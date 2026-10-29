@@ -1,5 +1,5 @@
-// Pickathon service worker. Build 20261029-153645
-const V='pk-20261029-153645',M='pkmedia-1',KEEP=["pack1-65568662.json", "pack2-96245441.json", "pack3-75c6eb1b.json", "pack4-ad16f5a9.json", "pack5-e2075859.json", "pack6-9cd4e800.json", "pack7-ddf1a3a0.json", "pack8-9a039424.json", "sspack1-28e78532.json", "sspack2-5dad79ef.json", "sspack3-f1933f08.json"],SHELL=['./','index.html','data.json','manifest.json','icon-192.png','apple-touch-icon.png','fonts/pickathon-2014.ttf'];
+// Pickathon service worker. Build 20261029-154203
+const V='pk-20261029-154203',M='pkmedia-1',KEEP=["pack1-65568662.json", "pack2-96245441.json", "pack3-75c6eb1b.json", "pack4-ad16f5a9.json", "pack5-e2075859.json", "pack6-9cd4e800.json", "pack7-ddf1a3a0.json", "pack8-9a039424.json", "sspack1-28e78532.json", "sspack2-5dad79ef.json", "sspack3-f1933f08.json"],SHELL=['./','index.html','data.json','manifest.json','icon-192.png','apple-touch-icon.png','fonts/pickathon-2014.ttf'];
 self.addEventListener('install',e=>{e.waitUntil(caches.open(V).then(c=>Promise.all(SHELL.map(u=>c.add(new Request(u,{cache:'reload'})).catch(()=>{})))))});
 self.addEventListener('message',e=>{if(e.data==='skip')self.skipWaiting()});
 self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(k=>Promise.all(k.filter(x=>x.startsWith('pk-')&&x!==V).map(x=>caches.delete(x)))).then(()=>caches.open(M)).then(h=>h.keys().then(ks=>Promise.all(ks.filter(q=>{const p=new URL(q.url).pathname.split('/').pop();return /pack/.test(p)&&KEEP.indexOf(p)<0}).map(q=>h.delete(q))))).then(()=>self.clients.claim()))});
