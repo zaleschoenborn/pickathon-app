@@ -765,7 +765,7 @@ var rl=false;navigator.serviceWorker.addEventListener('controllerchange',functio
 <sc-if value="{{hood.hasWatch}}" hint-placeholder-val="{{true}}"><button type="button" onClick="{{hood.watch}}" style="margin-top: 18px; display: inline-flex; align-items: center; gap: 10px; min-height: 46px; padding: 0 20px 0 8px; border-radius: 999px; border: 0; background: rgba(242,237,227,0.94); color: #12160F; font: inherit; font-weight: 800; cursor: pointer"><span aria-hidden="true" style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 999px; background: #12160F; color: #F2EDE3; font-size: 12px">▶</span>Watch {{hood.n}}<span style="font-weight: 600; opacity: 0.7"> · a quick look inside</span></button></sc-if>
 </div>
 </section>
-<sc-if value="{{hood.mm.show}}" hint-placeholder-val="{{false}}"><section style="{{wrap}}"><div style="padding: 16px 0 0"><button type="button" onClick="{{hood.mm.go}}" aria-label="See {{hood.mm.label}} on the farm map" style="{{hood.mm.box}}"><span aria-hidden="true" style="{{hood.mm.img}}"></span><span style="display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; font-size: 14px; font-weight: 800"><span>← All neighborhoods</span><span style="color: #F2B33D">Open map</span></span></button></div></section></sc-if>
+<sc-if value="{{hood.mm.show}}" hint-placeholder-val="{{false}}"><section style="{{wrap}}"><div style="padding: 16px 0 0"><button type="button" onClick="{{hood.mm.go}}" aria-label="See {{hood.mm.label}} on the farm map" style="{{hood.mm.box}}"><span aria-hidden="true" style="{{hood.mm.img}}"><svg viewBox="{{hood.mm.vb}}" preserveAspectRatio="none" style="position: absolute; inset: 0; width: 100%; height: 100%; display: block"><path d="{{hood.mm.mask}}" fill="rgba(12,14,10,0.58)" fill-rule="evenodd"></path><path d="{{hood.mm.poly}}" fill="none" stroke="#F2B33D" stroke-width="3" stroke-linejoin="round" vector-effect="non-scaling-stroke"></path></svg></span><span style="display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; font-size: 14px; font-weight: 800"><span>← All neighborhoods</span><span style="color: #F2B33D">Open map</span></span></button></div></section></sc-if>
 <section style="{{wrap}}">
 <div style="display: flex; flex-wrap: wrap; gap: 32px; padding: 28px 0">
 <div style="flex: 999 1 420px; min-width: 0">
@@ -2122,9 +2122,11 @@ var pr27 = function (k) { var r = PR27[k]; return r ? Math.ceil(r[PCOL]) : 0; },
           var ch = 0.56, cx = (x0 + x1) / 200, cy = (y0 + y1) / 200, bw = (x1 - x0) / 100, bh = (y1 - y0) / 100;
           var vw = Math.max(0.34, Math.min(0.62, Math.max(bw * 1.35, bh * 1.35 * 2667 / (2000 * ch)))), Zm = 1 / vw;
           var px = Math.max(0, Math.min(100, (Zm * cx - 0.5) / (Zm - 1) * 100)), py = Math.max(0, Math.min(100, (ch / 2 - cy * Zm * 1.3335) / (ch - Zm * 1.3335) * 100));
-          mm = { show: true, label: d.hoods[hid2].n,
+          var iw = Zm * 100, ih2 = Zm * 133.35, ox = px / 100 * (100 - iw), oy = py / 100 * (ch * 100 - ih2);
+          var polyD = 'M' + Z.map(function (p) { return (ox + p[0] / 100 * iw).toFixed(2) + ' ' + (oy + p[1] / 100 * ih2).toFixed(2); }).join(' L') + ' Z';
+          mm = { show: true, label: d.hoods[hid2].n, vb: '0 0 100 ' + (ch * 100).toFixed(2), poly: polyD, mask: 'M-5 -5 H105 V' + (ch * 100 + 5).toFixed(2) + ' H-5 Z ' + polyD,
             box: 'display: block; width: 100%; padding: 0; border: 1px solid #2A3125; border-radius: 14px; overflow: hidden; cursor: pointer; background: #1A2017; text-align: left; font: inherit; color: #F2EDE3',
-            img: 'display: block; width: 100%; aspect-ratio: 1 / ' + ch + '; background-image: url(' + out.mapImg + '); background-repeat: no-repeat; background-size: ' + (Zm * 100) + '% auto; background-position: ' + px.toFixed(1) + '% ' + py.toFixed(1) + '%',
+            img: 'position: relative; display: block; width: 100%; aspect-ratio: 1 / ' + ch + '; background-image: url(' + out.mapImg + '); background-repeat: no-repeat; background-size: ' + (Zm * 100) + '% auto; background-position: ' + px.toFixed(1) + '% ' + py.toFixed(1) + '%',
             go: function () { var i = -1; self.state.stack.forEach(function (e, k) { if (e.r === 'hoods') i = k; }); self.setState({ mapHood: hid2, sheet: false, mapHover: null }); if (i >= 0) { self.setState({ stack: self.state.stack.slice(0, i + 1) }); self.toTop(self.state.stack[i].y || 0); self.announce(); } else { self.go('hoods'); } } };
         }
         out.hood.mm = mm;

@@ -1,5 +1,5 @@
-// Pickathon service worker. Build 20261029-134700
-const V='pk-20261029-134700',SHELL=['./','index.html','data.json','manifest.json','icon-192.png','apple-touch-icon.png','fonts/pickathon-2014.ttf'];
+// Pickathon service worker. Build 20261029-134917
+const V='pk-20261029-134917',SHELL=['./','index.html','data.json','manifest.json','icon-192.png','apple-touch-icon.png','fonts/pickathon-2014.ttf'];
 self.addEventListener('install',e=>{e.waitUntil(caches.open(V).then(c=>Promise.all(SHELL.map(u=>c.add(new Request(u,{cache:'reload'})).catch(()=>{})))))});
 self.addEventListener('message',e=>{if(e.data==='skip')self.skipWaiting()});
 self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(k=>Promise.all(k.filter(x=>x.startsWith('pk-')&&x!==V).map(x=>caches.delete(x)))).then(()=>self.clients.claim()))});
