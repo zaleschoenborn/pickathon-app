@@ -5,6 +5,8 @@
 <style>
 body{margin:0;background:#2B2628}
 a{color:#F2EDE3}a:hover{color:#D6B54A}
+html,body,button,a,select,label,[role=button]{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+@media (max-width: 820px){input,select,textarea{font-size:16px!important}}
 [style*="overflow-x: auto"]{scrollbar-width:none!important;-ms-overflow-style:none}[style*="overflow-x: auto"]::-webkit-scrollbar{display:none!important}
 .pk-arw{position:fixed;z-index:60;width:44px;height:44px;margin-top:-22px;border-radius:999px;border:1px solid rgba(242,237,227,.35);background:rgba(18,22,15,.82);color:#F2EDE3;font:700 22px/1 system-ui,sans-serif;cursor:pointer;display:none;align-items:center;justify-content:center;box-shadow:0 4px 14px rgba(0,0,0,.35)}.pk-arw:hover{background:#F2EDE3;color:#12160F}
 .pk27 [style*="background: #12160F"]{background-color:#2B2628!important}
@@ -756,7 +758,7 @@ var rl=false;navigator.serviceWorker.addEventListener('controllerchange',functio
 <sc-if value="{{hood.hasWatch}}" hint-placeholder-val="{{true}}"><button type="button" onClick="{{hood.watch}}" style="margin-top: 18px; display: inline-flex; align-items: center; gap: 10px; min-height: 46px; padding: 0 20px 0 8px; border-radius: 999px; border: 0; background: rgba(242,237,227,0.94); color: #12160F; font: inherit; font-weight: 800; cursor: pointer"><span aria-hidden="true" style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 999px; background: #12160F; color: #F2EDE3; font-size: 12px">▶</span>Watch {{hood.n}}<span style="font-weight: 600; opacity: 0.7"> · a quick look inside</span></button></sc-if>
 </div>
 </section>
-<sc-if value="{{hood.mm.show}}" hint-placeholder-val="{{false}}"><section style="{{wrap}}"><div style="padding: 16px 0 0"><button type="button" onClick="{{hood.mm.go}}" aria-label="See {{hood.mm.label}} on the farm map" style="{{hood.mm.box}}"><span aria-hidden="true" style="{{hood.mm.img}}"></span><span aria-hidden="true" style="position: absolute; left: 50%; top: 50%; width: 22px; height: 22px; margin: -11px 0 0 -11px; border-radius: 999px; background: #F2B33D; border: 3px solid #12160F; box-shadow: 0 0 0 6px rgba(242,179,61,0.35)"></span><span style="position: absolute; left: 10px; bottom: 10px; padding: 8px 14px; border-radius: 999px; background: #12160F; color: #F2EDE3; font-size: 14px; font-weight: 800">← All neighborhoods</span><span style="position: absolute; right: 10px; bottom: 10px; padding: 8px 12px; border-radius: 999px; background: #F2B33D; color: #12160F; font-size: 13px; font-weight: 800">Open map</span></button></div></section></sc-if>
+<sc-if value="{{hood.mm.show}}" hint-placeholder-val="{{false}}"><section style="{{wrap}}"><div style="padding: 16px 0 0"><button type="button" onClick="{{hood.mm.go}}" aria-label="See {{hood.mm.label}} on the farm map" style="{{hood.mm.box}}"><span aria-hidden="true" style="{{hood.mm.img}}"></span><span style="display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; font-size: 14px; font-weight: 800"><span>← All neighborhoods</span><span style="color: #F2B33D">Open map</span></span></button></div></section></sc-if>
 <section style="{{wrap}}">
 <div style="display: flex; flex-wrap: wrap; gap: 32px; padding: 28px 0">
 <div style="flex: 999 1 420px; min-width: 0">
@@ -768,6 +770,7 @@ var rl=false;navigator.serviceWorker.addEventListener('controllerchange',functio
 <sc-if value="{{hood.canMore}}" hint-placeholder-val="{{false}}"><button type="button" onClick="{{hood.toggleMore}}" aria-expanded="{{hood.moreOpen}}" style="margin-top: 10px; min-height: 40px; padding: 0; border: 0; background: transparent; color: #9FCB8A; font: inherit; font-weight: 700; cursor: pointer">{{hood.moreLabel}}</button></sc-if>
 <sc-if value="{{hood.hasSets}}" hint-placeholder-val="{{true}}">
 <div style="{{secHead}}; margin-top: 36px"><h2 style="{{h2}}">{{hood.playHead}}</h2><span style="font-size: 14px; color: #B9B3A6">{{hood.lineups}}</span></div>
+<sc-if value="{{hood.stShow}}" hint-placeholder-val="{{false}}"><div role="group" aria-label="Place" style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px"><sc-for list="{{hood.stChips}}" as="c" hint-placeholder-count="3"><button type="button" onClick="{{c.pick}}" aria-pressed="{{c.on}}" style="{{c.style}}">{{c.label}}</button></sc-for></div></sc-if>
 <sc-if value="{{hood.luShow}}" hint-placeholder-val="{{false}}"><div role="group" aria-label="Type" style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px"><sc-for list="{{hood.luChips}}" as="c" hint-placeholder-count="3"><button type="button" onClick="{{c.pick}}" aria-pressed="{{c.on}}" style="{{c.style}}">{{c.label}}</button></sc-for></div></sc-if>
 <div role="group" aria-label="Day"style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px">
 <sc-for list="{{dayTabs}}" as="d" hint-placeholder-count="4">
@@ -2051,7 +2054,8 @@ var pr27 = function (k) { var r = PR27[k]; return r ? Math.ceil(r[PCOL]) : 0; },
       var hluSel = (st.hluF || '').indexOf(hid + '|') === 0 ? st.hluF.slice(hid.length + 1) : '';
       var luIds = []; all.forEach(function (s) { if (luIds.indexOf(s.l) < 0) luIds.push(s.l); });
       if (luIds.indexOf(hluSel) < 0) hluSel = '';
-      var dsets = all.filter(function (s) { return s.d === st.day && (!hluSel || s.l === hluSel); });
+      var hstSel = (st.hstF || '').indexOf(hid + '|') === 0 ? st.hstF.slice(hid.length + 1) : '';
+      var dsets = all.filter(function (s) { return s.d === st.day && (!hluSel || s.l === hluSel) && (!hstSel || s.st === hstSel); });
       var hSt = stories.filter(function (s) { return s.h.indexOf(hid) >= 0; }).slice(0, 2).map(sCard);
       var galH = galOf(H).slice(1);
       var ssN = ((d.screensaver) || []).filter(function (x) { return x.h === hid; }).length;
@@ -2082,12 +2086,14 @@ var pr27 = function (k) { var r = PR27[k]; return r ? Math.ceil(r[PCOL]) : 0; },
       if (R === 'hood' && out.hood) { (function () {
         var hid2 = cur.h, Z = ZONES[hid2], mm = { show: false };
         if (Z && Z.length && !OFFMAP[hid2]) {
-          var cx = 0, cy = 0; Z.forEach(function (p) { cx += p[0]; cy += p[1]; }); cx = cx / Z.length / 100; cy = cy / Z.length / 100;
-          var Zm = 3.2, ch = 0.56, ih = Zm * 1.3335;
-          var px = Math.max(0, Math.min(100, (Zm * cx - 0.5) / (Zm - 1) * 100)), py = Math.max(0, Math.min(100, (ch / 2 - cy * ih) / (ch - ih) * 100));
+          var x0 = 100, x1 = 0, y0 = 100, y1 = 0, ext = function (p) { x0 = Math.min(x0, p[0]); x1 = Math.max(x1, p[0]); y0 = Math.min(y0, p[1]); y1 = Math.max(y1, p[1]); };
+          Z.forEach(ext);
+          var ch = 0.56, cx = (x0 + x1) / 200, cy = (y0 + y1) / 200, bw = (x1 - x0) / 100, bh = (y1 - y0) / 100;
+          var vw = Math.max(0.34, Math.min(0.62, Math.max(bw * 1.35, bh * 1.35 * 2667 / (2000 * ch)))), Zm = 1 / vw;
+          var px = Math.max(0, Math.min(100, (Zm * cx - 0.5) / (Zm - 1) * 100)), py = Math.max(0, Math.min(100, (ch / 2 - cy * Zm * 1.3335) / (ch - Zm * 1.3335) * 100));
           mm = { show: true, label: d.hoods[hid2].n,
-            box: 'position: relative; display: block; width: 100%; padding: 0; border: 1px solid #2A3125; border-radius: 14px; overflow: hidden; cursor: pointer; background: #1E2A1B; aspect-ratio: 1 / ' + ch + '; text-align: left; font: inherit; color: #F2EDE3',
-            img: 'position: absolute; inset: 0; background-image: url(' + out.mapImg + '); background-repeat: no-repeat; background-size: ' + (Zm * 100) + '% auto; background-position: ' + px.toFixed(1) + '% ' + py.toFixed(1) + '%',
+            box: 'display: block; width: 100%; padding: 0; border: 1px solid #2A3125; border-radius: 14px; overflow: hidden; cursor: pointer; background: #1A2017; text-align: left; font: inherit; color: #F2EDE3',
+            img: 'display: block; width: 100%; aspect-ratio: 1 / ' + ch + '; background-image: url(' + out.mapImg + '); background-repeat: no-repeat; background-size: ' + (Zm * 100) + '% auto; background-position: ' + px.toFixed(1) + '% ' + py.toFixed(1) + '%',
             go: function () { var i = -1; self.state.stack.forEach(function (e, k) { if (e.r === 'hoods') i = k; }); self.setState({ mapHood: hid2, sheet: false, mapHover: null }); if (i >= 0) { self.setState({ stack: self.state.stack.slice(0, i + 1) }); self.toTop(self.state.stack[i].y || 0); self.announce(); } else { self.go('hoods'); } } };
         }
         out.hood.mm = mm;
@@ -2095,6 +2101,10 @@ var pr27 = function (k) { var r = PR27[k]; return r ? Math.ceil(r[PCOL]) : 0; },
         var allH = d.sets.filter(function (s) { return hoodIdOf(s) === hid2; }), ids2 = []; allH.forEach(function (s) { if (ids2.indexOf(s.l) < 0) ids2.push(s.l); });
         var sel2 = (st.hluF || '').indexOf(hid2 + '|') === 0 ? st.hluF.slice(hid2.length + 1) : '';
         var chipSt = function (on) { return 'min-height: 40px; padding: 0 16px; border-radius: 999px; border: 1px solid ' + (on ? '#F2B33D' : '#4A5240') + '; background: ' + (on ? '#F2B33D' : 'transparent') + '; color: ' + (on ? '#12160F' : '#F2EDE3') + '; font: inherit; font-size: 14px; font-weight: 700; cursor: pointer'; };
+        var stIds = [], stOf = function (s) { return s.st; }; allH.forEach(function (s) { if (stIds.indexOf(s.st) < 0) stIds.push(s.st); });
+        var selS = (st.hstF || '').indexOf(hid2 + '|') === 0 ? st.hstF.slice(hid2.length + 1) : '';
+        out.hood.stShow = stIds.length > 1;
+        out.hood.stChips = [{ label: 'Everywhere', on: selS ? 'false' : 'true', style: chipSt(!selS), pick: function () { self.setState({ hstF: '' }); } }].concat(stIds.map(function (id) { return { label: (stage[id] && stage[id].n) || id, on: selS === id ? 'true' : 'false', style: chipSt(selS === id), pick: function () { self.setState({ hstF: hid2 + '|' + id }); } }; }));
         out.hood.luShow = ids2.length > 1;
         out.hood.luChips = [{ label: 'All', on: sel2 ? 'false' : 'true', style: chipSt(!sel2), pick: function () { self.setState({ hluF: '' }); } }].concat(ids2.map(function (id) { return { label: (luName[id] || LUN[id] || id), on: sel2 === id ? 'true' : 'false', style: chipSt(sel2 === id), pick: function () { self.setState({ hluF: hid2 + '|' + id }); } }; }));
       })(); }
