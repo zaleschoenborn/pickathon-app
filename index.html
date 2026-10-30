@@ -154,7 +154,7 @@ var rl=false;navigator.serviceWorker.addEventListener('controllerchange',functio
 </sc-if>
 </sc-if>
 
-<main id="{{scrollId}}" style="{{mainStyle}}">
+<main id="{{scrollId}}" aria-label="{{mainLabel}}" style="{{mainStyle}}">
 <sc-if value="{{deskBack}}" hint-placeholder-val="{{false}}">
 <div style="max-width: 1280px; margin: 0 auto; padding: 16px 24px 0; box-sizing: border-box">
 <button type="button" onClick="{{goBack}}" style="min-height: 40px; padding: 0 14px 0 8px; border: 0; border-radius: 999px; background: #1A2017; color: #F2EDE3; font: inherit; font-size: 14px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 4px"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"></path></svg>Back to {{backLabel}}</button>
@@ -1734,7 +1734,7 @@ var PCOL = SEA === 'fest' ? 6 : SEA === 'sched' ? 3 : SEA === 'lineup' ? 2 : (in
 var pr27 = function (k) { var r = PR27[k]; return r ? Math.ceil(r[PCOL]) : 0; }, m27 = function (n) { return '$' + n.toFixed(2).replace(/\.00$/, '').replace(/\B(?=(\d{3})+(?!\d))/g, ','); };
     var out = {
       isPhone: phone, isDesk: !phone, loading: !d, canBack: st.stack.length > 1 && R !== 'home', menuOpen: st.menu ? 'true' : 'false', showMenu: phone && st.menu,
-      scrollId: phone ? 'pk-scroll-phone' : 'pk-scroll-desk',
+      scrollId: phone ? 'pk-scroll-phone' : 'pk-scroll-desk', mainLabel: (function () { var c = st.stack[st.stack.length - 1] || {}; return 'Page ' + st.stack.length + ' ' + (c.r || '') + (c.a || c.h || c.s || c.p || ''); })(),
       themeCls: ({ poster2: 'pkp pkq ', poster: 'pkp pkq ', night: 'pkn ', field: 'pkf ' }[st.look] || '') + ((st.look === 'field' || st.look === 'green') ? 'pk26' : 'pk27'), logoSrc: (st.look !== 'green' && (st.season || 'off') !== 'fest') ? 'i/p583.png' : 'i/278.png', logoAlt: (st.look !== 'green') ? 'Pickathon 2027' : 'Pickathon', rootStyle: phone ? 'position: fixed; top: 0; left: 0; right: 0; bottom: 0; display: flex; flex-direction: column; overflow: hidden; background: #12160F; color: #F2EDE3; font-family: Inter, system-ui, sans-serif; font-size: 15px; line-height: 1.5' : 'min-height: 100vh; background: #12160F; color: #F2EDE3; font-family: Inter, system-ui, sans-serif; font-size: 16px; line-height: 1.55',
       mainStyle: phone ? 'flex: 1; overflow-x: hidden; overflow-y: ' + ((st.cardOpen || st.menu) ? 'hidden' : 'auto') : '',
       wrap: 'max-width: 1280px; margin: 0 auto; padding: 0 ' + pad + '; box-sizing: border-box',
@@ -2802,9 +2802,10 @@ window.__render=function(){const root=document.getElementById('root');
   const y=window.scrollY;const sy=[...root.querySelectorAll('main,[id^=pk-scroll]')].map(m=>[m.id,m.scrollTop]);const hx=[...root.querySelectorAll('[style*="overflow-x: auto"],[style*="overflow-x:auto"]')].filter(e=>e.scrollLeft>0).map(e=>[pathOf(e,root),e.scrollLeft]);const sm=[...root.querySelectorAll('main')].filter(m=>!m.id&&m.scrollTop>0).map(m=>[pathOf(m,root),m.scrollTop]);
   const vals=comp.renderVals();const frag=document.createDocumentFragment();for(const c of document.getElementById('tpl').content.childNodes)build(c,vals,frag);
   if(root.firstChild){const wrap=document.createElement('div');wrap.appendChild(frag);morphKids(root,wrap)}else root.replaceChildren(frag);
-  sy.forEach(([id,t])=>{if(!id)return;const m=document.getElementById(id);if(m&&t)m.scrollTop=t});
-  hx.forEach(([pp,l])=>{const n=atPath(root,pp);if(n)n.scrollLeft=l});sm.forEach(([pp,t])=>{const n=atPath(root,pp);if(n)n.scrollTop=t});
-  window.scrollTo(0,y);
+  const navNow=comp._navT&&Date.now()-comp._navT<500;
+  if(!navNow)sy.forEach(([id,t])=>{if(!id)return;const m=document.getElementById(id);if(m&&t)m.scrollTop=t});
+  hx.forEach(([pp,l])=>{const n=atPath(root,pp);if(n)n.scrollLeft=l});if(!navNow)sm.forEach(([pp,t])=>{const n=atPath(root,pp);if(n)n.scrollTop=t});
+  if(!navNow)window.scrollTo(0,y);
   try{if(document.fullscreenEnabled&&!document.fullscreenElement){const lab=[...root.querySelectorAll('span')].find(x=>/^(Prototype · site state|Site state:)/.test(x.textContent));if(lab&&!lab.parentNode.querySelector('.pk-fs')){const b=document.createElement('button');b.className='pk-fs';b.type='button';b.textContent='⛶ Full screen';b.style.cssText='flex:none;min-height:30px;padding:0 10px;border-radius:999px;font:inherit;font-size:12px;font-weight:700;cursor:pointer;background:#F2B33D;color:#12160F;border:0';b.onclick=()=>{document.documentElement.requestFullscreen().catch(()=>{b.textContent='Full screen not available here'})};lab.parentNode.appendChild(b)}}}catch(e){}
   if(fp){const n=atPath(root,fp);if(n&&(n.tagName==='INPUT'||n.tagName==='TEXTAREA')){n.focus({preventScroll:true});try{if(sel)n.setSelectionRange(sel[0],sel[1])}catch(e){}}}
 };
