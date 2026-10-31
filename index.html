@@ -53,6 +53,9 @@ h1,h2,h3,button,strong{text-wrap:balance}p,li{text-wrap:pretty}
 .pk-bnd-p{position:absolute;left:10px;bottom:10px;display:inline-flex;align-items:center;gap:6px;padding:4px 11px 4px 4px;border-radius:999px;background:#F2B33D;color:#12160F;font-size:12px;font-weight:800}.pk-bnd-p span{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;background:#12160F;color:#F2B33D;font-size:10px}
 .pk-bnd-t{display:flex;flex-direction:column;gap:4px;padding:12px 14px 14px}
 .pk-bcb{display:block;margin-top:6px;font-size:14px;font-weight:700;line-height:1.3}.pk-bcl{display:block;margin-top:3px;font-size:13px;line-height:1.35;color:#DCD6C9}
+.pk-bc{scrollbar-width:none!important}.pk-bc::-webkit-scrollbar{display:none}
+.pk-bcw{position:relative}.pk-bcnav button{position:absolute;top:calc(50% - 44px);z-index:4;width:44px!important;height:44px!important;background:rgba(18,22,15,.82)!important;border:1px solid rgba(242,237,227,.35)!important;box-shadow:0 4px 14px rgba(0,0,0,.45)}
+.pk-bcw:has(#pk-bandrow) .pk-bcnav button{top:96px}@media(max-width:900px){.pk-bcw:has(#pk-bandrow) .pk-bcnav button{top:120px}}@media(max-width:600px){.pk-bcw:has(#pk-bandrow) .pk-bcnav button{top:70px}.pk-bcnav button{top:calc(50% - 60px)}}.pk-bcnav button:nth-of-type(1){left:-10px}.pk-bcnav button:nth-of-type(2){right:-10px}@media(max-width:600px){.pk-bcnav button:nth-of-type(1){left:4px}.pk-bcnav button:nth-of-type(2){right:4px}}
 .pk-bcw{margin-top:18px}
 .pk-bc{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:6px;scrollbar-width:thin;-webkit-overflow-scrolling:touch}
 .pk-bcc{flex:none;width:min(80%,560px);aspect-ratio:4/3;scroll-snap-align:start;position:relative;padding:0;border:0;border-radius:16px;overflow:hidden;background:#24301F;color:#F2EDE3;font:inherit;text-align:left;cursor:pointer}
@@ -2202,7 +2205,7 @@ var pr27 = function (k) { var r = PR27[k]; return r ? Math.ceil(r[PCOL]) : 0; },
     var nmKg = function (x) { return String(x || '').toLowerCase().replace(/^the\s+/, '').replace(/[^a-z0-9]/g, ''); };
     var hyOf = function (name) { if (!self._hy) { var M = {}; ((d.past && d.past.years) || []).forEach(function (y) { (y.all || []).concat(y.names || []).forEach(function (n) { var k = nmKg(n); M[k] = M[k] || []; if (M[k].indexOf(y.y) < 0) M[k].push(y.y); }); }); self._hy = M; } return (self._hy[nmKg(name)] || []).slice().sort(); };
     var ordG = ['First', '2nd', '3rd', '4th', '5th', '6th', '7th', '8th', '9th', '10th'];
-    var VKIND = function (line) { var p = (line || '').split(' · ')[0]; if (/^(Literary|Comedy|TV|Podcast|Film)$/.test(p)) return p + ' discovery'; return 'Music discovery'; };
+    var VKIND = function (line) { var p = (line || '').split(' · ')[0]; if (/^(Literary|Comedy|TV|Podcast|Film)$/.test(p)) return p + (/·\s*Already a name/.test(line || '') ? ' legend' : ' discovery'); return 'Music discovery'; };
     var VTEXT = function (line) { return (line || '').replace(/^(Literary|Comedy|TV|Podcast|Film) · /, ''); };
     var VLAB = function (mt, y) { var m = /from Pickathon(?:\s+(\d{4}))?/i.exec(mt || ''); if (m) return 'Pickathon ' + (m[1] || y || ''); if (/documentary/i.test(mt || '')) return 'Pickathon doc';
       var t = (mt || '').replace(/^▶\s*/, '').replace(/^Watch\s+/i, '').replace(/^Top songs by.*/i, 'Top songs');
@@ -2790,13 +2793,13 @@ var pr27 = function (k) { var r = PR27[k]; return r ? Math.ceil(r[PCOL]) : 0; },
         return res; })();
       var whySix = (function () { var disc = whyCar.slice(0, 3).map(function (x) { return { kind: 'Discovery', kc: '#9FCB8A', n: x.n, yr: x.yr, line: x.line, img: x.img, hasImg: !!x.img, u: x.u, hasU: !!x.u, watch: x.watch, label: x.label }; });
         var deepBy = {}; ((d.past || {}).deep || []).forEach(function (x) { deepBy[x.n] = x; });
-        var legPool = LEG.filter(function (g) { return LEGV[g[0]]; }); var legs = shufS(legPool, 'leg' + (self._visit || 0) + Math.floor(Date.now() / 3600000)).slice(0, 3).map(function (g) { var v = LEGV[g[0]]; return { kind: 'Legend', kc: '#D6B54A', n: g[0], yr: String(g[1]), line: LEGL[g[0]] || ('Played the farm in ' + g[1] + '.'), img: ALI[g[0]] || '', hasImg: !!ALI[g[0]], u: v.u, hasU: true, watch: '▶︎ Watch at Pickathon ' + v.y, label: 'Watch ' + g[0] + ' at Pickathon ' + v.y }; });
+        var legPool = LEG.filter(function (g) { return LEGV[g[0]]; }); var legs = shufS(legPool, 'leg' + (self._visit || 0) + Math.floor(Date.now() / 3600000)).slice(0, 3).map(function (g) { var v = LEGV[g[0]]; return { kind: 'Music legend', kc: '#D6B54A', n: g[0], yr: String(g[1]), line: LEGL[g[0]] || ('Played the farm in ' + g[1] + '.'), img: ALI[g[0]] || '', hasImg: !!ALI[g[0]], u: v.u, hasU: true, watch: '▶︎ Watch at Pickathon ' + v.y, label: 'Watch ' + g[0] + ' at Pickathon ' + v.y }; });
         return disc.concat(legs); })();
       var carP = self._carP || {};
       var whyReelL = (function () {
         var DBY = {}; ((d.past || {}).deep || []).forEach(function (q) { DBY[q.n] = q; });
-        var disc = whyCar.filter(function (x) { return x.img && x.u; }).map(function (x) { var q = DBY[x.n] || {}, vm = q.v || q.m || {}; return { kind: VKIND(q.l), kc: '#9FCB8A', n: x.n, yr: VLAB(vm.t, (q.y || [])[0]), line: VTEXT(x.line), img: x.img, u: x.u, watch: '▶︎ ' + VLAB(vm.t, (q.y || [])[0]), label: (vm.t || 'Watch').replace(/^▶\s*/, '') + ': ' + x.n }; });
-        var legs = LEG.filter(function (g) { return LEGV[g[0]] && ALI[g[0]]; }).map(function (g) { var v = LEGV[g[0]]; return { kind: 'Legend', kc: '#D6B54A', n: g[0], yr: 'Pickathon ' + v.y, line: LEGL[g[0]] || ('Played the farm in ' + g[1] + '.'), img: ALI[g[0]], u: v.u, watch: '▶︎ Pickathon ' + v.y, label: 'Watch ' + g[0] + ' at Pickathon ' + v.y }; });
+        var disc = whyCar.filter(function (x) { return x.img && x.u; }).map(function (x) { var q = DBY[x.n] || {}, vm = q.v || q.m || {}; return { kind: VKIND(q.l), kc: /legend$/.test(VKIND(q.l)) ? '#D6B54A' : '#9FCB8A', n: x.n, yr: VLAB(vm.t, (q.y || [])[0]), line: VTEXT(x.line), img: x.img, u: x.u, watch: '▶︎ ' + VLAB(vm.t, (q.y || [])[0]), label: (vm.t || 'Watch').replace(/^▶\s*/, '') + ': ' + x.n }; });
+        var legs = LEG.filter(function (g) { return LEGV[g[0]] && ALI[g[0]]; }).map(function (g) { var v = LEGV[g[0]]; return { kind: 'Music legend', kc: '#D6B54A', n: g[0], yr: 'Pickathon ' + v.y, line: LEGL[g[0]] || ('Played the farm in ' + g[1] + '.'), img: ALI[g[0]], u: v.u, watch: '▶︎ Pickathon ' + v.y, label: 'Watch ' + g[0] + ' at Pickathon ' + v.y }; });
         var out0 = [], a = shufS(disc, 'rd' + (self._visit || 0)), b = shufS(legs, 'rl' + (self._visit || 0)), n = Math.max(a.length, b.length);
         for (var q = 0; q < n; q++) { if (a[q]) out0.push(a[q]); if (b[q]) out0.push(b[q]); }
         return out0;
@@ -3421,3 +3424,9 @@ window.addEventListener('resize',()=>{const p=isPhone();if(p!==!!comp.props.phon
 window.__render();if(comp.componentDidMount)comp.componentDidMount();
 [].forEach(u=>fetch(u).then(r=>r.json()).then(p=>{window.PACK=Object.assign({},window.PACK,p);window.__render()}).catch(()=>{}));
 </script>
+<script>(function(){var rm=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)');var hold={};function key(el){return el.id||'x'}
+function pause(el,ms){hold[key(el)]=Date.now()+ms}
+document.addEventListener('pointerdown',function(e){var r=e.target.closest&&e.target.closest('.pk-bcw');if(r){var b=r.querySelector('.pk-bc');if(b)pause(b,12000)}},true);
+document.addEventListener('wheel',function(e){var b=e.target.closest&&e.target.closest('.pk-bc');if(b)pause(b,12000)},{capture:true,passive:true});
+document.addEventListener('mouseover',function(e){var r=e.target.closest&&e.target.closest('.pk-bcw');if(r){var b=r.querySelector('.pk-bc');if(b)pause(b,3000)}},true);
+setInterval(function(){if(rm&&rm.matches)return;document.querySelectorAll('.pk-bc').forEach(function(b){if(!b.offsetParent||(hold[key(b)]||0)>Date.now())return;var rr=b.getBoundingClientRect();if(rr.bottom<0||rr.top>innerHeight)return;var c=b.firstElementChild;var step=c?c.getBoundingClientRect().width+12:b.clientWidth*0.8;if(b.scrollLeft+b.clientWidth>=b.scrollWidth-4)b.scrollTo({left:0,behavior:'smooth'});else b.scrollBy({left:step,behavior:'smooth'})})},4500)})();</script>
