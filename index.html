@@ -58,6 +58,15 @@ button[style*="overflow: hidden"]:not([style*="display:"]){display:flex;flex-dir
 @keyframes pkpulse{0%{box-shadow:0 0 0 0 rgba(255,111,89,.7)}70%{box-shadow:0 0 0 9px rgba(255,111,89,0)}100%{box-shadow:0 0 0 0 rgba(255,111,89,0)}}
 .pk-creds .pk-cred{flex:1 1 calc(50% - 14px)!important;border-bottom:0!important}.pk-creds .pk-cred-v{font-size:15px}.pk-car::-webkit-scrollbar{display:none}
 .pk-reelpause .pk-reel{animation-play-state:paused!important}
+@media (max-width:767px){
+.pk-sspill{top:14px!important;bottom:auto!important;right:16px!important}
+.pkp .pkp-bat{top:62px!important}
+.pkp section[aria-label="Welcome"]>div[style*="max-width: 1280px"]{padding-top:calc(min(24.3vw,162px) + 92px)!important}
+[role=region][aria-label="Listen"][style*="width: 44px"]{transition:transform .25s ease,opacity .25s ease}
+html.pk-scrolling [role=region][aria-label="Listen"][style*="width: 44px"]{transform:translateX(calc(100% + 16px));opacity:0;pointer-events:none}
+html.pk-scrolling [role=region][aria-label="Listen"][style*="width: 44px"]:has(button[aria-label^="Music player, playing"]){transform:translateX(62%);opacity:.85;pointer-events:auto}
+}
+@media (prefers-reduced-motion:reduce){[role=region][aria-label="Listen"]{transition:none!important}}
 </style>
 <link rel="apple-touch-icon" href="apple-touch-icon.png"><script>
 (function(){var framed=false;try{framed=window.top!==window}catch(e){framed=true}var touch=!framed&&/iphone|ipad|ipod|android/i.test(navigator.userAgent||'')||(!framed&&/Macintosh/.test(navigator.userAgent||'')&&navigator.maxTouchPoints>1);
@@ -65,6 +74,16 @@ function toApp(u){u=u||'';var am=/^https:\/\/music\.apple\.com\/(.*)$/.exec(u);i
 window.__pkOpenMusic=function(u){var a=touch?toApp(u):null;if(a){var t=setTimeout(function(){if(!document.hidden)window.open(u,'_blank','noopener')},1400);document.addEventListener('visibilitychange',function v(){if(document.hidden){clearTimeout(t);document.removeEventListener('visibilitychange',v)}});window.location.href=a;return}window.open(u,'_blank','noopener')};
 (function(){var lastScroll=0,sx=0,sy=0,st=0,moved=false,stopTap=false;window.addEventListener('scroll',function(){lastScroll=Date.now();if(st)moved=true},{capture:true,passive:true});document.addEventListener('touchstart',function(e){var t=e.touches[0];sx=t.clientX;sy=t.clientY;st=Date.now();moved=false;stopTap=Date.now()-lastScroll<90},{capture:true,passive:true});document.addEventListener('touchmove',function(e){var t=e.touches[0];if(Math.abs(t.clientX-sx)>8||Math.abs(t.clientY-sy)>8)moved=true},{capture:true,passive:true});document.addEventListener('click',function(e){if(!st||Date.now()-st>1200){st=0;return}var bad=moved||stopTap;st=0;moved=false;stopTap=false;if(!bad)return;var el=e.target&&e.target.closest?e.target.closest('input,select,textarea,label'):null;if(el)return;e.preventDefault();e.stopPropagation();e.stopImmediatePropagation()},true)})();
 document.addEventListener('click',function(e){if(!touch)return;var el=e.target&&e.target.closest?e.target.closest('a[href]'):null;if(!el)return;var h=el.getAttribute('href')||'';if(toApp(h)){e.preventDefault();e.stopPropagation();window.__pkOpenMusic(h)}},true)})();
+</script><script>
+(function(){var root=document.documentElement,last=new WeakMap(),lastDoc=0,t=0,TOP=80;
+function show(){root.classList.remove('pk-scrolling')}
+function onScroll(e){if(!window.matchMedia||!window.matchMedia('(max-width:767px)').matches)return;
+var tg=e.target,isDoc=!tg||tg===document||tg===document.documentElement||tg===document.body,y=isDoc?(window.pageYOffset||0):(tg.scrollTop||0),p=isDoc?lastDoc:(last.get(tg)||0);
+if(isDoc)lastDoc=y;else last.set(tg,y);
+var d=y-p;if(!isDoc&&!d)return;
+if(y<TOP||d<-6){show();clearTimeout(t);return}
+if(d>6){root.classList.add('pk-scrolling');clearTimeout(t);t=setTimeout(show,900)}}
+document.addEventListener('scroll',onScroll,{capture:true,passive:true})})();
 </script><script>
 /* full-height handled by status bar style 'black' */</script><script>
 (function(){if(!('serviceWorker' in navigator))return;
