@@ -263,8 +263,7 @@ body{margin:0;background:var(--ink);color:var(--cream);font-family:var(--f);
 #phead{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 0 10px}
 #phead #pname{margin:0}
 #pclose{border:1px solid var(--line);background:#222820;color:var(--cream);width:34px;height:34px;border-radius:999px;font:800 14px/1 var(--f);cursor:pointer}
-#shapes .pkpeek{fill:rgba(242,179,61,.16);stroke:#F2B33D;stroke-width:3px;vector-effect:non-scaling-stroke;pointer-events:none;opacity:0;transition:opacity .12s}
-#shapes .pkpeek.on{opacity:1}
+#lits img.pk.on,#lits div.pk.on{opacity:.62}   /* the neighborhood under the pointer while another is pinned: same low-layer light, softer */
 .lab.peek{outline:3px solid #F2B33D;outline-offset:1px;box-shadow:0 2px 10px rgba(242,179,61,.55)}
 #shapes .rr{fill:none;stroke:#F2B33D;stroke-width:4px;vector-effect:non-scaling-stroke;pointer-events:none;filter:drop-shadow(0 0 4px #F2B33D)}
 </style>
@@ -451,6 +450,7 @@ const PINL={lushcamp:1,coyote:2,cherryhill:3,grove:4};  // left rail, this order
 
 // Light one neighborhood by swapping the mask, not by painting a wash over it.
 const LITIMG=new Map();
+let peekH=null;   // desktop: the neighborhood under the pointer while another is pinned
 function litMake(host,src,x,y,w,h){
   const im=new Image(); im.decoding='async'; im.draggable=false; im.alt='';
   im.style.cssText='left:'+x+'px;top:'+y+'px;width:'+w+'px;height:'+h+'px';
@@ -464,14 +464,18 @@ function litMake(host,src,x,y,w,h){
 function light(h){
   const host=document.getElementById('lits'); if(!host) return;
   const ids = amFilter ? HOODS.filter(x=>(passes(x)||x===h)&&LIT[x.id]).map(x=>x.id) : (h&&LIT[h.id]?[h.id]:[]);
+  const pkId = (peekH && LIT[peekH.id]) ? peekH.id : null;
+  if(pkId && ids.indexOf(pkId)<0) ids.push(pkId);
   const key=ids.join(',');
-  if(key===light._k) return;
+  const syncPk=()=>LITIMG.forEach((v,id)=>{ const on=(id===pkId); v.o.classList.toggle('pk',on); v.tiles.forEach(t=>t.classList.toggle('pk',on)); });
+  if(key===light._k){ syncPk(); return; }
   light._k=key;
   LITIMG.forEach((v,id)=>{ if(ids.indexOf(id)<0){
     v.o.classList.remove('on'); v.tiles.forEach(t=>t.classList.remove('on'));
     setTimeout(()=>{ v.o.remove(); v.tiles.forEach(t=>t.remove()); },260); LITIMG.delete(id); } });
   ids.forEach(id=>{ if(!LITIMG.has(id)){ const o=LIT[id].o;
     LITIMG.set(id,{o:litMake(host,'l/'+id+'.webp?v=3',o[0],o[1],o[2],o[3]),tiles:new Map()}); } });
+  syncPk();
   document.getElementById('veil').classList.toggle('on',ids.length>0);
   stage.classList.toggle('veiled',ids.length>0);
   schedTiles();
@@ -594,7 +598,7 @@ function tiles(){
         // every sharp piece of one neighbourhood lives in a single sheet; each piece just windows into it
         const A=LIT[id].a, f=TM/TP, d=document.createElement('div');
         d.style.cssText='left:'+c*TM+'px;top:'+r*TM+'px;width:'+Math.min(TM,MW-c*TM)+'px;height:'+Math.min(TM,MH-r*TM)+'px;background:url(l/'+id+'_a.webp?v=3) -'+a[2]*TP*f+'px -'+a[3]*TP*f+'px/'+A[0]*f+'px '+A[1]*f+'px no-repeat';
-        lh.appendChild(d); requestAnimationFrame(()=>d.classList.add('on')); v.tiles.set(key,d);
+        if(peekH&&peekH.id===id) d.classList.add('pk'); lh.appendChild(d); requestAnimationFrame(()=>d.classList.add('on')); v.tiles.set(key,d);
       } });
     v.tiles.forEach((im,key)=>{ if(!want.has(key)){ im.remove(); v.tiles.delete(key); } });
   });
@@ -705,13 +709,12 @@ function setCur(h){
   cur=h; show(h); apply();
 }
 let pinned=null;   // desktop: a click pins a neighborhood so the pointer can travel to its card
-let peekEl=null, peekH=null;   // while one neighborhood is pinned, the one under the pointer lights up (map + its name tag) to show a click would switch to it
+let peekEl=null;   // while one neighborhood is pinned, the one under the pointer lights up (map + its name tag) to show a click would switch to it
 function peek(h){
   if(h&&(h===pinned||h===cur&&!pinned)) h=null;
   if(h===peekH) return; peekH=h;
   HOODS.forEach(x=>{ if(x._el) x._el.classList.toggle('peek',x===h); });
-  if(!peekEl){ peekEl=document.createElementNS(NS,'path'); peekEl.setAttribute('class','pkpeek'); shp.appendChild(peekEl); }
-  if(h){ peekEl.setAttribute('d',h._mask); peekEl.classList.add('on'); } else peekEl.classList.remove('on');
+  light(cur);   // the highlight is the pre-made lit picture on the low layer: icons, lines and labels stay on top
 }
 function clearCur(){ pinned=null; peek(null); cur=null; show(null); apply(); }
 function goPage(h){
