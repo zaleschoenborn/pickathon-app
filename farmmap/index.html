@@ -214,6 +214,7 @@ body{margin:0;background:var(--ink);color:var(--cream);font-family:var(--f);
 .ai.hit{opacity:1;outline:2px solid #F2B33D;outline-offset:1px}
 #ptog{display:flex;align-items:center;gap:6px}
 #pnow{font:700 12px/1 var(--f);color:#F2B33D}
+#shapes .ring.dot{fill:#F2B33D;stroke:#12160F;stroke-width:1.5px;animation:none}
 #shapes .ricon{pointer-events:none;filter:drop-shadow(0 1px 2px rgba(0,0,0,.45))}
 #shapes .ring{fill:rgba(242,179,61,.38);stroke:#F2B33D;stroke-width:4px;vector-effect:non-scaling-stroke;pointer-events:none;
   animation:rp 1.5s ease-in-out infinite}
@@ -397,9 +398,14 @@ function showRings(a){
 }
 function sizeRings(){
   // The picture is a crisp copy of the real icon, kept at least 34px on screen so it reads at any zoom.
-  const w=Math.max(40,28/k);
-  RINGS.forEach(o=>{ o.c.setAttribute('r',w*0.78);
-    if(o.i){ o.i.setAttribute('x',o.x-w/2); o.i.setAttribute('y',o.y-w/2); o.i.setAttribute('width',w); o.i.setAttribute('height',w); } });
+  // Zoomed out, each icon is just a gold dot (the neighborhoods carry the message);
+  // zoom in and the dot opens into the real icon.
+  const near=k>=kFit*1.8, w=Math.max(40,28/k);
+  RINGS.forEach(o=>{
+    if(near){ o.c.setAttribute('r',w*0.78); o.c.classList.remove('dot'); }
+    else { o.c.setAttribute('r',5.5/k); o.c.classList.add('dot'); }
+    if(o.i){ o.i.style.display=near?'':'none';
+      o.i.setAttribute('x',o.x-w/2); o.i.setAttribute('y',o.y-w/2); o.i.setAttribute('width',w); o.i.setAttribute('height',w); } });
 }
 const passes = h => !amFilter || (h.amk||[]).includes(amFilter);
 const PINL={lushcamp:1,coyote:2,cherryhill:3,grove:4};  // left rail, this order, above Windmill
@@ -408,8 +414,10 @@ const PINL={lushcamp:1,coyote:2,cherryhill:3,grove:4};  // left rail, this order
 function light(h){
   const lp=document.getElementById('litpath'), im=document.getElementById('lit');
   if(!lp||!im) return;
-  const ok = h && passes(h) && (h._mask||'');
-  const key = ok ? h.id : '';
+  // With a filter on, every neighborhood that has the amenity glows together.
+  const all = amFilter ? HOODS.filter(x=>passes(x)&&x._mask) : null;
+  const ok = all ? (all.length? all.map(x=>x._mask).join(' ') : '') : (h && passes(h) && (h._mask||''));
+  const key = ok ? (all ? '*'+amFilter : h.id) : '';
   if(key===light._k) return;            // same neighborhood: nothing to redo
   light._k = key;
   lp.setAttribute('d', ok || '');
@@ -425,7 +433,7 @@ function light(h){
   // to a near-grey like Market or Welcome Lot, so those get more of it, and the
   // palest get light and contrast as well. Measured per area, not guessed.
   if(ok){
-    const f=(h._fx||[2.2,1,1]);
+    const f=all ? [0,1,2].map(i=>Math.max(...all.map(x=>(x._fx||[2.2,1,1])[i]))) : (h._fx||[2.2,1,1]);
     im.style.setProperty('--fxs',f[0]);
     im.style.setProperty('--fxb',f[1]);
     im.style.setProperty('--fxc',f[2]);
