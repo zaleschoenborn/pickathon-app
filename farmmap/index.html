@@ -747,7 +747,7 @@ function onMove(e){
     pinch=null;
     if(!prev) return;               // first sighting: next move does the work
     const dx=e.clientX-prev.x, dy=e.clientY-prev.y;
-    if(!moved&&downAt&&Math.hypot(e.clientX-downAt.x,e.clientY-downAt.y)>SLOP){ moved=true; hoverOK=false; }
+    if(!moved&&downAt&&Math.hypot(e.clientX-downAt.x,e.clientY-downAt.y)>SLOP){ moved=true; }
     if(moved){ tx+=dx; ty+=dy; clamp(); move(); }
   } else if(live.size===2){
     const[a,b]=[...live.values()];
@@ -796,8 +796,8 @@ function tapAt(e){
   if(!h) return;
   // mouse: hover already showed the card, a click opens. Touch: the first tap
   // shows the card, a tap on the one already showing opens it.
-  if(h!==cur){ setCur(h); hoverOK=false; return; }
-  hoverOK=false; goPage(h);
+  if(e.pointerType!=='mouse' && h!==cur){ setCur(h); return; }
+  goPage(h);
 }
 const lift=e=>{
   if(e.type==='pointerup' && live.size===1 && live.has(e.pointerId) && !moved && downAt
@@ -819,7 +819,7 @@ labs.addEventListener('click',e=>{
   const b=e.target.closest('.lab');
   const h=b&&b.__hood; const wasMoved=moved; moved=false;
   if(!h||wasMoved) return;
-  if(h!==cur){ setCur(h); hoverOK=false; return; }   // first tap shows the card
+  if(lastType==='touch' && h!==cur){ setCur(h); return; }   // first tap shows the card
   goPage(h);
 });
 labs.addEventListener('pointerover',e=>{
@@ -829,7 +829,7 @@ labs.addEventListener('pointerover',e=>{
 
 // A trackpad two-finger swipe moves the farm; a pinch (which arrives as
 // ctrl+wheel) and a mouse wheel zoom it.
-stage.addEventListener('wheel',e=>{ hoverOK=false;
+stage.addEventListener('wheel',e=>{
   e.preventDefault();
   if(!e.ctrlKey && !e.metaKey && (e.deltaX||Math.abs(e.deltaY)<40)){
     tx-=e.deltaX; ty-=e.deltaY; clamp(); move(); return;
