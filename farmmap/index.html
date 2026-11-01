@@ -495,7 +495,7 @@ function clearCur(){ cur=null; show(null); apply(); }
 function goPage(h){
   setCur(h); show(h);
   // Embedded in the site: hand off to the site's own neighborhood page.
-  if(window.parent!==window && /[?&]embed=1/.test(location.search)){ try{ parent.postMessage({pkMap:'open',id:h.id},'*'); return; }catch(e){} }
+  if(window.parent!==window && /[?&]embed=1/.test(location.search)){ try{ saveView(); parent.postMessage({pkMap:'open',id:h.id},'*'); return; }catch(e){} }
   document.getElementById('pgname').textContent=h.n;
   document.getElementById('pgtag').textContent=h.t||'';
   const pk=document.getElementById('pgkind');
@@ -653,6 +653,20 @@ addEventListener('keydown',e=>{
 });
 addEventListener('resize',()=>{const z=k/kFit; fit(); zoomAt(kFit*z,stage.clientWidth/2,stage.clientHeight/2);});
 
-function boot(){ art.style.width=MW+'px'; art.style.height=MH+'px'; build(); fit(); }
+// Coming back from a neighborhood page, the map returns to the same look. Only
+// the hand-off saves anything (no running cost); the site clears the flag if the
+// visitor goes anywhere else instead of coming back.
+function saveView(){ try{ const W=stage.clientWidth,H=stage.clientHeight;
+  sessionStorage.setItem('pkmap.view',JSON.stringify({kr:k/kFit,cx:(W/2-tx)/k,cy:(H/2-ty)/k,cur:cur&&cur.id}));
+  sessionStorage.setItem('pkmap.keep','1'); }catch(e){} }
+function restoreView(){ try{
+  const keep=sessionStorage.getItem('pkmap.keep'); sessionStorage.removeItem('pkmap.keep');
+  const v=JSON.parse(sessionStorage.getItem('pkmap.view')||'null'); sessionStorage.removeItem('pkmap.view');
+  if(keep!=='1'||!v) return;
+  const W=stage.clientWidth,H=stage.clientHeight;
+  k=Math.max(kFit,Math.min(maxK(),kFit*v.kr)); tx=W/2-v.cx*k; ty=H/2-v.cy*k; clamp(); apply();
+  const h=HOODS.find(x=>x.id===v.cur); if(h) setCur(h);
+}catch(e){} }
+function boot(){ art.style.width=MW+'px'; art.style.height=MH+'px'; build(); fit(); restoreView(); }
 if(img.complete&&img.naturalWidth) boot(); else img.onload=boot;
 </script>
