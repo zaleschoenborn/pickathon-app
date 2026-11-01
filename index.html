@@ -151,7 +151,7 @@ setInterval(function(){if(bar)bar.style.display=document.querySelector('[aria-mo
  setInterval(function(){reg.update().catch(function(){})},5*60*1000); reg.update().catch(function(){});
  document.addEventListener('visibilitychange',function(){if(!document.hidden)reg.update().catch(function(){})});
 }).catch(function(){});
-window.__pkBuild='20261101-0925';setTimeout(function(){fetch('sw.js?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.text()}).then(function(t){var m=/Build ([0-9-]+)/.exec(t);if(m&&m[1]!==window.__pkBuild){say('A newer version is ready','Update now',function(){Promise.resolve(window.caches?caches.keys().then(function(k){return Promise.all(k.filter(function(n){return n.indexOf('pk-')===0}).map(function(n){return caches.delete(n)}))}):0).then(function(){location.reload()})})}}).catch(function(){})},2500);
+window.__pkBuild='20261101-0946';setTimeout(function(){fetch('sw.js?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.text()}).then(function(t){var m=/Build ([0-9-]+)/.exec(t);if(m&&m[1]!==window.__pkBuild){say('A newer version is ready','Update now',function(){Promise.resolve(window.caches?caches.keys().then(function(k){return Promise.all(k.filter(function(n){return n.indexOf('pk-')===0}).map(function(n){return caches.delete(n)}))}):0).then(function(){location.reload()})})}}).catch(function(){})},2500);
 var rl=false;navigator.serviceWorker.addEventListener('controllerchange',function(){if(rl)return;rl=true;if(window.__pkHadCtl)location.reload()});window.__pkHadCtl=!!navigator.serviceWorker.controller;
 })();</script><div id="root"></div><template id="tpl">
 
@@ -1838,7 +1838,7 @@ class Component extends DCLogic {
   }
   announce() { var self = this; setTimeout(function () { try { var h = document.querySelector('#root h1, main h1'); var t = h ? (h.textContent || '').trim() : ''; document.title = (t ? t.slice(0, 60) + ' · ' : '') + 'Pickathon'; if (h) { if (!h.hasAttribute('tabindex')) h.setAttribute('tabindex', '-1'); h.focus({ preventScroll: true }); } } catch (e) {} }, 80); }
   back() { this._navT = Date.now(); var s = this.state.stack.slice(0, -1); if (!s.length) s = [{ r: 'home' }]; var y = s[s.length - 1].y || 0; this.setState({ stack: s }); this.toTop(y); this.announce(); }
-  reset(r) { try { sessionStorage.removeItem('pkmap.keep'); } catch (e) {} if (r === 'past') { } else if (r === 'lineup') { this.state.luArch = false; this.state.luYear = ''; } var upd = { stack: [{ r: r }], menu: false }; if (r === 'lineup') upd.genre = ''; if (r === 'stories') { upd.q = ''; upd.sType = 'all'; upd.sYear = 'all'; } if (r === 'search') upd.gq = ''; this.setState(upd); this.toTop(0); this.announce(); }
+  reset(r) { try { sessionStorage.removeItem('pkmap.view'); sessionStorage.removeItem('pkmap.focus'); } catch (e) {} if (r === 'past') { } else if (r === 'lineup') { this.state.luArch = false; this.state.luYear = ''; } var upd = { stack: [{ r: r }], menu: false }; if (r === 'lineup') upd.genre = ''; if (r === 'stories') { upd.q = ''; upd.sType = 'all'; upd.sYear = 'all'; } if (r === 'search') upd.gq = ''; this.setState(upd); this.toTop(0); this.announce(); }
   geoFix(lat, lon, acc, label) {
     var G = { x: [11611.81532332261, 462.9174741056556, 1401385.7107008402], y: [203.07351227143127, -12880.842630820463, 610258.8797750177] };
     var x = G.x[0] * lon + G.x[1] * lat + G.x[2], y = G.y[0] * lon + G.y[1] * lat + G.y[2];

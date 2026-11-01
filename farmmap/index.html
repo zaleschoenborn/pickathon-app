@@ -21,6 +21,9 @@ body{margin:0;background:var(--ink);color:var(--cream);font-family:var(--f);
 #stage.drag,#stage.drag *{cursor:grabbing!important}
 #art,#shapes{position:absolute;top:0;left:0;transform-origin:0 0;will-change:transform}
 #art img{display:block;width:100%;height:auto;user-select:none;-webkit-user-drag:none}
+#tiles{position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none}
+#tiles img{position:absolute;max-width:none;opacity:0;transition:opacity .22s ease}
+#tiles img.on{opacity:1}
 #shapes{overflow:visible}
 /* The highlight is the neighborhood's own ground pattern, turned up: a second
    copy of the art, saturated, showing only inside the area. Black line work and
@@ -112,6 +115,7 @@ body{margin:0;background:var(--ink);color:var(--cream);font-family:var(--f);
 #hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
   opacity:0;transition:opacity .7s ease}
 #hero img.on{opacity:1}
+#hero{background-size:cover;background-position:center}
 #meta{flex:1 1 auto;min-width:0;display:flex;flex-direction:column}
 .chip{display:inline-flex;align-self:flex-start;font:800 9.5px/1 var(--f);letter-spacing:.1em;
   text-transform:uppercase;padding:5px 8px;border-radius:999px;color:#fff;margin-bottom:5px}
@@ -162,12 +166,6 @@ body{margin:0;background:var(--ink);color:var(--cream);font-family:var(--f);
 }
 #hero img.on{animation:kb 7s ease-out forwards}
 @keyframes kb{from{transform:scale(1.02)}to{transform:scale(1.16)}}
-#pips{position:absolute;left:9px;right:9px;bottom:8px;display:flex;gap:4px;z-index:2}
-#pips i{flex:1;height:3px;border-radius:2px;background:rgba(255,255,255,.35);overflow:hidden;position:relative}
-#pips i.done{background:#fff}
-#pips i.on::after{content:'';position:absolute;inset:0;background:#fff;transform-origin:left;
-  animation:fill 3.2s linear forwards}
-@keyframes fill{from{transform:scaleX(0)}to{transform:scaleX(1)}}
 @media (min-width:880px){
   :root{--cardw:400px}
   #stage{bottom:0;right:var(--cardw)}
@@ -223,7 +221,7 @@ body{margin:0;background:var(--ink);color:var(--cream);font-family:var(--f);
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&display=swap">
 
 <div id="stage">
-  <div id="art"><img id="mapimg" src="map.webp" alt="Map of Pendarvis Farm" draggable="false"></div>
+  <div id="art"><img id="mapimg" src="map.webp" alt="Map of Pendarvis Farm" draggable="false"><div id="tiles"></div></div>
   <svg id="shapes"></svg>
   <svg id="leads"></svg>
   <div id="labs"></div>
@@ -304,12 +302,12 @@ function build(){
   // neighborhood being lit. A full-farm image run through a filter and a mask
   // at close zoom is bigger than the browser will render, and the glow came
   // out in pieces - the cause of patches that seemed to come and go.
-  const lit=document.createElementNS(NS,'image');
-  lit.setAttribute('id','lit'); lit.setAttribute('x',0); lit.setAttribute('y',0);
-  lit.setAttribute('width',MW); lit.setAttribute('height',MH);
-  lit.setAttribute('mask','url(#litmask)');
-  lit.setAttributeNS('http://www.w3.org/1999/xlink','href','map.webp');
-  lit.setAttribute('href','map.webp');
+  const lit=document.createElementNS(NS,'g');
+  lit.setAttribute('id','lit'); lit.setAttribute('mask','url(#litmask)');
+  const litBase=document.createElementNS(NS,'image');
+  litBase.setAttribute('x',0); litBase.setAttribute('y',0); litBase.setAttribute('width',MW); litBase.setAttribute('height',MH);
+  litBase.setAttributeNS('http://www.w3.org/1999/xlink','href','map.webp'); litBase.setAttribute('href','map.webp');
+  lit.appendChild(litBase);
   shp.appendChild(lit);
   const sg=document.createElementNS(NS,'g');
   sg.setAttribute('id','hit');
@@ -421,6 +419,7 @@ function light(h){
   if(key===light._k) return;            // same neighborhood: nothing to redo
   light._k = key;
   lp.setAttribute('d', ok || '');
+  if(!ok) litBox=null;
   if(ok){
     // confine the mask and the painted rectangle to this neighborhood's box
     const bb=lp.getBBox(), P=48;
@@ -428,6 +427,7 @@ function light(h){
     const w=Math.min(MW,bb.x+bb.width+P)-x, hh=Math.min(MH,bb.y+bb.height+P)-y;
     const mk=document.getElementById('litmask');
     mk.setAttribute('x',x); mk.setAttribute('y',y); mk.setAttribute('width',w); mk.setAttribute('height',hh);
+    litBox={x:x,y:y,w:w,h:hh};
   }
   // How hard to push depends on the ground. Turning saturation up does nothing
   // to a near-grey like Market or Welcome Lot, so those get more of it, and the
@@ -439,6 +439,7 @@ function light(h){
     im.style.setProperty('--fxc',f[2]);
   }
   im.classList.toggle('on', !!ok);
+  schedTiles();
 }
 
 function place(){
@@ -524,8 +525,47 @@ function move(){
   clearTimeout(mvT);
   mvT=setTimeout(()=>{ stage.classList.remove('moving'); apply(); },150);
 }
+
+// ---- Sharp zoom: the art is also cut into 512px pieces at 2.4x. Only the pieces
+// you can see are fetched, and only when you are in close enough for them to
+// matter; the highlight gets the same pieces so it stays crisp too.
+const TS=2.4, TP=512, TM=TP/TS, TW=Math.ceil(MW*TS/TP), TH=Math.ceil(MH*TS/TP), TMAX=96;
+const TILES=new Map(); let tileT=0, useN=0, litBox=null;
+function schedTiles(){ clearTimeout(tileT); tileT=setTimeout(tiles,140); }
+function tiles(){
+  const host=document.getElementById('tiles'), lg=document.getElementById('lit'); if(!host||!lg) return;
+  const W=stage.clientWidth, H=stage.clientHeight, need=k*Math.min(window.devicePixelRatio||1,3);
+  const NS='http://www.w3.org/2000/svg';
+  if(need<1.05){ TILES.forEach(t=>dropTile(t)); TILES.clear(); return; }
+  const m=TM*0.4, x0=Math.max(0,-tx/k-m), y0=Math.max(0,-ty/k-m), x1=Math.min(MW,(W-tx)/k+m), y1=Math.min(MH,(H-ty)/k+m);
+  const c0=Math.floor(x0/TM), c1=Math.min(TW-1,Math.floor(x1/TM)), r0=Math.floor(y0/TM), r1=Math.min(TH-1,Math.floor(y1/TM));
+  const want=new Set();
+  for(let r=r0;r<=r1;r++) for(let c=c0;c<=c1;c++){
+    const key=c+'_'+r; want.add(key);
+    let t=TILES.get(key);
+    if(!t){ t={c:c,r:r,x:c*TM,y:r*TM,w:Math.min(TM,MW-c*TM)+0.5,h:Math.min(TM,MH-r*TM)+0.5}; TILES.set(key,t); }
+    t.use=++useN;
+    if(!t.img){
+      const im=new Image(); im.decoding='async'; im.draggable=false;
+      im.style.left=t.x+'px'; im.style.top=t.y+'px'; im.style.width=t.w+'px'; im.style.height=t.h+'px';
+      im.onload=()=>im.classList.add('on'); im.src='t/'+key+'.webp'; host.appendChild(im); t.img=im;
+    }
+    const wantLit = litBox && t.x<litBox.x+litBox.w && t.x+t.w>litBox.x && t.y<litBox.y+litBox.h && t.y+t.h>litBox.y;
+    if(wantLit&&!t.li){
+      const li=document.createElementNS(NS,'image'); li.setAttribute('x',t.x); li.setAttribute('y',t.y);
+      li.setAttribute('width',t.w); li.setAttribute('height',t.h); li.style.opacity=0; li.style.transition='opacity .22s ease';
+      li.onload=()=>{ li.style.opacity=1; };
+      li.setAttributeNS('http://www.w3.org/1999/xlink','href','t/'+key+'.webp'); li.setAttribute('href','t/'+key+'.webp');
+      lg.appendChild(li); t.li=li;
+    } else if(!wantLit&&t.li){ t.li.remove(); t.li=null; }
+  }
+  if(TILES.size>TMAX){
+    [...TILES.entries()].filter(e=>!want.has(e[0])).sort((a,b)=>a[1].use-b[1].use).slice(0,TILES.size-TMAX).forEach(e=>{ dropTile(e[1]); TILES.delete(e[0]); });
+  }
+}
+function dropTile(t){ if(t.img){ t.img.remove(); t.img=null; } if(t.li){ t.li.remove(); t.li=null; } }
 function apply(){
-  paint(); if(typeof sizeRings==='function'&&RINGS.length) sizeRings();
+  paint(); schedTiles(); if(typeof saveSoon==='function') saveSoon(); if(typeof sizeRings==='function'&&RINGS.length) sizeRings();
   // Labels and leader lines are re-laid-out at most once per frame, however
   // many pointer events arrive; the feather is re-tuned only once the hands
   // have stopped, because changing a filter forces the whole image to repaint.
@@ -543,7 +583,7 @@ function clamp(){
 }
 // Let people get right in: 1.0 is the art at its own pixels, and a small farm
 // on a big screen should still be able to go past that.
-function maxK(){ return Math.max(kFit*2.2, 1.15); }
+function maxK(){ return Math.max(kFit*2.2, 1.6); }
 function zoomAt(nk,cx,cy){
   nk=Math.max(kFit,Math.min(maxK(),nk));
   const r=nk/k; tx=cx-(cx-tx)*r; ty=cy-(cy-ty)*r; k=nk; clamp(); move();
@@ -554,34 +594,42 @@ function fit(){
   tx=(W-MW*k)/2; ty=(H-MH*k)/2; clamp(); apply();
 }
 
+const LQ={"woods": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAA4KCw0LCQ4NDA0QDw4RFiQXFhQUFiwgIRokNC43NjMuMjI6QVNGOj1OPjIySGJJTlZYXV5dOEVmbWVabFNbXVn/2wBDAQ8QEBYTFioXFypZOzI7WVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVn/wAARCAAJAA4DASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwDmbXTrb7Lb3DycE5YbsA464PrVO6sY0m2wzxMuM8v/APWqxZf8g6T6r/OqOof8fbfQfypxXut+ZpJ2dj//2Q==", "paddock": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAA4KCw0LCQ4NDA0QDw4RFiQXFhQUFiwgIRokNC43NjMuMjI6QVNGOj1OPjIySGJJTlZYXV5dOEVmbWVabFNbXVn/2wBDAQ8QEBYTFioXFypZOzI7WVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVn/wAARCAAJAA4DASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwDlPsG/egLbl29SOMiq1zZ/vRHtdTgk5xU0PWT/AHxWdqH+vH+6Kxje+50VIpK5/9k=", "cherryhill": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAA4KCw0LCQ4NDA0QDw4RFiQXFhQUFiwgIRokNC43NjMuMjI6QVNGOj1OPjIySGJJTlZYXV5dOEVmbWVabFNbXVn/2wBDAQ8QEBYTFioXFypZOzI7WVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVn/wAARCAAJAA4DASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwDldPvZCjRwrH5aq25iOcE8ge9VtXuxNLGpB2xrtRDj5Fqrp3+vX60l/wD8fP4V0OMfZXsRf3j/2Q==", "grove": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAA4KCw0LCQ4NDA0QDw4RFiQXFhQUFiwgIRokNC43NjMuMjI6QVNGOj1OPjIySGJJTlZYXV5dOEVmbWVabFNbXVn/2wBDAQ8QEBYTFioXFypZOzI7WVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVn/wAARCAAJAA4DASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwDJS+kt0CxRAJ0Z1GSxpmoEXxgChllVW3qOF7dKbJ/x4Wf/AFxf+Rq/pP8Ax/xf9e7f+hipasi0z//Z", "windmill": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAA4KCw0LCQ4NDA0QDw4RFiQXFhQUFiwgIRokNC43NjMuMjI6QVNGOj1OPjIySGJJTlZYXV5dOEVmbWVabFNbXVn/2wBDAQ8QEBYTFioXFypZOzI7WVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVn/wAARCAAJAA4DASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwDNtLyKOF7pgDKgPyqcZ9B7Cor66dZ55baYwu8gL4frkdAD2/xrNi/5Bv4t/KjxB/x/D/dFSoibVj//2Q==", "galaxy": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAA4KCw0LCQ4NDA0QDw4RFiQXFhQUFiwgIRokNC43NjMuMjI6QVNGOj1OPjIySGJJTlZYXV5dOEVmbWVabFNbXVn/2wBDAQ8QEBYTFioXFypZOzI7WVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVn/wAARCAAJAA4DASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwDG8NeI/sNnNazr5yswMYfoPUVR8Vap/aOosIWY2kZxCpTaAMDPv1zVGy/4+bf/AHzVjV/+PuT61otVcy5rS5T/2Q==", "lucky": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAA4KCw0LCQ4NDA0QDw4RFiQXFhQUFiwgIRokNC43NjMuMjI6QVNGOj1OPjIySGJJTlZYXV5dOEVmbWVabFNbXVn/2wBDAQ8QEBYTFioXFypZOzI7WVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVn/wAARCAAJAA4DASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwC7etf3UZjWSZkJBZWIyOOvHT2rHXQ5ri5k2RMIR0KncM11+kf6++/67H+VWbb7lcam2bckT//Z", "farmhouse": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAA4KCw0LCQ4NDA0QDw4RFiQXFhQUFiwgIRokNC43NjMuMjI6QVNGOj1OPjIySGJJTlZYXV5dOEVmbWVabFNbXVn/2wBDAQ8QEBYTFioXFypZOzI7WVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVn/wAARCAAJAA4DASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwCBdXhiW5aOGJDGWCxsoOzpg565+nvWcdTt7fy0s1EeFJkLEtlie/HXgVP/AMu8f/XT+prHg6XX/Xb/ABqXTRSP/9k=", "curation": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAA4KCw0LCQ4NDA0QDw4RFiQXFhQUFiwgIRokNC43NjMuMjI6QVNGOj1OPjIySGJJTlZYXV5dOEVmbWVabFNbXVn/2wBDAQ8QEBYTFioXFypZOzI7WVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVn/wAARCAAJAA4DASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwCS2EcynyZRFIxGV3FSfYdjVa+kkt2ZQ2H3fN5nJ+ntil0L/kKp9B/Oqt3/AMf9z/12k/8AQqxk3Td4m0IRkmj/2Q==", "refuge": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAA4KCw0LCQ4NDA0QDw4RFiQXFhQUFiwgIRokNC43NjMuMjI6QVNGOj1OPjIySGJJTlZYXV5dOEVmbWVabFNbXVn/2wBDAQ8QEBYTFioXFypZOzI7WVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVn/wAARCAAJAA4DASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwC3ZzsunW4QsybQCpHPGOf1rQt7PbI0bzI7NmQt90kE8D6AVj6R0tv+uQ/ma2Lv/Wxf9c65qk1fltocPNdWsf/Z", "coyote": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAA4KCw0LCQ4NDA0QDw4RFiQXFhQUFiwgIRokNC43NjMuMjI6QVNGOj1OPjIySGJJTlZYXV5dOEVmbWVabFNbXVn/2wBDAQ8QEBYTFioXFypZOzI7WVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVn/wAARCAAJAA4DASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwCS1vYPNjzJLGXjX5mAH69q1Uu/LRVeVWIAJYvkDPauZuf9bD9F/wDQjUsP/H1/2yH86xnC2lzRQT1P/9k=", "courtyard": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAA4KCw0LCQ4NDA0QDw4RFiQXFhQUFiwgIRokNC43NjMuMjI6QVNGOj1OPjIySGJJTlZYXV5dOEVmbWVabFNbXVn/2wBDAQ8QEBYTFioXFypZOzI7WVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVn/wAARCAAJAA4DASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwCvNJDcxvLGw8xxu35xnsRkVAPLliChQY4zjc3du/XNO0Pq/wDu1PrH/HvbfjWFOjzPlbNJyVr2P//Z", "market": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAA4KCw0LCQ4NDA0QDw4RFiQXFhQUFiwgIRokNC43NjMuMjI6QVNGOj1OPjIySGJJTlZYXV5dOEVmbWVabFNbXVn/2wBDAQ8QEBYTFioXFypZOzI7WVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVn/wAARCAAJAA4DASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwCXw/qQ0+cedcK0ZUqQxPBx06e1dHF4gtp0LImCGKkE1wKf8eMv+ewpZfvj8f51GvQairH/2Q==", "orchard": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAA4KCw0LCQ4NDA0QDw4RFiQXFhQUFiwgIRokNC43NjMuMjI6QVNGOj1OPjIySGJJTlZYXV5dOEVmbWVabFNbXVn/2wBDAQ8QEBYTFioXFypZOzI7WVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVn/wAARCAAJAA4DASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwBL5FiUxqjHITYuPvHHT8zTr+5axWFIw0e9AzEg4zgDitO6+4P93+tV5v8AkAw/9dj/ACNYzqcqdhcl0j//2Q==", "welcomelot": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAA4KCw0LCQ4NDA0QDw4RFiQXFhQUFiwgIRokNC43NjMuMjI6QVNGOj1OPjIySGJJTlZYXV5dOEVmbWVabFNbXVn/2wBDAQ8QEBYTFioXFypZOzI7WVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVn/wAARCAAJAA4DASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwDRi1yF2WIrJ5hOACOQTUA1mO5Hy27sw6/KBWXpH+vT61unp+NYqpNS0Zo4xa2P/9k=", "lushcamp": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAA4KCw0LCQ4NDA0QDw4RFiQXFhQUFiwgIRokNC43NjMuMjI6QVNGOj1OPjIySGJJTlZYXV5dOEVmbWVabFNbXVn/2wBDAQ8QEBYTFioXFypZOzI7WVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVn/wAARCAAJAA4DASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwDPaC3WyY/vXmAIXPG457joAOKt/wBj6a6LIWuAXGQpYKwH4fjWkv8Aq5v+uTVBL/rW+p/mabpdEzT2aP/Z", "quailtrail": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAA4KCw0LCQ4NDA0QDw4RFiQXFhQUFiwgIRokNC43NjMuMjI6QVNGOj1OPjIySGJJTlZYXV5dOEVmbWVabFNbXVn/2wBDAQ8QEBYTFioXFypZOzI7WVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVn/wAARCAAJAA4DASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwChbQNb/vyjyErgq4yo+g9apalAjBXiJVyfmwwI/Adq7x/vR/QVzet/65fqakdj/9k=", "southcamp": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAA4KCw0LCQ4NDA0QDw4RFiQXFhQUFiwgIRokNC43NjMuMjI6QVNGOj1OPjIySGJJTlZYXV5dOEVmbWVabFNbXVn/2wBDAQ8QEBYTFioXFypZOzI7WVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVn/wAARCAAJAA4DASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwDMtRbQRkf2gzyyk7kjBGBnkH3OPal1a3e9uFnHm2zkcmQ7sj6c4qDT/v3H+e9ampf61fpWTlbRF8q3P//Z", "wildcamp": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAA4KCw0LCQ4NDA0QDw4RFiQXFhQUFiwgIRokNC43NjMuMjI6QVNGOj1OPjIySGJJTlZYXV5dOEVmbWVabFNbXVn/2wBDAQ8QEBYTFioXFypZOzI7WVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVn/wAARCAAJAA4DASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwDnrLypovLiVXZOTheT68VTu1QR7ZPkk3crg5GM0aJ/x/8A/AG/lVfUP+PyX/eoSEf/2Q==", "willowcamp": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAA4KCw0LCQ4NDA0QDw4RFiQXFhQUFiwgIRokNC43NjMuMjI6QVNGOj1OPjIySGJJTlZYXV5dOEVmbWVabFNbXVn/2wBDAQ8QEBYTFioXFypZOzI7WVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVn/wAARCAAJAA4DASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwCW1urmCTzIk8sbQEUpwB1J/HHWrf8AatvK4mulUyOo6H0/lXNr/wAep/3f6Gluf+Pgf7g/kKzbsauKSP/Z"};
 function heroRun(h){
   const box=document.getElementById('hero');
-  clearInterval(heroT); box.innerHTML=''; heroI=0;
+  clearTimeout(heroT); box.innerHTML=''; heroI=0; const tok=heroRun._t=(heroRun._t||0)+1;
   const list=HERO[h.id]||[];
   if(!list.length){ box.hidden=true; return; }
   box.hidden=false;
-  list.forEach((src,i)=>{
-    const im=document.createElement('img'); im.src=src; im.alt='';
-    if(i===0) im.className='on';
-    box.appendChild(im);
-  });
-  if(list.length<2) return;
-  // plays like a story: crossfade, a slow push-in, and a progress bar per photo
-  const pips=document.createElement('div'); pips.id='pips';
-  list.forEach(()=>pips.appendChild(document.createElement('i')));
-  box.appendChild(pips);
-  const mark=()=>[...pips.children].forEach((p,i)=>{ p.className = i<heroI?'done':(i===heroI?'on':''); });
-  mark();
-  heroT=setInterval(()=>{
-    const ims=box.querySelectorAll('img');
-    ims[heroI].classList.remove('on');
-    heroI=(heroI+1)%ims.length;
-    void ims[heroI].offsetWidth; ims[heroI].classList.add('on'); mark();
-  },3200);
+  // a soft blur of the first photo is there instantly; the photo fades in over it
+  box.style.backgroundImage=LQ[h.id]?'url('+LQ[h.id]+')':'none';
+  const ims=list.map((src,i)=>{ const im=document.createElement('img'); im.alt=''; im.decoding='async'; box.appendChild(im); return im; });
+  const first=ims[0]; first.fetchPriority='high';
+  const ready=im=>im.complete&&im.naturalWidth;
+  const showFirst=()=>{ if(tok!==heroRun._t) return; void first.offsetWidth; first.classList.add('on');
+    // the rest only start loading once the first has arrived, so it never competes
+    ims.slice(1).forEach((im,j)=>{ im.src=list[j+1]; });
+    if(ims.length>1) heroT=setTimeout(step,3200); };
+  first.onload=showFirst; first.src=list[0]; if(ready(first)) showFirst();
+  function step(){
+    if(tok!==heroRun._t) return;
+    const nx=(heroI+1)%ims.length, nim=ims[nx];
+    const go=()=>{ if(tok!==heroRun._t) return;
+      ims[heroI].classList.remove('on'); heroI=nx; void nim.offsetWidth; nim.classList.add('on');
+      heroT=setTimeout(step,3200); };
+    if(ready(nim)) go(); else { nim.onload=go; }   // wait for it: never fade to a half-loaded photo
+  }
+}
+// Quietly warm each neighborhood's first photo once the map is up.
+function warmHeroes(){
+  if(navigator.connection&&navigator.connection.saveData) return;
+  const ids=HOODS.map(h=>(HERO[h.id]||[])[0]).filter(Boolean); let i=0;
+  const next=()=>{ if(i>=ids.length) return; const im=new Image(); im.decoding='async'; im.src=ids[i++]; setTimeout(next,160); };
+  setTimeout(next,2500);
 }
 function show(h){
   if(!h){
-    clearInterval(heroT);
+    clearTimeout(heroT);
     document.getElementById('hero').hidden=true;
     document.getElementById('full').hidden=true;
     document.getElementById('empty').hidden=false;
@@ -779,27 +827,34 @@ addEventListener('resize',()=>{const z=k/kFit; fit(); zoomAt(kFit*z,stage.client
 // Coming back from a neighborhood page, the map returns to the same look. Only
 // the hand-off saves anything (no running cost); the site clears the flag if the
 // visitor goes anywhere else instead of coming back.
+// The map remembers where you were - zoom, position, selection - all the time, not
+// just at the moment you leave. Only a tab change (handled by the page around it)
+// wipes it, so coming back from a neighborhood always lands in the same place.
 function saveView(){ try{ const W=stage.clientWidth,H=stage.clientHeight;
-  sessionStorage.setItem('pkmap.view',JSON.stringify({kr:k/kFit,cx:(W/2-tx)/k,cy:(H/2-ty)/k,cur:cur&&cur.id}));
-  sessionStorage.setItem('pkmap.keep','1'); }catch(e){} }
+  sessionStorage.setItem('pkmap.view',JSON.stringify({kr:k/kFit,cx:(W/2-tx)/k,cy:(H/2-ty)/k,cur:cur&&cur.id,f:amFilter||''})); }catch(e){} }
+let saveT=0; function saveSoon(){ clearTimeout(saveT); saveT=setTimeout(saveView,250); }
 function restoreView(){ try{
-  const keep=sessionStorage.getItem('pkmap.keep'); sessionStorage.removeItem('pkmap.keep');
-  const v=JSON.parse(sessionStorage.getItem('pkmap.view')||'null'); sessionStorage.removeItem('pkmap.view');
+  const v=JSON.parse(sessionStorage.getItem('pkmap.view')||'null');
   const foc=sessionStorage.getItem('pkmap.focus'); sessionStorage.removeItem('pkmap.focus');
   const W=stage.clientWidth,H=stage.clientHeight;
   const fh=foc&&HOODS.find(x=>x.id===foc);
-  if(keep==='1'&&v){                       // back from a neighborhood: same look as before
+  if(v){
     k=Math.max(kFit,Math.min(maxK(),kFit*v.kr)); tx=W/2-v.cx*k; ty=H/2-v.cy*k; clamp(); apply();
-    const h=fh||HOODS.find(x=>x.id===v.cur); if(h) setCur(h);
-  } else if(fh){                           // "See it on the map": frame that neighborhood
-    const sh=D.shapes[fh.id], bb=sh&&sh.b;
-    if(bb){ const bw=Math.max(80,bb[2]-bb[0]), bh=Math.max(80,bb[3]-bb[1]);
-      k=Math.max(kFit,Math.min(maxK(),Math.min(W*0.5/bw,H*0.5/bh)));
-      tx=W/2-((bb[0]+bb[2])/2)*k; ty=H/2-((bb[1]+bb[3])/2)*k; clamp(); apply(); }
-    setCur(fh);
-  }
+    const h=fh||HOODS.find(x=>x.id===v.cur);
+    if(fh){   // asked to show a neighborhood: keep the look if it is on screen, otherwise bring it in
+      const sh=D.shapes[fh.id], bb=sh&&sh.b;
+      if(bb){ const x0=tx+bb[0]*k,x1=tx+bb[2]*k,y0=ty+bb[1]*k,y1=ty+bb[3]*k;
+        const seen=x1>0&&x0<W&&y1>0&&y0<H&&(Math.min(x1,W)-Math.max(x0,0))*(Math.min(y1,H)-Math.max(y0,0))>0.25*(x1-x0)*(y1-y0);
+        if(!seen) frameHood(fh); }
+    }
+    if(h) setCur(h);
+  } else if(fh){ frameHood(fh); setCur(fh); }
 }catch(e){} }
+function frameHood(fh){ const W=stage.clientWidth,H=stage.clientHeight, sh=D.shapes[fh.id], bb=sh&&sh.b;
+  if(!bb) return; const bw=Math.max(80,bb[2]-bb[0]), bh=Math.max(80,bb[3]-bb[1]);
+  k=Math.max(kFit,Math.min(maxK(),Math.min(W*0.5/bw,H*0.5/bh)));
+  tx=W/2-((bb[0]+bb[2])/2)*k; ty=H/2-((bb[1]+bb[3])/2)*k; clamp(); apply(); }
 let settleUntil=0;
-function boot(){ art.style.width=MW+'px'; art.style.height=MH+'px'; build(); fit(); restoreView(); settleUntil=NOW()+900; }
+function boot(){ art.style.width=MW+'px'; art.style.height=MH+'px'; build(); fit(); restoreView(); settleUntil=NOW()+900; warmHeroes(); }
 if(img.complete&&img.naturalWidth) boot(); else img.onload=boot;
 </script>
