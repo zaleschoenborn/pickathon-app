@@ -36,6 +36,8 @@ body{margin:0;background:var(--ink);color:var(--cream);font-family:var(--f);
 #veil,#lits{position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none}
 #veil{background:rgba(14,18,10,0);transition:background .25s ease}
 #veil.on{background:rgba(14,18,10,.13)}
+#stage{transition:background-color .25s ease}
+#stage.veiled{background-color:#C7D0BE}
 #lits img,#lits div{position:absolute;max-width:none;opacity:0;transition:opacity .22s ease}
 #lits img.on,#lits div.on{opacity:1}
 #shapes{overflow:visible}
@@ -453,6 +455,7 @@ function light(h){
   ids.forEach(id=>{ if(!LITIMG.has(id)){ const o=LIT[id].o;
     LITIMG.set(id,{o:litMake(host,'l/'+id+'.webp',o[0],o[1],o[2],o[3]),tiles:new Map()}); } });
   document.getElementById('veil').classList.toggle('on',ids.length>0);
+  stage.classList.toggle('veiled',ids.length>0);
   schedTiles();
 }
 
