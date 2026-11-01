@@ -528,6 +528,16 @@ function place(){
       let yy=BOT;
       for(let i=arr.length-1;i>=0;i--){ arr[i]._ly=Math.min(yy,arr[i]._ly); yy=arr[i]._ly-SP; }
     }
+    // capped labels (Welcome Lot, Willow Camp) are a ceiling too: the stack
+    // above them shifts up rather than letting them sink below Hagen Road
+    if(arr.some(h=>LBLCAP[h.id]!==undefined && h._ly>h._wy+0.5)){
+      let yy=1e9;
+      for(let i=arr.length-1;i>=0;i--){
+        const h=arr[i]; let ly=Math.min(h._ly,yy);
+        if(LBLCAP[h.id]!==undefined) ly=Math.min(ly,h._wy);
+        h._ly=Math.max(TOP,ly); yy=h._ly-SP;
+      }
+    }
   });
   live.forEach(h=>{ h._side = R.includes(h) ? 1 : 0; });
   HOODS.forEach(h=>{
