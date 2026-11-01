@@ -347,7 +347,7 @@ function build(){
       h._mask='M'+(cx-r)+','+cy+'a'+r+','+r+' 0 1 0 '+(2*r)+',0a'+r+','+r+' 0 1 0 '+(-2*r)+',0Z';
     }
     p.setAttribute('d',h._mask);
-    p.addEventListener('pointerenter',e=>{ if(e.pointerType==='mouse' && !e.buttons && !live.size && NOW()>settleUntil) setCur(h); });  // hover only; a finger or a drag never picks
+    p.addEventListener('pointerenter',e=>{ if(hoverOK && e.pointerType==='mouse' && !e.buttons && !live.size && NOW()>settleUntil) setCur(h); });  // hover only; a finger or a drag never picks
     // A drag that happens to END on a neighborhood is still a drag. Without
     // this the map opened a page every time you let go over a shape, the page
     // covered the farm, and it read as "after the first move it gets stuck".
@@ -725,7 +725,7 @@ function hover(e){
   const el=document.elementFromPoint(e.clientX,e.clientY);
   const h=el&&el.__hood?el.__hood:null;
   stage.classList.toggle('onhood',!!h);
-  if(NOW()>settleUntil) setCur(h);
+  if(hoverOK && NOW()>settleUntil) setCur(h);
 }
 
 function onMove(e){
@@ -744,7 +744,7 @@ function onMove(e){
     pinch=null;
     if(!prev) return;               // first sighting: next move does the work
     const dx=e.clientX-prev.x, dy=e.clientY-prev.y;
-    if(!moved&&downAt&&Math.hypot(e.clientX-downAt.x,e.clientY-downAt.y)>SLOP) moved=true;
+    if(!moved&&downAt&&Math.hypot(e.clientX-downAt.x,e.clientY-downAt.y)>SLOP){ moved=true; hoverOK=false; }
     if(moved){ tx+=dx; ty+=dy; clamp(); move(); }
   } else if(live.size===2){
     const[a,b]=[...live.values()];
@@ -789,8 +789,8 @@ function tapAt(e){
   if(!h) return;
   // mouse: hover already showed the card, a click opens. Touch: the first tap
   // shows the card, a tap on the one already showing opens it.
-  if(e.pointerType!=='mouse' && h!==cur){ setCur(h); return; }
-  goPage(h);
+  if(h!==cur){ setCur(h); hoverOK=false; return; }
+  hoverOK=false; goPage(h);
 }
 const lift=e=>{
   if(e.type==='pointerup' && live.size===1 && live.has(e.pointerId) && !moved && downAt
@@ -812,17 +812,17 @@ labs.addEventListener('click',e=>{
   const b=e.target.closest('.lab');
   const h=b&&b.__hood; const wasMoved=moved; moved=false;
   if(!h||wasMoved) return;
-  if(lastType==='touch' && h!==cur){ setCur(h); return; }   // first tap shows the card
+  if(h!==cur){ setCur(h); hoverOK=false; return; }   // first tap shows the card
   goPage(h);
 });
 labs.addEventListener('pointerover',e=>{
   const b=e.target.closest('.lab');
-  if(e.pointerType==='mouse'&&!e.buttons&&b&&b.__hood&&!live.size&&NOW()>settleUntil) setCur(b.__hood);   // hover is for a mouse; a finger only ever picks by tapping
+  if(hoverOK&&e.pointerType==='mouse'&&!e.buttons&&b&&b.__hood&&!live.size&&NOW()>settleUntil) setCur(b.__hood);   // hover is for a mouse; a finger only ever picks by tapping
 });
 
 // A trackpad two-finger swipe moves the farm; a pinch (which arrives as
 // ctrl+wheel) and a mouse wheel zoom it.
-stage.addEventListener('wheel',e=>{
+stage.addEventListener('wheel',e=>{ hoverOK=false;
   e.preventDefault();
   if(!e.ctrlKey && !e.metaKey && (e.deltaX||Math.abs(e.deltaY)<40)){
     tx-=e.deltaX; ty-=e.deltaY; clamp(); move(); return;
@@ -902,7 +902,8 @@ function frameHood(fh){ const W=stage.clientWidth,H=stage.clientHeight, sh=D.sha
   if(!bb) return; const bw=Math.max(80,bb[2]-bb[0]), bh=Math.max(80,bb[3]-bb[1]);
   k=Math.max(kFit,Math.min(maxK(),Math.min(W*0.5/bw,H*0.5/bh)));
   tx=W/2-((bb[0]+bb[2])/2)*k; ty=H/2-((bb[1]+bb[3])/2)*k; clamp(); apply(); }
-let settleUntil=0;
+let settleUntil=0; let hoverOK=true;   // hover previews only until the first pan, zoom or click; after that a click selects and a second click opens
+
 document.getElementById('ibuild').addEventListener('click',()=>{ try{ parent.postMessage({pkMap:'go',r:'build'},'*'); }catch(e){} });
 function boot(){ art.style.width=MW+'px'; art.style.height=MH+'px'; build(); fit(); restoreView(); settleUntil=NOW()+900; warmHeroes(); }
 if(img.complete&&img.naturalWidth) boot(); else img.onload=boot;
