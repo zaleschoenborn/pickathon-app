@@ -816,7 +816,7 @@ function tapAt(e){
         HOODS.forEach(hh=>{ if(!(hh.amk||[]).includes(ia)||!hh.p) return; const d=Math.hypot(hh.p[0]/100*D.size[0]-mx,hh.p[1]/100*D.size[1]-my); if(d<bd){bd=d;bh=hh;} });
         if(bh){ setCur(bh); pinned=bh; } }
       return; } }
-  if(!h){ if(pinned && e.pointerType==='mouse') clearCur(); return; }
+  if(!h){ if((pinned&&e.pointerType==='mouse')||(e.pointerType!=='mouse'&&cur)) clearCur(); return; }
   // mouse: hover peeks, a click pins, a click on the pinned one opens. Touch: the first tap
   // shows the card, a tap on the one already showing opens it.
   if(e.pointerType==='mouse'){ if(pinned!==h){ pinned=h; peek(null); setCur(h); show(h); return; } }
