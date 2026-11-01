@@ -1,5 +1,5 @@
 // Pickathon service worker. Build 20261101-1050
-const V='pk-20261101-2000',M='pkmedia-2',KEEP=["ssindex-b6158b1d.json"],SHELL=['./','index.html','data.json','manifest.json','icon-192.png','apple-touch-icon.png','fonts/pickathon-2014.ttf','farmmap/index.html?embed=1','farmmap/map.webp'];
+const V='pk-20261101-2100',M='pkmedia-2',KEEP=["ssindex-b6158b1d.json"],SHELL=['./','index.html','data.json','manifest.json','icon-192.png','apple-touch-icon.png','fonts/pickathon-2014.ttf','farmmap/index.html?embed=1','farmmap/map.webp'];
 self.addEventListener('install',e=>{e.waitUntil(caches.open(V).then(c=>Promise.all(SHELL.map(u=>c.add(new Request(u,{cache:'reload'})).catch(()=>{})))))});
 self.addEventListener('message',e=>{if(e.data==='skip')self.skipWaiting()});
 self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(k=>Promise.all(k.filter(x=>(x.startsWith('pk-')&&x!==V)||(x.startsWith('pkmedia')&&x!==M)).map(x=>caches.delete(x)))).then(()=>caches.open(M)).then(h=>h.keys().then(ks=>Promise.all(ks.filter(q=>{const p=new URL(q.url).pathname.split('/').pop();return /pack|ssindex/.test(p)&&KEEP.indexOf(p)<0}).map(q=>h.delete(q))))).then(()=>self.clients.claim()))});
