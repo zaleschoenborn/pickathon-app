@@ -61,7 +61,8 @@ body{margin:0;background:var(--ink);color:var(--cream);font-family:var(--f);
    the whole area answers the pointer without a wash being drawn on it. */
 #hit path{fill:#fff;fill-opacity:0;fill-rule:evenodd;stroke:none;
   pointer-events:fill;cursor:pointer}
-#hit .off{pointer-events:none}
+#hit .off{pointer-events:auto}
+.nohit{display:inline-block;margin-right:8px;padding:2px 8px;border-radius:999px;border:1px solid var(--line);font-size:12px;font-weight:700;color:var(--cream);opacity:.8}
 .c-stage{color:var(--stage)} .c-camp{color:var(--camp)} .c-around{color:var(--around)}
 .c-wellness{color:var(--wellness)} .c-family{color:var(--family)}
 
@@ -383,7 +384,6 @@ function build(){
     amFilter=a||null;
     [...GR.children].forEach(c=>c.setAttribute('aria-pressed',String((c.dataset.a||'')===(amFilter||''))));
     PN.textContent=amFilter?(AMLBL[amFilter]||amFilter):'All amenities';
-    if(cur&&!passes(cur)) cur=null;
     setFind(); showRings(amFilter); show(cur); apply();
     if(!quiet) setTimeout(()=>{ const t=document.getElementById('ptog'); if(t.getAttribute('aria-expanded')==='true') t.click(); },260);
   };
@@ -456,7 +456,7 @@ function litMake(host,src,x,y,w,h){
 // so zooming and panning only slide pictures - the cheap thing for a phone to do.
 function light(h){
   const host=document.getElementById('lits'); if(!host) return;
-  const ids = amFilter ? HOODS.filter(x=>passes(x)&&LIT[x.id]).map(x=>x.id) : (h&&passes(h)&&LIT[h.id]?[h.id]:[]);
+  const ids = amFilter ? HOODS.filter(x=>(passes(x)||x===h)&&LIT[x.id]).map(x=>x.id) : (h&&LIT[h.id]?[h.id]:[]);
   const key=ids.join(',');
   if(key===light._k) return;
   light._k=key;
@@ -674,7 +674,7 @@ function show(h){
   document.getElementById('ctag').textContent=h.t||'';
   const ck=document.getElementById('ckind');
   ck.textContent=KIND[h.k]||h.k; ck.className='chip k-'+h.k;
-  document.getElementById('cams').innerHTML=(h.amk||[]).map((a,i)=>
+  document.getElementById('cams').innerHTML=(amFilter&&!passes(h)?'<span class="nohit">No '+(AMLBL[amFilter]||amFilter)+' here</span>':'')+(h.amk||[]).map((a,i)=>
     '<span class="ai'+(a===amFilter?' hit':'')+'" title="'+(AMLBL[a]||a)+'">'+ico(a)+'</span>').join('');
   document.getElementById('cgo').textContent='Open '+h.n.replace(/^The /,'')+' →';
   if(!amFilter && typeof showRings==='function') showRings(null,h);
@@ -728,7 +728,11 @@ function hover(e){
   stage.classList.toggle('onhood',!!h&&!ia); stage.classList.toggle('onicon',!!ia);
   const tp=document.getElementById('itip');
   if(tp){ if(ia){ tp.textContent=TIPLBL[ia]||D.amlbl[ia]||ia; tp.style.left=e.clientX+'px'; tp.style.top=e.clientY+'px'; tp.classList.add('on'); } else tp.classList.remove('on'); }
-  if(hoverOK && !ia && NOW()>settleUntil) setCur(h);
+  if(hoverOK && !ia && NOW()>settleUntil){
+    clearTimeout(hover._t);
+    if(h) setCur(h);
+    else if(cur) hover._t=setTimeout(()=>{ if(cur && !stage.classList.contains('onhood') && !stage.classList.contains('onicon')) clearCur(); },200);
+  }
 }
 
 function onMove(e){
