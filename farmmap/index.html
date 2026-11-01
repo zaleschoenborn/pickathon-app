@@ -24,21 +24,22 @@ body{margin:0;background:var(--ink);color:var(--cream);font-family:var(--f);
 #tiles{position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none}
 #tiles img{position:absolute;max-width:none;opacity:0;transition:opacity .22s ease}
 #tiles img.on{opacity:1}
+#veil,#lits{position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none}
+#veil{background:rgba(14,18,10,0);transition:background .25s ease}
+#veil.on{background:rgba(14,18,10,.13)}
+#lits img{position:absolute;max-width:none;opacity:0;transition:opacity .22s ease}
+#lits img.on{opacity:1}
 #shapes{overflow:visible}
 /* The highlight is the neighborhood's own ground pattern, turned up: a second
    copy of the art, saturated, showing only inside the area. Black line work and
    white dashes are neutral, so they come through untouched; only the coloured
    dots and ground shift. Badges and amenity icons are holes in the mask, so
    nothing ever paints over a logo. */
-#lit{opacity:0;transition:opacity .2s ease;pointer-events:none}
-#lit.on{opacity:1}
 /* Invisible but fully hit-testable: pointer-events:fill ignores the paint, so
    the whole area answers the pointer without a wash being drawn on it. */
 #hit path{fill:#fff;fill-opacity:0;fill-rule:evenodd;stroke:none;
   pointer-events:fill;cursor:pointer}
 #hit .off{pointer-events:none}
-#litpath{fill:#fff;fill-rule:evenodd}
-#chromepath{fill:#000;fill-rule:nonzero}
 .c-stage{color:var(--stage)} .c-camp{color:var(--camp)} .c-around{color:var(--around)}
 .c-wellness{color:var(--wellness)} .c-family{color:var(--family)}
 
@@ -242,7 +243,7 @@ body{margin:0;background:var(--ink);color:var(--cream);font-family:var(--f);
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&display=swap">
 
 <div id="stage">
-  <div id="art"><img id="mapimg" src="map.webp" alt="Map of Pendarvis Farm" draggable="false"><div id="tiles"></div></div>
+  <div id="art"><img id="mapimg" src="map.webp" alt="Map of Pendarvis Farm" draggable="false"><div id="tiles"></div><div id="veil"></div><div id="lits"></div></div>
   <svg id="shapes"></svg>
   <svg id="leads"></svg>
   <div id="labs"></div>
@@ -307,33 +308,6 @@ function build(){
   // No outline at all: each area is a soft field that fades out across its own
   // border. Kinder to look at up close, and honest about an edge traced from a
   // JPEG being approximate rather than drawing a hard line it cannot justify.
-  const defs=document.createElementNS(NS,'defs');
-  defs.innerHTML=
-    '<filter id="soft" x="-20%" y="-20%" width="140%" height="140%">'+
-      '<feGaussianBlur id="softblur" stdDeviation="6"/></filter>'+
-    '<filter id="litfx" filterUnits="userSpaceOnUse" x="0" y="0" width="'+MW+'" height="'+MH+'" color-interpolation-filters="sRGB">'+
-      '<feColorMatrix id="fxsat" type="saturate" values="2.2"/>'+
-      '<feComponentTransfer id="fxct"><feFuncR type="linear" slope="1" intercept="0"/><feFuncG type="linear" slope="1" intercept="0"/><feFuncB type="linear" slope="1" intercept="0"/></feComponentTransfer></filter>'+
-    '<mask id="litmask" maskUnits="userSpaceOnUse" x="0" y="0" '+
-          'width="'+MW+'" height="'+MH+'">'+
-      '<path id="litpath" d="" filter="url(#soft)"/>'+
-      // the badges and amenity tiles are furniture standing ON the ground;
-      // black in the mask keeps the highlight off them entirely
-      '<path id="chromepath" fill="#000" d="'+(D.chrome||'')+EXTRA_CHROME+'"/>'+
-    '</mask>'+
-    '';
-  shp.appendChild(defs);
-  // The highlight layer is a small viewport onto the art, sized to the
-  // neighborhood being lit. A full-farm image run through a filter and a mask
-  // at close zoom is bigger than the browser will render, and the glow came
-  // out in pieces - the cause of patches that seemed to come and go.
-  const lit=document.createElementNS(NS,'g');
-  lit.setAttribute('id','lit'); lit.setAttribute('mask','url(#litmask)'); lit.setAttribute('filter','url(#litfx)');
-  const litBase=document.createElementNS(NS,'image');
-  litBase.setAttribute('x',0); litBase.setAttribute('y',0); litBase.setAttribute('width',MW); litBase.setAttribute('height',MH);
-  litBase.setAttributeNS('http://www.w3.org/1999/xlink','href','map.webp'); litBase.setAttribute('href','map.webp');
-  lit.appendChild(litBase);
-  shp.appendChild(lit);
   const sg=document.createElementNS(NS,'g');
   sg.setAttribute('id','hit');
   shp.appendChild(sg); shp._g=sg;
@@ -446,39 +420,29 @@ const passes = h => !amFilter || (h.amk||[]).includes(amFilter);
 const PINL={lushcamp:1,coyote:2,cherryhill:3,grove:4};  // left rail, this order, above Windmill
 
 // Light one neighborhood by swapping the mask, not by painting a wash over it.
+const LITIMG=new Map();
+function litMake(host,src,x,y,w,h){
+  const im=new Image(); im.decoding='async'; im.draggable=false; im.alt='';
+  im.style.cssText='left:'+x+'px;top:'+y+'px;width:'+w+'px;height:'+h+'px';
+  im.src=src; host.appendChild(im);
+  (im.decode?im.decode():Promise.resolve()).then(()=>im.classList.add('on'),()=>im.classList.add('on'));
+  return im;
+}
+// The highlight is pre-made: each neighbourhood has its own small picture, already
+// brightened and feathered, laid over the art. Nothing is filtered or masked live,
+// so zooming and panning only slide pictures - the cheap thing for a phone to do.
 function light(h){
-  const lp=document.getElementById('litpath'), im=document.getElementById('lit');
-  if(!lp||!im) return;
-  // With a filter on, every neighborhood that has the amenity glows together.
-  const all = amFilter ? HOODS.filter(x=>passes(x)&&x._mask) : null;
-  const ok = all ? (all.length? all.map(x=>x._mask).join(' ') : '') : (h && passes(h) && (h._mask||''));
-  const key = ok ? (all ? '*'+amFilter : h.id) : '';
-  if(key===light._k) return;            // same neighborhood: nothing to redo
-  light._k = key;
-  lp.setAttribute('d', ok || '');
-  if(!ok) litBox=null;
-  if(ok){
-    // confine the mask and the painted rectangle to this neighborhood's box
-    const bb=lp.getBBox(), P=48;
-    const x=Math.max(0,bb.x-P), y=Math.max(0,bb.y-P);
-    const w=Math.min(MW,bb.x+bb.width+P)-x, hh=Math.min(MH,bb.y+bb.height+P)-y;
-    const mk=document.getElementById('litmask');
-    mk.setAttribute('x',x); mk.setAttribute('y',y); mk.setAttribute('width',w); mk.setAttribute('height',hh);
-    litBox={x:x,y:y,w:w,h:hh};
-  }
-  // How hard to push depends on the ground. Turning saturation up does nothing
-  // to a near-grey like Market or Welcome Lot, so those get more of it, and the
-  // palest get light and contrast as well. Measured per area, not guessed.
-  if(ok){
-    const f=all ? (()=>{ const m=[0,1,2].map(i=>all.reduce((t,x)=>t+(x._fx||[2.2,1,1])[i],0)/all.length); return [Math.min(m[0],1.9),Math.min(m[1],1.04),Math.min(m[2],1.04)]; })() : (h._fx||[2.2,1,1]);
-    // saturate -> brightness -> contrast, as an SVG filter so every browser applies it
-    document.getElementById('fxsat').setAttribute('values',f[0]);
-    const sl=f[1]*f[2], ic=0.5*(1-f[2]);
-    document.querySelectorAll('#fxct > *').forEach(n=>{ n.setAttribute('slope',sl); n.setAttribute('intercept',ic); });
-    const fe=document.getElementById('litfx'), mk=document.getElementById('litmask');
-    ['x','y','width','height'].forEach(a=>fe.setAttribute(a,mk.getAttribute(a)));
-  }
-  im.classList.toggle('on', !!ok);
+  const host=document.getElementById('lits'); if(!host) return;
+  const ids = amFilter ? HOODS.filter(x=>passes(x)&&LIT[x.id]).map(x=>x.id) : (h&&passes(h)&&LIT[h.id]?[h.id]:[]);
+  const key=ids.join(',');
+  if(key===light._k) return;
+  light._k=key;
+  LITIMG.forEach((v,id)=>{ if(ids.indexOf(id)<0){
+    v.o.classList.remove('on'); v.tiles.forEach(t=>t.classList.remove('on'));
+    setTimeout(()=>{ v.o.remove(); v.tiles.forEach(t=>t.remove()); },260); LITIMG.delete(id); } });
+  ids.forEach(id=>{ if(!LITIMG.has(id)){ const o=LIT[id].o;
+    LITIMG.set(id,{o:litMake(host,'l/'+id+'.webp',o[0],o[1],o[2],o[3]),tiles:new Map()}); } });
+  document.getElementById('veil').classList.toggle('on',ids.length>0);
   schedTiles();
 }
 
@@ -571,15 +535,24 @@ function move(){
 // you can see are fetched, and only when you are in close enough for them to
 // matter; the highlight gets the same pieces so it stays crisp too.
 const TS=2.4, TP=1024, TM=TP/TS, TW=Math.ceil(MW*TS/TP), TH=Math.ceil(MH*TS/TP), TMAX=20;
-const TILES=new Map(); let tileT=0, useN=0, litBox=null;
+const LIT={"woods":{"o":[1587,1181,343,307],"t":[[3,2],[3,3],[4,2],[4,3]]},"paddock":{"o":[794,2516,559,537],"t":[[1,6],[1,7],[2,6],[2,7],[3,6]]},"cherryhill":{"o":[1247,2131,288,351],"t":[[3,5]]},"grove":{"o":[1059,2349,445,364],"t":[[2,5],[2,6],[3,5],[3,6]]},"windmill":{"o":[675,2404,489,558],"t":[[1,5],[1,6],[2,5],[2,6]]},"galaxy":{"o":[884,3004,295,250],"t":[[2,7]]},"lucky":{"o":[669,2940,406,484],"t":[[1,7],[2,7]]},"farmhouse":{"o":[869,3365,374,239],"t":[[2,8]]},"curation":{"o":[379,3481,337,308],"t":[[1,8]]},"refuge":{"o":[1668,1870,303,367],"t":[[4,4],[4,5]]},"coyote":{"o":[1117,1957,464,329],"t":[[2,4],[2,5],[3,4],[3,5]]},"market":{"o":[1390,1992,354,713],"t":[[3,4],[3,5],[3,6]]},"orchard":{"o":[879,3231,319,208],"t":[[2,7]]},"welcomelot":{"o":[1729,3459,312,309],"t":[[4,8]]},"quailtrail":{"o":[1607,1381,335,819],"t":[[3,4],[3,5],[4,3],[4,4],[4,5]]},"southcamp":{"o":[685,3391,798,386],"t":[[1,8],[2,8],[3,8]]},"willowcamp":{"o":[1471,3459,337,309],"t":[[3,8],[4,8]]},"courtyard":{"o":[904,3128,344,261],"t":[[2,7]]},"wildcamp":{"o":[235,0,1481,2279],"t":[[0,1],[0,2],[0,3],[1,0],[1,1],[1,2],[1,3],[1,4],[1,5],[2,0],[2,1],[2,2],[3,0],[3,1]]},"lushcamp":{"o":[603,268,1254,2339],"t":[[1,2],[1,3],[1,4],[1,5],[2,1],[2,2],[2,3],[2,4],[2,5],[3,0],[3,1],[3,2],[3,3],[3,4],[3,5],[4,1],[4,2],[4,3],[4,4]]}};
+const TILES=new Map(); let tileT=0, useN=0;
 function schedTiles(){ clearTimeout(tileT); tileT=setTimeout(tiles,140); }
 function tiles(){
-  const host=document.getElementById('tiles'), lg=document.getElementById('lit'); if(!host||!lg) return;
+  const host=document.getElementById('tiles'); if(!host) return;
   const W=stage.clientWidth, H=stage.clientHeight, need=k*Math.min(window.devicePixelRatio||1,3);
-  const NS='http://www.w3.org/2000/svg';
-  if(need<1.05){ TILES.forEach(t=>dropTile(t)); TILES.clear(); return; }
+  const sharp = need>=1.05;
   const m=TM*0.2, x0=Math.max(0,-tx/k-m), y0=Math.max(0,-ty/k-m), x1=Math.min(MW,(W-tx)/k+m), y1=Math.min(MH,(H-ty)/k+m);
   const c0=Math.floor(x0/TM), c1=Math.min(TW-1,Math.floor(x1/TM)), r0=Math.floor(y0/TM), r1=Math.min(TH-1,Math.floor(y1/TM));
+  const lh=document.getElementById('lits');
+  LITIMG.forEach((v,id)=>{
+    const want=new Set();
+    if(sharp) (LIT[id].t||[]).forEach(a=>{ const c=a[0], r=a[1]; if(c<c0||c>c1||r<r0||r>r1) return;
+      const key=c+'_'+r; want.add(key);
+      if(!v.tiles.has(key)) v.tiles.set(key,litMake(lh,'l/'+id+'_'+key+'.webp',c*TM,r*TM,Math.min(TM,MW-c*TM),Math.min(TM,MH-r*TM))); });
+    v.tiles.forEach((im,key)=>{ if(!want.has(key)){ im.remove(); v.tiles.delete(key); } });
+  });
+  if(!sharp){ TILES.forEach(t=>dropTile(t)); TILES.clear(); return; }
   const want=new Set();
   for(let r=r0;r<=r1;r++) for(let c=c0;c<=c1;c++){
     const key=c+'_'+r; want.add(key);
@@ -591,20 +564,12 @@ function tiles(){
       im.style.left=t.x+'px'; im.style.top=t.y+'px'; im.style.width=t.w+'px'; im.style.height=t.h+'px';
       im.src='t/'+key+'.webp'; (im.decode?im.decode():Promise.resolve()).then(()=>im.classList.add('on'),()=>im.classList.add('on')); host.appendChild(im); t.img=im;
     }
-    const wantLit = litBox && t.x<litBox.x+litBox.w && t.x+t.w>litBox.x && t.y<litBox.y+litBox.h && t.y+t.h>litBox.y;
-    if(wantLit&&!t.li){
-      const li=document.createElementNS(NS,'image'); li.setAttribute('x',t.x); li.setAttribute('y',t.y);
-      li.setAttribute('width',t.w); li.setAttribute('height',t.h); li.style.opacity=0; li.style.transition='opacity .22s ease';
-      li.onload=()=>{ li.style.opacity=1; };
-      li.setAttributeNS('http://www.w3.org/1999/xlink','href','t/'+key+'.webp'); li.setAttribute('href','t/'+key+'.webp');
-      lg.appendChild(li); t.li=li;
-    } else if(!wantLit&&t.li){ t.li.remove(); t.li=null; }
   }
   if(TILES.size>TMAX){
     [...TILES.entries()].filter(e=>!want.has(e[0])).sort((a,b)=>a[1].use-b[1].use).slice(0,TILES.size-TMAX).forEach(e=>{ dropTile(e[1]); TILES.delete(e[0]); });
   }
 }
-function dropTile(t){ if(t.img){ t.img.remove(); t.img=null; } if(t.li){ t.li.remove(); t.li=null; } }
+function dropTile(t){ if(t.img){ t.img.remove(); t.img=null; } }
 function apply(){
   paint(); schedTiles(); if(typeof saveSoon==='function') saveSoon(); if(typeof sizeRings==='function'&&RINGS.length) sizeRings();
   // Labels and leader lines are re-laid-out at most once per frame, however
@@ -612,9 +577,6 @@ function apply(){
   // have stopped, because changing a filter forces the whole image to repaint.
   if(!decQ){ decQ=true; requestAnimationFrame(()=>{ decQ=false;
     try{ place(); }catch(err){ if(++faults<4) console.warn('decorate',err); } }); }
-  clearTimeout(blurT);
-  blurT=setTimeout(()=>{ const bl=document.getElementById('softblur');
-    if(bl){ const nv=Math.min(7, Math.max(2.4, 1.2/k)), ov=+bl.getAttribute('stdDeviation')||0; if(Math.abs(nv-ov)/nv>0.18) bl.setAttribute('stdDeviation', nv); } },160);
 }
 // The farm locks to the frame: paper can never be dragged past the edges.
 function clamp(){
