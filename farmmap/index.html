@@ -24,6 +24,15 @@ body{margin:0;background:var(--ink);color:var(--cream);font-family:var(--f);
 #tiles{position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none}
 #tiles img{position:absolute;max-width:none;opacity:0;transition:opacity .22s ease}
 #tiles img.on{opacity:1}
+#body{touch-action:pan-y}
+#nav{position:absolute;right:12px;top:10px;display:flex;gap:6px;z-index:3}
+#ncount{align-self:center;font:700 11px/1 var(--f);color:var(--muted);letter-spacing:.04em;min-width:34px;text-align:center}
+#nav button{width:38px;height:38px;border-radius:999px;border:1px solid var(--line);background:#222820;color:var(--cream);font:700 24px/1 var(--f);cursor:pointer;padding:0 0 3px}
+#nav button:active{background:#2e362a}
+@keyframes swl{from{opacity:0;transform:translateX(34px)}to{opacity:1;transform:none}}
+@keyframes swr{from{opacity:0;transform:translateX(-34px)}to{opacity:1;transform:none}}
+#meta.swl{animation:swl .28s ease-out}
+#meta.swr{animation:swr .28s ease-out}
 #veil,#lits{position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none}
 #veil{background:rgba(14,18,10,0);transition:background .25s ease}
 #veil.on{background:rgba(14,18,10,.13)}
@@ -270,6 +279,7 @@ body{margin:0;background:var(--ink);color:var(--cream);font-family:var(--f);
     <div id="phead"><div id="pname">What are you looking for?</div><button id="pclose" type="button" aria-label="Close">✕</button></div>
     <div id="pgrid"></div>
   </div>
+  <div id="nav"><button id="nprev" type="button" aria-label="Previous neighborhood">&#8249;</button><span id="ncount"></span><button id="nnext" type="button" aria-label="Next neighborhood">&#8250;</button></div>
   <div id="body">
     <div id="hero" hidden></div>
     <div id="meta">
@@ -647,6 +657,7 @@ function show(h){
   document.getElementById('empty').hidden=true;
   document.getElementById('full').hidden=false;
   document.getElementById('cname').textContent=h.n;
+  try{ const ix=ORDER.indexOf(h.id), nc=document.getElementById('ncount'); if(nc) nc.textContent=ix<0?'':(ix+1)+' / '+ORDER.length; }catch(e){}
   document.getElementById('ctag').textContent=h.t||'';
   const ck=document.getElementById('ckind');
   ck.textContent=KIND[h.k]||h.k; ck.className='chip k-'+h.k;
@@ -809,7 +820,8 @@ stage.addEventListener('dblclick',e=>{e.preventDefault(); zoomAt(k*2,e.clientX,e
 
 document.getElementById('cgo').onclick=e=>{ e.stopPropagation(); if(cur) goPage(cur); };
 document.getElementById('card').addEventListener('click',e=>{
-  if(e.target.closest('#pickbar,#picker,#top')) return;     // the amenity controls stay controls
+  if(e.target.closest('#pickbar,#picker,#top,#nav')) return;     // the amenity controls stay controls
+  if(window.__swipedAt && performance.now()-window.__swipedAt<500) return;   // the end of a swipe is not a tap
   if(cur) goPage(cur);
 });
 document.getElementById('pgback').onclick=()=>{document.getElementById('page').hidden=true;};
@@ -879,4 +891,77 @@ function frameHood(fh){ const W=stage.clientWidth,H=stage.clientHeight, sh=D.sha
 let settleUntil=0;
 function boot(){ art.style.width=MW+'px'; art.style.height=MH+'px'; build(); fit(); restoreView(); settleUntil=NOW()+900; warmHeroes(); }
 if(img.complete&&img.naturalWidth) boot(); else img.onload=boot;
+
+// ---- Walk the farm: swipe the card (or use the arrows) to go neighbourhood to
+// neighbourhood, and the map glides to frame each one. The order is a walk from
+// the far south lots up through the camps; the big camps frame the whole farm.
+const ORDER=['willowcamp','welcomelot','curation','southcamp','farmhouse','orchard','courtyard','lucky','galaxy','paddock','windmill','grove','market','cherryhill','coyote','refuge','quailtrail','woods','lushcamp','wildcamp'];
+let flyRaf=0;
+function viewFor(h){
+  const sh=D.shapes[h.id], W=stage.clientWidth, H=stage.clientHeight; if(!sh) return null;
+  const b=sh.b, bw=b[2]-b[0], bh=b[3]-b[1];
+  const nk=Math.max(kFit,Math.min(maxK(),W*0.74/bw,H*0.74/bh));
+  const cx=(b[0]+b[2])/2, cy=(b[1]+b[3])/2, w=MW*nk, h2=MH*nk;
+  let ntx=W/2-cx*nk, nty=H/2-cy*nk;
+  ntx = w<=W ? (W-w)/2 : Math.min(0,Math.max(W-w,ntx));
+  nty = h2<=H ? (H-h2)/2 : Math.min(0,Math.max(H-h2,nty));
+  return {k:nk,tx:ntx,ty:nty};
+}
+// Start fetching what the destination needs while the glide is still under way,
+// so the sharp pieces are there when it lands rather than popping in after.
+function warmView(to,h){
+  try{
+    const W=stage.clientWidth,H=stage.clientHeight; if(to.k*Math.min(window.devicePixelRatio||1,3)<1.05) return;
+    const m=TM*0.2, x0=Math.max(0,-to.tx/to.k-m), y0=Math.max(0,-to.ty/to.k-m), x1=Math.min(MW,(W-to.tx)/to.k+m), y1=Math.min(MH,(H-to.ty)/to.k+m);
+    for(let c=Math.floor(x0/TM);c<=Math.min(TW-1,Math.floor(x1/TM));c++) for(let r=Math.floor(y0/TM);r<=Math.min(TH-1,Math.floor(y1/TM));r++) new Image().src='t/'+c+'_'+r+'.webp';
+    if(LIT[h.id]&&LIT[h.id].a){ new Image().src='l/'+h.id+'_a.webp'; }
+  }catch(e){}
+}
+function flyTo(h){
+  const to=viewFor(h); if(!to) return;
+  warmView(to,h);
+  cancelAnimationFrame(flyRaf);
+  const W=stage.clientWidth, H=stage.clientHeight;
+  const c0={x:(W/2-tx)/k,y:(H/2-ty)/k,k:k}, c1={x:(W/2-to.tx)/to.k,y:(H/2-to.ty)/to.k,k:to.k};
+  const dist=Math.hypot(c1.x-c0.x,c1.y-c0.y)*Math.min(c0.k,c1.k);
+  // a short hop just glides; a long one pulls back a little on the way, so you
+  // see the farm go by and arrive, instead of sliding across a blur
+  const dip = dist>170 ? Math.min(0.55,0.12+dist/2600) : 0;
+  const dur=Math.min(900,430+Math.min(dist,900)*0.28+Math.abs(Math.log(c1.k/c0.k))*110);
+  const t0=performance.now(); stage.classList.add('moving');
+  (function step(now){
+    const p=Math.min(1,(now-t0)/dur), e=p<.5?4*p*p*p:1-Math.pow(-2*p+2,3)/2;
+    k=Math.max(kFit,Math.exp(Math.log(c0.k)+(Math.log(c1.k)-Math.log(c0.k))*e-dip*Math.sin(Math.PI*e)));
+    const cx=c0.x+(c1.x-c0.x)*e, cy=c0.y+(c1.y-c0.y)*e;
+    tx=W/2-cx*k; ty=H/2-cy*k; paint();
+    if(p<1) flyRaf=requestAnimationFrame(step);
+    else { k=to.k; tx=to.tx; ty=to.ty; clamp(); paint(); stage.classList.remove('moving'); apply(); }
+  })(t0);
+}
+function stepHood(dir){
+  let i=cur?ORDER.indexOf(cur.id):-1;
+  if(i<0) i=dir>0?-1:0;
+  for(let n=0;n<ORDER.length;n++){
+    i=(i+dir+ORDER.length)%ORDER.length;
+    const h=HOODS.find(x=>x.id===ORDER[i]);
+    if(h && passes(h)){
+      const m=document.getElementById('meta'); m.classList.remove('swl','swr'); void m.offsetWidth; m.classList.add(dir>0?'swl':'swr');
+      setCur(h); flyTo(h); const nc=document.getElementById('ncount'); if(nc) nc.textContent=(i+1)+' / '+ORDER.length; return;
+    }
+  }
+}
+(function(){
+  const card=document.getElementById('card'); let d=null;
+  document.getElementById('nprev').onclick=()=>stepHood(-1);
+  document.getElementById('nnext').onclick=()=>stepHood(1);
+  card.addEventListener('pointerdown',e=>{ d=(e.target.closest('#cams,#picker,button'))?null:{x:e.clientX,y:e.clientY,t:performance.now()}; });
+  card.addEventListener('pointerup',e=>{
+    if(!d) return; const dx=e.clientX-d.x, dy=e.clientY-d.y, dt=performance.now()-d.t; d=null;
+    if(Math.abs(dx)>46 && Math.abs(dx)>1.6*Math.abs(dy) && dt<800){ window.__swipedAt=performance.now(); stepHood(dx<0?1:-1); }
+  });
+  card.addEventListener('pointercancel',()=>{ d=null; });
+  stage.addEventListener('pointerdown',()=>cancelAnimationFrame(flyRaf),true);
+  addEventListener('keydown',e=>{ if(e.target&&/INPUT|TEXTAREA/.test(e.target.tagName)) return;
+    if(e.key==='ArrowRight') stepHood(1); else if(e.key==='ArrowLeft') stepHood(-1); });
+})();
 </script>
