@@ -27,8 +27,8 @@ body{margin:0;background:var(--ink);color:var(--cream);font-family:var(--f);
 #veil,#lits{position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none}
 #veil{background:rgba(14,18,10,0);transition:background .25s ease}
 #veil.on{background:rgba(14,18,10,.13)}
-#lits img{position:absolute;max-width:none;opacity:0;transition:opacity .22s ease}
-#lits img.on{opacity:1}
+#lits img,#lits div{position:absolute;max-width:none;opacity:0;transition:opacity .22s ease}
+#lits img.on,#lits div.on{opacity:1}
 #shapes{overflow:visible}
 /* The highlight is the neighborhood's own ground pattern, turned up: a second
    copy of the art, saturated, showing only inside the area. Black line work and
@@ -535,7 +535,7 @@ function move(){
 // you can see are fetched, and only when you are in close enough for them to
 // matter; the highlight gets the same pieces so it stays crisp too.
 const TS=2.4, TP=1024, TM=TP/TS, TW=Math.ceil(MW*TS/TP), TH=Math.ceil(MH*TS/TP), TMAX=20;
-const LIT={"woods":{"o":[1587,1181,343,307],"t":[[3,2],[3,3],[4,2],[4,3]]},"paddock":{"o":[794,2516,559,537],"t":[[1,6],[1,7],[2,6],[2,7],[3,6]]},"cherryhill":{"o":[1247,2131,288,351],"t":[[3,5]]},"grove":{"o":[1059,2349,445,364],"t":[[2,5],[2,6],[3,5],[3,6]]},"windmill":{"o":[675,2404,489,558],"t":[[1,5],[1,6],[2,5],[2,6]]},"galaxy":{"o":[884,3004,295,250],"t":[[2,7]]},"lucky":{"o":[669,2940,406,484],"t":[[1,7],[2,7]]},"farmhouse":{"o":[869,3365,374,239],"t":[[2,8]]},"curation":{"o":[379,3481,337,308],"t":[[1,8]]},"refuge":{"o":[1668,1870,303,367],"t":[[4,4],[4,5]]},"coyote":{"o":[1117,1957,464,329],"t":[[2,4],[2,5],[3,4],[3,5]]},"market":{"o":[1390,1992,354,713],"t":[[3,4],[3,5],[3,6]]},"orchard":{"o":[879,3231,319,208],"t":[[2,7]]},"welcomelot":{"o":[1729,3459,312,309],"t":[[4,8]]},"quailtrail":{"o":[1607,1381,335,819],"t":[[3,4],[3,5],[4,3],[4,4],[4,5]]},"southcamp":{"o":[685,3391,798,386],"t":[[1,8],[2,8],[3,8]]},"willowcamp":{"o":[1471,3459,337,309],"t":[[3,8],[4,8]]},"courtyard":{"o":[904,3128,344,261],"t":[[2,7]]},"wildcamp":{"o":[235,0,1481,2279],"t":[[0,1],[0,2],[0,3],[1,0],[1,1],[1,2],[1,3],[1,4],[1,5],[2,0],[2,1],[2,2],[3,0],[3,1]]},"lushcamp":{"o":[603,268,1254,2339],"t":[[1,2],[1,3],[1,4],[1,5],[2,1],[2,2],[2,3],[2,4],[2,5],[3,0],[3,1],[3,2],[3,3],[3,4],[3,5],[4,1],[4,2],[4,3],[4,4]]}};
+const LIT={"woods":{"o":[1587,1181,343,307],"t":[[3,2,0,0],[3,3,1,0],[4,2,2,0],[4,3,0,1]],"a":[3072,2048]},"paddock":{"o":[794,2516,559,537],"t":[[1,6,0,0],[1,7,1,0],[2,6,2,0],[2,7,0,1],[3,6,1,1]],"a":[3072,2048]},"cherryhill":{"o":[1247,2131,288,351],"t":[[3,5,0,0]],"a":[1024,1024]},"grove":{"o":[1059,2349,445,364],"t":[[2,5,0,0],[2,6,1,0],[3,5,2,0],[3,6,0,1]],"a":[3072,2048]},"windmill":{"o":[675,2404,489,558],"t":[[1,5,0,0],[1,6,1,0],[2,5,2,0],[2,6,0,1]],"a":[3072,2048]},"galaxy":{"o":[884,3004,295,250],"t":[[2,7,0,0]],"a":[1024,1024]},"lucky":{"o":[669,2940,406,484],"t":[[1,7,0,0],[2,7,1,0]],"a":[2048,1024]},"farmhouse":{"o":[869,3365,374,239],"t":[[2,8,0,0]],"a":[1024,1024]},"curation":{"o":[379,3481,337,308],"t":[[1,8,0,0]],"a":[1024,1024]},"refuge":{"o":[1668,1870,303,367],"t":[[4,4,0,0],[4,5,1,0]],"a":[2048,1024]},"coyote":{"o":[1117,1957,464,329],"t":[[2,4,0,0],[2,5,1,0],[3,4,2,0],[3,5,0,1]],"a":[3072,2048]},"market":{"o":[1390,1992,354,713],"t":[[3,4,0,0],[3,5,1,0],[3,6,2,0]],"a":[3072,1024]},"orchard":{"o":[879,3231,319,208],"t":[[2,7,0,0]],"a":[1024,1024]},"welcomelot":{"o":[1729,3459,312,309],"t":[[4,8,0,0]],"a":[1024,1024]},"quailtrail":{"o":[1607,1381,335,819],"t":[[3,4,0,0],[3,5,1,0],[4,3,2,0],[4,4,0,1],[4,5,1,1]],"a":[3072,2048]},"southcamp":{"o":[685,3391,798,386],"t":[[1,8,0,0],[2,8,1,0],[3,8,2,0]],"a":[3072,1024]},"willowcamp":{"o":[1471,3459,337,309],"t":[[3,8,0,0],[4,8,1,0]],"a":[2048,1024]},"courtyard":{"o":[904,3128,344,261],"t":[[2,7,0,0]],"a":[1024,1024]},"wildcamp":{"o":[235,0,1481,2279],"t":[]},"lushcamp":{"o":[603,268,1254,2339],"t":[]}};
 const TILES=new Map(); let tileT=0, useN=0;
 function schedTiles(){ clearTimeout(tileT); tileT=setTimeout(tiles,140); }
 function tiles(){
@@ -549,7 +549,12 @@ function tiles(){
     const want=new Set();
     if(sharp) (LIT[id].t||[]).forEach(a=>{ const c=a[0], r=a[1]; if(c<c0||c>c1||r<r0||r>r1) return;
       const key=c+'_'+r; want.add(key);
-      if(!v.tiles.has(key)) v.tiles.set(key,litMake(lh,'l/'+id+'_'+key+'.webp',c*TM,r*TM,Math.min(TM,MW-c*TM),Math.min(TM,MH-r*TM))); });
+      if(!v.tiles.has(key)){
+        // every sharp piece of one neighbourhood lives in a single sheet; each piece just windows into it
+        const A=LIT[id].a, f=TM/TP, d=document.createElement('div');
+        d.style.cssText='left:'+c*TM+'px;top:'+r*TM+'px;width:'+Math.min(TM,MW-c*TM)+'px;height:'+Math.min(TM,MH-r*TM)+'px;background:url(l/'+id+'_a.webp) -'+a[2]*TP*f+'px -'+a[3]*TP*f+'px/'+A[0]*f+'px '+A[1]*f+'px no-repeat';
+        lh.appendChild(d); requestAnimationFrame(()=>d.classList.add('on')); v.tiles.set(key,d);
+      } });
     v.tiles.forEach((im,key)=>{ if(!want.has(key)){ im.remove(); v.tiles.delete(key); } });
   });
   if(!sharp){ TILES.forEach(t=>dropTile(t)); TILES.clear(); return; }
