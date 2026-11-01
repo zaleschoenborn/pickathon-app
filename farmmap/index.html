@@ -234,7 +234,7 @@ body{margin:0;background:var(--ink);color:var(--cream);font-family:var(--f);
 #ptog{display:flex;align-items:center;gap:6px}
 #pnow{font:700 12px/1 var(--f);color:#F2B33D}
 #shapes .ring.dot{fill:#F2B33D;stroke:#12160F;stroke-width:1.5px;animation:none}
-#shapes .ricon{pointer-events:none;filter:drop-shadow(0 1px 2px rgba(0,0,0,.45))}
+#shapes .spr{pointer-events:none;overflow:hidden}
 #shapes .ring{fill:rgba(242,179,61,.38);stroke:#F2B33D;stroke-width:4px;vector-effect:non-scaling-stroke;pointer-events:none;
   animation:rp 1.5s ease-in-out infinite}
 @keyframes rp{0%,100%{opacity:1}50%{opacity:.45}}
@@ -398,7 +398,7 @@ function ico(k){
   return '<span class="ic svg'+(ICO_DARK[k]?' dark':'')+'"><svg viewBox="0 0 40 40" aria-hidden="true">'+g+'</svg></span>';
 }
 // Where each amenity icon really sits on the art (map pixels, from the vector map).
-const ICON_AT={"restroom":[[1794,1227,44],[1041,860,40],[839,1861,38],[805,1491,38],[1366,717,40],[1664,2141,42],[744,3312,40],[1010,1133,40],[1240,2710,40],[614,2265,40]],"water":[[1772,1425,40],[1509,2521,38],[1207,2447,40],[841,3212,40],[1617,2129,44],[969,2543,44]],"bar":[[1221,2574,44],[1643,2229,44],[784,2604,42],[1121,3224,42],[1656,1332,42]],"coffee":[[778,2557,42],[1604,2424,40],[1729,1412,44]],"food":[[842,3162,42],[1160,2642,38],[1173,2738,38],[1605,2469,40],[1686,1377,42]],"dj":[[965,3295,44],[992,2634,44],[1473,2257,44]],"merch":[[1542,2638,38]],"craft":[[1524,2171,40],[1040,2914,44],[1159,2777,38],[1606,2286,40],[1554,2221,44]],"dot":[[843,3116,38],[1607,2571,38]],"ice":[[1608,2614,42]],"atm":[[955,3181,42],[1557,2524,40]],"massage":[[1838,2096,42]],"medical":[[1135,2823,38]],"info":[[955,2971,42]],"parking":[[1301,3452,40]],"moto":[[1410,3451,42]],"bike":[[1235,3353,42]],"charge":[[998,2949,42]],"gear":[[810,1429,38],[855,1809,38],[1438,712,38],[999,937,38]],"ticket":[[1177,3307,38]],"shuttle":[[1054,3501,42]],"kids":[[1386,2096,38]],"run":[[966,2698,40]],"rideshare":[[1042,3529,44]]};
+const ICON_AT={"restroom":[[1791.4,1228.9,42,0,41.7,42.5],[1041.3,860.1,42,1,41.7,42.5],[839.7,1868.9,42,2,41.7,42.5],[805.5,1498.9,42,3,41.7,42.5],[1366.4,717.6,42,4,41.7,42.5],[1663.5,2141.0,42,5,41.7,42.5],[745.5,3311.9,42,6,41.7,42.5],[1010.9,1133.0,42,7,41.7,42.5],[1241.4,2709.8,42,8,41.7,42.5],[615.5,2265.6,42,9,41.7,42.5]],"water":[[1773.1,1425.9,42,10,40.8,42.5],[1509.7,2523.1,42,11,40.8,42.5],[1208.0,2448.1,42,12,40.8,42.5],[843.0,3213.6,42,13,40.8,42.5],[1618.0,2140.6,42,14,40.8,42.5],[969.7,2542.7,42,15,40.8,42.5]],"bar":[[1220.5,2574.4,42,16,41.7,42.5],[1641.4,2228.1,42,17,41.7,42.5],[793.8,2604.4,42,18,41.7,42.5],[1113.4,3224.8,42,19,41.7,42.5],[1656.4,1333.0,42,20,41.7,42.5]],"coffee":[[780.5,2557.3,43,21,41.7,43.3],[1605.1,2426.9,43,22,41.7,43.3],[1728.5,1412.6,43,23,41.7,43.3]],"food":[[843.8,3163.2,42,24,41.7,42.5],[1155.9,2638.1,42,25,41.7,42.5],[1168.4,2734.0,42,26,41.7,42.5],[1606.4,2476.9,42,27,41.7,42.5],[1685.6,1377.6,42,28,41.7,42.5]],"dj":[[965.3,3294.9,49,29,48.8,49.2],[992.6,2633.5,49,30,49.2,49.2],[1473.0,2257.3,49,31,49.2,49.2]],"merch":[[1541.8,2639.2,45,32,45.0,42.9]],"craft":[[1515.5,2172.7,43,33,41.7,43.3],[1040.5,2913.6,43,34,41.7,43.3],[1152.6,2782.3,43,35,41.7,43.3],[1606.4,2288.5,43,36,41.7,43.3],[1552.6,2221.4,43,37,41.7,43.3]],"dot":[[843.8,3115.7,41,38,40.8,40.8],[1608.0,2571.0,45,39,40.8,45.0]],"ice":[[1607.6,2616.5,43,40,41.7,43.3]],"atm":[[954.7,3182.3,42,41,41.7,42.5],[1558.5,2525.2,42,42,41.7,42.5]],"massage":[[1844.3,2096.4,42,43,41.7,41.7]],"medical":[[1138.4,2827.3,43,44,41.7,43.3]],"info":[[953.0,2964.0,42,45,42.5,42.5]],"parking":[[1302.2,3444.4,43,46,42.5,43.3]],"moto":[[1409.7,3451.9,43,47,43.3,42.5]],"bike":[[1234.7,3354.0,42,48,41.7,42.5]],"charge":[[998.8,2944.8,42,49,42.5,42.5]],"gear":[[810.5,1440.5,58,50,57.5,57.5],[843.4,1810.6,58,51,57.5,57.5],[1426.4,713.4,58,52,57.5,57.5],[987.6,938.0,58,53,57.5,57.5]],"ticket":[[1172.4,3311.9,55,54,53.8,55.0]],"shuttle":[[1053.0,3486.1,42,55,42.5,42.5]],"kids":[[1393.4,2097.9,48,56,32.5,47.9]],"run":[[975.5,2692.9,44,57,28.3,43.8]],"rideshare":[[1036.8,3533.8,35,58,35.0,24.6]],"dishes":[[1606.0,2524.4,43,59,43.3,43.3]],"smoke":[[998.0,3154.4,43,60,43.3,43.3]],"wheelchair":[[1255.5,3444.9,42,61,41.7,41.7]],"accesscamp":[[1599.9,1940.8,42,62,42.1,42.1]],"vehicle":[[1028.8,3609.5,42,63,42.5,42.5],[1076.3,3609.0,42,64,42.5,42.5]],"shower":[[1795.1,2096.0,47,65,46.7,46.7]]};
 let RINGS=[];
 // The icons inside one neighbourhood: every icon whose centre falls in its outline.
 let _hp=null;
@@ -410,33 +410,30 @@ function hoodIcons(h){
   for(const a in ICON_AT) ICON_AT[a].forEach(p=>{ try{ const q=new DOMPoint(p[0],p[1]); if(_hp.isPointInFill(q)||_hp.isPointInStroke(q)) out.push([a,p]); }catch(e){} });
   return out;
 }
+const ICON_ATLAS='ic/atlas.webp?v=4', ATL=[1440,1008,144,10];
 function showRings(a,hood){
   const g=document.getElementById('rings'); if(!g) return;
   g.innerHTML=''; RINGS=[];
   const NS='http://www.w3.org/2000/svg';
-  const list = a ? (ICON_AT[a]||[]).map(p=>[a,p,false]) : hoodIcons(hood).map(e=>[e[0],e[1],true]);
-  list.forEach(([a,p,only])=>{
-    if(only){ const dc=document.createElementNS(NS,'circle'); dc.setAttribute('class','ring dot'); dc.setAttribute('cx',p[0]); dc.setAttribute('cy',p[1]); g.appendChild(dc);
-      const rr=document.createElementNS(NS,'rect'); rr.setAttribute('class','rr'); g.appendChild(rr); RINGS.push({x:p[0],y:p[1],s:p[2],r:rr,c:dc,only:1}); return; }
+  const list = a ? (ICON_AT[a]||[]).map(p=>[a,p]) : hoodIcons(hood).map(e=>[e[0],e[1]]);
+  list.forEach(([a,p])=>{
+    // far out: a gold dot. Close in: the icon itself, in its own colours, cut to its own shape.
     const c=document.createElementNS(NS,'circle'); c.setAttribute('class','ring dot'); c.setAttribute('cx',p[0]); c.setAttribute('cy',p[1]); g.appendChild(c);
     const o={c:c,x:p[0],y:p[1],s:p[2]};
-    if(ICO_IMG[a]){ const im=document.createElementNS(NS,'image'); im.setAttribute('href',ICO_IMG[a]); im.setAttribute('class','ricon'); g.appendChild(im); o.i=im; }
-    const rr=document.createElementNS(NS,'rect'); rr.setAttribute('class','rr'); g.appendChild(rr); o.r=rr;
+    if(p[3]!=null){
+      const sv=document.createElementNS(NS,'svg'); sv.setAttribute('class','spr');
+      sv.setAttribute('x',p[0]-30); sv.setAttribute('y',p[1]-30); sv.setAttribute('width',60); sv.setAttribute('height',60);
+      sv.setAttribute('viewBox',((p[3]%ATL[3])*ATL[2])+' '+(Math.floor(p[3]/ATL[3])*ATL[2])+' '+ATL[2]+' '+ATL[2]); sv.setAttribute('preserveAspectRatio','none');
+      const im=document.createElementNS(NS,'image'); im.setAttribute('href',ICON_ATLAS); im.setAttribute('width',ATL[0]); im.setAttribute('height',ATL[1]); sv.appendChild(im);
+      g.appendChild(sv); o.i=sv;
+    }
     RINGS.push(o);
   });
   sizeRings();
 }
 function sizeRings(){
-  // Zoomed out each icon is a gold dot; zoomed in it is outlined in place, at the size it is on the map.
   const near=k>=kFit*1.8;
-  RINGS.forEach(o=>{ const w=Math.max(o.s||40,22/k);
-    if(o.only){ const nr=k>=kFit*1.8; o.c.setAttribute('r',4.5/k); o.c.style.display=nr?'none':''; o.r.style.display=nr?'':'none'; o.r.setAttribute('x',o.x-w/2-2/k); o.r.setAttribute('y',o.y-w/2-2/k);
-      o.r.setAttribute('width',w+4/k); o.r.setAttribute('height',w+4/k); o.r.setAttribute('rx',w*0.26); return; }
-    o.c.setAttribute('r',5.5/k); o.c.style.display=near?'none':'';
-    if(o.i){ o.i.style.display=near?'':'none'; o.i.setAttribute('x',o.x-w/2); o.i.setAttribute('y',o.y-w/2); o.i.setAttribute('width',w); o.i.setAttribute('height',w); }
-    o.r.style.display=near?'':'none'; o.r.setAttribute('x',o.x-w/2-2/k); o.r.setAttribute('y',o.y-w/2-2/k);
-    o.r.setAttribute('width',w+4/k); o.r.setAttribute('height',w+4/k); o.r.setAttribute('rx',w*0.26);
-  });
+  RINGS.forEach(o=>{ o.c.setAttribute('r',5.5/k); o.c.style.display=(near&&o.i)?'none':''; if(o.i) o.i.style.display=near?'':'none'; });
 }
 
 const passes = h => !amFilter || (h.amk||[]).includes(amFilter);
@@ -773,11 +770,13 @@ addEventListener('pointermove',e=>{ try{ onMove(e); }
 addEventListener('dragstart',e=>e.preventDefault());
 addEventListener('selectstart',e=>{ if(stage.contains(e.target)) e.preventDefault(); });
 function iconAt(e){
-  // Only the picked neighbourhood's own icons answer, and at any zoom: zoomed out they are gold dots and the aim is forgiving.
+  // Only the picked neighbourhood's own icons answer. Zoomed in the hit area is the icon's own box; zoomed out it widens so a dot is still easy to hit.
   if(!cur) return null;
-  const r=stage.getBoundingClientRect(), mx=(e.clientX-r.left-tx)/k, my=(e.clientY-r.top-ty)/k, R=Math.max((e.pointerType==='mouse'?16:20)/k,22);
+  const r=stage.getBoundingClientRect(), mx=(e.clientX-r.left-tx)/k, my=(e.clientY-r.top-ty)/k, m=(e.pointerType==='mouse'?18:26)/k;
   let best=null,bd=1e9;
-  hoodIcons(cur).forEach(en=>{ const a=en[0],p=en[1], d=Math.hypot(p[0]-mx,p[1]-my); if(d<R&&d<bd){ bd=d; best=a; } });
+  hoodIcons(cur).forEach(en=>{ const a=en[0],p=en[1], hw=Math.max(p[4]||p[2],m)/2, hh=Math.max(p[5]||p[2],m)/2;
+    const dx=Math.abs(p[0]-mx), dy=Math.abs(p[1]-my);
+    if(dx<=hw&&dy<=hh){ const d=Math.hypot(dx/hw,dy/hh); if(d<bd){ bd=d; best=a; } } });
   return best;
 }
 function tapAt(e){
@@ -785,7 +784,7 @@ function tapAt(e){
   const h=el&&el.__hood;
   // an icon only answers once its neighbourhood is the one already picked
   if(cur && (!h || h===cur)){ const ia=iconAt(e);
-    if(ia && window.__setFilter && ia!=='tent' && ia!=='gear'){ window.__setFilter(ia,true); return; } }
+    if(ia && window.__setFilter && D.amlbl[ia] && ia!=='tent' && ia!=='gear'){ window.__setFilter(ia,true); return; } }
   if(!h) return;
   // mouse: hover already showed the card, a click opens. Touch: the first tap
   // shows the card, a tap on the one already showing opens it.
