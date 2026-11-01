@@ -517,7 +517,7 @@ function place(){
   const wm=L.find(h=>h.id==='windmill');
   L.forEach(h=>{ const o=PINL[h.id];
     h._sk = (o!==undefined && wm) ? wm._ay-(5-o)*0.9 : h._wy; });
-  R.forEach(h=>h._sk=(LBLCAP[h.id]!==undefined)?h._ay:h._wy);   // capped labels keep their true order
+  R.forEach(h=>h._sk=(LBLCAP[h.id]!==undefined)?1e6+(h.id==='willowcamp'?0:1):h._wy);   // capped labels sit last: Willow Camp, then Welcome Lot at the bottom (their leaders don't cross)
   [L,R].forEach(arr=>{
     arr.sort((a,b)=>a._sk-b._sk);
     // down the column first, then back up from the floor, so the bottom ones
