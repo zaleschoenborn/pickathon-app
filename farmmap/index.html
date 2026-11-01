@@ -263,6 +263,9 @@ body{margin:0;background:var(--ink);color:var(--cream);font-family:var(--f);
 #phead{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 0 10px}
 #phead #pname{margin:0}
 #pclose{border:1px solid var(--line);background:#222820;color:var(--cream);width:34px;height:34px;border-radius:999px;font:800 14px/1 var(--f);cursor:pointer}
+#shapes .pkpeek{fill:rgba(242,179,61,.16);stroke:#F2B33D;stroke-width:3px;vector-effect:non-scaling-stroke;pointer-events:none;opacity:0;transition:opacity .12s}
+#shapes .pkpeek.on{opacity:1}
+.lab.peek{outline:3px solid #F2B33D;outline-offset:1px;box-shadow:0 2px 10px rgba(242,179,61,.55)}
 #shapes .rr{fill:none;stroke:#F2B33D;stroke-width:4px;vector-effect:non-scaling-stroke;pointer-events:none;filter:drop-shadow(0 0 4px #F2B33D)}
 </style>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&display=swap">
@@ -351,7 +354,8 @@ function build(){
       h._mask='M'+(cx-r)+','+cy+'a'+r+','+r+' 0 1 0 '+(2*r)+',0a'+r+','+r+' 0 1 0 '+(-2*r)+',0Z';
     }
     p.setAttribute('d',h._mask);
-    p.addEventListener('pointerenter',e=>{ if(hoverOK && !pinned && e.pointerType==='mouse' && !e.buttons && !live.size && NOW()>settleUntil) setCur(h); });  // hover only; a finger or a drag never picks
+    p.addEventListener('pointerenter',e=>{ if(pinned && e.pointerType==='mouse' && !e.buttons && !live.size) peek(h);
+      if(hoverOK && !pinned && e.pointerType==='mouse' && !e.buttons && !live.size && NOW()>settleUntil) setCur(h); });  // hover only; a finger or a drag never picks
     // A drag that happens to END on a neighborhood is still a drag. Without
     // this the map opened a page every time you let go over a shape, the page
     // covered the farm, and it read as "after the first move it gets stuck".
@@ -688,7 +692,15 @@ function setCur(h){
   cur=h; show(h); apply();
 }
 let pinned=null;   // desktop: a click pins a neighborhood so the pointer can travel to its card
-function clearCur(){ pinned=null; cur=null; show(null); apply(); }
+let peekEl=null, peekH=null;   // while one neighborhood is pinned, the one under the pointer lights up (map + its name tag) to show a click would switch to it
+function peek(h){
+  if(h&&(h===pinned||h===cur&&!pinned)) h=null;
+  if(h===peekH) return; peekH=h;
+  HOODS.forEach(x=>{ if(x._el) x._el.classList.toggle('peek',x===h); });
+  if(!peekEl){ peekEl=document.createElementNS(NS,'path'); peekEl.setAttribute('class','pkpeek'); shp.appendChild(peekEl); }
+  if(h){ peekEl.setAttribute('d',h._mask); peekEl.classList.add('on'); } else peekEl.classList.remove('on');
+}
+function clearCur(){ pinned=null; peek(null); cur=null; show(null); apply(); }
 function goPage(h){
   setCur(h); show(h);
   // Embedded in the site: hand off to the site's own neighborhood page.
@@ -729,6 +741,7 @@ function hover(e){
   stage.classList.toggle('onhood',!!h&&!ia); stage.classList.toggle('onicon',!!ia);
   const tp=document.getElementById('itip');
   if(tp){ if(ia){ tp.textContent=TIPLBL[ia]||D.amlbl[ia]||ia; tp.style.left=e.clientX+'px'; tp.style.top=e.clientY+'px'; tp.classList.add('on'); } else tp.classList.remove('on'); }
+  if(pinned && e.pointerType==='mouse'){ const lb=el&&el.closest&&el.closest('.lab'); peek(lb&&lb.__hood?lb.__hood:(h&&!ia&&!stage.classList.contains('moving')?h:null)); }
   if(hoverOK && !ia && !pinned && NOW()>settleUntil){
     clearTimeout(hover._t);
     if(h) setCur(h);
@@ -805,7 +818,7 @@ function tapAt(e){
   if(!h){ if(pinned && e.pointerType==='mouse') clearCur(); return; }
   // mouse: hover peeks, a click pins, a click on the pinned one opens. Touch: the first tap
   // shows the card, a tap on the one already showing opens it.
-  if(e.pointerType==='mouse'){ if(pinned!==h){ pinned=h; setCur(h); show(h); return; } }
+  if(e.pointerType==='mouse'){ if(pinned!==h){ pinned=h; peek(null); setCur(h); show(h); return; } }
   else if(h!==cur){ setCur(h); return; }
   goPage(h);
 }
@@ -832,8 +845,10 @@ labs.addEventListener('click',e=>{
   if(e.detail>0) return;   // pointer taps are handled in tapAt, so a label behaves exactly like its neighborhood
   goPage(h);
 });
+labs.addEventListener('pointerout',e=>{ if(pinned) peek(null); });
 labs.addEventListener('pointerover',e=>{
   const b=e.target.closest('.lab');
+  if(pinned&&e.pointerType==='mouse'&&b&&b.__hood) peek(b.__hood);
   if(hoverOK&&!pinned&&e.pointerType==='mouse'&&!e.buttons&&b&&b.__hood&&!live.size&&NOW()>settleUntil) setCur(b.__hood);   // hover is for a mouse; a finger only ever picks by tapping
 });
 
