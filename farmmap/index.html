@@ -264,7 +264,7 @@ function build(){
       h._mask='M'+(cx-r)+','+cy+'a'+r+','+r+' 0 1 0 '+(2*r)+',0a'+r+','+r+' 0 1 0 '+(-2*r)+',0Z';
     }
     p.setAttribute('d',h._mask);
-    p.addEventListener('pointerenter',e=>{ if(e.pointerType==='mouse' && !e.buttons && !live.size) setCur(h); });  // hover only; a finger or a drag never picks
+    p.addEventListener('pointerenter',e=>{ if(e.pointerType==='mouse' && !e.buttons && !live.size && NOW()>settleUntil) setCur(h); });  // hover only; a finger or a drag never picks
     // A drag that happens to END on a neighborhood is still a drag. Without
     // this the map opened a page every time you let go over a shape, the page
     // covered the farm, and it read as "after the first move it gets stuck".
@@ -529,7 +529,7 @@ function hover(e){
   const el=document.elementFromPoint(e.clientX,e.clientY);
   const h=el&&el.__hood?el.__hood:null;
   stage.classList.toggle('onhood',!!h);
-  setCur(h);
+  if(NOW()>settleUntil) setCur(h);
 }
 
 function onMove(e){
@@ -609,7 +609,7 @@ labs.addEventListener('click',e=>{
 });
 labs.addEventListener('pointerover',e=>{
   const b=e.target.closest('.lab');
-  if(b&&b.__hood&&!live.size) setCur(b.__hood);
+  if(e.pointerType==='mouse'&&!e.buttons&&b&&b.__hood&&!live.size&&NOW()>settleUntil) setCur(b.__hood);   // hover is for a mouse; a finger only ever picks by tapping
 });
 
 // A trackpad two-finger swipe moves the farm; a pinch (which arrives as
@@ -662,11 +662,21 @@ function saveView(){ try{ const W=stage.clientWidth,H=stage.clientHeight;
 function restoreView(){ try{
   const keep=sessionStorage.getItem('pkmap.keep'); sessionStorage.removeItem('pkmap.keep');
   const v=JSON.parse(sessionStorage.getItem('pkmap.view')||'null'); sessionStorage.removeItem('pkmap.view');
-  if(keep!=='1'||!v) return;
+  const foc=sessionStorage.getItem('pkmap.focus'); sessionStorage.removeItem('pkmap.focus');
   const W=stage.clientWidth,H=stage.clientHeight;
-  k=Math.max(kFit,Math.min(maxK(),kFit*v.kr)); tx=W/2-v.cx*k; ty=H/2-v.cy*k; clamp(); apply();
-  const h=HOODS.find(x=>x.id===v.cur); if(h) setCur(h);
+  const fh=foc&&HOODS.find(x=>x.id===foc);
+  if(keep==='1'&&v){                       // back from a neighborhood: same look as before
+    k=Math.max(kFit,Math.min(maxK(),kFit*v.kr)); tx=W/2-v.cx*k; ty=H/2-v.cy*k; clamp(); apply();
+    const h=fh||HOODS.find(x=>x.id===v.cur); if(h) setCur(h);
+  } else if(fh){                           // "See it on the map": frame that neighborhood
+    const sh=D.shapes[fh.id], bb=sh&&sh.b;
+    if(bb){ const bw=Math.max(80,bb[2]-bb[0]), bh=Math.max(80,bb[3]-bb[1]);
+      k=Math.max(kFit,Math.min(maxK(),Math.min(W*0.5/bw,H*0.5/bh)));
+      tx=W/2-((bb[0]+bb[2])/2)*k; ty=H/2-((bb[1]+bb[3])/2)*k; clamp(); apply(); }
+    setCur(fh);
+  }
 }catch(e){} }
-function boot(){ art.style.width=MW+'px'; art.style.height=MH+'px'; build(); fit(); restoreView(); }
+let settleUntil=0;
+function boot(){ art.style.width=MW+'px'; art.style.height=MH+'px'; build(); fit(); restoreView(); settleUntil=NOW()+900; }
 if(img.complete&&img.naturalWidth) boot(); else img.onload=boot;
 </script>
