@@ -32,11 +32,13 @@ body{margin:0;background:var(--ink);color:var(--cream);font-family:var(--f);
 @keyframes swr{from{opacity:0;transform:translateX(-34px)}to{opacity:1;transform:none}}
 #meta.swl{animation:swl .28s ease-out}
 #meta.swr{animation:swr .28s ease-out}
+#dark{position:absolute;left:0;top:0;width:100%!important;height:100%!important;pointer-events:none}
 #veil,#lits{position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none}
 #veil{background:rgba(14,18,10,0);transition:background .25s ease}
 #veil.on{background:rgba(14,18,10,.13)}
 #stage{transition:background-color .25s ease}
-#stage.veiled{background-color:#C7D0BE}
+#stage{background-color:#12160F}
+#stage.veiled{background-color:#10140D}
 #lits img,#lits div{position:absolute;max-width:none;opacity:0;transition:opacity .22s ease}
 #lits img.on,#lits div.on{opacity:1}
 #shapes{overflow:visible}
@@ -145,6 +147,7 @@ body{margin:0;background:var(--ink);color:var(--cream);font-family:var(--f);
 #empty[hidden],#full[hidden],#hero[hidden],#page[hidden],#picker[hidden],
 .lab[hidden]{display:none!important}
 #empty b{font-size:15px;font-weight:800}
+#ibuild{align-self:flex-start;margin-top:6px;padding:9px 14px;border:0;border-radius:999px;background:#F2B33D;color:#12160F;font:800 12px/1 var(--f);cursor:pointer}
 #empty p{margin:0;color:var(--muted);font-size:12.5px;line-height:1.5}
 
 #page{position:fixed;inset:0;z-index:50;background:var(--ink);overflow-y:auto;
@@ -253,7 +256,7 @@ body{margin:0;background:var(--ink);color:var(--cream);font-family:var(--f);
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&display=swap">
 
 <div id="stage">
-  <div id="art"><img id="mapimg" src="map.webp" alt="Map of Pendarvis Farm" draggable="false"><div id="tiles"></div><div id="veil"></div><div id="lits"></div></div>
+  <div id="art"><img id="mapimg" src="map.webp" alt="Map of Pendarvis Farm" draggable="false"><div id="tiles"></div><img id="dark" src="dark.webp" alt="" draggable="false"><div id="veil"></div><div id="lits"></div></div>
   <svg id="shapes"></svg>
   <svg id="leads"></svg>
   <div id="labs"></div>
@@ -285,9 +288,9 @@ body{margin:0;background:var(--ink);color:var(--cream);font-family:var(--f);
     <div id="hero" hidden></div>
     <div id="meta">
       <div id="empty">
-        <b>Pendarvis Farm</b>
-        <p>Point at a neighborhood to see it here. Click to open it. Pinch or
-           scroll to go in, then drag to move around.</p>
+        <b>A city built for one weekend</b>
+        <p>Every August, architects and builders raise 20 neighborhoods on Pendarvis Farm. You're at the front gate. Swipe or tap ‹ › to walk through them, or tap any neighborhood to see what's there.</p>
+        <button id="ibuild" type="button">We build these. Want one? →</button>
       </div>
       <div id="full" hidden>
         <div class="chip" id="ckind">Stage</div>
@@ -387,7 +390,7 @@ function ico(k){
   return '<span class="ic svg'+(ICO_DARK[k]?' dark':'')+'"><svg viewBox="0 0 40 40" aria-hidden="true">'+g+'</svg></span>';
 }
 // Where each amenity icon really sits on the art (map pixels, from the vector map).
-const ICON_AT={"restroom":[[1794,1227,44],[1041,860,40],[839,1861,38],[805,1491,38],[1366,717,40],[1664,2141,42],[744,3312,40],[1010,1133,40],[1240,2710,40],[614,2265,40]],"water":[[1772,1425,40],[1518,2529,38],[1207,2447,40],[841,3212,40],[1617,2129,44],[969,2543,44]],"bar":[[1221,2574,44],[1643,2229,44],[784,2604,42],[1121,3224,42],[1656,1332,42]],"coffee":[[778,2572,42],[1604,2424,40],[1729,1412,44]],"food":[[842,3162,42],[1160,2642,38],[1173,2738,38],[1605,2469,40],[1686,1377,42]],"dj":[[965,3295,44],[992,2634,44],[1473,2257,44]],"merch":[[1542,2638,38]],"craft":[[1524,2171,40],[1040,2914,44],[1159,2777,38],[1606,2286,40],[1554,2221,44]],"dot":[[843,3116,38],[1607,2571,38]],"ice":[[1623,2617,42]],"atm":[[955,3181,42],[1557,2524,40]],"massage":[[1838,2096,42]],"medical":[[1135,2823,38]],"info":[[955,2971,42]],"parking":[[1301,3452,40]],"moto":[[1410,3451,42]],"bike":[[1235,3353,42]],"charge":[[998,2949,42]],"gear":[[810,1429,38],[855,1809,38],[1438,712,38],[999,937,38]],"ticket":[[1177,3307,38]],"shuttle":[[1054,3501,42],[1900,3604,42],[870,3572,40]],"kids":[[1380,2096,38]],"run":[[966,2698,40]],"rideshare":[[1042,3529,44]]};
+const ICON_AT={"restroom":[[1794,1227,44],[1041,860,40],[839,1861,38],[805,1491,38],[1366,717,40],[1664,2141,42],[744,3312,40],[1010,1133,40],[1240,2710,40],[614,2265,40]],"water":[[1772,1425,40],[1509,2521,38],[1207,2447,40],[841,3212,40],[1617,2129,44],[969,2543,44]],"bar":[[1221,2574,44],[1643,2229,44],[784,2604,42],[1121,3224,42],[1656,1332,42]],"coffee":[[778,2557,42],[1604,2424,40],[1729,1412,44]],"food":[[842,3162,42],[1160,2642,38],[1173,2738,38],[1605,2469,40],[1686,1377,42]],"dj":[[965,3295,44],[992,2634,44],[1473,2257,44]],"merch":[[1542,2638,38]],"craft":[[1524,2171,40],[1040,2914,44],[1159,2777,38],[1606,2286,40],[1554,2221,44]],"dot":[[843,3116,38],[1607,2571,38]],"ice":[[1608,2614,42]],"atm":[[955,3181,42],[1557,2524,40]],"massage":[[1838,2096,42]],"medical":[[1135,2823,38]],"info":[[955,2971,42]],"parking":[[1301,3452,40]],"moto":[[1410,3451,42]],"bike":[[1235,3353,42]],"charge":[[998,2949,42]],"gear":[[810,1429,38],[855,1809,38],[1438,712,38],[999,937,38]],"ticket":[[1177,3307,38]],"shuttle":[[1054,3501,42]],"kids":[[1386,2096,38]],"run":[[966,2698,40]],"rideshare":[[1042,3529,44]]};
 let RINGS=[];
 // The icons inside one neighbourhood: every icon whose centre falls in its outline.
 let _hp=null;
@@ -885,19 +888,21 @@ function restoreView(){ try{
     if(v.f&&window.__setFilter) window.__setFilter(v.f,true);
     if(h) setCur(h);
   } else if(fh){ frameHood(fh); setCur(fh); }
+  else { const wl=HOODS.find(x=>x.id==='welcomelot'), vw=wl&&viewFor(wl); if(vw){ k=vw.k; tx=vw.tx; ty=vw.ty; clamp(); apply(); } }   // fresh open: arrive at the gate
 }catch(e){} }
 function frameHood(fh){ const W=stage.clientWidth,H=stage.clientHeight, sh=D.shapes[fh.id], bb=sh&&sh.b;
   if(!bb) return; const bw=Math.max(80,bb[2]-bb[0]), bh=Math.max(80,bb[3]-bb[1]);
   k=Math.max(kFit,Math.min(maxK(),Math.min(W*0.5/bw,H*0.5/bh)));
   tx=W/2-((bb[0]+bb[2])/2)*k; ty=H/2-((bb[1]+bb[3])/2)*k; clamp(); apply(); }
 let settleUntil=0;
+document.getElementById('ibuild').addEventListener('click',()=>{ try{ parent.postMessage({pkMap:'go',r:'build'},'*'); }catch(e){} });
 function boot(){ art.style.width=MW+'px'; art.style.height=MH+'px'; build(); fit(); restoreView(); settleUntil=NOW()+900; warmHeroes(); }
 if(img.complete&&img.naturalWidth) boot(); else img.onload=boot;
 
 // ---- Walk the farm: swipe the card (or use the arrows) to go neighbourhood to
 // neighbourhood, and the map glides to frame each one. The order is a walk from
 // the far south lots up through the camps; the big camps frame the whole farm.
-const ORDER=['willowcamp','welcomelot','southcamp','curation','farmhouse','orchard','courtyard','lucky','galaxy','paddock','windmill','grove','market','cherryhill','coyote','refuge','quailtrail','woods','lushcamp','wildcamp'];
+const ORDER=['welcomelot','willowcamp','southcamp','curation','farmhouse','orchard','courtyard','lucky','galaxy','paddock','windmill','grove','market','cherryhill','coyote','refuge','quailtrail','woods','lushcamp','wildcamp'];
 let flyRaf=0;
 function viewFor(h){
   const sh=D.shapes[h.id], W=stage.clientWidth, H=stage.clientHeight; if(!sh) return null;
