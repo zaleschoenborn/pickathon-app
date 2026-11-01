@@ -1,0 +1,658 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"></head><title>Pendarvis Farm Map</title>
+<style>
+/* The farm floats on its own paper colour. Shapes are real footprints traced
+   from the art, so the same outline is both the glow and the hit area. */
+:root{
+  --stage:#D4502C; --camp:#C98A14; --around:#3E7F46;
+  --wellness:#2E8C9E; --family:#8A4FA8;
+  --ink:#12160F; --cream:#F2EDE3; --panel:#161A12; --line:#2B3126; --muted:#AFAB9F;
+  --paper:#E3ECD9; --cardh:36%;
+  --f:'Archivo',system-ui,-apple-system,sans-serif;
+}
+html,body{height:100%}
+body{margin:0;background:var(--ink);color:var(--cream);font-family:var(--f);
+  overscroll-behavior:none}
+
+#stage{position:fixed;top:0;left:0;right:0;bottom:var(--cardh);
+  overflow:hidden;touch-action:none;background:var(--paper);cursor:default;
+  user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
+#stage *{-webkit-user-drag:none}
+#stage.onhood{cursor:pointer}
+#stage.drag,#stage.drag *{cursor:grabbing!important}
+#art,#shapes{position:absolute;top:0;left:0;transform-origin:0 0;will-change:transform}
+#art img{display:block;width:100%;height:auto;user-select:none;-webkit-user-drag:none}
+#shapes{overflow:visible}
+/* The highlight is the neighborhood's own ground pattern, turned up: a second
+   copy of the art, saturated, showing only inside the area. Black line work and
+   white dashes are neutral, so they come through untouched; only the coloured
+   dots and ground shift. Badges and amenity icons are holes in the mask, so
+   nothing ever paints over a logo. */
+#lit{opacity:0;transition:opacity .2s ease;pointer-events:none;
+  filter:saturate(var(--fxs,2.2)) brightness(var(--fxb,1)) contrast(var(--fxc,1))}
+#lit.on{opacity:1}
+/* Invisible but fully hit-testable: pointer-events:fill ignores the paint, so
+   the whole area answers the pointer without a wash being drawn on it. */
+#hit path{fill:#fff;fill-opacity:0;fill-rule:evenodd;stroke:none;
+  pointer-events:fill;cursor:pointer}
+#hit .off{pointer-events:none}
+#litpath{fill:#fff;fill-rule:evenodd}
+#chromepath{fill:#000;fill-rule:nonzero}
+.c-stage{color:var(--stage)} .c-camp{color:var(--camp)} .c-around{color:var(--around)}
+.c-wellness{color:var(--wellness)} .c-family{color:var(--family)}
+
+#leads{position:absolute;inset:0;pointer-events:none;overflow:visible}
+/* Two strokes: a pale one underneath so a line stays legible over dark ground. */
+#leads .u{stroke:#FFF;stroke-width:3.2;stroke-opacity:.72}
+#leads .o{stroke:currentColor;stroke-width:1.3;stroke-opacity:.95}
+#leads .pt{stroke:#FFF;stroke-width:1.6;fill:currentColor}
+#labs{position:absolute;inset:0;pointer-events:none}
+#leads,#labs{transition:opacity .14s ease}
+#stage.moving #leads,#stage.moving #labs{opacity:0}
+#stage.moving #labs .lab{pointer-events:none}
+.lab{position:absolute;pointer-events:auto;border:0;cursor:pointer;
+  padding:4px 8px;border-radius:7px;max-width:116px;
+  font:800 11px/1.2 var(--f);letter-spacing:.015em;text-align:left;
+  background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.3);
+  display:flex;align-items:center;gap:5px;transform:translateY(-50%)}
+.lab span{color:var(--ink)}
+.lab::before{content:'';width:7px;height:7px;border-radius:999px;flex:0 0 auto;
+  background:currentColor}
+.lab.r{flex-direction:row-reverse;text-align:right}
+.lab[hidden]{display:none}
+.lab.sel{background:var(--ink);box-shadow:0 2px 9px rgba(0,0,0,.5)}
+.lab.sel span{color:#fff}
+
+
+#card{position:fixed;left:0;right:0;bottom:0;height:var(--cardh);z-index:30;
+  background:var(--panel);border-top:1px solid var(--line);
+  display:flex;flex-direction:column;overflow:hidden}
+#pickbar{display:flex;align-items:center;gap:8px;flex:0 0 auto;
+  padding:8px max(13px,env(safe-area-inset-right,0px)) 0 max(13px,env(safe-area-inset-left,0px))}
+#ptog{border:1px solid var(--line);background:#222820;color:var(--cream);
+  font:700 11px/1 var(--f);padding:7px 10px;border-radius:999px;cursor:pointer;
+  min-height:30px;display:flex;align-items:center;gap:5px}
+#ptog::after{content:'▾';font-size:9px;opacity:.7}
+#ptog[aria-expanded="true"]{background:var(--cream);color:var(--ink);border-color:var(--cream)}
+#pnow{font:700 11px/1 var(--f);color:var(--muted)}
+/* The key lives in the bar, not in a panel of its own: five dots, read once. */
+#key{display:flex;gap:10px;margin-left:auto;flex-wrap:wrap;justify-content:flex-end}
+#key b{display:flex;align-items:center;gap:4px;white-space:nowrap}
+#key i{width:7px;height:7px;border-radius:999px;background:currentColor;flex:0 0 auto}
+#key span{font:700 9.5px/1 var(--f);letter-spacing:.04em;color:var(--muted);
+  text-transform:uppercase}
+/* On a narrow screen the key drops onto its own line rather than losing its
+   words - five unexplained dots are worse than no key at all. */
+@media (max-width:620px){
+  #pickbar{flex-wrap:wrap;row-gap:7px}
+  #key{margin-left:0;width:100%;justify-content:flex-start;gap:9px}
+  #key span{font-size:9px}
+  #picker{flex-wrap:wrap;overflow:visible;row-gap:6px}
+}
+#picker{display:flex;gap:5px;overflow-x:auto;scrollbar-width:none;flex:0 0 auto;
+  padding:8px max(13px,env(safe-area-inset-right,0px)) 8px max(13px,env(safe-area-inset-left,0px))}
+#picker::-webkit-scrollbar{display:none}
+#picker[hidden]{display:none}
+.amb{flex:0 0 auto;border:1px solid var(--line);background:#222820;color:var(--cream);
+  font:700 11px/1 var(--f);padding:6px 9px;border-radius:999px;cursor:pointer;
+  white-space:nowrap;min-height:30px}
+.amb[aria-pressed="true"]{background:var(--cream);color:var(--ink);border-color:var(--cream)}
+
+/* The picture is the point down here: it runs to the edges of the card and
+   takes as much of it as it can, with the words given exactly the room they
+   need beside it. */
+#body{flex:1 1 auto;min-height:0;display:flex;gap:0;
+  padding:9px max(12px,env(safe-area-inset-right,0px))
+    calc(10px + env(safe-area-inset-bottom,0px)) max(12px,env(safe-area-inset-left,0px))}
+#hero{flex:0 0 46%;max-width:none;border-radius:12px;overflow:hidden;position:relative;
+  background:#0C0F0A;align-self:stretch}
+#meta{padding:1px 0 0 12px}
+#empty{padding:10px max(13px,env(safe-area-inset-right,0px))
+  calc(11px + env(safe-area-inset-bottom,0px)) max(13px,env(safe-area-inset-left,0px))}
+#hero[hidden]{display:none}
+#hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  opacity:0;transition:opacity .7s ease}
+#hero img.on{opacity:1}
+#meta{flex:1 1 auto;min-width:0;display:flex;flex-direction:column}
+.chip{display:inline-flex;align-self:flex-start;font:800 9.5px/1 var(--f);letter-spacing:.1em;
+  text-transform:uppercase;padding:5px 8px;border-radius:999px;color:#fff;margin-bottom:5px}
+.chip.k-stage{background:var(--stage)} .chip.k-camp{background:var(--camp)}
+.chip.k-around{background:var(--around)}
+.chip.k-wellness{background:var(--wellness)} .chip.k-family{background:var(--family)}
+#cname{margin:0;font-size:19px;font-weight:800;letter-spacing:-.015em;line-height:1.15}
+#ctag{margin:3px 0 0;color:var(--muted);font-size:12.5px;line-height:1.45;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.ams{display:flex;flex-wrap:wrap;gap:4px;margin:7px 0 0;overflow:hidden}
+.am{font:700 10.5px/1 var(--f);padding:4px 7px;border-radius:5px;background:#222820;
+  border:1px solid var(--line);color:var(--muted)}
+.am.hit{background:var(--cream);color:var(--ink);border-color:var(--cream)}
+#cgo{margin-top:auto;align-self:flex-start;border:0;background:var(--cream);color:var(--ink);
+  font:800 12.5px/1 var(--f);padding:10px 14px;border-radius:9px;cursor:pointer;min-height:38px}
+#empty{display:flex;flex-direction:column;justify-content:center;gap:5px}
+#empty[hidden],#full[hidden],#hero[hidden],#page[hidden],#picker[hidden],
+.lab[hidden]{display:none!important}
+#empty b{font-size:15px;font-weight:800}
+#empty p{margin:0;color:var(--muted);font-size:12.5px;line-height:1.5}
+
+#page{position:fixed;inset:0;z-index:50;background:var(--ink);overflow-y:auto;
+  padding:calc(15px + env(safe-area-inset-top,0px)) max(18px,env(safe-area-inset-right,0px))
+    calc(26px + env(safe-area-inset-bottom,0px)) max(18px,env(safe-area-inset-left,0px))}
+#page[hidden]{display:none}
+#pgback{border:1px solid var(--line);background:transparent;color:var(--cream);
+  font:700 13px/1 var(--f);padding:11px 14px;border-radius:999px;cursor:pointer;min-height:44px}
+#pghero{width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:13px;margin:15px 0 0;display:block}
+#page h1{margin:9px 0 0;font-size:27px;font-weight:800;letter-spacing:-.02em;text-wrap:balance}
+#page p{margin:6px 0 0;color:var(--muted);font-size:14.5px;line-height:1.55;max-width:62ch}
+#page .stub{margin-top:17px;padding-top:13px;border-top:1px solid var(--line);font-size:12.5px}
+@media (max-height:640px){:root{--cardh:42%}}
+@media (min-width:880px){
+  :root{--cardw:400px}
+  #stage{bottom:0;right:var(--cardw)}
+  #card{top:0;left:auto;width:var(--cardw);height:auto;
+    border-top:0;border-left:1px solid var(--line)}
+  /* A tall panel reads better with the picture across the top, full width,
+     and the words underneath - more image, and the text still gets its room. */
+  #body{overflow-y:auto;flex-direction:column;padding:14px 15px
+    calc(16px + env(safe-area-inset-bottom,0px))}
+  #hero{flex:0 0 auto;width:100%;aspect-ratio:5/4;min-height:0;border-radius:13px}
+  #meta{padding:14px 2px 0}
+  #cname{font-size:22px} #ctag{-webkit-line-clamp:3;font-size:13.5px}
+  #cgo{margin-top:15px}
+}
+</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&display=swap">
+
+<div id="stage">
+  <div id="art"><img id="mapimg" src="map.webp" alt="Map of Pendarvis Farm" draggable="false"></div>
+  <svg id="shapes"></svg>
+  <svg id="leads"></svg>
+  <div id="labs"></div>
+</div>
+
+
+<div id="page" hidden>
+  <button id="pgback">← Back to the map</button>
+  <img id="pghero" alt="">
+  <div class="chip" id="pgkind">Stage</div>
+  <h1 id="pgname">—</h1>
+  <p id="pgtag"></p>
+  <div class="ams" id="pgams"></div>
+  <p class="stub">Where the real neighborhood page goes — schedule, who built it,
+     who played here.</p>
+</div>
+
+<div id="card">
+  <div id="pickbar">
+    <button id="ptog" aria-expanded="false" aria-controls="picker">Amenities</button>
+    <span id="pnow"></span>
+    <div id="key" aria-label="What the colours mean"></div>
+  </div>
+  <div id="picker" role="group" aria-label="Filter by amenity" hidden></div>
+  <div id="body">
+    <div id="hero" hidden></div>
+    <div id="meta">
+      <div id="empty">
+        <b>Pendarvis Farm</b>
+        <p>Point at a neighborhood to see it here. Click to open it. Pinch or
+           scroll to go in, then drag to move around.</p>
+      </div>
+      <div id="full" hidden>
+        <div class="chip" id="ckind">Stage</div>
+        <h2 id="cname">—</h2>
+        <p id="ctag"></p>
+        <div class="ams" id="cams"></div>
+        <button id="cgo">Open the page →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const D={"hoods":[{"id":"woods","n":"Woods","t":"The Forest Cathedral","k":"stage","p":[82.999,33.675],"amk":["bar","coffee","stage","dj","restroom","water","entry"],"am":["Bar","Coffee","Stage","DJ","Restrooms","Water","Venue Entry/Exit"]},{"id":"paddock","n":"Paddock","t":"Grand Energy Under the Stars","k":"stage","p":[50.661,74.619],"amk":["stage","craft","medical","charge"],"am":["Stage","Craft Vendors","Medical","Cell Phone Charging Station"]},{"id":"cherryhill","n":"Cherry Hill","t":"The Nighttime Wonder","k":"stage","p":[65.36,62.021],"amk":["stage"],"am":["Stage"]},{"id":"grove","n":"Grove","t":"Art & Music in the Mystic Firs","k":"stage","p":[69.77,68.32],"amk":["bar","stage","water"],"am":["Bar","Stage","Water"]},{"id":"windmill","n":"Windmill","t":"Hillside Music, Beer & Lounge","k":"stage","p":[41.842,68.32],"amk":["bar","food","coffee","stage","dj","run","art","entry"],"am":["Bar","Food Vendors","Coffee","Stage","DJ","Fun Run Start/Finish","Art Installation","Venue Entry/Exit"]},{"id":"galaxy","n":"Galaxy Barn","t":"The Legendary Roadhouse","k":"stage","p":[53.601,80.919],"amk":["stage"],"am":["Stage"]},{"id":"lucky","n":"Lucky","t":"Intimate & Seated Sessions","k":"stage","p":[41.842,86.168],"amk":["food","stage","restroom","water","yoga"],"am":["Food Vendors","Stage","Restrooms","Water","Yoga"]},{"id":"farmhouse","n":"Farmhouse","t":"The Main Entrance","k":"stage","p":[56.541,87.218],"amk":["water","ticket","entry","stage"],"am":["Water","Ticketing","Venue Entry/Exit","Stage"]},{"id":"curation","n":"Curation","t":"Farm-to-Table Music Fantasy","k":"stage","p":[24.204,96.667],"amk":["bar","food","coffee","stage","dj","restroom","water"],"am":["Bar","Food Vendors","Coffee","Stage","DJ","Restrooms","Water"]},{"id":"refuge","n":"The Refuge","t":"Wellness & Restoration","k":"wellness","p":[87.408,51.522],"amk":["stage","water","massage"],"am":["Stage","Water","Massage"]},{"id":"coyote","n":"Coyote","t":"A Wonderland for Kids","k":"family","p":[60.951,54.672],"amk":["stage","water","kids"],"am":["Stage","Water","Kids Area"]},{"id":"courtyard","n":"Courtyard","t":"The Open-Air Plaza","k":"around","p":[59.481,81.969],"amk":["bar","dj","water","yoga"],"am":["Bar","DJ","Water","Yoga"]},{"id":"market","n":"Market","t":"The Town Square of Pendarvis","k":"around","p":[75.649,66.22],"amk":["bar","food","coffee","dj","craft","merch","dot","dot","restroom","water","dot","dot","dot","entry"],"am":["Bar","Food Vendors","Coffee","DJ","Craft Vendors","Merch","Buy/Return Dish & Token","Self Wash Dish Station","Restrooms","Water","Ice","ATM","Questions, Info, Lost & Found","Venue Entry/Exit"]},{"id":"orchard","n":"Orchard","t":"The Apple Tree Entry","k":"around","p":[38.902,83.018],"amk":[],"am":[]},{"id":"welcomelot","n":"Welcome Lot","t":"Arrival & Gear Drop","k":"camp","p":[88.878,96.667],"amk":["restroom","shuttle","parking","ticket","gear"],"am":["Restrooms","Shuttle Services","Parking","Ticketing","Gear Drop/Pick-up"]},{"id":"lushcamp","n":"Lush Camp","t":"Quiet Forest Camping","k":"camp","p":[54.483,37.454],"amk":["restroom","tent","dot","gear"],"am":["Restrooms","Tent Camping","Poler Camping","Gear Drop/Pick-up"]},{"id":"quailtrail","n":"Quail Trail","t":"Whimsical Wooded Path","k":"camp","p":[75.649,38.924],"amk":["art"],"am":["Art Installation"]},{"id":"southcamp","n":"South Camp","t":"RV & Car Camping","k":"camp","p":[47.722,93.517],"amk":["restroom","rideshare","shuttle","bike","moto","rv","gear"],"am":["Restrooms","Rideshare Services","Shuttle Services","Bicycle Parking","Motorcycle Parking","Vehicle Camping","Gear Drop/Pick-up"]},{"id":"wildcamp","n":"Wild Camp","t":"Rugged Ridge Camping","k":"camp","p":[35.963,13.202],"amk":["restroom","tent","gear"],"am":["Restrooms","Tent Camping","Gear Drop/Pick-up"]},{"id":"willowcamp","n":"Willow Camp","t":"Spacious Vehicle Camping","k":"camp","p":[75.649,96.667],"amk":["restroom","water","shuttle","rv"],"am":["Restrooms","Water","Shuttle Services","Vehicle Camping"]}],"amlbl":{"bar":"Bar","coffee":"Coffee","stage":"Stage","dj":"DJ","restroom":"Restrooms","water":"Water","entry":"Venue Entry/Exit","craft":"Craft Vendors","medical":"Medical","charge":"Cell Phone Charging Station","food":"Food Vendors","run":"Fun Run Start/Finish","art":"Art Installation","yoga":"Yoga","ticket":"Ticketing","massage":"Massage","kids":"Kids Area","merch":"Merch","dot":"Buy/Return Dish & Token","shuttle":"Shuttle Services","parking":"Parking","gear":"Gear Drop/Pick-up","tent":"Tent Camping","rideshare":"Rideshare Services","bike":"Bicycle Parking","moto":"Motorcycle Parking","rv":"Vehicle Camping"},"shapes":{"woods":{"d":"M1652,1265 1640,1286 1636,1309 1654,1312 1670,1325 1677,1340 1678,1353 1699,1367 1706,1389 1730,1390 1748,1401 1773,1404 1789,1417 1796,1435 1808,1437 1830,1421 1837,1399 1858,1385 1878,1336 1878,1321 1855,1311 1838,1291 1818,1285 1798,1259 1775,1250 1762,1239 1746,1239 1737,1243 1702,1245 1688,1252 1668,1253Z","c":[1756,1323],"pts":31,"area":0.36,"b":[1636,1239,1879,1438],"fx":[1.8,1.0,1.0]},"paddock":{"d":"M1298,2709 1286,2701 1266,2701 1262,2733 1226,2733 1218,2725 1220,2691 1252,2685 1270,2693 1266,2677 1226,2645 1182,2635 1176,2639 1176,2677 1152,2681 1138,2655 1136,2595 1120,2577 1108,2577 1114,2659 1090,2657 1094,2593 1086,2593 1026,2641 978,2715 930,2745 898,2779 870,2843 856,2915 842,2917 848,2991 936,2991 932,2953 938,2945 976,2945 978,2927 1004,2925 1024,2891 1062,2891 1100,2845 1116,2845 1116,2811 1132,2803 1132,2765 1150,2755 1152,2715 1208,2719 1210,2739 1222,2759 1264,2765 1282,2761 1302,2735Z","c":[1016,2801],"pts":52,"area":0.59,"b":[842,2577,1302,2991],"fx":[1.8,1.0,1.0]},"cherryhill":{"d":"M1359,2182 1340,2193 1339,2243 1320,2240 1320,2219 1312,2219 1296,2233 1296,2241 1316,2265 1322,2324 1308,2355 1312,2414 1316,2421 1328,2423 1326,2399 1332,2393 1391,2395 1394,2409 1384,2417 1388,2431 1408,2433 1412,2425 1436,2429 1448,2415 1448,2403 1420,2400 1422,2350 1435,2347 1440,2367 1448,2367 1455,2346 1462,2282 1446,2263 1416,2260 1420,2200 1434,2197 1438,2201 1442,2243 1450,2243 1462,2231 1480,2231 1485,2223 1486,2207 1482,2203 1469,2203 1466,2189 1460,2185 1384,2179Z","c":[1380,2307],"pts":48,"area":0.23,"b":[1296,2179,1487,2434],"fx":[2.2,1.0,1.0]},"grove":{"d":"M1145,2477 1139,2500 1150,2531 1148,2557 1138,2565 1119,2565 1137,2590 1166,2579 1178,2561 1192,2564 1205,2551 1236,2549 1242,2570 1274,2590 1283,2555 1297,2550 1305,2558 1305,2593 1291,2608 1327,2640 1335,2613 1351,2609 1358,2638 1339,2653 1354,2664 1389,2624 1391,2606 1406,2591 1435,2592 1442,2585 1446,2550 1430,2545 1425,2530 1432,2510 1453,2509 1450,2433 1430,2442 1432,2475 1417,2483 1406,2475 1405,2448 1391,2443 1379,2448 1363,2434 1318,2430 1306,2409 1281,2397 1230,2424 1233,2464 1223,2476 1182,2464 1170,2476ZM1353,2358 1353,2390 1387,2392 1398,2399 1392,2433 1420,2427 1433,2431 1452,2420 1446,2404 1417,2399 1417,2356Z","c":[1347,2506],"pts":63,"area":0.62,"b":[1119,2355,1456,2665],"fx":[1.8,1.0,1.0]},"windmill":{"d":"M890,2455 842,2465 810,2485 770,2479 770,2521 750,2519 752,2473 732,2467 724,2475 750,2547 758,2547 762,2533 792,2533 800,2539 798,2581 818,2583 822,2555 836,2553 840,2577 864,2577 880,2595 878,2613 864,2613 840,2597 838,2607 816,2607 812,2625 766,2623 760,2647 762,2669 788,2723 770,2809 788,2817 790,2775 804,2773 808,2821 794,2823 794,2831 826,2865 838,2913 850,2909 854,2867 860,2865 860,2845 868,2843 874,2801 898,2773 898,2759 954,2717 968,2717 974,2697 998,2677 1000,2659 984,2659 968,2645 968,2619 984,2607 1008,2609 1008,2593 1024,2577 1036,2577 1046,2605 1058,2605 1110,2559 1110,2545 1028,2517 1024,2529 1006,2529 1002,2517 976,2519 976,2549 962,2551 958,2521 964,2511 956,2511 954,2521 934,2521 922,2487 894,2479Z","c":[860,2690],"pts":79,"area":0.55,"b":[724,2455,1110,2913],"fx":[4.4,1.0,1.0]},"galaxy":{"d":"M945,3052 944,3155 975,3155 977,3133 1022,3134 1023,3175 972,3176 972,3193 1026,3193 1027,3178 1056,3178 1072,3193 1122,3190 1127,3194 1126,3199 1129,3199 1125,3052Z","c":[1071,3108],"pts":17,"area":0.3,"b":[944,3052,1129,3191],"fx":[3.6,1.0,1.0]},"lucky":{"d":"M846,2991 849,3047 847,3084 851,3094 862,3104 864,3118 847,3135 825,3136 820,3154 819,3180 823,3189 859,3195 865,3203 864,3228 855,3236 821,3237 817,3252 797,3263 720,3267 719,3354 729,3369 738,3369 757,3359 768,3366 772,3377 793,3379 800,3375 809,3359 818,3358 829,3365 834,3376 852,3379 872,3362 879,3362 888,3368 892,3378 920,3383 937,3372 947,3327 955,3320 978,3317 989,3300 990,3289 984,3278 954,3262 951,3208 974,3176 985,3175 1006,3182 1021,3160 1012,3153 980,3153 974,3147 974,3130 969,3124 947,3133 893,3127 884,3111 884,3047 888,3046 889,3033 911,2995 909,2991Z","c":[886,3297],"pts":63,"area":0.6,"b":[719,2991,1021,3383],"fx":[1.8,1.0,1.0]},"farmhouse":{"d":"M920,3420 918,3541 923,3548 1014,3547 1014,3524 1040,3516 1031,3503 1031,3472 1055,3463 1070,3466 1078,3475 1079,3502 1093,3521 1090,3548 1189,3550 1192,3443 1187,3421 987,3415ZM1316,3282 1304,3295 1296,3322 1299,3339 1309,3355 1286,3356 1286,3386 1408,3386 1408,3356 1383,3355 1393,3339 1396,3322 1394,3308 1386,3292 1373,3280 1355,3273 1332,3274ZM1133,3334 1133,3345 1146,3366 1144,3384 1149,3390 1228,3390 1236,3385 1244,3390 1275,3390 1284,3373 1278,3313 1282,3283 1269,3272 1240,3283 1211,3271 1181,3273 1176,3283 1194,3301 1192,3317 1174,3334 1163,3334 1146,3325Z","c":[975,3472],"pts":57,"area":0.7,"b":[918,3271,1409,3551],"fx":[1.8,1.0,1.0]},"curation":{"d":"M438,3553 430,3569 428,3665 430,3667 430,3699 440,3719 452,3729 470,3737 620,3737 646,3729 646,3725 660,3707 664,3691 664,3575 658,3557 642,3541 628,3533 610,3531 600,3533 470,3531 454,3537Z","c":[531,3634],"pts":21,"area":0.36,"b":[428,3531,664,3737],"fx":[5.2,1.11,1.09]},"refuge":{"d":"M1908,1947 1866,1929 1840,1925 1842,1967 1820,1969 1818,1943 1822,1919 1790,1919 1788,1951 1768,1949 1768,1923 1738,1923 1738,1937 1726,1941 1722,1967 1728,2033 1728,2097 1716,2147 1716,2159 1732,2187 1788,2189 1792,2143 1850,2129 1850,2121 1834,2121 1822,2111 1822,2083 1830,2075 1826,2031 1832,2025 1858,2025 1872,2033 1872,2065 1866,2071 1868,2121 1884,2121 1918,2109 1920,1999 1916,1959Z","c":[1779,2004],"pts":39,"area":0.29,"b":[1716,1919,1920,2189],"fx":[2.0,1.0,1.0]},"coyote":{"d":"M1168,2067 1172,2095 1288,2231 1322,2215 1322,2203 1290,2205 1274,2185 1277,2169 1311,2169 1318,2187 1350,2187 1358,2181 1466,2185 1468,2152 1472,2139 1478,2136 1492,2142 1507,2136 1513,2127 1522,2095 1518,2082 1519,2070 1511,2060 1511,2054 1487,2053 1458,2039 1460,2080 1437,2083 1436,2029 1394,2023 1387,2041 1371,2041 1366,2023 1355,2017 1306,2013 1306,2069 1318,2069 1321,2047 1338,2047 1362,2071 1362,2086 1344,2089 1341,2103 1312,2101 1309,2107 1298,2107 1292,2101 1288,2081 1278,2075 1280,2009 1252,2009 1251,2057 1230,2054 1230,2015 1216,2015 1196,2025 1198,2066Z","c":[1403,2127],"pts":57,"area":0.39,"b":[1168,2009,1523,2232],"fx":[4.4,1.0,1.0]},"market":{"d":"M1676,2053 1551,2057 1538,2062 1530,2059 1524,2052 1516,2052 1511,2058 1520,2070 1519,2083 1523,2096 1515,2125 1508,2136 1498,2142 1487,2142 1477,2137 1470,2147 1471,2159 1484,2165 1498,2151 1506,2148 1530,2152 1538,2161 1534,2187 1528,2195 1511,2201 1496,2191 1488,2191 1488,2219 1481,2231 1498,2245 1498,2249 1491,2250 1488,2267 1477,2279 1462,2283 1462,2297 1471,2310 1472,2324 1467,2336 1454,2347 1448,2397 1452,2411 1451,2430 1458,2444 1456,2551 1467,2619 1470,2625 1506,2653 1514,2653 1519,2630 1535,2618 1551,2618 1572,2633 1586,2631 1584,2545 1546,2543 1540,2535 1537,2512 1543,2504 1549,2502 1584,2507 1584,2348 1590,2340 1609,2339 1622,2346 1626,2413 1634,2413 1634,2313 1632,2309 1616,2314 1595,2312 1589,2304 1586,2278 1592,2270 1612,2264 1623,2270 1626,2283 1636,2279 1643,2260 1642,2249 1629,2246 1621,2240 1619,2217 1630,2205 1658,2204 1668,2170 1685,2158 1686,2148 1669,2127 1669,2120 1674,2113 1675,2080 1682,2070Z","c":[1599,2126],"pts":93,"area":0.56,"b":[1448,2052,1687,2654],"fx":[3.2,1.0,1.0]},"orchard":{"d":"M950,3319 947,3350 940,3363 942,3387 953,3389 969,3385 992,3390 1130,3394 1139,3387 1144,3367 1133,3357 1129,3346 1132,3327 1142,3317 1137,3311 1084,3306 1056,3283 1036,3280 1019,3286 1008,3300 989,3305 977,3319Z","c":[1042,3339],"pts":22,"area":0.22,"b":[940,3280,1145,3395],"fx":[2.2,1.0,1.0]},"welcomelot":{"d":"M1790,3527 1780,3545 1778,3561 1778,3667 1780,3679 1788,3695 1800,3707 1822,3715 1972,3715 1988,3709 2000,3699 2012,3675 2014,3569 2012,3567 2012,3549 2004,3531 1992,3519 1972,3511 1830,3509 1806,3515Z","c":[1880,3612],"pts":20,"area":0.39,"b":[1778,3509,2014,3715],"fx":[2.2,1.0,1.0]},"quailtrail":{"d":"M1818,1437 1792,1453 1766,1453 1754,1460 1759,1497 1783,1511 1792,1544 1790,1559 1777,1572 1788,1660 1774,1757 1758,1794 1723,1830 1717,1853 1690,1863 1678,1879 1658,1928 1654,2033 1683,2053 1680,2114 1694,2145 1706,2150 1714,2143 1724,2088 1718,2001 1723,1921 1822,1822 1866,1822 1879,1800 1895,1794 1891,1767 1853,1731 1856,1650 1836,1551 1824,1445Z","c":[1822,1772],"pts":35,"area":0.62,"b":[1654,1437,1896,2151],"fx":[1.8,1.0,1.0]},"southcamp":{"d":"M733,3439 1433,3439 1433,3727 733,3727ZM850,3536 840,3544 841,3555 833,3570 846,3580 850,3591 863,3593 874,3590 888,3568 883,3562 871,3557 870,3551 875,3544 871,3537ZM1007,3594 1006,3622 1010,3631 1019,3636 1037,3637 1055,3630 1070,3636 1087,3636 1096,3633 1102,3623 1103,3604 1099,3593 1090,3586 1062,3586 1052,3591 1040,3586 1016,3586ZM892,3610 872,3605 861,3608 834,3607 831,3615 837,3640 845,3646 880,3644 889,3636 893,3623ZM918,3441 1193,3441 1193,3556 918,3556Z","c":[1309,3602],"pts":49,"area":2.59,"b":[733,3439,1434,3728],"fx":[1.8,1.0,1.0]},"willowcamp":{"d":"M1532,3529 1524,3541 1520,3563 1520,3665 1522,3679 1532,3697 1546,3709 1552,3709 1554,3713 1568,3715 1704,3715 1720,3713 1734,3705 1744,3695 1752,3683 1754,3667 1754,3549 1738,3525 1720,3513 1706,3511 1566,3511 1546,3517Z","c":[1622,3613],"pts":22,"area":0.34,"b":[1520,3511,1754,3715],"fx":[1.8,1.0,1.0]},"courtyard":{"d":"M952,3209 958,3267 978,3272 990,3293 999,3299 1026,3278 1053,3277 1080,3301 1137,3309 1152,3328 1166,3337 1190,3318 1197,3304 1186,3292 1184,3273 1159,3269 1141,3252 1133,3236 1134,3214 1122,3193 1072,3194 1056,3180 1027,3180 1026,3194 972,3194 971,3180 971,3194Z","c":[1086,3242],"pts":27,"area":0.28,"b":[952,3180,1198,3338],"fx":[1.8,1.0,1.0]},"wildcamp":{"d":"M1617,46 1588,49 1568,33 1524,31 1494,54 1440,80 1416,83 1377,76 1325,96 1271,92 1223,104 1203,93 1190,66 1172,49 1130,46 1061,26 992,41 944,40 936,47 935,58 946,84 968,183 969,258 942,307 882,367 804,414 645,477 612,485 549,488 417,464 382,447 368,455 368,491 401,530 395,579 413,618 434,642 454,655 515,675 523,684 525,700 518,728 459,792 422,867 372,906 335,909 314,930 319,978 330,1000 355,1027 357,1041 347,1056 305,1070 285,1101 283,1132 301,1172 310,1223 301,1301 305,1401 318,1461 349,1545 385,1561 407,1603 461,1660 522,1711 571,1788 591,1847 639,1914 635,1956 623,1973 599,1985 575,1978 551,1980 539,1992 537,2004 596,2064 614,2105 630,2211 642,2229 661,2223 697,2170 739,2127 786,2039 799,1999 805,1957 802,1923 808,1896 800,1807 784,1750 779,1711 779,1547 764,1494 770,1389 780,1349 791,1330 927,1203 988,1104 1010,981 1000,970 973,968 961,959 959,919 973,907 1007,901 1035,916 1049,914 1060,899 1067,873 1126,816 1158,792 1257,742 1331,689 1448,651 1480,620 1516,549 1575,470 1580,448 1605,411 1647,327 1652,306 1666,287 1657,262 1665,222 1659,97 1631,74 1626,55Z","c":[1240,401],"pts":126,"area":15.45,"b":[283,26,1667,2230],"fx":[1.8,1.0,1.0]},"lushcamp":{"d":"M1669,316 1659,316 1649,325 1617,388 1609,418 1594,428 1582,451 1578,471 1519,550 1484,619 1464,642 1430,664 1432,679 1445,685 1456,701 1452,735 1440,744 1411,743 1395,725 1399,687 1392,678 1384,676 1348,685 1319,698 1232,760 1160,794 1125,820 1084,864 1070,869 1059,907 1048,918 1027,923 1018,931 1017,952 1009,967 1012,990 1002,1025 997,1083 991,1105 964,1155 929,1205 857,1275 832,1290 783,1349 772,1393 775,1409 785,1414 823,1411 839,1429 839,1453 828,1469 807,1477 777,1469 767,1484 782,1545 782,1710 787,1749 795,1780 805,1790 842,1779 862,1784 872,1799 873,1822 862,1839 848,1846 822,1842 809,1850 813,1934 795,2023 745,2123 669,2212 658,2234 651,2281 663,2356 696,2434 715,2463 740,2466 760,2483 793,2476 841,2455 882,2454 901,2474 922,2482 943,2513 992,2513 1014,2522 1046,2516 1098,2534 1120,2555 1134,2557 1144,2546 1134,2507 1139,2482 1168,2468 1175,2451 1194,2429 1223,2422 1273,2394 1299,2391 1304,2383 1303,2351 1316,2323 1308,2250 1271,2222 1173,2107 1165,2092 1169,2071 1188,2061 1209,2039 1223,2039 1242,2049 1264,2043 1292,2051 1300,2044 1305,2019 1324,2009 1358,2012 1381,2027 1397,2020 1422,2021 1438,2032 1446,2048 1454,2051 1483,2044 1526,2048 1547,2054 1641,2048 1649,2041 1653,1923 1664,1895 1686,1859 1711,1847 1720,1824 1754,1788 1769,1754 1782,1669 1773,1571 1786,1542 1779,1519 1757,1501 1752,1490 1753,1441 1736,1431 1713,1431 1697,1423 1644,1365 1642,1345 1632,1327 1634,1285 1644,1265 1656,1256 1688,1251 1702,1244 1737,1242 1765,1234 1781,1211 1802,1205 1807,1197 1805,1166 1776,1104 1799,1029 1801,967 1786,912 1759,872 1751,843 1717,831 1691,804 1693,789 1716,759 1721,741 1719,723 1706,715 1680,734 1659,731 1649,716 1651,699 1659,690 1680,682 1682,667 1649,639 1638,613 1629,610 1610,616 1597,613 1572,598 1559,577 1561,553 1579,534 1650,499 1659,488 1655,471 1636,468 1622,456 1621,430 1650,422 1669,444 1679,447 1689,442 1697,426 1702,393 1688,361 1683,330Z","c":[1255,1577],"pts":202,"area":17.91,"b":[651,316,1808,2558],"fx":[1.8,1.0,1.0]}},"paper":"#E3ECD9","size":[2041,3810],"heroes":{"woods":["h/woods0.webp","h/woods1.webp","h/woods2.webp"],"paddock":["h/paddock0.webp","h/paddock1.webp","h/paddock2.webp"],"cherryhill":["h/cherryhill0.webp","h/cherryhill1.webp","h/cherryhill2.webp"],"grove":["h/grove0.webp","h/grove1.webp","h/grove2.webp"],"windmill":["h/windmill0.webp","h/windmill1.webp","h/windmill2.webp"],"galaxy":["h/galaxy0.webp","h/galaxy1.webp","h/galaxy2.webp"],"lucky":["h/lucky0.webp","h/lucky1.webp","h/lucky2.webp"],"farmhouse":["h/farmhouse0.webp","h/farmhouse1.webp","h/farmhouse2.webp"],"curation":["h/curation0.webp","h/curation1.webp","h/curation2.webp"],"refuge":["h/refuge0.webp","h/refuge1.webp","h/refuge2.webp"],"coyote":["h/coyote0.webp","h/coyote1.webp","h/coyote2.webp"],"courtyard":["h/courtyard0.webp","h/courtyard1.webp","h/courtyard2.webp"],"market":["h/market0.webp","h/market1.webp","h/market2.webp"],"orchard":["h/orchard0.webp","h/orchard1.webp","h/orchard2.webp"],"welcomelot":["h/welcomelot0.webp","h/welcomelot1.webp","h/welcomelot2.webp"],"lushcamp":["h/lushcamp0.webp","h/lushcamp1.webp","h/lushcamp2.webp"],"quailtrail":["h/quailtrail0.webp","h/quailtrail1.webp","h/quailtrail2.webp"],"southcamp":["h/southcamp0.webp","h/southcamp1.webp","h/southcamp2.webp"],"wildcamp":["h/wildcamp0.webp","h/wildcamp1.webp","h/wildcamp2.webp"],"willowcamp":["h/willowcamp0.webp","h/willowcamp1.webp","h/willowcamp2.webp"]},"chrome":"M607,3797 594,3768 579,3765 560,3780 551,3800 588,3804 606,3802ZM1224,3783 1224,3791 1233,3803 1287,3803 1293,3800 1296,3789 1293,3779 1268,3769 1260,3758 1235,3763ZM715,3753 671,3773 671,3801 709,3800 718,3783ZM1155,3763 1163,3802 1188,3803 1196,3794 1206,3801 1218,3787 1185,3749ZM525,3737 519,3744 522,3763 518,3776 538,3788 547,3780 552,3757 542,3752 545,3744 541,3738ZM757,3738 744,3772 765,3799 784,3798 792,3803 835,3800 837,3771 833,3763 819,3763 802,3781 800,3769 810,3757 803,3743 785,3747 782,3760 768,3768 774,3741 769,3736ZM683,3723 676,3718 647,3721 635,3741 625,3741 625,3759 638,3762 655,3743 664,3754 687,3744ZM732,3676 730,3724 784,3727 784,3720 798,3701 767,3672ZM286,3652 279,3651 267,3666 244,3677 236,3688 237,3698 247,3701 282,3689 289,3676ZM2040,3560 2023,3561 2013,3583 2013,3601 2021,3607 2040,3602ZM1908,3551 1872,3558 1858,3575 1858,3590 1864,3595 1862,3610 1867,3619 1884,3629 1919,3623 1935,3602 1935,3576 1930,3564ZM845,3525 822,3549 822,3579 843,3602 856,3607 876,3606 888,3600 902,3583 902,3551 894,3536 879,3525ZM1193,3497 1162,3499 1145,3533 1134,3543 1113,3548 1113,3554 1181,3559 1191,3556 1197,3506ZM1769,3521 1781,3531 1793,3530 1810,3517 1814,3501 1830,3501 1828,3486 1835,3482 1835,3476 1769,3477 1764,3493ZM1073,3463 1055,3460 1028,3466 1031,3507 1068,3510 1075,3505ZM613,3471 590,3452 571,3463 559,3483 527,3489 510,3505 516,3516 515,3532 534,3533 548,3520 565,3521 575,3515 584,3500 590,3510 601,3505 612,3491ZM1380,3440 1380,3446 1386,3449 1390,3474 1425,3476 1432,3472 1437,3438 1434,3431 1397,3427ZM932,3409 917,3411 914,3417 912,3460 919,3468 941,3462 946,3454 947,3425 943,3416ZM1966,3380 1974,3403 2040,3403 2040,3373 2027,3371 2011,3382 2000,3372 1983,3369 1970,3373ZM855,3381 863,3390 892,3386 910,3390 928,3383 942,3366 924,3359 882,3359 869,3363ZM1215,3331 1209,3340 1213,3374 1221,3378 1253,3376 1258,3369 1256,3333 1246,3328ZM259,3354 270,3366 292,3352 304,3364 313,3365 336,3358 341,3344 329,3333 303,3336 300,3324 291,3321 264,3339ZM509,3295 498,3298 493,3306 496,3323 490,3340 501,3348 510,3347 535,3320 529,3313 518,3319 515,3313 519,3302ZM725,3288 720,3296 722,3332 731,3340 767,3338 773,3323 768,3291 760,3286ZM1136,3203 1119,3199 1093,3203 1087,3212 1092,3245 1099,3249 1132,3248 1137,3241ZM855,3137 828,3138 820,3145 820,3179 829,3188 819,3196 818,3220 822,3234 829,3237 857,3237 866,3229 866,3198 859,3187 867,3179 867,3146ZM1244,3143 1241,3162 1246,3173 1269,3188 1280,3182 1284,3173 1281,3156 1288,3133 1298,3185 1309,3191 1321,3184 1328,3152 1315,3144 1312,3129 1294,3125 1288,3130 1277,3124 1259,3139ZM600,3093 589,3089 576,3092 575,3106 585,3119 575,3125 572,3106 561,3099 546,3110 521,3110 517,3124 525,3134 526,3148 550,3156 573,3149 581,3139 594,3135 601,3128ZM933,2945 929,2951 932,2985 944,2991 972,2989 978,2980 976,2947 968,2941ZM120,2830 114,2837 117,2846 109,2862 111,2868 119,2873 126,2871 135,2881 149,2881 162,2874 170,2855 166,2845 141,2841 130,2826ZM1035,2805 1025,2802 1017,2814 1010,2809 988,2811 980,2820 982,2835 993,2843 1021,2840 1035,2819ZM1589,2593 1584,2598 1584,2629 1570,2634 1574,2643 1572,2667 1634,2667 1632,2597 1621,2591ZM1412,2586 1386,2612 1394,2623 1392,2632 1400,2638 1432,2607ZM1150,2586 1143,2589 1142,2600 1163,2617 1144,2621 1137,2630 1136,2643 1144,2655 1160,2658 1174,2646 1175,2634 1169,2623 1178,2619 1182,2602 1179,2596ZM1035,2569 1029,2569 1000,2597 1000,2607 985,2606 969,2616 964,2639 968,2648 977,2650 979,2658 996,2661 1011,2654 1019,2641 1019,2627 1027,2625 1048,2605 1039,2589 1044,2579ZM1201,2551 1195,2559 1200,2598 1235,2598 1242,2594 1242,2554 1224,2548ZM758,2535 756,2572 771,2584 767,2592 771,2624 781,2629 812,2627 817,2620 814,2582 794,2579 792,2567 774,2566 769,2560 771,2556 788,2556 794,2562 803,2562 801,2536 793,2531ZM950,2519 944,2532 946,2562 955,2567 988,2565 993,2556 991,2521 984,2517ZM731,2462 721,2471 720,2483 731,2493 733,2504 740,2507 740,2519 747,2522 758,2507 755,2499 760,2474 757,2468ZM1324,2416 1334,2419 1340,2428 1379,2428 1384,2407 1398,2404 1399,2397 1393,2393 1329,2392 1325,2395ZM602,2356 582,2350 568,2357 557,2383 559,2389 599,2384 605,2366ZM1582,2335 1578,2338 1582,2439 1595,2439 1596,2426 1613,2426 1617,2430 1609,2434 1608,2448 1624,2449 1629,2440 1627,2337ZM81,2331 60,2338 49,2355 18,2360 15,2368 21,2388 12,2401 14,2407 30,2409 38,2416 51,2402 70,2392 72,2381 65,2375 81,2358ZM1586,2266 1582,2274 1585,2309 1595,2313 1626,2310 1630,2303 1627,2266ZM596,2242 591,2248 593,2285 602,2290 633,2288 639,2277 636,2244 627,2240ZM1467,2229 1449,2240 1444,2259 1449,2273 1458,2281 1479,2284 1497,2271 1500,2250 1486,2232ZM965,2222 951,2219 942,2223 935,2236 909,2240 906,2276 913,2285 943,2287 954,2281 956,2255 967,2249 972,2239ZM1622,2205 1617,2211 1620,2249 1646,2253 1661,2250 1665,2243 1664,2207 1654,2203ZM1575,2199 1565,2195 1534,2197 1528,2207 1531,2241 1538,2245 1571,2244 1576,2237 1579,2210ZM1781,2187 1743,2183 1733,2186 1727,2206 1735,2213 1742,2233 1756,2232 1769,2218 1780,2214ZM1310,2164 1270,2170 1269,2182 1280,2187 1282,2200 1314,2196ZM1597,2118 1593,2131 1596,2160 1604,2166 1638,2162 1642,2155 1639,2118ZM668,2073 663,2081 667,2117 679,2123 706,2121 714,2112 716,2084 702,2082 693,2070ZM1772,2072 1768,2081 1772,2119 1784,2124 1818,2120 1823,2110 1820,2074 1809,2069ZM17,2037 0,2039 0,2083 33,2066 30,2052ZM1825,2025 1825,2065 1865,2065 1865,2025ZM901,1993 886,1990 876,1996 871,2007 846,2010 842,2016 846,2055 879,2058 889,2052 892,2026 907,2012ZM209,1987 200,1988 194,1997 187,1992 178,1996 169,2016 171,2041 186,2038 206,2018 212,2000ZM1786,1915 1788,1931 1784,1937 1790,1951 1811,1965 1820,1965 1825,1956 1827,1919ZM1261,1883 1246,1879 1235,1885 1230,1896 1211,1896 1202,1902 1200,1929 1209,1947 1238,1950 1251,1942 1252,1917 1266,1901ZM1089,1761 1071,1759 1059,1775 1046,1774 1033,1780 1030,1813 1036,1825 1075,1823 1079,1794 1095,1780ZM876,1760 863,1758 852,1771 850,1785 840,1783 822,1792 822,1801 810,1811 810,1830 818,1842 860,1844 871,1839 875,1808 864,1800 880,1794 881,1786 874,1774 880,1767ZM213,1735 201,1744 203,1757 216,1764 195,1786 199,1795 212,1794 240,1775 235,1747ZM705,1710 688,1706 673,1722 649,1725 644,1734 647,1770 680,1774 692,1768 694,1742 710,1726ZM926,1674 907,1673 896,1688 870,1694 867,1719 873,1737 912,1737 917,1729 917,1707 933,1692ZM167,1635 143,1651 151,1668 131,1696 140,1706 158,1707 166,1718 181,1719 192,1711 188,1704 192,1689 174,1670 174,1657 182,1641ZM93,1563 66,1560 40,1576 34,1591 41,1596 64,1592 86,1577ZM606,1542 590,1538 580,1544 575,1555 549,1559 545,1595 551,1604 584,1606 592,1602 595,1574 611,1559ZM252,1538 248,1545 253,1554 250,1572 262,1582 276,1575 276,1594 294,1602 304,1598 311,1582 299,1575 313,1564 318,1544 307,1541 298,1545 283,1530 265,1541ZM2040,1471 2032,1472 2020,1486 2003,1483 1991,1487 1991,1498 2007,1503 2017,1515 2040,1511ZM860,1406 848,1405 832,1394 821,1397 817,1416 808,1413 789,1423 789,1431 783,1436 789,1458 807,1467 827,1461 837,1443 831,1431 852,1426 860,1416ZM1929,1385 1927,1424 1934,1434 1952,1436 1959,1404 1950,1386ZM1233,1383 1217,1379 1209,1382 1201,1395 1175,1401 1172,1431 1177,1444 1191,1450 1214,1449 1223,1441 1225,1413 1238,1399ZM1506,1373 1493,1369 1483,1373 1475,1387 1461,1386 1449,1392 1446,1408 1451,1434 1492,1434 1496,1405 1512,1391ZM1809,1353 1788,1393 1827,1413 1849,1374ZM926,1342 908,1341 896,1356 880,1356 870,1362 868,1397 873,1405 903,1408 914,1403 917,1375 933,1361ZM633,1327 617,1324 602,1340 578,1342 573,1350 573,1381 579,1390 611,1392 622,1385 623,1360 639,1345ZM1091,1216 1072,1215 1061,1230 1044,1230 1035,1235 1032,1266 1036,1277 1070,1281 1080,1276 1082,1249 1098,1234ZM803,1159 784,1158 773,1173 756,1173 746,1179 744,1214 750,1223 781,1224 789,1219 794,1210 794,1192 804,1187 810,1176ZM643,1076 627,1073 612,1089 589,1092 583,1110 586,1137 601,1141 624,1139 625,1132 633,1127 633,1109 649,1094ZM1665,1063 1647,1062 1635,1078 1610,1082 1607,1118 1612,1125 1646,1128 1653,1124 1656,1097 1672,1081ZM1479,1061 1461,1059 1449,1075 1433,1075 1422,1081 1420,1116 1426,1124 1462,1123 1469,1112 1469,1094 1485,1079ZM1003,1063 999,1081 1002,1099 1008,1106 1041,1109 1050,1102 1050,1071 1040,1068 1031,1057 1012,1057ZM369,1057 367,1071 376,1073 417,1109 431,1107 435,1083 407,1054 394,1046 382,1058ZM1200,1019 1194,1026 1193,1041 1198,1063 1207,1069 1237,1067 1244,1060 1242,1033 1224,1017ZM1980,994 1953,989 1930,996 1929,1006 1941,1014 1944,1034 1961,1030 1965,1019 1978,1010ZM834,955 818,951 803,967 786,967 775,974 773,1007 779,1017 815,1017 823,1006 823,987 839,972ZM840,942 838,951 845,957 847,979 863,983 874,978 883,962 877,949 862,942 856,946ZM1777,920 1758,919 1747,934 1730,934 1720,941 1719,976 1730,987 1757,988 1767,981 1769,957 1784,937ZM572,875 558,872 549,876 542,888 515,893 513,930 517,937 550,940 559,936 563,908 578,894ZM1061,836 1026,834 1018,839 1016,873 1022,883 1000,891 994,912 984,911 967,919 960,940 969,958 984,964 1004,959 1014,942 1008,928 1030,923 1039,909 1038,898 1028,886 1060,887 1067,882 1069,850ZM889,770 875,768 860,784 835,788 831,795 831,826 835,833 869,836 879,830 881,804 893,796 897,786ZM1507,752 1493,749 1482,756 1477,766 1453,769 1449,776 1449,806 1453,813 1463,819 1489,819 1499,811 1501,783 1514,769ZM1346,694 1341,704 1343,737 1357,745 1391,741 1393,701 1378,691ZM1423,686 1405,695 1399,717 1408,734 1429,740 1447,730 1453,710 1443,692ZM1707,671 1689,669 1677,685 1651,690 1648,724 1652,733 1684,738 1698,730 1700,702 1713,690ZM1905,665 1883,673 1876,684 1887,699 1881,714 1894,734 1909,730 1903,707 1909,696 1911,670ZM1945,657 1937,664 1937,677 1926,701 1935,717 1952,712 1961,692 1951,675 1951,662ZM1207,579 1192,577 1177,593 1151,597 1148,634 1153,642 1186,645 1196,640 1199,612 1214,599 1213,586ZM1759,503 1745,520 1745,536 1751,541 1778,543 1791,520 1787,508 1781,504 1771,509ZM1661,491 1618,509 1616,516 1621,531 1639,537 1646,564 1670,578 1685,562 1685,534 1669,512 1669,500ZM976,468 958,467 947,483 928,482 919,488 917,522 921,530 955,534 965,529 968,501 983,487ZM1961,437 1947,442 1937,462 1941,484 1946,488 1954,487 1979,466ZM1678,406 1665,402 1655,406 1647,419 1623,422 1618,432 1620,466 1630,471 1656,471 1666,465 1668,439 1684,423ZM1352,389 1335,388 1323,403 1297,408 1294,446 1300,453 1332,455 1342,449 1344,423 1356,415 1360,406ZM311,361 282,372 261,406 264,415 273,417 286,444 299,451 307,444 313,401 324,386ZM1799,241 1789,252 1785,276 1795,282 1797,294 1806,300 1819,293 1820,285 1815,277 1815,256ZM1576,200 1561,197 1551,203 1546,214 1521,217 1516,226 1516,254 1521,263 1556,265 1564,260 1567,233 1582,219ZM638,179 616,204 628,235 643,245 670,246 678,233 676,226 653,228 680,206 687,186 682,182 658,193 649,179ZM540,156 529,150 491,162 488,172 495,185 494,207 503,211 513,208 527,185 544,172ZM2040,149 2023,151 2012,158 2009,166 2017,196 2026,206 2040,203ZM378,164 383,173 396,172 410,182 432,170 445,154 439,149 424,156 393,146 382,150ZM1879,131 1851,119 1842,124 1831,142 1827,160 1830,172 1842,175 1851,156 1876,150 1881,142ZM1247,69 1238,73 1236,97 1230,102 1218,101 1213,107 1224,122 1234,123 1241,130 1273,118 1268,96 1279,92 1268,78ZM623,17 613,36 612,51 625,69 649,74 656,55 635,30 634,20ZM1319,0 1291,0 1279,10 1282,28 1292,31 1293,62 1301,72 1314,66 1319,58 1315,39 1323,26ZM1488,2500 1532,2500 1532,2546 1488,2546Z"}, HOODS=D.hoods, AMLBL=D.amlbl, SHAPES=D.shapes,
+      HERO=D.heroes, MW=D.size[0], MH=D.size[1];
+const stage=document.getElementById('stage'), art=document.getElementById('art'),
+      img=document.getElementById('mapimg'), leads=document.getElementById('leads'),
+      labs=document.getElementById('labs'), shp=document.getElementById('shapes');
+const NS='http://www.w3.org/2000/svg';
+const KIND={stage:'Stage', camp:'Camping', around:'Around the farm',
+            wellness:'Wellness', family:'Family'};
+let k=1,tx=0,ty=0,kFit=1,cur=null,amFilter=null,heroT=null,heroI=0;
+
+function build(){
+  shp.setAttribute('viewBox','0 0 '+MW+' '+MH);
+  shp.setAttribute('width',MW); shp.setAttribute('height',MH);
+  // No outline at all: each area is a soft field that fades out across its own
+  // border. Kinder to look at up close, and honest about an edge traced from a
+  // JPEG being approximate rather than drawing a hard line it cannot justify.
+  const defs=document.createElementNS(NS,'defs');
+  defs.innerHTML=
+    '<filter id="soft" x="-20%" y="-20%" width="140%" height="140%">'+
+      '<feGaussianBlur id="softblur" stdDeviation="6"/></filter>'+
+    '<mask id="litmask" maskUnits="userSpaceOnUse" x="0" y="0" '+
+          'width="'+MW+'" height="'+MH+'">'+
+      '<path id="litpath" d="" filter="url(#soft)"/>'+
+      // the badges and amenity tiles are furniture standing ON the ground;
+      // black in the mask keeps the highlight off them entirely
+      '<path id="chromepath" fill="#000" d="'+(D.chrome||'')+'"/>'+
+    '</mask>'+
+    '';
+  shp.appendChild(defs);
+  // The highlight layer is a small viewport onto the art, sized to the
+  // neighborhood being lit. A full-farm image run through a filter and a mask
+  // at close zoom is bigger than the browser will render, and the glow came
+  // out in pieces - the cause of patches that seemed to come and go.
+  const lit=document.createElementNS(NS,'image');
+  lit.setAttribute('id','lit'); lit.setAttribute('x',0); lit.setAttribute('y',0);
+  lit.setAttribute('width',MW); lit.setAttribute('height',MH);
+  lit.setAttribute('mask','url(#litmask)');
+  lit.setAttributeNS('http://www.w3.org/1999/xlink','href','map.webp');
+  lit.setAttribute('href','map.webp');
+  shp.appendChild(lit);
+  const sg=document.createElementNS(NS,'g');
+  sg.setAttribute('id','hit');
+  shp.appendChild(sg); shp._g=sg;
+  HOODS.forEach(h=>{
+    const s=SHAPES[h.id];
+    h._mx = s ? s.c[0]/MW : h.p[0]/100;    // anchor on the footprint's own centre
+    h._my = s ? s.c[1]/MH : h.p[1]/100;
+    h._b  = s ? s.b : null;
+    // Courtyard, Lush Camp and Wild Camp are not drawn as bounded areas in the
+    // art, so they get a soft disc instead - still hoverable, still clickable.
+    const p=document.createElementNS(NS,'path');
+    if(s){ h._mask=s.d; h._fx=s.fx; }
+    else {
+      const cx=h.p[0]/100*MW, cy=h.p[1]/100*MH, r=Math.round(MW*0.055);
+      h._mask='M'+(cx-r)+','+cy+'a'+r+','+r+' 0 1 0 '+(2*r)+',0a'+r+','+r+' 0 1 0 '+(-2*r)+',0Z';
+    }
+    p.setAttribute('d',h._mask);
+    p.addEventListener('pointerenter',e=>{ if(e.pointerType==='mouse' && !e.buttons && !live.size) setCur(h); });  // hover only; a finger or a drag never picks
+    // A drag that happens to END on a neighborhood is still a drag. Without
+    // this the map opened a page every time you let go over a shape, the page
+    // covered the farm, and it read as "after the first move it gets stuck".
+    p.__hood=h; shp._g.appendChild(p); h._path=p;
+    const u=document.createElementNS(NS,'line'); u.setAttribute('class','u');
+    const o=document.createElementNS(NS,'line'); o.setAttribute('class','o c-'+h.k);
+    const pt=document.createElementNS(NS,'circle');
+    pt.setAttribute('class','pt c-'+h.k); pt.setAttribute('r','3.2');
+    leads.append(u,o,pt);
+    const b=document.createElement('button');
+    b.className='lab c-'+h.k;
+    const sp=document.createElement('span'); sp.textContent=h.n.replace(/^The /,'');
+    b.appendChild(sp); b.__hood=h;
+    labs.appendChild(b);
+    h._u=u; h._o=o; h._pt=pt; h._el=b;
+  });
+  const seen={}; HOODS.forEach(h=>(h.amk||[]).forEach(a=>seen[a]=(seen[a]||0)+1));
+  const KEYBAR=document.getElementById('key');
+  if(KEYBAR){
+    const seenk=[]; HOODS.forEach(h=>{ if(!seenk.includes(h.k)) seenk.push(h.k); });
+    KEYBAR.innerHTML=seenk.map(kk=>'<b class="c-'+kk+'"><i></i><span>'+
+      (KIND[kk]||kk)+'</span></b>').join('');
+  }
+  const P=document.getElementById('picker');
+  P.innerHTML='<button class="amb" data-a="" aria-pressed="true">All</button>'+
+    Object.keys(seen).sort((a,b)=>seen[b]-seen[a]).map(a=>
+      '<button class="amb" data-a="'+a+'" aria-pressed="false">'+(AMLBL[a]||a)+
+      ' <span style="opacity:.55">'+seen[a]+'</span></button>').join('');
+  P.addEventListener('click',e=>{
+    const b=e.target.closest('.amb'); if(!b) return;
+    amFilter=b.dataset.a||null;
+    [...P.children].forEach(c=>c.setAttribute('aria-pressed',String(c===b)));
+    if(cur&&!passes(cur)) cur=null;
+    document.getElementById('pnow').textContent=amFilter?(AMLBL[amFilter]||amFilter):'';
+    show(cur); apply();
+  });
+}
+const passes = h => !amFilter || (h.amk||[]).includes(amFilter);
+const PINL={lushcamp:1,coyote:2,cherryhill:3,grove:4};  // left rail, this order, above Windmill
+
+// Light one neighborhood by swapping the mask, not by painting a wash over it.
+function light(h){
+  const lp=document.getElementById('litpath'), im=document.getElementById('lit');
+  if(!lp||!im) return;
+  const ok = h && passes(h) && (h._mask||'');
+  const key = ok ? h.id : '';
+  if(key===light._k) return;            // same neighborhood: nothing to redo
+  light._k = key;
+  lp.setAttribute('d', ok || '');
+  if(ok){
+    // confine the mask and the painted rectangle to this neighborhood's box
+    const bb=lp.getBBox(), P=48;
+    const x=Math.max(0,bb.x-P), y=Math.max(0,bb.y-P);
+    const w=Math.min(MW,bb.x+bb.width+P)-x, hh=Math.min(MH,bb.y+bb.height+P)-y;
+    const mk=document.getElementById('litmask');
+    mk.setAttribute('x',x); mk.setAttribute('y',y); mk.setAttribute('width',w); mk.setAttribute('height',hh);
+  }
+  // How hard to push depends on the ground. Turning saturation up does nothing
+  // to a near-grey like Market or Welcome Lot, so those get more of it, and the
+  // palest get light and contrast as well. Measured per area, not guessed.
+  if(ok){
+    const f=(h._fx||[2.2,1,1]);
+    im.style.setProperty('--fxs',f[0]);
+    im.style.setProperty('--fxb',f[1]);
+    im.style.setProperty('--fxc',f[2]);
+  }
+  im.classList.toggle('on', !!ok);
+}
+
+function place(){
+  const W=stage.clientWidth, H=stage.clientHeight, M=6, live=[];
+  HOODS.forEach(h=>{
+    // A label survives while ANY part of its footprint is on screen, not just
+    // its centre. The line then points at the piece you can actually see.
+    let ax=tx+h._mx*MW*k, ay=ty+h._my*MH*k, on;
+    if(h._b){
+      const x0=tx+h._b[0]*k, y0=ty+h._b[1]*k, x1=tx+h._b[2]*k, y1=ty+h._b[3]*k;
+      on = x1>M && x0<W-M && y1>M && y0<H-M;
+      ax=Math.max(Math.min(ax, Math.min(x1,W-M)), Math.max(x0,M));
+      ay=Math.max(Math.min(ay, Math.min(y1,H-M)), Math.max(y0,M));
+    } else {
+      on = ax>M && ax<W-M && ay>M && ay<H-M;
+    }
+    h._ax=ax; h._ay=ay;
+    h._on = on && passes(h);
+    if(h._path) h._path.classList.toggle('off',!passes(h));
+    if(h._on) live.push(h);
+  });
+  light(cur);
+  const SP=23, TOP=11, BOT=H-26, CAP=Math.floor((BOT-TOP)/SP)+1;
+  let L=live.filter(h=>h._ax< W/2), R=live.filter(h=>h._ax>=W/2);
+  // The farm leans right, so the right rail overfills while the left sits half
+  // empty. Spill the overflow across - the ones nearest the middle travel least.
+  const spill=(from,to)=>{
+    while(from.length>CAP && to.length<CAP){
+      from.sort((a,b)=>Math.abs(a._ax-W/2)-Math.abs(b._ax-W/2));
+      to.push(from.shift());
+    }
+  };
+  spill(R,L); spill(L,R);
+  // Grove, Cherry Hill and Coyote belong on the left rail, stacked above
+  // Windmill, however the geometry falls.
+  for(let i=R.length-1;i>=0;i--) if(PINL[R[i].id]!==undefined) L.push(R.splice(i,1)[0]);
+  // The pins set the ORDER on the left rail, not the position: the labels still
+  // spread down the whole rail, they just queue up above Windmill.
+  const wm=L.find(h=>h.id==='windmill');
+  L.forEach(h=>{ const o=PINL[h.id];
+    h._sk = (o!==undefined && wm) ? wm._ay-(5-o)*0.9 : h._ay; });
+  R.forEach(h=>h._sk=h._ay);
+  [L,R].forEach(arr=>{
+    arr.sort((a,b)=>a._sk-b._sk);
+    // down the column first, then back up from the floor, so the bottom ones
+    // spread instead of piling on the last slot
+    let y=TOP;
+    arr.forEach(h=>{h._ly=Math.max(y,Math.min(BOT,h._ay)); y=h._ly+SP;});
+    if(y-SP>BOT){
+      let yy=BOT;
+      for(let i=arr.length-1;i>=0;i--){ arr[i]._ly=Math.min(yy,arr[i]._ly); yy=arr[i]._ly-SP; }
+    }
+  });
+  live.forEach(h=>{ h._side = R.includes(h) ? 1 : 0; });
+  HOODS.forEach(h=>{
+    h._el.hidden=!h._on;
+    [h._u,h._o,h._pt].forEach(e=>e.style.display=h._on?'':'none');
+    h._el.classList.toggle('sel', h===cur);
+    if(!h._on) return;
+    const right=h._side===1;
+    h._el.classList.toggle('r',right);
+    h._el.style.top=h._ly+'px';
+    h._el.style.left = right?'auto':'7px';
+    h._el.style.right= right?'7px':'auto';
+    const lw=h._el.offsetWidth||90, lx = right ? W-7-lw : 7+lw;
+    [h._u,h._o].forEach(e=>{
+      e.setAttribute('x1',h._ax); e.setAttribute('y1',h._ay);
+      e.setAttribute('x2',lx);    e.setAttribute('y2',h._ly);
+    });
+    h._pt.setAttribute('cx',h._ax); h._pt.setAttribute('cy',h._ay);
+  });
+}
+let faults=0;
+let decQ=false, blurT=0, mvQ=false, mvT=0;
+function paint(){ const t='translate3d('+tx+'px,'+ty+'px,0) scale('+k+')';
+  art.style.transform=t; shp.style.transform=t; }
+// While the farm is being moved only the picture moves - once per frame. The
+// labels and leader lines step aside and come back, re-laid-out, when it stops;
+// laying out twenty labels on every touch event is what made panning stutter.
+function move(){
+  if(!mvQ){ mvQ=true; requestAnimationFrame(()=>{ mvQ=false; paint(); }); }
+  stage.classList.add('moving');
+  clearTimeout(mvT);
+  mvT=setTimeout(()=>{ stage.classList.remove('moving'); apply(); },150);
+}
+function apply(){
+  paint();
+  // Labels and leader lines are re-laid-out at most once per frame, however
+  // many pointer events arrive; the feather is re-tuned only once the hands
+  // have stopped, because changing a filter forces the whole image to repaint.
+  if(!decQ){ decQ=true; requestAnimationFrame(()=>{ decQ=false;
+    try{ place(); }catch(err){ if(++faults<4) console.warn('decorate',err); } }); }
+  clearTimeout(blurT);
+  blurT=setTimeout(()=>{ const bl=document.getElementById('softblur');
+    if(bl) bl.setAttribute('stdDeviation', Math.min(7, Math.max(2.4, 1.2/k))); },160);
+}
+// The farm locks to the frame: paper can never be dragged past the edges.
+function clamp(){
+  const W=stage.clientWidth,H=stage.clientHeight,w=MW*k,h=MH*k;
+  tx = w<=W ? (W-w)/2 : Math.min(0,Math.max(W-w,tx));
+  ty = h<=H ? (H-h)/2 : Math.min(0,Math.max(H-h,ty));
+}
+// Let people get right in: 1.0 is the art at its own pixels, and a small farm
+// on a big screen should still be able to go past that.
+function maxK(){ return Math.max(kFit*2.2, 1.15); }
+function zoomAt(nk,cx,cy){
+  nk=Math.max(kFit,Math.min(maxK(),nk));
+  const r=nk/k; tx=cx-(cx-tx)*r; ty=cy-(cy-ty)*r; k=nk; clamp(); move();
+}
+function fit(){
+  const W=stage.clientWidth,H=stage.clientHeight;
+  kFit=Math.min(W/MW,H/MH); k=kFit;
+  tx=(W-MW*k)/2; ty=(H-MH*k)/2; clamp(); apply();
+}
+
+function heroRun(h){
+  const box=document.getElementById('hero');
+  clearInterval(heroT); box.innerHTML=''; heroI=0;
+  const list=HERO[h.id]||[];
+  if(!list.length){ box.hidden=true; return; }
+  box.hidden=false;
+  list.forEach((src,i)=>{
+    const im=document.createElement('img'); im.src=src; im.alt='';
+    if(i===0) im.className='on';
+    box.appendChild(im);
+  });
+  if(list.length>1) heroT=setInterval(()=>{
+    const ims=box.children;
+    ims[heroI].classList.remove('on');
+    heroI=(heroI+1)%ims.length;
+    ims[heroI].classList.add('on');
+  },3600);
+}
+function show(h){
+  if(!h){
+    clearInterval(heroT);
+    document.getElementById('hero').hidden=true;
+    document.getElementById('full').hidden=true;
+    document.getElementById('empty').hidden=false;
+    return;
+  }
+  document.getElementById('empty').hidden=true;
+  document.getElementById('full').hidden=false;
+  document.getElementById('cname').textContent=h.n;
+  document.getElementById('ctag').textContent=h.t||'';
+  const ck=document.getElementById('ckind');
+  ck.textContent=KIND[h.k]||h.k; ck.className='chip k-'+h.k;
+  document.getElementById('cams').innerHTML=(h.amk||[]).map((a,i)=>
+    '<span class="am'+(a===amFilter?' hit':'')+'">'+(h.am[i]||AMLBL[a]||a)+'</span>').join('');
+  document.getElementById('cgo').textContent='Open '+h.n.replace(/^The /,'')+' →';
+  heroRun(h);
+}
+// Exactly one neighborhood is current, ever. A deliberate pointer or touch on
+// a neighborhood changes it; moving onto bare ground leaves it alone, so the
+// lower third always has something in it.
+function setCur(h){
+  if(!h || h===cur) return;
+  cur=h; show(h); apply();
+}
+function clearCur(){ cur=null; show(null); apply(); }
+function goPage(h){
+  setCur(h); show(h);
+  // Embedded in the site: hand off to the site's own neighborhood page.
+  if(window.parent!==window && /[?&]embed=1/.test(location.search)){ try{ parent.postMessage({pkMap:'open',id:h.id},'*'); return; }catch(e){} }
+  document.getElementById('pgname').textContent=h.n;
+  document.getElementById('pgtag').textContent=h.t||'';
+  const pk=document.getElementById('pgkind');
+  pk.textContent=KIND[h.k]||h.k; pk.className='chip k-'+h.k;
+  const hv=(HERO[h.id]||[])[0], el=document.getElementById('pghero');
+  if(hv){el.src=hv; el.hidden=false;} else el.hidden=true;
+  document.getElementById('pgams').innerHTML=(h.amk||[]).map((a,i)=>
+    '<span class="am">'+(h.am[i]||AMLBL[a]||a)+'</span>').join('');
+  document.getElementById('page').hidden=false;
+}
+
+// ---------------------------------------------------------------- gestures
+// Rewritten to remove the whole class of bug: there is no remembered "am I
+// dragging" state to go stale. Every pointermove asks the EVENT whether a
+// button is down and rebuilds the gesture from scratch. A pointerdown that was
+// swallowed, a pointerup that never arrived, a finger the browser forgot - none
+// of it can jam anything, because nothing is carried forward. A pointer that
+// has not reported in for a fifth of a second simply stops existing.
+const live=new Map();            // pointerId -> {x,y,t}, rebuilt continuously
+let moved=false, pinch=null, tapT=0, lastType='mouse', downAt=null;
+const SLOP=10, TAPMS=450;   // a tap is short and barely moves; anything else is a drag
+const NOW=()=>(window.performance&&performance.now?performance.now():Date.now());
+const GAP=260;                   // silence this long and a pointer is gone
+
+function prune(t){ live.forEach((p,id)=>{ if(t-p.t>GAP) live.delete(id); }); }
+function idle(){ clearTimeout(tapT); live.clear(); pinch=null; stage.classList.remove('drag'); }
+const down = e => e.pointerType==='mouse' ? (e.buttons&1)===1 : true;
+
+function hover(e){
+  if(!stage.contains(e.target)&&e.target!==stage) return;
+  const el=document.elementFromPoint(e.clientX,e.clientY);
+  const h=el&&el.__hood?el.__hood:null;
+  stage.classList.toggle('onhood',!!h);
+  setCur(h);
+}
+
+function onMove(e){
+  const t=NOW();
+  prune(t);
+  if(!down(e)){                     // nothing is held: there is no gesture
+    if(live.size) idle();
+    moved=false;
+    if(e.pointerType!=='touch') hover(e);
+    return;
+  }
+  const prev=live.get(e.pointerId);
+  live.set(e.pointerId,{x:e.clientX,y:e.clientY,t:t});
+  stage.classList.add('drag');
+  if(live.size===1){
+    pinch=null;
+    if(!prev) return;               // first sighting: next move does the work
+    const dx=e.clientX-prev.x, dy=e.clientY-prev.y;
+    if(!moved&&downAt&&Math.hypot(e.clientX-downAt.x,e.clientY-downAt.y)>SLOP) moved=true;
+    if(moved){ tx+=dx; ty+=dy; clamp(); move(); }
+  } else if(live.size===2){
+    const[a,b]=[...live.values()];
+    const d=Math.hypot(a.x-b.x,a.y-b.y)||1;
+    if(!pinch) pinch={d:d,k:k,cx:(a.x+b.x)/2,cy:(a.y+b.y)/2};
+    else { moved=true; zoomAt(pinch.k*(d/pinch.d),pinch.cx,pinch.cy); }
+  } else {
+    idle();                         // three or more is not a gesture here
+  }
+}
+
+stage.addEventListener('pointerdown',e=>{
+  const t=NOW(); prune(t);
+  clearTimeout(tapT);
+  if(live.size){ pinch=null; moved=true; }   // a second finger: this is a pinch, never a pick
+  lastType=e.pointerType;
+  if(!live.size){ moved=false; downAt={x:e.clientX,y:e.clientY,t:t}; }   // a press picks nothing
+  live.set(e.pointerId,{x:e.clientX,y:e.clientY,t:t});
+  stage.classList.add('drag');
+});
+addEventListener('pointermove',e=>{ try{ onMove(e); }
+  catch(err){ idle(); if(++faults<4) console.warn('move',err); } });
+// A native image drag or a text selection starting under the finger stops
+// pointermove being delivered at all - the gesture dies mid-stroke and no
+// pointerup ever arrives. Neither belongs on a map.
+addEventListener('dragstart',e=>e.preventDefault());
+addEventListener('selectstart',e=>{ if(stage.contains(e.target)) e.preventDefault(); });
+function tapAt(e){
+  const el=document.elementFromPoint(e.clientX,e.clientY);
+  const h=el&&el.__hood; if(!h) return;
+  // mouse: hover already showed the card, a click opens. Touch: the first tap
+  // shows the card, a tap on the one already showing opens it.
+  if(e.pointerType!=='mouse' && h!==cur){ setCur(h); return; }
+  goPage(h);
+}
+const lift=e=>{
+  if(e.type==='pointerup' && live.size===1 && live.has(e.pointerId) && !moved && downAt
+     && NOW()-downAt.t<=TAPMS && stage.contains(e.target) && e.target!==document.getElementById('pgback')){
+    try{ tapAt(e); }catch(err){ if(++faults<4) console.warn('tap',err); }
+  }
+  live.delete(e.pointerId); if(live.size<2) pinch=null;
+                if(!live.size) stage.classList.remove('drag'); };
+addEventListener('pointerup',lift,true);
+addEventListener('pointercancel',lift,true);
+addEventListener('blur',idle);
+addEventListener('contextmenu',idle);
+document.addEventListener('visibilitychange',()=>{ if(document.hidden) idle(); });
+
+// One click handler for the whole map. The shapes and the labels have none of
+// their own, so a drag can never finish by opening a page.
+// (taps on the map are resolved on pointer-up, above - a click event can be swallowed)
+labs.addEventListener('click',e=>{
+  const b=e.target.closest('.lab');
+  const h=b&&b.__hood; const wasMoved=moved; moved=false;
+  if(!h||wasMoved) return;
+  if(lastType==='touch' && h!==cur){ setCur(h); return; }   // first tap shows the card
+  goPage(h);
+});
+labs.addEventListener('pointerover',e=>{
+  const b=e.target.closest('.lab');
+  if(b&&b.__hood&&!live.size) setCur(b.__hood);
+});
+
+// A trackpad two-finger swipe moves the farm; a pinch (which arrives as
+// ctrl+wheel) and a mouse wheel zoom it.
+stage.addEventListener('wheel',e=>{
+  e.preventDefault();
+  if(!e.ctrlKey && !e.metaKey && (e.deltaX||Math.abs(e.deltaY)<40)){
+    tx-=e.deltaX; ty-=e.deltaY; clamp(); move(); return;
+  }
+  const s=e.ctrlKey||e.metaKey ? Math.exp(-e.deltaY/140) : (e.deltaY<0?1.2:1/1.2);
+  zoomAt(k*s,e.clientX,e.clientY);
+},{passive:false});
+stage.addEventListener('dblclick',e=>{e.preventDefault(); zoomAt(k*2,e.clientX,e.clientY);});
+
+document.getElementById('cgo').onclick=e=>{ e.stopPropagation(); if(cur) goPage(cur); };
+document.getElementById('card').addEventListener('click',e=>{
+  if(e.target.closest('#pickbar,#picker')) return;     // the amenity controls stay controls
+  if(cur) goPage(cur);
+});
+document.getElementById('pgback').onclick=()=>{document.getElementById('page').hidden=true;};
+const PT=document.getElementById('ptog'), PK=document.getElementById('picker');
+PT.onclick=()=>{const o=PT.getAttribute('aria-expanded')==='true';
+  PT.setAttribute('aria-expanded',String(!o)); PK.hidden=o;};
+// Arrow keys always move the farm, whatever the pointer is doing.
+addEventListener('keydown',e=>{
+  const PAN={ArrowLeft:[1,0],ArrowRight:[-1,0],ArrowUp:[0,1],ArrowDown:[0,-1]};
+  if(PAN[e.key]){
+    e.preventDefault(); idle();
+    const s=(e.shiftKey?240:90);
+    tx+=PAN[e.key][0]*s; ty+=PAN[e.key][1]*s; clamp(); apply(); return;
+  }
+  if(e.key==='0'){ fit(); return; }
+  if(e.key!=='Escape')return;
+  // Escape also wipes the gesture state by hand. If the map ever stops moving
+  // and Escape frees it, the fault is in here; if it does not, the fault is
+  // somewhere else entirely - which is worth knowing.
+  idle(); faults=0; apply();
+  const pg=document.getElementById('page');
+  if(!pg.hidden){pg.hidden=true;return;}
+  clearCur();
+});
+addEventListener('resize',()=>{const z=k/kFit; fit(); zoomAt(kFit*z,stage.clientWidth/2,stage.clientHeight/2);});
+
+function boot(){ art.style.width=MW+'px'; art.style.height=MH+'px'; build(); fit(); }
+if(img.complete&&img.naturalWidth) boot(); else img.onload=boot;
+</script>
