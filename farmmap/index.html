@@ -404,11 +404,23 @@ function ico(k){
 // Where each amenity icon really sits on the art (map pixels, from the vector map).
 const ICON_AT={"restroom": [[1785, 1224], [1035, 855], [833, 1864], [799, 1494], [1359, 712], [1658, 2136], [738, 3307], [1004, 1128], [1234, 2705], [608, 2260]], "water": [[1774, 1425], [1510, 2522], [1208, 2447], [843, 3212], [1619, 2140], [970, 2542]], "bar": [[1218, 2569], [1640, 2222], [792, 2599], [1112, 3219], [1655, 1328]], "coffee": [[783, 2557], [1608, 2426], [1730, 1412]], "food": [[841, 3163], [1153, 2638], [1166, 2734], [1604, 2476], [1683, 1378]], "dj": [[960, 3292], [987, 2631], [1468, 2254]], "merch": [[1537, 2647]], "craft": [[1509, 2165], [1034, 2903], [1147, 2773], [1601, 2281], [1547, 2213]], "dot": [[838, 3113], [1602, 2569]], "ice": [[1608, 2615]], "atm": [[950, 3178], [1554, 2520]], "massage": [[1843, 2093]], "medical": [[1136, 2826]], "info": [[952, 2959]], "parking": [[1304, 3448]], "moto": [[1409, 3448]], "bike": [[1231, 3353]], "charge": [[996, 2935]], "gear": [[810, 1439], [843, 1809], [1426, 712], [987, 937]], "ticket": [[1169, 3309]], "shuttle": [[1052, 3485], [1896, 3590], [862, 3566]], "kids": [[1392, 2093]], "run": [[978, 2683]], "rideshare": [[1038, 3529]]};
 let RINGS=[];
-function showRings(a){
+// The icons inside one neighbourhood: every icon whose centre falls in its outline.
+let _hp=null;
+function hoodIcons(h){
+  const out=[]; if(!h||!D.shapes[h.id]) return out;
+  const svg=document.getElementById('rings').ownerSVGElement;
+  if(!_hp){ _hp=document.createElementNS('http://www.w3.org/2000/svg','path'); _hp.style.cssText='visibility:hidden;pointer-events:none;fill:#000;stroke:#000;stroke-width:44px'; svg.appendChild(_hp); }
+  _hp.setAttribute('d',D.shapes[h.id].d);
+  for(const a in ICON_AT) ICON_AT[a].forEach(p=>{ try{ const q=new DOMPoint(p[0],p[1]); if(_hp.isPointInFill(q)||_hp.isPointInStroke(q)) out.push([a,p]); }catch(e){} });
+  return out;
+}
+function showRings(a,hood){
   const g=document.getElementById('rings'); if(!g) return;
   g.innerHTML=''; RINGS=[];
   const NS='http://www.w3.org/2000/svg';
-  (ICON_AT[a]||[]).forEach(p=>{
+  const list = a ? (ICON_AT[a]||[]).map(p=>[a,p,false]) : hoodIcons(hood).map(e=>[e[0],e[1],true]);
+  list.forEach(([a,p,only])=>{
+    if(only){ const rr=document.createElementNS(NS,'rect'); rr.setAttribute('class','rr'); g.appendChild(rr); RINGS.push({x:p[0],y:p[1],r:rr,only:1}); return; }
     const c=document.createElementNS(NS,'circle'); c.setAttribute('class','ring dot'); c.setAttribute('cx',p[0]); c.setAttribute('cy',p[1]); g.appendChild(c);
     const o={c:c,x:p[0],y:p[1]};
     if(ICO_IMG[a]){ const im=document.createElementNS(NS,'image'); im.setAttribute('href',ICO_IMG[a]); im.setAttribute('class','ricon'); g.appendChild(im); o.i=im; }
@@ -421,6 +433,8 @@ function sizeRings(){
   // Zoomed out each icon is a gold dot; zoomed in it is outlined in place, at the size it is on the map.
   const near=k>=kFit*1.8, w=Math.max(38,22/k);
   RINGS.forEach(o=>{
+    if(o.only){ o.r.style.display=k>=kFit*1.3?'':'none'; o.r.setAttribute('x',o.x-w/2-2/k); o.r.setAttribute('y',o.y-w/2-2/k);
+      o.r.setAttribute('width',w+4/k); o.r.setAttribute('height',w+4/k); o.r.setAttribute('rx',w*0.26); return; }
     o.c.setAttribute('r',5.5/k); o.c.style.display=near?'none':'';
     if(o.i){ o.i.style.display=near?'':'none'; o.i.setAttribute('x',o.x-w/2); o.i.setAttribute('y',o.y-w/2); o.i.setAttribute('width',w); o.i.setAttribute('height',w); }
     o.r.style.display=near?'':'none'; o.r.setAttribute('x',o.x-w/2-2/k); o.r.setAttribute('y',o.y-w/2-2/k);
@@ -660,6 +674,7 @@ function show(h){
     document.getElementById('hero').hidden=true;
     document.getElementById('full').hidden=true;
     document.getElementById('empty').hidden=false;
+    if(!amFilter && typeof showRings==='function') showRings(null,null);
     return;
   }
   document.getElementById('empty').hidden=true;
@@ -671,6 +686,7 @@ function show(h){
   document.getElementById('cams').innerHTML=(h.amk||[]).map((a,i)=>
     '<span class="ai'+(a===amFilter?' hit':'')+'" title="'+(AMLBL[a]||a)+'">'+ico(a)+'</span>').join('');
   document.getElementById('cgo').textContent='Open '+h.n.replace(/^The /,'')+' →';
+  if(!amFilter && typeof showRings==='function') showRings(null,h);
   heroRun(h);
 }
 // Exactly one neighborhood is current, ever. A deliberate pointer or touch on
