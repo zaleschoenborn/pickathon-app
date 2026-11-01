@@ -151,7 +151,7 @@ setInterval(function(){if(bar)bar.style.display=document.querySelector('[aria-mo
  setInterval(function(){reg.update().catch(function(){})},5*60*1000); reg.update().catch(function(){});
  document.addEventListener('visibilitychange',function(){if(!document.hidden)reg.update().catch(function(){})});
 }).catch(function(){});
-window.__pkBuild='20261101-0905';setTimeout(function(){fetch('sw.js?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.text()}).then(function(t){var m=/Build ([0-9-]+)/.exec(t);if(m&&m[1]!==window.__pkBuild){say('A newer version is ready','Update now',function(){Promise.resolve(window.caches?caches.keys().then(function(k){return Promise.all(k.filter(function(n){return n.indexOf('pk-')===0}).map(function(n){return caches.delete(n)}))}):0).then(function(){location.reload()})})}}).catch(function(){})},2500);
+window.__pkBuild='20261101-0925';setTimeout(function(){fetch('sw.js?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.text()}).then(function(t){var m=/Build ([0-9-]+)/.exec(t);if(m&&m[1]!==window.__pkBuild){say('A newer version is ready','Update now',function(){Promise.resolve(window.caches?caches.keys().then(function(k){return Promise.all(k.filter(function(n){return n.indexOf('pk-')===0}).map(function(n){return caches.delete(n)}))}):0).then(function(){location.reload()})})}}).catch(function(){})},2500);
 var rl=false;navigator.serviceWorker.addEventListener('controllerchange',function(){if(rl)return;rl=true;if(window.__pkHadCtl)location.reload()});window.__pkHadCtl=!!navigator.serviceWorker.controller;
 })();</script><div id="root"></div><template id="tpl">
 
@@ -728,9 +728,9 @@ var rl=false;navigator.serviceWorker.addEventListener('controllerchange',functio
 <sc-if value="{{newMap.hoods}}" hint-placeholder-val="{{false}}"><style>
 div:has(> #pk-scroll-phone) > header { display: none !important }
 #pk-scroll-phone { overflow: hidden !important; position: relative }
-#pk-scroll-phone > section, #pk-scroll-phone > div[role=status], #pk-scroll-phone > footer { display: none !important }
+#pk-scroll-phone > :not(#pk-farmmap):not(style):not([aria-label="Cookie choices"]):not([aria-label="Listen"]) { display: none !important }
 #pk-scroll-phone > #pk-farmmap { position: absolute !important; top: env(safe-area-inset-top, 0px); right: 0; bottom: 0; left: 0; height: auto !important }
-#pk-scroll-desk > section, #pk-scroll-desk > div[role=status], #pk-scroll-desk > footer { display: none !important }
+#pk-scroll-desk > :not(#pk-farmmap):not(style):not([aria-label="Cookie choices"]):not([aria-label="Listen"]) { display: none !important }
 #pk-scroll-desk > #pk-farmmap { height: calc(100vh - 89px) !important }
 #pk-farmmap > iframe { height: 100% !important }
 div[aria-label="Preview controls"] { display: none !important }
@@ -1742,6 +1742,8 @@ class Component extends DCLogic {
   }
   componentDidMount() {
     var self = this;
+    // The map page never scrolls: whatever restores a scroll position (Back, closing a viewer) is put straight back to the top.
+    try { document.addEventListener('scroll', function (e) { var m = e.target; if (!document.getElementById('pk-farmmap')) return; if (m && m.id === 'pk-scroll-phone' && m.scrollTop) m.scrollTop = 0; else if ((m === document || m === document.documentElement) && window.scrollY && document.getElementById('pk-scroll-desk')) window.scrollTo(0, 0); }, true); } catch (x) {}
     // The farm map is its own page inside a frame; tapping a neighborhood there opens the site's real neighborhood page here, and Back returns to the map.
     try { window.addEventListener('message', function (e) { var m = e.data; if (!m || m.pkMap !== 'open' || !m.id || e.source !== (document.querySelector('#pk-farmmap iframe') || {}).contentWindow) return; self.go('hood', { h: String(m.id) }); }); } catch (x) {}
     try { setInterval(function () { var ch = false; [].slice.call(document.querySelectorAll('[aria-label="Festival map"] button[aria-label]')).forEach(function (b) { var nm = (b.textContent || '').trim(); if (!nm || !/^[A-Z]/.test(nm)) return; var w = Math.ceil(b.getBoundingClientRect().width); if (!w) return; var key = (window.innerWidth < 768 ? 'p' : 'd') + nm; self._lw = self._lw || {}; if (self._lw[key] !== w) { self._lw[key] = w; ch = true; } }); if (ch && self.state.stack && /hoods|hood/.test((self.state.stack[self.state.stack.length - 1] || {}).r)) self.setState({ mapTick: Date.now() }); }, 700); } catch (e) {}
