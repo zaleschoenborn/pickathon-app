@@ -144,6 +144,30 @@ body{margin:0;background:var(--ink);color:var(--cream);font-family:var(--f);
 #page p{margin:6px 0 0;color:var(--muted);font-size:14.5px;line-height:1.55;max-width:62ch}
 #page .stub{margin-top:17px;padding-top:13px;border-top:1px solid var(--line);font-size:12.5px}
 @media (max-height:640px){:root{--cardh:42%}}
+/* Phone card: a bigger picture that plays like a story, bigger words, and a
+   button that can never be pushed out of the card. */
+@media (max-width:879px){
+  :root{--cardh:41%}
+  #hero{flex:0 0 45%}
+  #meta{padding-left:13px}
+  #cname{font-size:23px}
+  #ctag{font-size:14px;-webkit-line-clamp:3;margin-top:4px}
+  .chip{font-size:10px;padding:5px 9px;margin-bottom:6px}
+  #full{display:flex;flex-direction:column;height:100%}
+  .ams{flex-wrap:nowrap;overflow:hidden;margin-top:8px;
+    -webkit-mask-image:linear-gradient(90deg,#000 82%,transparent);mask-image:linear-gradient(90deg,#000 82%,transparent)}
+  .am{font-size:11px;white-space:nowrap;flex:0 0 auto}
+  #cgo{align-self:stretch;margin-top:auto;min-height:46px;font-size:14.5px;border-radius:12px;
+    background:#F2B33D;color:#12160F;flex:0 0 auto}
+}
+#hero img.on{animation:kb 7s ease-out forwards}
+@keyframes kb{from{transform:scale(1.02)}to{transform:scale(1.16)}}
+#pips{position:absolute;left:9px;right:9px;bottom:8px;display:flex;gap:4px;z-index:2}
+#pips i{flex:1;height:3px;border-radius:2px;background:rgba(255,255,255,.35);overflow:hidden;position:relative}
+#pips i.done{background:#fff}
+#pips i.on::after{content:'';position:absolute;inset:0;background:#fff;transform-origin:left;
+  animation:fill 3.2s linear forwards}
+@keyframes fill{from{transform:scaleX(0)}to{transform:scaleX(1)}}
 @media (min-width:880px){
   :root{--cardw:400px}
   #stage{bottom:0;right:var(--cardw)}
@@ -458,12 +482,19 @@ function heroRun(h){
     if(i===0) im.className='on';
     box.appendChild(im);
   });
-  if(list.length>1) heroT=setInterval(()=>{
-    const ims=box.children;
+  if(list.length<2) return;
+  // plays like a story: crossfade, a slow push-in, and a progress bar per photo
+  const pips=document.createElement('div'); pips.id='pips';
+  list.forEach(()=>pips.appendChild(document.createElement('i')));
+  box.appendChild(pips);
+  const mark=()=>[...pips.children].forEach((p,i)=>{ p.className = i<heroI?'done':(i===heroI?'on':''); });
+  mark();
+  heroT=setInterval(()=>{
+    const ims=box.querySelectorAll('img');
     ims[heroI].classList.remove('on');
     heroI=(heroI+1)%ims.length;
-    ims[heroI].classList.add('on');
-  },3600);
+    void ims[heroI].offsetWidth; ims[heroI].classList.add('on'); mark();
+  },3200);
 }
 function show(h){
   if(!h){
