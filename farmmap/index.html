@@ -289,7 +289,7 @@ body{margin:0;background:var(--ink);color:var(--cream);font-family:var(--f);
     <div id="meta">
       <div id="empty">
         <b>A city built for one weekend</b>
-        <p>Every August, architects and builders raise 20 neighborhoods on Pendarvis Farm. You're at the front gate. Swipe or tap ‹ › to walk through them, or tap any neighborhood to see what's there.</p>
+        <p>Every August, architects and builders raise 20 neighborhoods on Pendarvis Farm. Swipe or tap ‹ › to walk through them from the front gate, or tap any neighborhood to see what's there.</p>
         <button id="ibuild" type="button">We build these. Want one? →</button>
       </div>
       <div id="full" hidden>
@@ -888,7 +888,6 @@ function restoreView(){ try{
     if(v.f&&window.__setFilter) window.__setFilter(v.f,true);
     if(h) setCur(h);
   } else if(fh){ frameHood(fh); setCur(fh); }
-  else { const wl=HOODS.find(x=>x.id==='welcomelot'), vw=wl&&viewFor(wl); if(vw){ k=vw.k; tx=vw.tx; ty=vw.ty; clamp(); apply(); } }   // fresh open: arrive at the gate
 }catch(e){} }
 function frameHood(fh){ const W=stage.clientWidth,H=stage.clientHeight, sh=D.shapes[fh.id], bb=sh&&sh.b;
   if(!bb) return; const bw=Math.max(80,bb[2]-bb[0]), bh=Math.max(80,bb[3]-bb[1]);
