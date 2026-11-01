@@ -151,7 +151,7 @@ setInterval(function(){if(bar)bar.style.display=document.querySelector('[aria-mo
  setInterval(function(){reg.update().catch(function(){})},5*60*1000); reg.update().catch(function(){});
  document.addEventListener('visibilitychange',function(){if(!document.hidden)reg.update().catch(function(){})});
 }).catch(function(){});
-window.__pkBuild='20261101-0946';setTimeout(function(){fetch('sw.js?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.text()}).then(function(t){var m=/Build ([0-9-]+)/.exec(t);if(m&&m[1]!==window.__pkBuild){say('A newer version is ready','Update now',function(){Promise.resolve(window.caches?caches.keys().then(function(k){return Promise.all(k.filter(function(n){return n.indexOf('pk-')===0}).map(function(n){return caches.delete(n)}))}):0).then(function(){location.reload()})})}}).catch(function(){})},2500);
+window.__pkBuild='20261101-1012';setTimeout(function(){fetch('sw.js?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.text()}).then(function(t){var m=/Build ([0-9-]+)/.exec(t);if(m&&m[1]!==window.__pkBuild){say('A newer version is ready','Update now',function(){Promise.resolve(window.caches?caches.keys().then(function(k){return Promise.all(k.filter(function(n){return n.indexOf('pk-')===0}).map(function(n){return caches.delete(n)}))}):0).then(function(){location.reload()})})}}).catch(function(){})},2500);
 var rl=false;navigator.serviceWorker.addEventListener('controllerchange',function(){if(rl)return;rl=true;if(window.__pkHadCtl)location.reload()});window.__pkHadCtl=!!navigator.serviceWorker.controller;
 })();</script><div id="root"></div><template id="tpl">
 
