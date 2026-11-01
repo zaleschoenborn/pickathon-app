@@ -736,7 +736,8 @@ const down = e => e.pointerType==='mouse' ? (e.buttons&1)===1 : true;
 function hover(e){
   if(!stage.contains(e.target)&&e.target!==stage) return;
   const el=document.elementFromPoint(e.clientX,e.clientY);
-  const h=el&&el.__hood?el.__hood:null;
+  const lb0=el&&el.closest&&el.closest('.lab');
+  const h=el&&el.__hood?el.__hood:(lb0&&lb0.__hood?lb0.__hood:null);   // a name tag counts as its neighborhood
   const ia=e.pointerType==='mouse'?iconAt(e):null;
   stage.classList.toggle('onhood',!!h&&!ia); stage.classList.toggle('onicon',!!ia);
   const tp=document.getElementById('itip');
