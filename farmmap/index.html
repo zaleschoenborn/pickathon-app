@@ -446,7 +446,7 @@ function sizeRings(){
 const passes = h => !amFilter || (h.amk||[]).includes(amFilter);
 // Right-rail labels that would land on top of their own neighbourhood sit higher: the
 // number is the lowest map row the label may use (Welcome Lot's goes above Hagen Road).
-const LBLCAP={welcomelot:3380};
+const LBLCAP={welcomelot:3380,willowcamp:3380};   // full strength at the first view, easing off as the map is zoomed in (~2x)
 const PINL={lushcamp:1,coyote:2,cherryhill:3,grove:4};  // left rail, this order, above Windmill
 
 // Light one neighborhood by swapping the mask, not by painting a wash over it.
@@ -491,7 +491,7 @@ function place(){
     } else {
       on = ax>M && ax<W-M && ay>M && ay<H-M;
     }
-    h._ax=ax; h._ay=ay; h._wy=(LBLCAP[h.id]!==undefined)?Math.min(ay,ty+LBLCAP[h.id]*k):ay;
+    h._ax=ax; h._ay=ay; { const cp=LBLCAP[h.id]; h._wy=ay; if(cp!==undefined){ const st=1-Math.max(0,Math.min(1,k/kFit-1)), lim=ty+cp*k; if(ay>lim) h._wy=ay-(ay-lim)*st; } }
     h._on = on && passes(h);
     if(h._path) h._path.classList.toggle('off',!passes(h));
     if(h._on) live.push(h);
@@ -516,7 +516,7 @@ function place(){
   // spread down the whole rail, they just queue up above Windmill.
   const wm=L.find(h=>h.id==='windmill');
   L.forEach(h=>{ const o=PINL[h.id];
-    h._sk = (o!==undefined && wm) ? wm._ay-(5-o)*0.9 : h._ay; });
+    h._sk = (o!==undefined && wm) ? wm._ay-(5-o)*0.9 : h._wy; });
   R.forEach(h=>h._sk=h._wy);
   [L,R].forEach(arr=>{
     arr.sort((a,b)=>a._sk-b._sk);
