@@ -26,7 +26,6 @@ body{margin:0;background:var(--ink);color:var(--cream);font-family:var(--f);
 #tiles img.on{opacity:1}
 #body{touch-action:pan-y}
 #nav{position:absolute;right:12px;top:10px;display:flex;gap:6px;z-index:3}
-#ncount{align-self:center;font:700 11px/1 var(--f);color:var(--muted);letter-spacing:.04em;min-width:34px;text-align:center}
 #nav button{width:38px;height:38px;border-radius:999px;border:1px solid var(--line);background:#222820;color:var(--cream);font:700 24px/1 var(--f);cursor:pointer;padding:0 0 3px}
 #nav button:active{background:#2e362a}
 @keyframes swl{from{opacity:0;transform:translateX(34px)}to{opacity:1;transform:none}}
@@ -281,7 +280,7 @@ body{margin:0;background:var(--ink);color:var(--cream);font-family:var(--f);
     <div id="phead"><div id="pname">What are you looking for?</div><button id="pclose" type="button" aria-label="Close">✕</button></div>
     <div id="pgrid"></div>
   </div>
-  <div id="nav"><button id="nprev" type="button" aria-label="Previous neighborhood">&#8249;</button><span id="ncount"></span><button id="nnext" type="button" aria-label="Next neighborhood">&#8250;</button></div>
+  <div id="nav"><button id="nprev" type="button" aria-label="Previous neighborhood">&#8249;</button><button id="nnext" type="button" aria-label="Next neighborhood">&#8250;</button></div>
   <div id="body">
     <div id="hero" hidden></div>
     <div id="meta">
@@ -388,7 +387,7 @@ function ico(k){
   return '<span class="ic svg'+(ICO_DARK[k]?' dark':'')+'"><svg viewBox="0 0 40 40" aria-hidden="true">'+g+'</svg></span>';
 }
 // Where each amenity icon really sits on the art (map pixels, from the vector map).
-const ICON_AT={"restroom": [[1785, 1224], [1035, 855], [833, 1864], [799, 1494], [1359, 712], [1658, 2136], [738, 3307], [1004, 1128], [1234, 2705], [608, 2260]], "water": [[1774, 1425], [1510, 2522], [1208, 2447], [843, 3212], [1619, 2140], [970, 2542]], "bar": [[1218, 2569], [1640, 2222], [792, 2599], [1112, 3219], [1655, 1328]], "coffee": [[783, 2557], [1608, 2426], [1730, 1412]], "food": [[841, 3163], [1153, 2638], [1166, 2734], [1604, 2476], [1683, 1378]], "dj": [[960, 3292], [987, 2631], [1468, 2254]], "merch": [[1537, 2647]], "craft": [[1509, 2165], [1034, 2903], [1147, 2773], [1601, 2281], [1547, 2213]], "dot": [[838, 3113], [1602, 2569]], "ice": [[1608, 2615]], "atm": [[950, 3178], [1554, 2520]], "massage": [[1843, 2093]], "medical": [[1136, 2826]], "info": [[952, 2959]], "parking": [[1304, 3448]], "moto": [[1409, 3448]], "bike": [[1231, 3353]], "charge": [[996, 2935]], "gear": [[810, 1439], [843, 1809], [1426, 712], [987, 937]], "ticket": [[1169, 3309]], "shuttle": [[1052, 3485], [1896, 3590], [862, 3566]], "kids": [[1392, 2093]], "run": [[978, 2683]], "rideshare": [[1038, 3529]]};
+const ICON_AT={"restroom":[[1794,1227,44],[1041,860,40],[839,1861,38],[805,1491,38],[1366,717,40],[1664,2141,42],[744,3312,40],[1010,1133,40],[1240,2710,40],[614,2265,40]],"water":[[1772,1425,40],[1518,2529,38],[1207,2447,40],[841,3212,40],[1617,2129,44],[969,2543,44]],"bar":[[1221,2574,44],[1643,2229,44],[784,2604,42],[1121,3224,42],[1656,1332,42]],"coffee":[[778,2572,42],[1604,2424,40],[1729,1412,44]],"food":[[842,3162,42],[1160,2642,38],[1173,2738,38],[1605,2469,40],[1686,1377,42]],"dj":[[965,3295,44],[992,2634,44],[1473,2257,44]],"merch":[[1542,2638,38]],"craft":[[1524,2171,40],[1040,2914,44],[1159,2777,38],[1606,2286,40],[1554,2221,44]],"dot":[[843,3116,38],[1607,2571,38]],"ice":[[1623,2617,42]],"atm":[[955,3181,42],[1557,2524,40]],"massage":[[1838,2096,42]],"medical":[[1135,2823,38]],"info":[[955,2971,42]],"parking":[[1301,3452,40]],"moto":[[1410,3451,42]],"bike":[[1235,3353,42]],"charge":[[998,2949,42]],"gear":[[810,1429,38],[855,1809,38],[1438,712,38],[999,937,38]],"ticket":[[1177,3307,38]],"shuttle":[[1054,3501,42],[1900,3604,42],[870,3572,40]],"kids":[[1380,2096,38]],"run":[[966,2698,40]],"rideshare":[[1042,3529,44]]};
 let RINGS=[];
 // The icons inside one neighbourhood: every icon whose centre falls in its outline.
 let _hp=null;
@@ -406,9 +405,10 @@ function showRings(a,hood){
   const NS='http://www.w3.org/2000/svg';
   const list = a ? (ICON_AT[a]||[]).map(p=>[a,p,false]) : hoodIcons(hood).map(e=>[e[0],e[1],true]);
   list.forEach(([a,p,only])=>{
-    if(only){ const rr=document.createElementNS(NS,'rect'); rr.setAttribute('class','rr'); g.appendChild(rr); RINGS.push({x:p[0],y:p[1],r:rr,only:1}); return; }
+    if(only){ const dc=document.createElementNS(NS,'circle'); dc.setAttribute('class','ring dot'); dc.setAttribute('cx',p[0]); dc.setAttribute('cy',p[1]); g.appendChild(dc);
+      const rr=document.createElementNS(NS,'rect'); rr.setAttribute('class','rr'); g.appendChild(rr); RINGS.push({x:p[0],y:p[1],s:p[2],r:rr,c:dc,only:1}); return; }
     const c=document.createElementNS(NS,'circle'); c.setAttribute('class','ring dot'); c.setAttribute('cx',p[0]); c.setAttribute('cy',p[1]); g.appendChild(c);
-    const o={c:c,x:p[0],y:p[1]};
+    const o={c:c,x:p[0],y:p[1],s:p[2]};
     if(ICO_IMG[a]){ const im=document.createElementNS(NS,'image'); im.setAttribute('href',ICO_IMG[a]); im.setAttribute('class','ricon'); g.appendChild(im); o.i=im; }
     const rr=document.createElementNS(NS,'rect'); rr.setAttribute('class','rr'); g.appendChild(rr); o.r=rr;
     RINGS.push(o);
@@ -417,9 +417,9 @@ function showRings(a,hood){
 }
 function sizeRings(){
   // Zoomed out each icon is a gold dot; zoomed in it is outlined in place, at the size it is on the map.
-  const near=k>=kFit*1.8, w=Math.max(38,22/k);
-  RINGS.forEach(o=>{
-    if(o.only){ o.r.style.display=k>=kFit*1.3?'':'none'; o.r.setAttribute('x',o.x-w/2-2/k); o.r.setAttribute('y',o.y-w/2-2/k);
+  const near=k>=kFit*1.8;
+  RINGS.forEach(o=>{ const w=Math.max(o.s||40,22/k);
+    if(o.only){ const nr=k>=kFit*1.8; o.c.setAttribute('r',4.5/k); o.c.style.display=nr?'none':''; o.r.style.display=nr?'':'none'; o.r.setAttribute('x',o.x-w/2-2/k); o.r.setAttribute('y',o.y-w/2-2/k);
       o.r.setAttribute('width',w+4/k); o.r.setAttribute('height',w+4/k); o.r.setAttribute('rx',w*0.26); return; }
     o.c.setAttribute('r',5.5/k); o.c.style.display=near?'none':'';
     if(o.i){ o.i.style.display=near?'':'none'; o.i.setAttribute('x',o.x-w/2); o.i.setAttribute('y',o.y-w/2); o.i.setAttribute('width',w); o.i.setAttribute('height',w); }
@@ -547,7 +547,7 @@ function move(){
 // ---- Sharp zoom: the art is also cut into 512px pieces at 2.4x. Only the pieces
 // you can see are fetched, and only when you are in close enough for them to
 // matter; the highlight gets the same pieces so it stays crisp too.
-const TS=2.4, TP=1024, TM=TP/TS, TW=Math.ceil(MW*TS/TP), TH=Math.ceil(MH*TS/TP), TMAX=20;
+const TS=2.4, TP=1024, TM=TP/TS, TW=Math.ceil(MW*TS/TP), TH=Math.ceil(MH*TS/TP), TMAX=12;
 const LIT={"woods":{"o":[1587,1181,343,307],"t":[[3,2,0,0],[3,3,1,0],[4,2,2,0],[4,3,0,1]],"a":[3072,2048]},"paddock":{"o":[794,2516,559,537],"t":[[1,6,0,0],[1,7,1,0],[2,6,2,0],[2,7,0,1],[3,6,1,1]],"a":[3072,2048]},"cherryhill":{"o":[1247,2131,288,351],"t":[[3,5,0,0]],"a":[1024,1024]},"grove":{"o":[1059,2349,445,364],"t":[[2,5,0,0],[2,6,1,0],[3,5,2,0],[3,6,0,1]],"a":[3072,2048]},"windmill":{"o":[675,2404,489,558],"t":[[1,5,0,0],[1,6,1,0],[2,5,2,0],[2,6,0,1]],"a":[3072,2048]},"galaxy":{"o":[884,3004,295,250],"t":[[2,7,0,0]],"a":[1024,1024]},"lucky":{"o":[669,2940,406,484],"t":[[1,7,0,0],[2,7,1,0]],"a":[2048,1024]},"farmhouse":{"o":[869,3365,374,239],"t":[[2,8,0,0]],"a":[1024,1024]},"curation":{"o":[379,3481,337,308],"t":[[1,8,0,0]],"a":[1024,1024]},"refuge":{"o":[1668,1870,303,367],"t":[[4,4,0,0],[4,5,1,0]],"a":[2048,1024]},"coyote":{"o":[1117,1957,464,329],"t":[[2,4,0,0],[2,5,1,0],[3,4,2,0],[3,5,0,1]],"a":[3072,2048]},"market":{"o":[1390,1992,354,713],"t":[[3,4,0,0],[3,5,1,0],[3,6,2,0]],"a":[3072,1024]},"orchard":{"o":[879,3231,319,208],"t":[[2,7,0,0]],"a":[1024,1024]},"welcomelot":{"o":[1729,3459,312,309],"t":[[4,8,0,0]],"a":[1024,1024]},"quailtrail":{"o":[1607,1381,335,819],"t":[[3,4,0,0],[3,5,1,0],[4,3,2,0],[4,4,0,1],[4,5,1,1]],"a":[3072,2048]},"southcamp":{"o":[685,3391,798,386],"t":[[1,8,0,0],[2,8,1,0],[3,8,2,0]],"a":[3072,1024]},"willowcamp":{"o":[1471,3459,337,309],"t":[[3,8,0,0],[4,8,1,0]],"a":[2048,1024]},"courtyard":{"o":[904,3128,344,261],"t":[[2,7,0,0]],"a":[1024,1024]},"wildcamp":{"o":[235,0,1481,2279],"t":[]},"lushcamp":{"o":[603,268,1254,2339],"t":[]}};
 const TILES=new Map(); let tileT=0, useN=0;
 function schedTiles(){ clearTimeout(tileT); tileT=setTimeout(tiles,140); }
@@ -660,7 +660,6 @@ function show(h){
   document.getElementById('empty').hidden=true;
   document.getElementById('full').hidden=false;
   document.getElementById('cname').textContent=h.n;
-  try{ const ix=ORDER.indexOf(h.id), nc=document.getElementById('ncount'); if(nc) nc.textContent=ix<0?'':(ix+1)+' / '+ORDER.length; }catch(e){}
   document.getElementById('ctag').textContent=h.t||'';
   const ck=document.getElementById('ckind');
   ck.textContent=KIND[h.k]||h.k; ck.className='chip k-'+h.k;
@@ -949,7 +948,7 @@ function stepHood(dir){
     const h=HOODS.find(x=>x.id===ORDER[i]);
     if(h && passes(h)){
       const m=document.getElementById('meta'); m.classList.remove('swl','swr'); void m.offsetWidth; m.classList.add(dir>0?'swl':'swr');
-      setCur(h); flyTo(h); const nc=document.getElementById('ncount'); if(nc) nc.textContent=(i+1)+' / '+ORDER.length; return;
+      setCur(h); flyTo(h); return;
     }
   }
 }
