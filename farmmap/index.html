@@ -25,20 +25,27 @@ body{margin:0;background:var(--ink);color:var(--cream);font-family:var(--f);
 #tiles img{position:absolute;max-width:none;opacity:0;transition:opacity .22s ease}
 #tiles img.on{opacity:1}
 #body{touch-action:pan-y}
-#nav{position:absolute;right:12px;top:10px;display:flex;gap:6px;z-index:3}
-#nav button{width:38px;height:38px;border-radius:999px;border:1px solid var(--line);background:#222820;color:var(--cream);font:700 24px/1 var(--f);cursor:pointer;padding:0 0 3px}
-#nav button:active{background:#2e362a}
+#nav{position:absolute;left:0;right:0;top:0;bottom:0;pointer-events:none;z-index:3}
+#nav button{position:absolute;top:calc(50% - 34px);width:26px;height:68px;border:0;background:rgba(242,237,227,.16);color:var(--cream);font:700 26px/1 var(--f);cursor:pointer;padding:0 0 4px;pointer-events:auto}
+#nprev{left:0;border-radius:0 14px 14px 0}#nnext{right:0;border-radius:14px 0 0 14px}
+#nav button:active{background:rgba(242,237,227,.3)}
+#card.intro{background:var(--cream);border-top-color:#D8D1C2}
+#card.intro #nav button{background:rgba(18,22,15,.14);color:var(--ink)}
+#card.intro #empty{padding-left:34px;padding-right:34px;padding-top:6px;gap:7px}
+#card.intro #empty b{color:var(--ink);font:900 26px/1.05 var(--f);letter-spacing:-.01em}
+#card.intro #empty p{color:#3A4132;font-size:15.5px;line-height:1.38}
+#card.intro #ibuild{background:#12160F;color:#F2B33D;font-size:14px;padding:13px 18px;margin-top:4px}
 @keyframes swl{from{opacity:0;transform:translateX(34px)}to{opacity:1;transform:none}}
 @keyframes swr{from{opacity:0;transform:translateX(-34px)}to{opacity:1;transform:none}}
 #meta.swl{animation:swl .28s ease-out}
 #meta.swr{animation:swr .28s ease-out}
-#dark{position:absolute;left:0;top:0;width:100%!important;height:100%!important;pointer-events:none}
+#dark{position:absolute;left:-3px;top:-3px;width:calc(100% + 6px)!important;height:calc(100% + 6px)!important;pointer-events:none}
 #veil,#lits{position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none}
 #veil{background:rgba(14,18,10,0);transition:background .25s ease}
 #veil.on{background:rgba(14,18,10,.13)}
 #stage{transition:background-color .25s ease}
 #stage{background-color:#12160F}
-#stage.veiled{background-color:#10140D}
+#stage.veiled{background-color:#12160F}
 #lits img,#lits div{position:absolute;max-width:none;opacity:0;transition:opacity .22s ease}
 #lits img.on,#lits div.on{opacity:1}
 #shapes{overflow:visible}
@@ -278,7 +285,7 @@ body{margin:0;background:var(--ink);color:var(--cream);font-family:var(--f);
   <button id="ptog" aria-expanded="false" aria-controls="picker"></button>
   <div id="key" aria-label="What the colours mean"></div>
 </div>
-<div id="card">
+<div id="card" class="intro">
   <div id="picker" role="group" aria-label="Find on the map" hidden>
     <div id="phead"><div id="pname">What are you looking for?</div><button id="pclose" type="button" aria-label="Close">✕</button></div>
     <div id="pgrid"></div>
@@ -288,8 +295,8 @@ body{margin:0;background:var(--ink);color:var(--cream);font-family:var(--f);
     <div id="hero" hidden></div>
     <div id="meta">
       <div id="empty">
-        <b>A city built for one weekend</b>
-        <p>Every August, architects and builders raise 20 neighborhoods on Pendarvis Farm. Swipe or tap ‹ › to walk through them from the front gate, or tap any neighborhood to see what's there.</p>
+        <b>A city for one weekend</b>
+        <p>Every August, architects and builders raise 20 neighborhoods on Pendarvis Farm. Swipe this panel to walk through them, or tap one on the map.</p>
         <button id="ibuild" type="button">We build these. Want one? →</button>
       </div>
       <div id="full" hidden>
@@ -656,11 +663,11 @@ function show(h){
     clearTimeout(heroT);
     document.getElementById('hero').hidden=true;
     document.getElementById('full').hidden=true;
-    document.getElementById('empty').hidden=false;
+    document.getElementById('empty').hidden=false; document.getElementById('card').classList.add('intro');
     if(!amFilter && typeof showRings==='function') showRings(null,null);
     return;
   }
-  document.getElementById('empty').hidden=true;
+  document.getElementById('empty').hidden=true; document.getElementById('card').classList.remove('intro');
   document.getElementById('full').hidden=false;
   document.getElementById('cname').textContent=h.n;
   document.getElementById('ctag').textContent=h.t||'';
