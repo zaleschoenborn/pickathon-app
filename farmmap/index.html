@@ -898,7 +898,7 @@ if(img.complete&&img.naturalWidth) boot(); else img.onload=boot;
 // ---- Walk the farm: swipe the card (or use the arrows) to go neighbourhood to
 // neighbourhood, and the map glides to frame each one. The order is a walk from
 // the far south lots up through the camps; the big camps frame the whole farm.
-const ORDER=['willowcamp','welcomelot','curation','southcamp','farmhouse','orchard','courtyard','lucky','galaxy','paddock','windmill','grove','market','cherryhill','coyote','refuge','quailtrail','woods','lushcamp','wildcamp'];
+const ORDER=['willowcamp','welcomelot','southcamp','curation','farmhouse','orchard','courtyard','lucky','galaxy','paddock','windmill','grove','market','cherryhill','coyote','refuge','quailtrail','woods','lushcamp','wildcamp'];
 let flyRaf=0;
 function viewFor(h){
   const sh=D.shapes[h.id], W=stage.clientWidth, H=stage.clientHeight; if(!sh) return null;
