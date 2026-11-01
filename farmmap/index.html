@@ -794,7 +794,7 @@ function iconAt(e){
 }
 function tapAt(e){
   const el=document.elementFromPoint(e.clientX,e.clientY);
-  const h=el&&el.__hood;
+  const h=el&&(el.__hood||(el.closest&&(el.closest('.lab')||{}).__hood));
   // an icon only answers once its neighbourhood is the one already picked
   { const ia=iconAt(e);
     if(ia && window.__setFilter && D.amlbl[ia] && ia!=='tent'){ window.__setFilter(ia,true);
@@ -829,7 +829,7 @@ labs.addEventListener('click',e=>{
   const b=e.target.closest('.lab');
   const h=b&&b.__hood; const wasMoved=moved; moved=false;
   if(!h||wasMoved) return;
-  if(lastType==='touch' && h!==cur){ setCur(h); return; }   // first tap shows the card
+  if(e.detail>0) return;   // pointer taps are handled in tapAt, so a label behaves exactly like its neighborhood
   goPage(h);
 });
 labs.addEventListener('pointerover',e=>{
