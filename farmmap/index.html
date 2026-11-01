@@ -18,6 +18,9 @@ body{margin:0;background:var(--ink);color:var(--cream);font-family:var(--f);
   user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
 #stage *{-webkit-user-drag:none}
 #stage.onhood{cursor:pointer}
+#stage.onicon{cursor:pointer}
+#itip{position:fixed;z-index:30;pointer-events:none;padding:5px 10px;border-radius:999px;background:#F2B33D;color:#12160F;font:800 12px/1.1 var(--f);white-space:nowrap;box-shadow:0 2px 8px rgba(0,0,0,.45);opacity:0;transform:translate(-50%,-140%);transition:opacity .12s}
+#itip.on{opacity:1}
 #stage.drag,#stage.drag *{cursor:grabbing!important}
 #art,#shapes{position:absolute;top:0;left:0;transform-origin:0 0;will-change:transform}
 #art img{display:block;width:100%;height:auto;user-select:none;-webkit-user-drag:none}
@@ -721,8 +724,11 @@ function hover(e){
   if(!stage.contains(e.target)&&e.target!==stage) return;
   const el=document.elementFromPoint(e.clientX,e.clientY);
   const h=el&&el.__hood?el.__hood:null;
-  stage.classList.toggle('onhood',!!h);
-  if(hoverOK && NOW()>settleUntil) setCur(h);
+  const ia=e.pointerType==='mouse'?iconAt(e):null;
+  stage.classList.toggle('onhood',!!h&&!ia); stage.classList.toggle('onicon',!!ia);
+  const tp=document.getElementById('itip');
+  if(tp){ if(ia){ tp.textContent=TIPLBL[ia]||D.amlbl[ia]||ia; tp.style.left=e.clientX+'px'; tp.style.top=e.clientY+'px'; tp.classList.add('on'); } else tp.classList.remove('on'); }
+  if(hoverOK && !ia && NOW()>settleUntil) setCur(h);
 }
 
 function onMove(e){
@@ -769,13 +775,15 @@ addEventListener('pointermove',e=>{ try{ onMove(e); }
 // pointerup ever arrives. Neither belongs on a map.
 addEventListener('dragstart',e=>e.preventDefault());
 addEventListener('selectstart',e=>{ if(stage.contains(e.target)) e.preventDefault(); });
+const TIPLBL={smoke:'Smoking Area',wheelchair:'Accessibility',accesscamp:'Accessible Camping',rv:'Vehicle Camping'};
+let _ALLI=null;
 function iconAt(e){
-  // Only the picked neighbourhood's own icons answer. Zoomed in the hit area is the icon's own box; zoomed out it widens so a dot is still easy to hit.
-  if(!cur) return null;
-  const r=stage.getBoundingClientRect(), mx=(e.clientX-r.left-tx)/k, my=(e.clientY-r.top-ty)/k, m=(e.pointerType==='mouse'?18:26)/k;
+  // An icon answers only once it is big enough to see and aim at (the same zoom where it is drawn as itself). Then any icon, in any neighborhood, answers on the first click.
+  if(!(k>=kFit*1.8) || 42*k<22) return null;   // clickable once the icon is at least ~22px across on screen
+  if(!_ALLI){ _ALLI=[]; for(const a in ICON_AT) ICON_AT[a].forEach(p=>_ALLI.push([a,p])); }
+  const r=stage.getBoundingClientRect(), mx=(e.clientX-r.left-tx)/k, my=(e.clientY-r.top-ty)/k, pad=(e.pointerType==='mouse'?3:10)/k;
   let best=null,bd=1e9;
-  hoodIcons(cur).forEach(en=>{ const a=en[0],p=en[1], hw=Math.max(p[4]||p[2],m)/2, hh=Math.max(p[5]||p[2],m)/2;
-    const dx=Math.abs(p[0]-mx), dy=Math.abs(p[1]-my);
+  _ALLI.forEach(en=>{ const a=en[0],p=en[1], hw=(p[4]||p[2])/2+pad, hh=(p[5]||p[2])/2+pad, dx=Math.abs(p[0]-mx), dy=Math.abs(p[1]-my);
     if(dx<=hw&&dy<=hh){ const d=Math.hypot(dx/hw,dy/hh); if(d<bd){ bd=d; best=a; } } });
   return best;
 }
@@ -783,8 +791,8 @@ function tapAt(e){
   const el=document.elementFromPoint(e.clientX,e.clientY);
   const h=el&&el.__hood;
   // an icon only answers once its neighbourhood is the one already picked
-  if(cur && (!h || h===cur)){ const ia=iconAt(e);
-    if(ia && window.__setFilter && D.amlbl[ia] && ia!=='tent' && ia!=='gear'){ window.__setFilter(ia,true); return; } }
+  { const ia=iconAt(e);
+    if(ia && window.__setFilter && D.amlbl[ia] && ia!=='tent'){ window.__setFilter(ia,true); return; } }
   if(!h) return;
   // mouse: hover already showed the card, a click opens. Touch: the first tap
   // shows the card, a tap on the one already showing opens it.
@@ -904,7 +912,7 @@ function frameHood(fh){ const W=stage.clientWidth,H=stage.clientHeight, sh=D.sha
 let settleUntil=0; let hoverOK=true;   // hover previews only until the first pan, zoom or click; after that a click selects and a second click opens
 
 document.getElementById('ibuild').addEventListener('click',()=>{ try{ parent.postMessage({pkMap:'go',r:'build'},'*'); }catch(e){} });
-function boot(){ art.style.width=MW+'px'; art.style.height=MH+'px'; build(); fit(); restoreView(); settleUntil=NOW()+900; warmHeroes(); }
+function boot(){ if(!document.getElementById('itip')){ const t=document.createElement('div'); t.id='itip'; document.body.appendChild(t); } art.style.width=MW+'px'; art.style.height=MH+'px'; build(); fit(); restoreView(); settleUntil=NOW()+900; warmHeroes(); }
 if(img.complete&&img.naturalWidth) boot(); else img.onload=boot;
 
 // ---- Walk the farm: swipe the card (or use the arrows) to go neighbourhood to
