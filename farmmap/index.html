@@ -235,7 +235,7 @@ body{margin:0;background:var(--ink);color:var(--cream);font-family:var(--f);
   #eyebrow{display:block!important}
 }
 #cpitch,#cvid{display:none}
-#cvsp{display:none;align-items:center;gap:8px;min-height:32px;padding:0 14px;border-radius:999px;border:1px solid #4A5544;background:rgba(18,22,15,.6);color:#F2EDE3;font:700 13px/1.2 var(--f);cursor:pointer}#cvsp:not([hidden]){display:inline-flex}#cvsp .ic{display:inline-block;position:relative;top:0;font:15px/15px Inter,system-ui,sans-serif;transition:transform .55s cubic-bezier(.2,.9,.3,1.3)}#cvw:not(:has(#cvid:not([hidden]))){display:none!important}#cvw{order:6;margin-top:14px;flex:0 0 auto;border-radius:16px;overflow:hidden;background:#1A2017;border:1px solid #2A3125}#cvt{display:flex;flex-direction:column;gap:4px;padding:10px 14px 12px}#cvk{font:800 11px/1.2 var(--f);letter-spacing:.1em;text-transform:uppercase;color:#D6B54A}#cva{font:800 20px/1.1 'Bricolage Grotesque',var(--f);color:#F2EDE3}#cvs{margin:0;font:400 15px/1.35 var(--f);color:#DCD6C9;display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden}#cvr{display:flex;margin-top:4px}#cvsp{min-height:32px!important}
+#cvsp{display:none;align-items:center;justify-content:center;gap:8px;min-height:38px;padding:0 16px;border-radius:6px;border:2px solid #F2EDE3;background:#F2EDE3;color:#12160F;font:800 12px/1.15 var(--f);letter-spacing:.08em;text-transform:uppercase;cursor:pointer}#cvsp:not([hidden]){display:inline-flex}#cvsp .ic{display:inline-block;position:relative;top:0;font:15px/15px Inter,system-ui,sans-serif;transition:transform .55s cubic-bezier(.2,.9,.3,1.3)}#cvw:not(:has(#cvid:not([hidden]))){display:none!important}#cvw{order:6;margin-top:14px;flex:0 0 auto;border-radius:16px;overflow:hidden;background:#1A2017;border:1px solid #2A3125}#cvt{display:flex;flex-direction:column;gap:4px;padding:10px 14px 12px}#cvk{font:800 11px/1.2 var(--f);letter-spacing:.1em;text-transform:uppercase;color:#D6B54A}#cva{font:800 20px/1.1 'Bricolage Grotesque',var(--f);color:#F2EDE3}#cvs{margin:0;font:400 15px/1.35 var(--f);color:#DCD6C9;display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden}#cvr{display:flex;margin-top:4px}#cvsp{min-height:38px!important}
 #card:not(.intro) #body{cursor:pointer}
 #card:not(.intro) #cvid,#card:not(.intro) #cmore,#card:not(.intro) #nav button{cursor:pointer}
 @media (min-width:880px){
@@ -255,8 +255,10 @@ body{margin:0;background:var(--ink);color:var(--cream);font-family:var(--f);
 
 
   #cvid::after{display:none}
+  #cvid .bp{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:1;width:56px;height:56px;border-radius:50%;background:rgba(242,237,227,.95);box-shadow:0 4px 22px rgba(0,0,0,.5);display:grid;place-items:center;pointer-events:none;transition:transform .2s ease}#cvid .bp b{display:block;width:0;height:0;border-left:17px solid #12160F;border-top:11px solid transparent;border-bottom:11px solid transparent;margin-left:5px}#cvid:hover .bp{transform:translate(-50%,-50%) scale(1.07)}
+  #cvt .pl2{display:inline-flex;align-items:center;align-self:flex-start;gap:6px;max-width:100%;margin:4px 0 2px;padding:5px 13px 5px 5px;border-radius:999px;background:#D6B54A;color:#12160F;font:800 13px/1.1 Inter,system-ui,sans-serif;white-space:nowrap;box-sizing:border-box;cursor:pointer}#cvt .pl2 b{flex:none;display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;background:#12160F;color:#D6B54A;font-size:10px;padding-left:1px;box-sizing:border-box}#cvt .pl2 #cvl{overflow:hidden;text-overflow:ellipsis}
   #cvid .pl,#cvid .vt{z-index:1}
-  #cvid.playing{cursor:default}#cvid.playing img,#cvid.playing .pl,#cvid.playing .vt{display:none}#cvid.playing::after{display:none}#cvid iframe{position:absolute;inset:0;width:100%;height:100%;border:0;z-index:2}
+  #cvid.playing{cursor:default}#cvid.playing img,#cvid.playing .bp,#cvid.playing .vt{display:none}#cvid.playing::after{display:none}#cvid iframe{position:absolute;inset:0;width:100%;height:100%;border:0;z-index:2}
   #full #cgo{order:9;margin-top:auto;align-self:stretch;text-align:center;padding-top:14px;padding-bottom:14px;background:#F2B33D;color:#12160F}
   #hero{aspect-ratio:16/9!important;border-radius:14px}
   #hero::after{content:'';position:absolute;inset:0;z-index:2;pointer-events:none;background:linear-gradient(180deg,rgba(12,14,10,0) 40%,rgba(12,14,10,.88) 100%)}
@@ -466,7 +468,7 @@ body{margin:0;background:var(--ink);color:var(--cream);font-family:var(--f);
         <p id="ctag"></p>
         <p id="cpitch" hidden></p>
         <button id="cmore" type="button" hidden>Read more →</button>
-        <div id="cvw"><a id="cvid" hidden target="_blank" rel="noopener"><img alt=""><span class="pl"><b>▶︎</b><span id="cvl">Watch</span></span></a><div id="cvt"><div id="cvk"></div><div id="cva"></div><p id="cvs"></p><div id="cvr"><button id="cvsp" type="button" hidden><span class="ic">↻</span>Another one</button></div></div></div>
+        <div id="cvw"><a id="cvid" hidden target="_blank" rel="noopener"><img alt=""><span class="bp" aria-hidden="true"><b></b></span></a><div id="cvt"><div id="cvk"></div><div id="cva"></div><span class="pl2" id="cvpl2" role="link" tabindex="0"><b>▶︎</b><span id="cvl">Watch</span></span><p id="cvs"></p><div id="cvr"><button id="cvsp" type="button" hidden><span class="ic">↻</span>Another one</button></div></div></div>
         <div class="ams" id="cams"></div>
         <button id="cgo">Explore the page →</button>
       </div>
@@ -890,7 +892,7 @@ function fillExtra(h){
   const pc=document.getElementById('cpitch'), cv=document.getElementById('cvid');
   pc.hidden=true; cv.hidden=true; document.getElementById('cvsp').hidden=true; document.getElementById('cmore').hidden=true; if(!XD||!XD.h) return;
   const x=XD.h[h.id]; const p=x&&x.d&&x.d[0]; if(p&&innerWidth<880){ pc.textContent=p; pc.hidden=false; document.getElementById('cmore').hidden=false; }
-  const rx=VRX[h.id]; if(rx&&XD.v){ const L0=XD.v.filter(v=>!v.cad&&!(v.vm&&!v.th)&&rx.test(String(v.s||'')+' '+String(v.vn||''))), L=L0; if(L.length){ let vi=Math.floor(Math.random()*L.length); try{ const lk='pkmap.lastv.'+h.id, last=sessionStorage.getItem(lk); if(L.length>1&&last!==null&&String(vi)===last) vi=(vi+1+Math.floor(Math.random()*(L.length-1)))%L.length; sessionStorage.setItem(lk,String(vi)); }catch(e){} let v=L[vi]; const sp=document.getElementById('cvsp'); sp.hidden=L.length<2; sp.onclick=e=>{ e.stopPropagation(); cyc++; sp.style.background=PAL[cyc%PAL.length]; sp.querySelector('.ic').style.transform='rotate('+(cyc*360)+'deg)'; let k=vi; while(L.length>1&&k===vi) k=Math.floor(Math.random()*L.length); vi=k; v=L[k]; put(v); };
+  const rx=VRX[h.id]; if(rx&&XD.v){ const L0=XD.v.filter(v=>!v.cad&&!(v.vm&&!v.th)&&rx.test(String(v.s||'')+' '+String(v.vn||''))), L=L0; if(L.length){ let vi=Math.floor(Math.random()*L.length); try{ const lk='pkmap.lastv.'+h.id, last=sessionStorage.getItem(lk); if(L.length>1&&last!==null&&String(vi)===last) vi=(vi+1+Math.floor(Math.random()*(L.length-1)))%L.length; sessionStorage.setItem(lk,String(vi)); }catch(e){} let v=L[vi]; const sp=document.getElementById('cvsp'); sp.hidden=L.length<2; sp.onclick=e=>{ e.stopPropagation(); cyc++; sp.querySelector('.ic').style.transform='rotate('+(cyc*360)+'deg)'; let k=vi; while(L.length>1&&k===vi) k=Math.floor(Math.random()*L.length); vi=k; v=L[k]; put(v); };
     const put=v=>{ cv.__v=v; cv.classList.remove('playing'); const old=cv.querySelector('iframe'); if(old) old.remove(); cv.href=v.vm?'https://vimeo.com/'+v.vm+(v.vh?'/'+v.vh:'')+(v.t?'#t='+v.t+'s':''):'https://www.youtube.com/watch?v='+v.id+(v.t?'&t='+v.t+'s':''); cv.querySelector('img').src=v.vm?v.th:'https://i.ytimg.com/vi/'+v.id+'/hqdefault.jpg'; cv.hidden=false; document.getElementById('cvl').textContent=v.y?((v.f?'Watch the full set, Pickathon ':'Watch from Pickathon ')+v.y):'Watch'; document.getElementById('cvk').textContent='Filmed at '+h.n; document.getElementById('cva').textContent=v.a||''; document.getElementById('cvs').textContent=vSong(v.s); }; put(v); } }
 }
 const THE={woods:1,paddock:1,grove:1,windmill:1,galaxy:1,farmhouse:1,refuge:1,courtyard:1,market:1,orchard:1,welcomelot:1};   // 'Explore the Grove', but 'Explore Cherry Hill', 'Explore Lucky'
@@ -1108,6 +1110,7 @@ stage.addEventListener('wheel',e=>{
 },{passive:false});
 stage.addEventListener('dblclick',e=>{e.preventDefault(); cancelAnimationFrame(flyRaf); zoomAt(k*2,e.clientX,e.clientY);});
 
+(function(){const pl=document.getElementById('cvpl2'),go=e=>{e.preventDefault();e.stopPropagation();document.getElementById('cvid').click()};pl.addEventListener('click',go);pl.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' ')go(e)})})();
 document.getElementById('cvid').addEventListener('click',e=>{   // the clip opens in the site's one video player, over the whole screen; it never sends you off to YouTube
   const cv=e.currentTarget, v=cv.__v; if(!v) return;
   e.preventDefault(); e.stopPropagation();
@@ -1129,7 +1132,7 @@ document.getElementById('cvid').addEventListener('click',e=>{   // the clip open
 });
 document.getElementById('cgo').onclick=e=>{ e.stopPropagation(); if(cur) goPage(cur); };
 document.getElementById('card').addEventListener('click',e=>{
-  if(e.target.closest('#pickbar,#picker,#top,#nav,#pcl,#cvid,#cvsp,#cmore,#fback,#fx')) return;     // the amenity controls stay controls
+  if(e.target.closest('#pickbar,#picker,#top,#nav,#pcl,#cvid,#cvpl2,#cvsp,#cmore,#fback,#fx')) return;     // the amenity controls stay controls
   if(window.__swipedAt && performance.now()-window.__swipedAt<500) return;   // the end of a swipe is not a tap
   if(cur) goPage(cur);
 });
