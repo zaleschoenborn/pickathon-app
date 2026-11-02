@@ -184,7 +184,7 @@ body{margin:0;background:var(--ink);color:var(--cream);font-family:var(--f);
     background:#F2B33D;color:#12160F;flex:0 0 auto}
 }
 @media (max-width:879px) and (max-height:640px){:root{--cardh:clamp(200px,42%,280px)}}
-#hero img.on{animation:kb 7s ease-out forwards}
+#hero img.on{animation:none}
 @keyframes kb{from{transform:scale(1.02)}to{transform:scale(1.16)}}
 @media (min-width:880px){
   :root{--cardw:clamp(440px,30vw,560px)}
@@ -447,7 +447,7 @@ body{margin:0;background:var(--ink);color:var(--cream);font-family:var(--f);
         <button id="cmore" type="button" hidden>Read more →</button>
         <a id="cvid" hidden target="_blank" rel="noopener"><img alt=""><span class="pl">▶︎</span><span class="vt"><b></b><i></i></span></a>
         <div class="ams" id="cams"></div>
-        <button id="cvsp" type="button" hidden>&#127922; Surprise me</button>
+        <button id="cvsp" type="button" hidden>Another one</button>
         <button id="cgo">Explore the page →</button>
       </div>
     </div>
@@ -867,7 +867,7 @@ function fillExtra(h){
   const pc=document.getElementById('cpitch'), cv=document.getElementById('cvid');
   pc.hidden=true; cv.hidden=true; document.getElementById('cvsp').hidden=true; document.getElementById('cmore').hidden=true; if(!XD||!XD.h) return;
   const x=XD.h[h.id]; const p=x&&x.d&&x.d[0]; if(p){ pc.textContent=p; pc.hidden=false; document.getElementById('cmore').hidden=false; }
-  const rx=VRX[h.id]; if(rx&&XD.v){ const L0=XD.v.filter(v=>!v.cad&&!(v.vm&&!v.th)&&rx.test(String(v.s||'')+' '+String(v.vn||''))), L=L0; if(L.length){ let vi=Math.floor(Math.random()*L.length); try{ const lk='pkmap.lastv.'+h.id, last=sessionStorage.getItem(lk); if(L.length>1&&last!==null&&String(vi)===last) vi=(vi+1+Math.floor(Math.random()*(L.length-1)))%L.length; sessionStorage.setItem(lk,String(vi)); }catch(e){} let v=L[vi]; const sp=document.getElementById('cvsp'); sp.hidden=L.length<2; sp.onclick=e=>{ e.stopPropagation(); if(sp.__b) return; sp.__b=1; const im=cv.querySelector('img'); let k=vi; while(L.length>1&&k===vi) k=Math.floor(Math.random()*L.length); const pool=L.slice(); for(let q=pool.length-1;q>0;q--){ const r=Math.floor(Math.random()*(q+1)); [pool[q],pool[r]]=[pool[r],pool[q]]; } let seq=[]; while(seq.length<12) seq=seq.concat(pool); seq=seq.slice(0,12); seq.push(L[k]); vi=k; v=L[k]; cv.classList.add('spinning'); let n=0; (function st(){ if(n<seq.length){ const z=seq[n]; im.src=z.vm?z.th:'https://i.ytimg.com/vi/'+z.id+'/hqdefault.jpg'; const dl=55+n*n*2.6; n++; setTimeout(st,dl); } else { cv.classList.remove('spinning'); sp.__b=0; put(v); } })(); };
+  const rx=VRX[h.id]; if(rx&&XD.v){ const L0=XD.v.filter(v=>!v.cad&&!(v.vm&&!v.th)&&rx.test(String(v.s||'')+' '+String(v.vn||''))), L=L0; if(L.length){ let vi=Math.floor(Math.random()*L.length); try{ const lk='pkmap.lastv.'+h.id, last=sessionStorage.getItem(lk); if(L.length>1&&last!==null&&String(vi)===last) vi=(vi+1+Math.floor(Math.random()*(L.length-1)))%L.length; sessionStorage.setItem(lk,String(vi)); }catch(e){} let v=L[vi]; const sp=document.getElementById('cvsp'); sp.hidden=L.length<2; sp.onclick=e=>{ e.stopPropagation(); let k=vi; while(L.length>1&&k===vi) k=Math.floor(Math.random()*L.length); vi=k; v=L[k]; put(v); };
     const put=v=>{ cv.__v=v; cv.classList.remove('playing'); const old=cv.querySelector('iframe'); if(old) old.remove(); cv.href=v.vm?'https://vimeo.com/'+v.vm+(v.vh?'/'+v.vh:'')+(v.t?'#t='+v.t+'s':''):'https://www.youtube.com/watch?v='+v.id+(v.t?'&t='+v.t+'s':''); cv.querySelector('img').src=v.vm?v.th:'https://i.ytimg.com/vi/'+v.id+'/hqdefault.jpg'; cv.querySelector('b').textContent=v.a||''; cv.querySelector('i').textContent=(/Tree ?line/i.test(String(v.s||'')+' '+String(v.vn||''))?'Treeline (now Cherry Hill)':h.n)+' · '+(v.y||''); cv.hidden=false; }; put(v); } }
 }
 function show(h){
