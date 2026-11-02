@@ -395,26 +395,6 @@
 "c": "Joe Duquette"
 },
 {
-"i": "i/pk-paddock-h2.jpg",
-"c": "Graeme Harrison"
-},
-{
-"i": "i/pk-paddock-03.jpg",
-"c": "Pickathon"
-},
-{
-"i": "i/pk-paddock-04.jpg",
-"c": "Killian Mustain"
-},
-{
-"i": "i/pk-paddock-05.jpg",
-"c": "Andy Meeks"
-},
-{
-"i": "i/pk-paddock-06.jpg",
-"c": "Norm Eder"
-},
-{
 "i": "i/pk-paddock-07.jpg",
 "c": "Pickathon"
 },
@@ -423,24 +403,8 @@
 "c": "Graeme Harrison"
 },
 {
-"i": "i/pk-paddock-09.jpg",
-"c": "Grace Hefley"
-},
-{
-"i": "i/pk-paddock-11.jpg",
-"c": "Pickathon"
-},
-{
 "i": "i/pk-paddock-12.jpg",
 "c": "Pickathon"
-},
-{
-"i": "i/pk-paddock-13.jpg",
-"c": "Graeme Harrison"
-},
-{
-"i": "i/pk-paddock-14.jpg",
-"c": "Norm Eder"
 }
 ],
 "ic": "i/224.svg",
@@ -493,17 +457,6 @@
 "i": "i/p604.jpg",
 "y": "2025",
 "by": ""
-},
-{
-"i": "i/p539.jpg",
-"y": "2026",
-"by": ""
-},
-{
-"i": "i/p470.jpg",
-"y": "2026",
-"by": "Graeme Harrison",
-"band": "Thee Sinseers"
 },
 {
 "i": "i/p674.jpg",
