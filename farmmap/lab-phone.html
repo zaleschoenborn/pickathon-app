@@ -731,6 +731,28 @@ body.lpback #lptitle{display:none!important}   /* back from a neighborhood page:
   #lpl{left:0!important;right:auto!important;border-left:0!important;border-radius:0 12px 12px 0!important}
   #lpr{right:0!important;left:auto!important;border-right:0!important;border-radius:12px 0 0 12px!important}
 }
+
+/* Desktop intro: a title panel anchored at the top of the right column. A click on it (or the first touch of the map) folds it
+   into a compact header; the emblem grid stays below it while nothing is selected. */
+#dtitle{display:none}
+@media (min-width:880px){
+  #card.intro #empty>#eyebrow,#card.intro #empty>b,#card.intro #empty>p{display:none!important}
+  #card.intro #empty{padding:0 22px 0!important;gap:0!important;justify-content:flex-start!important}
+  #dtitle{display:block;position:relative;margin:0 -22px;padding:28px 22px 20px;flex:none;cursor:pointer;
+    background:radial-gradient(120% 140% at 0 0,#262E1F 0%,#1B2116 55%,#161A12 100%);border-bottom:1px solid #2F3629}
+  #dtitle::before{content:'';position:absolute;left:22px;top:0;width:54px;height:4px;background:#F2B33D}
+  #dtitle h1{margin:0;font:900 clamp(32px,2.7vw,44px)/1.02 var(--f);letter-spacing:-.012em;color:#fff}
+  #dtitle .ds{margin:16px 0 0;font:600 clamp(16px,1.3vw,19px)/1.2 var(--f);color:#E6E0D3}
+  #dtitle .dn{margin:12px 0 0;font:800 13px/1.35 var(--f);color:#F2B33D}
+  body.dpdone #dtitle{padding:20px 22px 14px;cursor:default;transition:padding .25s ease}
+  body.dpdone #dtitle::before{width:34px;height:3px}
+  body.dpdone #dtitle h1{font-size:23px}
+  body.dpdone #dtitle .ds{display:none}
+  body.dpdone #dtitle .dn{margin-top:6px;font:600 12.5px/1.35 var(--f);color:var(--muted)}
+  #card.intro #empty #pcl{margin-top:14px!important;gap:10px 6px!important}
+  #card.intro #empty #pcl .pc .lg{width:56px!important;height:56px!important}
+  #card.intro #empty #pcl .pcg{margin:6px 0 0!important}
+}
 </style>
 <div id="card" class="intro"><div id="lpprev"><div id="lpth"></div><div id="lptx"><small id="lpk"></small><div id="lpnow" hidden></div><b id="lpn"></b><div id="lpprog"></div><div id="lppills"></div></div><button id="lpx" type="button" aria-label="Back to all neighborhoods">&#10005;</button><button id="lpl" class="lpar" type="button" aria-label="Previous neighborhood">&#8249;</button><button id="lpr" class="lpar" type="button" aria-label="Next neighborhood">&#8250;</button></div>
   <div id="picker" role="group" aria-label="Find on the map" hidden>
@@ -744,6 +766,7 @@ body.lpback #lptitle{display:none!important}   /* back from a neighborhood page:
     <div id="hero" hidden></div>
     <div id="meta">
       <div id="empty">
+        <div id="dtitle"><h1>Pickathon Neighborhoods</h1><p class="ds">A Temporary City of Wonder</p><p class="dn">Click any neighborhood on the map, or pick one here, to explore it.</p></div>
         <small id="eyebrow">Pickathon Neighborhoods</small>
         <b>A Temporary City of Wonder</b>
         <p>Every summer Pickathon builds a small city of stages, courtyards and camps on a farm in Oregon. Point at a neighborhood to find it. Click to fly there.</p>
@@ -1270,7 +1293,7 @@ let selOnce=false;
 function setCur(h){
   if(!h || h===cur) return;
   if(innerWidth<880) selOnce=true;
-  cur=h; show(h); apply();
+  cur=h; show(h); apply(); document.body.classList.add('dpdone');
   if(LP()){ lpFresh(false); lpSync(); lpSelAt=NOW(); lpPanTo(h); }
 }
 let pinned=null;   // desktop: a click pins a neighborhood so the pointer can travel to its card
@@ -1564,6 +1587,11 @@ function boot(){ if(!document.getElementById('itip')){ const t=document.createEl
 // Deep entry hint: shown once per visit when the map opens on a picked neighborhood; any first interaction fades it for good.
 function lpDeepInit(){
   if(CARDID) return;
+  // Desktop title panel: shown on every entry except an explicit neighborhood link or a return from a neighborhood page
+  if(!LP()){ const done=()=>document.body.classList.add('dpdone');
+    if(window.__lpDeep||FROMHOOD) done();
+    else{ const dt=document.getElementById('dtitle'); if(dt) dt.addEventListener('click',done);
+      ['pointerdown','wheel','keydown'].forEach(n=>stage.addEventListener(n,done,{once:true,passive:true})); } }
   if(FROMHOOD){ document.body.classList.add('lpback'); const ev0=['pointerdown','touchstart','wheel','keydown'], off0=function(){ document.body.classList.remove('lpback'); ev0.forEach(function(n){ removeEventListener(n,off0,true); }); }; ev0.forEach(function(n){ addEventListener(n,off0,{capture:true,passive:true}); }); return; }
   if(!window.__lpDeep||!cur) return;
   const el=document.getElementById('lpdeep'), f=document.getElementById('finder'); if(!el) return;
