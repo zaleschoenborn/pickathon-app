@@ -9,3 +9,8 @@
 - The neighborhood video pickers do not favor single songs; every clip counts.
 - Treeline (the predecessor of Cherry Hill) videos are included in Cherry Hill's picker, labeled "Treeline (now Cherry Hill)" on the map preview.
 - Standing rule: when a video changes, update data.json (main and test copy), the Video Ledger and the video docs together.
+
+## 2026-11-02 changes
+- Removed W.I.T.C.H. "Stop the rot" Slab 2023 (B_qLcKV7KlU): not a good video. No replacement found; card has no video for now.
+- Yo La Tengo 2016 "Mountain" full set (Vimeo 182121580) is now linked as the Legends watch pill; flagged as a full set (kept off Home and Why). Start time not yet set.
+- Mavis Staples 2011 card now uses her Vimeo still as its picture.
