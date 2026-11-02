@@ -860,6 +860,42 @@
 "c": "Pickathon"
 },
 {
+"i": "i/pk-grove-n1.jpg",
+"c": "Brooke Hoyer"
+},
+{
+"i": "i/pk-grove-n2.jpg",
+"c": "Andy Meeks"
+},
+{
+"i": "i/pk-grove-n3.jpg",
+"c": "Andy Meeks"
+},
+{
+"i": "i/pk-grove-n4.jpg",
+"c": "Brooke Hoyer"
+},
+{
+"i": "i/pk-grove-n7.jpg",
+"c": "Erin Riddle"
+},
+{
+"i": "i/pk-grove-n6.jpg",
+"c": "Dylan VanWeelden"
+},
+{
+"i": "i/pk-grove-n5.jpg",
+"c": "Graeme Harrison"
+},
+{
+"i": "i/pk-grove-n8.jpg",
+"c": "Erin Riddle"
+},
+{
+"i": "i/pk-grove-n9.jpg",
+"c": "Rob Kerr"
+},
+{
 "i": "i/p770.jpg",
 "c": "Pickathon"
 },
@@ -872,16 +908,8 @@
 "c": "Miri Stebivka"
 },
 {
-"i": "i/pk-grove-02.jpg",
-"c": "Pickathon"
-},
-{
 "i": "i/pk-grove-h1.jpg",
 "c": "Jaime Delacruz"
-},
-{
-"i": "i/pk-grove-h2.jpg",
-"c": "Norman Eder"
 },
 {
 "i": "i/pk-grove-03.jpg",
@@ -892,40 +920,12 @@
 "c": "Van Jaarsveld"
 },
 {
-"i": "i/pk-grove-05.jpg",
-"c": "Pickathon"
-},
-{
-"i": "i/pk-grove-06.jpg",
-"c": "Pickathon"
-},
-{
 "i": "i/pk-grove-07.jpg",
 "c": "Jason Redmond"
 },
 {
-"i": "i/pk-grove-08.jpg",
-"c": "Bill Purcell"
-},
-{
 "i": "i/pk-grove-09.jpg",
 "c": "Todd Stern"
-},
-{
-"i": "i/pk-grove-10.jpg",
-"c": "Pickathon"
-},
-{
-"i": "i/pk-grove-12.jpg",
-"c": "Jason Redmond"
-},
-{
-"i": "i/pk-grove-13.jpg",
-"c": "Bill Purcell"
-},
-{
-"i": "i/pk-grove-14.jpg",
-"c": "Norman Eder"
 },
 {
 "i": "i/pk-grove-15.jpg",
@@ -1021,6 +1021,37 @@
 "by": ""
 },
 {
+"i": "i/pk-grove-n1.jpg",
+"y": "2026",
+"by": "Brooke Hoyer"
+},
+{
+"i": "i/pk-grove-n2.jpg",
+"y": "2026",
+"by": "Andy Meeks"
+},
+{
+"i": "i/pk-grove-n7.jpg",
+"y": "2023",
+"by": "Erin Riddle"
+},
+{
+"i": "i/pk-grove-n4.jpg",
+"y": "2026",
+"by": "Brooke Hoyer"
+},
+{
+"i": "i/pk-grove-n3.jpg",
+"y": "2026",
+"by": "Andy Meeks"
+},
+{
+"i": "i/pk-grove-n6.jpg",
+"y": "2026",
+"by": "Dylan VanWeelden",
+"band": ""
+},
+{
 "i": "i/p715.jpg",
 "y": "2026",
 "by": "Graeme Harrison",
@@ -1031,53 +1062,6 @@
 "y": "2026",
 "by": "Brooke Hoyer",
 "band": "Prewn"
-},
-{
-"i": "i/p679.jpg",
-"y": "2026",
-"by": "Dylan VanWeelden",
-"band": ""
-},
-{
-"i": "i/p735.jpg",
-"y": "2026",
-"by": "Jaime Delacruz",
-"band": "Sgt. Papers"
-},
-{
-"i": "i/p752.jpg",
-"y": "2026",
-"by": "",
-"band": "Sgt. Papers"
-},
-{
-"i": "i/p599.jpg",
-"y": "2026",
-"by": "Andy Meeks"
-},
-{
-"i": "i/p590.jpg",
-"y": "2026",
-"by": "Jaime Delacruz",
-"band": "Sgt. Papers"
-},
-{
-"i": "i/p802.jpg",
-"y": "2026",
-"by": "Jaime Delacruz",
-"band": "Sgt. Papers"
-},
-{
-"i": "i/p586.jpg",
-"y": "2026",
-"by": "Jaime Delacruz",
-"band": "Sgt. Papers"
-},
-{
-"i": "i/p676.jpg",
-"y": "2026",
-"by": "Rob Kerr",
-"band": "Sgt. Papers"
 }
 ],
 "pb": [
