@@ -72,8 +72,8 @@ body{margin:0;background:var(--ink);color:var(--cream);font-family:var(--f);
 .lab:not([style*="top"]){opacity:0!important}   /* a label shows only once it has been placed: no blink at the corner on first entry */
 #stage.moving #labs .lab{pointer-events:none}
 .lab{position:absolute;pointer-events:auto;border:0;cursor:default;
-  padding:4px 8px;border-radius:7px;max-width:116px;
-  font:800 11px/1.2 var(--f);letter-spacing:.015em;text-align:left;
+  padding:5px 9px;border-radius:8px;max-width:140px;
+  font:800 13px/1.2 var(--f);letter-spacing:.015em;text-align:left;
   background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.3);
   display:flex;align-items:center;gap:5px;transform:translateY(-50%)}
 .lab span{color:var(--ink)}
@@ -193,7 +193,7 @@ body{margin:0;background:var(--ink);color:var(--cream);font-family:var(--f);
 @keyframes kb{from{transform:scale(1.02)}to{transform:scale(1.16)}}
 @media (min-width:880px){
   :root{--cardw:clamp(440px,30vw,560px)}
-  .lab{font-size:15px;padding:6px 11px;max-width:176px;border-radius:9px;gap:7px;letter-spacing:.01em}
+  .lab{font-size:17px;padding:7px 13px;max-width:210px;border-radius:10px;gap:8px;letter-spacing:.01em}
   .lab{border-left-width:5px;padding-left:9px}
   #stage{bottom:0;right:var(--cardw)}
   #card{top:0;left:auto;width:var(--cardw);height:auto;
@@ -1491,6 +1491,7 @@ addEventListener('selectstart',e=>{ if(stage.contains(e.target)) e.preventDefaul
 const TIPLBL={smoke:'Smoking Area',wheelchair:'Accessibility',accesscamp:'Accessible Camping',rv:'Vehicle Camping'};
 let _ALLI=null;
 function iconAt(e){
+  { const el0=document.elementFromPoint(e.clientX,e.clientY); if(el0&&el0.closest&&el0.closest('.lab')) return null; }   // a name tag sitting over an icon wins: the tooltip and click belong to the neighborhood
   // An icon answers only once it is big enough to see and aim at (the same zoom where it is drawn as itself). Then any icon, in any neighborhood, answers on the first click.
   if(!(k>=kFit*1.8) || 42*k<22) return null;   // clickable once the icon is at least ~22px across on screen
   if(!_ALLI){ _ALLI=[]; for(const a in ICON_AT) ICON_AT[a].forEach(p=>_ALLI.push([a,p])); }
@@ -1626,7 +1627,23 @@ addEventListener('keydown',e=>{
   if(!pg.hidden){pg.hidden=true;return;}
   clearCur();
 });
-addEventListener('resize',()=>{ if(LP()) return; const z=k/kFit; fit(); zoomAt(kFit*z,stage.clientWidth/2,stage.clientHeight/2);});
+// Responsive rule: crossing a layout breakpoint (desktop / tablet / phone) rebuilds the page cleanly, keeping the picked neighborhood; inside one layout the map refits, and a map still sitting at its start view goes to the new start view.
+const BOOTMODE=(function(){ return innerWidth>=880?'d':(innerWidth>=700?'t':'p'); })();
+let rsW=stage.clientWidth, rsH=stage.clientHeight, homeV=null, modeT=0;
+(function(){ const _hv=homeView; homeView=function(){ _hv.apply(this,arguments); homeV={k:k,tx:tx,ty:ty}; }; })();
+function modeNow(){ return innerWidth>=880?'d':(innerWidth>=700?'t':'p'); }
+addEventListener('resize',()=>{
+  if(modeNow()!==BOOTMODE){ clearTimeout(modeT); modeT=setTimeout(()=>{ if(modeNow()===BOOTMODE) return; try{ const last=+sessionStorage.getItem('pkmap.rl')||0; if(Date.now()-last<800) return; sessionStorage.setItem('pkmap.rl',String(Date.now())); if(cur) sessionStorage.setItem('pkmap.focus',cur.id); }catch(e){} location.reload(); },280); return; }
+  clearTimeout(modeT);
+  if(LP()) return;
+  const atH=!!homeV&&Math.abs(k-homeV.k)/homeV.k<0.01&&Math.abs(tx-homeV.tx)<3&&Math.abs(ty-homeV.ty)<3;
+  const cx=(rsW/2-tx)/k, cy=(rsH/2-ty)/k, z=k/kFit;
+  fit(); rsW=stage.clientWidth; rsH=stage.clientHeight;
+  if(atH){ homeView(); return; }
+  k=Math.max(kFit,Math.min(maxK(),kFit*z)); tx=rsW/2-cx*k; ty=rsH/2-cy*k; clamp(); apply();
+});
+// The frame can change size without the window hearing about it (an installed app restoring, the parent laying out after this page started). Watch the stage itself and replay the resize when its size really changed, so the map never sits at a stale size until someone nudges the window.
+(function(){ if(!window.ResizeObserver) return; let w0=stage.clientWidth,h0=stage.clientHeight,raf=0; new ResizeObserver(()=>{ cancelAnimationFrame(raf); raf=requestAnimationFrame(()=>{ const w=stage.clientWidth,h=stage.clientHeight; if(Math.abs(w-w0)<2&&Math.abs(h-h0)<2) return; w0=w; h0=h; try{ dispatchEvent(new Event('resize')); }catch(e){} }); }).observe(stage); })();
 
 // Coming back from a neighborhood page, the map returns to the same look. Only
 // the hand-off saves anything (no running cost); the site clears the flag if the
