@@ -1171,6 +1171,8 @@ function progOf(h){
   Object.keys(XD.ar).forEach(id=>{ const A=XD.ar[id]; if(!A) return;
     if((A.l==='food'||A.l==='craft') && h.id==='market' && !K[A.l]) K[A.l]=A.l==='food'?.6:.5;
     if(A.l==='beverages' && (A.bh||[]).indexOf(h.id)>=0 && !K.beverages) K.beverages=.1; });
+  // DJs play the Courtyard and the Market's Mountain of Sound, but those sets aren't on the public schedule.
+  if(h.id==='courtyard'||h.id==='market'){ if(!K.djs) K.djs=.7; }
   const LBL={music:'Music',djs:'DJs',family:'Family',wellness:'Wellness',comedy:'Comedy',literary:'Literary',curation:'Curation',food:'Food',craft:'Craft',beverages:'Beverages'};
   const ks=Object.keys(K).filter(x=>LBL[x]).sort((x,y)=>K[y]-K[x]);
   return ks.length?{tags:ks.map(x=>LBL[x]),line:''}:null;
