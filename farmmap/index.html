@@ -222,7 +222,7 @@ body{margin:0;background:var(--ink);color:var(--cream);font-family:var(--f);
   #pcl .pc u{display:none}
   #pcl .pc i,#pcl .pc em{display:none!important}
   #pcl .pc .lg{display:grid!important}
-  #pcl .pc{padding:4px 10px;gap:10px;border-left:3px solid var(--ac,#F2B33D)}
+  #pcl .pc{padding:4px 10px 4px 5px;gap:10px}
   #pcl .pc .lg{flex:0 0 32px!important;height:32px!important}
   #pcl .pc .lg img{width:26px!important;height:26px!important}
   #pcl .pcg{margin:6px 0 0!important}
@@ -798,6 +798,7 @@ function warmHeroes(){ buildCards();
   const next=()=>{ if(i>=ids.length) return; const im=new Image(); im.decoding='async'; im.src=ids[i++]; setTimeout(next,160); };
   setTimeout(next,2500);
 }
+const HCOL={"cherryhill": "#78acac", "courtyard": "#a17346", "coyote": "#878a99", "farmhouse": "#a4af52", "galaxy": "#7d8d78", "grove": "#a07044", "lucky": "#6d9a50", "lushcamp": "#69994c", "market": "#708085", "orchard": "#76acad", "paddock": "#a0aa44", "quailtrail": "#9caa40", "refuge": "#75abac", "southcamp": "#689848", "wildcamp": "#639743", "windmill": "#868998", "woods": "#9d6c3c", "curation": "#85889a", "welcomelot": "#7fafae", "willowcamp": "#a5774e"};
 const SVGL={"woods": "i/264.svg", "paddock": "i/224.svg", "cherryhill": "i/63.svg", "grove": "i/p532.svg", "windmill": "i/p633.svg", "galaxy": "i/p788.svg", "lucky": "i/272.svg", "farmhouse": "i/481.svg", "curation": "i/293.svg", "refuge": "i/197.svg", "coyote": "i/229.svg", "courtyard": "i/214.svg", "market": "i/144.svg", "orchard": "i/198.svg", "welcomelot": "i/p779.svg", "lushcamp": "i/19.svg", "quailtrail": "i/242.svg", "southcamp": "i/p707.svg", "wildcamp": "i/465.svg", "willowcamp": "i/25.svg"};
 function buildCards(){
   const box=document.getElementById('pcl'); if(!box||box._d) return; box._d=1;
@@ -808,7 +809,7 @@ function buildCards(){
     const L=HOODS.filter(h=>h.k===k||(k==='wellness'&&h.k==='family')); if(!L.length) return;
     html+='<div class="pcg">'+(k==='wellness'?'Wellness &amp; family':(KIND[k]||k))+'</div>';
     L.forEach(h=>{ const im=(HERO[h.id]||[])[0];
-      html+='<button class="pc" type="button" data-h="'+h.id+'" style="--ac:'+(col[k]||'#F2B33D')+'"><s class="lg"><img alt="" decoding="async" src="../'+(SVGL[h.id]||('ic2/'+h.id+'.png'))+'"></s><i'+(im?' style="background-image:url(\''+im+'\')"':'')+'></i><span><b>'+h.n+'</b><em>'+(h.t||'')+'</em></span><u>›</u></button>'; });
+      html+='<button class="pc" type="button" data-h="'+h.id+'" style="--ac:'+(col[k]||'#F2B33D')+'"><s class="lg" style="background:'+(HCOL[h.id]||'#0F130D')+'"><img alt="" decoding="async" src="../ic2/'+h.id+'.png"></s><i'+(im?' style="background-image:url(\''+im+'\')"':'')+'></i><span><b>'+h.n+'</b><em>'+(h.t||'')+'</em></span><u>›</u></button>'; });
   });
   html+='<a class="pcb" href="https://build.creativeneighborhoods.com/" target="_top">We build these. Creative Neighborhoods &rsaquo;</a>';
   box.innerHTML=html;
