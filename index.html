@@ -1855,6 +1855,7 @@ class Component extends DCLogic {
   go(r, extra, replace) {
     this._navT = Date.now();
     if (r === 'why' || r === 'home' || r === 'map') this._seed = 0;
+    if (r === 'hoods') { try { sessionStorage.removeItem('pkmap.view'); sessionStorage.removeItem('pkmap.frame'); } catch (e) {} }
     if (r === 'map') r = 'home';
     if (r === 'past') { if (extra && extra.y) this.state.pastY = String(extra.y); }
     else if (r === 'lineup' && !(extra && extra.keepArch)) { if ((this.state.season || 'off') === 'off') { this.state.luArch = true; this.state.luYear = '2026'; } else { this.state.luArch = false; this.state.luYear = ''; } }
