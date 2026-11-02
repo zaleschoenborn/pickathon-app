@@ -318,9 +318,9 @@ body{margin:0;background:var(--ink);color:var(--cream);font-family:var(--f);
 }
 #pcl,#body,#card{scrollbar-width:none;-ms-overflow-style:none}
 #pcl::-webkit-scrollbar,#body::-webkit-scrollbar,#card::-webkit-scrollbar{display:none}
-#fullmap{position:fixed;top:14px;right:14px;z-index:25;border:1px solid var(--line);background:rgba(22,26,18,.92);color:var(--cream);font:800 12px/1 var(--f);padding:0 13px;height:36px;border-radius:999px;display:flex;align-items:center;gap:7px;cursor:pointer;opacity:0;pointer-events:none;transition:opacity .2s}
+#fullmap{position:fixed;top:max(10px,env(safe-area-inset-top,0px));right:14px;z-index:25;border:1px solid rgba(255,255,255,.16);background:#161A12;box-shadow:0 3px 12px rgba(0,0,0,.38);color:var(--cream);font:800 15px/1 var(--f);padding:0 17px 0 13px;min-height:46px;border-radius:999px;display:flex;align-items:center;gap:9px;cursor:pointer;opacity:0;pointer-events:none;transition:opacity .2s}
 #fullmap.on{opacity:1;pointer-events:auto}
-#fullmap svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.8}
+#fullmap svg{width:19px;height:19px;stroke:currentColor;fill:none;stroke-width:2.2}
 @media (min-width:880px){#fullmap{right:calc(var(--cardw) + 14px)}}
 #pcl .pc .lg{display:none;flex:0 0 38px;height:38px;place-items:center;background:#0F130D;border-radius:9px;text-decoration:none}
 #pcl .pc .lg img{width:30px;height:30px;object-fit:contain}
@@ -410,8 +410,9 @@ body{margin:0;background:var(--ink);color:var(--cream);font-family:var(--f);
   #stage{inset:0!important;bottom:0!important}
   #lptest{display:block;position:fixed;top:0;right:0;z-index:60;padding:3px 7px 3px 8px;border-radius:0 0 0 8px;
     background:#D6B54A;color:#12160F;font:800 9px/1 var(--f);letter-spacing:.14em;pointer-events:none}
-  #fullmap{top:max(22px,calc(env(safe-area-inset-top,0px) + 12px));right:10px;height:32px;padding:0 12px;font-size:11.5px;
-    background:rgba(18,22,15,.86);border-color:rgba(255,255,255,.14);backdrop-filter:blur(6px)}
+  #fullmap{top:max(22px,calc(env(safe-area-inset-top,0px) + 12px));right:10px;min-height:36px;height:auto;padding:0 14px 0 11px;font-size:13px;
+    background:rgba(18,22,15,.86);border-color:rgba(255,255,255,.16);backdrop-filter:blur(6px)}
+  #fullmap svg{width:15px;height:15px}
   #finder #ptog{min-height:36px;font-size:13px;padding:0 14px 0 11px;background:rgba(18,22,15,.86);backdrop-filter:blur(6px)}
   #finder #ptog svg.mag{width:15px;height:15px}
 
@@ -1384,6 +1385,7 @@ function peek(h){
 function fullMap(){ pinned=null; peek(null); cur=null; show(null);
   if(LP()){ light(null); lpSync(); lpFresh(true); flyView(lpHome(),null); return; }
   const W=stage.clientWidth,H=stage.clientHeight; light(null);
+  selOnce=false; document.body.classList.remove('dpdone','nodt'); armTitle(); try{ lmSync(); }catch(e){}
   flyView({k:kFit,tx:(W-MW*kFit)/2,ty:(H-MH*kFit)/2},null); }
 function clearCur(){ pinned=null; peek(null); cur=null; show(null); if(LP()){ light(null); lpSync(); lpFresh(true); flyView(lpHome(),null); } else apply(); }
 function goPage(h){
@@ -1661,20 +1663,24 @@ let settleUntil=0; let hoverOK=true;   // hover previews only until the first pa
 document.getElementById('ibuild').addEventListener('click',()=>{ try{ parent.postMessage({pkMap:'go',r:'build'},'*'); }catch(e){} });
 function boot(){ if(!document.getElementById('itip')){ const t=document.createElement('div'); t.id='itip'; document.body.appendChild(t); } art.style.width=MW+'px'; art.style.height=MH+'px'; build(); fit(); homeView(); restoreView(); settleUntil=NOW()+900; if(CARDID){ cardView(); } else warmHeroes(); lpDeepInit(); }
 // Deep entry hint: shown once per visit when the map opens on a picked neighborhood; any first interaction fades it for good.
+// The title leaves only for a deliberate move, never for the tail of the click that opened the map: a held or double click, trackpad inertia from the page above, a key still down.
+let titleOff=null;
+function armTitle(){ if(LP()) return; if(titleOff) titleOff();
+  const t0=performance.now(); let dn=null, gone=false;
+  const evs=['pointerdown','pointermove','wheel','keydown'];
+  const off=()=>{ if(gone) return; gone=true; titleOff=null; evs.forEach(n=>stage.removeEventListener(n,h)); };
+  const h=e=>{ if(performance.now()-t0<1800) return;
+    if(e.type==='pointerdown'){ dn={x:e.clientX,y:e.clientY}; return; }
+    if(e.type==='pointermove'){ if(dn&&Math.hypot(e.clientX-dn.x,e.clientY-dn.y)>10){ off(); document.body.classList.add('dpdone'); } return; }
+    if(e.type==='wheel'){ if(Math.abs(e.deltaY)+Math.abs(e.deltaX)>0){ off(); document.body.classList.add('dpdone'); } return; }
+    if(e.type==='keydown'&&!e.repeat){ off(); document.body.classList.add('dpdone'); } };
+  titleOff=off; evs.forEach(n=>stage.addEventListener(n,h,{passive:true})); }
 function lpDeepInit(){
   if(CARDID) return;
   // Desktop title panel: shown on every entry except an explicit neighborhood link or a return from a neighborhood page
   if(!LP()){ const done=()=>document.body.classList.add('dpdone');
     if(window.__lpDeep||FROMHOOD) done();
-    else{   // The title leaves only for a deliberate move, never for the tail of the click that opened the map: a held or double click, trackpad inertia from the page above, a key still down.
-      const t0=performance.now(); let dn=null, gone=false;
-      const off=()=>{ if(gone) return; gone=true; done(); ['pointerdown','pointermove','wheel','keydown'].forEach(n=>stage.removeEventListener(n,h)); removeEventListener('keydown',h); };
-      const h=e=>{ if(performance.now()-t0<1800) return;
-        if(e.type==='pointerdown'){ dn={x:e.clientX,y:e.clientY}; return; }
-        if(e.type==='pointermove'){ if(dn&&Math.hypot(e.clientX-dn.x,e.clientY-dn.y)>10) off(); return; }
-        if(e.type==='wheel'){ if(Math.abs(e.deltaY)+Math.abs(e.deltaX)>0) off(); return; }
-        if(e.type==='keydown'&&!e.repeat) off(); };
-      ['pointerdown','pointermove','wheel','keydown'].forEach(n=>stage.addEventListener(n,h,{passive:true})); } }
+    else armTitle(); }
   if(FROMHOOD){ document.body.classList.add('lpback'); const ev0=['pointerdown','touchstart','wheel','keydown'], off0=function(){ document.body.classList.remove('lpback'); ev0.forEach(function(n){ removeEventListener(n,off0,true); }); }; ev0.forEach(function(n){ addEventListener(n,off0,{capture:true,passive:true}); }); return; }
   if(!window.__lpDeep||!cur) return;
   const el=document.getElementById('lpdeep'), f=document.getElementById('finder'); if(!el) return;
