@@ -394,6 +394,7 @@ body{margin:0;background:var(--ink);color:var(--cream);font-family:var(--f);
 #lits img.pk.on,#lits div.pk.on{opacity:.62}   /* the neighborhood under the pointer while another is pinned: same low-layer light, softer */
 .lab.peek{outline:3px solid #F2B33D;outline-offset:1px;box-shadow:0 2px 10px rgba(242,179,61,.55)}
 #shapes .rr{fill:none;stroke:#F2B33D;stroke-width:4px;vector-effect:non-scaling-stroke;pointer-events:none;filter:drop-shadow(0 0 4px #F2B33D)}
+
 </style>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&display=swap">
 
@@ -513,6 +514,55 @@ body{margin:0;background:var(--ink);color:var(--cream);font-family:var(--f);
   #card #cgo,#card #full #cgo{grid-column:1/-1;justify-self:start;align-self:start;margin:12px 0 0;min-height:34px;height:34px;padding:0 16px;
     border-radius:999px;background:#D6B54A;color:#12160F;font:800 13px/1 var(--f)}
 }
+
+/* ===== Phone strip (Nov 2026): one fixed-height strip under the map. Nothing picked: the emblems, in a row you swipe sideways.
+   Picked: a thin preview in the very same space. The strip never changes height, so the map never resizes or jumps. */
+#lptitle{display:none}
+@media (max-width:879px){
+  :root{--lps:calc(102px + env(safe-area-inset-bottom,0px))}
+  #lpbar,#lpscrim{display:none!important}
+  #finder{flex-direction:row;align-items:flex-start;gap:8px}
+  #lptitle{display:flex;flex-direction:column;gap:2px;padding:7px 12px 8px;border-radius:12px;background:rgba(18,22,15,.78);
+    backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.1);pointer-events:none;max-width:calc(100vw - 150px)}
+  #lptitle b{font:800 13.5px/1.1 var(--f);color:#F2EDE3;white-space:nowrap}
+  #lptitle span{font:500 11px/1.2 var(--f);color:#CFC9BC;white-space:nowrap}
+  body.lpsel #lptitle{display:none}
+  #lpmenu,body.lpmenu #lpmenu{display:block;position:fixed;left:0;right:0;bottom:0;top:auto;z-index:27;height:var(--lps);max-height:none;
+    padding:9px 0 env(safe-area-inset-bottom,0px);box-sizing:border-box;border-radius:0;transform:none;visibility:visible;transition:none;
+    background:#14180F;border-top:1px solid rgba(255,255,255,.09);box-shadow:none;overflow-x:auto;overflow-y:hidden;
+    overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+  #lpmenu::-webkit-scrollbar{display:none}
+  body.lpsel #lpmenu{visibility:hidden}
+  #lpgroups{display:flex;flex-direction:row;gap:0;width:max-content;padding:0 6px}
+  .lpgrp{display:flex;flex-direction:column;padding:0 4px}
+  .lpgrp+.lpgrp{border-left:1px solid rgba(242,237,227,.1);padding-left:8px;margin-left:4px}
+  .lpg{margin:0 0 6px 4px!important;white-space:nowrap;font:800 9.5px/1 var(--f);letter-spacing:.13em;text-transform:uppercase;color:#D6B54A}
+  .lpg em{font-style:normal;font-weight:600;letter-spacing:.02em;text-transform:none;color:#ABA597;margin-left:6px}
+  .lpits{display:flex;gap:2px}
+  .lpi{width:60px;padding:0;gap:4px}
+  .lpi s,body .lpi s{width:46px;height:46px}
+  .lpi b{-webkit-line-clamp:1;white-space:nowrap;text-overflow:ellipsis;font:700 10px/1.1 var(--f);display:block}
+  body.lpmenu #labs,body.lpmenu #leads{opacity:1!important}
+
+  #card,#card.intro{height:var(--lps)!important;max-height:none!important;border-radius:0;border-top:1px solid rgba(255,255,255,.09);
+    background:#14180F;box-shadow:none;transform:none;visibility:hidden;opacity:0;transition:opacity .16s ease,visibility 0s linear .16s}
+  body.lpsel #card{visibility:visible;opacity:1;transform:none;transition:opacity .16s ease,visibility 0s}
+  #card::before{display:none}
+  #lpprev{grid-template-columns:auto minmax(0,1fr)!important;column-gap:12px!important;align-items:center;height:100%;box-sizing:border-box;
+    padding:11px 12px calc(11px + env(safe-area-inset-bottom,0px))!important}
+  #lpth{height:calc(var(--lps) - 22px - env(safe-area-inset-bottom,0px));aspect-ratio:4/3;border-radius:10px}
+  #lptx{display:flex;flex-direction:column;justify-content:center;gap:0;padding-right:34px}
+  #lpk{font:800 9.5px/1 var(--f);letter-spacing:.13em;text-transform:uppercase;color:#D6B54A;margin:0 0 4px}
+  #lpk[hidden]{display:none}
+  #lpn{font:800 19px/1.1 var(--f)}
+  #lpnow{margin:0 0 4px!important;display:block!important;font:700 11.5px/1.2 var(--f);color:#F2EDE3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  #lpnow[hidden]{display:none!important}
+  #lpnow i{padding:1px 6px;margin-right:5px}
+  #lppills{display:flex;gap:6px;margin-top:8px;grid-column:auto}
+  #lppills button{height:28px;padding:0 13px;font:800 12px/1 var(--f)}
+  #lpx{top:50%;margin-top:-14px}
+}
+
 </style>
 <div id="stage">
   <div id="art"><img id="mapimg" src="map.webp?v=25" alt="Map of Pendarvis Farm" draggable="false"><div id="tiles"></div><div id="veil"></div><div id="lits"></div></div>
@@ -535,10 +585,30 @@ body{margin:0;background:var(--ink);color:var(--cream);font-family:var(--f);
 
 <div id="finder">
   <button id="ptog" aria-expanded="false" aria-controls="picker"></button>
+  <div id="lptitle"><b>Pickathon neighborhoods</b><span>Pick a neighborhood to explore</span></div>
   <div id="key" aria-label="What the colours mean"></div>
 </div>
 <button id="fullmap" type="button" aria-label="Back to the full map"><svg viewBox="0 0 16 16"><path d="M2 6V2h4M14 6V2h-4M2 10v4h4M14 10v4h-4"/></svg>Full map</button>
-<div id="card" class="intro"><div id="lpprev"><div id="lpth"><button id="lpw" type="button" hidden><b>&#9654;&#xFE0E;</b>Watch</button></div><div id="lptx"><b id="lpn"></b><p id="lpa"></p><div id="lpnow"></div></div><div id="lppills"></div><button id="lpx" type="button" aria-label="Close preview">&#10005;</button></div>
+<style>
+/* Desktop preview, kept simple: picture; emblem + name; amenities; one-line tagline; one clip; one Explore pill. */
+#chd{display:contents}#cemb{display:none}
+@media (min-width:880px){
+  #full #ckind,#full #cpitch,#full #cmore,#full #cvsp,#full #cvk,#full #cvs,#full #cvr{display:none!important}
+  #card:not(.intro) #full{margin-top:-74px}
+  #chd{order:2;display:flex;align-items:center;gap:12px;margin:0 0 0 16px;min-height:56px;position:relative;z-index:3}
+  #cemb{display:block;flex:none;width:52px;height:52px;object-fit:contain;filter:drop-shadow(0 2px 8px rgba(0,0,0,.55))}
+  #cemb:not([src]){visibility:hidden}
+  #full #cname{margin:0;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  #full #cams{order:3;margin:20px 0 0}
+  #full #ctag{order:4;display:block;margin:12px 0 0;font:700 16px/1.3 var(--f);color:var(--cream);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;-webkit-line-clamp:unset}
+  #full #cvw{order:5;margin-top:16px}
+  #full #cvt{padding:10px 14px}
+  #full #cva{font:800 16px/1.2 var(--f);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  #full #cgo{order:6;align-self:flex-start;margin:16px 0 0;height:36px;min-height:36px;padding:0 18px;border:0;border-radius:999px;
+    background:#D6B54A;color:#12160F;font:800 14px/1 var(--f);cursor:pointer}
+}
+</style>
+<div id="card" class="intro"><div id="lpprev"><div id="lpth"></div><div id="lptx"><small id="lpk"></small><div id="lpnow" hidden></div><b id="lpn"></b><div id="lppills"></div></div><button id="lpx" type="button" aria-label="Back to all neighborhoods">&#10005;</button></div>
   <div id="picker" role="group" aria-label="Find on the map" hidden>
     <div id="phead"><div id="pname">What are you looking for?</div><button id="pclose" type="button" aria-label="Close">✕</button></div>
     <div id="pgrid"></div>
@@ -559,7 +629,7 @@ body{margin:0;background:var(--ink);color:var(--cream);font-family:var(--f);
       </div>
       <div id="full" hidden>
         <div class="chip" id="ckind">Stage</div>
-        <h2 id="cname">—</h2>
+        <div id="chd"><img id="cemb" alt=""><h2 id="cname">—</h2></div>
         <p id="ctag"></p>
         <p id="cpitch" hidden></p>
         <button id="cmore" type="button" hidden>Read more →</button>
@@ -571,7 +641,7 @@ body{margin:0;background:var(--ink);color:var(--cream);font-family:var(--f);
   </div>
 </div>
 <div id="lpscrim" aria-hidden="true"></div>
-<div id="lpmenu" role="dialog" aria-label="Neighborhoods" aria-hidden="true"><div id="lpgroups"></div></div>
+<div id="lpmenu" role="navigation" aria-label="Neighborhoods"><div id="lpgroups"></div></div>
 <button id="lpbar" type="button" aria-expanded="false" aria-controls="lpmenu"><i></i><span>Neighborhoods</span><b>&#9652;</b></button>
 <div id="lptest" aria-hidden="true">TEST</div>
 
@@ -790,7 +860,10 @@ function place(){
   L.forEach(h=>{ const o=PINL[h.id];
     h._sk = (o!==undefined && wm) ? wm._ay-(5-o)*0.9 : h._wy; });
   R.forEach(h=>h._sk=(LBLCAP[h.id]!==undefined)?1e6+(h.id==='willowcamp'?0:1):h._wy);   // capped labels sit last: Willow Camp, then Welcome Lot at the bottom (their leaders don't cross)
+  const BOT0=BOT;
   [L,R].forEach(arr=>{
+    // phone inside the site: the right rail stops short of the corner where the site's music button sits
+    const BOT=(arr===R&&LP()&&parent!==window)?BOT0-44:BOT0;
     arr.sort((a,b)=>a._sk-b._sk);
     // down the column first, then back up from the floor, so the bottom ones
     // spread instead of piling on the last slot
@@ -899,8 +972,10 @@ function apply(){
 // The farm locks to the frame: paper can never be dragged past the edges.
 function clampV(kk,x,y,Hv){
   const W=stage.clientWidth,w=MW*kk,h=MH*kk;
-  x = w<=W ? (W-w)/2 : Math.min(0,Math.max(W-w,x));
-  y = h<=Hv ? (Hv-h)/2 : Math.min(0,Math.max(Hv-h,y));
+  // Phone, zoomed in: a little room past the left, right and top edges, so Woods (top) or Refuge (right edge) can sit mid-screen.
+  let mx=0,mt=0; if(LP()&&kMin){ const z=Math.max(0,Math.min(1,(kk/kMin-1)/0.6)); mx=W*0.3*z; mt=Hv*0.3*z; }
+  x = w<=W ? (W-w)/2 : Math.min(mx,Math.max(W-w-mx,x));
+  y = h<=Hv ? (Hv-h)/2 : Math.min(mt,Math.max(Hv-h,y));
   return {tx:x,ty:y};
 }
 // Lab (phone): the bottom of the map can only rise as far as the top of whatever covers the bottom of the screen.
@@ -968,13 +1043,13 @@ const SVGL={"woods": "i/264.svg", "paddock": "i/224.svg", "cherryhill": "i/63.sv
 function buildCards(){
   const box=document.getElementById('pcl'); if(!box||box._d) return; box._d=1;
   const col={stage:'#D4502C',camp:'#C98A14',around:'#3E7F46',wellness:'#2E8C9E',family:'#8A4FA8'};
-  const order=['stage','around','wellness','camp'], seen={};
+  const order=['stage','around','camp'], seen={};   // three groups: Stages, Gathering (around the farm + wellness & family), Camping
   let html='';
-  order.concat(Object.keys(KIND).filter(k=>order.indexOf(k)<0&&k!=='family')).forEach(k=>{
-    const L=HOODS.filter(h=>h.k===k||(k==='wellness'&&h.k==='family')); if(!L.length) return;
+  order.forEach(k=>{
+    const L=HOODS.filter(h=>h.k===k||(k==='around'&&(h.k==='wellness'||h.k==='family'))); if(!L.length) return;
     if(k==='stage'){ const pr=id=>id==='curation'?1:id==='farmhouse'?2:0; L.sort((x,y)=>pr(x.id)-pr(y.id)); }   // Curation, then Farmhouse last
-    const DS={stage:'Where the music happens',around:'Food, art, shade and wonder',wellness:'Rest, play and care',camp:'Where you sleep'};
-    html+='<div class="pcg">'+(k==='wellness'?'Wellness &amp; family':k==='stage'?'Stages':(KIND[k]||k))+(DS[k]?'<span>'+DS[k]+'</span>':'')+'</div>';
+    const DS={stage:'Where the music happens',around:'Food, art, wellness &amp; family',camp:'Where you sleep'};
+    html+='<div class="pcg">'+(k==='around'?'Gathering':k==='stage'?'Stages':(KIND[k]||k))+(DS[k]?'<span>'+DS[k]+'</span>':'')+'</div>';
     L.forEach(h=>{ const im=(HERO[h.id]||[])[0];
       html+='<button class="pc" type="button" data-h="'+h.id+'" style="--ac:'+(col[k]||'#F2B33D')+';--ic:url(../ic2/'+h.id+'.png)"><s class="lg" style="background:'+(HCOL[h.id]||'#0F130D')+'"><img alt="" decoding="async" src="../ic2/'+h.id+'.png"></s><i'+(im?' style="background-image:url(\''+im+'\')"':'')+'></i><span><b>'+h.n+'</b><em>'+(h.t||'')+'</em></span><u>›</u></button>'; });
   });
@@ -993,10 +1068,11 @@ function vSong(t){ t=String(t||'').trim(); const P=t.split(/\s+[-\u2013|]\s+/), 
 function fillExtra(h){
   const pc=document.getElementById('cpitch'), cv=document.getElementById('cvid');
   pc.hidden=true; cv.hidden=true; document.getElementById('cvsp').hidden=true; document.getElementById('cmore').hidden=true; if(!XD||!XD.h) return;
-  const x=XD.h[h.id]; const p=x&&x.d&&x.d[0]; if(p){ pc.textContent=p; pc.hidden=false; document.getElementById('cmore').hidden=false; }
+  const x=XD.h[h.id]; const p=x&&x.d&&x.d[0]; if(p&&LP()){ pc.textContent=p; pc.hidden=false; document.getElementById('cmore').hidden=false; }
   const rx=VRX[h.id]; if(rx&&XD.v){ const L0=XD.v.filter(v=>!v.cad&&!(v.vm&&!v.th)&&rx.test(String(v.s||'')+' '+String(v.vn||''))), L=L0; if(L.length){ let vi=Math.floor(Math.random()*L.length); try{ const lk='pkmap.lastv.'+h.id, last=sessionStorage.getItem(lk); if(L.length>1&&last!==null&&String(vi)===last) vi=(vi+1+Math.floor(Math.random()*(L.length-1)))%L.length; sessionStorage.setItem(lk,String(vi)); }catch(e){} let v=L[vi]; const sp=document.getElementById('cvsp'); sp.hidden=L.length<2; sp.onclick=e=>{ e.stopPropagation(); cyc++; sp.style.background=PAL[cyc%PAL.length]; sp.querySelector('.ic').style.transform='rotate('+(cyc*360)+'deg)'; let k=vi; while(L.length>1&&k===vi) k=Math.floor(Math.random()*L.length); vi=k; v=L[k]; put(v); };
     const put=v=>{ cv.__v=v; cv.classList.remove('playing'); const old=cv.querySelector('iframe'); if(old) old.remove(); cv.href=v.vm?'https://vimeo.com/'+v.vm+(v.vh?'/'+v.vh:'')+(v.t?'#t='+v.t+'s':''):'https://www.youtube.com/watch?v='+v.id+(v.t?'&t='+v.t+'s':''); cv.querySelector('img').src=v.vm?v.th:'https://i.ytimg.com/vi/'+v.id+'/hqdefault.jpg'; cv.hidden=false; document.getElementById('cvl').textContent=v.y?((v.f?(LP()?'Full set, Pickathon ':'Watch the full set, Pickathon '):'Watch from Pickathon ')+v.y):'Watch'; document.getElementById('cvk').textContent='Filmed at '+h.n; document.getElementById('cva').textContent=v.a||''; document.getElementById('cvs').textContent=vSong(v.s); }; put(v); } }
 }
+const THE={woods:1,paddock:1,grove:1,windmill:1,galaxy:1,farmhouse:1,refuge:1,courtyard:1,market:1,orchard:1,welcomelot:1};   // 'Explore the Grove', but 'Explore Cherry Hill', 'Explore Lucky'
 function show(h){
   if(h) document.getElementById('card').classList.remove('all');
   if(!h){
@@ -1016,7 +1092,8 @@ function show(h){
   document.getElementById('cams').innerHTML=(amFilter&&!passes(h)?'<span class="nohit">No '+(AMLBL[amFilter]||amFilter)+' here</span>':'')+(h.amk||[]).map((a,i)=>
     '<span class="ai'+(a===amFilter?' hit':'')+'" title="'+(AMLBL[a]||a)+'">'+ico(a)+'</span>').join('');
   loadXD(); fillExtra(h);
-  document.getElementById('cgo').textContent=LP()?('See '+(/^The /.test(h.n)?h.n:'the '+h.n)+' →'):('Explore '+h.n.replace(/^The /,'')+' →');
+  document.getElementById('cgo').textContent='Explore '+(THE[h.id]?'the ':'')+h.n.replace(/^The /,'');
+  document.getElementById('cemb').src='../ic2/'+h.id+'.png';
   if(!amFilter && typeof showRings==='function') showRings(null,h);
   heroRun(h);
   if(LP()) lpFill(h);
@@ -1321,13 +1398,13 @@ function cardView(){ document.body.classList.add('cardmode'); const h=HOODS.find
 // ================= LAB (phone test): full-screen locked map, pull-up neighborhood menu, lower-third preview
 function LP(){ return innerWidth<880; }
 var LPVB=0, kMin=0, lpSelAt=0, lpMenuOn=false;
-function lpBarH(){ const b=document.getElementById('lpbar'); return b?b.offsetHeight:0; }
+function lpBarH(){ const b=document.getElementById('lpmenu'); return LP()&&b?b.offsetHeight:0; }   // the strip: same height picked or not
 // What covers the bottom of the map: the preview panel while something is picked, otherwise the handle.
 function lpSync(){
   if(!LP()){ LPVB=0; return; }
   const sel=!!cur; document.body.classList.toggle('lpsel',sel);
   if(sel) lpMenu(false);
-  LPVB = sel ? document.getElementById('card').offsetHeight : lpBarH();
+  LPVB = lpBarH();
 }
 // Default view: the farm's width fills the screen (never smaller than the screen), Woods as near the top as the bottom bound allows.
 function lpHome(){
@@ -1350,26 +1427,30 @@ function lpSettle(){ const c=clampV(k,tx,ty,stage.clientHeight-LPVB);
   if(Math.abs(c.tx-tx)>.5||Math.abs(c.ty-ty)>.5) flyView({k:k,tx:c.tx,ty:c.ty},null); else apply(); }
 function lpFmOn(){ if(cur) return true; const v=lpHome(); return k>v.k*1.03 || Math.abs(ty-v.ty)>30 || Math.abs(tx-v.tx)>30; }
 function lpRightTop(){ const f=document.getElementById('fullmap');
-  return f&&f.classList.contains('on') ? Math.round(f.getBoundingClientRect().bottom-stage.getBoundingClientRect().top)+16 : 34; }
+  if(f&&f.classList.contains('on')) return Math.round(f.getBoundingClientRect().bottom-stage.getBoundingClientRect().top)+16;
+  const t=document.getElementById('lptitle'), r=t&&t.offsetParent?t.getBoundingClientRect():null;   // the overview title: right-hand names start below it if it reaches their side
+  return r&&r.right>stage.clientWidth-150 ? Math.round(r.bottom-stage.getBoundingClientRect().top)+10 : 34; }
 function lpMenu(on){
   if(on===lpMenuOn) return; lpMenuOn=on;
   document.body.classList.toggle('lpmenu',on);
   const bar=document.getElementById('lpbar'); bar.setAttribute('aria-expanded',String(on));
   document.getElementById('lpmenu').setAttribute('aria-hidden',String(!on));
 }
+let LPORDER=[];
 function lpBuildMenu(){
   const box=document.getElementById('lpgroups'); if(!box||box._d) return; box._d=1;
-    let html='';
-  const items=kk=>{ const L=HOODS.filter(h=>h.k===kk||(kk==='wellness'&&h.k==='family'));
+  const items=kk=>{ const L=HOODS.filter(h=>kk==='around'?(h.k==='around'||h.k==='wellness'||h.k==='family'):h.k===kk);
     if(kk==='stage'){ const pr=id=>id==='curation'?1:id==='farmhouse'?2:0; L.sort((x,y)=>pr(x.id)-pr(y.id)); } return L; };
-  const hdr=(kk,name)=>'<div class="lpg lpg-'+kk+'">'+name.replace('&','&amp;')+'</div>';
-  const add=kk=>items(kk).forEach(h=>{ html+='<button type="button" class="lpi lpi-'+kk+'" data-h="'+h.id+'"><s style="--ic:url(../ic2/'+h.id+'.png);background:'+(HCOL[h.id]||'#D6B54A')+'"></s><b>'+h.n.replace(/^The /,'')+'</b></button>'; });
-  html+=hdr('stage','Stages'); add('stage');
-  html+=hdr('around','Around the farm')+hdr('wellness','Wellness & family'); add('around'); add('wellness');
-  html+=hdr('camp','Camping'); add('camp');
+  let html='';
+  [['stage','Stages',''],['around','Gathering','Food, art, wellness &amp; family'],['camp','Camping','']].forEach(g=>{
+    const L=items(g[0]); if(!L.length) return;
+    html+='<div class="lpgrp"><div class="lpg">'+g[1]+(g[2]?'<em>'+g[2]+'</em>':'')+'</div><div class="lpits">';
+    L.forEach(h=>{ LPORDER.push(h.id); html+='<button type="button" class="lpi" data-h="'+h.id+'"><s style="--ic:url(../ic2/'+h.id+'.png);background:'+(HCOL[h.id]||'#D6B54A')+'"></s><b>'+h.n.replace(/^The /,'')+'</b></button>'; });
+    html+='</div></div>';
+  });
   box.innerHTML=html;
-  box.addEventListener('click',e=>{ const b=e.target.closest('.lpi'); if(!b||lpSwiped()) return;
-    const h=HOODS.find(x=>x.id===b.dataset.h); if(!h) return; lpMenu(false); setCur(h); });
+  box.addEventListener('click',e=>{ const b=e.target.closest('.lpi'); if(!b) return;
+    const h=HOODS.find(x=>x.id===b.dataset.h); if(!h) return; setCur(h); });
 }
 let lpSwT=0; function lpSwiped(){ return NOW()-lpSwT<400; }
 function lpWire(){
@@ -1421,23 +1502,17 @@ function lpFill(h){
   if(!h) return; lpFill._h=h; lpFill._f=lpFest();
   const th=document.getElementById('lpth'), im=(HERO[h.id]||[])[0];
   th.style.backgroundImage=(im?'url("'+im+'")':'')+(im&&LQ[h.id]?', ':'')+(LQ[h.id]?'url('+LQ[h.id]+')':'');
-  const cv=document.getElementById('cvid'), hasV=!cv.hidden&&!!cv.__v;
-  const w=document.getElementById('lpw'); w.hidden=!hasV;
   document.getElementById('lpn').textContent=h.n;
-  const fest=lpFill._f, nn=fest?lpNowNext(h):null, now=document.getElementById('lpnow'), ab=document.getElementById('lpa');
+  const kd=document.getElementById('lpk'); kd.textContent=h.k==='stage'?'Stage':h.k==='camp'?'Camping':'Gathering';
+  // Festival only: one slim line for what is playing (or next), plus the schedule. Off-season: nothing.
+  const fest=lpFill._f, nn=fest?lpNowNext(h):null, now=document.getElementById('lpnow');
   if(nn&&(nn.on||nn.nx)){
-    ab.hidden=true;
-    now.innerHTML=(nn.on?'<div><i class="on">Now</i>'+lpEsc(nn.on.n)+'<em> · until '+nn.on.e+'</em></div>':'')+
-      (nn.nx?'<div><i>Next</i>'+lpEsc(nn.nx.n)+'<em> · '+(nn.nx.d?nn.nx.d+' ':'')+nn.nx.s+'</em></div>':'');
-    now.hidden=false;
-  } else { ab.hidden=false; ab.textContent=h.t||''; now.hidden=true; now.innerHTML=''; }
-  const see='See '+(/^The /.test(h.n)?h.n:'the '+h.n);
-  const P=[];
-  if(fest&&nn&&nn.any) P.push(['sched','See the schedule',1]);
-  P.push(['open',see+' →',!(fest&&nn&&nn.any)]);
-  if(!fest&&parent!==window) P.push(['tour','▶︎ Tour',0]);
+    now.innerHTML=nn.on?'<i class="on">Now</i>'+lpEsc(nn.on.n)+'<em> · until '+nn.on.e+'</em>':'<i>Next</i>'+lpEsc(nn.nx.n)+'<em> · '+(nn.nx.d?nn.nx.d+' ':'')+nn.nx.s+'</em>';
+    now.hidden=false; kd.hidden=true;
+  } else { now.hidden=true; now.innerHTML=''; kd.hidden=false; }
+  const P=[['open','Explore '+h.n.replace(/^The /,''),1]];
+  if(fest&&nn&&nn.any) P.push(['sched','Schedule',0]);
   document.getElementById('lppills').innerHTML=P.map(p=>'<button type="button" data-a="'+p[0]+'" class="'+(p[2]?'pri':'')+'">'+p[1]+'</button>').join('');
-  if(LP()&&cur){ const c=document.getElementById('card'); if(c.offsetHeight!==LPVB) lpSync(); }
 }
 function lpWirePanel(){
   document.getElementById('lppills').addEventListener('click',e=>{ const b=e.target.closest('button'); if(!b||!cur) return; e.stopPropagation();
@@ -1445,7 +1520,6 @@ function lpWirePanel(){
     if(a==='open') goPage(cur);
     else if(a==='tour'){ if(!lpPost({pkMap:'tour',id:cur.id})) goPage(cur); }
     else if(a==='sched'){ if(!lpPost({pkMap:'sched',id:cur.id})) goPage(cur); } });
-  document.getElementById('lpw').addEventListener('click',e=>{ e.stopPropagation(); document.getElementById('cvid').click(); });
   document.getElementById('lpx').addEventListener('click',e=>{ e.stopPropagation(); clearCur(); });
   // follow the site's TEST "When" switch
   setInterval(()=>{ if(cur&&lpFill._h===cur&&lpFest()!==lpFill._f) lpFill(cur); },800);
@@ -1501,11 +1575,12 @@ function flyView(to,h){
   })(t0);
 }
 function stepHood(dir){
-  let i=cur?ORDER.indexOf(cur.id):-1;
+  const O=(LP()&&LPORDER.length)?LPORDER:ORDER;
+  let i=cur?O.indexOf(cur.id):-1;
   if(i<0) i=dir>0?-1:0;
-  for(let n=0;n<ORDER.length;n++){
-    i=(i+dir+ORDER.length)%ORDER.length;
-    const h=HOODS.find(x=>x.id===ORDER[i]);
+  for(let n=0;n<O.length;n++){
+    i=(i+dir+O.length)%O.length;
+    const h=HOODS.find(x=>x.id===O[i]);
     if(h && passes(h)){
       const m=document.getElementById('meta'); m.classList.remove('swl','swr'); void m.offsetWidth; m.classList.add(dir>0?'swl':'swr');
       setCur(h); pinned=h; flyTo(h); return;

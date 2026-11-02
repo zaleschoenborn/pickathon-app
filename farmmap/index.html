@@ -422,6 +422,25 @@ body{margin:0;background:var(--ink);color:var(--cream);font-family:var(--f);
   <div id="key" aria-label="What the colours mean"></div>
 </div>
 <button id="fullmap" type="button" aria-label="Back to the full map"><svg viewBox="0 0 16 16"><path d="M2 6V2h4M14 6V2h-4M2 10v4h4M14 10v4h-4"/></svg>Full map</button>
+<style>
+/* Desktop preview, kept simple: picture; emblem + name; amenities; one-line tagline; one clip; one Explore pill. */
+#chd{display:contents}#cemb{display:none}
+@media (min-width:880px){
+  #full #ckind,#full #cpitch,#full #cmore,#full #cvsp,#full #cvk,#full #cvs,#full #cvr{display:none!important}
+  #card:not(.intro) #full{margin-top:-74px}
+  #chd{order:2;display:flex;align-items:center;gap:12px;margin:0 0 0 16px;min-height:56px;position:relative;z-index:3}
+  #cemb{display:block;flex:none;width:52px;height:52px;object-fit:contain;filter:drop-shadow(0 2px 8px rgba(0,0,0,.55))}
+  #cemb:not([src]){visibility:hidden}
+  #full #cname{margin:0;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  #full #cams{order:3;margin:20px 0 0}
+  #full #ctag{order:4;display:block;margin:12px 0 0;font:700 16px/1.3 var(--f);color:var(--cream);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;-webkit-line-clamp:unset}
+  #full #cvw{order:5;margin-top:16px}
+  #full #cvt{padding:10px 14px}
+  #full #cva{font:800 16px/1.2 var(--f);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  #full #cgo{order:6;align-self:flex-start;margin:16px 0 0;height:36px;min-height:36px;padding:0 18px;border:0;border-radius:999px;
+    background:#D6B54A;color:#12160F;font:800 14px/1 var(--f);cursor:pointer}
+}
+</style>
 <div id="card" class="intro">
   <div id="picker" role="group" aria-label="Find on the map" hidden>
     <div id="phead"><div id="pname">What are you looking for?</div><button id="pclose" type="button" aria-label="Close">✕</button></div>
@@ -443,7 +462,7 @@ body{margin:0;background:var(--ink);color:var(--cream);font-family:var(--f);
       </div>
       <div id="full" hidden>
         <div class="chip" id="ckind">Stage</div>
-        <h2 id="cname">—</h2>
+        <div id="chd"><img id="cemb" alt=""><h2 id="cname">—</h2></div>
         <p id="ctag"></p>
         <p id="cpitch" hidden></p>
         <button id="cmore" type="button" hidden>Read more →</button>
@@ -844,13 +863,13 @@ const SVGL={"woods": "i/264.svg", "paddock": "i/224.svg", "cherryhill": "i/63.sv
 function buildCards(){
   const box=document.getElementById('pcl'); if(!box||box._d) return; box._d=1;
   const col={stage:'#D4502C',camp:'#C98A14',around:'#3E7F46',wellness:'#2E8C9E',family:'#8A4FA8'};
-  const order=['stage','around','wellness','camp'], seen={};
+  const order=['stage','around','camp'], seen={};   // three groups: Stages, Gathering (around the farm + wellness & family), Camping
   let html='';
-  order.concat(Object.keys(KIND).filter(k=>order.indexOf(k)<0&&k!=='family')).forEach(k=>{
-    const L=HOODS.filter(h=>h.k===k||(k==='wellness'&&h.k==='family')); if(!L.length) return;
+  order.forEach(k=>{
+    const L=HOODS.filter(h=>h.k===k||(k==='around'&&(h.k==='wellness'||h.k==='family'))); if(!L.length) return;
     if(k==='stage'){ const pr=id=>id==='curation'?1:id==='farmhouse'?2:0; L.sort((x,y)=>pr(x.id)-pr(y.id)); }   // Curation, then Farmhouse last
-    const DS={stage:'Where the music happens',around:'Food, art, shade and wonder',wellness:'Rest, play and care',camp:'Where you sleep'};
-    html+='<div class="pcg">'+(k==='wellness'?'Wellness &amp; family':k==='stage'?'Stages':(KIND[k]||k))+(DS[k]?'<span>'+DS[k]+'</span>':'')+'</div>';
+    const DS={stage:'Where the music happens',around:'Food, art, wellness &amp; family',camp:'Where you sleep'};
+    html+='<div class="pcg">'+(k==='around'?'Gathering':k==='stage'?'Stages':(KIND[k]||k))+(DS[k]?'<span>'+DS[k]+'</span>':'')+'</div>';
     L.forEach(h=>{ const im=(HERO[h.id]||[])[0];
       html+='<button class="pc" type="button" data-h="'+h.id+'" style="--ac:'+(col[k]||'#F2B33D')+';--ic:url(../ic2/'+h.id+'.png)"><s class="lg" style="background:'+(HCOL[h.id]||'#0F130D')+'"><img alt="" decoding="async" src="../ic2/'+h.id+'.png"></s><i'+(im?' style="background-image:url(\''+im+'\')"':'')+'></i><span><b>'+h.n+'</b><em>'+(h.t||'')+'</em></span><u>›</u></button>'; });
   });
@@ -869,10 +888,11 @@ function vSong(t){ t=String(t||'').trim(); const P=t.split(/\s+[-\u2013|]\s+/), 
 function fillExtra(h){
   const pc=document.getElementById('cpitch'), cv=document.getElementById('cvid');
   pc.hidden=true; cv.hidden=true; document.getElementById('cvsp').hidden=true; document.getElementById('cmore').hidden=true; if(!XD||!XD.h) return;
-  const x=XD.h[h.id]; const p=x&&x.d&&x.d[0]; if(p){ pc.textContent=p; pc.hidden=false; document.getElementById('cmore').hidden=false; }
+  const x=XD.h[h.id]; const p=x&&x.d&&x.d[0]; if(p&&innerWidth<880){ pc.textContent=p; pc.hidden=false; document.getElementById('cmore').hidden=false; }
   const rx=VRX[h.id]; if(rx&&XD.v){ const L0=XD.v.filter(v=>!v.cad&&!(v.vm&&!v.th)&&rx.test(String(v.s||'')+' '+String(v.vn||''))), L=L0; if(L.length){ let vi=Math.floor(Math.random()*L.length); try{ const lk='pkmap.lastv.'+h.id, last=sessionStorage.getItem(lk); if(L.length>1&&last!==null&&String(vi)===last) vi=(vi+1+Math.floor(Math.random()*(L.length-1)))%L.length; sessionStorage.setItem(lk,String(vi)); }catch(e){} let v=L[vi]; const sp=document.getElementById('cvsp'); sp.hidden=L.length<2; sp.onclick=e=>{ e.stopPropagation(); cyc++; sp.style.background=PAL[cyc%PAL.length]; sp.querySelector('.ic').style.transform='rotate('+(cyc*360)+'deg)'; let k=vi; while(L.length>1&&k===vi) k=Math.floor(Math.random()*L.length); vi=k; v=L[k]; put(v); };
     const put=v=>{ cv.__v=v; cv.classList.remove('playing'); const old=cv.querySelector('iframe'); if(old) old.remove(); cv.href=v.vm?'https://vimeo.com/'+v.vm+(v.vh?'/'+v.vh:'')+(v.t?'#t='+v.t+'s':''):'https://www.youtube.com/watch?v='+v.id+(v.t?'&t='+v.t+'s':''); cv.querySelector('img').src=v.vm?v.th:'https://i.ytimg.com/vi/'+v.id+'/hqdefault.jpg'; cv.hidden=false; document.getElementById('cvl').textContent=v.y?((v.f?'Watch the full set, Pickathon ':'Watch from Pickathon ')+v.y):'Watch'; document.getElementById('cvk').textContent='Filmed at '+h.n; document.getElementById('cva').textContent=v.a||''; document.getElementById('cvs').textContent=vSong(v.s); }; put(v); } }
 }
+const THE={woods:1,paddock:1,grove:1,windmill:1,galaxy:1,farmhouse:1,refuge:1,courtyard:1,market:1,orchard:1,welcomelot:1};   // 'Explore the Grove', but 'Explore Cherry Hill', 'Explore Lucky'
 function show(h){
   if(h) document.getElementById('card').classList.remove('all');
   if(!h){
@@ -892,7 +912,8 @@ function show(h){
   document.getElementById('cams').innerHTML=(amFilter&&!passes(h)?'<span class="nohit">No '+(AMLBL[amFilter]||amFilter)+' here</span>':'')+(h.amk||[]).map((a,i)=>
     '<span class="ai'+(a===amFilter?' hit':'')+'" title="'+(AMLBL[a]||a)+'">'+ico(a)+'</span>').join('');
   loadXD(); fillExtra(h);
-  document.getElementById('cgo').textContent='Explore '+h.n.replace(/^The /,'')+' →';
+  document.getElementById('cgo').textContent='Explore '+(THE[h.id]?'the ':'')+h.n.replace(/^The /,'');
+  document.getElementById('cemb').src='../ic2/'+h.id+'.png';
   if(!amFilter && typeof showRings==='function') showRings(null,h);
   heroRun(h);
 }
