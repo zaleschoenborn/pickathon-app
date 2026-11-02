@@ -1076,7 +1076,7 @@ document.getElementById('cvid').addEventListener('click',e=>{   // the clip play
   const cv=e.currentTarget, v=cv.__v; if(!v||cv.classList.contains('playing')) return;
   e.preventDefault(); e.stopPropagation();
   const f=document.createElement('iframe');
-  f.src='https://www.youtube-nocookie.com/embed/'+v.id+'?autoplay=1&rel=0&playsinline=1'+(v.t?'&start='+v.t:'');
+  f.src='https://www.youtube-nocookie.com/embed/'+v.id+'?autoplay=1&rel=0&playsinline=1&cc_load_policy=0&iv_load_policy=3'+(v.t?'&start='+v.t:'');
   f.allow='autoplay; encrypted-media; picture-in-picture; fullscreen'; f.setAttribute('allowfullscreen','');
   cv.classList.add('playing'); cv.appendChild(f);
 });
