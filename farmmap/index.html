@@ -1013,7 +1013,7 @@ function tapAt(e){
   if(!h){ if((pinned&&e.pointerType==='mouse')||(e.pointerType!=='mouse'&&cur)) clearCur(); return; }
   // mouse: hover peeks, a click pins, a click on the pinned one opens. Touch: the first tap
   // shows the card, a tap on the one already showing opens it.
-  if(e.pointerType==='mouse'){ if(pinned!==h){ pinned=h; peek(null); setCur(h); show(h); flyTo(h); } return; }   // desktop: a click only selects; the Open button is the way through
+  if(e.pointerType==='mouse'){ if(pinned!==h){ pinned=h; peek(null); setCur(h); show(h); } return; }   // desktop: a click on the map only selects (no zoom); the logo list and next/prev do the flying; the Open button is the way through
   else if(h!==cur){ setCur(h); return; }
   goPage(h);
 }
