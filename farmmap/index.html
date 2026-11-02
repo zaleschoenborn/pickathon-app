@@ -217,6 +217,9 @@ body{margin:0;background:var(--ink);color:var(--cream);font-family:var(--f);
   #pcl{display:flex!important}
   #eyebrow{display:block!important}
 }
+#fback{display:none;border:0;background:none;color:#F2B33D;font:800 12.5px/1 var(--f);padding:2px 0 10px;cursor:default;text-align:left}
+#fback:hover{text-decoration:underline}
+@media (min-width:880px){#fback{display:block}#card.intro #fback{display:none}}
 #eyebrow{display:none;font:800 11px/1 var(--f);letter-spacing:.16em;text-transform:uppercase;color:#F2B33D;margin-bottom:2px}
 .pcb{display:block;margin:16px 0 4px;text-align:center;font:700 12.5px/1 var(--f);color:var(--muted);text-decoration:none;padding:12px;border-top:1px solid var(--line)}
 .pcb:hover{color:#F2B33D}
@@ -331,6 +334,7 @@ body{margin:0;background:var(--ink);color:var(--cream);font-family:var(--f);
   </div>
   <div id="nav"><button id="nprev" type="button" aria-label="Previous neighborhood">&#8249;</button><button id="nnext" type="button" aria-label="Next neighborhood">&#8250;</button></div>
   <div id="body">
+    <button id="fback" type="button">&#8249; All neighborhoods</button>
     <div id="hero" hidden></div>
     <div id="meta">
       <div id="empty">
@@ -949,6 +953,7 @@ document.getElementById('card').addEventListener('click',e=>{
   if(cur) goPage(cur);
 });
 document.getElementById('fullmap').onclick=fullMap;
+document.getElementById('fback').onclick=e=>{ e.stopPropagation(); fullMap(); };
 setInterval(()=>{ document.getElementById('fullmap').classList.toggle('on', k>kFit*1.08 || !!cur); },250);
 document.getElementById('pgback').onclick=()=>{document.getElementById('page').hidden=true;};
 const PT=document.getElementById('ptog'), PK=document.getElementById('picker');
