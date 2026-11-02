@@ -69,6 +69,7 @@ body{margin:0;background:var(--ink);color:var(--cream);font-family:var(--f);
 #leads,#labs{transition:opacity .14s ease}
 @media (min-width:880px){body.lm .lab:not(.lmshow){opacity:0;pointer-events:none}body.lm #leads .u:not(.lmshow),body.lm #leads .o:not(.lmshow),body.lm #leads .pt:not(.lmshow){opacity:0}.lab,#leads .u,#leads .o,#leads .pt{transition:opacity .16s ease}}
 #stage.moving #leads,#stage.moving #labs{opacity:0}
+.lab:not([style*="top"]){opacity:0!important}   /* a label shows only once it has been placed: no blink at the corner on first entry */
 #stage.moving #labs .lab{pointer-events:none}
 .lab{position:absolute;pointer-events:auto;border:0;cursor:default;
   padding:4px 8px;border-radius:7px;max-width:116px;
@@ -1110,6 +1111,15 @@ function place(){
       e.setAttribute('x2',lx);    e.setAttribute('y2',h._ly);
     });
     h._pt.setAttribute('cx',h._ax); h._pt.setAttribute('cy',h._ay);
+    // Desktop/laptop: the picked neighborhood names itself right on its own shape (above it, or below if there is no room),
+    // not out on a far rail with a long line across the map.
+    if(h===cur && !LP() && innerWidth>=880 && h._b){
+      const x0=tx+h._b[0]*k, y0=ty+h._b[1]*k, x1=tx+h._b[2]*k, y1=ty+h._b[3]*k, lw2=h._el.offsetWidth||90, lh2=h._el.offsetHeight||30;
+      let lx2=Math.max(8,Math.min(W-lw2-8,(x0+x1)/2-lw2/2)), ly2=y0-lh2-12;
+      if(ly2<FB+8) ly2=y1+12; if(ly2+lh2>HB-8) ly2=Math.max(FB+8,Math.min(HB-lh2-8,(y0+y1)/2-lh2/2));
+      h._el.classList.remove('r'); h._el.style.left=lx2+'px'; h._el.style.right='auto'; h._el.style.top=ly2+'px';
+      [h._u,h._o,h._pt].forEach(e=>e.style.display='none');
+    }
   });
 }
 let faults=0;
