@@ -383,28 +383,64 @@
 "k": "stage",
 "g": [
 {
-"i": "i/pk-paddock-01.jpg",
-"c": "Justin Kent"
+"i": "i/pk-paddock-c10.jpg",
+"c": "Liz Devine"
 },
 {
-"i": "i/pk-paddock-02.jpg",
-"c": "Erica Marroquin"
+"i": "i/pk-paddock-c2.jpg",
+"c": "Dylan VanWeelden"
+},
+{
+"i": "i/pk-paddock-c7.jpg",
+"c": "Jason Redmond"
+},
+{
+"i": "i/pk-paddock-c3.jpg",
+"c": "Samantha Klopp"
+},
+{
+"i": "i/pk-paddock-c9.jpg",
+"c": "Jason Redmond"
+},
+{
+"i": "i/pk-paddock-c1.jpg",
+"c": "Erin Riddle"
+},
+{
+"i": "i/pk-paddock-c4.jpg",
+"c": "Rob Kerr"
+},
+{
+"i": "i/pk-paddock-c6.jpg",
+"c": "Erin Riddle"
+},
+{
+"i": "i/pk-paddock-c11.jpg",
+"c": "Ken Pappanduros"
+},
+{
+"i": "i/pk-paddock-c5.jpg",
+"c": "Killian Mustain"
+},
+{
+"i": "i/pk-paddock-c8.jpg",
+"c": "Miri Stebivka"
+},
+{
+"i": "i/pk-paddock-c12.jpg",
+"c": "Miri Stebivka"
+},
+{
+"i": "i/pk-paddock-01.jpg",
+"c": "Justin Kent"
 },
 {
 "i": "i/pk-paddock-h1.jpg",
 "c": "Joe Duquette"
 },
 {
-"i": "i/pk-paddock-07.jpg",
-"c": "Pickathon"
-},
-{
 "i": "i/pk-paddock-08.jpg",
 "c": "Graeme Harrison"
-},
-{
-"i": "i/pk-paddock-12.jpg",
-"c": "Pickathon"
 }
 ],
 "ic": "i/224.svg",
@@ -431,49 +467,49 @@
 "spn": [],
 "hr": [
 {
-"i": "i/p668.jpg",
-"y": "2026",
-"by": "Andy Meeks",
-"band": "Steve Earle"
+"i": "i/pk-paddock-c2.jpg",
+"y": "2022",
+"by": "Dylan VanWeelden"
 },
 {
-"i": "i/p649.jpg",
+"i": "i/pk-paddock-c10.jpg",
 "y": "2026",
-"by": "Rob Kerr",
-"band": "Family Company"
+"by": "Liz Devine"
 },
 {
-"i": "i/p520.jpg",
-"y": "2026",
-"by": "Graeme Harrison"
+"i": "i/pk-paddock-c3.jpg",
+"y": "2023",
+"by": "Samantha Klopp"
 },
 {
-"i": "i/p699.jpg",
-"y": "2026",
-"by": "Graeme Harrison",
-"band": "Automatic"
-},
-{
-"i": "i/p604.jpg",
+"i": "i/pk-paddock-c7.jpg",
 "y": "2025",
-"by": ""
+"by": "Jason Redmond"
 },
 {
-"i": "i/p674.jpg",
-"y": "2026",
-"by": "Ken Pappanduros",
-"band": "Mexican Institute of Sound"
-},
-{
-"i": "i/p692.jpg",
+"i": "i/pk-paddock-c9.jpg",
 "y": "2026",
 "by": "Jason Redmond"
 },
 {
-"i": "i/p717.jpg",
+"i": "i/pk-paddock-c4.jpg",
+"y": "2023",
+"by": "Rob Kerr"
+},
+{
+"i": "i/pk-paddock-c6.jpg",
+"y": "2025",
+"by": "Erin Riddle"
+},
+{
+"i": "i/pk-paddock-c1.jpg",
+"y": "2022",
+"by": "Erin Riddle"
+},
+{
+"i": "i/pk-paddock-c11.jpg",
 "y": "2026",
-"by": "Jaime Delacruz",
-"band": "Thee Sinseers"
+"by": "Ken Pappanduros"
 }
 ],
 "pb": [
@@ -1128,10 +1164,6 @@
 "c": "Pickathon"
 },
 {
-"i": "i/pk-windmill-05.jpg",
-"c": "Andy Meeks"
-},
-{
 "i": "i/pk-windmill-06.jpg",
 "c": "Andy Meeks"
 },
@@ -1158,10 +1190,6 @@
 {
 "i": "i/pk-windmill-13.jpg",
 "c": "Karen Pride"
-},
-{
-"i": "i/pk-windmill-14.jpg",
-"c": "Van Jaarsveld"
 },
 {
 "i": "i/pk-windmill-15.jpg",
@@ -1247,32 +1275,17 @@
 ],
 "hr": [
 {
-"i": "i/p696.jpg",
-"y": "2026",
-"by": ""
-},
-{
 "i": "i/p641.jpg",
 "y": "2026",
 "by": "Brooke Hoyer"
 },
 {
+"i": "i/pk-windmill-06.jpg",
+"y": "",
+"by": "Andy Meeks"
+},
+{
 "i": "i/p537.jpg",
-"y": "2026",
-"by": "Andy Meeks"
-},
-{
-"i": "i/p772.jpg",
-"y": "2026",
-"by": "Andy Meeks"
-},
-{
-"i": "i/p732.jpg",
-"y": "2026",
-"by": ""
-},
-{
-"i": "i/p478.jpg",
 "y": "2026",
 "by": "Andy Meeks"
 },
@@ -1286,11 +1299,6 @@
 "i": "i/p765.jpg",
 "y": "2026",
 "by": "Andy Meeks"
-},
-{
-"i": "i/p519.jpg",
-"y": "2026",
-"by": "Brooke Hoyer"
 },
 {
 "i": "i/p803.jpg",
