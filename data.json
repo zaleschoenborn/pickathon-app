@@ -40730,7 +40730,11 @@
 ],
 "pyr": 2025,
 "new2": 1,
-"pi": "i/p9922.jpg"
+"pi": "i/p9922.jpg",
+"m": {
+"u": "https://www.youtube.com/watch?v=xj7eaUSJn0o",
+"t": "▶ Watch from Pickathon 2025"
+}
 },
 {
 "n": "East Nash Grass",
@@ -41728,7 +41732,12 @@
 "g": "",
 "line": "Saving Country Music and Glide backed her Appalachian songwriting early. Five years of good reviews later, the rooms are still the same small clubs.",
 "src": "",
-"pyr": 2025
+"pyr": 2025,
+"m": {
+"u": "https://www.youtube.com/watch?v=KvKGDFhxzCY",
+"t": "▶ Watch from Pickathon 2025"
+},
+"pi": "https://i.ytimg.com/vi/KvKGDFhxzCY/hqdefault.jpg"
 },
 {
 "n": "Anna & Elizabeth",
@@ -42324,7 +42333,12 @@
 "g": "",
 "line": "Anatolian psych-folk on the bağlama, Songlines' pick of the world and then a Big Crown signing.",
 "src": "",
-"pyr": 2025
+"pyr": 2025,
+"m": {
+"u": "https://www.youtube.com/watch?v=Rn0tCm-pAOA",
+"t": "▶ Watch from Pickathon 2025"
+},
+"pi": "https://i.ytimg.com/vi/Rn0tCm-pAOA/hqdefault.jpg"
 },
 {
 "n": "Destroyer",
@@ -42892,7 +42906,12 @@
 "g": "",
 "line": "A Grammy-winning saxophonist most people have never heard of, playing on everyone else's best records.",
 "src": "",
-"pyr": 2025
+"pyr": 2025,
+"m": {
+"u": "https://www.youtube.com/watch?v=HyFxHq1JaK4",
+"t": "▶ Watch from Pickathon 2025"
+},
+"pi": "https://i.ytimg.com/vi/HyFxHq1JaK4/hqdefault.jpg"
 },
 {
 "n": "Joshua Hedley",
@@ -56391,6 +56410,38 @@
 "cad": 0,
 "th": "https://i.vimeocdn.com/video/210847879-d0d546ac82c985abb88d5265db6a37c6550abaace527410233ce573b083d13e7-d_590x332",
 "vn": "Fir Meadows"
+},
+{
+"id": "KvKGDFhxzCY",
+"a": "Angela Autumn",
+"s": "Angela Autumn Woods 2025",
+"y": 2025,
+"cad": 0,
+"vn": "Woods Stage"
+},
+{
+"id": "Rn0tCm-pAOA",
+"a": "Derya Yıldırım",
+"s": "Derya Yildirim Grup Simsek Woods 2025",
+"y": 2025,
+"cad": 0,
+"vn": "Woods Stage"
+},
+{
+"id": "xj7eaUSJn0o",
+"a": "Jake Vaadeland",
+"s": "Jake Vaandeland Woods 2025",
+"y": 2025,
+"cad": 0,
+"vn": "Woods Stage"
+},
+{
+"id": "HyFxHq1JaK4",
+"a": "Josh Johnson",
+"s": "Josh Johnson Lucky Barn 2025",
+"y": 2025,
+"cad": 0,
+"vn": "Lucky Barn"
 }
 ],
 "press": {
