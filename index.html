@@ -3127,6 +3127,7 @@ var pr27 = function (k) { var r = PR27[k]; return r ? Math.ceil(r[PCOL]) : 0; },
       var jump = function (id) { return function () { try { document.getElementById(id).scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch (x) {} }; };
       var PARTS = [
         ['pk-why-band', 'You were there first', 'Before they were big', 'Every Pickathon lineup is full of acts you’ll brag about seeing. Check any year. The names will surprise you.', '', '', [], [['See them all →', function () { self.setState({ luYear: 'disc', luArch: true, lineup: 'music' }); self.go('lineup', { keepArch: true }); }], ['Explore the neighborhoods →', goFarm]]],
+        ['pk-why-built', 'Why it feels different', 'Explore the city of wonder', 'Eighty acres of Pacific Northwest forest, rebuilt from scratch every summer. Architects and makers design a whole new city of stages, bars and camps among the big trees, so no two years look alike. Come hear your next favorite band somewhere you have never been.', '', '', [], [['Explore the neighborhoods →', goFarm]]],
         ['pk-why-years', 'Year by year', 'What was Pickathon like in…?', 'Pick a year and see the farm as it was: who played, what we built, what we remember. Every year since 1999 is here.', '', '', [], [['All the years →', nav('past')]]]
 
       ];
