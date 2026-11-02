@@ -27813,12 +27813,7 @@
 "top": false,
 "g": "soul",
 "pyr": 2023,
-"lg": 1,
-"pi": "https://i.ytimg.com/vi/B_qLcKV7KlU/hq720.jpg",
-"m": {
-"u": "https://www.youtube.com/watch?v=B_qLcKV7KlU",
-"t": "▶ Watch from Pickathon 2023"
-}
+"lg": 1
 },
 {
 "n": "Yot Club",
@@ -53969,14 +53964,6 @@
 "f": 1
 },
 {
-"id": "B_qLcKV7KlU",
-"a": "W.I.T.C.H.",
-"s": "W I T C H Stop the rot Slab 2023",
-"y": 2023,
-"cad": 0,
-"vn": "Slab Sessions"
-},
-{
 "id": "rk1Ls_BFCL8",
 "a": "WHIMZ",
 "s": "Whimz Slab AM2 moore Slab 2023",
@@ -55233,7 +55220,9 @@
 "y": 2016,
 "cad": 0,
 "th": "https://i.vimeocdn.com/video/591600635-b785e5aab1dad07190eea86c19c1baa81d69c8e94c266a3089a2b593f31f5cb5-d_590x332",
-"vh": "f5d7bf2cfa"
+"vh": "f5d7bf2cfa",
+"k": 2,
+"f": 1
 },
 {
 "id": "vm858704805",
