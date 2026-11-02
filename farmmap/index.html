@@ -906,7 +906,11 @@ function peek(h){
   HOODS.forEach(x=>{ if(x._el) x._el.classList.toggle('peek',x===h); });
   light(cur);   // the highlight is the pre-made lit picture on the low layer: icons, lines and labels stay on top
 }
-function fullMap(){ pinned=null; peek(null); cur=null; show(null); apply(); fit(); }
+// Full map glides out like every other move, instead of snapping: a snap swaps the sharp pieces,
+// labels and highlight all in one frame, which reads as a flicker.
+function fullMap(){ pinned=null; peek(null); cur=null; show(null);
+  const W=stage.clientWidth,H=stage.clientHeight; light(null);
+  flyView({k:kFit,tx:(W-MW*kFit)/2,ty:(H-MH*kFit)/2},null); }
 function clearCur(){ pinned=null; peek(null); cur=null; show(null); apply(); }
 function goPage(h){
   setCur(h); show(h);
@@ -1199,11 +1203,11 @@ function warmView(to,h){
     const W=stage.clientWidth,H=stage.clientHeight; if(to.k*Math.min(window.devicePixelRatio||1,3)<1.05) return;
     const m=TM*0.2, x0=Math.max(0,-to.tx/to.k-m), y0=Math.max(0,-to.ty/to.k-m), x1=Math.min(MW,(W-to.tx)/to.k+m), y1=Math.min(MH,(H-to.ty)/to.k+m);
     for(let c=Math.floor(x0/TM);c<=Math.min(TW-1,Math.floor(x1/TM));c++) for(let r=Math.floor(y0/TM);r<=Math.min(TH-1,Math.floor(y1/TM));r++) new Image().src='t/'+c+'_'+r+'.webp?v=25';
-    if(LIT[h.id]&&LIT[h.id].a){ new Image().src='l/'+h.id+'_a.webp?v=25'; }
+    if(h&&LIT[h.id]&&LIT[h.id].a){ new Image().src='l/'+h.id+'_a.webp?v=25'; }
   }catch(e){}
 }
-function flyTo(h){
-  const to=viewFor(h); if(!to) return;
+function flyTo(h){ const to=viewFor(h); if(to) flyView(to,h); }
+function flyView(to,h){
   warmView(to,h);
   cancelAnimationFrame(flyRaf);
   const W=stage.clientWidth, H=stage.clientHeight;
