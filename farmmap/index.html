@@ -237,7 +237,8 @@ body{margin:0;background:var(--ink);color:var(--cream);font-family:var(--f);
 .ai.hit{opacity:1;outline:2px solid #F2B33D;outline-offset:1px}
 #ptog{display:flex;align-items:center;gap:6px}
 #pnow{font:700 12px/1 var(--f);color:#F2B33D}
-#shapes .ring.dot{fill:#F2B33D;stroke:#12160F;stroke-width:1.5px;animation:none}
+#shapes .ring.dot{fill:#F2B33D;stroke:#12160F;stroke-width:2.5px;vector-effect:non-scaling-stroke;animation:none}
+#shapes .ring.halo{fill:rgba(242,179,61,.32);stroke:#F2B33D;stroke-width:2px;vector-effect:non-scaling-stroke;animation:none;pointer-events:none}
 #shapes .spr{pointer-events:none;overflow:hidden}
 #shapes .ring{fill:rgba(242,179,61,.38);stroke:#F2B33D;stroke-width:4px;vector-effect:non-scaling-stroke;pointer-events:none;
   animation:rp 1.5s ease-in-out infinite}
@@ -425,8 +426,9 @@ function showRings(a,hood){
   const list = a ? (ICON_AT[a]||[]).map(p=>[a,p]) : [];   // nothing is marked until an amenity is picked (Find or a click)
   list.forEach(([a,p])=>{
     // far out: a gold dot. Close in: the icon itself, in its own colours, cut to its own shape.
+    const hl=document.createElementNS(NS,'circle'); hl.setAttribute('class','ring halo'); hl.setAttribute('cx',p[0]); hl.setAttribute('cy',p[1]); g.appendChild(hl);
     const c=document.createElementNS(NS,'circle'); c.setAttribute('class','ring dot'); c.setAttribute('cx',p[0]); c.setAttribute('cy',p[1]); g.appendChild(c);
-    const o={c:c,x:p[0],y:p[1],s:p[2]};
+    const o={c:c,h:hl,x:p[0],y:p[1],s:p[2]};
     if(p[3]!=null){
       const sv=document.createElementNS(NS,'svg'); sv.setAttribute('class','spr');
       sv.setAttribute('x',p[0]-30); sv.setAttribute('y',p[1]-30); sv.setAttribute('width',60); sv.setAttribute('height',60);
@@ -440,10 +442,12 @@ function showRings(a,hood){
 }
 function sizeRings(){
   const near=k>=kFit*1.8;
-  RINGS.forEach(o=>{ o.c.setAttribute('r',5.5/k); o.c.style.display=(near&&o.i)?'none':''; if(o.i) o.i.style.display=near?'':'none'; });
+  RINGS.forEach(o=>{ o.c.setAttribute('r',8/k); o.h.setAttribute('r',17/k); o.h.style.display=o.c.style.display=(near&&o.i)?'none':''; if(o.i) o.i.style.display=near?'':'none'; });
 }
 
-const passes = h => !amFilter || (h.amk||[]).includes(amFilter);
+const OWNK={}; Object.keys(ICON_OWN).forEach(k=>{ (OWNK[ICON_OWN[k]]=OWNK[ICON_OWN[k]]||new Set()).add(k.split('|')[0]); });
+// a neighborhood has an amenity if WordPress lists it OR the map shows that icon inside it
+const passes = h => !amFilter || (h.amk||[]).includes(amFilter) || !!(OWNK[h.id]&&OWNK[h.id].has(amFilter));
 // Right-rail labels that would land on top of their own neighbourhood sit higher: the
 // number is the lowest map row the label may use (Welcome Lot's goes above Hagen Road).
 const LBLCAP={welcomelot:3380,willowcamp:3380};   // full strength at the first view, easing off as the map is zoomed in (~2x)
