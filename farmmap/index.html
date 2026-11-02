@@ -447,7 +447,7 @@ body{margin:0;background:var(--ink);color:var(--cream);font-family:var(--f);
         <button id="cmore" type="button" hidden>Read more →</button>
         <a id="cvid" hidden target="_blank" rel="noopener"><img alt=""><span class="pl">▶︎</span><span class="vt"><b></b><i></i></span></a>
         <div class="ams" id="cams"></div>
-        <button id="cvsp" type="button" hidden>&#8635; Another video</button>
+        <button id="cvsp" type="button" hidden>&#127922; Surprise me</button>
         <button id="cgo">Explore the page →</button>
       </div>
     </div>
@@ -867,8 +867,8 @@ function fillExtra(h){
   const pc=document.getElementById('cpitch'), cv=document.getElementById('cvid');
   pc.hidden=true; cv.hidden=true; document.getElementById('cvsp').hidden=true; document.getElementById('cmore').hidden=true; if(!XD||!XD.h) return;
   const x=XD.h[h.id]; const p=x&&x.d&&x.d[0]; if(p){ pc.textContent=p; pc.hidden=false; document.getElementById('cmore').hidden=false; }
-  const rx=VRX[h.id]; if(rx&&XD.v){ const L0=XD.v.filter(v=>!v.cad&&!v.vm&&rx.test(String(v.s||'')+' '+String(v.vn||''))), L=L0; if(L.length){ let vi=Math.floor(Math.random()*L.length); try{ const lk='pkmap.lastv.'+h.id, last=sessionStorage.getItem(lk); if(L.length>1&&last!==null&&String(vi)===last) vi=(vi+1+Math.floor(Math.random()*(L.length-1)))%L.length; sessionStorage.setItem(lk,String(vi)); }catch(e){} let v=L[vi]; const sp=document.getElementById('cvsp'); sp.hidden=L.length<2; sp.onclick=e=>{ e.stopPropagation(); vi=(vi+1)%L.length; v=L[vi]; put(v); };
-    const put=v=>{ cv.__v=v; cv.classList.remove('playing'); const old=cv.querySelector('iframe'); if(old) old.remove(); cv.href='https://www.youtube.com/watch?v='+v.id+(v.t?'&t='+v.t+'s':''); cv.querySelector('img').src='https://i.ytimg.com/vi/'+v.id+'/hqdefault.jpg'; cv.querySelector('b').textContent=v.a||''; cv.querySelector('i').textContent=(/Tree ?line/i.test(String(v.s||'')+' '+String(v.vn||''))?'Treeline (now Cherry Hill)':h.n)+' · '+(v.y||''); cv.hidden=false; }; put(v); } }
+  const rx=VRX[h.id]; if(rx&&XD.v){ const L0=XD.v.filter(v=>!v.cad&&!(v.vm&&!v.th)&&rx.test(String(v.s||'')+' '+String(v.vn||''))), L=L0; if(L.length){ let vi=Math.floor(Math.random()*L.length); try{ const lk='pkmap.lastv.'+h.id, last=sessionStorage.getItem(lk); if(L.length>1&&last!==null&&String(vi)===last) vi=(vi+1+Math.floor(Math.random()*(L.length-1)))%L.length; sessionStorage.setItem(lk,String(vi)); }catch(e){} let v=L[vi]; const sp=document.getElementById('cvsp'); sp.hidden=L.length<2; sp.onclick=e=>{ e.stopPropagation(); if(sp.__b) return; sp.__b=1; const im=cv.querySelector('img'); let k=vi; while(L.length>1&&k===vi) k=Math.floor(Math.random()*L.length); const seq=[]; for(let q=0;q<2;q++){ let r=Math.floor(Math.random()*L.length); seq.push(L[r]); } seq.push(L[k]); vi=k; v=L[k]; im.style.transition='opacity .15s'; let n=0; (function st(){ if(n<seq.length){ im.style.opacity='.25'; setTimeout(()=>{ const z=seq[n++]; im.src=z.vm?z.th:'https://i.ytimg.com/vi/'+z.id+'/hqdefault.jpg'; im.style.opacity='1'; setTimeout(st,170); },120); } else { im.style.opacity='1'; sp.__b=0; put(v); } })(); };
+    const put=v=>{ cv.__v=v; cv.classList.remove('playing'); const old=cv.querySelector('iframe'); if(old) old.remove(); cv.href=v.vm?'https://vimeo.com/'+v.vm+(v.vh?'/'+v.vh:'')+(v.t?'#t='+v.t+'s':''):'https://www.youtube.com/watch?v='+v.id+(v.t?'&t='+v.t+'s':''); cv.querySelector('img').src=v.vm?v.th:'https://i.ytimg.com/vi/'+v.id+'/hqdefault.jpg'; cv.querySelector('b').textContent=v.a||''; cv.querySelector('i').textContent=(/Tree ?line/i.test(String(v.s||'')+' '+String(v.vn||''))?'Treeline (now Cherry Hill)':h.n)+' · '+(v.y||''); cv.hidden=false; }; put(v); } }
 }
 function show(h){
   if(h) document.getElementById('card').classList.remove('all');
@@ -1082,7 +1082,7 @@ stage.addEventListener('dblclick',e=>{e.preventDefault(); cancelAnimationFrame(f
 document.getElementById('cvid').addEventListener('click',e=>{   // the clip opens big, over the whole screen, with full-screen available; it never sends you off to YouTube
   const cv=e.currentTarget, v=cv.__v; if(!v) return;
   e.preventDefault(); e.stopPropagation();
-  const u='https://www.youtube.com/watch?v='+v.id+(v.t?'&t='+v.t+'s':'');
+  const u=v.vm?'https://vimeo.com/'+v.vm+(v.vh?'/'+v.vh:'')+(v.t?'#t='+v.t+'s':''):'https://www.youtube.com/watch?v='+v.id+(v.t?'&t='+v.t+'s':'');
   try{ if(window.parent!==window && window.parent.__pkPlayVid && window.parent.__pkPlayVid(u)) return; }catch(err){}
   // and, failing that, our own player (filled to the whole screen): the same kind of full-window player
   const o=document.createElement('div'); o.style.cssText='position:fixed;inset:0;z-index:99999;background:rgba(8,10,7,.94);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:16px;box-sizing:border-box';
