@@ -264,6 +264,8 @@ body{margin:0;background:var(--ink);color:var(--cream);font-family:var(--f);
 #fback{display:none;border:0;background:none;color:#F2B33D;font:800 12.5px/1 var(--f);padding:2px 0 10px;cursor:default;text-align:left}
 #fback:hover{text-decoration:underline}
 @media (min-width:880px){#fback{display:block}#card.intro #fback{display:none}}
+#fx{display:none;position:absolute;top:8px;right:10px;z-index:6;width:34px;height:34px;place-items:center;border:1px solid var(--line);border-radius:50%;background:rgba(22,26,18,.9);color:var(--cream);font:800 15px/1 var(--f)}
+#card.intro #fx{display:none!important}
 #pall{display:none;border:0;background:none;color:#F2B33D;font:800 12px/1 var(--f);padding:9px 15px 0;text-align:left;cursor:pointer;margin-top:auto;padding-bottom:max(10px,env(safe-area-inset-bottom,0px))}
 @media (max-width:879px){
   #card.intro #nav,#card.intro #ibuild{display:none}
@@ -274,19 +276,19 @@ body{margin:0;background:var(--ink);color:var(--cream);font-family:var(--f);
   #card.intro #empty b{color:var(--cream);font:900 20px/1.1 var(--f)}
   #card.intro #empty p{display:none}
   #eyebrow{display:block!important;font-size:10px!important}
-  #pall{display:block}
-  #pcl{display:flex!important;flex-direction:row!important;gap:9px;overflow-x:auto!important;overflow-y:hidden!important;scroll-snap-type:x mandatory;margin:10px 0 0!important;padding:0 15px!important;flex:0 0 auto!important}
-  #pcl .pc{flex:0 0 auto;flex-direction:row;align-items:center;gap:9px;scroll-snap-align:start;padding:5px 14px 5px 5px;border-radius:999px}
+  #pall{display:none!important}
+  :root:has(#card.intro){--cardh:clamp(300px,39%,370px)}
+  #card.intro{height:var(--cardh)}
+  #card.intro #empty{padding:12px 0 0}
+  #card.intro #empty b{font:900 17px/1.1 var(--f)}
+  #pcl{display:grid!important;grid-template-columns:repeat(5,1fr);gap:7px 4px;margin:10px 0 0!important;padding:0 10px max(8px,env(safe-area-inset-bottom,0px))!important;overflow:hidden!important;flex:0 0 auto!important}
+  #pcl .pc{display:flex;flex-direction:column;align-items:center;gap:3px;padding:0;background:none!important;border:0!important;min-width:0}
   #pcl .pc i,#pcl .pc em,#pcl .pc u,#pcl .pcg,#pcl .pcb{display:none!important}
-  #pcl .pc .lg{display:grid!important;flex:0 0 36px;height:36px;border-radius:50%}
-  #pcl .pc .lg img{width:28px!important;height:28px!important}
-  #card.intro #empty #pcl .pc b{font:800 14px/1.1 var(--f);color:var(--cream);white-space:nowrap}
-  #card.intro:not(.all){height:auto!important;padding-bottom:calc(6px + env(safe-area-inset-bottom,0px))}
-  #card.intro:not(.all) #body,#card.intro:not(.all) #meta,#card.intro:not(.all) #empty{flex:0 0 auto}
-  #card.intro.all{height:72%}
-  #card.intro.all #pcl{display:grid!important;grid-template-columns:1fr 1fr;gap:6px!important;align-content:start;overflow-y:auto!important;overflow-x:hidden!important;scroll-snap-type:none;flex:1 1 auto!important;padding-bottom:20px!important}
-  #card.intro.all #pcl .pc{border-radius:12px;padding:5px 8px 5px 5px;min-width:0}
-  #card.intro.all #pcl .pcg,#card.intro.all #pcl .pcb{display:block!important;grid-column:1/-1}
+  #pcl .pc .lg{display:grid!important;width:min(15vw,56px);height:min(15vw,56px);border-radius:50%;flex:0 0 auto}
+  #pcl .pc .lg img{width:70%!important;height:70%!important}
+  #pcl .pc span{display:block;max-width:100%}
+  #card.intro #empty #pcl .pc b{font:700 9px/1.1 var(--f);color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block;max-width:100%;text-align:center}
+  #fx{display:grid}
 }
 #card.intro.all #pall{margin-top:0;order:-1}
 #eyebrow{display:none;font:800 11px/1 var(--f);letter-spacing:.16em;text-transform:uppercase;color:#F2B33D;margin-bottom:2px}
@@ -405,6 +407,7 @@ body{margin:0;background:var(--ink);color:var(--cream);font-family:var(--f);
   </div>
   <div id="nav"><button id="nprev" type="button" aria-label="Previous neighborhood">&#8249;</button><button id="nnext" type="button" aria-label="Next neighborhood">&#8250;</button></div>
   <div id="body">
+    <button id="fx" type="button" aria-label="Close preview">&#10005;</button>
     <button id="fback" type="button">&#8249; All neighborhoods</button>
     <div id="hero" hidden></div>
     <div id="meta">
@@ -617,6 +620,8 @@ function place(){
     }
     h._ax=ax; h._ay=ay; { const cp=LBLCAP[h.id]; h._wy=ay; if(cp!==undefined){ const st=1-Math.max(0,Math.min(1,k/kFit-1)), lim=ty+cp*k; if(ay>lim) h._wy=ay-(ay-lim)*st; } }
     h._on = on && passes(h);
+    // Phone: no labels at the whole-farm view; each neighborhood names itself once it is wide enough on screen to hold the name.
+    if(h._on && innerWidth<880 && h!==cur){ const wpx=h._b?(h._b[2]-h._b[0])*k:0; if(wpx<Math.max(130,stage.clientWidth*.45)) h._on=false; }
     if(h._path) h._path.classList.toggle('off',!passes(h));
     if(h._on) live.push(h);
   });
@@ -1052,6 +1057,7 @@ document.getElementById('cmore').onclick=e=>{ e.stopPropagation(); if(cur) goPag
     const r=pcl.getBoundingClientRect(); let best=null,bd=1e9; pcl.querySelectorAll('.pc').forEach(b=>{ const q=b.getBoundingClientRect(), d=Math.abs(q.left-r.left-15); if(d<bd){bd=d;best=b;} });
     if(best){ const h=HOODS.filter(x=>x.id===best.dataset.h)[0]; if(h) peek(h); } },140); },{passive:true});
 })();
+document.getElementById('fx').onclick=e=>{ e.stopPropagation(); clearCur(); };
 document.getElementById('fback').onclick=e=>{ e.stopPropagation(); fullMap(); };
 setInterval(()=>{ document.getElementById('fullmap').classList.toggle('on', k>kFit*1.08 || !!cur); },250);
 document.getElementById('pgback').onclick=()=>{document.getElementById('page').hidden=true;};
