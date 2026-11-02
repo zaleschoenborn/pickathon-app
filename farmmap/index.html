@@ -275,16 +275,17 @@ body{margin:0;background:var(--ink);color:var(--cream);font-family:var(--f);
   #eyebrow{display:block!important;font-size:10px!important}
   #pall{display:block}
   #pcl{display:flex!important;flex-direction:row!important;gap:9px;overflow-x:auto!important;overflow-y:hidden!important;scroll-snap-type:x mandatory;margin:10px 0 0!important;padding:0 15px!important;flex:0 0 auto!important}
-  #pcl .pc{flex:0 0 150px;flex-direction:column;align-items:stretch;gap:7px;scroll-snap-align:start;padding:6px 6px 9px}
-  #pcl .pc i{flex:none;width:100%;height:78px;border-left:0;border-top:4px solid var(--ac,#F2B33D)}
-  #pcl .pc u,#pcl .pcg,#pcl .pcb{display:none}
-  #pcl .pc b{font-size:14px}#pcl .pc em{font-size:11.5px;display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden}
+  #pcl .pc{flex:0 0 auto;flex-direction:row;align-items:center;gap:9px;scroll-snap-align:start;padding:5px 14px 5px 5px;border-radius:999px}
+  #pcl .pc i,#pcl .pc em,#pcl .pc u,#pcl .pcg,#pcl .pcb{display:none!important}
+  #pcl .pc .lg{display:grid!important;flex:0 0 36px;height:36px;border-radius:50%}
+  #pcl .pc .lg img{width:28px!important;height:28px!important}
+  #card.intro #empty #pcl .pc b{font:800 14px/1.1 var(--f);color:var(--cream);white-space:nowrap}
+  #card.intro:not(.all){height:auto!important;padding-bottom:calc(6px + env(safe-area-inset-bottom,0px))}
+  #card.intro:not(.all) #body,#card.intro:not(.all) #meta,#card.intro:not(.all) #empty{flex:0 0 auto}
   #card.intro.all{height:72%}
-  #card.intro.all #pcl{flex-direction:column!important;overflow-y:auto!important;overflow-x:hidden!important;scroll-snap-type:none;flex:1 1 auto!important;padding-bottom:20px!important}
-  #card.intro.all #pcl .pc{flex:none;flex-direction:row;align-items:center}
-  #card.intro.all #pcl .pc i{width:58px;height:58px;border-top:0;border-left:4px solid var(--ac,#F2B33D)}
-  #card.intro.all #pcl .pc u,#card.intro.all #pcl .pcg,#card.intro.all #pcl .pcb{display:block}
-  #card.intro.all #pcl .pc em{-webkit-line-clamp:2}
+  #card.intro.all #pcl{display:grid!important;grid-template-columns:1fr 1fr;gap:6px!important;align-content:start;overflow-y:auto!important;overflow-x:hidden!important;scroll-snap-type:none;flex:1 1 auto!important;padding-bottom:20px!important}
+  #card.intro.all #pcl .pc{border-radius:12px;padding:5px 8px 5px 5px;min-width:0}
+  #card.intro.all #pcl .pcg,#card.intro.all #pcl .pcb{display:block!important;grid-column:1/-1}
 }
 #card.intro.all #pall{margin-top:0;order:-1}
 #eyebrow{display:none;font:800 11px/1 var(--f);letter-spacing:.16em;text-transform:uppercase;color:#F2B33D;margin-bottom:2px}
