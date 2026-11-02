@@ -289,10 +289,11 @@ body{margin:0;background:var(--ink);color:var(--cream);font-family:var(--f);
   #pcl{display:grid!important;grid-template-columns:repeat(5,1fr);gap:7px 4px;margin:10px 0 0!important;padding:0 10px max(8px,env(safe-area-inset-bottom,0px))!important;overflow:hidden!important;flex:0 0 auto!important}
   #pcl .pc{display:flex;flex-direction:column;align-items:center;gap:3px;padding:0;background:none!important;border:0!important;min-width:0}
   #pcl .pc i,#pcl .pc em,#pcl .pc u,#pcl .pcg,#pcl .pcb{display:none!important}
-  #pcl .pc .lg{display:grid!important;width:min(15vw,56px);height:min(15vw,56px);border-radius:50%;flex:0 0 auto}
-  #pcl .pc .lg img{width:70%!important;height:70%!important}
+  /* phone: bare logos, drawn in the neighborhood's own color (the artwork is white, used as a stencil) */
+  #pcl .pc .lg{display:block!important;width:min(11.5vw,46px);height:min(11.5vw,46px);border-radius:0;flex:0 0 auto;-webkit-mask:var(--ic) center/contain no-repeat;mask:var(--ic) center/contain no-repeat}
+  #pcl .pc .lg img{display:none!important}
   #pcl .pc span{display:block;max-width:100%}
-  #card.intro #empty #pcl .pc b{font:700 9px/1.1 var(--f);color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block;max-width:100%;text-align:center}
+  #card.intro #empty #pcl .pc b{font:700 9.5px/1.1 var(--f);color:var(--cream);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block;max-width:100%;text-align:center}
   #fx{display:grid}
 }
 #card.intro.all #pall{margin-top:0;order:-1}
@@ -847,7 +848,7 @@ function buildCards(){
     const DS={stage:'Where the music happens',around:'Food, art, shade and wonder',wellness:'Rest, play and care',camp:'Where you sleep'};
     html+='<div class="pcg">'+(k==='wellness'?'Wellness &amp; family':k==='stage'?'Stages':(KIND[k]||k))+(DS[k]?'<span>'+DS[k]+'</span>':'')+'</div>';
     L.forEach(h=>{ const im=(HERO[h.id]||[])[0];
-      html+='<button class="pc" type="button" data-h="'+h.id+'" style="--ac:'+(col[k]||'#F2B33D')+'"><s class="lg" style="background:'+(HCOL[h.id]||'#0F130D')+'"><img alt="" decoding="async" src="../ic2/'+h.id+'.png"></s><i'+(im?' style="background-image:url(\''+im+'\')"':'')+'></i><span><b>'+h.n+'</b><em>'+(h.t||'')+'</em></span><u>›</u></button>'; });
+      html+='<button class="pc" type="button" data-h="'+h.id+'" style="--ac:'+(col[k]||'#F2B33D')+';--ic:url(../ic2/'+h.id+'.png)"><s class="lg" style="background:'+(HCOL[h.id]||'#0F130D')+'"><img alt="" decoding="async" src="../ic2/'+h.id+'.png"></s><i'+(im?' style="background-image:url(\''+im+'\')"':'')+'></i><span><b>'+h.n+'</b><em>'+(h.t||'')+'</em></span><u>›</u></button>'; });
   });
   html+='<a class="pcb" href="https://build.creativeneighborhoods.com/" target="_top">We build these. Creative Neighborhoods &rsaquo;</a>';
   box.innerHTML=html;
