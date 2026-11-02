@@ -60,7 +60,7 @@ body{margin:0;background:var(--ink);color:var(--cream);font-family:var(--f);
 /* Invisible but fully hit-testable: pointer-events:fill ignores the paint, so
    the whole area answers the pointer without a wash being drawn on it. */
 #hit path{fill:#fff;fill-opacity:0;fill-rule:evenodd;stroke:none;
-  pointer-events:fill;cursor:pointer}
+  pointer-events:fill;cursor:inherit}
 #hit .off{pointer-events:auto}
 .nohit{display:inline-block;margin-right:8px;padding:2px 8px;border-radius:999px;border:1px solid var(--line);font-size:12px;font-weight:700;color:var(--cream);opacity:.8}
 .c-stage{color:var(--stage)} .c-camp{color:var(--camp)} .c-around{color:var(--around)}
@@ -75,7 +75,7 @@ body{margin:0;background:var(--ink);color:var(--cream);font-family:var(--f);
 #leads,#labs{transition:opacity .14s ease}
 #stage.moving #leads,#stage.moving #labs{opacity:0}
 #stage.moving #labs .lab{pointer-events:none}
-.lab{position:absolute;pointer-events:auto;border:0;cursor:pointer;
+.lab{position:absolute;pointer-events:auto;border:0;cursor:default;
   padding:4px 8px;border-radius:7px;max-width:116px;
   font:800 11px/1.2 var(--f);letter-spacing:.015em;text-align:left;
   background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.3);
@@ -85,7 +85,7 @@ body{margin:0;background:var(--ink);color:var(--cream);font-family:var(--f);
 .lab::before{content:none}
 .lab.r{flex-direction:row-reverse;text-align:right}
 .lab[hidden]{display:none}
-.lab.sel{background:var(--ink);box-shadow:0 2px 9px rgba(0,0,0,.5)}
+.lab.sel{cursor:pointer;background:var(--ink);box-shadow:0 2px 9px rgba(0,0,0,.5)}
 .lab.sel span{color:#fff}
 
 
@@ -206,7 +206,25 @@ body{margin:0;background:var(--ink);color:var(--cream);font-family:var(--f);
   #meta{padding:14px 2px 0}
   #cname{font-size:22px} #ctag{-webkit-line-clamp:3;font-size:13.5px}
   #cgo{margin-top:15px}
+  #card.intro{background:var(--panel);border-left:1px solid var(--line)}
+  #card.intro #nav{display:none}
+  #card.intro #body{padding:0;overflow:hidden}
+  #card.intro #meta{padding:0;display:flex;flex-direction:column;min-height:0;flex:1}
+  #card.intro #empty{padding:30px 22px 0;gap:8px;min-height:0;flex:1;display:flex;flex-direction:column}
+  #card.intro #empty b{color:var(--cream);font:900 27px/1.05 var(--f)}
+  #card.intro #empty p{color:var(--muted);font-size:14px;line-height:1.4;margin:0}
+  #card.intro #ibuild{display:none}
+  #pcl{display:flex!important}
 }
+#pcl{display:none;flex-direction:column;gap:6px;overflow-y:auto;margin:12px -22px 0;padding:0 22px 22px;flex:1;min-height:0;overscroll-behavior:contain}
+.pcg{font:800 10.5px/1 var(--f);letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin:12px 0 2px}
+.pc{display:flex;align-items:center;gap:12px;border:1px solid var(--line);background:#1D2218;border-radius:12px;padding:6px;cursor:default;text-align:left;color:var(--cream);font-family:var(--f);transition:background .15s,border-color .15s}
+.pc:hover{background:#262D20;border-color:var(--ac,#F2B33D)}
+.pc i{flex:0 0 58px;height:58px;border-radius:8px;background:#2B3126 center/cover;display:block;border-left:4px solid var(--ac,#F2B33D)}
+.pc span{display:block;min-width:0}
+.pc b{display:block;font:800 15px/1.15 var(--f);color:var(--cream)}
+.pc em{display:block;font:500 12.5px/1.3 var(--f);color:var(--muted);font-style:normal;margin-top:2px}
+.pc u{margin-left:auto;text-decoration:none;color:var(--ac,#F2B33D);font-size:20px;padding-right:6px}
 
 /* Find: the picker is a sheet that rises over the card, never over the map. */
 #picker{position:absolute;left:0;right:0;top:46px;bottom:0;z-index:5;background:var(--panel);
@@ -307,6 +325,7 @@ body{margin:0;background:var(--ink);color:var(--cream);font-family:var(--f);
       <div id="empty">
         <b>A city for one weekend</b>
         <p>Every August, architects and builders raise 20 neighborhoods on Pendarvis Farm. Swipe this panel to walk through them, or tap one on the map.</p>
+        <div id="pcl"></div>
         <button id="ibuild" type="button">We build these. Want one? →</button>
       </div>
       <div id="full" hidden>
@@ -684,11 +703,28 @@ function heroRun(h){
   }
 }
 // Quietly warm each neighborhood's first photo once the map is up.
-function warmHeroes(){
+function warmHeroes(){ buildCards();
   if(navigator.connection&&navigator.connection.saveData) return;
   const ids=HOODS.map(h=>(HERO[h.id]||[])[0]).filter(Boolean); let i=0;
   const next=()=>{ if(i>=ids.length) return; const im=new Image(); im.decoding='async'; im.src=ids[i++]; setTimeout(next,160); };
   setTimeout(next,2500);
+}
+function buildCards(){
+  const box=document.getElementById('pcl'); if(!box||box._d) return; box._d=1;
+  const col={stage:'#D4502C',camp:'#C98A14',around:'#3E7F46',wellness:'#2E8C9E',family:'#8A4FA8'};
+  const order=['stage','camp','around'], seen={};
+  let html='';
+  order.concat(Object.keys(KIND).filter(k=>order.indexOf(k)<0)).forEach(k=>{
+    const L=HOODS.filter(h=>h.k===k); if(!L.length) return;
+    html+='<div class="pcg">'+(KIND[k]||k)+'</div>';
+    L.forEach(h=>{ const im=(HERO[h.id]||[])[0];
+      html+='<button class="pc" type="button" data-h="'+h.id+'" style="--ac:'+(col[k]||'#F2B33D')+'"><i'+(im?' style="background-image:url(\''+im+'\')"':'')+'></i><span><b>'+h.n+'</b><em>'+(h.t||'')+'</em></span><u>›</u></button>'; });
+  });
+  box.innerHTML=html;
+  const by=id=>HOODS.filter(h=>h.id===id)[0];
+  box.addEventListener('click',e=>{ const b=e.target.closest('.pc'); if(!b) return; const h=by(b.dataset.h); setCur(h); pinned=h; flyTo(h); });
+  box.addEventListener('mouseover',e=>{ const b=e.target.closest('.pc'); if(b&&!pinned) peek(by(b.dataset.h)); });
+  box.addEventListener('mouseleave',()=>{ if(!pinned) peek(null); });
 }
 function show(h){
   if(!h){
@@ -765,7 +801,7 @@ function hover(e){
   const lb0=el&&el.closest&&el.closest('.lab');
   const h=el&&el.__hood?el.__hood:(lb0&&lb0.__hood?lb0.__hood:null);   // a name tag counts as its neighborhood
   const ia=e.pointerType==='mouse'?iconAt(e):null;
-  stage.classList.toggle('onhood',!!h&&!ia); stage.classList.toggle('onicon',!!ia);
+  stage.classList.toggle('onhood',!!h&&!ia&&h===pinned); stage.classList.remove('onicon');   // hand only where a click goes through; a plain selector keeps the arrow
   const tp=document.getElementById('itip');
   if(tp){ if(ia){ tp.textContent=TIPLBL[ia]||D.amlbl[ia]||ia; tp.style.left=e.clientX+'px'; tp.style.top=e.clientY+'px'; tp.classList.add('on'); } else tp.classList.remove('on'); }
   if(pinned && e.pointerType==='mouse'){ const lb=el&&el.closest&&el.closest('.lab'); peek(lb&&lb.__hood?lb.__hood:(h&&!ia&&!stage.classList.contains('moving')?h:null)); }
