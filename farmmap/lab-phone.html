@@ -566,6 +566,9 @@ body{margin:0;background:var(--ink);color:var(--cream);font-family:var(--f);
 
 </style>
 <div id="stage">
+<script>/* Decide the entry state before the first paint, so nothing shows and then switches off (the title that blinked, labels that all showed and then collapsed). */
+(function(){try{var c=document.body.classList,emb=window.parent!==window,nv=performance.getEntriesByType('navigation')[0],rl=nv&&nv.type==='reload',fh=emb&&!rl&&sessionStorage.getItem('pkmap.from')==='hood',foc=!!sessionStorage.getItem('pkmap.focus');
+if(innerWidth>=880){c.add('lm');if(fh||foc){c.add('dpdone');c.add('nodt');}}else{if(fh)c.add('lpback');else if(!foc)c.add('lpfresh');}}catch(e){}})();</script>
   <div id="art"><img id="mapimg" src="map.webp?v=25" alt="Map of Pendarvis Farm" draggable="false"><div id="tiles"></div><div id="veil"></div><div id="lits"></div></div>
   <svg id="shapes"></svg>
   <svg id="leads"></svg>
@@ -744,7 +747,7 @@ body.lpback #lptitle{display:none!important}   /* back from a neighborhood page:
 @media (min-width:880px){
   #dover{display:block;position:fixed;left:26px;top:74px;width:min(340px,calc(100vw - var(--cardw,440px) - 60px));z-index:24;pointer-events:none;
     opacity:1;visibility:visible;transition:opacity .4s ease,visibility 0s}
-  body.dpdone #dover{opacity:0;visibility:hidden;transition:opacity .35s ease,visibility 0s linear .35s}
+  body.dpdone #dover{opacity:0;visibility:hidden;transition:opacity .35s ease,visibility 0s linear .35s}body.nodt #dover{transition:none!important}
   #dover::before{content:'';position:absolute;z-index:-1;left:-70px;top:-60px;right:-90px;bottom:-70px;
     background:radial-gradient(closest-side,rgba(10,13,8,.86) 0%,rgba(10,13,8,.72) 45%,rgba(10,13,8,.3) 78%,rgba(10,13,8,0) 100%)}
   #dover h1{margin:0;font:900 clamp(32px,2.7vw,42px)/1.02 var(--f);letter-spacing:-.012em;color:#fff;text-shadow:0 2px 16px rgba(0,0,0,.45)}
@@ -893,7 +896,7 @@ function build(){
     }
     p.setAttribute('d',h._mask);
     p.addEventListener('pointerenter',e=>{ if(pinned && e.pointerType==='mouse' && !e.buttons && !live.size) peek(h);
-      if(hoverOK && !pinned && e.pointerType==='mouse' && !e.buttons && !live.size && NOW()>settleUntil) setCur(h); });  // hover only; a finger or a drag never picks
+      if(hoverOK && hoverArmed && !pinned && e.pointerType==='mouse' && !e.buttons && !live.size && NOW()>settleUntil) setCur(h); });  // hover only; a finger or a drag never picks
     // A drag that happens to END on a neighborhood is still a drag. Without
     // this the map opened a page every time you let go over a shape, the page
     // covered the farm, and it read as "after the first move it gets stuck".
@@ -1359,6 +1362,8 @@ function show(h){
 // Labels: hidden only on the first overview, where the emblem row names the places. Once any
 // neighborhood has been picked they stay on at every zoom, Full map included.
 let selOnce=false;
+// A cursor left resting where the map opened is not a choice: the browser re-sends mouse events when the page changes under it. Hover picks a neighborhood only after the mouse has really travelled.
+let hoverArmed=false; (function(){ let p0=null; addEventListener('pointermove',function(ev){ if(hoverArmed||ev.pointerType!=='mouse') return; if(!p0){ p0={x:ev.clientX,y:ev.clientY}; return; } if(Math.hypot(ev.clientX-p0.x,ev.clientY-p0.y)>14) hoverArmed=true; },{passive:true,capture:true}); })();
 function setCur(h){
   if(!h || h===cur) return;
   if(innerWidth<880) selOnce=true;
@@ -1423,7 +1428,7 @@ function hover(e){
   const tp=document.getElementById('itip');
   if(tp){ if(ia){ tp.textContent=TIPLBL[ia]||D.amlbl[ia]||ia; tp.style.left=e.clientX+'px'; tp.style.top=e.clientY+'px'; tp.classList.add('on'); } else tp.classList.remove('on'); }
   if(pinned && e.pointerType==='mouse'){ const lb=el&&el.closest&&el.closest('.lab'); peek(lb&&lb.__hood?lb.__hood:(h&&!ia&&!stage.classList.contains('moving')?h:null)); }
-  if(hoverOK && !ia && !pinned && NOW()>settleUntil){
+  if(hoverOK && hoverArmed && !ia && !pinned && NOW()>settleUntil){
     clearTimeout(hover._t);
     if(h) setCur(h);
     else if(cur) hover._t=setTimeout(()=>{ if(cur && !stage.classList.contains('onhood') && !stage.classList.contains('onicon')) clearCur(); },200);
@@ -1499,8 +1504,8 @@ function tapAt(e){
   if(!h){ if((pinned&&e.pointerType==='mouse')||(e.pointerType!=='mouse'&&cur)) clearCur(); return; }
   // mouse: hover peeks, a click pins, a click on the pinned one opens. Touch: the first tap
   // shows the card, a tap on the one already showing opens it.
-  if(e.pointerType==='mouse'){ if(pinned!==h){ pinned=h; peek(null); setCur(h); show(h); } return; }   // desktop: a click on the map only selects (no zoom); the logo list and next/prev do the flying; the Open button is the way through
-  else if(h!==cur){ setCur(h); return; }
+  if(e.pointerType==='mouse'){ if(pinned!==h){ const kept=keepZoomIf(h); pinned=h; peek(null); setCur(h); show(h); if(kept){ const to=viewFor(h,keepK); if(to) flyView(to,h); } } return; }   // desktop: a click on the map only selects (no zoom); the logo list and next/prev do the flying; the Open button is the way through
+  else if(h!==cur){ keepZoomIf(h); setCur(h); return; }
   goPage(h);
 }
 const lift=e=>{
@@ -1530,7 +1535,7 @@ labs.addEventListener('pointerout',e=>{ if(pinned) peek(null); });
 labs.addEventListener('pointerover',e=>{
   const b=e.target.closest('.lab');
   if(pinned&&e.pointerType==='mouse'&&b&&b.__hood) peek(b.__hood);
-  if(hoverOK&&!pinned&&e.pointerType==='mouse'&&!e.buttons&&b&&b.__hood&&!live.size&&NOW()>settleUntil) setCur(b.__hood);   // hover is for a mouse; a finger only ever picks by tapping
+  if(hoverOK&&hoverArmed&&!pinned&&e.pointerType==='mouse'&&!e.buttons&&b&&b.__hood&&!live.size&&NOW()>settleUntil) setCur(b.__hood);   // hover is for a mouse; a finger only ever picks by tapping
 });
 
 // A trackpad two-finger swipe moves the farm; a pinch (which arrives as
@@ -1568,8 +1573,9 @@ document.getElementById('card').addEventListener('click',e=>{
 });
 document.getElementById('fullmap').onclick=fullMap;
 // Desktop: while nothing is clicked the list names the places, so the map stays clean and shows only the one label you point at; a click brings every label back.
-setInterval(()=>{ if(pinned&&!selOnce){ selOnce=true; saveSoon(); } const on=innerWidth>=880&&!pinned&&!selOnce; document.body.classList.toggle('lm',on);
-  HOODS.forEach(h=>{ const sh=on&&(h===cur||h===peekH); [h._el,h._u,h._o,h._pt].forEach(e=>{ if(e) e.classList.toggle('lmshow',sh); }); }); },120);
+function lmSync(){ if(pinned&&!selOnce){ selOnce=true; saveSoon(); } const on=innerWidth>=880&&!pinned&&!selOnce; document.body.classList.toggle('lm',on);
+  HOODS.forEach(h=>{ const sh=on&&(h===cur||h===peekH); [h._el,h._u,h._o,h._pt].forEach(e=>{ if(e) e.classList.toggle('lmshow',sh); }); }); }
+setInterval(lmSync,120);
 document.getElementById('cmore').onclick=e=>{ e.stopPropagation(); if(cur) goPage(cur); };
 (function(){ const c=document.getElementById('card'), pall=document.getElementById('pall'), pcl=document.getElementById('pcl'); let t;
   pall.onclick=e=>{ e.stopPropagation(); const on=c.classList.toggle('all'); pall.innerHTML=on?'Show fewer &#9662;':'See all 20 &#9652;'; };
@@ -1660,7 +1666,15 @@ function lpDeepInit(){
   // Desktop title panel: shown on every entry except an explicit neighborhood link or a return from a neighborhood page
   if(!LP()){ const done=()=>document.body.classList.add('dpdone');
     if(window.__lpDeep||FROMHOOD) done();
-    else{       ['pointerdown','wheel','keydown'].forEach(n=>stage.addEventListener(n,done,{once:true,passive:true})); } }
+    else{   // The title leaves only for a deliberate move, never for the tail of the click that opened the map: a held or double click, trackpad inertia from the page above, a key still down.
+      const t0=performance.now(); let dn=null, gone=false;
+      const off=()=>{ if(gone) return; gone=true; done(); ['pointerdown','pointermove','wheel','keydown'].forEach(n=>stage.removeEventListener(n,h)); removeEventListener('keydown',h); };
+      const h=e=>{ if(performance.now()-t0<1800) return;
+        if(e.type==='pointerdown'){ dn={x:e.clientX,y:e.clientY}; return; }
+        if(e.type==='pointermove'){ if(dn&&Math.hypot(e.clientX-dn.x,e.clientY-dn.y)>10) off(); return; }
+        if(e.type==='wheel'){ if(Math.abs(e.deltaY)+Math.abs(e.deltaX)>0) off(); return; }
+        if(e.type==='keydown'&&!e.repeat) off(); };
+      ['pointerdown','pointermove','wheel','keydown'].forEach(n=>stage.addEventListener(n,h,{passive:true})); } }
   if(FROMHOOD){ document.body.classList.add('lpback'); const ev0=['pointerdown','touchstart','wheel','keydown'], off0=function(){ document.body.classList.remove('lpback'); ev0.forEach(function(n){ removeEventListener(n,off0,true); }); }; ev0.forEach(function(n){ addEventListener(n,off0,{capture:true,passive:true}); }); return; }
   if(!window.__lpDeep||!cur) return;
   const el=document.getElementById('lpdeep'), f=document.getElementById('finder'); if(!el) return;
@@ -1698,14 +1712,17 @@ function lpHome(){
 // Picked: zoom in so the neighborhood fills most of the map that is still showing (between the top
 // controls and the strip), centered. Prev/next keep the same framing; Back / Full map return to lpHome().
 function lpTopR(){ const f=document.getElementById('finder'); return f?Math.round(f.getBoundingClientRect().bottom-stage.getBoundingClientRect().top)+6:56; }
-function lpView(h){
+function lpView(h,fk){
   const sh=D.shapes[h.id], b=sh&&sh.b, W=stage.clientWidth, Hv=stage.clientHeight-LPVB, T=Math.min(lpTopR(),Hv*.2);
   const cx=b?(b[0]+b[2])/2:h._mx*MW, cy=b?(b[1]+b[3])/2:h._my*MH;
-  let nk=k; if(b){ nk=Math.min(W*.66/Math.max(1,b[2]-b[0]),(Hv-T)*.7/Math.max(1,b[3]-b[1])); nk=Math.max(kMin||kFit,Math.min(maxK(),nk)); }
+  let nk=fk||k; if(b&&!fk){ nk=Math.min(W*.66/Math.max(1,b[2]-b[0]),(Hv-T)*.7/Math.max(1,b[3]-b[1])); nk=Math.max(kMin||kFit,Math.min(maxK(),nk)); }
   const lbl=Math.min(18,W*.045);   // the label stack on the left edge is heavier than the right, so sit a touch right of centre
   const c=clampV(nk, W/2+lbl-cx*nk, T+(Hv-T)/2-cy*nk, Hv, true); return {k:nk,tx:c.tx,ty:c.ty};
 }
-function lpPanTo(h){ if(h) flyView(lpView(h),h); }
+// Picking another neighborhood on the map while zoomed in keeps the zoom and only brings it to the middle; the list, the arrows and the first pick still frame it.
+let keepK=0, keepAt=0;
+function keepZoomIf(h){ if(!cur||cur===h) return false; const zoomed=LP()?k>lpHome().k*1.03:k>kFit*1.08; if(!zoomed) return false; keepK=k; keepAt=NOW(); return true; }
+function lpPanTo(h){ if(h) flyView(lpView(h,(keepK&&NOW()-keepAt<2500)?keepK:0),h); }
 function lpSettle(){ const c=clampV(k,tx,ty,stage.clientHeight-LPVB);
   if(Math.abs(c.tx-tx)>.5||Math.abs(c.ty-ty)>.5) flyView({k:k,tx:c.tx,ty:c.ty},null); else apply(); }
 function lpFmOn(){ if(innerWidth<700) return !document.body.classList.contains('lpfresh'); if(cur) return true; const v=lpHome(); return k>v.k*1.03 || Math.abs(ty-v.ty)>30 || Math.abs(tx-v.tx)>30; }
@@ -1837,7 +1854,7 @@ function lpWirePanel(){
   // follow the site's TEST "When" switch
   setInterval(()=>{ if(cur&&lpFill._h===cur&&lpFest()!==lpFill._f) lpFill(cur); },800);
 }
-(function(){ const _boot=boot; boot=function(){ if(LP()){ hoverOK=false; lpBuildMenu(); lpWire(); lpWirePanel(); } _boot(); if(LP()) lpFresh(lpAtHome()&&!FROMHOOD); lpWire._w=stage.clientWidth; lpWire._h=stage.clientHeight; }; })();
+(function(){ const _boot=boot; boot=function(){ if(LP()){ hoverOK=false; lpBuildMenu(); lpWire(); lpWirePanel(); } _boot(); if(LP()) lpFresh(lpAtHome()&&!FROMHOOD); try{ lmSync(); }catch(e){} lpWire._w=stage.clientWidth; lpWire._h=stage.clientHeight; }; })();
 if(img.complete&&img.naturalWidth) boot(); else img.onload=boot;
 
 // ---- Walk the farm: swipe the card (or use the arrows) to go neighbourhood to
@@ -1845,11 +1862,11 @@ if(img.complete&&img.naturalWidth) boot(); else img.onload=boot;
 // the far south lots up through the camps; the big camps frame the whole farm.
 const ORDER=['welcomelot','willowcamp','southcamp','curation','farmhouse','orchard','courtyard','lucky','galaxy','paddock','windmill','grove','market','cherryhill','coyote','refuge','quailtrail','woods','lushcamp','wildcamp'];
 let flyRaf=0;
-function viewFor(h){
-  if(LP()) return lpView(h);
+function viewFor(h,fk){
+  if(LP()) return lpView(h,fk);
   const sh=D.shapes[h.id], W=stage.clientWidth, H=stage.clientHeight; if(!sh) return null;
   const b=sh.b, bw=b[2]-b[0], bh=b[3]-b[1];
-  const nk=Math.max(kFit,Math.min(maxK(),W*0.74/bw,H*0.74/bh));
+  const nk=fk||Math.max(kFit,Math.min(maxK(),W*0.74/bw,H*0.74/bh));
   const cx=(b[0]+b[2])/2, cy=(b[1]+b[3])/2, w=MW*nk, h2=MH*nk;
   let ntx=W/2-cx*nk, nty=H/2-cy*nk;
   ntx = w<=W ? (W-w)/2 : Math.min(0,Math.max(W-w,ntx));
