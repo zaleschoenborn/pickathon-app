@@ -785,6 +785,12 @@ function zoomAt(nk,cx,cy){
   nk=Math.max(kFit,Math.min(maxK(),nk));
   const r=nk/k; tx=cx-(cx-tx)*r; ty=cy-(cy-ty)*r; k=nk; clamp(); move();
 }
+// Desktop opens on the working view: the farm's stages and camps fill the frame,
+// anchored to the bottom, with only the far northern camping trimmed off. 'Full map' shows it all.
+function homeView(){
+  const W=stage.clientWidth,H=stage.clientHeight;
+  k=Math.min(maxK(),kFit*1.45); tx=(W-MW*k)/2; ty=H-MH*k; clamp(); apply();
+}
 function fit(){
   const W=stage.clientWidth,H=stage.clientHeight;
   kFit=Math.min(W/MW,H/MH); k=kFit;
@@ -1155,7 +1161,7 @@ function frameHood(fh){ const W=stage.clientWidth,H=stage.clientHeight, sh=D.sha
 let settleUntil=0; let hoverOK=true;   // hover previews only until the first pan, zoom or click; after that a click selects and a second click opens
 
 document.getElementById('ibuild').addEventListener('click',()=>{ try{ parent.postMessage({pkMap:'go',r:'build'},'*'); }catch(e){} });
-function boot(){ if(!document.getElementById('itip')){ const t=document.createElement('div'); t.id='itip'; document.body.appendChild(t); } art.style.width=MW+'px'; art.style.height=MH+'px'; build(); fit(); restoreView(); settleUntil=NOW()+900; warmHeroes(); }
+function boot(){ if(!document.getElementById('itip')){ const t=document.createElement('div'); t.id='itip'; document.body.appendChild(t); } art.style.width=MW+'px'; art.style.height=MH+'px'; build(); fit(); if(innerWidth>=880) homeView(); restoreView(); settleUntil=NOW()+900; warmHeroes(); }
 if(img.complete&&img.naturalWidth) boot(); else img.onload=boot;
 
 // ---- Walk the farm: swipe the card (or use the arrows) to go neighbourhood to
