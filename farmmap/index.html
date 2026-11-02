@@ -67,6 +67,7 @@ body{margin:0;background:var(--ink);color:var(--cream);font-family:var(--f);
 #leads .pt{stroke:#FFF;stroke-width:1.6;fill:currentColor}
 #labs{position:absolute;inset:0;pointer-events:none}
 #leads,#labs{transition:opacity .14s ease}
+@media (min-width:880px){body.lm .lab:not(.lmshow){opacity:0;pointer-events:none}body.lm #leads .u:not(.lmshow),body.lm #leads .o:not(.lmshow),body.lm #leads .pt:not(.lmshow){opacity:0}.lab,#leads .u,#leads .o,#leads .pt{transition:opacity .16s ease}}
 #stage.moving #leads,#stage.moving #labs{opacity:0}
 #stage.moving #labs .lab{pointer-events:none}
 .lab{position:absolute;pointer-events:auto;border:0;cursor:default;
@@ -1041,6 +1042,9 @@ document.getElementById('card').addEventListener('click',e=>{
   if(cur) goPage(cur);
 });
 document.getElementById('fullmap').onclick=fullMap;
+// Desktop: while nothing is clicked the list names the places, so the map stays clean and shows only the one label you point at; a click brings every label back.
+setInterval(()=>{ const on=innerWidth>=880&&!pinned; document.body.classList.toggle('lm',on);
+  HOODS.forEach(h=>{ const sh=on&&(h===cur||h===peekH); [h._el,h._u,h._o,h._pt].forEach(e=>{ if(e) e.classList.toggle('lmshow',sh); }); }); },120);
 document.getElementById('cmore').onclick=e=>{ e.stopPropagation(); if(cur) goPage(cur); };
 (function(){ const c=document.getElementById('card'), pall=document.getElementById('pall'), pcl=document.getElementById('pcl'); let t;
   pall.onclick=e=>{ e.stopPropagation(); const on=c.classList.toggle('all'); pall.innerHTML=on?'Show fewer &#9662;':'See all 20 &#9652;'; };
