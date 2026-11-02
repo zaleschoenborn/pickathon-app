@@ -1203,7 +1203,7 @@ function clampV(kk,x,y,Hv,sel){
   const W=stage.clientWidth,w=MW*kk,h=MH*kk;
   // Phone: room past every edge while a neighborhood is picked (or the map is zoomed in), so an edge
   // neighborhood like Woods (top) or Refuge (right) can sit mid-screen with breathing room around it.
-  let mx=0,mt=0,mb=0; if(LP()&&kMin){ const z=(sel||cur)?1:Math.max(0,Math.min(1,(kk/kMin-1)/0.4)); mx=W*0.5*z; mt=Hv*0.5*z; mb=Hv*0.3*z; }
+  let mx=0,mt=0,mb=0; if(LP()&&kMin){ const z=(sel||cur)?1:Math.max(0,Math.min(1,(kk/kMin-1)/0.4)); mx=W*0.5*z; mt=Hv*0.1*z; mb=-8; }   // sides keep room for the labels; top and bottom stay tight, and the map's bottom edge tucks under the strip so no seam shows
   x = w<=W ? (W-w)/2 : Math.min(mx,Math.max(W-w-mx,x));
   y = h<=Hv ? (Hv-h)/2 : Math.min(mt,Math.max(Hv-h-mb,y));
   return {tx:x,ty:y};
@@ -1758,7 +1758,8 @@ function lpView(h,fk){
 // Picking another neighborhood on the map while zoomed in keeps the zoom and only brings it to the middle; the list, the arrows and the first pick still frame it.
 let keepK=0, keepAt=0;
 function keepZoomIf(h){ if(!cur||cur===h) return false; const zoomed=LP()?k>lpHome().k*1.03:k>kFit*1.08; if(!zoomed) return false; keepK=k; keepAt=NOW(); return true; }
-function lpPanTo(h){ if(h) flyView(lpView(h,(keepK&&NOW()-keepAt<2500)?keepK:0),h); }
+let noPanUntil=0;   // a swipe on the preview card only switches neighborhood: the map behind stays put
+function lpPanTo(h){ if(NOW()<noPanUntil) return; if(h) flyView(lpView(h,(keepK&&NOW()-keepAt<2500)?keepK:0),h); }
 function lpSettle(){ const c=clampV(k,tx,ty,stage.clientHeight-LPVB);
   if(Math.abs(c.tx-tx)>.5||Math.abs(c.ty-ty)>.5) flyView({k:k,tx:c.tx,ty:c.ty},null); else apply(); }
 function lpFmOn(){ if(innerWidth<700) return !document.body.classList.contains('lpfresh'); if(cur) return true; const v=lpHome(); return k>v.k*1.03 || Math.abs(ty-v.ty)>30 || Math.abs(tx-v.tx)>30; }
@@ -1940,7 +1941,7 @@ function flyView(to,h){
     else { k=to.k; tx=to.tx; ty=to.ty; clamp(); paint(); stage.classList.remove('moving'); apply(); }
   })(t0);
 }
-function stepHood(dir){
+function stepHood(dir,quiet){
   const O=(LP()&&LPORDER.length)?LPORDER:ORDER;
   let i=cur?O.indexOf(cur.id):-1;
   if(i<0) i=dir>0?-1:0;
@@ -1949,7 +1950,7 @@ function stepHood(dir){
     const h=HOODS.find(x=>x.id===O[i]);
     if(h && passes(h)){
       const m=document.getElementById('meta'); m.classList.remove('swl','swr'); void m.offsetWidth; m.classList.add(dir>0?'swl':'swr');
-      setCur(h); pinned=h; flyTo(h); return;
+      if(quiet) noPanUntil=NOW()+2200; setCur(h); pinned=h; if(!quiet) flyTo(h); return;
     }
   }
 }
@@ -1960,7 +1961,7 @@ function stepHood(dir){
   card.addEventListener('pointerdown',e=>{ d=(e.target.closest('#cams,#picker,button'))?null:{x:e.clientX,y:e.clientY,t:performance.now()}; });
   card.addEventListener('pointerup',e=>{
     if(!d) return; const dx=e.clientX-d.x, dy=e.clientY-d.y, dt=performance.now()-d.t; d=null;
-    if(Math.abs(dx)>46 && Math.abs(dx)>1.6*Math.abs(dy) && dt<800){ window.__swipedAt=performance.now(); stepHood(dx<0?1:-1); }
+    if(Math.abs(dx)>46 && Math.abs(dx)>1.6*Math.abs(dy) && dt<800){ window.__swipedAt=performance.now(); stepHood(dx<0?1:-1,true); }
   });
   card.addEventListener('pointercancel',()=>{ d=null; });
   stage.addEventListener('pointerdown',()=>{ cancelAnimationFrame(flyRaf); clearTimeout(mvT); if(stage.classList.contains('moving')){ stage.classList.remove('moving'); apply(); } },true);
