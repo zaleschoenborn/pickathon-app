@@ -24522,19 +24522,9 @@
 ],
 "count": 30,
 "img": "",
-"vids": [
-{
-"id": "6obSO7UT4lw",
-"a": "Trampled By Turtles",
-"s": "Documentary",
-"views": "12K",
-"y": "2007",
-"th": "i/57.jpg",
-"py": "2007"
-}
-],
+"vids": [],
 "stories": [],
-"nv": 1,
+"nv": 0,
 "all": [
 "The Avett Brothers",
 "Trampled by Turtles",
@@ -25476,10 +25466,6 @@
 "l": "Self-released and playing Duluth bars when they came. Within a few years they were selling out First Avenue, and later headlining Red Rocks.",
 "top": false,
 "g": "bluegrass",
-"m": {
-"u": "https://www.youtube.com/watch?v=6obSO7UT4lw",
-"t": "▶ Watch the Pickathon documentary"
-},
 "pi": "i/p10102.jpg"
 },
 {
@@ -45845,15 +45831,6 @@
 "y": 2009,
 "cad": 0,
 "v": 8206
-},
-{
-"id": "6obSO7UT4lw",
-"a": "Trampled By Turtles",
-"s": "",
-"y": 2009,
-"cad": 0,
-"v": 12172,
-"nonact": 1
 },
 {
 "id": "FygWEs0cx1o",
