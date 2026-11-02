@@ -232,6 +232,10 @@ body{margin:0;background:var(--ink);color:var(--cream);font-family:var(--f);
   #eyebrow{display:block!important}
 }
 #cpitch,#cvid{display:none}
+#cvsp{display:none;border:1px solid var(--line);background:#222820;color:var(--cream);font:800 12px/1 var(--f);padding:9px 13px;border-radius:999px;cursor:pointer;align-self:flex-start;margin-top:8px}
+@media (min-width:880px){#cvsp:not([hidden]){display:block;order:7}}
+#card:not(.intro) #body{cursor:pointer}
+#card:not(.intro) #cvid,#card:not(.intro) #cmore,#card:not(.intro) #nav button{cursor:pointer}
 @media (min-width:880px){
   #card:not(.intro) #meta{flex:1;min-height:0;display:flex;flex-direction:column;padding-top:12px}
   #full{display:flex;flex-direction:column;flex:1;min-height:0}
@@ -427,7 +431,8 @@ body{margin:0;background:var(--ink);color:var(--cream);font-family:var(--f);
         <button id="cmore" type="button" hidden>Read more →</button>
         <a id="cvid" hidden target="_blank" rel="noopener"><img alt=""><span class="pl">▶︎</span><span class="vt"><b></b><i></i></span></a>
         <div class="ams" id="cams"></div>
-        <button id="cgo">Open the page →</button>
+        <button id="cvsp" type="button" hidden>&#8635; Another video</button>
+        <button id="cgo">Explore the page →</button>
       </div>
     </div>
   </div>
@@ -830,10 +835,10 @@ function loadXD(){ if(XD||innerWidth<880) return; XD={}; fetch('../data.json').t
 const VRX={lucky:/Lucky Barn/i,woods:/Woods (Stage|Series)/i,galaxy:/Galaxy Barn/i,paddock:/Paddock/i,cherryhill:/Cherry Hill/i,windmill:/Windmill/i,grove:/Grove/i,courtyard:/Courtyard/i,orchard:/Orchard/i,refuge:/Refuge/i,farmhouse:/Farmhouse/i};
 function fillExtra(h){
   const pc=document.getElementById('cpitch'), cv=document.getElementById('cvid');
-  pc.hidden=true; cv.hidden=true; document.getElementById('cmore').hidden=true; if(!XD||!XD.h) return;
+  pc.hidden=true; cv.hidden=true; document.getElementById('cvsp').hidden=true; document.getElementById('cmore').hidden=true; if(!XD||!XD.h) return;
   const x=XD.h[h.id]; const p=x&&x.d&&x.d[0]; if(p){ pc.textContent=p; pc.hidden=false; document.getElementById('cmore').hidden=false; }
-  const rx=VRX[h.id]; if(rx&&XD.v){ const L=XD.v.filter(v=>!v.cad&&!v.vm&&rx.test(String(v.s||''))); if(L.length){ const v=L[(h.id.length*7+L.length)%L.length];
-    cv.href='https://www.youtube.com/watch?v='+v.id; cv.querySelector('img').src='https://i.ytimg.com/vi/'+v.id+'/hqdefault.jpg'; cv.querySelector('b').textContent=v.a||''; cv.querySelector('i').textContent=(h.n)+' · '+(v.y||''); cv.hidden=false; } }
+  const rx=VRX[h.id]; if(rx&&XD.v){ const L=XD.v.filter(v=>!v.cad&&!v.vm&&rx.test(String(v.s||''))); if(L.length){ let vi=(h.id.length*7+L.length)%L.length, v=L[vi]; const sp=document.getElementById('cvsp'); sp.hidden=L.length<2; sp.onclick=e=>{ e.stopPropagation(); vi=(vi+1)%L.length; v=L[vi]; put(v); };
+    const put=v=>{ cv.href='https://www.youtube.com/watch?v='+v.id; cv.querySelector('img').src='https://i.ytimg.com/vi/'+v.id+'/hqdefault.jpg'; cv.querySelector('b').textContent=v.a||''; cv.querySelector('i').textContent=(h.n)+' · '+(v.y||''); cv.hidden=false; }; put(v); } }
 }
 function show(h){
   if(h) document.getElementById('card').classList.remove('all');
@@ -854,7 +859,7 @@ function show(h){
   document.getElementById('cams').innerHTML=(amFilter&&!passes(h)?'<span class="nohit">No '+(AMLBL[amFilter]||amFilter)+' here</span>':'')+(h.amk||[]).map((a,i)=>
     '<span class="ai'+(a===amFilter?' hit':'')+'" title="'+(AMLBL[a]||a)+'">'+ico(a)+'</span>').join('');
   loadXD(); fillExtra(h);
-  document.getElementById('cgo').textContent='Open '+h.n.replace(/^The /,'')+' →';
+  document.getElementById('cgo').textContent='Explore '+h.n.replace(/^The /,'')+' →';
   if(!amFilter && typeof showRings==='function') showRings(null,h);
   heroRun(h);
 }
@@ -1041,9 +1046,8 @@ stage.addEventListener('dblclick',e=>{e.preventDefault(); zoomAt(k*2,e.clientX,e
 
 document.getElementById('cgo').onclick=e=>{ e.stopPropagation(); if(cur) goPage(cur); };
 document.getElementById('card').addEventListener('click',e=>{
-  if(e.target.closest('#pickbar,#picker,#top,#nav,#pcl')) return;     // the amenity controls stay controls
+  if(e.target.closest('#pickbar,#picker,#top,#nav,#pcl,#cvid,#cvsp,#cmore,#fback,#fx')) return;     // the amenity controls stay controls
   if(window.__swipedAt && performance.now()-window.__swipedAt<500) return;   // the end of a swipe is not a tap
-  if(innerWidth>=880) return;   // desktop: the Open button is the only way through
   if(cur) goPage(cur);
 });
 document.getElementById('fullmap').onclick=fullMap;
