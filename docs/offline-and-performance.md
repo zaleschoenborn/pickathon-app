@@ -32,3 +32,9 @@ index.html (1.1 MB), data.json (3.3 MB: schedule, 264 artists, 328 sets, 20 neig
 
 ## GPS "you are here" dot (planned)
 GPS works with no cell signal. Needs map calibration: at least 3 landmarks with known latitude/longitude mapped to map pixels (affine fit), accuracy about 5 to 10 m. Show the dot only while the visitor is on the farm; add "nearest toilet, water, first aid" from the amenity data.
+
+## Update (Nov 1, later)
+- **Measured smoothness** (`tools/map-pipeline/perf_test.js`, phone size, 3x pixel ratio, 4x CPU slowdown): 60fps while zooming and panning (median and 95th percentile frame 16.7 ms), 2 slow frames in 404, one 60 ms long task; base map image ready in about 0.7 s. Already smooth: GPU transforms, tiles fetched only when zoomed in, labels re-laid-out only after a pan stops.
+- **Tier 1 now saved with the pack:** the 168 photos of 2026 artists (5.8 MB total), the neighborhood images and the small icon set. Pack is about 25 MB (`gen_pack.py`).
+- **GPS dot built, hidden until calibrated.** Staff open `farmmap/index.html?calibrate=1` on a phone at the farm, stand at 3 to 5 spread-out spots, tap the map where they stand, press Save point; the app shows the fit error in meters. Then press Show JSON, paste it into `GEO` in farmmap/index.html, and the locate button appears for everyone. Tested with simulated GPS (`gps_test.js`); real-world accuracy still to be confirmed on site.
+- **Deep-zoom sharpness is the main remaining lever.** Tiles are cut at 2.4x the map; at the closest zoom on a 3x phone the art is stretched about 2x. A 4.8x tile level (rendered from the PDF vectors) would be about 180 tiles and roughly 10 to 15 MB, but the glow overlays would need the same treatment to match, so that is a decision for Zale.
