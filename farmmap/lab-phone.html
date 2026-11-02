@@ -322,7 +322,7 @@ body{margin:0;background:var(--ink);color:var(--cream);font-family:var(--f);
 #fullmap{position:fixed;top:max(10px,env(safe-area-inset-top,0px));right:14px;z-index:25;border:1px solid rgba(255,255,255,.16);background:#161A12;box-shadow:0 3px 12px rgba(0,0,0,.38);color:var(--cream);font:800 15px/1 var(--f);padding:0 17px 0 13px;min-height:46px;border-radius:999px;display:flex;align-items:center;gap:9px;cursor:pointer;opacity:0;pointer-events:none;transition:opacity .2s}
 #fullmap.on{opacity:1;pointer-events:auto}
 #fullmap svg{width:19px;height:19px;stroke:currentColor;fill:none;stroke-width:2.2}
-@media (min-width:880px){#fullmap{right:calc(var(--cardw) + 14px)}}
+@media (min-width:880px){#fullmap{right:calc(var(--cardw) + 10px)}}
 #pcl .pc .lg{display:none;flex:0 0 38px;height:38px;place-items:center;background:#0F130D;border-radius:9px;text-decoration:none}
 #pcl .pc .lg img{width:30px;height:30px;object-fit:contain}
 #pcl{display:none;flex-direction:column;gap:6px;overflow-y:auto;margin:12px -22px 0;padding:0 22px 22px;flex:1;min-height:0;overscroll-behavior:contain}
@@ -411,7 +411,7 @@ body{margin:0;background:var(--ink);color:var(--cream);font-family:var(--f);
   #stage{inset:0!important;bottom:0!important}
   #lptest{display:block;position:fixed;top:0;right:0;z-index:60;padding:3px 7px 3px 8px;border-radius:0 0 0 8px;
     background:#D6B54A;color:#12160F;font:800 9px/1 var(--f);letter-spacing:.14em;pointer-events:none}
-  #fullmap{top:max(22px,calc(env(safe-area-inset-top,0px) + 12px));right:10px;min-height:36px;height:auto;padding:0 14px 0 11px;font-size:13px;
+  #fullmap{top:max(10px,env(safe-area-inset-top,0px));right:max(10px,env(safe-area-inset-right,0px));min-height:36px;height:auto;padding:0 14px 0 11px;font-size:13px;
     background:rgba(18,22,15,.86);border-color:rgba(255,255,255,.16);backdrop-filter:blur(6px)}
   #fullmap svg{width:15px;height:15px}
   #finder #ptog{min-height:36px;font-size:13px;padding:0 14px 0 11px;background:rgba(18,22,15,.86);backdrop-filter:blur(6px)}
@@ -1087,7 +1087,8 @@ function place(){
     arr.sort((a,b)=>a._sk-b._sk);
     // down the column first, then back up from the floor, so the bottom ones
     // spread instead of piling on the last slot
-    let y=(arr===L)?Math.max(TOP,FB+(LP()?12:0),LP()?lpTitleBot():0):(LP()?lpRightTop():TOP);
+    const fmE=document.getElementById('fullmap'), fmB=(fmE&&fmE.classList.contains('on'))?Math.round(fmE.getBoundingClientRect().bottom-stage.getBoundingClientRect().top)+38:0;
+    let y=(arr===L)?Math.max(TOP,FB+38,LP()?lpTitleBot()+14:0):(LP()?lpRightTop():Math.max(TOP,fmB));
     arr.forEach(h=>{h._ly=Math.max(y,Math.min(BOT,h._wy)); y=h._ly+SP;});
     if(y-SP>BOT){
       let yy=BOT;
@@ -1769,7 +1770,7 @@ function lpFresh(on){ if(document.body.classList.contains('lpfresh')===on) retur
 function lpAtHome(){ if(cur) return false; const v=lpHome(); return !(k>v.k*1.03 || Math.abs(ty-v.ty)>30 || Math.abs(tx-v.tx)>30); }
 function lpTitleBot(){ if(!lpTitleOn()) return 0; const r=document.getElementById('lptitle').getBoundingClientRect(); return Math.round(r.bottom-stage.getBoundingClientRect().top)+8; }
 function lpRightTop(){ const f=document.getElementById('fullmap');
-  if(f&&f.classList.contains('on')) return Math.round(f.getBoundingClientRect().bottom-stage.getBoundingClientRect().top)+16;
+  if(f&&(f.classList.contains('on')||!document.body.classList.contains('lpfresh'))) return Math.round(f.getBoundingClientRect().bottom-stage.getBoundingClientRect().top)+38;
   const t=document.getElementById('lptitle'), r=lpTitleOn()?t.getBoundingClientRect():null;   // the overview title: right-hand names start below it if it reaches their side
   return r&&r.right>stage.clientWidth-150 ? Math.round(r.bottom-stage.getBoundingClientRect().top)+8 : 34; }
 function lpMenu(on){
