@@ -25057,7 +25057,7 @@
 },
 "g": "bluegrass",
 "pi": "i/p9603.jpg",
-"pyr": 2017,
+"pyr": 2015,
 "sp": "1ZN1c1qWEGZNX1pGeKCPpf"
 },
 {
@@ -25105,7 +25105,7 @@
 "top": true,
 "g": "indie",
 "pi": "i/p9633.jpg",
-"pyr": 2014,
+"pyr": 2012,
 "m": {
 "u": "https://vimeo.com/114593547/401f02547c",
 "t": "▶ Watch from Pickathon 2014"
@@ -25153,7 +25153,8 @@
 "top": false,
 "g": "folk",
 "pi": "i/p9980.jpg",
-"sp": "196lKsA13K3keVXMDFK66q"
+"sp": "196lKsA13K3keVXMDFK66q",
+"pyr": 2006
 },
 {
 "n": "Sturgill Simpson",
@@ -25170,7 +25171,8 @@
 "t": "▶ Watch from Pickathon 2013"
 },
 "pi": "i/p10043.jpg",
-"sp": "3vDpQbGnzRbRVirXlfQagB"
+"sp": "3vDpQbGnzRbRVirXlfQagB",
+"pyr": 2011
 },
 {
 "n": "Gregory Alan Isakov",
@@ -25220,7 +25222,8 @@
 },
 "g": "country",
 "pi": "i/p10037.jpg",
-"sp": "1YSA4byX5AL1zoTsSTlB03"
+"sp": "1YSA4byX5AL1zoTsSTlB03",
+"pyr": 2015
 },
 {
 "n": "Caamp",
@@ -25289,7 +25292,7 @@
 },
 "g": "soul",
 "pi": "i/p9619.jpg",
-"pyr": 2013,
+"pyr": 2012,
 "sp": "3nuc29fYGlQbIrwh4yrNWd"
 },
 {
@@ -25340,7 +25343,8 @@
 "t": "▶ Watch from Pickathon 2011"
 },
 "pi": "i/p10051.jpg",
-"sp": "1WvvwcQx0tj6NdDhZZ2zZz"
+"sp": "1WvvwcQx0tj6NdDhZZ2zZz",
+"pyr": 2011
 },
 {
 "n": "Shakey Graves",
@@ -25359,7 +25363,7 @@
 },
 "g": "folk",
 "pi": "i/p9627.jpg",
-"pyr": 2018,
+"pyr": 2013,
 "sp": "1fZpYWNWdL5Z3wrDtISFUH"
 },
 {
@@ -25509,7 +25513,8 @@
 "top": false,
 "g": "bluegrass",
 "pi": "i/p10102.jpg",
-"sp": "3GjVVVcFmUgEJEAAsbGkf4"
+"sp": "3GjVVVcFmUgEJEAAsbGkf4",
+"pyr": 2007
 },
 {
 "n": "Viagra Boys",
@@ -25699,7 +25704,7 @@
 },
 "g": "soul",
 "pi": "i/p9638.jpg",
-"pyr": 2022,
+"pyr": 2014,
 "sp": "4QZdOCb3UacKbQ1ybDFAKM"
 },
 {
@@ -25719,7 +25724,7 @@
 },
 "g": "folk",
 "pi": "i/p9640.jpg",
-"pyr": 2015
+"pyr": 2014
 },
 {
 "n": "Sharon Van Etten",
@@ -25770,7 +25775,7 @@
 "t": "▶ Watch from Pickathon 2018"
 },
 "pi": "i/p9629.jpg",
-"pyr": 2018,
+"pyr": 2012,
 "sp": "1M3BVQ36cqPQix8lQNCh4K"
 },
 {
@@ -25806,7 +25811,7 @@
 },
 "g": "folk",
 "pi": "i/p9634.jpg",
-"pyr": 2012,
+"pyr": 2006,
 "sp": "6FxuPrpa8phaP3Xn73emhT"
 },
 {
@@ -25817,7 +25822,8 @@
 "t": "x",
 "l": "TV · Already a name. The IFC sketch show filmed a whole Pickathon-themed episode on the Mountain Stage with The Flaming Lips. It aired as the Season 6 premiere (\"Pickathon\") in January 2016.",
 "top": false,
-"src": "https://pickathon.com/2015/07/portlandia-on-thursday-schedule/"
+"src": "https://pickathon.com/2015/07/portlandia-on-thursday-schedule/",
+"pyr": 2015
 },
 {
 "n": "Chapo Trap House",
@@ -25827,7 +25833,8 @@
 "t": "x",
 "l": "Podcast · Already a name. Nationally known political comedy podcast that recorded a live show in the Lucky Barn.",
 "top": false,
-"src": "https://pickathon.com/2022/06/podcasts-at-pickathon-chapo-trap-house-off-book-more/"
+"src": "https://pickathon.com/2022/06/podcasts-at-pickathon-chapo-trap-house-off-book-more/",
+"pyr": 2022
 },
 {
 "n": "Kyle Kinane",
@@ -25837,7 +25844,8 @@
 "t": "x",
 "l": "Comedy · Already a name. Veteran stand-up with several specials, and the voice of Comedy Central's on-air announcements from 2011 to 2018.",
 "top": false,
-"src": "https://pickathon.com/2022/08/laugh-learn-let-loose-at-the-galaxy-and-lucky-barns/"
+"src": "https://pickathon.com/2022/08/laugh-learn-let-loose-at-the-galaxy-and-lucky-barns/",
+"pyr": 2022
 },
 {
 "n": "Ian Karmel",
@@ -25847,7 +25855,8 @@
 "t": "x",
 "l": "Comedy · Already a name. Portland-born comic, co-head writer of The Late Late Show with James Corden, and a 2019 Emmy winner for the Carpool Karaoke McCartney special.",
 "top": false,
-"src": "https://pickathon.com/2019/05/ian-karmel-to-headline-laughs-with-amy-at-pickathon/"
+"src": "https://pickathon.com/2019/05/ian-karmel-to-headline-laughs-with-amy-at-pickathon/",
+"pyr": 2019
 },
 {
 "n": "Willy Vlautin",
@@ -25857,7 +25866,8 @@
 "t": "x",
 "l": "Literary · Already a name. Novelist whose books The Motel Life, Lean on Pete and The Night Always Comes became feature films. He also founded Richmond Fontaine and The Delines.",
 "top": false,
-"src": "https://pickathon.com/2024/06/author-reading-lineup/"
+"src": "https://pickathon.com/2024/06/author-reading-lineup/",
+"pyr": 2024
 },
 {
 "n": "Jon Raymond",
@@ -25867,7 +25877,8 @@
 "t": "x",
 "l": "Literary · Already a name. Novelist and Kelly Reichardt's screenwriter on Old Joy, Wendy and Lucy, Meek's Cutoff and First Cow. He was Emmy-nominated for HBO's Mildred Pierce.",
 "top": false,
-"src": "https://pickathon.com/2025/07/your-guide-to-lit-sunday-the-pickathon-2025-literary-lineup/"
+"src": "https://pickathon.com/2025/07/your-guide-to-lit-sunday-the-pickathon-2025-literary-lineup/",
+"pyr": 2025
 },
 {
 "n": "Ferris Jabr",
@@ -25877,7 +25888,8 @@
 "t": "x",
 "l": "Literary · Already a name. Science writer whose Becoming Earth is a New York Times bestseller and won the Rachel Carson Environment Book Award.",
 "top": false,
-"src": "https://pickathon.com/2024/06/author-reading-lineup/"
+"src": "https://pickathon.com/2024/06/author-reading-lineup/",
+"pyr": 2024
 },
 {
 "n": "Shayla Lawson",
@@ -25891,7 +25903,8 @@
 "m": {
 "u": "https://www.youtube.com/watch?v=5U0TrnWPPAk",
 "t": "▶ Watch from Pickathon 2017"
-}
+},
+"pyr": 2016
 },
 {
 "n": "Anis Mojgani",
@@ -25905,7 +25918,7 @@
 "top": false,
 "src": "https://pickathon.com/2018/07/laugh-spoken-imagine-storytelling/",
 "pi": "i/p9660.jpg",
-"pyr": "2026",
+"pyr": 2018,
 "v": {
 "u": "https://www.youtube.com/watch?v=gFeCmqRYCQQ",
 "t": "▶ Watch from Pickathon 2018"
@@ -25919,7 +25932,8 @@
 "t": "x",
 "l": "Literary · Here early. Her later novel Madwoman (2025) became a national bestseller and an Oprah's Best Book of the Year.",
 "top": false,
-"src": "https://pickathon.com/2023/07/pickathons-lit-sunday-lineup-announced/"
+"src": "https://pickathon.com/2023/07/pickathons-lit-sunday-lineup-announced/",
+"pyr": 2023
 },
 {
 "n": "Olufunke Grace Bankole",
@@ -25930,7 +25944,8 @@
 "t": "x",
 "l": "Literary · Here early. First read at Pickathon as a debut novelist. The Edge of Water then won the Westport Prize and the Ploughshares Zacharis First Book Award and was named a TIME Best Book of the Year.",
 "top": false,
-"src": "https://pickathon.com/2025/07/your-guide-to-lit-sunday-the-pickathon-2025-literary-lineup/"
+"src": "https://pickathon.com/2025/07/your-guide-to-lit-sunday-the-pickathon-2025-literary-lineup/",
+"pyr": 2025
 },
 {
 "n": "Irene Tu",
@@ -25940,7 +25955,8 @@
 "t": "x",
 "l": "Comedy · Here early. Named one of Netflix's 'Introducing' comics in 2022. She has done a Comedy Central Stand-Up Featuring set and opened for Taylor Tomlinson.",
 "top": false,
-"src": "https://pickathon.com/2019/05/ian-karmel-to-headline-laughs-with-amy-at-pickathon/"
+"src": "https://pickathon.com/2019/05/ian-karmel-to-headline-laughs-with-amy-at-pickathon/",
+"pyr": 2019
 },
 {
 "n": "Mohanad Elshieky",
@@ -25950,7 +25966,8 @@
 "t": "x",
 "l": "Comedy · Here early. Libyan-born Portland comic who did a stand-up set on Conan about three weeks after Pickathon 2019. He now tours nationally and has Comedy Central credits.",
 "top": false,
-"src": "https://pickathon.com/2019/05/ian-karmel-to-headline-laughs-with-amy-at-pickathon/"
+"src": "https://pickathon.com/2019/05/ian-karmel-to-headline-laughs-with-amy-at-pickathon/",
+"pyr": 2019
 },
 {
 "n": "David Gborie",
@@ -25964,7 +25981,8 @@
 "v": {
 "u": "https://www.youtube.com/watch?v=KUCZM1M1d-U",
 "t": "▶ Watch from Pickathon 2018"
-}
+},
+"pyr": 2018
 },
 {
 "n": "Amy Miller",
@@ -25977,7 +25995,7 @@
 "top": false,
 "src": "https://pickathon.com/2016/07/pickathon-first-late-night-comedy-lucky-barn/",
 "pi": "i/p9661.jpg",
-"pyr": "2025",
+"pyr": 2016,
 "v": {
 "u": "https://www.youtube.com/watch?v=zZtCZNGTtBI",
 "t": "▶ Watch from Pickathon 2018"
@@ -25992,7 +26010,8 @@
 "t": "x",
 "l": "Literary · Here early. Read from her debut Wolfish the year it came out. The book went on to win the 2024 Oregon Book Award.",
 "top": false,
-"src": "https://literary-arts.org/2023/06/pickathon-2023/"
+"src": "https://literary-arts.org/2023/06/pickathon-2023/",
+"pyr": 2023
 },
 {
 "n": "Holly Brickley",
@@ -26002,7 +26021,8 @@
 "t": "x",
 "l": "Literary · Already a name. Her debut novel Deep Cuts (2025) is a national bestseller published in 14 languages and is being adapted for film by A24.",
 "top": false,
-"src": "https://pickathon.com/2025/07/your-guide-to-lit-sunday-the-pickathon-2025-literary-lineup/"
+"src": "https://pickathon.com/2025/07/your-guide-to-lit-sunday-the-pickathon-2025-literary-lineup/",
+"pyr": 2025
 },
 {
 "n": "Arthur Bradford",
@@ -26012,7 +26032,8 @@
 "t": "x",
 "l": "Film · Already a name. Emmy-nominated film director and author of Dogwalker and Turtleface.",
 "top": false,
-"src": "https://pickathon.com/2023/07/pickathons-lit-sunday-lineup-announced/"
+"src": "https://pickathon.com/2023/07/pickathons-lit-sunday-lineup-announced/",
+"pyr": 2023
 },
 {
 "n": "Leah Sottile",
@@ -26022,7 +26043,8 @@
 "t": "x",
 "l": "Literary · Already a name. Journalist and host of the Bundyville podcast. Her book Blazing Eye Sees All won the 2026 Oregon Book Award for General Nonfiction.",
 "top": false,
-"src": "https://pickathon.com/2026/06/lit-sunday-returns-to-pickathon-2026/"
+"src": "https://pickathon.com/2026/06/lit-sunday-returns-to-pickathon-2026/",
+"pyr": 2026
 },
 {
 "n": "Acid King",
@@ -26563,7 +26585,7 @@
 "l": "Playing small clubs and side stages the summer he came. Five years later he was headlining 1,000-seat theatres and taking festival main stages.",
 "top": false,
 "g": "",
-"pyr": 2015,
+"pyr": 2007,
 "m": {
 "u": "https://www.youtube.com/watch?v=9EttNpByRg0",
 "t": "▶ Watch from Pickathon 2015"
@@ -26730,7 +26752,7 @@
 "l": "Busking and playing bars at twenty-five with two homemade records. Four years on he opened Jack White's tour and was headlining 1,000-seat theatres.",
 "top": false,
 "g": "",
-"pyr": 2011,
+"pyr": 2008,
 "m": {
 "u": "https://www.youtube.com/watch?v=Mi3ZR0JgeQo",
 "t": "▶ Watch from Pickathon 2011"
@@ -26888,7 +26910,7 @@
 "l": "A Knoxville bar band, unsigned, one record out. Inside two years they were on the Grand Ole Opry's 4,400-seat stage, and back again after that.",
 "top": false,
 "g": "",
-"pyr": 2014,
+"pyr": 2010,
 "m": {
 "u": "https://www.youtube.com/watch?v=U04WHHZUTPU",
 "t": "▶ Watch from Pickathon 2014"
@@ -26906,7 +26928,7 @@
 "l": "Ten months old and playing Seattle clubs when they came. Within two years they were headlining 500-capacity rooms in London under their own name.",
 "top": false,
 "g": "",
-"pyr": 2010,
+"pyr": 2008,
 "m": {
 "u": "https://www.youtube.com/watch?v=PXz4w8Tcr40",
 "t": "▶ Watch from Pickathon 2010"
@@ -38316,7 +38338,7 @@
 "line": "Shortlisted twice for Canada's biggest album prize, in 2008 and again in 2016. Fifteen years of the same 700-capacity clubs.",
 "src": "https://en.wikipedia.org/wiki/Polaris_Music_Prize",
 "pi": "i/p9704.jpg",
-"pyr": 2016,
+"pyr": 2011,
 "m": {
 "u": "https://www.youtube.com/watch?v=Bv0haOXpuKc",
 "t": "▶ Watch from Pickathon 2016"
@@ -38363,7 +38385,7 @@
 "line": "Fifteen years as Canada's finest backing band and a cult act in their own right. Juno and Polaris nods came later; the clubs never got any bigger.",
 "src": "https://en.wikipedia.org/wiki/Polaris_Music_Prize",
 "pi": "i/p9779.jpg",
-"pyr": 2014,
+"pyr": 2009,
 "m": {
 "u": "https://www.youtube.com/watch?v=bRdTT2YgJXM",
 "t": "▶ Watch from Pickathon 2011"
@@ -38419,7 +38441,8 @@
 ],
 "g": "folk",
 "line": "Three of the biggest music magazines put Apocalypse among the twenty-five best albums of the year, and one later called it one of the decade's best.",
-"src": "https://en.wikipedia.org/wiki/Apocalypse_(Bill_Callahan_album)"
+"src": "https://en.wikipedia.org/wiki/Apocalypse_(Bill_Callahan_album)",
+"pyr": 2011
 },
 {
 "n": "Wye Oak",
@@ -38432,7 +38455,8 @@
 "m": {
 "u": "https://www.youtube.com/watch?v=cS9YgWc5CDE",
 "t": "▶ Watch from Pickathon 2011"
-}
+},
+"pyr": 2011
 },
 {
 "n": "Shabazz Palaces",
@@ -38447,7 +38471,8 @@
 "u": "https://www.youtube.com/watch?v=fR0ZasoJ7NE",
 "t": "▶ Watch from Pickathon 2013"
 },
-"pi": "i/p10103.jpg"
+"pi": "i/p10103.jpg",
+"pyr": 2013
 },
 {
 "n": "Cloud Nothings",
@@ -38522,7 +38547,8 @@
 "t": "▶ Watch from Pickathon 2014"
 },
 "pi": "i/p10061.jpg",
-"sp": "0l5iOYpiSkQFYR3uPNoMDe"
+"sp": "0l5iOYpiSkQFYR3uPNoMDe",
+"pyr": 2014
 },
 {
 "n": "Lost Bayou Ramblers",
@@ -38535,7 +38561,7 @@
 "line": "Cajun music played hard and loud, in French, out of Lafayette. Grammy nominations, then a win in 2018 - and still the same dance halls.",
 "src": "https://en.wikipedia.org/wiki/Grammy_Award_for_Best_Regional_Roots_Music_Album",
 "pi": "i/p9748.jpg",
-"pyr": 2018,
+"pyr": 2009,
 "m": {
 "u": "https://www.youtube.com/watch?v=qM1cdmn_To4",
 "t": "▶ Watch from Pickathon 2018"
@@ -38570,7 +38596,8 @@
 "t": "▶ Watch from Pickathon 2011"
 },
 "pi": "i/p10062.jpg",
-"sp": "786IOgcZbyqrWKQRyc4PIV"
+"sp": "786IOgcZbyqrWKQRyc4PIV",
+"pyr": 2011
 },
 {
 "n": "Cedric Watson & Bijou Creole",
@@ -38580,7 +38607,8 @@
 "g": "folk",
 "line": "The Creole fiddler drew three straight Grammy nominations for Best Zydeco or Cajun Music Album, 2009 through 2011.",
 "src": "https://en.wikipedia.org/wiki/Grammy_Award_for_Best_Zydeco_or_Cajun_Music_Album",
-"pi": "i/p9982.jpg"
+"pi": "i/p9982.jpg",
+"pyr": 2013
 },
 {
 "n": "Dom Flemons",
@@ -38595,7 +38623,8 @@
 "t": "▶ Watch from Pickathon 2015"
 },
 "pi": "i/p9983.jpg",
-"sp": "79ScU9PMzW9i0jw67b5kVb"
+"sp": "79ScU9PMzW9i0jw67b5kVb",
+"pyr": 2015
 },
 {
 "n": "The Travelin' McCourys",
@@ -38639,7 +38668,8 @@
 "t": "▶ Watch from Pickathon 2014"
 },
 "pi": "i/p9984.jpg",
-"sp": "4v6KHXXFsmn8oREWFyodCh"
+"sp": "4v6KHXXFsmn8oREWFyodCh",
+"pyr": 2014
 },
 {
 "n": "Sierra Hull",
@@ -38667,7 +38697,7 @@
 "line": "The banjo innovator, a Pickathon regular since its early years, was Grammy-nominated for Best Bluegrass Album in 2021 for Man on Fire.",
 "src": "https://en.wikipedia.org/wiki/Grammy_Award_for_Best_Bluegrass_Album",
 "pi": "i/p9712.jpg",
-"pyr": 2018,
+"pyr": 2011,
 "m": {
 "u": "https://www.youtube.com/watch?v=eFKzQRDPc5w",
 "t": "▶ Watch from Pickathon 2011"
@@ -38693,7 +38723,8 @@
 "u": "https://www.youtube.com/watch?v=wRKsusbeJHQ",
 "t": "▶ Watch from Pickathon 2012"
 },
-"sp": "1lvVzEkQ4u72rrZ7bNUkcD"
+"sp": "1lvVzEkQ4u72rrZ7bNUkcD",
+"pyr": 2012
 },
 {
 "n": "The Rumble",
@@ -38847,7 +38878,8 @@
 "t": "▶ Watch from Pickathon 2012"
 },
 "pi": "i/p10108.jpg",
-"sp": "7s4I6rDvTcdBDKElVbtsAN"
+"sp": "7s4I6rDvTcdBDKElVbtsAN",
+"pyr": 2012
 },
 {
 "n": "Hailu Mergia",
@@ -39169,7 +39201,8 @@
 "u": "https://www.youtube.com/watch?v=dLg89G7J-h8",
 "t": "▶ Watch from Pickathon 2019"
 },
-"pi": "i/p10063.jpg"
+"pi": "i/p10063.jpg",
+"pyr": 2019
 },
 {
 "n": "Laura Veirs",
@@ -39184,7 +39217,8 @@
 "u": "https://www.youtube.com/watch?v=4GVBFtWkKgw",
 "t": "▶ Watch from Pickathon 2019"
 },
-"pi": "i/p10104.jpg"
+"pi": "i/p10104.jpg",
+"pyr": 2011
 },
 {
 "n": "Parquet Courts",
@@ -39196,7 +39230,7 @@
 "line": "Playing 200-capacity Brooklyn basements the winter they were booked. Twenty-two months later they headlined Webster Hall, fourteen hundred people.",
 "src": "https://yearendlists.com/albums/light-up-gold-ee31a454-8e2e-4ce6-be65-ceb00270f54a",
 "pi": "i/p9761.jpg",
-"pyr": 2014,
+"pyr": 2013,
 "m": {
 "u": "https://www.youtube.com/watch?v=Qg9PrA6MmKM",
 "t": "▶ Watch from Pickathon 2014"
@@ -39221,7 +39255,8 @@
 "m": {
 "u": "https://www.youtube.com/watch?v=qp3AxD4TTdc",
 "t": "▶ Watch from Pickathon 2014"
-}
+},
+"pyr": 2014
 },
 {
 "n": "Lonnie Holley",
@@ -39233,7 +39268,7 @@
 "line": "An Alabama sculptor with work in the Smithsonian who started making records in his sixties. By 2018 the critics had him among the year's best.",
 "src": "https://yearendlists.com/albums/mith-8b93995b-63de-4cb9-b65c-6094fcba1f20",
 "pi": "i/p9747.jpg",
-"pyr": 2018,
+"pyr": 2014,
 "m": {
 "u": "https://www.youtube.com/watch?v=GvnRCKKo1d8",
 "t": "▶ Watch from Pickathon 2018"
@@ -39501,7 +39536,7 @@
 "line": "Spin ranked his two 2011 albums among the year's fifty best. Fifteen years and several records later, he plays the same 600-capacity rooms.",
 "src": "https://www.spinmagazine.com/2011/12/spins-50-best-albums-2011/6/",
 "pi": "i/p9705.jpg",
-"pyr": 2016,
+"pyr": 2012,
 "m": {
 "u": "https://www.youtube.com/watch?v=zYl79bComSk",
 "t": "▶ Watch from Pickathon 2016"
@@ -39665,7 +39700,8 @@
 "u": "https://www.youtube.com/watch?v=pjW4pLOaxpQ",
 "t": "▶ Watch from Pickathon 2012"
 },
-"pi": "i/p9986.jpg"
+"pi": "i/p9986.jpg",
+"pyr": 2012
 },
 {
 "n": "Sampa The Great",
@@ -39871,7 +39907,7 @@
 "src": "https://en.wikipedia.org/wiki/C._W._Stoneking"
 }
 ],
-"pyr": 2016,
+"pyr": 2009,
 "new2": 1,
 "pi": "i/p9905.jpg",
 "m": {
@@ -40249,7 +40285,7 @@
 "src": "https://en.wikipedia.org/wiki/Foxygen"
 }
 ],
-"pyr": 2014,
+"pyr": 2013,
 "new2": 1,
 "pi": "i/p9917.jpg",
 "m": {
@@ -40380,7 +40416,7 @@
 "src": "https://nettwerk.com/?p=14211"
 }
 ],
-"pyr": 2018,
+"pyr": 2010,
 "new2": 1,
 "pi": "i/p9920.jpg",
 "m": {
@@ -40795,7 +40831,7 @@
 "src": "https://en.wikipedia.org/wiki/Muchacho_(album)"
 }
 ],
-"pyr": 2018,
+"pyr": 2012,
 "new2": 1,
 "pi": "i/p9932.jpg",
 "sp": "57kIMCLPgkzQlXjblX7XXP",
@@ -41068,7 +41104,7 @@
 "src": "https://en.wikipedia.org/wiki/Juno_Award_for_Roots_%26_Traditional_Album_of_the_Year_%E2%80%93_Group"
 }
 ],
-"pyr": 2010,
+"pyr": 2009,
 "new2": 1
 },
 {
@@ -41087,7 +41123,7 @@
 "src": "https://pro-pages.secretcityrecords.com/2018/06/14/the-barr-brothers-make-polaris-music-prize-2018-long-list-for-queens-of-the-breakers/"
 }
 ],
-"pyr": 2014,
+"pyr": 2012,
 "new2": 1,
 "pi": "i/p9942.jpg",
 "m": {
@@ -41187,7 +41223,7 @@
 "src": "https://blueridgeoutdoors.com/?p=38882"
 }
 ],
-"pyr": 2016,
+"pyr": 2009,
 "new2": 1,
 "pi": "i/p9946.jpg",
 "m": {
@@ -41211,7 +41247,7 @@
 "src": "https://en.wikipedia.org/wiki/A_Man_Alive"
 }
 ],
-"pyr": 2016,
+"pyr": 2009,
 "new2": 1,
 "pi": "i/p9947.jpg",
 "m": {
@@ -41259,7 +41295,7 @@
 "src": "https://en.wikipedia.org/wiki/Twins_(Ty_Segall_album)"
 }
 ],
-"pyr": 2017,
+"pyr": 2013,
 "new2": 1,
 "pi": "i/p9949.jpg",
 "sp": "58XGUNsRNu3cVOIOYk5chx",
@@ -41389,7 +41425,7 @@
 "g": "",
 "line": "Willamette Week's best new Portland band, with a debut three months old. Tiny Desk and Newport Folk followed, but they were still headlining 200-capacity clubs.",
 "src": "",
-"pyr": 2014,
+"pyr": 2011,
 "m": {
 "u": "https://www.youtube.com/watch?v=SJuMOmhLNsk",
 "t": "▶ Watch from Pickathon 2014"
@@ -41408,7 +41444,7 @@
 "g": "",
 "line": "Spin, NME and The Times all praised The Pirate's Gospel. Rough Trade signed her two years later, and she is still playing small clubs today.",
 "src": "",
-"pyr": 2018,
+"pyr": 2007,
 "sp": "2QIHd0B2VIKlmLyoq4lUr7",
 "m": {
 "u": "https://www.youtube.com/watch?v=VooFWlSWn8s",
@@ -41797,7 +41833,7 @@
 "g": "",
 "line": "Yep Roc's Raleigh four-piece charted every record they made and later topped the bluegrass chart repeatedly, while the rooms stayed the same clubs and theatres.",
 "src": "",
-"pyr": 2010,
+"pyr": 2007,
 "m": {
 "u": "https://www.youtube.com/watch?v=RgOQktFZI4w",
 "t": "▶ Watch from Pickathon 2010"
@@ -41905,7 +41941,7 @@
 "g": "",
 "line": "Two decades on Sub Pop and Secretly Canadian, a Richard Swift-produced trilogy critics loved, and a career spent in 300-seat listening rooms.",
 "src": "",
-"pyr": 2019,
+"pyr": 2011,
 "pi": "https://i.ytimg.com/vi/pXyaL1q4Bqg/hqdefault.jpg",
 "m": {
 "u": "https://www.youtube.com/watch?v=pXyaL1q4Bqg",
@@ -42195,7 +42231,7 @@
 "g": "",
 "line": "A Los Angeles street musician whose old-time fiddle and banjo records won serious critical attention. He stayed in small folk rooms, then mostly stopped touring.",
 "src": "",
-"pyr": 2010,
+"pyr": 2009,
 "m": {
 "u": "https://www.youtube.com/watch?v=GonCc4EKa5g",
 "t": "▶ Watch from Pickathon 2010"
@@ -42240,7 +42276,7 @@
 "g": "",
 "line": "Eric D. Johnson had seven years on Sub Pop and a turn in The Shins behind him, and sixteen years on he still fills the same mid-size clubs.",
 "src": "",
-"pyr": 2016,
+"pyr": 2010,
 "sp": "6Qm9stX6XO1a4c7BXQDDgc",
 "m": {
 "u": "https://www.youtube.com/watch?v=mYPRZ7Q-amg",
@@ -42389,7 +42425,7 @@
 "g": "",
 "line": "Erika Wennerstrom's band, on Fat Possum after Patrick Carney of the Black Keys vouched for them. Arrow drew raves in 2012; the clubs stayed clubs.",
 "src": "",
-"pyr": 2015,
+"pyr": 2010,
 "pi": "https://i.ytimg.com/vi/dEen-UnpgVw/hqdefault.jpg",
 "m": {
 "u": "https://www.youtube.com/watch?v=dEen-UnpgVw",
@@ -42446,7 +42482,7 @@
 "g": "",
 "line": "A Dublin string band with good notices at home and a Nashville label deal the next year. The folk clubs and festival tents stayed the same size.",
 "src": "",
-"pyr": 2016,
+"pyr": 2013,
 "pi": "https://i.ytimg.com/vi/C6jQDX2VEF4/hqdefault.jpg",
 "m": {
 "u": "https://www.youtube.com/watch?v=C6jQDX2VEF4",
@@ -42578,7 +42614,7 @@
 "g": "",
 "line": "Tom Waits championed her voice and Anti- Records signed her; the reviews never stopped. Twenty years on she still plays small halls and clubs.",
 "src": "",
-"pyr": 2014,
+"pyr": 2005,
 "m": {
 "u": "https://www.youtube.com/watch?v=2oOPoa_b3_o",
 "t": "▶ Watch from Pickathon 2014"
@@ -42666,7 +42702,7 @@
 "g": "",
 "line": "One Sub Pop album and years behind him in Witch with J Mascis. Two more records and good notices, and the same 600-capacity clubs five years on.",
 "src": "",
-"pyr": 2015,
+"pyr": 2013,
 "pi": "https://i.ytimg.com/vi/uwpRvhMhNH8/hqdefault.jpg",
 "m": {
 "u": "https://www.youtube.com/watch?v=uwpRvhMhNH8",
@@ -42708,7 +42744,7 @@
 "g": "",
 "line": "NPR put her on one of its first Tiny Desk concerts that same year. Two decades on she still plays the same 250-seat rooms.",
 "src": "",
-"pyr": 2012,
+"pyr": 2008,
 "m": {
 "u": "https://www.youtube.com/watch?v=ymMpsMtbpxU",
 "t": "▶ Watch from Pickathon 2012"
@@ -43206,7 +43242,7 @@
 "g": "",
 "line": "Philadelphia-to-North Carolina songwriter; No Medium made her a critics' album, and 2024's Bite Down took Stereogum's Album of the Week on Merge.",
 "src": "",
-"pyr": 2025,
+"pyr": 2022,
 "pi": "https://i.ytimg.com/vi/2WAKVkWplwo/hqdefault.jpg",
 "m": {
 "u": "https://www.youtube.com/watch?v=2WAKVkWplwo",
@@ -43232,7 +43268,7 @@
 "g": "",
 "line": "The New York Times put his I See the Sign among 2010's ten best and Nonesuch signed him in 2013. The rooms stayed concert halls and chapels.",
 "src": "",
-"pyr": 2018,
+"pyr": 2015,
 "pi": "https://i.ytimg.com/vi/tskhVVtdAJM/hqdefault.jpg",
 "m": {
 "u": "https://www.youtube.com/watch?v=tskhVVtdAJM",
@@ -43290,7 +43326,7 @@
 "g": "",
 "line": "A Gourds side project that became the main event, collecting Austin's hometown music awards while the venues stayed Texas dance halls and festival tents.",
 "src": "",
-"pyr": 2018,
+"pyr": 2008,
 "m": {
 "u": "https://www.youtube.com/watch?v=aHelQ3AKSEI",
 "t": "▶ Watch from Pickathon 2018"
@@ -43386,7 +43422,7 @@
 "g": "",
 "line": "Critics had already made him a guitarist's guitarist on Time Off, and Matador signed him next. A decade on, the rooms are still 500-capacity clubs.",
 "src": "",
-"pyr": 2017,
+"pyr": 2014,
 "pi": "https://i.vimeocdn.com/video/654094162-8c3c3f6c39fd7b943c45e0aa3526437f2ea25d8fe4f50fc12b739a5a0b21a45c-d_590x332",
 "m": {
 "u": "https://vimeo.com/232896450/ea90c380ff",
@@ -43821,7 +43857,7 @@
 "g": "",
 "line": "Luz Elena Mendoza's Portland band, six months out from Court the Storm. Mujeres reached NPR's best-of lists in 2019; the venues never got much bigger.",
 "src": "",
-"pyr": 2017,
+"pyr": 2012,
 "pi": "https://i.vimeocdn.com/video/654095809-533421e8b25d15d9df1260980b850f5ae09fba3e7c74dbae4725ce5e0da29037-d_590x332",
 "m": {
 "u": "https://vimeo.com/232897345/850d14b226",
