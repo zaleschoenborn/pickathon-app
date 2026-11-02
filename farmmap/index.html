@@ -196,7 +196,7 @@ body{margin:0;background:var(--ink);color:var(--cream);font-family:var(--f);
      and the words underneath - more image, and the text still gets its room. */
   #body{overflow-y:auto;flex-direction:column;padding:14px 15px
     calc(16px + env(safe-area-inset-bottom,0px))}
-  #hero{flex:0 0 auto;width:100%;aspect-ratio:5/4;min-height:0;border-radius:13px}
+  #hero{flex:0 0 auto;width:100%;aspect-ratio:16/9;min-height:0;border-radius:13px}
   #meta{padding:14px 2px 0}
   #cname{font-size:22px} #ctag{-webkit-line-clamp:3;font-size:13.5px}
   #cgo{margin-top:15px}
@@ -210,6 +210,28 @@ body{margin:0;background:var(--ink);color:var(--cream);font-family:var(--f);
   #card.intro #ibuild{display:none}
   #pcl{display:flex!important}
   #eyebrow{display:block!important}
+}
+#cpitch,#cvid{display:none}
+@media (min-width:880px){
+  #card:not(.intro) #meta{flex:1;min-height:0;display:flex;flex-direction:column;padding-top:12px}
+  #full{display:flex;flex-direction:column;flex:1;min-height:0}
+  #full[hidden]{display:none}
+  #full #ckind{order:1;align-self:flex-start}#full #cname{order:2;margin:6px 0 0}#full #cams{order:3;margin:10px 0 0}
+  #full #ctag{order:4;margin:14px 0 0;font:800 17px/1.25 var(--f);color:var(--cream);-webkit-line-clamp:2}
+  #full #cpitch{order:5;display:-webkit-box;margin:7px 0 0;color:var(--muted);font:400 13.5px/1.45 var(--f);-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+  #full #cpitch[hidden],#full #cvid[hidden],#full #cmore[hidden]{display:none}
+  #full #cmore{order:5;align-self:flex-start;border:0;background:none;color:#F2B33D;font:800 12.5px/1 var(--f);padding:7px 0 0;cursor:pointer}
+  #card:not(.intro) #body{padding-left:30px;padding-right:30px}
+  #full #cpitch+#cvid{order:6}
+  #full #cvid{order:6;display:block;position:relative;margin-top:14px;border-radius:12px;overflow:hidden;aspect-ratio:16/9;background:#1E2A1B;text-decoration:none;cursor:pointer;flex:0 0 auto}
+  #cvid img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  #cvid .pl{position:absolute;left:12px;bottom:12px;width:34px;height:34px;border-radius:50%;background:#F2B33D;color:#12160F;display:grid;place-items:center;font-size:13px}
+  #cvid .vt{position:absolute;left:55px;right:10px;bottom:10px;color:#F2EDE3;text-shadow:0 1px 6px rgba(0,0,0,.7)}
+  #cvid .vt b{display:block;font:800 14px/1.15 var(--f)}#cvid .vt i{display:block;font:500 11.5px/1.2 var(--f);font-style:normal;color:#E6E0D3}
+  #cvid::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(12,14,10,0) 45%,rgba(12,14,10,.8));pointer-events:none}
+  #cvid .pl,#cvid .vt{z-index:1}
+  #full #cgo{order:9;margin-top:auto;align-self:stretch;text-align:center;padding-top:14px;padding-bottom:14px;background:#F2B33D;color:#12160F}
+  #hero{aspect-ratio:16/9!important}
 }
 #fback{display:none;border:0;background:none;color:#F2B33D;font:800 12.5px/1 var(--f);padding:2px 0 10px;cursor:default;text-align:left}
 #fback:hover{text-decoration:underline}
@@ -367,6 +389,9 @@ body{margin:0;background:var(--ink);color:var(--cream);font-family:var(--f);
         <div class="chip" id="ckind">Stage</div>
         <h2 id="cname">—</h2>
         <p id="ctag"></p>
+        <p id="cpitch" hidden></p>
+        <button id="cmore" type="button" hidden>Read more →</button>
+        <a id="cvid" hidden target="_blank" rel="noopener"><img alt=""><span class="pl">▶︎</span><span class="vt"><b></b><i></i></span></a>
         <div class="ams" id="cams"></div>
         <button id="cgo">Open the page →</button>
       </div>
@@ -762,6 +787,16 @@ function buildCards(){
   box.addEventListener('mouseover',e=>{ const b=e.target.closest('.pc'); if(b&&!pinned) peek(by(b.dataset.h)); });
   box.addEventListener('mouseleave',()=>{ if(!pinned) peek(null); });
 }
+let XD=null;
+function loadXD(){ if(XD||innerWidth<880) return; XD={}; fetch('../data.json').then(r=>r.json()).then(d=>{ XD={h:d.hoods||{},v:d.videos||[]}; if(cur) show(cur); }).catch(()=>{}); }
+const VRX={lucky:/Lucky Barn/i,woods:/Woods (Stage|Series)/i,galaxy:/Galaxy Barn/i,paddock:/Paddock/i,cherryhill:/Cherry Hill/i,windmill:/Windmill/i,grove:/Grove/i,courtyard:/Courtyard/i,orchard:/Orchard/i,refuge:/Refuge/i,farmhouse:/Farmhouse/i};
+function fillExtra(h){
+  const pc=document.getElementById('cpitch'), cv=document.getElementById('cvid');
+  pc.hidden=true; cv.hidden=true; document.getElementById('cmore').hidden=true; if(!XD||!XD.h) return;
+  const x=XD.h[h.id]; const p=x&&x.d&&x.d[0]; if(p){ pc.textContent=p; pc.hidden=false; document.getElementById('cmore').hidden=false; }
+  const rx=VRX[h.id]; if(rx&&XD.v){ const L=XD.v.filter(v=>!v.cad&&!v.vm&&rx.test(String(v.s||''))); if(L.length){ const v=L[(h.id.length*7+L.length)%L.length];
+    cv.href='https://www.youtube.com/watch?v='+v.id; cv.querySelector('img').src='https://i.ytimg.com/vi/'+v.id+'/hqdefault.jpg'; cv.querySelector('b').textContent=v.a||''; cv.querySelector('i').textContent=(h.n)+' · '+(v.y||''); cv.hidden=false; } }
+}
 function show(h){
   if(h) document.getElementById('card').classList.remove('all');
   if(!h){
@@ -780,6 +815,7 @@ function show(h){
   ck.textContent=KIND[h.k]||h.k; ck.className='chip k-'+h.k;
   document.getElementById('cams').innerHTML=(amFilter&&!passes(h)?'<span class="nohit">No '+(AMLBL[amFilter]||amFilter)+' here</span>':'')+(h.amk||[]).map((a,i)=>
     '<span class="ai'+(a===amFilter?' hit':'')+'" title="'+(AMLBL[a]||a)+'">'+ico(a)+'</span>').join('');
+  loadXD(); fillExtra(h);
   document.getElementById('cgo').textContent='Open '+h.n.replace(/^The /,'')+' →';
   if(!amFilter && typeof showRings==='function') showRings(null,h);
   heroRun(h);
@@ -973,6 +1009,7 @@ document.getElementById('card').addEventListener('click',e=>{
   if(cur) goPage(cur);
 });
 document.getElementById('fullmap').onclick=fullMap;
+document.getElementById('cmore').onclick=e=>{ e.stopPropagation(); if(cur) goPage(cur); };
 (function(){ const c=document.getElementById('card'), pall=document.getElementById('pall'), pcl=document.getElementById('pcl'); let t;
   pall.onclick=e=>{ e.stopPropagation(); const on=c.classList.toggle('all'); pall.innerHTML=on?'Show fewer &#9662;':'See all 20 &#9652;'; };
   pcl.addEventListener('scroll',()=>{ if(innerWidth>=880||c.classList.contains('all')) return; clearTimeout(t); t=setTimeout(()=>{
