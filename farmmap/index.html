@@ -193,6 +193,8 @@ body{margin:0;background:var(--ink);color:var(--cream);font-family:var(--f);
 @keyframes kb{from{transform:scale(1.02)}to{transform:scale(1.16)}}
 @media (min-width:880px){
   :root{--cardw:400px}
+  .lab{font-size:15px;padding:6px 11px;max-width:176px;border-radius:9px;gap:7px;letter-spacing:.01em}
+  .lab{border-left-width:5px;padding-left:9px}
   #stage{bottom:0;right:var(--cardw)}
   #card{top:0;left:auto;width:var(--cardw);height:auto;
     border-top:0;border-left:1px solid var(--line)}
@@ -510,7 +512,7 @@ function place(){
   });
   light(cur);
   const fd=document.getElementById('finder'), FB=fd?Math.round(fd.getBoundingClientRect().bottom-stage.getBoundingClientRect().top)+8:0;
-  const SP=23, TOP=11, BOT=H-26, CAP=Math.floor((BOT-TOP)/SP)+1;
+  const SP=(W>=700&&H>=620)?31:23, TOP=11, BOT=H-26, CAP=Math.floor((BOT-TOP)/SP)+1;
   let L=live.filter(h=>h._ax< W/2), R=live.filter(h=>h._ax>=W/2);
   // The farm leans right, so the right rail overfills while the left sits half
   // empty. Spill the overflow across - the ones nearest the middle travel least.
