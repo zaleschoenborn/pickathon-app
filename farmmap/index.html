@@ -845,6 +845,7 @@ function buildCards(){
   let html='';
   order.concat(Object.keys(KIND).filter(k=>order.indexOf(k)<0&&k!=='family')).forEach(k=>{
     const L=HOODS.filter(h=>h.k===k||(k==='wellness'&&h.k==='family')); if(!L.length) return;
+    if(k==='stage'){ const pr=id=>id==='curation'?1:id==='farmhouse'?2:0; L.sort((x,y)=>pr(x.id)-pr(y.id)); }   // Curation, then Farmhouse last
     const DS={stage:'Where the music happens',around:'Food, art, shade and wonder',wellness:'Rest, play and care',camp:'Where you sleep'};
     html+='<div class="pcg">'+(k==='wellness'?'Wellness &amp; family':k==='stage'?'Stages':(KIND[k]||k))+(DS[k]?'<span>'+DS[k]+'</span>':'')+'</div>';
     L.forEach(h=>{ const im=(HERO[h.id]||[])[0];
