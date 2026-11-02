@@ -1629,6 +1629,7 @@ function lpDeepInit(){
   if(!window.__lpDeep||!cur) return;
   const el=document.getElementById('lpdeep'), f=document.getElementById('finder'); if(!el) return;
   const place=function(){ if(f){ const r=f.getBoundingClientRect(); if(r.bottom>0) el.style.setProperty('--lpdt',Math.round(r.bottom)+'px'); } };
+  return;   // a tile or link already sold the idea: a picked neighborhood opens straight onto it, no descriptive overlay on any screen size
   place(); document.body.classList.add('lpdeep');
   const ev=['pointerdown','touchstart','wheel','keydown'];
   const off=function(){ document.body.classList.remove('lpdeep'); try{ sessionStorage.setItem('pkmap.deephint','1'); }catch(e){}
