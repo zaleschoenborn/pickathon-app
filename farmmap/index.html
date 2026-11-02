@@ -32,12 +32,6 @@ body{margin:0;background:var(--ink);color:var(--cream);font-family:var(--f);
 #nav button{position:absolute;top:calc(50% - 34px);width:26px;height:68px;border:0;background:rgba(242,237,227,.16);color:var(--cream);font:700 26px/1 var(--f);cursor:pointer;padding:0 0 4px;pointer-events:auto}
 #nprev{left:0;border-radius:0 14px 14px 0}#nnext{right:0;border-radius:14px 0 0 14px}
 #nav button:active{background:rgba(242,237,227,.3)}
-#card.intro{background:var(--cream);border-top-color:#D8D1C2}
-#card.intro #nav button{background:rgba(18,22,15,.14);color:var(--ink)}
-#card.intro #empty{padding-left:34px;padding-right:34px;padding-top:6px;gap:7px}
-#card.intro #empty b{color:var(--ink);font:900 26px/1.05 var(--f);letter-spacing:-.01em}
-#card.intro #empty p{color:#3A4132;font-size:15.5px;line-height:1.38}
-#card.intro #ibuild{background:#12160F;color:#F2B33D;font-size:14px;padding:13px 18px;margin-top:4px}
 @keyframes swl{from{opacity:0;transform:translateX(34px)}to{opacity:1;transform:none}}
 @keyframes swr{from{opacity:0;transform:translateX(-34px)}to{opacity:1;transform:none}}
 #meta.swl{animation:swl .28s ease-out}
@@ -220,6 +214,30 @@ body{margin:0;background:var(--ink);color:var(--cream);font-family:var(--f);
 #fback{display:none;border:0;background:none;color:#F2B33D;font:800 12.5px/1 var(--f);padding:2px 0 10px;cursor:default;text-align:left}
 #fback:hover{text-decoration:underline}
 @media (min-width:880px){#fback{display:block}#card.intro #fback{display:none}}
+#pall{display:none;border:0;background:none;color:#F2B33D;font:800 12px/1 var(--f);padding:9px 15px 0;text-align:left;cursor:pointer;margin-top:auto;padding-bottom:max(10px,env(safe-area-inset-bottom,0px))}
+@media (max-width:879px){
+  #card.intro #nav,#card.intro #ibuild{display:none}
+  #card.intro #body{padding:0;overflow:hidden}
+  #card.intro #meta{padding:0;flex:1;min-height:0;display:flex;flex-direction:column}
+  #card.intro #empty{padding:12px 0 0;gap:3px;flex:1;min-height:0;justify-content:flex-start}
+  #card.intro #empty>*:not(#pcl){padding:0 max(15px,env(safe-area-inset-left,0px))}
+  #card.intro #empty b{color:var(--cream);font:900 20px/1.1 var(--f)}
+  #card.intro #empty p{display:none}
+  #eyebrow{display:block!important;font-size:10px!important}
+  #pall{display:block}
+  #pcl{display:flex!important;flex-direction:row!important;gap:9px;overflow-x:auto!important;overflow-y:hidden!important;scroll-snap-type:x mandatory;margin:10px 0 0!important;padding:0 15px!important;flex:0 0 auto!important}
+  #pcl .pc{flex:0 0 150px;flex-direction:column;align-items:stretch;gap:7px;scroll-snap-align:start;padding:6px 6px 9px}
+  #pcl .pc i{flex:none;width:100%;height:78px;border-left:0;border-top:4px solid var(--ac,#F2B33D)}
+  #pcl .pc u,#pcl .pcg,#pcl .pcb{display:none}
+  #pcl .pc b{font-size:14px}#pcl .pc em{font-size:11.5px;display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden}
+  #card.intro.all{height:72%}
+  #card.intro.all #pcl{flex-direction:column!important;overflow-y:auto!important;overflow-x:hidden!important;scroll-snap-type:none;flex:1 1 auto!important;padding-bottom:20px!important}
+  #card.intro.all #pcl .pc{flex:none;flex-direction:row;align-items:center}
+  #card.intro.all #pcl .pc i{width:58px;height:58px;border-top:0;border-left:4px solid var(--ac,#F2B33D)}
+  #card.intro.all #pcl .pc u,#card.intro.all #pcl .pcg,#card.intro.all #pcl .pcb{display:block}
+  #card.intro.all #pcl .pc em{-webkit-line-clamp:2}
+}
+#card.intro.all #pall{margin-top:0;order:-1}
 #eyebrow{display:none;font:800 11px/1 var(--f);letter-spacing:.16em;text-transform:uppercase;color:#F2B33D;margin-bottom:2px}
 .pcb{display:block;margin:16px 0 4px;text-align:center;font:700 12.5px/1 var(--f);color:var(--muted);text-decoration:none;padding:12px;border-top:1px solid var(--line)}
 .pcb:hover{color:#F2B33D}
@@ -342,6 +360,7 @@ body{margin:0;background:var(--ink);color:var(--cream);font-family:var(--f);
         <b>A Temporary City of Wonder</b>
         <p>Pickathon is a temporary city of imagination. Pick a neighborhood to fly the map to it.</p>
         <div id="pcl"></div>
+        <button id="pall" type="button">See all 20 &#9652;</button>
         <button id="ibuild" type="button">We build these. Want one? →</button>
       </div>
       <div id="full" hidden>
@@ -744,6 +763,7 @@ function buildCards(){
   box.addEventListener('mouseleave',()=>{ if(!pinned) peek(null); });
 }
 function show(h){
+  if(h) document.getElementById('card').classList.remove('all');
   if(!h){
     clearTimeout(heroT);
     document.getElementById('hero').hidden=true;
@@ -953,6 +973,12 @@ document.getElementById('card').addEventListener('click',e=>{
   if(cur) goPage(cur);
 });
 document.getElementById('fullmap').onclick=fullMap;
+(function(){ const c=document.getElementById('card'), pall=document.getElementById('pall'), pcl=document.getElementById('pcl'); let t;
+  pall.onclick=e=>{ e.stopPropagation(); const on=c.classList.toggle('all'); pall.innerHTML=on?'Show fewer &#9662;':'See all 20 &#9652;'; };
+  pcl.addEventListener('scroll',()=>{ if(innerWidth>=880||c.classList.contains('all')) return; clearTimeout(t); t=setTimeout(()=>{
+    const r=pcl.getBoundingClientRect(); let best=null,bd=1e9; pcl.querySelectorAll('.pc').forEach(b=>{ const q=b.getBoundingClientRect(), d=Math.abs(q.left-r.left-15); if(d<bd){bd=d;best=b;} });
+    if(best){ const h=HOODS.filter(x=>x.id===best.dataset.h)[0]; if(h) peek(h); } },140); },{passive:true});
+})();
 document.getElementById('fback').onclick=e=>{ e.stopPropagation(); fullMap(); };
 setInterval(()=>{ document.getElementById('fullmap').classList.toggle('on', k>kFit*1.08 || !!cur); },250);
 document.getElementById('pgback').onclick=()=>{document.getElementById('page').hidden=true;};
