@@ -642,10 +642,10 @@ body.lpdeep #lpdeep{opacity:1;visibility:visible;transition:opacity .35s ease}
 body.cardmode #lpdeep{display:none!important}
 body.lpback #lptitle{display:none!important}   /* back from a neighborhood page: no title screen until they touch the map */
 /* a title screen: big white display name, the city line under it, then the gold how-to */
-#lpdeep b{font:900 clamp(24px,7vw,28px)/1.04 var(--f);color:#FFFFFF;letter-spacing:-.01em;text-shadow:0 2px 14px rgba(0,0,0,.5)}
-#lpdeep small{font:800 10.5px/1 var(--f);letter-spacing:.16em;text-transform:uppercase;color:#F2B33D;text-shadow:0 1px 8px rgba(0,0,0,.6)}
-#lpdeep p{margin:0;max-width:30em;font:500 12.5px/1.35 var(--f);color:#E6E0D3;text-shadow:0 1px 8px rgba(0,0,0,.6)}
-#lpdeep i{margin-top:5px;font:800 13.5px/1.2 var(--f);font-style:normal;letter-spacing:.01em;color:#F2B33D;text-shadow:0 1px 8px rgba(0,0,0,.6)}
+#lpdeep b{font:900 clamp(30px,9vw,42px)/1.04 var(--f);color:#FFFFFF;letter-spacing:-.01em;text-shadow:0 2px 14px rgba(0,0,0,.5)}
+#lpdeep small{font:800 13px/1 var(--f);letter-spacing:.16em;text-transform:uppercase;color:#F2B33D;text-shadow:0 1px 8px rgba(0,0,0,.6)}
+#lpdeep p{margin:0;max-width:30em;font:500 16px/1.4 var(--f);color:#E6E0D3;text-shadow:0 1px 8px rgba(0,0,0,.6)}
+#lpdeep i{margin-top:7px;font:800 17px/1.2 var(--f);font-style:normal;letter-spacing:.01em;color:#F2B33D;text-shadow:0 1px 8px rgba(0,0,0,.6)}
 #lptitle .lpdd,#lpdeep .lpdd{display:none}
 #lptitle i span,#lpdeep i span{font:inherit;color:inherit}
 @media (hover:hover) and (pointer:fine){#lptitle .lpdp,#lpdeep .lpdp{display:none}#lptitle .lpdd,#lpdeep .lpdd{display:inline}}
@@ -690,7 +690,7 @@ body.lpback #lptitle{display:none!important}   /* back from a neighborhood page:
 :root{--lpb:env(safe-area-inset-bottom,0px)} :root.lpemb{--lpb:0px}
 @media (max-width:699px){
   :root{--lps:calc(104px + var(--lpb))}
-  #lphint{display:block;margin:9px 0 0;font:800 13px/1.2 var(--f);font-style:normal;letter-spacing:.01em;color:#F2B33D;text-shadow:0 1px 8px rgba(0,0,0,.6)}
+  #lphint{display:block;margin:11px 0 0;font:800 17px/1.2 var(--f);font-style:normal;letter-spacing:.01em;color:#F2B33D;text-shadow:0 1px 8px rgba(0,0,0,.6)}
   #lptitle{padding:calc(max(12px,env(safe-area-inset-top,0px)) + 8px) 16px 8px!important;opacity:0;visibility:hidden;transition:opacity .35s ease,visibility 0s linear .35s}
   body.lpfresh #lptitle{opacity:1;visibility:visible;transition:opacity .35s ease}
   #lptitle p{display:block;margin:7px 0 0;max-width:30em;font:500 16px/1.4 var(--f);color:#E6E0D3;text-shadow:0 1px 8px rgba(0,0,0,.55)}
@@ -1812,7 +1812,7 @@ function lpWire(){
     if(LP() && dy>50 && dy>1.4*Math.abs(dx)){ window.__swipedAt=performance.now(); clearCur(); } });
   // the panel's height follows its content (a video or not); keep the bound and the centering honest
   if(window.ResizeObserver) new ResizeObserver(()=>{ if(!LP()||!cur) return; lpSync(); if(NOW()-lpSelAt<1500) lpPanTo(cur); else lpSettle(); }).observe(card);
-  let lpTouched=false; stage.addEventListener('pointerdown',()=>{ lpTouched=true; lpFresh(false); },true); stage.addEventListener('wheel',()=>{ lpTouched=true; lpFresh(false); },true);
+  let lpTouched=false; stage.addEventListener('pointerdown',e=>{ if(e.target&&e.target.closest&&e.target.closest('.lab')) return; lpTouched=true; lpFresh(false); },true);   // a press on a label must not rearrange the labels under the finger: the tap itself picks it stage.addEventListener('wheel',()=>{ lpTouched=true; lpFresh(false); },true);
   addEventListener('resize',()=>{ if(!LP()) return; const W0=lpWire._w||stage.clientWidth, H0=lpWire._h||stage.clientHeight, cx=(W0/2-tx)/k, cy=(H0/2-ty)/k, z=k;
     lpWire._w=stage.clientWidth; lpWire._h=stage.clientHeight; fit(); lpSync();
     if(!lpTouched && !cur){ homeView(); return; }
