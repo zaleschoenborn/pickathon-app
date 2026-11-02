@@ -853,6 +853,22 @@
 "k": "stage",
 "g": [
 {
+"i": "i/p778.jpg",
+"c": "Pickathon"
+},
+{
+"i": "i/p9007.jpg",
+"c": "Pickathon"
+},
+{
+"i": "i/p770.jpg",
+"c": "Pickathon"
+},
+{
+"i": "i/p464.jpg",
+"c": "Pickathon"
+},
+{
 "i": "i/pk-grove-01.jpg",
 "c": "Miri Stebivka"
 },
@@ -995,6 +1011,16 @@
 ]
 ],
 "hr": [
+{
+"i": "i/p778.jpg",
+"y": "",
+"by": ""
+},
+{
+"i": "i/p9007.jpg",
+"y": "",
+"by": ""
+},
 {
 "i": "i/p715.jpg",
 "y": "2026",
