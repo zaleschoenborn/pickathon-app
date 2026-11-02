@@ -1016,7 +1016,7 @@
 "Art Installation",
 "Venue Entry/Exit"
 ],
-"i": "i/p9003.jpg",
+"i": "i/p9651.jpg",
 "p": [
 32,
 68
@@ -1024,28 +1024,28 @@
 "k": "stage",
 "g": [
 {
-"i": "i/p9003.jpg",
-"c": "Andy Meeks · 2026"
-},
-{
-"i": "i/p617.jpg",
-"c": "Miri Stebivka"
-},
-{
 "i": "i/p512.jpg",
 "c": "Miri Stebivka"
-},
-{
-"i": "i/p623.jpg",
-"c": "Rob Kerr"
 },
 {
 "i": "i/414.jpg",
 "c": "Norm Eder"
 },
 {
+"i": "i/p623.jpg",
+"c": "Rob Kerr"
+},
+{
+"i": "i/p621.jpg",
+"c": "Jaime Delacruz · 2026"
+},
+{
 "i": "i/161.jpg",
 "c": "Mark Stein"
+},
+{
+"i": "i/p537.jpg",
+"c": "Andy Meeks · 2026"
 }
 ],
 "ic": "i/p633.svg",
