@@ -597,7 +597,7 @@ if(innerWidth>=880){c.add('lm');if(fh){c.add('dpdone');c.add('nodt');}}else{if(f
   #lptitle{position:fixed;left:0;right:0;top:0;z-index:24;display:flex;flex-direction:column;gap:5px;max-width:none;
     padding:calc(max(10px,env(safe-area-inset-top,0px)) + 56px) 18px 6px;border:0;border-radius:0;background:none;backdrop-filter:none;-webkit-backdrop-filter:none;pointer-events:none}
   #lptitle::before{content:'';position:absolute;left:0;right:0;top:0;height:calc(100% + 46px);z-index:-1;
-    background:linear-gradient(180deg,rgba(10,13,8,.86) 0%,rgba(10,13,8,.66) 52%,rgba(10,13,8,.3) 78%,rgba(10,13,8,0) 100%)}
+    background:linear-gradient(180deg,rgba(10,13,8,.97) 0%,rgba(10,13,8,.95) 72%,rgba(10,13,8,.7) 90%,rgba(10,13,8,0) 100%);-webkit-backdrop-filter:blur(5px);backdrop-filter:blur(5px);-webkit-mask-image:linear-gradient(180deg,#000 0%,#000 84%,transparent 100%);mask-image:linear-gradient(180deg,#000 0%,#000 84%,transparent 100%)}
   #lptitle small{font:800 13px/1 var(--f);letter-spacing:.16em;text-transform:uppercase;color:#F2B33D}
   #lptitle b{font:900 clamp(30px,9vw,42px)/1.04 var(--f);color:var(--cream);white-space:normal;letter-spacing:-.005em;text-shadow:0 2px 14px rgba(0,0,0,.45)}
   body.lpsel #lptitle{display:none}
@@ -651,7 +651,8 @@ body.lpback #lptitle{display:none!important}   /* back from a neighborhood page:
 @media (hover:hover) and (pointer:fine){#lptitle .lpdp,#lpdeep .lpdp{display:none}#lptitle .lpdd,#lpdeep .lpdd{display:inline}}
 #lpdeep::before{content:'';position:absolute;inset:0;z-index:-1;
   background:linear-gradient(180deg,rgba(10,13,8,.86) 0%,rgba(10,13,8,.76) 62%,rgba(10,13,8,.3) 86%,rgba(10,13,8,0) 100%)}
-@media (max-width:879px){ #lpdeep{right:0} }
+@media (max-width:879px){ #lpdeep{right:0}
+  #lpdeep::before{background:linear-gradient(180deg,rgba(10,13,8,.97) 0%,rgba(10,13,8,.95) 72%,rgba(10,13,8,.7) 90%,rgba(10,13,8,0) 100%);-webkit-backdrop-filter:blur(5px);backdrop-filter:blur(5px);-webkit-mask-image:linear-gradient(180deg,#000 0%,#000 84%,transparent 100%);mask-image:linear-gradient(180deg,#000 0%,#000 84%,transparent 100%)} }
 @media (min-width:880px){
   #lpdeep{padding-right:110px;padding-left:24px;gap:7px}
   #lpdeep b{font-size:38px} #lpdeep small{font-size:18px} #lpdeep i{font-size:15px;margin-top:6px}
