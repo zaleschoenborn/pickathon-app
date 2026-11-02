@@ -25,7 +25,7 @@ body{margin:0;background:var(--ink);color:var(--cream);font-family:var(--f);
 #art,#shapes{position:absolute;top:0;left:0;transform-origin:0 0;will-change:transform}
 #art img{display:block;width:100%;height:auto;user-select:none;-webkit-user-drag:none}
 #tiles{position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none}
-#tiles img{position:absolute;max-width:none;opacity:0;transition:opacity .22s ease}
+#tiles img{position:absolute;max-width:none;opacity:0;transition:opacity .6s ease-out}
 #tiles img.on{opacity:1}
 #body{touch-action:pan-y}
 #nav{position:absolute;left:0;right:0;top:0;bottom:0;pointer-events:none;z-index:3}
@@ -43,7 +43,7 @@ body{margin:0;background:var(--ink);color:var(--cream);font-family:var(--f);
 #stage{transition:background-color .25s ease}
 #stage{background-color:#12160F}
 #stage.veiled{background-color:#12160F}
-#lits img,#lits div{position:absolute;max-width:none;opacity:0;transition:opacity .22s ease}
+#lits img,#lits div{position:absolute;max-width:none;opacity:0;transition:opacity .45s ease-out}
 #lits img.on,#lits div.on{opacity:1}#lits img.on{filter:drop-shadow(0 0 2px #fff4c2) drop-shadow(0 0 12px rgba(255,205,90,.85)) brightness(1.1) saturate(1.2)}
 #shapes{overflow:visible}
 /* The highlight is the neighborhood's own ground pattern, turned up: a second
