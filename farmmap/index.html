@@ -446,8 +446,11 @@ function sizeRings(){
 }
 
 const OWNK={}; Object.keys(ICON_OWN).forEach(k=>{ (OWNK[ICON_OWN[k]]=OWNK[ICON_OWN[k]]||new Set()).add(k.split('|')[0]); });
-// a neighborhood has an amenity if WordPress lists it OR the map shows that icon inside it
-const passes = h => !amFilter || (h.amk||[]).includes(amFilter) || !!(OWNK[h.id]&&OWNK[h.id].has(amFilter));
+// The map is the truth: if the map has icons of this kind, only neighborhoods that hold one light up
+// (WordPress claims with no icon on the map are listed in the 2027 map-inaccuracies doc).
+// Kinds with no icons on the map at all (stage, bar...) still follow the WordPress list.
+const passes = h => { if(!amFilter) return true; const hasIcons=(ICON_AT[amFilter]||[]).length>0;
+  return hasIcons ? !!(OWNK[h.id]&&OWNK[h.id].has(amFilter)) : (h.amk||[]).includes(amFilter); };
 // Right-rail labels that would land on top of their own neighbourhood sit higher: the
 // number is the lowest map row the label may use (Welcome Lot's goes above Hagen Road).
 const LBLCAP={welcomelot:3380,willowcamp:3380};   // full strength at the first view, easing off as the map is zoomed in (~2x)
