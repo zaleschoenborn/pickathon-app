@@ -220,6 +220,14 @@ body{margin:0;background:var(--ink);color:var(--cream);font-family:var(--f);
   #card.intro #empty #pcl .pc em{font:500 11px/1.25 var(--f);color:var(--muted);-webkit-line-clamp:2!important}
   #pcl .pc em{font-size:11px;display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden}
   #pcl .pc u{display:none}
+  #pcl .pc i,#pcl .pc em{display:none!important}
+  #pcl .pc .lg{display:grid!important}
+  #pcl .pc{padding:4px 10px;gap:10px;border-left:3px solid var(--ac,#F2B33D)}
+  #pcl .pc .lg{flex:0 0 32px!important;height:32px!important}
+  #pcl .pc .lg img{width:26px!important;height:26px!important}
+  #pcl .pcg{margin:6px 0 0!important}
+  #pcl{gap:4px!important}
+  #card.intro #empty #pcl .pc b{font:800 14.5px/1.15 var(--f)}
   #eyebrow{display:block!important}
 }
 #cpitch,#cvid{display:none}
@@ -288,6 +296,8 @@ body{margin:0;background:var(--ink);color:var(--cream);font-family:var(--f);
 #fullmap.on{opacity:1;pointer-events:auto}
 #fullmap svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.8}
 @media (min-width:880px){#fullmap{right:calc(var(--cardw) + 14px)}}
+#pcl .pc .lg{display:none;flex:0 0 38px;height:38px;place-items:center;background:#0F130D;border-radius:9px;text-decoration:none}
+#pcl .pc .lg img{width:30px;height:30px;object-fit:contain}
 #pcl{display:none;flex-direction:column;gap:6px;overflow-y:auto;margin:12px -22px 0;padding:0 22px 22px;flex:1;min-height:0;overscroll-behavior:contain}
 .pcg{font:800 10.5px/1 var(--f);letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin:12px 0 2px}
 .pc{display:flex;align-items:center;gap:12px;border:1px solid var(--line);background:#1D2218;border-radius:12px;padding:6px;cursor:default;text-align:left;color:var(--cream);font-family:var(--f);transition:background .15s,border-color .15s}
@@ -788,16 +798,17 @@ function warmHeroes(){ buildCards();
   const next=()=>{ if(i>=ids.length) return; const im=new Image(); im.decoding='async'; im.src=ids[i++]; setTimeout(next,160); };
   setTimeout(next,2500);
 }
+const SVGL={"woods": "i/264.svg", "paddock": "i/224.svg", "cherryhill": "i/63.svg", "grove": "i/p532.svg", "windmill": "i/p633.svg", "galaxy": "i/p788.svg", "lucky": "i/272.svg", "farmhouse": "i/481.svg", "curation": "i/293.svg", "refuge": "i/197.svg", "coyote": "i/229.svg", "courtyard": "i/214.svg", "market": "i/144.svg", "orchard": "i/198.svg", "welcomelot": "i/p779.svg", "lushcamp": "i/19.svg", "quailtrail": "i/242.svg", "southcamp": "i/p707.svg", "wildcamp": "i/465.svg", "willowcamp": "i/25.svg"};
 function buildCards(){
   const box=document.getElementById('pcl'); if(!box||box._d) return; box._d=1;
   const col={stage:'#D4502C',camp:'#C98A14',around:'#3E7F46',wellness:'#2E8C9E',family:'#8A4FA8'};
-  const order=['stage','around','wellness','family','camp'], seen={};
+  const order=['stage','around','wellness','camp'], seen={};
   let html='';
-  order.concat(Object.keys(KIND).filter(k=>order.indexOf(k)<0)).forEach(k=>{
-    const L=HOODS.filter(h=>h.k===k); if(!L.length) return;
-    html+='<div class="pcg">'+(KIND[k]||k)+'</div>';
+  order.concat(Object.keys(KIND).filter(k=>order.indexOf(k)<0&&k!=='family')).forEach(k=>{
+    const L=HOODS.filter(h=>h.k===k||(k==='wellness'&&h.k==='family')); if(!L.length) return;
+    html+='<div class="pcg">'+(k==='wellness'?'Wellness &amp; family':(KIND[k]||k))+'</div>';
     L.forEach(h=>{ const im=(HERO[h.id]||[])[0];
-      html+='<button class="pc" type="button" data-h="'+h.id+'" style="--ac:'+(col[k]||'#F2B33D')+'"><i'+(im?' style="background-image:url(\''+im+'\')"':'')+'></i><span><b>'+h.n+'</b><em>'+(h.t||'')+'</em></span><u>›</u></button>'; });
+      html+='<button class="pc" type="button" data-h="'+h.id+'" style="--ac:'+(col[k]||'#F2B33D')+'"><s class="lg"><img alt="" decoding="async" src="../'+(SVGL[h.id]||('ic2/'+h.id+'.png'))+'"></s><i'+(im?' style="background-image:url(\''+im+'\')"':'')+'></i><span><b>'+h.n+'</b><em>'+(h.t||'')+'</em></span><u>›</u></button>'; });
   });
   html+='<a class="pcb" href="https://build.creativeneighborhoods.com/" target="_top">We build these. Creative Neighborhoods &rsaquo;</a>';
   box.innerHTML=html;
