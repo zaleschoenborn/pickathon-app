@@ -58219,5 +58219,43 @@
 2022,
 2026
 ]
-}
+},
+ "cdmap": {
+  "The Avett Brothers": {
+   "y": 2006,
+   "t": "November Blue",
+   "id": "0ya0cyfiT21bkdBqgcwlJS",
+   "img": "https://i.scdn.co/image/ab67616d0000b2738b5dde34514aa13b4cf72f06"
+  },
+  "Trampled by Turtles": {
+   "y": 2007,
+   "t": "Nowhere to Hide",
+   "id": "3MUfKQwidW65STdSwqcTT3",
+   "img": "https://i.scdn.co/image/ab67616d0000b2737898b470b3fd782a60f054b5"
+  },
+  "Darol Anger & Scott Law": {
+   "y": 2008,
+   "t": "Ride the Wild Turkey",
+   "id": "2TX27SkwlEzFbUQ6zdvVhI",
+   "img": "https://i.scdn.co/image/ab67616d0000b273cc81e94508932d5df24b046e"
+  },
+  "Greg Brown": {
+   "y": 2006,
+   "t": "Kokomo",
+   "id": "3T6wUqSIPOKm5m8Cscjo2k",
+   "img": "https://i.scdn.co/image/ab67616d0000b2738b5dde34514aa13b4cf72f06"
+  },
+  "Kevin Burke & Casey Neill": {
+   "y": 2002,
+   "t": "Lucy Cambell and the Jolly Tinker",
+   "id": "3HlMfDE43zuYsNeuMooI7l",
+   "img": "https://i.scdn.co/image/ab67616d0000b273f58694cbe0877b7bbd52a248"
+  },
+  "Laurie Lewis, Tom Rozum, and Tom Sauber": {
+   "y": 2001,
+   "t": "Black Waters",
+   "id": "1GrCKs37SWFKd3vLj73pVM",
+   "img": "https://i.scdn.co/image/ab67616d0000b273c2d675128ed26a3ea9e7a320"
+  }
+ }
 }
