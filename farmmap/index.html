@@ -298,6 +298,17 @@ body{margin:0;background:var(--ink);color:var(--cream);font-family:var(--f);
 #eyebrow{display:none;font:800 11px/1 var(--f);letter-spacing:.16em;text-transform:uppercase;color:#F2B33D;margin-bottom:2px}
 .pcb{display:block;margin:8px 0 0;text-align:center;font:700 12.5px/1 var(--f);color:var(--muted);text-decoration:none;padding:12px;border-top:1px solid var(--line)}
 .pcb:hover{color:#F2B33D}
+@media (min-width:880px){
+  #card.intro #empty #pcl{grid-template-columns:repeat(5,1fr)!important;gap:14px 6px!important;margin-top:16px}
+  #card.intro #empty #pcl .pc{flex-direction:column!important;align-items:center;gap:6px;padding:0!important;background:none!important;border:0!important}
+  #card.intro #empty #pcl .pc .lg{flex:0 0 auto!important;width:64px!important;height:64px!important;border-radius:50%}
+  #card.intro #empty #pcl .pc .lg img{width:70%!important;height:70%!important}
+  #card.intro #empty #pcl .pc span{display:block;max-width:100%}
+  #card.intro #empty #pcl .pc b{font:700 11px/1.15 var(--f)!important;color:var(--muted)!important;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+  #card.intro #empty #pcl .pc:hover b{color:var(--cream)!important}
+  #card.intro #empty #pcl .pc:hover .lg{outline:2px solid #F2B33D;outline-offset:2px}
+  #card.intro #empty #pcl .pcg{display:none!important}
+}
 #pcl,#body,#card{scrollbar-width:none;-ms-overflow-style:none}
 #pcl::-webkit-scrollbar,#body::-webkit-scrollbar,#card::-webkit-scrollbar{display:none}
 #fullmap{position:fixed;top:14px;right:14px;z-index:25;border:1px solid var(--line);background:rgba(22,26,18,.92);color:var(--cream);font:800 12px/1 var(--f);padding:0 13px;height:36px;border-radius:999px;display:flex;align-items:center;gap:7px;cursor:pointer;opacity:0;pointer-events:none;transition:opacity .2s}
