@@ -1439,13 +1439,17 @@
 "am": [
 "Stage"
 ],
-"i": "i/pk-gf-26.jpg",
+"i": "i/pk-gx-94.jpg",
 "p": [
 40,
 80
 ],
 "k": "stage",
 "g": [
+{
+"i": "i/pk-gx-94.jpg",
+"c": "Pickathon"
+},
 {
 "i": "i/pk-gf-26.jpg",
 "c": "Sara Northrup"
@@ -1473,10 +1477,6 @@
 {
 "i": "i/pk-go-53.jpg",
 "c": "Dylan VanWeelden"
-},
-{
-"i": "i/pk-gx-94.jpg",
-"c": "Chris Riley"
 },
 {
 "i": "i/pk-galaxy-m3.jpg",
@@ -1543,6 +1543,12 @@
 ],
 "spn": [],
 "hr": [
+{
+"i": "i/pk-gx-94.jpg",
+"y": "2026",
+"by": "Chris Riley",
+"band": ""
+},
 {
 "i": "i/pk-galaxy-m10.jpg",
 "y": "2026",
