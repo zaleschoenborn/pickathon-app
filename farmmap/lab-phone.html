@@ -717,6 +717,20 @@ body.lpback #lptitle{display:none!important}   /* back from a neighborhood page:
   .lpar:active::before{background:rgba(242,237,227,.16)}
   #lpl{left:auto!important;right:48px!important} #lpr{right:4px!important}
 }
+
+/* Phone strip, round 3: edge tabs for prev/next, wider photo, text stacked in the column */
+@media (max-width:879px){
+  #card,#lpprev{overflow:visible!important}
+  #lpth{aspect-ratio:4/3!important}
+  #lptx{padding:6px 12px 0 0!important}
+  #lppills{margin:0!important}
+  .lpar{position:absolute!important;top:auto!important;bottom:calc(var(--lpb) + (var(--lps) - var(--lpb) - 52px)/2)!important;margin:0!important;width:20px!important;height:52px!important;padding:0!important;
+    display:grid;place-items:center;border:1px solid rgba(242,237,227,.16)!important;background:rgba(14,18,11,.62)!important;color:#F2EDE3;font:600 17px/1 var(--f)!important;z-index:26;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  .lpar::before{display:none!important}
+  .lpar:active{background:rgba(242,237,227,.18)!important}
+  #lpl{left:0!important;right:auto!important;border-left:0!important;border-radius:0 12px 12px 0!important}
+  #lpr{right:0!important;left:auto!important;border-right:0!important;border-radius:12px 0 0 12px!important}
+}
 </style>
 <div id="card" class="intro"><div id="lpprev"><div id="lpth"></div><div id="lptx"><small id="lpk"></small><div id="lpnow" hidden></div><b id="lpn"></b><div id="lpprog"></div><div id="lppills"></div></div><button id="lpx" type="button" aria-label="Back to all neighborhoods">&#10005;</button><button id="lpl" class="lpar" type="button" aria-label="Previous neighborhood">&#8249;</button><button id="lpr" class="lpar" type="button" aria-label="Next neighborhood">&#8250;</button></div>
   <div id="picker" role="group" aria-label="Find on the map" hidden>
@@ -1590,7 +1604,8 @@ function lpView(h){
   const sh=D.shapes[h.id], b=sh&&sh.b, W=stage.clientWidth, Hv=stage.clientHeight-LPVB, T=Math.min(lpTopR(),Hv*.2);
   const cx=b?(b[0]+b[2])/2:h._mx*MW, cy=b?(b[1]+b[3])/2:h._my*MH;
   let nk=k; if(b){ nk=Math.min(W*.66/Math.max(1,b[2]-b[0]),(Hv-T)*.7/Math.max(1,b[3]-b[1])); nk=Math.max(kMin||kFit,Math.min(maxK(),nk)); }
-  const c=clampV(nk, W/2-cx*nk, T+(Hv-T)/2-cy*nk, Hv, true); return {k:nk,tx:c.tx,ty:c.ty};
+  const lbl=Math.min(18,W*.045);   // the label stack on the left edge is heavier than the right, so sit a touch right of centre
+  const c=clampV(nk, W/2+lbl-cx*nk, T+(Hv-T)/2-cy*nk, Hv, true); return {k:nk,tx:c.tx,ty:c.ty};
 }
 function lpPanTo(h){ if(h) flyView(lpView(h),h); }
 function lpSettle(){ const c=clampV(k,tx,ty,stage.clientHeight-LPVB);
@@ -1679,7 +1694,7 @@ function lpFill(h){
   if(innerWidth<700){ th.style.backgroundImage=LQ[h.id]?'url('+LQ[h.id]+')':''; if(lpRot._h!==h||lpRot._x!==!!(XD&&XD.h)) lpRot(h); }
   else { th.innerHTML=''; th.style.backgroundImage=(im?'url("'+im+'")':'')+(im&&LQ[h.id]?', ':'')+(LQ[h.id]?'url('+LQ[h.id]+')':''); }
   document.getElementById('lpn').textContent=h.n;
-  const kd=document.getElementById('lpk'); kd.textContent=KLBL(h.k);
+  const kd=document.getElementById('lpk'); kd.textContent=h.k==='stage'?'Stage':h.k==='camp'?'Camping':'Gathering';   // the strip is tight: short kind here only
   // Phone: what goes on there and how much, from the latest festival's schedule (counts and kinds only)
   const PG=document.getElementById('lpprog'); PG.textContent='';
   if(innerWidth<700){ const P=(XD&&XD.h)?progOf(h):null;
