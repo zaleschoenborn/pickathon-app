@@ -395,6 +395,7 @@ body{margin:0;background:var(--ink);color:var(--cream);font-family:var(--f);
 </style>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&display=swap">
 
+<style>body.cardmode #stage{inset:0!important;right:0!important;bottom:0!important;width:100%!important;height:100%!important}body.cardmode #page,body.cardmode #finder,body.cardmode #fullmap,body.cardmode #card,body.cardmode #fx,body.cardmode #itip{display:none!important}body.cardmode,body.cardmode *{pointer-events:none!important;cursor:default!important}body.cardmode .lbl,body.cardmode [class*=lab]{display:none!important}</style>
 <div id="stage">
   <div id="art"><img id="mapimg" src="map.webp?v=25" alt="Map of Pendarvis Farm" draggable="false"><div id="tiles"></div><div id="veil"></div><div id="lits"></div></div>
   <svg id="shapes"></svg>
@@ -1178,7 +1179,9 @@ function frameHood(fh){ const W=stage.clientWidth,H=stage.clientHeight, sh=D.sha
 let settleUntil=0; let hoverOK=true;   // hover previews only until the first pan, zoom or click; after that a click selects and a second click opens
 
 document.getElementById('ibuild').addEventListener('click',()=>{ try{ parent.postMessage({pkMap:'go',r:'build'},'*'); }catch(e){} });
-function boot(){ if(!document.getElementById('itip')){ const t=document.createElement('div'); t.id='itip'; document.body.appendChild(t); } art.style.width=MW+'px'; art.style.height=MH+'px'; build(); fit(); homeView(); restoreView(); settleUntil=NOW()+900; warmHeroes(); }
+function boot(){ if(!document.getElementById('itip')){ const t=document.createElement('div'); t.id='itip'; document.body.appendChild(t); } art.style.width=MW+'px'; art.style.height=MH+'px'; build(); fit(); homeView(); restoreView(); settleUntil=NOW()+900; if(CARDID){ cardView(); } else warmHeroes(); }
+const CARDID=(location.search.match(/[?&]card=([a-z0-9]+)/)||[])[1]||'';
+function cardView(){ document.body.classList.add('cardmode'); const h=HOODS.find(x=>x.id===CARDID); if(!h) return; const go=function(){ const sh=D.shapes[h.id]; if(!sh) return; const W=stage.clientWidth,H=stage.clientHeight,b=sh.b; k=Math.max(kFit,Math.min(maxK(),W*0.68/(b[2]-b[0]),H*0.68/(b[3]-b[1]))); tx=W/2-(b[0]+b[2])/2*k; ty=H/2-(b[1]+b[3])/2*k; clamp(); apply(); light(h); }; go(); window.addEventListener('resize',function(){ fit(); go(); }); }
 if(img.complete&&img.naturalWidth) boot(); else img.onload=boot;
 
 // ---- Walk the farm: swipe the card (or use the arrows) to go neighbourhood to
