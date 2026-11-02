@@ -1379,84 +1379,84 @@
 "k": "stage",
 "g": [
 {
-"i": "i/pk-gq-bs.jpg",
-"c": "Dylan VanWeelden"
+"i": "i/pk-gf-26.jpg",
+"c": "Sara Northrup"
+},
+{
+"i": "i/pk-galaxy-m10.jpg",
+"c": "Liz Devine"
+},
+{
+"i": "i/pk-galaxy-m11.jpg",
+"c": "Killian Mustain"
 },
 {
 "i": "i/pk-gq-gel.jpg",
 "c": "Dylan VanWeelden"
 },
 {
-"i": "i/pk-gq-mer.jpg",
-"c": "Nehemiah Sliwoski"
+"i": "i/pk-galaxy-m6.jpg",
+"c": "Steve Harris"
 },
 {
-"i": "i/pk-gf-26.jpg",
-"c": "Sara Northrup"
-},
-{
-"i": "i/pk-gx-94.jpg",
-"c": "Chris Riley"
-},
-{
-"i": "i/pk-gx-107.jpg",
-"c": "Jaime Delacruz"
-},
-{
-"i": "i/pk-gx-27.jpg",
-"c": "Van Jaarsveld"
-},
-{
-"i": "i/pk-gx-1.jpg",
-"c": "Van Jaarsveld"
-},
-{
-"i": "i/pk-gb-19.jpg",
-"c": "Jaime Delacruz"
-},
-{
-"i": "i/pk-gx-35.jpg",
-"c": "Dylan VanWeelden"
-},
-{
-"i": "i/pk-gx-130.jpg",
-"c": "Amanda McAdams"
+"i": "i/pk-galaxy-m2.jpg",
+"c": "Melissa Dismuke"
 },
 {
 "i": "i/pk-go-53.jpg",
 "c": "Dylan VanWeelden"
 },
 {
-"i": "i/pk-go-28.jpg",
-"c": "Bill Purcell"
+"i": "i/pk-gx-94.jpg",
+"c": "Chris Riley"
 },
 {
-"i": "i/pk-go-82.jpg",
-"c": "Bill Purcell"
+"i": "i/pk-galaxy-m3.jpg",
+"c": "Dylan VanWeelden"
 },
 {
-"i": "i/pk-go-92.jpg",
-"c": "Emma Browne"
-},
-{
-"i": "i/pk-go-1.jpg",
-"c": "Mark Stein"
-},
-{
-"i": "i/pk-galaxy-03.jpg",
-"c": "Norm Eder"
-},
-{
-"i": "i/pk-galaxy-08.jpg",
-"c": "Nehemiah Sliwoski"
+"i": "i/pk-galaxy-m1.jpg",
+"c": "Joe Duquette"
 },
 {
 "i": "i/pk-galaxy-09.jpg",
 "c": "Norm Eder"
 },
 {
-"i": "i/pk-galaxy-07.jpg",
+"i": "i/pk-galaxy-m5.jpg",
+"c": "Kate Horton"
+},
+{
+"i": "i/pk-gx-107.jpg",
+"c": "Jaime Delacruz"
+},
+{
+"i": "i/pk-galaxy-m7.jpg",
+"c": "Jason Redmond"
+},
+{
+"i": "i/pk-go-92.jpg",
+"c": "Emma Browne"
+},
+{
+"i": "i/pk-galaxy-m8.jpg",
+"c": "Ken Pappanduros"
+},
+{
+"i": "i/pk-go-1.jpg",
+"c": "Mark Stein"
+},
+{
+"i": "i/pk-galaxy-m9.jpg",
+"c": "Dylan VanWeelden"
+},
+{
+"i": "i/pk-galaxy-m12.jpg",
 "c": "Norm Eder"
+},
+{
+"i": "i/pk-gx-27.jpg",
+"c": "Van Jaarsveld"
 }
 ],
 "ic": "i/p788.svg",
@@ -1476,14 +1476,39 @@
 "spn": [],
 "hr": [
 {
+"i": "i/pk-galaxy-m10.jpg",
+"y": "2026",
+"by": "Liz Devine"
+},
+{
+"i": "i/pk-galaxy-m2.jpg",
+"y": "2022",
+"by": "Melissa Dismuke"
+},
+{
+"i": "i/pk-galaxy-m6.jpg",
+"y": "2023",
+"by": "Steve Harris"
+},
+{
 "i": "i/pk-galaxy-01.jpg",
 "y": "2026",
 "by": "Rob Kerr"
 },
 {
-"i": "i/pk-galaxy-03.jpg",
-"y": "2025",
-"by": "Norm Eder"
+"i": "i/pk-galaxy-m11.jpg",
+"y": "2026",
+"by": "Killian Mustain"
+},
+{
+"i": "i/pk-galaxy-m3.jpg",
+"y": "2022",
+"by": "Dylan VanWeelden"
+},
+{
+"i": "i/pk-galaxy-m5.jpg",
+"y": "2023",
+"by": "Kate Horton"
 },
 {
 "i": "i/pk-galaxy-02.jpg",
@@ -1491,14 +1516,14 @@
 "by": "Jaime Delacruz"
 },
 {
+"i": "i/pk-galaxy-m8.jpg",
+"y": "2024",
+"by": "Ken Pappanduros"
+},
+{
 "i": "i/pk-galaxy-05.jpg",
 "y": "2025",
 "by": "Erica Stavis"
-},
-{
-"i": "i/pk-galaxy-04.jpg",
-"y": "2025",
-"by": "Norm Eder"
 }
 ],
 "pb": [
