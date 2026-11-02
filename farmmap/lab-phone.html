@@ -730,6 +730,9 @@ body.lpback #lptitle{display:none!important}   /* back from a neighborhood page:
     display:grid;place-items:center;border:1px solid rgba(242,237,227,.16)!important;background:rgba(14,18,11,.62)!important;color:#F2EDE3;font:600 17px/1 var(--f)!important;z-index:26;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
   .lpar::before{display:none!important}
   .lpar:active{background:rgba(242,237,227,.18)!important}
+  #lpprev{padding:0 22px var(--lpb) 22px!important}
+  .lpem{display:inline-block;width:22px;height:22px;object-fit:contain;vertical-align:-4px;margin-right:7px}
+  #lpk{letter-spacing:.1em!important}
   #lpl{left:0!important;right:auto!important;border-left:0!important;border-radius:0 12px 12px 0!important}
   #lpr{right:0!important;left:auto!important;border-right:0!important;border-radius:12px 0 0 12px!important}
 }
@@ -1755,8 +1758,8 @@ function lpFill(h){
   const th=document.getElementById('lpth'), im=(HERO[h.id]||[])[0];
   if(innerWidth<700){ th.style.backgroundImage=LQ[h.id]?'url('+LQ[h.id]+')':''; if(lpRot._h!==h||lpRot._x!==!!(XD&&XD.h)) lpRot(h); }
   else { th.innerHTML=''; th.style.backgroundImage=(im?'url("'+im+'")':'')+(im&&LQ[h.id]?', ':'')+(LQ[h.id]?'url('+LQ[h.id]+')':''); }
-  document.getElementById('lpn').textContent=h.n;
-  const kd=document.getElementById('lpk'); kd.textContent=h.k==='stage'?'Stage':h.k==='camp'?'Camping':'Gathering';   // the strip is tight: short kind here only
+  document.getElementById('lpn').innerHTML='<img class="lpem" alt="" draggable="false" src="../ic2/'+h.id+'.png" onerror="this.remove()">'+lpEsc(h.n);
+  const kd=document.getElementById('lpk'); kd.textContent=KLBL(h.k);
   // Phone: what goes on there and how much, from the latest festival's schedule (counts and kinds only)
   const PG=document.getElementById('lpprog'); PG.textContent='';
   if(innerWidth<700){ const P=(XD&&XD.h)?progOf(h):null;
