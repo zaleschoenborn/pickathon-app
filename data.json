@@ -616,10 +616,6 @@
 "c": "Brooke Hoyer"
 },
 {
-"i": "i/pk-cherryhill-04.jpg",
-"c": "Pickathon"
-},
-{
 "i": "i/pk-cherryhill-05.jpg",
 "c": "Erin Riddle"
 },
@@ -3193,6 +3189,10 @@
 },
 {
 "i": "i/pk-cherryhill-08.jpg",
+"c": "Pickathon"
+},
+{
+"i": "i/pk-cherryhill-04.jpg",
 "c": "Pickathon"
 }
 ],
