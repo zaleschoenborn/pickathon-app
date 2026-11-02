@@ -1255,7 +1255,7 @@
 "am": [
 "Stage"
 ],
-"i": "i/pk-gb-19.jpg",
+"i": "i/pk-gf-26.jpg",
 "p": [
 40,
 80
@@ -1263,36 +1263,68 @@
 "k": "stage",
 "g": [
 {
+"i": "i/pk-gf-26.jpg",
+"c": "Sara Northrup"
+},
+{
+"i": "i/pk-gx-94.jpg",
+"c": "Chris Riley"
+},
+{
+"i": "i/pk-gx-107.jpg",
+"c": "Jaime Delacruz"
+},
+{
+"i": "i/pk-gx-27.jpg",
+"c": "Van Jaarsveld"
+},
+{
+"i": "i/pk-gx-1.jpg",
+"c": "Van Jaarsveld"
+},
+{
 "i": "i/pk-gb-19.jpg",
 "c": "Jaime Delacruz"
 },
 {
-"i": "i/pk-gb-15.jpg",
-"c": "Jaime Delacruz"
+"i": "i/pk-gx-35.jpg",
+"c": "Dylan VanWeelden"
 },
 {
-"i": "i/pk-gb-13.jpg",
-"c": "Jaime Delacruz"
+"i": "i/pk-gx-12.jpg",
+"c": "Amanda McAdams"
 },
 {
-"i": "i/pk-gb-52.jpg",
-"c": "Samantha Klopp"
+"i": "i/pk-gx-130.jpg",
+"c": "Amanda McAdams"
 },
 {
-"i": "i/pk-gb-22.jpg",
-"c": "Joe Duquette"
+"i": "i/pk-gx-128.jpg",
+"c": "Justin Kent"
 },
 {
-"i": "i/pk-gb-58.jpg",
-"c": "Steve Harris"
-},
-{
-"i": "i/pk-gb-47.jpg",
-"c": "Joe Duquette"
-},
-{
-"i": "i/pk-gb-8.jpg",
+"i": "i/pk-gx-33.jpg",
 "c": "Brooke Hoyer"
+},
+{
+"i": "i/pk-go-53.jpg",
+"c": "Dylan VanWeelden"
+},
+{
+"i": "i/pk-go-28.jpg",
+"c": "Bill Purcell"
+},
+{
+"i": "i/pk-go-82.jpg",
+"c": "Bill Purcell"
+},
+{
+"i": "i/pk-go-92.jpg",
+"c": "Emma Browne"
+},
+{
+"i": "i/pk-go-1.jpg",
+"c": "Mark Stein"
 }
 ],
 "ic": "i/p788.svg",
@@ -28805,14 +28837,6 @@
 "band": "The Onlies"
 },
 {
-"k": "ss6",
-"by": "Amanda McAdams",
-"h": "paddock",
-"night": false,
-"p": 0,
-"band": "The Onlies"
-},
-{
 "k": "ss7",
 "by": "Andy Meeks",
 "h": "",
@@ -29014,14 +29038,6 @@
 "band": "Alela Diane"
 },
 {
-"k": "ss35",
-"by": "Austin Iles",
-"h": "cherryhill",
-"night": false,
-"p": 0,
-"band": "Alela Diane"
-},
-{
 "k": "ss36",
 "by": "Austin Iles",
 "h": "cherryhill",
@@ -29060,14 +29076,6 @@
 "band": "Boy Golden"
 },
 {
-"k": "ss41",
-"by": "Austin Iles",
-"h": "galaxy",
-"night": true,
-"p": 0,
-"band": "DUG"
-},
-{
 "k": "ss42",
 "by": "Austin Iles",
 "h": "lucky",
@@ -29100,23 +29108,7 @@
 "band": "Built To Spill"
 },
 {
-"k": "ss46",
-"by": "Austin Iles",
-"h": "woods",
-"night": false,
-"p": 0,
-"band": "Leroy From The North"
-},
-{
 "k": "ss47",
-"by": "Austin Iles",
-"h": "woods",
-"night": true,
-"p": 0,
-"band": "Steve Earle"
-},
-{
-"k": "ss48",
 "by": "Austin Iles",
 "h": "woods",
 "night": true,
@@ -29250,14 +29242,6 @@
 "band": "Lyrics Born"
 },
 {
-"k": "ss66",
-"by": "Chris Riley",
-"h": "galaxy",
-"night": true,
-"p": 0,
-"band": "Lyrics Born"
-},
-{
 "k": "ss67",
 "by": "Chris Riley",
 "h": "galaxy",
@@ -29272,14 +29256,6 @@
 "night": true,
 "p": 1,
 "band": "Sgt. Papers"
-},
-{
-"k": "ss69",
-"by": "Dylan VanWeelden",
-"h": "grove",
-"night": true,
-"p": 1,
-"band": "Hogslop String Band"
 },
 {
 "k": "ss70",
@@ -29314,39 +29290,7 @@
 "band": "Marcos Valle"
 },
 {
-"k": "ss74",
-"by": "Erica Marroquin",
-"h": "paddock",
-"night": false,
-"p": 1,
-"band": "Marcos Valle"
-},
-{
-"k": "ss75",
-"by": "Erica Marroquin",
-"h": "paddock",
-"night": false,
-"p": 1,
-"band": "Steve Earle"
-},
-{
 "k": "ss76",
-"by": "Erica Stavis",
-"h": "curation",
-"night": false,
-"p": 1,
-"band": "The Womack Sisters"
-},
-{
-"k": "ss77",
-"by": "Erica Stavis",
-"h": "curation",
-"night": false,
-"p": 1,
-"band": "The Womack Sisters"
-},
-{
-"k": "ss78",
 "by": "Erica Stavis",
 "h": "curation",
 "night": false,
@@ -29368,22 +29312,6 @@
 "p": 1
 },
 {
-"k": "ss81",
-"by": "Graeme Harrison",
-"h": "cherryhill",
-"night": false,
-"p": 1,
-"band": "Alela Diane"
-},
-{
-"k": "ss82",
-"by": "Graeme Harrison",
-"h": "grove",
-"night": false,
-"p": 1,
-"band": "Sgt. Papers"
-},
-{
 "k": "ss83",
 "by": "Graeme Harrison",
 "h": "cherryhill",
@@ -29397,30 +29325,6 @@
 "night": false,
 "p": 1,
 "band": "Briscoe"
-},
-{
-"k": "ss85",
-"by": "Jaime Delacruz",
-"h": "windmill",
-"night": false,
-"p": 1,
-"band": "Briscoe"
-},
-{
-"k": "ss86",
-"by": "Jaime Delacruz",
-"h": "paddock",
-"night": true,
-"p": 1,
-"band": "Built To Spill"
-},
-{
-"k": "ss87",
-"by": "Jaime Delacruz",
-"h": "paddock",
-"night": true,
-"p": 1,
-"band": "Built To Spill"
 },
 {
 "k": "ss88",
@@ -29463,52 +29367,12 @@
 "band": "Folk Bitch Trio"
 },
 {
-"k": "ss93",
-"by": "Jaime Delacruz",
-"h": "galaxy",
-"night": false,
-"p": 1,
-"band": "Lyrics Born"
-},
-{
 "k": "ss94",
 "by": "Jaime Delacruz",
 "h": "galaxy",
 "night": true,
 "p": 1,
 "band": "Mercury"
-},
-{
-"k": "ss95",
-"by": "Jaime Delacruz",
-"h": "paddock",
-"night": false,
-"p": 1,
-"band": "Mexican Institute of Sound"
-},
-{
-"k": "ss96",
-"by": "Jaime Delacruz",
-"h": "paddock",
-"night": false,
-"p": 1,
-"band": "Mexican Institute of Sound"
-},
-{
-"k": "ss97",
-"by": "Jaime Delacruz",
-"h": "grove",
-"night": false,
-"p": 1,
-"band": "Sgt. Papers"
-},
-{
-"k": "ss98",
-"by": "Jaime Delacruz",
-"h": "grove",
-"night": false,
-"p": 1,
-"band": "Sgt. Papers"
 },
 {
 "k": "ss99",
@@ -29540,14 +29404,6 @@
 "p": 1
 },
 {
-"k": "ss103",
-"by": "Jaime Delacruz",
-"h": "grove",
-"night": false,
-"p": 1,
-"band": "PISS"
-},
-{
 "k": "ss104",
 "by": "Jaime Delacruz",
 "h": "",
@@ -29570,14 +29426,6 @@
 "band": "Rumbo Tumba"
 },
 {
-"k": "ss107",
-"by": "Jaime Delacruz",
-"h": "windmill",
-"night": false,
-"p": 1,
-"band": "Rumbo Tumba"
-},
-{
 "k": "ss108",
 "by": "Jason Redmond",
 "h": "woods",
@@ -29592,70 +29440,6 @@
 "night": false,
 "p": 1,
 "band": "Sa-Roc"
-},
-{
-"k": "ss110",
-"by": "Jason Redmond",
-"h": "woods",
-"night": false,
-"p": 1,
-"band": "Sa-Roc"
-},
-{
-"k": "ss111",
-"by": "Jason Redmond",
-"h": "woods",
-"night": false,
-"p": 1,
-"band": "Sa-Roc"
-},
-{
-"k": "ss112",
-"by": "Jason Redmond",
-"h": "woods",
-"night": false,
-"p": 1,
-"band": "Sa-Roc"
-},
-{
-"k": "ss113",
-"by": "Jason Redmond",
-"h": "woods",
-"night": false,
-"p": 1,
-"band": "Sa-Roc"
-},
-{
-"k": "ss114",
-"by": "Jason Redmond",
-"h": "cherryhill",
-"night": false,
-"p": 1,
-"band": "Lyrics Born"
-},
-{
-"k": "ss115",
-"by": "Jason Redmond",
-"h": "paddock",
-"night": true,
-"p": 1,
-"band": "Built To Spill"
-},
-{
-"k": "ss116",
-"by": "Jason Redmond",
-"h": "paddock",
-"night": true,
-"p": 1,
-"band": "El Khat"
-},
-{
-"k": "ss117",
-"by": "Jason Redmond",
-"h": "paddock",
-"night": false,
-"p": 1,
-"band": "El Khat"
 },
 {
 "k": "ss118",
@@ -29693,13 +29477,6 @@
 "p": 1
 },
 {
-"k": "ss123",
-"by": "Justin Kent",
-"h": "galaxy",
-"night": true,
-"p": 1
-},
-{
 "k": "ss124",
 "by": "Justin Kent",
 "h": "galaxy",
@@ -29708,23 +29485,7 @@
 "band": "K Marie"
 },
 {
-"k": "ss125",
-"by": "Justin Kent",
-"h": "galaxy",
-"night": false,
-"p": 1,
-"band": "Lyrics Born"
-},
-{
 "k": "ss126",
-"by": "Justin Kent",
-"h": "grove",
-"night": false,
-"p": 1,
-"band": "Hudson Freeman"
-},
-{
-"k": "ss127",
 "by": "Justin Kent",
 "h": "grove",
 "night": false,
@@ -29762,14 +29523,6 @@
 "band": "The Brothers Comatose"
 },
 {
-"k": "ss132",
-"by": "Justin Kent",
-"h": "woods",
-"night": true,
-"p": 1,
-"band": "The Brothers Comatose"
-},
-{
 "k": "ss133",
 "by": "Justin Kent",
 "h": "woods",
@@ -29784,22 +29537,6 @@
 "night": true,
 "p": 1,
 "band": "Dylan Earl"
-},
-{
-"k": "ss135",
-"by": "Kaitlyn Taylor",
-"h": "woods",
-"night": true,
-"p": 1,
-"band": "Leroy From The North"
-},
-{
-"k": "ss136",
-"by": "Kaitlyn Taylor",
-"h": "woods",
-"night": true,
-"p": 1,
-"band": "Leroy From The North"
 },
 {
 "k": "ss137",
@@ -29826,31 +29563,7 @@
 "band": "The South Hill Experiment"
 },
 {
-"k": "ss140",
-"by": "Ken Pappanduros",
-"h": "paddock",
-"night": false,
-"p": 2,
-"band": "Mexican Institute of Sound"
-},
-{
-"k": "ss141",
-"by": "Ken Pappanduros",
-"h": "paddock",
-"night": false,
-"p": 2,
-"band": "Mexican Institute of Sound"
-},
-{
 "k": "ss142",
-"by": "Ken Pappanduros",
-"h": "paddock",
-"night": false,
-"p": 2,
-"band": "Shakey Graves"
-},
-{
-"k": "ss143",
 "by": "Ken Pappanduros",
 "h": "paddock",
 "night": false,
@@ -29887,14 +29600,6 @@
 "p": 2
 },
 {
-"k": "ss148",
-"by": "Ken Pappanduros",
-"h": "woods",
-"night": true,
-"p": 2,
-"band": "Steve Earle"
-},
-{
 "k": "ss149",
 "by": "Ken Pappanduros",
 "h": "woods",
@@ -29925,14 +29630,6 @@
 "p": 2
 },
 {
-"k": "ss153",
-"by": "Killian Mustain",
-"h": "paddock",
-"night": true,
-"p": 2,
-"band": "Shakey Graves"
-},
-{
 "k": "ss154",
 "by": "Killian Mustain",
 "h": "windmill",
@@ -29946,14 +29643,6 @@
 "h": "windmill",
 "night": false,
 "p": 2
-},
-{
-"k": "ss156",
-"by": "Killian Mustain",
-"h": "woods",
-"night": false,
-"p": 2,
-"band": "Leroy From The North"
 },
 {
 "k": "ss157",
@@ -29970,14 +29659,6 @@
 "p": 2
 },
 {
-"k": "ss159",
-"by": "Liz Devine",
-"h": "galaxy",
-"night": false,
-"p": 2,
-"band": "Lyrics Born"
-},
-{
 "k": "ss160",
 "by": "Liz Devine",
 "h": "paddock",
@@ -29992,34 +29673,10 @@
 "p": 2
 },
 {
-"k": "ss162",
-"by": "Liz Devine",
-"h": "woods",
-"night": true,
-"p": 2,
-"band": "The Womack Sisters"
-},
-{
-"k": "ss163",
-"by": "Liz Devine",
-"h": "woods",
-"night": true,
-"p": 2,
-"band": "The Womack Sisters"
-},
-{
 "k": "ss164",
 "by": "Nehemiah Sliwoski",
 "h": "galaxy",
 "night": false,
-"p": 2,
-"band": "Buddy Wynkoop"
-},
-{
-"k": "ss165",
-"by": "Nehemiah Sliwoski",
-"h": "galaxy",
-"night": true,
 "p": 2,
 "band": "Buddy Wynkoop"
 },
@@ -30038,30 +29695,6 @@
 "night": false,
 "p": 2,
 "band": "Prewn"
-},
-{
-"k": "ss168",
-"by": "Norman Eder",
-"h": "cherryhill",
-"night": false,
-"p": 2,
-"band": "Alela Diane"
-},
-{
-"k": "ss169",
-"by": "Norman Eder",
-"h": "cherryhill",
-"night": false,
-"p": 2,
-"band": "Alela Diane"
-},
-{
-"k": "ss170",
-"by": "Norman Eder",
-"h": "cherryhill",
-"night": false,
-"p": 2,
-"band": "Ben Chapman"
 },
 {
 "k": "ss171",
@@ -30107,30 +29740,6 @@
 "night": false,
 "p": 2,
 "band": "Hannah Frances"
-},
-{
-"k": "ss177",
-"by": "Norman Eder",
-"h": "cherryhill",
-"night": true,
-"p": 2,
-"band": "Ken Pomeroy"
-},
-{
-"k": "ss178",
-"by": "Norman Eder",
-"h": "cherryhill",
-"night": true,
-"p": 2,
-"band": "Ken Pomeroy"
-},
-{
-"k": "ss179",
-"by": "Norman Eder",
-"h": "cherryhill",
-"night": false,
-"p": 2,
-"band": "Meatbodies"
 },
 {
 "k": "ss180",
@@ -30179,60 +29788,12 @@
 "band": "Channing Wilson"
 },
 {
-"k": "ss186",
-"by": "Norman Eder",
-"h": "galaxy",
-"night": true,
-"p": 2,
-"band": "Channing Wilson"
-},
-{
-"k": "ss187",
-"by": "Norman Eder",
-"h": "galaxy",
-"night": true,
-"p": 2,
-"band": "Dylan Earl"
-},
-{
-"k": "ss188",
-"by": "Norman Eder",
-"h": "galaxy",
-"night": true,
-"p": 2,
-"band": "El Khat"
-},
-{
 "k": "ss189",
 "by": "Norman Eder",
 "h": "galaxy",
 "night": true,
 "p": 2,
 "band": "Hannah Hill"
-},
-{
-"k": "ss190",
-"by": "Norman Eder",
-"h": "galaxy",
-"night": true,
-"p": 2,
-"band": "Lyrics Born"
-},
-{
-"k": "ss191",
-"by": "Norman Eder",
-"h": "galaxy",
-"night": false,
-"p": 2,
-"band": "Mercury"
-},
-{
-"k": "ss192",
-"by": "Norman Eder",
-"h": "galaxy",
-"night": false,
-"p": 2,
-"band": "Mercury"
 },
 {
 "k": "ss193",
@@ -30243,23 +29804,7 @@
 "band": "PISS"
 },
 {
-"k": "ss194",
-"by": "Norman Eder",
-"h": "galaxy",
-"night": false,
-"p": 2,
-"band": "PISS"
-},
-{
 "k": "ss195",
-"by": "Norman Eder",
-"h": "galaxy",
-"night": true,
-"p": 2,
-"band": "Terror/Cactus"
-},
-{
-"k": "ss196",
 "by": "Norman Eder",
 "h": "galaxy",
 "night": true,
@@ -30283,14 +29828,6 @@
 },
 {
 "k": "ss199",
-"by": "Norman Eder",
-"h": "grove",
-"night": false,
-"p": 2,
-"band": "Buddy Wynkoop"
-},
-{
-"k": "ss200",
 "by": "Norman Eder",
 "h": "grove",
 "night": false,
@@ -30336,58 +29873,10 @@
 "band": "The Takes"
 },
 {
-"k": "ss206",
-"by": "Norman Eder",
-"h": "grove",
-"night": false,
-"p": 3,
-"band": "The Takes"
-},
-{
-"k": "ss207",
-"by": "Norman Eder",
-"h": "grove",
-"night": false,
-"p": 3,
-"band": "Ora Cogan"
-},
-{
-"k": "ss208",
-"by": "Norman Eder",
-"h": "grove",
-"night": false,
-"p": 3,
-"band": "Ora Cogan"
-},
-{
-"k": "ss209",
-"by": "Norman Eder",
-"h": "lucky",
-"night": false,
-"p": 3,
-"band": "Fabiano do Nascimento"
-},
-{
-"k": "ss210",
-"by": "Norman Eder",
-"h": "lucky",
-"night": false,
-"p": 3,
-"band": "Fabiano do Nascimento"
-},
-{
 "k": "ss211",
 "by": "Norman Eder",
 "h": "lucky",
 "night": false,
-"p": 3,
-"band": "Ken Pomeroy"
-},
-{
-"k": "ss212",
-"by": "Norman Eder",
-"h": "lucky",
-"night": true,
 "p": 3,
 "band": "Ken Pomeroy"
 },
@@ -30408,31 +29897,7 @@
 "band": "Rumbo Tumba"
 },
 {
-"k": "ss215",
-"by": "Norman Eder",
-"h": "lucky",
-"night": false,
-"p": 3,
-"band": "Rumbo Tumba"
-},
-{
-"k": "ss216",
-"by": "Norman Eder",
-"h": "cherryhill",
-"night": false,
-"p": 3,
-"band": "Meatbodies"
-},
-{
 "k": "ss217",
-"by": "Norman Eder",
-"h": "paddock",
-"night": true,
-"p": 3,
-"band": "Automatic"
-},
-{
-"k": "ss218",
 "by": "Norman Eder",
 "h": "paddock",
 "night": true,
@@ -30454,22 +29919,6 @@
 "night": false,
 "p": 3,
 "band": "Esther Rose"
-},
-{
-"k": "ss221",
-"by": "Norman Eder",
-"h": "paddock",
-"night": false,
-"p": 3,
-"band": "Hannah Juanita"
-},
-{
-"k": "ss222",
-"by": "Norman Eder",
-"h": "paddock",
-"night": false,
-"p": 3,
-"band": "Shakey Graves"
 },
 {
 "k": "ss223",
@@ -30494,14 +29943,6 @@
 "band": "The Womack Sisters"
 },
 {
-"k": "ss226",
-"by": "Norman Eder",
-"h": "paddock",
-"night": true,
-"p": 3,
-"band": "The Womack Sisters"
-},
-{
 "k": "ss227",
 "by": "Norman Eder",
 "h": "paddock",
@@ -30517,23 +29958,7 @@
 "band": "Briscoe"
 },
 {
-"k": "ss229",
-"by": "Norman Eder",
-"h": "",
-"night": false,
-"p": 3,
-"band": "Briscoe"
-},
-{
 "k": "ss230",
-"by": "Norman Eder",
-"h": "",
-"night": false,
-"p": 3,
-"band": "Hogslop String Band"
-},
-{
-"k": "ss231",
 "by": "Norman Eder",
 "h": "",
 "night": false,
@@ -30564,14 +29989,6 @@
 },
 {
 "k": "ss235",
-"by": "Norman Eder",
-"h": "windmill",
-"night": false,
-"p": 3,
-"band": "Widowspeak"
-},
-{
-"k": "ss236",
 "by": "Norman Eder",
 "h": "windmill",
 "night": false,
@@ -30624,51 +30041,11 @@
 "band": "The South Hill Experiment"
 },
 {
-"k": "ss243",
-"by": "Norman Eder",
-"h": "",
-"night": false,
-"p": 3,
-"band": "The South Hill Experiment"
-},
-{
 "k": "ss244",
 "by": "Miri Stebivka",
 "h": "",
 "night": true,
 "p": 3
-},
-{
-"k": "ss245",
-"by": "Miri Stebivka",
-"h": "cherryhill",
-"night": true,
-"p": 3,
-"band": "Orquestra Pacifico Tropical"
-},
-{
-"k": "ss246",
-"by": "Miri Stebivka",
-"h": "cherryhill",
-"night": true,
-"p": 3,
-"band": "Lyrics Born"
-},
-{
-"k": "ss247",
-"by": "Miri Stebivka",
-"h": "grove",
-"night": false,
-"p": 3,
-"band": "Prewn"
-},
-{
-"k": "ss248",
-"by": "Miri Stebivka",
-"h": "paddock",
-"night": false,
-"p": 3,
-"band": "Esther Rose"
 },
 {
 "k": "ss249",
@@ -30716,23 +30093,7 @@
 "band": "Clinton Fearon"
 },
 {
-"k": "ss255",
-"by": "Rob Kerr",
-"h": "cherryhill",
-"night": false,
-"p": 3,
-"band": "Clinton Fearon"
-},
-{
 "k": "ss256",
-"by": "Rob Kerr",
-"h": "cherryhill",
-"night": false,
-"p": 3,
-"band": "DJ Maaxa & Serene"
-},
-{
-"k": "ss257",
 "by": "Rob Kerr",
 "h": "cherryhill",
 "night": false,
@@ -30746,22 +30107,6 @@
 "night": false,
 "p": 3,
 "band": "DJ Stray"
-},
-{
-"k": "ss259",
-"by": "Rob Kerr",
-"h": "cherryhill",
-"night": true,
-"p": 3,
-"band": "DJ Stray"
-},
-{
-"k": "ss260",
-"by": "Rob Kerr",
-"h": "paddock",
-"night": false,
-"p": 3,
-"band": "Mexican Institute of Sound"
 },
 {
 "k": "ss261",
@@ -30814,22 +30159,6 @@
 "band": "Ben Chapman"
 },
 {
-"k": "ss268",
-"by": "Rob Kerr",
-"h": "galaxy",
-"night": false,
-"p": 3,
-"band": "Leroy From The North"
-},
-{
-"k": "ss269",
-"by": "Rob Kerr",
-"h": "galaxy",
-"night": false,
-"p": 4,
-"band": "Rose Gerber"
-},
-{
 "k": "ss270",
 "by": "Rob Kerr",
 "h": "galaxy",
@@ -30838,100 +30167,12 @@
 "band": "Sa-Roc"
 },
 {
-"k": "ss271",
-"by": "Rob Kerr",
-"h": "galaxy",
-"night": true,
-"p": 4,
-"band": "Sa-Roc"
-},
-{
-"k": "ss272",
-"by": "Rob Kerr",
-"h": "grove",
-"night": false,
-"p": 4,
-"band": "Hudson Freeman"
-},
-{
-"k": "ss273",
-"by": "Rob Kerr",
-"h": "grove",
-"night": false,
-"p": 4,
-"band": "Sgt. Papers"
-},
-{
-"k": "ss274",
-"by": "Rob Kerr",
-"h": "grove",
-"night": false,
-"p": 4,
-"band": "Sgt. Papers"
-},
-{
-"k": "ss275",
-"by": "Rob Kerr",
-"h": "paddock",
-"night": false,
-"p": 4,
-"band": "Built To Spill"
-},
-{
-"k": "ss276",
-"by": "Rob Kerr",
-"h": "paddock",
-"night": false,
-"p": 4,
-"band": "Built To Spill"
-},
-{
 "k": "ss277",
 "by": "Rob Kerr",
 "h": "paddock",
 "night": true,
 "p": 4,
 "band": "Family Company"
-},
-{
-"k": "ss278",
-"by": "Rob Kerr",
-"h": "paddock",
-"night": true,
-"p": 4,
-"band": "Family Company"
-},
-{
-"k": "ss279",
-"by": "Rob Kerr",
-"h": "paddock",
-"night": true,
-"p": 4,
-"band": "Marcos Valle"
-},
-{
-"k": "ss280",
-"by": "Rob Kerr",
-"h": "paddock",
-"night": false,
-"p": 4,
-"band": "Marcos Valle"
-},
-{
-"k": "ss281",
-"by": "Rob Kerr",
-"h": "paddock",
-"night": false,
-"p": 4,
-"band": "Mexican Institute of Sound"
-},
-{
-"k": "ss282",
-"by": "Rob Kerr",
-"h": "paddock",
-"night": false,
-"p": 4,
-"band": "Mexican Institute of Sound"
 },
 {
 "k": "ss283",
@@ -30948,60 +30189,12 @@
 "p": 4
 },
 {
-"k": "ss285",
-"by": "Rob Kerr",
-"h": "windmill",
-"night": false,
-"p": 4,
-"band": "Widowspeak"
-},
-{
 "k": "ss286",
 "by": "Rob Kerr",
 "h": "",
 "night": true,
 "p": 4,
 "band": "The Womack Sisters"
-},
-{
-"k": "ss287",
-"by": "Rob Kerr",
-"h": "",
-"night": false,
-"p": 4,
-"band": "The Womack Sisters"
-},
-{
-"k": "ss288",
-"by": "Rob Kerr",
-"h": "woods",
-"night": false,
-"p": 4,
-"band": "Cosmic Tones Research Trio"
-},
-{
-"k": "ss289",
-"by": "Rob Kerr",
-"h": "woods",
-"night": false,
-"p": 4,
-"band": "Cosmic Tones Research Trio"
-},
-{
-"k": "ss290",
-"by": "Rob Kerr",
-"h": "woods",
-"night": true,
-"p": 4,
-"band": "The Brothers Comatose"
-},
-{
-"k": "ss291",
-"by": "Rob Kerr",
-"h": "woods",
-"night": false,
-"p": 4,
-"band": "The Brothers Comatose"
 },
 {
 "k": "ss292",
@@ -31012,36 +30205,12 @@
 "band": "Terror/Cactus"
 },
 {
-"k": "ss293",
-"by": "Steven Amador",
-"h": "cherryhill",
-"night": false,
-"p": 4,
-"band": "Alela Diane"
-},
-{
-"k": "ss294",
-"by": "Steven Amador",
-"h": "cherryhill",
-"night": false,
-"p": 4,
-"band": "Alela Diane"
-},
-{
 "k": "ss295",
 "by": "Steven Amador",
 "h": "cherryhill",
 "night": false,
 "p": 4,
 "band": "mintwhisper"
-},
-{
-"k": "ss296",
-"by": "Steven Amador",
-"h": "grove",
-"night": true,
-"p": 4,
-"band": "Taylor Kingman and The Electric Skeleton"
 },
 {
 "k": "ss297",
@@ -31060,14 +30229,6 @@
 },
 {
 "k": "ss299",
-"by": "Todd Cooper",
-"h": "",
-"night": true,
-"p": 4,
-"band": "Built To Spill"
-},
-{
-"k": "ss300",
 "by": "Todd Cooper",
 "h": "",
 "night": true,
@@ -31123,14 +30284,6 @@
 "band": "Kendall Lujan"
 },
 {
-"k": "ss307",
-"by": "Todd Cooper",
-"h": "",
-"night": true,
-"p": 4,
-"band": "Kendall Lujan"
-},
-{
 "k": "ss308",
 "by": "Todd Cooper",
 "h": "",
@@ -31153,14 +30306,6 @@
 "band": "Ora Cogan"
 },
 {
-"k": "ss311",
-"by": "Todd Cooper",
-"h": "",
-"night": false,
-"p": 4,
-"band": "Ora Cogan"
-},
-{
 "k": "ss312",
 "by": "Todd Cooper",
 "h": "",
@@ -31169,35 +30314,11 @@
 "band": "Steve Earle"
 },
 {
-"k": "ss313",
-"by": "Todd Cooper",
-"h": "woods",
-"night": false,
-"p": 4,
-"band": "The Altons"
-},
-{
 "k": "ss314",
 "by": "Todd Stern",
 "h": "coyote",
 "night": false,
 "p": 4
-},
-{
-"k": "ss315",
-"by": "Todd Stern",
-"h": "galaxy",
-"night": false,
-"p": 4,
-"band": "Dan Yaker"
-},
-{
-"k": "ss316",
-"by": "Todd Stern",
-"h": "galaxy",
-"night": true,
-"p": 4,
-"band": "Leroy From The North"
 },
 {
 "k": "ss317",
@@ -31222,38 +30343,6 @@
 "night": false,
 "p": 4,
 "band": "Jonny's Day Out"
-},
-{
-"k": "ss320",
-"by": "Van Jaarsveld",
-"h": "cherryhill",
-"night": true,
-"p": 4,
-"band": "Boy Golden"
-},
-{
-"k": "ss321",
-"by": "Van Jaarsveld",
-"h": "cherryhill",
-"night": true,
-"p": 4,
-"band": "Boy Golden"
-},
-{
-"k": "ss322",
-"by": "Van Jaarsveld",
-"h": "galaxy",
-"night": true,
-"p": 4,
-"band": "Ben Chapman"
-},
-{
-"k": "ss323",
-"by": "Van Jaarsveld",
-"h": "galaxy",
-"night": true,
-"p": 4,
-"band": "Ben Chapman"
 },
 {
 "k": "ss324",
@@ -31294,14 +30383,6 @@
 "band": "Hogslop String Band"
 },
 {
-"k": "ss329",
-"by": "Van Jaarsveld",
-"h": "lucky",
-"night": true,
-"p": 4,
-"band": "Hogslop String Band"
-},
-{
 "k": "ss330",
 "by": "Van Jaarsveld",
 "h": "lucky",
@@ -31317,30 +30398,12 @@
 "y": "2026"
 },
 {
-"k": "sx1",
-"by": "Brooke Hoyer",
-"h": "galaxy",
-"night": false,
-"p": 6,
-"y": "2026",
-"band": "PISS"
-},
-{
 "k": "sx2",
 "by": "Brooke Hoyer",
 "h": "courtyard",
 "night": false,
 "p": 7,
 "y": "2026"
-},
-{
-"k": "sx3",
-"by": "Brooke Hoyer",
-"h": "galaxy",
-"night": false,
-"p": 8,
-"y": "2026",
-"band": "Quasi"
 },
 {
 "k": "sx4",
@@ -31367,15 +30430,6 @@
 "y": "2026"
 },
 {
-"k": "sx7",
-"by": "Brooke Hoyer",
-"h": "galaxy",
-"night": false,
-"p": 6,
-"y": "2026",
-"band": "Buddy Wynkoop"
-},
-{
 "k": "sx8",
 "by": "Brooke Hoyer",
 "h": "courtyard",
@@ -31400,15 +30454,6 @@
 "y": "2026"
 },
 {
-"k": "sx11",
-"by": "Brooke Hoyer",
-"h": "galaxy",
-"night": false,
-"p": 10,
-"y": "2026",
-"band": "Sgt. Papers"
-},
-{
 "k": "sx12",
 "by": "Andy Meeks",
 "h": "courtyard",
@@ -31417,48 +30462,12 @@
 "y": "2026"
 },
 {
-"k": "sx13",
-"by": "Brooke Hoyer",
-"h": "galaxy",
-"night": false,
-"p": 6,
-"y": "2026",
-"band": "Quasi"
-},
-{
-"k": "sx14",
-"by": "Brooke Hoyer",
-"h": "galaxy",
-"night": false,
-"p": 7,
-"y": "2026",
-"band": "Sgt. Papers"
-},
-{
-"k": "sx15",
-"by": "Brooke Hoyer",
-"h": "woods",
-"night": false,
-"p": 8,
-"y": "2026",
-"band": "The Altons"
-},
-{
 "k": "sx16",
 "by": "Brooke Hoyer",
 "h": "courtyard",
 "night": false,
 "p": 9,
 "y": "2026"
-},
-{
-"k": "sx17",
-"by": "Brooke Hoyer",
-"h": "woods",
-"night": false,
-"p": 10,
-"y": "2026",
-"band": "The Altons"
 },
 {
 "k": "sx18",
@@ -32021,15 +31030,6 @@
 "y": "2026"
 },
 {
-"k": "sx88",
-"by": "Erica Stavis",
-"h": "curation",
-"night": false,
-"p": 9,
-"y": "2026",
-"band": "The Womack Sisters"
-},
-{
 "k": "sx89",
 "by": "Risa Scott",
 "h": "curation",
@@ -32038,30 +31038,12 @@
 "y": "2026"
 },
 {
-"k": "sx90",
-"by": "Risa Scott",
-"h": "curation",
-"night": false,
-"p": 5,
-"y": "2026",
-"band": "Family Company"
-},
-{
 "k": "sx91",
 "by": "Risa Scott",
 "h": "curation",
 "night": false,
 "p": 6,
 "y": "2026"
-},
-{
-"k": "sx92",
-"by": "Risa Scott",
-"h": "curation",
-"night": false,
-"p": 7,
-"y": "2026",
-"band": "Family Company"
 },
 {
 "k": "sx93",
@@ -32080,33 +31062,6 @@
 "y": "2026"
 },
 {
-"k": "sx95",
-"by": "Risa Scott",
-"h": "curation",
-"night": false,
-"p": 10,
-"y": "2026",
-"band": "Family Company"
-},
-{
-"k": "sx96",
-"by": "Erica Stavis",
-"h": "curation",
-"night": false,
-"p": 5,
-"y": "2026",
-"band": "The Womack Sisters"
-},
-{
-"k": "sx97",
-"by": "Risa Scott",
-"h": "curation",
-"night": false,
-"p": 6,
-"y": "2026",
-"band": "Family Company"
-},
-{
 "k": "sx98",
 "by": "Risa Scott",
 "h": "curation",
@@ -32123,48 +31078,12 @@
 "y": "2026"
 },
 {
-"k": "sx100",
-"by": "Erica Stavis",
-"h": "curation",
-"night": false,
-"p": 9,
-"y": "2026",
-"band": "The Womack Sisters"
-},
-{
-"k": "sx101",
-"by": "Erica Stavis",
-"h": "curation",
-"night": false,
-"p": 10,
-"y": "2026",
-"band": "The Womack Sisters"
-},
-{
-"k": "sx102",
-"by": "Erica Stavis",
-"h": "curation",
-"night": false,
-"p": 5,
-"y": "2026",
-"band": "The Womack Sisters"
-},
-{
 "k": "sx103",
 "by": "Risa Scott",
 "h": "curation",
 "night": false,
 "p": 6,
 "y": "2026"
-},
-{
-"k": "sx104",
-"by": "Erica Stavis",
-"h": "curation",
-"night": false,
-"p": 7,
-"y": "2026",
-"band": "The Womack Sisters"
 },
 {
 "k": "sx105",
@@ -32184,48 +31103,12 @@
 "band": "The Brothers Comatose"
 },
 {
-"k": "sx107",
-"by": "Risa Scott",
-"h": "curation",
-"night": false,
-"p": 10,
-"y": "2026",
-"band": "Family Company"
-},
-{
-"k": "sx108",
-"by": "Erica Stavis",
-"h": "curation",
-"night": false,
-"p": 5,
-"y": "2026",
-"band": "The Womack Sisters"
-},
-{
 "k": "sx109",
 "by": "Risa Scott",
 "h": "curation",
 "night": false,
 "p": 6,
 "y": "2026"
-},
-{
-"k": "sx110",
-"by": "Risa Scott",
-"h": "curation",
-"night": false,
-"p": 7,
-"y": "2026",
-"band": "Family Company"
-},
-{
-"k": "sx111",
-"by": "Erica Stavis",
-"h": "curation",
-"night": false,
-"p": 8,
-"y": "2026",
-"band": "The Womack Sisters"
 },
 {
 "k": "sx112",
@@ -32236,66 +31119,12 @@
 "y": "2026"
 },
 {
-"k": "sx113",
-"by": "Erica Stavis",
-"h": "curation",
-"night": false,
-"p": 10,
-"y": "2026",
-"band": "The Womack Sisters"
-},
-{
-"k": "sx114",
-"by": "Erica Stavis",
-"h": "curation",
-"night": false,
-"p": 5,
-"y": "2026",
-"band": "The Womack Sisters"
-},
-{
-"k": "sx115",
-"by": "Erica Stavis",
-"h": "curation",
-"night": false,
-"p": 6,
-"y": "2026",
-"band": "The Womack Sisters"
-},
-{
-"k": "sx116",
-"by": "Erica Stavis",
-"h": "curation",
-"night": false,
-"p": 7,
-"y": "2026",
-"band": "The Womack Sisters"
-},
-{
-"k": "sx117",
-"by": "Erica Stavis",
-"h": "curation",
-"night": false,
-"p": 8,
-"y": "2026",
-"band": "The Womack Sisters"
-},
-{
 "k": "sx118",
 "by": "Risa Scott",
 "h": "curation",
 "night": false,
 "p": 9,
 "y": "2026"
-},
-{
-"k": "sx119",
-"by": "Erica Stavis",
-"h": "curation",
-"night": false,
-"p": 10,
-"y": "2026",
-"band": "The Womack Sisters"
 },
 {
 "k": "sx120",
@@ -32306,33 +31135,6 @@
 "y": "2026"
 },
 {
-"k": "sx121",
-"by": "Erica Stavis",
-"h": "curation",
-"night": false,
-"p": 6,
-"y": "2026",
-"band": "The Womack Sisters"
-},
-{
-"k": "sx122",
-"by": "Heather Binns",
-"h": "curation",
-"night": false,
-"p": 7,
-"y": "2026",
-"band": "The Brothers Comatose"
-},
-{
-"k": "sx123",
-"by": "Erica Stavis",
-"h": "curation",
-"night": false,
-"p": 8,
-"y": "2026",
-"band": "The Womack Sisters"
-},
-{
 "k": "sx124",
 "by": "Risa Scott",
 "h": "curation",
@@ -32340,60 +31142,6 @@
 "p": 9,
 "y": "2026",
 "band": "Mexican Institute of Sound"
-},
-{
-"k": "sx125",
-"by": "Heather Binns",
-"h": "curation",
-"night": false,
-"p": 10,
-"y": "2026",
-"band": "The Brothers Comatose"
-},
-{
-"k": "sx126",
-"by": "Erica Stavis",
-"h": "curation",
-"night": false,
-"p": 5,
-"y": "2026",
-"band": "The Womack Sisters"
-},
-{
-"k": "sx127",
-"by": "Erica Stavis",
-"h": "curation",
-"night": false,
-"p": 6,
-"y": "2026",
-"band": "The Womack Sisters"
-},
-{
-"k": "sx128",
-"by": "Erica Stavis",
-"h": "curation",
-"night": false,
-"p": 7,
-"y": "2026",
-"band": "The Womack Sisters"
-},
-{
-"k": "sx129",
-"by": "Graeme Harrison",
-"h": "farmhouse",
-"night": false,
-"p": 8,
-"y": "2026",
-"band": "PRESIDIO"
-},
-{
-"k": "sx130",
-"by": "Graeme Harrison",
-"h": "farmhouse",
-"night": false,
-"p": 9,
-"y": "2026",
-"band": "PRESIDIO"
 },
 {
 "k": "sx131",
@@ -32470,30 +31218,12 @@
 "y": "2026"
 },
 {
-"k": "sx140",
-"by": "Norman Eder",
-"h": "farmhouse",
-"night": false,
-"p": 7,
-"y": "2026",
-"band": "Reb & the Good News"
-},
-{
 "k": "sx141",
 "by": "Rob Kerr",
 "h": "farmhouse",
 "night": false,
 "p": 8,
 "y": "2026"
-},
-{
-"k": "sx142",
-"by": "Andy Meeks",
-"h": "farmhouse",
-"night": false,
-"p": 9,
-"y": "2026",
-"band": "Vista House"
 },
 {
 "k": "sx143",
@@ -32568,91 +31298,12 @@
 "y": "2025"
 },
 {
-"k": "sx152",
-"by": "Jaime Delacruz",
-"h": "galaxy",
-"night": false,
-"p": 7,
-"y": "2026",
-"band": "PISS"
-},
-{
-"k": "sx153",
-"by": "Amanda McAdams",
-"h": "galaxy",
-"night": false,
-"p": 8,
-"y": "2026"
-},
-{
-"k": "sx154",
-"by": "Amanda McAdams",
-"h": "galaxy",
-"night": false,
-"p": 9,
-"y": "2026"
-},
-{
-"k": "sx155",
-"by": "Dylan VanWeelden",
-"h": "grove",
-"night": false,
-"p": 10,
-"y": "2026",
-"band": "Hogslop String Band"
-},
-{
-"k": "sx156",
-"by": "Jaime Delacruz",
-"h": "grove",
-"night": false,
-"p": 5,
-"y": "2026",
-"band": "Sgt. Papers"
-},
-{
 "k": "sx157",
 "by": "Andy Meeks",
 "h": "grove",
 "night": false,
 "p": 6,
 "y": "2026"
-},
-{
-"k": "sx158",
-"by": "Jaime Delacruz",
-"h": "grove",
-"night": false,
-"p": 7,
-"y": "2026",
-"band": "Sgt. Papers"
-},
-{
-"k": "sx159",
-"by": "Jaime Delacruz",
-"h": "grove",
-"night": false,
-"p": 8,
-"y": "2026",
-"band": "Sgt. Papers"
-},
-{
-"k": "sx160",
-"by": "Brooke Hoyer",
-"h": "grove",
-"night": false,
-"p": 9,
-"y": "2026",
-"band": "Sgt. Papers"
-},
-{
-"k": "sx161",
-"by": "Dylan VanWeelden",
-"h": "grove",
-"night": false,
-"p": 10,
-"y": "2026",
-"band": "Hogslop String Band"
 },
 {
 "k": "sx162",
@@ -32663,51 +31314,6 @@
 "y": "2026"
 },
 {
-"k": "sx163",
-"by": "Jaime Delacruz",
-"h": "grove",
-"night": false,
-"p": 6,
-"y": "2026",
-"band": "Sgt. Papers"
-},
-{
-"k": "sx164",
-"by": "Brooke Hoyer",
-"h": "grove",
-"night": false,
-"p": 7,
-"y": "2026",
-"band": "Buddy Wynkoop"
-},
-{
-"k": "sx165",
-"by": "Brooke Hoyer",
-"h": "grove",
-"night": false,
-"p": 8,
-"y": "2026",
-"band": "Prewn"
-},
-{
-"k": "sx166",
-"by": "Jaime Delacruz",
-"h": "grove",
-"night": false,
-"p": 9,
-"y": "2026",
-"band": "Sgt. Papers"
-},
-{
-"k": "sx167",
-"by": "Graeme Harrison",
-"h": "grove",
-"night": false,
-"p": 10,
-"y": "2026",
-"band": "Sgt. Papers"
-},
-{
 "k": "sx168",
 "by": "Brooke Hoyer",
 "h": "grove",
@@ -32716,39 +31322,12 @@
 "y": "2026"
 },
 {
-"k": "sx169",
-"by": "Rob Kerr",
-"h": "grove",
-"night": false,
-"p": 6,
-"y": "2026",
-"band": "Sgt. Papers"
-},
-{
 "k": "sx170",
 "by": "Andy Meeks",
 "h": "grove",
 "night": false,
 "p": 7,
 "y": "2026"
-},
-{
-"k": "sx171",
-"by": "Norman Eder",
-"h": "grove",
-"night": false,
-"p": 8,
-"y": "2026",
-"band": "Sgt. Papers"
-},
-{
-"k": "sx172",
-"by": "Norman Eder",
-"h": "grove",
-"night": false,
-"p": 9,
-"y": "2026",
-"band": "Sgt. Papers"
 },
 {
 "k": "sx173",
@@ -32767,15 +31346,6 @@
 "y": "2026"
 },
 {
-"k": "sx175",
-"by": "Todd Stern",
-"h": "lucky",
-"night": false,
-"p": 6,
-"y": "2026",
-"band": "Cosmic Tones Research Trio"
-},
-{
 "k": "sx176",
 "by": "Van Jaarsveld",
 "h": "lucky",
@@ -32791,222 +31361,6 @@
 "p": 8,
 "y": "2026",
 "band": "The Takes"
-},
-{
-"k": "sx178",
-"by": "Rob Kerr",
-"h": "lucky",
-"night": false,
-"p": 9,
-"y": "2026",
-"band": "The Takes"
-},
-{
-"k": "sx179",
-"by": "Rob Kerr",
-"h": "lucky",
-"night": false,
-"p": 10,
-"y": "2026",
-"band": "The Takes"
-},
-{
-"k": "sx180",
-"by": "Todd Stern",
-"h": "lucky",
-"night": false,
-"p": 5,
-"y": "2026",
-"band": "Cosmic Tones Research Trio"
-},
-{
-"k": "sx181",
-"by": "Todd Stern",
-"h": "lucky",
-"night": false,
-"p": 6,
-"y": "2026",
-"band": "The Takes"
-},
-{
-"k": "sx182",
-"by": "Todd Stern",
-"h": "lucky",
-"night": false,
-"p": 7,
-"y": "2026",
-"band": "Cosmic Tones Research Trio"
-},
-{
-"k": "sx183",
-"by": "Van Jaarsveld",
-"h": "lucky",
-"night": false,
-"p": 8,
-"y": "2026",
-"band": "Hogslop String Band"
-},
-{
-"k": "sx184",
-"by": "Norman Eder",
-"h": "lucky",
-"night": false,
-"p": 9,
-"y": "2026",
-"band": "Kendall Lujan"
-},
-{
-"k": "sx185",
-"by": "Graeme Harrison",
-"h": "lucky",
-"night": false,
-"p": 10,
-"y": "2026",
-"band": "Hannah Hill"
-},
-{
-"k": "sx186",
-"by": "Todd Stern",
-"h": "lucky",
-"night": false,
-"p": 5,
-"y": "2026",
-"band": "The Takes"
-},
-{
-"k": "sx187",
-"by": "Todd Stern",
-"h": "lucky",
-"night": false,
-"p": 6,
-"y": "2026",
-"band": "The Takes"
-},
-{
-"k": "sx188",
-"by": "Killian Mustain",
-"h": "lucky",
-"night": false,
-"p": 7,
-"y": "2026",
-"band": "Rumbo Tumba"
-},
-{
-"k": "sx189",
-"by": "Todd Stern",
-"h": "lucky",
-"night": false,
-"p": 8,
-"y": "2026",
-"band": "The Takes"
-},
-{
-"k": "sx190",
-"by": "Van Jaarsveld",
-"h": "lucky",
-"night": false,
-"p": 9,
-"y": "2026",
-"band": "Hogslop String Band"
-},
-{
-"k": "sx191",
-"by": "Rob Kerr",
-"h": "lucky",
-"night": true,
-"p": 10,
-"y": "2026",
-"band": "The Takes"
-},
-{
-"k": "sx192",
-"by": "Graeme Harrison",
-"h": "lucky",
-"night": false,
-"p": 5,
-"y": "2026",
-"band": "Hannah Hill"
-},
-{
-"k": "sx193",
-"by": "Van Jaarsveld",
-"h": "lucky",
-"night": false,
-"p": 6,
-"y": "2026",
-"band": "Hogslop String Band"
-},
-{
-"k": "sx194",
-"by": "Van Jaarsveld",
-"h": "lucky",
-"night": false,
-"p": 7,
-"y": "2026",
-"band": "Hogslop String Band"
-},
-{
-"k": "sx195",
-"by": "Van Jaarsveld",
-"h": "lucky",
-"night": false,
-"p": 8,
-"y": "2026",
-"band": "Hogslop String Band"
-},
-{
-"k": "sx196",
-"by": "Van Jaarsveld",
-"h": "lucky",
-"night": false,
-"p": 9,
-"y": "2026",
-"band": "Hogslop String Band"
-},
-{
-"k": "sx197",
-"by": "Todd Stern",
-"h": "lucky",
-"night": false,
-"p": 10,
-"y": "2026",
-"band": "Friendship"
-},
-{
-"k": "sx198",
-"by": "Van Jaarsveld",
-"h": "lucky",
-"night": false,
-"p": 5,
-"y": "2026",
-"band": "Hogslop String Band"
-},
-{
-"k": "sx199",
-"by": "Todd Stern",
-"h": "lucky",
-"night": false,
-"p": 6,
-"y": "2026",
-"band": "Friendship"
-},
-{
-"k": "sx200",
-"by": "Todd Stern",
-"h": "lucky",
-"night": false,
-"p": 7,
-"y": "2026",
-"band": "The Takes"
-},
-{
-"k": "sx201",
-"by": "Heather Binns",
-"h": "lucky",
-"night": true,
-"p": 8,
-"y": "2026",
-"band": "Ken Pomeroy"
 },
 {
 "k": "sx202",
@@ -34186,24 +32540,6 @@
 "y": "2026"
 },
 {
-"k": "sx349",
-"by": "Teresa Meier",
-"h": "windmill",
-"night": false,
-"p": 6,
-"y": "2026",
-"band": "Limanjaya"
-},
-{
-"k": "sx350",
-"by": "Brooke Hoyer",
-"h": "windmill",
-"night": false,
-"p": 7,
-"y": "2026",
-"band": "Rumbo Tumba"
-},
-{
 "k": "sx351",
 "by": "Andy Meeks",
 "h": "windmill",
@@ -34218,15 +32554,6 @@
 "night": false,
 "p": 9,
 "y": "2026"
-},
-{
-"k": "sx353",
-"by": "Ken Pappanduros",
-"h": "windmill",
-"night": false,
-"p": 10,
-"y": "2026",
-"band": "The Country Co-Op"
 },
 {
 "k": "sx354",
@@ -34270,15 +32597,6 @@
 "y": "2026"
 },
 {
-"k": "sx359",
-"by": "",
-"h": "windmill",
-"night": false,
-"p": 10,
-"y": "2026",
-"band": "Esther Rose"
-},
-{
 "k": "sx360",
 "by": "Brooke Hoyer",
 "h": "windmill",
@@ -34312,57 +32630,12 @@
 "band": "Hogslop String Band"
 },
 {
-"k": "sx364",
-"by": "Norman Eder",
-"h": "windmill",
-"night": false,
-"p": 9,
-"y": "2026",
-"band": "Hannah Frances"
-},
-{
-"k": "sx365",
-"by": "Graeme Harrison",
-"h": "windmill",
-"night": false,
-"p": 10,
-"y": "2026",
-"band": "Briscoe"
-},
-{
-"k": "sx366",
-"by": "Justin Kent",
-"h": "windmill",
-"night": false,
-"p": 5,
-"y": "2026",
-"band": "Setting"
-},
-{
 "k": "sx367",
 "by": "Andy Meeks",
 "h": "windmill",
 "night": false,
 "p": 6,
 "y": "2026"
-},
-{
-"k": "sx368",
-"by": "Norman Eder",
-"h": "windmill",
-"night": false,
-"p": 7,
-"y": "2026",
-"band": "Hannah Frances"
-},
-{
-"k": "sx369",
-"by": "Graeme Harrison",
-"h": "windmill",
-"night": false,
-"p": 8,
-"y": "2026",
-"band": "Briscoe"
 },
 {
 "k": "sx370",
@@ -34397,42 +32670,6 @@
 "y": "2026"
 },
 {
-"k": "sx374",
-"by": "Justin Kent",
-"h": "windmill",
-"night": false,
-"p": 7,
-"y": "2026",
-"band": "Setting"
-},
-{
-"k": "sx375",
-"by": "Jaime Delacruz",
-"h": "woods",
-"night": false,
-"p": 8,
-"y": "2026",
-"band": "Clinton Fearon"
-},
-{
-"k": "sx376",
-"by": "Jaime Delacruz",
-"h": "woods",
-"night": false,
-"p": 9,
-"y": "2026",
-"band": "Folk Bitch Trio"
-},
-{
-"k": "sx377",
-"by": "Jaime Delacruz",
-"h": "woods",
-"night": false,
-"p": 10,
-"y": "2026",
-"band": "Clinton Fearon"
-},
-{
 "k": "sx378",
 "by": "Jaime Delacruz",
 "h": "woods",
@@ -34442,30 +32679,12 @@
 "band": "Taylor Kingman and The Electric Skeleton"
 },
 {
-"k": "sx379",
-"by": "Jaime Delacruz",
-"h": "woods",
-"night": false,
-"p": 6,
-"y": "2026",
-"band": "Cosmic Tones Research Trio"
-},
-{
 "k": "sx380",
 "by": "Austin Iles",
 "h": "woods",
 "night": false,
 "p": 7,
 "y": "2026"
-},
-{
-"k": "sx381",
-"by": "Todd Stern",
-"h": "woods",
-"night": false,
-"p": 8,
-"y": "2026",
-"band": "Jonny's Day Out"
 },
 {
 "k": "sx382",
@@ -35408,6 +33627,21 @@
 "y": "2026",
 "by": "Rob Kerr",
 "night": false
+},
+{
+"k": "ss123",
+"by": "Justin Kent",
+"h": "courtyard",
+"night": true,
+"p": 1
+},
+{
+"k": "ss315",
+"by": "Todd Stern",
+"h": "courtyard",
+"night": false,
+"p": 4,
+"band": "Dan Yaker"
 }
 ],
 "tags": {
