@@ -1255,7 +1255,7 @@
 "am": [
 "Stage"
 ],
-"i": "i/p624.jpg",
+"i": "i/pk-gb-19.jpg",
 "p": [
 40,
 80
@@ -1263,24 +1263,36 @@
 "k": "stage",
 "g": [
 {
-"i": "i/p624.jpg",
-"c": "Rob Kerr"
+"i": "i/pk-gb-19.jpg",
+"c": "Jaime Delacruz"
 },
 {
-"i": "i/p554.jpg",
-"c": "Norman Eder"
+"i": "i/pk-gb-15.jpg",
+"c": "Jaime Delacruz"
 },
 {
-"i": "i/p728.jpg",
-"c": "Norman Eder"
+"i": "i/pk-gb-13.jpg",
+"c": "Jaime Delacruz"
 },
 {
-"i": "i/207.jpg",
-"c": "Dylan VanWeelden"
+"i": "i/pk-gb-52.jpg",
+"c": "Samantha Klopp"
 },
 {
-"i": "i/270.jpg",
-"c": "Todd Cooper"
+"i": "i/pk-gb-22.jpg",
+"c": "Joe Duquette"
+},
+{
+"i": "i/pk-gb-58.jpg",
+"c": "Steve Harris"
+},
+{
+"i": "i/pk-gb-47.jpg",
+"c": "Joe Duquette"
+},
+{
+"i": "i/pk-gb-8.jpg",
+"c": "Brooke Hoyer"
 }
 ],
 "ic": "i/p788.svg",
@@ -26054,7 +26066,7 @@
 "t": "r",
 "l": "San Francisco riff-heavy doom pioneers, led by Lori S. since 1993, credited in metal reference books with playing doom rock before the genre had a name.",
 "top": false,
-"g": "",
+"g": "punk",
 "pyr": 2026,
 "lg": 1,
 "sp": "0PK6ewFU4DbFB8Eqr58Sct",
@@ -26080,7 +26092,7 @@
 "t": "r",
 "l": "Below the Heavens made them underground hip-hop canon; they never left the underground.",
 "top": false,
-"g": "",
+"g": "hiphop",
 "pyr": 2025,
 "lg": 1,
 "pi": "i/pk-blu-exile-b.jpg"
@@ -26121,7 +26133,7 @@
 "t": "b",
 "l": "Daptone's Screaming Eagle of Soul, who found his audience in his sixties - three albums and a documentary behind him. He died seven weeks later.",
 "top": false,
-"g": "",
+"g": "soul",
 "pyr": 2017,
 "lg": 1,
 "pi": "https://i.ytimg.com/vi/JBxgUFB-2hM/hqdefault.jpg",
@@ -26138,7 +26150,7 @@
 "t": "r",
 "l": "Took over his father Clifton's Red Hot Louisiana Band in 1987, toured with Paul Simon, and won zydeco honors from Living Blues along the way.",
 "top": false,
-"g": "",
+"g": "blues",
 "pyr": 2006,
 "lg": 1
 },
@@ -26150,7 +26162,7 @@
 "t": "r",
 "l": "Jamaican bassist and singer who joined The Gladiators in 1969, moved to Seattle in 1987, and has led his Boogie Brown Band through ten solo albums.",
 "top": false,
-"g": "",
+"g": "indie",
 "pyr": 2026,
 "lg": 1,
 "sp": "2mSiPzmzBCGS7p6tEuRuTd"
@@ -26163,7 +26175,7 @@
 "t": "r",
 "l": "A Franklin County, Virginia kid, signed but still playing regional rooms. A year on, his own small-theatre dates across the country and a tour of England.",
 "top": false,
-"g": "",
+"g": "country",
 "pyr": 2025,
 "pi": "i/pk-colby-t-helms.jpg"
 },
@@ -26192,7 +26204,7 @@
 "t": "r",
 "l": "Thirty years of fiddle, from David Grisman's first quintet to the Grammy-winning Turtle Island String Quartet. He helped invent modern acoustic string music.",
 "top": false,
-"g": "",
+"g": "bluegrass",
 "pyr": 2008,
 "lg": 1
 },
@@ -26204,7 +26216,7 @@
 "t": "b",
 "l": "Providence rock band thirteen years in, releasing their fifth and sixth albums, Vol. 1 and Vol. 2, that September.",
 "top": false,
-"g": "",
+"g": "indie",
 "pyr": 2017,
 "lg": 1,
 "pi": "https://i.ytimg.com/vi/lHK7j4Wq6yA/hqdefault.jpg",
@@ -26221,7 +26233,7 @@
 "t": "r",
 "l": "The band that shaped 1980s American indie rock on SST, still recording thirty-three years on, J Mascis and Lou Barlow both aboard.",
 "top": false,
-"g": "",
+"g": "indie",
 "pyr": 2017,
 "lg": 1,
 "pi": "https://i.ytimg.com/vi/kD1gH_fnQzk/hqdefault.jpg",
@@ -26273,7 +26285,7 @@
 "t": "b",
 "l": "Twenty years and a dozen albums deep, from Southern Rock Opera to American Band, Jason Isbell among the alumni, and a New Year's run at Athens' 40 Watt as an institution.",
 "top": false,
-"g": "",
+"g": "indie",
 "pyr": 2017,
 "lg": 1,
 "pi": "https://i.ytimg.com/vi/jvooiFYumJ8/hqdefault.jpg",
@@ -26290,7 +26302,7 @@
 "t": "r",
 "l": "A Portland mariachi singer with no album out yet. By 2017 she stood on the Latin Grammy stage; by 2022 she headlined the Hollywood Bowl.",
 "top": false,
-"g": "",
+"g": "global",
 "pyr": 2015,
 "pi": "https://i.ytimg.com/vi/TdkqUOijChQ/hqdefault.jpg",
 "m": {
@@ -26319,7 +26331,7 @@
 "t": "r",
 "l": "Howe Gelb's Tucson desert-rock institution, thirty years and twenty-odd albums deep, the band every Americana writer cites.",
 "top": false,
-"g": "",
+"g": "folk",
 "pyr": 2015,
 "lg": 1,
 "pi": "https://i.ytimg.com/vi/1_Vpju5MBYM/hqdefault.jpg",
@@ -26353,7 +26365,7 @@
 "t": "r",
 "l": "Twenty-five years of relentless touring, a string of chart-topping bluegrass records, and a festival circuit they helped build.",
 "top": false,
-"g": "",
+"g": "bluegrass",
 "pyr": 2025,
 "lg": 1,
 "pi": "i/pk-greensky-bluegrass-b.jpg"
@@ -26366,7 +26378,7 @@
 "t": "r",
 "l": "Forty years of Iowa folk songwriting, two Grammy nominations, years as a Prairie Home Companion regular, and a catalog other songwriters keep raiding for material.",
 "top": false,
-"g": "",
+"g": "folk",
 "pyr": 2006,
 "lg": 1
 },
@@ -26394,7 +26406,7 @@
 "t": "r",
 "l": "A Brooklyn folk songwriter playing small clubs in 2025, then opening Mumford & Sons arena dates in Australia, with headline runs through Britain, Europe and New York.",
 "top": false,
-"g": "",
+"g": "folk",
 "pyr": 2026,
 "sp": "6k3W2iGuRZrhUnfVZOMQo8",
 "pi": "i/pk-hudson-freeman.jpg"
@@ -26494,7 +26506,7 @@
 "t": "r",
 "l": "Thirty years on from co-founding X, the band that defined Los Angeles punk, with records critics still rank among the best of the eighties.",
 "top": false,
-"g": "",
+"g": "punk",
 "pyr": 2009,
 "lg": 1
 },
@@ -26535,7 +26547,7 @@
 "t": "r",
 "l": "A quarter century of Irish fiddle behind him - the Bothy Band, Patrick Street, the Celtic Fiddle Festival - played a Portland hillside with songwriter Casey Neill.",
 "top": false,
-"g": "",
+"g": "bluegrass",
 "pyr": 2001,
 "lg": 1
 },
@@ -26601,7 +26613,7 @@
 "t": "r",
 "l": "Twice bluegrass's vocalist of the year, a Grammy nomination with Rozum, and a quarter century of records - already Opry and Prairie Home Companion regulars when they arrived.",
 "top": false,
-"g": "",
+"g": "bluegrass",
 "pyr": 2001,
 "lg": 1
 },
@@ -26613,7 +26625,7 @@
 "t": "b",
 "l": "Cutting soul records since 1969 and nicknamed Little JB, he was back on the circuit with My World - and still works the same 500-capacity clubs.",
 "top": false,
-"g": "",
+"g": "soul",
 "pyr": 2011,
 "lg": 1,
 "m": {
@@ -26647,7 +26659,7 @@
 "t": "r",
 "l": "Bay Area MC rapping since the early 1990s, co-founder of the Solesides and Quannum labels alongside DJ Shadow, and half of the duo Latyrx.",
 "top": false,
-"g": "",
+"g": "hiphop",
 "pyr": 2026,
 "lg": 1,
 "sp": "3X3DHASP1G1waqVoEDWMHr",
@@ -26677,7 +26689,7 @@
 "t": "r",
 "l": "Camilo Lara's Mexico City project, going since 2004, mixing cumbia and electronics; he consulted on Pixar's Coco and has worked with David Byrne and Gorillaz.",
 "top": false,
-"g": "",
+"g": "global",
 "pyr": 2026,
 "lg": 1,
 "sp": "4TPTW3cTwUtiihgOMSQfmy",
@@ -26707,7 +26719,7 @@
 "t": "b",
 "l": "Multiple sold-out nights at Red Rocks, a platinum single in \"S.O.B.,\" and a Denver band that had already graduated to amphitheatres.",
 "top": false,
-"g": "",
+"g": "global",
 "pyr": 2019,
 "lg": 1,
 "pi": "https://i.vimeocdn.com/video/861478535-b54eaf2fe783d3a1bab32f22be93e417be3021df3b9433d037d5a8889144b6ce-d_590x332",
@@ -26788,7 +26800,7 @@
 "t": "b",
 "l": "Will Holland, twenty years and twenty albums deep on Tru Thoughts, the English producer who moved to Cali, Colombia and rebuilt tropical soul.",
 "top": false,
-"g": "",
+"g": "soul",
 "pyr": 2022,
 "lg": 1,
 "pi": "https://i.ytimg.com/vi/cBUzNyCrcEI/hqdefault.jpg",
@@ -26805,7 +26817,7 @@
 "t": "r",
 "l": "The Portland duo of Sam Coomes and Janet Weiss, together since 1993, ten albums deep, and Elliott Smith's touring band in the late nineties.",
 "top": false,
-"g": "",
+"g": "indie",
 "pyr": 2026,
 "lg": 1,
 "sp": "0fiUV7n91Qqmgln2vQMVdO"
@@ -26878,7 +26890,7 @@
 "t": "b",
 "l": "An unknown Kentucky bar band whose singer had already quit music once. That singer, Sturgill Simpson, was selling out the 2,362-seat Ryman within five years.",
 "top": false,
-"g": "",
+"g": "indie",
 "pyr": 2011,
 "pi": "https://i.vimeocdn.com/video/191917215-36fb5530fb389e33077049674dfac3f742c88c613e663c75a1d496d2ee4034f6-d_590x332",
 "m": {
@@ -26913,7 +26925,7 @@
 "t": "r",
 "l": "A Knoxville bar band, unsigned, one record out. Inside two years they were on the Grand Ole Opry's 4,400-seat stage, and back again after that.",
 "top": false,
-"g": "",
+"g": "indie",
 "pyr": 2010,
 "m": {
 "u": "https://www.youtube.com/watch?v=U04WHHZUTPU",
@@ -26947,7 +26959,7 @@
 "t": "r",
 "l": "Six months old as a band when they came. In Boston they went from the 900-capacity Paradise to the House of Blues, 2,400 seats, inside a single year.",
 "top": false,
-"g": "",
+"g": "blues",
 "pyr": 2013,
 "pi": "https://i.ytimg.com/vi/Fc7obeDE1bE/hqdefault.jpg",
 "m": {
@@ -26980,7 +26992,7 @@
 "t": "r",
 "l": "Three unsigned Los Angeles songwriters playing 200-capacity rooms. Two years later, a label, NPR, and their own headline night at the Troubadour.",
 "top": false,
-"g": "",
+"g": "folk",
 "pyr": 2016,
 "pi": "https://i.ytimg.com/vi/tLFW4qonnbo/hqdefault.jpg",
 "m": {
@@ -27070,7 +27082,7 @@
 "t": "r",
 "l": "A 1960s soul singer back from decades away, with a three-month-old band playing Portland bars. Ten years on, a Revolution Hall headline and European tours.",
 "top": false,
-"g": "",
+"g": "soul",
 "pyr": 2014,
 "pi": "https://i.ytimg.com/vi/aA32v_-h5QM/hqdefault.jpg",
 "m": {
@@ -27086,7 +27098,7 @@
 "t": "b",
 "l": "We Intend To Cause Havoc - Zambia's defining 1970s rock band, whose zamrock records were rediscovered decades later, back on the road fifty years on.",
 "top": false,
-"g": "",
+"g": "soul",
 "pyr": 2023,
 "lg": 1,
 "pi": "https://i.ytimg.com/vi/B_qLcKV7KlU/hqdefault.jpg",
@@ -27103,7 +27115,7 @@
 "t": "b",
 "l": "A bedroom-pop project with a song that went everywhere online. Within three years he was headlining Chicago's Thalia Hall and touring Europe.",
 "top": false,
-"g": "",
+"g": "indie",
 "pyr": 2023,
 "pi": "https://i.vimeocdn.com/video/1716280111-acddd7a317f02ebf5ebfa36fff556043fba491975223e76c2f09b2d917e45cfa-d_590x332",
 "m": {
@@ -27120,7 +27132,7 @@
 "t": "r",
 "l": "California rockabilly and western swing band, together since 1988, with albums on HighTone and Yep Roc.",
 "top": false,
-"g": "",
+"g": "country",
 "pyr": 2009,
 "lg": 1
 },
@@ -27132,7 +27144,7 @@
 "t": "r",
 "l": "Colorado band formed in 2006 that calls its style transcendental folk; it went on hiatus in 2018 and is back on the road.",
 "top": false,
-"g": "",
+"g": "folk",
 "pyr": 2024,
 "lg": 1,
 "pi": "i/pk-elephant-revival.jpg",
@@ -27150,7 +27162,7 @@
 "t": "r",
 "l": "First recorded for Folkways in the 1960s with First Songs, and later lived in northwest Oregon and played Portland often.",
 "top": false,
-"g": "",
+"g": "folk",
 "pyr": 2010,
 "lg": 1,
 "m": {
@@ -27167,7 +27179,7 @@
 "t": "b",
 "l": "Unsigned Portland band with one early EP in 2010; Partisan signed them in 2011 and two albums followed, Dirty Radio and Untamed Beast.",
 "top": false,
-"g": "",
+"g": "indie",
 "pyr": 2010,
 "m": {
 "u": "https://www.youtube.com/watch?v=wFtWYIYbKUg",
@@ -27195,7 +27207,7 @@
 "t": "r",
 "l": "Old-time band formed in 1992 with two Rounder albums, and a 1996 second-place finish on A Prairie Home Companion's talent contest.",
 "top": false,
-"g": "",
+"g": "bluegrass",
 "pyr": 2009,
 "lg": 1
 },
@@ -27208,7 +27220,7 @@
 "t": "r",
 "l": "Austin-based singer who mixes western swing, country and rockabilly, recording since his 1995 debut Thunderstorms and Neon Signs and on Bloodshot since 2001.",
 "top": false,
-"g": "",
+"g": "country",
 "pyr": 2008,
 "lg": 1
 },
@@ -27220,7 +27232,7 @@
 "t": "r",
 "l": "Watchhouse's songwriter, formerly of Mandolin Orange, with three solo instrumental albums, Buried in a Cape and the pair Witching Hour and Fable & Fire.",
 "top": false,
-"g": "",
+"g": "folk",
 "pyr": 2023,
 "lg": 1,
 "pi": "i/pk-andrew-marlin.jpg",
@@ -27237,7 +27249,7 @@
 "t": "r",
 "l": "A Dallas soul artist and producer who also worked A&R for several labels. I Got More Soul, on Omnivore, was his return after a long break from recording.",
 "top": false,
-"g": "",
+"g": "soul",
 "pyr": 2014,
 "lg": 1,
 "m": {
@@ -27255,7 +27267,7 @@
 "t": "b",
 "l": "His rockabilly debut, Signs & Signifiers, came out on Hi-STYLE in 2010 and was reissued by Rounder in 2012, when it topped Billboard's Heatseekers chart.",
 "top": false,
-"g": "",
+"g": "indie",
 "pyr": 2013,
 "m": {
 "u": "https://www.youtube.com/watch?v=IWPnBGp8SjM",
@@ -27287,7 +27299,7 @@
 "t": "r",
 "l": "A Santa Cruz string band formed in 2001. I'm a Stranger Here, their first record on New West, came out that October.",
 "top": false,
-"g": "",
+"g": "bluegrass",
 "pyr": 2013,
 "lg": 1,
 "m": {
@@ -27316,7 +27328,7 @@
 "t": "r",
 "l": "X's co-founder and bassist, playing country with The Sadies, who backed him on 2009's Country Club.",
 "top": false,
-"g": "",
+"g": "country",
 "pyr": 2009,
 "lg": 1
 },
@@ -27359,7 +27371,7 @@
 "t": "r",
 "l": "Folk rock from Palenville in the Catskills, who toured with Bright Eyes in 2007 and opened for Dave Matthews Band in 2010.",
 "top": false,
-"g": "",
+"g": "folk",
 "pyr": 2013,
 "lg": 1,
 "m": {
@@ -41626,7 +41638,7 @@
 "y": [
 2012
 ],
-"g": "",
+"g": "bluegrass",
 "line": "A banjo-and-bass vaudeville duo out of New York. Sing Out! named Heavy Petting a pick of the week in 2010; the rooms stayed barrooms.",
 "src": "",
 "pyr": 2012
@@ -41651,7 +41663,7 @@
 "y": [
 2015
 ],
-"g": "",
+"g": "punk",
 "line": "Eight years of Austin punk before a respected label signed them and the critics started reviewing every record. The rooms never grew past the clubs.",
 "src": "",
 "pyr": 2015,
@@ -41692,7 +41704,7 @@
 2011,
 2014
 ],
-"g": "",
+"g": "folk",
 "line": "Willamette Week's best new Portland band, with a debut three months old. Tiny Desk and Newport Folk followed, but they were still headlining 200-capacity clubs.",
 "src": "",
 "pyr": 2011,
@@ -41711,7 +41723,7 @@
 2018,
 2026
 ],
-"g": "",
+"g": "soul",
 "line": "Spin, NME and The Times all praised The Pirate's Gospel. Rough Trade signed her two years later, and she is still playing small clubs today.",
 "src": "",
 "pyr": 2007,
@@ -41742,7 +41754,7 @@
 "y": [
 2025
 ],
-"g": "",
+"g": "bluegrass",
 "line": "Saving Country Music and Glide backed her Appalachian songwriting early. Five years of good reviews later, the rooms are still the same small clubs.",
 "src": "",
 "pyr": 2025,
@@ -41757,7 +41769,7 @@
 "y": [
 2017
 ],
-"g": "",
+"g": "bluegrass",
 "line": "Old-time duo whose 2015 album made Folk Alley's ten favorites of the year - acclaim in the folk press, no commercial reach.",
 "src": "",
 "pyr": 2017,
@@ -41783,7 +41795,7 @@
 "y": [
 2024
 ],
-"g": "",
+"g": "folk",
 "line": "NPR calls her Portland's finest songwriter, and Folk Alley named her 2024 record the best album of the year.",
 "src": "",
 "pyr": 2024,
@@ -41799,7 +41811,7 @@
 2022,
 2026
 ],
-"g": "",
+"g": "punk",
 "line": "A Los Angeles post-punk trio on Stones Throw whose first headline tour ran through 400-capacity clubs. They opened the Greek for Bauhaus and stayed club-sized.",
 "src": "",
 "pyr": 2022,
@@ -41815,7 +41827,7 @@
 "y": [
 2019
 ],
-"g": "",
+"g": "punk",
 "line": "A Brooklyn post-punk trio whose second album came out the same week they played.",
 "src": "",
 "pyr": 2019,
@@ -41830,7 +41842,7 @@
 "y": [
 2018
 ],
-"g": "",
+"g": "folk",
 "line": "Azniv Korkejian's Spacebomb debut drew raves from NPR and the Guardian and almost no sales. Still a songwriter's songwriter, in the same small rooms.",
 "src": "",
 "pyr": 2018,
@@ -41846,7 +41858,7 @@
 2022,
 2024
 ],
-"g": "",
+"g": "bluegrass",
 "line": "One self-released Appalachian record, reissued by Rounder. The Opry and Newport followed, along with support slots and 150-capacity rooms like Charlotte's Evening Muse.",
 "src": "",
 "pyr": 2022,
@@ -41876,7 +41888,7 @@
 "y": [
 2017
 ],
-"g": "",
+"g": "hiphop",
 "line": "A Detroit rapper and producer whose 2010 album won critics over completely and barely registered on the charts.",
 "src": "",
 "pyr": 2017,
@@ -41901,7 +41913,7 @@
 "y": [
 2014
 ],
-"g": "",
+"g": "indie",
 "line": "An Astoria band that put a top-twenty album on the Billboard chart, still headlining the same Portland theatres an hour from where they started.",
 "src": "",
 "pyr": 2014,
@@ -41917,7 +41929,7 @@
 2009,
 2012
 ],
-"g": "",
+"g": "indie",
 "line": "Rolling Stone named Furr one of 2008's best albums. Fifteen years later the Portland band still plays the same thousand-capacity hometown halls.",
 "src": "",
 "pyr": 2009,
@@ -41932,7 +41944,7 @@
 "y": [
 2016
 ],
-"g": "",
+"g": "soul",
 "line": "A Raleigh punk kid turned funk bandleader with his first album out that year. He kept making well-reviewed records and kept playing the same small clubs.",
 "src": "",
 "pyr": 2016,
@@ -41947,7 +41959,7 @@
 "y": [
 2012
 ],
-"g": "",
+"g": "folk",
 "line": "A North Carolina folk trio the serious critics liked. The Clearing came out five months before the farm, and then the band went quiet.",
 "src": "",
 "pyr": 2012
@@ -41957,7 +41969,7 @@
 "y": [
 2013
 ],
-"g": "",
+"g": "bluegrass",
 "line": "Open Road's frontman back from years of farming, no record yet. The Fader and the bluegrass press took him up; he kept playing listening rooms and festival side stages.",
 "src": "",
 "pyr": 2013,
@@ -41972,7 +41984,7 @@
 "y": [
 2015
 ],
-"g": "",
+"g": "indie",
 "line": "\"Class Historian\" put the Oklahoma band on public-radio year-end lists in 2014 and into a decade of commercials and TV. The rooms stayed clubs.",
 "src": "",
 "pyr": 2015,
@@ -41983,7 +41995,7 @@
 "y": [
 2011
 ],
-"g": "",
+"g": "soul",
 "line": "Grupo Fantasma's Latin-funk offshoot, already eight years deep. Their Black Sabbath covers record brought Bonnaroo and national radio, but the clubs stayed the same size.",
 "src": "",
 "pyr": 2011,
@@ -41998,7 +42010,7 @@
 "y": [
 2023
 ],
-"g": "",
+"g": "soul",
 "line": "Richmond jazz-funk on Concord, two albums in, and a working life of festival stages and five-hundred-capacity clubs.",
 "src": "",
 "pyr": 2023,
@@ -42014,7 +42026,7 @@
 2011,
 2013
 ],
-"g": "",
+"g": "folk",
 "line": "A self-released first record and nothing before it. Free Dirt and NPR followed, and the rooms held: house concerts and 300-capacity folk clubs, same as before.",
 "src": "",
 "pyr": 2011,
@@ -42029,7 +42041,7 @@
 "y": [
 2012
 ],
-"g": "",
+"g": "bluegrass",
 "line": "Jesse Lege, a Cajun Music Hall of Famer, with fiddler Joel Savoy. The Right Combination drew Songlines and OffBeat raves and still filled dance halls.",
 "src": "",
 "pyr": 2012,
@@ -42044,7 +42056,7 @@
 "y": [
 2011
 ],
-"g": "",
+"g": "folk",
 "line": "Thirteen years of Tim Rutili's art-folk; the Times called Roots & Crowns enthralling and nobody bought it.",
 "src": "",
 "pyr": 2011,
@@ -42059,7 +42071,7 @@
 "y": [
 2015
 ],
-"g": "",
+"g": "indie",
 "line": "He took the Academy of American Poets' Walt Whitman Award in 2010 and published Saint Friend in 2014 - a national prize, a reading-room career.",
 "src": "",
 "pyr": 2015,
@@ -42074,7 +42086,7 @@
 "y": [
 2023
 ],
-"g": "",
+"g": "folk",
 "line": "A self-releasing Ontario songwriter with a devoted audience and no label pushing her. Three years on she's still co-billing 600-seat theatres.",
 "src": "",
 "pyr": 2023,
@@ -42090,7 +42102,7 @@
 2011,
 2014
 ],
-"g": "",
+"g": "country",
 "line": "Nine albums of Duluth country blues on tiny labels; Red House and Smithsonian Folkways came later.",
 "src": "",
 "pyr": 2011,
@@ -42107,7 +42119,7 @@
 2008,
 2010
 ],
-"g": "",
+"g": "bluegrass",
 "line": "Yep Roc's Raleigh four-piece charted every record they made and later topped the bluegrass chart repeatedly, while the rooms stayed the same clubs and theatres.",
 "src": "",
 "pyr": 2007,
@@ -42122,7 +42134,7 @@
 "y": [
 2011
 ],
-"g": "",
+"g": "blues",
 "line": "Phelps had spent fifteen years as one of acoustic blues' most praised slide guitarists. This duo record charmed critics; both kept playing 300-seat halls.",
 "src": "",
 "pyr": 2011,
@@ -42137,7 +42149,7 @@
 "y": [
 2011
 ],
-"g": "",
+"g": "folk",
 "line": "A Kerrville New Folk finalist paired with a 1990s Rykodisc fingerstyle master.",
 "src": "",
 "pyr": 2011,
@@ -42167,7 +42179,7 @@
 "y": [
 2010
 ],
-"g": "",
+"g": "indie",
 "line": "Paranoid Cocoon and Tall Hours made them a Suicide Squeeze favorite. The band wound down two years later, still playing 200-capacity rooms.",
 "src": "",
 "pyr": 2010
@@ -42194,7 +42206,7 @@
 2009,
 2013
 ],
-"g": "",
+"g": "country",
 "line": "A dozen years of honky-tonk records critics loved and Nashville ignored. He has stayed exactly where he started: dance halls, roadhouses and Austin bars.",
 "src": "",
 "pyr": 2007,
@@ -42225,7 +42237,7 @@
 2011,
 2019
 ],
-"g": "",
+"g": "indie",
 "line": "Two decades on Sub Pop and Secretly Canadian, a Richard Swift-produced trilogy critics loved, and a career spent in 300-seat listening rooms.",
 "src": "",
 "pyr": 2011,
@@ -42241,7 +42253,7 @@
 2004,
 2005
 ],
-"g": "",
+"g": "bluegrass",
 "line": "He ran old-time banjo through punk with the Bad Livers, and won Steve Martin's banjo prize in 2015. The rooms stayed small throughout.",
 "src": "",
 "pyr": 2004,
@@ -42256,7 +42268,7 @@
 "y": [
 2018
 ],
-"g": "",
+"g": "bluegrass",
 "line": "Bad Livers founder who won the 2015 Steve Martin Prize for banjo, still playing rooms the award never filled.",
 "src": "",
 "pyr": 2018,
@@ -42271,7 +42283,7 @@
 "y": [
 2019
 ],
-"g": "",
+"g": "bluegrass",
 "line": "Two Los Angeles fiddlers who made the first record of nothing but old-time fiddle duets.",
 "src": "",
 "pyr": 2019,
@@ -42317,7 +42329,7 @@
 "y": [
 2022
 ],
-"g": "",
+"g": "punk",
 "line": "Chicago post-punk on Fire Talk, reviewed by Pitchfork and Paste and never near a chart; Sub Pop signed them the following year.",
 "src": "",
 "pyr": 2022,
@@ -42347,7 +42359,7 @@
 "y": [
 2025
 ],
-"g": "",
+"g": "global",
 "line": "Anatolian psych-folk on the bağlama, Songlines' pick of the world and then a Big Crown signing.",
 "src": "",
 "pyr": 2025,
@@ -42377,7 +42389,7 @@
 "y": [
 2017
 ],
-"g": "",
+"g": "global",
 "line": "St. Croix roots reggae singer, six albums on I Grade Records since 2001 and revered inside reggae, unknown outside it.",
 "src": "",
 "pyr": 2017,
@@ -42407,7 +42419,7 @@
 "y": [
 2002
 ],
-"g": "",
+"g": "bluegrass",
 "line": "Louisiana and Appalachian traditionalists on Rounder. Powell went on to make the music for Cold Mountain and produce award-winning records; the rooms stayed dance halls and folk clubs.",
 "src": "",
 "pyr": 2002,
@@ -42422,7 +42434,7 @@
 "y": [
 2012
 ],
-"g": "",
+"g": "country",
 "line": "A Toronto country writer The New Yorker championed in 2010 and the critics were still championing in 2023, in the same small rooms throughout.",
 "src": "",
 "pyr": 2012
@@ -42432,7 +42444,7 @@
 "y": [
 2025
 ],
-"g": "",
+"g": "country",
 "line": "Cosmic country out of Brooklyn, beloved by country critics and unknown to country radio.",
 "src": "",
 "pyr": 2025,
@@ -42443,7 +42455,7 @@
 "y": [
 2025
 ],
-"g": "",
+"g": "indie",
 "line": "Pitchfork and Stereogum both singled out their record, from a band almost nobody has heard of.",
 "src": "",
 "pyr": 2025,
@@ -42454,7 +42466,7 @@
 "y": [
 2024
 ],
-"g": "",
+"g": "indie",
 "line": "His solo debut drew universal acclaim; he is still better known as a band's frontman.",
 "src": "",
 "pyr": 2024,
@@ -42470,7 +42482,7 @@
 "y": [
 2011
 ],
-"g": "",
+"g": "folk",
 "line": "Her fifth album reached the folk chart the same week she played the farm.",
 "src": "",
 "pyr": 2011,
@@ -42486,7 +42498,7 @@
 2023,
 2025
 ],
-"g": "",
+"g": "country",
 "line": "Nashville honky-tonk, one New West album in. A second record and European tours followed, but she is still playing the same 300-capacity bars and listening rooms.",
 "src": "",
 "pyr": 2023,
@@ -42516,7 +42528,7 @@
 "y": [
 2017
 ],
-"g": "",
+"g": "punk",
 "line": "Memphis punk band on Goner, their Ty Segall-produced records reviewed in PopMatters and premiered by Pitchfork; no chart, no sales.",
 "src": "",
 "pyr": 2017,
@@ -42532,7 +42544,7 @@
 2009,
 2010
 ],
-"g": "",
+"g": "bluegrass",
 "line": "A Los Angeles street musician whose old-time fiddle and banjo records won serious critical attention. He stayed in small folk rooms, then mostly stopped touring.",
 "src": "",
 "pyr": 2009,
@@ -42563,7 +42575,7 @@
 2005,
 2015
 ],
-"g": "",
+"g": "country",
 "line": "Sixteen years of harmony singing that critics credit with starting alt-country. The roots press never stopped praising them, and the rooms never got any bigger.",
 "src": "",
 "pyr": 2005
@@ -42577,7 +42589,7 @@
 2019,
 2025
 ],
-"g": "",
+"g": "indie",
 "line": "Eric D. Johnson had seven years on Sub Pop and a turn in The Shins behind him, and sixteen years on he still fills the same mid-size clubs.",
 "src": "",
 "pyr": 2010,
@@ -42593,7 +42605,7 @@
 "y": [
 2023
 ],
-"g": "",
+"g": "blues",
 "line": "Boston traditionalists whose Hound Dog Taylor tribute climbed the blues chart, playing the same 400-capacity clubs and blues festivals before and after.",
 "src": "",
 "pyr": 2023,
@@ -42608,7 +42620,7 @@
 "y": [
 2022
 ],
-"g": "",
+"g": "country",
 "line": "Nashville-born country songwriter whose third album drew an 8.2 from Saving Country Music and No Depression's praise, with no radio to match.",
 "src": "",
 "pyr": 2022,
@@ -42623,7 +42635,7 @@
 "y": [
 2022
 ],
-"g": "",
+"g": "indie",
 "line": "New Jersey jam-rock craftsmen who landed two 2020 year-end placements, Uncut's 75 and MOJO's 75, while selling records by the box.",
 "src": "",
 "pyr": 2022,
@@ -42638,7 +42650,7 @@
 "y": [
 2023
 ],
-"g": "",
+"g": "punk",
 "line": "Their debut was four months old and made them the most written-about hardcore band of the year. The rooms stayed what hardcore rooms are - a few hundred people.",
 "src": "",
 "pyr": 2023,
@@ -42653,7 +42665,7 @@
 "y": [
 2013
 ],
-"g": "",
+"g": "bluegrass",
 "line": "Three Rounder albums of Appalachian gospel singing, including one with Hazel Dickens.",
 "src": "",
 "pyr": 2013,
@@ -42668,7 +42680,7 @@
 "y": [
 2022
 ],
-"g": "",
+"g": "punk",
 "line": "Noise-pop veterans a decade into DFA and Feeding Tube records when Sub Pop signed them in January 2022, still without a commercial hit.",
 "src": "",
 "pyr": 2022,
@@ -42684,7 +42696,7 @@
 2005,
 2007
 ],
-"g": "",
+"g": "folk",
 "line": "Dan Penn, the Muscle Shoals songwriter, produced all three of their records, and Springsteen later sang on a tribute to Chris Gaffney. The rooms stayed roadhouses.",
 "src": "",
 "pyr": 2005
@@ -42709,7 +42721,7 @@
 "y": [
 2015
 ],
-"g": "",
+"g": "indie",
 "line": "Stereogum named them a Band to Watch in 2014 on the strength of Weird Little Birthday. The London trio never outgrew the clubs.",
 "src": "",
 "pyr": 2015,
@@ -42726,7 +42738,7 @@
 2012,
 2015
 ],
-"g": "",
+"g": "indie",
 "line": "Erika Wennerstrom's band, on Fat Possum after Patrick Carney of the Black Keys vouched for them. Arrow drew raves in 2012; the clubs stayed clubs.",
 "src": "",
 "pyr": 2010,
@@ -42742,7 +42754,7 @@
 2007,
 2009
 ],
-"g": "",
+"g": "indie",
 "line": "A Portland band whose quiet string-and-voice records drew national reviews and a Kill Rock Stars deal the next year. They have been a club act ever since.",
 "src": "",
 "pyr": 2007,
@@ -42757,7 +42769,7 @@
 "y": [
 2018
 ],
-"g": "",
+"g": "bluegrass",
 "line": "A duo reworking Appalachian hymns for Thrill Jockey, praised by nearly every critic who reviewed it and bought by almost nobody.",
 "src": "",
 "pyr": 2018,
@@ -42772,7 +42784,7 @@
 "y": [
 2025
 ],
-"g": "",
+"g": "folk",
 "line": "Minnesota folk with NPR behind it and no chart anywhere.",
 "src": "",
 "pyr": 2025,
@@ -42788,7 +42800,7 @@
 2013,
 2016
 ],
-"g": "",
+"g": "bluegrass",
 "line": "A Dublin string band with good notices at home and a Nashville label deal the next year. The folk clubs and festival tents stayed the same size.",
 "src": "",
 "pyr": 2013,
@@ -42803,7 +42815,7 @@
 "y": [
 2022
 ],
-"g": "",
+"g": "indie",
 "line": "An LA band with a huge young following who were already selling the 1,900-capacity El Rey twice over. The rooms have stayed that size since.",
 "src": "",
 "pyr": 2022,
@@ -42818,7 +42830,7 @@
 "y": [
 2015
 ],
-"g": "",
+"g": "folk",
 "line": "The Euro Americana Charts named Barn Doors album of 2011, and Uncut, Mojo and Q praised Silver Season that October. He kept playing the same clubs.",
 "src": "",
 "pyr": 2015,
@@ -42833,7 +42845,7 @@
 "y": [
 2023
 ],
-"g": "",
+"g": "blues",
 "line": "Berklee-trained Austin blues guitarist, named her city's musician of the year with an Austin City Limits taping behind her, still working Austin clubs and festival stages.",
 "src": "",
 "pyr": 2023,
@@ -42878,7 +42890,7 @@
 "y": [
 2010
 ],
-"g": "",
+"g": "blues",
 "line": "Twenty-one with no records at all. The Grammys nominated him for a blues album in 2025, but the rooms are still 200-seat folk clubs.",
 "src": "",
 "pyr": 2010
@@ -42888,7 +42900,7 @@
 "y": [
 2024
 ],
-"g": "",
+"g": "folk",
 "line": "A songwriter who draws their own album art, and whose 2023 record was the one indie critics singled out that year.",
 "src": "",
 "pyr": 2024,
@@ -42950,7 +42962,7 @@
 "y": [
 2018
 ],
-"g": "",
+"g": "bluegrass",
 "line": "Robert's Western World's house fiddler, whose Third Man debut Mr. Jukebox drew 8 out of 10 from Saving Country Music that April.",
 "src": "",
 "pyr": 2018,
@@ -42965,7 +42977,7 @@
 "y": [
 2018
 ],
-"g": "",
+"g": "country",
 "line": "An Anacortes cult figure twenty-one albums deep, whose Bella Union country record won over critics and no one else.",
 "src": "",
 "pyr": 2018,
@@ -42980,7 +42992,7 @@
 "y": [
 2022
 ],
-"g": "",
+"g": "country",
 "line": "No Depression and the British roots press championed her dusty country-psych. All that praise never changed the rooms: she still plays small clubs.",
 "src": "",
 "pyr": 2022,
@@ -42997,7 +43009,7 @@
 2006,
 2008
 ],
-"g": "",
+"g": "blues",
 "line": "Critics treated his slide-guitar records as the finest acoustic blues of the decade. He spent his whole career in folk clubs and listening rooms.",
 "src": "",
 "pyr": 2000,
@@ -43013,7 +43025,7 @@
 2013,
 2015
 ],
-"g": "",
+"g": "indie",
 "line": "One Sub Pop album and years behind him in Witch with J Mascis. Two more records and good notices, and the same 600-capacity clubs five years on.",
 "src": "",
 "pyr": 2013,
@@ -43028,7 +43040,7 @@
 "y": [
 2012
 ],
-"g": "",
+"g": "soul",
 "line": "London siblings cutting rhythm and blues live to tape. Paste and NPR took notice in 2011; British record buyers barely did.",
 "src": "",
 "pyr": 2012,
@@ -43043,7 +43055,7 @@
 "y": [
 2006
 ],
-"g": "",
+"g": "folk",
 "line": "Four carefully built albums for a respected New England folk label, warmly reviewed and steadily played on folk radio, in the same listening rooms ever since.",
 "src": "",
 "pyr": 2006
@@ -43070,7 +43082,7 @@
 "y": [
 2015
 ],
-"g": "",
+"g": "soul",
 "line": "A Portland gospel-soul debut made for almost nothing reached the top ten of the gospel chart. She stayed a club and church-hall singer.",
 "src": "",
 "pyr": 2015,
@@ -43085,7 +43097,7 @@
 "y": [
 2008
 ],
-"g": "",
+"g": "indie",
 "line": "A nine-piece Portland chamber-pop band NPR championed, with a Decemberists tour weeks later. Seven years on they were still playing Mississippi Studios and the Doug Fir.",
 "src": "",
 "pyr": 2008
@@ -43110,7 +43122,7 @@
 "y": [
 2012
 ],
-"g": "",
+"g": "indie",
 "line": "A Raleigh band with a devoted following in North Carolina clubs. Fifteen years on they still fill Cat's Cradle and the Hopscotch stage back home.",
 "src": "",
 "pyr": 2012,
@@ -43125,7 +43137,7 @@
 "y": [
 2012
 ],
-"g": "",
+"g": "bluegrass",
 "line": "Cajun fiddle played loud and strange. The Grammys nominated Mammoth Waltz, then gave them one outright, and they still play dance halls and clubs.",
 "src": "",
 "pyr": 2012,
@@ -43140,7 +43152,7 @@
 "y": [
 2018
 ],
-"g": "",
+"g": "indie",
 "line": "Adam Weiner's Philadelphia band - a Rolling Stone four-star act on Obama's playlist, and still selling only clubs.",
 "src": "",
 "pyr": 2018,
@@ -43155,7 +43167,7 @@
 "y": [
 2017
 ],
-"g": "",
+"g": "country",
 "line": "His self-titled 2016 album topped Saving Country Music's most-essential list for the year; signed to Thirty Tigers, never a chart act.",
 "src": "",
 "pyr": 2017,
@@ -43170,7 +43182,7 @@
 "y": [
 2017
 ],
-"g": "",
+"g": "indie",
 "line": "Colombian-American band in New York whose Mezcla earned four stars from Songlines in 2016 on Glitterbeat, with no commercial profile.",
 "src": "",
 "pyr": 2017,
@@ -43185,7 +43197,7 @@
 "y": [
 2023
 ],
-"g": "",
+"g": "jazz",
 "line": "Known for a cappella EPs, with her first full album weeks old. The jazz press has followed her since; the rooms are still 600-capacity clubs.",
 "src": "",
 "pyr": 2023,
@@ -43200,7 +43212,7 @@
 "y": [
 2005
 ],
-"g": "",
+"g": "blues",
 "line": "A Piedmont-blues fingerpicker nominated again and again for the national acoustic blues award, and still playing the folk clubs and guitar camps she always played.",
 "src": "",
 "pyr": 2005
@@ -43210,7 +43222,7 @@
 "y": [
 2018
 ],
-"g": "",
+"g": "folk",
 "line": "Three solo albums after Page France and Cotton Jones, a name other songwriters trade, and a career lived entirely in 250-capacity rooms.",
 "src": "",
 "pyr": 2018,
@@ -43225,7 +43237,7 @@
 "y": [
 2022
 ],
-"g": "",
+"g": "indie",
 "line": "A Canadian power-pop revivalist on Daptone's rock imprint, well reviewed in 2018 and selling like the cult record it was.",
 "src": "",
 "pyr": 2022,
@@ -43255,7 +43267,7 @@
 "y": [
 2023
 ],
-"g": "",
+"g": "country",
 "line": "A Korean-American country blues singer and published poet; Dan Auerbach put out his debut that month. Two years on he was still opening 300-capacity clubs.",
 "src": "",
 "pyr": 2023,
@@ -43271,7 +43283,7 @@
 2015,
 2026
 ],
-"g": "",
+"g": "bluegrass",
 "line": "A solo banjo player on Paradise of Bachelors whose Nansemond drew serious critical attention, and who kept playing lofts and small halls.",
 "src": "",
 "pyr": 2015,
@@ -43287,7 +43299,7 @@
 "y": [
 2023
 ],
-"g": "",
+"g": "hiphop",
 "line": "Crack named him one of the artists who defined 2023, DJ Mag ran a Recognise feature, Resident Advisor gave him a podcast. Still club nights.",
 "src": "",
 "pyr": 2023,
@@ -43302,7 +43314,7 @@
 "y": [
 2018
 ],
-"g": "",
+"g": "indie",
 "line": "Sergio Mendoza's Tucson indie-mambo orchestra, four stars in Songlines for Vamos a Guarachar, known mostly to Calexico fans.",
 "src": "",
 "pyr": 2018,
@@ -43317,7 +43329,7 @@
 "y": [
 2003
 ],
-"g": "",
+"g": "blues",
 "line": "His stark, haunted blues records won blues awards and topped critics' polls. Two decades on he was playing the same clubs and festival tents.",
 "src": "",
 "pyr": 2003
@@ -43342,7 +43354,7 @@
 "y": [
 2023
 ],
-"g": "",
+"g": "global",
 "line": "A one-man dub studio out of Puerto Rico by way of Los Angeles, signed to ATO and watched closely by Pitchfork, still playing 400-capacity clubs.",
 "src": "",
 "pyr": 2023,
@@ -43357,7 +43369,7 @@
 "y": [
 2024
 ],
-"g": "",
+"g": "indie",
 "line": "Madeline Link's Toronto band, reviewed everywhere and bought by almost no one.",
 "src": "",
 "pyr": 2024,
@@ -43387,7 +43399,7 @@
 "y": [
 2018
 ],
-"g": "",
+"g": "country",
 "line": "My Gospel put him on Rolling Stone's 2016 country list and no further; the big rooms, the Ryman included, took another seven years to arrive.",
 "src": "",
 "pyr": 2018,
@@ -43402,7 +43414,7 @@
 "y": [
 2022
 ],
-"g": "",
+"g": "country",
 "line": "A Joshua Tree country-disco singer whose Magic Mirror was warmly reviewed by the handful of critics who found it, and never charted.",
 "src": "",
 "pyr": 2022,
@@ -43417,7 +43429,7 @@
 "y": [
 2013
 ],
-"g": "",
+"g": "bluegrass",
 "line": "Four-time Juno winners for Traditional Roots Album of the Year, Canada's top honor for old-time music.",
 "src": "",
 "pyr": 2013,
@@ -43447,7 +43459,7 @@
 "y": [
 2013
 ],
-"g": "",
+"g": "indie",
 "line": "Stereogum called them a band to watch weeks before they arrived. Six years later they were still playing the same 300-capacity rooms, Mississippi Studios included.",
 "src": "",
 "pyr": 2013
@@ -43457,7 +43469,7 @@
 "y": [
 2022
 ],
-"g": "",
+"g": "bluegrass",
 "line": "Nashville fiddler and songwriter, a former Illinois state fiddle champion whose protest-folk records draw NPR and Folk Alley notice rather than sales.",
 "src": "",
 "pyr": 2022,
@@ -43472,7 +43484,7 @@
 "y": [
 2012
 ],
-"g": "",
+"g": "blues",
 "line": "A Dallas holiness minister playing cigar-box slide blues. The Austin Chronicle gave 2010's When I Rise three and a half stars; the rooms stayed juke joints.",
 "src": "",
 "pyr": 2012,
@@ -43487,7 +43499,7 @@
 "y": [
 2025
 ],
-"g": "",
+"g": "global",
 "line": "Fabi Reyna's Afro-Latin guitar project, carried forward after her collaborator's death.",
 "src": "",
 "pyr": 2025,
@@ -43528,7 +43540,7 @@
 "y": [
 2018
 ],
-"g": "",
+"g": "indie",
 "line": "Leah Song and Chloe Smith built their following entirely by touring - a Red Rocks bill and sold-out theatres, and the same theatres before and since.",
 "src": "",
 "pyr": 2018,
@@ -43543,7 +43555,7 @@
 "y": [
 2012
 ],
-"g": "",
+"g": "folk",
 "line": "A Houston writer whose Photographs made American Songwriter's fifty best albums of 2011. Four acclaimed records later, he still headlines clubs.",
 "src": "",
 "pyr": 2012
@@ -43553,7 +43565,7 @@
 "y": [
 2024
 ],
-"g": "",
+"g": "soul",
 "line": "A samba star at home in Rio for twenty years, and a discovery to everybody in the Woods.",
 "src": "",
 "pyr": 2024,
@@ -43569,7 +43581,7 @@
 2022,
 2025
 ],
-"g": "",
+"g": "folk",
 "line": "Philadelphia-to-North Carolina songwriter; No Medium made her a critics' album, and 2024's Bite Down took Stereogum's Album of the Week on Merge.",
 "src": "",
 "pyr": 2022,
@@ -43584,7 +43596,7 @@
 "y": [
 2025
 ],
-"g": "",
+"g": "country",
 "line": "Ripley Johnson's country turn after Wooden Shjips — five Thrill Jockey albums, no fuss.",
 "src": "",
 "pyr": 2025,
@@ -43622,7 +43634,7 @@
 "y": [
 2018
 ],
-"g": "",
+"g": "soul",
 "line": "A former Bride of Funkenstein turned Detroit storyteller, a 2017 Kresge Literary Arts Fellow with her own public-radio series.",
 "src": "",
 "pyr": 2018,
@@ -43637,7 +43649,7 @@
 "y": [
 2018
 ],
-"g": "",
+"g": "folk",
 "line": "Carissa's Wierd and Band of Horses' drummer turned Sub Pop songwriter, reviewed by NPR, never a seller.",
 "src": "",
 "pyr": 2018,
@@ -43669,7 +43681,7 @@
 "y": [
 2015
 ],
-"g": "",
+"g": "indie",
 "line": "A Sudanese-American bandleader whose Mean Love drew wide 2014 praise and who fronted the all-star William Onyeabor tribute band. The venues never grew.",
 "src": "",
 "pyr": 2015,
@@ -43691,7 +43703,7 @@
 "y": [
 2024
 ],
-"g": "",
+"g": "folk",
 "line": "A Guardian best-of-2023 placement for a North Carolina songwriter you've never heard of.",
 "src": "",
 "pyr": 2024,
@@ -43706,7 +43718,7 @@
 "y": [
 2025
 ],
-"g": "",
+"g": "jazz",
 "line": "Five Los Angeles improvisers who recorded two albums of acclaim in two years.",
 "src": "",
 "pyr": 2025,
@@ -43736,7 +43748,7 @@
 "y": [
 2012
 ],
-"g": "",
+"g": "folk",
 "line": "Athens, Ohio folk-rock that the critics nearly all loved in 2009 — then the band broke up without ever outgrowing the bars.",
 "src": "",
 "pyr": 2012,
@@ -43783,7 +43795,7 @@
 "y": [
 2017
 ],
-"g": "",
+"g": "indie",
 "line": "Charleston band whose & I'm Fine Today was named South Carolina's album of the year by SceneSC - regional acclaim, no sales.",
 "src": "",
 "pyr": 2017,
@@ -43798,7 +43810,7 @@
 "y": [
 2022
 ],
-"g": "",
+"g": "punk",
 "line": "Lo-fi post-punk duo who recorded in a disused lab. NME gave the debut four stars, BrooklynVegan named it indie album of the week, and the clubs stayed small.",
 "src": "",
 "pyr": 2022,
@@ -43813,7 +43825,7 @@
 "y": [
 2017
 ],
-"g": "",
+"g": "indie",
 "line": "Austin band whose St. Mojo landed on three Austin Chronicle critics' 2017 lists and an NPR World Cafe session, without charting.",
 "src": "",
 "pyr": 2017,
@@ -43844,7 +43856,7 @@
 2001,
 2002
 ],
-"g": "",
+"g": "blues",
 "line": "Had already won Portland's blues guitar award nine years running and topped the Living Blues radio chart. Twenty-five years on, he plays the same clubs.",
 "src": "",
 "pyr": 2001
@@ -43854,7 +43866,7 @@
 "y": [
 2005
 ],
-"g": "",
+"g": "folk",
 "line": "A Vancouver trio whose hushed harmonies won Canadian roots nominations and devoted British press. They stayed a theatre band, then quietly stopped.",
 "src": "",
 "pyr": 2005
@@ -43866,7 +43878,7 @@
 2013,
 2025
 ],
-"g": "",
+"g": "folk",
 "line": "Minneapolis brothers singing close Everly harmony in neighborhood bars. Red House signed them in 2016 and David Lynch put them in Twin Peaks in 2017.",
 "src": "",
 "pyr": 2012,
@@ -43881,7 +43893,7 @@
 "y": [
 2001
 ],
-"g": "",
+"g": "bluegrass",
 "line": "He ran old-time banjo through punk with the Bad Livers, and won Steve Martin's banjo prize in 2015. The rooms stayed small throughout.",
 "src": "",
 "pyr": 2001,
@@ -43896,7 +43908,7 @@
 "y": [
 2018
 ],
-"g": "",
+"g": "bluegrass",
 "line": "Ryan Gustafson's North Carolina project, whose Unsung Passage landed on the Bluegrass Situation's top albums of 2018.",
 "src": "",
 "pyr": 2018,
@@ -43911,7 +43923,7 @@
 "y": [
 2010
 ],
-"g": "",
+"g": "folk",
 "line": "A two-year-old DIY string trio. Smithsonian Folkways put out their next record with John Cohen, and they went on playing 100-seat Brooklyn folk rooms.",
 "src": "",
 "pyr": 2010
@@ -43922,7 +43934,7 @@
 2007,
 2008
 ],
-"g": "",
+"g": "bluegrass",
 "line": "Thirteen years and eight albums of Austin roots music, loved by critics and a devoted following, and best known for a bluegrass cover people credited to Phish.",
 "src": "",
 "pyr": 2007
@@ -43933,7 +43945,7 @@
 2008,
 2009
 ],
-"g": "",
+"g": "country",
 "line": "Nine years in, with an album near the top of the Americana chart and a national tour backing a Country Hall of Famer.",
 "src": "",
 "pyr": 2008
@@ -43953,7 +43965,7 @@
 "y": [
 2017
 ],
-"g": "",
+"g": "hiphop",
 "line": "Portland rapper on the local EYRST label, later featured on Anderson .Paak's Oxnard and a Mark Ronson album.",
 "src": "",
 "pyr": 2017,
@@ -43968,7 +43980,7 @@
 "y": [
 2012
 ],
-"g": "",
+"g": "indie",
 "line": "Laura Burhenn's band. Generals arrived two months before the farm to strong reviews and sales that never followed.",
 "src": "",
 "pyr": 2012
@@ -43994,7 +44006,7 @@
 2022,
 2026
 ],
-"g": "",
+"g": "bluegrass",
 "line": "Pacific Northwest old-time quartet who started as kids; Saving Country Music scored their 2020 album 8 and called them the form's most respected young group.",
 "src": "",
 "pyr": 2022,
@@ -44009,7 +44021,7 @@
 "y": [
 2015
 ],
-"g": "",
+"g": "bluegrass",
 "line": "Texas state fiddle titles by 2001, the Opry by 2003, the Kennedy Center by 2006 - fifteen years of honors and the same size halls throughout.",
 "src": "",
 "pyr": 2015,
@@ -44024,7 +44036,7 @@
 "y": [
 2006
 ],
-"g": "",
+"g": "folk",
 "line": "A Canadian roots award already won and a standing invitation to A Prairie Home Companion. Twenty years on, still a three-part-harmony theatre act.",
 "src": "",
 "pyr": 2006,
@@ -44040,7 +44052,7 @@
 2012,
 2016
 ],
-"g": "",
+"g": "punk",
 "line": "John Dwyer's garage machine has made a record almost every year since; Floating Coffin drew near-universal praise, and they still sell out 1,000-capacity clubs.",
 "src": "",
 "pyr": 2012,
@@ -44055,7 +44067,7 @@
 "y": [
 2024
 ],
-"g": "",
+"g": "country",
 "line": "A French country singer nobody here knew; Warner signed him the following year. Venue growth not established.",
 "src": "",
 "pyr": 2024,
@@ -44085,7 +44097,7 @@
 "y": [
 2022
 ],
-"g": "",
+"g": "country",
 "line": "Chicago honky-tonk band whose debut took an A-minus from The Vinyl District and an NPR feature, on a small independent label.",
 "src": "",
 "pyr": 2022,
@@ -44100,7 +44112,7 @@
 "y": [
 2001
 ],
-"g": "",
+"g": "bluegrass",
 "line": "Twice the national banjo champion at Winfield, with six Rounder albums behind him. Thirty-five years on, he still fills the same Portland clubs.",
 "src": "",
 "pyr": 2001
@@ -44110,7 +44122,7 @@
 "y": [
 2005
 ],
-"g": "",
+"g": "folk",
 "line": "With Dave Carter she was folk radio's most-played act of the early 2000s, and Joan Baez took them on tour. She kept the songs in the same folk clubs.",
 "src": "",
 "pyr": 2005
@@ -44120,7 +44132,7 @@
 "y": [
 2022
 ],
-"g": "",
+"g": "punk",
 "line": "A London post-punk band signed to Sub Pop after a single gig. Decent reviews, and very little else.",
 "src": "",
 "pyr": 2022,
@@ -44135,7 +44147,7 @@
 "y": [
 2018
 ],
-"g": "",
+"g": "indie",
 "line": "Supergiant arrived days earlier to a Rolling Stone review and little else; the Los Angeles band never charted.",
 "src": "",
 "pyr": 2018,
@@ -44151,7 +44163,7 @@
 2015,
 2018
 ],
-"g": "",
+"g": "indie",
 "line": "Ty Segall put out their debut on his own label, and the critics kept praising them for five more years. Still a club band.",
 "src": "",
 "pyr": 2015,
@@ -44181,7 +44193,7 @@
 "y": [
 2012
 ],
-"g": "",
+"g": "indie",
 "line": "Austin power trio, Best New Band at the 2008 Austin Music Awards and a Rolling Stone breaking artist, still working the same thousand-capacity rooms.",
 "src": "",
 "pyr": 2012
@@ -44192,7 +44204,7 @@
 2012,
 2017
 ],
-"g": "",
+"g": "indie",
 "line": "Luz Elena Mendoza's Portland band, six months out from Court the Storm. Mujeres reached NPR's best-of lists in 2019; the venues never got much bigger.",
 "src": "",
 "pyr": 2012,
@@ -44222,7 +44234,7 @@
 "y": [
 2018
 ],
-"g": "",
+"g": "country",
 "line": "His honky-tonk debut This Highway was a Saving Country Music 2017 Album of the Year nominee, and almost nobody bought it.",
 "src": "",
 "pyr": 2018,
@@ -44237,7 +44249,7 @@
 "y": [
 2023
 ],
-"g": "",
+"g": "bluegrass",
 "line": "Banjo and fiddle duo on Free Dirt; de Groot plays clawhammer banjo with Molsky's Mountain Drifters, and Hargreaves has played fiddle with Gillian Welch and Laurie Lewis.",
 "src": "",
 "pyr": 2023,
@@ -44252,7 +44264,7 @@
 "y": [
 2014
 ],
-"g": "",
+"g": "soul",
 "line": "Austin funk band, an offshoot of Grupo Fantasma, covering Black Sabbath as Brown Sabbath; the 2014 record drew praise from NPR, AllMusic, Rolling Stone and Ozzy Osbourne.",
 "src": "",
 "pyr": 2014,
@@ -44267,7 +44279,7 @@
 "y": [
 2008
 ],
-"g": "",
+"g": "bluegrass",
 "line": "Two albums on Signature Sounds, and a new lineup: cellist Tristan Clarridge and fiddler Brittany Haas joined in January 2008.",
 "src": "",
 "pyr": 2008
@@ -44277,7 +44289,7 @@
 "y": [
 2014
 ],
-"g": "",
+"g": "country",
 "line": "Four guitarists, Nashville, and a 2013 album, I'm Rich Beyond Your Wildest Dreams, recorded in eight days, mostly live.",
 "src": "",
 "pyr": 2014,
@@ -44292,7 +44304,7 @@
 "y": [
 2019
 ],
-"g": "",
+"g": "soul",
 "line": "London afro-funk band fronted by Eno Williams, with three albums by 2019, two of them on Merge.",
 "src": "",
 "pyr": 2019,
@@ -44307,7 +44319,7 @@
 "y": [
 2010
 ],
-"g": "",
+"g": "indie",
 "line": "Co-founder of the everybodyfields, a Ramseur Records band that split in 2009; she went solo with a self-titled EP.",
 "src": "",
 "pyr": 2010
@@ -44317,7 +44329,7 @@
 "y": [
 2011
 ],
-"g": "",
+"g": "bluegrass",
 "line": "A Boston string band that won the Podunk Bluegrass band contest in 2007; bassist Bridget Kearney also plays in Lake Street Dive.",
 "src": "",
 "pyr": 2011,
@@ -44358,7 +44370,7 @@
 "y": [
 2014
 ],
-"g": "",
+"g": "indie",
 "line": "Sam Jayne's band, formed in 1994 after his band Lync ended, with records on K Records and Sub Pop.",
 "src": "",
 "pyr": 2014
@@ -44369,7 +44381,7 @@
 2013,
 2014
 ],
-"g": "",
+"g": "jazz",
 "line": "Pianist who came up in New York's experimental jazz scene after Berklee, now based near Woodstock; his records include TigerFace (2012).",
 "src": "",
 "pyr": 2013,
@@ -44384,7 +44396,7 @@
 "y": [
 2023
 ],
-"g": "",
+"g": "punk",
 "line": "Percussionist and vibraphonist who has played with Les Claypool, Ani DiFranco and Rickie Lee Jones, and leads Punkadelick.",
 "src": "",
 "pyr": 2023
@@ -44394,7 +44406,7 @@
 "y": [
 2016
 ],
-"g": "",
+"g": "indie",
 "line": "Band whose second album, Miracle Temple (2013), was its first for Merge; How to Dance followed in 2016.",
 "src": "",
 "pyr": 2016,
@@ -44409,7 +44421,7 @@
 "y": [
 2014
 ],
-"g": "",
+"g": "bluegrass",
 "line": "A North Carolina-linked quartet playing old-time and bluegrass; banjo player Riley Baugus sang on the Cold Mountain soundtrack and appears on Raising Sand.",
 "src": "",
 "pyr": 2014,
@@ -44440,7 +44452,7 @@
 2008,
 2010
 ],
-"g": "",
+"g": "country",
 "line": "Baton Rouge Cajun and western swing band on Sugar Hill since 2007, whose rhythm section backed Linda Ronstadt and Ann Savoy on Adieu False Heart.",
 "src": "",
 "pyr": 2008
@@ -44450,7 +44462,7 @@
 "y": [
 2010
 ],
-"g": "",
+"g": "indie",
 "line": "Co-founder of the everybodyfields with Jill Andrews; the Ramseur Records band split in 2009 so both could pursue solo careers.",
 "src": "",
 "pyr": 2010
@@ -44460,7 +44472,7 @@
 "y": [
 2016
 ],
-"g": "",
+"g": "folk",
 "line": "New Orleans roots band, formerly the Tumbleweeds; their self-titled debut came out on New West in 2015.",
 "src": "",
 "pyr": 2016,
@@ -44475,7 +44487,7 @@
 "y": [
 2014
 ],
-"g": "",
+"g": "country",
 "line": "Nashville band with three albums on its own Oh Wow Dang label; Robert Christgau praised Screws Get Loose and SPIN praised Blur the Line.",
 "src": "",
 "pyr": 2014,
@@ -44490,7 +44502,7 @@
 "y": [
 2016
 ],
-"g": "",
+"g": "punk",
 "line": "A metal band with members of YOB, Agalloch and Hammers of Misfortune, with two albums on Profound Lore, VHÖL (2013) and Deeper Than the Sky (2015).",
 "src": "",
 "pyr": 2016,
@@ -44520,7 +44532,7 @@
 "y": [
 2019
 ],
-"g": "",
+"g": "indie",
 "line": "Indie rock band with two albums on Saddle Creek, the second released in 2018.",
 "src": "",
 "pyr": 2019,
@@ -44535,7 +44547,7 @@
 "y": [
 2014
 ],
-"g": "",
+"g": "country",
 "line": "Cahalen Morrison's honky-tonk band, whose debut album The Flower of Muscle Shoals came out on Free Dirt. The same group later became Western Centuries.",
 "src": "",
 "pyr": 2014,
@@ -44550,7 +44562,7 @@
 "y": [
 2019
 ],
-"g": "",
+"g": "indie",
 "line": "Omaha rock guitarist David Nance, whose records came out on Trouble in Mind; he later put out an album on Third Man.",
 "src": "",
 "pyr": 2019,
@@ -44565,7 +44577,7 @@
 "y": [
 2013
 ],
-"g": "",
+"g": "indie",
 "line": "A longtime member of the Cajun band Balfa Toujours, with Rounder records since the 1990s. He worked on film music including Cold Mountain and spent ten years as Joan Baez's band.",
 "src": "",
 "pyr": 2013
@@ -44605,7 +44617,7 @@
 "y": [
 2019
 ],
-"g": "",
+"g": "indie",
 "line": "Jupiter Bokondji's Kinshasa band. Damon Albarn and Warren Ellis play on their 2017 album Kin Sonic.",
 "src": "",
 "pyr": 2019,
@@ -44620,7 +44632,7 @@
 "y": [
 2013
 ],
-"g": "",
+"g": "soul",
 "line": "Nicole Wray and Terri Walker's retro-soul debut, out in March 2013 on Truth & Soul. Wray's earlier solo single 'Make It Hot' reached the Hot 100 top five.",
 "src": "",
 "pyr": 2013,
@@ -44635,7 +44647,7 @@
 "y": [
 2010
 ],
-"g": "",
+"g": "folk",
 "line": "Kyle Field's indie folk project, with albums on K Records. Field is also an acclaimed visual artist.",
 "src": "",
 "pyr": 2010
@@ -44645,7 +44657,7 @@
 "y": [
 2013
 ],
-"g": "",
+"g": "folk",
 "line": "A North Carolina songwriter whose debut for Geffen was shelved. Steve Earle called him the best songwriter he ever threw out of his recording studio.",
 "src": "",
 "pyr": 2013,
@@ -44675,7 +44687,7 @@
 "y": [
 2023
 ],
-"g": "",
+"g": "folk",
 "line": "A harpist and songwriter from Rochester, New York, who has released records on Rounder and Kill Rock Stars and has played with Bob Weir.",
 "src": "",
 "pyr": 2023,
@@ -44690,7 +44702,7 @@
 "y": [
 2023
 ],
-"g": "",
+"g": "soul",
 "line": "The last bassist Prince hired before his death in 2016, known for microtonal funk bass.",
 "src": "",
 "pyr": 2023,
@@ -44705,7 +44717,7 @@
 "y": [
 2014
 ],
-"g": "",
+"g": "electronic",
 "line": "Dan Boeckner's new synth band, one EP old — but Wolf Parade and Handsome Furs came first.",
 "src": "",
 "pyr": 2014,
@@ -44716,7 +44728,7 @@
 "y": [
 2016
 ],
-"g": "",
+"g": "country",
 "line": "A young Nashville country-rock band whose 2013 self-titled debut came out on Paradise of Bachelors.",
 "src": "",
 "pyr": 2016,
@@ -44731,7 +44743,7 @@
 "y": [
 2023
 ],
-"g": "",
+"g": "country",
 "line": "A Nashville experimental musician whose 2022 album I Survived, Now It's Over came out on Third Man Records.",
 "src": "",
 "pyr": 2023,
@@ -44746,7 +44758,7 @@
 "y": [
 2013
 ],
-"g": "",
+"g": "indie",
 "line": "A Portland rock 'n' roll band on Partisan Records. They announced their breakup in December 2013.",
 "src": "",
 "pyr": 2013,
@@ -44761,7 +44773,7 @@
 "y": [
 2019
 ],
-"g": "",
+"g": "punk",
 "line": "Eva Moolchan's post-punk project, on Merge Records. Highway Hypnosis came out in 2019.",
 "src": "",
 "pyr": 2019,
@@ -44776,7 +44788,7 @@
 "y": [
 2008
 ],
-"g": "",
+"g": "bluegrass",
 "line": "A Boston-area roots band formed in 1994, playing early blues, gospel and Appalachian music. Two albums on Rounder.",
 "src": "",
 "pyr": 2008
@@ -44786,7 +44798,7 @@
 "y": [
 2009
 ],
-"g": "",
+"g": "blues",
 "line": "A Brooklyn ragtime and blues band, invited to tour with Bob Dylan in 2009.",
 "src": "",
 "pyr": 2009
@@ -44826,7 +44838,7 @@
 "y": [
 2016
 ],
-"g": "",
+"g": "indie",
 "line": "Cahalen Morrison, Ethan Lawton and Jim Miller, a Donna the Buffalo co-founder, formed the band. Their debut Weight of the World came out on Free Dirt in 2016.",
 "src": "",
 "pyr": 2016,
@@ -44841,7 +44853,7 @@
 "y": [
 2014
 ],
-"g": "",
+"g": "indie",
 "line": "Jeremy Earl's Brooklyn band, eight albums in by 2014, released on his Woodsist label.",
 "src": "",
 "pyr": 2014,
@@ -44856,7 +44868,7 @@
 "y": [
 2008
 ],
-"g": "",
+"g": "bluegrass",
 "line": "Austin's banjo-and-tuba band, unofficially split in 2000, back together for a few shows in 2008.",
 "src": "",
 "pyr": 2008
@@ -44869,7 +44881,7 @@
 2011,
 2013
 ],
-"g": "",
+"g": "bluegrass",
 "line": "A Michigan trio of guitar and banjo, cello and percussion, making atmospheric acoustic folk.",
 "src": "",
 "pyr": 2009,
@@ -44884,7 +44896,7 @@
 "y": [
 2019
 ],
-"g": "",
+"g": "country",
 "line": "East Nashville cosmic country on ATO, produced by one of the Milk Carton Kids, with NPR behind it.",
 "src": "",
 "pyr": 2019,
@@ -44920,7 +44932,7 @@
 "y": [
 2011
 ],
-"g": "",
+"g": "country",
 "line": "Seattle's gothic country-rock, three Barsuk albums and a turn singing for Sunn O))).",
 "src": "",
 "pyr": 2011,
@@ -44935,7 +44947,7 @@
 "y": [
 2011
 ],
-"g": "",
+"g": "blues",
 "line": "A Mississippi bluesman born in 1928, featured in the 2008 documentary M for Mississippi.",
 "src": "",
 "pyr": 2011,
@@ -44950,7 +44962,7 @@
 "y": [
 2023
 ],
-"g": "",
+"g": "bluegrass",
 "line": "Venezuelan Llanera musician Larry Bellorin, an asylum seeker in North Carolina, paired with Joe Troop of Che Apalache in a Venezuelan-Appalachian duo.",
 "src": "",
 "pyr": 2023,
@@ -44980,7 +44992,7 @@
 "y": [
 2011
 ],
-"g": "",
+"g": "bluegrass",
 "line": "Mike Merenda and Ruth Ungar of The Mammals, touring as a duo since 2008; she is the daughter of fiddler Jay Ungar.",
 "src": "",
 "pyr": 2011,
@@ -44995,7 +45007,7 @@
 "y": [
 2023
 ],
-"g": "",
+"g": "electronic",
 "line": "Afro-Peruvian music mixed with electronica, from Lima, formed in 2001 and released worldwide on Cumbancha.",
 "src": "",
 "pyr": 2023,
@@ -45021,7 +45033,7 @@
 "y": [
 2014
 ],
-"g": "",
+"g": "psych",
 "line": "A Boston psych-folk band on Mexican Summer, with three albums between 2011 and 2016.",
 "src": "",
 "pyr": 2014,
@@ -45036,7 +45048,7 @@
 "y": [
 2010
 ],
-"g": "",
+"g": "indie",
 "line": "Willy Vlautin's Portland band, together from 1994 to 2016, with a following in the UK and Europe.",
 "src": "",
 "pyr": 2010
@@ -45063,7 +45075,7 @@
 2012,
 2015
 ],
-"g": "",
+"g": "indie",
 "line": "Sonny Smith's San Francisco band, with two Fat Possum albums, Tomorrow Is Alright and Hit After Hit.",
 "src": "",
 "pyr": 2011,
@@ -45078,7 +45090,7 @@
 "y": [
 2016
 ],
-"g": "",
+"g": "indie",
 "line": "Emmett Kelly's own band; he also plays with Will Oldham and, from 2016, in Ty Segall's band.",
 "src": "",
 "pyr": 2016,
@@ -45093,7 +45105,7 @@
 "y": [
 2023
 ],
-"g": "",
+"g": "hiphop",
 "line": "A Tampa rap duo whose 2022 album Finally, New was acclaimed by DJ Mag and made its year-end list.",
 "src": "",
 "pyr": 2023,
@@ -45110,7 +45122,7 @@
 2011,
 2015
 ],
-"g": "",
+"g": "folk",
 "line": "A folk band whose Sub Pop album Tight Knit came out in February 2009.",
 "src": "",
 "pyr": 2009,
@@ -45126,7 +45138,7 @@
 2019,
 2022
 ],
-"g": "",
+"g": "bluegrass",
 "line": "An old-time duo; Leva's 2018 solo album Time Is Everything featured Calcagno, and their own album followed on Free Dirt.",
 "src": "",
 "pyr": 2019,
@@ -45151,7 +45163,7 @@
 "y": [
 2013
 ],
-"g": "",
+"g": "indie",
 "line": "Sam Cohen's Brooklyn band; he went on to produce Kevin Morby's Singing Saw and later albums.",
 "src": "",
 "pyr": 2013,
@@ -45166,7 +45178,7 @@
 "y": [
 2016
 ],
-"g": "",
+"g": "psych",
 "line": "Psychedelic duo Ripley Johnson and Sanae Yamada, formed in San Francisco in 2009. Pitchfork gave Circles a 76, and NPR called Shadow of the Sun “the best Moon Duo record to date.”",
 "src": "",
 "pyr": 2016,
