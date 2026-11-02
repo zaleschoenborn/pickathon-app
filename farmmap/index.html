@@ -791,7 +791,7 @@ function warmHeroes(){ buildCards();
 function buildCards(){
   const box=document.getElementById('pcl'); if(!box||box._d) return; box._d=1;
   const col={stage:'#D4502C',camp:'#C98A14',around:'#3E7F46',wellness:'#2E8C9E',family:'#8A4FA8'};
-  const order=['stage','camp','around'], seen={};
+  const order=['stage','around','wellness','family','camp'], seen={};
   let html='';
   order.concat(Object.keys(KIND).filter(k=>order.indexOf(k)<0)).forEach(k=>{
     const L=HOODS.filter(h=>h.k===k); if(!L.length) return;
