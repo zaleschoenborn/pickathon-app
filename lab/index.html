@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex">
+<title>Pickathon Past Lab (TEST)</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#12160F;--cream:#F2EDE3;--mut:#B9B3A6;--gold:#D6B54A;--line:rgba(242,237,227,.16)}
+*{box-sizing:border-box;scrollbar-width:none}*::-webkit-scrollbar{display:none}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--cream);font-family:Inter,system-ui,sans-serif;overflow:hidden}
+main{height:100dvh;display:flex;flex-direction:column;justify-content:center;gap:16px;padding:0 24px;max-width:1100px;margin:0 auto}
+h1{font-family:'Bricolage Grotesque',system-ui,sans-serif;font-weight:800;font-size:clamp(34px,6vh,56px);margin:0;letter-spacing:-.02em}
+.test{font-size:11px;font-weight:800;letter-spacing:.14em;background:var(--gold);color:var(--bg);padding:3px 8px;border-radius:4px;vertical-align:middle;margin-left:10px}
+p{margin:0;color:var(--mut);max-width:620px;line-height:1.5}
+.g{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:6px}
+.c{border:1px solid var(--line);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.c.fav{border-color:var(--gold)}
+.c h2{margin:0;font-family:'Bricolage Grotesque',system-ui,sans-serif;font-size:21px}
+.c small{color:var(--mut);font-size:13px;line-height:1.4}
+.l{display:flex;gap:8px;flex-wrap:wrap;margin-top:4px}
+.l a{min-height:40px;padding:0 14px;display:inline-flex;align-items:center;border-radius:999px;border:1px solid var(--line);text-decoration:none;font-weight:700;font-size:14px;color:var(--cream)}
+.l a:first-child{background:var(--gold);color:var(--bg);border-color:var(--gold)}
+.l a:hover{border-color:var(--gold)}
+@media(max-width:760px){.g{grid-template-columns:1fr;gap:8px}.c{padding:12px 14px;gap:4px}.c small{display:none}main{gap:10px;padding:0 16px}}
+</style></head><body><main>
+<h1>Year page lab<span class="test">TEST</span></h1>
+<p>Three single-screen versions of a Pickathon Past year page. Nothing here touches the live site. 2019 and 2023 have a film, 2014 a smaller one, 2008 and 2025 show the still version.</p>
+<div class="g">
+<div class="c fav"><h2>A. Title Card</h2><small>One photo, one line, one gold button, chapters underneath.</small><div class="l"><a href="year-a.html?y=2019">2019</a><a href="year-a.html?y=2023">2023</a><a href="year-a.html?y=2014">2014</a><a href="year-a.html?y=2008">2008</a><a href="year-a.html?y=2025">2025</a></div></div>
+<div class="c"><h2>B. Contact Sheet Reel</h2><small>A row of stills with the year as a big numeral.</small><div class="l"><a href="year-b.html?y=2019">2019</a><a href="year-b.html?y=2023">2023</a><a href="year-b.html?y=2014">2014</a><a href="year-b.html?y=2008">2008</a><a href="year-b.html?y=2025">2025</a></div></div>
+<div class="c"><h2>C. Projectionist</h2><small>The film is on the page. Chapters are a timeline under it.</small><div class="l"><a href="year-c.html?y=2019">2019</a><a href="year-c.html?y=2023">2023</a><a href="year-c.html?y=2014">2014</a><a href="year-c.html?y=2008">2008</a><a href="year-c.html?y=2025">2025</a></div></div>
+</div></main></body></html>
