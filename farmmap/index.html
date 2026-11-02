@@ -187,7 +187,7 @@ body{margin:0;background:var(--ink);color:var(--cream);font-family:var(--f);
 #hero img.on{animation:kb 7s ease-out forwards}
 @keyframes kb{from{transform:scale(1.02)}to{transform:scale(1.16)}}
 @media (min-width:880px){
-  :root{--cardw:440px}
+  :root{--cardw:clamp(440px,30vw,560px)}
   .lab{font-size:15px;padding:6px 11px;max-width:176px;border-radius:9px;gap:7px;letter-spacing:.01em}
   .lab{border-left-width:5px;padding-left:9px}
   #stage{bottom:0;right:var(--cardw)}
@@ -307,7 +307,9 @@ body{margin:0;background:var(--ink);color:var(--cream);font-family:var(--f);
   #card.intro #empty #pcl .pc b{font:700 11px/1.15 var(--f)!important;color:var(--muted)!important;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
   #card.intro #empty #pcl .pc:hover b{color:var(--cream)!important}
   #card.intro #empty #pcl .pc:hover .lg{outline:2px solid #F2B33D;outline-offset:2px}
-  #card.intro #empty #pcl .pcg{display:none!important}
+  #card.intro #empty #pcl{grid-template-columns:repeat(auto-fill,minmax(70px,1fr))!important}
+  #card.intro #empty #pcl .pcg{display:flex!important;align-items:baseline;gap:10px;grid-column:1/-1;margin:10px 0 0!important}
+  #card.intro #empty #pcl .pcg span{font:500 11.5px/1 var(--f);letter-spacing:0;text-transform:none;color:var(--muted);opacity:.8}
 }
 #pcl,#body,#card{scrollbar-width:none;-ms-overflow-style:none}
 #pcl::-webkit-scrollbar,#body::-webkit-scrollbar,#card::-webkit-scrollbar{display:none}
@@ -429,7 +431,7 @@ body{margin:0;background:var(--ink);color:var(--cream);font-family:var(--f);
       <div id="empty">
         <small id="eyebrow">Pickathon Neighborhoods</small>
         <b>A Temporary City of Wonder</b>
-        <p>Pickathon is a temporary city of imagination. Pick a neighborhood to fly the map to it.</p>
+        <p>Every summer Pickathon builds a small city of stages, courtyards and camps on a farm in Oregon. Point at a neighborhood to find it. Click to fly there.</p>
         <div id="pcl"></div>
         <button id="pall" type="button">See all 20 &#9652;</button>
         <button id="ibuild" type="button">We build these. Want one? →</button>
@@ -637,7 +639,7 @@ function place(){
     h._ax=ax; h._ay=ay; { const cp=LBLCAP[h.id]; h._wy=ay; if(cp!==undefined){ const st=1-Math.max(0,Math.min(1,k/kFit-1)), lim=ty+cp*k; if(ay>lim) h._wy=ay-(ay-lim)*st; } }
     h._on = on && passes(h);
     // Phone: no labels at the whole-farm view; each neighborhood names itself once it is wide enough on screen to hold the name.
-    if(h._on && innerWidth<880 && h!==cur){ const wpx=h._b?(h._b[2]-h._b[0])*k:0; if(wpx<Math.max(130,stage.clientWidth*.45)) h._on=false; }
+    if(h._on && innerWidth<880 && h!==cur){ const wpx=h._b?(h._b[2]-h._b[0])*k:0; if(wpx<Math.max(130,stage.clientWidth*.45)*(h.k==='camp'?1.9:1)) h._on=false; }
     if(h._path) h._path.classList.toggle('off',!passes(h));
     if(h._on) live.push(h);
   });
@@ -830,7 +832,8 @@ function buildCards(){
   let html='';
   order.concat(Object.keys(KIND).filter(k=>order.indexOf(k)<0&&k!=='family')).forEach(k=>{
     const L=HOODS.filter(h=>h.k===k||(k==='wellness'&&h.k==='family')); if(!L.length) return;
-    html+='<div class="pcg">'+(k==='wellness'?'Wellness &amp; family':(KIND[k]||k))+'</div>';
+    const DS={stage:'Where the music happens',around:'Food, art, shade and wonder',wellness:'Rest, play and care',camp:'Where you sleep'};
+    html+='<div class="pcg">'+(k==='wellness'?'Wellness &amp; family':k==='stage'?'Stages':(KIND[k]||k))+(DS[k]?'<span>'+DS[k]+'</span>':'')+'</div>';
     L.forEach(h=>{ const im=(HERO[h.id]||[])[0];
       html+='<button class="pc" type="button" data-h="'+h.id+'" style="--ac:'+(col[k]||'#F2B33D')+'"><s class="lg" style="background:'+(HCOL[h.id]||'#0F130D')+'"><img alt="" decoding="async" src="../ic2/'+h.id+'.png"></s><i'+(im?' style="background-image:url(\''+im+'\')"':'')+'></i><span><b>'+h.n+'</b><em>'+(h.t||'')+'</em></span><u>›</u></button>'; });
   });
@@ -843,13 +846,13 @@ function buildCards(){
 }
 let XD=null;
 function loadXD(){ if(XD||innerWidth<880) return; XD={}; fetch('../data.json').then(r=>r.json()).then(d=>{ XD={h:d.hoods||{},v:d.videos||[]}; if(cur) show(cur); }).catch(()=>{}); }
-const VRX={lucky:/Lucky Barn/i,woods:/Woods (Stage|Series)/i,galaxy:/Galaxy Barn/i,paddock:/Paddock/i,cherryhill:/Cherry Hill/i,windmill:/Windmill/i,grove:/Grove/i,courtyard:/Courtyard/i,orchard:/Orchard/i,refuge:/Refuge/i,farmhouse:/Farmhouse/i};
+const VRX={lucky:/Lucky Barn/i,woods:/Woods (Stage|Series)/i,galaxy:/Galaxy Barn/i,paddock:/Paddock/i,cherryhill:/Cherry Hill|Tree ?line/i,windmill:/Windmill/i,grove:/Grove/i,courtyard:/Courtyard/i,orchard:/Orchard/i,refuge:/Refuge/i,farmhouse:/Farmhouse/i};
 function fillExtra(h){
   const pc=document.getElementById('cpitch'), cv=document.getElementById('cvid');
   pc.hidden=true; cv.hidden=true; document.getElementById('cvsp').hidden=true; document.getElementById('cmore').hidden=true; if(!XD||!XD.h) return;
   const x=XD.h[h.id]; const p=x&&x.d&&x.d[0]; if(p){ pc.textContent=p; pc.hidden=false; document.getElementById('cmore').hidden=false; }
-  const rx=VRX[h.id]; if(rx&&XD.v){ const L=XD.v.filter(v=>!v.cad&&!v.vm&&rx.test(String(v.s||''))); if(L.length){ let vi=(h.id.length*7+L.length)%L.length, v=L[vi]; const sp=document.getElementById('cvsp'); sp.hidden=L.length<2; sp.onclick=e=>{ e.stopPropagation(); vi=(vi+1)%L.length; v=L[vi]; put(v); };
-    const put=v=>{ cv.href='https://www.youtube.com/watch?v='+v.id; cv.querySelector('img').src='https://i.ytimg.com/vi/'+v.id+'/hqdefault.jpg'; cv.querySelector('b').textContent=v.a||''; cv.querySelector('i').textContent=(h.n)+' · '+(v.y||''); cv.hidden=false; }; put(v); } }
+  const rx=VRX[h.id]; if(rx&&XD.v){ const L0=XD.v.filter(v=>!v.cad&&!v.vm&&rx.test(String(v.s||'')+' '+String(v.vn||''))), LS=L0.filter(v=>/\s[-–|]\s/.test(String(v.s||''))), L=LS.length?LS:L0; if(L.length){ let vi=(h.id.length*7+L.length)%L.length, v=L[vi]; const sp=document.getElementById('cvsp'); sp.hidden=L.length<2; sp.onclick=e=>{ e.stopPropagation(); vi=(vi+1)%L.length; v=L[vi]; put(v); };
+    const put=v=>{ cv.href='https://www.youtube.com/watch?v='+v.id+(v.t?'&t='+v.t+'s':''); cv.querySelector('img').src='https://i.ytimg.com/vi/'+v.id+'/hqdefault.jpg'; cv.querySelector('b').textContent=v.a||''; cv.querySelector('i').textContent=(/Tree ?line/i.test(String(v.s||'')+' '+String(v.vn||''))?'Treeline (now Cherry Hill)':h.n)+' · '+(v.y||''); cv.hidden=false; }; put(v); } }
 }
 function show(h){
   if(h) document.getElementById('card').classList.remove('all');
