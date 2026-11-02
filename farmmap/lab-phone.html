@@ -1692,12 +1692,17 @@ function lpDeepInit(){
   if(!window.__lpDeep||!cur) return;
   const el=document.getElementById('lpdeep'), f=document.getElementById('finder'); if(!el) return;
   const place=function(){ if(f){ const r=f.getBoundingClientRect(); if(r.bottom>0) el.style.setProperty('--lpdt',Math.round(r.bottom)+'px'); } };
-  return;   // a tile or link already sold the idea: a picked neighborhood opens straight onto it, no descriptive overlay on any screen size
   place(); document.body.classList.add('lpdeep');
-  const ev=['pointerdown','touchstart','wheel','keydown'];
+  // Held until a deliberate move: a real drag, scroll or key press after the first 1.8s. The automatic zoom and the tail of the opening tap do not count.
+  const t0=performance.now(); let dn=null;
+  const ev=['pointerdown','pointermove','wheel','keydown'];
   const off=function(){ document.body.classList.remove('lpdeep'); try{ sessionStorage.setItem('pkmap.deephint','1'); }catch(e){}
-    ev.forEach(function(n){ removeEventListener(n,off,true); }); removeEventListener('resize',place); };
-  ev.forEach(function(n){ addEventListener(n,off,{capture:true,passive:true}); }); addEventListener('resize',place);
+    ev.forEach(function(n){ removeEventListener(n,hh,true); }); removeEventListener('resize',place); };
+  const hh=function(e){ if(performance.now()-t0<1800) return;
+    if(e.type==='pointerdown'){ dn={x:e.clientX,y:e.clientY}; return; }
+    if(e.type==='pointermove'){ if(dn&&Math.hypot(e.clientX-dn.x,e.clientY-dn.y)>10) off(); return; }
+    if(e.type==='keydown'&&e.repeat) return; off(); };
+  ev.forEach(function(n){ addEventListener(n,hh,{capture:true,passive:true}); }); addEventListener('resize',place);
 }
 function cardView(){ document.body.classList.add('cardmode'); const h=HOODS.find(x=>x.id===CARDID); if(!h) return; const go=function(){ const sh=D.shapes[h.id]; if(!sh) return; const W=stage.clientWidth,H=stage.clientHeight,b=sh.b; k=Math.max(kFit,Math.min(maxK(),W*0.9/(b[2]-b[0]),H*0.9/(b[3]-b[1]))); tx=W/2-(b[0]+b[2])/2*k; ty=H/2-(b[1]+b[3])/2*k; clamp(); apply(); light(h); }; go(); setTimeout(function(){ light._k=''; light(h); },700); setTimeout(function(){ light._k=''; light(h); },2000); window.addEventListener('resize',function(){ fit(); go(); }); }
 
