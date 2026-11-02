@@ -232,8 +232,7 @@ body{margin:0;background:var(--ink);color:var(--cream);font-family:var(--f);
   #eyebrow{display:block!important}
 }
 #cpitch,#cvid{display:none}
-#cvsp{display:none;border:1px solid rgba(242,179,61,.6);background:rgba(12,14,10,.72);color:#F2EDE3;font:800 12px/1 var(--f);min-height:30px;padding:0 11px;border-radius:999px;cursor:pointer;align-self:flex-start;margin-top:8px}#cvid{box-shadow:0 0 0 1px rgba(242,179,61,.35),0 0 24px rgba(242,179,61,.2)}#cvid.spinning{box-shadow:0 0 0 3px #F2B33D,0 0 30px rgba(242,179,61,.6)}#cvid.spinning img{filter:saturate(1.6) contrast(1.1) blur(1.5px)}
-@media (min-width:880px){#cvsp:not([hidden]){display:block;order:7}}
+#cvsp{display:none;position:absolute;right:10px;bottom:10px;z-index:3;border:1px solid rgba(242,237,227,.4);background:rgba(12,15,10,.62);color:#F2EDE3;font:700 12px/1 var(--f);min-height:30px;padding:0 11px;border-radius:999px;cursor:pointer;backdrop-filter:blur(3px)}#cvsp:hover{background:rgba(12,15,10,.85)}#cvsp:not([hidden]){display:block}#cvw:not(:has(#cvid:not([hidden]))){display:none!important}#cvw{position:relative;order:6;margin-top:14px;flex:0 0 auto}
 #card:not(.intro) #body{cursor:pointer}
 #card:not(.intro) #cvid,#card:not(.intro) #cmore,#card:not(.intro) #nav button{cursor:pointer}
 @media (min-width:880px){
@@ -247,12 +246,12 @@ body{margin:0;background:var(--ink);color:var(--cream);font-family:var(--f);
   #full #cmore{order:5;align-self:flex-start;border:0;background:none;color:#F2B33D;font:800 12.5px/1 var(--f);padding:7px 0 0;cursor:pointer}
   #card:not(.intro) #body{padding-left:30px;padding-right:30px}
   #full #cpitch+#cvid{order:6}
-  #full #cvid{order:6;display:block;position:relative;margin-top:14px;border-radius:12px;overflow:hidden;aspect-ratio:16/9;background:#1E2A1B;text-decoration:none;cursor:pointer;flex:0 0 auto}
+  #full #cvid{display:block;position:relative;margin-top:0;border-radius:12px;overflow:hidden;aspect-ratio:16/9;background:#1E2A1B;text-decoration:none;cursor:pointer;flex:0 0 auto}
   #cvid img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-  #cvid .pl{position:absolute;left:12px;bottom:12px;width:34px;height:34px;border-radius:50%;background:#F2B33D;color:#12160F;display:grid;place-items:center;font-size:13px}
+  #cvid .pl{position:absolute;left:50%;top:50%;width:48px;height:48px;margin:-24px 0 0 -24px;border-radius:50%;background:rgba(12,15,10,.62);border:1px solid rgba(242,237,227,.5);color:#F2EDE3;display:grid;place-items:center;font-size:16px;padding-left:3px;box-sizing:border-box}
   #cvid .vt{position:absolute;left:55px;right:10px;bottom:10px;color:#F2EDE3;text-shadow:0 1px 6px rgba(0,0,0,.7)}
   #cvid .vt b{display:block;font:800 14px/1.15 var(--f)}#cvid .vt i{display:block;font:500 11.5px/1.2 var(--f);font-style:normal;color:#E6E0D3}
-  #cvid::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(12,14,10,0) 45%,rgba(12,14,10,.8));pointer-events:none}
+  #cvid::after{display:none}
   #cvid .pl,#cvid .vt{z-index:1}
   #cvid.playing{cursor:default}#cvid.playing img,#cvid.playing .pl,#cvid.playing .vt{display:none}#cvid.playing::after{display:none}#cvid iframe{position:absolute;inset:0;width:100%;height:100%;border:0;z-index:2}
   #full #cgo{order:9;margin-top:auto;align-self:stretch;text-align:center;padding-top:14px;padding-bottom:14px;background:#F2B33D;color:#12160F}
@@ -264,7 +263,7 @@ body{margin:0;background:var(--ink);color:var(--cream);font-family:var(--f);
   #full #cams{margin-top:14px}
   #full #ctag{margin-top:16px;font:800 19px/1.2 var(--f)}
   #full #cpitch{font-size:14px;margin-top:8px;-webkit-line-clamp:4}
-  #full #cvid{margin-top:16px}
+  #full #cvid{margin-top:0}
 }
 #fback{display:none;border:0;background:none;color:#F2B33D;font:800 15px/1.1 var(--f);padding:4px 0 12px;cursor:default;text-align:left}
 #fback:hover{text-decoration:underline}
@@ -445,9 +444,8 @@ body{margin:0;background:var(--ink);color:var(--cream);font-family:var(--f);
         <p id="ctag"></p>
         <p id="cpitch" hidden></p>
         <button id="cmore" type="button" hidden>Read more →</button>
-        <a id="cvid" hidden target="_blank" rel="noopener"><img alt=""><span class="pl">▶︎</span><span class="vt"><b></b><i></i></span></a>
+        <div id="cvw"><a id="cvid" hidden target="_blank" rel="noopener"><img alt=""><span class="pl">▶︎</span></a><button id="cvsp" type="button" hidden>Another one</button></div>
         <div class="ams" id="cams"></div>
-        <button id="cvsp" type="button" hidden>Another one</button>
         <button id="cgo">Explore the page →</button>
       </div>
     </div>
@@ -868,7 +866,7 @@ function fillExtra(h){
   pc.hidden=true; cv.hidden=true; document.getElementById('cvsp').hidden=true; document.getElementById('cmore').hidden=true; if(!XD||!XD.h) return;
   const x=XD.h[h.id]; const p=x&&x.d&&x.d[0]; if(p){ pc.textContent=p; pc.hidden=false; document.getElementById('cmore').hidden=false; }
   const rx=VRX[h.id]; if(rx&&XD.v){ const L0=XD.v.filter(v=>!v.cad&&!(v.vm&&!v.th)&&rx.test(String(v.s||'')+' '+String(v.vn||''))), L=L0; if(L.length){ let vi=Math.floor(Math.random()*L.length); try{ const lk='pkmap.lastv.'+h.id, last=sessionStorage.getItem(lk); if(L.length>1&&last!==null&&String(vi)===last) vi=(vi+1+Math.floor(Math.random()*(L.length-1)))%L.length; sessionStorage.setItem(lk,String(vi)); }catch(e){} let v=L[vi]; const sp=document.getElementById('cvsp'); sp.hidden=L.length<2; sp.onclick=e=>{ e.stopPropagation(); let k=vi; while(L.length>1&&k===vi) k=Math.floor(Math.random()*L.length); vi=k; v=L[k]; put(v); };
-    const put=v=>{ cv.__v=v; cv.classList.remove('playing'); const old=cv.querySelector('iframe'); if(old) old.remove(); cv.href=v.vm?'https://vimeo.com/'+v.vm+(v.vh?'/'+v.vh:'')+(v.t?'#t='+v.t+'s':''):'https://www.youtube.com/watch?v='+v.id+(v.t?'&t='+v.t+'s':''); cv.querySelector('img').src=v.vm?v.th:'https://i.ytimg.com/vi/'+v.id+'/hqdefault.jpg'; cv.querySelector('b').textContent=v.a||''; cv.querySelector('i').textContent=(/Tree ?line/i.test(String(v.s||'')+' '+String(v.vn||''))?'Treeline (now Cherry Hill)':h.n)+' · '+(v.y||''); cv.hidden=false; }; put(v); } }
+    const put=v=>{ cv.__v=v; cv.classList.remove('playing'); const old=cv.querySelector('iframe'); if(old) old.remove(); cv.href=v.vm?'https://vimeo.com/'+v.vm+(v.vh?'/'+v.vh:'')+(v.t?'#t='+v.t+'s':''):'https://www.youtube.com/watch?v='+v.id+(v.t?'&t='+v.t+'s':''); cv.querySelector('img').src=v.vm?v.th:'https://i.ytimg.com/vi/'+v.id+'/hqdefault.jpg'; cv.hidden=false; }; put(v); } }
 }
 function show(h){
   if(h) document.getElementById('card').classList.remove('all');
