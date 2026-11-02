@@ -25343,7 +25343,7 @@
 2024
 ],
 "t": "h",
-"l": "A young Brooklyn band one album in. In 2025 they had the best-reviewed record of the year and sold out Forest Hills Stadium.",
+"l": "A young Brooklyn band two albums in. In 2025 they made one of the year's best-reviewed records and grew into a major touring act.",
 "top": true,
 "m": {
 "u": "https://www.youtube.com/watch?v=8cIGCzXH3xQ",
@@ -25510,7 +25510,7 @@
 2013
 ],
 "t": "h",
-"l": "Won the 2017 Grammy for Best Country Album after playing 300-500 capacity clubs with his self-funded High Top Mountain. Sold-out Ryman headlines came first; arenas followed.",
+"l": "Won the 2017 Grammy for Best Country Album after playing 300-500 capacity clubs with his self-funded High Top Mountain. Sold-out Ryman headlines came first; arenas followed. He first played the farm in 2011 as the bar band Sunday Valley.",
 "top": false,
 "g": "country",
 "m": {
@@ -25596,7 +25596,7 @@
 2016
 ],
 "t": "h",
-"l": "Salad Days was six weeks old, the record that made him. The Hollywood Bowl followed.",
+"l": "Salad Days, four months old, was the record that made him. The Hollywood Bowl followed.",
 "top": false,
 "m": {
 "u": "https://www.youtube.com/watch?v=VoGNw78eYzc",
@@ -25787,7 +25787,7 @@
 2016
 ],
 "t": "b",
-"l": "Unsigned, in 150-300 capacity bars, with her wedding ring pawned to pay for the record. Third Man and SNL followed within months; her first Ryman headline in 2018 sold out so fast a third night was added.",
+"l": "Her debut on Third Man and an SNL spot had just landed that spring, after she pawned her wedding ring to pay for the record. Her first Ryman headline in 2018 sold out so fast a third night was added.",
 "top": false,
 "m": {
 "u": "https://www.youtube.com/watch?v=1NUOPFPQHMQ",
@@ -25860,7 +25860,8 @@
 "top": false,
 "g": "bluegrass",
 "pi": "i/p10102.jpg",
-"sp": "3GjVVVcFmUgEJEAAsbGkf4"
+"sp": "3GjVVVcFmUgEJEAAsbGkf4",
+"pyr": 2007
 },
 {
 "n": "Viagra Boys",
@@ -26928,22 +26929,6 @@
 "sp": "0nugNBwdWaptgIAsEtx1It"
 },
 {
-"n": "Sunday Valley",
-"y": [
-2011
-],
-"t": "b",
-"l": "An unsigned Kentucky bar band whose singer had already quit music once. As Sturgill Simpson, he sold out the 2,362-seat Ryman, won a Grammy in 2017 and headlined arenas by 2019.",
-"top": false,
-"g": "indie",
-"pyr": 2011,
-"pi": "https://i.vimeocdn.com/video/191917215-36fb5530fb389e33077049674dfac3f742c88c613e663c75a1d496d2ee4034f6-d_590x332",
-"m": {
-"u": "https://vimeo.com/28735540/ce45b0d17a",
-"t": "▶ Watch from Pickathon 2011"
-}
-},
-{
 "n": "The Altons",
 "y": [
 2023,
@@ -26966,7 +26951,7 @@
 2013
 ],
 "t": "r",
-"l": "Six months old as a band, with the debut out that month, they played New York rooms near 200. They went from Boston's 933-capacity Paradise to the 2,400-seat House of Blues in a year.",
+"l": "A New York band two years in, with a debut that had come out that January. They went from Boston's 933-capacity Paradise to the 2,400-seat House of Blues in a year.",
 "top": false,
 "g": "blues",
 "pyr": 2013,
@@ -27080,30 +27065,6 @@
 "top": false,
 "g": "",
 "pyr": 2010,
-"lg": 1
-},
-{
-"n": "Howe Gelb",
-"y": [
-2013
-],
-"t": "r",
-"l": "Founder of Giant Sand in Tucson; two of its longtime members, Joey Burns and John Convertino, went on to form Calexico.",
-"top": false,
-"g": "",
-"pyr": 2013,
-"lg": 1
-},
-{
-"n": "John Doe and The Sadies",
-"y": [
-2009
-],
-"t": "r",
-"l": "X's co-founder and bassist, playing country with The Sadies, who backed him on 2009's Country Club.",
-"top": false,
-"g": "country",
-"pyr": 2009,
 "lg": 1
 },
 {
@@ -37483,6 +37444,7 @@
 {
 "n": "Danny Barnes",
 "y": [
+2002,
 2011,
 2018
 ],
@@ -37490,7 +37452,7 @@
 "line": "The banjo innovator, a Pickathon regular since its early years, was Grammy-nominated for Best Bluegrass Album in 2021 for Man on Fire.",
 "src": "https://en.wikipedia.org/wiki/Grammy_Award_for_Best_Bluegrass_Album",
 "pi": "i/p9712.jpg",
-"pyr": 2011,
+"pyr": 2002,
 "m": {
 "u": "https://www.youtube.com/watch?v=eFKzQRDPc5w",
 "t": "▶ Watch from Pickathon 2011"
@@ -39966,12 +39928,13 @@
 {
 "n": "Cut Worms",
 "y": [
+2017,
 2018
 ],
 "g": "",
 "line": "His debut had arrived three months earlier to almost uniformly good reviews, and never touched a chart.",
 "src": "",
-"pyr": 2018,
+"pyr": 2017,
 "pi": "https://i.ytimg.com/vi/Iad0C-NTUpI/hqdefault.jpg",
 "m": {
 "u": "https://www.youtube.com/watch?v=Iad0C-NTUpI",
@@ -40468,12 +40431,13 @@
 {
 "n": "Hannah Cohen",
 "y": [
+2022,
 2025
 ],
 "g": "",
 "line": "Four albums for Bella Union across thirteen years, admired by Pitchfork and the British press, and the venues never grew past the club circuit.",
 "src": "",
-"pyr": 2025,
+"pyr": 2022,
 "pi": "https://i.ytimg.com/vi/gbuuR0_l_4E/hqdefault.jpg",
 "m": {
 "u": "https://www.youtube.com/watch?v=gbuuR0_l_4E",
