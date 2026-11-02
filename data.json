@@ -29334,8 +29334,8 @@
 "announce": [
 {
 "id": "build",
-"t": "Something’s being built. Let Pickathon build it with you.",
-"short": "Want to build something? Apply by Dec 15",
+"t": "Help build next year’s neighborhoods.",
+"short": "Help build next year’s neighborhoods",
 "cta": "Start a project",
 "route": "build",
 "start": "2026-10-28",
