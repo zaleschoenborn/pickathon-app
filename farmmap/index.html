@@ -859,7 +859,7 @@ function buildCards(){
 }
 let XD=null;
 function loadXD(){ if(XD||innerWidth<880) return; XD={}; fetch('../data.json').then(r=>r.json()).then(d=>{ XD={h:d.hoods||{},v:d.videos||[]}; if(cur) show(cur); }).catch(()=>{}); }
-const VRX={lucky:/Lucky Barn/i,woods:/Woods (Stage|Series)/i,galaxy:/Galaxy Barn/i,paddock:/Paddock/i,cherryhill:/Cherry Hill|Tree ?line/i,windmill:/Windmill/i,grove:/Grove/i,courtyard:/Courtyard/i,orchard:/Orchard/i,refuge:/Refuge/i,farmhouse:/Farmhouse/i};
+const VRX={lucky:/Lucky Barn/i,woods:/Woods (Stage|Series)/i,galaxy:/Galaxy Barn/i,paddock:/Paddock/i,cherryhill:/Cherry Hill|Tree ?line/i,windmill:/Windmill/i,grove:/Grove/i,courtyard:/Courtyard/i,orchard:/Orchard/i,refuge:/Refuge/i,farmhouse:/Farmhouse/i,curation:/Curation/i};
 function fillExtra(h){
   const pc=document.getElementById('cpitch'), cv=document.getElementById('cvid');
   pc.hidden=true; cv.hidden=true; document.getElementById('cvsp').hidden=true; document.getElementById('cmore').hidden=true; if(!XD||!XD.h) return;
