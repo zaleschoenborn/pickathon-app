@@ -424,10 +424,6 @@
 "c": "Grace Hefley"
 },
 {
-"i": "i/pk-paddock-10.jpg",
-"c": "Risa Scott"
-},
-{
 "i": "i/pk-paddock-11.jpg",
 "c": "Pickathon"
 },
@@ -442,10 +438,6 @@
 {
 "i": "i/pk-paddock-14.jpg",
 "c": "Norm Eder"
-},
-{
-"i": "i/pk-paddock-15.jpg",
-"c": "Risa Scott"
 }
 ],
 "ic": "i/224.svg",
@@ -897,10 +889,6 @@
 "c": "Pickathon"
 },
 {
-"i": "i/pk-grove-11.jpg",
-"c": "Teresa Meier"
-},
-{
 "i": "i/pk-grove-12.jpg",
 "c": "Jason Redmond"
 },
@@ -1186,10 +1174,6 @@
 {
 "i": "i/pk-windmill-11.jpg",
 "c": "Killian Mustain"
-},
-{
-"i": "i/pk-windmill-12.jpg",
-"c": "Teresa Meier"
 },
 {
 "i": "i/pk-windmill-13.jpg",
@@ -1652,10 +1636,6 @@
 {
 "i": "i/pk-lucky-09.jpg",
 "c": "Van Jaarsveld"
-},
-{
-"i": "i/pk-lucky-10.jpg",
-"c": "Pickathon"
 },
 {
 "i": "i/pk-lucky-11.jpg",
@@ -2719,10 +2699,6 @@
 "c": "Andy Meeks"
 },
 {
-"i": "i/pk-courtyard-08.jpg",
-"c": "Brooke Hoyer"
-},
-{
 "i": "i/pk-courtyard-09.jpg",
 "c": "Andy Meeks"
 },
@@ -2745,10 +2721,6 @@
 {
 "i": "i/pk-courtyard-14.jpg",
 "c": "Dylan VanWeelden"
-},
-{
-"i": "i/pk-courtyard-15.jpg",
-"c": "Brooke Hoyer"
 }
 ],
 "ic": "i/214.svg",
@@ -3023,10 +2995,6 @@
 {
 "i": "i/pk-market-13.jpg",
 "c": "Andy Meeks"
-},
-{
-"i": "i/pk-market-14.jpg",
-"c": "Brooke Hoyer"
 }
 ],
 "ic": "i/144.svg",
@@ -52851,7 +52819,8 @@
 "s": "La Lom Cherry Hill 2024",
 "y": 2024,
 "cad": 0,
-"vn": "Cherry Hill"
+"vn": "Cherry Hill",
+"t": 105
 },
 {
 "id": "FE8lbKgtjyc",
