@@ -400,7 +400,7 @@ body{margin:0;background:var(--ink);color:var(--cream);font-family:var(--f);
 <style>body.cardmode #leads{display:none!important}body.cardmode #veil.on{background:rgba(8,11,6,.6)!important}body.cardmode #lits img{filter:drop-shadow(0 0 1.5px #fff) drop-shadow(0 0 4px #fff4c2) drop-shadow(0 0 18px rgba(255,236,150,1)) brightness(1.3) saturate(1.2)}body.cardmode #stage{inset:0!important;right:0!important;bottom:0!important;width:100%!important;height:100%!important}body.cardmode #page,body.cardmode #finder,body.cardmode #fullmap,body.cardmode #card,body.cardmode #fx,body.cardmode #itip{display:none!important}body.cardmode,body.cardmode *{pointer-events:none!important;cursor:default!important}body.cardmode .lbl,body.cardmode [class*=lab]{display:none!important}</style>
 <style>
 /* ================= LAB (phone test) */
-#lpbar,#lpmenu,#lpscrim,#lptest{display:none}
+#lpbar,#lpmenu,#lpscrim,#lptest,#lpprev{display:none}
 @media (max-width:879px){
   html,body{height:100%;overflow:hidden;overscroll-behavior:none}
   body{position:fixed;inset:0;width:100%}
@@ -486,6 +486,30 @@ body{margin:0;background:var(--ink);color:var(--cream);font-family:var(--f);
   #card #cvsp{min-height:0!important;height:26px;padding:0 10px;font-size:11px;gap:5px;align-items:center}
   #card #cvsp .ic{width:auto;height:auto;border-radius:0;font-size:12px;line-height:1;top:0}
   #card #cvr{margin-top:6px}
+  #card #body{display:none!important}
+  #card,#card.intro{max-height:30%}
+  #lpprev{display:grid!important;grid-template-columns:clamp(96px,29%,120px) minmax(0,1fr);column-gap:12px;row-gap:10px;
+    padding:16px 14px calc(12px + env(safe-area-inset-bottom,0px));position:relative}
+  #lpth{position:relative;aspect-ratio:4/3;border-radius:10px;background:#0C0F0A center/cover no-repeat;overflow:hidden}
+  #lpw{position:absolute;left:5px;bottom:5px;display:inline-flex;align-items:center;gap:4px;height:22px;padding:0 8px 0 3px;border:0;border-radius:999px;
+    background:#D6B54A;color:#12160F;font:800 10.5px/1 var(--f);cursor:pointer}
+  #lpw[hidden]{display:none}
+  #lpw b{display:inline-grid;place-items:center;width:16px;height:16px;border-radius:50%;background:#12160F;color:#D6B54A;font-size:7px;padding-left:1px;box-sizing:border-box}
+  #lptx{min-width:0;align-self:center;padding-right:30px}
+  #lpn{display:block;font:800 19px/1.1 var(--f);color:#fff;letter-spacing:-.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  #lpa{margin:4px 0 0;font:500 13px/1.3 var(--f);color:#CFC9BC;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  #lpa[hidden],#lpnow[hidden]{display:none}
+  #lpnow{margin-top:5px;display:flex;flex-direction:column;gap:3px}
+  #lpnow div{font:700 12.5px/1.25 var(--f);color:#F2EDE3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  #lpnow em{font-style:normal;font-weight:500;color:#ABA597}
+  #lpnow i{display:inline-block;margin-right:6px;padding:2px 6px;border-radius:999px;font:800 9px/1.2 var(--f);letter-spacing:.08em;text-transform:uppercase;font-style:normal;background:#2A3125;color:#CFC9BC}
+  #lpnow i.on{background:#FF6F59;color:#12160F}
+  #lppills{grid-column:1/-1;display:flex;gap:7px;flex-wrap:nowrap;overflow:hidden}
+  #lppills button{flex:none;height:32px;padding:0 14px;border-radius:999px;border:1px solid rgba(242,237,227,.28);background:transparent;color:#F2EDE3;
+    font:800 12.5px/1 var(--f);cursor:pointer;white-space:nowrap}
+  #lppills button.pri{background:#D6B54A;border-color:#D6B54A;color:#12160F}
+  #lpx{position:absolute;top:12px;right:10px;width:28px;height:28px;border-radius:50%;border:1px solid rgba(255,255,255,.12);background:rgba(34,40,32,.9);
+    color:#F2EDE3;font:800 12px/1 var(--f);display:grid;place-items:center;cursor:pointer;padding:0}
   #card #cgo,#card #full #cgo{grid-column:1/-1;justify-self:start;align-self:start;margin:12px 0 0;min-height:34px;height:34px;padding:0 16px;
     border-radius:999px;background:#D6B54A;color:#12160F;font:800 13px/1 var(--f)}
 }
@@ -514,7 +538,7 @@ body{margin:0;background:var(--ink);color:var(--cream);font-family:var(--f);
   <div id="key" aria-label="What the colours mean"></div>
 </div>
 <button id="fullmap" type="button" aria-label="Back to the full map"><svg viewBox="0 0 16 16"><path d="M2 6V2h4M14 6V2h-4M2 10v4h4M14 10v4h-4"/></svg>Full map</button>
-<div id="card" class="intro">
+<div id="card" class="intro"><div id="lpprev"><div id="lpth"><button id="lpw" type="button" hidden><b>&#9654;&#xFE0E;</b>Watch</button></div><div id="lptx"><b id="lpn"></b><p id="lpa"></p><div id="lpnow"></div></div><div id="lppills"></div><button id="lpx" type="button" aria-label="Close preview">&#10005;</button></div>
   <div id="picker" role="group" aria-label="Find on the map" hidden>
     <div id="phead"><div id="pname">What are you looking for?</div><button id="pclose" type="button" aria-label="Close">✕</button></div>
     <div id="pgrid"></div>
@@ -962,7 +986,7 @@ function buildCards(){
   box.addEventListener('mouseleave',()=>{ if(!pinned) peek(null); });
 }
 let XD=null;
-function loadXD(){ if(XD) return; XD={}; fetch('../data.json').then(r=>r.json()).then(d=>{ XD={h:d.hoods||{},v:d.videos||[]}; if(cur) show(cur); }).catch(()=>{}); }
+function loadXD(){ if(XD) return; XD={}; fetch('../data.json').then(r=>r.json()).then(d=>{ XD={h:d.hoods||{},v:d.videos||[],s:d.sets||[],st:d.stages||[],ar:d.artists||{},days:d.days||[]}; if(cur) show(cur); }).catch(()=>{}); }
 const VRX={lucky:/Lucky Barn/i,woods:/Woods (Stage|Series)/i,galaxy:/Galaxy Barn/i,paddock:/Paddock/i,cherryhill:/Cherry Hill|Tree ?line/i,windmill:/Windmill/i,grove:/Grove/i,courtyard:/Courtyard/i,orchard:/Orchard/i,refuge:/Refuge/i,farmhouse:/Farmhouse/i,curation:/Curation/i};
 const PAL=['#F2B33D','#9FCB8A','#7FD3E6','#E58FB0','#C9A0F0']; let cyc=0;
 function vSong(t){ t=String(t||'').trim(); const P=t.split(/\s+[-\u2013|]\s+/), K=[]; for(let i=0;i<P.length;i++){ if(i>0&&/pickathon|session|stage|S\d\dE\d\d|live at|full set/i.test(P[i])) break; K.push(P[i]); } const c=K.join(' - ').replace(/\s*@\s*Pickathon.*$/i,'').replace(/\s+S\d\dE\d\d\s*$/i,'').replace(/\s*[\(\[](live|official)[^\)\]]*[\)\]]\s*$/i,'').trim(); return c||t; }
@@ -995,6 +1019,7 @@ function show(h){
   document.getElementById('cgo').textContent=LP()?('See '+(/^The /.test(h.n)?h.n:'the '+h.n)+' →'):('Explore '+h.n.replace(/^The /,'')+' →');
   if(!amFilter && typeof showRings==='function') showRings(null,h);
   heroRun(h);
+  if(LP()) lpFill(h);
 }
 // Exactly one neighborhood is current, ever. A deliberate pointer or touch on
 // a neighborhood changes it; moving onto bare ground leaves it alone, so the
@@ -1372,7 +1397,60 @@ function lpWire(){
   // Find: on a phone its sheet rises from the bottom on its own, not inside the (hidden) preview
   if(LP()){ const P=document.getElementById('picker'); if(P) document.body.appendChild(P); }
 }
-(function(){ const _boot=boot; boot=function(){ if(LP()){ hoverOK=false; lpBuildMenu(); lpWire(); } _boot(); lpWire._w=stage.clientWidth; lpWire._h=stage.clientHeight; }; })();
+// ---- compact preview: thumbnail, name, one line, small pills. During the festival: on now / next + the schedule.
+function lpWhen(){ let v=null; const m=location.search.match(/[?&]when=([a-z]+)/); if(m) return m[1];
+  try{ const sel=parent!==window&&parent.document.querySelector('select[aria-label="Site state"]'); if(sel) v=sel.value; }catch(e){}
+  if(v==null){ try{ v=sessionStorage.getItem('pkmaplab.when'); }catch(e){} } return v||'now'; }
+function lpFest(){ return lpWhen()==='fest'; }
+const lpT12=iso=>{ const h=+iso.slice(11,13), m=iso.slice(14,16); return (h%12||12)+(m==='00'?'':':'+m)+(h<12?' AM':' PM'); };
+function lpNowNext(h){
+  if(!XD||!XD.s) return null;
+  const hoodOf={}; (XD.st||[]).forEach(x=>hoodOf[x.id]=x.h);
+  const days=(XD.days||[]).map(x=>x.id), pad=n=>(n<10?'0':'')+n, d=new Date();
+  const real=d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
+  // during the real weekend use the clock; otherwise the site's test moment (Saturday, 8 PM)
+  const t = days.indexOf(real)>=0 ? real+' '+pad(d.getHours())+':'+pad(d.getMinutes()) : '2026-08-01 20:00';
+  const L=XD.s.filter(x=>hoodOf[x.st]===h.id).sort((a,b)=>a.s<b.s?-1:1);
+  const on=L.filter(x=>x.s<=t&&t<x.e)[0], nx=L.filter(x=>x.s>t)[0];
+  const nm=x=>((XD.ar[x.a]||{}).n||'');
+  return {on:on&&{n:nm(on),e:lpT12(on.e)}, nx:nx&&{n:nm(nx),s:lpT12(nx.s),d:nx.d!==t.slice(0,10)?((XD.days.find(z=>z.id===nx.d)||{}).n||''):''}, any:L.length>0};
+}
+const lpEsc=t=>String(t||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function lpPost(m){ try{ if(parent!==window){ parent.postMessage(m,'*'); return true; } }catch(e){} return false; }
+function lpFill(h){
+  if(!h) return; lpFill._h=h; lpFill._f=lpFest();
+  const th=document.getElementById('lpth'), im=(HERO[h.id]||[])[0];
+  th.style.backgroundImage=(im?'url("'+im+'")':'')+(im&&LQ[h.id]?', ':'')+(LQ[h.id]?'url('+LQ[h.id]+')':'');
+  const cv=document.getElementById('cvid'), hasV=!cv.hidden&&!!cv.__v;
+  const w=document.getElementById('lpw'); w.hidden=!hasV;
+  document.getElementById('lpn').textContent=h.n;
+  const fest=lpFill._f, nn=fest?lpNowNext(h):null, now=document.getElementById('lpnow'), ab=document.getElementById('lpa');
+  if(nn&&(nn.on||nn.nx)){
+    ab.hidden=true;
+    now.innerHTML=(nn.on?'<div><i class="on">Now</i>'+lpEsc(nn.on.n)+'<em> · until '+nn.on.e+'</em></div>':'')+
+      (nn.nx?'<div><i>Next</i>'+lpEsc(nn.nx.n)+'<em> · '+(nn.nx.d?nn.nx.d+' ':'')+nn.nx.s+'</em></div>':'');
+    now.hidden=false;
+  } else { ab.hidden=false; ab.textContent=h.t||''; now.hidden=true; now.innerHTML=''; }
+  const see='See '+(/^The /.test(h.n)?h.n:'the '+h.n);
+  const P=[];
+  if(fest&&nn&&nn.any) P.push(['sched','See the schedule',1]);
+  P.push(['open',see+' →',!(fest&&nn&&nn.any)]);
+  if(!fest&&parent!==window) P.push(['tour','▶︎ Tour',0]);
+  document.getElementById('lppills').innerHTML=P.map(p=>'<button type="button" data-a="'+p[0]+'" class="'+(p[2]?'pri':'')+'">'+p[1]+'</button>').join('');
+  if(LP()&&cur){ const c=document.getElementById('card'); if(c.offsetHeight!==LPVB) lpSync(); }
+}
+function lpWirePanel(){
+  document.getElementById('lppills').addEventListener('click',e=>{ const b=e.target.closest('button'); if(!b||!cur) return; e.stopPropagation();
+    const a=b.dataset.a;
+    if(a==='open') goPage(cur);
+    else if(a==='tour'){ if(!lpPost({pkMap:'tour',id:cur.id})) goPage(cur); }
+    else if(a==='sched'){ if(!lpPost({pkMap:'sched',id:cur.id})) goPage(cur); } });
+  document.getElementById('lpw').addEventListener('click',e=>{ e.stopPropagation(); document.getElementById('cvid').click(); });
+  document.getElementById('lpx').addEventListener('click',e=>{ e.stopPropagation(); clearCur(); });
+  // follow the site's TEST "When" switch
+  setInterval(()=>{ if(cur&&lpFill._h===cur&&lpFest()!==lpFill._f) lpFill(cur); },800);
+}
+(function(){ const _boot=boot; boot=function(){ if(LP()){ hoverOK=false; lpBuildMenu(); lpWire(); lpWirePanel(); } _boot(); lpWire._w=stage.clientWidth; lpWire._h=stage.clientHeight; }; })();
 if(img.complete&&img.naturalWidth) boot(); else img.onload=boot;
 
 // ---- Walk the farm: swipe the card (or use the arrows) to go neighbourhood to
