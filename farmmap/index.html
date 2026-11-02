@@ -254,6 +254,7 @@ body{margin:0;background:var(--ink);color:var(--cream);font-family:var(--f);
   #cvid .vt b{display:block;font:800 14px/1.15 var(--f)}#cvid .vt i{display:block;font:500 11.5px/1.2 var(--f);font-style:normal;color:#E6E0D3}
   #cvid::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(12,14,10,0) 45%,rgba(12,14,10,.8));pointer-events:none}
   #cvid .pl,#cvid .vt{z-index:1}
+  #cvid.playing{cursor:default}#cvid.playing img,#cvid.playing .pl,#cvid.playing .vt{display:none}#cvid.playing::after{display:none}#cvid iframe{position:absolute;inset:0;width:100%;height:100%;border:0;z-index:2}
   #full #cgo{order:9;margin-top:auto;align-self:stretch;text-align:center;padding-top:14px;padding-bottom:14px;background:#F2B33D;color:#12160F}
   #hero{aspect-ratio:16/9!important;border-radius:14px}
   #hero::after{content:'';position:absolute;inset:0;z-index:2;pointer-events:none;background:linear-gradient(180deg,rgba(12,14,10,0) 40%,rgba(12,14,10,.88) 100%)}
@@ -852,7 +853,7 @@ function fillExtra(h){
   pc.hidden=true; cv.hidden=true; document.getElementById('cvsp').hidden=true; document.getElementById('cmore').hidden=true; if(!XD||!XD.h) return;
   const x=XD.h[h.id]; const p=x&&x.d&&x.d[0]; if(p){ pc.textContent=p; pc.hidden=false; document.getElementById('cmore').hidden=false; }
   const rx=VRX[h.id]; if(rx&&XD.v){ const L0=XD.v.filter(v=>!v.cad&&!v.vm&&rx.test(String(v.s||'')+' '+String(v.vn||''))), L=L0; if(L.length){ let vi=(h.id.length*7+L.length)%L.length, v=L[vi]; const sp=document.getElementById('cvsp'); sp.hidden=L.length<2; sp.onclick=e=>{ e.stopPropagation(); vi=(vi+1)%L.length; v=L[vi]; put(v); };
-    const put=v=>{ cv.href='https://www.youtube.com/watch?v='+v.id+(v.t?'&t='+v.t+'s':''); cv.querySelector('img').src='https://i.ytimg.com/vi/'+v.id+'/hqdefault.jpg'; cv.querySelector('b').textContent=v.a||''; cv.querySelector('i').textContent=(/Tree ?line/i.test(String(v.s||'')+' '+String(v.vn||''))?'Treeline (now Cherry Hill)':h.n)+' · '+(v.y||''); cv.hidden=false; }; put(v); } }
+    const put=v=>{ cv.__v=v; cv.classList.remove('playing'); const old=cv.querySelector('iframe'); if(old) old.remove(); cv.href='https://www.youtube.com/watch?v='+v.id+(v.t?'&t='+v.t+'s':''); cv.querySelector('img').src='https://i.ytimg.com/vi/'+v.id+'/hqdefault.jpg'; cv.querySelector('b').textContent=v.a||''; cv.querySelector('i').textContent=(/Tree ?line/i.test(String(v.s||'')+' '+String(v.vn||''))?'Treeline (now Cherry Hill)':h.n)+' · '+(v.y||''); cv.hidden=false; }; put(v); } }
 }
 function show(h){
   if(h) document.getElementById('card').classList.remove('all');
@@ -1050,14 +1051,23 @@ labs.addEventListener('pointerover',e=>{
 // ctrl+wheel) and a mouse wheel zoom it.
 stage.addEventListener('wheel',e=>{
   e.preventDefault();
+  cancelAnimationFrame(flyRaf);   // a glide in progress must not fight the hand
   if(!e.ctrlKey && !e.metaKey && (e.deltaX||Math.abs(e.deltaY)<40)){
     tx-=e.deltaX; ty-=e.deltaY; clamp(); move(); return;
   }
   const s=e.ctrlKey||e.metaKey ? Math.exp(-e.deltaY/140) : (e.deltaY<0?1.2:1/1.2);
   zoomAt(k*s,e.clientX,e.clientY);
 },{passive:false});
-stage.addEventListener('dblclick',e=>{e.preventDefault(); zoomAt(k*2,e.clientX,e.clientY);});
+stage.addEventListener('dblclick',e=>{e.preventDefault(); cancelAnimationFrame(flyRaf); zoomAt(k*2,e.clientX,e.clientY);});
 
+document.getElementById('cvid').addEventListener('click',e=>{   // the clip plays right here in the card; it never sends you off to YouTube
+  const cv=e.currentTarget, v=cv.__v; if(!v||cv.classList.contains('playing')) return;
+  e.preventDefault(); e.stopPropagation();
+  const f=document.createElement('iframe');
+  f.src='https://www.youtube-nocookie.com/embed/'+v.id+'?autoplay=1&rel=0&playsinline=1'+(v.t?'&start='+v.t:'');
+  f.allow='autoplay; encrypted-media; picture-in-picture; fullscreen'; f.setAttribute('allowfullscreen','');
+  cv.classList.add('playing'); cv.appendChild(f);
+});
 document.getElementById('cgo').onclick=e=>{ e.stopPropagation(); if(cur) goPage(cur); };
 document.getElementById('card').addEventListener('click',e=>{
   if(e.target.closest('#pickbar,#picker,#top,#nav,#pcl,#cvid,#cvsp,#cmore,#fback,#fx')) return;     // the amenity controls stay controls
@@ -1076,7 +1086,7 @@ document.getElementById('cmore').onclick=e=>{ e.stopPropagation(); if(cur) goPag
     if(best){ const h=HOODS.filter(x=>x.id===best.dataset.h)[0]; if(h) peek(h); } },140); },{passive:true});
 })();
 document.getElementById('fx').onclick=e=>{ e.stopPropagation(); clearCur(); };
-document.getElementById('fback').onclick=e=>{ e.stopPropagation(); fullMap(); };
+document.getElementById('fback').onclick=e=>{ e.stopPropagation(); clearCur(); };
 setInterval(()=>{ document.getElementById('fullmap').classList.toggle('on', k>kFit*1.08 || !!cur); },250);
 document.getElementById('pgback').onclick=()=>{document.getElementById('page').hidden=true;};
 const PT=document.getElementById('ptog'), PK=document.getElementById('picker');
@@ -1216,7 +1226,7 @@ function stepHood(dir){
     if(Math.abs(dx)>46 && Math.abs(dx)>1.6*Math.abs(dy) && dt<800){ window.__swipedAt=performance.now(); stepHood(dx<0?1:-1); }
   });
   card.addEventListener('pointercancel',()=>{ d=null; });
-  stage.addEventListener('pointerdown',()=>cancelAnimationFrame(flyRaf),true);
+  stage.addEventListener('pointerdown',()=>{ cancelAnimationFrame(flyRaf); clearTimeout(mvT); if(stage.classList.contains('moving')){ stage.classList.remove('moving'); apply(); } },true);
   addEventListener('keydown',e=>{ if(e.target&&/INPUT|TEXTAREA/.test(e.target.tagName)) return;
     if(e.key==='ArrowRight') stepHood(1); else if(e.key==='ArrowLeft') stepHood(-1); });
 })();
