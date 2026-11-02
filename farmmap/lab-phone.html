@@ -583,9 +583,50 @@ body{margin:0;background:var(--ink);color:var(--cream);font-family:var(--f);
      who played here.</p>
 </div>
 
+<style>
+/* ===== Nov 2 pass. Phone: a graphic overview heading (no box) and quiet prev/next arrows on the strip.
+   Desktop: the picked-neighborhood pane gets its type, what to expect and programming back. */
+#ctype,#cexp,#cprog,.lpar{display:none}
+@media (max-width:879px){
+  #lptitle{position:fixed;left:0;right:0;top:0;z-index:24;display:flex;flex-direction:column;gap:5px;max-width:none;
+    padding:calc(max(10px,env(safe-area-inset-top,0px)) + 52px) 16px 4px;border:0;border-radius:0;background:none;backdrop-filter:none;-webkit-backdrop-filter:none;pointer-events:none}
+  #lptitle::before{content:'';position:absolute;left:0;right:0;top:0;height:calc(100% + 46px);z-index:-1;
+    background:linear-gradient(180deg,rgba(10,13,8,.86) 0%,rgba(10,13,8,.66) 52%,rgba(10,13,8,.3) 78%,rgba(10,13,8,0) 100%)}
+  #lptitle small{font:800 11px/1 var(--f);letter-spacing:.16em;text-transform:uppercase;color:#F2B33D}
+  #lptitle b{font:900 clamp(22px,7vw,27px)/1.05 var(--f);color:var(--cream);white-space:normal;letter-spacing:-.005em;text-shadow:0 2px 14px rgba(0,0,0,.45)}
+  body.lpsel #lptitle{display:none}
+  #lpprev{position:relative;padding-left:42px!important;padding-right:42px!important}
+  #lptx{padding-right:4px!important}
+  .lpar{display:grid;place-items:center;position:absolute;top:calc((100% - env(safe-area-inset-bottom,0px))/2);margin-top:-15px;width:30px;height:30px;padding:0 0 2px;box-sizing:border-box;
+    border-radius:50%;border:1px solid rgba(242,237,227,.16);background:rgba(242,237,227,.05);color:#E6E0D3;font:400 21px/1 var(--f);cursor:default;z-index:2}
+  .lpar:active{background:rgba(242,237,227,.14)}
+  #lpl{left:6px} #lpr{right:6px}
+  #lpx{top:7px!important;right:9px!important;margin-top:0!important;width:24px!important;height:24px!important;font-size:10.5px!important;z-index:3}
+  #ctype,#cexp,#cprog{display:none!important}
+}
+@media (min-width:880px){
+  #chd{order:2!important} #full #ctype{order:3!important} #full #ctag{order:4!important} #full #cexp{order:5!important} #full #cprog{order:6!important}
+  #full #cams{order:7!important;margin:14px 0 0!important} #full #cvw{order:8!important} #full #cgo{order:9!important}
+  #full>*{flex-shrink:0}
+  #full #ctype{display:block;margin:10px 0 0;font:600 13px/1.25 var(--f);color:var(--muted)}
+  #full #ctype b{font:800 10.5px/1 var(--f);letter-spacing:.14em;text-transform:uppercase;color:var(--kc,#F2B33D);margin-right:7px}
+  #full #ctag{margin-top:8px}
+  #full #cexp,#full #cprog{display:block;margin:16px 0 0}
+  #full #cexp[hidden],#full #cprog[hidden]{display:none}
+  #cexp small,#cprog small{display:block;margin:0 0 6px;font:800 10px/1 var(--f);letter-spacing:.14em;text-transform:uppercase;color:#F2B33D}
+  #cexp p{margin:0;color:#CFC9BC;font:400 13.5px/1.45 var(--f);display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+  #cprog .pr{display:flex;flex-wrap:wrap;gap:6px}
+  #cprog .pr span{display:inline-flex;align-items:center;height:24px;padding:0 10px;border-radius:999px;border:1px solid #4A5544;color:#F2EDE3;font:700 12px/1 var(--f);white-space:nowrap}
+  #cprog p{margin:7px 0 0;color:var(--muted);font:500 12px/1.3 var(--f)}
+  #cprog p:empty{display:none}
+  #card,#card *{scrollbar-width:none} #card ::-webkit-scrollbar{display:none}
+}
+@media (min-width:880px) and (max-height:880px){ #hero{aspect-ratio:2/1!important} #full #cvid{aspect-ratio:5/2!important} }
+@media (min-width:880px) and (max-height:770px){ #hero{aspect-ratio:5/2!important} #full #cvid{aspect-ratio:3/1!important} #cexp p{-webkit-line-clamp:2} #full #cexp,#full #cprog{margin-top:12px} }
+</style>
+<div id="lptitle" aria-hidden="true"><small>Pickathon Neighborhoods</small><b>A Temporary City of Wonder</b></div>
 <div id="finder">
   <button id="ptog" aria-expanded="false" aria-controls="picker"></button>
-  <div id="lptitle"><b>Pickathon neighborhoods</b><span>Pick a neighborhood to explore</span></div>
   <div id="key" aria-label="What the colours mean"></div>
 </div>
 <button id="fullmap" type="button" aria-label="Back to the full map"><svg viewBox="0 0 16 16"><path d="M2 6V2h4M14 6V2h-4M2 10v4h4M14 10v4h-4"/></svg>Full map</button>
@@ -608,7 +649,7 @@ body{margin:0;background:var(--ink);color:var(--cream);font-family:var(--f);
     background:#D6B54A;color:#12160F;font:800 14px/1 var(--f);cursor:pointer}
 }
 </style>
-<div id="card" class="intro"><div id="lpprev"><div id="lpth"></div><div id="lptx"><small id="lpk"></small><div id="lpnow" hidden></div><b id="lpn"></b><div id="lppills"></div></div><button id="lpx" type="button" aria-label="Back to all neighborhoods">&#10005;</button></div>
+<div id="card" class="intro"><div id="lpprev"><div id="lpth"></div><div id="lptx"><small id="lpk"></small><div id="lpnow" hidden></div><b id="lpn"></b><div id="lppills"></div></div><button id="lpx" type="button" aria-label="Back to all neighborhoods">&#10005;</button><button id="lpl" class="lpar" type="button" aria-label="Previous neighborhood">&#8249;</button><button id="lpr" class="lpar" type="button" aria-label="Next neighborhood">&#8250;</button></div>
   <div id="picker" role="group" aria-label="Find on the map" hidden>
     <div id="phead"><div id="pname">What are you looking for?</div><button id="pclose" type="button" aria-label="Close">✕</button></div>
     <div id="pgrid"></div>
@@ -630,7 +671,10 @@ body{margin:0;background:var(--ink);color:var(--cream);font-family:var(--f);
       <div id="full" hidden>
         <div class="chip" id="ckind">Stage</div>
         <div id="chd"><img id="cemb" alt=""><h2 id="cname">—</h2></div>
+        <div id="ctype"></div>
         <p id="ctag"></p>
+        <div id="cexp" hidden><small>What to expect</small><p></p></div>
+        <div id="cprog" hidden><small>Programming</small><div class="pr"></div><p></p></div>
         <p id="cpitch" hidden></p>
         <button id="cmore" type="button" hidden>Read more →</button>
         <div id="cvw"><a id="cvid" hidden target="_blank" rel="noopener"><img alt=""><span class="pl"><b>▶︎</b><span id="cvl">Watch</span></span></a><div id="cvt"><div id="cvk"></div><div id="cva"></div><p id="cvs"></p><div id="cvr"><button id="cvsp" type="button" hidden><span class="ic">↻</span>Another one</button></div></div></div>
@@ -867,7 +911,7 @@ function place(){
     arr.sort((a,b)=>a._sk-b._sk);
     // down the column first, then back up from the floor, so the bottom ones
     // spread instead of piling on the last slot
-    let y=(arr===L)?Math.max(TOP,FB+(LP()?12:0)):(LP()?lpRightTop():TOP);
+    let y=(arr===L)?Math.max(TOP,FB+(LP()?12:0),LP()?lpTitleBot():0):(LP()?lpRightTop():TOP);
     arr.forEach(h=>{h._ly=Math.max(y,Math.min(BOT,h._wy)); y=h._ly+SP;});
     if(y-SP>BOT){
       let yy=BOT;
@@ -970,12 +1014,13 @@ function apply(){
     try{ place(); }catch(err){ if(++faults<4) console.warn('decorate',err); } }); }
 }
 // The farm locks to the frame: paper can never be dragged past the edges.
-function clampV(kk,x,y,Hv){
+function clampV(kk,x,y,Hv,sel){
   const W=stage.clientWidth,w=MW*kk,h=MH*kk;
-  // Phone, zoomed in: a little room past the left, right and top edges, so Woods (top) or Refuge (right edge) can sit mid-screen.
-  let mx=0,mt=0; if(LP()&&kMin){ const z=Math.max(0,Math.min(1,(kk/kMin-1)/0.6)); mx=W*0.3*z; mt=Hv*0.3*z; }
+  // Phone: room past every edge while a neighborhood is picked (or the map is zoomed in), so an edge
+  // neighborhood like Woods (top) or Refuge (right) can sit mid-screen with breathing room around it.
+  let mx=0,mt=0,mb=0; if(LP()&&kMin){ const z=(sel||cur)?1:Math.max(0,Math.min(1,(kk/kMin-1)/0.4)); mx=W*0.5*z; mt=Hv*0.5*z; mb=Hv*0.3*z; }
   x = w<=W ? (W-w)/2 : Math.min(mx,Math.max(W-w-mx,x));
-  y = h<=Hv ? (Hv-h)/2 : Math.min(mt,Math.max(Hv-h,y));
+  y = h<=Hv ? (Hv-h)/2 : Math.min(mt,Math.max(Hv-h-mb,y));
   return {tx:x,ty:y};
 }
 // Lab (phone): the bottom of the map can only rise as far as the top of whatever covers the bottom of the screen.
@@ -1061,7 +1106,7 @@ function buildCards(){
   box.addEventListener('mouseleave',()=>{ if(!pinned) peek(null); });
 }
 let XD=null;
-function loadXD(){ if(XD) return; XD={}; fetch('../data.json').then(r=>r.json()).then(d=>{ XD={h:d.hoods||{},v:d.videos||[],s:d.sets||[],st:d.stages||[],ar:d.artists||{},days:d.days||[]}; if(cur) show(cur); }).catch(()=>{}); }
+function loadXD(){ if(XD) return; XD={}; fetch('../data.json').then(r=>r.json()).then(d=>{ XD={h:d.hoods||{},v:d.videos||[],s:d.sets||[],st:d.stages||[],ar:d.artists||{},days:d.days||[],hs:d.hoodsched||{}}; if(cur) show(cur); }).catch(()=>{}); }
 const VRX={lucky:/Lucky Barn/i,woods:/Woods (Stage|Series)/i,galaxy:/Galaxy Barn/i,paddock:/Paddock/i,cherryhill:/Cherry Hill|Tree ?line/i,windmill:/Windmill/i,grove:/Grove/i,courtyard:/Courtyard/i,orchard:/Orchard/i,refuge:/Refuge/i,farmhouse:/Farmhouse/i,curation:/Curation/i};
 const PAL=['#F2B33D','#9FCB8A','#7FD3E6','#E58FB0','#C9A0F0']; let cyc=0;
 function vSong(t){ t=String(t||'').trim(); const P=t.split(/\s+[-\u2013|]\s+/), K=[]; for(let i=0;i<P.length;i++){ if(i>0&&/pickathon|session|stage|S\d\dE\d\d|live at|full set/i.test(P[i])) break; K.push(P[i]); } const c=K.join(' - ').replace(/\s*@\s*Pickathon.*$/i,'').replace(/\s+S\d\dE\d\d\s*$/i,'').replace(/\s*[\(\[](live|official)[^\)\]]*[\)\]]\s*$/i,'').trim(); return c||t; }
@@ -1071,6 +1116,43 @@ function fillExtra(h){
   const x=XD.h[h.id]; const p=x&&x.d&&x.d[0]; if(p&&LP()){ pc.textContent=p; pc.hidden=false; document.getElementById('cmore').hidden=false; }
   const rx=VRX[h.id]; if(rx&&XD.v){ const L0=XD.v.filter(v=>!v.cad&&!(v.vm&&!v.th)&&rx.test(String(v.s||'')+' '+String(v.vn||''))), L=L0; if(L.length){ let vi=Math.floor(Math.random()*L.length); try{ const lk='pkmap.lastv.'+h.id, last=sessionStorage.getItem(lk); if(L.length>1&&last!==null&&String(vi)===last) vi=(vi+1+Math.floor(Math.random()*(L.length-1)))%L.length; sessionStorage.setItem(lk,String(vi)); }catch(e){} let v=L[vi]; const sp=document.getElementById('cvsp'); sp.hidden=L.length<2; sp.onclick=e=>{ e.stopPropagation(); cyc++; sp.style.background=PAL[cyc%PAL.length]; sp.querySelector('.ic').style.transform='rotate('+(cyc*360)+'deg)'; let k=vi; while(L.length>1&&k===vi) k=Math.floor(Math.random()*L.length); vi=k; v=L[k]; put(v); };
     const put=v=>{ cv.__v=v; cv.classList.remove('playing'); const old=cv.querySelector('iframe'); if(old) old.remove(); cv.href=v.vm?'https://vimeo.com/'+v.vm+(v.vh?'/'+v.vh:'')+(v.t?'#t='+v.t+'s':''):'https://www.youtube.com/watch?v='+v.id+(v.t?'&t='+v.t+'s':''); cv.querySelector('img').src=v.vm?v.th:'https://i.ytimg.com/vi/'+v.id+'/hqdefault.jpg'; cv.hidden=false; document.getElementById('cvl').textContent=v.y?((v.f?(LP()?'Full set, Pickathon ':'Watch the full set, Pickathon '):'Watch from Pickathon ')+v.y):'Watch'; document.getElementById('cvk').textContent='Filmed at '+h.n; document.getElementById('cva').textContent=v.a||''; document.getElementById('cvs').textContent=vSong(v.s); }; put(v); } }
+}
+// Desktop pane: the neighborhood's type, a short "what to expect" and its programming (kinds of things on there).
+const KTYPE={stage:['Stage','Where the music happens','#E86F51'],around:['Gathering','Food, art, wellness & family','#9FCB8A'],wellness:['Gathering','Food, art, wellness & family','#9FCB8A'],family:['Gathering','Food, art, wellness & family','#9FCB8A'],camp:['Camping','Where you sleep','#F2B33D']};
+const PKEY=s=>String(s||'').toLowerCase().replace(/^the\s+/,'').replace(/[^a-z0-9]+/g,'');
+function progOf(h){
+  const HS=(XD.hs||{})[h.id]; if(!HS) return null;
+  const ys=Object.keys(HS).filter(y=>+y<=2025).sort(); if(!ys.length) return null;
+  if(!XD._ak){ XD._ak={}; Object.keys(XD.ar||{}).forEach(k=>{ const A=XD.ar[k]; if(A&&A.n) XD._ak[PKEY(A.n)]=A; }); }
+  const cat=n=>{ const A=XD._ak[PKEY(n)], l=A&&A.l?String(A.l).toLowerCase():'';
+    if(l){ if(/dj/.test(l)) return 'dj'; if(/lit|word|book|poet|spoken/.test(l)) return 'lit'; if(/comed/.test(l)) return 'comedy'; if(/music/.test(l)) return 'music'; if(/well|yoga/.test(l)) return 'well'; if(/fam|kid/.test(l)) return 'fam'; if(/craft|art/.test(l)) return 'make'; }
+    if(/^DJ\b|\bDJ\b|DJ set/i.test(n)) return 'dj'; if(/comedy|stand-?up|comedian/i.test(n)) return 'comedy';
+    if(/poet|poetry|reading|author|book|literary|story|spoken/i.test(n)) return 'lit';
+    if(/yoga|meditat|sound ?bath|breath|ceremony|tarot|massage|stretch|movement|qi gong|kirtan|recovery|\btea\b|cacao|aromather|somatic/i.test(n)) return 'well';
+    if(/kids|story ?time|parade|family|face|glitter|bee /i.test(n)) return 'fam';
+    if(/workshop|diy|make your own|craft|weav|paint|class|demo|session|tasting|talk|panel|q&a|tour/i.test(n)) return 'make';
+    return 'music'; };
+  const y=ys[ys.length-1], C={}; ys.forEach(yy=>HS[yy].forEach(n=>{ C[cat(n)]=1; }));
+  const LBL=[['music','Live music'],['dj','DJ sets'],['lit','Literary'],['comedy','Comedy'],['well','Wellness'],['make','Workshops & making'],['fam','Family']];
+  const n=HS[y].length;
+  return {tags:LBL.filter(x=>C[x[0]]).map(x=>x[1]), line:n+' '+(h.k==='stage'&&!C.well&&!C.make?'sets':'sets & sessions')+' in Pickathon '+y};
+}
+function expOf(h){
+  const x=XD.h&&XD.h[h.id], p=x&&x.d&&x.d[0]; if(!p) return '';
+  const S=(String(p).match(/[^.!?]+[.!?]+(\s|$)/g)||[p]).map(t=>t.trim()).filter(t=>t&&!/2026/.test(t));
+  let out=''; for(const t of S){ if(!out){ out=t; continue; } if((out+' '+t).length<=170) out+=' '+t; break; }
+  return out;
+}
+function fillDesk(h){
+  const T=KTYPE[h.k]||[KIND[h.k]||'',''], ty=document.getElementById('ctype');
+  ty.style.setProperty('--kc',T[2]||'#F2B33D'); ty.innerHTML='<b>'+T[0]+'</b>'+(T[1]?T[1].replace(/&/g,'&amp;'):'');
+  const ex=document.getElementById('cexp'), pr=document.getElementById('cprog');
+  ex.hidden=true; pr.hidden=true; if(LP()||!XD||!XD.h) return;
+  const e=expOf(h); if(e){ ex.querySelector('p').textContent=e; ex.hidden=false; }
+  let P=progOf(h);
+  if(!P){ const AMP={food:'Food',bar:'Drinks',coffee:'Coffee',craft:'Crafts',art:'Art',kids:'Kids',yoga:'Yoga',massage:'Massage',merch:'Merch',shower:'Showers',tent:'Camping',dj:'DJ sets',stage:'Live music',info:'Info',medical:'First aid'};
+    const t=[]; (h.amk||[]).forEach(a=>{ if(AMP[a]&&t.indexOf(AMP[a])<0) t.push(AMP[a]); }); if(h.k!=='camp'&&t.length) P={tags:t.slice(0,6),line:''}; }
+  if(P&&P.tags.length){ pr.querySelector('.pr').innerHTML=P.tags.map(t=>'<span>'+t.replace(/&/g,'&amp;')+'</span>').join(''); pr.querySelector('p').textContent=P.line||''; pr.hidden=false; }
 }
 const THE={woods:1,paddock:1,grove:1,windmill:1,galaxy:1,farmhouse:1,refuge:1,courtyard:1,market:1,orchard:1,welcomelot:1};   // 'Explore the Grove', but 'Explore Cherry Hill', 'Explore Lucky'
 function show(h){
@@ -1091,7 +1173,7 @@ function show(h){
   ck.textContent=KIND[h.k]||h.k; ck.className='chip k-'+h.k;
   document.getElementById('cams').innerHTML=(amFilter&&!passes(h)?'<span class="nohit">No '+(AMLBL[amFilter]||amFilter)+' here</span>':'')+(h.amk||[]).map((a,i)=>
     '<span class="ai'+(a===amFilter?' hit':'')+'" title="'+(AMLBL[a]||a)+'">'+ico(a)+'</span>').join('');
-  loadXD(); fillExtra(h);
+  loadXD(); fillExtra(h); fillDesk(h);
   document.getElementById('cgo').textContent='Explore '+(THE[h.id]?'the ':'')+h.n.replace(/^The /,'');
   document.getElementById('cemb').src='../ic2/'+h.id+'.png';
   if(!amFilter && typeof showRings==='function') showRings(null,h);
@@ -1124,7 +1206,7 @@ function fullMap(){ pinned=null; peek(null); cur=null; show(null);
   if(LP()){ light(null); lpSync(); flyView(lpHome(),null); return; }
   const W=stage.clientWidth,H=stage.clientHeight; light(null);
   flyView({k:kFit,tx:(W-MW*kFit)/2,ty:(H-MH*kFit)/2},null); }
-function clearCur(){ pinned=null; peek(null); cur=null; show(null); if(LP()){ lpSync(); lpSettle(); } else apply(); }
+function clearCur(){ pinned=null; peek(null); cur=null; show(null); if(LP()){ light(null); lpSync(); flyView(lpHome(),null); } else apply(); }
 function goPage(h){
   setCur(h); show(h);
   // Embedded in the site: hand off to the site's own neighborhood page.
@@ -1416,20 +1498,25 @@ function lpHome(){
   const c=clampV(kk, W/2-(x0+x1)/2*kk, -(top-MH*.012)*kk, Hv);
   return {k:kk,tx:c.tx,ty:c.ty};
 }
-// Same zoom, just pan: the picked neighborhood sits in the middle of the map that is still showing.
+// Picked: zoom in so the neighborhood fills most of the map that is still showing (between the top
+// controls and the strip), centered. Prev/next keep the same framing; Back / Full map return to lpHome().
+function lpTopR(){ const f=document.getElementById('finder'); return f?Math.round(f.getBoundingClientRect().bottom-stage.getBoundingClientRect().top)+6:56; }
 function lpView(h){
-  const sh=D.shapes[h.id], b=sh&&sh.b, W=stage.clientWidth, Hv=stage.clientHeight-LPVB;
+  const sh=D.shapes[h.id], b=sh&&sh.b, W=stage.clientWidth, Hv=stage.clientHeight-LPVB, T=Math.min(lpTopR(),Hv*.2);
   const cx=b?(b[0]+b[2])/2:h._mx*MW, cy=b?(b[1]+b[3])/2:h._my*MH;
-  const c=clampV(k, W/2-cx*k, Hv/2-cy*k, Hv); return {k:k,tx:c.tx,ty:c.ty};
+  let nk=k; if(b){ nk=Math.min(W*.66/Math.max(1,b[2]-b[0]),(Hv-T)*.7/Math.max(1,b[3]-b[1])); nk=Math.max(kMin||kFit,Math.min(maxK(),nk)); }
+  const c=clampV(nk, W/2-cx*nk, T+(Hv-T)/2-cy*nk, Hv, true); return {k:nk,tx:c.tx,ty:c.ty};
 }
 function lpPanTo(h){ if(h) flyView(lpView(h),h); }
 function lpSettle(){ const c=clampV(k,tx,ty,stage.clientHeight-LPVB);
   if(Math.abs(c.tx-tx)>.5||Math.abs(c.ty-ty)>.5) flyView({k:k,tx:c.tx,ty:c.ty},null); else apply(); }
 function lpFmOn(){ if(cur) return true; const v=lpHome(); return k>v.k*1.03 || Math.abs(ty-v.ty)>30 || Math.abs(tx-v.tx)>30; }
+function lpTitleOn(){ const t=document.getElementById('lptitle'); return !!(t&&!cur&&getComputedStyle(t).display!=='none'); }
+function lpTitleBot(){ if(!lpTitleOn()) return 0; const r=document.getElementById('lptitle').getBoundingClientRect(); return Math.round(r.bottom-stage.getBoundingClientRect().top)+8; }
 function lpRightTop(){ const f=document.getElementById('fullmap');
   if(f&&f.classList.contains('on')) return Math.round(f.getBoundingClientRect().bottom-stage.getBoundingClientRect().top)+16;
-  const t=document.getElementById('lptitle'), r=t&&t.offsetParent?t.getBoundingClientRect():null;   // the overview title: right-hand names start below it if it reaches their side
-  return r&&r.right>stage.clientWidth-150 ? Math.round(r.bottom-stage.getBoundingClientRect().top)+10 : 34; }
+  const t=document.getElementById('lptitle'), r=lpTitleOn()?t.getBoundingClientRect():null;   // the overview title: right-hand names start below it if it reaches their side
+  return r&&r.right>stage.clientWidth-150 ? Math.round(r.bottom-stage.getBoundingClientRect().top)+8 : 34; }
 function lpMenu(on){
   if(on===lpMenuOn) return; lpMenuOn=on;
   document.body.classList.toggle('lpmenu',on);
@@ -1521,6 +1608,8 @@ function lpWirePanel(){
     else if(a==='tour'){ if(!lpPost({pkMap:'tour',id:cur.id})) goPage(cur); }
     else if(a==='sched'){ if(!lpPost({pkMap:'sched',id:cur.id})) goPage(cur); } });
   document.getElementById('lpx').addEventListener('click',e=>{ e.stopPropagation(); clearCur(); });
+  document.getElementById('lpl').addEventListener('click',e=>{ e.stopPropagation(); stepHood(-1); });
+  document.getElementById('lpr').addEventListener('click',e=>{ e.stopPropagation(); stepHood(1); });
   // follow the site's TEST "When" switch
   setInterval(()=>{ if(cur&&lpFill._h===cur&&lpFest()!==lpFill._f) lpFill(cur); },800);
 }
