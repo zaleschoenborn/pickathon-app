@@ -1514,7 +1514,7 @@ function tapAt(e){
   if(!h){ if((pinned&&e.pointerType==='mouse')||(e.pointerType!=='mouse'&&cur)) clearCur(); return; }
   // mouse: hover peeks, a click pins, a click on the pinned one opens. Touch: the first tap
   // shows the card, a tap on the one already showing opens it.
-  if(e.pointerType==='mouse'){ if(pinned!==h){ const kept=keepZoomIf(h); pinned=h; peek(null); setCur(h); show(h); if(kept){ const to=viewFor(h,keepK); if(to) flyView(to,h); } } return; }   // desktop: a click on the map only selects (no zoom); the logo list and next/prev do the flying; the Open button is the way through
+  if(e.pointerType==='mouse'){ if(pinned!==h){ const kept=keepZoomIf(h)&&!atHomeD(); const first=!kept&&atHomeD(); pinned=h; peek(null); setCur(h); show(h); if(first){ flyTo(h); } else if(kept){ const to=viewFor(h,keepK); if(to) flyView(to,h); } } return; }   // desktop: a click on the map only selects (no zoom); the logo list and next/prev do the flying; the Open button is the way through
   else if(h!==cur){ keepZoomIf(h); setCur(h); return; }
   goPage(h);
 }
@@ -1631,6 +1631,8 @@ addEventListener('keydown',e=>{
 const BOOTMODE=(function(){ return innerWidth>=880?'d':(innerWidth>=700?'t':'p'); })();
 let rsW=stage.clientWidth, rsH=stage.clientHeight, homeV=null, modeT=0;
 (function(){ const _hv=homeView; homeView=function(){ _hv.apply(this,arguments); homeV={k:k,tx:tx,ty:ty}; }; })();
+function atHomeD(){ return !!homeV&&Math.abs(k-homeV.k)/homeV.k<0.03&&Math.abs(tx-homeV.tx)<8&&Math.abs(ty-homeV.ty)<8; }   // desktop still on the start view: the first pick zooms in like an icon tap; once zoomed, picks keep the zoom
+if(!LP()&&!cur) homeV={k:k,tx:tx,ty:ty};
 function modeNow(){ return innerWidth>=880?'d':(innerWidth>=700?'t':'p'); }
 addEventListener('resize',()=>{
   if(modeNow()!==BOOTMODE){ clearTimeout(modeT); modeT=setTimeout(()=>{ if(modeNow()===BOOTMODE) return; try{ const last=+sessionStorage.getItem('pkmap.rl')||0; if(Date.now()-last<800) return; sessionStorage.setItem('pkmap.rl',String(Date.now())); if(cur) sessionStorage.setItem('pkmap.focus',cur.id); }catch(e){} location.reload(); },280); return; }
