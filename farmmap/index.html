@@ -80,8 +80,11 @@ body{margin:0;background:var(--ink);color:var(--cream);font-family:var(--f);
 .lab::before{content:none}
 .lab.r{flex-direction:row-reverse;text-align:right}
 .lab[hidden]{display:none}
-.lab.sel{cursor:pointer;background:var(--ink);box-shadow:0 2px 9px rgba(0,0,0,.5)}
-.lab.sel span{color:#fff}
+/* Labels: every name is a dark tag; the selected neighborhood's tag turns white so it stands out. */
+.lab{background:color-mix(in srgb,currentColor 14%,var(--ink))}
+.lab span{color:#F2EDE3}
+.lab.sel{cursor:pointer;background:#fff;box-shadow:0 2px 10px rgba(0,0,0,.55)}
+.lab.sel span{color:var(--ink)}
 
 
 #card{position:fixed;left:0;right:0;bottom:0;height:var(--cardh);z-index:30;
