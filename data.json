@@ -2284,7 +2284,7 @@
 "Water",
 "Massage"
 ],
-"i": "i/p691.jpg",
+"i": "i/pk-refuge-01.jpg",
 "p": [
 63,
 52
@@ -2292,24 +2292,48 @@
 "k": "around",
 "g": [
 {
-"i": "i/p691.jpg",
-"c": "Andy Meeks"
+"i": "i/pk-refuge-01.jpg",
+"c": "Mark Stein"
 },
 {
-"i": "i/p693.jpg",
-"c": "Justin Kent"
+"i": "i/pk-refuge-02.jpg",
+"c": "Rob Kerr"
 },
 {
-"i": "i/p719.jpg",
-"c": "Jaime Delacruz"
+"i": "i/pk-refuge-03.jpg",
+"c": "Rob Kerr"
 },
 {
-"i": "i/71.jpg",
-"c": ""
+"i": "i/pk-refuge-04.jpg",
+"c": "Graeme Harrison"
 },
 {
-"i": "i/325.jpg",
-"c": ""
+"i": "i/pk-refuge-05.jpg",
+"c": "Pickathon"
+},
+{
+"i": "i/pk-refuge-06.jpg",
+"c": "Pickathon"
+},
+{
+"i": "i/pk-refuge-07.jpg",
+"c": "Pickathon"
+},
+{
+"i": "i/pk-refuge-08.jpg",
+"c": "Pickathon"
+},
+{
+"i": "i/pk-refuge-09.jpg",
+"c": "Pickathon"
+},
+{
+"i": "i/pk-refuge-10.jpg",
+"c": "Pickathon"
+},
+{
+"i": "i/pk-refuge-11.jpg",
+"c": "Pickathon"
 }
 ],
 "ic": "i/197.svg",
@@ -2465,7 +2489,7 @@
 "Water",
 "Kids Area"
 ],
-"i": "i/p9657.jpg",
+"i": "i/pk-coyote-01.jpg",
 "p": [
 45,
 55
@@ -2473,32 +2497,44 @@
 "k": "around",
 "g": [
 {
-"i": "i/p9657.jpg",
-"c": "Andy Meeks · 2026"
+"i": "i/pk-coyote-01.jpg",
+"c": "Pickathon"
 },
 {
-"i": "i/p496.jpg",
-"c": "Andy Meeks"
+"i": "i/pk-coyote-02.jpg",
+"c": "Pickathon"
 },
 {
-"i": "i/p793.jpg",
-"c": "Todd Stern"
+"i": "i/pk-coyote-03.jpg",
+"c": "Pickathon"
 },
 {
-"i": "i/p681.jpg",
-"c": "Andy Meeks"
+"i": "i/pk-coyote-04.jpg",
+"c": "Pickathon"
 },
 {
-"i": "i/p620.jpg",
-"c": "Todd Stern"
+"i": "i/pk-coyote-05.jpg",
+"c": "Pickathon"
 },
 {
-"i": "i/118.jpg",
-"c": ""
-},
-{
-"i": "i/110.jpg",
+"i": "i/pk-coyote-06.jpg",
 "c": "Erin Riddle"
+},
+{
+"i": "i/pk-coyote-07.jpg",
+"c": "Erin Riddle"
+},
+{
+"i": "i/pk-coyote-08.jpg",
+"c": "Mark Stein"
+},
+{
+"i": "i/pk-coyote-09.jpg",
+"c": "James Glover"
+},
+{
+"i": "i/pk-coyote-10.jpg",
+"c": "Pickathon"
 }
 ],
 "ic": "i/229.svg",
@@ -3513,7 +3549,7 @@
 "Poler Camping",
 "Gear Drop/Pick-up"
 ],
-"i": "i/p9658.jpg",
+"i": "i/pk-lushcamp-01.jpg",
 "p": [
 40.6,
 38.6
@@ -3521,24 +3557,36 @@
 "k": "camp",
 "g": [
 {
-"i": "i/p9658.jpg",
-"c": "Brooke Hoyer · 2025"
+"i": "i/pk-lushcamp-01.jpg",
+"c": "Norm Eder"
 },
 {
-"i": "i/p630.jpg",
+"i": "i/pk-lushcamp-02.jpg",
+"c": "Erin Riddle"
+},
+{
+"i": "i/pk-lushcamp-03.jpg",
 "c": "Brooke Hoyer"
 },
 {
-"i": "i/p466.jpg",
-"c": "Brooke Hoyer"
+"i": "i/pk-lushcamp-04.jpg",
+"c": "Mark Stein"
 },
 {
-"i": "i/475.jpg",
-"c": ""
+"i": "i/pk-lushcamp-05.jpg",
+"c": "Mark Stein"
 },
 {
-"i": "i/127.jpg",
-"c": ""
+"i": "i/pk-lushcamp-06.jpg",
+"c": "Mark Stein"
+},
+{
+"i": "i/pk-lushcamp-07.jpg",
+"c": "Norm Eder"
+},
+{
+"i": "i/pk-lushcamp-08.jpg",
+"c": "Norm Eder"
 }
 ],
 "ic": "i/19.svg",
@@ -3567,7 +3615,7 @@
 "am": [
 "Art Installation"
 ],
-"i": "i/p576.jpg",
+"i": "i/pk-quailtrail-01.jpg",
 "p": [
 55,
 40
@@ -3575,16 +3623,48 @@
 "k": "camp",
 "g": [
 {
-"i": "i/p576.jpg",
-"c": ""
+"i": "i/pk-quailtrail-01.jpg",
+"c": "Brud Giles"
 },
 {
-"i": "i/433.jpg",
-"c": ""
+"i": "i/pk-quailtrail-02.jpg",
+"c": "Pickathon"
 },
 {
-"i": "i/346.jpg",
-"c": ""
+"i": "i/pk-quailtrail-03.jpg",
+"c": "Joe Duquette"
+},
+{
+"i": "i/pk-quailtrail-04.jpg",
+"c": "Joe Duquette"
+},
+{
+"i": "i/pk-quailtrail-05.jpg",
+"c": "Mark Stein"
+},
+{
+"i": "i/pk-quailtrail-06.jpg",
+"c": "Mark Stein"
+},
+{
+"i": "i/pk-quailtrail-07.jpg",
+"c": "Mark Stein"
+},
+{
+"i": "i/pk-quailtrail-08.jpg",
+"c": "Pickathon"
+},
+{
+"i": "i/pk-quailtrail-09.jpg",
+"c": "Erin Riddle"
+},
+{
+"i": "i/pk-quailtrail-10.jpg",
+"c": "Erin Riddle"
+},
+{
+"i": "i/pk-quailtrail-11.jpg",
+"c": "Alec Carrier"
 }
 ],
 "ic": "i/242.svg",
@@ -3685,7 +3765,7 @@
 "Tent Camping",
 "Gear Drop/Pick-up"
 ],
-"i": "i/45.jpg",
+"i": "i/pk-wildcamp-01.jpg",
 "p": [
 28,
 15.5
@@ -3693,24 +3773,40 @@
 "k": "camp",
 "g": [
 {
-"i": "i/45.jpg",
-"c": ""
+"i": "i/pk-wildcamp-01.jpg",
+"c": "Mark Stein"
 },
 {
-"i": "i/497.jpg",
-"c": "Bill Purcell"
+"i": "i/pk-wildcamp-02.jpg",
+"c": "Mark Stein"
 },
 {
-"i": "i/p556.jpg",
-"c": ""
+"i": "i/pk-wildcamp-03.jpg",
+"c": "Mark Stein"
 },
 {
-"i": "i/p662.jpg",
-"c": ""
+"i": "i/pk-wildcamp-04.jpg",
+"c": "Mark Stein"
 },
 {
-"i": "i/497.jpg",
-"c": "Bill Purcell"
+"i": "i/pk-wildcamp-06.jpg",
+"c": "Pickathon"
+},
+{
+"i": "i/pk-wildcamp-07.jpg",
+"c": "Pickathon"
+},
+{
+"i": "i/pk-wildcamp-08.jpg",
+"c": "Mark Stein"
+},
+{
+"i": "i/pk-wildcamp-09.jpg",
+"c": "Norm Eder"
+},
+{
+"i": "i/pk-wildcamp-10.jpg",
+"c": "Mark Stein"
 }
 ],
 "ic": "i/465.svg",
