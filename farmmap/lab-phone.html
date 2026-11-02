@@ -570,7 +570,7 @@ body{margin:0;background:var(--ink);color:var(--cream);font-family:var(--f);
 <div id="stage">
 <script>/* Decide the entry state before the first paint, so nothing shows and then switches off (the title that blinked, labels that all showed and then collapsed). */
 (function(){try{var c=document.body.classList,emb=window.parent!==window,nv=performance.getEntriesByType('navigation')[0],rl=nv&&nv.type==='reload',fh=emb&&!rl&&sessionStorage.getItem('pkmap.from')==='hood',foc=!!sessionStorage.getItem('pkmap.focus');
-if(innerWidth>=880){c.add('lm');if(fh||foc){c.add('dpdone');c.add('nodt');}}else{if(fh)c.add('lpback');else if(!foc)c.add('lpfresh');}}catch(e){}})();</script>
+if(innerWidth>=880){c.add('lm');if(fh){c.add('dpdone');c.add('nodt');}}else{if(fh)c.add('lpback');else if(!foc)c.add('lpfresh');}}catch(e){}})();</script>
   <div id="art"><img id="mapimg" src="map.webp?v=25" alt="Map of Pendarvis Farm" draggable="false"><div id="tiles"></div><div id="veil"></div><div id="lits"></div></div>
   <svg id="shapes"></svg>
   <svg id="leads"></svg>
@@ -1686,8 +1686,8 @@ function lpDeepInit(){
   if(CARDID) return;
   // Desktop title panel: shown on every entry except an explicit neighborhood link or a return from a neighborhood page
   if(!LP()){ const done=()=>document.body.classList.add('dpdone');
-    if(window.__lpDeep||FROMHOOD) done();
-    else armTitle(); }
+    if(FROMHOOD) done();
+    else{ document.body.classList.remove('dpdone'); armTitle(); } }
   if(FROMHOOD){ document.body.classList.add('lpback'); const ev0=['pointerdown','touchstart','wheel','keydown'], off0=function(){ document.body.classList.remove('lpback'); ev0.forEach(function(n){ removeEventListener(n,off0,true); }); }; ev0.forEach(function(n){ addEventListener(n,off0,{capture:true,passive:true}); }); return; }
   if(!window.__lpDeep||!cur) return;
   const el=document.getElementById('lpdeep'), f=document.getElementById('finder'); if(!el) return;
