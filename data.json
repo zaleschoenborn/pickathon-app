@@ -41392,10 +41392,6 @@
 "line": "A Portland band whose quiet string-and-voice records drew national reviews and a Kill Rock Stars deal the next year. They have been a club act ever since.",
 "src": "",
 "pyr": 2007,
-"m": {
-"u": "https://www.youtube.com/watch?v=Mu9l3WERd5g",
-"t": "▶ Watch from Pickathon 2015"
-},
 "pi": "https://i.ytimg.com/vi/Mu9l3WERd5g/hqdefault.jpg"
 },
 {
@@ -52553,14 +52549,6 @@
 "vn": "Live and Breathing"
 },
 {
-"id": "FN_9_qKKGiM",
-"a": "Fred",
-"s": "My Pickathon *12 - Fred & The Cable Cam @Pickathon 2016 S03E17",
-"y": 2016,
-"cad": 0,
-"vn": "My Pickathon"
-},
-{
 "id": "OvCRap00U4I",
 "a": "Fruit Bats",
 "s": "Fruit Bats - Tony The Tripper (Live from Pickathon 2011)",
@@ -52599,14 +52587,6 @@
 "y": 2014,
 "cad": 0,
 "vn": "Live and Breathing"
-},
-{
-"id": "Mu9l3WERd5g",
-"a": "HORSE",
-"s": "Seriously? (S02E03) HORSE @Pickathon 2015",
-"y": 2015,
-"cad": 0,
-"vn": "Seriously?"
 },
 {
 "id": "gbuuR0_l_4E",
@@ -53026,14 +53006,6 @@
 "vn": "Laugh"
 },
 {
-"id": "ZOrceCJ-aK0",
-"a": "Marmoset",
-"s": "My Pickathon (S02E02) Marmoset @Pickathon 2015",
-"y": 2015,
-"cad": 0,
-"vn": "My Pickathon"
-},
-{
 "id": "xTBOsm1tIL4",
 "a": "Matt Monroe",
 "s": "Matt Monroe - Laugh @Pickathon 2016 S01E01",
@@ -53242,14 +53214,6 @@
 "vn": "Live and Breathing"
 },
 {
-"id": "O9g8qBntXXg",
-"a": "Quail Trail Buskers",
-"s": "My Pickathon (S02E01) Quail Trail Buskers @Pickathon 2015",
-"y": 2015,
-"cad": 0,
-"vn": "My Pickathon"
-},
-{
 "id": "cBUzNyCrcEI",
 "a": "Quantic",
 "s": "Quantic Woods 2022",
@@ -53337,14 +53301,6 @@
 "y": 2013,
 "cad": 0,
 "vn": "Live and Breathing"
-},
-{
-"id": "_CXPc8935xo",
-"a": "Salmon",
-"s": "My Pickathon (S01E07) - Salmon - @Pickathon",
-"y": 2015,
-"cad": 0,
-"vn": "My Pickathon"
 },
 {
 "id": "VRZ3mHx3RZY",
@@ -53560,14 +53516,6 @@
 "y": 2013,
 "cad": 0,
 "vn": "Live and Breathing"
-},
-{
-"id": "CXZjAMlcSm0",
-"a": "The Gator Stealers",
-"s": "My Pickathon (S01E01) - The Gator Stealers - @Pickathon",
-"y": 2015,
-"cad": 0,
-"vn": "My Pickathon"
 },
 {
 "id": "Fc7obeDE1bE",
@@ -54279,16 +54227,6 @@
 "th": "https://i.vimeocdn.com/video/1715238759-ac486e924afe88154d8bec18e77bcb5fdca3cc072b96da0a7b4308a258ea0e19-d_590x332",
 "vh": "a9ce3236e4",
 "vn": "Woods"
-},
-{
-"id": "vm69452216",
-"vm": "69452216",
-"a": "Foxygen",
-"s": "Intro 2013 — Foxygen",
-"y": 2013,
-"cad": 0,
-"th": "https://i.vimeocdn.com/video/442222505-02ddc748da27f975c2d9d215a083fcdea9acabac61c6352f4bde3c4ae38e7097-d_590x332",
-"vh": "9895b537db"
 },
 {
 "id": "vm862212422",
@@ -55064,17 +55002,6 @@
 "cad": 0,
 "th": "https://i.vimeocdn.com/video/724333993-ca6eba93a479c260ac1f0c3f75d28fd7714c78cf0db65f220027a8a48c4f8be4-d_590x332",
 "vh": "fd8f6e0ebe"
-},
-{
-"id": "vm357955410",
-"vm": "357955410",
-"a": "mattevideo",
-"s": "Matte Video -10-BROADCAST",
-"y": 2019,
-"cad": 0,
-"th": "https://i.vimeocdn.com/video/811452209-0b78e994be365452c7f3c40857540dd86f1f81d79711fb3f9db6664439dcc5c4-d_590x332",
-"vh": "bd501d427e",
-"vn": "Broadcast"
 },
 {
 "id": "vm357943812",
