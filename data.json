@@ -2264,10 +2264,6 @@
 "c": "Pickathon"
 },
 {
-"i": "i/pk-refuge-06.jpg",
-"c": "Pickathon"
-},
-{
 "i": "i/pk-refuge-07.jpg",
 "c": "Pickathon"
 },
@@ -2298,6 +2294,10 @@
 {
 "i": "i/pk-refuge-19.jpg",
 "c": "Todd Stern"
+},
+{
+"i": "i/pk-refuge-06.jpg",
+"c": "Pickathon"
 },
 {
 "i": "i/pk-refuge-14.jpg",
@@ -2369,6 +2369,11 @@
 "by": "Jaime Delacruz"
 },
 {
+"i": "i/pk-refuge-03.jpg",
+"y": "",
+"by": "Rob Kerr"
+},
+{
 "i": "i/p665.jpg",
 "y": "2026",
 "by": "Jaime Delacruz"
@@ -2377,6 +2382,11 @@
 "i": "i/p511.jpg",
 "y": "2026",
 "by": "Jaime Delacruz"
+},
+{
+"i": "i/pk-refuge-19.jpg",
+"y": "",
+"by": "Todd Stern"
 },
 {
 "i": "i/p594.jpg",
@@ -2400,11 +2410,6 @@
 },
 {
 "i": "i/p684.jpg",
-"y": "2024",
-"by": "Graeme Harrison"
-},
-{
-"i": "i/p482.jpg",
 "y": "2024",
 "by": "Graeme Harrison"
 }
