@@ -25904,20 +25904,6 @@
 ],
 "deep": [
 {
-"n": "Mary Halvorson",
-"y": [
-2026
-],
-"t": "r",
-"l": "A MacArthur \"genius grant\" guitarist and composer whose records topped the jazz critics' polls in 2022 and 2025.",
-"top": false,
-"lg": true,
-"g": "jazz",
-"pi": "i/p9752.jpg",
-"pyr": 2026,
-"sp": "5tCfZ8dYbzaq6auQeSAsRl"
-},
-{
 "n": "Geese",
 "y": [
 2024
@@ -38338,6 +38324,25 @@
 "t": "▶ Watch from Pickathon 2016"
 },
 "sp": "21SOnTj5ECwVXeBUTRcP3s"
+},
+{
+"n": "Mary Halvorson",
+"y": [
+2026
+],
+"g": "jazz",
+"line": "A guitarist and composer whose Amaryllis was voted the best new jazz album of 2022 by a poll of over a hundred and fifty critics.",
+"src": "https://artsfuse.org/267017/the-17th-annual-francis-davis-jazz-poll-a-profusion-of-geniuses/",
+"pi": "i/p9752.jpg",
+"pyr": 2026,
+"acc": [
+{
+"t": "MacArthur Fellowship (\"genius grant\")",
+"y": 2019,
+"src": "https://www.macfound.org/fellows/class-of-2019/mary-halvorson"
+}
+],
+"sp": "5tCfZ8dYbzaq6auQeSAsRl"
 },
 {
 "n": "Makaya McCraven",
