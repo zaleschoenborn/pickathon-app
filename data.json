@@ -26082,12 +26082,7 @@
 "top": false,
 "g": "",
 "pyr": 2025,
-"lg": 1,
-"pi": "https://i.ytimg.com/vi/Hb3bOFVGN74/hqdefault.jpg",
-"m": {
-"u": "https://www.youtube.com/watch?v=Hb3bOFVGN74",
-"t": "▶ Watch from Pickathon 2025"
-}
+"lg": 1
 },
 {
 "n": "Bombadil",
@@ -26780,12 +26775,7 @@
 "top": false,
 "g": "",
 "pyr": 2025,
-"lg": 1,
-"pi": "https://i.ytimg.com/vi/xtWUNVFK3yk/hqdefault.jpg",
-"m": {
-"u": "https://www.youtube.com/watch?v=xtWUNVFK3yk",
-"t": "▶ Watch from Pickathon 2025"
-}
+"lg": 1
 },
 {
 "n": "Quantic",
@@ -40740,11 +40730,7 @@
 ],
 "pyr": 2025,
 "new2": 1,
-"pi": "i/p9922.jpg",
-"m": {
-"u": "https://www.youtube.com/watch?v=xj7eaUSJn0o",
-"t": "▶ Watch from Pickathon 2025"
-}
+"pi": "i/p9922.jpg"
 },
 {
 "n": "East Nash Grass",
@@ -40763,11 +40749,7 @@
 ],
 "pyr": 2025,
 "new2": 1,
-"pi": "i/p9923.jpg",
-"m": {
-"u": "https://www.youtube.com/watch?v=yn9diNtbXZs",
-"t": "▶ Watch from Pickathon 2025"
-}
+"pi": "i/p9923.jpg"
 },
 {
 "n": "Folk Bitch Trio",
@@ -41746,12 +41728,7 @@
 "g": "",
 "line": "Saving Country Music and Glide backed her Appalachian songwriting early. Five years of good reviews later, the rooms are still the same small clubs.",
 "src": "",
-"pyr": 2025,
-"pi": "https://i.ytimg.com/vi/KvKGDFhxzCY/hqdefault.jpg",
-"m": {
-"u": "https://www.youtube.com/watch?v=KvKGDFhxzCY",
-"t": "▶ Watch from Pickathon 2025"
-}
+"pyr": 2025
 },
 {
 "n": "Anna & Elizabeth",
@@ -42347,12 +42324,7 @@
 "g": "",
 "line": "Anatolian psych-folk on the bağlama, Songlines' pick of the world and then a Big Crown signing.",
 "src": "",
-"pyr": 2025,
-"pi": "https://i.ytimg.com/vi/Rn0tCm-pAOA/hqdefault.jpg",
-"m": {
-"u": "https://www.youtube.com/watch?v=Rn0tCm-pAOA",
-"t": "▶ Watch from Pickathon 2025"
-}
+"pyr": 2025
 },
 {
 "n": "Destroyer",
@@ -42920,12 +42892,7 @@
 "g": "",
 "line": "A Grammy-winning saxophonist most people have never heard of, playing on everyone else's best records.",
 "src": "",
-"pyr": 2025,
-"pi": "https://i.ytimg.com/vi/HyFxHq1JaK4/hqdefault.jpg",
-"m": {
-"u": "https://www.youtube.com/watch?v=HyFxHq1JaK4",
-"t": "▶ Watch from Pickathon 2025"
-}
+"pyr": 2025
 },
 {
 "n": "Joshua Hedley",
@@ -53411,14 +53378,6 @@
 "vn": "Live and Breathing"
 },
 {
-"id": "5F-uWxhl76w",
-"a": "Amos Heart",
-"s": "Amos Heart Galaxy barn 2025",
-"y": 2025,
-"cad": 0,
-"vn": "Galaxy Barn"
-},
-{
 "id": "EY_IbPbpdBY",
 "a": "Anaïs Mitchell",
 "s": "Anais Mitchell - Coming Down (Live from Pickathon 2010)",
@@ -53435,28 +53394,12 @@
 "vn": "Woods Stage"
 },
 {
-"id": "KvKGDFhxzCY",
-"a": "Angela Autumn",
-"s": "Angela Autumn Woods 2025",
-"y": 2025,
-"cad": 0,
-"vn": "Woods Stage"
-},
-{
 "id": "D32NAidy0xY",
 "a": "Anna Tivel",
 "s": "Anna Tivel Two Truths On the farm 2024",
 "y": 2024,
 "cad": 0,
 "vn": "On The Farm Sessions"
-},
-{
-"id": "Ieay7V4JFTc",
-"a": "Being Dead",
-"s": "Being Dead Galaxy Barn 2025",
-"y": 2025,
-"cad": 0,
-"vn": "Galaxy Barn"
 },
 {
 "id": "5ilAPaexiyU",
@@ -53467,14 +53410,6 @@
 "vn": "Pumphouse Sessions"
 },
 {
-"id": "wZnxjBM8ZU0",
-"a": "Ben Seretan",
-"s": "Ben Seratan pt 1 Galaxy Barn 2025",
-"y": 2025,
-"cad": 0,
-"vn": "Galaxy Barn"
-},
-{
 "id": "eOJKby_FEZ8",
 "a": "Billie Marten",
 "s": "Billie Marten Cherry Hill 2024",
@@ -53482,14 +53417,6 @@
 "cad": 0,
 "vn": "Cherry Hill",
 "t": 304
-},
-{
-"id": "Hb3bOFVGN74",
-"a": "Blu & Exile",
-"s": "Blue and Exile Galaxy Barn 2025",
-"y": 2025,
-"cad": 0,
-"vn": "Galaxy Barn"
 },
 {
 "id": "j8-pp1lrqWE",
@@ -53645,14 +53572,6 @@
 "vn": "Live and Breathing"
 },
 {
-"id": "COZ24iIFh3g",
-"a": "Chris Acker",
-"s": "Chris acker pt 1 Galaxy Barn 2025",
-"y": 2025,
-"cad": 0,
-"vn": "Galaxy Barn"
-},
-{
 "id": "YK00-lzG55E",
 "a": "Chris Charpentier",
 "s": "Chris Charpentier - Laugh @Pickathon 2018 S03E03",
@@ -53734,14 +53653,6 @@
 "vn": "Laugh"
 },
 {
-"id": "6NPodvrMHLQ",
-"a": "David Nance",
-"s": "David Nance Galaxy Barn 2025",
-"y": 2025,
-"cad": 0,
-"vn": "Galaxy Barn"
-},
-{
 "id": "p0g-Emb5hvI",
 "a": "Dawn Landes",
 "s": "Dawn Landes - I Can't Meet You (Live from Pickathon 2011)",
@@ -53772,14 +53683,6 @@
 "y": 2014,
 "cad": 0,
 "vn": "Live and Breathing"
-},
-{
-"id": "Rn0tCm-pAOA",
-"a": "Derya Yıldırım",
-"s": "Derya Yildirim Grup Simsek Woods 2025",
-"y": 2025,
-"cad": 0,
-"vn": "Woods Stage"
 },
 {
 "id": "GJgejdBSEeI",
@@ -53828,14 +53731,6 @@
 "y": 2024,
 "cad": 0,
 "vn": "On The Farm Sessions"
-},
-{
-"id": "yn9diNtbXZs",
-"a": "East Nash Grass",
-"s": "East Nash Grass Galaxy Barn 2025",
-"y": 2025,
-"cad": 0,
-"vn": "Galaxy Barn"
 },
 {
 "id": "TdkqUOijChQ",
@@ -53942,14 +53837,6 @@
 "vn": "My Pickathon"
 },
 {
-"id": "4jD5WEjvSYE",
-"a": "Frente Cumbiero",
-"s": "Frente Cumbiero Galaxy Barn 2025",
-"y": 2025,
-"cad": 0,
-"vn": "Galaxy Barn"
-},
-{
 "id": "OvCRap00U4I",
 "a": "Fruit Bats",
 "s": "Fruit Bats - Tony The Tripper (Live from Pickathon 2011)",
@@ -53974,14 +53861,6 @@
 "vn": "Slab Sessions"
 },
 {
-"id": "U8CgLiNymRg",
-"a": "Glitterfox",
-"s": "Gitterfox Galaxy Barn 2025",
-"y": 2025,
-"cad": 0,
-"vn": "Galaxy Barn"
-},
-{
 "id": "Scx3bSnaX7Y",
 "a": "Greg Freeman",
 "s": "Greg Freeman Curtain Slab 2024",
@@ -54004,14 +53883,6 @@
 "y": 2015,
 "cad": 0,
 "vn": "Seriously?"
-},
-{
-"id": "sHjQVnxHyfA",
-"a": "Haley Heynderickx",
-"s": "Haley Heynderickx Woods 2025",
-"y": 2025,
-"cad": 0,
-"vn": "Woods Stage"
 },
 {
 "id": "gbuuR0_l_4E",
@@ -54054,14 +53925,6 @@
 "vn": "Live and Breathing"
 },
 {
-"id": "bbneY-J0beQ",
-"a": "Humbird",
-"s": "Humbird pt 1 Galaxy Barn 2025",
-"y": 2025,
-"cad": 0,
-"vn": "Galaxy Barn"
-},
-{
 "id": "qAoSOAQB2_U",
 "a": "I Draw Slow",
 "s": "I Draw Slow - Mama Don't Cry (Live @Pickathon 2013)",
@@ -54094,14 +53957,6 @@
 "vn": "Cherry Hill"
 },
 {
-"id": "Ok80_en0hqs",
-"a": "J.R.C.G.",
-"s": "J R C G Galaxy Barn 2025",
-"y": 2025,
-"cad": 0,
-"vn": "Galaxy Barn"
-},
-{
 "id": "a4JVVlAszA8",
 "a": "JJUUJJUU",
 "s": "jjuujjuu galaxy barn 2024",
@@ -54124,14 +53979,6 @@
 "y": 2024,
 "cad": 0,
 "vn": "Pumphouse Sessions"
-},
-{
-"id": "xj7eaUSJn0o",
-"a": "Jake Vaadeland",
-"s": "Jake Vaandeland Woods 2025",
-"y": 2025,
-"cad": 0,
-"vn": "Woods Stage"
 },
 {
 "id": "vv2OzyM3TMs",
@@ -54221,30 +54068,6 @@
 "y": 2024,
 "cad": 0,
 "vn": "Slab Sessions"
-},
-{
-"id": "LNmi8QcQii0",
-"a": "Jonny’s Day Out",
-"s": "Jonny's Day Out Galaxy Barn 2025",
-"y": 2025,
-"cad": 0,
-"vn": "Galaxy Barn"
-},
-{
-"id": "HyFxHq1JaK4",
-"a": "Josh Johnson",
-"s": "Josh Johnson Lucky Barn 2025",
-"y": 2025,
-"cad": 0,
-"vn": "Lucky Barn"
-},
-{
-"id": "lrIFqN0BY40",
-"a": "Jourdan Thibodeaux et les Rôdailleurs",
-"s": "jourdan thibodeaux et les rodailleurs Galaxy Barn 2025",
-"y": 2025,
-"cad": 0,
-"vn": "Galaxy Barn"
 },
 {
 "id": "Y16qIvwtBjg",
@@ -54421,14 +54244,6 @@
 "y": 2023,
 "cad": 0,
 "vn": "Grove"
-},
-{
-"id": "jv2Cr7y3kCE",
-"a": "Lonesome Shack",
-"s": "Lonesome Shack Lucky Barn 2025",
-"y": 2025,
-"cad": 0,
-"vn": "Lucky Barn"
 },
 {
 "id": "tMJ5g_ptXFA",
@@ -54615,14 +54430,6 @@
 "vn": "Galaxy Barn"
 },
 {
-"id": "XfxzL8IqdZk",
-"a": "Ocie Elliott",
-"s": "Ocie Elliott Paddock 2025 RAW",
-"y": 2025,
-"cad": 0,
-"vn": "Paddock Stage"
-},
-{
 "id": "pnhQLUnz1EI",
 "a": "Old Light",
 "s": "Old Light - Old Man (Live from Pickathon 2011)",
@@ -54711,14 +54518,6 @@
 "vn": "Live and Breathing"
 },
 {
-"id": "xtWUNVFK3yk",
-"a": "Portugal. The Man",
-"s": "Portugal the Man Full Set Program Paddock 2025 RAW",
-"y": 2025,
-"cad": 0,
-"vn": "Paddock Stage"
-},
-{
 "id": "O9g8qBntXXg",
 "a": "Quail Trail Buskers",
 "s": "My Pickathon (S02E01) Quail Trail Buskers @Pickathon 2015",
@@ -54798,22 +54597,6 @@
 "cad": 0,
 "vn": "Paddock Stage",
 "t": 180
-},
-{
-"id": "AOSNs0xfw1U",
-"a": "Rosali",
-"s": "Rosali Full Set Back Wide only Paddock 2025 RAW",
-"y": 2025,
-"cad": 0,
-"vn": "Paddock Stage"
-},
-{
-"id": "euUWo1uPWvY",
-"a": "SML",
-"s": "SML Paddock 2025",
-"y": 2025,
-"cad": 0,
-"vn": "Paddock Stage"
 },
 {
 "id": "wFtWYIYbKUg",
