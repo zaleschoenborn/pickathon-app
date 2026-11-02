@@ -1,0 +1,15 @@
+const {chromium}=require('playwright');
+(async()=>{const b=await chromium.launch();const ctx=await b.newContext({viewport:{width:430,height:900},serviceWorkers:'allow'});const p=await ctx.newPage();
+const errs=[];p.on('pageerror',e=>errs.push(String(e)));
+await p.goto('http://localhost:8767/index.html');
+await p.waitForFunction(()=>navigator.serviceWorker.controller||false,{timeout:20000}).catch(()=>{});
+await p.reload();await p.waitForTimeout(15000);
+const n=await p.evaluate(async()=>{const k=await caches.keys();const o={};for(const x of k){o[x]=(await (await caches.open(x)).keys()).length}return o});
+console.log('caches',JSON.stringify(n));
+await ctx.setOffline(true);
+const q=await ctx.newPage();const failed=[];q.on('requestfailed',r=>failed.push(r.url()));
+const resp=[];q.on('response',r=>{if(/farmmap\/(t|l|h|ic)\/|map\.webp/.test(r.url()))resp.push(r.status())});
+await q.goto('http://localhost:8767/farmmap/index.html?embed=1');await q.waitForTimeout(4000);
+const ok=await q.evaluate(()=>{const i=document.getElementById('mapimg');return i?[i.complete,i.naturalWidth]:null});
+console.log('offline map img',ok,'asset responses',resp.length,'statuses',[...new Set(resp)],'failed',failed.length,failed.slice(0,3),errs.slice(0,2));
+await q.screenshot({path:'/tmp/bk/off.png'});await b.close()})();
