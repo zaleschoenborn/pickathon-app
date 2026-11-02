@@ -1,5 +1,5 @@
 // Pickathon service worker. Build 20261101-1050
-const V='pk-20261101-2554',M='pkmedia-2',KEEP=["ssindex-b6158b1d.json"],SHELL=['./','index.html','data.json','manifest.json','icon-192.png','apple-touch-icon.png','fonts/pickathon-2014.ttf','farmmap/index.html?embed=1'];
+const V='pk-20261101-2555',M='pkmedia-2',KEEP=["ssindex-b6158b1d.json"],SHELL=['./','index.html','data.json','manifest.json','icon-192.png','apple-touch-icon.png','fonts/pickathon-2014.ttf','farmmap/index.html?embed=1'];
 const MP='pkmap-1';
 async function mapPack(tier){try{const p=await (await fetch('farmmap/pack.json',{cache:'no-store'})).json();const c=await caches.open(MP);const abs=u=>new URL(u,self.registration.scope).href;const want=new Set(p.core.concat(p.extra).map(abs));for(const q of await c.keys())if(!want.has(q.url))await c.delete(q);const list=tier==='core'?p.core:p.extra;let i=0;const run=async()=>{while(i<list.length){const u=list[i++];const rq=new Request(abs(u));if(await c.match(rq))continue;try{const x=await fetch(rq);if(x.ok)await c.put(rq,x)}catch(e){}}};await Promise.all([run(),run(),run(),run()])}catch(e){}}
 self.addEventListener('install',e=>{e.waitUntil(Promise.all([caches.open(V).then(c=>Promise.all(SHELL.map(u=>c.add(new Request(u,{cache:'reload'})).catch(()=>{})))),mapPack('core')]))});

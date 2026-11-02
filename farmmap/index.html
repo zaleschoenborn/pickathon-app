@@ -215,7 +215,15 @@ body{margin:0;background:var(--ink);color:var(--cream);font-family:var(--f);
   #card.intro #empty p{color:var(--muted);font-size:14px;line-height:1.4;margin:0}
   #card.intro #ibuild{display:none}
   #pcl{display:flex!important}
+  #eyebrow{display:block!important}
 }
+#eyebrow{display:none;font:800 11px/1 var(--f);letter-spacing:.16em;text-transform:uppercase;color:#F2B33D;margin-bottom:2px}
+#pcl,#body,#card{scrollbar-width:none;-ms-overflow-style:none}
+#pcl::-webkit-scrollbar,#body::-webkit-scrollbar,#card::-webkit-scrollbar{display:none}
+#fullmap{position:fixed;top:14px;right:14px;z-index:25;border:1px solid var(--line);background:rgba(22,26,18,.92);color:var(--cream);font:800 12px/1 var(--f);padding:0 13px;height:36px;border-radius:999px;display:flex;align-items:center;gap:7px;cursor:pointer;opacity:0;pointer-events:none;transition:opacity .2s}
+#fullmap.on{opacity:1;pointer-events:auto}
+#fullmap svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.8}
+@media (min-width:880px){#fullmap{right:calc(var(--cardw) + 14px)}}
 #pcl{display:none;flex-direction:column;gap:6px;overflow-y:auto;margin:12px -22px 0;padding:0 22px 22px;flex:1;min-height:0;overscroll-behavior:contain}
 .pcg{font:800 10.5px/1 var(--f);letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin:12px 0 2px}
 .pc{display:flex;align-items:center;gap:12px;border:1px solid var(--line);background:#1D2218;border-radius:12px;padding:6px;cursor:default;text-align:left;color:var(--cream);font-family:var(--f);transition:background .15s,border-color .15s}
@@ -313,6 +321,7 @@ body{margin:0;background:var(--ink);color:var(--cream);font-family:var(--f);
   <button id="ptog" aria-expanded="false" aria-controls="picker"></button>
   <div id="key" aria-label="What the colours mean"></div>
 </div>
+<button id="fullmap" type="button" aria-label="Back to the full map"><svg viewBox="0 0 16 16"><path d="M2 6V2h4M14 6V2h-4M2 10v4h4M14 10v4h-4"/></svg>Full map</button>
 <div id="card" class="intro">
   <div id="picker" role="group" aria-label="Find on the map" hidden>
     <div id="phead"><div id="pname">What are you looking for?</div><button id="pclose" type="button" aria-label="Close">✕</button></div>
@@ -323,8 +332,9 @@ body{margin:0;background:var(--ink);color:var(--cream);font-family:var(--f);
     <div id="hero" hidden></div>
     <div id="meta">
       <div id="empty">
-        <b>A city for one weekend</b>
-        <p>Every August, architects and builders raise 20 neighborhoods on Pendarvis Farm. Swipe this panel to walk through them, or tap one on the map.</p>
+        <small id="eyebrow">Pickathon Neighborhoods</small>
+        <b>A metropolis of imagination, built for one weekend</b>
+        <p>Every August, artists, architects and builders raise 20 neighborhoods on Pendarvis Farm. Pick one to fly the map to it.</p>
         <div id="pcl"></div>
         <button id="ibuild" type="button">We build these. Want one? →</button>
       </div>
@@ -762,6 +772,7 @@ function peek(h){
   HOODS.forEach(x=>{ if(x._el) x._el.classList.toggle('peek',x===h); });
   light(cur);   // the highlight is the pre-made lit picture on the low layer: icons, lines and labels stay on top
 }
+function fullMap(){ pinned=null; peek(null); cur=null; show(null); apply(); fit(); }
 function clearCur(){ pinned=null; peek(null); cur=null; show(null); apply(); }
 function goPage(h){
   setCur(h); show(h);
@@ -933,6 +944,8 @@ document.getElementById('card').addEventListener('click',e=>{
   if(window.__swipedAt && performance.now()-window.__swipedAt<500) return;   // the end of a swipe is not a tap
   if(cur) goPage(cur);
 });
+document.getElementById('fullmap').onclick=fullMap;
+setInterval(()=>{ document.getElementById('fullmap').classList.toggle('on', k>kFit*1.08 || !!cur); },250);
 document.getElementById('pgback').onclick=()=>{document.getElementById('page').hidden=true;};
 const PT=document.getElementById('ptog'), PK=document.getElementById('picker');
 function setFind(){
