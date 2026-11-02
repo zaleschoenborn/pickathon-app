@@ -1856,31 +1856,11 @@
 "c": "Andy Meeks"
 },
 {
-"i": "i/pk-farmhouse-02.jpg",
-"c": "Andy Meeks"
-},
-{
-"i": "i/pk-farmhouse-03.jpg",
-"c": "Andy Meeks"
-},
-{
-"i": "i/pk-farmhouse-04.jpg",
-"c": "Andy Meeks"
-},
-{
 "i": "i/pk-farmhouse-05.jpg",
 "c": "Andy Meeks"
 },
 {
-"i": "i/pk-farmhouse-06.jpg",
-"c": "Andy Meeks"
-},
-{
 "i": "i/pk-farmhouse-07.jpg",
-"c": "Rob Kerr"
-},
-{
-"i": "i/pk-farmhouse-08.jpg",
 "c": "Rob Kerr"
 },
 {
@@ -2043,13 +2023,17 @@
 "Restrooms",
 "Water"
 ],
-"i": "i/pk-curation-01.jpg",
+"i": "i/pk-curation-10.jpg",
 "p": [
 20,
 95
 ],
 "k": "stage",
 "g": [
+{
+"i": "i/pk-curation-10.jpg",
+"c": "Heather Binns"
+},
 {
 "i": "i/pk-curation-01.jpg",
 "c": "Pickathon"
@@ -2067,10 +2051,6 @@
 "c": "Pickathon"
 },
 {
-"i": "i/pk-curation-05.jpg",
-"c": "Pickathon"
-},
-{
 "i": "i/pk-curation-06.jpg",
 "c": "Heather Binns"
 },
@@ -2079,23 +2059,11 @@
 "c": "Pickathon"
 },
 {
-"i": "i/pk-curation-08.jpg",
-"c": "Pickathon"
-},
-{
 "i": "i/pk-curation-09.jpg",
 "c": "Pickathon"
 },
 {
-"i": "i/pk-curation-10.jpg",
-"c": "Heather Binns"
-},
-{
 "i": "i/pk-curation-11.jpg",
-"c": "Risa Scott"
-},
-{
-"i": "i/pk-curation-12.jpg",
 "c": "Risa Scott"
 },
 {
@@ -2284,10 +2252,6 @@
 "c": "Rob Kerr"
 },
 {
-"i": "i/pk-refuge-04.jpg",
-"c": "Graeme Harrison"
-},
-{
 "i": "i/pk-refuge-05.jpg",
 "c": "Pickathon"
 },
@@ -2301,14 +2265,6 @@
 },
 {
 "i": "i/pk-refuge-08.jpg",
-"c": "Pickathon"
-},
-{
-"i": "i/pk-refuge-09.jpg",
-"c": "Pickathon"
-},
-{
-"i": "i/pk-refuge-10.jpg",
 "c": "Pickathon"
 },
 {
@@ -2481,10 +2437,6 @@
 "c": "Pickathon"
 },
 {
-"i": "i/pk-coyote-02.jpg",
-"c": "Pickathon"
-},
-{
 "i": "i/pk-coyote-03.jpg",
 "c": "Pickathon"
 },
@@ -2503,10 +2455,6 @@
 {
 "i": "i/pk-coyote-07.jpg",
 "c": "Erin Riddle"
-},
-{
-"i": "i/pk-coyote-08.jpg",
-"c": "Mark Stein"
 },
 {
 "i": "i/pk-coyote-09.jpg",
@@ -3197,10 +3145,6 @@
 "c": "Dylan VanWeelden"
 },
 {
-"i": "i/pk-orchard-02.jpg",
-"c": "Dylan VanWeelden"
-},
-{
 "i": "i/pk-orchard-03.jpg",
 "c": "Dylan VanWeelden"
 },
@@ -3221,32 +3165,12 @@
 "c": "Dylan VanWeelden"
 },
 {
-"i": "i/pk-orchard-08.jpg",
-"c": "Dylan VanWeelden"
-},
-{
 "i": "i/pk-orchard-09.jpg",
-"c": "Andy Meeks"
-},
-{
-"i": "i/pk-orchard-10.jpg",
 "c": "Andy Meeks"
 },
 {
 "i": "i/pk-orchard-11.jpg",
 "c": "Andy Meeks"
-},
-{
-"i": "i/pk-orchard-12.jpg",
-"c": "Andy Meeks"
-},
-{
-"i": "i/pk-orchard-13.jpg",
-"c": "Andy Meeks"
-},
-{
-"i": "i/pk-orchard-14.jpg",
-"c": "Mark Stein"
 }
 ],
 "ic": "i/198.svg",
@@ -3381,10 +3305,6 @@
 "c": "Mark Stein"
 },
 {
-"i": "i/pk-welcomelot-02.jpg",
-"c": "Mark Stein"
-},
-{
 "i": "i/pk-welcomelot-03.jpg",
 "c": "Rob Kerr"
 },
@@ -3405,32 +3325,12 @@
 "c": "Rob Kerr"
 },
 {
-"i": "i/pk-welcomelot-08.jpg",
-"c": "Rob Kerr"
-},
-{
-"i": "i/pk-welcomelot-09.jpg",
-"c": "Rob Kerr"
-},
-{
 "i": "i/pk-welcomelot-10.jpg",
-"c": "Mark Stein"
-},
-{
-"i": "i/pk-welcomelot-11.jpg",
-"c": "Mark Stein"
-},
-{
-"i": "i/pk-welcomelot-12.jpg",
 "c": "Mark Stein"
 },
 {
 "i": "i/pk-welcomelot-13.jpg",
 "c": "Chris Riley"
-},
-{
-"i": "i/pk-welcomelot-14.jpg",
-"c": "Mark Stein"
 }
 ],
 "ic": "i/p779.svg",
@@ -3545,10 +3445,6 @@
 "c": "Mark Stein"
 },
 {
-"i": "i/pk-lushcamp-06.jpg",
-"c": "Mark Stein"
-},
-{
 "i": "i/pk-lushcamp-07.jpg",
 "c": "Norm Eder"
 },
@@ -3603,10 +3499,6 @@
 "c": "Joe Duquette"
 },
 {
-"i": "i/pk-quailtrail-04.jpg",
-"c": "Joe Duquette"
-},
-{
 "i": "i/pk-quailtrail-05.jpg",
 "c": "Mark Stein"
 },
@@ -3619,15 +3511,7 @@
 "c": "Mark Stein"
 },
 {
-"i": "i/pk-quailtrail-08.jpg",
-"c": "Pickathon"
-},
-{
 "i": "i/pk-quailtrail-09.jpg",
-"c": "Erin Riddle"
-},
-{
-"i": "i/pk-quailtrail-10.jpg",
 "c": "Erin Riddle"
 },
 {
@@ -3733,7 +3617,7 @@
 "Tent Camping",
 "Gear Drop/Pick-up"
 ],
-"i": "i/pk-wildcamp-01.jpg",
+"i": "i/pk-wildcamp-06.jpg",
 "p": [
 28,
 15.5
@@ -3741,28 +3625,20 @@
 "k": "camp",
 "g": [
 {
-"i": "i/pk-wildcamp-01.jpg",
-"c": "Mark Stein"
+"i": "i/pk-wildcamp-06.jpg",
+"c": "Pickathon"
 },
 {
 "i": "i/pk-wildcamp-02.jpg",
 "c": "Mark Stein"
 },
 {
+"i": "i/pk-wildcamp-10.jpg",
+"c": "Mark Stein"
+},
+{
 "i": "i/pk-wildcamp-03.jpg",
 "c": "Mark Stein"
-},
-{
-"i": "i/pk-wildcamp-04.jpg",
-"c": "Mark Stein"
-},
-{
-"i": "i/pk-wildcamp-06.jpg",
-"c": "Pickathon"
-},
-{
-"i": "i/pk-wildcamp-07.jpg",
-"c": "Pickathon"
 },
 {
 "i": "i/pk-wildcamp-08.jpg",
@@ -3773,7 +3649,7 @@
 "c": "Norm Eder"
 },
 {
-"i": "i/pk-wildcamp-10.jpg",
+"i": "i/pk-wildcamp-01.jpg",
 "c": "Mark Stein"
 }
 ],
