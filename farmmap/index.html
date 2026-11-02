@@ -485,6 +485,7 @@ const NS='http://www.w3.org/2000/svg';
 const EXTRA_CHROME='M1764 1203h42v42h-42zM1014 834h42v42h-42zM812 1843h42v42h-42zM778 1473h42v42h-42zM1338 691h42v42h-42zM1637 2115h42v42h-42zM717 3286h42v42h-42zM983 1107h42v42h-42zM1213 2684h42v42h-42zM587 2239h42v42h-42zM1753 1404h42v42h-42zM1489 2501h42v42h-42zM1187 2426h42v42h-42zM822 3191h42v42h-42zM1598 2119h42v42h-42zM949 2521h42v42h-42zM1197 2548h42v42h-42zM1619 2201h42v42h-42zM771 2578h42v42h-42zM1091 3198h42v42h-42zM1634 1307h42v42h-42zM762 2536h42v42h-42zM1587 2405h42v42h-42zM1709 1391h42v42h-42zM820 3142h42v42h-42zM1132 2617h42v42h-42zM1145 2713h42v42h-42zM1583 2455h42v42h-42zM1662 1357h42v42h-42zM939 3271h42v42h-42zM966 2610h42v42h-42zM1447 2233h42v42h-42zM1516 2626h42v42h-42zM1488 2144h42v42h-42zM1013 2882h42v42h-42zM1126 2752h42v42h-42zM1580 2260h42v42h-42zM1526 2192h42v42h-42zM817 3092h42v42h-42zM1581 2548h42v42h-42zM1587 2594h42v42h-42zM929 3157h42v42h-42zM1533 2499h42v42h-42zM1822 2072h42v42h-42zM1115 2805h42v42h-42zM931 2938h42v42h-42zM1283 3427h42v42h-42zM1388 3427h42v42h-42zM1210 3332h42v42h-42zM975 2914h42v42h-42zM789 1418h42v42h-42zM822 1788h42v42h-42zM1405 691h42v42h-42zM966 916h42v42h-42zM1148 3288h42v42h-42zM1233 3427h42v42h-42zM1053 3582h42v42h-42zM1006 3582h42v42h-42zM975 3457h42v42h-42zM1588 2507h42v42h-42zM1777 2072h42v42h-42z';
 const KIND={stage:'Stage', camp:'Camping', around:'Around the farm',
             wellness:'Wellness', family:'Family'};
+const KLBL=k=>k==='stage'?'Stage neighborhood':k==='camp'?'Camping neighborhood':'Gathering neighborhood';   // single-neighborhood kind label
 let k=1,tx=0,ty=0,kFit=1,cur=null,amFilter=null,heroT=null,heroI=0;
 
 function build(){
@@ -908,7 +909,7 @@ function show(h){
   document.getElementById('cname').textContent=h.n;
   document.getElementById('ctag').textContent=h.t||'';
   const ck=document.getElementById('ckind');
-  ck.textContent=KIND[h.k]||h.k; ck.className='chip k-'+h.k;
+  ck.textContent=KLBL(h.k); ck.className='chip k-'+h.k;
   document.getElementById('cams').innerHTML=(amFilter&&!passes(h)?'<span class="nohit">No '+(AMLBL[amFilter]||amFilter)+' here</span>':'')+(h.amk||[]).map((a,i)=>
     '<span class="ai'+(a===amFilter?' hit':'')+'" title="'+(AMLBL[a]||a)+'">'+ico(a)+'</span>').join('');
   loadXD(); fillExtra(h);
@@ -949,7 +950,7 @@ function goPage(h){
   document.getElementById('pgname').textContent=h.n;
   document.getElementById('pgtag').textContent=h.t||'';
   const pk=document.getElementById('pgkind');
-  pk.textContent=KIND[h.k]||h.k; pk.className='chip k-'+h.k;
+  pk.textContent=KLBL(h.k); pk.className='chip k-'+h.k;
   const hv=(HERO[h.id]||[])[0], el=document.getElementById('pghero');
   if(hv){el.src=hv; el.hidden=false;} else el.hidden=true;
   document.getElementById('pgams').innerHTML=(h.amk||[]).map((a,i)=>
@@ -1188,8 +1189,10 @@ addEventListener('resize',()=>{const z=k/kFit; fit(); zoomAt(kFit*z,stage.client
 function saveView(){ if(CARDID) return; try{ const W=stage.clientWidth,H=stage.clientHeight;
   sessionStorage.setItem('pkmap.view',JSON.stringify({kr:k/kFit,cx:(W/2-tx)/k,cy:(H/2-ty)/k,cur:cur&&cur.id,f:amFilter||'',s:selOnce?1:0})); }catch(e){} }
 let saveT=0; function saveSoon(){ clearTimeout(saveT); saveT=setTimeout(saveView,250); }
+// Every entry starts on the whole farm unless a neighborhood was asked for; only a return from a neighborhood page picks up where they left off.
+const FROMHOOD=(function(){ try{ if(window.parent===window) return false; const nv=performance.getEntriesByType('navigation')[0]; if(nv&&nv.type==='reload') return false; return sessionStorage.getItem('pkmap.from')==='hood'; }catch(e){ return false; } })();
 function restoreView(){ if(CARDID) return; try{
-  const v=JSON.parse(sessionStorage.getItem('pkmap.view')||'null');
+  const v=FROMHOOD?JSON.parse(sessionStorage.getItem('pkmap.view')||'null'):null;
   const foc=sessionStorage.getItem('pkmap.focus'); sessionStorage.removeItem('pkmap.focus'); const force=sessionStorage.getItem('pkmap.force')==='1'; sessionStorage.removeItem('pkmap.force');
   const W=stage.clientWidth,H=stage.clientHeight;
   const fh=foc&&HOODS.find(x=>x.id===foc);

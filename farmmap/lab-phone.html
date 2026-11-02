@@ -625,23 +625,27 @@ body{margin:0;background:var(--ink);color:var(--cream);font-family:var(--f);
 @media (min-width:880px) and (max-height:770px){ #hero{aspect-ratio:5/2!important} #full #cvid{aspect-ratio:3/1!important} #cexp p{-webkit-line-clamp:2} #full #cexp,#full #cprog{margin-top:12px} }
 </style>
 <div id="lptitle" aria-hidden="true"><small>Pickathon Neighborhoods</small><b>A Temporary City of Wonder</b><p>Every summer Pickathon builds a small city of stages, courtyards and camps on a farm in Oregon.</p><i id="lphint">Tap the map or an icon to explore</i></div>
-<div id="lpdeep" aria-hidden="true"><small>Pickathon Neighborhoods</small><i><span class="lpdp">Tap the map or an icon to explore</span><span class="lpdd">Click the map or a neighborhood to explore</span></i></div>
+<div id="lpdeep" aria-hidden="true"><b>Pickathon Neighborhoods</b><small>A Temporary City of Wonder</small><i><span class="lpdp">Tap the map or an icon to explore</span><span class="lpdd">Click the map or a neighborhood to explore</span></i></div>
 <style>
 /* Deep entry (a neighborhood already picked from home, Why Pickathon or a neighborhood page): a compact version of the
    overview title, under Find, until the first touch, drag, zoom, click, wheel or key. No box, no pulse. */
-#lpdeep{position:fixed;left:0;top:0;z-index:24;display:flex;flex-direction:column;gap:6px;box-sizing:border-box;
-  padding:calc(var(--lpdt,58px) + 4px) 16px 30px max(16px,env(safe-area-inset-left,0px));pointer-events:none;
+#lpdeep{position:fixed;left:0;top:0;z-index:24;display:flex;flex-direction:column;gap:5px;box-sizing:border-box;
+  padding:calc(var(--lpdt,58px) + 6px) 16px 34px max(16px,env(safe-area-inset-left,0px));pointer-events:none;
   opacity:0;visibility:hidden;transition:opacity .45s ease,visibility 0s linear .45s}
 body.lpdeep #lpdeep{opacity:1;visibility:visible;transition:opacity .35s ease}
 body.cardmode #lpdeep{display:none!important}
-#lpdeep small{font:800 10.5px/1 var(--f);letter-spacing:.16em;text-transform:uppercase;color:#F2B33D;text-shadow:0 1px 8px rgba(0,0,0,.6)}
-#lpdeep i{font:800 13px/1.2 var(--f);font-style:normal;letter-spacing:.01em;color:#F2B33D;text-shadow:0 1px 8px rgba(0,0,0,.6)}
+body.lpback #lptitle{display:none!important}   /* back from a neighborhood page: no title screen until they touch the map */
+/* a title screen: big white display name, the city line under it, then the gold how-to */
+#lpdeep b{font:900 clamp(26px,7.6vw,30px)/1.02 var(--f);color:#FFFFFF;letter-spacing:-.01em;text-shadow:0 2px 14px rgba(0,0,0,.5)}
+#lpdeep small{font:600 clamp(14px,4vw,16px)/1.2 var(--f);color:#E6E0D3;text-shadow:0 1px 8px rgba(0,0,0,.6)}
+#lpdeep i{margin-top:5px;font:800 13.5px/1.2 var(--f);font-style:normal;letter-spacing:.01em;color:#F2B33D;text-shadow:0 1px 8px rgba(0,0,0,.6)}
 #lpdeep .lpdd{display:none}
 #lpdeep::before{content:'';position:absolute;inset:0;z-index:-1;
   background:linear-gradient(180deg,rgba(10,13,8,.86) 0%,rgba(10,13,8,.76) 62%,rgba(10,13,8,.3) 86%,rgba(10,13,8,0) 100%)}
 @media (max-width:879px){ #lpdeep{right:0} }
 @media (min-width:880px){
-  #lpdeep{padding-right:90px}
+  #lpdeep{padding-right:110px;padding-left:24px;gap:7px}
+  #lpdeep b{font-size:38px} #lpdeep small{font-size:18px} #lpdeep i{font-size:15px;margin-top:6px}
   #lpdeep .lpdp{display:none} #lpdeep .lpdd{display:inline}
   #lpdeep::before{background:radial-gradient(130% 100% at 0 0,rgba(10,13,8,.82) 0%,rgba(10,13,8,.6) 45%,rgba(10,13,8,.22) 72%,rgba(10,13,8,0) 100%)}
 }
@@ -765,6 +769,7 @@ const NS='http://www.w3.org/2000/svg';
 const EXTRA_CHROME='M1764 1203h42v42h-42zM1014 834h42v42h-42zM812 1843h42v42h-42zM778 1473h42v42h-42zM1338 691h42v42h-42zM1637 2115h42v42h-42zM717 3286h42v42h-42zM983 1107h42v42h-42zM1213 2684h42v42h-42zM587 2239h42v42h-42zM1753 1404h42v42h-42zM1489 2501h42v42h-42zM1187 2426h42v42h-42zM822 3191h42v42h-42zM1598 2119h42v42h-42zM949 2521h42v42h-42zM1197 2548h42v42h-42zM1619 2201h42v42h-42zM771 2578h42v42h-42zM1091 3198h42v42h-42zM1634 1307h42v42h-42zM762 2536h42v42h-42zM1587 2405h42v42h-42zM1709 1391h42v42h-42zM820 3142h42v42h-42zM1132 2617h42v42h-42zM1145 2713h42v42h-42zM1583 2455h42v42h-42zM1662 1357h42v42h-42zM939 3271h42v42h-42zM966 2610h42v42h-42zM1447 2233h42v42h-42zM1516 2626h42v42h-42zM1488 2144h42v42h-42zM1013 2882h42v42h-42zM1126 2752h42v42h-42zM1580 2260h42v42h-42zM1526 2192h42v42h-42zM817 3092h42v42h-42zM1581 2548h42v42h-42zM1587 2594h42v42h-42zM929 3157h42v42h-42zM1533 2499h42v42h-42zM1822 2072h42v42h-42zM1115 2805h42v42h-42zM931 2938h42v42h-42zM1283 3427h42v42h-42zM1388 3427h42v42h-42zM1210 3332h42v42h-42zM975 2914h42v42h-42zM789 1418h42v42h-42zM822 1788h42v42h-42zM1405 691h42v42h-42zM966 916h42v42h-42zM1148 3288h42v42h-42zM1233 3427h42v42h-42zM1053 3582h42v42h-42zM1006 3582h42v42h-42zM975 3457h42v42h-42zM1588 2507h42v42h-42zM1777 2072h42v42h-42z';
 const KIND={stage:'Stage', camp:'Camping', around:'Around the farm',
             wellness:'Wellness', family:'Family'};
+const KLBL=k=>k==='stage'?'Stage neighborhood':k==='camp'?'Camping neighborhood':'Gathering neighborhood';   // single-neighborhood kind label
 let k=1,tx=0,ty=0,kFit=1,cur=null,amFilter=null,heroT=null,heroI=0;
 
 function build(){
@@ -1183,7 +1188,7 @@ function fillExtra(h){
     const put=v=>{ cv.__v=v; cv.classList.remove('playing'); const old=cv.querySelector('iframe'); if(old) old.remove(); cv.href=v.vm?'https://vimeo.com/'+v.vm+(v.vh?'/'+v.vh:'')+(v.t?'#t='+v.t+'s':''):'https://www.youtube.com/watch?v='+v.id+(v.t?'&t='+v.t+'s':''); cv.querySelector('img').src=v.vm?v.th:'https://i.ytimg.com/vi/'+v.id+'/hqdefault.jpg'; cv.hidden=false; document.getElementById('cvl').textContent=v.y?((v.f?(LP()?'Full set, Pickathon ':'Watch the full set, Pickathon '):'Watch from Pickathon ')+v.y):'Watch'; document.getElementById('cvk').textContent='Filmed at '+h.n; document.getElementById('cva').textContent=v.a||''; document.getElementById('cvs').textContent=vSong(v.s); }; put(v); } }
 }
 // Desktop pane: the neighborhood's type, a short "what to expect" and its programming (kinds of things on there).
-const KTYPE={stage:['Stage','Where the music happens','#E86F51'],around:['Gathering','Food, art, wellness & family','#9FCB8A'],wellness:['Gathering','Food, art, wellness & family','#9FCB8A'],family:['Gathering','Food, art, wellness & family','#9FCB8A'],camp:['Camping','Where you sleep','#F2B33D']};
+const KTYPE={stage:['Stage neighborhood','Where the music happens','#E86F51'],around:['Gathering neighborhood','Food, art, wellness & family','#9FCB8A'],wellness:['Gathering neighborhood','Food, art, wellness & family','#9FCB8A'],family:['Gathering neighborhood','Food, art, wellness & family','#9FCB8A'],camp:['Camping neighborhood','Where you sleep','#F2B33D']};
 const PKEY=s=>String(s||'').toLowerCase().replace(/^the\s+/,'').replace(/[^a-z0-9]+/g,'');
 function progOf(h){
   // The lineup's own categories for what happens here, from the latest festival (no counts, no names):
@@ -1232,7 +1237,7 @@ function show(h){
   document.getElementById('cname').textContent=h.n;
   document.getElementById('ctag').textContent=h.t||'';
   const ck=document.getElementById('ckind');
-  ck.textContent=KIND[h.k]||h.k; ck.className='chip k-'+h.k;
+  ck.textContent=KLBL(h.k); ck.className='chip k-'+h.k;
   document.getElementById('cams').innerHTML=(amFilter&&!passes(h)?'<span class="nohit">No '+(AMLBL[amFilter]||amFilter)+' here</span>':'')+(h.amk||[]).map((a,i)=>
     '<span class="ai'+(a===amFilter?' hit':'')+'" title="'+(AMLBL[a]||a)+'">'+ico(a)+'</span>').join('');
   loadXD(); fillExtra(h); fillDesk(h);
@@ -1276,7 +1281,7 @@ function goPage(h){
   document.getElementById('pgname').textContent=h.n;
   document.getElementById('pgtag').textContent=h.t||'';
   const pk=document.getElementById('pgkind');
-  pk.textContent=KIND[h.k]||h.k; pk.className='chip k-'+h.k;
+  pk.textContent=KLBL(h.k); pk.className='chip k-'+h.k;
   const hv=(HERO[h.id]||[])[0], el=document.getElementById('pghero');
   if(hv){el.src=hv; el.hidden=false;} else el.hidden=true;
   document.getElementById('pgams').innerHTML=(h.amk||[]).map((a,i)=>
@@ -1510,9 +1515,13 @@ addEventListener('resize',()=>{ if(LP()) return; const z=k/kFit; fit(); zoomAt(k
 function saveView(){ if(CARDID) return; try{ const W=stage.clientWidth,H=stage.clientHeight;
   sessionStorage.setItem('pkmap.labphone.view',JSON.stringify({kr:k/kFit,cx:(W/2-tx)/k,cy:(H/2-ty)/k,cur:cur&&cur.id,f:amFilter||'',s:selOnce?1:0})); }catch(e){} }
 let saveT=0; function saveSoon(){ clearTimeout(saveT); saveT=setTimeout(saveView,250); }
+// Where the visitor came from (the site sets pkmap.from on every page change): back from a neighborhood page means they are
+// returning, so the map comes back as they left it with no title screen; from anywhere else (or a reload) the title shows.
+const FROMHOOD=(function(){ try{ if(window.parent===window) return false; const nv=performance.getEntriesByType('navigation')[0]; if(nv&&nv.type==='reload') return false; return sessionStorage.getItem('pkmap.from')==='hood'; }catch(e){ return false; } })();
 function restoreView(){ if(CARDID) return; try{
-  const v=JSON.parse(sessionStorage.getItem('pkmap.labphone.view')||'null');
-  const foc=sessionStorage.getItem('pkmap.focus'); sessionStorage.removeItem('pkmap.focus'); const force=sessionStorage.getItem('pkmap.force')==='1'; sessionStorage.removeItem('pkmap.force');
+  const foc=sessionStorage.getItem('pkmap.focus');
+  const v=FROMHOOD?JSON.parse(sessionStorage.getItem('pkmap.labphone.view')||'null'):null;   // only a return from a neighborhood page picks up where they left off
+  sessionStorage.removeItem('pkmap.focus'); const force=sessionStorage.getItem('pkmap.force')==='1'; sessionStorage.removeItem('pkmap.force');
   const W=stage.clientWidth,H=stage.clientHeight;
   const fh=foc&&HOODS.find(x=>x.id===foc);
   if(fh) window.__lpDeep=1;   // deep entry: a neighborhood is picked before the map is ever seen
@@ -1539,9 +1548,10 @@ let settleUntil=0; let hoverOK=true;   // hover previews only until the first pa
 document.getElementById('ibuild').addEventListener('click',()=>{ try{ parent.postMessage({pkMap:'go',r:'build'},'*'); }catch(e){} });
 function boot(){ if(!document.getElementById('itip')){ const t=document.createElement('div'); t.id='itip'; document.body.appendChild(t); } art.style.width=MW+'px'; art.style.height=MH+'px'; build(); fit(); homeView(); restoreView(); settleUntil=NOW()+900; if(CARDID){ cardView(); } else warmHeroes(); lpDeepInit(); }
 // Deep entry hint: shown once per visit when the map opens on a picked neighborhood; any first interaction fades it for good.
-function lpDeepInit(){ let seen=false; try{ seen=sessionStorage.getItem('pkmap.deephint')==='1'; }catch(e){}
+function lpDeepInit(){
   if(CARDID) return;
-  if(!window.__lpDeep||!cur||seen){ if(!window.__lpDeep){ try{ sessionStorage.setItem('pkmap.deephint','1'); }catch(e){} } return; }
+  if(FROMHOOD){ document.body.classList.add('lpback'); const ev0=['pointerdown','touchstart','wheel','keydown'], off0=function(){ document.body.classList.remove('lpback'); ev0.forEach(function(n){ removeEventListener(n,off0,true); }); }; ev0.forEach(function(n){ addEventListener(n,off0,{capture:true,passive:true}); }); return; }
+  if(!window.__lpDeep||!cur) return;
   const el=document.getElementById('lpdeep'), f=document.getElementById('finder'); if(!el) return;
   const place=function(){ if(f){ const r=f.getBoundingClientRect(); if(r.bottom>0) el.style.setProperty('--lpdt',Math.round(r.bottom)+'px'); } };
   place(); document.body.classList.add('lpdeep');
@@ -1669,7 +1679,7 @@ function lpFill(h){
   if(innerWidth<700){ th.style.backgroundImage=LQ[h.id]?'url('+LQ[h.id]+')':''; if(lpRot._h!==h||lpRot._x!==!!(XD&&XD.h)) lpRot(h); }
   else { th.innerHTML=''; th.style.backgroundImage=(im?'url("'+im+'")':'')+(im&&LQ[h.id]?', ':'')+(LQ[h.id]?'url('+LQ[h.id]+')':''); }
   document.getElementById('lpn').textContent=h.n;
-  const kd=document.getElementById('lpk'); kd.textContent=h.k==='stage'?'Stage':h.k==='camp'?'Camping':'Gathering';
+  const kd=document.getElementById('lpk'); kd.textContent=KLBL(h.k);
   // Phone: what goes on there and how much, from the latest festival's schedule (counts and kinds only)
   const PG=document.getElementById('lpprog'); PG.textContent='';
   if(innerWidth<700){ const P=(XD&&XD.h)?progOf(h):null;
@@ -1714,7 +1724,7 @@ function lpWirePanel(){
   // follow the site's TEST "When" switch
   setInterval(()=>{ if(cur&&lpFill._h===cur&&lpFest()!==lpFill._f) lpFill(cur); },800);
 }
-(function(){ const _boot=boot; boot=function(){ if(LP()){ hoverOK=false; lpBuildMenu(); lpWire(); lpWirePanel(); } _boot(); if(LP()) lpFresh(lpAtHome()); lpWire._w=stage.clientWidth; lpWire._h=stage.clientHeight; }; })();
+(function(){ const _boot=boot; boot=function(){ if(LP()){ hoverOK=false; lpBuildMenu(); lpWire(); lpWirePanel(); } _boot(); if(LP()) lpFresh(lpAtHome()&&!FROMHOOD); lpWire._w=stage.clientWidth; lpWire._h=stage.clientHeight; }; })();
 if(img.complete&&img.naturalWidth) boot(); else img.onload=boot;
 
 // ---- Walk the farm: swipe the card (or use the arrows) to go neighbourhood to

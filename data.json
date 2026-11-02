@@ -29272,7 +29272,8 @@
 "announce": [
 {
 "id": "build",
-"t": "Need something built?",
+"t": "Something’s being built. Let Pickathon build it with you.",
+"short": "Want to build something? Apply by Dec 15",
 "cta": "Start a project",
 "route": "build",
 "start": "2026-10-28",
@@ -29282,7 +29283,7 @@
 "off"
 ],
 "feature": true,
-"sub": "Pickathon builds it · proposals due Dec 15"
+"sub": "Applications close Dec 15."
 },
 {
 "id": "presale-soon",
