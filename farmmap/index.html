@@ -929,7 +929,7 @@ stage.addEventListener('dblclick',e=>{e.preventDefault(); zoomAt(k*2,e.clientX,e
 
 document.getElementById('cgo').onclick=e=>{ e.stopPropagation(); if(cur) goPage(cur); };
 document.getElementById('card').addEventListener('click',e=>{
-  if(e.target.closest('#pickbar,#picker,#top,#nav')) return;     // the amenity controls stay controls
+  if(e.target.closest('#pickbar,#picker,#top,#nav,#pcl')) return;     // the amenity controls stay controls
   if(window.__swipedAt && performance.now()-window.__swipedAt<500) return;   // the end of a swipe is not a tap
   if(cur) goPage(cur);
 });
