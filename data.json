@@ -292,11 +292,6 @@
 "by": ""
 },
 {
-"i": "i/p603.jpg",
-"y": "2026",
-"by": "Rob Kerr"
-},
-{
 "i": "i/p543.jpg",
 "y": "2026",
 "by": "Brooke Hoyer"
@@ -1493,6 +1488,22 @@
 {
 "i": "i/pk-go-1.jpg",
 "c": "Mark Stein"
+},
+{
+"i": "i/pk-galaxy-03.jpg",
+"c": "Norm Eder"
+},
+{
+"i": "i/pk-galaxy-08.jpg",
+"c": "Nehemiah Sliwoski"
+},
+{
+"i": "i/pk-galaxy-09.jpg",
+"c": "Norm Eder"
+},
+{
+"i": "i/pk-galaxy-07.jpg",
+"c": "Norm Eder"
 }
 ],
 "ic": "i/p788.svg",
@@ -1540,6 +1551,31 @@
 "y": "2026",
 "by": "Graeme Harrison",
 "band": "Ora Cogan"
+},
+{
+"i": "i/pk-galaxy-01.jpg",
+"y": "2026",
+"by": "Rob Kerr"
+},
+{
+"i": "i/pk-galaxy-03.jpg",
+"y": "2025",
+"by": "Norm Eder"
+},
+{
+"i": "i/pk-galaxy-02.jpg",
+"y": "2026",
+"by": "Jaime Delacruz"
+},
+{
+"i": "i/pk-galaxy-05.jpg",
+"y": "2025",
+"by": "Erica Stavis"
+},
+{
+"i": "i/pk-galaxy-04.jpg",
+"y": "2025",
+"by": "Norm Eder"
 }
 ],
 "pb": [
@@ -1628,10 +1664,6 @@
 "c": "Pickathon"
 },
 {
-"i": "i/pk-lucky-h1.jpg",
-"c": "Todd Stern"
-},
-{
 "i": "i/pk-lucky-x-2.jpg",
 "c": "Andy Meeks"
 },
@@ -1650,10 +1682,6 @@
 {
 "i": "i/pk-lucky-04.jpg",
 "c": "Todd Stern"
-},
-{
-"i": "i/pk-lucky-x-3.jpg",
-"c": "Andy Meeks"
 },
 {
 "i": "i/pk-lucky-05.jpg",
@@ -1741,12 +1769,6 @@
 "spn": [],
 "hr": [
 {
-"i": "i/p9643.jpg",
-"y": "2026",
-"by": "Andy Meeks",
-"band": "Kaleidoscope"
-},
-{
 "i": "i/p456.jpg",
 "y": "2026",
 "by": "Todd Stern",
@@ -1763,12 +1785,6 @@
 "y": "2026",
 "by": "Todd Stern",
 "band": "Cosmic Tones Research Trio"
-},
-{
-"i": "i/p9645.jpg",
-"y": "2026",
-"by": "Andy Meeks",
-"band": "Kaleidoscope"
 },
 {
 "i": "i/p756.jpg",
@@ -1801,19 +1817,7 @@
 "band": "Lucky Bramble"
 },
 {
-"i": "i/p9647.jpg",
-"y": "2025",
-"by": "Andy Meeks",
-"band": "Lucky Bramble"
-},
-{
 "i": "i/p9648.jpg",
-"y": "2025",
-"by": "Andy Meeks",
-"band": "Lucky Bramble"
-},
-{
-"i": "i/p9649.jpg",
 "y": "2025",
 "by": "Andy Meeks",
 "band": "Lucky Bramble"
@@ -1924,6 +1928,30 @@
 {
 "i": "i/pk-farmhouse-13.jpg",
 "c": "Norman Eder"
+},
+{
+"i": "i/pk-farmhouse-20.jpg",
+"c": "Norm Eder"
+},
+{
+"i": "i/pk-farmhouse-22.jpg",
+"c": "Norm Eder"
+},
+{
+"i": "i/pk-farmhouse-21.jpg",
+"c": "Norm Eder"
+},
+{
+"i": "i/pk-farmhouse-23.jpg",
+"c": "Norm Eder"
+},
+{
+"i": "i/pk-farmhouse-24.jpg",
+"c": "Andy Meeks"
+},
+{
+"i": "i/pk-farmhouse-25.jpg",
+"c": "Norm Eder"
 }
 ],
 "ic": "i/481.svg",
@@ -1997,6 +2025,21 @@
 "i": "i/p546.jpg",
 "y": "2025",
 "by": ""
+},
+{
+"i": "i/pk-farmhouse-20.jpg",
+"y": "2026",
+"by": "Norm Eder"
+},
+{
+"i": "i/pk-farmhouse-22.jpg",
+"y": "2026",
+"by": "Norm Eder"
+},
+{
+"i": "i/pk-farmhouse-21.jpg",
+"y": "2026",
+"by": "Norm Eder"
 }
 ],
 "pb": [
@@ -2312,6 +2355,54 @@
 {
 "i": "i/pk-refuge-11.jpg",
 "c": "Pickathon"
+},
+{
+"i": "i/pk-refuge-12.jpg",
+"c": "Jen Van Jaarsveld"
+},
+{
+"i": "i/pk-refuge-13.jpg",
+"c": "Andy Meeks"
+},
+{
+"i": "i/pk-refuge-15.jpg",
+"c": "Brooke Hoyer"
+},
+{
+"i": "i/pk-refuge-17.jpg",
+"c": "Andy Meeks"
+},
+{
+"i": "i/pk-refuge-19.jpg",
+"c": "Todd Stern"
+},
+{
+"i": "i/pk-refuge-14.jpg",
+"c": "Andy Meeks"
+},
+{
+"i": "i/pk-refuge-16.jpg",
+"c": "Brooke Hoyer"
+},
+{
+"i": "i/pk-refuge-20.jpg",
+"c": "Dylan VanWeelden"
+},
+{
+"i": "i/pk-refuge-18.jpg",
+"c": "Todd Stern"
+},
+{
+"i": "i/pk-refuge-21.jpg",
+"c": "Andy Meeks"
+},
+{
+"i": "i/pk-refuge-22.jpg",
+"c": "Erica Marroquin"
+},
+{
+"i": "i/pk-refuge-23.jpg",
+"c": "Rob Kerr"
 }
 ],
 "ic": "i/197.svg",
@@ -2505,6 +2596,54 @@
 {
 "i": "i/pk-coyote-10.jpg",
 "c": "Pickathon"
+},
+{
+"i": "i/pk-coyote-11.jpg",
+"c": "Norm Eder"
+},
+{
+"i": "i/pk-coyote-12.jpg",
+"c": "Mark Stein"
+},
+{
+"i": "i/pk-coyote-18.jpg",
+"c": "Dylan VanWeelden"
+},
+{
+"i": "i/pk-coyote-14.jpg",
+"c": "Norm Eder"
+},
+{
+"i": "i/pk-coyote-20.jpg",
+"c": "Todd Stern"
+},
+{
+"i": "i/pk-coyote-15.jpg",
+"c": "Dylan VanWeelden"
+},
+{
+"i": "i/pk-coyote-17.jpg",
+"c": "Norm Eder"
+},
+{
+"i": "i/pk-coyote-21.jpg",
+"c": "Jen Van Jaarsveld"
+},
+{
+"i": "i/pk-coyote-16.jpg",
+"c": "Dylan VanWeelden"
+},
+{
+"i": "i/pk-coyote-19.jpg",
+"c": "Graeme Harrison"
+},
+{
+"i": "i/pk-coyote-13.jpg",
+"c": "Erin Riddle"
+},
+{
+"i": "i/pk-coyote-22.jpg",
+"c": "Norm Eder"
 }
 ],
 "ic": "i/229.svg",
@@ -2677,6 +2816,14 @@
 "c": "Andy Meeks"
 },
 {
+"i": "i/pk-courtyard-21.jpg",
+"c": "Andy Meeks"
+},
+{
+"i": "i/pk-courtyard-22.jpg",
+"c": "Mark Stein"
+},
+{
 "i": "i/pk-courtyard-01.jpg",
 "c": "Pickathon"
 },
@@ -2707,6 +2854,14 @@
 {
 "i": "i/pk-courtyard-14.jpg",
 "c": "Dylan VanWeelden"
+},
+{
+"i": "i/pk-courtyard-24.jpg",
+"c": "Sara Northrup"
+},
+{
+"i": "i/pk-courtyard-23.jpg",
+"c": "Andy Meeks"
 }
 ],
 "ic": "i/214.svg",
@@ -2778,9 +2933,9 @@
 "by": ""
 },
 {
-"i": "i/p655.jpg",
+"i": "i/pk-courtyard-20.jpg",
 "y": "2025",
-"by": ""
+"by": "Graeme Harrison"
 }
 ],
 "pb": [
@@ -3001,6 +3156,14 @@
 {
 "i": "i/pk-market-13.jpg",
 "c": "Andy Meeks"
+},
+{
+"i": "i/pk-market-20.jpg",
+"c": "Erin Riddle"
+},
+{
+"i": "i/pk-market-21.jpg",
+"c": "Dylan VanWeelden"
 }
 ],
 "ic": "i/144.svg",
@@ -3132,6 +3295,16 @@
 "i": "i/p510.jpg",
 "y": "2025",
 "by": ""
+},
+{
+"i": "i/pk-market-20.jpg",
+"y": "2025",
+"by": "Erin Riddle"
+},
+{
+"i": "i/pk-market-22.jpg",
+"y": "2025",
+"by": "Mark Stein"
 }
 ],
 "pb": [
@@ -3211,8 +3384,12 @@
 "c": "Andy Meeks"
 },
 {
-"i": "i/pk-orchard-h2.jpg",
-"c": "Andy Meeks"
+"i": "i/pk-orchard-21.jpg",
+"c": "Todd Stern"
+},
+{
+"i": "i/pk-orchard-20.jpg",
+"c": "Tobin Copeland-Turner"
 },
 {
 "i": "i/pk-orchard-04.jpg",
@@ -3237,6 +3414,14 @@
 {
 "i": "i/pk-orchard-11.jpg",
 "c": "Andy Meeks"
+},
+{
+"i": "i/pk-orchard-22.jpg",
+"c": "Todd Stern"
+},
+{
+"i": "i/pk-orchard-23.jpg",
+"c": "Tobin Copeland-Turner"
 }
 ],
 "ic": "i/198.svg",
@@ -3294,6 +3479,16 @@
 "i": "i/p658.jpg",
 "y": "2025",
 "by": ""
+},
+{
+"i": "i/pk-orchard-20.jpg",
+"y": "2022",
+"by": "Tobin Copeland-Turner"
+},
+{
+"i": "i/pk-orchard-21.jpg",
+"y": "2022",
+"by": "Todd Stern"
 }
 ],
 "pb": [
