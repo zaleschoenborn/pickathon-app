@@ -788,6 +788,29 @@ body.lpback #lptitle{display:none!important}   /* back from a neighborhood page:
   #card.intro #empty #pcl .pc .lg{width:min(100%,56px)!important}
   #card.intro #empty #pcl .pc{padding:8px 3px 6px!important;gap:5px}
 }
+/* Desktop intro, round 2: spacious and graphic. Overlay centered on the left; right column drops the boxes and lets the emblems and bigger group titles carry it. */
+@media (min-width:880px){
+  #dover{top:50%;left:48px;transform:translateY(-54%);width:min(420px,calc(100vw - var(--cardw,440px) - 96px))}
+  #dover::before{left:-90px;right:-120px;top:-90px;bottom:-90px}
+  #dover .dk{margin:0 0 16px;font-size:12.5px;letter-spacing:.2em}
+  #dover h1{font-size:clamp(42px,4vw,64px);line-height:.98;letter-spacing:-.02em}
+  #dover .dx{margin:22px 0 0;font-size:clamp(15px,1.15vw,18px);line-height:1.45;max-width:360px}
+  #dover .dn{margin:26px 0 0;font-size:15px}
+  #dover .dn::before{width:64px;margin-bottom:16px}
+  #card.intro #empty{--ico:clamp(44px,calc((100vh - 500px)/5),78px);display:flex!important;flex-direction:column;justify-content:center!important;padding:22px 26px 22px!important}
+  #card.intro #empty #pcl{margin:0!important;padding:0!important;gap:clamp(10px,2vh,20px) 6px!important}
+  #card.intro #empty #pcl .pcg{margin:clamp(14px,3.2vh,34px) 0 2px!important;gap:12px;font-size:22px}
+  #card.intro #empty #pcl .pcg:first-child{margin-top:0!important}
+  #card.intro #empty #pcl .pcg .gld{font:800 clamp(17px,2.4vh,22px)/1 var(--f)}
+  #card.intro #empty #pcl .pcg::before{height:24px;width:6px}
+  #card.intro #empty #pcl .pcg::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,#3A4331,rgba(58,67,49,0))}
+  #card.intro #empty #pcl .pc{padding:0!important;background:none!important;border:0!important;box-shadow:none!important;gap:8px}
+  #card.intro #empty #pcl .pc .lg{width:var(--ico)!important;transition:box-shadow .2s,transform .2s}
+  #card.intro #empty #pcl .pc b{font:700 12.5px/1.15 var(--f)!important;color:#CFC9BC!important;min-height:2.3em;transition:color .2s}
+  #card.intro #empty #pcl .pc:hover,#card.intro #empty #pcl .pc.sel{background:none!important;box-shadow:none!important;border:0!important}
+  #card.intro #empty #pcl .pc:hover .lg,#card.intro #empty #pcl .pc.sel .lg{box-shadow:0 0 0 3px #D6B54A,0 0 18px rgba(214,181,74,.35)}
+  #card.intro #empty #pcl .pc:hover b,#card.intro #empty #pcl .pc.sel b{color:#fff!important}
+}
 </style>
 <div id="dover" aria-hidden="true"><small class="dk">Pickathon Neighborhoods</small><h1>A Temporary City of Wonder</h1><p class="dx">Stages, gathering places and camps, all on one map. Pick one to see who plays there, how it was built and where it goes next.</p><p class="dn">Click a neighborhood to explore</p></div>
 <div id="card" class="intro"><div id="lpprev"><div id="lpth"></div><div id="lptx"><small id="lpk"></small><div id="lpnow" hidden></div><b id="lpn"></b><div id="lpprog"></div><div id="lppills"></div></div><button id="lpx" type="button" aria-label="Back to all neighborhoods">&#10005;</button><button id="lpl" class="lpar" type="button" aria-label="Previous neighborhood">&#8249;</button><button id="lpr" class="lpar" type="button" aria-label="Next neighborhood">&#8250;</button></div>
