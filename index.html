@@ -3001,7 +3001,7 @@ var pr27 = function (k) { var r = PR27[k]; return r ? Math.ceil(r[PCOL]) : 0; },
         var SH = {}; shufS(items.slice(), 'arch').forEach(function (a, i) { SH[a.n] = i; });
         items.forEach(function (a) { a._full = isFullU(a.vu); });
         items.sort(function (a, b) { return a.rank - b.rank || (a._full ? 1 : 0) - (b._full ? 1 : 0) || (b.vu || b.img ? 1 : 0) - (a.vu || a.img ? 1 : 0) || (SH[a.n] - SH[b.n]); });
-        var TOPN = phone ? 3 : 6; for (var fi = 0; fi < Math.min(TOPN, items.length); fi++) { if (items[fi]._full) { var sw = -1; for (var fj = fi + 1; fj < items.length; fj++) { if (!items[fj]._full) { sw = fj; break; } } if (sw > 0) items.splice(fi, 0, items.splice(sw, 1)[0]); } }
+        var TOPN = phone ? 6 : 12; for (var fi = 0; fi < Math.min(TOPN, items.length); fi++) { if (items[fi]._full) { var sw = -1; for (var fj = fi + 1; fj < items.length; fj++) { if (!items[fj]._full) { sw = fj; break; } } if (sw > 0) items.splice(fi, 0, items.splice(sw, 1)[0]); } }
         var LEAD = st.archLead; if (LEAD) { var li = items.map(function (a) { return a.n; }).indexOf(LEAD); if (li < 0) { var nk = function (x) { return String(x || '').toLowerCase().replace(/^the\s+/, '').replace(/[^a-z0-9]/g, ''); }; li = items.map(function (a) { return nk(a.n); }).indexOf(nk(LEAD)); } if (li > 0) items.unshift(items.splice(li, 1)[0]); }
         var nMax = T.deep ? (st.archN || 24) : items.length, allN = items.length; var cards = items.slice(0, nMax).map(function (a) { return archCard(a, Y); });
         var tl = T.deep ? 'deep cuts' : T.leg ? 'legends' : 'discoveries';
