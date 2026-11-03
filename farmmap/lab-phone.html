@@ -691,7 +691,7 @@ body.lpback #lptitle{display:none!important}   /* back from a neighborhood page:
    Full map come in after. Bigger emblems in the same strip; picked: a full-height photo that turns over every few seconds. */
 #lptitle p,#lpprog,#lphint,#lpbat{display:none}
 #labs,#leads{transition:opacity .3s ease}
-@media (max-width:879px){ body.batout #lpbat{display:block;height:min(27vw,104px);width:min(27vw,104px)!important;object-fit:contain;object-position:left center;margin:0 0 10px -4px;filter:drop-shadow(0 2px 10px rgba(0,0,0,.5))} body.batout.lpfresh #labs,body.batout.lpfresh #leads{opacity:0!important;pointer-events:none!important} body.batout.lpfresh #labs .lab{pointer-events:none!important} }
+@media (max-width:879px){ body.batout #lpbat{display:block;height:min(27vw,104px);width:min(27vw,104px)!important;object-fit:contain;object-position:left center;margin:0 0 10px -4px;filter:drop-shadow(0 2px 10px rgba(0,0,0,.5))} body.lpclean #labs,body.lpclean #leads,body.batout.lpfresh #labs,body.batout.lpfresh #leads{opacity:0!important;pointer-events:none!important} body.lpclean #labs .lab,body.batout.lpfresh #labs .lab{pointer-events:none!important} }
 :root{--lpb:env(safe-area-inset-bottom,0px)} :root.lpemb{--lpb:0px}
 @media (max-width:699px){
   :root{--lps:calc(104px + var(--lpb))}
@@ -1608,6 +1608,7 @@ document.getElementById('cmore').onclick=e=>{ e.stopPropagation(); if(cur) goPag
 })();
 document.getElementById('fx').onclick=e=>{ e.stopPropagation(); clearCur(); };
 document.getElementById('fback').onclick=e=>{ e.stopPropagation(); clearCur(); };
+setInterval(()=>{ if(LP()){ const cl=!cur&&k<=lpHome().k*1.25; if(document.body.classList.contains('lpclean')!==cl) document.body.classList.toggle('lpclean',cl); } else document.body.classList.remove('lpclean'); }, 120);
 setInterval(()=>{ const f=document.getElementById('fullmap'), on=LP()?lpFmOn():(k>kFit*1.3 || !!cur); if(f.classList.contains('on')!==on){ f.classList.toggle('on',on); if(LP()) apply(); } },250);
 document.getElementById('pgback').onclick=()=>{document.getElementById('page').hidden=true;};
 const PT=document.getElementById('ptog'), PK=document.getElementById('picker');
