@@ -1214,12 +1214,14 @@ function apply(){
     try{ place(); }catch(err){ if(++faults<4) console.warn('decorate',err); } }); }
 }
 // The farm locks to the frame: paper can never be dragged past the edges.
+/* desktop, map narrower than the stage: once the title is gone the map stops short of the label gutters on both sides, so it can't be dragged over the labels */
+function deskRail(W,w,x){ let lo=0,hi=W-w; if(document.body.classList.contains('dpdone')&&innerWidth>=880){ const g=deskGap(); lo=g-21; hi=W-w-g; if(lo>hi) return (W-w)/2; } return Math.min(hi,Math.max(lo,x)); }
 function clampV(kk,x,y,Hv,sel){
   const W=stage.clientWidth,w=MW*kk,h=MH*kk;
   // Phone: room past every edge while a neighborhood is picked (or the map is zoomed in), so an edge
   // neighborhood like Woods (top) or Refuge (right) can sit mid-screen with breathing room around it.
   let mx=0,mt=0,mb=0; if(LP()&&kMin){ const z=(sel||cur)?1:Math.max(0,Math.min(1,(kk/kMin-1)/0.4)); mx=W*0.5*z; mt=Hv*0.1*z; mb=-8; }   // sides keep room for the labels; top and bottom stay tight, and the map's bottom edge tucks under the strip so no seam shows
-  x = w<=W ? (LP() ? (W-w)/2 : Math.min(W-w,Math.max(0,x))) : Math.min(mx,Math.max(W-w-mx,x));
+  x = w<=W ? (LP() ? (W-w)/2 : deskRail(W,w,x)) : Math.min(mx,Math.max(W-w-mx,x));
   y = h<=Hv ? (Hv-h)/2 : Math.min(mt,Math.max(Hv-h-mb,y));
   return {tx:x,ty:y};
 }
