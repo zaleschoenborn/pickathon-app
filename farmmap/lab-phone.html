@@ -322,7 +322,7 @@ body{margin:0;background:var(--ink);color:var(--cream);font-family:var(--f);
 #fullmap{position:fixed;top:max(10px,env(safe-area-inset-top,0px));right:14px;z-index:25;border:1px solid rgba(255,255,255,.16);background:#161A12;box-shadow:0 3px 12px rgba(0,0,0,.38);color:var(--cream);font:800 15px/1 var(--f);padding:0 17px 0 13px;min-height:46px;border-radius:999px;display:flex;align-items:center;gap:9px;cursor:pointer;opacity:0;pointer-events:none;transition:opacity .2s}
 #fullmap.on{opacity:1;pointer-events:auto}
 #fullmap svg{width:19px;height:19px;stroke:currentColor;fill:none;stroke-width:2.2}
-@media (min-width:880px){#fullmap{right:calc(var(--cardw) + 10px)}}
+@media (min-width:880px){#fullmap{right:auto;left:112px}}
 #pcl .pc .lg{display:none;flex:0 0 38px;height:38px;place-items:center;background:#0F130D;border-radius:9px;text-decoration:none}
 #pcl .pc .lg img{width:30px;height:30px;object-fit:contain}
 #pcl{display:none;flex-direction:column;gap:6px;overflow-y:auto;margin:12px -22px 0;padding:0 22px 22px;flex:1;min-height:0;overscroll-behavior:contain}
@@ -1234,7 +1234,7 @@ function homeView(){
   if(top==null||r<=l) return;
   const m=MH*0.02, y0=Math.max(0,top-m), x0=Math.max(0,l-MW*0.02), x1=Math.min(MW,r+MW*0.02);
   const nk=Math.max(kFit,Math.min(maxK(),H/(MH-y0),W/(x1-x0)));
-  k=nk; const cw=(x1-x0)*k; const cx=Math.min(W/2+W*0.16, W-120-cw/2); tx=cx-((x0+x1)/2)*k; ty=H-MH*k; clamp(); apply();
+  k=nk; const cw=(x1-x0)*k; const cx=Math.min(W/2+W*0.2, W-26-cw/2); tx=cx-((x0+x1)/2)*k; ty=H-MH*k; clamp(); apply();
 }
 function fit(){
   const W=stage.clientWidth,H=stage.clientHeight;
