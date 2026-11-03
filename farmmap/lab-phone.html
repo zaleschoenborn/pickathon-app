@@ -656,13 +656,13 @@ body.lpback #lptitle{display:none!important}   /* back from a neighborhood page:
 #lptitle i span,#lpdeep i span{font:inherit;color:inherit}
 @media (hover:hover) and (pointer:fine){#lptitle .lpdp,#lpdeep .lpdp{display:none}#lptitle .lpdd,#lpdeep .lpdd{display:inline}}
 #lpdeep::before{content:'';position:absolute;inset:0;z-index:-1;
-  background:linear-gradient(180deg,rgba(10,13,8,.86) 0%,rgba(10,13,8,.76) 62%,rgba(10,13,8,.3) 86%,rgba(10,13,8,0) 100%)}
+  background:linear-gradient(180deg,rgba(10,13,8,.95) 0%,rgba(10,13,8,.9) 62%,rgba(10,13,8,.5) 86%,rgba(10,13,8,0) 100%);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}
 @media (max-width:879px){ #lpdeep{right:0}
   #lpdeep::before{background:linear-gradient(180deg,rgba(10,13,8,.97) 0%,rgba(10,13,8,.95) 72%,rgba(10,13,8,.7) 90%,rgba(10,13,8,0) 100%);-webkit-backdrop-filter:blur(5px);backdrop-filter:blur(5px);-webkit-mask-image:linear-gradient(180deg,#000 0%,#000 84%,transparent 100%);mask-image:linear-gradient(180deg,#000 0%,#000 84%,transparent 100%)} }
 @media (min-width:880px){
   #lpdeep{padding-right:110px;padding-left:24px;gap:7px}
   #lpdeep b{font-size:38px} #lpdeep small{font-size:18px} #lpdeep i{font-size:15px;margin-top:6px}
-  #lpdeep::before{background:radial-gradient(130% 100% at 0 0,rgba(10,13,8,.82) 0%,rgba(10,13,8,.6) 45%,rgba(10,13,8,.22) 72%,rgba(10,13,8,0) 100%)}
+  #lpdeep::before{background:radial-gradient(130% 100% at 0 0,rgba(10,13,8,.94) 0%,rgba(10,13,8,.84) 45%,rgba(10,13,8,.5) 72%,rgba(10,13,8,0) 100%)}
 }
 </style>
 <script>/* inside the site: the site's own nav sits below the strip, so the strip adds no safe-area padding of its own */try{if(window.parent!==window)document.documentElement.classList.add('lpemb')}catch(e){}</script>
@@ -1745,13 +1745,14 @@ function lpDeepInit(){
   place(); document.body.classList.add('lpdeep');
   // Held until a deliberate move: a real drag, scroll or key press after the first 1.8s. The automatic zoom and the tail of the opening tap do not count.
   const t0=performance.now(); let dn=null;
-  const ev=['pointerdown','pointermove','wheel','keydown'];
-  const off=function(){ document.body.classList.remove('lpdeep'); try{ sessionStorage.setItem('pkmap.deephint','1'); }catch(e){}
+  const ev=['pointerdown','pointermove','wheel','keydown','touchmove'];
+  let vw=null; const vt=setInterval(function(){ if(performance.now()-t0<1900) return; if(!vw){ vw={k:k,x:tx,y:ty}; return; } if(Math.abs(k-vw.k)>vw.k*0.02||Math.abs(tx-vw.x)>6||Math.abs(ty-vw.y)>6) off(); },120);   /* any real move of the map, however it happens, clears the overlay */
+  const off=function(){ clearInterval(vt); document.body.classList.remove('lpdeep'); try{ sessionStorage.setItem('pkmap.deephint','1'); }catch(e){}
     ev.forEach(function(n){ removeEventListener(n,hh,true); }); removeEventListener('resize',place); };
   const hh=function(e){ if(performance.now()-t0<1800) return;
     if(e.type==='pointerdown'){ dn={x:e.clientX,y:e.clientY}; return; }
     if(e.type==='pointermove'){ if(dn&&Math.hypot(e.clientX-dn.x,e.clientY-dn.y)>10) off(); return; }
-    if(e.type==='keydown'&&e.repeat) return; off(); };
+    if(e.type==='keydown'&&e.repeat) return; if(e.type==='touchmove'&&!dn) return; off(); };
   ev.forEach(function(n){ addEventListener(n,hh,{capture:true,passive:true}); }); addEventListener('resize',place);
 }
 function cardView(){ document.body.classList.add('cardmode'); const h=HOODS.find(x=>x.id===CARDID); if(!h) return; const go=function(){ const sh=D.shapes[h.id]; if(!sh) return; const W=stage.clientWidth,H=stage.clientHeight,b=sh.b; k=Math.max(kFit,Math.min(maxK(),W*0.9/(b[2]-b[0]),H*0.9/(b[3]-b[1]))); tx=W/2-(b[0]+b[2])/2*k; ty=H/2-(b[1]+b[3])/2*k; clamp(); apply(); light(h); }; go(); setTimeout(function(){ light._k=''; light(h); },700); setTimeout(function(){ light._k=''; light(h); },2000); window.addEventListener('resize',function(){ fit(); go(); }); }
