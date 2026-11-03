@@ -117,6 +117,22 @@ body{margin:0;background:var(--ink);color:var(--cream);font-family:var(--f);
   padding:8px max(13px,env(safe-area-inset-right,0px)) 8px max(13px,env(safe-area-inset-left,0px))}
 #picker::-webkit-scrollbar{display:none}
 #picker[hidden]{display:none}
+/* Find panel: grouped by subject, each icon named. */
+#picker #pgrid{display:block}
+#pgrid .pgint{font:600 12px/1.3 var(--f);color:#CFC9BC;margin:0 0 10px}
+#pgrid .pgh{font:800 10.5px/1 var(--f);letter-spacing:.12em;text-transform:uppercase;color:#D6B54A;margin:14px 0 8px;display:flex;align-items:center;gap:8px}
+#pgrid .pgh::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,#3A4331,rgba(58,67,49,0))}
+#pgrid .pgr{display:flex;flex-wrap:wrap;gap:6px}
+#pgrid .amb:not(.all){width:auto;height:auto;padding:4px 11px 4px 4px;gap:7px;border:1px solid #3A4331;border-radius:12px;background:#222820}
+#pgrid .amb:not(.all) .ic{width:30px;height:30px;border-radius:8px}
+#pgrid .amb .al{font:700 12.5px/1.1 var(--f);color:var(--cream);white-space:nowrap}
+#pgrid .amb:not(.all):hover{border-color:#D6B54A}
+#pgrid .amb:not(.all)[aria-pressed="true"]{border-color:#F2B33D;background:#2E3524;box-shadow:0 0 0 2px rgba(242,179,61,.25)}
+#pgrid .amb.all{display:flex;width:fit-content;height:34px;padding:0 14px;border-radius:999px;margin:0 0 2px}
+#pgrid .pgint{margin-bottom:8px}
+#picker{max-height:100%;overflow-y:auto;scrollbar-width:none}#picker::-webkit-scrollbar{display:none}
+#pname{font:800 18px/1.15 var(--f)}
+
 .amb{flex:0 0 auto;border:1px solid var(--line);background:#222820;color:var(--cream);
   font:700 11px/1 var(--f);padding:6px 9px;border-radius:999px;cursor:pointer;
   white-space:nowrap;min-height:30px}
@@ -946,13 +962,22 @@ function build(){
       (KIND[kk]||kk)+'</span></b>').join('');
   }
   const P=document.getElementById('picker'), GR=document.getElementById('pgrid'), PN=document.getElementById('pname');
-  GR.innerHTML='<button class="amb all" data-a="" aria-pressed="true">All</button>'+
-    Object.keys(seen).sort((a,b)=>seen[b]-seen[a]).map(a=>
-      '<button class="amb" data-a="'+a+'" aria-pressed="false" aria-label="'+(AMLBL[a]||a)+'" title="'+(AMLBL[a]||a)+'">'+ico(a)+'</button>').join('');
+  const AMGRP=[['Music & fun',['stage','dj','art','yoga','massage','kids','run']],
+    ['Food & drink',['food','coffee','bar','water','ice','dot','dishes']],
+    ['Essentials',['restroom','shower','medical','charge','info','atm','smoke']],
+    ['Shop & gear',['craft','merch','gear','ticket']],
+    ['Getting here & camping',['entry','shuttle','parking','rideshare','bike','moto','tent','rv','accesscamp','wheelchair']]];
+  const AMSH={charge:'Phone charging',entry:'Entry / exit',dot:'Dish & token',gear:'Gear drop',craft:'Craft vendors',food:'Food vendors',run:'Fun run',art:'Art',accesscamp:'Accessible camping',wheelchair:'Accessibility',rideshare:'Rideshare',moto:'Motorcycle',bike:'Bike parking',tent:'Tent camping',rv:'Vehicle camping',restroom:'Restrooms',ticket:'Tickets',shuttle:'Shuttles',dishes:'Dish washing',medical:'Medical',smoke:'Smoking area',kids:'Kids area',info:'Info booth'};
+  const placed={}; AMGRP.forEach(g=>g[1].forEach(a=>placed[a]=1));
+  const rest=Object.keys(seen).filter(a=>!placed[a]);
+  const grps=AMGRP.concat(rest.length?[['More',rest]]:[]);
+  const pill=a=>'<button class="amb" data-a="'+a+'" aria-pressed="false" aria-label="'+(AMLBL[a]||a)+'" title="'+(AMLBL[a]||a)+'">'+ico(a)+'<span class="al">'+(AMSH[a]||AMLBL[a]||a)+'</span></button>';
+  GR.innerHTML='<div class="pgint">Tap one to light it up on the map.</div><button class="amb all" data-a="" aria-pressed="true">Show everything</button>'+
+    grps.map(g=>{ const ks=g[1].filter(a=>seen[a]); return ks.length?'<div class="pgh">'+g[0]+'</div><div class="pgr">'+ks.map(pill).join('')+'</div>':''; }).join('');
   const sel=(b)=>{ const nm=b&&b.dataset.a?(AMLBL[b.dataset.a]||b.dataset.a):'All amenities'; PN.textContent=nm; };
   const setFilterTo=(a,quiet)=>{
     amFilter=a||null;
-    [...GR.children].forEach(c=>c.setAttribute('aria-pressed',String((c.dataset.a||'')===(amFilter||''))));
+    [...GR.querySelectorAll('.amb')].forEach(c=>c.setAttribute('aria-pressed',String((c.dataset.a||'')===(amFilter||''))));
     PN.textContent=amFilter?(AMLBL[amFilter]||amFilter)+' \u00b7 '+HOODS.filter(h=>passes(h)).length+' neighborhoods':'All amenities';
     setFind(); showRings(amFilter); show(cur); apply();
     if(!quiet) setTimeout(()=>{ const t=document.getElementById('ptog'); if(t.getAttribute('aria-expanded')==='true') t.click(); },260);
