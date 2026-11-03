@@ -402,7 +402,7 @@ body{margin:0;background:var(--ink);color:var(--cream);font-family:var(--f);
 
 <style>body.cardmode #leads{display:none!important}body.cardmode #veil.on{background:rgba(8,11,6,.6)!important}body.cardmode #lits img{filter:drop-shadow(0 0 1.5px #fff) drop-shadow(0 0 4px #fff4c2) drop-shadow(0 0 18px rgba(255,236,150,1)) brightness(1.3) saturate(1.2)}body.cardmode #stage{inset:0!important;right:0!important;bottom:0!important;width:100%!important;height:100%!important}body.cardmode #page,body.cardmode #finder,body.cardmode #fullmap,body.cardmode #card,body.cardmode #fx,body.cardmode #itip{display:none!important}body.cardmode,body.cardmode *{pointer-events:none!important;cursor:default!important}body.cardmode .lbl,body.cardmode [class*=lab]{display:none!important}</style>
 <div id="stage">
-  <div id="art"><img id="mapimg" src="map.webp?v=30" alt="Map of Pendarvis Farm" draggable="false"><div id="tiles"></div><div id="veil"></div><div id="lits"></div></div>
+  <div id="art"><img id="mapimg" src="map.webp?v=31" alt="Map of Pendarvis Farm" draggable="false"><div id="tiles"></div><div id="veil"></div><div id="lits"></div></div>
   <svg id="shapes"></svg>
   <svg id="leads"></svg>
   <div id="labs"></div>
@@ -579,7 +579,7 @@ function hoodIcons(h){
   for(const a in ICON_AT) ICON_AT[a].forEach(p=>{ if(ICON_OWN[a+'|'+p[0]+'|'+p[1]]===h.id) out.push([a,p]); });   // every icon has exactly one owner (computed from the art, ties broken by the WordPress amenity list)
   return out;
 }
-const ICON_ATLAS='ic/atlas.webp?v=30', ATL=[1440,1008,144,10];
+const ICON_ATLAS='ic/atlas.webp?v=31', ATL=[1440,1008,144,10];
 function showRings(a,hood){
   const g=document.getElementById('rings'); if(!g) return;
   g.innerHTML=''; RINGS=[];
@@ -643,7 +643,7 @@ function light(h){
     v.o.classList.remove('on'); v.tiles.forEach(t=>t.classList.remove('on'));
     setTimeout(()=>{ v.o.remove(); v.tiles.forEach(t=>t.remove()); },260); LITIMG.delete(id); } });
   ids.forEach(id=>{ if(!LITIMG.has(id)){ const o=LIT[id].o;
-    LITIMG.set(id,{o:litMake(host,'l/'+id+'.webp?v=30',o[0],o[1],o[2],o[3]),tiles:new Map()}); } });
+    LITIMG.set(id,{o:litMake(host,'l/'+id+'.webp?v=31',o[0],o[1],o[2],o[3]),tiles:new Map()}); } });
   syncPk();
   document.getElementById('veil').classList.toggle('on',ids.length>0);
   stage.classList.toggle('veiled',ids.length>0);
@@ -768,7 +768,7 @@ function tiles(){
       if(!v.tiles.has(key)){
         // every sharp piece of one neighbourhood lives in a single sheet; each piece just windows into it
         const A=LIT[id].a, f=TM/TP, d=document.createElement('div');
-        d.style.cssText='left:'+c*TM+'px;top:'+r*TM+'px;width:'+Math.min(TM,MW-c*TM)+'px;height:'+Math.min(TM,MH-r*TM)+'px;background:url(l/'+id+'_a.webp?v=30) -'+a[2]*TP*f+'px -'+a[3]*TP*f+'px/'+A[0]*f+'px '+A[1]*f+'px no-repeat';
+        d.style.cssText='left:'+c*TM+'px;top:'+r*TM+'px;width:'+Math.min(TM,MW-c*TM)+'px;height:'+Math.min(TM,MH-r*TM)+'px;background:url(l/'+id+'_a.webp?v=31) -'+a[2]*TP*f+'px -'+a[3]*TP*f+'px/'+A[0]*f+'px '+A[1]*f+'px no-repeat';
         if(peekH&&peekH.id===id) d.classList.add('pk'); lh.appendChild(d); requestAnimationFrame(()=>d.classList.add('on')); v.tiles.set(key,d);
       } });
     v.tiles.forEach((im,key)=>{ if(!want.has(key)){ im.remove(); v.tiles.delete(key); } });
@@ -783,7 +783,7 @@ function tiles(){
     if(!t.img){
       const im=new Image(); im.decoding='async'; im.draggable=false;
       im.style.left=t.x+'px'; im.style.top=t.y+'px'; im.style.width=t.w+'px'; im.style.height=t.h+'px';
-      im.src='t/'+key+'.webp?v=30'; (im.decode?im.decode():Promise.resolve()).then(()=>im.classList.add('on'),()=>im.classList.add('on')); host.appendChild(im); t.img=im;
+      im.src='t/'+key+'.webp?v=31'; (im.decode?im.decode():Promise.resolve()).then(()=>im.classList.add('on'),()=>im.classList.add('on')); host.appendChild(im); t.img=im;
     }
   }
   if(TILES.size>TMAX){
@@ -1246,8 +1246,8 @@ function warmView(to,h){
   try{
     const W=stage.clientWidth,H=stage.clientHeight; if(to.k*Math.min(window.devicePixelRatio||1,3)<1.05) return;
     const m=TM*0.2, x0=Math.max(0,-to.tx/to.k-m), y0=Math.max(0,-to.ty/to.k-m), x1=Math.min(MW,(W-to.tx)/to.k+m), y1=Math.min(MH,(H-to.ty)/to.k+m);
-    for(let c=Math.floor(x0/TM);c<=Math.min(TW-1,Math.floor(x1/TM));c++) for(let r=Math.floor(y0/TM);r<=Math.min(TH-1,Math.floor(y1/TM));r++) new Image().src='t/'+c+'_'+r+'.webp?v=30';
-    if(h&&LIT[h.id]&&LIT[h.id].a){ new Image().src='l/'+h.id+'_a.webp?v=30'; }
+    for(let c=Math.floor(x0/TM);c<=Math.min(TW-1,Math.floor(x1/TM));c++) for(let r=Math.floor(y0/TM);r<=Math.min(TH-1,Math.floor(y1/TM));r++) new Image().src='t/'+c+'_'+r+'.webp?v=31';
+    if(h&&LIT[h.id]&&LIT[h.id].a){ new Image().src='l/'+h.id+'_a.webp?v=31'; }
   }catch(e){}
 }
 function flyTo(h){ const to=viewFor(h); if(to) flyView(to,h); }
