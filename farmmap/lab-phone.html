@@ -1,4 +1,4 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="color-scheme" content="dark"><style>html{background:#12160F url(mapthumb.webp) center/cover no-repeat}</style><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"></head><title>Farm Map Phone Test</title>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="color-scheme" content="dark"><style>html{background:#12160F}</style><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"></head><title>Farm Map Phone Test</title>
 <style>
 /* The farm floats on its own paper colour. Shapes are real footprints traced
    from the art, so the same outline is both the glow and the hit area. */
@@ -25,7 +25,7 @@ body{margin:0;background:var(--ink);color:var(--cream);font-family:var(--f);
 #art,#shapes{position:absolute;top:0;left:0;transform-origin:0 0;will-change:transform}
 #art img{display:block;width:100%;height:auto;user-select:none;-webkit-user-drag:none}
 #nic{position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none}#nic img{position:absolute;max-width:none;height:auto;pointer-events:none}
-#art{visibility:hidden}body.mapready #art{visibility:visible;animation:mapin .35s ease-out}@keyframes mapin{from{opacity:0}to{opacity:1}}
+#art{opacity:0}body.mapready #art{opacity:1;transition:opacity .45s ease}
 #tiles{position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none}
 #tiles img{position:absolute;max-width:none;opacity:0;transition:opacity .6s ease-out}
 #tiles img.on{opacity:1}
@@ -596,7 +596,7 @@ body.batout #dbat{margin:0 0 16px calc((100% - 129px)/6)!important}
 <script>/* Decide the entry state before the first paint, so nothing shows and then switches off (the title that blinked, labels that all showed and then collapsed). */
 (function(){try{var c=document.body.classList,emb=window.parent!==window,nv=performance.getEntriesByType('navigation')[0],rl=nv&&nv.type==='reload',fh=emb&&!rl&&sessionStorage.getItem('pkmap.from')==='hood',foc=!!sessionStorage.getItem('pkmap.focus');
 if(innerWidth>=880){c.add('lm');if(fh){c.add('dpdone');c.add('nodt');}}else{if(fh)c.add('lpback');else if(!foc)c.add('lpfresh');}}catch(e){}})();</script>
-  <div id="art"><img id="mapimg" src="map.webp?v=32" alt="Map of Pendarvis Farm" draggable="false"><div id="tiles"></div><div id="veil"></div><div id="lits"></div><div id="nic"></div></div>
+  <div id="art"><img id="mapimg" src="map.webp?v=33" alt="Map of Pendarvis Farm" draggable="false"><div id="tiles"></div><div id="veil"></div><div id="lits"></div><div id="nic"></div></div>
   <svg id="shapes"></svg>
   <svg id="leads"></svg>
   <div id="labs"></div>
@@ -719,7 +719,7 @@ body.lpback #lptitle{display:none!important}   /* back from a neighborhood page:
    Full map come in after. Bigger emblems in the same strip; picked: a full-height photo that turns over every few seconds. */
 #lptitle p,#lpprog,#lphint,#lpbat{display:none}
 #labs,#leads{transition:opacity .3s ease}
-body:not(.mapready){background:#12160F url(mapthumb.webp) center/cover no-repeat} body:not(.mapready) #labs,body:not(.mapready) #leads{opacity:0!important;transition:none!important} @media (max-width:879px){ body.lpfresh #labs,body.lpfresh #leads{opacity:0!important;transition:none!important;pointer-events:none!important} body.batout #lpbat{display:block;height:min(27vw,104px);width:min(27vw,104px)!important;object-fit:contain;object-position:left center;margin:0 0 10px -4px;filter:drop-shadow(0 2px 10px rgba(0,0,0,.5))} body.lpclean #labs,body.lpclean #leads,body.batout.lpfresh #labs,body.batout.lpfresh #leads{opacity:0!important;pointer-events:none!important} body.lpclean #labs .lab,body.batout.lpfresh #labs .lab{pointer-events:none!important} }
+body:not(.mapready){background:#12160F} body:not(.mapready) #labs,body:not(.mapready) #leads{opacity:0!important;transition:none!important} @media (max-width:879px){ body.lpfresh #labs,body.lpfresh #leads{opacity:0!important;transition:none!important;pointer-events:none!important} body.batout #lpbat{display:block;height:min(27vw,104px);width:min(27vw,104px)!important;object-fit:contain;object-position:left center;margin:0 0 10px -4px;filter:drop-shadow(0 2px 10px rgba(0,0,0,.5))} body.lpclean #labs,body.lpclean #leads,body.batout.lpfresh #labs,body.batout.lpfresh #leads{opacity:0!important;pointer-events:none!important} body.lpclean #labs .lab,body.batout.lpfresh #labs .lab{pointer-events:none!important} }
 :root{--lpb:env(safe-area-inset-bottom,0px)} :root.lpemb{--lpb:0px}
 @media (max-width:699px){
   :root{--lps:calc(104px + var(--lpb))}
@@ -1012,7 +1012,7 @@ function hoodIcons(h){
   for(const a in ICON_AT) ICON_AT[a].forEach(p=>{ if(ICON_OWN[a+'|'+p[0]+'|'+p[1]]===h.id) out.push([a,p]); });   // every icon has exactly one owner (computed from the art, ties broken by the WordPress amenity list)
   return out;
 }
-const ICON_ATLAS='ic/atlas.webp?v=32', ATL=[1440,1008,144,10];
+const ICON_ATLAS='ic/atlas.webp?v=33', ATL=[1440,1008,144,10];
 function showRings(a,hood){
   const g=document.getElementById('rings'); if(!g) return;
   g.innerHTML=''; RINGS=[];
@@ -1077,7 +1077,7 @@ function light(h){
     v.o.classList.remove('on'); v.tiles.forEach(t=>t.classList.remove('on'));
     setTimeout(()=>{ v.o.remove(); v.tiles.forEach(t=>t.remove()); },260); LITIMG.delete(id); } });
   ids.forEach(id=>{ if(!LITIMG.has(id)){ const o=LIT[id].o;
-    LITIMG.set(id,{o:litMake(host,'l/'+id+'.webp?v=32',o[0],o[1],o[2],o[3]),tiles:new Map()}); } });
+    LITIMG.set(id,{o:litMake(host,'l/'+id+'.webp?v=33',o[0],o[1],o[2],o[3]),tiles:new Map()}); } });
   syncPk();
   document.getElementById('veil').classList.toggle('on',ids.length>0);
   stage.classList.toggle('veiled',ids.length>0);
@@ -1200,7 +1200,7 @@ function move(){
 // you can see are fetched, and only when you are in close enough for them to
 // matter; the highlight gets the same pieces so it stays crisp too.
 const TS=2.4, TP=1024, TM=TP/TS, TW=Math.ceil(MW*TS/TP), TH=Math.ceil(MH*TS/TP), TMAX=12;
-const LIT={"woods":{"o":[1587,1181,343,307],"t":[[3,2,0,0],[3,3,1,0],[4,2,2,0],[4,3,0,1]],"a":[3072,2048]},"paddock":{"o":[794,2516,559,537],"t":[[1,6,0,0],[1,7,1,0],[2,6,2,0],[2,7,0,1],[3,6,1,1]],"a":[3072,2048]},"cherryhill":{"o":[1247,2131,288,351],"t":[[3,5,0,0]],"a":[1024,1024]},"grove":{"o":[1059,2349,445,364],"t":[[2,5,0,0],[2,6,1,0],[3,5,2,0],[3,6,0,1]],"a":[3072,2048]},"windmill":{"o":[675,2404,489,558],"t":[[1,5,0,0],[1,6,1,0],[2,5,2,0],[2,6,0,1]],"a":[3072,2048]},"galaxy":{"o":[884,3004,295,250],"t":[[2,7,0,0]],"a":[1024,1024]},"lucky":{"o":[669,2940,406,484],"t":[[1,7,0,0],[2,7,1,0]],"a":[2048,1024]},"farmhouse":{"o":[869,3224,590,380],"t":[[2,7,0,0],[2,8,1,0],[3,7,2,0]],"a":[3072,1024]},"curation":{"o":[379,3481,337,308],"t":[[0,8,0,0],[1,8,1,0]],"a":[2048,1024]},"refuge":{"o":[1668,1870,303,367],"t":[[4,4,0,0],[4,5,1,0]],"a":[2048,1024]},"coyote":{"o":[1117,1957,464,329],"t":[[2,4,0,0],[2,5,1,0],[3,4,2,0],[3,5,0,1]],"a":[3072,2048]},"market":{"o":[1390,1992,354,713],"t":[[3,4,0,0],[3,5,1,0],[3,6,2,0]],"a":[3072,1024]},"orchard":{"o":[879,3231,319,208],"t":[[2,7,0,0]],"a":[1024,1024]},"welcomelot":{"o":[1729,3459,312,309],"t":[[4,8,0,0]],"a":[1024,1024]},"quailtrail":{"o":[1607,1381,335,819],"t":[[3,4,0,0],[3,5,1,0],[4,3,2,0],[4,4,0,1],[4,5,1,1]],"a":[3072,2048]},"southcamp":{"o":[685,3391,798,386],"t":[[1,8,0,0],[2,8,1,0],[3,8,2,0]],"a":[3072,1024]},"willowcamp":{"o":[1471,3459,337,309],"t":[[3,8,0,0],[4,8,1,0]],"a":[2048,1024]},"courtyard":{"o":[904,3128,344,261],"t":[[2,7,0,0]],"a":[1024,1024]},"wildcamp":{"o":[235,0,1481,2279],"t":[]},"lushcamp":{"o":[603,268,1254,2339],"t":[]}};
+const LIT={"woods":{"o":[1587,1181,343,307],"t":[[3,2,0,0,871,934,153,90],[3,3,1,0,844,0,180,339],[4,2,2,0,0,848,297,176],[4,3,0,1,0,0,428,411]]},"paddock":{"o":[794,2516,559,537],"t":[[1,6,0,0,993,844,31,180],[1,7,1,0,1004,0,20,14],[2,6,2,0,0,24,1024,1000],[2,7,0,1,0,0,280,19],[3,6,1,1,0,180,63,307]]},"cherryhill":{"o":[1247,2131,288,351],"t":[[3,5,0,0,30,113,494,610]]},"grove":{"o":[1059,2349,445,364],"t":[[2,5,0,0,622,626,402,398],[2,6,1,0,618,0,406,96],[3,5,2,0,0,529,433,495],[3,6,0,1,0,0,418,267]]},"windmill":{"o":[675,2404,489,558],"t":[[1,5,0,0,706,785,318,239],[1,6,1,0,785,0,239,856],[2,5,2,0,0,748,630,276],[2,6,0,1,0,0,626,848]]},"galaxy":{"o":[884,3004,295,250],"t":[[2,7,0,0,192,191,467,334]]},"lucky":{"o":[669,2940,406,484],"t":[[1,7,0,0,693,9,331,897],[2,7,1,0,0,9,296,898]]},"farmhouse":{"o":[869,3224,590,380],"t":[[2,7,0,0,151,329,873,695],[2,8,1,0,150,0,672,345],[3,7,2,0,0,681,293,299]]},"curation":{"o":[379,3481,337,308],"t":[[0,8,0,0,1023,589,1,1],[1,8,1,0,0,275,582,551]]},"refuge":{"o":[1668,1870,303,367],"t":[[4,4,0,0,28,503,490,521],[4,5,1,0,19,0,280,135]]},"coyote":{"o":[1117,1957,464,329],"t":[[2,4,0,0,746,715,278,309],[2,5,1,0,834,0,190,222],[3,4,2,0,0,717,640,307],[3,5,0,1,0,0,557,257]]},"market":{"o":[1390,1992,354,713],"t":[[3,4,0,0,554,821,422,203],[3,5,1,0,395,0,581,1024],[3,6,2,0,386,0,488,281]]},"orchard":{"o":[879,3231,319,208],"t":[[2,7,0,0,214,699,499,267]]},"welcomelot":{"o":[1729,3459,312,309],"t":[[4,8,0,0,165,223,583,514]]},"quailtrail":{"o":[1607,1381,335,819],"t":[[3,4,0,0,901,294,123,730],[3,5,1,0,971,0,53,42],[4,3,2,0,94,353,275,671],[4,4,0,1,0,0,457,1024],[4,5,1,1,0,0,32,49]]},"southcamp":{"o":[685,3391,798,386],"t":[[1,8,0,0,729,58,295,695],[2,8,1,0,0,21,1024,749],[3,8,2,0,0,23,386,751]]},"willowcamp":{"o":[1471,3459,337,309],"t":[[3,8,0,0,570,223,454,514],[4,8,1,0,0,225,129,510]]},"courtyard":{"o":[904,3128,344,261],"t":[[2,7,0,0,207,454,555,347]]},"wildcamp":{"o":[235,0,1481,2279],"t":[]},"lushcamp":{"o":[603,268,1254,2339],"t":[]}};
 const TILES=new Map(); let tileT=0, useN=0;
 function schedTiles(){ clearTimeout(tileT); tileT=setTimeout(tiles,140); }
 function tiles(){
@@ -1216,8 +1216,10 @@ function tiles(){
       const key=c+'_'+r; want.add(key);
       if(!v.tiles.has(key)){
         // every sharp piece of one neighbourhood lives in a single sheet; each piece just windows into it
-        const A=LIT[id].a, f=TM/TP, d=document.createElement('div');
-        d.style.cssText='left:'+c*TM+'px;top:'+r*TM+'px;width:'+Math.min(TM,MW-c*TM)+'px;height:'+Math.min(TM,MH-r*TM)+'px;background:url(l/'+id+'_a.webp?v=32) -'+a[2]*TP*f+'px -'+a[3]*TP*f+'px/'+A[0]*f+'px '+A[1]*f+'px no-repeat';
+        // each piece is its own tightly cropped file (a = [col,row,cellX,cellY,cropX,cropY,cropW,cropH] in sheet px), so only the pieces in view are ever decoded
+        if(!a[6]) return;
+        const f=TM/TP, d=document.createElement('div');
+        d.style.cssText='left:'+c*TM+'px;top:'+r*TM+'px;width:'+Math.min(TM,MW-c*TM)+'px;height:'+Math.min(TM,MH-r*TM)+'px;background:url(l/'+id+'_'+a[2]+'_'+a[3]+'.webp?v=33) '+a[4]*f+'px '+a[5]*f+'px/'+a[6]*f+'px '+a[7]*f+'px no-repeat';
         if(peekH&&peekH.id===id) d.classList.add('pk'); lh.appendChild(d); requestAnimationFrame(()=>d.classList.add('on')); v.tiles.set(key,d);
       } });
     v.tiles.forEach((im,key)=>{ if(!want.has(key)){ im.remove(); v.tiles.delete(key); } });
@@ -1232,7 +1234,7 @@ function tiles(){
     if(!t.img){
       const im=new Image(); im.decoding='async'; im.draggable=false;
       im.style.left=t.x+'px'; im.style.top=t.y+'px'; im.style.width=t.w+'px'; im.style.height=t.h+'px';
-      im.src='t/'+key+'.webp?v=32'; (im.decode?im.decode():Promise.resolve()).then(()=>im.classList.add('on'),()=>im.classList.add('on')); host.appendChild(im); t.img=im;
+      im.src='t/'+key+'.webp?v=33'; (im.decode?im.decode():Promise.resolve()).then(()=>im.classList.add('on'),()=>im.classList.add('on')); host.appendChild(im); t.img=im;
     }
   }
   if(TILES.size>TMAX){
@@ -1326,7 +1328,9 @@ function warmHeroes(){ buildCards();
   if(navigator.connection&&navigator.connection.saveData) return;
   const ids=HOODS.map(h=>(HERO[h.id]||[])[0]).filter(Boolean); let i=0;
   const next=()=>{ if(i>=ids.length) return; const im=new Image(); im.decoding='async'; im.src=ids[i++]; setTimeout(next,160); };
-  setTimeout(next,2500);
+  /* wait for the first touch: no 1.9 MB of photos competing with the map while it loads */
+  const go=()=>{ ['pointerdown','keydown','wheel'].forEach(t=>removeEventListener(t,go,true)); setTimeout(next,500); };
+  ['pointerdown','keydown','wheel'].forEach(t=>addEventListener(t,go,{capture:true,passive:true}));
 }
 const HCOL={"cherryhill": "#78acac", "courtyard": "#a17346", "coyote": "#878a99", "farmhouse": "#a4af52", "galaxy": "#7d8d78", "grove": "#a07044", "lucky": "#6d9a50", "lushcamp": "#69994c", "market": "#708085", "orchard": "#76acad", "paddock": "#a0aa44", "quailtrail": "#9caa40", "refuge": "#75abac", "southcamp": "#689848", "wildcamp": "#639743", "windmill": "#868998", "woods": "#9d6c3c", "curation": "#85889a", "welcomelot": "#7fafae", "willowcamp": "#a5774e"};
 const SVGL={"woods": "i/264.svg", "paddock": "i/224.svg", "cherryhill": "i/63.svg", "grove": "i/p532.svg", "windmill": "i/p633.svg", "galaxy": "i/p788.svg", "lucky": "i/272.svg", "farmhouse": "i/481.svg", "curation": "i/293.svg", "refuge": "i/197.svg", "coyote": "i/229.svg", "courtyard": "i/214.svg", "market": "i/144.svg", "orchard": "i/198.svg", "welcomelot": "i/p779.svg", "lushcamp": "i/19.svg", "quailtrail": "i/242.svg", "southcamp": "i/p707.svg", "wildcamp": "i/465.svg", "willowcamp": "i/25.svg"};
@@ -1966,9 +1970,14 @@ function lpWirePanel(){
 (function(){ const _boot=boot; boot=function(){ if(LP()){ hoverOK=false; lpBuildMenu(); lpWire(); lpWirePanel(); } _boot(); if(LP()) lpFresh(lpAtHome()&&!FROMHOOD); try{ lmSync(); }catch(e){} lpWire._w=stage.clientWidth; lpWire._h=stage.clientHeight; }; })();
 /* Top layer: the dotted white trail and the icons added after the glow layers were baked. Never dimmed by the veil, never covered by a neighborhood's glow. */
 (function(){ const host=document.getElementById('nic'); if(!host) return;
-  [["ic/n_trail.webp", 646.3, 290.4, 1218.4], ["ic/n_rec_cur.webp", 594.6, 3661.1, 60.0], ["ic/n_rec_wood.webp", 1672.6, 1261.0, 60.0], ["ic/n_rec_mkt.webp", 1443.0, 2227.3, 60.0], ["ic/n_food_cur.webp", 438.0, 3665.0, 60.0], ["ic/n_plate_cur.webp", 434.6, 3539.7, 80], ["ic/n_plate_farm.webp", 1177.6, 3263.1, 60]].forEach(function(n){ const i=new Image(); i.alt=''; i.draggable=false; i.src=n[0]+'?v=32'; i.style.cssText='left:'+n[1]+'px;top:'+n[2]+'px;width:'+n[3]+'px'; host.appendChild(i); }); })();
-function revealMap(){ document.body.classList.add('mapready'); }
-setTimeout(revealMap,2500);   /* never stay hidden */
+  [["ic/n_trail.webp", 646.3, 290.4, 1218.4], ["ic/n_rec_cur.webp", 594.6, 3661.1, 60.0], ["ic/n_rec_wood.webp", 1672.6, 1261.0, 60.0], ["ic/n_rec_mkt.webp", 1443.0, 2227.3, 60.0], ["ic/n_food_cur.webp", 438.0, 3665.0, 60.0], ["ic/n_plate_cur.webp", 434.6, 3539.7, 80], ["ic/n_plate_farm.webp", 1177.6, 3263.1, 60]].forEach(function(n){ const i=new Image(); i.alt=''; i.draggable=false; i.src=n[0]+'?v=33'; i.style.cssText='left:'+n[1]+'px;top:'+n[2]+'px;width:'+n[3]+'px'; host.appendChild(i); }); })();
+let _rvd=0;
+function _rvGo(){ if(_rvd) return; _rvd=1; document.body.classList.add('mapready'); }
+/* The art fades in from black only once the final base image is decoded: no placeholder, no blurry swap. */
+function revealMap(){ if(_rvd) return; const i=document.getElementById('mapimg');
+  if(!i||(i.complete&&i.naturalWidth)){ (i&&i.decode?i.decode():Promise.resolve()).then(_rvGo,_rvGo); }
+  else { i.addEventListener('load',()=>{ (i.decode?i.decode():Promise.resolve()).then(_rvGo,_rvGo); },{once:true}); i.addEventListener('error',_rvGo,{once:true}); } }
+setTimeout(_rvGo,20000);   /* never stay hidden */
 (function(){ const _b2=boot; boot=function(){ try{ _b2(); }finally{ requestAnimationFrame(function(){ requestAnimationFrame(function(){ setTimeout(revealMap,60); }); }); } }; })();
 if(img.complete&&img.naturalWidth) boot(); else img.onload=boot;
 
@@ -1996,8 +2005,9 @@ function warmView(to,h){
   try{
     const W=stage.clientWidth,H=stage.clientHeight; if(to.k*Math.min(window.devicePixelRatio||1,3)<1.05) return;
     const m=TM*0.2, x0=Math.max(0,-to.tx/to.k-m), y0=Math.max(0,-to.ty/to.k-m), x1=Math.min(MW,(W-to.tx)/to.k+m), y1=Math.min(MH,(H-to.ty)/to.k+m);
-    for(let c=Math.floor(x0/TM);c<=Math.min(TW-1,Math.floor(x1/TM));c++) for(let r=Math.floor(y0/TM);r<=Math.min(TH-1,Math.floor(y1/TM));r++) new Image().src='t/'+c+'_'+r+'.webp?v=32';
-    if(h&&LIT[h.id]&&LIT[h.id].a){ new Image().src='l/'+h.id+'_a.webp?v=32'; }
+    const idle=window.requestIdleCallback||(f=>setTimeout(f,60));   // fetch only: keeps the first select's frame free
+    idle(()=>{ for(let c=Math.floor(x0/TM);c<=Math.min(TW-1,Math.floor(x1/TM));c++) for(let r=Math.floor(y0/TM);r<=Math.min(TH-1,Math.floor(y1/TM));r++) new Image().src='t/'+c+'_'+r+'.webp?v=33';
+      if(h&&LIT[h.id]) LIT[h.id].t.forEach(a=>{ if(a[6]) new Image().src='l/'+h.id+'_'+a[2]+'_'+a[3]+'.webp?v=33'; }); },{timeout:400});
   }catch(e){}
 }
 function flyTo(h){ const to=viewFor(h); if(to) flyView(to,h); }
