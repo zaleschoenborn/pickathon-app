@@ -3001,7 +3001,7 @@ var pr27 = function (k) { var r = PR27[k]; return r ? Math.ceil(r[PCOL]) : 0; },
         out.home.yr = (function () { if (!d.past) return { show: false };
           var OK = d.past.years.filter(function (y) { return /^\d{4}$/.test(y.y) && +y.y <= 2026 && ((d.arc || {})[y.y] || (d.yearHero || {})[y.y]); });
           if (!OK.length) return { show: false };
-          var ST = OK.map(function (y) { return y.y; }).filter(function (q) { return +q >= 2011 && +q <= 2019; }); if (self._yo == null) self._yo = Math.floor(Math.random() * 1000);
+          var ST = OK.map(function (y) { return y.y; }).filter(function (q) { return ['2019', '2015', '2018', '2017', '2014', '2012', '2022', '2016', '2013', '2024'].indexOf(q) >= 0; }); if (self._yo == null) self._yo = Math.floor(Math.random() * 1000);
           var first = ST.length ? ST[self._yo % ST.length] : OK[0].y;
           var rest = shufS(OK.filter(function (y) { return y.y !== first; }), 'yr').map(function (y) { return y.y; }); var order = [first].concat(rest);
           var k = (st.homeYrSel && order.indexOf(st.homeYrSel) >= 0) ? st.homeYrSel : order[((st.homeYr || 0) % order.length + order.length) % order.length], y = OK.filter(function (q) { return q.y === k; })[0], r0 = vRange(k), n = +k;
