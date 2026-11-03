@@ -1,5 +1,5 @@
 // Pickathon service worker. Build 20261101-1050
-const V='pk-20261103-3104',M='pkmedia-2',KEEP=["ssindex-b6158b1d.json"],SHELL=['./','index.html','data.json','manifest.json','icon-192.png','apple-touch-icon.png','fonts/pickathon-2014.ttf','farmmap/index.html?embed=1','farmmap/lab-phone.html?embed=1'];
+const V='pk-20261103-3110',M='pkmedia-2',KEEP=["ssindex-b6158b1d.json"],SHELL=['./','index.html','data.json','manifest.json','icon-192.png','apple-touch-icon.png','fonts/pickathon-2014.ttf','farmmap/index.html?embed=1','farmmap/lab-phone.html?embed=1'];
 const MP='pkmap-1';
 const fl=new Map();/* one network request per URL at a time (icons are asked for twice by the page) */
 const once=(k,f)=>{let p=fl.get(k);if(!p){p=f().finally(()=>fl.delete(k));fl.set(k,p)}return p.then(x=>x.clone())};
@@ -16,7 +16,8 @@ self.addEventListener('fetch',e=>{const r=e.request;if(r.method!=='GET')return;c
   const net=once(r.url,()=>fetch(r).then(x=>{if(x.ok)c.put(r,x.clone());return x}));
   if(m){e.waitUntil(net.catch(()=>{}));return m}
   return net.catch(()=>new Response('',{status:504}))})));return}
- const fresh=r.mode==='navigate'||/(index\.html|data\.json|manifest\.json)$/.test(u.pathname)||u.pathname.endsWith('/');
- if(fresh){const net=fetch(r,{cache:'reload'}).then(x=>{const c=x.clone();e.waitUntil(caches.open(V).then(h=>h.put(r,c)));return x});e.respondWith(caches.match(r).then(m=>{if(!m)return net.catch(()=>caches.match('index.html'));return Promise.race([net,new Promise(res=>setTimeout(()=>res(m),3000))]).catch(()=>m)}));return}
+ /* Rule: anything that changes (pages, data, the map page) always comes from the network when online; the saved copy is only for offline. Big files that never change (map tiles, photos, fonts) come from the cache. */
+ const fresh=r.mode==='navigate'||/(\.html|data\.json|manifest\.json)$/.test(u.pathname)||u.pathname.endsWith('/');
+ if(fresh){const net=fetch(r,{cache:'reload'}).then(x=>{const c=x.clone();e.waitUntil(caches.open(V).then(h=>h.put(r,c)));return x});e.respondWith(caches.match(r).then(m=>{if(!m)return net.catch(()=>caches.match('index.html'));return net.then(x=>x.ok?x:m).catch(()=>m)}));return}
  const media=/pack[\w-]*\.json$|ssindex|\/i\/|\/ss\/|\/fonts\//.test(u.pathname);
  e.respondWith(caches.match(r).then(m=>m||once(r.url,()=>fetch(r).then(x=>{if(x.ok){const c=x.clone();e.waitUntil(caches.open(media?M:V).then(h=>h.put(r,c)))}return x}))))});
