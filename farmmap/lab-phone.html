@@ -911,7 +911,7 @@ function build(){
     }
     p.setAttribute('d',h._mask);
     p.addEventListener('pointerenter',e=>{ if(pinned && e.pointerType==='mouse' && !e.buttons && !live.size) peek(h);
-      if(hoverOK && hoverArmed && !titleHold() && !pinned && e.pointerType==='mouse' && !e.buttons && !live.size && NOW()>settleUntil) setCur(h); });  // hover only; a finger or a drag never picks
+      if(hoverOK && hoverArmed && !pinned && e.pointerType==='mouse' && !e.buttons && !live.size && NOW()>settleUntil) setCur(h,true); });  // hover only; a finger or a drag never picks
     // A drag that happens to END on a neighborhood is still a drag. Without
     // this the map opened a page every time you let go over a shape, the page
     // covered the farm, and it read as "after the first move it gets stuck".
@@ -1384,10 +1384,10 @@ let selOnce=false;
 // A cursor left resting where the map opened is not a choice: the browser re-sends mouse events when the page changes under it. Hover picks a neighborhood only after the mouse has really travelled.
 function titleHold(){ return innerWidth>=880&&!document.body.classList.contains('dpdone'); }   /* desktop title stays until a click on the map or an icon: hovering never picks */
 let hoverArmed=false; (function(){ let p0=null; addEventListener('pointermove',function(ev){ if(hoverArmed||ev.pointerType!=='mouse') return; if(!p0){ p0={x:ev.clientX,y:ev.clientY}; return; } if(Math.hypot(ev.clientX-p0.x,ev.clientY-p0.y)>14) hoverArmed=true; },{passive:true,capture:true}); })();
-function setCur(h){
-  if(!h || h===cur) return;
+function setCur(h,hov){
+  if(!h) return; if(h===cur){ if(!hov) document.body.classList.add('dpdone'); return; }
   if(innerWidth<880) selOnce=true;
-  cur=h; show(h); apply(); document.body.classList.add('dpdone');
+  cur=h; show(h); apply(); if(!(hov&&innerWidth>=880)) document.body.classList.add('dpdone');
   document.querySelectorAll('#pcl .pc').forEach(b=>b.classList.toggle('sel',b.dataset.h===h.id));
   if(LP()){ lpFresh(false); lpSync(); lpSelAt=NOW(); lpPanTo(h); }
 }
@@ -1449,9 +1449,9 @@ function hover(e){
   const tp=document.getElementById('itip');
   if(tp){ if(ia){ tp.textContent=TIPLBL[ia]||D.amlbl[ia]||ia; tp.style.left=e.clientX+'px'; tp.style.top=e.clientY+'px'; tp.classList.add('on'); } else tp.classList.remove('on'); }
   if(pinned && e.pointerType==='mouse'){ const lb=el&&el.closest&&el.closest('.lab'); peek(lb&&lb.__hood?lb.__hood:(h&&!ia&&!stage.classList.contains('moving')?h:null)); }
-  if(hoverOK && hoverArmed && !titleHold() && !ia && !pinned && NOW()>settleUntil){
+  if(hoverOK && hoverArmed && !ia && !pinned && NOW()>settleUntil){
     clearTimeout(hover._t);
-    if(h) setCur(h);
+    if(h) setCur(h,true);
     else if(cur) hover._t=setTimeout(()=>{ if(cur && !stage.classList.contains('onhood') && !stage.classList.contains('onicon')) clearCur(); },200);
   }
 }
@@ -1558,7 +1558,7 @@ labs.addEventListener('pointerout',e=>{ if(pinned) peek(null); });
 labs.addEventListener('pointerover',e=>{
   const b=e.target.closest('.lab');
   if(pinned&&e.pointerType==='mouse'&&b&&b.__hood) peek(b.__hood);
-  if(hoverOK&&hoverArmed&&!titleHold()&&!pinned&&e.pointerType==='mouse'&&!e.buttons&&b&&b.__hood&&!live.size&&NOW()>settleUntil) setCur(b.__hood);   // hover is for a mouse; a finger only ever picks by tapping
+  if(hoverOK&&hoverArmed&&!pinned&&e.pointerType==='mouse'&&!e.buttons&&b&&b.__hood&&!live.size&&NOW()>settleUntil) setCur(b.__hood,true);   // hover is for a mouse; a finger only ever picks by tapping
 });
 
 // A trackpad two-finger swipe moves the farm; a pinch (which arrives as
@@ -1609,7 +1609,7 @@ document.getElementById('cmore').onclick=e=>{ e.stopPropagation(); if(cur) goPag
 document.getElementById('fx').onclick=e=>{ e.stopPropagation(); clearCur(); };
 document.getElementById('fback').onclick=e=>{ e.stopPropagation(); clearCur(); };
 setInterval(()=>{ if(LP()){ const cl=!cur&&k<=lpHome().k*1.25; if(document.body.classList.contains('lpclean')!==cl) document.body.classList.toggle('lpclean',cl); } else document.body.classList.remove('lpclean'); }, 120);
-setInterval(()=>{ const f=document.getElementById('fullmap'), on=LP()?lpFmOn():(k>kFit*1.3 || !!cur); if(f.classList.contains('on')!==on){ f.classList.toggle('on',on); if(LP()) apply(); } },250);
+setInterval(()=>{ const f=document.getElementById('fullmap'), on=LP()?lpFmOn():(k>kFit*1.3 || (!!cur && !titleHold())); if(f.classList.contains('on')!==on){ f.classList.toggle('on',on); if(LP()) apply(); } },250);
 document.getElementById('pgback').onclick=()=>{document.getElementById('page').hidden=true;};
 const PT=document.getElementById('ptog'), PK=document.getElementById('picker');
 function setFind(){
