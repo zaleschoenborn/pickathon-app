@@ -402,8 +402,8 @@ body{margin:0;background:var(--ink);color:var(--cream);font-family:var(--f);
 
 <style>/* intro kicker is the screen's title: sized by script to span the full text width, bat centered above it */
 #dover .dk,#lptitle small{white-space:nowrap!important;display:block}
-body.batout #dbat{margin:0 0 16px calc((100% - 129px)/3)!important}
-@media (max-width:879px){ body.batout #lpbat{margin:0 0 10px calc((100% - min(27vw,104px))/3)!important;object-position:center!important} }</style>
+body.batout #dbat{margin:0 0 16px calc((100% - 129px)/6)!important}
+@media (max-width:879px){ body.batout #lpbat{margin:0 0 10px calc((100% - min(27vw,104px))/6)!important;object-position:center!important} }</style>
 <style>body.cardmode #leads{display:none!important}body.cardmode #veil.on{background:rgba(8,11,6,.6)!important}body.cardmode #lits img{filter:drop-shadow(0 0 1.5px #fff) drop-shadow(0 0 4px #fff4c2) drop-shadow(0 0 18px rgba(255,236,150,1)) brightness(1.3) saturate(1.2)}body.cardmode #stage{inset:0!important;right:0!important;bottom:0!important;width:100%!important;height:100%!important}body.cardmode #page,body.cardmode #finder,body.cardmode #fullmap,body.cardmode #card,body.cardmode #fx,body.cardmode #itip{display:none!important}body.cardmode,body.cardmode *{pointer-events:none!important;cursor:default!important}body.cardmode .lbl,body.cardmode [class*=lab]{display:none!important}</style>
 <style>
 /* ================= LAB (phone test) */
@@ -1082,8 +1082,8 @@ function place(){
       to.push(from.shift());
     }
   };
-  const DST=!LP()&&innerWidth>=880&&k<=kFit*1.08&&!pinned;   /* desktop start view: every label lives on the right, beside the panel divider, never under the title */
-  if(DST){ R=live.slice(); L=[]; } else { spill(R,L); spill(L,R); }
+  const DST=!LP()&&innerWidth>=880&&k<=kFit*1.08;   /* desktop start view: every label lives on the right, beside the panel divider, never under the title */
+  if(DST){ R=live.slice(); L=[]; spill(R,L); } else { spill(R,L); spill(L,R); }
   // Grove, Cherry Hill and Coyote belong on the left rail, stacked above
   // Windmill, however the geometry falls.
   if(!DST) for(let i=R.length-1;i>=0;i--) if(PINL[R[i].id]!==undefined) L.push(R.splice(i,1)[0]);
@@ -1129,7 +1129,7 @@ function place(){
     h._el.style.top=h._ly+'px';
     h._el.style.left = right?'auto':'7px';
     h._el.style.right= right?(DST?'28px':'7px'):'auto';
-    if(DST&&(h===cur||h===peekH)){ const ly3=Math.max(TOP,Math.min(BOT0,h._wy)); h._ly=ly3; h._el.style.top=ly3+'px'; }
+    if(DST&&!pinned&&(h===cur||h===peekH)){ const ly3=Math.max(TOP,Math.min(BOT0,h._wy)); h._ly=ly3; h._el.style.top=ly3+'px'; }
     const lw=h._el.offsetWidth||90, lx = right ? W-(DST?28:7)-lw : 7+lw;
     [h._u,h._o].forEach(e=>{
       e.setAttribute('x1',h._ax); e.setAttribute('y1',h._ay);
@@ -1626,7 +1626,7 @@ document.getElementById('cmore').onclick=e=>{ e.stopPropagation(); if(cur) goPag
 document.getElementById('fx').onclick=e=>{ e.stopPropagation(); clearCur(); };
 document.getElementById('fback').onclick=e=>{ e.stopPropagation(); clearCur(); };
 setInterval(()=>{ if(LP()){ const cl=!cur&&k<=lpHome().k*1.25; if(document.body.classList.contains('lpclean')!==cl) document.body.classList.toggle('lpclean',cl); } else document.body.classList.remove('lpclean'); }, 120);
-setInterval(()=>{ const f=document.getElementById('fullmap'), on=LP()?lpFmOn():(k>kFit*1.3 || (!!cur && !titleHold())); if(f.classList.contains('on')!==on){ f.classList.toggle('on',on); if(LP()) apply(); } },250);
+setInterval(()=>{ const f=document.getElementById('fullmap'), on=LP()?lpFmOn():(k>kFit*1.3); if(f.classList.contains('on')!==on){ f.classList.toggle('on',on); if(LP()) apply(); } },250);
 document.getElementById('pgback').onclick=()=>{document.getElementById('page').hidden=true;};
 const PT=document.getElementById('ptog'), PK=document.getElementById('picker');
 function setFind(){
