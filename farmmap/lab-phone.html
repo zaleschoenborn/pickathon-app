@@ -761,7 +761,6 @@ body.lpback #lptitle{display:none!important}   /* back from a neighborhood page:
   body.dpdone #dover{opacity:0;visibility:hidden;transition:opacity .35s ease,visibility 0s linear .35s}body.nodt #dover{transition:none!important}
   #dover::before{content:'';position:absolute;z-index:-1;left:-70px;top:-60px;right:-90px;bottom:-70px;
     background:radial-gradient(closest-side,rgba(10,13,8,.86) 0%,rgba(10,13,8,.72) 45%,rgba(10,13,8,.3) 78%,rgba(10,13,8,0) 100%)}
-  body.lm:not(.dpdone) #art{filter:drop-shadow(-16px 0 28px rgba(0,0,0,.7))}
   #dbat{display:none;height:128px;width:auto;margin:0 0 18px -8px;filter:drop-shadow(0 2px 10px rgba(0,0,0,.45))}body.batout #dbat{display:block}
   #dover h1{margin:0;font:900 clamp(32px,2.7vw,42px)/1.02 var(--f);letter-spacing:-.012em;color:#fff;text-shadow:0 2px 16px rgba(0,0,0,.45)}
   #dover .dk{display:block;margin:0 0 10px;font:800 11.5px/1 var(--f);letter-spacing:.16em;text-transform:uppercase;color:#F2B33D;text-shadow:0 1px 8px rgba(0,0,0,.6)}
@@ -1083,10 +1082,11 @@ function place(){
       to.push(from.shift());
     }
   };
-  spill(R,L); spill(L,R);
+  const DST=!LP()&&innerWidth>=880&&k<=kFit*1.08&&!pinned;   /* desktop start view: every label lives on the right, beside the panel divider, never under the title */
+  if(DST){ R=live.slice(); L=[]; } else { spill(R,L); spill(L,R); }
   // Grove, Cherry Hill and Coyote belong on the left rail, stacked above
   // Windmill, however the geometry falls.
-  for(let i=R.length-1;i>=0;i--) if(PINL[R[i].id]!==undefined) L.push(R.splice(i,1)[0]);
+  if(!DST) for(let i=R.length-1;i>=0;i--) if(PINL[R[i].id]!==undefined) L.push(R.splice(i,1)[0]);
   // The pins set the ORDER on the left rail, not the position: the labels still
   // spread down the whole rail, they just queue up above Windmill.
   const wm=L.find(h=>h.id==='windmill');
@@ -1128,8 +1128,9 @@ function place(){
     h._el.classList.toggle('r',right);
     h._el.style.top=h._ly+'px';
     h._el.style.left = right?'auto':'7px';
-    h._el.style.right= right?'7px':'auto';
-    const lw=h._el.offsetWidth||90, lx = right ? W-7-lw : 7+lw;
+    h._el.style.right= right?(DST?'28px':'7px'):'auto';
+    if(DST&&(h===cur||h===peekH)){ const ly3=Math.max(TOP,Math.min(BOT0,h._wy)); h._ly=ly3; h._el.style.top=ly3+'px'; }
+    const lw=h._el.offsetWidth||90, lx = right ? W-(DST?28:7)-lw : 7+lw;
     [h._u,h._o].forEach(e=>{
       e.setAttribute('x1',h._ax); e.setAttribute('y1',h._ay);
       e.setAttribute('x2',lx);    e.setAttribute('y2',h._ly);
@@ -1137,7 +1138,7 @@ function place(){
     h._pt.setAttribute('cx',h._ax); h._pt.setAttribute('cy',h._ay);
     // Desktop/laptop: the picked neighborhood names itself right on its own shape (above it, or below if there is no room),
     // not out on a far rail with a long line across the map.
-    if(h===cur && !LP() && innerWidth>=880 && h._b){
+    if(h===cur && !LP() && innerWidth>=880 && h._b && !DST){
       const x0=tx+h._b[0]*k, y0=ty+h._b[1]*k, x1=tx+h._b[2]*k, y1=ty+h._b[3]*k, lw2=h._el.offsetWidth||90, lh2=h._el.offsetHeight||30;
       let lx2=Math.max(8,Math.min(W-lw2-8,(x0+x1)/2-lw2/2)), ly2=y0-lh2-12;
       if(ly2<FB+8) ly2=y1+12; if(ly2+lh2>HB-8) ly2=Math.max(FB+8,Math.min(HB-lh2-8,(y0+y1)/2-lh2/2));
@@ -1236,7 +1237,7 @@ function zoomAt(nk,cx,cy){
 // Only the far northern camping is trimmed. 'Full map' shows all of it.
 try{ if(sessionStorage.getItem('pk.bat')==='1') document.body.classList.add('batout'); }catch(e){}
 /* desktop start view: right margin = widest label + a clear gap off the map edge; the map may slide under the title text only so far */
-function deskGap(){ let m=0; document.querySelectorAll('#labs .lab').forEach(e=>{ m=Math.max(m,e.offsetWidth); }); return Math.max(m,120)+7+26; }
+function deskGap(){ let m=0; document.querySelectorAll('#labs .lab').forEach(e=>{ m=Math.max(m,e.offsetWidth); }); return Math.max(m,150)+28+22; }
 function deskMinTx(){ return 40+Math.min(400,innerWidth-(parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--cardw'))||440)-96)*0.5; }
 function deskHomeV(){ const W=stage.clientWidth,H=stage.clientHeight; const w=MW*kFit; return {k:kFit,tx:Math.min(Math.max(0,W-w),Math.max(W-w-deskGap(),deskMinTx())),ty:(H-MH*kFit)/2}; }
 function homeView(){
