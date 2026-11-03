@@ -947,7 +947,7 @@ function build(){
   const setFilterTo=(a,quiet)=>{
     amFilter=a||null;
     [...GR.children].forEach(c=>c.setAttribute('aria-pressed',String((c.dataset.a||'')===(amFilter||''))));
-    PN.textContent=amFilter?(AMLBL[amFilter]||amFilter):'All amenities';
+    PN.textContent=amFilter?(AMLBL[amFilter]||amFilter)+' \u00b7 '+HOODS.filter(h=>passes(h)).length+' neighborhoods':'All amenities';
     setFind(); showRings(amFilter); show(cur); apply();
     if(!quiet) setTimeout(()=>{ const t=document.getElementById('ptog'); if(t.getAttribute('aria-expanded')==='true') t.click(); },260);
   };
@@ -1546,7 +1546,6 @@ function tapAt(e){
   // shows the card, a tap on the one already showing opens it.
   if(e.pointerType==='mouse'){ if(pinned!==h){ const kept=!atHomeD()&&k>kFit*1.08; if(kept){ keepK=k; keepAt=NOW(); } const first=!kept; /* hover can already mark the hood as current, so judge by the view, not by cur */ pinned=h; peek(null); setCur(h); show(h); if(first){ flyTo(h); } else if(kept){ const to=viewFor(h,keepK); if(to) flyView(to,h); } } return; }   // desktop: a click on the map only selects (no zoom); the logo list and next/prev do the flying; the Open button is the way through
   else if(h!==cur){ keepZoomIf(h); setCur(h); return; }
-  if(e.pointerType==='mouse'){ clearTimeout(window.__goT); window.__goT=setTimeout(function(){ goPage(h); },300); return; }   /* a double click is 'put it back', not 'open it' */
   goPage(h);
 }
 const lift=e=>{
@@ -1590,7 +1589,7 @@ stage.addEventListener('wheel',e=>{
   const s=e.ctrlKey||e.metaKey ? Math.exp(-e.deltaY/140) : (e.deltaY<0?1.2:1/1.2);
   zoomAt(k*s,e.clientX,e.clientY);
 },{passive:false});
-stage.addEventListener('dblclick',e=>{e.preventDefault(); clearTimeout(window.__goT); if(cur||pinned){ cancelAnimationFrame(flyRaf); clearCur(); if(!LP()){ try{ fullMap(); }catch(x){} } return; } cancelAnimationFrame(flyRaf); zoomAt(k*2,e.clientX,e.clientY);});
+stage.addEventListener('dblclick',e=>{e.preventDefault(); cancelAnimationFrame(flyRaf); zoomAt(k*2,e.clientX,e.clientY);});
 
 document.getElementById('cvid').addEventListener('click',e=>{   // the clip opens big, over the whole screen, with full-screen available; it never sends you off to YouTube
   const cv=e.currentTarget, v=cv.__v; if(!v) return;
