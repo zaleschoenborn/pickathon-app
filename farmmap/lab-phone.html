@@ -1952,6 +1952,8 @@ function warmView(to,h){
 }
 function flyTo(h){ const to=viewFor(h); if(to) flyView(to,h); }
 function flyView(to,h){
+  /* first pick from the start view: if the neighborhood already reads at a good size (shorter side >= 60px) the map stays put; smaller ones zoom in and center */
+  if(h&&h._b&&(LP()?k<=lpHome().k*1.03:atHomeD())&&Math.min(h._b[2]-h._b[0],h._b[3]-h._b[1])*k>=60) return;
   warmView(to,h);
   cancelAnimationFrame(flyRaf);
   const W=stage.clientWidth, H=stage.clientHeight;
