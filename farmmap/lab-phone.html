@@ -1082,7 +1082,7 @@ function place(){
       to.push(from.shift());
     }
   };
-  const DST=!LP()&&innerWidth>=880&&k<=kFit*1.08;   /* desktop start view: every label lives on the right, beside the panel divider, never under the title */
+  const DST=!LP()&&innerWidth>=880&&k<=kFit*1.08&&!document.body.classList.contains("dpdone");   /* desktop start view: every label lives on the right, beside the panel divider, never under the title */
   if(DST){ R=live.slice(); L=[]; spill(R,L); } else { spill(R,L); spill(L,R); }
   // Grove, Cherry Hill and Coyote belong on the left rail, stacked above
   // Windmill, however the geometry falls.
@@ -1214,6 +1214,8 @@ function apply(){
     try{ place(); }catch(err){ if(++faults<4) console.warn('decorate',err); } }); }
 }
 // The farm locks to the frame: paper can never be dragged past the edges.
+/* labels re-lay-out the moment the title leaves or returns */
+try{ let _dp=document.body.classList.contains('dpdone'); new MutationObserver(()=>{ const n=document.body.classList.contains('dpdone'); if(n!==_dp){ _dp=n; try{ place(); }catch(e){} } }).observe(document.body,{attributes:true,attributeFilter:['class']}); }catch(e){}
 /* desktop, map narrower than the stage: once the title is gone the map stops short of the label gutters on both sides, so it can't be dragged over the labels */
 function deskRail(W,w,x){ let lo=0,hi=W-w; if(document.body.classList.contains('dpdone')&&innerWidth>=880){ const g=deskGap(); lo=g-21; hi=W-w-g; if(lo>hi) return (W-w)/2; } return Math.min(hi,Math.max(lo,x)); }
 function clampV(kk,x,y,Hv,sel){
