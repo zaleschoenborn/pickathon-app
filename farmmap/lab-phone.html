@@ -1938,7 +1938,9 @@ function viewFor(h,fk){
   if(LP()) return lpView(h,fk);
   const sh=D.shapes[h.id], W=stage.clientWidth, H=stage.clientHeight; if(!sh) return null;
   const b=sh.b, bw=b[2]-b[0], bh=b[3]-b[1];
-  const nk=fk||Math.max(kFit,Math.min(maxK(),W*0.74/bw,H*0.74/bh));
+  let nk=fk||Math.max(kFit,Math.min(maxK(),W*0.74/bw,H*0.74/bh));
+  /* first pick from the desktop start view always zooms in and centers, even for big neighborhoods (Lush Camp, Wild Camp) */
+  if(!fk&&typeof atHomeD==='function'&&atHomeD()) nk=Math.max(nk,Math.min(maxK(),kFit*2.2));
   const cx=(b[0]+b[2])/2, cy=(b[1]+b[3])/2, w=MW*nk, h2=MH*nk;
   let ntx=W/2-cx*nk, nty=H/2-cy*nk;
   ntx = w<=W ? (W-w)/2 : Math.min(0,Math.max(W-w,ntx));
@@ -1958,7 +1960,6 @@ function warmView(to,h){
 function flyTo(h){ const to=viewFor(h); if(to) flyView(to,h); }
 function flyView(to,h){
   /* first pick from the start view: if the neighborhood already reads at a good size (shorter side >= 60px) the map stays put; smaller ones zoom in and center */
-  if(h&&h._b&&(LP()?k<=lpHome().k*1.03:atHomeD())&&Math.min(h._b[2]-h._b[0],h._b[3]-h._b[1])*k>=60) return;
   warmView(to,h);
   cancelAnimationFrame(flyRaf);
   const W=stage.clientWidth, H=stage.clientHeight;
