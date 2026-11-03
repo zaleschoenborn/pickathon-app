@@ -1227,8 +1227,10 @@ function zoomAt(nk,cx,cy){
 // very bottom of the map, so every neighborhood is on screen and the bottom is fully visible.
 // Only the far northern camping is trimmed. 'Full map' shows all of it.
 try{ if(sessionStorage.getItem('pk.bat')==='1') document.body.classList.add('batout'); }catch(e){}
+function deskHomeV(){ const W=stage.clientWidth,H=stage.clientHeight; const w=MW*kFit; return {k:kFit,tx:Math.max(0,(W-w)*0.88),ty:(H-MH*kFit)/2}; }
 function homeView(){
   if(LP()){ lpSync(); const v=lpHome(); kMin=v.k; k=v.k; tx=v.tx; ty=v.ty; clamp(); apply(); return; }
+  { const v=deskHomeV(); k=v.k; tx=v.tx; ty=v.ty; clamp(); apply(); return; }   /* desktop: the whole map, shifted toward the neighborhood column; Full map returns to exactly this */
   const W=stage.clientWidth,H=stage.clientHeight; let top=null,l=1e9,r=-1e9;
   HOODS.forEach(h=>{ const sh=D.shapes&&D.shapes[h.id], b=sh&&sh.b; if(!b) return; l=Math.min(l,b[0]); r=Math.max(r,b[2]); if(h.id==='woods') top=b[1]; });
   if(top==null||r<=l) return;
@@ -1399,7 +1401,7 @@ function fullMap(){ pinned=null; peek(null); cur=null; show(null);
   if(LP()){ light(null); lpSync(); lpFresh(true); flyView(lpHome(),null); return; }
   const W=stage.clientWidth,H=stage.clientHeight; light(null);
   selOnce=false; document.body.classList.remove('dpdone','nodt'); armTitle(); try{ lmSync(); }catch(e){}
-  flyView({k:kFit,tx:(W-MW*kFit)/2,ty:(H-MH*kFit)/2},null); }
+  flyView(deskHomeV(),null); }
 function clearCur(){ pinned=null; peek(null); cur=null; show(null); if(LP()){ light(null); lpSync(); lpFresh(true); flyView(lpHome(),null); } else apply(); }
 function goPage(h){
   setCur(h); show(h);
