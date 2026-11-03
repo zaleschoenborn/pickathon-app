@@ -757,6 +757,7 @@ body.lpback #lptitle{display:none!important}   /* back from a neighborhood page:
   body.dpdone #dover{opacity:0;visibility:hidden;transition:opacity .35s ease,visibility 0s linear .35s}body.nodt #dover{transition:none!important}
   #dover::before{content:'';position:absolute;z-index:-1;left:-70px;top:-60px;right:-90px;bottom:-70px;
     background:radial-gradient(closest-side,rgba(10,13,8,.86) 0%,rgba(10,13,8,.72) 45%,rgba(10,13,8,.3) 78%,rgba(10,13,8,0) 100%)}
+  body.lm:not(.dpdone) #art{filter:drop-shadow(-16px 0 28px rgba(0,0,0,.7))}
   #dbat{display:none;height:128px;width:auto;margin:0 0 18px -8px;filter:drop-shadow(0 2px 10px rgba(0,0,0,.45))}body.batout #dbat{display:block}
   #dover h1{margin:0;font:900 clamp(32px,2.7vw,42px)/1.02 var(--f);letter-spacing:-.012em;color:#fff;text-shadow:0 2px 16px rgba(0,0,0,.45)}
   #dover .dk{display:block;margin:0 0 10px;font:800 11.5px/1 var(--f);letter-spacing:.16em;text-transform:uppercase;color:#F2B33D;text-shadow:0 1px 8px rgba(0,0,0,.6)}
@@ -1230,7 +1231,7 @@ function zoomAt(nk,cx,cy){
 // very bottom of the map, so every neighborhood is on screen and the bottom is fully visible.
 // Only the far northern camping is trimmed. 'Full map' shows all of it.
 try{ if(sessionStorage.getItem('pk.bat')==='1') document.body.classList.add('batout'); }catch(e){}
-function deskHomeV(){ const W=stage.clientWidth,H=stage.clientHeight; const w=MW*kFit; return {k:kFit,tx:Math.max(0,(W-w)*0.88),ty:(H-MH*kFit)/2}; }
+function deskHomeV(){ const W=stage.clientWidth,H=stage.clientHeight; const w=MW*kFit; return {k:kFit,tx:Math.max(0,W-w-176),ty:(H-MH*kFit)/2}; }
 function homeView(){
   if(LP()){ lpSync(); const v=lpHome(); kMin=v.k; k=v.k; tx=v.tx; ty=v.ty; clamp(); apply(); return; }
   { const v=deskHomeV(); k=v.k; tx=v.tx; ty=v.ty; clamp(); apply(); return; }   /* desktop: the whole map, shifted toward the neighborhood column; Full map returns to exactly this */
