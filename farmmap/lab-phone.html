@@ -24,6 +24,7 @@ body{margin:0;background:var(--ink);color:var(--cream);font-family:var(--f);
 #stage.drag,#stage.drag *{cursor:grabbing!important}
 #art,#shapes{position:absolute;top:0;left:0;transform-origin:0 0;will-change:transform}
 #art img{display:block;width:100%;height:auto;user-select:none;-webkit-user-drag:none}
+#art{visibility:hidden}body.mapready #art{visibility:visible;animation:mapin .35s ease-out}@keyframes mapin{from{opacity:0}to{opacity:1}}
 #tiles{position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none}
 #tiles img{position:absolute;max-width:none;opacity:0;transition:opacity .6s ease-out}
 #tiles img.on{opacity:1}
@@ -1962,6 +1963,9 @@ function lpWirePanel(){
   setInterval(()=>{ if(cur&&lpFill._h===cur&&lpFest()!==lpFill._f) lpFill(cur); },800);
 }
 (function(){ const _boot=boot; boot=function(){ if(LP()){ hoverOK=false; lpBuildMenu(); lpWire(); lpWirePanel(); } _boot(); if(LP()) lpFresh(lpAtHome()&&!FROMHOOD); try{ lmSync(); }catch(e){} lpWire._w=stage.clientWidth; lpWire._h=stage.clientHeight; }; })();
+function revealMap(){ document.body.classList.add('mapready'); }
+setTimeout(revealMap,2500);   /* never stay hidden */
+(function(){ const _b2=boot; boot=function(){ try{ _b2(); }finally{ requestAnimationFrame(function(){ requestAnimationFrame(function(){ setTimeout(revealMap,60); }); }); } }; })();
 if(img.complete&&img.naturalWidth) boot(); else img.onload=boot;
 
 // ---- Walk the farm: swipe the card (or use the arrows) to go neighbourhood to
