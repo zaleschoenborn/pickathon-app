@@ -690,7 +690,7 @@ body.lpback #lptitle{display:none!important}   /* back from a neighborhood page:
    Full map come in after. Bigger emblems in the same strip; picked: a full-height photo that turns over every few seconds. */
 #lptitle p,#lpprog,#lphint,#lpbat{display:none}
 #labs,#leads{transition:opacity .3s ease}
-@media (max-width:879px){ body.batout #lpbat{display:block;height:64px;width:auto;margin:0 0 12px -4px;filter:drop-shadow(0 2px 10px rgba(0,0,0,.5))} body.batout.lpfresh #labs,body.batout.lpfresh #leads{opacity:0!important;pointer-events:none!important} body.batout.lpfresh #labs .lab{pointer-events:none!important} }
+@media (max-width:879px){ body.batout #lpbat{display:block;height:min(30vw,112px);width:auto;margin:0 0 14px -6px;filter:drop-shadow(0 2px 10px rgba(0,0,0,.5))} body.batout.lpfresh #labs,body.batout.lpfresh #leads{opacity:0!important;pointer-events:none!important} body.batout.lpfresh #labs .lab{pointer-events:none!important} }
 :root{--lpb:env(safe-area-inset-bottom,0px)} :root.lpemb{--lpb:0px}
 @media (max-width:699px){
   :root{--lps:calc(104px + var(--lpb))}
@@ -756,7 +756,7 @@ body.lpback #lptitle{display:none!important}   /* back from a neighborhood page:
   body.dpdone #dover{opacity:0;visibility:hidden;transition:opacity .35s ease,visibility 0s linear .35s}body.nodt #dover{transition:none!important}
   #dover::before{content:'';position:absolute;z-index:-1;left:-70px;top:-60px;right:-90px;bottom:-70px;
     background:radial-gradient(closest-side,rgba(10,13,8,.86) 0%,rgba(10,13,8,.72) 45%,rgba(10,13,8,.3) 78%,rgba(10,13,8,0) 100%)}
-  #dbat{display:none;height:78px;width:auto;margin:0 0 16px -6px;filter:drop-shadow(0 2px 10px rgba(0,0,0,.45))}body.batout #dbat{display:block}
+  #dbat{display:none;height:124px;width:auto;margin:0 0 20px -10px;filter:drop-shadow(0 2px 10px rgba(0,0,0,.45))}body.batout #dbat{display:block}
   #dover h1{margin:0;font:900 clamp(32px,2.7vw,42px)/1.02 var(--f);letter-spacing:-.012em;color:#fff;text-shadow:0 2px 16px rgba(0,0,0,.45)}
   #dover .dk{display:block;margin:0 0 10px;font:800 11.5px/1 var(--f);letter-spacing:.16em;text-transform:uppercase;color:#F2B33D;text-shadow:0 1px 8px rgba(0,0,0,.6)}
   #dover .dx{margin:12px 0 0;font:500 14px/1.4 var(--f);color:#E6E0D3;text-shadow:0 1px 8px rgba(0,0,0,.6)}
