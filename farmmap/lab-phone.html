@@ -631,7 +631,7 @@ if(innerWidth>=880){c.add('lm');if(fh){c.add('dpdone');c.add('nodt');}}else{if(f
 @media (min-width:880px) and (max-height:880px){ #hero{aspect-ratio:2/1!important} #full #cvid{aspect-ratio:5/2!important} }
 @media (min-width:880px) and (max-height:770px){ #hero{aspect-ratio:5/2!important} #full #cvid{aspect-ratio:3/1!important} #cexp p{-webkit-line-clamp:2} #full #cexp,#full #cprog{margin-top:12px} }
 </style>
-<div id="lptitle" aria-hidden="true"><img id="lpbat" alt="" src="../logo27-bat.png"><small>Pickathon Neighborhoods</small><b>A Temporary City of Wonder</b><p>Stages, gathering places and camps, all on one map. Pick one to see who plays there, how it was built and where it goes next.</p><i id="lphint"><span class="lpdp">Tap a neighborhood to explore</span><span class="lpdd">Click a neighborhood to explore</span></i></div>
+<div id="lptitle" aria-hidden="true"><img id="lpbat" alt="" src="../logo27-bat-only.png"><small>Pickathon Neighborhoods</small><b>A Temporary City of Wonder</b><p>Stages, gathering places and camps, all on one map. Pick one to see who plays there, how it was built and where it goes next.</p><i id="lphint"><span class="lpdp">Tap a neighborhood to explore</span><span class="lpdd">Click a neighborhood to explore</span></i></div>
 <div id="lpdeep" aria-hidden="true"><small>Pickathon Neighborhoods</small><b>A Temporary City of Wonder</b><p>Stages, gathering places and camps, all on one map. Pick one to see who plays there, how it was built and where it goes next.</p><i><span class="lpdp">Tap a neighborhood to explore</span><span class="lpdd">Click a neighborhood to explore</span></i></div>
 <style>
 /* Deep entry (a neighborhood already picked from home, Why Pickathon or a neighborhood page): a compact version of the
@@ -690,7 +690,7 @@ body.lpback #lptitle{display:none!important}   /* back from a neighborhood page:
    Full map come in after. Bigger emblems in the same strip; picked: a full-height photo that turns over every few seconds. */
 #lptitle p,#lpprog,#lphint,#lpbat{display:none}
 #labs,#leads{transition:opacity .3s ease}
-@media (max-width:879px){ body.batout #lpbat{display:block;height:min(30vw,112px);width:auto;margin:0 0 14px -6px;filter:drop-shadow(0 2px 10px rgba(0,0,0,.5))} body.batout.lpfresh #labs,body.batout.lpfresh #leads{opacity:0!important;pointer-events:none!important} body.batout.lpfresh #labs .lab{pointer-events:none!important} }
+@media (max-width:879px){ body.batout #lpbat{display:block;height:min(27vw,104px);width:min(27vw,104px)!important;object-fit:contain;object-position:left center;margin:0 0 10px -4px;filter:drop-shadow(0 2px 10px rgba(0,0,0,.5))} body.batout.lpfresh #labs,body.batout.lpfresh #leads{opacity:0!important;pointer-events:none!important} body.batout.lpfresh #labs .lab{pointer-events:none!important} }
 :root{--lpb:env(safe-area-inset-bottom,0px)} :root.lpemb{--lpb:0px}
 @media (max-width:699px){
   :root{--lps:calc(104px + var(--lpb))}
@@ -756,7 +756,7 @@ body.lpback #lptitle{display:none!important}   /* back from a neighborhood page:
   body.dpdone #dover{opacity:0;visibility:hidden;transition:opacity .35s ease,visibility 0s linear .35s}body.nodt #dover{transition:none!important}
   #dover::before{content:'';position:absolute;z-index:-1;left:-70px;top:-60px;right:-90px;bottom:-70px;
     background:radial-gradient(closest-side,rgba(10,13,8,.86) 0%,rgba(10,13,8,.72) 45%,rgba(10,13,8,.3) 78%,rgba(10,13,8,0) 100%)}
-  #dbat{display:none;height:124px;width:auto;margin:0 0 20px -10px;filter:drop-shadow(0 2px 10px rgba(0,0,0,.45))}body.batout #dbat{display:block}
+  #dbat{display:none;height:128px;width:auto;margin:0 0 18px -8px;filter:drop-shadow(0 2px 10px rgba(0,0,0,.45))}body.batout #dbat{display:block}
   #dover h1{margin:0;font:900 clamp(32px,2.7vw,42px)/1.02 var(--f);letter-spacing:-.012em;color:#fff;text-shadow:0 2px 16px rgba(0,0,0,.45)}
   #dover .dk{display:block;margin:0 0 10px;font:800 11.5px/1 var(--f);letter-spacing:.16em;text-transform:uppercase;color:#F2B33D;text-shadow:0 1px 8px rgba(0,0,0,.6)}
   #dover .dx{margin:12px 0 0;font:500 14px/1.4 var(--f);color:#E6E0D3;text-shadow:0 1px 8px rgba(0,0,0,.6)}
@@ -828,7 +828,7 @@ body.lpback #lptitle{display:none!important}   /* back from a neighborhood page:
   #card.intro #empty #pcl .pc:hover b,#card.intro #empty #pcl .pc.sel b{color:#fff!important}
 }
 </style>
-<div id="dover" aria-hidden="true"><img id="dbat" alt="" src="../logo27-bat.png"><small class="dk">Pickathon Neighborhoods</small><h1>A Temporary City of Wonder</h1><p class="dx">Stages, gathering places and camps, all on one map. Pick one to see who plays there, how it was built and where it goes next.</p><p class="dn">Click a neighborhood to explore</p></div>
+<div id="dover" aria-hidden="true"><img id="dbat" alt="" src="../logo27-bat-only.png"><small class="dk">Pickathon Neighborhoods</small><h1>A Temporary City of Wonder</h1><p class="dx">Stages, gathering places and camps, all on one map. Pick one to see who plays there, how it was built and where it goes next.</p><p class="dn">Click a neighborhood to explore</p></div>
 <div id="card" class="intro"><div id="lpprev"><div id="lpth"></div><div id="lptx"><small id="lpk"></small><div id="lpnow" hidden></div><b id="lpn"></b><div id="lpprog"></div><div id="lppills"></div></div><button id="lpx" type="button" aria-label="Back to all neighborhoods">&#10005;</button><button id="lpl" class="lpar" type="button" aria-label="Previous neighborhood">&#8249;</button><button id="lpr" class="lpar" type="button" aria-label="Next neighborhood">&#8250;</button></div>
   <div id="picker" role="group" aria-label="Find on the map" hidden>
     <div id="phead"><div id="pname">What are you looking for?</div><button id="pclose" type="button" aria-label="Close">✕</button></div>
