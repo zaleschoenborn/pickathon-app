@@ -911,7 +911,7 @@ function build(){
     }
     p.setAttribute('d',h._mask);
     p.addEventListener('pointerenter',e=>{ if(pinned && e.pointerType==='mouse' && !e.buttons && !live.size) peek(h);
-      if(hoverOK && hoverArmed && !pinned && e.pointerType==='mouse' && !e.buttons && !live.size && NOW()>settleUntil) setCur(h); });  // hover only; a finger or a drag never picks
+      if(hoverOK && hoverArmed && !titleHold() && !pinned && e.pointerType==='mouse' && !e.buttons && !live.size && NOW()>settleUntil) setCur(h); });  // hover only; a finger or a drag never picks
     // A drag that happens to END on a neighborhood is still a drag. Without
     // this the map opened a page every time you let go over a shape, the page
     // covered the farm, and it read as "after the first move it gets stuck".
@@ -1070,7 +1070,6 @@ function place(){
   const fd=document.getElementById('finder'), FB=fd?Math.round(fd.getBoundingClientRect().bottom-stage.getBoundingClientRect().top)+8:0;
   const SP=(W>=700&&H>=620)?31:23, TOP=11, BOT=HB-(LP()?18:26), CAP=Math.floor((BOT-TOP)/SP)+1;
   let L=live.filter(h=>h._ax< W/2), R=live.filter(h=>h._ax>=W/2);
-  if(!LP()&&innerWidth>=880&&!cur&&k<=kFit*1.08){ L=live.slice(); R=[]; }   /* desktop start view: the map sits right, so every label goes to the open left side */
   // The farm leans right, so the right rail overfills while the left sits half
   // empty. Spill the overflow across - the ones nearest the middle travel least.
   const spill=(from,to)=>{
@@ -1383,6 +1382,7 @@ function show(h){
 // neighborhood has been picked they stay on at every zoom, Full map included.
 let selOnce=false;
 // A cursor left resting where the map opened is not a choice: the browser re-sends mouse events when the page changes under it. Hover picks a neighborhood only after the mouse has really travelled.
+function titleHold(){ return innerWidth>=880&&!document.body.classList.contains('dpdone'); }   /* desktop title stays until a click on the map or an icon: hovering never picks */
 let hoverArmed=false; (function(){ let p0=null; addEventListener('pointermove',function(ev){ if(hoverArmed||ev.pointerType!=='mouse') return; if(!p0){ p0={x:ev.clientX,y:ev.clientY}; return; } if(Math.hypot(ev.clientX-p0.x,ev.clientY-p0.y)>14) hoverArmed=true; },{passive:true,capture:true}); })();
 function setCur(h){
   if(!h || h===cur) return;
@@ -1449,7 +1449,7 @@ function hover(e){
   const tp=document.getElementById('itip');
   if(tp){ if(ia){ tp.textContent=TIPLBL[ia]||D.amlbl[ia]||ia; tp.style.left=e.clientX+'px'; tp.style.top=e.clientY+'px'; tp.classList.add('on'); } else tp.classList.remove('on'); }
   if(pinned && e.pointerType==='mouse'){ const lb=el&&el.closest&&el.closest('.lab'); peek(lb&&lb.__hood?lb.__hood:(h&&!ia&&!stage.classList.contains('moving')?h:null)); }
-  if(hoverOK && hoverArmed && !ia && !pinned && NOW()>settleUntil){
+  if(hoverOK && hoverArmed && !titleHold() && !ia && !pinned && NOW()>settleUntil){
     clearTimeout(hover._t);
     if(h) setCur(h);
     else if(cur) hover._t=setTimeout(()=>{ if(cur && !stage.classList.contains('onhood') && !stage.classList.contains('onicon')) clearCur(); },200);
@@ -1558,7 +1558,7 @@ labs.addEventListener('pointerout',e=>{ if(pinned) peek(null); });
 labs.addEventListener('pointerover',e=>{
   const b=e.target.closest('.lab');
   if(pinned&&e.pointerType==='mouse'&&b&&b.__hood) peek(b.__hood);
-  if(hoverOK&&hoverArmed&&!pinned&&e.pointerType==='mouse'&&!e.buttons&&b&&b.__hood&&!live.size&&NOW()>settleUntil) setCur(b.__hood);   // hover is for a mouse; a finger only ever picks by tapping
+  if(hoverOK&&hoverArmed&&!titleHold()&&!pinned&&e.pointerType==='mouse'&&!e.buttons&&b&&b.__hood&&!live.size&&NOW()>settleUntil) setCur(b.__hood);   // hover is for a mouse; a finger only ever picks by tapping
 });
 
 // A trackpad two-finger swipe moves the farm; a pinch (which arrives as
@@ -1595,10 +1595,9 @@ document.getElementById('card').addEventListener('click',e=>{
   if(cur) goPage(cur);
 });
 document.getElementById('fullmap').onclick=fullMap;
-try{ new MutationObserver(()=>{ if(innerWidth>=880){ lmSync(); try{ place(); }catch(e){} } }).observe(document.body,{attributes:true,attributeFilter:['class']}); }catch(e){}
 // Desktop: while nothing is clicked the list names the places, so the map stays clean and shows only the one label you point at; a click brings every label back.
 function lmSync(){ if(pinned&&!selOnce){ selOnce=true; saveSoon(); } const on=innerWidth>=880&&!pinned&&!selOnce; document.body.classList.toggle('lm',on);
-  HOODS.forEach(h=>{ const sh=on&&(h===cur||h===peekH||(!cur&&document.body.classList.contains('dpdone')&&k<=kFit*1.08)); [h._el,h._u,h._o,h._pt].forEach(e=>{ if(e) e.classList.toggle('lmshow',sh); }); }); }
+  HOODS.forEach(h=>{ const sh=on&&(h===cur||h===peekH); [h._el,h._u,h._o,h._pt].forEach(e=>{ if(e) e.classList.toggle('lmshow',sh); }); }); }
 setInterval(lmSync,120);
 document.getElementById('cmore').onclick=e=>{ e.stopPropagation(); if(cur) goPage(cur); };
 (function(){ const c=document.getElementById('card'), pall=document.getElementById('pall'), pcl=document.getElementById('pcl'); let t;
@@ -1707,10 +1706,10 @@ function boot(){ if(!document.getElementById('itip')){ const t=document.createEl
 let titleOff=null;
 function armTitle(){ if(LP()) return; if(titleOff) titleOff();
   const t0=performance.now(); let dn=null, gone=false;
-  const evs=['pointerdown','pointermove','wheel','keydown'];
+  const evs=['pointerdown'];
   const off=()=>{ if(gone) return; gone=true; titleOff=null; evs.forEach(n=>stage.removeEventListener(n,h)); };
   const h=e=>{ if(performance.now()-t0<1800) return;
-    if(e.type==='pointerdown'){ dn={x:e.clientX,y:e.clientY}; return; }
+    if(e.type==='pointerdown'){ off(); document.body.classList.add('dpdone'); return; }
     if(e.type==='pointermove'){ if(dn&&Math.hypot(e.clientX-dn.x,e.clientY-dn.y)>10){ off(); document.body.classList.add('dpdone'); } return; }
     if(e.type==='wheel'){ if(Math.abs(e.deltaY)+Math.abs(e.deltaX)>0){ off(); document.body.classList.add('dpdone'); } return; }
     if(e.type==='keydown'&&!e.repeat){ off(); document.body.classList.add('dpdone'); } };
