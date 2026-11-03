@@ -772,7 +772,7 @@ body.lpback #lptitle{display:none!important}   /* back from a neighborhood page:
   #dover .dn{display:none!important}   /* the right column now says it: 'Wander in. Pick your first stop.' */
   #card.intro #empty>#eyebrow,#card.intro #empty>b,#card.intro #empty>p{display:none!important}
   #card.intro #empty #pinv{display:block!important;margin:0 0 16px;padding:0 2px}
-  #cbat{display:none} body.batout.lm #cbat{display:block;position:fixed;top:5px;right:18px;height:40px;width:auto;z-index:30;pointer-events:none;filter:drop-shadow(0 2px 6px rgba(0,0,0,.45))} body.batout.lm:has(#card.intro) #cbat{display:none}
+  #cbat{display:none} body.batout.lm:not(.dpdone) #cbat,body.lm:not(.dpdone) #card.intro #pinv .pbat{opacity:0!important} body.batout.lm #cbat,body.batout #card.intro #pinv .pbat{transition:opacity .45s ease .15s} body.batout.lm #cbat{display:block;position:fixed;top:5px;right:18px;height:40px;width:auto;z-index:30;pointer-events:none;filter:drop-shadow(0 2px 6px rgba(0,0,0,.45))} body.batout.lm:has(#card.intro) #cbat{display:none}
   #pinv{position:relative} .pbat{display:none} body.batout #card.intro #pinv .pbat{display:block;position:absolute;right:4px;top:-4px;height:78px;width:auto;filter:drop-shadow(0 2px 8px rgba(0,0,0,.4))}
   #pinv::before{content:'';display:block;width:54px;height:3px;background:#F2B33D;margin-bottom:12px}
   #card.intro #empty #pinv b{display:block!important;color:var(--cream);font:900 clamp(28px,2.3vw,36px)/1.02 var(--f);letter-spacing:-.01em}
