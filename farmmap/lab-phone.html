@@ -24,6 +24,7 @@ body{margin:0;background:var(--ink);color:var(--cream);font-family:var(--f);
 #stage.drag,#stage.drag *{cursor:grabbing!important}
 #art,#shapes{position:absolute;top:0;left:0;transform-origin:0 0;will-change:transform}
 #art img{display:block;width:100%;height:auto;user-select:none;-webkit-user-drag:none}
+#nic{position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none}#nic img{position:absolute;max-width:none;height:auto;pointer-events:none}
 #art{visibility:hidden}body.mapready #art{visibility:visible;animation:mapin .35s ease-out}@keyframes mapin{from{opacity:0}to{opacity:1}}
 #tiles{position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none}
 #tiles img{position:absolute;max-width:none;opacity:0;transition:opacity .6s ease-out}
@@ -595,7 +596,7 @@ body.batout #dbat{margin:0 0 16px calc((100% - 129px)/6)!important}
 <script>/* Decide the entry state before the first paint, so nothing shows and then switches off (the title that blinked, labels that all showed and then collapsed). */
 (function(){try{var c=document.body.classList,emb=window.parent!==window,nv=performance.getEntriesByType('navigation')[0],rl=nv&&nv.type==='reload',fh=emb&&!rl&&sessionStorage.getItem('pkmap.from')==='hood',foc=!!sessionStorage.getItem('pkmap.focus');
 if(innerWidth>=880){c.add('lm');if(fh){c.add('dpdone');c.add('nodt');}}else{if(fh)c.add('lpback');else if(!foc)c.add('lpfresh');}}catch(e){}})();</script>
-  <div id="art"><img id="mapimg" src="map.webp?v=31" alt="Map of Pendarvis Farm" draggable="false"><div id="tiles"></div><div id="veil"></div><div id="lits"></div></div>
+  <div id="art"><img id="mapimg" src="map.webp?v=31" alt="Map of Pendarvis Farm" draggable="false"><div id="tiles"></div><div id="veil"></div><div id="lits"></div><div id="nic"></div></div>
   <svg id="shapes"></svg>
   <svg id="leads"></svg>
   <div id="labs"></div>
@@ -655,8 +656,8 @@ if(innerWidth>=880){c.add('lm');if(fh){c.add('dpdone');c.add('nodt');}}else{if(f
 @media (min-width:880px) and (max-height:880px){ #hero{aspect-ratio:2/1!important} #full #cvid{aspect-ratio:5/2!important} }
 @media (min-width:880px) and (max-height:770px){ #hero{aspect-ratio:5/2!important} #full #cvid{aspect-ratio:3/1!important} #cexp p{-webkit-line-clamp:2} #full #cexp,#full #cprog{margin-top:12px} }
 </style>
-<div id="lptitle" aria-hidden="true"><img id="lpbat" alt="" src="../logo27-bat-only.png"><small>Pickathon Neighborhoods</small><b>A Temporary City of Wonder</b><p>Stages, gathering places and camps, all on one map. Pick one to see who plays there, how it was built and where it goes next.</p><i id="lphint"><span class="lpdp">Tap a neighborhood to explore</span><span class="lpdd">Click a neighborhood to explore</span></i></div>
-<div id="lpdeep" aria-hidden="true"><small>Pickathon Neighborhoods</small><b>A Temporary City of Wonder</b><p>Stages, gathering places and camps, all on one map. Pick one to see who plays there, how it was built and where it goes next.</p><i><span class="lpdp">Tap a neighborhood to explore</span><span class="lpdd">Click a neighborhood to explore</span></i></div>
+<div id="lptitle" aria-hidden="true"><img id="lpbat" alt="" src="../logo27-bat-only.png"><small>Pickathon Neighborhoods</small><b>Where will you wake up, dance and wander?</b><p>Eighty acres of forest, rebuilt every summer. Stages, gathering places and camps, each one its own world. Pick one to see who plays there and how it was built.</p><i id="lphint"><span class="lpdp">Tap a neighborhood to step in</span><span class="lpdd">Click a neighborhood to step in</span></i></div>
+<div id="lpdeep" aria-hidden="true"><small>Pickathon Neighborhoods</small><b>Where will you wake up, dance and wander?</b><p>Eighty acres of forest, rebuilt every summer. Stages, gathering places and camps, each one its own world. Pick one to see who plays there and how it was built.</p><i><span class="lpdp">Tap a neighborhood to step in</span><span class="lpdd">Click a neighborhood to step in</span></i></div>
 <style>
 /* Deep entry (a neighborhood already picked from home, Why Pickathon or a neighborhood page): a compact version of the
    overview title, under Find, until the first touch, drag, zoom, click, wheel or key. No box, no pulse. */
@@ -859,7 +860,7 @@ body.lpback #lptitle{display:none!important}   /* back from a neighborhood page:
   #card.intro #empty #pcl .pc:hover b,#card.intro #empty #pcl .pc.sel b{color:#fff!important}
 }
 </style>
-<div id="dover" aria-hidden="true"><img id="dbat" alt="" src="../logo27-bat-only.png"><small class="dk">Pickathon Neighborhoods</small><h1>A Temporary City of Wonder</h1><p class="dx">Stages, gathering places and camps, all on one map. Pick one to see who plays there, how it was built and where it goes next.</p><p class="dn">Click a neighborhood to explore</p></div>
+<div id="dover" aria-hidden="true"><img id="dbat" alt="" src="../logo27-bat-only.png"><small class="dk">Pickathon Neighborhoods</small><h1>A Temporary City of Wonder</h1><p class="dx">Stages, gathering places and camps, all on one map. Pick one to see who plays there, how it was built and where it goes next.</p><p class="dn">Click a neighborhood to step in</p></div>
 <div id="card" class="intro"><div id="lpprev"><div id="lpth"></div><div id="lptx"><small id="lpk"></small><div id="lpnow" hidden></div><b id="lpn"></b><div id="lpprog"></div><div id="lppills"></div></div><button id="lpx" type="button" aria-label="Back to all neighborhoods">&#10005;</button><button id="lpl" class="lpar" type="button" aria-label="Previous neighborhood">&#8249;</button><button id="lpr" class="lpar" type="button" aria-label="Next neighborhood">&#8250;</button></div>
   <div id="picker" role="group" aria-label="Find on the map" hidden>
     <div id="phead"><div id="pname">What are you looking for?</div><button id="pclose" type="button" aria-label="Close">✕</button></div>
@@ -1963,6 +1964,9 @@ function lpWirePanel(){
   setInterval(()=>{ if(cur&&lpFill._h===cur&&lpFest()!==lpFill._f) lpFill(cur); },800);
 }
 (function(){ const _boot=boot; boot=function(){ if(LP()){ hoverOK=false; lpBuildMenu(); lpWire(); lpWirePanel(); } _boot(); if(LP()) lpFresh(lpAtHome()&&!FROMHOOD); try{ lmSync(); }catch(e){} lpWire._w=stage.clientWidth; lpWire._h=stage.clientHeight; }; })();
+/* Top layer: the dotted white trail and the icons added after the glow layers were baked. Never dimmed by the veil, never covered by a neighborhood's glow. */
+(function(){ const host=document.getElementById('nic'); if(!host) return;
+  [["ic/n_trail.webp", 646.3, 290.4, 1218.4], ["ic/n_rec_cur.webp", 594.6, 3661.1, 60.0], ["ic/n_rec_wood.webp", 1672.6, 1261.0, 60.0], ["ic/n_rec_mkt.webp", 1443.0, 2227.3, 60.0], ["ic/n_food_cur.webp", 438.0, 3665.0, 60.0], ["ic/n_plate_cur.webp", 434.6, 3539.7, 80], ["ic/n_plate_farm.webp", 1177.6, 3263.1, 60]].forEach(function(n){ const i=new Image(); i.alt=''; i.draggable=false; i.src=n[0]+'?v=32'; i.style.cssText='left:'+n[1]+'px;top:'+n[2]+'px;width:'+n[3]+'px'; host.appendChild(i); }); })();
 function revealMap(){ document.body.classList.add('mapready'); }
 setTimeout(revealMap,2500);   /* never stay hidden */
 (function(){ const _b2=boot; boot=function(){ try{ _b2(); }finally{ requestAnimationFrame(function(){ requestAnimationFrame(function(){ setTimeout(revealMap,60); }); }); } }; })();
