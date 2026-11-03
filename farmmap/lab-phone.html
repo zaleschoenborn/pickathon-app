@@ -400,6 +400,10 @@ body{margin:0;background:var(--ink);color:var(--cream);font-family:var(--f);
 </style>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&display=swap">
 
+<style>/* intro kicker is the screen's title: sized by script to span the full text width, bat centered above it */
+#dover .dk,#lptitle small{white-space:nowrap!important;display:block}
+body.batout #dbat{margin:0 auto 16px!important}
+@media (max-width:879px){ body.batout #lpbat{margin:0 auto 10px!important;object-position:center!important} }</style>
 <style>body.cardmode #leads{display:none!important}body.cardmode #veil.on{background:rgba(8,11,6,.6)!important}body.cardmode #lits img{filter:drop-shadow(0 0 1.5px #fff) drop-shadow(0 0 4px #fff4c2) drop-shadow(0 0 18px rgba(255,236,150,1)) brightness(1.3) saturate(1.2)}body.cardmode #stage{inset:0!important;right:0!important;bottom:0!important;width:100%!important;height:100%!important}body.cardmode #page,body.cardmode #finder,body.cardmode #fullmap,body.cardmode #card,body.cardmode #fx,body.cardmode #itip{display:none!important}body.cardmode,body.cardmode *{pointer-events:none!important;cursor:default!important}body.cardmode .lbl,body.cardmode [class*=lab]{display:none!important}</style>
 <style>
 /* ================= LAB (phone test) */
@@ -1386,6 +1390,12 @@ function show(h){
 // neighborhood has been picked they stay on at every zoom, Full map included.
 let selOnce=false;
 // A cursor left resting where the map opened is not a choice: the browser re-sends mouse events when the page changes under it. Hover picks a neighborhood only after the mouse has really travelled.
+
+function fitKickers(){ [['#dover .dk','#dover'],['#lptitle small','#lptitle']].forEach(function(pr){ const e=document.querySelector(pr[0]), c=document.querySelector(pr[1]); if(!e||!c) return;
+  const cs=getComputedStyle(c); if(cs.display==='none') return; const W=c.clientWidth-parseFloat(cs.paddingLeft)-parseFloat(cs.paddingRight); if(W<80) return;
+  e.style.fontSize='20px'; e.style.letterSpacing='.14em'; const w=e.scrollWidth||e.getBoundingClientRect().width; if(!w) return;
+  const fs=Math.max(11,Math.min(34,20*W/w)); e.style.fontSize=fs.toFixed(2)+'px'; }); }
+addEventListener('resize',fitKickers); try{ document.fonts&&document.fonts.ready.then(fitKickers); }catch(e){} setTimeout(fitKickers,60); setTimeout(fitKickers,600);
 function titleHold(){ return innerWidth>=880&&!document.body.classList.contains('dpdone'); }   /* desktop title stays until a click on the map or an icon: hovering never picks */
 let hoverArmed=false; (function(){ let p0=null; addEventListener('pointermove',function(ev){ if(hoverArmed||ev.pointerType!=='mouse') return; if(!p0){ p0={x:ev.clientX,y:ev.clientY}; return; } if(Math.hypot(ev.clientX-p0.x,ev.clientY-p0.y)>14) hoverArmed=true; },{passive:true,capture:true}); })();
 function setCur(h,hov){
