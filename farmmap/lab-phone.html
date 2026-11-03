@@ -1231,7 +1231,10 @@ function zoomAt(nk,cx,cy){
 // very bottom of the map, so every neighborhood is on screen and the bottom is fully visible.
 // Only the far northern camping is trimmed. 'Full map' shows all of it.
 try{ if(sessionStorage.getItem('pk.bat')==='1') document.body.classList.add('batout'); }catch(e){}
-function deskHomeV(){ const W=stage.clientWidth,H=stage.clientHeight; const w=MW*kFit; return {k:kFit,tx:Math.max(0,W-w-176),ty:(H-MH*kFit)/2}; }
+/* desktop start view: right margin = widest label + a clear gap off the map edge; the map may slide under the title text only so far */
+function deskGap(){ let m=0; document.querySelectorAll('#labs .lab').forEach(e=>{ m=Math.max(m,e.offsetWidth); }); return Math.max(m,120)+7+26; }
+function deskMinTx(){ return 40+Math.min(400,innerWidth-(parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--cardw'))||440)-96)*0.5; }
+function deskHomeV(){ const W=stage.clientWidth,H=stage.clientHeight; const w=MW*kFit; return {k:kFit,tx:Math.min(Math.max(0,W-w),Math.max(W-w-deskGap(),deskMinTx())),ty:(H-MH*kFit)/2}; }
 function homeView(){
   if(LP()){ lpSync(); const v=lpHome(); kMin=v.k; k=v.k; tx=v.tx; ty=v.ty; clamp(); apply(); return; }
   { const v=deskHomeV(); k=v.k; tx=v.tx; ty=v.ty; clamp(); apply(); return; }   /* desktop: the whole map, shifted toward the neighborhood column; Full map returns to exactly this */
