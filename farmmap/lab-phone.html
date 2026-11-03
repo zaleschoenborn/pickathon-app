@@ -634,10 +634,10 @@ if(innerWidth>=880){c.add('lm');if(fh){c.add('dpdone');c.add('nodt');}}else{if(f
   #ctype,#cexp,#cprog{display:none!important}
 }
 @media (min-width:880px){
-  #chd{order:2!important} #full #ctype{order:3!important} #full #ctag{order:4!important} #full #cexp{order:5!important} #full #cprog{order:6!important}
+  #chd{order:2!important} #full #ctype{order:1!important} #full #ctag{order:4!important} #full #cexp{order:5!important} #full #cprog{order:6!important}
   #full #cams{order:7!important;margin:14px 0 0!important} #full #cvw{order:8!important} #full #cgo{order:9!important}
   #full>*{flex-shrink:0}
-  #full #ctype{display:block;margin:10px 0 0;font:600 13px/1.25 var(--f);color:var(--muted)}
+  #full #ctype{display:block;margin:0 0 8px;font:600 13px/1.25 var(--f);color:var(--muted)}
   #full #ctype b{font:800 10.5px/1 var(--f);letter-spacing:.14em;text-transform:uppercase;color:var(--kc,#F2B33D);margin-right:7px}
   #full #ctag{margin-top:8px}
   #full #cexp,#full #cprog{display:block;margin:16px 0 0}
@@ -1386,7 +1386,7 @@ function expOf(h){
 }
 function fillDesk(h){
   const T=KTYPE[h.k]||[KIND[h.k]||'',''], ty=document.getElementById('ctype');
-  ty.style.setProperty('--kc',T[2]||'#F2B33D'); ty.innerHTML='<b>'+T[0]+'</b>'+(T[1]?T[1].replace(/&/g,'&amp;'):'');
+  ty.style.setProperty('--kc',T[2]||'#F2B33D'); ty.innerHTML='<b>'+T[0]+'</b>';
   const ex=document.getElementById('cexp'), pr=document.getElementById('cprog');
   ex.hidden=true; pr.hidden=true; if(LP()||!XD||!XD.h) return;
   const e=expOf(h); if(e){ ex.querySelector('p').textContent=e; ex.hidden=false; }
@@ -1410,7 +1410,7 @@ function show(h){
   document.getElementById('ctag').textContent=h.t||'';
   const ck=document.getElementById('ckind');
   ck.textContent=KLBL(h.k); ck.className='chip k-'+h.k;
-  document.getElementById('cams').innerHTML=(amFilter&&!passes(h)?'<span class="nohit">No '+(AMLBL[amFilter]||amFilter)+' here</span>':'')+(h.amk||[]).map((a,i)=>
+  document.getElementById('cams').innerHTML=(amFilter&&!passes(h)?'<span class="nohit">No '+(AMLBL[amFilter]||amFilter)+' here</span>':'')+(h.amk||[]).filter(a=>a!=='stage'||amFilter==='stage').map((a,i)=>
     '<span class="ai'+(a===amFilter?' hit':'')+'" title="'+(AMLBL[a]||a)+'">'+ico(a)+'</span>').join('');
   loadXD(); fillExtra(h); fillDesk(h);
   document.getElementById('cgo').textContent='Explore '+(THE[h.id]?'the ':'')+h.n.replace(/^The /,'');
