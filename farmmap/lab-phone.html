@@ -577,6 +577,7 @@ if(innerWidth>=880){c.add('lm');if(fh){c.add('dpdone');c.add('nodt');}}else{if(f
   <svg id="leads"></svg>
   <div id="labs"></div>
 </div>
+<img id="cbat" alt="" src="../logo27-bat-only.png">
 
 
 <div id="page" hidden>
@@ -767,6 +768,7 @@ body.lpback #lptitle{display:none!important}   /* back from a neighborhood page:
   #dover .dn{display:none!important}   /* the right column now says it: 'Wander in. Pick your first stop.' */
   #card.intro #empty>#eyebrow,#card.intro #empty>b,#card.intro #empty>p{display:none!important}
   #card.intro #empty #pinv{display:block!important;margin:0 0 16px;padding:0 2px}
+  #cbat{display:none} body.batout.lm #cbat{display:block;position:fixed;top:5px;right:18px;height:40px;width:auto;z-index:30;pointer-events:none;filter:drop-shadow(0 2px 6px rgba(0,0,0,.45))} body.batout.lm:has(#card.intro) #cbat{display:none}
   #pinv{position:relative} .pbat{display:none} body.batout #card.intro #pinv .pbat{display:block;position:absolute;right:4px;top:-4px;height:78px;width:auto;filter:drop-shadow(0 2px 8px rgba(0,0,0,.4))}
   #pinv::before{content:'';display:block;width:54px;height:3px;background:#F2B33D;margin-bottom:12px}
   #card.intro #empty #pinv b{display:block!important;color:var(--cream);font:900 clamp(28px,2.3vw,36px)/1.02 var(--f);letter-spacing:-.01em}
@@ -1068,6 +1070,7 @@ function place(){
   const fd=document.getElementById('finder'), FB=fd?Math.round(fd.getBoundingClientRect().bottom-stage.getBoundingClientRect().top)+8:0;
   const SP=(W>=700&&H>=620)?31:23, TOP=11, BOT=HB-(LP()?18:26), CAP=Math.floor((BOT-TOP)/SP)+1;
   let L=live.filter(h=>h._ax< W/2), R=live.filter(h=>h._ax>=W/2);
+  if(!LP()&&innerWidth>=880&&!cur&&k<=kFit*1.08){ L=live.slice(); R=[]; }   /* desktop start view: the map sits right, so every label goes to the open left side */
   // The farm leans right, so the right rail overfills while the left sits half
   // empty. Spill the overflow across - the ones nearest the middle travel least.
   const spill=(from,to)=>{
@@ -1592,9 +1595,10 @@ document.getElementById('card').addEventListener('click',e=>{
   if(cur) goPage(cur);
 });
 document.getElementById('fullmap').onclick=fullMap;
+try{ new MutationObserver(()=>{ if(innerWidth>=880){ lmSync(); try{ place(); }catch(e){} } }).observe(document.body,{attributes:true,attributeFilter:['class']}); }catch(e){}
 // Desktop: while nothing is clicked the list names the places, so the map stays clean and shows only the one label you point at; a click brings every label back.
 function lmSync(){ if(pinned&&!selOnce){ selOnce=true; saveSoon(); } const on=innerWidth>=880&&!pinned&&!selOnce; document.body.classList.toggle('lm',on);
-  HOODS.forEach(h=>{ const sh=on&&(h===cur||h===peekH); [h._el,h._u,h._o,h._pt].forEach(e=>{ if(e) e.classList.toggle('lmshow',sh); }); }); }
+  HOODS.forEach(h=>{ const sh=on&&(h===cur||h===peekH||(!cur&&document.body.classList.contains('dpdone')&&k<=kFit*1.08)); [h._el,h._u,h._o,h._pt].forEach(e=>{ if(e) e.classList.toggle('lmshow',sh); }); }); }
 setInterval(lmSync,120);
 document.getElementById('cmore').onclick=e=>{ e.stopPropagation(); if(cur) goPage(cur); };
 (function(){ const c=document.getElementById('card'), pall=document.getElementById('pall'), pcl=document.getElementById('pcl'); let t;
@@ -1605,7 +1609,7 @@ document.getElementById('cmore').onclick=e=>{ e.stopPropagation(); if(cur) goPag
 })();
 document.getElementById('fx').onclick=e=>{ e.stopPropagation(); clearCur(); };
 document.getElementById('fback').onclick=e=>{ e.stopPropagation(); clearCur(); };
-setInterval(()=>{ const f=document.getElementById('fullmap'), on=LP()?lpFmOn():(k>kFit*1.08 || !!cur); if(f.classList.contains('on')!==on){ f.classList.toggle('on',on); if(LP()) apply(); } },250);
+setInterval(()=>{ const f=document.getElementById('fullmap'), on=LP()?lpFmOn():(k>kFit*1.3 || !!cur); if(f.classList.contains('on')!==on){ f.classList.toggle('on',on); if(LP()) apply(); } },250);
 document.getElementById('pgback').onclick=()=>{document.getElementById('page').hidden=true;};
 const PT=document.getElementById('ptog'), PK=document.getElementById('picker');
 function setFind(){
