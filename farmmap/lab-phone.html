@@ -1280,7 +1280,14 @@ try{ if(sessionStorage.getItem('pk.bat')==='1') document.body.classList.add('bat
 /* desktop start view: right margin = widest label + a clear gap off the map edge; the map may slide under the title text only so far */
 function deskGap(){ let m=0; document.querySelectorAll('#labs .lab').forEach(e=>{ m=Math.max(m,e.offsetWidth); }); return Math.max(m,150)+28+22; }
 function deskMinTx(){ return 40+Math.min(400,innerWidth-(parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--cardw'))||440)-96)*0.5; }
-function deskHomeV(){ const W=stage.clientWidth,H=stage.clientHeight; const w=MW*kFit; return {k:kFit,tx:Math.min(Math.max(0,W-w),Math.max(W-w-deskGap(),deskMinTx())),ty:(H-MH*kFit)/2}; }
+function deskHomeV(){ const W=stage.clientWidth,H=stage.clientHeight; let top=null,l=1e9,r=-1e9;
+  HOODS.forEach(h=>{ const sh=D.shapes&&D.shapes[h.id], b=sh&&sh.b; if(!b) return; l=Math.min(l,b[0]); r=Math.max(r,b[2]); if(h.id==='woods') top=b[1]; });
+  if(top==null||r<=l){ const w=MW*kFit; return {k:kFit,tx:Math.min(Math.max(0,W-w),Math.max(W-w-deskGap(),deskMinTx())),ty:(H-MH*kFit)/2}; }
+  /* same working view as tablet and phone: just above the Woods stage down to the very bottom, so the small neighborhoods read and Wild and Lush no longer dominate */
+  const y0=Math.max(0,top-MH*0.02), x0=Math.max(0,l-MW*0.02), x1=Math.min(MW,r+MW*0.02), avail=Math.max(200,W-deskGap()-deskMinTx());
+  const nk=Math.max(kFit,Math.min(maxK(),H/(MH-y0),avail/(x1-x0)));
+  const tx=deskMinTx()+(avail-(x1-x0)*nk)/2-x0*nk;
+  return {k:nk,tx:tx,ty:H-MH*nk}; }
 function homeView(){
   if(LP()){ lpSync(); const v=lpHome(); kMin=v.k; k=v.k; tx=v.tx; ty=v.ty; clamp(); apply(); return; }
   { const v=deskHomeV(); k=v.k; tx=v.tx; ty=v.ty; clamp(); apply(); return; }   /* desktop: the whole map, shifted toward the neighborhood column; Full map returns to exactly this */
@@ -2149,5 +2156,24 @@ function stepHood(dir,quiet){
     }
     start(); upd();
   }
+})();
+
+/* Desktop and tablet: the right column (title, three groups, every icon) scales to fit one frame at any window size, so it never scrolls. */
+(function(){
+  function fitCol(){
+    try{
+      const E=document.getElementById('empty'),P=document.getElementById('pcl'),T=document.getElementById('pinv'); if(!E||!P||!T) return;
+      const on=matchMedia('(min-width:880px)').matches&&document.getElementById('card').classList.contains('intro');
+      if(!on){ P.style.zoom=''; T.style.zoom=''; return; }
+      P.style.zoom=1; T.style.zoom=1;
+      const cs=getComputedStyle(E), avail=E.clientHeight-parseFloat(cs.paddingTop)-parseFloat(cs.paddingBottom);
+      const need=T.offsetHeight+parseFloat(getComputedStyle(T).marginBottom||0)+P.scrollHeight;
+      const z=Math.max(.5,Math.min(1,avail/need)); P.style.zoom=z; T.style.zoom=z;
+    }catch(e){}
+  }
+  window.__fitCol=fitCol;
+  addEventListener('resize',fitCol); addEventListener('load',()=>{ fitCol(); setTimeout(fitCol,400); setTimeout(fitCol,1500); });
+  try{ document.fonts&&document.fonts.ready.then(fitCol); }catch(e){}
+  try{ new MutationObserver(fitCol).observe(document.getElementById('card'),{attributes:true,attributeFilter:['class']}); }catch(e){}
 })();
 </script>
