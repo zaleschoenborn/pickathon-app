@@ -1592,7 +1592,7 @@ function tapAt(e){
   if(!h){ if((pinned&&e.pointerType==='mouse')||(e.pointerType!=='mouse'&&cur)) clearCur(); return; }
   // mouse: hover peeks, a click pins, a click on the pinned one opens. Touch: the first tap
   // shows the card, a tap on the one already showing opens it.
-  if(e.pointerType==='mouse'||(!LP()&&innerWidth>=880)){ if(pinned!==h){ const kept=!atHomeD()&&k>kFit*1.08; if(kept){ keepK=k; keepAt=NOW(); } const first=!kept; /* hover can already mark the hood as current, so judge by the view, not by cur */ pinned=h; peek(null); setCur(h); show(h); if(first){ flyTo(h); } else if(kept){ const to=viewFor(h,keepK); if(to) flyView(to,h); } } return; }   // desktop: a click on the map only selects (no zoom); the logo list and next/prev do the flying; the Open button is the way through
+  if(e.pointerType==='mouse'||(!LP()&&innerWidth>=880)){ if(pinned===h&&cur===h&&window.__pinAt&&NOW()-window.__pinAt>450){ goPage(h); return; } if(pinned!==h){ window.__pinAt=NOW(); const kept=!atHomeD()&&k>kFit*1.08; if(kept){ keepK=k; keepAt=NOW(); } const first=!kept; /* hover can already mark the hood as current, so judge by the view, not by cur */ pinned=h; peek(null); setCur(h); show(h); if(first){ flyTo(h); } else if(kept){ const to=viewFor(h,keepK); if(to) flyView(to,h); } } return; }   // desktop: a click on the map only selects (no zoom); the logo list and next/prev do the flying; the Open button is the way through
   else if(h!==cur){ keepZoomIf(h); setCur(h); return; }
   goPage(h);
 }
