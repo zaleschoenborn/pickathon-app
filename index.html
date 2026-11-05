@@ -4330,3 +4330,7 @@ window.addEventListener('resize',sched);document.addEventListener('load',functio
 <script>
 (function(){document.addEventListener('click',function(e){try{var t=e.target;if(!t||!t.closest)return;var f=t.closest('.pk-yreel-f');if(!f||t.closest('a,button'))return;var best=null,bo=0;f.querySelectorAll('figure.pk-rs').forEach(function(g){var cs=getComputedStyle(g);if(cs.visibility==='hidden')return;var o=parseFloat(cs.opacity);if(o>bo){bo=o;best=g}});if(best&&bo>.4){var a=best.querySelector('a.pk-rv');if(a)a.click();else best.click()}}catch(x){}},false)})();
 </script>
+<script>
+/* Archive cards: the corner already shows the first year, so the pill just says Watch; it adds a year only when the clip is from a different year. */
+(function(){var q=0;function fix(){q=0;try{document.querySelectorAll('.pk-arch-c .pk-bnd-p.cp i').forEach(function(el){var m=/Watch from Pickathon (\d{4})/.exec(el.textContent||'');if(!m)return;var c=el.closest('.pk-arch-c'),ai=c&&c.querySelector('.pk-ai[data-y]'),fy=ai&&ai.getAttribute('data-y');if(!fy)return;el.textContent=(String(fy)===m[1])?'Watch':'Watch '+m[1]})}catch(e){}}function sch(){if(!q){q=1;requestAnimationFrame(fix)}}try{new MutationObserver(sch).observe(document.body,{childList:true,subtree:true,characterData:true})}catch(e){}sch()})();
+</script>
