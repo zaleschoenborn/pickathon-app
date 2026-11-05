@@ -303,6 +303,11 @@ html:root:root .pk-b2 .pk-bk,html:root:root .pk-b2m .pk-bk{position:absolute;lef
 html:root:root .pk-b2 .pk-bnd-p,html:root:root .pk-b2m .pk-bnd-p{top:8px!important;left:8px!important;bottom:auto!important;font-size:11px}
 @media(max-width:700px){html:root:root .pk-b2g,html:root:root .pk-b2mg,html:root:root .pk-b3g{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
 @media(min-width:701px) and (max-width:1000px){html:root:root .pk-b2g,html:root:root .pk-b2mg,html:root:root .pk-b3g{grid-template-columns:repeat(3,minmax(0,1fr))!important}}
+
+/* Zale 06:34: one name size on every card (all caps stays); archive cards show their whole description */
+:root{--pk-name:clamp(26px,7.4vw,30px)}@media(min-width:821px){:root{--pk-name:32px}}
+html:root body .pk-arch-c h3{font-size:var(--pk-name)!important;line-height:.98!important;text-transform:uppercase!important;letter-spacing:-.012em!important;margin:0 0 2px!important}
+html:root body .pk-arch-c p{display:block!important;-webkit-line-clamp:unset!important;overflow:visible!important}
 </style>
 <link rel="apple-touch-icon" href="apple-touch-icon.png"><script>
 (function(){var framed=false;try{framed=window.top!==window}catch(e){framed=true}var touch=!framed&&/iphone|ipad|ipod|android/i.test(navigator.userAgent||'')||(!framed&&/Macintosh/.test(navigator.userAgent||'')&&navigator.maxTouchPoints>1);
