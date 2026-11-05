@@ -3066,7 +3066,7 @@ var pr27 = function (k) { var r = PR27[k]; return r ? Math.ceil(r[PCOL]) : 0; },
           var RL = d.yearReel || {}; var first = (RL['2024'] && OK.some(function (q) { return q.y === '2024'; })) ? '2024' : (ST.length ? ST[self._yo % ST.length] : OK[0].y);
           var rest = shufS(OK.filter(function (y) { return y.y !== first; }), 'yr').map(function (y) { return y.y; }); var order = [first].concat(rest);
           var k = (st.homeYrSel && order.indexOf(st.homeYrSel) >= 0) ? st.homeYrSel : order[((st.homeYr || 0) % order.length + order.length) % order.length], y = OK.filter(function (q) { return q.y === k; })[0], r0 = vRange(k), n = +k;
-          var vv = vInYear(k); var HY = (d.yearHero || {})[k] || []; var img = HY[0] || y.img || (vv[0] ? 'https://i.ytimg.com/vi/' + vv[0].id + '/hq720.jpg' : ''); if (n >= 2026) { img = ''; HY = []; vv = []; }
+          var vv = vInYear(k); var HY = (d.yearHero || {})[k] || []; var RH0 = ((d.yearReel || {})[k] || [])[0]; if (RH0 && RH0.i) HY = [RH0.i].concat(HY.filter(function (u) { return u !== RH0.i; })); var img = HY[0] || y.img || (vv[0] ? 'https://i.ytimg.com/vi/' + vv[0].id + '/hq720.jpg' : ''); if (n >= 2026) { img = ''; HY = []; vv = []; }
           var ARK = (d.arc || {})[k] || {}; var G = d.grammys || {}, GW = G.w || [], GN = G.n || [], acts = (y.all && y.all.length ? y.all : (y.names || []));
           var AA = archAll().filter(function (x) { return x.cat === 'music' && (x.years || []).map(Number).indexOf(n) >= 0; }).sort(function (p, q) { return p.rank - q.rank; });
           var disc = AA.filter(function (x) { return !x.dc && !x.leg; }), leg = AA.filter(function (x) { return x.leg; }), dcs = AA.filter(function (x) { return x.dc; });
