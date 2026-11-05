@@ -261,6 +261,19 @@ html:root:root main .pk-sspill.pk-tour{background:#F2EDE3!important;color:#12160
 html:root:root section[aria-label="Next step"]{max-width:1280px!important;margin-left:auto!important;margin-right:auto!important;box-sizing:border-box!important}
 html:root:root .pk-act-v .pk-bnd-p{position:absolute!important;left:12px!important;top:calc((100% - 0px)*0 + 12px)!important;bottom:auto!important}
 html:root:root .pk-act-v img{height:auto!important;max-height:none!important;min-height:0!important;aspect-ratio:16/9!important}html:root:root .pk-act-vt{position:relative;z-index:1;background:#1A2017}
+html:root:root .pk-b2g,html:root:root .pk-b2mg,html:root:root .pk-b3g{display:grid!important;grid-template-columns:repeat(5,minmax(0,1fr))!important;gap:10px!important;margin-top:10px}
+html:root:root .pk-b2,html:root:root .pk-b2m,html:root:root .pk-b3{position:relative!important;display:block!important;aspect-ratio:4/3!important;min-height:0!important;padding:0!important;border:0!important;border-radius:12px!important;overflow:hidden!important;background:#1A2017!important;text-align:left}
+html:root:root .pk-b3:after,html:root:root .pk-b2:after,html:root:root .pk-b2m:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,22,15,0) 15%,rgba(18,22,15,.94) 100%);pointer-events:none}
+html:root:root .pk-b3 .pk-b3i,html:root:root .pk-b3 i{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;border-radius:0!important;object-fit:cover}
+html:root:root .pk-b3 i{opacity:.35}
+html:root:root .pk-b3 b,html:root:root .pk-b2 .pk-bcap b,html:root:root .pk-b2m .pk-bcap b{position:absolute;left:10px;right:10px;bottom:26px;z-index:2;font-family:"Bricolage Grotesque",sans-serif!important;font-weight:800!important;font-size:15px!important;line-height:1.1!important;color:#F2EDE3}
+html:root:root .pk-b3 > span{position:absolute;left:10px;right:10px;bottom:8px;z-index:2;margin:0!important;font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:#D8D2C4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+html:root:root .pk-b3 .pk-b3v{position:absolute;top:8px;right:8px;z-index:3}
+html:root:root .pk-b2 .pk-bcap,html:root:root .pk-b2m .pk-bcap{position:absolute;inset:0;z-index:2}
+html:root:root .pk-b2 .pk-bk,html:root:root .pk-b2m .pk-bk{position:absolute;left:10px;right:10px;bottom:8px;font-size:11px}
+html:root:root .pk-b2 .pk-bnd-p,html:root:root .pk-b2m .pk-bnd-p{top:8px!important;left:8px!important;bottom:auto!important;font-size:11px}
+@media(max-width:700px){html:root:root .pk-b2g,html:root:root .pk-b2mg,html:root:root .pk-b3g{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
+@media(min-width:701px) and (max-width:1000px){html:root:root .pk-b2g,html:root:root .pk-b2mg,html:root:root .pk-b3g{grid-template-columns:repeat(3,minmax(0,1fr))!important}}
 </style>
 <link rel="apple-touch-icon" href="apple-touch-icon.png"><script>
 (function(){var framed=false;try{framed=window.top!==window}catch(e){framed=true}var touch=!framed&&/iphone|ipad|ipod|android/i.test(navigator.userAgent||'')||(!framed&&/Macintosh/.test(navigator.userAgent||'')&&navigator.maxTouchPoints>1);
