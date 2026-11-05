@@ -231,7 +231,7 @@ html.pk-scrolling [role=region][aria-label="Listen"][style*="height: 44px"]:has(
 }
 .pk-h2d,.pk-yanw{display:none}.pk-h2m{display:inline}@media(max-width:820px){.pk-yh .pk-ytop{display:none!important}.pk-yh>div:first-child{width:100%!important;flex:1 1 100%!important}.pk-yh .pk-ysub{max-width:none!important}.pk-yanw{display:block;margin-top:10px}.pk-yanw .pk-bkb{display:flex!important;align-items:center;justify-content:center;gap:8px;width:100%!important;min-height:48px!important;background:#F2B33D!important;border-color:#F2B33D!important;color:#12160F!important;font-size:12.5px!important;letter-spacing:.06em!important;white-space:nowrap!important}}
 @media(min-width:821px){.pk-yreel:not(.pk-yrp) .pk-ydeepw{display:flex!important;position:absolute!important;right:18px!important;bottom:18px!important;left:auto!important;width:auto!important;z-index:6}.pk-yreel:not(.pk-yrp) .pk-ydeepw .pk-bkb{width:auto!important;padding:0 20px!important;min-height:46px!important;white-space:nowrap!important}.pk-yh .pk-ytop .pk-yex{display:none!important}.pk-yh .pk-ysub{max-width:900px!important}}
-.pk-yan3{display:none!important}html:root:root:root .pk-pyl{font-family:"Pickathon 2014",sans-serif!important;font-size:38px;line-height:1;color:#F2EDE3;font-weight:400}
+.pk-yan3{display:none!important}@media(max-width:600px){html:root:root:root .pk-bcw .pk-bc,html:root:root:root [aria-label="Pickathon at a glance"]{scroll-snap-type:x mandatory!important;margin-inline:-16px;padding-inline:calc((100vw - min(82vw,340px))/2)!important;scroll-padding-inline:0}html:root:root:root .pk-bcw .pk-bc>*,html:root:root:root [aria-label="Pickathon at a glance"]>*{flex:none!important;width:min(82vw,340px)!important;box-sizing:border-box;scroll-snap-align:center!important;scroll-snap-stop:always}}html:root:root:root .pk-pyl{font-family:"Pickathon 2014",sans-serif!important;font-size:38px;line-height:1;color:#F2EDE3;font-weight:400}
 html:root:root [role="region"][aria-label="Listen"] select[aria-label="Playlist"],html:root:root [role="region"][aria-label="Listen"] span:has(+ select[aria-label="Playlist"]){display:none!important}
 .pk-ah-y{position:absolute;top:18px;right:22px;z-index:2;font-family:"Pickathon 2014",sans-serif!important;font-size:clamp(34px,5vw,60px);line-height:1;color:#F2EDE3;text-shadow:0 2px 14px rgba(0,0,0,.55)}
 html:root:root .pk-ag{display:flex!important;gap:12px!important;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;-ms-overflow-style:none;margin-right:-16px;padding-right:16px}
@@ -2990,12 +2990,12 @@ var pr27 = function (k) { var r = PR27[k]; return r ? Math.ceil(r[PCOL]) : 0; },
         if (HB1) {
           var A = phone ? 2.4 : 2.0, bb = HB1.b, MWd = 2041, MHd = 3810, bw = bb[2] - bb[0], bh = bb[3] - bb[1];
           var fw = Math.min(MWd, Math.max(bw * 1.3, bh * 1.3 * A, 260)), fh = fw / A, ccx = (bb[0] + bb[2]) / 2, ccy = (bb[1] + bb[3]) / 2;
-          var fx = Math.max(0, Math.min(MWd - fw, ccx - fw / 2)), fy = Math.max(0, Math.min(MHd - fh, ccy - fh / 2)), pc = function (v, t) { return (v / t * 100).toFixed(3) + '%'; }, ob = HB1.o;
+          var fx = ccx - fw / 2, fy = ccy - fh / 2, pc = function (v, t) { return (v / t * 100).toFixed(3) + '%'; }, ob = HB1.o;
           mm.show = true; mm.label = d.hoods[hid2].n; if (!mm.near) mm.near = [];
-          mm.btn = 'display: block; position: relative; overflow: hidden; width: 100%; aspect-ratio: ' + A + '; padding: 0; border: 0; background: #E3ECD9; cursor: pointer';
+          mm.btn = 'display: block; position: relative; overflow: hidden; width: 100%; aspect-ratio: ' + A + '; padding: 0; border: 0; background: #0F1712; cursor: pointer';
           mm.inner = 'position: absolute; left: ' + (-fx / fw * 100).toFixed(3) + '%; top: ' + (-fy / fh * 100).toFixed(3) + '%; width: ' + (MWd / fw * 100).toFixed(3) + '%; height: ' + (MHd / fh * 100).toFixed(3) + '%';
-          mm.base = 'farmmap/map.webp'; mm.lit = 'farmmap/l/' + hid2 + '.webp'; mm.litSt = 'position: absolute; display: block; left: ' + pc(ob[0], MWd) + '; top: ' + pc(ob[1], MHd) + '; width: ' + pc(ob[2], MWd) + '; height: ' + pc(ob[3], MHd);
-          mm.veil = 'position: absolute; inset: 0; background: rgba(14,18,10,0.14)';
+          mm.base = 'farmmap/map.webp'; mm.lit = 'farmmap/l/' + hid2 + '.webp'; mm.litSt = 'position: absolute; display: block; left: ' + pc(ob[0], MWd) + '; top: ' + pc(ob[1], MHd) + '; width: ' + pc(ob[2], MWd) + '; height: ' + pc(ob[3], MHd) + '; filter: drop-shadow(0 0 10px rgba(242,179,61,0.85)) drop-shadow(0 0 2px rgba(255,236,170,0.9))';
+          mm.veil = 'position: absolute; inset: 0; background: rgba(10,14,8,0.5)';
           mm.goSel = function () { try { sessionStorage.setItem('pkmap.frame', hid2); } catch (e) {} var i = -1; self.state.stack.forEach(function (e, k) { if (e.r === 'hoods') i = k; }); self.setState({ mapHood: hid2, sheet: false, mapHover: null }); if (i >= 0) { self.setState({ stack: self.state.stack.slice(0, i + 1) }); self.toTop(self.state.stack[i].y || 0); self.announce(); } else { self.go('hoods'); } };
           try { sessionStorage.setItem('pkmap.frame', hid2); } catch (e) {}
         }
