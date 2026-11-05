@@ -457,11 +457,12 @@ html:root:root .pk-b2 .pk-bnd-p,html:root:root .pk-b2m .pk-bnd-p{top:8px!importa
 /* Zale 06:43: photo never spills past its frame (Joseph, Dr. Dog); year sits on the photo, top right */
 html:root body .pk-arch-c .pk-ai{overflow:hidden!important;aspect-ratio:16/9!important;position:relative!important}
 html:root body .pk-arch-c .pk-ai img{width:100%!important;height:100%!important;aspect-ratio:auto!important;object-fit:cover!important;position:absolute!important;inset:0!important}
-.pk-arch-c .pk-ai[data-y]::after{content:attr(data-y);position:absolute;top:8px;right:12px;font-family:"Pickathon 2014","Bricolage Grotesque",sans-serif;font-size:26px;line-height:1;color:#F2EDE3;text-shadow:0 1px 8px rgba(0,0,0,.65);pointer-events:none;z-index:2}
+.pk-arch-c .pk-ai[data-y]::after{content:attr(data-y);position:absolute;top:12px;right:16px;font-family:"Bricolage Grotesque",sans-serif!important;font-weight:800!important;font-size:28px!important;line-height:1;color:rgba(242,237,227,.96);text-shadow:0 2px 12px rgba(0,0,0,.55);pointer-events:none;z-index:5}
 html:root body .pk-arch-c:has(.pk-ai[data-y]) .pk-kr>b{display:none!important}
 /* Zale 06:34: one name size on every card (all caps stays); archive cards show their whole description */
 :root{--pk-name:clamp(26px,7.4vw,30px)}@media(min-width:821px){:root{--pk-name:32px}}
-html:root body .pk-arch-c h3{font-size:var(--pk-name)!important;line-height:.98!important;text-transform:uppercase!important;letter-spacing:-.012em!important;margin:0 0 2px!important}
+html:root body .pk-arch-c h3{font-weight:800!important;font-family:'Bricolage Grotesque',sans-serif!important;font-size:var(--pk-name)!important;line-height:.98!important;text-transform:uppercase!important;letter-spacing:-.012em!important;margin:0 0 2px!important}
+html:root:root:root:root:root:root:root:root body .pk-arch-c h3,html:root:root:root:root:root:root:root:root body .pk-arch-c h3 *{font-weight:800!important}
 html:root body .pk-arch-c p{display:block!important;-webkit-line-clamp:unset!important;overflow:visible!important}
 </style>
 <link rel="apple-touch-icon" href="apple-touch-icon.png"><script>
