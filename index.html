@@ -1723,7 +1723,12 @@ button.pk-o2{align-self:flex-start;margin-top:4px!important}.pk-o2{order:2}.pk-o
 <section style="{{wrapTop}}">
 <div class="pk-yhd"><button type="button" class="pk-yhb" onClick="{{goBack}}" aria-label="Back"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"></path></svg></button><sc-if value="{{past.hdHasLogo}}" hint-placeholder-val="{{false}}"><img class="pk-yhl" src="{{past.hdLogo}}" alt="" aria-hidden="true"></sc-if><h2 class="pk-pyl" style="margin: 0">{{past.hdTitle}}</h2><button type="button" class="pk-bkb sec pk-yhp" onClick="{{past.pyTog}}" aria-haspopup="dialog" aria-expanded="{{past.pyExp}}">Pick another year</button></div>
 <article aria-label="Pickathon {{past.ch.title}}">
-<style id="pk-rvo-css">html:root:root:root:root:root:root .pk-lgd{list-style:none;margin:0 0 18px;padding:0;display:flex;flex-wrap:wrap;gap:8px 26px}
+<style id="pk-rvo-css">@media(max-width:700px){html:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root body .pk-yrp .pk-rs.pk-t0 .pk-rim img{object-position:0% 40%!important}}html:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root body .pk-yrp .pk-rs.pk-t0 .pk-rim img{transform:scaleX(-1)}
+@media(max-width:700px){html:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root body .pk-yrp .pk-rs.pk-t0 .pk-rim img{object-position:0% 40%!important}}
+html:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root body .pk-yrp .pk-rs.pk-t0 figcaption>b{display:none!important}
+html:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root body .pk-yrp .pk-rs.pk-t0 img.pk-tl{top:50%!important;transform:translateY(-50%)}
+@media(max-width:700px){html:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root body .pk-yrp .pk-rs.pk-t0 img.pk-tl{top:50%!important;left:16px!important}}
+html:root:root:root:root:root:root .pk-lgd{list-style:none;margin:0 0 18px;padding:0;display:flex;flex-wrap:wrap;gap:8px 26px}
 html:root:root:root:root:root:root .pk-lgd li{display:inline-flex;align-items:center;gap:8px;font-size:16px;line-height:1.2}
 html:root:root:root:root:root:root .pk-lgd li i{display:inline-block!important;width:12px!important;height:12px!important;border-radius:50%;margin:0!important}
 html:root:root:root:root:root:root .pk-lgd li b{font-weight:800;color:#F2EDE3}
