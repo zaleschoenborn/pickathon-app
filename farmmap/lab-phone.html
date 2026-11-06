@@ -2177,3 +2177,27 @@ function stepHood(dir,quiet){
   try{ new MutationObserver(fitCol).observe(document.getElementById('card'),{attributes:true,attributeFilter:['class']}); }catch(e){}
 })();
 </script>
+<style>
+/* landscape phone (short window): compact title, short picker strip, so the map stays the star */
+@media (orientation:landscape) and (max-height:500px){
+  :root:root{--lps:calc(80px + var(--lpb,0px))!important}
+  #lpbat,#dbat{display:none!important}
+  #lptitle p,#lpdeep p,#dover p{display:none!important}
+  #lptitle{flex-direction:row!important;flex-wrap:wrap;align-items:baseline;gap:0 14px!important;padding:12px 16px 10px 128px!important}
+  #lptitle small{font-size:11px!important}
+  #lptitle b{font-size:22px!important;line-height:1.1!important}
+  #lptitle #lphint{display:block!important;flex:1 0 100%;margin:3px 0 0!important;font-size:13px!important}
+  #lpdeep{padding-top:12px!important;padding-left:128px!important;padding-bottom:10px!important}
+  #lpdeep b{font-size:22px!important}
+  #lpdeep small{font-size:11px!important}
+  #lpdeep i{font-size:13px!important;margin-top:2px!important}
+  #dover{top:62px!important}
+  #dover h1{font-size:24px!important}
+  #dover .dk{font-size:11px!important}
+  .lpi{width:56px!important}
+  .lpi s,body .lpi s{width:36px!important;height:36px!important}
+  .lpi b{font-size:9px!important}
+  #lpmenu,body.lpmenu #lpmenu{padding:5px 0 var(--lpb,0px)!important}
+  .lpg{margin:0 0 3px 4px!important}
+}
+</style>
