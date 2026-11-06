@@ -198,7 +198,12 @@ html:root:root:root:root:root:root body main button.pk-ilink::after{content:"";p
 /*pk-six1*/@media (min-width:700px){html:root:root:root main p:not([style*="center"]):not([class*="pk-kr"]):not(.pkp-mono){max-width:68ch !important}html:root:root:root main li:not([style*="center"]){max-width:72ch}}
 /*pk-six2*/html:root:root:root button[onClick*="nl.submit"]{min-height:50px !important;border-radius:6px !important}
 /*pk-minsize*/html:root:root:root .pk-ln,html:root:root:root .pk-bkb,html:root:root:root .pk-bkb.pri{font-size:13px !important}html:root:root:root .pkp-mono,html:root:root:root .pk-ykick,html:root:root:root .pk-bck,html:root:root:root .pk-stc span{font-size:12px !important}html:root:root:root nav span,html:root:root:root [role=tablist] span{font-size:12px !important}
-/*pk-big1*/@media (min-width:1400px){html:root:root:root main p:not(.pk-one-t p):not([class*="pk-kr"]):not(.pkp-mono):not([style*="uppercase"]){font-size:19px !important;line-height:1.5 !important}html:root:root:root main p[style*="uppercase"],html:root:root:root .pk-ykick{font-size:14px !important}}
+/*pk-fluid*/:root{--pk-fs-body:clamp(16px,11px + .55vw,22px);--pk-fs-kick:clamp(12px,8px + .4vw,16px);--pk-fs-lab:clamp(13px,9px + .42vw,17px);--pk-fs-h2:clamp(30px,16px + 1.5vw,50px);--pk-fs-name:clamp(15px,9px + .6vw,22px)}
+html:root:root:root main p:not(.pk-one-t p):not([class*="pk-kr"]):not(.pkp-mono):not([style*="uppercase"]){font-size:var(--pk-fs-body) !important;line-height:1.5 !important;color:#E8E2D5}
+html:root:root:root main p[style*="uppercase"],html:root:root:root .pk-ykick,html:root:root:root .pk-sechead>div>p:first-child{font-size:var(--pk-fs-kick) !important;letter-spacing:.12em}
+html:root:root:root .pk-bk .pk-kr>span:first-child{font-size:var(--pk-fs-lab) !important}
+html:root:root:root .pk-wrow a span{font-size:var(--pk-fs-name) !important;line-height:1.15}
+@media (min-width:1200px){html:root:root:root main h2,html:root:root:root main h2 span{font-size:var(--pk-fs-h2) !important}}
 </style>
 
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&amp;family=Inter:wght@400;500;600;700&amp;family=Anton&amp;family=Oswald:wght@500;600;700&amp;family=Work+Sans:wght@400;500;700&amp;family=Instrument+Serif:ital@0;1&amp;family=Fraunces:opsz,wght@9..144,500;9..144,700&amp;family=Courier+Prime:wght@400;700&amp;display=swap" rel="stylesheet">
