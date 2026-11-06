@@ -1,4 +1,4 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="color-scheme" content="dark"><style>html{background:#12160F}</style><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"></head><title>Farm Map Phone Test</title>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="color-scheme" content="dark"><style>html{background:#12160F}</style><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><style>@font-face{font-family:"Pickathon 2014";src:url(../fonts/pickathon-2014.ttf) format("truetype");font-weight:400;font-style:normal;font-display:swap}</style><style>@media (min-width:1200px){html body #card #empty #pinv,html body #card.intro #empty #pinv{display:none!important;height:0!important;margin:0!important;padding:0!important}}</style></head><title>Farm Map Phone Test</title>
 <style>
 /* The farm floats on its own paper colour. Shapes are real footprints traced
    from the art, so the same outline is both the glow and the hit area. */
@@ -7,7 +7,7 @@
   --wellness:#2E8C9E; --family:#8A4FA8;
   --ink:#12160F; --cream:#F2EDE3; --panel:#161A12; --line:#2B3126; --muted:#AFAB9F;
   --paper:#E3ECD9; --cardh:clamp(250px,34%,340px);
-  --f:'Archivo',system-ui,-apple-system,sans-serif;
+  --f:'Bricolage Grotesque',system-ui,-apple-system,sans-serif;
 }
 html,body{height:100%}
 body{margin:0;background:var(--ink);color:var(--cream);font-family:var(--f);
@@ -112,7 +112,7 @@ body{margin:0;background:var(--ink);color:var(--cream);font-family:var(--f);
 @media (max-width:620px){
   #pickbar{flex-wrap:wrap;row-gap:7px}
   #key{margin-left:0;width:100%;justify-content:flex-start;gap:9px}
-  #key span{font-size:9px}
+  #key span{font-size:11px}
   #picker{flex-wrap:wrap;overflow:visible;row-gap:6px}
 }
 #picker{display:flex;gap:5px;overflow-x:auto;scrollbar-width:none;flex:0 0 auto;
@@ -198,7 +198,7 @@ body{margin:0;background:var(--ink);color:var(--cream);font-family:var(--f);
   #meta{padding-left:13px}
   #cname{font-size:23px}
   #ctag{font-size:14px;-webkit-line-clamp:3;margin-top:4px}
-  .chip{font-size:10px;padding:5px 9px;margin-bottom:6px}
+  .chip{font-size:11px;padding:5px 9px;margin-bottom:6px}
   #full{display:flex;flex-direction:column;height:100%}
   .ams{flex-wrap:nowrap;overflow:hidden;margin-top:8px;
     -webkit-mask-image:linear-gradient(90deg,#000 82%,transparent);mask-image:linear-gradient(90deg,#000 82%,transparent)}
@@ -302,7 +302,7 @@ body{margin:0;background:var(--ink);color:var(--cream);font-family:var(--f);
   #card.intro #empty>*:not(#pcl){padding:0 max(15px,env(safe-area-inset-left,0px))}
   #card.intro #empty b{color:var(--cream);font:900 20px/1.1 var(--f)}
   #card.intro #empty p{display:none}
-  #eyebrow{display:block!important;font-size:10px!important}
+  #eyebrow{display:block!important;font-size:11px!important}
   #pall{display:none!important}
   :root:has(#card.intro){--cardh:clamp(300px,39%,370px)}
   #card.intro{height:var(--cardh)}
@@ -361,7 +361,7 @@ body{margin:0;background:var(--ink);color:var(--cream);font-family:var(--f);
 #pname{font:800 13px/1.2 var(--f);color:var(--cream);margin:0 0 9px;min-height:16px;letter-spacing:.01em}
 #pgrid{display:flex;flex-wrap:wrap;gap:7px}
 #empty #key{margin:12px 0 0;width:auto;justify-content:flex-start;gap:12px;flex-wrap:wrap}
-#empty #key span{font-size:10px}
+#empty #key span{font-size:11px}
 #ptog.on{background:#D6B54A;color:#12160F;border-color:#D6B54A;padding:3px 8px 3px 4px;gap:7px}
 #ptog.on::after{content:none}
 #ptog .ic{width:24px;height:24px;border-radius:7px}
@@ -418,7 +418,7 @@ body{margin:0;background:var(--ink);color:var(--cream);font-family:var(--f);
 
 .amn{font-style:normal;font-weight:700;opacity:.8}
 </style>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;600;700;800&display=swap">
 
 <style>/* intro kicker is the screen's title: sized by script to span the full text width, bat centered above it */
 #dover .dk,#lptitle small{white-space:nowrap!important;display:block}
@@ -496,7 +496,7 @@ body.batout #dbat{margin:0 0 16px calc((100% - 129px)/6)!important}
   #card #meta{display:contents!important}
   #card #full:not([hidden]){display:contents!important}
   #card #hero{grid-column:1;grid-row:1/span 3;flex:none;width:100%;aspect-ratio:4/3;height:auto;align-self:start;border-radius:12px}
-  #card #ckind{grid-column:2;grid-row:1;margin:0 0 5px;align-self:start;justify-self:start;font-size:9.5px;padding:4px 8px}
+  #card #ckind{grid-column:2;grid-row:1;margin:0 0 5px;align-self:start;justify-self:start;font-size:11px;padding:4px 8px}
   #card #cname{grid-column:2;grid-row:2;margin:0;font:800 21px/1.08 var(--f);letter-spacing:-.01em;color:#fff}
   #card #ctag{grid-column:2;grid-row:3;margin:5px 0 0;font:500 13px/1.38 var(--f);color:#CFC9BC;-webkit-line-clamp:3}
   #card #fx{display:grid;top:10px;right:10px;width:30px;height:30px;font-size:13px;background:rgba(34,40,32,.9);border-color:rgba(255,255,255,.12)}
@@ -509,7 +509,7 @@ body.batout #dbat{margin:0 0 16px calc((100% - 129px)/6)!important}
   #card #cvid .pl #cvl{overflow:hidden;text-overflow:ellipsis}
   #card #cvid.playing img,#card #cvid.playing .pl{display:none}
   #card #cvt{padding:8px 10px;gap:3px;min-width:0}
-  #card #cvk{font-size:9px;letter-spacing:.1em}
+  #card #cvk{font-size:11px;letter-spacing:.1em}
   #card #cva{font:800 15px/1.12 var(--f)}
   #card #cvs{font-size:12px;line-height:1.3;-webkit-line-clamp:2}
   #card #cvsp{min-height:0!important;height:26px;padding:0 10px;font-size:11px;gap:5px;align-items:center}
@@ -2196,7 +2196,7 @@ function stepHood(dir,quiet){
   #dover .dk{font-size:11px!important}
   .lpi{width:56px!important}
   .lpi s,body .lpi s{width:36px!important;height:36px!important}
-  .lpi b{font-size:9px!important}
+  .lpi b{font-size:11px!important}
   #lpmenu,body.lpmenu #lpmenu{padding:5px 0 var(--lpb,0px)!important}
   .lpg{margin:0 0 3px 4px!important}
 }
