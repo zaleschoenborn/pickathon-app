@@ -199,11 +199,14 @@ html:root:root:root:root:root:root body main button.pk-ilink::after{content:"";p
 /*pk-six2*/html:root:root:root button[onClick*="nl.submit"]{min-height:50px !important;border-radius:6px !important}
 /*pk-minsize*/html:root:root:root .pk-ln,html:root:root:root .pk-bkb,html:root:root:root .pk-bkb.pri{font-size:13px !important}html:root:root:root .pkp-mono,html:root:root:root .pk-ykick,html:root:root:root .pk-bck,html:root:root:root .pk-stc span{font-size:12px !important}html:root:root:root nav span,html:root:root:root [role=tablist] span{font-size:12px !important}
 /*pk-fluid*/:root{--pk-fs-body:clamp(16px,11px + .55vw,22px);--pk-fs-kick:clamp(12px,8px + .4vw,16px);--pk-fs-lab:clamp(13px,9px + .42vw,17px);--pk-fs-h2:clamp(30px,16px + 1.5vw,50px);--pk-fs-name:clamp(15px,9px + .6vw,22px)}
+html:root:root:root main li:not([class*="pk-"]):not([style*="uppercase"]),html:root:root:root main dd,html:root:root:root main label:not([class*="pk-"]){font-size:var(--pk-fs-body) !important;line-height:1.5}
 html:root:root:root main p:not(.pk-one-t p):not([class*="pk-kr"]):not(.pkp-mono):not([style*="uppercase"]){font-size:var(--pk-fs-body) !important;line-height:1.5 !important;color:#E8E2D5}
 html:root:root:root main p[style*="uppercase"],html:root:root:root .pk-ykick,html:root:root:root .pk-sechead>div>p:first-child{font-size:var(--pk-fs-kick) !important;letter-spacing:.12em}
 html:root:root:root .pk-bk .pk-kr>span:first-child{font-size:var(--pk-fs-lab) !important}
 html:root:root:root .pk-wrow a span{font-size:var(--pk-fs-name) !important;line-height:1.15}
 @media (min-width:1200px){html:root:root:root main h2,html:root:root:root main h2 span{font-size:var(--pk-fs-h2) !important}}
+/*pk-card1*/@media (max-width:1199px){html:root:root:root .pk-bk.pk-one .pk-one-t{gap:6px !important;padding:14px 16px 16px !important}html:root:root:root .pk-bk.pk-one .pk-one-t .pk-kr{order:-1 !important;min-height:0 !important;margin:0 !important;align-items:center}html:root:root:root .pk-bk.pk-one .pk-one-t .pk-kr .pk-bst{min-height:0 !important}html:root:root:root .pk-bk.pk-one .pk-one-t .pk-bkbs{margin-top:8px !important}}
+/*pk-card2*/@media (max-width:1199px){html:root:root:root figure.pk-rs figcaption{gap:6px 10px !important;padding-bottom:84px !important}html:root:root:root figure.pk-rs figcaption .pk-rk{order:-1 !important}}
 </style>
 
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&amp;family=Inter:wght@400;500;600;700&amp;family=Anton&amp;family=Oswald:wght@500;600;700&amp;family=Work+Sans:wght@400;500;700&amp;family=Instrument+Serif:ital@0;1&amp;family=Fraunces:opsz,wght@9..144,500;9..144,700&amp;family=Courier+Prime:wght@400;700&amp;display=swap" rel="stylesheet">
@@ -3731,7 +3734,7 @@ var pr27 = function (k) { var r = PR27[k]; return r ? Math.ceil(r[PCOL]) : 0; },
       var PARTS = [
         ['pk-why-band', 'Your next favorite band', 'Who will it be this year?', 'This is the magic of Pickathon. We go after the best bands in music, and many of them are not well known yet when they play the farm. Plenty have gone on to play arenas and stadiums. You get to see them here first, up close, in the woods.', '', '', [], []],
         ['pk-why-built', 'Summer camp for your soul', 'It gets to you, and then we start over.', 'Community, a weekend off the grid in the woods, and a culture of architecture, art and music: it gets to you in a way a regular festival doesn’t. Each summer, architects and makers turn Pendarvis Farm into worlds you live inside: woven forest cathedrals, glowing sculptures, stages you walk into instead of stand in front of. Then it all comes down, and every year we wipe the slate clean to make it new. You can wander between all of it in a single day.', '', '', [], []],
-        ['pk-why-years', 'The proof, summer by summer', 'Wait, they all played here?', 'Swipe through the summers. Each one has a story, and the proof that those bands were playing the farm before the rest of the world caught on.', '', '', [], [['See all years →', nav('past')]]],
+        ['pk-why-years', 'Year by year', 'Wait, they all played here?', 'Swipe through the summers. Each one has a story, and the proof that those bands were playing the farm before the rest of the world caught on.', '', '', [], [['See all years →', nav('past')]]],
 
       ];
       var PRF = ['Geese', 'Thee Sacred Souls', 'The Marías', 'Billy Strings'];
