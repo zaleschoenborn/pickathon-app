@@ -5,10 +5,12 @@
 //   --sizes=390x844,1440x900   --modes=tab,app   --only=regex (target ids)   --workers=2
 //   --prev=keys.json   mark issues not in a previous run as NEW (used by the morning task)
 //   --shots=ref|fail|none  ref (default) = reference screens for Design Review + failures
+//   --speed=path/speed.json  fold in a separate speed run   --no-speed  skip the speed checks
+//   (a plain run, and --quick, also run the speed checks afterwards: tests/speed.js)
 const path = require('path'), fs = require('fs'), http = require('http');
 let pw; for (const p of ['playwright', '/opt/npm-tools/node_modules/playwright']) { try { pw = require(p); break; } catch (e) {} }
 if (!pw) { console.error('Playwright not found (npm i -g playwright)'); process.exit(2); }
-const IP = require('./lib/inpage'), FONTS = require('./lib/fonts'), { discover } = require('./lib/discover'), RULES = require('./rules'), report = require('./lib/report');
+const IP = require('./lib/inpage'), FONTS = require('./lib/fonts'), serveRepo = require('./lib/serve'), { discover } = require('./lib/discover'), RULES = require('./rules'), report = require('./lib/report');
 let PNG; for (const p of ['playwright-core/lib/utilsBundle', '/opt/npm-tools/node_modules/playwright-core/lib/utilsBundle']) { try { PNG = require(p).PNG; if (PNG) break; } catch (e) {} }
 
 const arg = (k, d) => { const a = process.argv.find((x) => x === '--' + k || x.startsWith('--' + k + '=')); return a ? (a.includes('=') ? a.split('=').slice(1).join('=') : true) : d; };
@@ -25,11 +27,6 @@ const log = (s) => { const l = new Date().toTimeString().slice(0, 8) + ' ' + s; 
 // Touch devices: phones and tablets. 1024x768 and 1440x900 are laptops/desktops.
 const isTouch = (w, h) => !(w === 1024 && h === 768) && w <= 1180;
 const TEMPLATE = new Set(['artist', 'story', 'page', 'act', 'act-plain', 'hood', 'past']);
-
-function serve() {
-  const types = { '.html': 'text/html', '.js': 'text/javascript', '.json': 'application/json', '.css': 'text/css', '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.webp': 'image/webp', '.svg': 'image/svg+xml', '.woff2': 'font/woff2', '.woff': 'font/woff', '.ttf': 'font/ttf', '.mp4': 'video/mp4', '.webmanifest': 'application/manifest+json' };
-  return new Promise((res) => { const s = http.createServer((q, r) => { let f = decodeURIComponent(q.url.split('?')[0]); if (f.endsWith('/')) f += 'index.html'; const fp = path.join(ROOT, f); if (!fp.startsWith(ROOT) || !fs.existsSync(fp) || fs.statSync(fp).isDirectory()) { r.writeHead(404); return r.end('nf'); } r.writeHead(200, { 'content-type': types[path.extname(fp).toLowerCase()] || 'application/octet-stream' }); fs.createReadStream(fp).pipe(r); }); s.listen(0, '127.0.0.1', () => res([s, 'http://127.0.0.1:' + s.address().port + '/'])); });
-}
 
 function pickQuick(list) {
   const per = { artist: 3, story: 2, page: 2, act: 3, 'act-plain': 2, hood: 3, past: 3 }, n = {};
@@ -124,14 +121,15 @@ async function merge(dirs) { // combine parts run separately (e.g. sizes split a
   const sink = { issues: [], skips: [], zoom: {}, checked: 0 }; const tg = new Map(); const sizes = new Set(), modes = new Set();
   for (const r of parts) { sink.issues.push(...r.issues); sink.skips.push(...r.skips); Object.assign(sink.zoom, r.zoom); sink.checked += r.checked || 0; r.targets.forEach((t) => tg.set(t.id, t)); r.sizes.forEach((x) => sizes.add(x)); r.modes.forEach((x) => modes.add(x)); for (const sub of ['ref', 'fail']) { const src = path.join(path.dirname(path.join(dirs[parts.indexOf(r)], 'x')), 'shots', sub); if (fs.existsSync(src)) fs.cpSync(src, path.join(OUT, 'shots', sub), { recursive: true }); } }
   const prev = arg('prev') && fs.existsSync(arg('prev')) ? JSON.parse(fs.readFileSync(arg('prev'), 'utf8')) : null;
-  const r = report.write(OUT, { run: RUN, base: parts[0].base, quick: parts[0].quick, sizes: ALL_SIZES.filter((x) => sizes.has(x)), modes: [...modes], targets: [...tg.values()], sink, prev, mins: parts.reduce((s, p) => s + (p.mins || 0), 0) });
+  const speed = arg('speed') && fs.existsSync(arg('speed')) ? JSON.parse(fs.readFileSync(arg('speed'), 'utf8')) : null;
+  const r = report.write(OUT, { run: RUN, base: parts[0].base, quick: parts[0].quick, sizes: ALL_SIZES.filter((x) => sizes.has(x)), modes: [...modes], targets: [...tg.values()], sink, prev, speed, mins: parts.reduce((s, p) => s + (p.mins || 0), 0) });
   log('merged ' + dirs.length + ' parts: ' + r.groups + ' distinct problems, ' + r.newCount + ' new. Report: ' + path.join(OUT, 'issues.md'));
 }
 
 (async () => {
   if (arg('merge')) { await merge(String(arg('merge')).split(',')); return process.exit(0); }
   const t0 = Date.now(); let server, base = arg('base');
-  if (!base) { [server, base] = await serve(); }
+  if (!base) { [server, base] = await serveRepo(ROOT); }
   if (!base.endsWith('/')) base += '/';
   log('QA run ' + RUN + ' on ' + base + (QUICK ? ' (quick)' : ' (full)') + ' -> ' + path.relative(process.cwd(), OUT));
   const browser = await pw.chromium.launch();
@@ -146,9 +144,11 @@ async function merge(dirs) { // combine parts run separately (e.g. sizes split a
     pass() { if (++this.checked % 200 === 0) log(this.checked + ' screens checked, ' + this.issues.length + ' problems so far'); } };
   const q = combos.slice();
   await Promise.all(Array.from({ length: Math.min(WORKERS, q.length) }, async () => { while (q.length) { const [s, m] = q.shift(); log('start ' + s + ' ' + m); await runCombo(browser, base, targets, s, m, sink); log('done ' + s + ' ' + m); } }));
+  let speed = arg('speed') && fs.existsSync(arg('speed')) ? JSON.parse(fs.readFileSync(arg('speed'), 'utf8')) : null;
+  if (!speed && !arg('no-speed') && !ONLY && !arg('sizes')) { log('speed checks' + (QUICK ? ' (quick: phone only)' : '')); process.argv.push('--out=' + OUT); speed = await require('./speed').run(browser, base, { targets, quick: QUICK }); }
   await browser.close(); if (server) server.close();
   const prev = arg('prev') && fs.existsSync(arg('prev')) ? JSON.parse(fs.readFileSync(arg('prev'), 'utf8')) : null;
-  const r = report.write(OUT, { run: RUN, base, quick: QUICK, sizes: SIZES, modes: MODES, targets, sink, prev, mins: Math.round((Date.now() - t0) / 60000) });
+  const r = report.write(OUT, { run: RUN, base, quick: QUICK, sizes: SIZES, modes: MODES, targets, sink, prev, speed, mins: Math.round((Date.now() - t0) / 60000) });
   log('finished in ' + Math.round((Date.now() - t0) / 60000) + ' min: ' + r.groups + ' distinct problems (' + sink.issues.length + ' raw), ' + r.newCount + ' new. Report: ' + path.join(OUT, 'issues.md'));
   process.exit(0);
 })().catch((e) => { console.error(e); process.exit(1); });
