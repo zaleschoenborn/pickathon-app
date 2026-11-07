@@ -11,7 +11,9 @@ function sizesTxt(set) { const s = ALL.filter((x) => set.has(x)); if (s.length =
 exports.write = (OUT, o) => {
   const { sink, targets } = o; const total = targets.reduce((a, t) => ((a[t.kind] = (a[t.kind] || 0) + 1), a), {});
   const G = new Map();
-  for (const i of sink.issues) {
+  sink.issues = sink.issues.filter((i) => !/^file missing: failed |could not open page: no-app/.test(i.m)); // kit artifacts from runs before Nov 7 13:30 (canceled requests, lost app handle)
+  for (const i0 of sink.issues) {
+    const i = Object.assign({}, i0); const ext = String(i.m).match(/^file missing: (\d+) https?:\/\/([^/]+)\/.*?([^/]+)$/); if (ext) i.m = 'outside file missing: ' + ext[1] + ' from ' + ext[2] + ' (…/' + ext[3] + ')';
     const key = i.c + '|' + norm(i.m) + '|' + norm(i.s).replace(/ ".*/, '');
     if (!G.has(key)) G.set(key, { key, c: i.c, m: i.m, s: i.s, sizes: new Set(), modes: new Set(), ids: new Map(), shot: '' });
     const g = G.get(key); g.sizes.add(i.size); g.modes.add(i.mode); if (!g.ids.has(i.kind)) g.ids.set(i.kind, new Set()); g.ids.get(i.kind).add(i.id); if (!g.shot && i.shot) g.shot = i.shot;

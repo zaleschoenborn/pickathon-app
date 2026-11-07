@@ -49,7 +49,7 @@ const INIT = () => {
 const CONTENT = async (o) => {
   const t0 = o.t0, until = t0 + o.cap, sleep = (t) => new Promise((r) => setTimeout(r, t));
   const imgsDone = (doc, vh, vw) => { let n = 0; for (const im of doc.querySelectorAll('img')) { const r = im.getBoundingClientRect(); if (r.width < 8 || r.bottom < 0 || r.top > vh || r.right < 0 || r.left > vw || !im.checkVisibility()) continue; n++; if (!im.complete) return -1; } return n; };
-  const bgDone = async (doc, vh) => { for (const el of doc.querySelectorAll('[style*="background"]')) { const r = el.getBoundingClientRect(); if (r.width < 100 || r.bottom < 0 || r.top > vh) continue; const m = getComputedStyle(el).backgroundImage.match(/url\(["']?([^"')]+)/); if (!m) continue; const e = performance.getEntriesByName(new URL(m[1], location.href).href); if (!e.length || !e[0].responseEnd) return false; } return true; };
+  const bgDone = async (doc, vh) => { for (const el of doc.querySelectorAll('[style*="background"]')) { const r = el.getBoundingClientRect(); if (r.width < 100 || r.bottom < 0 || r.top > vh) continue; const m = getComputedStyle(el).backgroundImage.match(/url\(["']?([^"')]+)/); if (!m) continue; const U = new URL(m[1], location.href); if (U.origin !== location.origin) continue; /* outside images: their hosts may be blocked in cloud tests */ const e = performance.getEntriesByName(U.href); if (!e.length || !e[0].responseEnd) return false; } return true; };
   while (performance.now() < until) {
     if (o.map) {
       const f = document.querySelector('#pk-farmmap iframe'); const d = f && f.contentDocument;
@@ -188,7 +188,12 @@ async function runProfile(browser, base, name, pages, problems, numbers) {
 
   // REPEAT VISIT: the service worker is installed and has cached what it keeps.
   await page.evaluate(async () => { try { await navigator.serviceWorker.ready; } catch (e) {} });
-  await page.waitForTimeout(3000);
+  // a real repeat visit comes later, after the service worker has finished its one-time map download; wait for that to settle
+  // (the worker's own downloads don't show in the page's request log, so watch the cache grow instead; its big tier starts ~25 s after the page asks)
+  { const count = () => page.evaluate(async () => { let n = 0; for (const k of await caches.keys()) n += (await (await caches.open(k)).keys()).length; return n; }).catch(() => -1);
+    const until = Date.now() + 240000; let last = await count(), quietSince = Date.now();
+    while (Date.now() < until) { await page.waitForTimeout(3000); const n = await count(); if (n !== last) { last = n; quietSince = Date.now(); } else if (Date.now() - quietSince > 35000) break; }
+    log(name + ': service worker cache settled at ' + last + ' files'); }
   log(name + ': repeat visit');
   const fromW = seq; await entry('repeat visit');
   const wMap = await measureNav({ id: 'map (cold start)', r: 'hoods', p: {} }, 'repeat visit'); await record({ id: 'map (cold start)', r: 'hoods', p: {} }, 'repeat visit', wMap);

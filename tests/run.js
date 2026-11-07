@@ -4,7 +4,7 @@
 //   --base=URL         test a served site instead of this checkout (default: serve the repo folder)
 //   --sizes=390x844,1440x900   --modes=tab,app   --only=regex (target ids)   --workers=2
 //   --prev=keys.json   mark issues not in a previous run as NEW (used by the morning task)
-//   --shots=ref|fail|none  ref (default) = reference screens for Design Review + failures
+//   --shots=ref|fail|none  ref (default) = reference screens for Design Studio + failures
 //   --speed=path/speed.json  fold in a separate speed run   --no-speed  skip the speed checks
 //   (a plain run, and --quick, also run the speed checks afterwards: tests/speed.js)
 const path = require('path'), fs = require('fs'), http = require('http');
@@ -64,7 +64,7 @@ async function runCombo(browser, base, targets, size, mode, sink) {
     page.on('pageerror', (e) => errs.push(String(e.message || e).split('\n')[0].slice(0, 140)));
     page.on('console', (m) => { if (m.type() === 'error' && !/Failed to load resource|ERR_|net::/.test(m.text())) errs.push(m.text().split('\n')[0].slice(0, 140)); });
     page.on('response', (r) => { if (r.status() >= 400 && !/favicon|google-analytics|googletagmanager/.test(r.url())) bad.push(r.status() + ' ' + (r.url().startsWith(base) ? r.url().slice(base.length, base.length + 80) : r.url().slice(0, 90))); });
-    page.on('requestfailed', (r) => { if (r.url().startsWith(base)) bad.push('failed ' + r.url().slice(base.length, base.length + 80)); });
+    page.on('requestfailed', (r) => { const er = (r.failure() || {}).errorText || ''; if (r.url().startsWith(base) && !/ABORTED|BLOCKED/.test(er)) bad.push('did not load (' + er + ') ' + r.url().slice(base.length, base.length + 80)); });
     await page.goto(base, { waitUntil: 'load', timeout: 60000 }); await page.waitForTimeout(1200);
     await page.evaluate(() => { // test housekeeping: answer the cookie banner, hide the dev-only "Site state" bar
       const c = document.querySelector('[aria-label="Cookie choices"]'); const d = c && [...c.querySelectorAll('button')].find((b) => /decline/i.test(b.textContent)); if (d) d.click();
@@ -84,7 +84,7 @@ async function runCombo(browser, base, targets, size, mode, sink) {
     if (++n % 40 === 0) await fresh();
     const e0 = errs.length, b0 = bad.length;
     let st = 'err';
-    try { st = await page.evaluate(IP.goto, t); } catch (e) { st = 'err ' + String(e.message).slice(0, 80); await fresh(); }
+    try { st = await page.evaluate(IP.goto, t); if (st === 'no-app') { await page.evaluate(IP.hook); st = await page.evaluate(IP.goto, t); } if (st === 'no-app') { await fresh(); st = await page.evaluate(IP.goto, t); } } catch (e) { st = 'err ' + String(e.message).slice(0, 80); await fresh(); }
     if (st === 'no-control') { sink.skip(t, size, mode, 'control not shown at this size'); continue; }
     if (st !== 'ok') { sink.issue({ t, size, mode, c: 'script', m: 'could not open page: ' + st, s: '', shot: '' }); continue; }
     try {

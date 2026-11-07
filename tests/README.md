@@ -1,6 +1,6 @@
 # Site QA test kit
 
-Checks every page of the site at every screen size, as a browser tab and as the installed app, and lists what's broken in plain words. Owned by the Site QA chat; this folder is the only part of the repo it writes. The site build chat runs it before every push.
+Checks every page of the site at every screen size, as a browser tab and as the installed app, and lists what's broken in plain words. Owned by Site QA; this folder is the only part of the repo it writes. Site Build runs it before every push.
 
 ## Run it
 
@@ -22,7 +22,7 @@ Results land in `tests/out/<run>/` (not committed):
 
 Options: `--sizes=390x844,1440x900`, `--modes=tab|app|tab,app`, `--only=<regex on page ids>` (e.g. `--only='^act:'`), `--workers=4`, `--shots=ref|fail|none`, `--base=http://…` (test a served copy), `--prev=<old keys.json>` (mark NEW problems), `--merge=dirA,dirB` (join parts run separately, e.g. sizes split across sessions).
 
-## Screenshots for Design Review
+## Screenshots for Design Studio
 
 Each full sweep is published to the **`qa-shots` branch**, folder `tests/shots/latest/` (replaced every sweep, so the branch stays small):
 
