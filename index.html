@@ -4772,26 +4772,7 @@ html:root:root:root:root:root body .pk-std,html:root:root:root:root:root body .p
 html:root:root:root:root:root body .pk-std.pk-gold{background:rgba(214,181,74,.26)!important;color:#F2EDE3!important;width:100%!important;min-height:50px!important;position:absolute!important;left:16px!important;right:16px!important;bottom:16px!important;z-index:2!important}
 html:root:root:root:root:root body .pk-bcc .pk-bcbr{display:flex!important}
 </style>
-<style id="pk-phone-wrap">/*pk-phone-wrap*/
-@media (max-width:600px) and (orientation:portrait){
-html:root:root:root:root:root body .pk-nbbs .pk-bkb,html:root:root:root:root:root body .pk-nbbs .pk-std,html:root:root:root:root:root body .pk-bcc .pk-bcbr .pk-bcsee.pk-std{white-space:normal!important;line-height:1.15!important;min-height:52px!important;padding:8px 10px!important;text-align:center!important;overflow:visible!important;text-overflow:clip!important;min-width:0!important;max-width:100%!important}
-html:root:root:root:root:root body .pk-nbbs{column-gap:8px!important}
-}
-</style>
 
-<style id="pk-phone-lbl">/*pk-phone-lbl*/
-@media (max-width:600px) and (orientation:portrait){
-html:root:root:root:root:root body .pk-nbbs .pk-bkb .pk-lw{display:none!important}
-html:root:root:root:root:root body .pk-nbbs .pk-bkb .pk-ln{display:inline!important}
-html:root:root:root:root:root body .pk-nbbs .pk-bkb{font-size:15px!important;letter-spacing:.03em!important;line-height:1.15!important}
-html:root:root:root:root:root body .pk-nbbs .pk-bkb .pk-ln{font-size:15px!important;letter-spacing:0!important;white-space:nowrap!important}
-html:root:root:root:root:root body .pk-nbbs .pk-bkb{padding-left:6px!important;padding-right:6px!important;gap:6px!important}
-html:root:root:root:root:root body .pk-nbbs .pk-bkb.sec .pk-ln{font-size:14px!important}
-html:root:root:root:root:root body .pk-nbbs .pk-bkb.sec{padding-left:4px!important;padding-right:12px!important;gap:4px!important}
-html:root:root:root:root:root body .pk-nbbs .pk-bkb.pri{white-space:nowrap!important}
-html:root:root:root:root:root body .pk-nbbs .pk-bkb.sec{white-space:nowrap!important;letter-spacing:0!important;padding-left:6px!important;padding-right:6px!important}
-}
-</style>
 
 <style id="pk-yl-css">/*pk-yl-css*/
 html:root:root:root:root:root body .pk-bnd .pk-yl{position:absolute!important;top:10px!important;right:16px!important;width:56px!important;height:56px!important;object-fit:contain!important;z-index:6!important;pointer-events:none!important;margin:0!important}
@@ -4799,10 +4780,19 @@ html:root:root:root:root:root body .pk-bnd .pk-bnd-yr[data-yl="1"],html:root:roo
 html:root:root:root:root:root body .pk-yreel .pk-yl,html:root:root:root:root:root body .pk-yl.pk-yl-r{position:absolute!important;top:10px!important;right:16px!important;width:56px!important;height:56px!important;object-fit:contain!important;z-index:6!important;pointer-events:none!important;margin:0!important}
 </style>
 <script>/*pk-yl*/(function(){function run(){try{var L=window.__pkYL||{};document.querySelectorAll(".pk-bnd-yr,.pk-yreel-y").forEach(function(y){var yr=(y.textContent||"").trim();var src=/^\d{4}$/.test(yr)?L[yr]:"";var card=y.parentElement;if(!card)return;var img=card.querySelector(":scope > img.pk-yl");if(!src){if(img)img.remove();y.removeAttribute("data-yl");return}if(!img){img=document.createElement("img");img.className="pk-yl";img.alt="";img.setAttribute("aria-hidden","true");card.insertBefore(img,y)}if(!img.getAttribute("data-s")){img.setAttribute("data-s","1");var st=img.style;st.setProperty("position","absolute","important");st.setProperty("top","10px","important");st.setProperty("right","16px","important");st.setProperty("width","56px","important");st.setProperty("height","56px","important");st.setProperty("object-fit","contain","important");st.setProperty("z-index","6","important");st.setProperty("pointer-events","none","important");st.setProperty("margin","0","important")}if(img.getAttribute("src")!==src)img.setAttribute("src",src);y.setAttribute("data-yl","1")})}catch(e){}}run();setInterval(run,600)})();</script>
+<style id="pk-btn-system">/*pk-btn-system: the one rule set for two-button rows. ID selector so it outranks the older class-chain overrides without any script.*/
+#root .pk-nbbs{flex-wrap:nowrap!important;gap:12px!important;padding-right:0!important;margin-right:0!important}
+#root .pk-nbbs>.pk-bkb{flex:1 1 0!important;width:auto!important;max-width:none!important;min-width:max-content!important;align-items:center!important;justify-content:center!important;gap:8px!important;padding:0 16px!important;min-height:56px!important;font-size:18px!important;font-weight:800!important;letter-spacing:.04em!important;line-height:1.15!important;white-space:nowrap!important;text-transform:uppercase!important;box-sizing:border-box!important}
+#root .pk-nbbs>.pk-bkb *{font-size:inherit!important;letter-spacing:inherit!important;line-height:inherit!important;white-space:nowrap!important}
+@media (min-width:601px){#root .pk-bk.pk-one .pk-one-t>:nth-child(2){line-height:1.02!important}}
+#root .pk-nbbs>.pk-bkb.pri,#root main[aria-label$="why"] .pk-bkb.pri{background:rgba(214,181,74,.18)!important;color:#F2CF62!important;border:2px solid #D6B54A!important;border-radius:6px!important}
+#root .pk-nbbs>.pk-bkb.sec{background:rgba(18,22,15,.26)!important;color:#F2EDE3!important;border:2px solid rgba(242,237,227,.88)!important;border-radius:6px!important}
+#root main[aria-label$="why"] .pk-bkb.pri{display:inline-flex;align-items:center!important;justify-content:center!important;gap:8px!important;width:auto!important;max-width:100%!important;min-width:max-content!important;padding:0 24px!important;min-height:56px!important;font-size:18px!important;font-weight:800!important;letter-spacing:.04em!important;line-height:1.15!important;white-space:nowrap!important;text-transform:uppercase!important;box-sizing:border-box!important}
+#root main[aria-label$="why"] .pk-bkb.pri *{font-size:inherit!important;letter-spacing:inherit!important;color:inherit!important}
 
-<style id="pk-btnsize-wide">/*pk-btnsize-wide*/
-@media (min-width:601px){
-html:root:root:root:root:root body .pk-nbbs .pk-bkb,html:root:root:root:root:root body .pk-nbbs .pk-bkb .pk-lw,html:root:root:root:root:root body .pk-nbbs .pk-bkb .pk-ln{font-size:18px!important;letter-spacing:.04em!important;white-space:nowrap!important;line-height:1.15!important}
+@media (max-width:600px) and (orientation:portrait){
+#root .pk-nbbs{gap:6px!important}
+#root .pk-nbbs>.pk-bkb{font-size:clamp(11.5px,3.18vw,14px)!important;padding:0 8px!important;gap:5px!important;min-height:50px!important;letter-spacing:.02em!important}
+#root main[aria-label$="why"] .pk-bkb.pri{font-size:clamp(11.5px,3.18vw,14px)!important;padding:0 16px!important;min-height:50px!important;letter-spacing:.02em!important}
 }
 </style>
-<script>/*pk-fs*/(function(){function sv(e,p,v){if(e.style.getPropertyValue(p)!==v||e.style.getPropertyPriority(p)!=="important")e.style.setProperty(p,v,"important")}function setE(e){sv(e,"font-size","18px");sv(e,"letter-spacing",".04em");sv(e,"line-height","1.15")}function run(){try{if(window.innerWidth<601)return;document.querySelectorAll(".pk-nbbs .pk-bkb").forEach(function(b){setE(b);[].slice.call(b.querySelectorAll("span")).forEach(function(s){if(s.children.length===0&&s.textContent.trim()&&!/^\u21bb$/.test(s.textContent.trim()))setE(s)})});document.querySelectorAll(".pk-bk.pk-one .pk-one-t").forEach(function(t){var n=t.children[1];if(n)sv(n,"line-height","1.02")})}catch(e){}}run();window.addEventListener("resize",run);setInterval(run,1500)})();</script>
