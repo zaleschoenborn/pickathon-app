@@ -79,7 +79,7 @@ async function runCombo(browser, base, targets, size, mode, sink) {
   zc.iss.forEach((i) => sink.issue({ t: { id: 'site (zoom)', kind: 'zoom' }, size, mode, c: i.c, m: i.m, s: '', shot: '' }));
   sink.zoom[combo] = { meta: zc.z.meta, noScale: zc.z.noScale, touchAction: zc.z.touchAction, gesture: zc.z.gesture, pinch: zc.pinch };
   await fresh();
-  let n = 0, tmplRef = {};
+  let n = 0, tmplRef = {}; const shotSeen = new Set();
   for (const t of targets) {
     if (++n % 40 === 0) await fresh();
     const e0 = errs.length, b0 = bad.length;
@@ -107,7 +107,9 @@ async function runCombo(browser, base, targets, size, mode, sink) {
       const name = (t.id.replace(/[^a-zA-Z0-9@:._-]+/g, '-').replace(/:/g, '_')).slice(0, 80) + '.jpg';
       let shot = '';
       const wantRef = SHOTS === 'ref' && mode === 'tab' && (!TEMPLATE.has(t.kind) || (tmplRef[t.kind] = (tmplRef[t.kind] || 0) + 1) <= 6 || t.id === 'past:2024' || /geese/.test(t.id));
-      if (found.length && SHOTS !== 'none') { shot = 'fail/' + combo + '/' + name; await page.screenshot({ type: 'jpeg', quality: 55, path: path.join(OUT, 'shots', shot) }); }
+      // one screenshot per distinct problem per size/mode (the same problem on 264 artist pages needs one picture, not 264)
+      const fresh1 = found.filter((f) => { const k = f.c + '|' + String(f.m).replace(/\d+(\.\d+)?/g, '#') + '|' + String(f.s).replace(/ ".*/, ''); if (shotSeen.has(k)) return false; shotSeen.add(k); return true; });
+      if (fresh1.length && SHOTS !== 'none') { shot = 'fail/' + combo + '/' + name; await page.screenshot({ type: 'jpeg', quality: 55, path: path.join(OUT, 'shots', shot) }); }
       if (wantRef) { const ref = 'ref/' + combo + '/' + name; if (shot) { fs.mkdirSync(path.dirname(path.join(OUT, 'shots', ref)), { recursive: true }); fs.copyFileSync(path.join(OUT, 'shots', shot), path.join(OUT, 'shots', ref)); } else { await page.screenshot({ type: 'jpeg', quality: 55, path: path.join(OUT, 'shots', ref) }); } }
       found.forEach((f) => sink.issue({ t, size, mode, c: f.c, m: f.m, s: f.s, shot }));
       sink.pass(t, size, mode, found.length);

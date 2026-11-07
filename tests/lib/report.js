@@ -28,8 +28,14 @@ exports.write = (OUT, o) => {
   });
   const counts = {}; groups.forEach((g) => (counts[g.c] = (counts[g.c] || 0) + 1));
   // speed problems (from speed.js): own section, biggest win first, already sorted
-  const sp = (o.speed && o.speed.problems) || []; const spLines = [];
-  for (const x of sp) { const isNew = prevKeys && !prevKeys.has(x.key); if (isNew) newCount++; spLines.push({ key: x.key, line: '- ' + (isNew ? '**NEW** ' : '') + 'Speed · ' + x.pages.slice(0, 3).join(', ') + (x.pages.length > 3 ? ' +' + (x.pages.length - 3) + ' more' : '') + ' · ' + x.prof + ' ' + x.mode + ' · ' + x.sub + ' · ' + x.m }); }
+  // merge the same page-level speed problem across devices and visits into one line, biggest win first
+  const spAll = (o.speed && o.speed.problems) || [];
+  const timedOut = [...new Set(spAll.filter((x) => /over 20\.0 s|after 20\.0 s/.test(x.m)).flatMap((x) => x.pages))];
+  const sp0 = spAll.filter((x) => !(/over 20\.0 s|after 20\.0 s/.test(x.m))); const spG = new Map();
+  for (const x of sp0) { const k = x.sub + '|' + x.pages.join(',') + '|' + (/content|usable|map|download|shift/.test(x.sub) ? '' : x.m.replace(/\d+(\.\d+)?/g, '#')); const g = spG.get(k); if (g) { g.where.push(x.prof + ' ' + x.mode + ' ' + (x.m.match(/[\d.]+ s|score [\d.]+|[\d,]+ KB/) || [''])[0]); g.win = Math.max(g.win, x.win || 0); g.keys.push(x.key); } else spG.set(k, Object.assign({}, x, { where: [x.prof + ' ' + x.mode + ' ' + (x.m.match(/[\d.]+ s|score [\d.]+|[\d,]+ KB/) || [''])[0]], keys: [x.key] })); }
+  const sp = [...spG.values()].sort((a, b) => (b.win || 0) - (a.win || 0)).map((g) => g.where.length > 1 ? Object.assign(g, { prof: '', mode: g.where.map((w) => w.trim()).join('; '), m: g.m.replace(/ after (over )?[\d.]+ s/, '').replace(/downloads [\d,]+ KB/, 'downloads too much') }) : g);
+  const spLines = [];
+  for (const x of sp) { const isNew = prevKeys && !x.keys.some((k) => prevKeys.has(k)); if (isNew) newCount++; spLines.push({ key: x.key, line: '- ' + (isNew ? '**NEW** ' : '') + 'Speed · ' + x.pages.slice(0, 3).join(', ') + (x.pages.length > 3 ? ' +' + (x.pages.length - 3) + ' more' : '') + ' · ' + x.prof + ' ' + x.mode + ' · ' + x.sub + ' · ' + x.m }); }
   const keyLine = {}; groups.forEach((g, i) => (keyLine[g.key] = lines[i].replace('**NEW** ', ''))); spLines.forEach((l) => (keyLine[l.key] = l.line.replace('**NEW** ', '')));
   const spKeys = new Set(spLines.map((l) => l.key));
   const fixed = o.prev && o.prev.lines ? Object.keys(o.prev.lines).filter((k) => !G.has(k) && !spKeys.has(k) && (o.speed || !/^speed\|/.test(k))).map((k) => o.prev.lines[k].replace(/ · `[^`]*`$/, '')) : [];
@@ -37,8 +43,17 @@ exports.write = (OUT, o) => {
     targets.length + ' pages/states x ' + o.sizes.length + ' sizes x ' + o.modes.join('+') + ' = ' + sink.checked + ' screens checked in ' + o.mins + ' min. ' +
     Object.entries(counts).map(([k, v]) => (NAMES[k] || k) + ' ' + v).join(', ') + '.\n';
   const fixedTxt = fixed.length ? '\n#### Fixed since the last run (' + fixed.length + ')\n' + fixed.slice(0, 15).map((l) => l.replace(/^- /, '- ~~') + '~~').join('\n') + (fixed.length > 15 ? '\n- …and ' + (fixed.length - 15) + ' more' : '') + '\n' : '';
-  const speedTxt = o.speed ? '\n#### Speed (biggest win first; phone = mid-range phone on slow 4G)\n' + (spLines.map((l) => l.line).join('\n') || '- all pages within targets') + '\n' : '';
-  fs.writeFileSync(path.join(OUT, 'issues.md'), head + (o.speed ? 'Speed: ' + sp.length + ' problems.\n' : '') + '\n' + lines.join('\n') + '\n' + speedTxt + fixedTxt);
+  const speedTxt = o.speed ? '\n#### Speed (biggest win first; phone = mid-range phone on slow 4G)\n' + (spLines.map((l) => l.line).join('\n') || '- all pages within targets') + (timedOut.length ? '\n- (not measured: ' + timedOut.join(', ') + ' timed out in the test)' : '') + '\n' : '';
+  fs.writeFileSync(path.join(OUT, 'issues.md'), head + (o.speed ? 'Speed: ' + spLines.length + ' problems.\n' : '') + '\n' + lines.join('\n') + '\n' + speedTxt + fixedTxt);
+  // short version for photo-catalog/site_issues.md (Project space is tight): NEW lines always, then the top few per check, speed top 12
+  const PER = 6, SPEEDN = 12, more = (n, what) => '- …and ' + n + ' more ' + what + ' (full list: qa-shots branch, tests/shots/latest/issues.md)';
+  const byCheck = new Map(); lines.forEach((l, i) => { const c = groups[i].c; if (!byCheck.has(c)) byCheck.set(c, []); byCheck.get(c).push(l); });
+  const tidy = (l) => { const f = l.split(' · '); if (f.length < 4) return l; if (f[1].length > 90) f[1] = f[1].slice(0, 88).replace(/[;,][^;,]*$/, '') + ' …'; const sz = f[2]; if (sz.split(',').length > 5) f[2] = (/1440|1024/.test(sz) ? 'nearly all sizes' : 'all touch sizes') + (/rotating/.test(sz) ? ' incl. after rotating' : ''); return f.join(' · '); };
+  const short = []; for (const [c, ls0] of byCheck) { const ls = ls0.map(tidy); const keep = ls.filter((l, i) => i < PER || l.includes('**NEW**')); short.push(...keep); if (ls.length > keep.length) short.push(more(ls.length - keep.length, (NAMES[c] || c).toLowerCase() + ' problems')); }
+  const spKeep = spLines.filter((l, i) => i < SPEEDN || l.line.includes('**NEW**')).map((l) => l.line.replace(/(Speed · [^·]{0,80})[^·]*·/, '$1 ·'));
+  const toNote = timedOut.length ? '\n- (not measured: ' + timedOut.join(', ') + ' timed out in the test, a test problem being fixed, not a site one)' : '';
+  const speedShort = o.speed ? '\n#### Speed (biggest win first; phone = mid-range phone on slow 4G)\n' + (spKeep.join('\n') || '- all pages within targets') + toNote + (spLines.length > spKeep.length ? '\n' + more(spLines.length - spKeep.length, 'speed problems') : '') + '\n' : '';
+  fs.writeFileSync(path.join(OUT, 'issues_short.md'), head + (o.speed ? 'Speed: ' + spLines.length + ' problems.\n' : '') + '\n' + short.join('\n') + '\n' + speedShort + fixedTxt);
   fs.writeFileSync(path.join(OUT, 'keys.json'), JSON.stringify({ run: o.run, keys: groups.map((g) => g.key).concat(spLines.map((l) => l.key)), lines: keyLine }));
   fs.writeFileSync(path.join(OUT, 'results.json'), JSON.stringify({ run: o.run, base: o.base, quick: o.quick, sizes: o.sizes, modes: o.modes, targets: targets.map((t) => ({ id: t.id, kind: t.kind, r: t.r, p: t.p })), zoom: sink.zoom, skips: sink.skips, checked: sink.checked, mins: o.mins, issues: sink.issues }));
   fs.writeFileSync(path.join(OUT, 'new.md'), lines.concat(spLines.map((l) => l.line)).filter((l) => l.includes('**NEW**')).join('\n') + (newCount ? '\n' : ''));

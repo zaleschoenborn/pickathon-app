@@ -51,7 +51,7 @@ const INIT = () => {
 // Map view: the farm map and its neighborhood layer are drawn inside the map frame.
 const CONTENT = async (o) => {
   const t0 = o.t0, until = t0 + o.cap, sleep = (t) => new Promise((r) => setTimeout(r, t));
-  const imgsDone = (doc, vh, vw) => { let n = 0; for (const im of doc.querySelectorAll('img')) { const r = im.getBoundingClientRect(); if (r.width < 8 || r.bottom < 0 || r.top > vh || r.right < 0 || r.left > vw || !im.checkVisibility()) continue; n++; if (!im.complete) return -1; } return n; };
+  const imgsDone = (doc, vh, vw) => { let n = 0; for (const im of doc.querySelectorAll('img')) { const r = im.getBoundingClientRect(); if (r.width < 8 || r.bottom < 0 || r.top > vh || r.right < 0 || r.left > vw || !im.checkVisibility()) continue; try { if (new URL(im.currentSrc || im.src, location.href).origin !== location.origin) continue; } catch (e) { continue; } /* outside hosts can hang in cloud tests */ n++; if (!im.complete) return -1; } return n; };
   const bgDone = async (doc, vh) => { for (const el of doc.querySelectorAll('[style*="background"]')) { const r = el.getBoundingClientRect(); if (r.width < 100 || r.bottom < 0 || r.top > vh) continue; const m = getComputedStyle(el).backgroundImage.match(/url\(["']?([^"')]+)/); if (!m) continue; const U = new URL(m[1], location.href); if (U.origin !== location.origin) continue; /* outside images: their hosts may be blocked in cloud tests */ const e = performance.getEntriesByName(U.href); if (!e.length || !e[0].responseEnd) return false; } return true; };
   while (performance.now() < until) {
     if (o.map) {
