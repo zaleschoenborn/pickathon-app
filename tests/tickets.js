@@ -21,7 +21,7 @@ const OUT = path.resolve(arg('out', path.join(__dirname, 'out', 'tickets')));
 fs.mkdirSync(path.join(OUT, 'shots'), { recursive: true });
 const log = (s) => { const l = new Date().toTimeString().slice(0, 8) + ' tickets ' + s; console.log(l); fs.appendFileSync(path.join(OUT, 'log.txt'), l + '\n'); };
 // The feed Site Build is building: any request to these is "the feed". Update when its URL is known.
-const FEED = new RegExp(arg('feed', 'fms\\.pickathon\\.com/.*(on-?sale|ticket)|/api/.*(on-?sale|ticket-types|tickets)'), 'i');
+const FEED = new RegExp(arg('feed', 'fms\\.pickathon\\.com/api/public/on-sale|/api/.*(on-?sale|ticket-types)'), 'i'); // Site Build's feed (index.html pkFeed)
 // Pages that mean "payment step reached" (stop here) and fields that must never be touched.
 const PAY_STEP = /stripe\.com|checkout\.stripe|squareup|paypal\.com|js\.stripe/i;
 const DEVICES = { phone: { width: 390, height: 844, touch: true }, tablet: { width: 820, height: 1180, touch: true }, desktop: { width: 1440, height: 900, touch: false } };
@@ -71,7 +71,7 @@ async function run() {
   const fail = (c, where, m, shot) => res.checks.push({ ok: false, c, where, m, shot: shot || '' });
   const pass = (c, where, m) => res.checks.push({ ok: true, c, where, m });
   const wait = (c, m) => { if (!res.waiting.some((w) => w.c === c)) res.waiting.push({ c, m }); };
-  let feedSeen = false, feedBody = null;
+  let feedSeen = false, feedBody = null, feedErr = '';
 
   const devs = arg('devices') ? String(arg('devices')).split(',') : QUICK ? ['phone', 'desktop'] : Object.keys(DEVICES);
   for (const dn of devs) for (const mode of (arg('modes') ? String(arg('modes')).split(',') : ['tab', 'app'])) for (const feedMode of ['live', 'blocked', 'down']) for (const S of STATES) {
@@ -80,7 +80,7 @@ async function run() {
     const ctx = await browser.newContext({ viewport: { width: D.width, height: D.height }, isMobile: D.touch, hasTouch: D.touch, serviceWorkers: 'block' });
     await ctx.addInitScript({ content: '(' + IP.initScript + ')(' + JSON.stringify(mode) + ')' }); await FONTS.route(ctx);
     // feed: live = pass through; blocked = no answer; down = HTTP 500
-    await ctx.route(FEED, async (r) => { feedSeen = true; if (feedMode === 'blocked') return r.abort('failed'); if (feedMode === 'down') return r.fulfill({ status: 500, body: 'down' }); const resp = await r.fetch().catch(() => null); if (!resp) return r.abort('failed'); try { feedBody = await resp.json(); } catch (e) {} return r.fulfill({ response: resp }); });
+    await ctx.route(FEED, async (r) => { feedSeen = true; if (feedMode === 'blocked') return r.abort('failed'); if (feedMode === 'down') return r.fulfill({ status: 500, body: 'down' }); const resp = await r.fetch().catch((e) => { feedErr = 'no answer (' + String(e.message).split('\n')[0].slice(0, 60) + ')'; return null; }); if (!resp) return r.abort('failed'); if (resp.status() !== 200) feedErr = 'HTTP ' + resp.status(); try { feedBody = await resp.json(); } catch (e) { feedErr = feedErr || 'not JSON'; } return r.fulfill({ response: resp }); });
     // checkout: allow navigation, but block anything that would submit a payment
     await ctx.route(/./, (r) => { const q = r.request(); if (q.method() === 'POST' && PAY_STEP.test(q.url()) && !/\.js(\?|$)/.test(q.url())) return r.abort('blockedbyclient'); return r.fallback(); });
     const page = await ctx.newPage(); const errs = [];
@@ -95,7 +95,13 @@ async function run() {
 
       // (1/2) cards: every pass shows a real price; sold-out only where the source says so
       const cards = await page.evaluate(CARDS); const e0 = errs.length;
-      if (!cards.length) { fail('blank', where, 'Tickets page shows no pass cards', await shot('no-cards')); await ctx.close(); continue; }
+      if (!cards.length) {
+        const pre = await page.evaluate(() => /sale begins|notify me|remind/i.test(document.querySelector('#root').innerText));
+        const saleOpen = S === 'sale' || new Date() >= new Date('2026-11-19T00:00:00-08:00');
+        if (pre && !saleOpen) pass('presale', where, 'pre-sale page with the reminder sign-up, as expected before Nov 19');
+        else fail('blank', where, 'Tickets page shows no pass cards' + (saleOpen ? ' while the sale is open' : ''), await shot('no-cards'));
+        await ctx.close(); continue;
+      }
       for (const c of cards) {
         if (c.bad || (!c.price && !c.free)) fail('blank', where, c.name + ': card shows no usable price ("' + c.text.slice(0, 60) + '")', await shot('blank-' + c.name));
         res.prices[c.name] = res.prices[c.name] || {}; res.prices[c.name][where] = c.free ? 'Free' : c.price;
@@ -164,7 +170,15 @@ async function run() {
     await ctx.close();
   }
   if (!feedSeen) wait('feed', 'the Tickets page does not call a live FMS feed yet; price match to the FMS waits on Site Build\'s feed (fallback checks ran against data.json)');
-  else if (feedBody) res.feed = { keys: Object.keys(feedBody).slice(0, 10) };
+  else if (!feedBody) wait('feed', 'the page asks the feed (' + String(FEED).slice(1, 60) + '…) but it gave ' + (feedErr || 'no answer') + ': not deployed yet, or the host is not reachable from this session; price match to the live FMS waits on it');
+  else {
+    res.feed = { keys: Object.keys(feedBody).slice(0, 10) };
+    // find {name, price} pairs anywhere in the feed and compare with what each card shows
+    const fp = {}; const walk = (v) => { if (Array.isArray(v)) return v.forEach(walk); if (v && typeof v === 'object') { const n = v.name || v.title || v.label; const pr = v.price ?? v.amount ?? v.price_cents / 100; if (typeof n === 'string' && pr !== undefined && !isNaN(+pr)) fp[n.trim().toLowerCase()] = { price: +pr > 10000 ? +pr / 100 : +pr, sold: !!(v.sold_out || v.soldOut || v.status === 'sold_out') }; Object.values(v).forEach(walk); } }; walk(feedBody);
+    let compared = 0;
+    for (const [name, byWhere] of Object.entries(res.prices)) { const f = fp[name.toLowerCase()]; if (!f) continue; for (const [wh, shown] of Object.entries(byWhere)) { if (!wh.includes('feed live')) continue; compared++; const val = shown === 'Free' ? 0 : +String(shown).replace(/[$,]/g, ''); if (Math.abs(val - f.price) > 0.5) fail('price', wh, name + ' shows ' + shown + ', the live feed says $' + f.price); } }
+    if (!compared) wait('feed-match', 'the feed answered but no pass names matched the Tickets page; the feed\'s field names need mapping (keys: ' + res.feed.keys.join(', ') + ')'); else pass('price', 'all', compared + ' page prices compared with the live feed');
+  }
   // (1) prices: page vs feed vs Site Build's FMS admin list (fms_prices.txt, passed in with --fms=path)
   const fmsPath = arg('fms'); const fms = fmsPath && fs.existsSync(fmsPath) ? fs.readFileSync(fmsPath, 'utf8') : '';
   if (!fms) wait('fms-list', 'no FMS admin price list from Site Build yet (photo-catalog/fms_prices.txt, requests.md row 31)');
