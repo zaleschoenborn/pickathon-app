@@ -67,6 +67,17 @@ Targets (fail if slower; edit `TARGETS` in speed.js):
 
 Speed problems are listed biggest win first (time over target, or time the wasted bytes cost on slow 4G), each with the measured number. `speed.md` also has a table of every measured number.
 
+## Ticket check, Nov 19 sale (tests/tickets.js)
+
+`node tests/tickets.js` (~25 min; `--quick` for phone and desktop, a few orders). Phone, tablet and desktop, each as a tab and as the installed app, in the Nov 19 sale state and today's state.
+
+1. **Prices match.** Every price on the Tickets page matches the live FMS feed, and the feed matches the FMS admin list Site Build posts in overnight_status.md as one line: `Site Build: FMS prices <date>: 4-Day Pass=555, 3-Day Pass=460, Teen Pass=278, ...` (names as on the Tickets page). Save that line to a file and pass `--fms=<file>`; pass `--feed=<regex>` if the feed URL isn't matched by the default pattern.
+2. **Fallback works.** The same page with the feed blocked (no answer) and down (HTTP 500): every card still shows a price from data.json, no script errors, no wrong "sold out".
+3. **Every button reaches checkout.** For every pass, each day ticket, and every choice in the later steps (getting there, parking, shuttle, camping spots, Wednesday add-on, Curation meals, give-backs, souvenirs), it builds an order and checks the lines, the 5% fee (none on give-backs) and the total. Then it clicks checkout and follows it to the real checkout's payment step, checking the event and ticket types. It **never types into any field, never enters card details and never submits a payment**; payment requests are blocked outright. Pending test orders it leaves are logged in `tests/out/ticket_test_orders.json` for cleanup (with Zale's OK) before the feed is merged.
+4. No sign-in and no fan data anywhere: screenshots show only the public Tickets page.
+
+Parts that can't run yet say "waiting on": the live feed, Site Build's FMS price list, and the real checkout wiring (the prototype's checkout button is still a stand-in). A daily scheduled task ("Site QA ticket check", Nov 12–19) runs it, messages Zale right away on any failure, and otherwise adds one line to overnight_status.md starting "Site QA: ticket check". The run exits with code 3 when anything fails.
+
 ## The checks (each pass/fail, with a screenshot on fail)
 
 | id | fails when |
