@@ -15,7 +15,7 @@ let PNG; for (const p of ['playwright-core/lib/utilsBundle', '/opt/npm-tools/nod
 
 const arg = (k, d) => { const a = process.argv.find((x) => x === '--' + k || x.startsWith('--' + k + '=')); return a ? (a.includes('=') ? a.split('=').slice(1).join('=') : true) : d; };
 const QUICK = !!arg('quick');
-const ALL_SIZES = ['360x800', '390x844', '820x1180', '1180x820', '1024x768', '1440x900'];
+const ALL_SIZES = ['360x800', '390x844', '800x360', '844x390', '820x1180', '1180x820', '1024x768', '1440x900']; // 800x360 / 844x390 = phones turned sideways
 const SIZES = String(arg('sizes', QUICK ? '390x844,820x1180,1440x900' : ALL_SIZES.join(','))).split(',');
 const MODES = String(arg('modes', 'tab,app')).split(',');
 const WORKERS = +arg('workers', 2), ONLY = arg('only') ? new RegExp(arg('only')) : null, SHOTS = arg('shots', 'ref');
@@ -25,7 +25,7 @@ const OUT = path.resolve(arg('out', path.join(__dirname, 'out', RUN)));
 fs.mkdirSync(OUT, { recursive: true });
 const log = (s) => { const l = new Date().toTimeString().slice(0, 8) + ' ' + s; console.log(l); fs.appendFileSync(path.join(OUT, 'log.txt'), l + '\n'); };
 // Touch devices: phones and tablets. 1024x768 and 1440x900 are laptops/desktops.
-const isTouch = (w, h) => !(w === 1024 && h === 768) && w <= 1180;
+const isTouch = (w, h) => !(w === 1024 && h === 768) && w <= 1180; // phones (either way up) and tablets
 const TEMPLATE = new Set(['artist', 'story', 'page', 'act', 'act-plain', 'hood', 'past']);
 
 function pickQuick(list) {
@@ -122,7 +122,7 @@ async function merge(dirs) { // combine parts run separately (e.g. sizes split a
   for (const r of parts) { sink.issues.push(...r.issues); sink.skips.push(...r.skips); Object.assign(sink.zoom, r.zoom); sink.checked += r.checked || 0; r.targets.forEach((t) => tg.set(t.id, t)); r.sizes.forEach((x) => sizes.add(x)); r.modes.forEach((x) => modes.add(x)); for (const sub of ['ref', 'fail']) { const src = path.join(path.dirname(path.join(dirs[parts.indexOf(r)], 'x')), 'shots', sub); if (fs.existsSync(src)) fs.cpSync(src, path.join(OUT, 'shots', sub), { recursive: true }); } }
   const prev = arg('prev') && fs.existsSync(arg('prev')) ? JSON.parse(fs.readFileSync(arg('prev'), 'utf8')) : null;
   const speed = arg('speed') && fs.existsSync(arg('speed')) ? JSON.parse(fs.readFileSync(arg('speed'), 'utf8')) : null;
-  const r = report.write(OUT, { run: RUN, base: parts[0].base, quick: parts[0].quick, sizes: ALL_SIZES.filter((x) => sizes.has(x)), modes: [...modes], targets: [...tg.values()], sink, prev, speed, mins: parts.reduce((s, p) => s + (p.mins || 0), 0) });
+  const r = report.write(OUT, { run: RUN, base: parts[0].base, quick: parts[0].quick, sizes: ALL_SIZES.filter((x) => sizes.has(x)).concat([...sizes].filter((x) => !ALL_SIZES.includes(x))), modes: [...modes], targets: [...tg.values()], sink, prev, speed, mins: parts.reduce((s, p) => s + (p.mins || 0), 0) });
   log('merged ' + dirs.length + ' parts: ' + r.groups + ' distinct problems, ' + r.newCount + ' new. Report: ' + path.join(OUT, 'issues.md'));
 }
 
@@ -144,6 +144,7 @@ async function merge(dirs) { // combine parts run separately (e.g. sizes split a
     pass() { if (++this.checked % 200 === 0) log(this.checked + ' screens checked, ' + this.issues.length + ' problems so far'); } };
   const q = combos.slice();
   await Promise.all(Array.from({ length: Math.min(WORKERS, q.length) }, async () => { while (q.length) { const [s, m] = q.shift(); log('start ' + s + ' ' + m); await runCombo(browser, base, targets, s, m, sink); log('done ' + s + ' ' + m); } }));
+  if (!arg('no-rotate') && !ONLY && !arg('sizes') && !arg('no-speed')) { log('rotation check' + (QUICK ? ' (quick)' : '')); const { execFileSync } = require('child_process'); try { execFileSync(process.execPath, [path.join(__dirname, 'rotate.js'), '--base=' + base, '--out=' + path.join(OUT, 'rotate')].concat(QUICK ? ['--quick'] : []), { stdio: 'inherit' }); const rr = JSON.parse(fs.readFileSync(path.join(OUT, 'rotate', 'results.json'), 'utf8')); rr.issues.forEach((i) => sink.issues.push(i)); sink.checked += rr.checked; } catch (e) { log('rotation check failed: ' + String(e.message).slice(0, 100)); } }
   let speed = arg('speed') && fs.existsSync(arg('speed')) ? JSON.parse(fs.readFileSync(arg('speed'), 'utf8')) : null;
   if (!speed && !arg('no-speed') && !ONLY && !arg('sizes')) { log('speed checks' + (QUICK ? ' (quick: phone only)' : '')); process.argv.push('--out=' + OUT); speed = await require('./speed').run(browser, base, { targets, quick: QUICK }); }
   await browser.close(); if (server) server.close();

@@ -32,4 +32,22 @@ module.exports = [
       return x ? [] : [{ m: 'open panel has no visible close (X) button', s: (m.getAttribute('aria-label') || m.className || '').toString().slice(0, 30) }];
     },
   },
+  {
+    id: 'bar-covers',
+    why: 'Nov 7 (rotation check): on a sideways phone the Home hero\'s "Why Pickathon" button sat half under the bottom tab bar; buttons must never sit partly under the fixed tab bar or header',
+    when: (o) => o.touch,
+    run: () => {
+      if (scrollY > 10) return []; // only the first screen a visitor sees; mid-scroll overlap is normal
+      const bars = [...document.querySelectorAll('nav, header, [role=tablist]')].map((b) => { let p = b; while (p && p !== document.body && getComputedStyle(p).position !== 'fixed' && getComputedStyle(p).position !== 'sticky') p = p.parentElement; return p && p !== document.body ? p : null; }).filter((p, i, a) => p && a.indexOf(p) === i && p.checkVisibility() && !p.closest('[aria-modal=true],nav[aria-label=More]'));
+      const out = [];
+      for (const b of document.querySelectorAll('button.pk-cta, a.pk-cta, .pk-bkb, .pk-sqb, button[class*="cta"]')) {
+        if (!b.checkVisibility({ checkOpacity: true }) || bars.some((x) => x.contains(b))) continue;
+        const r = b.getBoundingClientRect(); if (r.bottom <= 0 || r.top >= innerHeight) continue;
+        for (const x of bars) { const d = x.getBoundingClientRect(); const h = Math.min(r.bottom, d.bottom) - Math.max(r.top, d.top); const w = Math.min(r.right, d.right) - Math.max(r.left, d.left);
+          if (w > 10 && h > 6 && h < r.height - 2) { out.push({ m: 'button partly hidden under the ' + (d.top > innerHeight / 2 ? 'bottom tab bar' : 'header') + ' (' + Math.round(h) + 'px of ' + Math.round(r.height) + ')', s: (b.textContent || '').trim().slice(0, 30) }); break; } }
+        if (out.length > 2) break;
+      }
+      return out;
+    },
+  },
 ];

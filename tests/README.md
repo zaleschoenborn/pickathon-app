@@ -8,7 +8,7 @@ Checks every page of the site at every screen size, as a browser tab and as the 
 node tests/run.js --quick          # before every push: ~8 min, every page type at 390, 820 and 1440, plus phone speed
 node tests/speed.js                # speed checks alone (~25 min); --quick for phone + a few pages
 node tests/run.js                  # full sweep: every page, 6 sizes, tab + app (~3 h on 2 CPUs)
-bash tests/sweep.sh a; bash tests/sweep.sh b; bash tests/sweep.sh speed; bash tests/sweep.sh finish
+bash tests/sweep.sh a; bash tests/sweep.sh b; bash tests/sweep.sh c; bash tests/sweep.sh rotate; bash tests/sweep.sh speed; bash tests/sweep.sh finish
                                    # the same full sweep in two ~80-min halves, merged, compared
                                    # with the last published sweep and published to qa-shots
 ```
@@ -34,7 +34,11 @@ git clone --depth 1 -b qa-shots https://github.com/zaleschoenborn/pickathon-app 
 - `ref/<size>-tab/<page>.jpg`: every page once per size (template pages such as artist, story, year and neighborhood pages: the first 6 plus Geese and the 2024 year page).
 - `fail/<size>-<tab|app>/<page>.jpg`: every screen where a check failed; names match `issues.md`.
 
-Sizes: 360x800, 390x844 (phones), 820x1180 and 1180x820 (tablet portrait and landscape), 1024x768 (small laptop), 1440x900 (desktop). Phones and tablets are tested as touch devices.
+Sizes: 360x800, 390x844 (phones), 800x360 and 844x390 (phones turned sideways), 820x1180 and 1180x820 (tablet portrait and landscape), 1024x768 (small laptop), 1440x900 (desktop). Phones and tablets are tested as touch devices.
+
+## Rotation check (tests/rotate.js)
+
+On a phone (390x844) and a tablet (820x1180), as a tab and as the installed app: open each main page and a sample of each page type, scroll partway, turn sideways (Chrome's real orientation change, not just a resize), then turn back. Fails when the page takes over 1 s to settle, you lose your place (what was mid-screen leaves the screen), the page reloads or jumps to another page, an open panel closes, a script error fires, or any layout check fails in the new orientation.
 
 ## What it finds
 
@@ -42,7 +46,7 @@ The site has no per-page URLs, so the kit drives the app's own router. Pages are
 
 ## Speed checks (tests/speed.js, marked "speed" in the report)
 
-Two devices: a **mid-range phone on slow 4G** (412x823, 1.75x screen, CPU slowed 4x, 150 ms latency, 1.6 Mb/s down, like Lighthouse's Moto G Power) and a **desktop** (1440x900, 40 ms, 10 Mb/s). Each does a **first visit** (empty cache) and a **repeat visit** (service worker installed). The site has one entry page (Home), so "site opens" is Home; every other page is measured as the tap from Home: all main pages, the map, and 1-3 of each page type (same layouts, so a sample tells the story). The local server gzips like GitHub Pages, so download sizes match the live site. Run speed checks with nothing else running; a busy machine makes the phone look slower.
+Three devices: a **mid-range phone on slow 4G** (412x823, 1.75x screen, CPU slowed 4x, 150 ms latency, 1.6 Mb/s down, like Lighthouse's Moto G Power), an **iPad-class tablet on 4G** (820x1180, 2x screen, CPU slowed 2x, 100 ms, 4 Mb/s) and a **desktop** (1440x900, 40 ms, 10 Mb/s). Each does a **first visit** (empty cache) and a **repeat visit** (service worker installed). The site has one entry page (Home), so "site opens" is Home; every other page is measured as the tap from Home: all main pages, the map, and 1-3 of each page type (same layouts, so a sample tells the story). The local server gzips like GitHub Pages, so download sizes match the live site. Run speed checks with nothing else running; a busy machine makes the phone look slower.
 
 Per page: **content shown** (heading up and every image on screen drawn; for Home also the browser's largest paint), **usable** (content shown and no main-thread task over 50 ms for 1 s), **layout shift while loading**, **downloaded KB**. Map: base map and neighborhood icons drawn (cold start, first tap on Neighborhoods), and base map plus the lit neighborhood overlay (tap on a Home neighborhood tile).
 
@@ -50,16 +54,16 @@ Flags: images much bigger than shown (over 1.5x the screen pixels and 60 KB+), i
 
 Targets (fail if slower; edit `TARGETS` in speed.js):
 
-| | phone | desktop |
-|---|---|---|
-| Home content shown, first visit | 2.5 s | 1.5 s |
-| Home usable | 4.0 s | 2.5 s |
-| Page content shown (first / repeat visit) | 2.5 s / 1.5 s | 1.5 s / 0.8 s |
-| Page usable | 3.5 s | 2.0 s |
-| Map drawn (cold start or tile tap) | 3.0 s | 3.0 s |
-| Layout shift while loading | 0.1 | 0.1 |
-| First-visit download / per page | 2 MB / 1 MB | 3 MB / 1.5 MB |
-| Slow request / large file | 3 s / 500 KB | 1 s / 1 MB |
+| | phone | tablet | desktop |
+|---|---|---|---|
+| Home content shown, first visit | 2.5 s | 2.0 s | 1.5 s |
+| Home usable | 4.0 s | 3.5 s | 2.5 s |
+| Page content shown (first / repeat visit) | 2.5 s / 1.5 s | 2.0 s / 1.2 s | 1.5 s / 0.8 s |
+| Page usable | 3.5 s | 3.0 s | 2.0 s |
+| Map drawn (cold start or tile tap) | 3.0 s | 3.0 s | 3.0 s |
+| Layout shift while loading | 0.1 | 0.1 | 0.1 |
+| First-visit download / per page | 2 MB / 1 MB | 2.5 MB / 1.2 MB | 3 MB / 1.5 MB |
+| Slow request / large file | 3 s / 500 KB | 2 s / 700 KB | 1 s / 1 MB |
 
 Speed problems are listed biggest win first (time over target, or time the wasted bytes cost on slow 4G), each with the measured number. `speed.md` also has a table of every measured number.
 
@@ -87,7 +91,7 @@ Test housekeeping: the cookie banner is answered and the dev-only "TEST When / A
 
 ## Every reported bug becomes a check
 
-When Zale reports a bug, add an entry to `tests/rules.js` (id, why with date, an in-page `run` returning problems). Current rules: `listen-covers` (Listen dock over a button, Nov 6), `popup-close` (sheet without a visible X, Nov 5).
+When Zale reports a bug, add an entry to `tests/rules.js` (id, why with date, an in-page `run` returning problems). Current rules: `listen-covers` (Listen dock over a button, Nov 6), `popup-close` (sheet without a visible X, Nov 5), `bar-covers` (a button partly under the tab bar or header on the first screen, found sideways on Home, Nov 7).
 
 ## Morning run
 

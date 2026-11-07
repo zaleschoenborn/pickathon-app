@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 // Speed checks. node tests/speed.js [--quick] [--base=URL] [--out=dir]
-// Two devices: a mid-range phone on slow 4G (Lighthouse's Moto G Power: 412x823, 4x slower CPU,
-// 150 ms latency, 1.6 Mb/s down) and a desktop (1440x900, 40 ms, 10 Mb/s). Each runs a first visit
+// Three devices: a mid-range phone on slow 4G (Lighthouse's Moto G Power: 412x823, 4x slower CPU,
+// 150 ms latency, 1.6 Mb/s down), an iPad-class tablet on 4G (820x1180, 2x slower CPU, 100 ms, 4 Mb/s)
+// and a desktop (1440x900, 40 ms, 10 Mb/s). Each runs a first visit
 // (empty cache) and a repeat visit (service worker installed), so the numbers show both.
 // Writes speed.json (problems, worst first) and speed.md into the out folder; run.js and
 // sweep.sh fold them into issues.md / site_issues.md marked "speed".
@@ -12,10 +13,12 @@ const IP = require('./lib/inpage'), FONTS = require('./lib/fonts'), serve = requ
 // Targets: anything slower fails. Change here (and in README) if Zale moves a target.
 const TARGETS = {
   phone: { entryContent: 2500, entryUsable: 4000, pageContent: 2500, pageContentWarm: 1500, pageUsable: 3500, map: 3000, cls: 0.1, entryKB: 2000, pageKB: 1000, slowReq: 3000, bigFileKB: 500 },
+  tablet: { entryContent: 2000, entryUsable: 3500, pageContent: 2000, pageContentWarm: 1200, pageUsable: 3000, map: 3000, cls: 0.1, entryKB: 2500, pageKB: 1200, slowReq: 2000, bigFileKB: 700 },
   desktop: { entryContent: 1500, entryUsable: 2500, pageContent: 1500, pageContentWarm: 800, pageUsable: 2000, map: 3000, cls: 0.1, entryKB: 3000, pageKB: 1500, slowReq: 1000, bigFileKB: 1000 },
 };
 const PROFILES = {
   phone: { viewport: { width: 412, height: 823 }, deviceScaleFactor: 1.75, isMobile: true, hasTouch: true, cpu: 4, net: { latency: 150, downloadThroughput: (1.6 * 1024 * 1024) / 8, uploadThroughput: (750 * 1024) / 8 } },
+  tablet: { viewport: { width: 820, height: 1180 }, deviceScaleFactor: 2, isMobile: true, hasTouch: true, cpu: 2, net: { latency: 100, downloadThroughput: (4 * 1024 * 1024) / 8, uploadThroughput: (3 * 1024 * 1024) / 8 } },
   desktop: { viewport: { width: 1440, height: 900 }, deviceScaleFactor: 1, isMobile: false, hasTouch: false, cpu: 1, net: { latency: 40, downloadThroughput: (10 * 1024 * 1024) / 8, uploadThroughput: (10 * 1024 * 1024) / 8 } },
 };
 const arg = (k, d) => { const a = process.argv.find((x) => x === '--' + k || x.startsWith('--' + k + '=')); return a ? (a.includes('=') ? a.split('=').slice(1).join('=') : true) : d; };
@@ -214,7 +217,7 @@ exports.run = async (browser, base, opts = {}) => {
   const all = opts.targets || (await discover(browser, base, log));
   const pages = pickPages(all, QUICK || opts.quick);
   const problems = [], numbers = [];
-  const profs = opts.profiles || (QUICK || opts.quick ? ['phone'] : ['phone', 'desktop']);
+  const profs = opts.profiles || (QUICK || opts.quick ? ['phone'] : ['phone', 'tablet', 'desktop']);
   for (const p of profs) { log(p + ': ' + pages.length + ' pages + map'); await runProfile(browser, base, p, pages, problems, numbers); }
   // one line per problem; dedupe identical messages across pages; biggest win first
   const seen = new Map();

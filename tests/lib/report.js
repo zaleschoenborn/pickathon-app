@@ -1,12 +1,12 @@
 // Turns raw results into a short, plain-language list: one line per distinct problem.
 const fs = require('fs'), path = require('path');
-const ORDER = ['script', 'hscroll', 'wide', 'broken-file', 'broken-img', 'broken-video', 'zoom', 'clip', 'overlap', 'btn-out', 'field-font', 'shift', 'flicker', 'listen-covers', 'popup-close', 'scrollbar', 'lowres', 'tap', 'btn-style'];
-const NAMES = { script: 'Script error', hscroll: 'Sideways scroll', wide: 'Wider than screen', 'broken-file': 'Missing file', 'broken-img': 'Broken image', 'broken-video': 'Broken video', zoom: 'Zoom', clip: 'Clipped text', overlap: 'Overlapping text', 'btn-out': 'Button outside card', 'field-font': 'Form field <16px', shift: 'Layout shift', flicker: 'Flicker', scrollbar: 'Visible scroll bar', lowres: 'Low-res image', tap: 'Tap target <44px', 'btn-style': 'Button style', 'listen-covers': 'Listen dock covers button', 'popup-close': 'Popup without X' };
-const ALL = ['360x800', '390x844', '820x1180', '1180x820', '1024x768', '1440x900'];
+const ORDER = ['script', 'hscroll', 'wide', 'broken-file', 'broken-img', 'broken-video', 'zoom', 'clip', 'overlap', 'btn-out', 'field-font', 'shift', 'flicker', 'listen-covers', 'bar-covers', 'popup-close', 'rotate', 'scrollbar', 'lowres', 'tap', 'btn-style'];
+const NAMES = { script: 'Script error', hscroll: 'Sideways scroll', wide: 'Wider than screen', 'broken-file': 'Missing file', 'broken-img': 'Broken image', 'broken-video': 'Broken video', zoom: 'Zoom', clip: 'Clipped text', overlap: 'Overlapping text', 'btn-out': 'Button outside card', 'field-font': 'Form field <16px', shift: 'Layout shift', flicker: 'Flicker', scrollbar: 'Visible scroll bar', lowres: 'Low-res image', tap: 'Tap target <44px', 'btn-style': 'Button style', 'listen-covers': 'Listen dock covers button', 'popup-close': 'Popup without X', rotate: 'Rotation', 'bar-covers': 'Button under tab bar' };
+const ALL = ['360x800', '390x844', '800x360', '844x390', '820x1180', '1180x820', '1024x768', '1440x900'];
 const norm = (s) => String(s || '').replace(/\d+(\.\d+)?/g, '#').replace(/"[^"]{20,}"/g, '"…"');
 const kindName = { artist: 'current-lineup artist pages', story: 'news stories', page: 'info pages', act: 'past artist pages', 'act-plain': 'plain past artist pages', hood: 'neighborhood pages', past: 'year pages', tickets: 'Tickets states', panel: 'panels', view: 'main pages', zoom: 'whole site' };
 
-function sizesTxt(set) { const s = ALL.filter((x) => set.has(x)); if (s.length === ALL.length) return 'all sizes'; if (s.join() === '360x800,390x844') return 'phones'; return s.map((x) => x.split('x')[0] + (x === '1180x820' ? 'L' : '')).join(','); }
+function sizesTxt(set) { const s = ALL.filter((x) => set.has(x)), other = [...set].filter((x) => !ALL.includes(x)); if (s.length === ALL.length && !other.length) return 'all sizes'; let t = s.join() === '360x800,390x844' ? 'phones' : s.join() === '800x360,844x390' ? 'sideways phones' : s.map((x) => { const [w, h] = x.split('x'); return +w > +h && +h < 600 ? w + 'x' + h : w + (x === '1180x820' ? 'L' : ''); }).join(','); return [t].concat(other).filter(Boolean).join(','); }
 
 exports.write = (OUT, o) => {
   const { sink, targets } = o; const total = targets.reduce((a, t) => ((a[t.kind] = (a[t.kind] || 0) + 1), a), {});
