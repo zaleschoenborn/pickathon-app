@@ -7,6 +7,9 @@ Checks every page of the site at every screen size, as a browser tab and as the 
 ```
 node tests/run.js --quick          # before every push: ~5 min, every page type at 390, 820 and 1440
 node tests/run.js                  # full sweep: every page, 6 sizes, tab + app (~3 h on 2 CPUs)
+bash tests/sweep.sh a; bash tests/sweep.sh b; bash tests/sweep.sh finish
+                                   # the same full sweep in two ~80-min halves, merged, compared
+                                   # with the last published sweep and published to qa-shots
 ```
 
 It serves this checkout on a local port, so it tests exactly what gh-pages will publish (the live github.io address is blocked from cloud sessions; a fresh gh-pages clone is the same files). Needs only Playwright (pre-installed in Claude sessions at /opt/npm-tools).
@@ -64,4 +67,4 @@ When Zale reports a bug, add an entry to `tests/rules.js` (id, why with date, an
 
 ## Morning run
 
-A scheduled task clones gh-pages fresh each morning, runs the full sweep with `--prev` (yesterday's keys from the qa-shots branch), publishes the screenshots, and tells Zale only when something NEW breaks.
+A scheduled task ("Site QA morning sweep", 4:41 am PT daily) clones gh-pages fresh, runs `tests/sweep.sh a`, `b` and `finish`, writes the result to `photo-catalog/site_issues.md`, and messages Zale only when something NEW breaks. `issues.md` ends with a short "Fixed since the last run" list.

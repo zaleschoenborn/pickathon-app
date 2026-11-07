@@ -25,11 +25,14 @@ exports.write = (OUT, o) => {
     return '- ' + (isNew ? '**NEW** ' : '') + (NAMES[g.c] || g.c) + ' · ' + pages + ' · ' + sizesTxt(g.sizes) + modes + ' · ' + g.m.replace(/\|/g, '/') + (g.s ? ' · ' + g.s.replace(/\|/g, '/').slice(0, 50) : '') + (g.shot ? ' · `' + g.shot + '`' : '');
   });
   const counts = {}; groups.forEach((g) => (counts[g.c] = (counts[g.c] || 0) + 1));
+  const keyLine = {}; groups.forEach((g, i) => (keyLine[g.key] = lines[i].replace('**NEW** ', '')));
+  const fixed = o.prev && o.prev.lines ? Object.keys(o.prev.lines).filter((k) => !G.has(k)).map((k) => o.prev.lines[k].replace(/ · `[^`]*`$/, '')) : [];
   const head = '### QA run ' + o.run + (o.quick ? ' (quick)' : ' (full)') + ': ' + groups.length + ' open problems' + (prevKeys ? ', ' + newCount + ' new' : '') + '\n' +
     targets.length + ' pages/states x ' + o.sizes.length + ' sizes x ' + o.modes.join('+') + ' = ' + sink.checked + ' screens checked in ' + o.mins + ' min. ' +
     Object.entries(counts).map(([k, v]) => (NAMES[k] || k) + ' ' + v).join(', ') + '.\n';
-  fs.writeFileSync(path.join(OUT, 'issues.md'), head + '\n' + lines.join('\n') + '\n');
-  fs.writeFileSync(path.join(OUT, 'keys.json'), JSON.stringify({ run: o.run, keys: groups.map((g) => g.key) }));
+  const fixedTxt = fixed.length ? '\n#### Fixed since the last run (' + fixed.length + ')\n' + fixed.slice(0, 15).map((l) => l.replace(/^- /, '- ~~') + '~~').join('\n') + (fixed.length > 15 ? '\n- …and ' + (fixed.length - 15) + ' more' : '') + '\n' : '';
+  fs.writeFileSync(path.join(OUT, 'issues.md'), head + '\n' + lines.join('\n') + '\n' + fixedTxt);
+  fs.writeFileSync(path.join(OUT, 'keys.json'), JSON.stringify({ run: o.run, keys: groups.map((g) => g.key), lines: keyLine }));
   fs.writeFileSync(path.join(OUT, 'results.json'), JSON.stringify({ run: o.run, base: o.base, quick: o.quick, sizes: o.sizes, modes: o.modes, targets: targets.map((t) => ({ id: t.id, kind: t.kind, r: t.r, p: t.p })), zoom: sink.zoom, skips: sink.skips, checked: sink.checked, mins: o.mins, issues: sink.issues }));
   fs.writeFileSync(path.join(OUT, 'new.md'), groups.filter((g) => prevKeys && !prevKeys.has(g.key)).length ? lines.filter((l) => l.includes('**NEW**')).join('\n') + '\n' : '');
   return { groups: groups.length, newCount };
