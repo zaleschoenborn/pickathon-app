@@ -4819,3 +4819,15 @@ html:root:root:root:root:root body .pk-yreel .pk-yl,html:root:root:root:root:roo
 @media (max-width:1199px){#root div:has(> sc-if > img.pk-ylh),#root div:has(> img.pk-ylh){padding-right:104px!important;min-height:88px!important}#root img.pk-ylh{width:88px!important;height:88px!important}}
 @media (max-width:600px) and (orientation:portrait){#root div:has(> sc-if > img.pk-ylh),#root div:has(> img.pk-ylh){padding-right:76px!important;min-height:0!important}#root img.pk-ylh{width:64px!important;height:64px!important;top:24px!important;transform:none!important}}
 </style>
+<style id="pk-type">/*pk-type: Home's type sizes as the site standard. Phone = portrait <=600, tablet 601-1199, desktop >=1200.*/
+#root{--t-kick:15.2px;--t-lead:19.9px;--t-label:15.2px;--t-yname:28px;--t-year:34px;--t-line:16px}
+@media (min-width:601px),(orientation:landscape){#root{--t-kick:16px;--t-lead:22px;--t-label:13px;--t-yname:28px;--t-year:41px;--t-line:17px}}
+@media (min-width:1200px){#root{--t-kick:13.76px;--t-lead:18.92px;--t-label:16px;--t-yname:37.7px;--t-year:64px;--t-line:18.92px}}
+#root main section p:has(+ h2){font-size:var(--t-kick)!important}
+#root main section h2 + p{font-size:var(--t-lead)!important}
+#root .pk-bnd .pk-kr span,#root .pk-ycard .pk-ywk{font-size:var(--t-label)!important}
+#root .pk-bnd .pk-kr span{color:#9FCB8A!important}
+#root .pk-ycard .pk-ywn{font-size:var(--t-yname)!important}
+#root .pk-ycard .pk-wyr,#root .pk-bnd .pk-bnd-yr{font-size:var(--t-year)!important}
+#root .pk-ycard .pk-ywl,#root .pk-bnd .pk-bnd-t p{font-size:var(--t-line)!important}
+</style>
