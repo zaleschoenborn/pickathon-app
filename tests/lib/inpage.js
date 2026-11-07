@@ -186,7 +186,7 @@ exports.checks = async (o) => {
   const lowres = []; const minD = touch ? 1.0 : 0.8; // 'much larger than the file': under 1x on phones/tablets (2-3x screens), under 0.8x on computers
   for (const im of document.querySelectorAll('img')) {
     if (!vis(im)) continue; const r = im.getBoundingClientRect(); if (r.width < 2) continue;
-    if (im.complete && im.naturalWidth === 0 && (im.currentSrc || im.src) && im.loading !== 'lazy') { add('broken-img', 'image did not load: ' + (im.getAttribute('src') || '').slice(0, 60), im); continue; }
+    if (im.complete && im.naturalWidth === 0 && (im.currentSrc || im.src) && im.loading !== 'lazy' && new URL(im.currentSrc || im.src, location.href).origin === location.origin) { add('broken-img', 'image did not load: ' + (im.getAttribute('src') || '').slice(0, 60), im); continue; }
     if (!im.naturalWidth || r.width < 200) continue;
     const fit = getComputedStyle(im).objectFit, sx = r.width / im.naturalWidth, sy = r.height / im.naturalHeight;
     const sc = fit === 'cover' ? Math.max(sx, sy) : fit === 'contain' ? Math.min(sx, sy) : Math.max(sx, sy);
@@ -195,7 +195,7 @@ exports.checks = async (o) => {
   for (const el of all) {
     const bg = getComputedStyle(el).backgroundImage; if (!bg || bg === 'none') continue; const m = bg.match(/url\(["']?([^"')]+)["']?\)/); if (!m || /^data:|\.svg/.test(m[1])) continue;
     const r = el.getBoundingClientRect(); if (r.width < 200 || r.height < 60 || !vis(el)) continue; if (r.top > vh * 3) continue;
-    const n = await getNat(m[1]); if (!n) continue; if (n[0] === 0) { add('broken-img', 'background image did not load: ' + m[1].slice(-60), el); continue; }
+    const n = await getNat(m[1]); if (!n) continue; if (n[0] === 0 && new URL(m[1], location.href).origin !== location.origin) continue; if (n[0] === 0) { add('broken-img', 'background image did not load: ' + m[1].slice(-60), el); continue; }
     const cs = getComputedStyle(el); const bs = cs.backgroundSize;
     const sc = bs === 'contain' ? Math.min(r.width / n[0], r.height / n[1]) : Math.max(r.width / n[0], r.height / n[1]);
     if (1 / sc < minD) lowres.push([m[1], Math.round(r.width), n[0], 1 / sc, el]);

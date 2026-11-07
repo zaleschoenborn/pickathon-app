@@ -1,6 +1,6 @@
 // Finds every page and open-on-tap state from the site itself (nav clicks + the site's own data),
 // so new artists, years, neighborhoods, info pages and stories are picked up automatically.
-const IP = require('./inpage');
+const IP = require('./inpage'), FONTS = require('./fonts');
 
 // Ticket sale states, from the site's own preview switcher (onState in index.html).
 const SALE = { now: ['off'], teaser: ['off', '2026-11-12'], sale: ['off', '2026-11-19'], giving: ['off', '2026-12-01'], early: ['off', '2026-12-10'], reveal: ['off', '2027-01-13'], lineup: ['lineup'], sched: ['sched'], fest: ['fest'] };
@@ -43,6 +43,7 @@ exports.discover = async (browser, base, log) => {
   for (const [vp, phone] of [[{ width: 1440, height: 900 }, false], [{ width: 390, height: 844 }, true]]) {
     const ctx = await browser.newContext({ viewport: vp, isMobile: phone, hasTouch: phone, serviceWorkers: 'block' });
     await ctx.addInitScript({ content: '(' + IP.initScript + ')("tab")' });
+    await FONTS.route(ctx);
     const page = await ctx.newPage(); await page.goto(base, { waitUntil: 'load' }); await page.waitForTimeout(1500);
     await page.evaluate(IP.hook); await page.evaluate(() => window.__app && window.__app.setState({}));
     for (const s of await clickRecord(page, phone)) {

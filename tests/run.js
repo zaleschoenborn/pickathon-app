@@ -8,7 +8,7 @@
 const path = require('path'), fs = require('fs'), http = require('http');
 let pw; for (const p of ['playwright', '/opt/npm-tools/node_modules/playwright']) { try { pw = require(p); break; } catch (e) {} }
 if (!pw) { console.error('Playwright not found (npm i -g playwright)'); process.exit(2); }
-const IP = require('./lib/inpage'), { discover } = require('./lib/discover'), RULES = require('./rules'), report = require('./lib/report');
+const IP = require('./lib/inpage'), FONTS = require('./lib/fonts'), { discover } = require('./lib/discover'), RULES = require('./rules'), report = require('./lib/report');
 let PNG; for (const p of ['playwright-core/lib/utilsBundle', '/opt/npm-tools/node_modules/playwright-core/lib/utilsBundle']) { try { PNG = require(p).PNG; if (PNG) break; } catch (e) {} }
 
 const arg = (k, d) => { const a = process.argv.find((x) => x === '--' + k || x.startsWith('--' + k + '=')); return a ? (a.includes('=') ? a.split('=').slice(1).join('=') : true) : d; };
@@ -59,13 +59,14 @@ async function runCombo(browser, base, targets, size, mode, sink) {
   const [w, h] = size.split('x').map(Number), touch = isTouch(w, h), combo = size + '-' + mode;
   const ctx = await browser.newContext({ viewport: { width: w, height: h }, isMobile: touch, hasTouch: touch, serviceWorkers: 'block', deviceScaleFactor: 1 });
   await ctx.addInitScript({ content: '(' + IP.initScript + ')(' + JSON.stringify(mode) + ')' });
+  await FONTS.route(ctx, log);
   let page, errs = [], bad = [];
   const fresh = async () => {
     if (page) await page.close().catch(() => {});
     page = await ctx.newPage(); errs = []; bad = [];
     page.on('pageerror', (e) => errs.push(String(e.message || e).split('\n')[0].slice(0, 140)));
     page.on('console', (m) => { if (m.type() === 'error' && !/Failed to load resource|ERR_|net::/.test(m.text())) errs.push(m.text().split('\n')[0].slice(0, 140)); });
-    page.on('response', (r) => { if (r.status() >= 400 && r.url().startsWith(base)) bad.push(r.status() + ' ' + r.url().slice(base.length, base.length + 80)); });
+    page.on('response', (r) => { if (r.status() >= 400 && !/favicon|google-analytics|googletagmanager/.test(r.url())) bad.push(r.status() + ' ' + (r.url().startsWith(base) ? r.url().slice(base.length, base.length + 80) : r.url().slice(0, 90))); });
     page.on('requestfailed', (r) => { if (r.url().startsWith(base)) bad.push('failed ' + r.url().slice(base.length, base.length + 80)); });
     await page.goto(base, { waitUntil: 'load', timeout: 60000 }); await page.waitForTimeout(1200);
     await page.evaluate(() => { // test housekeeping: answer the cookie banner, hide the dev-only "Site state" bar
