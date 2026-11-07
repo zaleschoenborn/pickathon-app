@@ -1808,7 +1808,7 @@ button.pk-o2{align-self:flex-start;margin-top:4px!important}.pk-o2{order:2}.pk-o
 <h1 style="{{bp.h1}}">What do you want Pickathon to build for you?</h1>
 <p style="margin: 12px 0 0; max-width: 640px; font-size: 18px; color: #E6E0D3">For businesses, schools and community groups. Leading architects and builders design it for your site. It stands at Pickathon first, then it’s yours, and it keeps the festival’s work going.</p>
 <p style="margin: 12px 0 0; max-width: 680px; padding: 10px 14px; border-radius: 12px; background: rgba(18,22,15,0.62); color: #F2EDE3; font-weight: 700">Every build helps sustain Pickathon and powers the Creative Neighborhoods mission: hand-built places, students learning the trades, and a festival that keeps going for the next generation. We aim to come in at least 10% under the open-market price.</p>
-<div style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px"><button type="button" onClick="{{bp.watch}}" style="display: inline-flex; align-items: center; gap: 10px; min-height: 50px; padding: 0 20px 0 8px; border-radius: 999px; border: 1.5px solid #F2EDE3; background: rgba(18,22,15,0.5); color: #F2EDE3; font: inherit; font-weight: 800; cursor: pointer"><span aria-hidden="true" style="display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px; border-radius: 999px; background: #F2EDE3; color: #12160F; font-size: 12px">▶︎</span>Watch the builds</button><button type="button" onClick="{{bp.toForm}}" style="min-height: 50px; padding: 0 24px; border-radius: 999px; border: 0; background: #F2EDE3; color: #12160F; font: inherit; font-weight: 800; cursor: pointer">Build with us</button></div>
+<div style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px"><button type="button" class="pk-cta sec pk-cta-play" onClick="{{bp.watch}}" style="display: inline-flex; align-items: center; gap: 10px; min-height: 50px; padding: 0 20px 0 8px; border-radius: 999px; border: 1.5px solid #F2EDE3; background: rgba(18,22,15,0.5); color: #F2EDE3; font: inherit; font-weight: 800; cursor: pointer"><span class="pk-ico" aria-hidden="true" style="display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px; border-radius: 999px; background: #F2EDE3; color: #12160F; font-size: 12px">▶︎</span>Watch the builds</button><button type="button" class="pk-cta pri" onClick="{{bp.toForm}}">Build with us</button></div>
 </div>
 </section>
 <section style="{{wrap}}">
@@ -1838,7 +1838,7 @@ button.pk-o2{align-self:flex-start;margin-top:4px!important}.pk-o2{order:2}.pk-o
 <label style="font-weight: 700">{{bp.whatL}}<span style="display: block; font-weight: 400; font-size: 14px; color: #3A4035; margin-top: 2px">{{bp.whatH}}</span><textarea onChange="{{bp.set.what}}" rows="4" style="{{bp.ta}}">{{bp.f.what}}</textarea></label>
 <fieldset style="border: 0; padding: 0; margin: 0"><legend style="font-weight: 700; margin-bottom: 6px">How did you hear about this?</legend><div style="display: flex; flex-wrap: wrap; gap: 8px"><sc-for list="{{bp.heards}}" as="k" hint-placeholder-count="3"><button type="button" onClick="{{k.pick}}" aria-pressed="{{k.on}}" style="{{k.style}}">{{k.t}}</button></sc-for></div></fieldset>
 <sc-if value="{{bp.hasErr}}" hint-placeholder-val="{{false}}"><p role="alert" style="margin: 0; color: #8A2A12; font-weight: 700">{{bp.err}}</p></sc-if>
-<button type="button" onClick="{{bp.submit}}" style="justify-self: start; min-height: 52px; padding: 0 26px; border-radius: 999px; border: 0; background: #12160F; color: #F2EDE3; font: inherit; font-weight: 800; cursor: pointer">{{bp.sendL}}</button>
+<button type="button" class="pk-cta pri" onClick="{{bp.submit}}" style="justify-self: start; min-height: 52px; padding: 0 26px; border-radius: 999px; border: 0; background: #12160F; color: #F2EDE3; font: inherit; font-weight: 800; cursor: pointer">{{bp.sendL}}</button>
 </div>
 </sc-if>
 </sc-if>
@@ -1846,7 +1846,7 @@ button.pk-o2{align-self:flex-start;margin-top:4px!important}.pk-o2{order:2}.pk-o
 </div>
 <h2 style="{{h2}}; margin-top: 44px">Who we build for</h2>
 <div style="{{bp.twoGrid}}; margin-top: 16px">
-<sc-for list="{{bp.ways}}" as="w" hint-placeholder-count="2"><div style="border-radius: 18px; overflow: hidden; background: #1A2017; border: 1px solid #2A3125"><img src="{{w.img}}" alt="" loading="lazy" style="display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover"><div style="padding: 16px 18px 20px"><h3 style="margin: 0; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 24px">{{w.t}}</h3><p style="margin: 6px 0 0; color: #DCD6C9; line-height: 1.5">{{w.x}}</p><p style="margin: 10px 0 0; font-size: 14px; color: #B9B3A6">{{w.ex}}</p><button type="button" onClick="{{w.go}}" style="margin-top: 14px; min-height: 44px; padding: 0 18px; border-radius: 999px; border: 1px solid #F2EDE3; background: transparent; color: #F2EDE3; font: inherit; font-weight: 800; cursor: pointer">Tell us what you need ↑</button></div></div></sc-for>
+<sc-for list="{{bp.ways}}" as="w" hint-placeholder-count="2"><div style="border-radius: 18px; overflow: hidden; background: #1A2017; border: 1px solid #2A3125"><img src="{{w.img}}" alt="" loading="lazy" style="display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover"><div style="padding: 16px 18px 20px"><h3 style="margin: 0; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 24px">{{w.t}}</h3><p style="margin: 6px 0 0; color: #DCD6C9; line-height: 1.5">{{w.x}}</p><p style="margin: 10px 0 0; font-size: 14px; color: #B9B3A6">{{w.ex}}</p><button type="button" class="pk-cta sec" onClick="{{w.go}}" style="margin-top: 14px; min-height: 44px; padding: 0 18px; border-radius: 999px; border: 1px solid #F2EDE3; background: transparent; color: #F2EDE3; font: inherit; font-weight: 800; cursor: pointer">Tell us what you need ↑</button></div></div></sc-for>
 </div>
 <h2 id="pk-sec-went" style="{{h2}}; margin-top: 44px; scroll-margin-top: 80px">Where the 2026 neighborhoods went</h2>
 <p style="margin: 6px 0 14px; color: #CFC9BC; max-width: 680px">Most neighborhoods live at Pickathon first, then go on to a permanent home.</p>
@@ -4914,4 +4914,37 @@ html:root:root:root:root:root body .pk-yreel .pk-yl,html:root:root:root:root:roo
 /* Quiet back button */
 #root .pk-backb{background:transparent!important;color:#CFC9BC!important;padding-left:0!important;font-weight:700!important}
 #root .pk-backb:hover{color:#F2EDE3!important}
+</style>
+<style id="pk-build">/*pk-build: Build with Pickathon form in the dark card family*/
+#root .pk-cta .pk-ico{color:#12160F!important;font-size:12px!important;flex:none}
+#root .pk-cta-play{padding-left:10px!important}
+#root #pk-build-form{background:#1A2017!important;color:#F2EDE3!important;border:1px solid #3A4331;border-left:4px solid #D6B54A;border-radius:16px!important;max-width:none!important}
+#root #pk-build-form [style*="color: #3A4035"]{color:#B9B3A6!important}
+#root #pk-build-form [style*="border-top: 1px solid #C9C2B0"]{border-top-color:#3A4331!important}
+#root #pk-build-form h2{color:#F2EDE3!important}
+#root #pk-build-form label,#root #pk-build-form legend{color:#F2EDE3}
+#root #pk-build-form input,#root #pk-build-form textarea{background:#12160F!important;color:#F2EDE3!important;border:1px solid #8C947C!important;border-radius:6px!important}
+#root #pk-build-form input:focus-visible,#root #pk-build-form textarea:focus-visible{outline:3px solid #F2CF62;outline-offset:1px}
+#root #pk-build-form button[aria-pressed]{background:rgba(18,22,15,.26)!important;color:#F2EDE3!important;border:1.5px solid rgba(242,237,227,.5)!important;border-radius:6px!important}
+#root #pk-build-form button[aria-pressed] *{color:inherit!important}
+#root #pk-build-form div:has(> button[aria-pressed]),#root #pk-build-form div:has(> sc-for > button[aria-pressed]){background:transparent!important;border-color:transparent!important;box-shadow:none!important}
+#root #pk-build-form button[aria-pressed="true"]{background:rgba(214,181,74,.18)!important;color:#F2CF62!important;border-color:#D6B54A!important}
+#root #pk-build-form [role=alert],#root #pk-build-form .pk-err{color:#F2A08A!important}
+</style>
+<style id="pk-shell2">/*pk-shell2: unstyled inline buttons on info pages join the system (year page excluded on purpose)*/
+#root main:not([aria-label$="year"]) button[style*="background: #F2B33D"]:not(.pk-cta):not(.pk-bkb):not([aria-pressed]),
+#root main:not([aria-label$="year"]) button[style*="border: 1px solid #727D6B"]:not([style*="min-height: 40px"]):not(.pk-cta):not([aria-pressed]){display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:56px!important;padding:0 24px!important;border-radius:6px!important;font-size:18px!important;font-weight:800!important;letter-spacing:.04em!important;text-transform:uppercase!important;line-height:1.15!important;white-space:nowrap}
+#root main:not([aria-label$="year"]) button[style*="background: #F2B33D"]:not(.pk-cta):not(.pk-bkb):not([aria-pressed]){background:rgba(214,181,74,.18)!important;color:#F2CF62!important;border:2px solid #D6B54A!important}
+#root main:not([aria-label$="year"]) button[style*="border: 1px solid #727D6B"]:not([style*="min-height: 40px"]):not(.pk-cta):not([aria-pressed]){background:rgba(18,22,15,.26)!important;color:#F2EDE3!important;border:2px solid rgba(242,237,227,.88)!important}
+/* compact chips: same look, smaller */
+#root main button[style^="min-height: 40px; padding: 0 14px; border-radius: 999px"]:not([aria-pressed]),
+#root main a[style*="border: 1px solid #F2B33D"],#root main button[style*="border: 1px solid #F2B33D"]:not([aria-pressed]){display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:44px!important;padding:0 16px!important;border-radius:6px!important;font-size:14px!important;font-weight:800!important;letter-spacing:.04em!important;text-transform:uppercase!important;line-height:1.2!important;text-decoration:none!important}
+#root main button[style^="display: inline-flex; align-items: center; min-height: 40px; padding: 0 14px"]:not([aria-pressed]),#root main a[style^="display: inline-flex; align-items: center; min-height: 40px; padding: 0 14px"]{min-height:44px!important;padding:0 16px!important;border-radius:6px!important;font-size:14px!important;font-weight:800!important;letter-spacing:.04em!important;text-transform:uppercase!important;background:rgba(18,22,15,.26)!important;color:#F2EDE3!important;border:1.5px solid rgba(242,237,227,.6)!important;text-decoration:none!important}
+#root main button[style^="min-height: 40px; padding: 0 14px; border-radius: 999px"]:not([aria-pressed]){background:rgba(18,22,15,.26)!important;color:#F2EDE3!important;border:1.5px solid rgba(242,237,227,.6)!important}
+#root main a[style*="border: 1px solid #F2B33D"],#root main button[style*="border: 1px solid #F2B33D"]:not([aria-pressed]){background:rgba(214,181,74,.12)!important;color:#F2CF62!important;border:1.5px solid #D6B54A!important}
+@media (max-width:600px) and (orientation:portrait){
+#root main:not([aria-label$="year"]) button[style*="background: #F2B33D"]:not(.pk-cta):not(.pk-bkb):not([aria-pressed]),
+#root main:not([aria-label$="year"]) button[style*="border: 1px solid #727D6B"]:not([style*="min-height: 40px"]):not(.pk-cta):not([aria-pressed]){min-height:50px!important;padding:0 16px!important;font-size:clamp(11.5px,3.18vw,14px)!important;letter-spacing:.02em!important}
+#root main button[style^="min-height: 40px; padding: 0 14px; border-radius: 999px"]:not([aria-pressed]),#root main a[style*="border: 1px solid #F2B33D"],#root main button[style*="border: 1px solid #F2B33D"]:not([aria-pressed]){font-size:12.5px!important;padding:0 12px!important;white-space:normal!important;text-align:center}
+}
 </style>
