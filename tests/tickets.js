@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // Ticket check (Nov 19 sale). node tests/tickets.js [--base=URL] [--out=dir] [--quick]
 // 1. Prices: every price on the Tickets page matches the live FMS feed, and the feed matches the FMS
-//    admin list Site Build posts in overnight_status.md ("Site Build: FMS prices <date>: p4=555, p3=460, ...").
+//    admin list Site Build keeps in photo-catalog/fms_prices.txt ("<date>: 4-Day Pass=540, ..."), passed as --fms.
 // 2. Fallback: with the feed blocked (no answer) or down (HTTP 500), the page falls back to data.json:
 //    no blank cards, no script errors, no wrong "sold out".
 // 3. Checkout: every pass type and every option in each step (getting there, camping, parking, days,
@@ -165,9 +165,9 @@ async function run() {
   }
   if (!feedSeen) wait('feed', 'the Tickets page does not call a live FMS feed yet; price match to the FMS waits on Site Build\'s feed (fallback checks ran against data.json)');
   else if (feedBody) res.feed = { keys: Object.keys(feedBody).slice(0, 10) };
-  // (1) prices: page vs feed vs Site Build's FMS admin list (passed in with --fms=path or found in overnight_status text via --status=path)
+  // (1) prices: page vs feed vs Site Build's FMS admin list (fms_prices.txt, passed in with --fms=path)
   const fmsPath = arg('fms'); const fms = fmsPath && fs.existsSync(fmsPath) ? fs.readFileSync(fmsPath, 'utf8') : '';
-  if (!fms) wait('fms-list', 'no FMS admin price list from Site Build yet ("Site Build: FMS prices <date>: 4-Day Pass=555, ..." in overnight_status.md)');
+  if (!fms) wait('fms-list', 'no FMS admin price list from Site Build yet (photo-catalog/fms_prices.txt, requests.md row 31)');
   else {
     const want = {}; for (const m of fms.matchAll(/([A-Za-z0-9 ·\-’'&]+?)\s*=\s*\$?([\d,.]+|Free)/g)) want[m[1].trim().toLowerCase()] = m[2] === 'Free' ? 'Free' : '$' + Math.round(+m[2].replace(/,/g, '')).toLocaleString('en-US');
     for (const [name, byWhere] of Object.entries(res.prices)) { const w = want[name.toLowerCase()]; if (!w) continue; for (const [wh, shown] of Object.entries(byWhere)) if (!wh.includes('feed live')) continue; else if (shown.replace(/\.00$/, '') !== w && !(w === 'Free' && shown === 'Free')) fail('price', wh, name + ' shows ' + shown + ', FMS admin list says ' + w); else pass('price', wh, name + ' ' + shown + ' matches the FMS'); }
