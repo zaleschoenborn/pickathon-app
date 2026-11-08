@@ -2293,6 +2293,7 @@ body.dooron #door{display:block}
   #door .drow .dib{width:44px}
   #door .dx{top:4px;right:4px}
 }
+#door .dfull{cursor:pointer}
 </style>
 <div id="door" role="region" aria-label="Neighborhood preview">
   <div class="dfull">
@@ -2370,6 +2371,9 @@ body.dooron #door{display:block}
   $('.dspin').addEventListener('click',e=>{ e.stopPropagation(); if(L.length>1){ vi=(vi+1)%L.length; putMedia(); try{ sessionStorage.setItem('pkmap.doorv.'+H.id,String(vi)); }catch(x){} } });
   $('.dx').addEventListener('click',e=>{ e.preventDefault(); e.stopPropagation(); const k0=H&&H.k; clearCur(); if(k0) chipTo(k0==='stage'?'stage':k0==='camp'?'camp':'around'); });
   $('.dv').addEventListener('click',e=>{ if(e.target.closest('.dx')) return; e.preventDefault(); const v=$('.dv').__v; if(!v) return; const cv=document.getElementById('cvid'); cv.__v=v; cv.click(); });
+  // map_page.md "The whole doorway is the link" (Nov 8): a tap anywhere on the card opens the neighborhood page, except the play area, arrows, spin and close
+  let dDown=null; door.addEventListener('pointerdown',e=>{ dDown={x:e.clientX,y:e.clientY}; },true);
+  door.addEventListener('click',e=>{ const moved=dDown&&Math.hypot(e.clientX-dDown.x,e.clientY-dDown.y)>12; if(moved||!H||fold) return; const t=e.target; if(t.closest('.dprev,.dnext,.dspin,.dx,.dgo,.dbar,a,input')) return; const dv=t.closest('.dv'); if(dv&&dv.__v) return; e.preventDefault(); goPage(H); });
   // phone: swipe the sheet sideways for the next or previous neighborhood
   let sw=null; door.addEventListener('pointerdown',e=>{ sw={x:e.clientX,y:e.clientY}; });
   door.addEventListener('pointerup',e=>{ if(!sw||!LP()) return; const dx=e.clientX-sw.x, dy=e.clientY-sw.y; sw=null; if(Math.abs(dx)>50&&Math.abs(dx)>1.5*Math.abs(dy)) stepHood(dx<0?1:-1); });
