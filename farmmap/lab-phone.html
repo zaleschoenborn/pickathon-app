@@ -2201,3 +2201,191 @@ function stepHood(dir,quiet){
   .lpg{margin:0 0 3px 4px!important}
 }
 </style>
+
+<style id="doorcss">
+/* Nov 8 2026, design_specs/map_page.md (Option A): the chooser never goes away; the preview is a doorway. */
+#door{display:none;position:fixed;z-index:40;box-sizing:border-box;background:#1A2017;color:#F2EDE3;font-family:var(--f);-webkit-tap-highlight-color:transparent}
+body.dooron #door{display:block}
+#door *{box-sizing:border-box}
+#door .dv{position:relative;display:block;aspect-ratio:16/9;border-radius:12px;overflow:hidden;background:#24301F;cursor:pointer}
+#door .dv.ph{cursor:default}
+#door .dv img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+#door .dring{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:64px;height:64px;border-radius:50%;border:2px solid rgba(255,255,255,.92);background:rgba(18,22,15,.35);display:flex;align-items:center;justify-content:center;pointer-events:none}
+#door .dring b{display:block;width:0;height:0;margin-left:6px;border-left:20px solid #fff;border-top:12px solid transparent;border-bottom:12px solid transparent}
+#door .dv.ph .dring{display:none}
+#door .dcap{display:flex;align-items:center;gap:10px;margin-top:10px}
+#door .dcap p{flex:1;min-width:0;margin:0;font:600 14px/1.3 var(--f);color:#CFC9BC;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#door .dcap p b{color:#F2EDE3;font-weight:800}
+#door.nocap .dcap{display:none}
+#door .dib{flex:none;width:44px;height:44px;border-radius:4px;border:2px solid #6A6163;background:transparent;color:#F2EDE3;font:700 19px/1 var(--f);display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0}
+#door .dib:hover{border-color:#F2EDE3}
+#door .dk{margin:14px 0 6px;font:800 12px/1 var(--f);letter-spacing:.12em;text-transform:uppercase;color:#D6B54A}
+#door .dn{display:flex;align-items:center;gap:10px;min-width:0}
+#door .dn img{flex:none;width:44px;height:44px;object-fit:contain}
+#door .dn h2{margin:0;min-width:0;font:400 30px/1 "Pickathon 2014",var(--f);color:#F2EDE3;overflow-wrap:anywhere}
+#door .dh{margin:8px 0 0;font:500 15px/1.4 var(--f);color:#DCD6C9}
+#door .drow{display:flex;gap:8px;margin-top:14px}
+#door .dgo{flex:1;min-width:0;height:56px;border-radius:6px;border:2px solid #D6B54A;background:rgba(214,181,74,.18);color:#F2CF62;font:800 15px/1 var(--f);letter-spacing:1px;text-transform:uppercase;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:0 14px}
+#door .dgo:hover{filter:brightness(1.12)}
+#door .drow .dib{width:56px;height:56px;font-size:24px}
+#door .dx{display:none;position:absolute;top:8px;right:8px;width:44px;height:44px;border-radius:4px;border:2px solid rgba(242,237,227,.85);background:rgba(18,22,15,.6);color:#F2EDE3;font:700 16px/1 var(--f);align-items:center;justify-content:center;cursor:pointer;padding:0;z-index:2}
+#door .dbar{display:none;align-items:center;gap:10px;height:56px;padding:0 6px 0 10px;cursor:pointer}
+#door .dbar img{flex:none;width:36px;height:36px;object-fit:contain}
+#door .dbar b{flex:1;min-width:0;font:400 20px/1 "Pickathon 2014",var(--f);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#door .dbar .dgo{flex:none;height:44px;font-size:13px;padding:0 14px}
+#door.fold .dfull{display:none}
+#door.fold .dbar{display:flex}
+#door.fold{padding:0!important}
+/* desktop: the chooser column stays; the doorway floats over the map's lower left */
+@media (min-width:1200px){
+  #door{left:24px;bottom:24px;width:450px;padding:14px 14px 16px;border-radius:16px;border:1px solid #3A4331;box-shadow:0 14px 44px rgba(0,0,0,.55)}
+  #card #full,#card #hero,#card #nav,#card #fx,#card #fback{display:none!important}
+  #card #empty{display:block!important}
+  body #card #empty #pcl .pc.sel .lg,body #card.intro #empty #pcl .pc.sel .lg{box-shadow:0 0 0 3px #12160F,0 0 0 6px #D6B54A,0 0 20px rgba(214,181,74,.45)!important}
+  body #card #empty #pcl .pc.sel b,body #card.intro #empty #pcl .pc.sel b{color:#F2CF62!important;font-weight:800!important}
+}
+/* phone and tablet: chips + a swipe row of icons; the doorway is a sheet above the tab bar */
+@media (max-width:1199px){
+  :root{--lps:calc(124px + var(--lpb))}
+  #door{left:0;right:0;bottom:0;padding:12px 16px calc(14px + var(--lpb,0px));border-radius:16px 16px 0 0;border-top:3px solid #D6B54A;box-shadow:0 -8px 28px rgba(0,0,0,.45);max-height:62vh;overflow:hidden;transform:translateY(0);transition:transform .26s cubic-bezier(.2,.8,.2,1)}
+  body.dooron.doorin #door{transform:translateY(110%)}
+  #door .dx{display:flex}
+  #door .dring{width:56px;height:56px}
+  #door .dring b{border-left-width:18px;border-top-width:11px;border-bottom-width:11px;margin-left:5px}
+  #door .drow .dgo,#door .drow .dib{height:50px}
+  #door .drow .dib{width:50px}
+  #door .dn h2{font-size:26px}
+  #door .dk{margin-top:12px}
+  #door.fold{height:calc(56px + var(--lpb,0px));padding-bottom:var(--lpb,0px)!important}
+  body.dooron #card{visibility:hidden!important}
+  body.dooron #lpmenu{visibility:hidden!important}
+  #lpchips{display:flex;gap:8px;padding:0 12px 8px;width:100vw;box-sizing:border-box}
+  #lpchips button{flex:1 1 0;min-width:0;height:44px;border-radius:4px;border:2px solid #6A6163;background:transparent;color:#F2EDE3;font:800 12px/1 var(--f);letter-spacing:1px;text-transform:uppercase;cursor:default;padding:0 6px;white-space:nowrap}
+  #lpchips button[aria-pressed="true"]{background:#D6B54A;border-color:#D6B54A;color:#2B2628}
+  #lpmenu,body.lpmenu #lpmenu{overflow:hidden!important;padding-top:8px!important}
+  #lpgroups{display:block!important;width:100vw!important;padding:0!important}
+  .lpgrp{display:none!important}
+  .lpgrp.on{display:block!important;border:0!important;margin:0!important;padding:0!important}
+  .lpgrp .lpg{display:none!important}
+  .lpgrp.on .lpits{display:flex;gap:4px;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x proximity;padding:0 10px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+  .lpgrp.on .lpits::-webkit-scrollbar{display:none}
+  .lpgrp.on .lpi{flex:none;scroll-snap-align:start;width:64px!important}
+}
+@media (min-width:700px) and (max-width:1199px){
+  #door{max-height:none;padding:14px 20px calc(16px + var(--lpb,0px))}
+  #door .dfull{display:grid;grid-template-columns:minmax(0,46%) minmax(0,1fr);column-gap:20px;align-items:start}
+  #door .dmedia{grid-row:1/span 6}
+  #door .dk{margin-top:2px}
+  #door .dn h2{font-size:30px}
+}
+@media (orientation:landscape) and (max-height:500px){
+  :root:root{--lps:calc(112px + var(--lpb,0px))!important}
+  #door{max-height:none}
+  #door{padding:10px 14px calc(10px + var(--lpb,0px))!important}
+  #door .dfull{display:grid;grid-template-columns:minmax(0,30%) minmax(0,1fr);column-gap:14px;align-items:center}
+  #door .dmedia{grid-row:1/span 6}
+  #door .dcap,#door .dh{display:none!important}
+  #door .dk{margin:0 0 4px}
+  #door .dn h2{font-size:22px}
+  #door .dn img{width:32px;height:32px}
+  #door .drow{margin-top:8px}
+  #door .drow .dgo,#door .drow .dib{height:44px}
+  #door .drow .dib{width:44px}
+  #door .dx{top:4px;right:4px}
+}
+</style>
+<div id="door" role="region" aria-label="Neighborhood preview">
+  <div class="dfull">
+    <div class="dmedia">
+      <a class="dv" href="#" aria-label="Play"><img alt=""><span class="dring" aria-hidden="true"><b></b></span><button type="button" class="dx" aria-label="Close preview">&#10005;</button></a>
+      <div class="dcap"><p></p><button type="button" class="dib dspin" aria-label="Another performance here">&#8635;</button></div>
+    </div>
+    <p class="dk"></p>
+    <div class="dn"><img alt="" draggable="false"><h2></h2></div>
+    <p class="dh"></p>
+    <div class="drow"><button type="button" class="dgo"></button><button type="button" class="dib dprev" aria-label="Previous neighborhood">&#8249;</button><button type="button" class="dib dnext" aria-label="Next neighborhood">&#8250;</button></div>
+  </div>
+  <div class="dbar"><img alt="" draggable="false"><b></b><button type="button" class="dgo dgo2"></button></div>
+</div>
+<script id="doorjs">
+(function(){
+  const door=document.getElementById('door'); if(!door) return;
+  const B=document.body, $=s=>door.querySelector(s);
+  const SING_STAGE=id=>{ const h=HOODS.find(x=>x.id===id); return h&&h.k==='stage'&&id!=='farmhouse'; };
+  const FRX=/[-–]\s*(?:Lucky Barn|Galaxy Barn|Woods|Grove|Windmill|Paddock|Treeline|Cherry Hill|Mountain|Starlight|Courtyard|Orchard|Refuge|Farmhouse)(?: Stage)?\s*[-–]\s*(?:19|20)\d\d\b|full set|\bpt ?\d\b|rough .*cut|-RAW/i;
+  const noS=v=>{ let t=String(v.s||'').toLowerCase().replace(/^the /,''); const a=String(v.a||'').toLowerCase().replace(/^the /,''); if(a) t=t.split(a).join(''); t=t.replace(/lucky barn|galaxy barn|galaxy|woods|grove|windmill|paddock|treeline|cherry hill|mountain|starlight|courtyard|orchard|refuge|farmhouse|stage|series|pickathon|s\d\de\d\d|session|live|@/g,''); return !t.replace(/[^a-z]/g,''); };
+  const singles=h=>{ if(!SING_STAGE(h.id)||!XD||!XD.v) return []; const rx=VRX[h.id]; if(!rx) return [];
+    return XD.v.filter(v=>!v.nonact&&!v.cad&&!v.f&&!(v.vm&&!v.th)&&rx.test(String(v.vn||v.s||''))&&!FRX.test(String(v.s||''))&&!noS(v)); };
+  const vUrl=v=>v.vm?'https://vimeo.com/'+v.vm+(v.vh?'/'+v.vh:'')+(v.t?'#t='+v.t+'s':''):'https://www.youtube.com/watch?v='+v.id+(v.t?'&t='+v.t+'s':'');
+  const vTh=v=>v.vm?v.th:'https://i.ytimg.com/vi/'+v.id+'/hqdefault.jpg';
+  const short=h=>String(h.n||'').replace(/^The /,'');
+  let H=null, L=[], vi=0, fold=false, pickAt=0;
+  function photo(h){ const x=XD&&XD.h&&XD.h[h.id]; const p=(x&&(x.hi||x.i))||((HERO[h.id]||[])[0])||''; return p&&!/^(https?:|\.\.\/|\/)/.test(p)?'../'+p:p; }
+  function putMedia(){
+    const a=$('.dv'), im=a.querySelector('img'), v=L.length?L[vi%L.length]:null;
+    if(v){ a.classList.remove('ph'); a.href=vUrl(v); a.__v=v; im.src=vTh(v); a.setAttribute('aria-label','Play '+(v.a||'')+' at '+H.n);
+      const y=v.y?'Pickathon '+v.y:''; $('.dcap p').innerHTML='<b>'+lpEsc(v.a||'')+'</b> · '+lpEsc(short(H))+(y?' · '+y:''); door.classList.remove('nocap'); $('.dspin').hidden=L.length<2; }
+    else { a.classList.add('ph'); a.removeAttribute('href'); a.__v=null; im.src=photo(H); a.setAttribute('aria-label',H.n); door.classList.add('nocap'); }
+  }
+  function fill(h){
+    const same=H===h; H=h; if(!same){ L=singles(h); let r=Math.floor(Math.random()*Math.max(1,L.length)); try{ const k='pkmap.doorv.'+h.id, last=sessionStorage.getItem(k); if(L.length>1&&last!==null&&String(r)===last) r=(r+1)%L.length; sessionStorage.setItem(k,String(r)); }catch(e){} vi=r; }
+    else if(!L.length) L=singles(h);
+    putMedia();
+    $('.dk').textContent=KLBL(h.k);
+    $('.dn img').src='../ic2/'+h.id+'.png'; $('.dn h2').textContent=h.n;
+    const hk=(XD&&XD.h&&XD.h[h.id]&&XD.h[h.id].hook)||h.t||''; $('.dh').textContent=hk; $('.dh').hidden=!hk;
+    $('.dgo').textContent='Explore '+short(h)+' →'; $('.dgo2').textContent='Explore →';
+    $('.dbar img').src='../ic2/'+h.id+'.png'; $('.dbar b').textContent=h.n;
+  }
+  function setFold(on){ fold=!!on; door.classList.toggle('fold',fold); if(LP()) { try{ lpSync(); }catch(e){} } }
+  function open(h){
+    const was=B.classList.contains('dooron');
+    fill(h); if(!(h===H&&fold&&NOW()-pickAt>600&&false)) setFold(false);
+    if(!was){ B.classList.add('dooron'); if(LP()){ B.classList.add('doorin'); void door.offsetWidth; requestAnimationFrame(()=>B.classList.remove('doorin')); } }
+    pickAt=NOW(); if(LP()){ try{ lpSync(); }catch(e){} }
+  }
+  function close(){ B.classList.remove('dooron'); setFold(false); }
+  // every pick goes through show(): the doorway follows it
+  const _show=show; show=function(h){ _show.apply(this,arguments);
+    if(!innerWidth||CARDID) return;
+    if(h){ if(innerWidth>=1200){ const c=document.getElementById('card'); c.classList.add('intro'); document.getElementById('empty').hidden=false; document.getElementById('full').hidden=true; document.getElementById('hero').hidden=true; }
+      open(h); }
+    else close(); };
+  // phone: the bottom band the map keeps clear is the sheet while it is open
+  const _bar=lpBarH; lpBarH=function(){ if(LP()&&B.classList.contains('dooron')) return door.offsetHeight||_bar(); return _bar(); };
+  // where a pick lands: desktop, in the space right of the card, at the current zoom; phone, in the strip above the sheet, zooming out only if it would not fit
+  const _vf=viewFor; viewFor=function(h,fk){
+    if(LP()){ const fit=lpView(h,0), atHome=k<=(kMin||lpHome().k)*1.03; if(atHome) return fit; return fit.k<k?fit:lpView(h,k); }
+    const home=typeof atHomeD==='function'&&atHomeD(); const v=_vf(h, fk||(home?0:k)); if(!v) return v;
+    const W=stage.clientWidth, H2=stage.clientHeight, sh=D.shapes[h.id], b=sh&&sh.b; if(!b) return v;
+    const cardR=24+450+24, cx=(b[0]+b[2])/2, cy=(b[1]+b[3])/2;
+    const c=clampV(v.k,(cardR+W)/2-cx*v.k,H2*0.42-cy*v.k,H2,true); return {k:v.k,tx:c.tx,ty:c.ty}; };
+  const _lpPan=lpPanTo; lpPanTo=function(h){ if(NOW()<noPanUntil||!h) return; flyView(viewFor(h),h); };
+  // a drag folds the doorway into its slim bar; it stays folded until tapped or a new pick
+  new MutationObserver(()=>{ if(stage.classList.contains('drag')&&B.classList.contains('dooron')&&!fold&&NOW()-pickAt>350) setFold(true); }).observe(stage,{attributes:true,attributeFilter:['class']});
+  $('.dbar').addEventListener('click',e=>{ if(e.target.closest('.dgo')) return; setFold(false); });
+  door.querySelectorAll('.dgo').forEach(b=>b.addEventListener('click',e=>{ e.stopPropagation(); if(H) goPage(H); }));
+  $('.dprev').addEventListener('click',e=>{ e.stopPropagation(); stepHood(-1); });
+  $('.dnext').addEventListener('click',e=>{ e.stopPropagation(); stepHood(1); });
+  $('.dspin').addEventListener('click',e=>{ e.stopPropagation(); if(L.length>1){ vi=(vi+1)%L.length; putMedia(); try{ sessionStorage.setItem('pkmap.doorv.'+H.id,String(vi)); }catch(x){} } });
+  $('.dx').addEventListener('click',e=>{ e.preventDefault(); e.stopPropagation(); const k0=H&&H.k; clearCur(); if(k0) chipTo(k0==='stage'?'stage':k0==='camp'?'camp':'around'); });
+  $('.dv').addEventListener('click',e=>{ if(e.target.closest('.dx')) return; e.preventDefault(); const v=$('.dv').__v; if(!v) return; const cv=document.getElementById('cvid'); cv.__v=v; cv.click(); });
+  // phone: swipe the sheet sideways for the next or previous neighborhood
+  let sw=null; door.addEventListener('pointerdown',e=>{ sw={x:e.clientX,y:e.clientY}; });
+  door.addEventListener('pointerup',e=>{ if(!sw||!LP()) return; const dx=e.clientX-sw.x, dy=e.clientY-sw.y; sw=null; if(Math.abs(dx)>50&&Math.abs(dx)>1.5*Math.abs(dy)) stepHood(dx<0?1:-1); });
+  // phone chooser: three chips over a swipe row of that kind
+  let KIND0='stage';
+  function chipTo(kk){ KIND0=kk; const box=document.getElementById('lpgroups'); if(!box) return; const gs=box.querySelectorAll('.lpgrp'); const ord=['stage','around','camp']; gs.forEach((g,i)=>{ g.dataset.k=g.dataset.k||ord[i]; g.classList.toggle('on',g.dataset.k===kk); }); document.querySelectorAll('#lpchips button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.k===kk))); const on=box.querySelector('.lpgrp.on .lpits'); if(on) on.scrollLeft=0; }
+  function chipsInit(){ const m=document.getElementById('lpmenu'), g=document.getElementById('lpgroups'); if(!m||!g||document.getElementById('lpchips')) return;
+    const c=document.createElement('div'); c.id='lpchips'; c.setAttribute('role','group'); c.setAttribute('aria-label','Kind of neighborhood');
+    c.innerHTML='<button type="button" data-k="stage">Stages</button><button type="button" data-k="around">Gathering</button><button type="button" data-k="camp">Camping</button>';
+    m.insertBefore(c,g); c.addEventListener('click',e=>{ const b=e.target.closest('button'); if(b) chipTo(b.dataset.k); });
+    chipTo(KIND0); }
+  const _boot=boot; boot=function(){ _boot.apply(this,arguments); try{ if(LP()) chipsInit(); }catch(e){} if(cur&&!CARDID) open(cur); };
+  addEventListener('resize',()=>{ try{ if(LP()) chipsInit(); }catch(e){} });
+  try{ if(LP()) chipsInit(); }catch(e){} setTimeout(()=>{ try{ if(LP()) chipsInit(); }catch(e){} if(cur&&!CARDID&&!B.classList.contains('dooron')) open(cur); },0);
+  // the sheet's height settles after its text and font load: keep the pick framed for the first moments after a pick
+  if(window.ResizeObserver){ let h0=0; new ResizeObserver(()=>{ const hh=door.offsetHeight; if(!LP()||!cur||fold||Math.abs(hh-h0)<4){ h0=hh; return; } h0=hh; try{ lpSync(); }catch(e){} if(NOW()-pickAt<2000) flyView(viewFor(cur),cur); }).observe(door); }
+  window.__pickForTest=h=>{ setCur(h); pinned=h; flyTo(h); };
+})();
+</script>
