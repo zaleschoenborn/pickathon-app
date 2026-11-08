@@ -4291,7 +4291,7 @@ var pr27 = function (k) { var r = PR27[k]; return r ? Math.ceil(r[PCOL]) : 0; },
         var nhL = function (t) { var P = String(t || '').replace(/\b(No|St|Mt|Dr|Mr|Mrs|Jr|Sr|vs)\. /g, '$1\u2024 '); return shortLine(P, 120).replace(/\u2024/g, '.'); };
         var gOf = function (k) { return String(k || '').split(' · ')[1] || ''; };
         // 3. the bands: ranked Discoveries, top tier first at random, sudoku (no genre or year twice in a row), never 2026
-        var BL = whyReelL.filter(function (x) { return +fyOf(x.ys, x.yr) < 2025 && x.img; });   // never 2026; 2025 is too soon to call
+        var PVW = d.preview || {}; var BL = whyReelL.filter(function (x) { return +fyOf(x.ys, x.yr) < 2025 && PVW[x.n]; }).map(function (x) { return Object.assign({}, x, { img: PVW[x.n].i }); });   // design_studio-33: only acts with a chosen preview photo   // never 2026; 2025 is too soon to call
         var bandL = sud(shufS(BL.slice(0, 8), SEED + 'b').concat(shufS(BL.slice(8, 22), SEED + 'b2')), function (x) { return [gOf(x.kind), fyOf(x.ys, x.yr)]; }).filter(function (x) { if (usedI[x.img]) return false; usedI[x.img] = 1; usedN[x.n] = 1; return true; }).slice(0, 12);
         var nDisc = (function () { try { return archAll().filter(function (a) { return a.cat === 'music' && !a.dc && !a.leg; }).length; } catch (e) { return BL.length; } })();
         var card = function (o) { return Object.assign({ cls: '', hasImg: !!o.img, hasU: isVid(o.u), hasFy: !!o.fy, hasLine: !!o.line, hasCr: !!o.cr, hasK: !!o.k, all: false, notAll: true, kc: '#9FCB8A', cue: '', hasCue: !!o.cue, playL: 'Play ' + (o.n || '') }, o); };
