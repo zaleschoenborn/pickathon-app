@@ -1589,7 +1589,7 @@ div[aria-label="Preview controls"] { display: none !important }
 #root .pk-hd-walk{display:flex;align-items:center;min-height:48px;padding:0 2px;font-size:15px;color:#B9B3A6;line-height:1.35}
 #root .pk-hd-end{height:28px}
 #root .pk-hd-colR .pk-hd-vid{display:none}
-@media (min-width:1200px){#root .pk-hd-colL .pk-hd-vid{display:none}#root .pk-hd-colR .pk-hd-vid{display:block}#root .pk-hd-cols.pk-hd-nov{grid-template-columns:minmax(0,1fr)}#root .pk-hd-nov .pk-hd-colR{display:none}#root .pk-hd-nov .pk-hd-colL{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:40px;align-items:start}#root .pk-hd-nov .pk-hd-colL>.pk-hd-sum{margin-top:0}}
+@media (min-width:1200px){#root .pk-hd-colR{display:none}#root .pk-hd-cols.pk-hd-nov{grid-template-columns:minmax(0,1fr)}#root .pk-hd-nov .pk-hd-colR{display:none}#root .pk-hd-nov .pk-hd-colL{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:40px;align-items:start}#root .pk-hd-nov .pk-hd-colL>.pk-hd-sum{margin-top:0}}
 @media (orientation:landscape) and (max-height:600px){#root .pk-hd-hero{height:min(460px,78vh)}}
 @media (min-width:1200px){
 #root .pk-hd-hero{height:500px}
@@ -1598,7 +1598,18 @@ div[aria-label="Preview controls"] { display: none !important }
 #root .pk-hd-nm img{width:88px;height:88px}
 #root .pk-hd-nm h1{font-size:96px}
 #root .pk-hd-w{padding:0 32px}
-#root .pk-hd-cols{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:40px;align-items:start;margin-top:32px}
+#root .pk-hd-cols{display:block;margin-top:32px}
+#root .pk-hd-desc{max-width:860px}
+#root .pk-hd-colL>.pk-hd-vid{margin-top:28px}
+#root .pk-hd-vi{border-radius:16px}
+#root .pk-hd-play{width:96px;height:96px;border-width:3px}
+#root .pk-hd-play b{margin-left:9px;border-left-width:32px;border-top-width:20px;border-bottom-width:20px}
+#root .pk-hd-vid{display:grid;grid-template-columns:minmax(0,1fr) auto;column-gap:24px;align-items:center}
+#root .pk-hd-vid>.pk-hd-vi{grid-column:1/-1}
+#root .pk-hd-vid .pk-cta{width:auto;margin-top:12px;white-space:nowrap!important}
+#root .pk-hd-ca{font-size:26px}
+#root .pk-hd-cs{font-size:16px}
+#root .pk-hd-colL>.pk-hd-sum{margin-top:28px}
 #root .pk-hd-desc{margin-top:0;font-size:19px}
 #root .pk-hd-vid{margin-top:0}
 #root .pk-hd-colL>.pk-hd-card:first-child{margin-top:0}
