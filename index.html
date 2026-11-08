@@ -2189,14 +2189,12 @@ html{-webkit-text-size-adjust:100%!important;text-size-adjust:100%!important}.pk
 </sc-for>
 </div>
 </sc-if>
-<div style="{{grid3}}; margin-top: 24px">
-<sc-for list="{{info.paths}}" as="p" hint-placeholder-count="6">
-<div class="pk-card" style="{{p.style}}">
-<h2 style="margin: 0; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 26px">{{p.t}}</h2>
-<p style="margin: 2px 0 8px; font-size: 14px; opacity: 0.8">{{p.x}}</p>
-<sc-for list="{{p.items}}" as="i" hint-placeholder-count="4"><button type="button" class="pk-lnk" onClick="{{i.go}}" style="display: flex; justify-content: space-between; gap: 10px; width: 100%; min-height: 44px; padding: 8px 0; border: 0; border-top: 1px solid rgba(242,237,227,0.08); background: transparent; color: inherit; font: inherit; text-align: left; cursor: pointer"><span>{{i.t}}</span><span class="pk-arr" aria-hidden="true">→</span></button></sc-for>
-</div>
-</sc-for>
+<div class="pk-trip">
+<div class="pk-tb"><sc-for list="{{info.trip.basics}}" as="f" hint-placeholder-count="4"><p class="pk-tbf"><b>{{f.b}}</b><span>{{f.s}}</span></p></sc-for><button type="button" class="pk-cta pri pk-tbb" onClick="{{info.trip.tix}}">Tickets</button></div>
+<p class="pk-tk">How are you coming?</p>
+<div class="pk-tp"><sc-for list="{{info.trip.paths}}" as="p" hint-placeholder-count="3"><article class="pk-tpc"><img src="{{p.img}}" alt="" loading="lazy" decoding="async"><div class="pk-tpt"><h2>{{p.t}}</h2><p>{{p.x}}</p><sc-for list="{{p.l}}" as="i" hint-placeholder-count="3"><button type="button" class="pk-lnk" onClick="{{i.go}}"><span>{{i.t}}</span><span class="pk-arr" aria-hidden="true">→</span></button></sc-for></div></article></sc-for></div>
+<p class="pk-tk">For everyone</p>
+<div class="pk-te"><sc-for list="{{info.trip.every}}" as="e" hint-placeholder-count="5"><button type="button" class="pk-te-b" onClick="{{e.go}}">{{e.t}}</button></sc-for></div>
 </div>
 <h2 style="{{h2}}; margin-top: 40px">Common questions</h2>
 <div style="margin: 12px 0 56px; max-width: 860px">
@@ -4170,7 +4168,16 @@ var pr27 = function (k) { var r = PR27[k]; return r ? Math.ceil(r[PCOL]) : 0; },
       var meI = st.me, from = meI ? [meI.x, meI.y] : (d.hoods.farmhouse ? d.hoods.farmhouse.p : [45, 86]);
       var wk = function (k) { var p = d.hoods[k].p; return Math.max(1, Math.round(Math.sqrt(Math.pow(p[0] - from[0], 2) + Math.pow((p[1] - from[1]) * 1.3335, 2)) * 0.13)); };
       var nearList = Object.keys(d.hoods).filter(function (k) { return d.hoods[k].k !== 'camp' || (d.hoods[k].am || []).length; }).sort(function (a, b) { return wk(a) - wk(b); }).slice(0, 7).map(function (k) { var h = d.hoods[k]; return { n: h.n, min: wk(k) + ' min', what: (h.am && h.am.length ? h.am.slice(0, 4).join(' · ') : h.t), go: openH(k) }; });
-      out.info = { title: SEA === 'fest' ? 'Info & near me' : 'Plan your trip', showNear: SEA === 'fest', near: nearList, nearHead: meI ? 'Near you' : 'Near the main gate', nearSub: meI ? 'Walk times from where you are' + (meI.demo ? ' (demo spot)' : '') + '.' : 'Tap “Find me” to sort by where you are.', findMe: function () { self.findMe(); }, findLabel: meI ? 'Update' : 'Find me', paths: d.info.map(function (p, i) { var hot = p.feat ? p.feat.indexOf(SEA) >= 0 : i === 0; return { hot: hot, t: p.t, x: p.x || '', style: 'padding: 20px; border-radius: 16px; ' + (hot ? 'background: #24301F; color: #F2EDE3; border: 1px solid #3A4A33' : 'background: #1A2017; border: 1px solid #2A3125; color: #F2EDE3'), items: p.i.map(function (it) { return { t: it[0], go: infoGo(it) }; }) }; }).map(function (p, i) { p.i0 = i; return p; }).sort(function (a, b) { return ((b.hot ? 1 : 0) - (a.hot ? 1 : 0)) || (a.i0 - b.i0); }),
+      var tripP4 = pr27('p4'), tripTeenHalf = tripP4 && Math.abs(pr27('teen') * 2 - tripP4) <= 3, tripKidFree = pr27('child') === 0;
+      var tripLn = function (t, k, v) { return { t: t, go: infoGo([t, k, v]) }; };
+      var tripPaths = [
+        { t: 'Camping all weekend', img: 'i/pk-lushcamp-04.jpg', x: 'A 3- or 4-day pass, and your tent goes up in the forest.', l: [tripLn('Tent, quiet and vehicle camping', 'page', 'camping'), tripLn('Gear shuttle and load-out', 'page', 'traveling-to-pickathon'), tripLn('What to pack', 'page', 'what-to-bring-to-pickathon')] },
+        { t: 'Just for a day', img: 'i/p451.jpg', x: 'Single days Thursday to Sunday, or Saturday and Sunday together. Home to your own bed.', l: [tripLn('Not a camper? Your easy day', 'page', 'easy-day'), tripLn('Getting here: driving, shuttle, bike', 'page', 'traveling-to-pickathon'), tripLn('Where to stay nearby', 'page', 'lodging')] },
+        { t: 'Bringing kids', img: 'i/p763.jpg', x: (tripKidFree ? '12 and under free with a ticketed adult' : 'Kid passes with a ticketed adult') + (tripTeenHalf ? '; teens half price' : '') + '. Coyote is their neighborhood.', l: [tripLn('Kids and families: Coyote', 'hood', 'coyote'), tripLn('Quiet camping in Lush Camp', 'hood', 'lushcamp'), tripLn('Teen and child passes', 'route', 'tickets')] }
+      ];
+      var tripEvery = [tripLn('Accessibility', 'page', 'ada-info'), tripLn('Food and drink', 'lineup', 'food'), tripLn('Zero waste', 'page', 'commitment-to-sustainability'), tripLn('Work trade', 'page', 'volunteer'), tripLn('Neighborhood map', 'route', 'hoods')];
+      var tripBasics = [{ b: 'Aug 4–8, 2027', s: 'Wednesday early arrival' }, { b: 'Happy Valley, OR', s: '12 miles from Portland' }, { b: 'Camping included', s: 'Tents in the woods, free' }, { b: 'From ' + m27(pr27('p3')), s: '3-day weekend pass' }];
+      out.info = { trip: { basics: tripBasics, tix: nav('tickets'), paths: tripPaths, every: tripEvery }, title: SEA === 'fest' ? 'Info & near me' : 'Plan your trip', showNear: SEA === 'fest', near: nearList, nearHead: meI ? 'Near you' : 'Near the main gate', nearSub: meI ? 'Walk times from where you are' + (meI.demo ? ' (demo spot)' : '') + '.' : 'Tap “Find me” to sort by where you are.', findMe: function () { self.findMe(); }, findLabel: meI ? 'Update' : 'Find me', paths: d.info.map(function (p, i) { var hot = p.feat ? p.feat.indexOf(SEA) >= 0 : i === 0; return { hot: hot, t: p.t, x: p.x || '', style: 'padding: 20px; border-radius: 16px; ' + (hot ? 'background: #24301F; color: #F2EDE3; border: 1px solid #3A4A33' : 'background: #1A2017; border: 1px solid #2A3125; color: #F2EDE3'), items: p.i.map(function (it) { return { t: it[0], go: infoGo(it) }; }) }; }).map(function (p, i) { p.i0 = i; return p; }).sort(function (a, b) { return ((b.hot ? 1 : 0) - (a.hot ? 1 : 0)) || (a.i0 - b.i0); }),
         faq: d.faq.map(function (f, i) { var o = st.faq === i; return { more: f[2] ? f[2][0] : 'More', go: f[2] ? infoGo(f[2]) : nav('info'), q: f[0], a: f[1], isOpen: o, open: o ? 'true' : 'false', sign: o ? '−' : '+', toggle: function () { self.setState({ faq: o ? -1 : i }); } }; }) };
     }
     if (R === 'tickets') {
@@ -5038,6 +5045,26 @@ html:root:root:root:root:root body .pk-yreel .pk-yl,html:root:root:root:root:roo
 #root .pk-yhp.pk-bkb,#root .pk-sspill.pk-tour{min-height:50px!important}
 @media (min-width:601px){#root .pk-yhp.pk-bkb,#root .pk-sspill.pk-tour{min-height:56px!important}}
 #root a.pk-in-addr,#root main a[href^="https://www.google.com/maps"]{display:inline-flex;align-items:center;min-height:44px}
+</style>
+<style id="pk-trip1">
+#root .pk-trip{margin-top:20px}
+#root .pk-tb{display:grid;grid-template-columns:1fr 1fr;gap:16px 14px;padding:18px;border-radius:16px;background:#383234;border:1px solid #4F4749}
+#root .pk-tbf{margin:0;display:flex;flex-direction:column;gap:3px;min-width:0}
+#root .pk-tbf b{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:19px;line-height:1.15;color:#F2EDE3}
+#root .pk-tbf span{font-size:13px;line-height:1.3;color:#CFC9BC}
+#root .pk-tbb{grid-column:1/-1;width:100%}
+#root .pk-tk{margin:28px 0 12px;font-size:13px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#F2B33D}
+#root .pk-tp{display:grid;grid-template-columns:1fr;gap:16px}
+#root .pk-tpc{display:flex;flex-direction:column;border-radius:16px;overflow:hidden;background:#1A2017;border:1px solid #3A4331;min-width:0}
+#root .pk-tpc img{display:block;width:100%;height:170px;object-fit:cover;margin:0}
+#root .pk-tpt{padding:16px 16px 8px}
+#root .pk-tpt h2{margin:0;font-family:'Pickathon 2014','Bricolage Grotesque',sans-serif;font-weight:800;font-size:26px;line-height:1.05;color:#F2EDE3}
+#root .pk-tpt p{margin:8px 0 10px;font-size:15px;line-height:1.4;color:#CFC9BC}
+#root .pk-tpt .pk-lnk{display:flex;justify-content:space-between;gap:10px;width:100%;min-height:44px;padding:8px 0;border:0;border-top:1px solid rgba(242,237,227,.1);background:transparent;color:#F2EDE3;font:inherit;font-size:15px;text-align:left;cursor:pointer}
+#root .pk-te{display:flex;flex-wrap:wrap;gap:10px}
+#root .pk-te-b{min-height:44px;padding:0 16px;border-radius:6px;border:1px solid #F2EDE3;background:transparent;color:#F2EDE3;font-family:'Bricolage Grotesque',sans-serif;font-size:13px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;cursor:pointer}
+@media(min-width:1200px){#root .pk-tb{grid-template-columns:repeat(4,1fr) auto;align-items:center;padding:22px 26px}#root .pk-tbb{grid-column:auto;width:auto;min-width:180px}#root .pk-tp{grid-template-columns:repeat(3,1fr)}#root .pk-tpc img{height:200px}#root .pk-tbf b{font-size:22px}}
+@media(min-width:700px) and (max-width:1199px){#root .pk-tpc img{height:170px}}
 </style>
 <style id="pk-lnt1">/*pk-lnt1: lineup tabs, music-only story bar label, non-music tiles (lineup_filter.md)*/
 #root .pk-lnt{display:flex;gap:2px;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;-ms-overflow-style:none;border-bottom:1px solid #4F4749;margin:2px 0 16px;scroll-snap-type:x proximity}
