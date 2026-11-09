@@ -1,6 +1,6 @@
 # Splice tools/climb_ladder/pk-climb.{css,js} into index.html (replaces the pk-cl-css body and the pk-cl-js script).
 import json,re,sys
-root='/home/claude/site/'
+import os; root=os.getcwd()+'/'
 s=open(root+'index.html').read()
 css=open(root+'tools/climb_ladder/pk-climb.css').read()
 a=s.index('<style id="pk-cl-css">')+len('<style id="pk-cl-css">'); b=s.index('</style>',a)

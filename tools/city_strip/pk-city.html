@@ -1,16 +1,28 @@
 <style id="pk-cy-css">
 /* pk-city: Home "Live inside a temporary city of wonder" on every screen: the picked neighborhood's photo beside a strip of the real farm map (home_flow.md section 3; Zale, Nov 9: "I wanna see the new map come on") */
-#root #pk-nh-city.pk-cyon #pk-nh-cr,#root #pk-nh-city.pk-cyon .pk-nh-arrs{display:none!important}
+#root #pk-nh-city #pk-nh-cr,#root #pk-nh-city .pk-nh-arrs{visibility:hidden}
+html.pk-cyon #root #pk-nh-city #pk-nh-cr,html.pk-cyon #root #pk-nh-city .pk-nh-arrs{display:none!important}
 /* phone and tablet (Zale, Nov 9 06:30): the same photo and real map, stacked; the map pans to the picked spot */
 #root .pk-cy.ph{grid-template-columns:minmax(0,1fr)!important;gap:12px;margin-top:14px}
 #root .pk-cy.ph .pk-cy-m{width:100%!important;overflow:clip}
-#root .pk-cy-l{position:absolute;left:0;top:0;background:no-repeat;transition:transform .6s cubic-bezier(.45,0,.25,1)}
-#root .pk-cy.ph .pk-nh-cl{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-@media (prefers-reduced-motion:reduce){#root .pk-cy-l{transition:none}}
+#root .pk-cy-l{position:absolute;left:0;top:0;background:no-repeat;transform-origin:0 0;will-change:transform}
+#root .pk-cy-k{position:absolute;inset:0;pointer-events:none}
+/* the picked neighborhood's whole outline glows; on desktop the one under the pointer lights softly (Zale, Nov 9 08:56) */
+#root .pk-cy-lit{position:absolute;max-width:none;pointer-events:none;opacity:0;transition:opacity .35s ease-out;z-index:2}
+#root .pk-cy-lit.on{opacity:1;filter:drop-shadow(0 0 2px #fff4c2) drop-shadow(0 0 14px rgba(255,205,90,.9)) brightness(1.12) saturate(1.2)}
+#root .pk-cy-lit.hv{opacity:.85;filter:drop-shadow(0 0 2px #fff4c2) drop-shadow(0 0 8px rgba(255,235,180,.6)) brightness(1.06)}
+#root .pk-cy-veil{position:absolute;inset:0;background:rgba(14,18,10,.18);z-index:1;pointer-events:none}
+#root .pk-cy-k .pk-cy-s{pointer-events:auto}
+#root .pk-cy-m{isolation:isolate;touch-action:none;cursor:grab;user-select:none;-webkit-user-select:none}
+#root .pk-cy-m.drag{cursor:grabbing}
+#root .pk-cy-m.fits{cursor:default}
+#root .pk-cy.anim .pk-cy-l,#root .pk-cy.anim .pk-cy-s{transition:transform .55s cubic-bezier(.45,0,.25,1),left .55s cubic-bezier(.45,0,.25,1),top .55s cubic-bezier(.45,0,.25,1)}
+/* phone: only the kind, the name and Explore sit on the photo (Zale, Nov 9 08:30: too much text over the image) */
+#root .pk-cy.ph .pk-cy-f .pk-nh-cl,#root .pk-cy.ph .pk-cy-f .pk-nh-cr{display:none!important}
+@media (prefers-reduced-motion:reduce){#root .pk-cy.anim .pk-cy-l,#root .pk-cy.anim .pk-cy-s{transition:none}#root .pk-cy-s.on i{animation:none!important}}
 /* the floating Listen button steps aside while the city map is on screen (as on the map pages) */
 html.pk-cy-in div:has(> button[aria-label="Listen to Pickathon"]){opacity:0!important;visibility:hidden!important;transition:opacity .2s,visibility 0s .2s}
-/* phone: the other 19 spots are small cream dots on the map's own icons, the picked one keeps its icon, gold ring and name */
-#root#root .pk-cy.ph .pk-cy-s:not(.on) i{left:16px;top:16px;width:12px;height:12px;background:#F2EDE3!important;box-shadow:0 0 0 2px rgba(31,28,29,.8);filter:none;opacity:.9}
+/* every spot is the neighborhood's own icon (no dots, Zale Nov 9 08:30); icons grow as you zoom in, names show from 1.8x */
 #root .pk-cy{position:relative}
 #root .pk-cy-nv{position:absolute;top:10px;right:12px;z-index:6;display:flex;align-items:center;border-radius:22px;background:rgba(31,28,29,.86);color:#F2EDE3;font:800 12px/1 'Bricolage Grotesque',sans-serif;letter-spacing:.08em;text-transform:uppercase;cursor:default}
 #root#root#root#root#root .pk-cy-nv button{width:44px;height:44px;min-height:44px!important;padding:0;border:0!important;border-radius:22px!important;background:transparent!important;color:#F2CF62;cursor:default;box-shadow:none;display:grid;place-items:center}
@@ -19,21 +31,43 @@ html.pk-cy-in div:has(> button[aria-label="Listen to Pickathon"]){opacity:0!impo
 #root .pk-cy-nv span{padding:0 2px;white-space:nowrap;cursor:default}
 #root .pk-cy.ph .pk-cy-f>article .pk-nh-cg{background:linear-gradient(to top,rgba(20,17,18,.92) 0%,rgba(20,17,18,.62) 42%,rgba(20,17,18,0) 72%)!important}
 #root .pk-cy.ph .pk-cy-f .pk-nh-cr{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:62%}
+@media (max-width:999px) and (max-height:720px){#root #pk-nh-city .pk-nh-in{display:none}#root #pk-nh-city .pk-nh-h2{font-size:24px!important}#root .pk-cy.ph .pk-cy-f .pk-nh-ck{display:none!important}}
 @media (max-width:370px){#root #pk-nh-city .pk-nh-h2{font-size:26px!important}#root #pk-nh-city .pk-nh-k{font-size:11px!important;letter-spacing:.06em!important}}
 #root .pk-cy{display:grid;grid-template-columns:minmax(0,1fr) 420px;gap:20px;margin-top:18px}
 #root .pk-cy-f{position:relative;height:573px;border-radius:16px;overflow:hidden;cursor:pointer;background:#1A2017}
 #root .pk-cy-f>article{position:absolute!important;inset:0!important;width:auto!important;height:auto!important;margin:0!important;border-radius:0!important}
 #root .pk-cy-f>article .pk-nh-hit{pointer-events:none}
+/* the picked neighborhood's photo is a short reel of its best shots, like the hero (Zale, Nov 9 08:59) */
+#root .pk-cy-f .pk-cy-rl{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 1.1s ease;z-index:0}
+#root .pk-cy-f .pk-cy-rl.on{opacity:1}
+#root .pk-cy-f>article .pk-nh-ci{opacity:0}
+#root .pk-cy-f>article .pk-nh-cg{z-index:1}
+#root .pk-cy-f>article .pk-nh-ct,#root .pk-cy-f>article .pk-nh-at{z-index:2}
+@media (prefers-reduced-motion:reduce){#root .pk-cy-f .pk-cy-rl{transition:none}}
 #root .pk-cy-f:focus-visible{outline:3px solid #F2CF62;outline-offset:3px}
 #root .pk-cy-m{position:relative;width:420px;height:573px;border-radius:16px;overflow:hidden;background:#12160F no-repeat}
 #root .pk-cy-m::after{content:'';position:absolute;inset:0;border-radius:16px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.08);pointer-events:none}
 #root#root#root#root#root .pk-cy-s{position:absolute;width:44px;height:44px;margin:-22px 0 0 -22px;padding:0;border:0!important;border-radius:50%!important;background:transparent!important;box-shadow:none!important;outline:0;min-height:0!important;cursor:default;z-index:1}
 #root#root#root#root#root .pk-cy-s:focus-visible{outline:2px solid #F2CF62;outline-offset:-2px}
-#root .pk-cy-s i{position:absolute;left:8px;top:8px;width:28px;height:28px;border-radius:50%;box-sizing:border-box;background:transparent center/28px no-repeat;filter:drop-shadow(0 2px 3px rgba(0,0,0,.5))}
+#root .pk-cy-s i{position:absolute;left:50%;top:50%;width:var(--iz,26px);height:var(--iz,26px);margin:calc(var(--iz,26px) / -2) 0 0 calc(var(--iz,26px) / -2);border-radius:50%;box-sizing:border-box;background:transparent center/100% no-repeat;filter:drop-shadow(0 2px 3px rgba(0,0,0,.55));transition:width .2s,height .2s,margin .2s}
 #root#root#root#root#root .pk-cy-s.on{z-index:30}
-#root .pk-cy-s.on i{width:36px;height:36px;left:4px;top:4px;background-size:36px;filter:none;box-shadow:0 0 0 3px #D6B54A,0 0 18px 4px rgba(214,181,74,.5)}
+#root .pk-cy-s:not(.on) i{box-shadow:0 0 0 2px rgba(242,237,227,.85)}
+#root .pk-cy-s.on i{--iz:42px;filter:none;box-shadow:0 0 0 3px #F2CF62,0 0 0 6px rgba(31,28,29,.55),0 0 30px 14px rgba(242,207,98,.8)}
+#root .pk-cy.own .pk-cy-s:not(.on) b{opacity:0!important}
+#root .pk-cy.zn .pk-cy-s b{opacity:1;font-size:10.5px;padding:2px 6px;background:rgba(31,28,29,.88)}
+#root .pk-cy-s b{top:calc(50% + var(--iz,26px) / 2 + 3px)!important}
+#root .pk-cy-s.on b{top:calc(50% + 24px)!important}
+#root .pk-cy-zm{position:absolute;right:10px;top:10px;z-index:40;display:flex;flex-direction:column;gap:6px}
+#root#root#root#root#root .pk-cy-zm button{width:44px;height:44px;min-height:44px!important;padding:0;border-radius:8px!important;border:1.5px solid rgba(242,237,227,.5)!important;background:rgba(31,28,29,.88)!important;color:#F2EDE3;display:grid;place-items:center;cursor:pointer;box-shadow:none}
+#root .pk-cy-zm svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:round}
+#root#root .pk-cy-zm button:disabled{opacity:.35;cursor:default}
+#root .pk-cy-hint{position:absolute;left:10px;bottom:12px;z-index:40;padding:5px 9px;border-radius:4px;background:rgba(31,28,29,.88);color:#F2EDE3;font:700 12px 'Bricolage Grotesque',sans-serif;pointer-events:none;transition:opacity .4s}
+#root .pk-cy-hint.off{opacity:0}
+#root#root .pk-cy-s.nz:not(.on) b{opacity:0!important}
+#root#root .pk-cy-s.nz.on b{top:auto!important;bottom:calc(50% + 24px);right:4px;left:auto;transform:none}
+#root .pk-cy:not(.ph) .pk-cy-hint{top:12px;bottom:auto}
 #root .pk-cy-s b{position:absolute;left:50%;top:40px;transform:translateX(-50%);white-space:nowrap;padding:3px 8px;border-radius:4px;background:#1F1C1D;color:#F2EDE3;font:800 12px/1.1 'Bricolage Grotesque',sans-serif;font-stretch:75%;font-variation-settings:'wdth' 75;letter-spacing:.08em;text-transform:uppercase;opacity:0;pointer-events:none;transition:opacity .15s}
-#root .pk-cy-s.on b{opacity:1;background:#D6B54A;color:#2B2628;pointer-events:auto}
+#root#root .pk-cy-s.on b{opacity:1;background:#F2CF62;color:#1F1C1D;pointer-events:auto;font-size:12px;padding:4px 9px}
 @media (hover:hover) and (pointer:fine){#root .pk-cy-s:hover b{opacity:1}}
 #root .pk-cy-s:focus-visible b{opacity:1}
 #root .pk-cy-s:hover{z-index:4}
@@ -43,6 +77,9 @@ html.pk-cy-in div:has(> button[aria-label="Listen to Pickathon"]){opacity:0!impo
 <script id="pk-cy-js">
 (function () {
   var P = { cherryhill: [1385, 2280], courtyard: [1036, 3212], coyote: [1323, 2080], curation: [546, 3620], farmhouse: [1345, 3316], galaxy: [1060, 3100], grove: [1335, 2510], lucky: [814, 3296], lushcamp: [1110, 1470], market: [1535, 2420], orchard: [1042, 3310], paddock: [1004, 2804], quailtrail: [1857, 1780], southcamp: [860, 3564], refuge: [1781, 1984], welcomelot: [1897, 3584], wildcamp: [736, 520], willowcamp: [1639, 3590], windmill: [874, 2570], woods: [1755, 1320] }; // centers of the map's own icons (map.webp px), Nov 9
+  // each neighborhood's own lit outline, pre-made for the farm map page (farmmap/l/<id>.webp; x, y, w, h in map.webp px)
+  var LO = {"woods":[1587,1181,343,307],"paddock":[794,2516,559,537],"cherryhill":[1247,2131,288,351],"grove":[1059,2349,445,364],"windmill":[675,2404,489,558],"galaxy":[884,3004,295,250],"lucky":[669,2940,406,484],"farmhouse":[869,3224,590,380],"curation":[379,3481,337,308],"refuge":[1668,1870,303,367],"coyote":[1117,1957,464,329],"market":[1390,1992,354,713],"orchard":[879,3231,319,208],"welcomelot":[1729,3459,312,309],"quailtrail":[1607,1381,335,819],"southcamp":[685,3391,798,386],"willowcamp":[1471,3459,337,309],"courtyard":[904,3128,344,261],"wildcamp":[235,0,1481,2279],"lushcamp":[603,268,1254,2339]};
+  try { window.__pkCyP = P; window.__pkCyLO = LO; } catch (e) {}
   var NM = { 'cherry hill': 'cherryhill', 'courtyard': 'courtyard', 'coyote': 'coyote', 'curation': 'curation', 'farmhouse': 'farmhouse', 'galaxy barn': 'galaxy', 'grove': 'grove', 'lucky': 'lucky', 'lush camp': 'lushcamp', 'market': 'market', 'orchard': 'orchard', 'paddock': 'paddock', 'quail trail': 'quailtrail', 'south camp': 'southcamp', 'the refuge': 'refuge', 'refuge': 'refuge', 'welcome lot': 'welcomelot', 'wild camp': 'wildcamp', 'willow camp': 'willowcamp', 'windmill': 'windmill', 'woods': 'woods', 'the woods': 'woods' };
   var W0 = 420, X0 = 330, Y0 = 1150, MW = 2041, MH = 3810, S0 = W0 / (MW - X0), H0 = Math.round((MH - Y0) * S0), W = W0, S = S0, H = H0;
   var st = { pick: null, sig: '' };
@@ -54,8 +91,8 @@ html.pk-cy-in div:has(> button[aria-label="Listen to Pickathon"]){opacity:0!impo
   var PH = { on: false, Hf: 300, Vh: 240 };
   var Y1 = 1150; // desktop crop top (just above the Woods); phone/tablet pan, so they start at Wild Camp
   function sizeForPh(sec) { Y0 = 430; var w = (sec.querySelector('.pk-nh-head') || sec).clientWidth || 358; PH.w = w; W = Math.max(280, w); S = W / (MW - X0); H = Math.round((MH - Y0) * S);
-    var hd = sec.querySelector('.pk-nh-head'), hb = hd ? hd.getBoundingClientRect().bottom - sec.getBoundingClientRect().top : 120, tb = 64, vis = (window.innerHeight || 800) - 76 - tb - hb - 14 - 12, av = Math.max(400, Math.min(vis, window.innerWidth < 700 ? 600 : 900));
-    PH.Hf = Math.round(av * 0.6); PH.Vh = av - PH.Hf - 12; if (PH.Vh < 170) { PH.Vh = 170; PH.Hf = Math.max(200, av - 12 - 170); } }
+    var hd = sec.querySelector('.pk-nh-head'), hb = hd ? hd.getBoundingClientRect().bottom - sec.getBoundingClientRect().top : 120, tb = 64, vis = (window.innerHeight || 800) - 76 - tb - hb - 14 - 12, av = Math.max(330, Math.min(vis, window.innerWidth < 700 ? 600 : 900));
+    PH.Hf = Math.round(av * (av < 460 ? 0.52 : 0.6)); PH.Vh = av - PH.Hf - 12; if (PH.Vh < 160) { PH.Vh = 160; PH.Hf = Math.max(160, av - 12 - 160); } }
   function sizeFor() { Y0 = Y1; var hmax = Math.max(420, (window.innerHeight || 900) - 250 - (window.innerWidth < 1200 ? 64 : 0)); if (H0 > hmax) { H = Math.round(hmax); S = H / (MH - Y0); W = Math.round((MW - X0) * S); } else { W = W0; S = S0; H = H0; } }
   function focusKey(sec) { var a = document.activeElement; if (!a || !sec.contains(a)) return null; return a.getAttribute('data-cy') ? '[data-cy="' + a.getAttribute('data-cy') + '"]' : a.getAttribute('data-st') ? '.pk-cy-nv [data-st="' + a.getAttribute('data-st') + '"]' : a.classList.contains('pk-cy-f') ? '.pk-cy-f' : a.classList.contains('pk-cy-all') ? '.pk-cy-all' : null; }
   document.addEventListener('focusin', function (e) { var sec = document.getElementById('pk-nh-city'); st.fk = sec && sec.contains(e.target) ? focusKey(sec) : null; });
@@ -67,50 +104,106 @@ html.pk-cy-in div:has(> button[aria-label="Listen to Pickathon"]){opacity:0!impo
     var box = sec.querySelector('.pk-cy'); if (!box) { box = document.createElement('div'); box.className = 'pk-cy'; var hd = sec.querySelector('.pk-nh-head'); hd.parentNode.insertBefore(box, hd.nextSibling); }
     if (!st.pick || ids.indexOf(st.pick) < 0) st.pick = ids.filter(Boolean)[0];
     var L = spread(ids.map(function (id, i) { return id && P[id] ? { id: id, i: i, x: (P[id][0] - X0) * S, y: (P[id][1] - Y0) * S, n: (A[i].querySelector('.pk-nh-cn') || {}).textContent || id } : null; }).filter(Boolean));
+    st.L = L; st.W = W; st.H = H;
     var bg = 'background-image:url(farmmap/map.webp);background-size:' + (MW * S).toFixed(1) + 'px auto;background-position:' + (-X0 * S).toFixed(1) + 'px ' + (-Y0 * S).toFixed(1) + 'px;';
-    var h = PH.on ? '<div class="pk-cy-f" role="link" tabindex="0" style="height:' + PH.Hf + 'px"></div>' + '<div class="pk-cy-nv"><button type="button" data-st="-1" aria-label="Previous neighborhood"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M10 3 5 8l5 5"/></svg></button><span aria-hidden="true"></span><button type="button" data-st="1" aria-label="Next neighborhood"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m6 3 5 5-5 5"/></svg></button></div>' + '<div class="pk-cy-m" role="group" aria-label="The neighborhoods on the farm map" style="height:' + PH.Vh + 'px"><div class="pk-cy-l" style="' + bg + 'height:' + H + 'px;width:' + W + 'px">'
-      : '<div class="pk-cy-f" role="link" tabindex="0" style="height:' + H + 'px"></div><div class="pk-cy-m" role="group" aria-label="The neighborhoods on the farm map" style="' + bg + 'height:' + H + 'px">';
-    L.forEach(function (q) { h += '<button type="button" class="pk-cy-s' + (q.id === st.pick ? ' on' : '') + (q.x > W - 70 ? ' ed-r' : q.x < 70 ? ' ed-l' : '') + (q.y > H - 50 ? ' ed-b' : '') + '" data-cy="' + q.id + '" aria-pressed="' + (q.id === st.pick) + '" aria-label="' + q.n.replace(/"/g, '') + '" style="left:' + q.x.toFixed(1) + 'px;top:' + q.y.toFixed(1) + 'px"><i style="background-image:url(ic2/' + q.id + '.png)"></i><b>' + q.n + '</b></button>'; });
-    h += PH.on ? '</div></div>' : '</div>';
+    var vh = PH.on ? PH.Vh : H, h = '<div class="pk-cy-f" role="link" tabindex="0" style="height:' + (PH.on ? PH.Hf : H) + 'px"></div>';
+    if (PH.on) h += '<div class="pk-cy-nv"><button type="button" data-st="-1" aria-label="Previous neighborhood"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M10 3 5 8l5 5"/></svg></button><span aria-hidden="true"></span><button type="button" data-st="1" aria-label="Next neighborhood"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m6 3 5 5-5 5"/></svg></button></div>';
+    h += '<div class="pk-cy-m" role="group" aria-label="The neighborhoods on the farm map. Drag to look around, pinch or use the zoom buttons." style="height:' + vh + 'px"><div class="pk-cy-l" style="' + bg + 'height:' + H + 'px;width:' + W + 'px">' + L.map(function (q) { var o = LO[q.id]; return o ? '<img class="pk-cy-lit" data-lit="' + q.id + '" alt="" src="farmmap/l/' + q.id + '.webp?v=33" style="left:' + ((o[0] - X0) * S).toFixed(1) + 'px;top:' + ((o[1] - Y0) * S).toFixed(1) + 'px;width:' + (o[2] * S).toFixed(1) + 'px;height:' + (o[3] * S).toFixed(1) + 'px">' : ''; }).join('') + '<i class="pk-cy-veil"></i></div><div class="pk-cy-zm"><button type="button" data-z="1" aria-label="Zoom in"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 3v10M3 8h10"/></svg></button><button type="button" data-z="-1" aria-label="Zoom out"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10"/></svg></button></div><div class="pk-cy-k">';
+    L.forEach(function (q) { h += '<button type="button" class="pk-cy-s' + (q.id === st.pick ? ' on' : '') + '" data-cy="' + q.id + '" aria-pressed="' + (q.id === st.pick) + '" data-n="' + q.n.replace(/"/g, '') + '" aria-label="' + q.n.replace(/"/g, '') + '"><i style="background-image:url(ic2/' + q.id + '.png)"></i><b>' + q.n + '</b></button>'; });
+    h += '</div>' + (st.used ? '' : '<span class="pk-cy-hint" aria-hidden="true">' + (PH.on ? 'Drag or pinch the map' : 'Zoom in to look around') + '</span>') + '</div>';
     h += '<p class="pk-sr" aria-live="polite"></p>'; box.innerHTML = h; var nv0 = box.querySelector('.pk-cy-nv'); if (nv0) nv0.style.top = (PH.Hf - 56) + 'px'; box.classList.toggle('ph', PH.on); var mm = box.querySelector('.pk-cy-m');
     if (PH.on) { box.style.gridTemplateColumns = ''; } else { box.style.gridTemplateColumns = 'minmax(0,1fr) ' + W + 'px'; if (mm) mm.style.width = W + 'px'; }
     var all = [].filter.call(sec.querySelectorAll('#pk-nh-cr > article.all'), function (a) { return /map/i.test(a.textContent); })[0];
     if (all) { var b = document.createElement('button'); b.type = 'button'; b.className = 'pk-cy-all' + (PH.on ? ' ph' : ''); b.textContent = ((all.querySelector('.pk-nh-an') || {}).textContent || 'All on the map').trim() + ' →'; b.addEventListener('click', function () { var hh = all.querySelector('.pk-nh-hit'); if (hh) hh.click(); }); if (!PH.on) sec.querySelector('.pk-nh-head').appendChild(b); }
-    sec.classList.add('pk-cyon'); show(sec, true, true);
+    st.vw = PH.on ? (mm.clientWidth || W) : W; st.vh = vh;
+    if (!st.v || st.v.key !== st.sig) { st.v = { z: 1, tx: 0, ty: 0, key: st.sig }; centerOn(st.pick, true); }
+    sec.classList.add('pk-cyon'); document.documentElement.classList.add('pk-cyon'); st.box = box; st.ids = ids.join(','); show(sec, true, true); apply(sec);
   }
-  function panTo(sec, y, now, x) { var l = sec.querySelector('.pk-cy-l'); if (!l) return; var ty = Math.max(Math.min(0, y < PH.Vh * 1.4 ? PH.Vh - 46 - y : PH.Vh / 2 - y), PH.Vh - (parseFloat(l.style.height) || PH.Vh)); if (now) { l.style.transition = 'none'; l.style.transform = 'translateY(' + ty.toFixed(1) + 'px)'; l.offsetHeight; l.style.transition = ''; } else l.style.transform = 'translateY(' + ty.toFixed(1) + 'px)'; }
+  // ---- the map view: drag, pinch, zoom buttons; spots stay the same size on screen (Zale, Nov 9 08:30) ----
+  var ZMAX = 3.2;
+  function clampV() { var v = st.v, cw = st.W * v.z, ch = st.H * v.z; v.tx = cw <= st.vw ? (st.vw - cw) / 2 : Math.max(st.vw - cw, Math.min(0, v.tx)); v.ty = ch <= st.vh ? (st.vh - ch) / 2 : Math.max(st.vh - ch, Math.min(0, v.ty)); }
+  function qOf(id) { return (st.L || []).filter(function (q) { return q.id === id; })[0]; }
+  function centerOn(id, quiet) { var q = qOf(id); if (!q || !st.v) return; var v = st.v; v.tx = st.vw / 2 - q.x * v.z; v.ty = (q.y * v.z < st.vh * 0.7 && v.z === 1 ? 0 : st.vh / 2 - q.y * v.z); clampV(); }
+  function apply(sec, anim) {
+    sec = sec || document.getElementById('pk-nh-city'); if (!sec || !st.v) return; var box = sec.querySelector('.pk-cy'), l = sec.querySelector('.pk-cy-l'); if (!box || !l) return;
+    clampV(); var v = st.v; box.classList.toggle('anim', !!anim); if (anim) { clearTimeout(st.at); st.at = setTimeout(function () { box.classList.remove('anim'); }, 600); }
+    l.style.transform = 'translate(' + v.tx.toFixed(1) + 'px,' + v.ty.toFixed(1) + 'px) scale(' + v.z.toFixed(3) + ')';
+    var iz = Math.round(26 + (Math.min(v.z, ZMAX) - 1) * 6); box.style.setProperty('--iz', iz + 'px'); box.classList.toggle('zn', v.z >= 1.8 && S * v.z < 0.55); box.classList.toggle('own', S * v.z >= 0.55);
+    sec.querySelectorAll('.pk-cy-s').forEach(function (b) { var q = qOf(b.getAttribute('data-cy')); if (!q) return; var x = q.x * v.z + v.tx, y = q.y * v.z + v.ty; b.style.left = x.toFixed(1) + 'px'; b.style.top = y.toFixed(1) + 'px'; var nearZ = x > st.vw - 70 && y < 120; b.classList.toggle('nz', nearZ); b.classList.toggle('ed-r', x > st.vw - 70); b.classList.toggle('ed-l', x < 70); b.classList.toggle('ed-b', y > st.vh - 50); var out = x < 4 || y < 4 || x > st.vw - 4 || y > st.vh - 4; b.style.visibility = out ? 'hidden' : ''; });
+    var mmz = sec.querySelector('.pk-cy-m'); if (mmz) mmz.classList.toggle('fits', st.W * v.z <= st.vw + 1 && st.H * v.z <= st.vh + 1); var zb = sec.querySelectorAll('.pk-cy-zm button'); if (zb.length) { zb[0].disabled = v.z >= ZMAX - 0.01; zb[1].disabled = v.z <= 1.01; }
+  }
+  function zoomAt(nz, cx, cy, anim) { var v = st.v; nz = Math.max(1, Math.min(ZMAX, nz)); v.tx = cx - (cx - v.tx) * nz / v.z; v.ty = cy - (cy - v.ty) * nz / v.z; v.z = nz; apply(null, anim); }
+  function used() { if (st.used) return; st.used = true; var hn = document.querySelector('#pk-nh-city .pk-cy-hint'); if (hn) hn.classList.add('off'); }
   function show(sec, now, quiet) {
     var A = cards(sec), a = A.filter(function (x) { return idOf(x) === st.pick; })[0] || A[0]; if (!a) return; var f = sec.querySelector('.pk-cy-f'); if (!f) return;
-    var c = a.cloneNode(true); c.removeAttribute('role'); [].forEach.call(c.querySelectorAll('button,a,[tabindex]'), function (x) { x.setAttribute('tabindex', '-1'); x.setAttribute('aria-hidden', 'true'); }); f.innerHTML = ''; f.appendChild(c);
+    var c = a.cloneNode(true); c.removeAttribute('role'); [].forEach.call(c.querySelectorAll('button,a,[tabindex]'), function (x) { x.setAttribute('tabindex', '-1'); x.setAttribute('aria-hidden', 'true'); }); f.innerHTML = ''; f.appendChild(c); reel(f, idOf(a), c);
     var txt = function (q) { return ((a.querySelector(q) || {}).textContent || '').trim(); }, nm = txt('.pk-nh-cn'), k = A.indexOf(a) + 1;
     var sp = sec.querySelector('.pk-cy-nv span'); if (sp) sp.textContent = k + ' of ' + A.length;
-    f.setAttribute('aria-label', nm + ', ' + txt('.pk-nh-ck') + '. ' + txt('.pk-nh-cl') + ' Explore it on the map');
+    f.setAttribute('aria-label', nm + ', ' + txt('.pk-nh-ck') + '. ' + txt('.pk-nh-cl') + ' Open the ' + nm + ' page');
     var lr = sec.querySelector('.pk-cy .pk-sr'); if (lr && !quiet) lr.textContent = nm + ', ' + k + ' of ' + A.length;
-    sec.querySelectorAll('.pk-cy-s').forEach(function (s) { var on = s.getAttribute('data-cy') === st.pick; s.classList.toggle('on', on); s.setAttribute('aria-pressed', String(on)); });
-    var on = sec.querySelector('.pk-cy-s.on'); if (on) panTo(sec, parseFloat(on.style.top) || 0, now, parseFloat(on.style.left) || 0);
+    sec.querySelectorAll('.pk-cy-s').forEach(function (s) { var on = s.getAttribute('data-cy') === st.pick; s.classList.toggle('on', on); s.setAttribute('aria-pressed', String(on)); s.setAttribute('aria-label', (s.getAttribute('data-n') || '') + (on ? ', picked. Open its page' : '')); var bb = s.querySelector('b'); if (bb) bb.textContent = (s.getAttribute('data-n') || '') + (on ? ' →' : ''); });
+    lit(sec);
+    if (!now) { centerOn(st.pick); apply(sec, true); }
   }
+  var RT = null;
+  function reel(f, id, c) {
+    clearInterval(RT); var Lr = ((window.__pkNBHM || {})[id] || []).slice(0, 5), ci = c.querySelector('.pk-nh-ci'); if (!ci) return; if (!Lr.length) { ci.style.opacity = '1'; return; }
+    var ims = Lr.map(function (u, i) { var im = document.createElement('img'); im.className = 'pk-cy-rl' + (i === 0 ? ' on' : ''); im.alt = ''; im.decoding = 'async'; if (i < 2) im.src = u; else im.setAttribute('data-src', u); c.insertBefore(im, ci); return im; });
+    var k = 0, reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches; if (ims.length < 2 || reduce) return;
+    RT = setInterval(function () { if (document.hidden || !document.documentElement.classList.contains('pk-cy-in') || !document.contains(c)) return; var n = (k + 1) % ims.length, nx = ims[(n + 1) % ims.length]; if (nx.getAttribute('data-src')) { nx.src = nx.getAttribute('data-src'); nx.removeAttribute('data-src'); } if (!ims[n].complete) return; ims[k].classList.remove('on'); ims[n].classList.add('on'); k = n; }, 4200);
+  }
+  function lit(sec) { sec = sec || document.getElementById('pk-nh-city'); if (!sec) return; sec.querySelectorAll('.pk-cy-lit').forEach(function (im) { var id = im.getAttribute('data-lit'); im.classList.toggle('on', id === st.pick); im.classList.toggle('hv', id === st.hov && id !== st.pick); }); }
+  // the neighborhood under a point on the map (its outline box, nearest center wins)
+  function hoodAt(cx, cy) { var v = st.v, best = null, bd = 1e9; (st.L || []).forEach(function (q) { var o = LO[q.id]; if (!o) return; var mx = (cx - v.tx) / v.z / S + X0, my = (cy - v.ty) / v.z / S + Y0; if (mx < o[0] || my < o[1] || mx > o[0] + o[2] || my > o[1] + o[3]) return; var d = Math.hypot(mx - P[q.id][0], my - P[q.id][1]); if (d < bd) { bd = d; best = q.id; } }); return best; }
+  function openHood(id) { if (!id) return; try { sessionStorage.setItem('pkmap.focus', id); } catch (e) {} if (window.__pkGo) { window.__pkGo('hood', { h: id }); return; } var sec = document.getElementById('pk-nh-city'), a = sec && cards(sec).filter(function (x) { return idOf(x) === id; })[0], hit = a && a.querySelector('.pk-nh-hit'); if (hit) hit.click(); }
   function step(sec, d) { var ids = cards(sec).map(idOf).filter(Boolean), i = ids.indexOf(st.pick); st.pick = ids[(i + d + ids.length) % ids.length]; show(sec); }
   document.addEventListener('click', function (e) {
-    var s = e.target.closest && e.target.closest('.pk-cy-s'); var sec = document.getElementById('pk-nh-city');
-    var nv = e.target.closest && e.target.closest('.pk-cy-nv'); if (nv && sec && sec.contains(nv)) { var nb = e.target.closest('button'); if (nb) step(sec, +nb.getAttribute('data-st')); return; }
-    if (s && sec && sec.contains(s)) { st.pick = s.getAttribute('data-cy'); show(sec); return; }
-    var f = e.target.closest && e.target.closest('.pk-cy-f');
-    if (f && sec && sec.contains(f) && Date.now() - (window.pkCySwiped || 0) < 500) return;
-    if (f && sec && sec.contains(f)) { var a = cards(sec).filter(function (x) { return idOf(x) === st.pick; })[0]; var hit = a && a.querySelector('.pk-nh-hit'); if (hit) hit.click(); }
+    var sec = document.getElementById('pk-nh-city'); if (!sec || !sec.contains(e.target)) return;
+    var nv = e.target.closest('.pk-cy-nv'); if (nv) { var nb = e.target.closest('button'); if (nb) step(sec, +nb.getAttribute('data-st')); return; }
+    var zb = e.target.closest('.pk-cy-zm button'); if (zb) { used(); zoomAt(st.v.z * (+zb.getAttribute('data-z') > 0 ? 1.6 : 1 / 1.6), st.vw / 2, st.vh / 2, true); return; }
+    var s = e.target.closest('.pk-cy-s');
+    if (s) { if (Date.now() - (st.dragT || 0) < 300) return; var id = s.getAttribute('data-cy'); if (id === st.pick) { openHood(id); return; } st.pick = id; show(sec); return; }
+    var f = e.target.closest('.pk-cy-f');
+    if (f && Date.now() - (window.pkCySwiped || 0) < 500) return;
+    if (f) openHood(st.pick);
   });
+  // drag and pinch on the map (pointer events; one finger pans, two pinch; a tap still picks a spot)
+  var PT = {}, G = null, lastTap = 0;
+  function pts() { return Object.keys(PT).map(function (k) { return PT[k]; }); }
+  document.addEventListener('pointerdown', function (e) {
+    var m = e.target.closest && e.target.closest('#pk-nh-city .pk-cy-m'); if (!m || e.target.closest('.pk-cy-zm') || (e.pointerType === 'mouse' && e.button !== 0)) return;
+    PT[e.pointerId] = { x: e.clientX, y: e.clientY }; var p = pts(), r = m.getBoundingClientRect();
+    if (p.length === 1) G = { k: 1, x: e.clientX, y: e.clientY, tx: st.v.tx, ty: st.v.ty, moved: false, r: r };
+    else if (p.length === 2) G = { k: 2, d: Math.hypot(p[0].x - p[1].x, p[0].y - p[1].y) || 1, z: st.v.z, cx: (p[0].x + p[1].x) / 2 - r.left, cy: (p[0].y + p[1].y) / 2 - r.top, tx: st.v.tx, ty: st.v.ty, moved: true, r: r };
+  });
+  window.addEventListener('pointermove', function (e) {
+    if (!G || !PT[e.pointerId]) return; PT[e.pointerId] = { x: e.clientX, y: e.clientY }; var p = pts(), v = st.v, m = document.querySelector('#pk-nh-city .pk-cy-m');
+    if (G.k === 1 && p.length === 1) { var dx = e.clientX - G.x, dy = e.clientY - G.y; if (!G.moved && Math.hypot(dx, dy) < 7) return; G.moved = true; used(); if (m) m.classList.add('drag'); v.tx = G.tx + dx; v.ty = G.ty + dy; apply(); }
+    else if (G.k === 2 && p.length === 2) { used(); var d = Math.hypot(p[0].x - p[1].x, p[0].y - p[1].y), nz = Math.max(1, Math.min(ZMAX, G.z * d / G.d)), cx = (p[0].x + p[1].x) / 2 - G.r.left, cy = (p[0].y + p[1].y) / 2 - G.r.top; v.z = nz; v.tx = cx - (G.cx - G.tx) * nz / G.z; v.ty = cy - (G.cy - G.ty) * nz / G.z; apply(); }
+  });
+  function up(e) {
+    if (!PT[e.pointerId]) return; delete PT[e.pointerId]; var m = document.querySelector('#pk-nh-city .pk-cy-m'); if (m) m.classList.remove('drag');
+    if (G && G.moved) st.dragT = Date.now();
+    else if (G && G.k === 1 && e.type === 'pointerup' && !(e.target.closest && e.target.closest('.pk-cy-s'))) { var t = Date.now(); if (t - lastTap < 320) { used(); zoomAt(st.v.z * 1.8, e.clientX - G.r.left, e.clientY - G.r.top, true); lastTap = 0; } else { lastTap = t; var hid = hoodAt(e.clientX - G.r.left, e.clientY - G.r.top), sec0 = document.getElementById('pk-nh-city'); if (hid && sec0) { st.dragT = Date.now(); if (hid === st.pick && e.pointerType === 'mouse') openHood(hid); else if (hid !== st.pick) { st.pick = hid; show(sec0); } } } }
+    var p = pts(); G = p.length === 1 ? { k: 1, x: p[0].x, y: p[0].y, tx: st.v.tx, ty: st.v.ty, moved: true, r: (m || document.body).getBoundingClientRect() } : null;
+  }
+  window.addEventListener('pointerup', up); window.addEventListener('pointercancel', up);
+  document.addEventListener('mousemove', function (e) { var m = e.target.closest && e.target.closest('#pk-nh-city .pk-cy-m'); var id = null; if (m && !G && !e.target.closest('.pk-cy-zm')) { var r = m.getBoundingClientRect(), s = e.target.closest('.pk-cy-s'); id = s ? s.getAttribute('data-cy') : hoodAt(e.clientX - r.left, e.clientY - r.top); m.style.cursor = id && id !== st.pick ? 'pointer' : ''; } if (id !== st.hov) { st.hov = id; lit(); } });
+  document.addEventListener('wheel', function (e) { var m = e.target.closest && e.target.closest('#pk-nh-city .pk-cy-m'); if (!m || !e.ctrlKey) return; e.preventDefault(); used(); var r = m.getBoundingClientRect(); zoomAt(st.v.z * Math.exp(-e.deltaY * 0.01), e.clientX - r.left, e.clientY - r.top); }, { passive: false });
   var sw = null;
   document.addEventListener('touchstart', function (e) { var f = e.target.closest && e.target.closest('#pk-nh-city .pk-cy-f'); sw = f ? { x: e.touches[0].clientX, y: e.touches[0].clientY, moved: false } : null; }, { passive: true });
   document.addEventListener('touchmove', function (e) { if (sw && Math.abs(e.touches[0].clientX - sw.x) > 10) sw.moved = true; }, { passive: true });
-  document.addEventListener('touchend', function (e) { if (!sw) return; var t = e.changedTouches[0], dx = t.clientX - sw.x, dy = t.clientY - sw.y; if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy) * 1.3) { var sec = document.getElementById('pk-nh-city'); sw.swiped = Date.now(); step(sec, dx < 0 ? 1 : -1); } window.pkCySwiped = sw.swiped || 0; sw = null; });
-  document.addEventListener('focusin', function (e) { var s = e.target.closest && e.target.closest('#pk-nh-city .pk-cy.ph .pk-cy-s'); if (s) { var m = s.closest('.pk-cy-m'); m.scrollTop = 0; requestAnimationFrame(function () { m.scrollTop = 0; }); panTo(document.getElementById('pk-nh-city'), parseFloat(s.style.top) || 0); } });
-  document.addEventListener('focusout', function (e) { var s = e.target.closest && e.target.closest('#pk-nh-city .pk-cy.ph .pk-cy-s'); if (s && !(e.relatedTarget && e.relatedTarget.closest && e.relatedTarget.closest('.pk-cy-s'))) { var sec = document.getElementById('pk-nh-city'), on = sec && sec.querySelector('.pk-cy-s.on'); if (on) panTo(sec, parseFloat(on.style.top) || 0); } });
+  document.addEventListener('touchend', function (e) { if (!sw) return; var t = e.changedTouches[0], dx = t.clientX - sw.x, dy = t.clientY - sw.y; if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5) { var sec = document.getElementById('pk-nh-city'); sw.swiped = Date.now(); step(sec, dx < 0 ? 1 : -1); } window.pkCySwiped = sw.swiped || (sw.moved ? Date.now() : 0); sw = null; });
+  document.addEventListener('focusin', function (e) { var s = e.target.closest && e.target.closest('#pk-nh-city .pk-cy-s'); if (s) { var m = s.closest('.pk-cy-m'); m.scrollTop = 0; m.scrollLeft = 0; var x = parseFloat(s.style.left) || 0, y = parseFloat(s.style.top) || 0; if (x < 30 || y < 30 || x > st.vw - 30 || y > st.vh - 30) { centerOn(s.getAttribute('data-cy')); apply(null, true); } } });
   document.addEventListener('keydown', function (e) { if ((e.key === 'Enter' || e.key === ' ') && e.target.classList && e.target.classList.contains('pk-cy-f')) { e.preventDefault(); e.target.click(); } });
   var io = null, ioEl = null;
-  setInterval(function () {
+  try { new MutationObserver(function () { var sec = document.getElementById('pk-nh-city'); if (!sec || sec.querySelector('.pk-cy')) return; var hd = sec.querySelector('.pk-nh-head'), ids = cards(sec).map(idOf).join(','); if (st.box && hd && (!ids || ids === st.ids) && (window.innerWidth < 1000) === PH.on) { hd.parentNode.insertBefore(st.box, hd.nextSibling); sec.classList.add('pk-cyon'); if (ids) { show(sec, true, true); apply(sec); } return; } if (!ids) return; st.sig = ''; tick(); }).observe(document.documentElement, { childList: true, subtree: true }); } catch (e) {}
+  function tick() {
     var sec = document.getElementById('pk-nh-city'); if (!sec) { document.documentElement.classList.remove('pk-cy-in'); return; }
     if (ioEl !== sec && window.IntersectionObserver) { if (io) io.disconnect(); ioEl = sec; io = new IntersectionObserver(function (es) { es.forEach(function (en) { document.documentElement.classList.toggle('pk-cy-in', en.isIntersecting && en.intersectionRatio > 0.2); }); }, { threshold: [0, 0.2, 0.5] }); io.observe(sec); }
     var A = cards(sec), sig = A.map(idOf).join(',');
     var vk = sig + '|' + (window.innerWidth || 0) + '|' + (window.innerWidth < 1000 ? 0 : window.innerHeight || 0); if (sig && (vk !== st.sig || !sec.querySelector('.pk-cy'))) { st.sig = vk; build(sec); }
-  }, 500);
+  }
+  setInterval(tick, 500);
 })();
 </script>

@@ -28,3 +28,20 @@
 }
 /* Home renders every section up front: no content-visibility skipping (blank sections on phones, Zale Nov 9 06:30) */
 main:has(#pk-nh-climb)>section{content-visibility:visible!important;contain-intrinsic-size:none!important}
+/* time bar above the poster: the year it played to today, with Replay beside it (Zale, Nov 9 09:02) */
+#root .pk-cl-tb{display:flex;align-items:center;gap:12px;margin:12px auto 0;max-width:960px}
+#root .pk-cl-ty{flex:none;font:800 15px/1 'Bricolage Grotesque',sans-serif;letter-spacing:.06em;color:#CFC9BC;font-variant-numeric:tabular-nums}
+#root .pk-cl-ty:first-child{color:#F2EDE3}
+#root .pk-cl-tr{position:relative;flex:1;min-width:60px;height:4px;border-radius:2px;background:rgba(242,237,227,.18)}
+#root .pk-cl-tf{position:absolute;left:0;top:0;bottom:0;border-radius:2px;background:#F2CF62}
+#root .pk-cl-tm{position:absolute;top:-24px;transform:translateX(-50%);font:800 13px/1 'Bricolage Grotesque',sans-serif;color:#F2CF62;font-variant-numeric:tabular-nums;transition:opacity .2s;pointer-events:none}
+#root .pk-cl-tm::after{content:'';position:absolute;left:50%;top:20px;width:10px;height:10px;margin-left:-5px;border-radius:50%;background:#F2CF62}
+#root#root#root .pk-cl-rpl{flex:none;min-height:44px;padding:0 14px;border-radius:6px;border:2px solid rgba(242,237,227,.55);background:transparent;color:#F2EDE3;font:800 13px 'Bricolage Grotesque',sans-serif;letter-spacing:1px;text-transform:uppercase;cursor:pointer;white-space:nowrap}
+#root#root#root .pk-cl-rpl:hover{border-color:#F2EDE3}
+#root#root#root .pk-cl-tl{max-width:960px!important;width:auto;margin:6px auto 14px!important;font-size:13px;color:#B9B3A6}
+@media (max-width:999px){#root .pk-cl-tb{gap:10px}#root .pk-cl-ty{font-size:13px}}
+
+/* review r2: names never draw past the paper; Another year clears the heading on phone */
+#root .pk-cl-p{overflow:hidden}
+@media (max-width:999px){#root .pk-cl-ht .pk-nh-h2{margin-top:22px!important}}
+#root#root#root#root .pk-cl-tb .pk-cl-rpl{min-height:44px!important;height:auto!important;padding:0 14px!important;font-size:13px!important;width:auto!important}
