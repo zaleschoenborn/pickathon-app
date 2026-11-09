@@ -1,0 +1,154 @@
+<style id="pk-tn-css">
+/* Then and now: one dot per music band, class on the chosen date (year_page.md, story card graphic). Design Studio, Nov 9 2026 */
+#root .pk-st-mix.pk-tn-off{display:none!important}
+#root .pk-tn{min-width:0;padding:18px 18px 14px;border-radius:14px;background:#12160F;color:#F2EDE3;--tn-d:20px;--tn-g:4px}
+#root .pk-tn *{box-sizing:border-box}
+#root .pk-tn-k{margin:0;font:800 11.5px/1.2 'Bricolage Grotesque',sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#CFC9BC}
+#root .pk-tn-h{margin:4px 0 6px;font:800 22px/1.05 'Bricolage Grotesque',sans-serif;letter-spacing:.01em;text-transform:uppercase;color:#F2EDE3}
+#root .pk-tn-p{margin:0 0 12px;font-size:13.5px;line-height:1.4;color:#CFC9BC}
+#root .pk-tn-nav{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;margin:0 0 12px}
+#root .pk-tn-step{display:flex;align-items:center;gap:6px}
+#root#root .pk-tn button{font-family:'Bricolage Grotesque',sans-serif;cursor:pointer;width:auto}
+#root#root .pk-tn-sb{width:44px!important;height:44px;min-height:44px;padding:0!important;border-radius:6px;border:1.5px solid rgba(242,237,227,.45)!important;background:transparent!important;color:#F2EDE3!important;display:grid;place-items:center}
+#root#root .pk-tn-sb:disabled{opacity:.3;cursor:default}
+#root .pk-tn-sb svg{width:18px;height:18px}
+#root .pk-tn-dt{min-width:118px;text-align:center;line-height:1.1}
+#root .pk-tn-dt b{display:block;font:800 15px 'Bricolage Grotesque',sans-serif;letter-spacing:.06em}
+#root .pk-tn-dt span{display:block;margin-top:2px;font-size:10.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#F2CF62}
+#root .pk-tn-chips{display:flex;gap:6px}
+#root#root .pk-tn-chip{min-height:44px;padding:0 12px!important;border-radius:999px;border:1.5px solid rgba(242,237,227,.35)!important;background:transparent!important;color:#F2EDE3!important;font-size:12.5px!important;font-weight:800;letter-spacing:.03em;white-space:nowrap}
+#root#root .pk-tn-chip[aria-pressed="true"]{background:#F2EDE3!important;color:#12160F!important;border-color:#F2EDE3!important}
+#root .pk-tn-cols{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:0 0 6px}
+#root .pk-tn-cols div{min-width:0;border-top:3px solid var(--c);padding-top:5px}
+#root .pk-tn-cols b{display:block;font:800 24px/1 'Bricolage Grotesque',sans-serif;color:var(--c)}
+#root .pk-tn-cols span{display:block;margin-top:2px;font-size:10.5px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:#B9B3A6;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#root .pk-tn-f{position:relative;margin:4px 0 0}
+#root#root .pk-tn-dot{position:absolute;left:0;top:0;width:var(--tn-d)!important;height:var(--tn-d);min-height:0;padding:0!important;border-radius:50%;border:0!important;background:var(--c)!important;transition:transform .7s cubic-bezier(.3,.7,.2,1),background-color .7s;box-shadow:none}
+#root#root .pk-tn-dot.mv{box-shadow:0 0 0 1.5px #12160F,0 0 0 3px #F2CF62}
+#root#root .pk-tn-dot.sel{box-shadow:0 0 0 2px #12160F,0 0 0 4.5px #F2EDE3;z-index:2}
+#root#root .pk-tn-dot:focus-visible{outline:2px solid #F2EDE3;outline-offset:3px}
+@media (prefers-reduced-motion:reduce){#root#root .pk-tn-dot{transition:none}}
+#root .pk-tn-tip{position:absolute;z-index:3;pointer-events:none;transform:translate(-50%,-100%);margin-top:-6px;padding:4px 8px;border-radius:4px;background:#F2EDE3;color:#12160F;font:800 12px 'Bricolage Grotesque',sans-serif;white-space:nowrap;display:none}
+@media (hover:hover) and (pointer:fine){#root .pk-tn-tip.on{display:block}}
+#root .pk-tn-card{margin:12px 0 0;padding:10px 12px;border-radius:8px;background:rgba(242,237,227,.07);min-height:44px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+#root .pk-tn-card b{font:800 15px 'Bricolage Grotesque',sans-serif}
+#root .pk-tn-card span{font-size:13px;color:#CFC9BC}
+#root .pk-tn-card i{font-style:normal;font-size:13px;color:#F2CF62}
+#root#root .pk-tn-go{margin-left:auto;min-height:36px;padding:0 10px!important;border-radius:6px;border:1.5px solid rgba(242,237,227,.4)!important;background:transparent!important;color:#F2EDE3!important;font-size:12.5px!important;font-weight:800}
+#root .pk-tn-fn{margin:10px 0 0;font-size:11.5px;color:#9A9486}
+#root .pk-tn .pk-sr{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+@media (max-width:599px){#root .pk-tn{--tn-d:16px;padding:16px 14px 12px}#root .pk-tn-h{font-size:20px}#root .pk-tn-nav{flex-direction:column;align-items:stretch}#root .pk-tn-step{justify-content:space-between}#root .pk-tn-chips>*{flex:1}}
+</style>
+<script id="pk-tn-js">
+(function () {
+  var COL = [['leg', 'Legends', 'Legend', '#D6B54A'], ['disc', 'Discoveries', 'Discovery', '#9FCB8A'], ['deep', 'Deep cuts', 'Deep cut', '#7FD3E6'], ['none', 'More to hear', 'More to hear', '#B49BDB']];
+  var CI = { leg: 0, disc: 1, deep: 2, none: 3 };
+  var MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  var ST = {};
+  function mo(s) { var p = s.split('-'); return MON[+p[1] - 1] + ' ' + p[0]; }
+  function months(a, b) { var x = a.split('-'), z = b.split('-'); return (+z[0] - +x[0]) * 12 + (+z[1] - +x[1]); }
+  function cap(Y, i) {
+    var n = Y.dates.length - 1;
+    if (i === n) return 'Now';
+    if (i === Y.fest) return 'At the festival';
+    if (i < Y.fest) return 'When booked';
+    var m = months(Y.dates[Y.fest], Y.dates[i]);
+    return m === 6 ? 'Six months on' : m === 12 ? 'A year on' : m === 18 ? '18 months on' : m === 24 ? 'Two years on' : m + ' months on';
+  }
+  function nextRating() { var t = new Date(), y = t.getFullYear(), m = t.getMonth(); return m < 1 ? 'Feb 1, ' + y : m < 7 ? 'Aug 1, ' + y : 'Feb 1, ' + (y + 1); }
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function openAct(n, y) {
+    var b = document.querySelector('button.pk-b1[aria-label^="' + n.replace(/"/g, '\\"') + '"]') || document.querySelector('button.pk-b3[aria-label^="' + n.replace(/"/g, '\\"') + '"]');
+    try { if (window.__pkApp && window.__pkApp.go) { window.__pkApp.go('act', { n: n, y: y }); return; } } catch (e) {}
+    if (b) b.click();
+  }
+  function build(host, y, Y) {
+    var s = ST[y] || (ST[y] = { i: Y.dates.length - 1, sel: null });
+    var F = Y.fest, N = Y.dates.length - 1;
+    if (s.sel == null) {
+      var best = null, bv = -99;
+      Y.acts.forEach(function (a, k) { if (a.c[F] !== a.c[N]) { var v = (a.m[N] - a.m[F]) * 100 + a.m[N]; if (v > bv) { bv = v; best = k; } } });
+      s.sel = best == null ? 0 : best;
+    }
+    var w = document.createElement('div');
+    w.className = 'pk-tn'; w.setAttribute('role', 'group'); w.setAttribute('aria-label', 'Then and now: what ' + y + ' turned into');
+    w.innerHTML = '<p class="pk-tn-k">Then and now</p><h3 class="pk-tn-h">What ' + y + ' turned into</h3>' +
+      '<p class="pk-tn-p">The ' + Y.acts.length + ' bands of ' + y + ', re-rated every six months with what was known on each date. Nobody is a Discovery at the festival; it shows in the rooms they play after.</p>' +
+      '<div class="pk-tn-nav"><div class="pk-tn-step"><button type="button" class="pk-tn-sb" data-d="-1" aria-label="Earlier date"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>' +
+      '<div class="pk-tn-dt" aria-live="polite"><b></b><span></span></div>' +
+      '<button type="button" class="pk-tn-sb" data-d="1" aria-label="Later date"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button></div>' +
+      '<div class="pk-tn-chips"><button type="button" class="pk-tn-chip" data-j="' + F + '">At the festival</button><button type="button" class="pk-tn-chip" data-j="' + N + '">Now</button></div></div>' +
+      '<div class="pk-tn-cols">' + COL.map(function (c) { return '<div style="--c:' + c[3] + '"><b></b><span>' + c[1] + '</span></div>'; }).join('') + '</div>' +
+      '<div class="pk-tn-f"><span class="pk-tn-tip" aria-hidden="true"></span>' + Y.acts.map(function (a, k) { return '<button type="button" class="pk-tn-dot" data-k="' + k + '"></button>'; }).join('') + '</div>' +
+      '<div class="pk-tn-card" aria-live="polite"></div>' +
+      '<p class="pk-tn-fn">Scores 0–10 · next re-rating ' + nextRating() + '</p>';
+    var dots = w.querySelectorAll('.pk-tn-dot'), field = w.querySelector('.pk-tn-f'), tip = w.querySelector('.pk-tn-tip');
+    function lab(a, i) { return COL[CI[a.c[i]]][2]; }
+    function layout() {
+      var cs = getComputedStyle(w), D = parseFloat(cs.getPropertyValue('--tn-d')) || 20, G = 4;
+      var cols = w.querySelectorAll('.pk-tn-cols div'); if (!cols.length || !cols[0].offsetWidth) return;
+      var colW = cols[0].offsetWidth, x0 = cols[0].offsetLeft, step = cols[1].offsetLeft - cols[0].offsetLeft, per = Math.max(1, Math.floor((colW + G) / (D + G)));
+      var maxRows = 1;
+      Y.dates.forEach(function (_, i) { var cn = [0, 0, 0, 0]; Y.acts.forEach(function (a) { cn[CI[a.c[i]]]++; }); cn.forEach(function (n) { maxRows = Math.max(maxRows, Math.ceil(n / per)); }); });
+      field.style.height = (maxRows * (D + G) - G) + 'px';
+      var i = s.i, groups = [[], [], [], []];
+      Y.acts.forEach(function (a, k) { groups[CI[a.c[i]]].push(k); });
+      groups.forEach(function (g, ci) {
+        g.sort(function (p, q) { return (Y.acts[q].m[i] - Y.acts[p].m[i]) || Y.acts[p].n.localeCompare(Y.acts[q].n); });
+        g.forEach(function (k, r) { var d = dots[k]; d.style.transform = 'translate(' + (x0 - field.offsetLeft + ci * step + (r % per) * (D + G)) + 'px,' + (Math.floor(r / per) * (D + G)) + 'px)'; });
+      });
+      w.querySelectorAll('.pk-tn-cols b').forEach(function (b, ci) { b.textContent = groups[ci].length; });
+    }
+    function paint() {
+      var i = s.i, a = Y.acts[s.sel];
+      w.querySelector('.pk-tn-dt b').textContent = mo(Y.dates[i]).toUpperCase();
+      w.querySelector('.pk-tn-dt span').textContent = cap(Y, i);
+      w.querySelectorAll('.pk-tn-sb')[0].disabled = i === 0; w.querySelectorAll('.pk-tn-sb')[1].disabled = i === N;
+      w.querySelectorAll('.pk-tn-chip').forEach(function (c) { c.setAttribute('aria-pressed', String(+c.dataset.j === i)); });
+      dots.forEach(function (d, k) {
+        var x = Y.acts[k]; d.style.setProperty('--c', COL[CI[x.c[i]]][3]);
+        d.classList.toggle('mv', x.c[F] !== x.c[N]); d.classList.toggle('sel', k === s.sel);
+        d.setAttribute('aria-label', x.n + ': ' + lab(x, i) + ' in ' + mo(Y.dates[i]) + (x.c[F] !== x.c[N] ? ', changed since the festival' : ''));
+        d.setAttribute('aria-pressed', String(k === s.sel));
+      });
+      var ch = a.c[F] !== a.c[N], h = '<b>' + esc(a.n) + '</b>';
+      if (ch) {
+        var j = N; while (j > 0 && a.c[j - 1] === a.c[N]) j--;
+        h += '<span>At the festival: ' + lab(a, F) + ' ' + a.m[F] + ' → Now: ' + lab(a, N) + ' ' + a.m[N] + '</span><i>Became a' + (/^[AEIOU]/.test(lab(a, N)) ? 'n ' : ' ') + lab(a, N) + ': ' + mo(Y.dates[j]) + '</i>';
+      } else h += '<span>' + lab(a, N) + ' at the festival and now · score ' + a.m[N] + '</span>';
+      h += '<button type="button" class="pk-tn-go">Artist page →</button>';
+      var card = w.querySelector('.pk-tn-card'); card.innerHTML = h;
+      card.querySelector('.pk-tn-go').onclick = function () { openAct(a.n, y); };
+      layout();
+    }
+    w.addEventListener('click', function (e) {
+      var t = e.target.closest('button'); if (!t || !w.contains(t)) return;
+      if (t.classList.contains('pk-tn-sb')) { s.i = Math.max(0, Math.min(N, s.i + +t.dataset.d)); paint(); }
+      else if (t.classList.contains('pk-tn-chip')) { s.i = +t.dataset.j; paint(); }
+      else if (t.classList.contains('pk-tn-dot')) { s.sel = +t.dataset.k; paint(); }
+    });
+    w.addEventListener('mouseover', function (e) {
+      var t = e.target.closest('.pk-tn-dot'); if (!t) { tip.classList.remove('on'); return; }
+      var r = t.getBoundingClientRect(), fr = field.getBoundingClientRect();
+      tip.textContent = Y.acts[+t.dataset.k].n; tip.style.left = (r.left - fr.left + r.width / 2) + 'px'; tip.style.top = (r.top - fr.top) + 'px'; tip.classList.add('on');
+    });
+    w.addEventListener('mouseleave', function () { tip.classList.remove('on'); });
+    host.parentNode.insertBefore(w, host); host.classList.add('pk-tn-off');
+    w.__layout = layout; paint();
+    return w;
+  }
+  var ro = null;
+  function tick() {
+    var R = window.__pkYR || {}, m = document.querySelector('.pk-yp-mount[data-y]'), mix = document.querySelector('#root .pk-story .pk-st-mix');
+    if (!mix || !mix.offsetParent && !mix.classList.contains('pk-tn-off')) return;
+    var y = m && m.getAttribute('data-y'), Y = y && R[y];
+    var old = mix.parentNode.querySelector('.pk-tn');
+    if (!Y || !Y.acts || !Y.acts.length) { if (old) old.remove(); mix.classList.remove('pk-tn-off'); return; }
+    if (old && old.getAttribute('data-y') === y) return;
+    if (old) old.remove();
+    var w = build(mix, y, Y); w.setAttribute('data-y', y);
+    if (window.ResizeObserver) { if (ro) ro.disconnect(); ro = new ResizeObserver(function () { w.__layout(); }); ro.observe(w.querySelector('.pk-tn-cols')); }
+  }
+  setInterval(tick, 400);
+})();
+</script>
