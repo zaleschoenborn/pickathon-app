@@ -36,12 +36,13 @@ for y, LL in yln.items():
 
 def fix_blurb(t, n):
     t = (t or '').strip()
+    t = re.sub(r'^((Website|Instagram|Facebook|Mixcloud|Bandcamp|XRAY\.FM|TikTok|YouTube|Twitter|Linktree)\s*\|?\s*)+', '', t, flags=re.I).strip()
     if not t or not t[0].islower(): return t
     if re.match(r'^(is|are|was|were|has|have)\b', t): return n + ' ' + t
     s = re.split(r'(?<=[.!?])\s+(?=[A-Z])', t, maxsplit=1)
     return s[1] if len(s) > 1 else t
 
-alias, ph, AS = {}, d.get('yearPhotos') or {}, d.get('actSets') or {}
+alias, ph, AS = dict(d.get('actAlias') or {}), d.get('yearPhotos') or {}, d.get('actSets') or {}   # keep earlier aliases: the script runs again on its own output
 renamed = 0
 for g, rows in G.items():
     rows.sort(key=lambda r: r[0])
@@ -56,10 +57,13 @@ for g, rows in G.items():
         parts = (b.get('c') or '').split(' · ')
         if len(parts) > 1 and parts[1] not in ('Discovery', 'Legend', 'Deep cut'): late_tag = parts[1]; break
     blurbs = [b.get('l') for _, b in reversed(rows) if b.get('l')]
-    links = []
+    links, dom = [], set()
     for _, b in reversed(rows):
         for u in b.get('lk') or []:
-            if u not in links: links.append(u)
+            u = u.rstrip('.,;)')
+            mm = re.search(r'instagram|facebook|bandcamp|spotify|soundcloud|tiktok|linktr|twitter|x\.com|mixcloud', u)
+            dk = mm.group(0) if mm else 'web'
+            if dk not in dom: dom.add(dk); links.append(u)
     for y, b in rows:
         old = b['n']
         if old != name:
@@ -79,7 +83,7 @@ for g, rows in G.items():
             b['c'] = lu1 + ' · ' + {'disc': 'Discovery', 'leg': 'Legend', 'deep': 'Deep cut'}[first['k']]
         else:
             b['k'] = 'none'; b['c'] = lu1 + (' · ' + late_tag if late_tag else '')
-        b['l'] = fix_blurb(b.get('l') or (blurbs[0] if blurbs else ''), name)
+        b['l'] = fix_blurb(blurbs[0] if blurbs else '', name)   # one bio per act: the latest year's
         if links: b['lk'] = links[:3]
 # every lineup-list spelling of a paged act points at its page too
 for y, LL in yln.items():
