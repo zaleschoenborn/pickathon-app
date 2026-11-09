@@ -1068,8 +1068,8 @@ html.pk-nh-ontop #root [role=region][aria-label="Listen"],html.pk-nh-ontop #root
   var LEAD = ['THE', 'A', '&', '& THE', 'AND', 'AND THE', 'THEE', 'DR.', 'MR.', 'MS.', 'LA', 'LOS', 'LAS', 'EL'];
   var LH = 0.86;
   var ALLY = function () { return Object.keys(C).filter(function (k) { return C[k] && C[k].names && C[k].names.length; }).map(Number).sort(function (a, b) { return b - a; }); };
-  // ANOTHER YEAR draws from the summers that have a climber (2005 on, never 2025/2026), shuffled so nothing repeats until all have shown.
-  var POOL = function () { return ALLY().filter(function (y) { var D = C[y]; return y <= 2024 && D.clim && D.labels && D.labels.length > 1; }); };
+  // ANOTHER YEAR draws from every summer that has a climber, shuffled so nothing repeats until all have shown.
+  var POOL = function () { return ALLY().filter(function (y) { var D = C[y]; return D.clim && D.labels && D.labels.length > 1; }); }; // every year with a climber, 2025 and 2026 included (no year holdback, Zale Nov 8-9)
 
   // Sizes. Desktop: the paper is 960 wide (inner 880): art 330 at left, list column 524. Phone and tablet (phone-style): art small on top, list full width.
   function cfg(ph, wAvail) {
