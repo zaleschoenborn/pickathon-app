@@ -930,6 +930,20 @@ var rl=false;navigator.serviceWorker.addEventListener('controllerchange',functio
 /* Listen float stays off the hero text until the visitor scrolls past the hero */
 html.pk-nh-ontop #root [role=region][aria-label="Listen"],html.pk-nh-ontop #root button.pk-tly{opacity:0!important;pointer-events:none!important}
 </style>
+<style id="pk-cn-css">
+/* Creative Neighborhoods block on Home (home_flow.md section 4) */
+#root .pk-cn-in{max-width:960px;margin:0 auto}
+#root .pk-cn-g{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:28px;align-items:start;margin-top:18px}
+#root .pk-cn-f{position:relative;margin:0;border-radius:16px;overflow:hidden;aspect-ratio:4/3;background:#1A2017}
+#root .pk-cn-f img{width:100%;height:100%;object-fit:cover;display:block}
+#root .pk-cn-f figcaption{position:absolute;left:14px;bottom:14px;padding:6px 10px;border-radius:4px;background:#1F1C1D;color:#C9A3C4;font:800 12px/1 'Bricolage Grotesque',sans-serif;font-stretch:75%;font-variation-settings:'wdth' 75;letter-spacing:.12em;text-transform:uppercase}
+#root .pk-cn-s{margin:0;font-size:22px;line-height:1.4;color:#F2EDE3}
+#root .pk-cn-l{margin:14px 0 0;font-size:16px;line-height:1.55;color:#CFC9BC}
+#root#root .pk-cn-a{all:unset;cursor:pointer;color:#D6B54A;font-weight:800;min-height:44px;display:inline-flex;align-items:center}
+#root .pk-cn-d{display:flex;flex-wrap:wrap;gap:22px 34px;margin-top:22px;align-items:flex-end}
+#root .pk-cn-dk{margin:0 0 8px;font:800 12px/1.2 'Bricolage Grotesque',sans-serif;font-stretch:75%;font-variation-settings:'wdth' 75;letter-spacing:.12em;text-transform:uppercase;color:#CFC9BC}
+@media (max-width:999px){#root .pk-cn-g{grid-template-columns:1fr;gap:16px}#root .pk-cn-s{font-size:19px}#root .pk-cn-d{flex-direction:column;align-items:stretch;gap:14px}#root .pk-cn-d .pk-cta{width:100%}}
+</style>
 <style id="pk-cl-css">
 /* pk-climb v2: the vertical ladder (home_flow.md section 5, Nov 9) */
 #root .pk-cl-mount{max-width:1120px;margin:0 auto;font-family:'Bricolage Grotesque',system-ui,sans-serif}
@@ -1603,6 +1617,14 @@ window.addEventListener('scroll',tick,{passive:true,capture:true});setInterval(t
 </sc-for></div>
 </section>
 <section id="pk-nh-climb" class="pk-nh-sec" aria-labelledby="pk-cl-h"><div class="pk-cl-mount"></div></section>
+<section id="pk-nh-cn" class="pk-nh-sec pk-cn" aria-labelledby="pk-cn-h"><div class="pk-cn-in">
+<p class="pk-nh-k" style="color:#C9A3C4">Creative Neighborhoods</p>
+<h2 id="pk-cn-h" class="pk-nh-h2">Our stages don’t get torn down. They get given away.</h2>
+<div class="pk-cn-g"><figure class="pk-cn-f"><img src="farmmap/h/cherryhill0.webp" alt="Cherry Hill at Pickathon" loading="lazy" decoding="async"><figcaption>Cherry Hill → nets for Ukraine</figcaption></figure>
+<div class="pk-cn-t"><p class="pk-cn-s">Portland State students built Cherry Hill. After the festival, its nets went to Ukraine to help shield villages from drones.</p>
+<p class="pk-cn-l">Every neighborhood is built with architects, schools and makers through Creative Neighborhoods, our nonprofit. Most get a second life. <button type="button" class="pk-cn-a" onclick="window.pkGo&&window.pkGo('build')">See where they went →</button></p>
+<div class="pk-cn-d"><div><p class="pk-cn-dk">Have a project?</p><button type="button" class="pk-cta pri" onclick="window.pkGo&&window.pkGo('build')">Build it with us →</button></div><div><p class="pk-cn-dk">Sponsor, donate or join the team</p><button type="button" class="pk-cn-a pk-cn-a2" onclick="window.pkGo&&window.pkGo('build')">Get involved →</button></div></div>
+</div></div></div></section>
 
 <section class="pk-nh-q" aria-label="What the press says" data-nhq="1"><div class="pk-nh-qs"><sc-for list="{{nh.quotes}}" as="q" hint-placeholder-count="2"><figure class="pk-nh-qf" data-i="{{q.i}}"><blockquote>“{{q.t}}”</blockquote><figcaption>{{q.s}}</figcaption></figure></sc-for></div><p class="pk-nh-qn" aria-hidden="true"><span class="pk-nh-qi">1</span> of {{nh.qN}}</p></section>
 <section class="pk-nh-sec pk-nh-facts" aria-labelledby="pk-nh-fh"><p class="pk-nh-k" id="pk-nh-fh">And a few more things</p><div class="pk-nh-fg" role="list"><sc-for list="{{nh.facts}}" as="f" hint-placeholder-count="3"><div role="listitem" class="pk-nh-f"><p class="pk-nh-fv">{{f.v}}</p><p class="pk-nh-fk">{{f.k}}</p></div></sc-for></div></section>
@@ -3405,6 +3427,8 @@ class Component extends DCLogic {
   }
   go(r, extra, replace) {
     this._navT = Date.now();
+    // Why Pickathon is retired (home_flow.md "Off Home"; Zale, Nov 9): its route lands on Home at the bands
+    if (r === 'why') { r = 'home'; extra = undefined; setTimeout(function () { try { var b = document.getElementById('pk-nh-bands'); if (b) b.scrollIntoView({ block: 'start' }); } catch (e) {} }, 450); }
     if (r !== 'why') { this.state.whyLu = false; }
     if (r === 'why' || r === 'home' || r === 'map') this._seed = 0;
     if (r !== 'lineup') { this._pickLead = null; if (r !== 'home') this._featLead = null; }
@@ -3674,7 +3698,7 @@ var pr27 = function (k) { var r = PR27[k]; return r ? Math.ceil(r[PCOL]) : 0; },
     var nStarsAll = Object.keys(stars).length;
     var TABSD = { off: [['home', 'Home'], ['hoods', 'Neighborhoods'], ['tickets', 'Tickets'], ['mine', 'My Pickathon'], ['more', 'More']], lineup: [['home', 'Home'], ['lineup', 'Lineup'], ['tickets', 'Tickets'], ['mine', 'My Pickathon'], ['more', 'More']], sched: [['lineup', 'Lineup'], ['schedule', 'Schedule'], ['tickets', 'Tickets'], ['mine', 'My Pickathon'], ['more', 'More']], fest: [['home', 'Map'], ['schedule', 'Schedule'], ['mine', 'My Pickathon'], ['info', 'Info'], ['more', 'More']] }[SEA];
     var deskItems = TABSD.filter(function (t) { return t[0] !== 'more' && t[0] !== 'tickets' && !(t[0] === 'home' && t[1] === 'Home'); }).map(function (t) { return [t[0], t[0] === 'mine' ? '★ My Pickathon' + (nStarsAll ? ' (' + nStarsAll + ')' : '') : t[1]]; });
-    var EXTRA = { off: [['lineup', 'Lineup'], ['why', 'Why Pickathon'], ['info', 'Plan your trip'], ['stories', 'Stories']], lineup: [['hoods', 'Neighborhoods'], ['why', 'Why Pickathon'], ['info', 'Plan your trip'], ['stories', 'Stories']], sched: [['hoods', 'Neighborhoods'], ['info', 'Plan your trip'], ['why', 'Why Pickathon'], ['stories', 'Stories']], fest: [['lineup', 'Lineup'], ['stories', 'Stories']] }[SEA];
+    var EXTRA = { off: [['lineup', 'Lineup'], ['info', 'Plan your trip'], ['stories', 'Stories']], lineup: [['hoods', 'Neighborhoods'], ['info', 'Plan your trip'], ['stories', 'Stories']], sched: [['hoods', 'Neighborhoods'], ['info', 'Plan your trip'], ['stories', 'Stories']], fest: [['lineup', 'Lineup'], ['stories', 'Stories']] }[SEA];
     var VWd = st.vw || (typeof window !== 'undefined' ? window.innerWidth : 1300); var nEx = VWd >= 1680 ? 4 : VWd >= 1440 ? 3 : VWd >= 1280 ? 2 : VWd >= 1120 ? 1 : 0; if (SEA === 'lineup' || SEA === 'sched') nEx = Math.max(0, nEx - (SEA === 'sched' ? 2 : 1));
     var curEx = EXTRA.filter(function (n, i) { return i >= nEx && (R === n[0] || (n[0] === 'hoods' && R === 'hood') || (n[0] === 'stories' && R === 'story') || (n[0] === 'info' && R === 'page') || (n[0] === 'lineup' && (R === 'artist' || R === 'past'))); });
     var mineIx = deskItems.map(function (n) { return n[0]; }).indexOf('mine'); var exAdd = nEx ? EXTRA.slice(0, Math.max(0, nEx - curEx.length)).concat(curEx) : [];
@@ -3693,7 +3717,7 @@ var pr27 = function (k) { var r = PR27[k]; return r ? Math.ceil(r[PCOL]) : 0; },
     out.deskNav = deskItems.map(function (n) { var on = R === n[0] || (n[0] === 'hoods' && R === 'hood') || (n[0] === 'lineup' && (R === 'artist' || R === 'past')) || (n[0] === 'stories' && R === 'story') || (n[0] === 'info' && R === 'page') || (n[0] === 'home' && R === 'home'); return { label: n[1], cur: on ? 'page' : 'false', go: n[0] === 'home' ? out.goHome : function () { self.reset(n[0]); }, style: navSt(on) }; });
     var TABS = { off: [['home', 'Home'], ['hoods', 'Places'], ['tickets', 'Tickets'], ['mine', 'My Pickathon'], ['more', 'More']], lineup: [['lineup', 'Lineup'], ['hoods', 'Places'], ['tickets', 'Tickets'], ['mine', 'My Pickathon'], ['more', 'More']], sched: [['lineup', 'Lineup'], ['schedule', 'Schedule'], ['tickets', 'Tickets'], ['mine', 'My Pickathon'], ['more', 'More']], fest: [['home', 'Map'], ['schedule', 'Schedule'], ['mine', 'My Pickathon'], ['info', 'Info'], ['more', 'More']] }[SEA];
     var inTabs = {}; TABS.forEach(function (t) { inTabs[t[0]] = true; });
-    var MENU = [['home', 'Home'], ['lineup', 'Lineup'], ['schedule', 'Schedule'], ['hoods', 'All neighborhoods'], ['info', SEA === 'fest' ? 'Info & FAQ' : 'Plan your trip'], ['stories', 'Stories'], ['tickets', 'Tickets'], ['mine', SEA === 'off' ? '★ My Pickathon' : 'My Pickathon'], ['why', 'Why Pickathon'], ['about', 'Our story'], ['build', 'Build with Pickathon'], ['partners', 'Partners'], ['press', 'Press'], ['presents', 'Pickathon Presents'], ['account', st.user ? 'Your account & tickets' : 'Sign in'], ['tour', 'Take the tour'], ['watch', 'Watch'], ['search', 'Search']].filter(function (n) { if (n[0] === 'schedule' && (SEA === 'off' || SEA === 'lineup')) return false;  return !inTabs[n[0]]; });
+    var MENU = [['home', 'Home'], ['lineup', 'Lineup'], ['schedule', 'Schedule'], ['hoods', 'All neighborhoods'], ['info', SEA === 'fest' ? 'Info & FAQ' : 'Plan your trip'], ['stories', 'Stories'], ['tickets', 'Tickets'], ['mine', SEA === 'off' ? '★ My Pickathon' : 'My Pickathon'], ['about', 'Our story'], ['build', 'Build with Pickathon'], ['partners', 'Partners'], ['press', 'Press'], ['presents', 'Pickathon Presents'], ['account', st.user ? 'Your account & tickets' : 'Sign in'], ['tour', 'Take the tour'], ['watch', 'Watch'], ['search', 'Search']].filter(function (n) { if (n[0] === 'schedule' && (SEA === 'off' || SEA === 'lineup')) return false;  return !inTabs[n[0]]; });
     var fP = function (slug) { return function () { self.go('page', { p: slug }); }; };
     out.footContact = function () { self.go('page', { p: 'contact-pickathon' }); }; out.fnl = (function () {
       var v = st.fnlVal || '';
@@ -3759,7 +3783,7 @@ var pr27 = function (k) { var r = PR27[k]; return r ? Math.ceil(r[PCOL]) : 0; },
         wake: function () { self.ssWake(); }, skip: function () { var c = self._ssSkipN = (self._ssSkipN || 0) + 1; if (c < 30) setTimeout(function () { self.ssStep(1); }, 50); },
         filters: fl.map(function (f) { var on = F === f[0]; return { id: f[0], sel: on, label: f[1], on: on ? 'true' : 'false', style: 'min-height: 36px; padding: 0 12px; border-radius: 999px; font: inherit; font-size: 13px; font-weight: 700; cursor: pointer; ' + (on ? 'background: #F2EDE3; color: #12160F; border: 0' : 'background: rgba(0,0,0,0.4); color: #F2EDE3; border: 1px solid rgba(242,237,227,0.5)'), pick: function (e) { if (e && e.stopPropagation) e.stopPropagation(); self.setState({ ssF: f[0], ssI: 0, ssPrevK: '', ssT0: Date.now(), ssFO: false }); self.ssTick(); } }; }) };
     })();
-    out.foot = [['Plan', [['Tickets and prices', nav('tickets')], ['Getting here', fP('traveling-to-pickathon')], ['Camping', fP('camping')], ['What to pack', fP('what-to-bring-to-pickathon')], ['Accessibility', fP('ada-info')], ['Not a camper? Easy day', fP('easy-day')]]], ['Pickathon', [['Why Pickathon', nav('why')], ['Neighbors & community', fP('neighbors')], ['Our story', nav('about')], ['Pickathon Presents', nav('presents')], ['The Pickathon Archive', nav('past')], ['Neighborhoods', nav('hoods')], ['Stories', nav('stories')]]], ['Work with us', [['Build with Pickathon', nav('build')], ['Partners', nav('partners')], ['Work trade', fP('volunteer')], ['Vendors', function () { self.go('story', { s: 44005 }); }], ['Contact us', function () { self.go('page', { p: 'contact-pickathon' }); }]]]].map(function (c) { return { t: c[0], links: c[1].map(function (l) { return { t: l[0], go: l[1] }; }) }; });
+    out.foot = [['Plan', [['Tickets and prices', nav('tickets')], ['Getting here', fP('traveling-to-pickathon')], ['Camping', fP('camping')], ['What to pack', fP('what-to-bring-to-pickathon')], ['Accessibility', fP('ada-info')], ['Not a camper? Easy day', fP('easy-day')]]], ['Pickathon', [['Neighbors & community', fP('neighbors')], ['Our story', nav('about')], ['Pickathon Presents', nav('presents')], ['The Pickathon Archive', nav('past')], ['Neighborhoods', nav('hoods')], ['Stories', nav('stories')]]], ['Work with us', [['Build with Pickathon', nav('build')], ['Partners', nav('partners')], ['Work trade', fP('volunteer')], ['Vendors', function () { self.go('story', { s: 44005 }); }], ['Contact us', function () { self.go('page', { p: 'contact-pickathon' }); }]]]].map(function (c) { return { t: c[0], links: c[1].map(function (l) { return { t: l[0], go: l[1] }; }) }; });
     out.phoneMenu = (function () { var have = {}; MENU.forEach(function (n) { have[n[0]] = n[1]; }); var pg = function (slug, lab) { return [':' + slug, lab]; };
       var G = [['Festival', ['home', 'lineup', 'schedule', 'hoods', ['@archive', 'Discoveries & deep cuts'], 'watch', 'info', pg('easy-day', 'Not a camper? Easy day'), 'stories']], ['Year-round', ['presents', 'why', 'about', 'build', 'partners', pg('neighbors', 'Neighbors & community'), 'press']], ['You', ['tickets', 'mine', 'account', 'search', 'tour']]];
       var out0 = []; G.forEach(function (g) { var items = g[1].map(function (k) { return typeof k === 'string' ? (have[k] ? [k, have[k]] : null) : k; }).filter(Boolean); if (!items.length) return; out0.push({ isHead: true, isItem: false, label: g[0] }); items.forEach(function (n) { out0.push({ isHead: false, isItem: true, label: n[1], go: function () { if (n[0] === '@archive') { self.setState({ menu: false, luYear: 'disc', luArch: true, lineup: 'music' }); self.go('lineup', { keepArch: true }); return; } if (n[0] === 'tour') { self.setState({ menu: false }); self.ssOpen(); return; } if (n[0].charAt(0) === ':') { self.setState({ menu: false }); self.go('page', { p: n[0].slice(1) }); return; } self.reset(n[0]); } }); }); }); return out0; })();
@@ -3828,7 +3852,7 @@ var pr27 = function (k) { var r = PR27[k]; return r ? Math.ceil(r[PCOL]) : 0; },
     var vInYear = function (key) { var r = vRange(key); return VIDS.filter(function (v) { return !v.nonact && !v.cad && v.y && v.y >= r[0] && v.y <= r[1]; }); };
     var goWatch = function (y, cad) { return function () { self.setState({ watchY: y || '', watchCad: !!cad, watchQ: '', watchN: 48 }); self.go('watch'); }; };
     var pastKey = function (v) { var Ys0 = (d && d.past && d.past.years) || []; v = String(v || ''); var hit = Ys0.filter(function (x) { return x.y === v; })[0]; if (hit) return hit.y; var n = parseInt(v.slice(0, 4), 10); if (n) { var rg = Ys0.filter(function (x) { return x.y.indexOf('–') > 0 && n >= parseInt(x.y.slice(0, 4), 10) && n <= parseInt(x.y.slice(-4), 10); })[0]; if (rg) return rg.y; var ex = Ys0.filter(function (x) { return x.y === String(n); })[0]; if (ex) return ex.y; } return Ys0.length ? (Ys0.filter(function (x) { return x.y < '2025'; })[0] || Ys0[0]).y : ''; };
-      try { if (d && d.climb) { window.pkClimb = d.climb; } window.pkOpenYear = function (y) { openYear(+y)(); }; window.pkGoAct = function (n, y) { self.go('act', { n: n, y: y }); }; } catch (e) {}
+      try { if (d && d.climb) { window.pkClimb = d.climb; } window.pkOpenYear = function (y) { openYear(+y)(); }; window.pkGo = function (r) { self.go(r); self.toTop && self.toTop(0); }; window.pkGoAct = function (n, y) { self.go('act', { n: n, y: y }); }; } catch (e) {}
       var openYear = function (y) { return function () { self.setState({ pastY: pastKey(y) }); self.go('past'); }; };
     var goPastY = function (y0) { return function () { self.setState({ pastY: String(y0 || '') }); self.reset('past'); }; };
     var canStarA = SEA !== 'off';
@@ -4808,7 +4832,7 @@ var pr27 = function (k) { var r = PR27[k]; return r ? Math.ceil(r[PCOL]) : 0; },
         var toArch = function (n, cls) { return function () { self.setState({ luYear: cls, archLead: (self._pickLead = n), luArch: true, lineup: 'music', archT: null, archC: null, archY: '' }); self.go('lineup', { keepArch: true }); }; };
         var isVid = function (u) { return /youtube\.com\/watch|youtu\.be\/|vimeo\.com\/\d/.test(String(u || '')); };
         var sud = function (A, keys) { var res = [], pool = A.slice(); while (pool.length) { var last = res[res.length - 1], i = 0; if (last) { var lk = keys(last); i = pool.findIndex(function (x) { var k = keys(x); return k.every(function (v, j) { return !v || v !== lk[j]; }); }); if (i < 0) i = 0; } res.push(pool.splice(i, 1)[0]); } return res; };
-        var scr = function (id, dir) { return function () { try { var el = document.getElementById(id), c = el.querySelector('.pk-nh-c'); el.scrollBy({ left: dir * ((c ? c.offsetWidth : 320) + 16), behavior: 'smooth' }); } catch (x) {} }; };
+        var scr = function (id, dir) { return function () { try { var el = document.getElementById(id), c = el.querySelector('.pk-nh-c'), max = el.scrollWidth - el.clientWidth; if (dir < 0 && el.scrollLeft <= 4) el.scrollTo({ left: max, behavior: 'smooth' }); else if (dir > 0 && el.scrollLeft >= max - 4) el.scrollTo({ left: 0, behavior: 'smooth' }); else el.scrollBy({ left: dir * ((c ? c.offsetWidth : 320) + 16), behavior: 'smooth' }); } catch (x) {} }; };
         var fyOf = function (ys, yr) { var Y = (ys || []).map(Number).filter(Boolean); return String(Y.length ? Math.min.apply(null, Y) : String(yr || '').replace(/\D/g, '').slice(0, 4)); };
         var nhL = function (t) { var P = String(t || '').replace(/\b(No|St|Mt|Dr|Mr|Mrs|Jr|Sr|vs)\. /g, '$1\u2024 '); return shortLine(P, 120).replace(/\u2024/g, '.'); };
         var gOf = function (k) { return String(k || '').split(' · ')[1] || ''; };
@@ -4832,7 +4856,7 @@ var pr27 = function (k) { var r = PR27[k]; return r ? Math.ceil(r[PCOL]) : 0; },
         cityK = shufS(stK, SEED + 'c').concat(shufS(otK, SEED + 'c2')); cityK = cityK.slice(0, 4).concat(shufS(cityK.slice(4), SEED + 'c3'));
         var city = cityK.map(function (k) { var H = d.hoods[k], cr = CRED(H); var im = ((NBHM[k] || []).filter(function (u) { return !usedI[u]; })[0]) || H.i || ''; usedI[im] = 1; return card({ n: H.n || '', k: NBKD(k), kc: '#F2EDE3', line: H.hook || H.t || '', img: im, cr: cr ? cr.v : '', crl: cr ? cr.l : '', cue: 'Explore →', go: mapH(k), aria: (H.n || '') + ', ' + NBKD(k) + '. Explore it on the map' }); });
         var cnImg = (d.hoods.grove.g && d.hoods.grove.g[1] ? d.hoods.grove.g[1].i : 'i/p9002.jpg');
-        city.push({ cls: 'cn', all: true, notAll: false, k1: 'Creative Neighborhoods', t: 'Built by people from here', b: 'Architects, makers and schools build the city each summer, and many builds go on to a second life after August.', cue: 'See where the builds went →', go: nav('build'), aria: 'Creative Neighborhoods: built by people from here. See where the builds went', hasImg: !!cnImg, img: cnImg, hasU: false });
+        // the Creative Neighborhoods card moved out of this row into its own Home block (home_flow.md section 4)
         city.push(allCard('The whole farm', 'All ' + nbKeys.length + ' on the map', 'Stages, gathering places and camps, a few minutes’ walk apart.', 'Open the map →', goFarm));
         // 5. the years: one strong year per visit (never 2026); its top Discovery first, then a sudoku mix of Discoveries, Legends and Deep cuts; no act twice on Home
         var AA = []; try { AA = archAll().filter(function (a) { return a.cat === 'music' && a.img && !/scdn\.co|\/(mq|hq|sd)?default\.jpg/.test(a.img); }); } catch (e) {}
