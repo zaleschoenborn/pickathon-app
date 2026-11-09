@@ -1,0 +1,126 @@
+place_id,name_as_used,years_used,kind,source,notes,feeds_neighborhood
+backyard-bowl,Backyard Bowl,2007-2012,official name,master schedule draft 6; photo catalog master,,
+backyard-bowl,Backyard Amphitheater,"2006, 2008",map label,"time machine zone files (photo-catalog/time_machine_zones_*.json), from each year's festival map",name on the 2006 and 2008 maps,
+big-top,Big Top,2015-2018,map label,"time machine zone files (photo-catalog/time_machine_zones_*.json), from each year's festival map",circus tent; Wild Horse took the spot in 2019,
+cedarwood,Cedarwood,2022-2026,official name,master schedule draft 6,Cedarwood Waldorf School family area,coyote
+cherry-hill,Cherry Hill,2022-2026,official name,Content by Year by Artist draft 3 (video); master schedule draft 6; photo catalog master,"2022 on; built by PSU; the new spot the stage moved to in 2022, when neighborhoods began (Zale, Nov 7)",
+cherry-hill,CH (file code),,file spelling,photo file-name parser codes (parse_photos.py),,
+cherry-hill,Cherry,2023-2026,file spelling,photo folder names (Dropbox All Pickathon Photos),,
+cherry-hill,CherryHill,2025-2026,file spelling,photo folder names (Dropbox All Pickathon Photos),,
+cherry-hill,CherryStage,2026,file spelling,photo folder names (Dropbox All Pickathon Photos),,
+coyote-cove,Coyote Cove,2024-2025,official name,master schedule draft 6; photo catalog master,"listed beside Coyote Stage in 2024-25, so a separate spot",coyote
+coyote-crafts,Coyote Crafts,2026,official name,master schedule draft 6,2026,coyote
+coyote-stage,Coyote Stage,"2010, 2014-2026",official name,master schedule draft 6; photo catalog master,Coyote neighborhood (family),
+coyote-stage,CouyoteStage,2026,file spelling,photo folder names (Dropbox All Pickathon Photos),,
+coyote-stage,Coyote,2024,nickname,photo catalog master,short form; 2024 photo tags,
+coyote-stage,Coyote Corner,2022,map label,"time machine zone files (photo-catalog/time_machine_zones_*.json), from each year's festival map",2022 name of the family neighborhood,
+coyote-stage,Coyote Kids,2025-2026,file spelling,photo folder names (Dropbox All Pickathon Photos),,
+coyote-stage,cayote,2026,file spelling,photo folder names (Dropbox All Pickathon Photos),,
+coyote-workshop,Coyote Workshop,2022-2026,official name,master schedule draft 6,,coyote
+curation,Curation,2016-2026,official name,Content by Year by Artist draft 3 (video); master schedule draft 6; photo catalog master,its own stage (Zale),
+curation,Curation (Backyard Bowl),2016,map label,"time machine zone files (photo-catalog/time_machine_zones_*.json), from each year's festival map",2016 Curation sat in the Backyard Bowl,
+edge,Edge,2015-2026,official name,Content by Year by Artist draft 3 (video); master schedule draft 6; photo catalog master,session,
+edge,Edge Sessions,2022,file spelling,Content by Year by Artist draft 3 (video),session,
+farmhouse,Farmhouse,2025-2026,official name,master schedule draft 6; photo catalog master,,
+feeding-nest,Feeding Nest,2022-2026,official name,master schedule draft 6,family service area,coyote
+fir-meadows,Fir Meadows,"2006, 2008, 2010-2011, 2013, 2015",official name,Content by Year by Artist draft 3 (video); master schedule draft 6,"second, smaller main stage next to Mountain View for a period (Zale, Nov 7)",paddock
+fir-meadows,Fir Meadows Stage,"2007, 2010-2014",official name,master schedule draft 6; photo catalog master,,paddock
+fir-meadows,Fir Meadow Stage,2009,file spelling,master schedule draft 6,2009 printed spelling,paddock
+fir-meadows,Meadow Stage,2014-2015,nickname,master schedule draft 6; photo catalog master,"2015 schedule short form (Lineup call, medium)",paddock
+fishing-lodge,Fishing Lodge,2025,official name,photo catalog master,2025 photo tag,
+galaxy-barn,Galaxy Barn,2006-2026,official name,Content by Year by Artist draft 3 (video); master schedule draft 6; photo catalog master,,
+galaxy-barn,GB (file code),,file spelling,photo file-name parser codes (parse_photos.py),,
+galaxy-barn,Galaxy,"2015-2019, 2023-2026",file spelling,photo folder names (Dropbox All Pickathon Photos),,
+galaxy-barn,GalaxyBarn,"2019, 2023-2025",file spelling,photo folder names (Dropbox All Pickathon Photos),,
+galaxy-courtyard,Galaxy Courtyard,2025-2026,official name,photo catalog master,Zale: anything outside the Galaxy Barn is the Courtyard,
+galaxy-courtyard,BarnsCourtyard,2026,file spelling,photo folder names (Dropbox All Pickathon Photos),,
+galaxy-courtyard,Circus Court,2012,earlier name,master schedule draft 6,"2012; a circus camp for kids on the Courtyard neighborhood spot, used during the day; later moved over by Wild Horse for several years (Zale, Nov 7)",
+galaxy-courtyard,Courtyard,2025-2026,file spelling,photo folder names (Dropbox All Pickathon Photos),,
+galaxy-courtyard,Galaxy ArtYard,2018-2019,map label,"time machine zone files (photo-catalog/time_machine_zones_*.json), from each year's festival map",,
+galaxy-courtyard,The Court,2009-2011,earlier name,master schedule draft 6,"2009-2011; the old pre-Courtyard neighborhood on the Courtyard spot (Zale, Nov 7)",
+grove,Grove,2022-2026,official name,Content by Year by Artist draft 3 (video); master schedule draft 6; photo catalog master,,
+grove,GroveStage,"2023, 2025-2026",file spelling,photo folder names (Dropbox All Pickathon Photos),,
+happy-valley,Happy Valley,2024,official name,photo catalog master,2024 photo tag,
+knot-springs,Knot Springs,2024,official name,photo catalog master,2024 photo tag,
+logging-road,Logging Road,2015,official name,Content by Year by Artist draft 3 (video),Zale: Logging Road and Old Growth are the same location,
+logging-road,Old Growth,2016-2019,official name,Content by Year by Artist draft 3 (video),later name of Logging Road (Zale),
+lucky-barn,Lucky Barn,2014-2026,official name,Content by Year by Artist draft 3 (video); master schedule draft 6; photo catalog master,Lucky Barn from 2014,
+lucky-barn,Gallery Barn,2007,earlier name,master schedule draft 6,"2007 name of the barn later called Workshop Barn, then Lucky Barn (Zale, Nov 7)",
+lucky-barn,LB (file code),,file spelling,photo file-name parser codes (parse_photos.py),,
+lucky-barn,Lucky,"2015-2018, 2023, 2025-2026",file spelling,photo folder names (Dropbox All Pickathon Photos),,
+lucky-barn,LuckyBarn,2023,file spelling,photo folder names (Dropbox All Pickathon Photos),,
+lucky-barn,Workshop,2006,map label,"time machine zone files (photo-catalog/time_machine_zones_*.json), from each year's festival map",2006 map label for the Workshop Barn,
+lucky-barn,Workshop Barn,"2008-2013, 2016, 2018",earlier name,Content by Year by Artist draft 3 (video); master schedule draft 6; photo catalog master,Zale: Workshop Barn was the early Lucky Barn,
+luna,Luna,2016-2019,official name,Content by Year by Artist draft 3 (video); photo catalog master,session,
+market,Market,2024,official name,photo catalog master,,
+meadow,Meadow,"2022, 2025",official name,photo folder names (Dropbox All Pickathon Photos),"a subset of the Paddock that came and went: own zone 2022 and 2025 only, folded into the Paddock in 2026 (Zale, Nov 7 and Nov 8)",paddock
+meadow,Crossroads,2022,earlier name,pickathon.com posts Jun 23 and Jul 20 2022,evening meadow neighborhood beside the Paddock,paddock
+mountain-view,Mountain View,"2006, 2008, 2010, 2013-2015",official name,Content by Year by Artist draft 3 (video); master schedule draft 6,main stage beside Fir Meadows (Zale),paddock
+mountain-view,Mountain View Stage,2009-2014,official name,master schedule draft 6; photo catalog master,,paddock
+mountain-view,Mt Hood Stage,2016-2019,official name,master schedule draft 6; photo catalog master,"2016-2019; same spot as Mountain View (Zale, Nov 7)",paddock
+mountain-view,Mountain Stage,2015,nickname,master schedule draft 6; photo catalog master,"2015 schedule short form (Lineup call, medium)",paddock
+mountain-view,Mt. Hood,2016-2019,file spelling,Content by Year by Artist draft 3 (video),,paddock
+mountain-view,Mt. View Stage,2007,file spelling,master schedule draft 6,2007 printed spelling,paddock
+mountain-view,Mt.Hood_Stage,2019,file spelling,photo folder names (Dropbox All Pickathon Photos),,paddock
+on-the-farm,On The Farm,2013-2024,official name,Content by Year by Artist draft 3 (video),session series filmed around the farm,
+on-the-farm,On The Farm Sessions,"2015, 2022-2023",file spelling,Content by Year by Artist draft 3 (video),session,
+orchard,Orchard,2009-2010,official name,master schedule draft 6,,
+orchard,Orchard West with Trackers Earth,2012,official name,master schedule draft 6,2012 printed name,
+orchard,The Orchard East,2011,official name,master schedule draft 6,2011 split East/West,
+orchard,The Orchard West,2011,official name,master schedule draft 6,2011 split East/West,
+orchard,Orchard (2023-2026 folders),"2023, 2025-2026",file spelling,photo folder names (Dropbox All Pickathon Photos),,
+paddock,Paddock,2022-2026,official name,Content by Year by Artist draft 3 (video); master schedule draft 6; photo catalog master,"2022 on; not the Mountain View / Mt Hood spot (Zale, Nov 7)",
+paddock,PD (file code),,file spelling,photo file-name parser codes (parse_photos.py),,
+paddock,PaddockStage,2026,file spelling,photo folder names (Dropbox All Pickathon Photos),,
+paddock,"Timbre Grove (structure in the Paddock, 2025)",2025,file spelling,photo folder names (Dropbox All Pickathon Photos),,
+pickathon-cafe,Pickathon Cafe,2013,official name,master schedule draft 6,2013,
+pickathon-cafe,Cafe Stage,2013,map label,"time machine zone files (photo-catalog/time_machine_zones_*.json), from each year's festival map",2013 map; the spot the Tree Line Stage took in 2014 (Lineup ask open),
+pickathon-cafe,Pickathon Cafe & beer garden,2008-2010,map label,"time machine zone files (photo-catalog/time_machine_zones_*.json), from each year's festival map",,
+pumphouse,Pumphouse,2015-2026,official name,Content by Year by Artist draft 3 (video); master schedule draft 6; photo catalog master,session,
+pumphouse,2016 Pumphouse & Edge pics,2016,file spelling,photo folder names (Dropbox All Pickathon Photos),,
+pumphouse,Habitat (2023 folder name),2023,nickname,photo folder names (Dropbox All Pickathon Photos),2023 setup folder; Zale: it is the Pumphouse neighborhood (Nov 7),
+pumphouse,Live & Breathing (Pumphouse),2010-2014,file spelling,Content by Year by Artist draft 3 (video),Live & Breathing filmed at the Pumphouse,
+pumphouse,Pumphouse Sessions,"2015, 2019-2022",file spelling,Content by Year by Artist draft 3 (video),session,
+refuge,The Refuge,2018-2026,official name,master schedule draft 6; photo catalog master,,
+refuge,Refuge,2023-2026,file spelling,photo folder names (Dropbox All Pickathon Photos),,
+rowdy-pony,Rowdy Pony,"2019, 2024-2026",official name,master schedule draft 6; photo catalog master,,
+shady-grove,Shady Grove,2016,map label,"time machine zone files (photo-catalog/time_machine_zones_*.json), from each year's festival map",became The Refuge in 2017 (same spot on the maps),refuge
+slab,Slab,2015-2026,official name,Content by Year by Artist draft 3 (video); master schedule draft 6; photo catalog master,session,
+slab,Slab Sessions,"2017, 2022-2025",file spelling,Content by Year by Artist draft 3 (video),session,
+starlight,Starlight Stage,2009-2019,official name,master schedule draft 6; photo catalog master,2009-2019,paddock
+starlight,Heartsong Cabaret,2008,earlier name,master schedule draft 6,Zale: Cabaret became Starlight,paddock
+starlight,Heartsong Late-Night Cabaret,2007,earlier name,master schedule draft 6,Zale: Cabaret became Starlight,paddock
+starlight,Starlight,2015-2019,nickname,Content by Year by Artist draft 3 (video),short form,paddock
+starlight,Starlight_stage,2019,file spelling,photo folder names (Dropbox All Pickathon Photos),,paddock
+starlight,The Heartsong Cabaret,2008,map label,"time machine zone files (photo-catalog/time_machine_zones_*.json), from each year's festival map",2008 map spelling,paddock
+the-blacktop,The Blacktop,2008,official name,master schedule draft 6,2008,
+trackers,Trackers,"2018, 2022-2026",official name,master schedule draft 6; photo catalog master,"Trackers Earth family area; 2022 on: a spot inside the Coyote neighborhood (Zale, Nov 9)",
+trackers,Trackers NW,2019,map label,"time machine zone files (photo-catalog/time_machine_zones_*.json), from each year's festival map",kids outdoor skills,
+treeline,Treeline Stage,2014-2019,official name,master schedule draft 6; photo catalog master,"2014-2019; AIA award; built by PSU. Near Cherry Hill but not the same spot; its videos carry over to the Cherry Hill neighborhood (Zale, Nov 7)",cherry-hill
+treeline,Tree Line Stage,2014,file spelling,master schedule draft 6,2014 printed spelling,cherry-hill
+treeline,Treeline,2015-2019,nickname,Content by Year by Artist draft 3 (video),,cherry-hill
+treeline,Treeline (now Cherry Hill),2015,file spelling,Content by Year by Artist draft 3 (video),"video ledger label; Treeline is near, not on, Cherry Hill (Zale, Nov 7)",cherry-hill
+treeline,Treeline_Stage,2019,file spelling,photo folder names (Dropbox All Pickathon Photos),,cherry-hill
+welcome-lot,Welcome Lot,2024,official name,photo catalog master,,
+wild-horse,Wild Horse,"2019-2022, 2025-2026",official name,photo catalog master,,
+wild-horse,Wild Horse Meadow,2014-2015,map label,"time machine zone files (photo-catalog/time_machine_zones_*.json), from each year's festival map",,
+wild-horse,Wild Horse Stage & Meadow,2017-2018,map label,"time machine zone files (photo-catalog/time_machine_zones_*.json), from each year's festival map",Wild Horse was also the circus; moved across the street in 2019 (Zale),
+wild-horse,Wildhorse,2025,file spelling,photo folder names (Dropbox All Pickathon Photos),,
+wild-horse,Wildhorse Stage,2016,map label,"time machine zone files (photo-catalog/time_machine_zones_*.json), from each year's festival map",,
+windmill,Windmill,2022-2026,official name,Content by Year by Artist draft 3 (video); master schedule draft 6; photo catalog master,,
+windmill,WM (file code),,file spelling,photo file-name parser codes (parse_photos.py),,
+windmill,WindmillStage,"2023, 2025-2026",file spelling,photo folder names (Dropbox All Pickathon Photos),,
+windmill-hill,Windmill Hill,"2013-2019, 2022",map label,"time machine zone files (photo-catalog/time_machine_zones_*.json), from each year's festival map","family / kids area 2013-2019 (Backyard Bowl was the earlier kids area, Zale); 2022 map label beside the Meadow",paddock
+woods,Woods,"2007, 2010, 2012-2026",official name,Content by Year by Artist draft 3 (video); master schedule draft 6; photo catalog master,name used 2017 on,
+woods,Woods Stage,2008-2016,official name,master schedule draft 6,name used 2008-2016,
+woods,In the Woods Stage,2007,earlier name,master schedule draft 6,2007 printed name,
+woods,THE WOODS,2026,file spelling,photo folder names (Dropbox All Pickathon Photos),,
+woods,WS (file code),,file spelling,photo file-name parser codes (parse_photos.py),,
+woods,WoodsStage,2026,file spelling,photo folder names (Dropbox All Pickathon Photos),,
+,Broadcast,2019,not a place,Content by Year by Artist draft 3 (video),"2019 video file tag (""...-BROADCAST"" on a song mix), not a stage (Lineup call)",
+,Imagine,2017-2018,not a place,Content by Year by Artist draft 3 (video),"series label (Imagine), not a stage",
+,Laugh,2016-2018,not a place,Content by Year by Artist draft 3 (video),"series label (Laugh), not a stage",
+,Main Stage / Main Stages (folder label),"2015, 2018",nickname,photo folder names (Dropbox All Pickathon Photos),generic label for the biggest stage that year; never split (Zale rule),
+,Spoken,2015-2018,not a place,Content by Year by Artist draft 3 (video),"series label (Spoken), not a stage",
+,Unknown,"2006, 2009, 2011-2025",not a place,Content by Year by Artist draft 3 (video),placeholder,
+,food,2023,not a place,photo catalog master,photo type word filed as a stage,
