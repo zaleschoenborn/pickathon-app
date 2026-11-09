@@ -955,6 +955,70 @@ html.pk-nh-ontop #root [role=region][aria-label="Listen"],html.pk-nh-ontop #root
 #root .pk-cl-pw{margin-top:12px}
 }
 </style>
+<style id="pk-cy-css">
+/* pk-city: Home "Live inside a temporary city of wonder" on desktop: the picked neighborhood's photo beside a strip of the real farm map (home_flow.md section 3; Zale, Nov 9: "I wanna see the new map come on") */
+@media (min-width:1000px){
+#root #pk-nh-city.pk-cyon #pk-nh-cr,#root #pk-nh-city.pk-cyon .pk-nh-arrs{display:none!important}
+}
+#root .pk-cy{display:grid;grid-template-columns:minmax(0,1fr) 440px;gap:20px;margin-top:18px}
+#root .pk-cy-f{position:relative;height:573px;border-radius:16px;overflow:hidden;cursor:pointer;background:#1A2017}
+#root .pk-cy-f>article{position:absolute!important;inset:0!important;width:auto!important;height:auto!important;margin:0!important;border-radius:0!important}
+#root .pk-cy-f>article .pk-nh-hit{pointer-events:none}
+#root .pk-cy-f:focus-visible{outline:3px solid #F2CF62;outline-offset:3px}
+#root .pk-cy-m{position:relative;width:440px;height:573px;border-radius:16px;overflow:hidden;background:#12160F no-repeat}
+#root .pk-cy-m::after{content:'';position:absolute;inset:0;border-radius:16px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.08);pointer-events:none}
+#root#root .pk-cy-s{position:absolute;width:44px;height:44px;margin:-22px 0 0 -22px;padding:0;border:0;background:transparent;cursor:default;z-index:1}
+#root .pk-cy-s i{position:absolute;left:8px;top:8px;width:28px;height:28px;border-radius:50%;box-sizing:border-box;border:3px solid #F2EDE3;background:#1F1C1D center/18px no-repeat;box-shadow:0 2px 6px rgba(0,0,0,.45)}
+#root .pk-cy-s.on{z-index:3}
+#root .pk-cy-s.on i{border-color:#D6B54A;width:36px;height:36px;left:4px;top:4px;background-size:24px;box-shadow:0 0 0 4px rgba(214,181,74,.28),0 0 22px 4px rgba(214,181,74,.55)}
+#root .pk-cy-s b{position:absolute;left:50%;top:40px;transform:translateX(-50%);white-space:nowrap;padding:3px 8px;border-radius:4px;background:#1F1C1D;color:#F2EDE3;font:800 12px/1.1 'Bricolage Grotesque',sans-serif;font-stretch:75%;font-variation-settings:'wdth' 75;letter-spacing:.08em;text-transform:uppercase;opacity:0;pointer-events:none;transition:opacity .15s}
+#root .pk-cy-s.on b{opacity:1;background:#D6B54A;color:#2B2628}
+#root .pk-cy-s:hover b,#root .pk-cy-s:focus-visible b{opacity:1}
+#root .pk-cy-s:hover{z-index:4}
+#root#root .pk-cy-all{margin-left:auto;align-self:flex-end;flex:none;min-height:44px;padding:0 16px;border-radius:6px;cursor:pointer;background:transparent;border:2px solid #D6B54A;color:#F2CF62;font:800 13px 'Bricolage Grotesque',sans-serif;letter-spacing:1.2px;text-transform:uppercase;white-space:nowrap}
+</style>
+<script id="pk-cy-js">
+(function () {
+  // today's map spots (farmmap/map.webp pixels; neighborhood_positions_by_year.csv, 2026 rows)
+  var P = { cherryhill: [1392, 2302], courtyard: [1049, 3249], coyote: [1347, 2103], curation: [547, 3635], farmhouse: [1137, 3416], galaxy: [1038, 3129], grove: [1302, 2519], lucky: [858, 3232], lushcamp: [1258, 1545], market: [1562, 2369], orchard: [1048, 3340], paddock: [1052, 2789], quailtrail: [1773, 1778], southcamp: [1094, 3599], refuge: [1813, 2039], welcomelot: [1896, 3613], wildcamp: [876, 869], willowcamp: [1638, 3613], windmill: [889, 2628], woods: [1754, 1337] };
+  var NM = { 'cherry hill': 'cherryhill', 'courtyard': 'courtyard', 'coyote': 'coyote', 'curation': 'curation', 'farmhouse': 'farmhouse', 'galaxy barn': 'galaxy', 'grove': 'grove', 'lucky': 'lucky', 'lush camp': 'lushcamp', 'market': 'market', 'orchard': 'orchard', 'paddock': 'paddock', 'quail trail': 'quailtrail', 'south camp': 'southcamp', 'the refuge': 'refuge', 'refuge': 'refuge', 'welcome lot': 'welcomelot', 'wild camp': 'wildcamp', 'willow camp': 'willowcamp', 'windmill': 'windmill', 'woods': 'woods', 'the woods': 'woods' };
+  var W = 440, Y0 = 1150, MW = 2041, MH = 3810, S = W / MW, H = Math.round((MH - Y0) * S);
+  var st = { pick: null, sig: '' };
+  function cards(sec) { return [].filter.call(sec.querySelectorAll('#pk-nh-cr > article'), function (a) { return !a.classList.contains('cn') && !a.classList.contains('all') && a.querySelector('.pk-nh-cn'); }); }
+  function idOf(a) { var n = (a.querySelector('.pk-nh-cn') || {}).textContent || ''; return NM[n.trim().toLowerCase()] || null; }
+  function spread(L) { // nudge close spots apart so none overlap (Galaxy Barn, Courtyard, Orchard, Lucky, Farmhouse)
+    for (var it = 0; it < 40; it++) for (var i = 0; i < L.length; i++) for (var j = i + 1; j < L.length; j++) { var a = L[i], b = L[j], dx = b.x - a.x, dy = b.y - a.y, d = Math.hypot(dx, dy) || 0.01, m = 31; if (d < m) { var p = (m - d) / 2, ux = dx / d, uy = dy / d; a.x -= ux * p; a.y -= uy * p; b.x += ux * p; b.y += uy * p; } }
+    L.forEach(function (q) { q.x = Math.max(18, Math.min(W - 18, q.x)); q.y = Math.max(18, Math.min(H - 18, q.y)); }); return L; }
+  function build(sec) {
+    var A = cards(sec); if (!A.length) return; var ids = A.map(idOf);
+    var box = sec.querySelector('.pk-cy'); if (!box) { box = document.createElement('div'); box.className = 'pk-cy'; var hd = sec.querySelector('.pk-nh-head'); hd.parentNode.insertBefore(box, hd.nextSibling); }
+    if (!sec.querySelector('.pk-cy-all')) { var all = [].filter.call(sec.querySelectorAll('#pk-nh-cr > article.all'), function (a) { return /map/i.test(a.textContent); })[0]; if (all) { var b = document.createElement('button'); b.type = 'button'; b.className = 'pk-cy-all'; var n = (all.querySelector('.pk-nh-an') || {}).textContent || 'All on the map'; b.textContent = n.trim() + ' →'; b.addEventListener('click', function () { var h = all.querySelector('.pk-nh-hit'); if (h) h.click(); }); sec.querySelector('.pk-nh-head').appendChild(b); } }
+    if (!st.pick || ids.indexOf(st.pick) < 0) st.pick = ids.filter(Boolean)[0];
+    var L = spread(ids.map(function (id, i) { return id && P[id] ? { id: id, i: i, x: P[id][0] * S, y: (P[id][1] - Y0) * S, n: (A[i].querySelector('.pk-nh-cn') || {}).textContent || id } : null; }).filter(Boolean));
+    var h = '<div class="pk-cy-f" role="link" tabindex="0"></div><div class="pk-cy-m" role="group" aria-label="The neighborhoods on the farm map" style="background-image:url(farmmap/map.webp);background-size:' + (MW * S).toFixed(1) + 'px auto;background-position:0 ' + (-Y0 * S).toFixed(1) + 'px">';
+    L.forEach(function (q) { h += '<button type="button" class="pk-cy-s' + (q.id === st.pick ? ' on' : '') + '" data-cy="' + q.id + '" aria-pressed="' + (q.id === st.pick) + '" aria-label="' + q.n.replace(/"/g, '') + '" style="left:' + q.x.toFixed(1) + 'px;top:' + q.y.toFixed(1) + 'px"><i style="background-image:url(ic2/' + q.id + '.png)"></i><b>' + q.n + '</b></button>'; });
+    h += '</div>'; box.innerHTML = h; sec.classList.add('pk-cyon'); show(sec);
+  }
+  function show(sec) {
+    var A = cards(sec), a = A.filter(function (x) { return idOf(x) === st.pick; })[0] || A[0]; if (!a) return; var f = sec.querySelector('.pk-cy-f'); if (!f) return;
+    var c = a.cloneNode(true); c.removeAttribute('role'); f.innerHTML = ''; f.appendChild(c); f.setAttribute('aria-label', ((a.querySelector('.pk-nh-cn') || {}).textContent || '') + ': explore it on the map');
+    sec.querySelectorAll('.pk-cy-s').forEach(function (s) { var on = s.getAttribute('data-cy') === st.pick; s.classList.toggle('on', on); s.setAttribute('aria-pressed', String(on)); });
+  }
+  document.addEventListener('click', function (e) {
+    var s = e.target.closest && e.target.closest('.pk-cy-s'); var sec = document.getElementById('pk-nh-city');
+    if (s && sec && sec.contains(s)) { st.pick = s.getAttribute('data-cy'); show(sec); return; }
+    var f = e.target.closest && e.target.closest('.pk-cy-f');
+    if (f && sec && sec.contains(f)) { var a = cards(sec).filter(function (x) { return idOf(x) === st.pick; })[0]; var hit = a && a.querySelector('.pk-nh-hit'); if (hit) hit.click(); }
+  });
+  document.addEventListener('keydown', function (e) { if ((e.key === 'Enter' || e.key === ' ') && e.target.classList && e.target.classList.contains('pk-cy-f')) { e.preventDefault(); e.target.click(); } });
+  setInterval(function () {
+    var sec = document.getElementById('pk-nh-city'); if (!sec) return;
+    if (window.innerWidth < 1000) { if (sec.classList.contains('pk-cyon')) { sec.classList.remove('pk-cyon'); var b = sec.querySelector('.pk-cy'); if (b) b.remove(); var x = sec.querySelector('.pk-cy-all'); if (x) x.remove(); } return; }
+    var A = cards(sec), sig = A.map(idOf).join(',');
+    if (sig && (sig !== st.sig || !sec.querySelector('.pk-cy'))) { st.sig = sig; build(sec); }
+  }, 500);
+})();
+</script>
 <script id="pk-cl-js">/*pk-climb v2: Home "The climb" as the vertical ladder (home_flow.md section 5, Zale Nov 9 00:14-00:59; Design Studio board ClimbLadderDesk).
   One big vertical: every name moves straight up or down at the same time on one smooth curve, bigger names in front, a faint halftone glow on the biggest,
   the top spot's ray fans pass to the new #1, a ▲ on the three biggest risers. The poster carries its own clock: a date stamp that counts from the
