@@ -76,8 +76,12 @@ for hid in GATHER:
     K = defaultdict(OrderedDict); YS = defaultdict(set); NM = {}
     for y, r in rows:
         title = re.sub(r'\s+', ' ', r[4]).strip()
-        k = who(title) or nk(re.split(r':\s', title)[0])
-        n = ENT.get(k) or re.split(r':\s', title)[0].strip()
+        k = who(title); n = ENT.get(k, '')
+        if not k:
+            m1 = re.match(r'^([A-Z][\w.’\'&]+(?: [A-Z&][\w.’\'&]+){0,3})\s+[-–]\s', title)          # 'Megan Barella - Nature Weaving'
+            m2 = re.search(r'\b(?:with|w/)\s+([A-Z][\w.’\']+(?: [A-Z][\w.’\']+){0,3})\s*$', title)  # 'Singing Bowls with Joshua Stoddard'
+            n = (m1.group(1) if m1 else m2.group(1) if m2 else re.split(r':\s', title)[0]).strip()
+            k = nk(n)
         NM[k] = n; YS[k].add(y)
         K[kind_of(title, r[2], k, hid)][k] = 1
     small = [x for x in K if len(K[x]) < 3 and x != 'More']
@@ -104,14 +108,14 @@ for hid in GATHER:
 STAGES = ['woods', 'paddock', 'cherryhill', 'grove', 'windmill', 'galaxy', 'lucky', 'farmhouse', 'orchard']
 KL = {'leg': 'Legends', 'disc': 'Discoveries', 'deep': 'Deep cuts', 'none': 'More to hear'}
 LUK = {'DJs': 'DJs', 'Comedy': 'Comedy & readings', 'Literary': 'Comedy & readings', 'Family': 'Family'}
-ORDER = ['Legends', 'Discoveries', 'Deep cuts', 'More to hear', 'DJs', 'Comedy & readings', 'Family', 'More']
+ORDER = ['Legends', 'Discoveries', 'Deep cuts', 'More to hear', 'DJs', 'Comedy & readings', 'Family', 'Showcases & other']
 ROW = {}
 for y, bb in d['yearBill'].items():
     for b in bb: ROW[(int(y), nk(b['n']))] = b
 for hid in STAGES:
     rows = [(int(y), r) for y, R in (d.get('pastSched') or {}).items() if y.isdigit() and int(y) >= 2018 for r in R if r[3] == hid and not SKIP.search(r[4] or '')]
     if not rows: continue
-    K = defaultdict(OrderedDict); YS = defaultdict(set); NM = {}; MG = defaultdict(float); MU = set()
+    K = defaultdict(OrderedDict); YS = defaultdict(set); NM = {}; MG = defaultdict(float); MU = set(); LY = {}; KN1 = {}
     # showcases (Pickathon Laughs, Author Readings, Soul Stew) stand for the acts WordPress links to them
     WITH = defaultdict(list)
     for y0, A in (d.get('actSets') or {}).items():
@@ -127,12 +131,13 @@ for hid in STAGES:
         k0 = kw or nk(r[4]); k = AL.get(k0, k0); b = ROW.get((y, k))
         if b and not b.get('f'): kn = KL.get(b.get('k') or 'none', 'More to hear'); MU.add(k)
         elif b: kn = LUK.get(b.get('lu'), 'More')
-        else: kn = 'More'
+        else: kn = 'Showcases & other'
         NM[k] = b['n'] if b else re.sub(r'\s+', ' ', r[4]).strip(); YS[k].add(y); MG[k] = max(MG[k], float((b or {}).get('m') or 0))
-        K[kn][k] = 1
-    for kn in [x for x in K if len(K[x]) < 3 and x != 'More']:
-        for k in K.pop(kn): K['More'][k] = 1
-    kinds = [[kn, [[NM[k], sorted(YS[k]), page_of(k)] for k in sorted(K[kn], key=lambda k: (-MG[k], -len(YS[k]), NM[k].lower()))]] for kn in ORDER if kn in K]
+        if y >= LY.get(k, 0): LY[k] = y; KN1[k] = kn   # one tab per act: the kind of its latest year here
+    for k, kn in KN1.items(): K[kn][k] = 1
+    for kn in [x for x in K if len(K[x]) < 3 and x != 'Showcases & other']:
+        for k in K.pop(kn): K['Showcases & other'][k] = 1
+    kinds = [[kn, [[NM[k], sorted(YS[k]), page_of(k)] for k in sorted(K[kn], key=lambda k: (-max(YS[k]), -MG[k], NM[k].lower()))]] for kn in ORDER if kn in K]
     regs = []
     for k in sorted(YS, key=lambda k: (k not in MU, -len(YS[k]), -MG[k], NM[k].lower())):   # bands first: the regulars of a stage are its returning acts
         if len(YS[k]) < 2 or len(regs) >= 6 or (k not in MU and len(regs) >= 3): continue
