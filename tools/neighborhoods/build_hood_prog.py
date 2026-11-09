@@ -35,7 +35,21 @@ for k, n in PAGE.items():
 ENT.setdefault('myvoicemusic', 'My Voice Music'); ENT.setdefault('redyarn', 'Red Yarn'); ENT.setdefault('bridgetownbaby', 'Bridgetown Baby Family Feeding Nest')
 ENT.setdefault('cedarwood', 'Cedarwood Waldorf School'); ENT.setdefault('friendsofnoise', 'Friends of Noise'); ENT.setdefault('sellwoodcommunityhouse', 'Sellwood Community House')
 EK = sorted(ENT, key=len, reverse=True)
+# one name per thing (visitor round 1, Nov 9): spelling variants merge, care sessions read as care with ages, events never open act pages
+MERGE = {'redyarnband': ('redyarn', 'Red Yarn'), 'bridgetownbabyfamilyfeedingnest': ('bridgetownbaby', 'Bridgetown Baby Family Feeding Nest'),
+         'mophillipsandthespaghettipantsdanceband': ('mophillips', 'Mo Phillips'), 'coyoteparade': ('puppetparade', 'Puppet Parade'),
+         'cedarwoodwaldorfschool': ('cedarwood', 'Cedarwood Waldorf School (drop-off care)'), 'smithyarn': ('smithyarn', 'Smith & Yarn')}
+EVENT = {'puppetparade', 'kidstalentshow', 'coyotefamilyjamboree', 'allageshappyhour', 'myvoicemusic', 'mvmstudentshowcase', 'portlandfamilymusicshowcase', 'shadypinesradio', 'musictogetherofportland'}
+def canon(title, k, n):
+    t = title.lower()
+    m = re.search(r'drop-?off care,? ages? (3-7|7\+)|\(drop-?off care, ages? (3-7|7\+)\)', t)
+    if m:
+        a = (m.group(1) or m.group(2)).replace('-', '\u2013')
+        return 'dropoff' + a, 'Drop-off care, ages ' + a
+    if k in MERGE: return MERGE[k]
+    return k, n
 def page_of(k):
+    if k in EVENT: return ''
     k = AL.get(k, k)
     return PAGE.get(k, '')
 def who(title):
@@ -82,8 +96,11 @@ for hid in GATHER:
             m2 = re.search(r'\b(?:with|w/)\s+([A-Z][\w.’\']+(?: [A-Z][\w.’\']+){0,3})\s*$', title)  # 'Singing Bowls with Joshua Stoddard'
             n = (m1.group(1) if m1 else m2.group(1) if m2 else re.split(r':\s', title)[0]).strip()
             k = nk(n)
+        k, n = canon(title, k, n)
+        if k.startswith('dropoff'): kd = 'Little ones & care'
+        else: kd = kind_of(title, r[2], k, hid)
         NM[k] = n; YS[k].add(y)
-        K[kind_of(title, r[2], k, hid)][k] = 1
+        K[kd][k] = 1
     small = [x for x in K if len(K[x]) < 3 and x != 'More']
     if small and sum(len(K[x]) for x in small) + len(K.get('More', {})) >= 3:   # a kind with one or two names joins 'More' (never a 'More' of one)
         for kn in small:
