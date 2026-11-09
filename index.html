@@ -1123,6 +1123,230 @@ html.pk-nh-ontop #root [role=region][aria-label="Listen"],html.pk-nh-ontop #root
   var lw = 0; window.addEventListener('resize', function () { var w = mountEl ? mountEl.clientWidth : 0; if (w && w !== lw) { lw = w; draw(); } });
 })();
 </script>
+<style id="pk-yp-css">
+/* pk-yposter: year page poster hero (year_page.md "Poster hero") */
+#root .pk-yp-mount{max-width:1120px;margin:14px auto 0;font-family:'Bricolage Grotesque',system-ui,sans-serif}
+#root .pk-yp-mount:empty{display:none}
+#root .pk-yp-tl{display:flex;align-items:center;gap:16px}
+#root .pk-yp-p{margin-top:14px;padding:40px 45px 0}
+#root .pk-yp-r{display:flex;flex-direction:column;align-items:center;justify-content:center}
+#root .pk-yp-r.top{margin-bottom:18px}#root .pk-yp-r.bot{margin-top:18px}
+#root .pk-yp-ln{display:flex;flex-wrap:nowrap;justify-content:center;align-items:center;width:100%}
+#root .pk-yp-ln span{display:inline-block;white-space:nowrap;margin:3px 0;font-family:'Bricolage Grotesque',sans-serif;font-stretch:75%;font-variation-settings:'wdth' 75;font-weight:800;letter-spacing:.5px;line-height:1}
+#root .pk-yp-mid{display:grid;grid-template-columns:minmax(0,1fr) 380px minmax(0,1fr);gap:24px;align-items:center}
+#root .pk-yp-art{width:380px;height:auto;display:block}
+#root .pk-yp-noart{text-align:center;font:800 64px/.95 'Bricolage Grotesque',sans-serif;font-stretch:75%;font-variation-settings:'wdth' 75}
+#root .pk-yp-dl{flex:none;height:50px;padding:0 26px;display:flex;align-items:center;white-space:nowrap;font-family:'Bricolage Grotesque',sans-serif;font-stretch:75%;font-variation-settings:'wdth' 75;font-weight:800;font-size:22px;letter-spacing:1px}
+#root .pk-yp-p.ph{padding:20px 16px 0}
+#root .pk-yp-p.ph .pk-yp-mid{display:block;margin:6px 0}
+#root .pk-yp-p.ph .pk-yp-art{width:200px;margin:0 auto 10px}
+#root .pk-yp-p.ph .pk-yp-noart{font-size:40px;margin:8px 0}
+#root .pk-yp-p.ph .pk-yp-r.side{margin-top:4px}
+#root .pk-yp-p.ph .pk-yp-dl{height:36px;padding:0 10px;font-size:14px}
+#root .pk-yp-p.ph .pk-cl-ban{padding:14px 0 16px}
+html.pk-yp-on #root .pk-yb{display:none}
+@media (max-width:899px){#root .pk-yp-tl{flex-wrap:wrap;gap:4px 10px}#root .pk-yp-tl .pk-cl-bar{flex:1 1 100%}}
+</style>
+<script id="pk-yp-js">/*pk-yposter: year page "Poster hero" (year_page.md, skill pickathon-year-poster; design_studio-35/-36). Built by rule from d.climb (class table + Artwork kits): rests on TODAY, "PLAY FROM THE FESTIVAL" on tap, two steps only.*/
+(function () {
+  var RM = false; try { RM = window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) {}
+  var esc = function (s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;'); };
+  var RS = function (r) { return r === 0 ? 100 : r < 8 ? 76 - r * 4 : r < 20 ? 34 - (r - 8) * 0.6 : Math.max(15, 21 - (r - 20) * 0.2); };
+  var THS = { B: 60, M: 36, S: 18 };
+  var wOf = function (n, fs) { return n.length * (0.53 * fs + 0.6); };
+  var ST = {}; // per mount: {y, w, tp, raf, spans, sizes}
+  function sizes(D, ph) {
+    var n = D.labels.length, K = ph ? 0.48 : 1, MIN = ph ? 12 : 15, out = [];
+    for (var si = 0; si < n; si++) {
+      var isFest = n > 1 && si === 0, S = {};
+      var order = D.names.slice().sort(function (a, b) { return a[1][si] - b[1][si]; }), prev = 999;
+      order.forEach(function (x) { var nm = x[0], fs;
+        if (isFest && D.tiers) fs = Math.max(ph ? 12 : 0, Math.round(K * THS[D.tiers[nm] || 'S']));
+        else { fs = Math.max(MIN, Math.round(K * RS(x[1][si]))); }
+        S[nm] = fs; });
+      out.push({ S: S, order: order.map(function (x) { return x[0]; }), cap: !(isFest && D.tiers) });
+    }
+    return out;
+  }
+  // placement (desktop and phone use the same regions; phone stacks them in one column)
+  function place(D, Z, W, ar) {
+    var nowI = D.labels.length - 1, rank = D.names.slice().sort(function (a, b) { return a[1][nowI] - b[1][nowI]; }).map(function (x) { return x[0]; });
+    var mx = function (nm) { return Math.max.apply(null, Z.map(function (z) { return z.S[nm]; })); };
+    var R = { top: [], left: [], right: [], bot: [] }, GAP = 20;
+    var lineFit = function (arr, w) { var lines = [[]], cur = 0; arr.forEach(function (nm) { var ww = wOf(nm, Math.min(mx(nm), (w * 0.94 / nm.length - 0.6) / 0.53)); if (cur && cur + GAP + ww > w * 0.94) { lines.push([]); cur = 0; } lines[lines.length - 1].push(nm); cur += (cur ? GAP : 0) + ww; }); return lines; };
+    var i = 0;
+    while (i < rank.length && R.top.length < 3) { var t = R.top.concat([rank[i]]); if (lineFit(t, W.top).length > 2) break; R.top.push(rank[i]); i++; }
+    var artH = W.art * (ar || 0.7), hL = 0, hR = 0, lw = { left: 0, right: 0 }, lh = { left: 0, right: 0 };
+    var add = function (b, nm) { var fs = mx(nm), ww = wOf(nm, fs); if (lw[b] && lw[b] + GAP + ww > W[b] * 0.94) { if (b === 'left') hL += lh[b] + 6; else hR += lh[b] + 6; lw[b] = 0; lh[b] = 0; } lw[b] += (lw[b] ? GAP : 0) + ww; lh[b] = Math.max(lh[b], fs); R[b].push(nm); };
+    for (; i < rank.length; i++) {
+      var nm = rank[i], fs = mx(nm), hl = hL + lh.left, hr = hR + lh.right;
+      if (hl >= artH && hr >= artH) { R.bot.push(nm); continue; }
+      var b = hl <= hr ? 'left' : 'right';
+      if (wOf(nm, fs) <= W[b] * 0.94) add(b, nm);
+      else if (i <= 20) R.top.push(nm); else R.bot.push(nm);
+    }
+    return R;
+  }
+  function lines(arr, Z, w, gap) {
+    var L = [[]], ws = Z.map(function () { return 0; });
+    arr.forEach(function (nm) {
+      var fits = Z.every(function (z, si) { var fs = Math.min(z.S[nm], Math.floor((w * 0.94 / nm.length - 0.6) / 0.53)); return !L[L.length - 1].length || ws[si] + gap + wOf(nm, fs) <= w * 0.94; });
+      if (!fits) { L.push([]); ws = ws.map(function () { return 0; }); }
+      Z.forEach(function (z, si) { var fs = Math.min(z.S[nm], Math.floor((w * 0.94 / nm.length - 0.6) / 0.53)); ws[si] += (L[L.length - 1].length ? gap : 0) + wOf(nm, fs); });
+      L[L.length - 1].push(nm);
+    });
+    return L.filter(function (l) { return l.length; });
+  }
+  function fitSizes(Z, regOf, Wd) { // shrink only to fit the region; at rank-sized steps, never rise above a higher rank
+    return Z.map(function (z) { var F = {}, prev = 999; z.order.forEach(function (nm) { var w = Wd[regOf[nm]] || Wd.top; var fs = Math.min(z.S[nm], Math.floor((w * 0.94 / nm.length - 0.6) / 0.53)); if (z.cap) { fs = Math.min(fs, prev); prev = fs; } F[nm] = fs; }); return F; });
+  }
+  function build(m, D, y) {
+    var ph = (m.clientWidth || 390) < 900, colW = Math.max(260, (m.clientWidth || 390) - (ph ? 32 : 0));
+    var Wd = ph ? { top: colW, left: colW, right: colW, bot: colW, art: 200 } : { top: 1030, left: 306, right: 306, bot: 1030, art: 380 };
+    var Z = sizes(D, ph), Wp = { top: 1030, left: 306, right: 306, bot: 1030, art: 380 };
+    var R = place(D, sizes(D, false), Wp, D.ar);
+    var regOf = {}; Object.keys(R).forEach(function (k) { R[k].forEach(function (nm) { regOf[nm] = k; }); });
+    var F = fitSizes(Z, regOf, Wd), gap = ph ? 12 : 20, ink = 0, inks = D.inks;
+    var reg = function (k, cls) { var L = lines(R[k], F.map(function (f) { return { S: f }; }), Wd[k], gap), h = '<div class="pk-yp-r ' + cls + '">';
+      L.forEach(function (l) { var lh = Math.max.apply(null, l.map(function (nm) { return Math.max.apply(null, F.map(function (f) { return f[nm]; })); }));
+        h += '<div class="pk-yp-ln" style="min-height:' + lh + 'px;column-gap:' + gap + 'px">';
+        l.forEach(function (nm) { h += '<span data-n="' + esc(nm) + '" style="color:' + inks[(ink++) % 2] + '">' + esc(nm) + '</span>'; }); h += '</div>'; });
+      return h + '</div>'; };
+    var art = D.art ? '<img class="pk-yp-art" src="' + D.art + '" alt="Pickathon ' + y + ' poster art" decoding="async">' : '<div class="pk-yp-noart" style="color:' + inks[0] + '">PICKATHON<br>' + y + '</div>';
+    var n = D.labels.length, h = '';
+    if (n > 1) h += '<div class="pk-yp-tl"><button type="button" class="pk-cl-play" data-yp="play">▶ PLAY FROM THE FESTIVAL</button><div class="pk-cl-bar"><i class="pk-cl-tr"></i><i class="pk-cl-fill"></i>' +
+      D.labels.map(function (t, i) { return '<button type="button" class="pk-cl-dot" data-yp="to" data-i="' + i + '" aria-label="' + esc(t) + '" style="left:calc(10px + (100% - 20px) * ' + (i / (n - 1)) + ')"><b></b><span style="transform:translateX(' + (i === 0 ? '-12px' : 'calc(-100% + 12px)') + ')">' + esc(t) + '</span></button>'; }).join('') + '</div></div><p class="pk-cl-cap pk-yp-cap" aria-live="polite"></p>';
+    h += '<div class="pk-yp-p' + (ph ? ' ph' : '') + '" style="background:' + D.paper + '"><p class="pk-sr">Pickathon ' + y + ' music lineup, ranked today: ' + esc(D.names.slice().sort(function (a, b) { return a[1][n - 1] - b[1][n - 1]; }).map(function (x) { return x[0]; }).join(', ')) + '</p><div aria-hidden="true">';
+    h += reg('top', 'top');
+    if (ph) h += '<div class="pk-yp-mid">' + art + '</div>' + reg('left', 'side') + reg('right', 'side');
+    else h += '<div class="pk-yp-mid">' + reg('left', 'side') + art + reg('right', 'side') + '</div>';
+    h += reg('bot', 'bot') + '</div>';
+    var dl = D.dates ? String(D.dates).toUpperCase().replace(/(\d)-(\d)/g, '$1–$2') : 'PICKATHON ' + y;
+    h += '<div class="pk-cl-ban"><span class="pk-cl-l" style="--ink:' + inks[0] + '"></span><span class="pk-yp-dl" style="background:' + inks[0] + ';color:' + D.paper + '">' + esc(dl) + '</span><span class="pk-cl-r" style="--ink:' + inks[0] + '"></span></div></div>';
+    m.innerHTML = h;
+    var spans = {}; m.querySelectorAll('.pk-yp-ln span').forEach(function (s) { spans[s.getAttribute('data-n')] = s; });
+    return { F: F, spans: spans, n: n };
+  }
+  function paint(m, s, D) {
+    var tp = s.tp, n = s.b.n, k0 = Math.floor(tp), k1 = Math.min(n - 1, k0 + 1), fk = tp - k0, FA = s.b.F[k0], FB = s.b.F[k1];
+    Object.keys(s.b.spans).forEach(function (nm) { s.b.spans[nm].style.fontSize = (FA[nm] + (FB[nm] - FA[nm]) * fk).toFixed(2) + 'px'; });
+    if (n < 2) return; var atEnd = tp >= n - 1 - 1e-3, kk = atEnd ? n - 1 : Math.floor(tp + 1e-6);
+    var f = m.querySelector('.pk-cl-fill'); if (f) f.style.width = 'calc((100% - 20px) * ' + (tp / (n - 1)).toFixed(4) + ')';
+    m.querySelectorAll('.pk-cl-dot').forEach(function (b, i) { var cur = i === kk, on = i <= kk, d = b.querySelector('b'), sp = b.querySelector('span');
+      d.style.cssText = 'width:' + (cur ? 14 : 8) + 'px;height:' + (cur ? 14 : 8) + 'px;margin:-' + (cur ? 7 : 4) + 'px 0 0 -' + (cur ? 7 : 4) + 'px;background:' + (on ? '#D6B54A' : '#4F4749') + (cur ? ';box-shadow:0 0 10px rgba(242,207,98,.6)' : ''); sp.style.color = cur ? '#F2CF62' : '#8F8789'; });
+    var p = m.querySelector('[data-yp=play]'); if (p) { p.textContent = s.raf ? '■ STOP' : '▶ PLAY FROM THE FESTIVAL'; p.classList.toggle('on', !!s.raf); }
+    var c = m.querySelector('.pk-yp-cap'); if (c) { c.textContent = atEnd ? 'TODAY · RANKED BY HOW FAR THEY’VE GONE' : tp < 0.02 ? (D.tiers ? 'HOW THE ' + s.y + ' POSTER BILLED THEM' : 'THE ' + s.y + ' FESTIVAL, BEFORE ANYONE KNEW') : 'ON THE WAY TO TODAY'; c.style.color = atEnd ? '#F2CF62' : '#CFC9BC'; }
+  }
+  function tween(m, s, D, from, to, dur) {
+    if (s.raf) cancelAnimationFrame(s.raf); var t0 = performance.now(), ez = function (x) { return x < .5 ? 2 * x * x : 1 - Math.pow(-2 * x + 2, 2) / 2; };
+    var fr = function (now) { var x = Math.min(1, (now - t0) / dur); s.tp = from + (to - from) * ez(x); s.raf = x < 1 ? requestAnimationFrame(fr) : null; paint(m, s, D); };
+    s.raf = requestAnimationFrame(fr);
+  }
+  document.addEventListener('click', function (e) {
+    var b = e.target && e.target.closest && e.target.closest('[data-yp]'); if (!b) return; var m = b.closest('.pk-yp-mount'); if (!m) return;
+    var s = m._yp, D = (window.pkClimb || {})[s && s.y]; if (!s || !D) return; var n = D.labels.length;
+    if (b.getAttribute('data-yp') === 'play') { if (s.raf) { cancelAnimationFrame(s.raf); s.raf = null; paint(m, s, D); return; } s.tp = 0; paint(m, s, D); if (RM) { s.tp = n - 1; paint(m, s, D); return; } tween(m, s, D, 0, n - 1, (n - 1) * 1300 + 400); }
+    else { var i = +b.getAttribute('data-i'); if (RM) { s.tp = i; paint(m, s, D); } else tween(m, s, D, s.tp, i, 500); }
+  });
+  function tick() {
+    var C = window.pkClimb; if (!C) return;
+    document.querySelectorAll('.pk-yp-mount').forEach(function (m) {
+      var y = String(m.getAttribute('data-y') || '').replace(/\D/g, '').slice(0, 4), D = C[y];
+      document.documentElement.classList.toggle('pk-yp-on', !!D);
+      if (!D) { if (m.firstChild) m.innerHTML = ''; return; }
+      var w = m.clientWidth; if (m._yp && m._yp.y === y && m._yp.w === w && m.firstChild) return;
+      if (m._yp && m._yp.raf) cancelAnimationFrame(m._yp.raf);
+      var s = m._yp = { y: y, w: w, tp: D.labels.length - 1, raf: null }; s.b = build(m, D, y); paint(m, s, D);
+    });
+    if (!document.querySelector('.pk-yp-mount')) document.documentElement.classList.remove('pk-yp-on');
+  }
+  setInterval(tick, 400);
+})();
+</script>
+<style id="pk-ayl-css">
+/* pk-ayl: the year's look on the artist page */
+#root .pk-ev-gh.pk-yl{min-height:52px;padding:0 14px;border-radius:4px;display:flex;align-items:center;gap:12px}
+#root .pk-ev-gh.pk-yl .pk-ev-y{flex:1;margin:0}
+#root .pk-yl-b{height:28px;width:auto;flex:none}
+#root .pk-ycs{display:flex;flex-direction:column;gap:18px;margin:16px 0 8px}
+#root .pk-yc-h{min-height:52px;padding:0 14px;display:flex;align-items:center;gap:12px;border-radius:4px 4px 0 0}
+#root .pk-yc-h h3{flex:1;margin:0;font:800 18px/1.1 'Bricolage Grotesque',sans-serif;font-stretch:75%;font-variation-settings:'wdth' 75;letter-spacing:1px}
+#root .pk-yc-ch{display:flex;gap:6px}
+#root#root .pk-yc-ch button{min-height:36px;padding:0 10px;border-radius:999px;border:2px solid #6A6163;background:transparent;color:#2B2628;font:800 11px 'Bricolage Grotesque',sans-serif;letter-spacing:1px;cursor:pointer}
+#root#root .pk-yc-ch button[aria-pressed=true]{background:#D6B54A;border-color:#D6B54A}
+#root#root .pk-yc-b{all:unset;box-sizing:border-box;display:block;width:100%;padding:10px 14px 14px;cursor:pointer;border-radius:0 0 4px 4px}
+#root .pk-yc-ls{display:flex;flex-direction:column;align-items:center;gap:2px}
+#root .pk-yc-n{display:block;white-space:nowrap;max-width:100%;overflow:hidden;text-overflow:ellipsis;font-family:'Bricolage Grotesque',sans-serif;font-stretch:75%;font-variation-settings:'wdth' 75;font-weight:800;letter-spacing:.5px;line-height:1.05}
+#root .pk-yc-l{margin:8px 0 0;font-size:15px;line-height:1.45;color:#CFC9BC}
+#root#root .pk-yc-l button{all:unset;cursor:pointer;color:#D6B54A;font-weight:800;min-height:32px}
+@media (max-width:699px){#root .pk-ev-gh.pk-yl,#root .pk-yc-h{min-height:44px}#root .pk-yl-b{height:22px}#root .pk-yc-h h3{font-size:15px}}
+#root .pk-hd-yc.pk-hyl .pk-hd-yt{padding:12px 14px 14px}
+#root .pk-hd-yc.pk-hyl .pk-yl-b{display:block;height:24px;margin-bottom:6px}
+</style>
+<script id="pk-ayl-js">/*pk-ayl: artist page "The year's look" (artist_page.md, design_studio-25/-36): each Pickathon <year> heading on that year's paper with its badge, and an "On the <year> bill, ranked today" card for music acts. Data: d.climb, the same ranked data as Home and the year page.*/
+(function () {
+  var esc = function (s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;'); };
+  var K = function (t) { return String(t || '').normalize('NFKD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[“”"]/g, '').replace(/&/g, ' and ').replace(/^the\s+/, '').replace(/[^a-z0-9]/g, ''); };
+  var ORD = function (k) { var s = ['th', 'st', 'nd', 'rd'], v = k % 100; return k + (s[(v - 20) % 10] || s[v] || s[0]); };
+  var RS = function (r) { return r === 0 ? 100 : r < 8 ? 76 - r * 4 : r < 20 ? 34 - (r - 8) * 0.6 : Math.max(15, 21 - (r - 20) * 0.2); };
+  var THS = { B: 60, M: 36, S: 18 }, TW = { B: 'a headliner', M: 'a mid-size name', S: 'a small name' };
+  var badge = function (y) { return 'i/y' + String(y).slice(2) + '-year-badge.svg'; };
+  function strips(C) {
+    document.querySelectorAll('.pk-ev-gh').forEach(function (gh) {
+      var h = gh.querySelector('.pk-ev-y'); if (!h) return; var m = /Pickathon (\d{4})/.exec(h.textContent || ''); if (!m) return; var D = C[m[1]];
+      if (!D || D.art === undefined || gh.getAttribute('data-yl') === m[1]) return; gh.setAttribute('data-yl', m[1]);
+      if (!D.badge && m[1] === '1999') return;
+      gh.classList.add('pk-yl'); gh.style.background = D.paper; h.style.color = D.inks[0];
+      if (!gh.querySelector('.pk-yl-b')) { var im = document.createElement('img'); im.className = 'pk-yl-b'; im.alt = ''; im.src = badge(m[1]); im.onerror = function () { im.remove(); }; gh.insertBefore(im, gh.firstChild); }
+    });
+  }
+  function card(D, y, nm, ph) {
+    var n = D.labels.length, last = n - 1, rk = D.names.slice().sort(function (a, b) { return a[1][last] - b[1][last]; }), i = rk.map(function (x) { return x[0]; }).indexOf(nm);
+    if (i < 0) return '';
+    var real = !!D.tiers, sl = rk.slice(Math.max(0, i - 1), i + 2), ink = D.inks[0], sc = ph ? 0.42 : 0.6;
+    var sz = function (x, fest) { var f = fest ? THS[D.tiers[x[0]] || 'S'] : RS(x[1][last]); return Math.max(ph ? 13 : 15, Math.round(f * sc)); };
+    var lines = sl.map(function (x) { var me = x[0] === nm; return '<span class="pk-yc-n" data-fs="' + sz(x, false) + '" data-ff="' + (real ? sz(x, true) : sz(x, false)) + '" style="font-size:' + sz(x, false) + 'px;color:' + ink + ';opacity:' + (me ? 1 : 0.3) + '">' + esc(x[0]) + '</span>'; }).join('');
+    var title = real ? 'ON THE ' + y + ' POSTER' : 'ON THE ' + y + ' BILL, RANKED TODAY';
+    var neither = (D.names.filter(function (x) { return x[0] === nm; })[0] || [0, []])[1][last] >= D.ranked;
+    var today = neither ? 'On the ' + y + ' bill.' : ORD(i + 1) + ' on the ' + y + ' bill today.';
+    var line = real ? 'At the festival: ' + TW[D.tiers[nm] || 'S'] + '. Now: ' + (i === 0 ? 'the biggest name of ' + y : i < 5 ? 'one of the 5 biggest names of ' + y : i < 10 ? 'one of the 10 biggest names of ' + y : i < 20 ? 'one of the 20 biggest names of ' + y : ORD(i + 1) + ' of ' + D.names.length) + '.' : today;
+    var chips = real ? '<div class="pk-yc-ch" role="group" aria-label="Billing"><button type="button" data-yc="f" aria-pressed="false">AT THE FESTIVAL</button><button type="button" data-yc="n" aria-pressed="true">NOW</button></div>' : '';
+    return '<div class="pk-yc" data-y="' + y + '"><div class="pk-yl pk-yc-h" style="background:' + D.paper + '"><img class="pk-yl-b" alt="" src="' + badge(y) + '" onerror="this.remove()"><h3 style="color:' + ink + '">' + title + '</h3>' + chips + '</div>' +
+      '<button type="button" class="pk-yc-b" data-yc="go" style="background:' + D.paper + '" aria-label="' + esc(line + ' See the ' + y + ' poster') + '"><span class="pk-yc-ls" aria-hidden="true">' + lines + '</span></button>' +
+      '<p class="pk-yc-l">' + esc(line) + ' <button type="button" data-yc="go">See the poster →</button></p></div>';
+  }
+  function cards(C) {
+    var acts = [].filter.call(document.querySelectorAll('.pk-act-acts[data-act]'), function (e) { return e.offsetParent !== null; })[0]; if (!acts) return; var box = document.querySelector('.pk-as') || acts.parentNode;
+    var nm = acts.getAttribute('data-act'), key = K(nm), ph = (box.clientWidth || 390) < 700;
+    if (box.getAttribute('data-yc') === key + ph) return;
+    var out = '';
+    Object.keys(C).sort().forEach(function (y) { var D = C[y], hit = D.names.filter(function (x) { return K(x[0]) === key; })[0]; if (hit) out += card(D, y, hit[0], ph); });
+    var old = box.querySelector('.pk-ycs'); if (old) old.remove();
+    box.setAttribute('data-yc', key + ph); if (!out) return;
+    var w = document.createElement('div'); w.className = 'pk-ycs'; w.innerHTML = out;
+    var blocks = box.querySelectorAll('.pk-as-b'), at = null; blocks.forEach(function (b) { var h = b.querySelector('.pk-as-h'); if (h && /^At Pickathon/i.test(h.textContent)) at = b; });
+    if (at) at.parentNode.insertBefore(w, at.nextSibling); else if (box.classList.contains('pk-as')) box.appendChild(w); else { var ev = null, an = acts.parentNode; while (an && an !== document.body && !(ev = an.querySelector('.pk-ev'))) an = an.parentNode; if (ev && ev.parentNode) ev.parentNode.insertBefore(w, ev); else acts.parentNode.insertBefore(w, acts.nextSibling); }
+  }
+  function ease(c, fest) { var t0 = performance.now(), S = [].map.call(c.querySelectorAll('.pk-yc-n'), function (s) { return [s, parseFloat(s.style.fontSize), +s.getAttribute(fest ? 'data-ff' : 'data-fs')]; });
+    var fr = function (now) { var x = Math.min(1, (now - t0) / 500), e = x < .5 ? 2 * x * x : 1 - Math.pow(-2 * x + 2, 2) / 2; S.forEach(function (q) { q[0].style.fontSize = (q[1] + (q[2] - q[1]) * e).toFixed(2) + 'px'; }); if (x < 1) requestAnimationFrame(fr); }; requestAnimationFrame(fr); }
+  document.addEventListener('click', function (e) {
+    var b = e.target && e.target.closest && e.target.closest('[data-yc]'); if (!b) return; var c = b.closest('.pk-yc'); if (!c) return; var a = b.getAttribute('data-yc');
+    if (a === 'go') { try { window.pkOpenYear && window.pkOpenYear(c.getAttribute('data-y')); } catch (x) {} return; }
+    c.querySelectorAll('[data-yc=f],[data-yc=n]').forEach(function (q) { q.setAttribute('aria-pressed', String(q === b)); }); ease(c, a === 'f');
+  });
+  // neighborhood page v2 (design_studio-30, neighborhood_page.md item 9): year cards in that year's paper, ink and badge; no poster
+  function hoods(C) {
+    document.querySelectorAll('.pk-hd-yc').forEach(function (c) {
+      var yy = c.querySelector('.pk-hd-yy'), t = c.querySelector('.pk-hd-yt'); if (!yy || !t) return; var y = (yy.textContent.match(/\d{4}/) || [])[0], D = C[y];
+      if (!D || y === '1999' || c.getAttribute('data-yl') === y) return; c.setAttribute('data-yl', y);
+      c.classList.add('pk-hyl'); t.style.background = D.paper; yy.style.color = D.inks[0];
+      [].forEach.call(t.querySelectorAll('.pk-hd-yb,.pk-hd-yl'), function (e, i) { e.style.color = D.inks[i ? 0 : 1]; });
+      if (!t.querySelector('.pk-yl-b')) { var im = document.createElement('img'); im.className = 'pk-yl-b'; im.alt = ''; im.src = badge(y); im.onerror = function () { im.remove(); }; t.insertBefore(im, t.firstChild); }
+    });
+  }
+  setInterval(function () { var C = window.pkClimb; if (!C) return; strips(C); cards(C); hoods(C); }, 500);
+})();
+</script>
 <script id="pk-nh-js">(function(){var qi=0,stop=false,t0=0;function figs(){return document.querySelectorAll('.pk-nh-qf')}
 function show(i){var F=figs();if(!F.length)return;qi=((i%F.length)+F.length)%F.length;for(var k=0;k<F.length;k++){var on=k===qi;if(F[k].classList.contains('on')!==on)F[k].classList.toggle('on',on)}var n=document.querySelector('.pk-nh-qi');if(n)n.textContent=String(qi+1)}
 setInterval(function(){var F=figs();if(!F.length)return;var cur=document.querySelector('.pk-nh-qf.on');if(!cur){show(qi);return}if(stop)return;if(Date.now()-t0>7000){t0=Date.now();show(qi+1)}},500);
@@ -1640,7 +1864,7 @@ window.addEventListener('scroll',tick,{passive:true,capture:true});setInterval(t
 <sc-if value="{{act.hasPage}}" hint-placeholder-val="{{false}}"><div class="pk-ah {{act.ahCls}}"><img class="pk-ah-i" src="{{act.heroImg}}" alt="{{act.n}} at Pickathon"><sc-if value="{{act.hasGal}}" hint-placeholder-val="{{false}}"><sc-for list="{{act.gal}}" as="g" hint-placeholder-count="6"><img class="pk-ah-x" src="{{g.u}}" alt="" loading="lazy" data-st="{{g.st}}" style="object-position: {{g.pos}}"></sc-for></sc-if><div class="pk-ah-t"><p class="pk-act-k" style="color: {{act.kc}} !important">{{act.heroKind}}</p><h1 class="pk-act-n">{{act.n}}</h1><p class="pk-ah-sub">{{act.heroSub}}</p></div><span class="pk-ah-y">{{act.heroYr}}</span><sc-if value="{{act.hasStar}}" hint-placeholder-val="{{true}}"><button type="button" class="pk-ah-star" aria-pressed="{{act.starOn}}" aria-label="{{act.starL}}" onClick="{{act.star}}">{{act.starIcon}}</button></sc-if><sc-if value="{{act.hasVids}}" hint-placeholder-val="{{true}}"><button type="button" class="pk-ah-play" onClick="{{act.watch}}" aria-label="{{act.playL}} of {{act.n}}"></button></sc-if><div class="pk-ah-btns"><sc-if value="{{act.hasVids}}" hint-placeholder-val="{{true}}"><button type="button" class="pk-bkb pri" onClick="{{act.watch}}">{{act.playL}}</button></sc-if><sc-if value="{{act.hasListen}}" hint-placeholder-val="{{false}}"><button type="button" class="pk-bkb sec pk-svb {{act.svcCls}}" onClick="{{act.listen}}">Listen on {{act.svcN}}</button></sc-if></div></div></sc-if>
 <sc-if value="{{act.noPage}}" hint-placeholder-val="{{true}}"><div class="pk-act-h"><sc-if value="{{act.hasImg}}" hint-placeholder-val="{{true}}"><img src="{{act.img}}" alt="{{act.n}} at Pickathon" class="pk-act-i"></sc-if><sc-if value="{{act.noImg}}" hint-placeholder-val="{{false}}"><div class="pk-act-i pk-act-ph" role="img" aria-label="Pickathon {{act.gy}}"><i>Pickathon</i><b>{{act.gy}}</b></div></sc-if><div class="pk-act-t"><sc-if value="{{act.hasMeta}}" hint-placeholder-val="{{true}}"><p class="pk-act-k" style="color: {{act.kc}}">{{act.meta}}</p></sc-if><h1 class="pk-act-n">{{act.n}}</h1><p class="pkp-mono pk-act-y">{{act.fy}}</p><sc-if value="{{act.hasYears}}" hint-placeholder-val="{{false}}"><p class="pkp-mono pk-act-y">{{act.yearsL}}</p></sc-if></div></div>
 <sc-if value="{{act.hasLine}}" hint-placeholder-val="{{true}}"><p class="pk-act-l">{{act.line}}</p></sc-if></sc-if>
-<div class="pk-act-acts {{act.ahCls}}"><sc-if value="{{act.hasVids}}" hint-placeholder-val="{{true}}"><button type="button" class="pk-bkb pri pk-alb pk-awb" onClick="{{act.watch}}">{{act.playL}}</button></sc-if><sc-if value="{{act.hasListen}}" hint-placeholder-val="{{false}}"><button type="button" class="pk-bkb sec pk-svb pk-alb {{act.svcCls}}" onClick="{{act.listen}}">Listen on {{act.svcN}}</button></sc-if></div><sc-if value="{{act.hasStory}}" hint-placeholder-val="{{false}}"><div class="pk-as"><sc-for list="{{act.story}}" as="b" hint-placeholder-count="3"><div class="pk-as-b"><h2 class="pk-as-h">{{b.h}}</h2><p>{{b.t}}</p><sc-if value="{{b.hasMore}}" hint-placeholder-val="{{false}}"><sc-for list="{{b.more}}" as="m" hint-placeholder-count="1"><p>{{m.p}}</p></sc-for></sc-if></div></sc-for><sc-if value="{{act.canMore}}" hint-placeholder-val="{{false}}"><button type="button" class="pk-as-more" onClick="{{act.toggleMore}}" aria-expanded="{{act.moreOpen}}">{{act.moreL}}</button></sc-if></div></sc-if>
+<div class="pk-act-acts {{act.ahCls}}" data-act="{{act.n}}"><sc-if value="{{act.hasVids}}" hint-placeholder-val="{{true}}"><button type="button" class="pk-bkb pri pk-alb pk-awb" onClick="{{act.watch}}">{{act.playL}}</button></sc-if><sc-if value="{{act.hasListen}}" hint-placeholder-val="{{false}}"><button type="button" class="pk-bkb sec pk-svb pk-alb {{act.svcCls}}" onClick="{{act.listen}}">Listen on {{act.svcN}}</button></sc-if></div><sc-if value="{{act.hasStory}}" hint-placeholder-val="{{false}}"><div class="pk-as"><sc-for list="{{act.story}}" as="b" hint-placeholder-count="3"><div class="pk-as-b"><h2 class="pk-as-h">{{b.h}}</h2><p>{{b.t}}</p><sc-if value="{{b.hasMore}}" hint-placeholder-val="{{false}}"><sc-for list="{{b.more}}" as="m" hint-placeholder-count="1"><p>{{m.p}}</p></sc-for></sc-if></div></sc-for><sc-if value="{{act.canMore}}" hint-placeholder-val="{{false}}"><button type="button" class="pk-as-more" onClick="{{act.toggleMore}}" aria-expanded="{{act.moreOpen}}">{{act.moreL}}</button></sc-if></div></sc-if>
 
 
 <sc-if value="{{act.hasVids}}" hint-placeholder-val="{{true}}"><div class="pk-ev"><p class="pk-ev-k">Every video</p><h2 class="pk-ev-h">{{act.n}} at Pickathon</h2><sc-for list="{{act.groups}}" as="g" hint-placeholder-count="2"><div class="pk-ev-g"><div class="pk-ev-gh"><h3 class="pk-ev-y">Pickathon {{g.y}}<sc-if value="{{g.hasAs}}" hint-placeholder-val="{{false}}"><span class="pk-ev-as"> · as {{g.as}}</span></sc-if></h3><sc-if value="{{g.hasArr}}" hint-placeholder-val="{{false}}"><div class="pk-ev-arrs"><button type="button" aria-label="Earlier videos" onClick="{{g.prev}}">←</button><button type="button" aria-label="More videos" onClick="{{g.next}}">→</button></div></sc-if></div><div class="pk-ev-row" id="{{g.rid}}"><sc-for list="{{g.tiles}}" as="t" hint-placeholder-count="4"><button type="button" class="pk-ev-t" onClick="{{t.play}}" aria-label="{{t.label}}"><sc-if value="{{t.hasTh}}" hint-placeholder-val="{{true}}"><img src="{{t.th}}" alt="" loading="lazy"></sc-if><span class="pk-ev-sc"></span><sc-if value="{{t.hasTag}}" hint-placeholder-val="{{false}}"><span class="pk-ev-tag">{{t.tag}}</span></sc-if><span class="pk-ev-ring"></span><span class="pk-ev-cap"><span class="pk-ev-tt">{{t.title}}</span><sc-if value="{{t.hasVn}}" hint-placeholder-val="{{true}}"><span class="pk-ev-vn">{{t.vn}}</span></sc-if></span></button></sc-for></div></div></sc-for></div></sc-if>
@@ -2388,7 +2612,7 @@ div[aria-label="Preview controls"] { display: none !important }
 <sc-if value="{{r.past}}" hint-placeholder-val="{{false}}">
 <section style="{{wrapTop}}">
 <div class="pk-yhd"><button type="button" class="pk-yhb" onClick="{{goBack}}" aria-label="Back"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"></path></svg></button><sc-if value="{{past.hdHasLogo}}" hint-placeholder-val="{{false}}"><img class="pk-yhl" src="{{past.hdLogo}}" alt="" aria-hidden="true"></sc-if><h2 class="pk-pyl" style="margin: 0">{{past.hdTitle}}</h2><button type="button" class="pk-bkb sec pk-yhp" onClick="{{past.pyTog}}" aria-haspopup="dialog" aria-expanded="{{past.pyExp}}">Pick another year</button></div>
-<article aria-label="Pickathon {{past.ch.title}}" style="{{past.ch.bandSt}}"><sc-if value="{{past.ch.hasBrand}}" hint-placeholder-val="{{false}}"><section class="pk-yb" aria-label="Pickathon {{past.ch.title}}"><div class="pk-yb-in"><img class="pk-yb-badge" src="{{past.ch.brandBadge}}" alt="Pickathon {{past.ch.title}} badge" width="220" height="216"><div class="pk-yb-t"><h1 class="pk-yb-h">Pickathon {{past.ch.title}}</h1><p class="pk-yb-d">{{past.ch.brandDates}}</p></div></div><div class="pk-yb-stripe" aria-hidden="true"><sc-for list="{{past.ch.brandStripe}}" as="s" hint-placeholder-count="4"><span style="{{s.st}}"></span></sc-for></div></section></sc-if>
+<article aria-label="Pickathon {{past.ch.title}}" style="{{past.ch.bandSt}}"><div class="pk-yp-mount" data-y="{{past.ch.title}}"></div><sc-if value="{{past.ch.hasBrand}}" hint-placeholder-val="{{false}}"><section class="pk-yb" aria-label="Pickathon {{past.ch.title}}"><div class="pk-yb-in"><img class="pk-yb-badge" src="{{past.ch.brandBadge}}" alt="Pickathon {{past.ch.title}} badge" width="220" height="216"><div class="pk-yb-t"><h1 class="pk-yb-h">Pickathon {{past.ch.title}}</h1><p class="pk-yb-d">{{past.ch.brandDates}}</p></div></div><div class="pk-yb-stripe" aria-hidden="true"><sc-for list="{{past.ch.brandStripe}}" as="s" hint-placeholder-count="4"><span style="{{s.st}}"></span></sc-for></div></section></sc-if>
 <style id="pk-rvo-css">
 @media(max-width:1199px){html:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root body .pk-yrp .pk-rs.pk-t0 .pk-rim img{object-position:0% 40%!important}}html:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root body .pk-yrp .pk-rs.pk-t0 .pk-rim img{transform:none}
 @media(max-width:1199px){html:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root body .pk-yrp .pk-rs.pk-t0 .pk-rim img{object-position:0% 40%!important}}
@@ -3494,6 +3718,7 @@ var pr27 = function (k) { var r = PR27[k]; return r ? Math.ceil(r[PCOL]) : 0; },
     var vInYear = function (key) { var r = vRange(key); return VIDS.filter(function (v) { return !v.nonact && !v.cad && v.y && v.y >= r[0] && v.y <= r[1]; }); };
     var goWatch = function (y, cad) { return function () { self.setState({ watchY: y || '', watchCad: !!cad, watchQ: '', watchN: 48 }); self.go('watch'); }; };
     var pastKey = function (v) { var Ys0 = (d && d.past && d.past.years) || []; v = String(v || ''); var hit = Ys0.filter(function (x) { return x.y === v; })[0]; if (hit) return hit.y; var n = parseInt(v.slice(0, 4), 10); if (n) { var rg = Ys0.filter(function (x) { return x.y.indexOf('–') > 0 && n >= parseInt(x.y.slice(0, 4), 10) && n <= parseInt(x.y.slice(-4), 10); })[0]; if (rg) return rg.y; var ex = Ys0.filter(function (x) { return x.y === String(n); })[0]; if (ex) return ex.y; } return Ys0.length ? (Ys0.filter(function (x) { return x.y < '2025'; })[0] || Ys0[0]).y : ''; };
+      try { if (d && d.climb) { window.pkClimb = d.climb; } window.pkOpenYear = function (y) { openYear(+y)(); }; window.pkGoAct = function (n, y) { self.go('act', { n: n, y: y }); }; } catch (e) {}
       var openYear = function (y) { return function () { self.setState({ pastY: pastKey(y) }); self.go('past'); }; };
     var goPastY = function (y0) { return function () { self.setState({ pastY: String(y0 || '') }); self.reset('past'); }; };
     var canStarA = SEA !== 'off';
