@@ -64,7 +64,7 @@ def blurb(t, n):
     out = ''
     for x in s:
         if len(out) + len(x) > 260 and out: break
-        out = (out + ' ' + x).strip()
+        out = (out + ' ' + x.strip()).strip()
     return out if len(out) <= 300 else out[:299].rsplit(' ', 1)[0] + '…'
 
 def save_photo(src, dst, local=False):
