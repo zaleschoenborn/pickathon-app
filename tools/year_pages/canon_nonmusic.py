@@ -36,7 +36,7 @@ for y, LL in yln.items():
 
 def fix_blurb(t, n):
     t = (t or '').strip()
-    t = re.sub(r'^((Website|Instagram|Facebook|Mixcloud|SoundCloud|Bandcamp|Spotify|XRAY\.FM|TikTok|YouTube|Twitter|Linktree)\s*\|?\s*)+', '', t, flags=re.I).strip()
+    t = re.sub(r'^((Website|Instagram|Facebook|Mixcloud|SoundCloud|Bandcamp|Spotify|XRAY\.FM|TikTok|YouTube|Twitter|Linktree|[\w-]+(?:\.[\w-]+)+\.(?:org|com|fm|net|io|co))\s*\|?\s*)+', '', t, flags=re.I).strip()
     if not t or not t[0].islower(): return t
     if re.match(r'^(is|are|was|were|has|have)\b', t): return n + ' ' + t
     s = re.split(r'(?<=[.!?])\s+(?=[A-Z])', t, maxsplit=1)
