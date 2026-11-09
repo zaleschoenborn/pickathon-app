@@ -5118,12 +5118,13 @@ var pr27 = function (k) { var r = PR27[k]; return r ? Math.ceil(r[PCOL]) : 0; },
         (PL.more || []).forEach(function (p) { put('2026', Object.assign({}, p, { label: p.n })); });
         (PL.past || []).forEach(function (p) { var l = String(p.n || '').replace(/^\d{4}\s+/, ''); l = /^lineup$/i.test(l) ? 'Full lineup' : l.charAt(0).toUpperCase() + l.slice(1); put(String(p.y), Object.assign({}, p, { label: l })); });
         var ys = Object.keys(by).sort().reverse(), latest = ys[0] || '2026';
-        var pgY = (R === 'past' && st.pastY && by[st.pastY]) ? st.pastY : ((R === 'act' || R === 'hood') && st.tmY && by[st.tmY] && st.tmY < '2026') ? st.tmY : '', atK = R === 'past' ? String(st.pastY || '') : '', cxY = R === 'past' ? String(st.pastY || '') : ((R === 'act' || R === 'hood') ? String(st.tmY || '') : ''), offY = (cxY && cxY < '2026' && !by[cxY]) ? (ys.filter(function (y) { return y < '2025'; })[0] || '') : '', Y = (by[st.lsY] && (st.lsYAt || '') === atK) ? st.lsY : (pgY || offY || latest), list = by[Y] || [], pi = Math.min(st.lsI || 0, Math.max(0, list.length - 1)), P = list[pi] || {};
+        var pgY = (R === 'past' && st.pastY && by[st.pastY]) ? st.pastY : ((R === 'act' || R === 'hood') && st.tmY && by[st.tmY] && st.tmY < '2026') ? st.tmY : '', atK = R === 'past' ? String(st.pastY || '') : '', cxY = R === 'past' ? String(st.pastY || '') : ((R === 'act' || R === 'hood') ? String(st.tmY || '') : ''), noPl = !!(cxY && cxY < '2026' && !by[cxY]), Y = (by[st.lsY] && (st.lsYAt || '') === atK) ? st.lsY : (pgY || latest), list = by[Y] || [], pi = Math.min(st.lsI || 0, Math.max(0, list.length - 1)), P = list[pi] || {};
         var avail = SV.filter(function (x) { return !!P[x[0]]; }), sv = P[svc] ? svc : (avail[0] ? avail[0][0] : 'sp'), svN = (SV.filter(function (x) { return x[0] === sv; })[0] || ['', 'Spotify'])[1];
         var u = P[sv] || '', lo = st.lsOpen || '';
         var opt = function (label, on, fn) { return { label: label, on: on, mark: on ? '✓' : '', color: on ? '#D6B54A' : '#F2EDE3', pick: fn }; };
         var tg = function (k) { return function () { self.setState({ lsOpen: lo === k ? '' : k }); }; };
         Object.assign(out.lb, {
+          show: out.lb.show && !noPl,
           yVal: 'Pickathon ' + Y, yOpen: lo === 'y', yOpenA: lo === 'y' ? 'true' : 'false', yChev: lo === 'y' ? '▴' : '▾', yToggle: tg('y'),
           yOpts: ys.map(function (y) { return opt('Pickathon ' + y, y === Y, function () { self.setState({ lsY: y, lsYAt: atK, lsI: 0, lsOpen: '' }); }); }),
           pVal: P.label || 'Full lineup', pOpen: lo === 'p', pOpenA: lo === 'p' ? 'true' : 'false', pChev: lo === 'p' ? '▴' : '▾', pToggle: tg('p'),
