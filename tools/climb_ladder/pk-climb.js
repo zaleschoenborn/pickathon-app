@@ -102,9 +102,9 @@
       var mask = big ? ';-webkit-mask-image:' + WORN + ';mask-image:' + WORN + ';-webkit-mask-size:200px;mask-size:200px;-webkit-mask-position:' + (hh % 200) + 'px ' + ((hh >> 8) % 200) + 'px;mask-position:' + (hh % 200) + 'px ' + ((hh >> 8) % 200) + 'px' : '';
       var lineSt = function (isLead, ink) { return (small ? 'display:inline' : 'display:block;width:fit-content;' + (al === 'left' ? 'margin-right:auto' : al === 'right' ? 'margin-left:auto' : 'margin:0 auto')) + ';color:' + ink + (isLead ? ';font-size:.55em;line-height:1;margin-bottom:.06em' : '') + mask; };
       var rise = small ? 0 : showRise(x), fsM = Math.max(Q.ph ? 9 : 11, p.f * 0.42) / p.f, crw = cwOf(x[0]), d = dims(p);
-      var reach = (function () { if (crw < 0.01 || small) return 0; var gap = Math.max(8, p.f * 0.12), sp = Math.min(Math.min(p.f * 0.62, 90), d.cx - d.w / 2 - S[0].x - gap); return sp < 14 ? 0 : (gap + sp * Math.cos(36 * Math.PI / 180) + 6) * crw; })();
+      var reach = (function () { if (crw < 0.01 || small) return 0; var gap = Math.max(8, p.f * 0.12), sp = Math.min(Math.min(p.f * 0.62, 90), d.cx - d.w / 2 - S[0].x - gap); return sp < 9 ? 0 : (gap + sp * Math.cos(36 * Math.PI / 180) + 6) * crw; })();
       if (crw > 0.01 && !small) { var gapF = Math.max(8, p.f * 0.12), len = Math.min(p.f * 0.62, 90), L0 = d.cx - d.w / 2, R0 = d.cx + d.w / 2, room = { l: L0 - S[0].x - gapF, r: S[0].x + S[0].w - R0 - gapF }, swd = Math.max(2, p.f * 0.035);
-        var fan = function (side) { var sp = Math.min(len, room[side]); if (sp < 14) return ''; var x0 = side === 'l' ? L0 - gapF : R0 + gapF, dir = side === 'l' ? -1 : 1;
+        var fan = function (side) { var sp = Math.min(len, room[side]); if (sp < 9) return ''; var x0 = side === 'l' ? L0 - gapF : R0 + gapF, dir = side === 'l' ? -1 : 1;
           return [-36, -18, 0, 18, 36].map(function (deg, i) { var r = deg * Math.PI / 180, l = sp * (i % 2 ? 0.7 : 1); return '<line x1="' + x0.toFixed(1) + '" y1="' + (d.cy + Math.sin(r) * d.h * 0.18).toFixed(1) + '" x2="' + (x0 + dir * Math.cos(r) * l).toFixed(1) + '" y2="' + (d.cy + Math.sin(r) * (d.h * 0.18 + l)).toFixed(1) + '"/>'; }).join(''); };
         fans += '<g stroke="' + (p.ink === A ? B : A) + '" stroke-width="' + swd.toFixed(1) + '" stroke-linecap="square" opacity="' + (crw * o).toFixed(3) + '">' + fan('l') + fan('r') + '</g>'; }
       var roomy = reach === 0 || d.cx - d.w / 2 - reach - p.f * fsM * 1.6 >= S[0].x;
@@ -114,7 +114,7 @@
       var showNote = rise > 0.01 && roomy && noteO > 0.01 && D.src === 'real billing', triPx = p.f * fsM;
       var pre = '', post = '';
       if (p.sep) pre = '<span style="font-size:.6em;letter-spacing:0;color:' + B + ';margin-right:10px;vertical-align:.2em">★</span>';
-      else if (rise > 0.01 && roomy) pre = '<span aria-hidden="true" style="position:absolute;right:100%;top:' + (cyEm / fsM - 0.6 - (showNote && !noteFits ? (nf * 0.55 + 2) / triPx * noteO : 0)).toFixed(2) + 'em;margin-right:' + (0.5 + reach / (p.f * fsM)).toFixed(3) + 'em;font-size:' + fsM.toFixed(3) + 'em;line-height:1;letter-spacing:0;color:' + ACC + ';opacity:' + rise.toFixed(3) + '">▲</span>';
+      else if (rise > 0.01 && roomy && !(x[1][n - 1] === 0 && tp >= n - 1 - 1e-3) && crw < 0.5) pre = '<span aria-hidden="true" style="position:absolute;right:100%;top:' + (cyEm / fsM - 0.6 - (showNote && !noteFits ? (nf * 0.55 + 2) / triPx * noteO : 0)).toFixed(2) + 'em;margin-right:' + (0.5 + reach / (p.f * fsM)).toFixed(3) + 'em;font-size:' + fsM.toFixed(3) + 'em;line-height:1;letter-spacing:0;color:' + ACC + ';opacity:' + rise.toFixed(3) + '">▲</span>';
       if (showNote) { var nst = 'font-size:' + nf.toFixed(1) + 'px;line-height:1;text-shadow:none;letter-spacing:.08em;white-space:nowrap;color:' + ACC + ';opacity:' + noteO.toFixed(3);
         post = noteFits ? '<span aria-hidden="true" style="position:absolute;left:100%;top:' + (cyEm * p.f - nf * 0.5).toFixed(1) + 'px;margin-left:' + (gapN + reach).toFixed(1) + 'px;' + nst + '">' + noteT + '</span>'
           : '<span aria-hidden="true" style="position:absolute;right:100%;top:' + (cyEm * p.f + triPx * 0.42 + 3).toFixed(1) + 'px;margin-right:' + (0.5 * triPx + reach + (triPx * 0.8 - shortW) / 2).toFixed(1) + 'px;' + nst + '">' + shortT + '</span>'; }
@@ -135,16 +135,16 @@
   // the clock on the poster: a date stamp that counts the summers from the festival to today; tapping it plays again
   function stamp(D, y, tp, Q, F) {
     var n = D.labels.length, atEnd = tp >= n - 1 - 1e-3, kk = Math.floor(tp), fk = tp - kk, g = fk <= 0 ? 0 : fk >= 1 ? 1 : 0.5 - 0.5 * Math.cos(Math.PI * fk), frac = n > 1 ? (kk + g) / (n - 1) : 1;
-    var y0 = +y, yNow = n > 1 ? Math.round(y0 + (TODAY - y0) * Math.min(1, frac)) : TODAY, age = yNow - y0;
-    var top = n < 2 ? 'TODAY’S BILL' : frac <= 0.001 ? 'THE BILL IN' : atEnd ? 'THE BILL TODAY' : 'THE BILL IN';
-    var bot = n < 2 ? 'BY HOW FAR THEY’VE GONE' : (frac <= 0.001 || age <= 0) ? (D.src === 'real billing' ? 'ON THE POSTER' : 'AT THE FESTIVAL') : atEnd ? (age === 1 ? 'ONE SUMMER ON' : (NW[age] || age) + ' SUMMERS ON') : (age === 1 ? 'ONE SUMMER ON' : (NW[age] || age) + ' SUMMERS ON');
+    var y0 = +y, yNow = n > 1 ? Math.round(y0 + (TODAY - y0) * Math.min(1, frac)) : TODAY;
+    var top = n < 2 || atEnd ? 'TODAY' : frac <= 0.001 ? (D.src === 'real billing' ? 'ON THE POSTER' : 'AT THE FESTIVAL') : 'SUMMER BY SUMMER';
     var s = Q.STAMP, ink = F.ACC, act = n > 1 && !RM;
-    var w = Math.round(132 * s), big = Math.round(46 * s), sml = Math.max(10, Math.round(11 * s));
-    var bar = n > 1 ? '<span style="display:block;height:' + Math.max(2, Math.round(3 * s)) + 'px;margin:' + Math.round(4 * s) + 'px 0 ' + Math.round(4 * s) + 'px;background:' + ink + '33"><span style="display:block;height:100%;width:' + (Math.min(1, frac) * 100).toFixed(1) + '%;background:' + ink + '"></span></span>' : '';
-    var rep = act && atEnd && !S.playing ? '<span style="display:block;margin-top:' + Math.round(3 * s) + 'px;font-size:' + sml + 'px;letter-spacing:.12em">↻ PLAY AGAIN</span>' : '';
-    var inner = '<span style="display:block;font-size:' + sml + 'px;letter-spacing:.12em">' + top + '</span><span style="display:block;font-size:' + big + 'px;line-height:.9;letter-spacing:.02em;font-variant-numeric:tabular-nums">' + yNow + '</span>' + bar + '<span style="display:block;font-size:' + sml + 'px;letter-spacing:.12em">' + bot + '</span>' + rep;
-    var st = 'position:absolute;z-index:2;left:' + (Q.ph ? 10 : 18) + 'px;top:' + (Q.ph ? 10 : 18) + 'px;width:' + w + 'px;padding:' + Math.round(8 * s) + 'px ' + Math.round(10 * s) + 'px;box-sizing:border-box;text-align:center;border:' + Math.max(2, Math.round(3 * s)) + 'px solid ' + ink + ';color:' + ink + ';background:' + F.PAPER + 'E6;transform:rotate(-4deg);font-family:\'Bricolage Grotesque\',sans-serif;font-stretch:75%;font-variation-settings:\'wdth\' 75;font-weight:800';
-    return act ? '<button type="button" class="pk-cl-stamp" data-cl="play" aria-label="' + (S.playing ? 'Stop' : 'Play ' + y + ' to today') + '" style="' + st + ';cursor:pointer;appearance:none;font-size:inherit">' + inner + '</button>' : '<div class="pk-cl-stamp" style="' + st + '">' + inner + '</div>';
+    var w = Math.round(124 * s), big = Math.max(28, Math.round(44 * s)), sml = Math.max(10, Math.round(11 * s));
+    var bar = n > 1 ? '<span style="display:block;height:' + Math.max(2, Math.round(3 * s)) + 'px;margin:' + Math.round(5 * s) + 'px 2px 0;background:' + ink + '33"><span style="display:block;height:100%;width:' + (Math.min(1, frac) * 100).toFixed(1) + '%;background:' + ink + '"></span></span>' : '';
+    var rep = act && atEnd && !S.playing ? '<span aria-hidden="true" style="position:absolute;right:' + Math.round(6 * s) + 'px;top:' + Math.round(4 * s) + 'px;font-size:' + Math.max(12, Math.round(14 * s)) + 'px;line-height:1">↻</span>' : '';
+    var inner = rep + '<span style="display:block;font-size:' + sml + 'px;letter-spacing:.14em">' + top + '</span><span style="display:block;font-size:' + big + 'px;line-height:.92;letter-spacing:.02em;font-variant-numeric:tabular-nums">' + yNow + '</span>' + bar;
+    var inset = Q.ph ? 14 : 24;
+    var st = 'position:absolute;z-index:2;left:' + inset + 'px;top:' + inset + 'px;width:' + w + 'px;padding:' + Math.round(7 * s) + 'px ' + Math.round(10 * s) + 'px ' + Math.round(9 * s) + 'px;box-sizing:border-box;text-align:center;border:' + Math.max(2, Math.round(2.5 * s)) + 'px solid ' + ink + ';outline:1px solid ' + ink + ';outline-offset:' + Math.max(2, Math.round(3 * s)) + 'px;color:' + ink + ';background:transparent;transform:rotate(-6deg);-webkit-mask-image:' + WORN + ';mask-image:' + WORN + ';-webkit-mask-size:160px;mask-size:160px;font-family:\'Bricolage Grotesque\',sans-serif;font-stretch:75%;font-variation-settings:\'wdth\' 75;font-weight:800';
+    return act ? '<button type="button" class="pk-cl-stamp" data-cl="play" aria-label="' + (S.playing ? 'Stop' : 'Play ' + y + ' to today again') + '" style="' + st + ';cursor:pointer;appearance:none;font-size:inherit">' + inner + '</button>' : '<div class="pk-cl-stamp" style="' + st + '">' + inner + '</div>';
   }
 
   function caption(D, y, tp) {
@@ -187,8 +187,8 @@
   }
   function check() {
     if (!mountEl || RM || S.seen[S.y] || S.playing) return;
-    var r = mountEl.getBoundingClientRect(), vh = window.innerHeight || 800, vis = Math.min(r.bottom, vh) - Math.max(r.top, 0);
-    if (vis >= Math.min(r.height, vh) * 0.5) { S.seen[S.y] = 1; if (C[S.y].labels.length > 1) setTimeout(run, 250); }
+    var pe = mountEl.querySelector('.pk-cl-p') || mountEl, r = pe.getBoundingClientRect(), vh = window.innerHeight || 800, vis = Math.min(r.bottom, vh) - Math.max(r.top, 0);
+    if (vis >= Math.min(r.height, vh) * 0.6) { S.seen[S.y] = 1; if (C[S.y].labels.length > 1) setTimeout(run, 300); }
   }
   document.addEventListener('click', function (e) {
     var b = e.target && e.target.closest && e.target.closest('[data-cl]'); if (!b || !mountEl || !mountEl.contains(b)) return;
