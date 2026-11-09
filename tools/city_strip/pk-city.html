@@ -7,6 +7,8 @@
 #root .pk-cy-l{position:absolute;left:0;top:0;background:no-repeat;transition:transform .6s cubic-bezier(.45,0,.25,1)}
 #root .pk-cy.ph .pk-nh-cl{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 @media (prefers-reduced-motion:reduce){#root .pk-cy-l{transition:none}}
+/* the floating Listen button steps aside while the city map is on screen (as on the map pages) */
+html.pk-cy-in div:has(> button[aria-label="Listen to Pickathon"]){opacity:0!important;visibility:hidden!important;transition:opacity .2s,visibility 0s .2s}
 /* phone: the other 19 spots are small cream dots on the map's own icons, the picked one keeps its icon, gold ring and name */
 #root#root .pk-cy.ph .pk-cy-s:not(.on) i{left:16px;top:16px;width:12px;height:12px;background:#F2EDE3!important;box-shadow:0 0 0 2px rgba(31,28,29,.8);filter:none;opacity:.9}
 #root .pk-cy{position:relative}
@@ -76,7 +78,7 @@
     if (all) { var b = document.createElement('button'); b.type = 'button'; b.className = 'pk-cy-all' + (PH.on ? ' ph' : ''); b.textContent = ((all.querySelector('.pk-nh-an') || {}).textContent || 'All on the map').trim() + ' →'; b.addEventListener('click', function () { var hh = all.querySelector('.pk-nh-hit'); if (hh) hh.click(); }); if (!PH.on) sec.querySelector('.pk-nh-head').appendChild(b); }
     sec.classList.add('pk-cyon'); show(sec, true, true);
   }
-  function panTo(sec, y, now, x) { var l = sec.querySelector('.pk-cy-l'); if (!l) return; var ty = Math.max(Math.min(0, y < PH.Vh * 1.4 ? PH.Vh - 46 - y : PH.Vh / 2 - y), PH.Vh - (parseFloat(l.style.height) || PH.Vh) - (x > W - 80 ? 60 : 0)); /* a right-edge spot clears the floating Listen button */ if (now) { l.style.transition = 'none'; l.style.transform = 'translateY(' + ty.toFixed(1) + 'px)'; l.offsetHeight; l.style.transition = ''; } else l.style.transform = 'translateY(' + ty.toFixed(1) + 'px)'; }
+  function panTo(sec, y, now, x) { var l = sec.querySelector('.pk-cy-l'); if (!l) return; var ty = Math.max(Math.min(0, y < PH.Vh * 1.4 ? PH.Vh - 46 - y : PH.Vh / 2 - y), PH.Vh - (parseFloat(l.style.height) || PH.Vh)); if (now) { l.style.transition = 'none'; l.style.transform = 'translateY(' + ty.toFixed(1) + 'px)'; l.offsetHeight; l.style.transition = ''; } else l.style.transform = 'translateY(' + ty.toFixed(1) + 'px)'; }
   function show(sec, now, quiet) {
     var A = cards(sec), a = A.filter(function (x) { return idOf(x) === st.pick; })[0] || A[0]; if (!a) return; var f = sec.querySelector('.pk-cy-f'); if (!f) return;
     var c = a.cloneNode(true); c.removeAttribute('role'); [].forEach.call(c.querySelectorAll('button,a,[tabindex]'), function (x) { x.setAttribute('tabindex', '-1'); x.setAttribute('aria-hidden', 'true'); }); f.innerHTML = ''; f.appendChild(c);
@@ -103,8 +105,10 @@
   document.addEventListener('focusin', function (e) { var s = e.target.closest && e.target.closest('#pk-nh-city .pk-cy.ph .pk-cy-s'); if (s) { var m = s.closest('.pk-cy-m'); m.scrollTop = 0; requestAnimationFrame(function () { m.scrollTop = 0; }); panTo(document.getElementById('pk-nh-city'), parseFloat(s.style.top) || 0); } });
   document.addEventListener('focusout', function (e) { var s = e.target.closest && e.target.closest('#pk-nh-city .pk-cy.ph .pk-cy-s'); if (s && !(e.relatedTarget && e.relatedTarget.closest && e.relatedTarget.closest('.pk-cy-s'))) { var sec = document.getElementById('pk-nh-city'), on = sec && sec.querySelector('.pk-cy-s.on'); if (on) panTo(sec, parseFloat(on.style.top) || 0); } });
   document.addEventListener('keydown', function (e) { if ((e.key === 'Enter' || e.key === ' ') && e.target.classList && e.target.classList.contains('pk-cy-f')) { e.preventDefault(); e.target.click(); } });
+  var io = null, ioEl = null;
   setInterval(function () {
-    var sec = document.getElementById('pk-nh-city'); if (!sec) return;
+    var sec = document.getElementById('pk-nh-city'); if (!sec) { document.documentElement.classList.remove('pk-cy-in'); return; }
+    if (ioEl !== sec && window.IntersectionObserver) { if (io) io.disconnect(); ioEl = sec; io = new IntersectionObserver(function (es) { es.forEach(function (en) { document.documentElement.classList.toggle('pk-cy-in', en.isIntersecting && en.intersectionRatio > 0.2); }); }, { threshold: [0, 0.2, 0.5] }); io.observe(sec); }
     var A = cards(sec), sig = A.map(idOf).join(',');
     var vk = sig + '|' + (window.innerWidth || 0) + '|' + (window.innerWidth < 1000 ? 0 : window.innerHeight || 0); if (sig && (vk !== st.sig || !sec.querySelector('.pk-cy'))) { st.sig = vk; build(sec); }
   }, 500);
