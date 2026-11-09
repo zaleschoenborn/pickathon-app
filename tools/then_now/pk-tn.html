@@ -3,7 +3,7 @@
 #root .pk-st-mix.pk-tn-off{display:none!important}
 #root .pk-tn{min-width:0;padding:18px 18px 14px;border-radius:14px;background:#12160F;color:#F2EDE3;--tn-d:20px;--tn-g:4px}
 #root .pk-tn *{box-sizing:border-box}
-#root .pk-tn-k{margin:0;font:800 11.5px/1.2 'Bricolage Grotesque',sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#CFC9BC}
+#root .pk-tn-one .pk-tn-nav{display:none}#root#root#root#root .pk-tn button.pk-tn-dot{min-height:0!important;height:var(--tn-d)!important;width:var(--tn-d)!important;padding:0!important;border:0!important;border-radius:50%!important;background:var(--c)!important;box-shadow:none!important}#root#root#root#root .pk-tn button.pk-tn-dot.sel{box-shadow:0 0 0 3px #12160F,0 0 0 5px #F2EDE3!important}#root .pk-tn-k{margin:0;font:800 11.5px/1.2 'Bricolage Grotesque',sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#CFC9BC}
 #root .pk-tn-h{margin:4px 0 6px;font:800 22px/1.05 'Bricolage Grotesque',sans-serif;letter-spacing:.01em;text-transform:uppercase;color:#F2EDE3}
 #root .pk-tn-p{margin:0 0 12px;font-size:13.5px;line-height:1.4;color:#CFC9BC}
 #root .pk-tn-nav{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;margin:0 0 12px}
@@ -70,10 +70,11 @@
       Y.acts.forEach(function (a, k) { if (a.c[F] !== a.c[N]) { var v = (a.m[N] - a.m[F]) * 100 + a.m[N]; if (v > bv) { bv = v; best = k; } } });
       s.sel = best == null ? 0 : best;
     }
+    var ONE = !Y.dates || Y.dates.length < 2;   /* only a Now snapshot for this year: no date stepper, no festival claim */
     var w = document.createElement('div');
-    w.className = 'pk-tn'; w.setAttribute('role', 'group'); w.setAttribute('aria-label', 'Then and now: what ' + y + ' turned into');
-    w.innerHTML = '<p class="pk-tn-k">Then and now</p><h3 class="pk-tn-h">What ' + y + ' turned into</h3>' +
-      '<p class="pk-tn-p">The ' + Y.acts.length + ' bands of ' + y + ', re-rated every six months with what was known on each date. Nobody is a Discovery at the festival; it shows in the rooms they play after.</p>' +
+    w.className = 'pk-tn' + (ONE ? ' pk-tn-one' : ''); w.setAttribute('role', 'group'); w.setAttribute('aria-label', 'Then and now: what ' + y + ' turned into');
+    w.innerHTML = '<p class="pk-tn-k">Then and now</p><h3 class="pk-tn-h">' + (ONE ? 'Where ' + y + ' stands now' : 'What ' + y + ' turned into') + '</h3>' +
+      (ONE ? '<p class="pk-tn-p">The ' + Y.acts.length + ' bands of ' + y + ', rated with what is known now. Tap a dot for each act.</p>' : '<p class="pk-tn-p">The ' + Y.acts.length + ' bands of ' + y + ', re-rated every six months with what was known on each date. Nobody is a Discovery at the festival; it shows in the rooms they play after.</p>') +
       '<div class="pk-tn-nav"><div class="pk-tn-step"><button type="button" class="pk-tn-sb" data-d="-1" aria-label="Earlier date"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>' +
       '<div class="pk-tn-dt" aria-live="polite"><b></b><span></span></div>' +
       '<button type="button" class="pk-tn-sb" data-d="1" aria-label="Later date"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button></div>' +
@@ -81,7 +82,7 @@
       '<div class="pk-tn-cols">' + COL.map(function (c) { return '<div style="--c:' + c[3] + '"><b></b><span>' + c[1] + '</span></div>'; }).join('') + '</div>' +
       '<div class="pk-tn-f"><span class="pk-tn-tip" aria-hidden="true"></span>' + Y.acts.map(function (a, k) { return '<button type="button" class="pk-tn-dot" data-k="' + k + '"></button>'; }).join('') + '</div>' +
       '<div class="pk-tn-card" aria-live="polite"></div>' +
-      '<p class="pk-tn-fn">Scores 0–10 · next re-rating ' + nextRating() + '</p>';
+      '<p class="pk-tn-fn">Scores 0–10' + (ONE ? '' : ' · next re-rating ' + nextRating()) + '</p>';
     var dots = w.querySelectorAll('.pk-tn-dot'), field = w.querySelector('.pk-tn-f'), tip = w.querySelector('.pk-tn-tip');
     function lab(a, i) { return COL[CI[a.c[i]]][2]; }
     function layout() {
@@ -115,7 +116,7 @@
       if (ch) {
         var j = N; while (j > 0 && a.c[j - 1] === a.c[N]) j--;
         h += '<span>At the festival: ' + lab(a, F) + ' ' + a.m[F] + ' → Now: ' + lab(a, N) + ' ' + a.m[N] + '</span><i>Became a' + (/^[AEIOU]/.test(lab(a, N)) ? 'n ' : ' ') + lab(a, N) + ': ' + mo(Y.dates[j]) + '</i>';
-      } else h += '<span>' + lab(a, N) + ' at the festival and now · score ' + a.m[N] + '</span>';
+      } else h += '<span>' + lab(a, N) + (ONE ? ' now' : ' at the festival and now') + ' · score ' + a.m[N] + '</span>';
       h += '<button type="button" class="pk-tn-go">Artist page →</button>';
       var card = w.querySelector('.pk-tn-card'); card.innerHTML = h;
       card.querySelector('.pk-tn-go').onclick = function () { openAct(a.n, y); };
