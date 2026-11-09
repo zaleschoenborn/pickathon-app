@@ -178,11 +178,12 @@ for hid in STAGES:
         if ks and nk(r[4]) not in ks: exp += [(y, r, k1) for k1 in ks]
         else: exp.append((y, r, None))
     for y, r, kw in exp:
-        k0 = kw or nk(r[4]); k = AL.get(k0, k0); b = ROW.get((y, k))
+        t4 = re.sub(r'\s*\((?:21\+|courtyard)\)\s*$|\s+[\u2013-]\s+(?:Galaxy Barn|Lucky)\s*$', '', r[4], flags=re.I).strip()   # '(21+)' late sets are the same act
+        k0 = kw or nk(t4); k = AL.get(k0, k0); b = ROW.get((y, k))
         if b and not b.get('f'): kn = KL.get(b.get('k') or 'none', 'More to hear'); MU.add(k)
         elif b: kn = LUK.get(b.get('lu'), 'More')
         else: kn = 'Showcases & other'
-        NM[k] = b['n'] if b else re.sub(r'\s+', ' ', r[4]).strip(); YS[k].add(y); MG[k] = max(MG[k], float((b or {}).get('m') or 0))
+        NM[k] = b['n'] if b else re.sub(r'\s+', ' ', t4).strip(); YS[k].add(y); MG[k] = max(MG[k], float((b or {}).get('m') or 0))
         if y >= LY.get(k, 0): LY[k] = y; KN1[k] = kn   # one tab per act: the kind of its latest year here
     for k, kn in KN1.items(): K[kn][k] = 1
     for kn in [x for x in K if len(K[x]) < 3 and x != 'Showcases & other']:
