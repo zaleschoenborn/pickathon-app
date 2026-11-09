@@ -1,4 +1,8 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="color-scheme" content="dark"><style>html{background:#12160F}</style><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><style>@font-face{font-family:"Pickathon 2014";src:url(../fonts/pickathon-2014.ttf) format("truetype");font-weight:400;font-style:normal;font-display:swap}</style><style>@media (min-width:1200px){html body #card #empty #pinv,html body #card.intro #empty #pinv{display:none!important;height:0!important;margin:0!important;padding:0!important}}</style></head><title>Farm Map Phone Test</title>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="color-scheme" content="dark"><style>html{background:#12160F}</style><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><style>@font-face{font-family:"Pickathon 2014";src:url(../fonts/pickathon-2014.ttf) format("truetype");font-weight:400;font-style:normal;font-display:swap}</style><style>@media (min-width:1200px){html body #card #empty #pinv,html body #card.intro #empty #pinv{display:none!important;height:0!important;margin:0!important;padding:0!important}}</style><style id="pk-sitetype">/* Zale, Nov 9: the map in the site's own type: Pickathon 2014 for titles and names, condensed Bricolage caps for kickers and labels */
+#dover h1,#lptitle b,#lpdeep b,#eyebrow+b,#cname,#pname,#pgname{font-family:"Pickathon 2014",var(--f)!important;text-transform:uppercase;letter-spacing:.02em!important;font-weight:400!important}
+#dover .dk,#lptitle small,#lpdeep small,#eyebrow,.pcg .gld,.pcg .gls,.pgh,#ckind,#pgkind,#ctag,#pgtag{font-family:var(--f)!important;font-weight:800!important;font-stretch:75%;font-variation-settings:'wdth' 75;text-transform:uppercase;letter-spacing:.12em!important}
+.pc span b,.lab,#fullmap,#finder,.pcb{font-family:var(--f)!important;font-weight:800!important;font-stretch:75%;font-variation-settings:'wdth' 75;letter-spacing:.04em!important;text-transform:uppercase}
+</style></head><title>Farm Map Phone Test</title>
 <style>
 /* The farm floats on its own paper colour. Shapes are real footprints traced
    from the art, so the same outline is both the glow and the hit area. */
@@ -418,7 +422,7 @@ body{margin:0;background:var(--ink);color:var(--cream);font-family:var(--f);
 
 .amn{font-style:normal;font-weight:700;opacity:.8}
 </style>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;600;700;800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,400..800&display=swap">
 
 <style>/* intro kicker is the screen's title: sized by script to span the full text width, bat centered above it */
 #dover .dk,#lptitle small{white-space:nowrap!important;display:block}
@@ -939,8 +943,7 @@ function build(){
       h._mask='M'+(cx-r)+','+cy+'a'+r+','+r+' 0 1 0 '+(2*r)+',0a'+r+','+r+' 0 1 0 '+(-2*r)+',0Z';
     }
     p.setAttribute('d',h._mask);
-    p.addEventListener('pointerenter',e=>{ if(pinned && e.pointerType==='mouse' && !e.buttons && !live.size) peek(h);
-      if(hoverOK && hoverArmed && !pinned && e.pointerType==='mouse' && !e.buttons && !live.size && NOW()>settleUntil) setCur(h,true); });  // hover only; a finger or a drag never picks
+    p.addEventListener('pointerenter',e=>{ if(e.pointerType==='mouse' && !e.buttons && !live.size) peek(h); }); p.addEventListener('pointerleave',e=>{ if(e.pointerType==='mouse') peek(null); });  // Zale, Nov 9: hover only highlights; it never picks, pans or zooms  // hover only; a finger or a drag never picks
     // A drag that happens to END on a neighborhood is still a drag. Without
     // this the map opened a page every time you let go over a shape, the page
     // covered the farm, and it read as "after the first move it gets stuck".
@@ -1131,7 +1134,9 @@ function place(){
   const BOT0=BOT;
   [L,R].forEach(arr=>{
     // phone inside the site: the right rail stops short of the corner where the site's music button sits
-    const BOT=(arr===R&&LP()&&parent!==window)?BOT0-44:BOT0;
+    let BOT=(arr===R&&LP()&&parent!==window)?BOT0-44:BOT0;
+    // Zale, Nov 9: nothing ever sits under the open card; the left rail stops above it
+    if(arr===L&&!LP()){ const dr=document.getElementById('door'); if(dr&&document.body.classList.contains('dooron')){ const r=dr.getBoundingClientRect(), sr=stage.getBoundingClientRect(); if(r.height>0&&r.left-sr.left<W/2) BOT=Math.min(BOT,Math.round(r.top-sr.top)-18); } }
     arr.sort((a,b)=>a._sk-b._sk);
     // down the column first, then back up from the floor, so the bottom ones
     // spread instead of piling on the last slot
@@ -1619,11 +1624,11 @@ labs.addEventListener('click',e=>{
   if(e.detail>0) return;   // pointer taps are handled in tapAt, so a label behaves exactly like its neighborhood
   goPage(h);
 });
-labs.addEventListener('pointerout',e=>{ if(pinned) peek(null); });
+labs.addEventListener('pointerout',e=>{ peek(null); });
 labs.addEventListener('pointerover',e=>{
   const b=e.target.closest('.lab');
   if(pinned&&e.pointerType==='mouse'&&b&&b.__hood) peek(b.__hood);
-  if(hoverOK&&hoverArmed&&!pinned&&e.pointerType==='mouse'&&!e.buttons&&b&&b.__hood&&!live.size&&NOW()>settleUntil) setCur(b.__hood,true);   // hover is for a mouse; a finger only ever picks by tapping
+  if(!pinned&&e.pointerType==='mouse'&&!e.buttons&&b&&b.__hood&&!live.size) peek(b.__hood);   // hover only highlights (Zale, Nov 9)
 });
 
 // A trackpad two-finger swipe moves the farm; a pinch (which arrives as
@@ -1631,10 +1636,9 @@ labs.addEventListener('pointerover',e=>{
 stage.addEventListener('wheel',e=>{
   e.preventDefault();
   cancelAnimationFrame(flyRaf);   // a glide in progress must not fight the hand
-  if(!e.ctrlKey && !e.metaKey && (e.deltaX||Math.abs(e.deltaY)<40)){
-    tx-=e.deltaX; ty-=e.deltaY; clamp(); move(); return;
-  }
-  const s=e.ctrlKey||e.metaKey ? Math.exp(-e.deltaY/140) : (e.deltaY<0?1.2:1/1.2);
+  // Zale, Nov 9: the wheel and a trackpad always zoom around the pointer (pinch faster); dragging is what moves the farm
+  if(!e.deltaY) return;
+  const dy=e.deltaMode===1?e.deltaY*16:e.deltaY, s=e.ctrlKey||e.metaKey ? Math.exp(-dy/140) : Math.exp(-Math.max(-120,Math.min(120,dy))/320);
   zoomAt(k*s,e.clientX,e.clientY);
 },{passive:false});
 stage.addEventListener('dblclick',e=>{e.preventDefault(); cancelAnimationFrame(flyRaf); zoomAt(k*2,e.clientX,e.clientY);});
@@ -2363,7 +2367,7 @@ body.dooron #door{display:block}
     const c=clampV(v.k,(cardR+W)/2-cx*v.k,H2*0.42-cy*v.k,H2,true); return {k:v.k,tx:c.tx,ty:c.ty}; };
   const _lpPan=lpPanTo; lpPanTo=function(h){ if(NOW()<noPanUntil||!h) return; flyView(viewFor(h),h); };
   // a drag folds the doorway into its slim bar; it stays folded until tapped or a new pick
-  new MutationObserver(()=>{ if(stage.classList.contains('drag')&&B.classList.contains('dooron')&&!fold&&NOW()-pickAt>350) setFold(true); }).observe(stage,{attributes:true,attributeFilter:['class']});
+  new MutationObserver(()=>{ if(innerWidth<1200&&stage.classList.contains('drag')&&B.classList.contains('dooron')&&!fold&&NOW()-pickAt>350) setFold(true); })  /* Zale, Nov 9: on desktop the card stays open while you move the map */.observe(stage,{attributes:true,attributeFilter:['class']});
   $('.dbar').addEventListener('click',e=>{ if(e.target.closest('.dgo')) return; setFold(false); });
   door.querySelectorAll('.dgo').forEach(b=>b.addEventListener('click',e=>{ e.stopPropagation(); if(H) goPage(H); }));
   $('.dprev').addEventListener('click',e=>{ e.stopPropagation(); stepHood(-1); });
