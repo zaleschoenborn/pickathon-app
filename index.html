@@ -4893,7 +4893,7 @@ var pr27 = function (k) { var r = PR27[k]; return r ? Math.ceil(r[PCOL]) : 0; },
         var regs = (P.regs || []).map(function (r) { var ly = latest(r[2]) || String(r[1][r[1].length - 1]), b = YB[ly] || {}; return { n: r[0], ys: r[1].length + ' summers · ' + span(r[1]), isA: !!r[2], noA: !r[2], go: r[2] ? goA(r[2]) : function () {}, img: r[3] || '', hasImg: !!r[3], noImg: !r[3], badge: b.card || '', bg: b.paper || '#F2EDE3' }; });
         // a day here: the schedule as it ran, any year on record
         var PS = d.pastSched || {}, SKIP = /sign-?ups? begin|registration|check-?in\b|^tba\b|^tbd\b/i;
-        var yrs = Object.keys(PS).filter(function (y) { return (PS[y] || []).some(function (r) { return r[3] === h; }); }).sort();
+        var yrs = Object.keys(PS).filter(function (y) { return +y >= 2018 && (PS[y] || []).some(function (r) { return r[3] === h; }); }).sort();
         var YS = st.nhY && st.nhY[0] === h && yrs.indexOf(st.nhY[1]) >= 0 ? st.nhY[1] : yrs[yrs.length - 1];
         var seen = {}, rows = (PS[YS] || []).filter(function (r) { if (r[3] !== h || SKIP.test(r[4] || '')) return false; var q = r.slice(0, 5).join('|'); if (seen[q]) return false; seen[q] = 1; return true; });
         var ORD = ['Thu', 'Fri', 'Sat', 'Sun', 'Mon'], DL = { Thu: 'Thursday', Fri: 'Friday', Sat: 'Saturday', Sun: 'Sunday', Mon: 'Monday' }, days = [];

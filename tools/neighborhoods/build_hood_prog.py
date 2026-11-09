@@ -53,7 +53,14 @@ KW = [('Little ones & care', r'feeding nest|nursing|drop-?off|cedarwood|care\b|b
       ('Clown & variety', r'clown|juggl|magic|circus|variety|puppet|jokey|comedy|joke')]
 TAGK = {"Kids' music": "Kids' music", 'Clown & variety': 'Clown & variety', 'Little ones & care': 'Little ones & care',
         'Music workshop': 'Workshops & lessons', 'Outdoor skills': 'Outdoor skills', 'Yoga': 'Yoga & movement', 'Crafts': 'Crafts & making'}
-def kind_of(title, stage, k):
+KWH = {'refuge': [('Recovery', r'recovery|dharma'), ('Sound baths', r'sound|bowl|harp|looping|kirtan'),
+                  ('Meditation & breath', r'meditat|breath|tea\b|tea cer|qi ?gong|rest, relax|cacao'),
+                  ('Yoga & movement', r'yoga|stretch|somatic|movement|dance'), ('Sing-alongs & poetry', r'sing|poetry|poem|type-?written'),
+                  ('Making', r'weav|craft|aromatherapy|mister|blooms|crane|art\b|make|bee'), ('Tarot & readings', r'tarot|reading')],
+       'curation': [('Chef dinners with a band', r'\bw/|\bwith\b'), ('DJs', r'^dj\b'), ('Dinners & brunches', r'dinner|brunch|happy hour|curation')]}
+def kind_of(title, stage, k, hid=''):
+    for kn, rx in KWH.get(hid, []):
+        if re.search(rx, title, re.I): return kn
     for kn, rx in KW:
         if re.search(rx, title, re.I): return kn
     t = TAG.get(k) or TAG.get(AL.get(k, ''), '')
@@ -64,7 +71,7 @@ def kind_of(title, stage, k):
     return "Kids' music" if re.search(r'stage', stage, re.I) else 'More'
 out = {}
 for hid in GATHER:
-    rows = [(int(y), r) for y, R in (d.get('pastSched') or {}).items() if y.isdigit() for r in R if r[3] == hid and not SKIP.search(r[4] or '')]
+    rows = [(int(y), r) for y, R in (d.get('pastSched') or {}).items() if y.isdigit() and int(y) >= 2018 for r in R if r[3] == hid and not SKIP.search(r[4] or '')]
     if not rows: continue
     K = defaultdict(OrderedDict); YS = defaultdict(set); NM = {}
     for y, r in rows:
@@ -72,7 +79,7 @@ for hid in GATHER:
         k = who(title) or nk(re.split(r':\s', title)[0])
         n = ENT.get(k) or re.split(r':\s', title)[0].strip()
         NM[k] = n; YS[k].add(y)
-        K[kind_of(title, r[2], k)][k] = 1
+        K[kind_of(title, r[2], k, hid)][k] = 1
     for kn in [x for x in K if len(K[x]) < 3 and x != 'More']:   # a kind with one or two names joins 'More'
         for k in K.pop(kn): K['More'][k] = 1
     kinds = []
