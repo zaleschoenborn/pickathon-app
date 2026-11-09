@@ -1293,6 +1293,8 @@ html.pk-yp-on #root .pk-yb{display:none}
     else { var i = +b.getAttribute('data-i'); if (RM) { s.tp = i; paint(m, s, D); } else tween(m, s, D, s.tp, i, 500); }
   });
   function tick() {
+    // Zale, Nov 9 00:55: the ranked poster lives on Home only; the year page keeps its year band (year_page.md "Poster hero: retired")
+    document.documentElement.classList.remove('pk-yp-on'); document.querySelectorAll('.pk-yp-mount').forEach(function (m) { if (m.firstChild) m.innerHTML = ''; }); return;
     var C = window.pkClimb; if (!C) return;
     document.querySelectorAll('.pk-yp-mount').forEach(function (m) {
       var y = String(m.getAttribute('data-y') || '').replace(/\D/g, '').slice(0, 4), D = C[y];
@@ -1309,9 +1311,9 @@ html.pk-yp-on #root .pk-yb{display:none}
 </script>
 <style id="pk-ayl-css">
 /* pk-ayl: the year's look on the artist page */
-#root .pk-ev-gh.pk-yl{min-height:52px;padding:0 14px;border-radius:4px;display:flex;align-items:center;gap:12px}
+#root .pk-ev-gh.pk-yl{min-height:44px;padding:0 0 6px;display:flex;align-items:center;gap:10px;border-bottom:2px solid var(--yw)}
 #root .pk-ev-gh.pk-yl .pk-ev-y{flex:1;margin:0}
-#root .pk-yl-b{height:28px;width:auto;flex:none}
+#root .pk-yl-b{height:32px;width:auto;flex:none;padding:3px;border-radius:4px;background:var(--yp,#F2EDE3);box-sizing:border-box}
 #root .pk-ycs{display:flex;flex-direction:column;gap:18px;margin:16px 0 8px}
 #root .pk-yc-h{min-height:52px;padding:0 14px;display:flex;align-items:center;gap:12px;border-radius:4px 4px 0 0}
 #root .pk-yc-h h3{flex:1;margin:0;font:800 18px/1.1 'Bricolage Grotesque',sans-serif;font-stretch:75%;font-variation-settings:'wdth' 75;letter-spacing:1px}
@@ -1324,8 +1326,8 @@ html.pk-yp-on #root .pk-yb{display:none}
 #root .pk-yc-l{margin:8px 0 0;font-size:15px;line-height:1.45;color:#CFC9BC}
 #root#root .pk-yc-l button{all:unset;cursor:pointer;color:#D6B54A;font-weight:800;min-height:32px}
 @media (max-width:699px){#root .pk-ev-gh.pk-yl,#root .pk-yc-h{min-height:44px}#root .pk-yl-b{height:22px}#root .pk-yc-h h3{font-size:15px}}
-#root .pk-hd-yc.pk-hyl .pk-hd-yt{padding:12px 14px 14px}
-#root .pk-hd-yc.pk-hyl .pk-yl-b{display:block;height:24px;margin-bottom:6px}
+#root .pk-hd-yc.pk-hyl{border-top:4px solid var(--yw)}
+#root .pk-hd-yc.pk-hyl .pk-yl-b{display:block;height:30px;margin-bottom:6px}
 </style>
 <script id="pk-ayl-js">/*pk-ayl: artist page "The year's look" (artist_page.md, design_studio-25/-36): each Pickathon <year> heading on that year's paper with its badge, and an "On the <year> bill, ranked today" card for music acts. Data: d.climb, the same ranked data as Home and the year page.*/
 (function () {
@@ -1340,7 +1342,7 @@ html.pk-yp-on #root .pk-yb{display:none}
       var h = gh.querySelector('.pk-ev-y'); if (!h) return; var m = /Pickathon (\d{4})/.exec(h.textContent || ''); if (!m) return; var D = C[m[1]];
       if (!D || D.art === undefined || gh.getAttribute('data-yl') === m[1]) return; gh.setAttribute('data-yl', m[1]);
       if (!D.badge && m[1] === '1999') return;
-      gh.classList.add('pk-yl'); gh.style.background = D.paper; h.style.color = D.inks[0];
+      gh.classList.add('pk-yl'); gh.style.setProperty('--yw', D.inks[1] || D.inks[0]); gh.style.setProperty('--yp', D.paper);
       if (!gh.querySelector('.pk-yl-b')) { var im = document.createElement('img'); im.className = 'pk-yl-b'; im.alt = ''; im.src = badge(m[1]); im.onerror = function () { im.remove(); }; gh.insertBefore(im, gh.firstChild); }
     });
   }
@@ -1360,6 +1362,7 @@ html.pk-yp-on #root .pk-yb{display:none}
       '<p class="pk-yc-l">' + esc(line) + ' <button type="button" data-yc="go">See the poster →</button></p></div>';
   }
   function cards(C) {
+    var old0 = document.querySelector('.pk-ycs'); if (old0) old0.remove(); return; // Zale, Nov 9: no poster pieces on the artist page
     var acts = [].filter.call(document.querySelectorAll('.pk-act-acts[data-act]'), function (e) { return e.offsetParent !== null; })[0]; if (!acts) return; var box = document.querySelector('.pk-as') || acts.parentNode;
     var nm = acts.getAttribute('data-act'), key = K(nm), ph = (box.clientWidth || 390) < 700;
     if (box.getAttribute('data-yc') === key + ph) return;
@@ -1383,8 +1386,7 @@ html.pk-yp-on #root .pk-yb{display:none}
     document.querySelectorAll('.pk-hd-yc').forEach(function (c) {
       var yy = c.querySelector('.pk-hd-yy'), t = c.querySelector('.pk-hd-yt'); if (!yy || !t) return; var y = (yy.textContent.match(/\d{4}/) || [])[0], D = C[y];
       if (!D || y === '1999' || c.getAttribute('data-yl') === y) return; c.setAttribute('data-yl', y);
-      c.classList.add('pk-hyl'); t.style.background = D.paper; yy.style.color = D.inks[0];
-      [].forEach.call(t.querySelectorAll('.pk-hd-yb,.pk-hd-yl'), function (e, i) { e.style.color = D.inks[i ? 0 : 1]; });
+      c.classList.add('pk-hyl'); c.style.setProperty('--yw', D.inks[1] || D.inks[0]); c.style.setProperty('--yp', D.paper);
       if (!t.querySelector('.pk-yl-b')) { var im = document.createElement('img'); im.className = 'pk-yl-b'; im.alt = ''; im.src = badge(y); im.onerror = function () { im.remove(); }; t.insertBefore(im, t.firstChild); }
     });
   }
