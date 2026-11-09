@@ -42,7 +42,7 @@
     var fit = function (nm, s) { var wd = nm.split(' '), opts = [{ L: [nm], lead: false }];
       if (s.ml > 1) for (var i = 1; i < wd.length; i++) { var a = wd.slice(0, i).join(' '), b = wd.slice(i).join(' '); opts.push({ L: [a, b], lead: false }); if (LEAD.indexOf(a) >= 0 && b.length > 3) opts.push({ L: [a, b], lead: true }); }
       var best = null; opts.forEach(function (o) { var ws = o.L.map(function (t, i) { return tw(t) * (o.lead && i === 0 ? 0.55 : 1); }), hs = o.L.length === 1 ? LH : o.lead ? LH * 1.55 + 0.04 : LH * 2 + 0.04;
-        var mw = Math.max.apply(null, ws), f = Math.min(s.mx, s.w * 0.93 / mw, s.h / hs);
+        var fanR = s.head ? Math.min(s.mx * 0.62, 90) * 0.81 + Math.max(8, s.mx * 0.12) + 4 : 0, mw = Math.max.apply(null, ws), f = Math.min(s.mx, (s.w - 2 * Math.max(fanR, s.head ? 46 : 0)) * 0.97 / mw, s.h / hs);
         if (!best || f > best.f + (o.lead ? -2 : 0.5) || (Math.abs(f - best.f) <= 0.5 && o.L.length === best.L.length && !o.lead && !best.lead && mw < best.mw)) best = { f: f, mw: mw, L: o.L, lead: o.lead }; }); return best; };
     var posAt = function (si) { var P = {};
       D.names.forEach(function (x0) { var r = x0[1][si]; if (r < LN) { var s = S[r], b = fit(x0[0], s); P[x0[0]] = { x: s.x + s.k * s.w, y: s.y + s.h, k: s.k, f: b.f, L: b.L, lead: b.lead, ink: s.ink, head: !!s.head, line: r, on: true }; } });
@@ -62,11 +62,11 @@
     var same = function (a, b) { return a.x === b.x && a.y === b.y && a.f === b.f && a.k === b.k; };
     // every name takes the same time on one smooth curve (Zale, Nov 9 00:27)
     var G = fk <= 0 ? 0 : fk >= 1 ? 1 : 0.5 - 0.5 * Math.cos(Math.PI * fk);
-    var LAST = S[LN - 1], VOFF = function (nm, f0, src) { return { x: LAST.x + 0.5 * LAST.w, y: LAST.y + LAST.h + 50, k: 0.5, f: Math.min(f0 || LAST.mx, LAST.mx) * 0.8, L: src.L, lead: src.lead, ink: A, line: LN, on: true }; };
+    var LAST = S[LN - 1], VOFF = function (nm, f0, src) { return { x: LAST.x + 0.5 * LAST.w, y: LAST.y + LAST.h + 14, k: 0.5, f: Math.min(f0 || LAST.mx, LAST.mx) * 0.8, L: src.L, lead: src.lead, ink: A, line: LN, on: true }; };
     var op = function (nm, a, b) { var va = a.vis !== false, vb = b.vis !== false;
-      if (same(a, b)) return va ? [[a, 1, 0]] : [];
+      if (same(a, b)) return va ? [[a, a.on ? 1 : 1 - 0.7 * Math.sin(G * Math.PI), 0]] : [];
       var g = G, mv = g > 0 && g < 1;
-      if (!a.on && !b.on) { var s2 = sm((g - 0.3) / 0.4); return [va ? [a, 1 - s2, g] : null, vb ? [b, s2, g] : null].filter(Boolean); }
+      if (!a.on && !b.on) { var s2 = sm((g - 0.3) / 0.4), dip = 1 - 0.7 * Math.sin(G * Math.PI); return [va ? [a, (1 - s2) * dip, g] : null, vb ? [b, s2 * dip, g] : null].filter(Boolean); }
       var A0 = a.on ? a : VOFF(nm, b.f, b), B0 = b.on ? b : VOFF(nm, a.f, a), up = B0.f > A0.f;
       var swell = mv ? Math.sin(g * Math.PI) * (nm === D.clim ? 0.25 : up ? 0.15 : -0.08) : 0;
       var pos = { x: A0.x + (B0.x - A0.x) * g, y: A0.y + (B0.y - A0.y) * g, k: A0.k + (B0.k - A0.k) * g, f: (A0.f + (B0.f - A0.f) * g) * (1 + swell), ink: mix(A0.ink, B0.ink, g), moving: mv, on: true };
@@ -74,8 +74,8 @@
       var out = [], sameShape = A0.L.join('|') === B0.L.join('|') && !!A0.lead === !!B0.lead;
       if (sameShape) out.push([Object.assign({}, g < 0.5 ? A0 : B0, pos), o, g]);
       else { var s3 = sm((g - 0.35) / 0.3); out.push([Object.assign({}, A0, pos), o * (1 - s3), g], [Object.assign({}, B0, pos), o * s3, g]); }
-      if (!a.on && va) out.push([a, 1 - sm(g * 3), g]);
-      if (!b.on && vb) out.push([b, sm((g - 0.6) / 0.4), g]);
+      if (!a.on && va) out.push([a, (1 - sm(g * 3)) * (1 - 0.7 * Math.sin(G * Math.PI)), g]);
+      if (!b.on && vb) out.push([b, sm((g - 0.6) / 0.4) * (1 - 0.7 * Math.sin(G * Math.PI)), g]);
       return out; };
     var drawn = []; D.names.forEach(function (x) { op(x[0], PA[x[0]], PB[x[0]]).forEach(function (q) { if (q[1] > 0.005) drawn.push([x, q]); }); });
     var fTo = function (q) { var b = PB[q[0][0]], a = PA[q[0][0]]; return Math.max(q[1][0].f, b && b.on ? b.f : 0, a && a.on && !(b && b.on) ? 0 : 0); };
@@ -105,7 +105,7 @@
       var rise = small ? 0 : showRise(x), fsM = Math.max(Q.ph ? 9 : 11, p.f * 0.42) / p.f, crw = cwOf(x[0]), d = dims(p);
       var reach = (function () { if (crw < 0.01 || small) return 0; var gap = Math.max(8, p.f * 0.12), sp = Math.min(Math.min(p.f * 0.62, 90), d.cx - d.w / 2 - S[0].x - gap); return sp < 9 ? 0 : (gap + sp * Math.cos(36 * Math.PI / 180) + 6) * crw; })();
       if (crw > 0.01 && !small) { var gapF = Math.max(8, p.f * 0.12), len = Math.min(p.f * 0.62, 90), L0 = d.cx - d.w / 2, R0 = d.cx + d.w / 2, room = { l: L0 - S[0].x - gapF, r: S[0].x + S[0].w - R0 - gapF }, swd = Math.max(2, p.f * 0.035);
-        var fan = function (side) { var sp = Math.min(len, room[side]); if (sp < 9) return ''; var x0 = side === 'l' ? L0 - gapF : R0 + gapF, dir = side === 'l' ? -1 : 1;
+        var fan = function (side) { var sp = Math.min(len, room[side]); if (sp < 20) return ''; var x0 = side === 'l' ? L0 - gapF : R0 + gapF, dir = side === 'l' ? -1 : 1;
           return [-36, -18, 0, 18, 36].map(function (deg, i) { var r = deg * Math.PI / 180, l = sp * (i % 2 ? 0.7 : 1); return '<line x1="' + x0.toFixed(1) + '" y1="' + (d.cy + Math.sin(r) * d.h * 0.18).toFixed(1) + '" x2="' + (x0 + dir * Math.cos(r) * l).toFixed(1) + '" y2="' + (d.cy + Math.sin(r) * (d.h * 0.18 + l)).toFixed(1) + '"/>'; }).join(''); };
         fans += '<g stroke="' + (p.ink === A ? B : A) + '" stroke-width="' + swd.toFixed(1) + '" stroke-linecap="square" opacity="' + (crw * o).toFixed(3) + '">' + fan('l') + fan('r') + '</g>'; }
       var roomy = reach === 0 || d.cx - d.w / 2 - reach - p.f * fsM * 1.6 >= S[0].x;
@@ -141,12 +141,13 @@
     var s = Q.STAMP, ink = F.ACC, act = n > 1 && !RM;
     var w = Math.max(Q.ph ? 106 : 0, Math.round(132 * s)), big = Math.max(28, Math.round(44 * s)), sml = Math.max(11, Math.round(12 * s));
     var bar = n > 1 ? '<span style="display:block;height:' + Math.max(2, Math.round(3 * s)) + 'px;margin:' + Math.round(5 * s) + 'px 2px 0;background:' + ink + '33"><span style="display:block;height:100%;width:' + (Math.min(1, frac) * 100).toFixed(1) + '%;background:' + ink + '"></span></span>' : '';
-    var rep = act && atEnd && !S.playing ? '<span aria-hidden="true" style="position:absolute;right:' + Math.round(6 * s) + 'px;top:' + Math.round(4 * s) + 'px;font-size:' + Math.max(12, Math.round(14 * s)) + 'px;line-height:1">↻</span>' : '';
+    var rep = '';
     var inner = rep + '<span style="display:block;font-size:' + sml + 'px;letter-spacing:.12em">' + top + '</span><span style="display:block;font-size:' + big + 'px;line-height:.92;letter-spacing:.02em;font-variant-numeric:tabular-nums">' + yNow + '</span>' + bar + '<span style="display:block;margin-top:' + Math.round(4 * s) + 'px;font-size:' + sml + 'px;letter-spacing:.12em">' + low + '</span>';
     var inset = Q.ph ? 14 : 24;
     var st = 'position:absolute;z-index:2;left:' + inset + 'px;top:' + inset + 'px;width:' + w + 'px;padding:0;border:0;background:transparent;transform:rotate(-6deg);color:' + ink + ';font-family:\'Bricolage Grotesque\',sans-serif;font-stretch:75%;font-variation-settings:\'wdth\' 75;font-weight:800;text-align:center';
     var ist = 'display:block;position:relative;padding:' + Math.round(7 * s) + 'px ' + Math.round(10 * s) + 'px ' + Math.round(9 * s) + 'px;box-sizing:border-box;border:' + Math.max(2, Math.round(2.5 * s)) + 'px solid ' + ink + ';outline:1px solid ' + ink + ';outline-offset:' + Math.max(2, Math.round(3 * s)) + 'px;-webkit-mask-image:' + WORN + ';mask-image:' + WORN + ';-webkit-mask-size:160px;mask-size:160px';
-    return { act: act, st: st, html: '<span class="pk-cl-ink" style="' + ist + '">' + inner + '</span>', label: S.playing ? 'Stop' : 'Play ' + y + ' to today again' };
+    var rp = act && atEnd && !S.playing ? '<span class="pk-cl-rp" aria-hidden="true" style="position:absolute;left:0;right:0;top:100%;margin-top:' + Math.round(9 * s) + 'px;font-size:' + Math.max(11, Math.round(12 * s)) + 'px;letter-spacing:.12em;white-space:nowrap">↻ PLAY AGAIN</span>' : '';
+    return { act: act, st: st, html: '<span class="pk-cl-ink" style="' + ist + '">' + inner + '</span>' + rp, label: S.playing ? 'Stop' : 'Play ' + y + ' to today again' };
   }
 
   function caption(D, y, tp) {
