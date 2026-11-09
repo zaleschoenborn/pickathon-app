@@ -102,6 +102,11 @@ for y, LL in yln.items():
             if g in G:
                 pn = G[g][0][1]['n']
                 if nk(q['n']) != nk(pn): alias[nk(q['n'])] = nk(pn)
+PAGES = {nk(b['n']) for rows in G.values() for _, b in rows}
+def res(v, n=0):
+    return v if v in PAGES or n > 5 else res(alias.get(v, v), n + 1) if v in alias else v
+alias = {k: res(v) for k, v in alias.items()}
+alias = {k: v for k, v in alias.items() if k not in PAGES and v in PAGES and k != v}   # never point a page's own key away, no loops
 d['actAlias'] = alias
 json.dump(d, open(os.path.join(SITE, 'data.json'), 'w'), ensure_ascii=False, separators=(',', ':'))
 print('groups', len(G), 'rows renamed', renamed, 'aliases', len(alias))
