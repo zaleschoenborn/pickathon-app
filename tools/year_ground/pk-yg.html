@@ -5,8 +5,13 @@ html.pk-yg #root main [style*="background: #2B2628"],html.pk-yg #root main [styl
 html.pk-yg #root .pk-ah{position:relative}
 html.pk-yg #root .pk-ah-y{display:inline-flex;align-items:center;gap:.22em}
 html.pk-yg #root .pk-yg-badge{height:1.25em;width:auto;filter:drop-shadow(0 2px 5px rgba(0,0,0,.45));pointer-events:none}
-html.pk-yg #root .pk-yg-stripe{display:flex;height:6px;margin:0 0 18px;border-radius:0 0 6px 6px;overflow:hidden}
-html.pk-yg #root .pk-yg-stripe i{flex:1}
+/* the year's poster masthead (ink on paper, no color bar) and the artist page date stamp: designer's option A, Zale Nov 9 08:40 */
+html.pk-yg #root .pk-yb{background:var(--yp) radial-gradient(var(--yih) 1px,transparent 1.3px) 0 0/5px 5px!important;border-radius:6px!important;box-shadow:inset 0 0 0 6px var(--yp),inset 0 0 0 8px var(--yi)!important}
+html.pk-yg body #root section.pk-yb .pk-yb-in .pk-yb-t h1.pk-yb-h{color:var(--yi)!important;-webkit-text-fill-color:var(--yi)!important}
+html.pk-yg body #root section.pk-yb .pk-yb-in .pk-yb-t p.pk-yb-d{color:var(--yi2)!important;-webkit-text-fill-color:var(--yi2)!important}
+html.pk-yg #root .pk-yb-stripe,html.pk-yg #root .pk-yreel-y{display:none!important}
+html.pk-yg #root#root .pk-ah-y{background:var(--yp)!important;color:var(--yi)!important;border:2px solid var(--yi)!important;box-shadow:inset 0 0 0 2px var(--yp),inset 0 0 0 3px var(--yi)!important;padding:4px 12px 4px 6px!important;border-radius:3px!important;transform:rotate(-3deg);font-family:'Bricolage Grotesque',sans-serif!important;font-stretch:75%;font-variation-settings:'wdth' 75;font-weight:800!important;text-shadow:none!important;font-size:clamp(20px,2.4vw,30px)!important;line-height:1!important;-webkit-text-fill-color:var(--yi)!important}
+html.pk-yg #root .pk-ah-y .pk-yg-badge{height:1.5em;filter:none}
 </style>
 <script id="pk-yg-js">
 (function () {
@@ -19,8 +24,8 @@ html.pk-yg #root .pk-yg-stripe i{flex:1}
     if (act && act.offsetParent !== null) y = String(window.__pkYGa || ''); else if (m && yb && yb.offsetParent !== null) y = m.getAttribute('data-y') || '';
     var B = (window.__pkYB || {})[y], root = document.documentElement;
     if (!B) { if (last) { root.classList.remove('pk-yg'); root.style.removeProperty('--yg'); last = ''; } return; }
-    var g = ground(B.band); if (last !== y + g) { root.style.setProperty('--yg', g); root.classList.add('pk-yg'); last = y + g; }
-    if (act) { var hero = act.querySelector('.pk-ah'), yl = hero && hero.querySelector('.pk-ah-y'); if (hero && yl && !hero.querySelector('.pk-yg-badge')) { var im = document.createElement('img'); im.className = 'pk-yg-badge'; im.src = B.badge; im.alt = ''; im.setAttribute('aria-hidden', 'true'); yl.insertBefore(im, yl.firstChild); var st = document.createElement('div'); st.className = 'pk-yg-stripe'; st.setAttribute('aria-hidden', 'true'); st.innerHTML = (B.stripe || []).map(function (c) { return '<i style="background:' + c + '"></i>'; }).join(''); hero.after(st); } }
+    var g = ground(B.band); if (last !== y + g) { var P = B.paper || '#F2EDE3', I = B.ink || B.band || '#2B2628', hx = I.replace('#', ''); root.style.setProperty('--yg', g); root.style.setProperty('--yp', P); root.style.setProperty('--yi', I); root.style.setProperty('--yi2', B.ink2 || I); root.style.setProperty('--yih', 'rgba(' + parseInt(hx.substr(0, 2), 16) + ',' + parseInt(hx.substr(2, 2), 16) + ',' + parseInt(hx.substr(4, 2), 16) + ',.10)'); root.classList.add('pk-yg'); last = y + g; }
+    if (act) { var hero = act.querySelector('.pk-ah'), yl = hero && hero.querySelector('.pk-ah-y'); if (hero && yl && !hero.querySelector('.pk-yg-badge')) { var im = document.createElement('img'); im.className = 'pk-yg-badge'; im.src = B.badge; im.alt = ''; im.setAttribute('aria-hidden', 'true'); yl.insertBefore(im, yl.firstChild); } }
   }, 250);
 })();
 </script>
