@@ -54,10 +54,13 @@ def site_name(n):
 TAGS = {key(r['n']): (r.get('t') or []) for L in PAGE_LU for r in (YL.get(L) or [])}
 
 def blurb(t, n):
-    t = re.sub(r'https?://\S+', '', t or ''); t = re.sub(r'\s+', ' ', t).strip()
+    t = re.sub(r'https?://\S+', '', t or ''); t = re.sub(r'[\s\u00a0]+', ' ', t).strip()
     t = re.sub(r'^' + re.escape(n.split(' (')[0]) + r'\s+Bio:\s*', '', t)
     t = re.sub(r'\s*(Website|Instagram|Facebook|Mixcloud|Bandcamp|TikTok|YouTube|Twitter)(\s*\|\s*(Website|Instagram|Facebook|Mixcloud|Bandcamp|TikTok|YouTube|Twitter))*\s*$', '', t)
-    s = re.findall(r'.+?[.!?](?=\s|$)', t) or [t]
+    t = re.sub(r'\.{2,}', '.', t)
+    AB = r'(?:Mr|Ms|Mrs|Dr|St|Jr|Sr|vs|Mt|No|Vol|feat|ft|aka|e\.g|i\.e)'
+    t = re.sub(AB + r'\.', lambda m: m.group(0)[:-1] + '\u2024', t)   # keep 'Ms. Kelly' in one sentence
+    s = [x.replace('\u2024', '.') for x in (re.findall(r'.+?[.!?](?=\s|$)', t) or [t])]
     out = ''
     for x in s:
         if len(out) + len(x) > 260 and out: break
@@ -98,7 +101,13 @@ for r in W['rows']:
     lab = LSING[r['ln']] + (' · ' + c if kk != 'none' else (' · ' + tg[0] if tg else ''))
     arch = ARCH.get(k) or {}
     line = (arch.get('l') if arch.get('t') == 'x' and arch.get('l') else '') or blurb(r.get('txt'), r['n'])
-    links = [u for u in (r.get('links') or []) if u.startswith('http') and 'pickathon.com' not in u and not re.search(r'youtu', u)][:3]
+    links, dom = [], set()
+    for u in (r.get('links') or []):
+        if not u.startswith('http') or 'pickathon.com' in u or re.search(r'youtu', u): continue
+        mm = re.search(r'instagram|facebook|bandcamp|spotify|soundcloud|tiktok|linktr|twitter|x\.com', u); dk = mm.group(0) if mm else 'web'
+        if dk in dom: continue
+        dom.add(dk); links.append(u)
+    links = links[:3]
     yrs = sorted({int(y0) for y0, LL in (d.get('yln') or {}).items() for L in LL.values() for q in L if key(q['n']) == k or (min(len(k), len(key(q['n']))) >= 6 and (key(q['n']).startswith(k) or k.startswith(key(q['n']))))} | CTY.get(k, set()) | {int(Y)})
     row = {'n': n, 'k': kk, 'g': '', 'm': m, 't': 4, 'c': lab, 'f': 1, 'lu': r['ln'], 'l': line, 'yrs': yrs}
     if links: row['lk'] = links
