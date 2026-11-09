@@ -36,7 +36,7 @@ for y, LL in yln.items():
 
 def fix_blurb(t, n):
     t = (t or '').strip()
-    t = re.sub(r'^((Website|Instagram|Facebook|Mixcloud|Bandcamp|XRAY\.FM|TikTok|YouTube|Twitter|Linktree)\s*\|?\s*)+', '', t, flags=re.I).strip()
+    t = re.sub(r'^((Website|Instagram|Facebook|Mixcloud|SoundCloud|Bandcamp|Spotify|XRAY\.FM|TikTok|YouTube|Twitter|Linktree)\s*\|?\s*)+', '', t, flags=re.I).strip()
     if not t or not t[0].islower(): return t
     if re.match(r'^(is|are|was|were|has|have)\b', t): return n + ' ' + t
     s = re.split(r'(?<=[.!?])\s+(?=[A-Z])', t, maxsplit=1)
@@ -46,9 +46,18 @@ alias, ph, AS = dict(d.get('actAlias') or {}), d.get('yearPhotos') or {}, d.get(
 renamed = 0
 for g, rows in G.items():
     rows.sort(key=lambda r: r[0])
-    cnt = Counter(b['n'] for _, b in rows)
-    top = max(cnt.values())
-    name = [b['n'] for _, b in reversed(rows) if cnt[b['n']] == top][0]
+    # the page name: every billing seen (bill rows and lineup lists); for DJs a 'DJ …' billing in normal case wins,
+    # then the most used, then the latest ('disco diablo' and 'GREASY' read as typos on a grid of 'DJ …' names)
+    seen = [(y, b['n']) for y, b in rows] + [(int(y0), q['n']) for y0, LL in yln.items() for L in LL.values() for q in L if ck(q['n']) == g]
+    seen = [(y, re.sub(r'\s*\([^)]*\)\s*$', '', n).strip()) for y, n in seen]
+    cnt = Counter(n for _, n in seen)
+    dj = any((b.get('lu') == 'DJs') for _, b in rows)
+    def score(yn):
+        y, n = yn
+        return ((dj and n.startswith('DJ ') and not n.startswith('DJ The ') and not n.startswith('DJs ')), not (n.islower() or n.isupper()), cnt[n], y)
+    top = max(seen, key=lambda yn: (cnt[yn[1]], yn[0]))[1]   # the most used billing decides WHICH name (The Ambassador, not Allen Thayer)
+    base = lambda n: re.sub(r'^djs?(?=[a-z0-9]{3})', '', key(n))
+    name = max([yn for yn in seen if base(yn[1]) == base(top)], key=score)[1]   # then its best-dressed spelling
     yrs = sorted(set().union(*[set(b.get('yrs') or []) for _, b in rows]) | {y for y, _ in rows} | LNY.get(g, set()))
     classed = [b for _, b in rows if b.get('k') in ('disc', 'leg', 'deep')]
     first = classed[0] if classed else None
