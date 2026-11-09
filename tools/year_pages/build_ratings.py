@@ -31,6 +31,11 @@ for f in sys.argv[1:]:
             last = S.get(x) or last
             c.append(K.get((last or {}).get('class'), 'none') if last else 'none'); m.append(int(float((last or {}).get('mag') or 0)))
         acts.append({'n': n, 'c': c, 'm': m})
+    # The lineup is the source of truth (Zale, Nov 9): an act in the rating history that is not on that year's bill
+    # (2022 and 2023 MOTRIK; years before 2022 have partial bills, so they are not checked) stays out of the dots, so the Time Machine and the grid count the same acts.
+    nk = lambda t: re.sub(r'[^a-z0-9]', '', re.sub(r'^the\s+', '', str(t).lower()))
+    bill = {nk(b['n']) for b in d.get('yearBill', {}).get(y, []) if not b.get('f')}
+    if bill and int(y) >= 2022: acts = [a for a in acts if nk(a['n']) in bill or nk(a['n']) in {nk(x) for x in d.get('actAlias', {})}]
     acts.sort(key=lambda a: a['n'].lower())
     fest = next((i for i, x in enumerate(keep) if x >= y + '-08-01'), len(keep) - 1)
     d['yearRatings'][y] = {'dates': keep, 'fest': fest, 'acts': acts}
