@@ -24,8 +24,20 @@ for f in sys.argv[1:]:
     # A snapshot date counts only when most acts were rated by then; earlier dates with a few reconstructed rows
     # would show everyone else as Neither (Nov 9: only 2024 has full six-month snapshots).
     keep = [x for x in keep if sum(1 for S in snap.values() if any(k <= x for k in S)) >= 0.75 * len(snap)] or keep[-1:]
+    # Years with no real snapshot history (every year but 2024; Zale, Nov 9: treat the first rating as 'at the festival'):
+    # two dots, the first rating of each act (its call at the festival) and the newest one (today).
+    two = len(keep) < 2
+    if two:
+        ALL = [r for r in csv.DictReader(open(f, encoding='utf-8-sig')) if r['cat'] == 'Music']
+        ALL.sort(key=lambda r: r['date']); snap = {}
+        for r in ALL: snap.setdefault(r['act'], []).append(r)
+        last = max(r['date'] for r in ALL); keep = [y + '-08-01', last] if last > y + '-08-01' else [last]
     acts = []
     for n, S in snap.items():
+        if two:
+            rs = S; c0, c1 = rs[0], rs[-1]; cc = [c0, c1][:len(keep)]
+            acts.append({'n': n, 'c': [K.get(r['class'], 'none') for r in cc], 'm': [int(float(r.get('mag') or 0)) for r in cc]}); continue
+    for n, S in ([] if two else snap.items()):
         c, m, last = [], [], None
         for x in keep:
             last = S.get(x) or last
