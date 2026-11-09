@@ -1,7 +1,7 @@
 <style id="pk-cy-css">
 /* pk-city: Home "Live inside a temporary city of wonder" on every screen: the picked neighborhood's photo beside a strip of the real farm map (home_flow.md section 3; Zale, Nov 9: "I wanna see the new map come on") */
 #root #pk-nh-city #pk-nh-cr,#root #pk-nh-city .pk-nh-arrs{visibility:hidden}
-#root #pk-nh-city.pk-cyon #pk-nh-cr,#root #pk-nh-city.pk-cyon .pk-nh-arrs{display:none!important}
+html.pk-cyon #root #pk-nh-city #pk-nh-cr,html.pk-cyon #root #pk-nh-city .pk-nh-arrs{display:none!important}
 /* phone and tablet (Zale, Nov 9 06:30): the same photo and real map, stacked; the map pans to the picked spot */
 #root .pk-cy.ph{grid-template-columns:minmax(0,1fr)!important;gap:12px;margin-top:14px}
 #root .pk-cy.ph .pk-cy-m{width:100%!important;overflow:clip}
@@ -53,6 +53,7 @@ html.pk-cy-in div:has(> button[aria-label="Listen to Pickathon"]){opacity:0!impo
 #root#root#root#root#root .pk-cy-s.on{z-index:30}
 #root .pk-cy-s:not(.on) i{box-shadow:0 0 0 2px rgba(242,237,227,.85)}
 #root .pk-cy-s.on i{--iz:42px;filter:none;box-shadow:0 0 0 3px #F2CF62,0 0 0 6px rgba(31,28,29,.55),0 0 30px 14px rgba(242,207,98,.8)}
+#root .pk-cy.own .pk-cy-s:not(.on) b{opacity:0!important}
 #root .pk-cy.zn .pk-cy-s b{opacity:1;font-size:10.5px;padding:2px 6px;background:rgba(31,28,29,.88)}
 #root .pk-cy-s b{top:calc(50% + var(--iz,26px) / 2 + 3px)!important}
 #root .pk-cy-s.on b{top:calc(50% + 24px)!important}
@@ -116,7 +117,7 @@ html.pk-cy-in div:has(> button[aria-label="Listen to Pickathon"]){opacity:0!impo
     if (all) { var b = document.createElement('button'); b.type = 'button'; b.className = 'pk-cy-all' + (PH.on ? ' ph' : ''); b.textContent = ((all.querySelector('.pk-nh-an') || {}).textContent || 'All on the map').trim() + ' →'; b.addEventListener('click', function () { var hh = all.querySelector('.pk-nh-hit'); if (hh) hh.click(); }); if (!PH.on) sec.querySelector('.pk-nh-head').appendChild(b); }
     st.vw = PH.on ? (mm.clientWidth || W) : W; st.vh = vh;
     if (!st.v || st.v.key !== st.sig) { st.v = { z: 1, tx: 0, ty: 0, key: st.sig }; centerOn(st.pick, true); }
-    sec.classList.add('pk-cyon'); show(sec, true, true); apply(sec);
+    sec.classList.add('pk-cyon'); document.documentElement.classList.add('pk-cyon'); st.box = box; st.ids = ids.join(','); show(sec, true, true); apply(sec);
   }
   // ---- the map view: drag, pinch, zoom buttons; spots stay the same size on screen (Zale, Nov 9 08:30) ----
   var ZMAX = 3.2;
@@ -127,7 +128,7 @@ html.pk-cy-in div:has(> button[aria-label="Listen to Pickathon"]){opacity:0!impo
     sec = sec || document.getElementById('pk-nh-city'); if (!sec || !st.v) return; var box = sec.querySelector('.pk-cy'), l = sec.querySelector('.pk-cy-l'); if (!box || !l) return;
     clampV(); var v = st.v; box.classList.toggle('anim', !!anim); if (anim) { clearTimeout(st.at); st.at = setTimeout(function () { box.classList.remove('anim'); }, 600); }
     l.style.transform = 'translate(' + v.tx.toFixed(1) + 'px,' + v.ty.toFixed(1) + 'px) scale(' + v.z.toFixed(3) + ')';
-    var iz = Math.round(26 + (Math.min(v.z, ZMAX) - 1) * 6); box.style.setProperty('--iz', iz + 'px'); box.classList.toggle('zn', v.z >= 1.8);
+    var iz = Math.round(26 + (Math.min(v.z, ZMAX) - 1) * 6); box.style.setProperty('--iz', iz + 'px'); box.classList.toggle('zn', v.z >= 1.8 && S * v.z < 0.55); box.classList.toggle('own', S * v.z >= 0.55);
     sec.querySelectorAll('.pk-cy-s').forEach(function (b) { var q = qOf(b.getAttribute('data-cy')); if (!q) return; var x = q.x * v.z + v.tx, y = q.y * v.z + v.ty; b.style.left = x.toFixed(1) + 'px'; b.style.top = y.toFixed(1) + 'px'; var nearZ = x > st.vw - 70 && y < 120; b.classList.toggle('nz', nearZ); b.classList.toggle('ed-r', x > st.vw - 70); b.classList.toggle('ed-l', x < 70); b.classList.toggle('ed-b', y > st.vh - 50); var out = x < 4 || y < 4 || x > st.vw - 4 || y > st.vh - 4; b.style.visibility = out ? 'hidden' : ''; });
     var mmz = sec.querySelector('.pk-cy-m'); if (mmz) mmz.classList.toggle('fits', st.W * v.z <= st.vw + 1 && st.H * v.z <= st.vh + 1); var zb = sec.querySelectorAll('.pk-cy-zm button'); if (zb.length) { zb[0].disabled = v.z >= ZMAX - 0.01; zb[1].disabled = v.z <= 1.01; }
   }
@@ -196,7 +197,7 @@ html.pk-cy-in div:has(> button[aria-label="Listen to Pickathon"]){opacity:0!impo
   document.addEventListener('focusin', function (e) { var s = e.target.closest && e.target.closest('#pk-nh-city .pk-cy-s'); if (s) { var m = s.closest('.pk-cy-m'); m.scrollTop = 0; m.scrollLeft = 0; var x = parseFloat(s.style.left) || 0, y = parseFloat(s.style.top) || 0; if (x < 30 || y < 30 || x > st.vw - 30 || y > st.vh - 30) { centerOn(s.getAttribute('data-cy')); apply(null, true); } } });
   document.addEventListener('keydown', function (e) { if ((e.key === 'Enter' || e.key === ' ') && e.target.classList && e.target.classList.contains('pk-cy-f')) { e.preventDefault(); e.target.click(); } });
   var io = null, ioEl = null;
-  try { new MutationObserver(function () { var sec = document.getElementById('pk-nh-city'); if (sec && !sec.querySelector('.pk-cy') && cards(sec).length) { st.sig = ''; tick(); } }).observe(document.body, { childList: true, subtree: true }); } catch (e) {}
+  try { new MutationObserver(function () { var sec = document.getElementById('pk-nh-city'); if (!sec || sec.querySelector('.pk-cy')) return; var hd = sec.querySelector('.pk-nh-head'), ids = cards(sec).map(idOf).join(','); if (st.box && hd && (!ids || ids === st.ids) && (window.innerWidth < 1000) === PH.on) { hd.parentNode.insertBefore(st.box, hd.nextSibling); sec.classList.add('pk-cyon'); if (ids) { show(sec, true, true); apply(sec); } return; } if (!ids) return; st.sig = ''; tick(); }).observe(document.documentElement, { childList: true, subtree: true }); } catch (e) {}
   function tick() {
     var sec = document.getElementById('pk-nh-city'); if (!sec) { document.documentElement.classList.remove('pk-cy-in'); return; }
     if (ioEl !== sec && window.IntersectionObserver) { if (io) io.disconnect(); ioEl = sec; io = new IntersectionObserver(function (es) { es.forEach(function (en) { document.documentElement.classList.toggle('pk-cy-in', en.isIntersecting && en.intersectionRatio > 0.2); }); }, { threshold: [0, 0.2, 0.5] }); io.observe(sec); }

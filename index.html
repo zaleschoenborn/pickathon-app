@@ -991,6 +991,10 @@ main:has(#pk-nh-climb)>section{content-visibility:visible!important;contain-intr
 #root#root#root .pk-cl-rpl:hover{border-color:#F2EDE3}
 #root#root#root .pk-cl-tl{max-width:960px!important;width:auto;margin:6px auto 14px!important;font-size:13px;color:#B9B3A6}
 @media (max-width:999px){#root .pk-cl-tb{gap:10px}#root .pk-cl-ty{font-size:13px}}
+
+/* review r2: names never draw past the paper; Another year clears the heading on phone */
+#root .pk-cl-p{overflow:hidden}
+@media (max-width:999px){#root .pk-cl-ht .pk-nh-h2{margin-top:22px!important}}
 </style>
 <style id="pk-hm-css">
 /* Neighborhood page: "Where it is" map (Zale, Nov 9 08:30: a way to move between neighborhoods from the map on each neighborhood page). Design Studio */
@@ -1014,7 +1018,7 @@ main:has(#pk-nh-climb)>section{content-visibility:visible!important;contain-intr
 #root .pk-hm-s.here b{top:48px;background:#F2CF62;color:#1F1C1D;font-size:12px}
 #root#root .pk-hm-s:focus-visible{outline:2px solid #F2CF62;outline-offset:2px}
 #root .pk-hm-zm{position:absolute;right:8px;top:8px;z-index:9;display:flex;gap:6px}
-#root .pk-hm-s.nz b{opacity:0}
+#root .pk-hm-s.nz b,#root .pk-hm-s.lh b,#root .pk-hm.own .pk-hm-s:not(.here) b{opacity:0}
 #root#root#root#root#root .pk-hm-zm button{width:44px;height:44px;min-height:44px!important;padding:0;border-radius:8px!important;border:1.5px solid rgba(242,237,227,.5)!important;background:rgba(31,28,29,.88)!important;color:#F2EDE3;display:grid;place-items:center;cursor:pointer}
 #root .pk-hm-zm svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:round}
 #root#root .pk-hm-zm button:disabled{opacity:.35;cursor:default}
@@ -1032,8 +1036,16 @@ main:has(#pk-nh-climb)>section{content-visibility:visible!important;contain-intr
   function apply(anim) {
     var w = document.querySelector('#root .pk-hm'); if (!w || !V) return; clampV();
     w.classList.toggle('anim', !!anim); if (anim) { clearTimeout(V.at); V.at = setTimeout(function () { w.classList.remove('anim'); }, 550); }
-    var l = w.querySelector('.pk-hm-l'), k = V.s * V.z; l.style.width = MW * V.s + 'px'; l.style.height = MH * V.s + 'px'; l.style.transform = 'translate(' + V.tx.toFixed(1) + 'px,' + V.ty.toFixed(1) + 'px) scale(' + V.z.toFixed(3) + ')';
-    w.querySelectorAll('.pk-hm-s').forEach(function (b) { var p = V.P[b.getAttribute('data-h')]; var x = p[0] * k + V.tx, y = p[1] * k + V.ty; b.style.left = x.toFixed(1) + 'px'; b.style.top = y.toFixed(1) + 'px'; b.style.visibility = (x < 6 || y < 6 || x > V.vw - 6 || y > V.vh - 6) ? 'hidden' : ''; b.classList.toggle('nz', x > V.vw - 110 && y < 70 && !b.classList.contains('here')); });
+    var l = w.querySelector('.pk-hm-l'), k = V.s * V.z; w.classList.toggle('own', k >= 0.55);   /* the map's own printed names are readable: don't double them */ l.style.width = MW * V.s + 'px'; l.style.height = MH * V.s + 'px'; l.style.transform = 'translate(' + V.tx.toFixed(1) + 'px,' + V.ty.toFixed(1) + 'px) scale(' + V.z.toFixed(3) + ')';
+    w.querySelectorAll('.pk-hm-s').forEach(function (b) { var p = V.P[b.getAttribute('data-h')]; var x = p[0] * k + V.tx, y = p[1] * k + V.ty; b.style.left = x.toFixed(1) + 'px'; b.style.top = y.toFixed(1) + 'px'; b.style.visibility = (x < 6 || y < 6 || x > V.vw - 6 || y > V.vh - 6) ? 'hidden' : ''; b.classList.toggle('nz', x > V.vw - 110 && y < 70 && !b.classList.contains('here'));
+    });
+    // names that would overlap another name or icon step back, nearest to here first (review r2)
+    var here = w.querySelector('.pk-hm-s.here'), hp = here ? V.P[here.getAttribute('data-h')] : [0, 0], boxes = [];
+    if (here) { var hr = here.getBoundingClientRect(); boxes.push(hr); var hb = here.querySelector('b'); if (hb) boxes.push(hb.getBoundingClientRect()); }
+    [].slice.call(w.querySelectorAll('.pk-hm-s:not(.here)')).filter(function (b) { return b.style.visibility !== 'hidden'; }).sort(function (a, b) { var pa = V.P[a.getAttribute('data-h')], pb = V.P[b.getAttribute('data-h')]; return Math.hypot(pa[0] - hp[0], pa[1] - hp[1]) - Math.hypot(pb[0] - hp[0], pb[1] - hp[1]); }).forEach(function (b) {
+      b.classList.remove('lh'); var lb = b.querySelector('b'), ib = b.querySelector('i').getBoundingClientRect(), r = lb.getBoundingClientRect();
+      var hit = boxes.some(function (q) { return !(r.right < q.left || r.left > q.right || r.bottom < q.top || r.top > q.bottom); }) || b.classList.contains('nz');
+      if (hit) b.classList.add('lh'); else boxes.push(r); boxes.push(ib); });
     var zb = w.querySelectorAll('.pk-hm-zm button'); zb[0].disabled = V.z >= 2.4; zb[1].disabled = V.z <= V.zmin + 0.01;
   }
   function zoomAt(nz, cx, cy, anim) { nz = Math.max(V.zmin, Math.min(2.4, nz)); V.tx = cx - (cx - V.tx) * nz / V.z; V.ty = cy - (cy - V.ty) * nz / V.z; V.z = nz; apply(anim); }
@@ -1048,12 +1060,13 @@ main:has(#pk-nh-climb)>section{content-visibility:visible!important;contain-intr
     var m = w.querySelector('.pk-hm-m'), vw = m.clientWidth || 340, vh = m.clientHeight || 230, s = Math.min(vw, 480) / 760;   /* never blown up past the art's own size */
     if (VS[id] && VS[id].vw === vw) V = VS[id];
     else {
-      // start zoomed so the three nearest neighbors are in the frame with their names
-      var near = Object.keys(P).filter(function (k) { return k !== id; }).map(function (k) { return [k, Math.hypot(P[k][0] - P[id][0], P[k][1] - P[id][1])]; }).sort(function (a, b) { return a[1] - b[1]; }).slice(0, 3);
-      var dx = 0, dy = 0; near.forEach(function (n) { dx = Math.max(dx, Math.abs(P[n[0]][0] - P[id][0])); dy = Math.max(dy, Math.abs(P[n[0]][1] - P[id][1])); });
-      var z = Math.min(2.4, (vw / 2 - 46) / Math.max(1, dx * s), (vh / 2 - 34) / Math.max(1, dy * s)), zmin = Math.min(1, vw / (MW * s), vh / (MH * s));
-      z = Math.max(zmin, z);
-      V = VS[id] = { h: id, P: P, s: s, z: z, zmin: zmin, vw: vw, vh: vh, tx: vw / 2 - P[id][0] * s * z, ty: vh / 2 - P[id][1] * s * z };
+      // frame this neighborhood with its nearest neighbors (2, or 1 when the 2nd is far), centered on the group, never smaller than ~0.3 of the art's own size
+      var near = Object.keys(P).filter(function (k) { return k !== id; }).map(function (k) { return [k, Math.hypot(P[k][0] - P[id][0], P[k][1] - P[id][1])]; }).sort(function (a, b) { return a[1] - b[1]; });
+      var zmin = Math.min(1, vw / (MW * s), vh / (MH * s)), floor = 0.3 / s;
+      var frameFor = function (n) { var pts = [P[id]].concat(near.slice(0, n).map(function (q) { return P[q[0]]; })), x0 = Math.min.apply(null, pts.map(function (p) { return p[0]; })), x1 = Math.max.apply(null, pts.map(function (p) { return p[0]; })), y0 = Math.min.apply(null, pts.map(function (p) { return p[1]; })), y1 = Math.max.apply(null, pts.map(function (p) { return p[1]; }));
+        var z = Math.min(2.4, (vw - 120) / Math.max(1, (x1 - x0) * s), (vh - 84) / Math.max(1, (y1 - y0) * s)); return { z: z, cx: (x0 + x1) / 2, cy: (y0 + y1) / 2 }; };
+      var F = frameFor(2); if (F.z < floor) F = frameFor(1); var z = Math.max(zmin, F.z);
+      V = VS[id] = { h: id, P: P, s: s, z: z, zmin: zmin, vw: vw, vh: vh, tx: vw / 2 - F.cx * s * z, ty: vh / 2 - F.cy * s * z };
     }
     apply(); return w;
   }
@@ -1076,7 +1089,7 @@ main:has(#pk-nh-climb)>section{content-visibility:visible!important;contain-intr
   function up(e) { if (!PT[e.pointerId]) return; delete PT[e.pointerId]; var m = document.querySelector('#root .pk-hm-m'); if (m) m.classList.remove('drag'); if (G && G.moved) dragT = Date.now(); var p = Object.keys(PT).map(function (k) { return PT[k]; }); G = p.length === 1 ? { k: 1, x: p[0].x, y: p[0].y, tx: V.tx, ty: V.ty, moved: true } : null; }
   window.addEventListener('pointerup', up); window.addEventListener('pointercancel', up);
   setInterval(function () {
-    var t = top(), host = document.querySelector('#root section.pk-hd-w .pk-hd-desc'), old = document.querySelector('#root .pk-hm');
+    var t = top(), wide = window.innerWidth >= 1000, host = wide ? document.querySelector('#root section.pk-hd-w .pk-hd-cols') : document.querySelector('#root section.pk-hd-w .pk-hd-desc'), old = document.querySelector('#root .pk-hm');
     if (t.r !== 'hood' || !host) return;
     if (old && old.getAttribute('data-h') === t.h) return;
     if (old) old.remove(); build(host, t.h);
@@ -1105,7 +1118,7 @@ main:has(#pk-nh-climb)>section{content-visibility:visible!important;contain-intr
 <style id="pk-cy-css">
 /* pk-city: Home "Live inside a temporary city of wonder" on every screen: the picked neighborhood's photo beside a strip of the real farm map (home_flow.md section 3; Zale, Nov 9: "I wanna see the new map come on") */
 #root #pk-nh-city #pk-nh-cr,#root #pk-nh-city .pk-nh-arrs{visibility:hidden}
-#root #pk-nh-city.pk-cyon #pk-nh-cr,#root #pk-nh-city.pk-cyon .pk-nh-arrs{display:none!important}
+html.pk-cyon #root #pk-nh-city #pk-nh-cr,html.pk-cyon #root #pk-nh-city .pk-nh-arrs{display:none!important}
 /* phone and tablet (Zale, Nov 9 06:30): the same photo and real map, stacked; the map pans to the picked spot */
 #root .pk-cy.ph{grid-template-columns:minmax(0,1fr)!important;gap:12px;margin-top:14px}
 #root .pk-cy.ph .pk-cy-m{width:100%!important;overflow:clip}
@@ -1157,6 +1170,7 @@ html.pk-cy-in div:has(> button[aria-label="Listen to Pickathon"]){opacity:0!impo
 #root#root#root#root#root .pk-cy-s.on{z-index:30}
 #root .pk-cy-s:not(.on) i{box-shadow:0 0 0 2px rgba(242,237,227,.85)}
 #root .pk-cy-s.on i{--iz:42px;filter:none;box-shadow:0 0 0 3px #F2CF62,0 0 0 6px rgba(31,28,29,.55),0 0 30px 14px rgba(242,207,98,.8)}
+#root .pk-cy.own .pk-cy-s:not(.on) b{opacity:0!important}
 #root .pk-cy.zn .pk-cy-s b{opacity:1;font-size:10.5px;padding:2px 6px;background:rgba(31,28,29,.88)}
 #root .pk-cy-s b{top:calc(50% + var(--iz,26px) / 2 + 3px)!important}
 #root .pk-cy-s.on b{top:calc(50% + 24px)!important}
@@ -1220,7 +1234,7 @@ html.pk-cy-in div:has(> button[aria-label="Listen to Pickathon"]){opacity:0!impo
     if (all) { var b = document.createElement('button'); b.type = 'button'; b.className = 'pk-cy-all' + (PH.on ? ' ph' : ''); b.textContent = ((all.querySelector('.pk-nh-an') || {}).textContent || 'All on the map').trim() + ' →'; b.addEventListener('click', function () { var hh = all.querySelector('.pk-nh-hit'); if (hh) hh.click(); }); if (!PH.on) sec.querySelector('.pk-nh-head').appendChild(b); }
     st.vw = PH.on ? (mm.clientWidth || W) : W; st.vh = vh;
     if (!st.v || st.v.key !== st.sig) { st.v = { z: 1, tx: 0, ty: 0, key: st.sig }; centerOn(st.pick, true); }
-    sec.classList.add('pk-cyon'); show(sec, true, true); apply(sec);
+    sec.classList.add('pk-cyon'); document.documentElement.classList.add('pk-cyon'); st.box = box; st.ids = ids.join(','); show(sec, true, true); apply(sec);
   }
   // ---- the map view: drag, pinch, zoom buttons; spots stay the same size on screen (Zale, Nov 9 08:30) ----
   var ZMAX = 3.2;
@@ -1231,7 +1245,7 @@ html.pk-cy-in div:has(> button[aria-label="Listen to Pickathon"]){opacity:0!impo
     sec = sec || document.getElementById('pk-nh-city'); if (!sec || !st.v) return; var box = sec.querySelector('.pk-cy'), l = sec.querySelector('.pk-cy-l'); if (!box || !l) return;
     clampV(); var v = st.v; box.classList.toggle('anim', !!anim); if (anim) { clearTimeout(st.at); st.at = setTimeout(function () { box.classList.remove('anim'); }, 600); }
     l.style.transform = 'translate(' + v.tx.toFixed(1) + 'px,' + v.ty.toFixed(1) + 'px) scale(' + v.z.toFixed(3) + ')';
-    var iz = Math.round(26 + (Math.min(v.z, ZMAX) - 1) * 6); box.style.setProperty('--iz', iz + 'px'); box.classList.toggle('zn', v.z >= 1.8);
+    var iz = Math.round(26 + (Math.min(v.z, ZMAX) - 1) * 6); box.style.setProperty('--iz', iz + 'px'); box.classList.toggle('zn', v.z >= 1.8 && S * v.z < 0.55); box.classList.toggle('own', S * v.z >= 0.55);
     sec.querySelectorAll('.pk-cy-s').forEach(function (b) { var q = qOf(b.getAttribute('data-cy')); if (!q) return; var x = q.x * v.z + v.tx, y = q.y * v.z + v.ty; b.style.left = x.toFixed(1) + 'px'; b.style.top = y.toFixed(1) + 'px'; var nearZ = x > st.vw - 70 && y < 120; b.classList.toggle('nz', nearZ); b.classList.toggle('ed-r', x > st.vw - 70); b.classList.toggle('ed-l', x < 70); b.classList.toggle('ed-b', y > st.vh - 50); var out = x < 4 || y < 4 || x > st.vw - 4 || y > st.vh - 4; b.style.visibility = out ? 'hidden' : ''; });
     var mmz = sec.querySelector('.pk-cy-m'); if (mmz) mmz.classList.toggle('fits', st.W * v.z <= st.vw + 1 && st.H * v.z <= st.vh + 1); var zb = sec.querySelectorAll('.pk-cy-zm button'); if (zb.length) { zb[0].disabled = v.z >= ZMAX - 0.01; zb[1].disabled = v.z <= 1.01; }
   }
@@ -1300,7 +1314,7 @@ html.pk-cy-in div:has(> button[aria-label="Listen to Pickathon"]){opacity:0!impo
   document.addEventListener('focusin', function (e) { var s = e.target.closest && e.target.closest('#pk-nh-city .pk-cy-s'); if (s) { var m = s.closest('.pk-cy-m'); m.scrollTop = 0; m.scrollLeft = 0; var x = parseFloat(s.style.left) || 0, y = parseFloat(s.style.top) || 0; if (x < 30 || y < 30 || x > st.vw - 30 || y > st.vh - 30) { centerOn(s.getAttribute('data-cy')); apply(null, true); } } });
   document.addEventListener('keydown', function (e) { if ((e.key === 'Enter' || e.key === ' ') && e.target.classList && e.target.classList.contains('pk-cy-f')) { e.preventDefault(); e.target.click(); } });
   var io = null, ioEl = null;
-  try { new MutationObserver(function () { var sec = document.getElementById('pk-nh-city'); if (sec && !sec.querySelector('.pk-cy') && cards(sec).length) { st.sig = ''; tick(); } }).observe(document.body, { childList: true, subtree: true }); } catch (e) {}
+  try { new MutationObserver(function () { var sec = document.getElementById('pk-nh-city'); if (!sec || sec.querySelector('.pk-cy')) return; var hd = sec.querySelector('.pk-nh-head'), ids = cards(sec).map(idOf).join(','); if (st.box && hd && (!ids || ids === st.ids) && (window.innerWidth < 1000) === PH.on) { hd.parentNode.insertBefore(st.box, hd.nextSibling); sec.classList.add('pk-cyon'); if (ids) { show(sec, true, true); apply(sec); } return; } if (!ids) return; st.sig = ''; tick(); }).observe(document.documentElement, { childList: true, subtree: true }); } catch (e) {}
   function tick() {
     var sec = document.getElementById('pk-nh-city'); if (!sec) { document.documentElement.classList.remove('pk-cy-in'); return; }
     if (ioEl !== sec && window.IntersectionObserver) { if (io) io.disconnect(); ioEl = sec; io = new IntersectionObserver(function (es) { es.forEach(function (en) { document.documentElement.classList.toggle('pk-cy-in', en.isIntersecting && en.intersectionRatio > 0.2); }); }, { threshold: [0, 0.2, 0.5] }); io.observe(sec); }
@@ -1383,7 +1397,7 @@ html.pk-cy-in div:has(> button[aria-label="Listen to Pickathon"]){opacity:0!impo
       var A0 = a.on ? a : VOFF(nm, b.f, b), B0 = b.on ? b : VOFF(nm, a.f, a), up = B0.f > A0.f;
       var swell = mv ? Math.sin(g * Math.PI) * (nm === D.clim ? 0.25 : up ? 0.15 : -0.08) : 0;
       var pos = { x: A0.x + (B0.x - A0.x) * g, y: A0.y + (B0.y - A0.y) * g, k: A0.k + (B0.k - A0.k) * g, f: (A0.f + (B0.f - A0.f) * g) * (1 + swell), ink: mix(A0.ink, B0.ink, g), moving: mv, on: true };
-      var o = 1 - (mv && !up ? 0.12 * Math.sin(g * Math.PI) : 0); if (!a.on) o *= sm(g / 0.3); if (!b.on) o *= 1 - sm((g - 0.15) / 0.55);
+      var o = 1 - (mv && !up ? 0.75 * Math.sin(g * Math.PI) : 0);   /* fallers step back while names cross (review r2) */ if (!a.on) o *= sm(g / 0.3); if (!b.on) o *= 1 - sm((g - 0.15) / 0.55);
       var out = [], sameShape = A0.L.join('|') === B0.L.join('|') && !!A0.lead === !!B0.lead;
       if (sameShape) out.push([Object.assign({}, g < 0.5 ? A0 : B0, pos), o, g]);
       else { var s3 = sm((g - 0.35) / 0.3); out.push([Object.assign({}, A0, pos), o * (1 - s3), g], [Object.assign({}, B0, pos), o * s3, g]); }
@@ -1466,9 +1480,10 @@ html.pk-cy-in div:has(> button[aria-label="Listen to Pickathon"]){opacity:0!impo
   // the clock above the poster (Zale, Nov 9 09:02: the stamp on the poster crowded the headliner and hid Play again)
   function timebar(D, y, tp) {
     var n = D.labels.length, atEnd = tp >= n - 1 - 1e-3, kk = Math.floor(tp), fk = tp - kk, g = fk <= 0 ? 0 : fk >= 1 ? 1 : 0.5 - 0.5 * Math.cos(Math.PI * fk), frac = n > 1 ? Math.min(1, (kk + g) / (n - 1)) : 1;
-    var y0 = +y, yNow = n > 1 ? Math.round(y0 + (TODAY - y0) * frac) : TODAY;
-    var line = n < 2 ? 'Ranked by how far each act has gone' : frac <= 0.001 ? (D.src === 'real billing' ? 'The bill as printed in ' + y : 'The bill as booked in ' + y) : atEnd ? 'Ranked today by how far each act has gone' : 'Re-ranked as of ' + yNow;
-    return { n: n, frac: frac, yNow: yNow, line: line, btn: S.playing ? '■ Stop' : '↻ Replay', aria: S.playing ? 'Stop' : 'Replay ' + y + ' to today' };
+    var y0 = +y, yNow = n > 1 ? Math.max(y0 + 1, Math.round(y0 + (TODAY - y0) * frac)) : TODAY;
+    var line = n < 2 ? 'Ranked by how far each act has gone' : frac <= 0.001 ? (D.src === 'real billing' ? 'The bill as printed in ' + y : 'The bill as booked in ' + y) : (atEnd || yNow >= TODAY) ? 'Ranked today by how far each act has gone' : 'Re-ranked as of ' + yNow;
+    var btn = S.playing ? '■ Stop' : atEnd ? '↻ Replay' : '▶ Play';
+    return { n: n, show: n > 1 && y0 < TODAY, frac: frac, yNow: Math.min(yNow, TODAY), line: line, btn: btn, aria: S.playing ? 'Stop' : atEnd ? 'Replay ' + y + ' to today' : 'Play ' + y + ' to today' };
   }
   function caption(D, y, tp) {
     var n = D.labels.length, atEnd = tp >= n - 1 - 1e-3, derived = D.src !== 'real billing', age = TODAY - y;
@@ -1481,10 +1496,10 @@ html.pk-cy-in div:has(> button[aria-label="Listen to Pickathon"]){opacity:0!impo
   }
 
   function stop() { if (S.raf) { cancelAnimationFrame(S.raf); S.raf = null; } S.playing = false; }
-  function run() {
-    var D = C[S.y], n = D.labels.length; if (n < 2) return; stop();
-    var HOLD = 1400, tot = DUR * (n - 1), t0 = performance.now(); S.playing = true; S.tp = 0;
-    var fr = function (now) { var t = Math.max(0, Math.min(tot, now - t0 - HOLD)), done = now - t0 - HOLD >= tot; S.tp = done ? n - 1 : t / DUR; if (done) { S.playing = false; S.raf = null; } else S.raf = requestAnimationFrame(fr); draw(); };
+  function run(resume) {
+    var D = C[S.y], n = D.labels.length; if (n < 2) return; var from = resume && S.tp > 0 && S.tp < n - 1 - 1e-3 ? S.tp : 0; stop();
+    var HOLD = from ? 0 : 1400, tot = DUR * (n - 1), t0 = performance.now(), off = from * DUR; S.playing = true; S.tp = from;
+    var fr = function (now) { var t = Math.max(0, Math.min(tot, now - t0 - HOLD + off)), done = now - t0 - HOLD + off >= tot; S.tp = done ? n - 1 : t / DUR; if (done) { S.playing = false; S.raf = null; } else S.raf = requestAnimationFrame(fr); draw(); };
     draw(); S.raf = requestAnimationFrame(function (now) { t0 = now; fr(now); });
   }
   function go(y) { stop(); S.y = String(y); var n = C[y].labels.length; S.tp = (n > 1 && !RM) ? 0 : n - 1; S.seen[S.y] = 0; draw(); check(); }
@@ -1494,7 +1509,7 @@ html.pk-cy-in div:has(> button[aria-label="Listen to Pickathon"]){opacity:0!impo
     if (!mountEl || !C || !S.y) return;
     var y = S.y, D = C[y], n = D.labels.length, tp = Math.max(0, Math.min(n - 1, S.tp)), wAll = mountEl.clientWidth || 360, ph = wAll < 1000;
     var Q = cfg(ph, wAll), F = frame(D, y, tp, Q), PW = F.IW + 2 * Q.PADX, PH = F.H + 2 * Q.PADY, TB = timebar(D, y, tp), cap = caption(D, +y, tp), atEnd = tp >= n - 1 - 1e-3;
-    var key = y + '|' + Q.ph + '|' + PW + '|' + PH + '|' + (TB.n > 1);
+    var key = y + '|' + Q.ph + '|' + PW + '|' + PH + '|' + TB.show;
     if (mountEl._key === key && mountEl.querySelector('.pk-cl-layer')) {
       mountEl.querySelector('.pk-cl-layer').innerHTML = F.html;
       var tb = mountEl.querySelector('.pk-cl-tb'); if (tb) { tb.querySelector('.pk-cl-tf').style.width = (TB.frac * 100).toFixed(1) + '%'; var mk = tb.querySelector('.pk-cl-tm'); mk.style.left = (TB.frac * 100).toFixed(1) + '%'; mk.textContent = TB.yNow; mk.style.opacity = TB.frac > 0.04 && TB.frac < 0.96 ? '1' : '0'; var rb = tb.querySelector('.pk-cl-rpl'); if (rb) { rb.textContent = TB.btn; rb.setAttribute('aria-label', TB.aria); } var tl = mountEl.querySelector('.pk-cl-tl'); if (tl.textContent !== TB.line) tl.textContent = TB.line; }
@@ -1506,7 +1521,7 @@ html.pk-cy-in div:has(> button[aria-label="Listen to Pickathon"]){opacity:0!impo
     var h = '<div class="pk-cl-hd"><div class="pk-cl-ht"><p class="pk-nh-k">Still happening</p><h2 class="pk-nh-h2" id="pk-cl-h">Wait, they all played <span style="color:' + (YC[y] || '#F2CF62') + '">Pickathon ' + y + '?</span></h2>'
       + '<p class="pk-cl-cap" aria-live="polite" style="color:' + (atEnd ? '#F2CF62' : '#CFC9BC') + '">' + esc(cap) + '</p></div>'
       + '<button type="button" class="pk-cl-an" data-cl="rand">↻ Another year</button></div>';
-    if (TB.n > 1) h += '<div class="pk-cl-tb"><span class="pk-cl-ty">' + y + '</span><span class="pk-cl-tr" aria-hidden="true"><i class="pk-cl-tf" style="width:' + (TB.frac * 100).toFixed(1) + '%"></i><b class="pk-cl-tm" style="left:' + (TB.frac * 100).toFixed(1) + '%;opacity:' + (TB.frac > 0.04 && TB.frac < 0.96 ? 1 : 0) + '">' + TB.yNow + '</b></span><span class="pk-cl-ty">' + TODAY + '</span><button type="button" class="pk-cl-rpl" data-cl="play" aria-label="' + TB.aria + '">' + TB.btn + '</button></div><p class="pk-cl-tl" aria-hidden="true">' + esc(TB.line) + '</p>';
+    if (TB.show) h += '<div class="pk-cl-tb"><span class="pk-cl-ty">' + y + '</span><span class="pk-cl-tr" aria-hidden="true"><i class="pk-cl-tf" style="width:' + (TB.frac * 100).toFixed(1) + '%"></i><b class="pk-cl-tm" style="left:' + (TB.frac * 100).toFixed(1) + '%;opacity:' + (TB.frac > 0.04 && TB.frac < 0.96 ? 1 : 0) + '">' + TB.yNow + '</b></span><span class="pk-cl-ty">' + TODAY + '</span><button type="button" class="pk-cl-rpl" data-cl="play" aria-label="' + TB.aria + '">' + TB.btn + '</button></div><p class="pk-cl-tl" aria-hidden="true">' + esc(TB.line) + '</p>';
     h += '<div class="pk-cl-pw" style="width:' + PW + 'px;height:' + PH + 'px">';
     h += '<div class="pk-cl-p" data-cl="year" role="link" tabindex="0" aria-label="Pickathon ' + y + ': open the ' + y + ' page" style="width:' + PW + 'px;height:' + PH + 'px;background:' + F.PAPER + '">';
     h += '<i aria-hidden="true" class="pk-cl-tone" style="background-image:radial-gradient(' + F.B + ' 1.4px,transparent 1.9px);-webkit-mask-image:' + cm + ';mask-image:' + cm + '"></i><i aria-hidden="true" class="pk-cl-grain" style="background-image:' + GRAIN + '"></i><i aria-hidden="true" class="pk-cl-frame" style="border-color:' + F.A + ';inset:' + (Q.ph ? 8 : 14) + 'px"></i>';
@@ -1538,7 +1553,7 @@ html.pk-cy-in div:has(> button[aria-label="Listen to Pickathon"]){opacity:0!impo
   document.addEventListener('click', function (e) {
     var b = e.target && e.target.closest && e.target.closest('[data-cl]'); if (!b || !mountEl || !mountEl.contains(b)) return;
     var a = b.getAttribute('data-cl'); e.preventDefault();
-    if (a === 'play') { e.stopPropagation(); if (S.playing) { stop(); S.tp = C[S.y].labels.length - 1; draw(); } else run(); }
+    if (a === 'play') { e.stopPropagation(); if (S.playing) { stop(); draw(); } else run(true); }
     else if (a === 'rand') rand();
     else if (a === 'year') { try { window.pkOpenYear && window.pkOpenYear(S.y); } catch (x) {} }
   }, true);

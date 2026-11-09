@@ -40,3 +40,7 @@ main:has(#pk-nh-climb)>section{content-visibility:visible!important;contain-intr
 #root#root#root .pk-cl-rpl:hover{border-color:#F2EDE3}
 #root#root#root .pk-cl-tl{max-width:960px!important;width:auto;margin:6px auto 14px!important;font-size:13px;color:#B9B3A6}
 @media (max-width:999px){#root .pk-cl-tb{gap:10px}#root .pk-cl-ty{font-size:13px}}
+
+/* review r2: names never draw past the paper; Another year clears the heading on phone */
+#root .pk-cl-p{overflow:hidden}
+@media (max-width:999px){#root .pk-cl-ht .pk-nh-h2{margin-top:22px!important}}
