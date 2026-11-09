@@ -5019,8 +5019,8 @@ var pr27 = function (k) { var r = PR27[k]; return r ? Math.ceil(r[PCOL]) : 0; },
         var S;
         if (SEA === 'lineup') S = { line: 'The 2027 lineup is here', btn: 'See the lineup', go: nav('lineup') };
         else if (saleOpen) S = { line: (inHoliday ? 'The Holiday Sale is on · ends ' + fmtD(PSALE.end) : tierName + ' passes are on sale'), btn: 'Get passes', go: nav('tickets') };
-        else if (saleBefore && (dTo <= 7 || !buildOn)) S = { line: 'Holiday Sale opens ' + fmtDL(PSALE.start), btn: 'Alert me when it opens', form: true };
-        else if (buildOn) S = { line: 'Help build next year’s neighborhoods · Applications close Dec 15', btn: 'Start a project', go: nav('build') };
+        // tickets lead (home_flow.md, Zale Nov 8 11:58 and Nov 9 08:31): the build call has its own section lower on Home
+        else if (saleBefore) S = { line: 'Holiday Sale opens ' + fmtDL(PSALE.start), btn: 'Alert me when it opens', form: true };
         else S = { line: 'Early Bird opens Jan 5', btn: 'Alert me when it opens', form: true };
         var formOpen = !!S.form && (!phone || !!st.heroForm) && !st.nlDone;
         return {
