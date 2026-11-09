@@ -50,8 +50,8 @@ KW = [('Little ones & care', r'feeding nest|nursing|drop-?off|cedarwood|care\b|b
       ('Outdoor skills', r'trackers|nature|forest|outdoor|wild|earth cool'),
       ('Big moments', r'parade|talent show|jamboree|showcase|open mic|happy hour|sing-?a-?long|storytime'),
       ('Workshops & lessons', r'workshop|lesson|songwriting|drumming|vocal|exploration|music together|jam\b|ukulele|battle'),
-      ('Clown & variety', r'clown|juggl|magic|circus|variety|puppet|jokey|comedy|joke')]
-TAGK = {"Kids' music": "Kids' music", 'Clown & variety': 'Clown & variety', 'Little ones & care': 'Little ones & care',
+      ("Kids' shows", r'clown|juggl|magic|circus|variety|puppet|jokey|comedy|joke')]
+TAGK = {"Kids' music": "Kids' shows", 'Clown & variety': "Kids' shows", 'Little ones & care': 'Little ones & care',
         'Music workshop': 'Workshops & lessons', 'Outdoor skills': 'Outdoor skills', 'Yoga': 'Yoga & movement', 'Crafts': 'Crafts & making'}
 KWH = {'refuge': [('Recovery', r'recovery|dharma'), ('Sound baths', r'sound|bowl|harp|looping|kirtan'),
                   ('Meditation & breath', r'meditat|breath|tea\b|tea cer|qi ?gong|rest, relax|cacao'),
@@ -68,7 +68,7 @@ def kind_of(title, stage, k, hid=''):
     if re.search(r'workshop', stage, re.I): return 'Workshops & lessons'
     if re.search(r'craft', stage, re.I): return 'Crafts & making'
     if re.search(r'cove', stage, re.I): return 'Yoga & movement'
-    return "Kids' music" if re.search(r'stage', stage, re.I) else 'More'
+    return "Kids' shows" if re.search(r'stage', stage, re.I) else 'More'
 out = {}
 for hid in GATHER:
     rows = [(int(y), r) for y, R in (d.get('pastSched') or {}).items() if y.isdigit() and int(y) >= 2018 for r in R if r[3] == hid and not SKIP.search(r[4] or '')]
@@ -80,8 +80,10 @@ for hid in GATHER:
         n = ENT.get(k) or re.split(r':\s', title)[0].strip()
         NM[k] = n; YS[k].add(y)
         K[kind_of(title, r[2], k, hid)][k] = 1
-    for kn in [x for x in K if len(K[x]) < 3 and x != 'More']:   # a kind with one or two names joins 'More'
-        for k in K.pop(kn): K['More'][k] = 1
+    small = [x for x in K if len(K[x]) < 3 and x != 'More']
+    if small and sum(len(K[x]) for x in small) + len(K.get('More', {})) >= 3:   # a kind with one or two names joins 'More' (never a 'More' of one)
+        for kn in small:
+            for k in K.pop(kn): K['More'][k] = 1
     kinds = []
     for kn in sorted(K, key=lambda x: (x == 'More', -len(K[x]), x)):
         items = sorted(K[kn], key=lambda k: (-len(YS[k]), NM[k].lower()))
