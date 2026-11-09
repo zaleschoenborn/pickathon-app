@@ -4910,7 +4910,7 @@ var pr27 = function (k) { var r = PR27[k]; return r ? Math.ceil(r[PCOL]) : 0; },
         var set = function (o) { return function () { self.setState(o); }; };
         var STG = P.mode === 'stage', RNG = P.y0 === P.y1 ? String(P.y0) : P.y0 + '–' + P.y1;
         return { show: true, kick: (STG ? 'On the record, ' : 'Programming, ') + RNG, title: (STG ? 'Who played at ' : 'What happens at ') + HN,
-          stat: STG ? P.n + ' sets on the schedule, from ' + P.w + ' different acts.' : P.n + ' things on the schedule, from ' + P.w + ' different acts and activities.',
+          stat: P.stat ? P.stat : STG ? P.n + ' sets on the schedule, from ' + P.w + ' different acts.' : P.n + ' things on the schedule, from ' + P.w + ' different acts and activities.',
           kinds: kinds.map(function (k) { var on = k[0] === kSel; return { l: k[0], n: String(k[1].length), on: on ? 'true' : 'false', cl: on ? 'pk-lnt-b on' : 'pk-lnt-b', pick: set({ nhK: [h, k[0]], nhAll: '' }) }; }),
           items: shown.map(function (it) { return { n: it[0], ys: it[1].length >= 2 ? it[1].length + ' summers \u00b7 ' + span(it[1]) : span(it[1]), isA: !!it[2], noA: !it[2], go: it[2] ? goA(it[2]) : function () {} }; }),
           hasMore: cur0.length > NSH, more: set({ nhAll: all ? '' : h + '|' + kSel }), moreL: all ? 'Show fewer' : 'Show all ' + cur0.length,

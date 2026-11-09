@@ -126,6 +126,31 @@ for hid in GATHER:
     out[hid] = {'y0': ys[0], 'y1': ys[-1], 'n': len(rows), 'w': len(YS), 'kinds': kinds, 'regs': regs}
     print(hid, ys[0], ys[-1], 'items', len(rows), 'who', len(YS), [(k[0], len(k[1])) for k in kinds])
     print('  regulars', [(r[0], r[1], bool(r[2]), bool(r[3])) for r in regs])
+# ---- Curation: a chef and a band at one table. Who cooked, who played (2018 on; the 2018-2019 meals carry no names) ----
+def curation():
+    rows = [(int(y), r) for y, R in (d.get('pastSched') or {}).items() if y.isdigit() and int(y) >= 2018 for r in R if r[3] == 'curation']
+    if not rows: return
+    CH, BD, DJ = defaultdict(set), defaultdict(set), defaultdict(set); NM = {}
+    for y, r in rows:
+        t = re.sub(r'\s+', ' ', r[4]).strip()
+        t = re.sub(r'^(?:Curation:\s*)?(?:(?:Thur?s?day|Friday|Saturday|Sunday|Fri|Sat|Sun)\s+)?(?:Dinner|Brunch|Happy Hour)\s*:\s*', '', t)
+        if re.match(r'^(Curation\b|(Thur?s?day|Friday|Saturday|Sunday) (Dinner|Brunch|Happy Hour)$)', t) or not t: continue
+        if re.match(r'^DJ ', t): DJ[nk(t)].add(y); NM[nk(t)] = t; continue
+        parts = re.split(r'\s+(?:w/|with)\s+', t, maxsplit=1)
+        if len(parts) == 1: parts = re.split(r'\s+and\s+(?=The |[A-Z])', t, maxsplit=1) if y == 2026 else [t]
+        chef = band = ''
+        if len(parts) == 1: chef = parts[0]
+        elif re.match(r'^Chefs? ', parts[0]) or y == 2026: chef, band = parts[0], parts[1]
+        else: band, chef = parts[0], parts[1]
+        if nk(chef) == 'cheflunaofchelopdx': chef = 'Chef Luna Contreras of Chelo'
+        if chef: CH[nk(chef)].add(y); NM[nk(chef)] = re.sub(r'\s+', ' ', chef)
+        if band: BD[nk(band)].add(y); NM[nk(band)] = band
+    def lst(G): return [[NM[k], sorted(G[k]), page_of(k)] for k in sorted(G, key=lambda k: (-max(G[k]), NM[k].lower()))]
+    kinds = [[n, L] for n, L in (('Chefs & kitchens', lst(CH)), ('Bands at the table', lst(BD)), ('DJs', lst(DJ))) if L]
+    ys = sorted({y for y, _ in rows})
+    out['curation'] = {'y0': ys[0], 'y1': ys[-1], 'n': len(rows), 'w': len(CH) + len(BD) + len(DJ), 'stat': '%d meals on the schedule, with %d chefs and kitchens and %d bands and DJs at the table.' % (len(rows), len(CH), len(BD) + len(DJ)), 'kinds': kinds, 'regs': []}
+    print('curation', [(k[0], len(k[1])) for k in kinds])
+curation()
 # ---- stage neighborhoods: who played here, by class (music) or lineup (everything else) ----
 STAGES = ['woods', 'paddock', 'cherryhill', 'grove', 'windmill', 'galaxy', 'lucky', 'farmhouse', 'orchard']
 KL = {'leg': 'Legends', 'disc': 'Discoveries', 'deep': 'Deep cuts', 'none': 'More to hear'}
