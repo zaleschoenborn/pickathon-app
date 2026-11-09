@@ -26,11 +26,11 @@
 
   // Sizes. Desktop: the paper is 960 wide (inner 880): art 330 at left, list column 524. Phone and tablet (phone-style): art small on top, list full width.
   function cfg(ph, wAvail) {
-    if (!ph) return { ph: false, IW: 880, PADX: 40, PADY: 22, ART: { x: 0, y: 118, w: 330 }, COLX: 356, COLW: 524, Y0: 0, LANES: [[86, 80, 2], [48, 45, 1], [48, 45, 1], [48, 45, 1], [36, 31, 1], [36, 31, 1], [36, 31, 1], [36, 31, 1], [36, 31, 1], [36, 31, 1]], GAP: 6, R1: 24, ROWH: 22, FS: 13, CFS: 15, DATES: 16, DGAP: 46, BOT: 110, RIB: [42, 15], STAMP: 1 };
+    if (!ph) return { ph: false, IW: 880, PADX: 40, PADY: 22, ART: { x: 0, y: 118, w: 330 }, COLX: 356, COLW: 524, Y0: 0, LANES: [[80, 74, 2], [44, 41, 1], [44, 41, 1], [44, 41, 1], [33, 29, 1], [33, 29, 1], [33, 29, 1], [33, 29, 1], [33, 29, 1], [33, 29, 1]], GAP: 5, R1: 22, ROWH: 21, FS: 13, CFS: 15, DATES: 15, DGAP: 42, BOT: 100, RIB: [40, 14], STAMP: 0.92 };
     var PW = Math.max(300, Math.min(wAvail, 720)), IW = PW - 32, k = Math.min(1.7, IW / 326), L = function (h, m, ml) { return [Math.round(h * k), Math.round(m * k), ml]; };
-    var AW = Math.round(118 * k);
-    return { ph: true, IW: IW, PADX: 16, PADY: 14, ART: { x: (IW - AW) / 2, y: 0, w: AW, h: Math.round(104 * k) }, COLX: 0, COLW: IW, Y0: Math.round(112 * k),
-      LANES: [L(46, 40, 2), L(30, 26, 1), L(30, 26, 1), L(30, 26, 1), L(22, 18, 1), L(22, 18, 1), L(22, 18, 1), L(22, 18, 1), L(22, 18, 1), L(22, 18, 1)], GAP: Math.round(4 * k), R1: Math.round(18 * k), ROWH: Math.round(15 * k), FS: 9.5 * k, CFS: 11 * k, DATES: 10 * k, DGAP: Math.round(34 * k), BOT: Math.round(80 * k), RIB: [Math.round(32 * k), 11 * k], STAMP: 0.62 * k };
+    var AW = Math.round(96 * k);
+    return { ph: true, IW: IW, PADX: 16, PADY: 14, ART: { x: (IW - AW) / 2, y: 0, w: AW, h: Math.round(82 * k) }, COLX: 0, COLW: IW, Y0: Math.round(90 * k),
+      LANES: [L(42, 36, 2), L(27, 23, 1), L(27, 23, 1), L(27, 23, 1), L(21, 17, 1), L(21, 17, 1), L(21, 17, 1), L(21, 17, 1), L(21, 17, 1), L(21, 17, 1)], GAP: Math.round(3 * k), R1: Math.round(16 * k), ROWH: Math.round(16 * k), FS: Math.max(11, 11 * k), CFS: Math.max(12, 12 * k), DATES: Math.max(11, 11 * k), DGAP: Math.round(34 * k), BOT: Math.round(78 * k), RIB: [Math.max(34, Math.round(32 * k)), Math.max(12, 12 * k)], STAMP: 0.7 * k };
   }
 
   // One frame of the ladder at time tp (0 = festival, n-1 = today). Returns the paper's inner HTML and its height.
@@ -52,7 +52,7 @@
       off.forEach(function (x0) { var isC = x0[0] === D.clim, fs = isC ? CFS : FS, w = sw(x0[0], fs), r = rows.length - 1, add = rows[r].length ? SEP + w : w;
         var needC = climOff && !isC && !rows.some(function (row) { return row.some(function (q) { return q.isC; }); }) ? SEP + sw(cl[0], CFS) : 0;
         if (rw[r] + add + (r === 1 ? needC : 0) > ROWMAX) { if (r === 0) { rows.push([]); rw.push(0); r = 1; } else if (!isC) { hide(x0, fs); return; } }
-        if (shown >= (Q.ph ? 10 : 16) && !isC) { hide(x0, fs); return; }
+        if (shown >= (Q.ph ? 6 : 16) && !isC) { hide(x0, fs); return; }
         rw[r] += rows[r].length ? SEP + w : w; rows[r].push({ x0: x0, fs: fs, w: w, isC: isC }); shown++; });
       var rules = [];
       rows.forEach(function (row, ri) { var x = (IW - rw[ri]) / 2, yb = ROW1 + ri * Q.ROWH; if (row.length) rules.push({ y: yb - 8, a: x - 20, b: x + rw[ri] + 20 });
@@ -139,7 +139,7 @@
     var top = n < 2 ? 'TODAY’S BILL' : frac <= 0.001 ? 'THE BILL IN' : atEnd ? 'THE BILL TODAY' : 'THE BILL IN';
     var bot = n < 2 ? 'BY HOW FAR THEY’VE GONE' : (frac <= 0.001 || age <= 0) ? (D.src === 'real billing' ? 'ON THE POSTER' : 'AT THE FESTIVAL') : atEnd ? (age === 1 ? 'ONE SUMMER ON' : (NW[age] || age) + ' SUMMERS ON') : (age === 1 ? 'ONE SUMMER ON' : (NW[age] || age) + ' SUMMERS ON');
     var s = Q.STAMP, ink = F.ACC, act = n > 1 && !RM;
-    var w = Math.round(132 * s), big = Math.round(46 * s), sml = Math.max(8, Math.round(11 * s));
+    var w = Math.round(132 * s), big = Math.round(46 * s), sml = Math.max(10, Math.round(11 * s));
     var bar = n > 1 ? '<span style="display:block;height:' + Math.max(2, Math.round(3 * s)) + 'px;margin:' + Math.round(4 * s) + 'px 0 ' + Math.round(4 * s) + 'px;background:' + ink + '33"><span style="display:block;height:100%;width:' + (Math.min(1, frac) * 100).toFixed(1) + '%;background:' + ink + '"></span></span>' : '';
     var rep = act && atEnd && !S.playing ? '<span style="display:block;margin-top:' + Math.round(3 * s) + 'px;font-size:' + sml + 'px;letter-spacing:.12em">↻ PLAY AGAIN</span>' : '';
     var inner = '<span style="display:block;font-size:' + sml + 'px;letter-spacing:.12em">' + top + '</span><span style="display:block;font-size:' + big + 'px;line-height:.9;letter-spacing:.02em;font-variant-numeric:tabular-nums">' + yNow + '</span>' + bar + '<span style="display:block;font-size:' + sml + 'px;letter-spacing:.12em">' + bot + '</span>' + rep;
@@ -160,8 +160,8 @@
   function stop() { if (S.raf) { cancelAnimationFrame(S.raf); S.raf = null; } S.playing = false; }
   function run() {
     var D = C[S.y], n = D.labels.length; if (n < 2) return; stop();
-    var tot = DUR * (n - 1), t0 = performance.now(); S.playing = true; S.tp = 0;
-    var fr = function (now) { var t = Math.min(tot, now - t0), done = t >= tot; S.tp = done ? n - 1 : t / DUR; if (done) { S.playing = false; S.raf = null; } else S.raf = requestAnimationFrame(fr); draw(); };
+    var HOLD = 1400, tot = DUR * (n - 1), t0 = performance.now(); S.playing = true; S.tp = 0;
+    var fr = function (now) { var t = Math.max(0, Math.min(tot, now - t0 - HOLD)), done = now - t0 - HOLD >= tot; S.tp = done ? n - 1 : t / DUR; if (done) { S.playing = false; S.raf = null; } else S.raf = requestAnimationFrame(fr); draw(); };
     draw(); S.raf = requestAnimationFrame(function (now) { t0 = now; fr(now); });
   }
   function go(y) { stop(); S.y = String(y); var n = C[y].labels.length; S.tp = (n > 1 && !RM) ? 0 : n - 1; S.seen[S.y] = 0; draw(); check(); }

@@ -2,7 +2,7 @@
 #root .pk-cl-mount{max-width:1120px;margin:0 auto;font-family:'Bricolage Grotesque',system-ui,sans-serif}
 #root .pk-cl-hd{display:flex;align-items:flex-end;gap:16px;max-width:960px;margin:0 auto}
 #root .pk-cl-ht{flex:1;min-width:0}
-#root .pk-cl-cap{min-height:18px;margin:6px 0 0;font:800 13px/1.35 'Bricolage Grotesque',sans-serif;letter-spacing:1px}
+#root .pk-cl-cap{min-height:2.7em;margin:6px 0 0;font:800 13px/1.35 'Bricolage Grotesque',sans-serif;letter-spacing:1px}
 #root#root .pk-cl-an{flex:none;min-height:44px;padding:0 16px;border-radius:6px;cursor:pointer;background:#F2EDE3;border:2px solid #F2EDE3;color:#2B2628;font:800 13px 'Bricolage Grotesque',sans-serif;letter-spacing:1.2px;text-transform:uppercase;white-space:nowrap}
 #root .pk-cl-pw{max-width:100%;margin:16px auto 0}
 #root .pk-cl-p{position:relative;overflow:hidden;cursor:pointer;box-sizing:border-box}
@@ -17,7 +17,9 @@
 #root .pk-cl-stamp:focus-visible{outline:3px solid #F2CF62}
 #root .pk-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 @media (max-width:999px){
-#root .pk-cl-hd{flex-wrap:wrap;align-items:flex-start;gap:10px}
-#root .pk-cl-ht{flex:1 1 100%}
-#root .pk-cl-pw{margin-top:12px}
+#root .pk-cl-hd{position:relative;display:block}
+#root#root .pk-cl-an{position:absolute;right:0;top:-12px;padding:0 12px;font-size:12px}
+#root .pk-cl-cap{min-height:4.05em}
+#root .pk-cl-pw{margin-top:8px}
+#root .pk-cl-ht .pk-nh-h2{margin-top:14px}
 }
