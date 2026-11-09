@@ -4884,7 +4884,7 @@ var pr27 = function (k) { var r = PR27[k]; return r ? Math.ceil(r[PCOL]) : 0; },
           rows: list.map(function (r) { var nm = page[nk(r[4])], W = withA[r[0] + r[1] + nk(r[4])] || []; return { t: tf(r[1]), a: r[4], isA: !!nm, noA: !nm, go: function () { self.go('act', { n: nm, y: y }); }, hasW: W.length > 0 && !nm, w: W.map(function (n, i) { return { n: n, sep: i < W.length - 1 ? ', ' : '', go: function () { self.go('act', { n: n, y: y }); } }; }) }; }) }; } catch (e) { return { show: false }; } })();
       out.nh = (function () { try { var h = cur.h, P = (d.hoodProg || {})[h]; if (!P || (cur.y && String(cur.y) !== String(d.year || ''))) return { show: false };
         var nk = function (x) { return String(x || '').toLowerCase().replace(/^the\s+/, '').replace(/[^a-z0-9]/g, ''); }, AL = d.actAlias || {}, HN = ((d.hoods || {})[h] || {}).n || h;
-        var span = function (ys) { var a = ys.map(Number).sort(), runs = [], i0 = 0; for (var i = 1; i <= a.length; i++) { if (i === a.length || a[i] !== a[i - 1] + 1 && !(a[i - 1] === 2019 && a[i] === 2022)) { runs.push(i - 1 > i0 ? a[i0] + '–' + a[i - 1] : String(a[i0])); i0 = i; } } return runs.join(', '); };
+        var span = function (ys) { var a = ys.map(Number).sort(), runs = [], i0 = 0; for (var i = 1; i <= a.length; i++) { if (i === a.length || a[i] !== a[i - 1] + 1 && !(a[i - 1] === 2019 && a[i] === 2022)) { runs.push(i - 1 - i0 >= 2 ? a[i0] + '–' + a[i - 1] : a.slice(i0, i).join(', ')); i0 = i; } } return runs.join(', '); };
         var latest = function (n) { var ly = ''; Object.keys(d.yearBill || {}).forEach(function (y) { if ((d.yearBill[y] || []).some(function (b) { return b.n === n; }) && (!ly || +y > +ly)) ly = y; }); return ly; };
         var goA = function (n) { return function () { self.go('act', { n: n, y: latest(n) }); }; };
         var KS = st.nhK && st.nhK[0] === h ? st.nhK[1] : '', kinds = P.kinds, kSel = kinds.some(function (k) { return k[0] === KS; }) ? KS : (kinds[0] || [''])[0];
@@ -4905,12 +4905,13 @@ var pr27 = function (k) { var r = PR27[k]; return r ? Math.ceil(r[PCOL]) : 0; },
         var tf = function (t) { if (!t) return ''; var hh = +t.slice(0, 2), m = t.slice(3, 5); return (hh % 12 === 0 ? 12 : hh % 12) + (m === '00' ? '' : ':' + m) + (hh >= 12 ? ' p.m.' : ' a.m.'); }, LT = function (t) { return (+String(t).slice(0, 2) < 5 ? '3' : '1') + t; };
         var list = rows.filter(function (r) { return r[0] === DS; }).sort(function (a, b) { return LT(a[1]) < LT(b[1]) ? -1 : LT(a[1]) > LT(b[1]) ? 1 : 0; });
         var set = function (o) { return function () { self.setState(o); }; };
-        return { show: true, kick: 'Programming, ' + (P.y0 === P.y1 ? P.y0 : P.y0 + '–' + P.y1), title: 'What happens at ' + HN,
-          stat: P.n + ' things on the schedule, from ' + P.w + ' different acts and activities.',
+        var STG = P.mode === 'stage', RNG = P.y0 === P.y1 ? String(P.y0) : P.y0 + '–' + P.y1;
+        return { show: true, kick: (STG ? 'Who played here, ' : 'Programming, ') + RNG, title: (STG ? 'Who played at ' : 'What happens at ') + HN,
+          stat: STG ? P.n + ' sets on the schedule, from ' + P.w + ' different acts.' : P.n + ' things on the schedule, from ' + P.w + ' different acts and activities.',
           kinds: kinds.map(function (k) { return { l: k[0], n: String(k[1].length), on: k[0] === kSel ? 'true' : 'false', pick: set({ nhK: [h, k[0]], nhAll: '' }) }; }),
           items: shown.map(function (it) { return { n: it[0], ys: span(it[1]), isA: !!it[2], noA: !it[2], go: it[2] ? goA(it[2]) : function () {} }; }),
           hasMore: cur0.length > NSH, more: set({ nhAll: all ? '' : h + '|' + kSel }), moreL: all ? 'Show fewer' : 'Show all ' + cur0.length,
-          hasRegs: regs.length > 0, regs: regs, regSub: 'Who came back the most summers.',
+          hasRegs: regs.length > 0, regs: regs, regSub: STG ? 'The acts that came back to this stage.' : 'Who came back the most summers.',
           dayH: 'A day at ' + HN,
           years: yrs.map(function (y) { return { l: y, on: y === YS ? 'true' : 'false', pick: set({ nhY: [h, y] }) }; }),
           days: days.map(function (x) { return { l: DL[x] || x, on: x === DS ? 'true' : 'false', pick: set({ nhD: [h + YS, x] }) }; }),

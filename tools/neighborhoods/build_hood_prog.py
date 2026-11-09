@@ -98,5 +98,49 @@ for hid in GATHER:
     out[hid] = {'y0': ys[0], 'y1': ys[-1], 'n': len(rows), 'w': len(YS), 'kinds': kinds, 'regs': regs}
     print(hid, ys[0], ys[-1], 'items', len(rows), 'who', len(YS), [(k[0], len(k[1])) for k in kinds])
     print('  regulars', [(r[0], r[1], bool(r[2]), bool(r[3])) for r in regs])
+# ---- stage neighborhoods: who played here, by class (music) or lineup (everything else) ----
+STAGES = ['woods', 'paddock', 'cherryhill', 'grove', 'windmill', 'galaxy', 'lucky', 'farmhouse', 'orchard']
+KL = {'leg': 'Legends', 'disc': 'Discoveries', 'deep': 'Deep cuts', 'none': 'More to hear'}
+LUK = {'DJs': 'DJs', 'Comedy': 'Comedy & readings', 'Literary': 'Comedy & readings', 'Family': 'Family'}
+ORDER = ['Legends', 'Discoveries', 'Deep cuts', 'More to hear', 'DJs', 'Comedy & readings', 'Family', 'More']
+ROW = {}
+for y, bb in d['yearBill'].items():
+    for b in bb: ROW[(int(y), nk(b['n']))] = b
+for hid in STAGES:
+    rows = [(int(y), r) for y, R in (d.get('pastSched') or {}).items() if y.isdigit() and int(y) >= 2018 for r in R if r[3] == hid and not SKIP.search(r[4] or '')]
+    if not rows: continue
+    K = defaultdict(OrderedDict); YS = defaultdict(set); NM = {}; MG = defaultdict(float); MU = set()
+    # showcases (Pickathon Laughs, Author Readings, Soul Stew) stand for the acts WordPress links to them
+    WITH = defaultdict(list)
+    for y0, A in (d.get('actSets') or {}).items():
+        for ak, L in A.items():
+            for r2 in L:
+                if r2[3] == hid: WITH[(int(y0), r2[0], r2[1], nk(r2[4]))].append(AL.get(ak, ak))
+    exp = []
+    for y, r in rows:
+        ks = WITH.get((y, r[0], r[1], nk(r[4])))
+        if ks and nk(r[4]) not in ks: exp += [(y, r, k1) for k1 in ks]
+        else: exp.append((y, r, None))
+    for y, r, kw in exp:
+        k0 = kw or nk(r[4]); k = AL.get(k0, k0); b = ROW.get((y, k))
+        if b and not b.get('f'): kn = KL.get(b.get('k') or 'none', 'More to hear'); MU.add(k)
+        elif b: kn = LUK.get(b.get('lu'), 'More')
+        else: kn = 'More'
+        NM[k] = b['n'] if b else re.sub(r'\s+', ' ', r[4]).strip(); YS[k].add(y); MG[k] = max(MG[k], float((b or {}).get('m') or 0))
+        K[kn][k] = 1
+    for kn in [x for x in K if len(K[x]) < 3 and x != 'More']:
+        for k in K.pop(kn): K['More'][k] = 1
+    kinds = [[kn, [[NM[k], sorted(YS[k]), page_of(k)] for k in sorted(K[kn], key=lambda k: (-MG[k], -len(YS[k]), NM[k].lower()))]] for kn in ORDER if kn in K]
+    regs = []
+    for k in sorted(YS, key=lambda k: (k not in MU, -len(YS[k]), -MG[k], NM[k].lower())):   # bands first: the regulars of a stage are its returning acts
+        if len(YS[k]) < 2 or len(regs) >= 6 or (k not in MU and len(regs) >= 3): continue
+        pg = page_of(k); ph = ''
+        for y in sorted(YS[k], reverse=True):
+            ph = (((d.get('yearPhotos') or {}).get(str(y)) or {}).get(pg) or {}).get('i', '')
+            if ph: break
+        regs.append([NM[k], sorted(YS[k]), pg, ph])
+    ys = sorted({y for y, _ in rows})
+    out[hid] = {'mode': 'stage', 'y0': ys[0], 'y1': ys[-1], 'n': len(rows), 'w': len(YS), 'kinds': kinds, 'regs': regs}
+    print(hid, ys[0], ys[-1], 'sets', len(rows), 'acts', len(YS), [(k[0], len(k[1])) for k in kinds], 'regulars', [r[0] for r in regs])
 d['hoodProg'] = out
 json.dump(d, open(os.path.join(SITE, 'data.json'), 'w'), ensure_ascii=False, separators=(',', ':'))
