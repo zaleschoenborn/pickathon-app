@@ -133,8 +133,9 @@ for s in W['sched']:
     for i in ids:
         n = idn.get(i)
         if not n or key(n) == key(s['t']): continue
+        r2 = row[:4] + [n if re.match(r'^\s*(TBA|TBD)\b', s['t'], re.I) else s['t']]   # a 'TBA' post title stands for the linked act itself
         L = AS.setdefault(key(n), [])
-        if row not in L: L.append(row)
+        if r2 not in L: L.append(r2)
 d.setdefault('actSets', {})[Y] = AS
 json.dump(d, open(os.path.join(SITE, 'data.json'), 'w'), ensure_ascii=False, separators=(',', ':'))
 from collections import Counter
