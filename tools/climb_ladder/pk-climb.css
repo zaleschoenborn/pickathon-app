@@ -16,7 +16,7 @@
 #root#root .pk-cl-stamp{box-shadow:none;cursor:default;appearance:none;font-size:inherit}
 #root#root .pk-cl-stamp:focus-visible{outline:0;box-shadow:0 0 0 4px #2B2628,0 0 0 7px #F2CF62;border-radius:2px}
 #root#root .pk-cl-an{cursor:default}
-#root#root .pk-nh-arr{cursor:default}
+#root#root .pk-nh-arr{cursor:default!important}
 #root .pk-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 @media (max-width:999px){
 #root .pk-cl-hd{position:relative;display:block}
