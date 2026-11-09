@@ -1,0 +1,23 @@
+/* pk-climb v2: the vertical ladder (home_flow.md section 5, Nov 9) */
+#root .pk-cl-mount{max-width:1120px;margin:0 auto;font-family:'Bricolage Grotesque',system-ui,sans-serif}
+#root .pk-cl-hd{display:flex;align-items:flex-end;gap:16px;max-width:960px;margin:0 auto}
+#root .pk-cl-ht{flex:1;min-width:0}
+#root .pk-cl-cap{min-height:18px;margin:6px 0 0;font:800 13px/1.35 'Bricolage Grotesque',sans-serif;letter-spacing:1px}
+#root#root .pk-cl-an{flex:none;min-height:44px;padding:0 16px;border-radius:6px;cursor:pointer;background:#F2EDE3;border:2px solid #F2EDE3;color:#2B2628;font:800 13px 'Bricolage Grotesque',sans-serif;letter-spacing:1.2px;text-transform:uppercase;white-space:nowrap}
+#root .pk-cl-pw{max-width:100%;margin:16px auto 0}
+#root .pk-cl-p{position:relative;overflow:hidden;cursor:pointer;box-sizing:border-box}
+#root .pk-cl-p:focus-visible{outline:3px solid #F2CF62;outline-offset:3px}
+#root .pk-cl-tone{position:absolute;inset:0;pointer-events:none;background-size:6px 6px;opacity:.16}
+#root .pk-cl-grain{position:absolute;inset:0;pointer-events:none;background-size:240px;mix-blend-mode:multiply;opacity:.55}
+#root .pk-cl-frame{position:absolute;border:2px solid;opacity:.85;pointer-events:none}
+#root .pk-cl-fl,#root .pk-cl-fr{flex:1;height:3px;background:var(--ink);position:relative}
+#root .pk-cl-fl::before{content:'';position:absolute;left:0;top:-7px;width:22px;height:17px;background:repeating-linear-gradient(90deg,var(--ink) 0 3px,transparent 3px 7px);clip-path:polygon(0 0,40% 50%,0 100%,60% 100%,100% 50%,60% 0)}
+#root .pk-cl-fr::after{content:'';position:absolute;right:-2px;top:-8px;border-top:9.5px solid transparent;border-bottom:9.5px solid transparent;border-left:18px solid var(--ink)}
+#root .pk-cl-stamp{box-shadow:none;outline-offset:3px}
+#root .pk-cl-stamp:focus-visible{outline:3px solid #F2CF62}
+#root .pk-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+@media (max-width:999px){
+#root .pk-cl-hd{flex-wrap:wrap;align-items:flex-start;gap:10px}
+#root .pk-cl-ht{flex:1 1 100%}
+#root .pk-cl-pw{margin-top:12px}
+}
