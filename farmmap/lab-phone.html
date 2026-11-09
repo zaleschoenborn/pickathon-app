@@ -943,7 +943,7 @@ function build(){
       h._mask='M'+(cx-r)+','+cy+'a'+r+','+r+' 0 1 0 '+(2*r)+',0a'+r+','+r+' 0 1 0 '+(-2*r)+',0Z';
     }
     p.setAttribute('d',h._mask);
-    p.addEventListener('pointerenter',e=>{ if(e.pointerType==='mouse' && !e.buttons && !live.size) peek(h); }); p.addEventListener('pointerleave',e=>{ if(e.pointerType==='mouse') peek(null); });  // Zale, Nov 9: hover only highlights; it never picks, pans or zooms  // hover only; a finger or a drag never picks
+    p.addEventListener('pointerenter',e=>{ if(e.pointerType==='mouse' && hoverArmed && !e.buttons && !live.size) peek(h); }); p.addEventListener('pointerleave',e=>{ if(e.pointerType==='mouse') peek(null); });  // Zale, Nov 9: hover only highlights; it never picks, pans or zooms  // hover only; a finger or a drag never picks
     // A drag that happens to END on a neighborhood is still a drag. Without
     // this the map opened a page every time you let go over a shape, the page
     // covered the farm, and it read as "after the first move it gets stuck".
@@ -1520,11 +1520,8 @@ function hover(e){
   const tp=document.getElementById('itip');
   if(tp){ if(ia){ tp.textContent=TIPLBL[ia]||D.amlbl[ia]||ia; tp.style.left=e.clientX+'px'; tp.style.top=e.clientY+'px'; tp.classList.add('on'); } else tp.classList.remove('on'); }
   if(pinned && e.pointerType==='mouse'){ const lb=el&&el.closest&&el.closest('.lab'); peek(lb&&lb.__hood?lb.__hood:(h&&!ia&&!stage.classList.contains('moving')?h:null)); }
-  if(hoverOK && hoverArmed && !ia && !pinned && NOW()>settleUntil){
-    clearTimeout(hover._t);
-    if(h) setCur(h,true);
-    else if(cur) { if(!stage.classList.contains('onhood') && !stage.classList.contains('onicon')) clearCur(); }
-  }
+  // Zale, Nov 9: hover only highlights; it never picks (only a click picks)
+  if(!pinned && e.pointerType==='mouse' && hoverArmed && !stage.classList.contains('moving')) peek(h&&!ia?h:null);
 }
 
 function onMove(e){
@@ -1629,7 +1626,7 @@ labs.addEventListener('pointerout',e=>{ peek(null); });
 labs.addEventListener('pointerover',e=>{
   const b=e.target.closest('.lab');
   if(pinned&&e.pointerType==='mouse'&&b&&b.__hood) peek(b.__hood);
-  if(!pinned&&e.pointerType==='mouse'&&!e.buttons&&b&&b.__hood&&!live.size) peek(b.__hood);   // hover only highlights (Zale, Nov 9)
+  if(!pinned&&e.pointerType==='mouse'&&hoverArmed&&!e.buttons&&b&&b.__hood&&!live.size) peek(b.__hood);   // hover only highlights (Zale, Nov 9)
 });
 
 // A trackpad two-finger swipe moves the farm; a pinch (which arrives as

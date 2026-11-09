@@ -18,6 +18,7 @@
 #root .pk-cy-s.on b{opacity:1;background:#D6B54A;color:#2B2628}
 #root .pk-cy-s:hover b,#root .pk-cy-s:focus-visible b{opacity:1}
 #root .pk-cy-s:hover{z-index:4}
+#root .pk-cy-s.ed-r b{left:auto;right:4px;transform:none}#root .pk-cy-s.ed-l b{left:4px;transform:none}#root .pk-cy-s.ed-b b{top:auto;bottom:40px}
 #root#root .pk-cy-all{margin-left:auto;align-self:flex-end;flex:none;min-height:44px;padding:0 16px;border-radius:6px;cursor:pointer;background:transparent;border:2px solid #D6B54A;color:#F2CF62;font:800 13px 'Bricolage Grotesque',sans-serif;letter-spacing:1.2px;text-transform:uppercase;white-space:nowrap}
 </style>
 <script id="pk-cy-js">
@@ -39,7 +40,7 @@
     if (!st.pick || ids.indexOf(st.pick) < 0) st.pick = ids.filter(Boolean)[0];
     var L = spread(ids.map(function (id, i) { return id && P[id] ? { id: id, i: i, x: P[id][0] * S, y: (P[id][1] - Y0) * S, n: (A[i].querySelector('.pk-nh-cn') || {}).textContent || id } : null; }).filter(Boolean));
     var h = '<div class="pk-cy-f" role="link" tabindex="0"></div><div class="pk-cy-m" role="group" aria-label="The neighborhoods on the farm map" style="background-image:url(farmmap/map.webp);background-size:' + (MW * S).toFixed(1) + 'px auto;background-position:0 ' + (-Y0 * S).toFixed(1) + 'px">';
-    L.forEach(function (q) { h += '<button type="button" class="pk-cy-s' + (q.id === st.pick ? ' on' : '') + '" data-cy="' + q.id + '" aria-pressed="' + (q.id === st.pick) + '" aria-label="' + q.n.replace(/"/g, '') + '" style="left:' + q.x.toFixed(1) + 'px;top:' + q.y.toFixed(1) + 'px"><i style="background-image:url(ic2/' + q.id + '.png)"></i><b>' + q.n + '</b></button>'; });
+    L.forEach(function (q) { h += '<button type="button" class="pk-cy-s' + (q.id === st.pick ? ' on' : '') + (q.x > W - 70 ? ' ed-r' : q.x < 70 ? ' ed-l' : '') + (q.y > H - 50 ? ' ed-b' : '') + '" data-cy="' + q.id + '" aria-pressed="' + (q.id === st.pick) + '" aria-label="' + q.n.replace(/"/g, '') + '" style="left:' + q.x.toFixed(1) + 'px;top:' + q.y.toFixed(1) + 'px"><i style="background-image:url(ic2/' + q.id + '.png)"></i><b>' + q.n + '</b></button>'; });
     h += '</div>'; box.innerHTML = h; sec.classList.add('pk-cyon'); show(sec);
   }
   function show(sec) {
