@@ -2238,7 +2238,7 @@ window.addEventListener('scroll',tick,{passive:true,capture:true});setInterval(t
 <sc-if value="{{nh.btnShow}}" hint-placeholder-val="{{true}}"><button type="button" class="pk-cta pri pk-nh-hb" onClick="{{nh.btnGo}}">{{nh.btn}}</button></sc-if>
 <sc-if value="{{nh.formOpen}}" hint-placeholder-val="{{false}}"><sc-if value="{{nl.open}}" hint-placeholder-val="{{true}}"><div class="pk-nh-form"><label for="pk-nh-em" class="pk-nh-fl">Get a text or email the moment tickets are on.</label><div class="pk-nh-fr"><input id="pk-nh-em" type="text" inputmode="email" autocomplete="email" aria-invalid="{{nl.inv}}" value="{{nl.email}}" onChange="{{nl.onEmail}}" placeholder="Email or mobile number"><button type="button" class="pk-cta pri" onClick="{{nl.submit}}">Alert me</button></div><sc-if value="{{nl.hasErr}}" hint-placeholder-val="{{false}}"><p role="alert" class="pk-nh-ferr">{{nl.err}}</p></sc-if></div></sc-if></sc-if>
 <sc-if value="{{nh.nlDone}}" hint-placeholder-val="{{false}}"><p role="status" class="pk-nh-done">{{nl.doneMsg}}</p></sc-if>
-<sc-if value="{{nh.helpShow}}" hint-placeholder-val="{{false}}"><button type="button" class="pk-nh-help" onClick="{{nh.helpGo}}">Help build next year’s neighborhoods · apply by Dec 15 →</button></sc-if>
+<sc-if value="{{nh.helpShow}}" hint-placeholder-val="{{false}}"><button type="button" class="pk-nh-help" onClick="{{nh.helpGo}}">Help build next year’s neighborhoods →</button></sc-if>
 </div>
 </section>
 <section id="pk-nh-bands" class="pk-nh-sec" aria-labelledby="pk-nh-bh">
