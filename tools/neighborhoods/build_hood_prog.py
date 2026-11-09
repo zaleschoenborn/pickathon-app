@@ -60,7 +60,7 @@ def who(title):
     for k in EK:
         if k in t: return k
     return ''
-SKIP = re.compile(r'sign-?ups? begin|registration|check-?in|closed|^tba\b|^tbd\b', re.I)
+SKIP = re.compile(r'\bbooth\b|sign-?ups? begin|registration|check-?in|closed|^tba\b|^tbd\b', re.I)
 KW = [('Little ones & care', r'feeding nest|nursing|drop-?off|cedarwood|care\b|baby|toddler'),
       ('Yoga & movement', r'yoga|dance|movement|square dance'),
       ('Crafts & making', r'craft|felt|clay|typewriter|paint|stamp|bubbles|make|making|handmade|wands|mobiles|facepaint'),
@@ -90,7 +90,7 @@ out = {}
 for hid in GATHER:
     rows = [(int(y), r) for y, R in (d.get('pastSched') or {}).items() if y.isdigit() and int(y) >= 2018 for r in R if r[3] == hid and not SKIP.search(r[4] or '')]
     if not rows: continue
-    K = defaultdict(OrderedDict); YS = defaultdict(set); NM = {}
+    K = defaultdict(OrderedDict); YS = defaultdict(set); NM = {}; LK = {}
     for y, r in rows:
         title = re.sub(r'\s+', ' ', r[4]).strip()
         k = who(title); n = ENT.get(k, '')
@@ -105,7 +105,8 @@ for hid in GATHER:
         elif k == 'mophillips': kd = "Kids' shows"
         else: kd = kind_of(title, r[2], k, hid)
         NM[k] = n; YS[k].add(y)
-        K[kd][k] = 1
+        if y >= LK.get(k, (0, ''))[0]: LK[k] = (y, kd)   # one tab per name: the kind of its latest summer
+    for k, (_, kd) in LK.items(): K[kd][k] = 1
     small = [x for x in K if len(K[x]) < 3 and x != 'More']
     if small and sum(len(K[x]) for x in small) + len(K.get('More', {})) >= 3:   # a kind with one or two names joins 'More' (never a 'More' of one)
         for kn in small:
