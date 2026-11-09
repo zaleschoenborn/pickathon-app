@@ -1147,11 +1147,11 @@ main:has(#pk-nh-climb)>section{content-visibility:visible!important;contain-intr
 </style>
 <style id="pk-tm-css">
 /* The Time Machine chip: "You're in 2024 · Back to 2027", wearing the year (time_machine.md) */
-#root .pk-tm{position:fixed;left:24px;transform:none;top:auto;bottom:24px;z-index:70;display:flex;align-items:center;gap:2px;padding:3px 3px 3px 8px;border-radius:999px;background:var(--tmb,#2B2628);box-shadow:0 0 0 1.5px rgba(242,237,227,.35),0 6px 18px rgba(0,0,0,.35);color:#F2EDE3;font:800 13px/1 'Bricolage Grotesque',sans-serif;white-space:nowrap}
-#root .pk-tm img{height:26px;width:auto;margin-right:4px}
-#root .pk-tm b{font-weight:800;letter-spacing:.02em;padding-right:6px}
-#root#root .pk-tm button{min-height:38px;width:auto!important;white-space:nowrap!important;flex:none;padding:0 14px;border-radius:999px;border:0!important;background:#F2EDE3!important;color:#2B2628;font:800 12.5px 'Bricolage Grotesque',sans-serif;letter-spacing:.06em;text-transform:uppercase;cursor:pointer}
-@media (max-width:999px){#root .pk-tm{top:auto;left:12px;transform:none;max-width:calc(100% - 84px);bottom:calc(76px + env(safe-area-inset-bottom,0px))}#root .pk-tm b{font-size:12.5px}}
+.pk-tm{position:fixed;left:0;right:0;top:var(--tmtop,64px);z-index:19;display:flex;align-items:center;justify-content:center;gap:10px;min-height:44px;padding:4px 12px;background:var(--tmb,#2B2628);border-bottom:1px solid rgba(242,237,227,.25);color:#F2EDE3;font:800 13px/1 'Bricolage Grotesque',sans-serif;white-space:nowrap}
+.pk-tm img{height:26px;width:auto}
+.pk-tm b{font-weight:800;letter-spacing:.02em}
+.pk-tm button{min-height:36px;width:auto;white-space:nowrap;flex:none;padding:0 14px;border-radius:999px;border:0;background:#F2EDE3;color:#2B2628;font:800 12.5px 'Bricolage Grotesque',sans-serif;letter-spacing:.06em;text-transform:uppercase;cursor:pointer}
+html.pk-tmon #root header + *{margin-top:44px}
 </style>
 <script id="pk-tm-js">
 (function () {
@@ -1161,9 +1161,11 @@ main:has(#pk-nh-climb)>section{content-visibility:visible!important;contain-intr
   setInterval(function () {
     var T = window.__pkTM || {}, y = T.y, show = !!y && ['past', 'act', 'hood'].indexOf(T.r) >= 0, root = document.getElementById('root');
     if (!root) return;
-    if (!show) { if (el) { el.remove(); el = null; key = ''; } return; }
+    if (!show) { if (el) { el.remove(); el = null; key = ''; } document.documentElement.classList.remove('pk-tmon'); return; }
     var B = (window.__pkYB || {})[y] || {}, k = y + '|' + T.r;
-    if (!el || !root.contains(el)) { el = document.createElement('div'); el.className = 'pk-tm'; el.setAttribute('role', 'status'); root.appendChild(el); key = ''; }
+    if (!el || !document.body.contains(el)) { el = document.createElement('div'); el.className = 'pk-tm'; el.setAttribute('role', 'status'); document.body.appendChild(el); key = ''; }
+    var H = root.querySelector('header'); if (H) { var hb = Math.round(H.getBoundingClientRect().bottom); if (hb >= 0 && hb < 200) el.style.setProperty('--tmtop', hb + 'px'); }
+    document.documentElement.classList.add('pk-tmon');
     if (key !== k) { key = k; el.style.setProperty('--tmb', B.band || '#2B2628'); el.innerHTML = (B.badge ? '<img src="' + B.badge + '" alt="">' : '') + '<b>You\u2019re in ' + y + '</b><button type="button">Back to 2027</button>'; el.querySelector('button').onclick = back; }
   }, 250);
 })();
