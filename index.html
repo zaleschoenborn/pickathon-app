@@ -980,6 +980,33 @@ html.pk-nh-ontop #root [role=region][aria-label="Listen"],html.pk-nh-ontop #root
 /* Home renders every section up front: no content-visibility skipping (blank sections on phones, Zale Nov 9 06:30) */
 main:has(#pk-nh-climb)>section{content-visibility:visible!important;contain-intrinsic-size:none!important}
 </style>
+<style id="pk-yg-css">
+/* pk-yg: each year's own dark ground on its year page and its artist pages (Zale, Nov 9 08:10: option B "year ground color"). The header, tab bar and footer stay the site's. */
+html.pk-yg,html.pk-yg body,html.pk-yg #root,html.pk-yg #root .pkp{background:var(--yg)!important}
+html.pk-yg #root main [style*="background: #2B2628"],html.pk-yg #root main [style*="background:#2B2628"],html.pk-yg #root section.pk-act,html.pk-yg #root section.pk-act>div{background-color:var(--yg)!important}
+html.pk-yg #root .pk-ah{position:relative}
+html.pk-yg #root .pk-ah-y{display:inline-flex;align-items:center;gap:.22em}
+html.pk-yg #root .pk-yg-badge{height:1.25em;width:auto;filter:drop-shadow(0 2px 5px rgba(0,0,0,.45));pointer-events:none}
+html.pk-yg #root .pk-yg-stripe{display:flex;height:6px;margin:0 0 18px;border-radius:0 0 6px 6px;overflow:hidden}
+html.pk-yg #root .pk-yg-stripe i{flex:1}
+</style>
+<script id="pk-yg-js">
+(function () {
+  function lum(h) { h = String(h || '').replace('#', ''); if (h.length !== 6) return 0; var c = [0, 2, 4].map(function (i) { var v = parseInt(h.substr(i, 2), 16) / 255; return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); }); return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2]; }
+  function dark(h, k) { h = h.replace('#', ''); return '#' + [0, 2, 4].map(function (i) { var v = Math.round(parseInt(h.substr(i, 2), 16) * k); return ('0' + v.toString(16)).slice(-2); }).join(''); }
+  function ground(band) { var g = band || '#2B2628', n = 0; while ((1.05 / (lum(g) + 0.05)) * (lum('#F2EDE3') + 0.05) / 1.05 < 9 && n++ < 30) g = dark(g, 0.9); return g; } // cream text at 9:1 or better
+  var last = '';
+  setInterval(function () {
+    var y = '', m = document.querySelector('.pk-yp-mount[data-y]'), yb = document.querySelector('.pk-yb'), act = document.querySelector('section.pk-act');
+    if (act && act.offsetParent !== null) y = String(window.__pkYGa || ''); else if (m && yb && yb.offsetParent !== null) y = m.getAttribute('data-y') || '';
+    var B = (window.__pkYB || {})[y], root = document.documentElement;
+    if (!B) { if (last) { root.classList.remove('pk-yg'); root.style.removeProperty('--yg'); last = ''; } return; }
+    var g = ground(B.band); if (last !== y + g) { root.style.setProperty('--yg', g); root.classList.add('pk-yg'); last = y + g; }
+    if (act) { var hero = act.querySelector('.pk-ah'), yl = hero && hero.querySelector('.pk-ah-y'); if (hero && yl && !hero.querySelector('.pk-yg-badge')) { var im = document.createElement('img'); im.className = 'pk-yg-badge'; im.src = B.badge; im.alt = ''; im.setAttribute('aria-hidden', 'true'); yl.insertBefore(im, yl.firstChild); var st = document.createElement('div'); st.className = 'pk-yg-stripe'; st.setAttribute('aria-hidden', 'true'); st.innerHTML = (B.stripe || []).map(function (c) { return '<i style="background:' + c + '"></i>'; }).join(''); hero.after(st); } }
+  }, 250);
+})();
+</script>
+
 <style id="pk-cy-css">
 /* pk-city: Home "Live inside a temporary city of wonder" on every screen: the picked neighborhood's photo beside a strip of the real farm map (home_flow.md section 3; Zale, Nov 9: "I wanna see the new map come on") */
 #root #pk-nh-city.pk-cyon #pk-nh-cr,#root #pk-nh-city.pk-cyon .pk-nh-arrs{display:none!important}
@@ -4561,7 +4588,7 @@ var pr27 = function (k) { var r = PR27[k]; return r ? Math.ceil(r[PCOL]) : 0; },
         var LNL = { music: 'Music', comedy: 'Comedy', lit: 'Literary', screen: 'TV, podcasts & film' }, ltabs = Object.keys(LNL).map(function (c0) { return { c: c0, n: all.filter(function (a) { return a.cat === c0; }).length }; }).filter(function (t) { return t.n > 0 || t.c === 'music'; }).sort(function (a, b) { return (a.c === 'music' ? -1 : 0) - (b.c === 'music' ? -1 : 0) || b.n - a.n; }).map(function (t) { var on = t.c === LNK; return { l: LNL[t.c], n: String(t.n), sel: on ? 'true' : 'false', cl: on ? 'pk-lnt-b on' : 'pk-lnt-b', pick: on ? function () {} : function () { var cc = all.filter(function (a) { return a.cat === t.c; }), k0 = cc.some(function (a) { return !a.dc && !a.leg; }) ? 'disc' : cc.some(function (a) { return !a.dc && a.leg; }) ? 'leg' : 'deep'; self.setState({ archLn: t.c, luYear: k0, archN: 24 }); } }; });
         return { ltabs: ltabs, hasLt: ltabs.length > 1, total: String(allN), hasMore: cards.length < allN, more: function () { self.setState({ archN: (st.archN || 24) + 24 }); }, items: cards, types: types, moreN: (function () { var S = {}; ((d.past || {}).years || []).forEach(function (y) { (y.all && y.all.length ? y.all : (y.names || [])).forEach(function (n) { S[n] = 1; }); }); var inA = 0; all.forEach(function (a) { if (S[a.n]) inA++; }); return String(Math.max(0, Object.keys(S).length - inA)); })(), goLineups: function () { self.go('past'); }, cats: cats, yearOpts: [{ v: '', t: 'All years', sel: !Y }].concat(yrs.map(function (y) { return { v: String(y), t: String(y), sel: String(y) === Y }; })), onYear: function (e) { self.setState({ archY: e && e.target ? e.target.value : '' }); }, clear: function () { self.setState({ archC: null, archY: '' }); }, cols: phone ? '1fr' : 'repeat(3, minmax(0, 1fr))', count: cards.length ? cards.length + ' ' + tl + (Y ? ' from ' + Y : '') : 'Nothing matches those filters yet.', hasG: false, genres: [], goTix: nav('tickets'), goPast: nav('past'), goWhy: function () { self.go('why', { sec: 'band' }); }, hasLead: !!st.archLead, backLead: function () { self.setState({ archLead: null }); self.back(); },
           head: v === 'deep' ? 'Critics\u2019 favorites, before the lists' : v === 'leg' ? 'Legends who chose the farm' : 'Small rooms then, big rooms now', lead: v === 'deep' ? 'Critics\u2019 favorites with the same kind of talent as the acts that went on to fill arenas. Their reviews, best-of lists and Grammy nods said what the room already knew. Even if it wasn\u2019t your genre, you would have loved them.' : v === 'leg' ? 'These artists defined their music worlds and had careers full of success long before they came here. They were well beyond needing us. They came because they wanted to: Pickathon is a place to play for people who are really listening, up close.' : 'A Discovery played the farm before the rest of the world caught on: small rooms then, far bigger stages since. Open a card to watch them the summer we had them first.' }; })();
-      out.act = (function () { if (R !== 'act') return { show: false }; var nk = function (x) { return String(x || '').toLowerCase().replace(/^the\s+/, '').replace(/[^a-z0-9]/g, ''); }, nm = cur.n || '', yr = String(cur.y || ''), key = nk(nm);
+      out.act = (function () { try { window.__pkYB = d.yearBrand || {}; window.__pkYGa = ''; } catch (e) {} if (R !== 'act') return { show: false }; var nk = function (x) { return String(x || '').toLowerCase().replace(/^the\s+/, '').replace(/[^a-z0-9]/g, ''); }, nm = cur.n || '', yr = String(cur.y || ''), key = nk(nm); try { window.__pkYGa = yr; } catch (e) {}
         var a = archAll().filter(function (x) { return nk(x.n) === key; })[0] || { n: nm, years: [+yr], line: '', img: '', g: '', kind: '' };
         var yb = ((d.yearBill || {})[yr] || []).filter(function (b) { return nk(b.n) === key; })[0] || null;
         var GLm = { indie: 'Indie & rock', folk: 'Folk', country: 'Country', bluegrass: 'Bluegrass', soul: 'Soul & funk', global: 'World', punk: 'Punk & garage', jazz: 'Jazz', psych: 'Psych', americana: 'Americana', blues: 'Blues', hiphop: 'Hip-hop', electronic: 'Electronic', experimental: 'Experimental' };

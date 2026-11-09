@@ -1,0 +1,26 @@
+<style id="pk-yg-css">
+/* pk-yg: each year's own dark ground on its year page and its artist pages (Zale, Nov 9 08:10: option B "year ground color"). The header, tab bar and footer stay the site's. */
+html.pk-yg,html.pk-yg body,html.pk-yg #root,html.pk-yg #root .pkp{background:var(--yg)!important}
+html.pk-yg #root main [style*="background: #2B2628"],html.pk-yg #root main [style*="background:#2B2628"],html.pk-yg #root section.pk-act,html.pk-yg #root section.pk-act>div{background-color:var(--yg)!important}
+html.pk-yg #root .pk-ah{position:relative}
+html.pk-yg #root .pk-ah-y{display:inline-flex;align-items:center;gap:.22em}
+html.pk-yg #root .pk-yg-badge{height:1.25em;width:auto;filter:drop-shadow(0 2px 5px rgba(0,0,0,.45));pointer-events:none}
+html.pk-yg #root .pk-yg-stripe{display:flex;height:6px;margin:0 0 18px;border-radius:0 0 6px 6px;overflow:hidden}
+html.pk-yg #root .pk-yg-stripe i{flex:1}
+</style>
+<script id="pk-yg-js">
+(function () {
+  function lum(h) { h = String(h || '').replace('#', ''); if (h.length !== 6) return 0; var c = [0, 2, 4].map(function (i) { var v = parseInt(h.substr(i, 2), 16) / 255; return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); }); return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2]; }
+  function dark(h, k) { h = h.replace('#', ''); return '#' + [0, 2, 4].map(function (i) { var v = Math.round(parseInt(h.substr(i, 2), 16) * k); return ('0' + v.toString(16)).slice(-2); }).join(''); }
+  function ground(band) { var g = band || '#2B2628', n = 0; while ((1.05 / (lum(g) + 0.05)) * (lum('#F2EDE3') + 0.05) / 1.05 < 9 && n++ < 30) g = dark(g, 0.9); return g; } // cream text at 9:1 or better
+  var last = '';
+  setInterval(function () {
+    var y = '', m = document.querySelector('.pk-yp-mount[data-y]'), yb = document.querySelector('.pk-yb'), act = document.querySelector('section.pk-act');
+    if (act && act.offsetParent !== null) y = String(window.__pkYGa || ''); else if (m && yb && yb.offsetParent !== null) y = m.getAttribute('data-y') || '';
+    var B = (window.__pkYB || {})[y], root = document.documentElement;
+    if (!B) { if (last) { root.classList.remove('pk-yg'); root.style.removeProperty('--yg'); last = ''; } return; }
+    var g = ground(B.band); if (last !== y + g) { root.style.setProperty('--yg', g); root.classList.add('pk-yg'); last = y + g; }
+    if (act) { var hero = act.querySelector('.pk-ah'), yl = hero && hero.querySelector('.pk-ah-y'); if (hero && yl && !hero.querySelector('.pk-yg-badge')) { var im = document.createElement('img'); im.className = 'pk-yg-badge'; im.src = B.badge; im.alt = ''; im.setAttribute('aria-hidden', 'true'); yl.insertBefore(im, yl.firstChild); var st = document.createElement('div'); st.className = 'pk-yg-stripe'; st.setAttribute('aria-hidden', 'true'); st.innerHTML = (B.stripe || []).map(function (c) { return '<i style="background:' + c + '"></i>'; }).join(''); hero.after(st); } }
+  }, 250);
+})();
+</script>
