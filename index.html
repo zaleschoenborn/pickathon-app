@@ -977,6 +977,8 @@ html.pk-nh-ontop #root [role=region][aria-label="Listen"],html.pk-nh-ontop #root
 #root .pk-cl-pw{margin-top:8px}
 #root .pk-cl-ht .pk-nh-h2{margin-top:14px}
 }
+/* Home renders every section up front: no content-visibility skipping (blank sections on phones, Zale Nov 9 06:30) */
+main:has(#pk-nh-climb)>section{content-visibility:visible!important;contain-intrinsic-size:none!important}
 </style>
 <style id="pk-cy-css">
 /* pk-city: Home "Live inside a temporary city of wonder" on desktop: the picked neighborhood's photo beside a strip of the real farm map (home_flow.md section 3; Zale, Nov 9: "I wanna see the new map come on") */

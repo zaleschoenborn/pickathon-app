@@ -26,3 +26,5 @@
 #root .pk-cl-pw{margin-top:8px}
 #root .pk-cl-ht .pk-nh-h2{margin-top:14px}
 }
+/* Home renders every section up front: no content-visibility skipping (blank sections on phones, Zale Nov 9 06:30) */
+main:has(#pk-nh-climb)>section{content-visibility:visible!important;contain-intrinsic-size:none!important}
