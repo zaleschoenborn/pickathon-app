@@ -46,6 +46,9 @@ def canon(title, k, n):
     if m:
         a = (m.group(1) or m.group(2)).replace('-', '\u2013')
         return 'dropoff' + a, 'Drop-off care, ages ' + a
+    if re.match(r'family yoga', t): return 'familyyoga', 'Family Yoga'
+    if 'suzishelton' in k: return 'suzishelton', 'Suzi Shelton'
+    if k == 'jokeyjokeswithdaviddacosta': return 'jokeyjokes', 'Jokey Jokes with David DaCosta'
     if k in MERGE: return MERGE[k]
     return k, n
 def page_of(k):
@@ -98,6 +101,8 @@ for hid in GATHER:
             k = nk(n)
         k, n = canon(title, k, n)
         if k.startswith('dropoff'): kd = 'Little ones & care'
+        elif k == 'familyyoga': kd = 'Yoga & movement'
+        elif k == 'mophillips': kd = "Kids' shows"
         else: kd = kind_of(title, r[2], k, hid)
         NM[k] = n; YS[k].add(y)
         K[kd][k] = 1
