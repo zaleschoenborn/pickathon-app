@@ -1,0 +1,80 @@
+<style id="pk-hm-css">
+/* Neighborhood page: "Where it is" map (Zale, Nov 9 08:30: a way to move between neighborhoods from the map on each neighborhood page). Design Studio */
+#root .pk-hm{margin:18px 0 6px}
+#root .pk-hm-h{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;margin:0 0 10px}
+#root .pk-hm-h p{margin:0;font:800 12px/1.2 'Bricolage Grotesque',sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#9FCB8A}
+#root .pk-hm-h span{display:block;margin-top:4px;font-size:14px;letter-spacing:0;text-transform:none;font-weight:600;color:#CFC9BC}
+#root#root#root .pk-hm-full{flex:none;min-height:44px;padding:0 14px;border-radius:6px;border:2px solid #D6B54A!important;background:transparent!important;color:#F2CF62!important;font:800 13px 'Bricolage Grotesque',sans-serif;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;white-space:nowrap}
+#root .pk-hm-m{position:relative;height:230px;border-radius:14px;overflow:hidden;background:#12160F;touch-action:none;cursor:grab;user-select:none;-webkit-user-select:none}
+@media (min-width:700px){#root .pk-hm-m{height:300px}}
+#root .pk-hm-m.drag{cursor:grabbing}
+#root .pk-hm-m::after{content:'';position:absolute;inset:0;border-radius:14px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.08);pointer-events:none}
+#root .pk-hm-l{position:absolute;left:0;top:0;background:url(farmmap/map.webp) 0 0/100% 100% no-repeat;transform-origin:0 0}
+#root .pk-hm.anim .pk-hm-l,#root .pk-hm.anim .pk-hm-s{transition:transform .5s cubic-bezier(.45,0,.25,1),left .5s cubic-bezier(.45,0,.25,1),top .5s cubic-bezier(.45,0,.25,1)}
+#root#root#root#root#root .pk-hm-s{position:absolute;width:44px;height:44px;min-height:0!important;margin:-22px 0 0 -22px;padding:0!important;border:0!important;border-radius:50%!important;background:transparent!important;box-shadow:none!important;cursor:pointer;z-index:2}
+#root .pk-hm-s i{position:absolute;left:50%;top:50%;width:30px;height:30px;margin:-15px 0 0 -15px;border-radius:50%;background:center/100% no-repeat;box-shadow:0 0 0 2px rgba(242,237,227,.9);filter:drop-shadow(0 2px 3px rgba(0,0,0,.55))}
+#root .pk-hm-s b{position:absolute;left:50%;top:40px;transform:translateX(-50%);white-space:nowrap;padding:2px 7px;border-radius:4px;background:rgba(31,28,29,.9);color:#F2EDE3;font:800 11px/1.2 'Bricolage Grotesque',sans-serif;letter-spacing:.06em;text-transform:uppercase;pointer-events:none}
+#root .pk-hm-s.here{cursor:default;z-index:5}
+#root .pk-hm-s.here i{width:44px;height:44px;margin:-22px 0 0 -22px;box-shadow:0 0 0 3px #F2CF62,0 0 0 6px rgba(31,28,29,.55),0 0 30px 14px rgba(242,207,98,.8);filter:none}
+#root .pk-hm-s.here b{top:48px;background:#F2CF62;color:#1F1C1D;font-size:12px}
+#root#root .pk-hm-s:focus-visible{outline:2px solid #F2CF62;outline-offset:2px}
+#root .pk-hm-zm{position:absolute;right:8px;bottom:8px;z-index:9;display:flex;gap:6px}
+#root#root#root#root#root .pk-hm-zm button{width:44px;height:44px;min-height:44px!important;padding:0;border-radius:8px!important;border:1.5px solid rgba(242,237,227,.5)!important;background:rgba(31,28,29,.88)!important;color:#F2EDE3;display:grid;place-items:center;cursor:pointer}
+#root .pk-hm-zm svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:round}
+#root#root .pk-hm-zm button:disabled{opacity:.35;cursor:default}
+@media (prefers-reduced-motion:reduce){#root .pk-hm.anim .pk-hm-l,#root .pk-hm.anim .pk-hm-s{transition:none}}
+</style>
+<script id="pk-hm-js">
+(function () {
+  var MW = 2041, MH = 3810, NAME = {};
+  var V = null, PT = {}, G = null, dragT = 0;
+  function hoods() { try { return (window.__pkSt.data || {}).hoods || {}; } catch (e) { return {}; } }
+  function top() { try { var s = window.__pkSt.stack; return s[s.length - 1] || {}; } catch (e) { return {}; } }
+  function nm(id) { var h = hoods()[id] || {}; return h.name || h.n || h.title || NAME[id] || id; }
+  function go(id) { try { sessionStorage.setItem('pkmap.focus', id); } catch (e) {} if (window.__pkGo) window.__pkGo('hood', { h: id }); }
+  function clampV() { var cw = MW * V.s * V.z, ch = MH * V.s * V.z; V.tx = cw <= V.vw ? (V.vw - cw) / 2 : Math.max(V.vw - cw, Math.min(0, V.tx)); V.ty = ch <= V.vh ? (V.vh - ch) / 2 : Math.max(V.vh - ch, Math.min(0, V.ty)); }
+  function apply(anim) {
+    var w = document.querySelector('#root .pk-hm'); if (!w || !V) return; clampV();
+    w.classList.toggle('anim', !!anim); if (anim) { clearTimeout(V.at); V.at = setTimeout(function () { w.classList.remove('anim'); }, 550); }
+    var l = w.querySelector('.pk-hm-l'), k = V.s * V.z; l.style.width = MW * V.s + 'px'; l.style.height = MH * V.s + 'px'; l.style.transform = 'translate(' + V.tx.toFixed(1) + 'px,' + V.ty.toFixed(1) + 'px) scale(' + V.z.toFixed(3) + ')';
+    w.querySelectorAll('.pk-hm-s').forEach(function (b) { var p = V.P[b.getAttribute('data-h')]; var x = p[0] * k + V.tx, y = p[1] * k + V.ty; b.style.left = x.toFixed(1) + 'px'; b.style.top = y.toFixed(1) + 'px'; b.style.visibility = (x < 6 || y < 6 || x > V.vw - 6 || y > V.vh - 6) ? 'hidden' : ''; });
+    var zb = w.querySelectorAll('.pk-hm-zm button'); zb[0].disabled = V.z >= 2.4; zb[1].disabled = V.z <= V.zmin + 0.01;
+  }
+  function zoomAt(nz, cx, cy, anim) { nz = Math.max(V.zmin, Math.min(2.4, nz)); V.tx = cx - (cx - V.tx) * nz / V.z; V.ty = cy - (cy - V.ty) * nz / V.z; V.z = nz; apply(anim); }
+  function build(host, id) {
+    var P = window.__pkCyP; if (!P || !P[id]) return null;
+    var w = document.createElement('section'); w.className = 'pk-hm'; w.setAttribute('data-h', id); w.setAttribute('aria-label', 'Where ' + nm(id) + ' is on the farm');
+    var h = '<div class="pk-hm-h"><p>Where it is<span>' + (window.matchMedia && matchMedia('(pointer:fine)').matches ? 'Click a neighbor to go there. Drag to look around.' : 'Tap a neighbor to go there. Drag or pinch to look around.') + '</span></p><button type="button" class="pk-hm-full">Full map →</button></div><div class="pk-hm-m" role="group" aria-label="The farm map around ' + nm(id) + '"><div class="pk-hm-l"></div>';
+    Object.keys(P).forEach(function (k) { var here = k === id; h += '<button type="button" class="pk-hm-s' + (here ? ' here' : '') + '" data-h="' + k + '" aria-label="' + (here ? nm(k) + ', you are here' : 'Go to ' + nm(k)) + '"' + (here ? ' aria-current="page"' : '') + '><i style="background-image:url(ic2/' + k + '.png)"></i><b>' + nm(k) + '</b></button>'; });
+    h += '<div class="pk-hm-zm"><button type="button" data-z="1" aria-label="Zoom in"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 3v10M3 8h10"/></svg></button><button type="button" data-z="-1" aria-label="Zoom out"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10"/></svg></button></div></div>';
+    w.innerHTML = h; host.parentNode.insertBefore(w, host.nextSibling);
+    var m = w.querySelector('.pk-hm-m'), vw = m.clientWidth || 340, vh = m.clientHeight || 230, s = vw / 760;
+    V = { P: P, s: s, z: 1, zmin: Math.min(1, vw / (MW * s)), vw: vw, vh: vh, tx: vw / 2 - P[id][0] * s, ty: vh / 2 - P[id][1] * s };
+    apply(); return w;
+  }
+  document.addEventListener('click', function (e) {
+    var w = e.target.closest && e.target.closest('#root .pk-hm'); if (!w) return;
+    var z = e.target.closest('.pk-hm-zm button'); if (z) { zoomAt(V.z * (+z.getAttribute('data-z') > 0 ? 1.5 : 1 / 1.5), V.vw / 2, V.vh / 2, true); return; }
+    if (e.target.closest('.pk-hm-full')) { var id = w.getAttribute('data-h'); try { sessionStorage.setItem('pkmap.focus', id); sessionStorage.setItem('pkmap.force', '1'); } catch (er) {} var lk = [].filter.call(document.querySelectorAll('.pk-hd-links button'), function (b) { return /on the map/i.test(b.textContent); })[0]; if (lk) lk.click(); else if (window.__pkGo) window.__pkGo('hoods'); return; }
+    var b = e.target.closest('.pk-hm-s'); if (b && Date.now() - dragT > 300 && !b.classList.contains('here')) go(b.getAttribute('data-h'));
+  });
+  document.addEventListener('pointerdown', function (e) {
+    var m = e.target.closest && e.target.closest('#root .pk-hm-m'); if (!m || !V || e.target.closest('.pk-hm-zm') || (e.pointerType === 'mouse' && e.button !== 0)) return;
+    PT[e.pointerId] = { x: e.clientX, y: e.clientY }; var p = Object.keys(PT).map(function (k) { return PT[k]; }), r = m.getBoundingClientRect();
+    G = p.length === 1 ? { k: 1, x: e.clientX, y: e.clientY, tx: V.tx, ty: V.ty, moved: false } : { k: 2, d: Math.hypot(p[0].x - p[1].x, p[0].y - p[1].y) || 1, z: V.z, cx: (p[0].x + p[1].x) / 2 - r.left, cy: (p[0].y + p[1].y) / 2 - r.top, tx: V.tx, ty: V.ty, moved: true, r: r };
+  });
+  window.addEventListener('pointermove', function (e) {
+    if (!G || !PT[e.pointerId]) return; PT[e.pointerId] = { x: e.clientX, y: e.clientY }; var p = Object.keys(PT).map(function (k) { return PT[k]; }), m = document.querySelector('#root .pk-hm-m');
+    if (G.k === 1 && p.length === 1) { var dx = e.clientX - G.x, dy = e.clientY - G.y; if (!G.moved && Math.hypot(dx, dy) < 7) return; G.moved = true; if (m) m.classList.add('drag'); V.tx = G.tx + dx; V.ty = G.ty + dy; apply(); }
+    else if (G.k === 2 && p.length === 2) { var d = Math.hypot(p[0].x - p[1].x, p[0].y - p[1].y), nz = Math.max(V.zmin, Math.min(2.4, G.z * d / G.d)), cx = (p[0].x + p[1].x) / 2 - G.r.left, cy = (p[0].y + p[1].y) / 2 - G.r.top; V.z = nz; V.tx = cx - (G.cx - G.tx) * nz / G.z; V.ty = cy - (G.cy - G.ty) * nz / G.z; apply(); }
+  });
+  function up(e) { if (!PT[e.pointerId]) return; delete PT[e.pointerId]; var m = document.querySelector('#root .pk-hm-m'); if (m) m.classList.remove('drag'); if (G && G.moved) dragT = Date.now(); var p = Object.keys(PT).map(function (k) { return PT[k]; }); G = p.length === 1 ? { k: 1, x: p[0].x, y: p[0].y, tx: V.tx, ty: V.ty, moved: true } : null; }
+  window.addEventListener('pointerup', up); window.addEventListener('pointercancel', up);
+  setInterval(function () {
+    var t = top(), host = document.querySelector('#root section.pk-hd-w .pk-hd-desc'), old = document.querySelector('#root .pk-hm');
+    if (t.r !== 'hood' || !host) return;
+    if (old && old.getAttribute('data-h') === t.h && old.previousSibling === host) return;
+    if (old) old.remove(); build(host, t.h);
+  }, 400);
+})();
+</script>
