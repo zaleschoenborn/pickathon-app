@@ -29,8 +29,8 @@
     if (!ph) return { ph: false, IW: 880, PADX: 40, PADY: 22, ART: { x: 0, y: 118, w: 330 }, COLX: 356, COLW: 524, Y0: 0, LANES: [[80, 74, 2], [44, 41, 1], [44, 41, 1], [44, 41, 1], [33, 29, 1], [33, 29, 1], [33, 29, 1], [33, 29, 1], [33, 29, 1], [33, 29, 1]], GAP: 5, R1: 22, ROWH: 21, FS: 13, CFS: 15, DATES: 15, DGAP: 42, BOT: 100, RIB: [40, 14], STAMP: 0.92 };
     var PW = Math.max(300, Math.min(wAvail, 720)), IW = PW - 32, k = Math.min(1.7, IW / 326), L = function (h, m, ml) { return [Math.round(h * k), Math.round(m * k), ml]; };
     var AW = Math.round(96 * k);
-    return { ph: true, IW: IW, PADX: 16, PADY: 14, ART: { x: (IW - AW) / 2, y: 0, w: AW, h: Math.round(82 * k) }, COLX: 0, COLW: IW, Y0: Math.round(90 * k),
-      LANES: [L(42, 36, 2), L(27, 23, 1), L(27, 23, 1), L(27, 23, 1), L(21, 17, 1), L(21, 17, 1), L(21, 17, 1), L(21, 17, 1), L(21, 17, 1), L(21, 17, 1)], GAP: Math.round(3 * k), R1: Math.round(16 * k), ROWH: Math.round(16 * k), FS: Math.max(11, 11 * k), CFS: Math.max(12, 12 * k), DATES: Math.max(11, 11 * k), DGAP: Math.round(34 * k), BOT: Math.round(78 * k), RIB: [Math.max(34, Math.round(32 * k)), Math.max(12, 12 * k)], STAMP: 0.7 * k };
+    return { ph: true, IW: IW, PADX: 16, PADY: 14, ART: { x: (IW - AW) / 2, y: 0, w: AW, h: Math.round(74 * k) }, COLX: 0, COLW: IW, Y0: Math.round(80 * k),
+      LANES: [L(42, 36, 2), L(27, 23, 1), L(27, 23, 1), L(27, 23, 1), L(21, 17, 1), L(21, 17, 1), L(21, 17, 1), L(21, 17, 1), L(21, 17, 1), L(21, 17, 1)], GAP: Math.round(3 * k), R1: Math.round(13 * k), ROWH: Math.round(16 * k), FS: Math.max(11, 11 * k), CFS: Math.max(12, 12 * k), DATES: Math.max(11, 11 * k), DGAP: Math.round(34 * k), BOT: Math.round(78 * k), RIB: [Math.max(34, Math.round(32 * k)), Math.max(12, 12 * k)], STAMP: 0.7 * k };
   }
 
   // One frame of the ladder at time tp (0 = festival, n-1 = today). Returns the paper's inner HTML and its height.
@@ -143,8 +143,9 @@
     var rep = act && atEnd && !S.playing ? '<span aria-hidden="true" style="position:absolute;right:' + Math.round(6 * s) + 'px;top:' + Math.round(4 * s) + 'px;font-size:' + Math.max(12, Math.round(14 * s)) + 'px;line-height:1">↻</span>' : '';
     var inner = rep + '<span style="display:block;font-size:' + sml + 'px;letter-spacing:.14em">' + top + '</span><span style="display:block;font-size:' + big + 'px;line-height:.92;letter-spacing:.02em;font-variant-numeric:tabular-nums">' + yNow + '</span>' + bar;
     var inset = Q.ph ? 14 : 24;
-    var st = 'position:absolute;z-index:2;left:' + inset + 'px;top:' + inset + 'px;width:' + w + 'px;padding:' + Math.round(7 * s) + 'px ' + Math.round(10 * s) + 'px ' + Math.round(9 * s) + 'px;box-sizing:border-box;text-align:center;border:' + Math.max(2, Math.round(2.5 * s)) + 'px solid ' + ink + ';outline:1px solid ' + ink + ';outline-offset:' + Math.max(2, Math.round(3 * s)) + 'px;color:' + ink + ';background:transparent;transform:rotate(-6deg);-webkit-mask-image:' + WORN + ';mask-image:' + WORN + ';-webkit-mask-size:160px;mask-size:160px;font-family:\'Bricolage Grotesque\',sans-serif;font-stretch:75%;font-variation-settings:\'wdth\' 75;font-weight:800';
-    return act ? '<button type="button" class="pk-cl-stamp" data-cl="play" aria-label="' + (S.playing ? 'Stop' : 'Play ' + y + ' to today again') + '" style="' + st + ';cursor:pointer;appearance:none;font-size:inherit">' + inner + '</button>' : '<div class="pk-cl-stamp" style="' + st + '">' + inner + '</div>';
+    var st = 'position:absolute;z-index:2;left:' + inset + 'px;top:' + inset + 'px;width:' + w + 'px;padding:0;border:0;background:transparent;transform:rotate(-6deg);color:' + ink + ';font-family:\'Bricolage Grotesque\',sans-serif;font-stretch:75%;font-variation-settings:\'wdth\' 75;font-weight:800;text-align:center';
+    var ist = 'display:block;position:relative;padding:' + Math.round(7 * s) + 'px ' + Math.round(10 * s) + 'px ' + Math.round(9 * s) + 'px;box-sizing:border-box;border:' + Math.max(2, Math.round(2.5 * s)) + 'px solid ' + ink + ';outline:1px solid ' + ink + ';outline-offset:' + Math.max(2, Math.round(3 * s)) + 'px;-webkit-mask-image:' + WORN + ';mask-image:' + WORN + ';-webkit-mask-size:160px;mask-size:160px';
+    return { act: act, st: st, html: '<span class="pk-cl-ink" style="' + ist + '">' + inner + '</span>', label: S.playing ? 'Stop' : 'Play ' + y + ' to today again' };
   }
 
   function caption(D, y, tp) {
@@ -170,20 +171,31 @@
   function draw() {
     if (!mountEl || !C || !S.y) return;
     var y = S.y, D = C[y], n = D.labels.length, tp = Math.max(0, Math.min(n - 1, S.tp)), wAll = mountEl.clientWidth || 360, ph = wAll < 1000;
-    var Q = cfg(ph, wAll), F = frame(D, y, tp, Q), PW = F.IW + 2 * Q.PADX, PH = F.H + 2 * Q.PADY;
+    var Q = cfg(ph, wAll), F = frame(D, y, tp, Q), PW = F.IW + 2 * Q.PADX, PH = F.H + 2 * Q.PADY, ST = stamp(D, y, tp, Q, F), cap = caption(D, +y, tp), atEnd = tp >= n - 1 - 1e-3;
+    var key = y + '|' + Q.ph + '|' + PW + '|' + PH + '|' + ST.act;
+    if (mountEl._key === key && mountEl.querySelector('.pk-cl-layer')) {
+      mountEl.querySelector('.pk-cl-layer').innerHTML = F.html;
+      var sb = mountEl.querySelector('.pk-cl-stamp'); if (sb) { sb.innerHTML = ST.html; if (ST.act) sb.setAttribute('aria-label', ST.label); }
+      var cp = mountEl.querySelector('.pk-cl-cap'); if (cp.textContent !== cap) cp.textContent = cap; cp.style.color = atEnd ? '#F2CF62' : '#CFC9BC';
+      return;
+    }
+    var fa = document.activeElement, fk = fa && mountEl.contains(fa) ? fa.getAttribute('data-cl') : null;
     var corner = function (cx, cy) { return 'radial-gradient(circle at ' + cx + ' ' + cy + ',#000 0,transparent 22%)'; }, cm = [corner('0', '0'), corner('100%', '0'), corner('0', '100%'), corner('100%', '100%')].join(',');
     var h = '<div class="pk-cl-hd"><div class="pk-cl-ht"><p class="pk-nh-k">Still happening</p><h2 class="pk-nh-h2" id="pk-cl-h">Wait, they all played <span style="color:' + (YC[y] || '#F2CF62') + '">Pickathon ' + y + '?</span></h2>'
-      + '<p class="pk-cl-cap" aria-live="polite" style="color:' + (tp >= n - 1 - 1e-3 ? '#F2CF62' : '#CFC9BC') + '">' + esc(caption(D, +y, tp)) + '</p></div>'
+      + '<p class="pk-cl-cap" aria-live="polite" style="color:' + (atEnd ? '#F2CF62' : '#CFC9BC') + '">' + esc(cap) + '</p></div>'
       + '<button type="button" class="pk-cl-an" data-cl="rand">↻ Another year</button></div>';
-    h += '<div class="pk-cl-pw" style="width:' + PW + 'px">';
+    h += '<div class="pk-cl-pw" style="width:' + PW + 'px;height:' + PH + 'px">';
     h += '<div class="pk-cl-p" data-cl="year" role="link" tabindex="0" aria-label="Pickathon ' + y + ': open the ' + y + ' page" style="width:' + PW + 'px;height:' + PH + 'px;background:' + F.PAPER + '">';
     h += '<i aria-hidden="true" class="pk-cl-tone" style="background-image:radial-gradient(' + F.B + ' 1.4px,transparent 1.9px);-webkit-mask-image:' + cm + ';mask-image:' + cm + '"></i><i aria-hidden="true" class="pk-cl-grain" style="background-image:' + GRAIN + '"></i><i aria-hidden="true" class="pk-cl-frame" style="border-color:' + F.A + ';inset:' + (Q.ph ? 8 : 14) + 'px"></i>';
-    h += '<div aria-hidden="true" style="position:absolute;left:' + Q.PADX + 'px;top:' + Q.PADY + 'px;width:' + F.IW + 'px;height:' + F.H + 'px">' + F.html + '</div>';
-    h += stamp(D, y, tp, Q, F);
-    h += '</div></div>';
+    h += '<div class="pk-cl-layer" aria-hidden="true" style="position:absolute;left:' + Q.PADX + 'px;top:' + Q.PADY + 'px;width:' + F.IW + 'px;height:' + F.H + 'px">' + F.html + '</div>';
+    h += '</div>';
+    h += ST.act ? '<button type="button" class="pk-cl-stamp" data-cl="play" aria-label="' + ST.label + '" style="' + ST.st + '">' + ST.html + '</button>' : '<div class="pk-cl-stamp" style="' + ST.st + '">' + ST.html + '</div>';
+    h += '</div>';
     var fin = D.names.filter(function (x) { return x[1][n - 1] < Math.min(10, D.ranked || 10); }).sort(function (a, b) { return a[1][n - 1] - b[1][n - 1]; }).map(function (x) { return x[0]; });
     h += '<p class="pk-sr">Pickathon ' + y + ', ranked today by how far each act has gone: ' + esc(fin.join(', ')) + '.</p>';
-    mountEl.innerHTML = h; mountEl.setAttribute('data-y', y);
+    mountEl.innerHTML = h; mountEl.setAttribute('data-y', y); mountEl._key = key;
+    mountEl.style.minHeight = mountEl.offsetHeight + 'px';
+    if (fk) { var nf = mountEl.querySelector('[data-cl="' + fk + '"]'); if (nf) try { nf.focus({ preventScroll: true }); } catch (e) {} }
   }
   function check() {
     if (!mountEl || RM || S.seen[S.y] || S.playing) return;
@@ -202,10 +214,10 @@
     var m = document.querySelector('.pk-cl-mount');
     if (!m) { mountEl = null; return; }
     if (!C) { C = window.pkClimb || null; if (!C) return; }
-    if (m !== mountEl || !m.firstChild) { mountEl = m; if (!S.y) { var y0 = window.pkClimbY0 && C[window.pkClimbY0] ? window.pkClimbY0 : POOL()[0]; S.y = String(y0); S.tp = (!RM && C[S.y].labels.length > 1) ? 0 : C[S.y].labels.length - 1; } draw(); }
+    if (m !== mountEl || !m.firstChild) { mountEl = m; mountEl._key = null; if (!S.y) { var y0 = window.pkClimbY0 && C[window.pkClimbY0] ? window.pkClimbY0 : POOL()[0]; S.y = String(y0); S.tp = (!RM && C[S.y].labels.length > 1) ? 0 : C[S.y].labels.length - 1; } draw(); }
     check();
   }
-  setInterval(tick, 400); window.addEventListener('scroll', function () { if (mountEl) check(); }, { passive: true, capture: true });
+  setInterval(tick, 400); try { new MutationObserver(function () { var m = document.querySelector('.pk-cl-mount'); if (m && (m !== mountEl || !m.firstChild)) tick(); }).observe(document.body, { childList: true, subtree: true }); } catch (e) {} window.addEventListener('scroll', function () { if (mountEl) check(); }, { passive: true, capture: true });
   var lw = 0; window.addEventListener('resize', function () { var w = mountEl ? mountEl.clientWidth : 0; if (w && w !== lw) { lw = w; draw(); } });
   window.pkClimbDraw = function () { draw(); };
 })();

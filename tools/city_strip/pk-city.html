@@ -30,7 +30,7 @@
   function cards(sec) { return [].filter.call(sec.querySelectorAll('#pk-nh-cr > article'), function (a) { return !a.classList.contains('cn') && !a.classList.contains('all') && a.querySelector('.pk-nh-cn'); }); }
   function idOf(a) { var n = (a.querySelector('.pk-nh-cn') || {}).textContent || ''; return NM[n.trim().toLowerCase()] || null; }
   function spread(L) { // nudge close spots apart so none overlap (Galaxy Barn, Courtyard, Orchard, Lucky, Farmhouse)
-    for (var it = 0; it < 40; it++) for (var i = 0; i < L.length; i++) for (var j = i + 1; j < L.length; j++) { var a = L[i], b = L[j], dx = b.x - a.x, dy = b.y - a.y, d = Math.hypot(dx, dy) || 0.01, m = 31; if (d < m) { var p = (m - d) / 2, ux = dx / d, uy = dy / d; a.x -= ux * p; a.y -= uy * p; b.x += ux * p; b.y += uy * p; } }
+    for (var it = 0; it < 40; it++) for (var i = 0; i < L.length; i++) for (var j = i + 1; j < L.length; j++) { var a = L[i], b = L[j], dx = b.x - a.x, dy = b.y - a.y, d = Math.hypot(dx, dy) || 0.01, m = 38; if (d < m) { var p = (m - d) / 2, ux = dx / d, uy = dy / d; a.x -= ux * p; a.y -= uy * p; b.x += ux * p; b.y += uy * p; } }
     L.forEach(function (q) { q.x = Math.max(18, Math.min(W - 18, q.x)); q.y = Math.max(18, Math.min(H - 18, q.y)); }); return L; }
   function build(sec) {
     var A = cards(sec); if (!A.length) return; var ids = A.map(idOf);
@@ -44,7 +44,7 @@
   }
   function show(sec) {
     var A = cards(sec), a = A.filter(function (x) { return idOf(x) === st.pick; })[0] || A[0]; if (!a) return; var f = sec.querySelector('.pk-cy-f'); if (!f) return;
-    var c = a.cloneNode(true); c.removeAttribute('role'); f.innerHTML = ''; f.appendChild(c); f.setAttribute('aria-label', ((a.querySelector('.pk-nh-cn') || {}).textContent || '') + ': explore it on the map');
+    var c = a.cloneNode(true); c.removeAttribute('role'); [].forEach.call(c.querySelectorAll('button,a,[tabindex]'), function (x) { x.setAttribute('tabindex', '-1'); x.setAttribute('aria-hidden', 'true'); }); f.innerHTML = ''; f.appendChild(c); f.setAttribute('aria-label', ((a.querySelector('.pk-nh-cn') || {}).textContent || '') + ': explore it on the map');
     sec.querySelectorAll('.pk-cy-s').forEach(function (s) { var on = s.getAttribute('data-cy') === st.pick; s.classList.toggle('on', on); s.setAttribute('aria-pressed', String(on)); });
   }
   document.addEventListener('click', function (e) {
