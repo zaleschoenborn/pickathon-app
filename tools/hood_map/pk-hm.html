@@ -10,6 +10,7 @@
 #root .pk-hm-m.drag{cursor:grabbing}
 #root .pk-hm-m::after{content:'';position:absolute;inset:0;border-radius:14px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.08);pointer-events:none}
 #root .pk-hm-l{position:absolute;left:0;top:0;background:url(farmmap/map.webp) 0 0/100% 100% no-repeat;transform-origin:0 0}
+#root .pk-hm-lit{position:absolute;max-width:none;pointer-events:none;filter:drop-shadow(0 0 2px #fff4c2) drop-shadow(0 0 14px rgba(255,205,90,.9)) brightness(1.12) saturate(1.2)}
 #root .pk-hm.anim .pk-hm-l,#root .pk-hm.anim .pk-hm-s{transition:transform .5s cubic-bezier(.45,0,.25,1),left .5s cubic-bezier(.45,0,.25,1),top .5s cubic-bezier(.45,0,.25,1)}
 #root#root#root#root#root .pk-hm-s{position:absolute;width:44px;height:44px;min-height:0!important;margin:-22px 0 0 -22px;padding:0!important;border:0!important;border-radius:50%!important;background:transparent!important;box-shadow:none!important;cursor:pointer;z-index:2}
 #root .pk-hm-s i{position:absolute;left:50%;top:50%;width:30px;height:30px;margin:-15px 0 0 -15px;border-radius:50%;background:center/100% no-repeat;box-shadow:0 0 0 2px rgba(242,237,227,.9);filter:drop-shadow(0 2px 3px rgba(0,0,0,.55))}
@@ -48,8 +49,9 @@
     Object.keys(P).forEach(function (k) { var here = k === id; h += '<button type="button" class="pk-hm-s' + (here ? ' here' : '') + '" data-h="' + k + '" aria-label="' + (here ? nm(k) + ', you are here' : 'Go to ' + nm(k)) + '"' + (here ? ' aria-current="page"' : '') + '><i style="background-image:url(ic2/' + k + '.png)"></i><b>' + nm(k) + '</b></button>'; });
     h += '<div class="pk-hm-zm"><button type="button" data-z="1" aria-label="Zoom in"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 3v10M3 8h10"/></svg></button><button type="button" data-z="-1" aria-label="Zoom out"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10"/></svg></button></div></div>';
     w.innerHTML = h; host.parentNode.insertBefore(w, host.nextSibling);
+    var LO = (window.__pkCyLO || {})[id], m0 = w.querySelector('.pk-hm-m'), s0 = (m0.clientWidth || 340) / 760; if (LO) { var im = document.createElement('img'); im.className = 'pk-hm-lit'; im.alt = ''; im.src = 'farmmap/l/' + id + '.webp?v=33'; im.style.cssText = 'left:' + (LO[0] * s0).toFixed(1) + 'px;top:' + (LO[1] * s0).toFixed(1) + 'px;width:' + (LO[2] * s0).toFixed(1) + 'px;height:' + (LO[3] * s0).toFixed(1) + 'px'; w.querySelector('.pk-hm-l').appendChild(im); }
     var m = w.querySelector('.pk-hm-m'), vw = m.clientWidth || 340, vh = m.clientHeight || 230, s = vw / 760;
-    V = { P: P, s: s, z: 1, zmin: Math.min(1, vw / (MW * s)), vw: vw, vh: vh, tx: vw / 2 - P[id][0] * s, ty: vh / 2 - P[id][1] * s };
+    if (V && V.h === id && V.vw === vw) { V.P = P; } else V = { h: id, P: P, s: s, z: 1, zmin: Math.min(1, vw / (MW * s)), vw: vw, vh: vh, tx: vw / 2 - P[id][0] * s, ty: vh / 2 - P[id][1] * s };
     apply(); return w;
   }
   document.addEventListener('click', function (e) {
@@ -73,7 +75,7 @@
   setInterval(function () {
     var t = top(), host = document.querySelector('#root section.pk-hd-w .pk-hd-desc'), old = document.querySelector('#root .pk-hm');
     if (t.r !== 'hood' || !host) return;
-    if (old && old.getAttribute('data-h') === t.h && old.previousSibling === host) return;
+    if (old && old.getAttribute('data-h') === t.h) return;
     if (old) old.remove(); build(host, t.h);
   }, 400);
 })();
