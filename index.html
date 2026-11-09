@@ -2936,6 +2936,8 @@ div[aria-label="Preview controls"] { display: none !important }
 #root .pk-hd-spin{display:inline-block;transition:transform .55s cubic-bezier(.2,.9,.3,1.3)}
 #root .pk-hd-card{margin-top:22px;padding:18px 18px 20px;border-radius:16px;box-sizing:border-box}
 #root .pk-hd-sum{background:#383234;border:1px solid #4A4245}
+#root .pk-hd-sum.pk-slim{padding:12px 16px!important;min-height:0!important;display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 14px}#root .pk-hd-sum.pk-slim h2{font:800 13px/1.2 'Bricolage Grotesque',sans-serif!important;letter-spacing:.08em;text-transform:uppercase;margin:0!important;flex:none;width:100%}#root .pk-hd-sum.pk-slim p{margin:0!important}#root .pk-hd-sum.pk-slim .pk-hd-am{margin:4px 0 0!important}#root .pk-hd-sum.pk-slim .pk-hd-lab{font-size:12px!important}
+
 #root .pk-hd-who{background:#1A2017;border:1px solid #3A4331;border-left:4px solid #D6B54A}
 #root .pk-hd-card h2{margin:0;font-family:'Pickathon 2014',sans-serif!important;font-weight:400;font-size:clamp(21px,5.6vw,30px);line-height:1.05;color:#F2EDE3}
 #root .pk-hd-lab{margin:16px 0 6px;font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#D6B54A}
@@ -5040,7 +5042,7 @@ var pr27 = function (k) { var r = PR27[k]; return r ? Math.ceil(r[PCOL]) : 0; },
           o.hdDesc = (function () { if (H2.dd) return H2.dd; var sn = function (t) { t = String(t || '').trim().replace(/\b(Mt|St|Dr|Mr|Mrs|Ms|Jr|vs)\. /g, '$1.\u00a0'); return (t.match(/[\s\S]*?[.!?]["’”)]?(?=[ \t\n]+[A-Z“"‘(]|\s*$)/g) || [t]).map(function (x) { return x.trim(); }).filter(Boolean); }; var m = sn((H2.d || [])[0]); if (m.length < 2) m = m.concat(sn((H2.d || [])[1]).slice(0, 1)); var two = m.slice(0, 2).join(' '); return (two.length > 320 ? m[0] : two) || ''; })();
           var hv = !!(P.show && P.v); o.hdVidL = hv; o.hdVidR = hv; o.hdNoVid = !hv; o.hdColsCls = hv ? '' : 'pk-hd-nov';
           if (hv) { var cap = String(P.v.cap || '').trim(); o.hdVCap = (cap ? cap + ' · ' : '') + (P.v.y ? 'Pickathon ' + P.v.y : ''); o.hdSpin = P.ic || ''; }
-          o.hdNote = o.progNote || ''; o.hdHasNote = !!o.hdNote && !!o.hasProg; o.sumCls = (cur && cur.y && String(cur.y) !== String(d.year || '')) ? 'pk-off' : ''; o.hdTourN = String(H2.n || '').replace(/^The /, '');
+          o.hdNote = o.progNote || ''; o.hdHasNote = !!o.hdNote && !!o.hasProg; o.sumCls = (cur && cur.y && String(cur.y) !== String(d.year || '')) ? 'pk-off' : ((d.hoodProg || {})[hid] ? 'pk-slim' : ''); o.hdTourN = String(H2.n || '').replace(/^The /, '');
           var AMR = { 'Venue Entry/Exit': 'Entry and exit', 'DJ': 'DJ booth' }; o.hdAm = (o.am || []).map(function (a) { return { n: AMR[a.n] || a.n, ic: a.ic }; });
           var cr = (H2.crl || []).map(function (c) { return { k: c[0], v: c[1] }; }); if ((H2.sp || []).indexOf('hampton-lumber') >= 0 && !cr.some(function (c) { return /lumber/i.test(c.k + ' ' + c.v); })) cr.push({ k: 'Lumber', v: 'Hampton Lumber' });
           o.hdCr = cr; o.hdHasCr = cr.length > 0; o.hdWho = cr.length > 0 || !!H2.nx;
