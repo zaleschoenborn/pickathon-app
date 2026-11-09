@@ -21,6 +21,20 @@
   var GRAIN = enc('<svg xmlns="http://www.w3.org/2000/svg" width="240" height="240"><filter id="g"><feTurbulence type="fractalNoise" baseFrequency=".75" numOctaves="3" seed="3"/><feColorMatrix values="0 0 0 0 .35  0 0 0 0 .3  0 0 0 0 .25  0 0 0 .55 -.18"/></filter><rect width="240" height="240" filter="url(#g)"/></svg>');
   var LEAD = ['THE', 'A', '&', '& THE', 'AND', 'AND THE', 'THEE', 'DR.', 'MR.', 'MS.', 'LA', 'LOS', 'LAS', 'EL'];
   var LH = 0.86;
+  /* TODAY ranks from the class data at page load (Zale, Nov 9 09:54: live data for the posters, not when we build). climbSrc: tools/climb_ladder/build_src.py */
+  window.pkClimbLive = function (dd) { try { var B = dd.climb || {}, SRC = dd.climbSrc; if (!SRC) return B; var out = {};
+    var G = { 'Discovery': 0, 'Legend': 0, 'Deep cut': 1, 'Neither': 2 }, CL = { 'Discovery': 0, 'Legend': 1, 'Deep cut': 2, 'Neither': 3 }, CF = { 'high': 5, 'medium-high': 4, 'medium': 3, 'low-medium': 2, 'low': 1 };
+    var nm = function (s) { return String(s).toLowerCase().replace(/&/g, ' and ').replace(/[“”"]/g, '').replace(/[^a-z0-9 ]/g, '').split(/\s+/).filter(Boolean).join(' '); };
+    Object.keys(B).forEach(function (y) { var D0 = B[y], S0 = SRC[y]; if (!S0 || !S0.r || !S0.r.length) { out[y] = D0; return; }
+      var R = S0.r.slice(), pin = S0.pin || [], N = function (r) { return r[1] === 'Neither'; };
+      R.sort(function (a, b) { var pa = pin.indexOf(nm(a[0])), pb = pin.indexOf(nm(b[0])); pa = pa < 0 ? 99 : pa; pb = pb < 0 ? 99 : pb; if (pa !== pb) return pa - pb;
+        var ka = [N(a) ? 1 : 0, N(a) ? 0 : -a[2], N(a) ? 0 : -(CF[a[3]] || 0), CL[a[1]] || 0], kb = [N(b) ? 1 : 0, N(b) ? 0 : -b[2], N(b) ? 0 : -(CF[b[3]] || 0), CL[b[1]] || 0];
+        for (var i = 0; i < 4; i++) if (ka[i] !== kb[i]) return ka[i] - kb[i]; return a[0] < b[0] ? -1 : a[0] > b[0] ? 1 : 0; });
+      var now = {}; R.forEach(function (r, i) { now[r[0]] = i; });
+      var two = R.some(function (r) { return r[4] !== now[r[0]]; }), cands = R.filter(function (r) { return r[5] && r[4] - now[r[0]] >= 3; }).sort(function (a, b) { return now[a[0]] - now[b[0]]; }), clim = two && cands.length ? cands[0][0] : null;
+      var D = Object.assign({}, D0); D.names = R.map(function (r) { return [r[0], clim ? [r[4], now[r[0]]] : [now[r[0]]]]; }); D.labels = clim ? [S0.l0, 'TODAY'] : ['TODAY']; D.clim = clim; D.climFrom = clim ? cands[0][4] : 0; D.climTo = clim ? now[clim] : 0;
+      D.ranked = R.filter(function (r) { return !N(r); }).length; D.more = Math.max(0, R.length - Math.min(10, D.ranked)); D.live = 1; out[y] = D; });
+    return out; } catch (e) { return dd.climb || {}; } };
   var ALLY = function () { return Object.keys(C).filter(function (k) { return C[k] && C[k].names && C[k].names.length; }).map(Number).sort(function (a, b) { return b - a; }); };
   // ANOTHER YEAR draws from every summer that has a climber, shuffled so nothing repeats until all have shown.
   var POOL = function () { return ALLY().filter(function (y) { var D = C[y]; return D.clim && D.labels && D.labels.length > 1; }); }; // every year with a climber, 2025 and 2026 included (no year holdback, Zale Nov 8-9)
