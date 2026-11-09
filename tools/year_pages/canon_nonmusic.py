@@ -1,0 +1,97 @@
+# One name per non-music act across every year (Design Studio, Nov 9 2026).
+# WordPress bills the same person differently from year to year ('Greg Vandy' / 'DJ Greg Vandy', 'DJ Aquaman' /
+# 'DJ Eric "Aquaman" Hedford', 'The Ambassador' / 'DJ Allen Thayer'), which split one act into several pages.
+# Run after build_nonmusic.py for all years. It:
+#   - groups the f:1 yearBill rows of every year by a person key (ck),
+#   - gives every row the act's most used name (ties: the latest year's),
+#   - makes the years list the union of the group, and the label the same in every year
+#     (class: the earliest classed year's, as on the archive; else the latest year's tag),
+#   - fills a missing blurb from another year and repairs blurbs that start mid-sentence,
+#   - renames yearPhotos and actSets keys to the one name,
+#   - writes data.json actAlias {variant key: page key} so schedule rows and 'with' links find the page.
+import json, os, re, unicodedata
+from collections import defaultdict, Counter
+SITE = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..')
+d = json.load(open(os.path.join(SITE, 'data.json')))
+
+def nk(s):   # the site's key (index.html nk)
+    return re.sub(r'[^a-z0-9]', '', re.sub(r'^the\s+', '', str(s or '').lower()))
+def key(s):
+    return nk(unicodedata.normalize('NFKD', str(s or '')).encode('ascii', 'ignore').decode())
+SAME = {'allenthayer': 'ambassador', 'ericaquamanhedford': 'aquaman', 'impactsound': 'impactsound'}
+def ck(n):
+    s = re.sub(r'\([^)]*\)', '', str(n or '')); s = re.sub(r'\s*&\s*|\s+and\s+', ' and ', s, flags=re.I)
+    k = key(s); k = re.sub(r'^djs?(?=[a-z0-9]{4})', '', k); k = re.sub(r'djs$', '', k); k = re.sub(r'^the(?=[a-z]{4})', '', k)
+    return SAME.get(k, k)
+
+G = defaultdict(list)
+for y, bb in d['yearBill'].items():
+    for b in bb:
+        if b.get('f'): G[ck(b['n'])].append((int(y), b))
+yln = d.get('yln') or {}
+LNY = defaultdict(set)
+for y, LL in yln.items():
+    for L in LL.values():
+        for q in L: LNY[ck(q['n'])].add(int(y))
+
+def fix_blurb(t, n):
+    t = (t or '').strip()
+    if not t or not t[0].islower(): return t
+    if re.match(r'^(is|are|was|were|has|have)\b', t): return n + ' ' + t
+    s = re.split(r'(?<=[.!?])\s+(?=[A-Z])', t, maxsplit=1)
+    return s[1] if len(s) > 1 else t
+
+alias, ph, AS = {}, d.get('yearPhotos') or {}, d.get('actSets') or {}
+renamed = 0
+for g, rows in G.items():
+    rows.sort(key=lambda r: r[0])
+    cnt = Counter(b['n'] for _, b in rows)
+    top = max(cnt.values())
+    name = [b['n'] for _, b in reversed(rows) if cnt[b['n']] == top][0]
+    yrs = sorted(set().union(*[set(b.get('yrs') or []) for _, b in rows]) | {y for y, _ in rows} | LNY.get(g, set()))
+    classed = [b for _, b in rows if b.get('k') in ('disc', 'leg', 'deep')]
+    first = classed[0] if classed else None
+    late_tag = ''
+    for _, b in reversed(rows):
+        parts = (b.get('c') or '').split(' · ')
+        if len(parts) > 1 and parts[1] not in ('Discovery', 'Legend', 'Deep cut'): late_tag = parts[1]; break
+    blurbs = [b.get('l') for _, b in reversed(rows) if b.get('l')]
+    links = []
+    for _, b in reversed(rows):
+        for u in b.get('lk') or []:
+            if u not in links: links.append(u)
+    for y, b in rows:
+        old = b['n']
+        if old != name:
+            renamed += 1
+            if nk(old) != nk(name): alias[nk(old)] = nk(name)
+            Y = str(y)
+            if old in (ph.get(Y) or {}) and name not in ph[Y]: ph[Y][name] = ph[Y].pop(old)
+            A = AS.get(Y) or {}
+            if key(old) in A:
+                L = A.setdefault(key(name), [])
+                for r2 in A.pop(key(old)):
+                    if r2 not in L: L.append(r2)
+        b['n'] = name; b['yrs'] = yrs
+        lu1 = (b.get('c') or '').split(' · ')[0]
+        if first:
+            b['k'] = first['k']; b['m'] = max(b.get('m') or 0, first.get('m') or 0)
+            b['c'] = lu1 + ' · ' + {'disc': 'Discovery', 'leg': 'Legend', 'deep': 'Deep cut'}[first['k']]
+        else:
+            b['k'] = 'none'; b['c'] = lu1 + (' · ' + late_tag if late_tag else '')
+        b['l'] = fix_blurb(b.get('l') or (blurbs[0] if blurbs else ''), name)
+        if links: b['lk'] = links[:3]
+# every lineup-list spelling of a paged act points at its page too
+for y, LL in yln.items():
+    for L in LL.values():
+        for q in L:
+            g = ck(q['n'])
+            if g in G:
+                pn = G[g][0][1]['n']
+                if nk(q['n']) != nk(pn): alias[nk(q['n'])] = nk(pn)
+d['actAlias'] = alias
+json.dump(d, open(os.path.join(SITE, 'data.json'), 'w'), ensure_ascii=False, separators=(',', ':'))
+print('groups', len(G), 'rows renamed', renamed, 'aliases', len(alias))
+for g, rows in G.items():
+    if len({y for y, _ in rows}) > 1 and len({b['n'] for _, b in rows}) == 1 and any(nk(b['n']) in alias.values() for _, b in rows):
+        pass

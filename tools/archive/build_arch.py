@@ -4,6 +4,8 @@
 # Writes data.json archCT = [{n, k: disc|leg|deep, y: first year, ys: [years], m, g, l}] for every music act the table classes.
 # The page (archAll) reclassifies existing hand-made cards to match and adds a card for any act that has none.
 # Usage: python3 build_arch.py <class_rows.txt year|act|L/D/C|conf|mag> [<class_table.csv for extra years>] [<lineup_research.json>]
+# Genre corrections where the research sheet disagrees with the act's own record (flagged to Research, Nov 9 2026)
+GFIX = {'durandjones': 'soul'}
 import json, sys, re, os, csv, unicodedata
 SITE = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..')
 def key(s):
@@ -29,7 +31,7 @@ out = []
 for k, A in acts.items():
     R = LBY.get((str(A['y']), k)) or {}
     safe = (R.get('Safe to publish') or '').lower().startswith('yes')
-    o = {'n': A['n'], 'k': A['k'], 'y': A['y'], 'ys': sorted(A['ys']), 'm': A['m'], 'g': (R.get('Genre') or '').strip().lower()}
+    o = {'n': A['n'], 'k': A['k'], 'y': A['y'], 'ys': sorted(A['ys']), 'm': A['m'], 'g': GFIX.get(k) or (R.get('Genre') or '').strip().lower()}
     if safe and R.get('Story hook'): o['l'] = R['Story hook'].strip()
     out.append(o)
 out.sort(key=lambda o: (o['y'], o['n'].lower()))
