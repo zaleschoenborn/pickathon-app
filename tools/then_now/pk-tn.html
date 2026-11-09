@@ -21,9 +21,9 @@
 #root .pk-tn-cols{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:0 0 6px}
 #root .pk-tn-cols div{min-width:0;border-top:3px solid var(--c);padding-top:5px}
 #root .pk-tn-cols b{display:block;font:800 24px/1 'Bricolage Grotesque',sans-serif;color:var(--c)}
-#root .pk-tn-cols span{display:block;margin-top:2px;font-size:10.5px;font-weight:800;letter-spacing:.04em;line-height:1.2;text-transform:uppercase;color:#B9B3A6;white-space:normal;overflow-wrap:anywhere}
+#root .pk-tn-cols span{display:block;margin-top:2px;font-size:10.5px;font-weight:800;letter-spacing:.04em;line-height:1.2;text-transform:uppercase;color:#B9B3A6;white-space:normal;overflow-wrap:normal;word-break:normal;hyphens:none}@media (max-width:480px){#root .pk-tn-cols span{font-size:9.5px;letter-spacing:0}}
 #root .pk-tn-f{position:relative;margin:4px 0 0}
-#root#root .pk-tn-dot{position:absolute;left:0;top:0;width:var(--tn-d)!important;height:var(--tn-d);min-height:0;padding:0!important;border-radius:50%;border:0!important;background:var(--c)!important;transition:transform .7s cubic-bezier(.3,.7,.2,1),background-color .7s;box-shadow:none}
+#root#root .pk-tn-dot{position:absolute;left:0;top:0;width:var(--tn-d)!important;height:var(--tn-d);min-height:0;padding:0!important;border-radius:50%;border:0!important;background:var(--c)!important;transition:none;box-shadow:none}#root#root .pk-tn-anim .pk-tn-dot{transition:transform .7s cubic-bezier(.3,.7,.2,1),background-color .7s}#root .pk-tn-f:not(.on){visibility:hidden}
 #root#root .pk-tn-dot.mv{box-shadow:0 0 0 1.5px #12160F,0 0 0 3px #F2CF62}
 #root#root .pk-tn-dot.sel{box-shadow:0 0 0 2px #12160F,0 0 0 4.5px #F2EDE3;z-index:2}
 #root#root .pk-tn-dot:focus-visible{outline:2px solid #F2EDE3;outline-offset:3px}
@@ -82,13 +82,13 @@
       '<div class="pk-tn-cols">' + COL.map(function (c) { return '<div style="--c:' + c[3] + '"><b></b><span>' + c[1] + '</span></div>'; }).join('') + '</div>' +
       '<div class="pk-tn-f"><span class="pk-tn-tip" aria-hidden="true"></span>' + Y.acts.map(function (a, k) { return '<button type="button" class="pk-tn-dot" data-k="' + k + '"></button>'; }).join('') + '</div>' +
       '<div class="pk-tn-card" aria-live="polite"></div>' +
-      '<p class="pk-tn-fn">' + (ONE ? 'Rated with what we know now' : 'Checked again ' + nextRating()) + '</p>';
+      '<p class="pk-tn-fn">' + (ONE ? 'Rated with what we know now' : 'Next check: ' + nextRating()) + '</p>';
     var dots = w.querySelectorAll('.pk-tn-dot'), field = w.querySelector('.pk-tn-f'), tip = w.querySelector('.pk-tn-tip');
     function lab(a, i) { return COL[CI[a.c[i]]][2]; }
-    function layout() {
+    function layout(anim) {
       var cs = getComputedStyle(w), D = parseFloat(cs.getPropertyValue('--tn-d')) || 20, G = 4;
-      var cols = w.querySelectorAll('.pk-tn-cols div'); if (!cols.length || !cols[0].offsetWidth) return;
-      var colW = cols[0].offsetWidth, x0 = cols[0].offsetLeft, step = cols[1].offsetLeft - cols[0].offsetLeft, per = Math.max(1, Math.floor((colW + G) / (D + G)));
+      var cols = w.querySelectorAll('.pk-tn-cols div'); if (!cols.length || !cols[0].offsetWidth) return; w.classList.toggle('pk-tn-anim', !!anim && field.classList.contains('on'));
+      var colW = cols[0].offsetWidth, per = Math.max(1, Math.floor((colW + G) / (D + G)));
       var maxRows = 1;
       Y.dates.forEach(function (_, i) { var cn = [0, 0, 0, 0]; Y.acts.forEach(function (a) { cn[CI[a.c[i]]]++; }); cn.forEach(function (n) { maxRows = Math.max(maxRows, Math.ceil(n / per)); }); });
       field.style.height = (maxRows * (D + G) - G) + 'px';
@@ -96,11 +96,12 @@
       Y.acts.forEach(function (a, k) { groups[CI[a.c[i]]].push(k); });
       groups.forEach(function (g, ci) {
         g.sort(function (p, q) { return (Y.acts[q].m[i] - Y.acts[p].m[i]) || Y.acts[p].n.localeCompare(Y.acts[q].n); });
-        g.forEach(function (k, r) { var d = dots[k]; d.style.transform = 'translate(' + (x0 - field.offsetLeft + ci * step + (r % per) * (D + G)) + 'px,' + (Math.floor(r / per) * (D + G)) + 'px)'; });
+        g.forEach(function (k, r) { var d = dots[k]; d.style.transform = 'translate(' + (cols[ci].offsetLeft - field.offsetLeft + (r % per) * (D + G)) + 'px,' + (Math.floor(r / per) * (D + G)) + 'px)'; });
       });
       w.querySelectorAll('.pk-tn-cols b').forEach(function (b, ci) { b.textContent = groups[ci].length; });
+      field.classList.add('on');
     }
-    function paint() {
+    function paint(anim) {
       var i = s.i, a = Y.acts[s.sel];
       w.querySelector('.pk-tn-dt b').textContent = mo(Y.dates[i]).toUpperCase();
       w.querySelector('.pk-tn-dt span').textContent = cap(Y, i);
@@ -120,12 +121,12 @@
       h += '<button type="button" class="pk-tn-go">Artist page →</button>';
       var card = w.querySelector('.pk-tn-card'); card.innerHTML = h;
       card.querySelector('.pk-tn-go').onclick = function () { openAct(a.n, y); };
-      layout();
+      layout(anim);
     }
     w.addEventListener('click', function (e) {
       var t = e.target.closest('button'); if (!t || !w.contains(t)) return;
-      if (t.classList.contains('pk-tn-sb')) { s.i = Math.max(0, Math.min(N, s.i + +t.dataset.d)); paint(); }
-      else if (t.classList.contains('pk-tn-chip')) { s.i = +t.dataset.j; paint(); }
+      if (t.classList.contains('pk-tn-sb')) { s.i = Math.max(0, Math.min(N, s.i + +t.dataset.d)); paint(true); }
+      else if (t.classList.contains('pk-tn-chip')) { s.i = +t.dataset.j; paint(true); }
       else if (t.classList.contains('pk-tn-dot')) { s.sel = +t.dataset.k; paint(); }
     });
     w.addEventListener('mouseover', function (e) {
