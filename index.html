@@ -1155,7 +1155,7 @@ main:has(#pk-nh-climb)>section{content-visibility:visible!important;contain-intr
 (function () {
   var el = null, key = '';
   function back() { var A = window.__pkApp, T = window.__pkTM || {}; if (!A) return; A.state.tmY = '';
-    if (T.r === 'act') A.go('act', { n: (T.ex || {}).n, tm0: 1 }, true); else if (T.r === 'hood') A.go('hood', { h: (T.ex || {}).h, tm0: 1 }, true); else A.go('lineup'); }
+    if (T.r === 'act') A.go('lineup'); else if (T.r === 'hood') A.go('hood', { h: (T.ex || {}).h, tm0: 1 }, true); else A.go('lineup'); }
   setInterval(function () {
     var T = window.__pkTM || {}, y = T.y, show = !!y && ['past', 'act', 'hood'].indexOf(T.r) >= 0, root = document.getElementById('root');
     if (!root) return;
