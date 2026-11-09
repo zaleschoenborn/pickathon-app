@@ -2328,7 +2328,7 @@ body.dooron #door{display:block}
   const vTh=v=>v.vm?v.th:'https://i.ytimg.com/vi/'+v.id+'/hqdefault.jpg';
   const short=h=>String(h.n||'').replace(/^The /,'');
   let H=null, L=[], vi=0, fold=false, pickAt=0;
-  function photo(h){ const x=XD&&XD.h&&XD.h[h.id]; const p=(x&&(x.hi||x.i))||((HERO[h.id]||[])[0])||''; return p&&!/^(https?:|\.\.\/|\/)/.test(p)?'../'+p:p; }
+  function photo(h){ const x=XD&&XD.h&&XD.h[h.id], q=x&&(x.hi||x.i); if(q) return !/^(https?:|\.\.\/|\/)/.test(q)?'../'+q:q; return ((HERO[h.id]||[])[0])||''; }  // site photos are root paths; the map's own h/ heroes sit next to this page
   function putMedia(){
     const a=$('.dv'), im=a.querySelector('img'), v=L.length?L[vi%L.length]:null;
     if(v){ a.classList.remove('ph'); a.href=vUrl(v); a.__v=v; im.src=vTh(v); a.setAttribute('aria-label','Play '+(v.a||'')+' at '+H.n);
