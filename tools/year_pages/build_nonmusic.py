@@ -61,6 +61,7 @@ def blurb(t, n):
     AB = r'(?:Mr|Ms|Mrs|Dr|St|Jr|Sr|vs|Mt|No|Vol|feat|ft|aka|e\.g|i\.e)'
     t = re.sub(AB + r'\.', lambda m: m.group(0)[:-1] + '\u2024', t)   # keep 'Ms. Kelly' in one sentence
     s = [x.replace('\u2024', '.') for x in (re.findall(r'.+?[.!?](?=\s|$)', t) or [t])]
+    if len(s) > 1: s = [x for x in s if not x.strip().endswith('!')] or s   # promo shouts ('Get ready…!', 'kicks ass!') stay out
     out = ''
     for x in s:
         if len(out) + len(x) > 260 and out: break
@@ -100,7 +101,7 @@ for r in W['rows']:
     kk = KC.get(c, 'none'); tg = TAGS.get(k) or []
     lab = LSING[r['ln']] + (' · ' + c if kk != 'none' else (' · ' + tg[0] if tg else ''))
     arch = ARCH.get(k) or {}
-    line = (arch.get('l') if arch.get('t') == 'x' and arch.get('l') else '') or blurb(r.get('txt'), r['n'])
+    line = (re.sub(r'^(Comedy|Literary|Family|DJs?|Music)\s*·\s*[^.]*\.\s*', '', arch.get('l')) if arch.get('t') == 'x' and arch.get('l') else '') or blurb(r.get('txt'), r['n'])
     links, dom = [], set()
     for u in (r.get('links') or []):
         if not u.startswith('http') or 'pickathon.com' in u or re.search(r'youtu', u): continue
