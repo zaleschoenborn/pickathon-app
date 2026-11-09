@@ -7,7 +7,7 @@
   var YC = __YC__;
   var C = null, S = { y: null, tp: 1, playing: false, seen: {}, raf: null, bag: [] }, mountEl = null, RM = false, TODAY = 2026, DUR = 3800;
   try { RM = window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) {}
-  var NW = ['', 'ONE', 'TWO', 'THREE', 'FOUR', 'FIVE', 'SIX', 'SEVEN', 'EIGHT', 'NINE', 'TEN', 'ELEVEN', 'TWELVE', 'THIRTEEN', 'FOURTEEN', 'FIFTEEN', 'SIXTEEN', 'SEVENTEEN', 'EIGHTEEN', 'NINETEEN', 'TWENTY'];
+  var NW = ['', 'ONE', 'TWO', 'THREE', 'FOUR', 'FIVE', 'SIX', 'SEVEN', 'EIGHT', 'NINE', 'TEN', 'ELEVEN', 'TWELVE', 'THIRTEEN', 'FOURTEEN', 'FIFTEEN', 'SIXTEEN', 'SEVENTEEN', 'EIGHTEEN', 'NINETEEN', 'TWENTY', 'TWENTY-ONE', 'TWENTY-TWO', 'TWENTY-THREE', 'TWENTY-FOUR', 'TWENTY-FIVE', 'TWENTY-SIX', 'TWENTY-SEVEN'];
   var ORD = function (k) { return (k + 1) + (k === 0 ? 'ST' : k === 1 ? 'ND' : k === 2 ? 'RD' : 'TH'); };
   var esc = function (s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;'); };
   var sm = function (t) { return t <= 0 ? 0 : t >= 1 ? 1 : t * t * (3 - 2 * t); };
@@ -47,7 +47,7 @@
     var posAt = function (si) { var P = {};
       D.names.forEach(function (x0) { var r = x0[1][si]; if (r < LN) { var s = S[r], b = fit(x0[0], s); P[x0[0]] = { x: s.x + s.k * s.w, y: s.y + s.h, k: s.k, f: b.f, L: b.L, lead: b.lead, ink: s.ink, head: !!s.head, line: r, on: true }; } });
       var off = D.names.filter(function (x) { return x[1][si] >= LN; }).sort(function (p, q) { return p[1][si] - q[1][si]; });
-      var cl = D.names.filter(function (x) { return x[0] === D.clim; })[0], climOff = !!cl && cl[1][si] >= LN, FS = Q.FS, CFS = Q.CFS, SEP = 12 + 0.6 * FS * 0.8 + 10, sw = function (t, fs) { return tw(t) * fs + t.length * 0.04 * fs + 2; };
+      var cl = D.names.filter(function (x) { return x[0] === D.clim; })[0], climOff = !!cl && cl[1][si] >= LN, FS = Q.FS, CFS = Q.CFS, SEP = 14 + 0.6 * FS * 0.8 + 12, sw = function (t, fs) { return tw(t) * fs + t.length * 0.04 * fs + 2; };
       var rows = [[]], rw = [0], shown = 0, hide = function (x0, fs) { P[x0[0]] = { x: IW / 2, y: ROW1, k: 0.5, f: fs, L: [x0[0]], ink: A, line: 30, on: false, vis: false }; };
       off.forEach(function (x0) { var isC = x0[0] === D.clim, fs = isC ? CFS : FS, w = sw(x0[0], fs), r = rows.length - 1, add = rows[r].length ? SEP + w : w;
         var needC = climOff && !isC && !rows.some(function (row) { return row.some(function (q) { return q.isC; }); }) ? SEP + sw(cl[0], CFS) : 0;
@@ -70,7 +70,7 @@
       var A0 = a.on ? a : VOFF(nm, b.f, b), B0 = b.on ? b : VOFF(nm, a.f, a), up = B0.f > A0.f;
       var swell = mv ? Math.sin(g * Math.PI) * (nm === D.clim ? 0.25 : up ? 0.15 : -0.08) : 0;
       var pos = { x: A0.x + (B0.x - A0.x) * g, y: A0.y + (B0.y - A0.y) * g, k: A0.k + (B0.k - A0.k) * g, f: (A0.f + (B0.f - A0.f) * g) * (1 + swell), ink: mix(A0.ink, B0.ink, g), moving: mv, on: true };
-      var o = 1 - (mv ? 0.12 * Math.sin(g * Math.PI) : 0); if (!a.on) o *= sm((g - 0.3) / 0.55); if (!b.on) o *= 1 - sm((g - 0.15) / 0.55);
+      var o = 1 - (mv && !up ? 0.12 * Math.sin(g * Math.PI) : 0); if (!a.on) o *= sm(g / 0.3); if (!b.on) o *= 1 - sm((g - 0.15) / 0.55);
       var out = [], sameShape = A0.L.join('|') === B0.L.join('|') && !!A0.lead === !!B0.lead;
       if (sameShape) out.push([Object.assign({}, g < 0.5 ? A0 : B0, pos), o, g]);
       else { var s3 = sm((g - 0.35) / 0.3); out.push([Object.assign({}, A0, pos), o * (1 - s3), g], [Object.assign({}, B0, pos), o * s3, g]); }
@@ -78,7 +78,8 @@
       if (!b.on && vb) out.push([b, sm((g - 0.6) / 0.4), g]);
       return out; };
     var drawn = []; D.names.forEach(function (x) { op(x[0], PA[x[0]], PB[x[0]]).forEach(function (q) { if (q[1] > 0.005) drawn.push([x, q]); }); });
-    drawn.sort(function (u, v) { return u[1][0].f - v[1][0].f; }); // bigger names in front
+    var fTo = function (q) { var b = PB[q[0][0]], a = PA[q[0][0]]; return Math.max(q[1][0].f, b && b.on ? b.f : 0, a && a.on && !(b && b.on) ? 0 : 0); };
+    drawn.sort(function (u, v) { return fTo(u) - fTo(v); }); // bigger names in front, judged by where they are headed
     var GLOWINK = (K.light && K.light.toUpperCase() !== PAPER.toUpperCase() && K.light.toUpperCase() !== '#FFFFFF') ? K.light : B;
     var dims = function (p) { var w = Math.max.apply(null, p.L.map(function (t, i) { return tw(t) * (p.lead && i === 0 ? 0.55 : 1); })) * p.f, h = (p.L.length > 1 ? (p.lead ? 1.55 : 2) : 1) * LH * p.f; return { w: w, h: h, cx: p.x + (0.5 - p.k) * w, cy: p.y - h / 2 }; };
     var h = '';
@@ -91,7 +92,7 @@
       var g = same(a, b) ? 1 : G, w = wa && wb ? 1 : wa ? 1 - sm(g * 1.4) : sm((g - 0.85) / 0.15); if (w > 0.01) crownOf.push([x[0], w]); });
     var cwOf = function (nm) { var c = crownOf.filter(function (c) { return c[0] === nm; })[0]; return c ? c[1] : 0; };
     // risers: the three biggest climbs relative to where they started (10th to 1st beats 41st to 5th), at least 3 places and at least double
-    var ACC = K.head || B, lift = function (x) { return Math.log((x[1][0] + 1) / (x[1][n - 1] + 1)); }, gain = function (x) { return x[1][0] - x[1][n - 1]; };
+    var ACC = K.head && K.hc >= 3 ? K.head : A, lift = function (x) { return Math.log((x[1][0] + 1) / (x[1][n - 1] + 1)); }, gain = function (x) { return x[1][0] - x[1][n - 1]; };
     var RISERS = n < 2 ? [] : D.names.filter(function (x) { return x[1][n - 1] < LN && gain(x) >= 3 && lift(x) >= Math.log(2); }).sort(function (p, q) { return lift(q) - lift(p); }).slice(0, 3).map(function (x) { return x[0]; });
     var showRise = function (x) { if (RISERS.indexOf(x[0]) < 0) return 0; if (tp >= n - 1 - 1e-3) return 1; var now = x[1][k0] + (x[1][k1] - x[1][k0]) * G; return sm(Math.max(0, Math.min(1, (x[1][0] - now) / gain(x) * 1.6))); };
     var FONT = "font-family:'Bricolage Grotesque',sans-serif;font-stretch:75%;font-variation-settings:'wdth' 75;font-weight:800";
@@ -111,7 +112,7 @@
       var cyEm = p.lead ? 0.61 + LH / 2 : two ? LH : LH / 2, nf = Math.min(16, Math.max(Q.ph ? 9 : 12, p.f * 0.2));
       var noteT = 'FROM #' + (x[1][0] + 1), shortT = '#' + (x[1][0] + 1), noteW = tw(noteT) * nf + noteT.length * 0.08 * nf, shortW = tw(shortT) * nf + shortT.length * 0.08 * nf, gapN = Math.max(8, p.f * 0.2);
       var noteFits = d.cx + d.w / 2 + reach + gapN + noteW <= S[0].x + S[0].w + 30, noteO = Math.pow(Math.max(0, Math.min(1, rise)), 3);
-      var showNote = rise > 0.01 && roomy && noteO > 0.01 && D.src === 'real billing', triPx = p.f * fsM;
+      var isTop = x[1][n - 1] === 0, showNote = rise > 0.01 && roomy && noteO > 0.01 && D.src === 'real billing' && (!isTop || noteFits), triPx = p.f * fsM;
       var pre = '', post = '';
       if (p.sep) pre = '<span style="font-size:.6em;letter-spacing:0;color:' + B + ';margin-right:10px;vertical-align:.2em">★</span>';
       else if (rise > 0.01 && roomy && !(x[1][n - 1] === 0 && tp >= n - 1 - 1e-3) && crw < 0.5) pre = '<span aria-hidden="true" style="position:absolute;right:100%;top:' + (cyEm / fsM - 0.6 - (showNote && !noteFits ? (nf * 0.55 + 2) / triPx * noteO : 0)).toFixed(2) + 'em;margin-right:' + (0.5 + reach / (p.f * fsM)).toFixed(3) + 'em;font-size:' + fsM.toFixed(3) + 'em;line-height:1;letter-spacing:0;color:' + ACC + ';opacity:' + rise.toFixed(3) + '">▲</span>';
@@ -138,7 +139,7 @@
     var y0 = +y, yNow = n > 1 ? Math.round(y0 + (TODAY - y0) * Math.min(1, frac)) : TODAY;
     var top = n < 2 || atEnd ? 'TODAY' : frac <= 0.001 ? (D.src === 'real billing' ? 'ON THE POSTER' : 'AT THE FESTIVAL') : 'SUMMER BY SUMMER';
     var s = Q.STAMP, ink = F.ACC, act = n > 1 && !RM;
-    var w = Math.round(124 * s), big = Math.max(28, Math.round(44 * s)), sml = Math.max(10, Math.round(11 * s));
+    var w = Math.round(132 * s), big = Math.max(28, Math.round(44 * s)), sml = Math.max(11, Math.round(12 * s));
     var bar = n > 1 ? '<span style="display:block;height:' + Math.max(2, Math.round(3 * s)) + 'px;margin:' + Math.round(5 * s) + 'px 2px 0;background:' + ink + '33"><span style="display:block;height:100%;width:' + (Math.min(1, frac) * 100).toFixed(1) + '%;background:' + ink + '"></span></span>' : '';
     var rep = act && atEnd && !S.playing ? '<span aria-hidden="true" style="position:absolute;right:' + Math.round(6 * s) + 'px;top:' + Math.round(4 * s) + 'px;font-size:' + Math.max(12, Math.round(14 * s)) + 'px;line-height:1">↻</span>' : '';
     var inner = rep + '<span style="display:block;font-size:' + sml + 'px;letter-spacing:.14em">' + top + '</span><span style="display:block;font-size:' + big + 'px;line-height:.92;letter-spacing:.02em;font-variant-numeric:tabular-nums">' + yNow + '</span>' + bar;
