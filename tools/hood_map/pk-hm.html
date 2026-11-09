@@ -1,6 +1,6 @@
 <style id="pk-hm-css">
 /* Neighborhood page: "Where it is" map (Zale, Nov 9 08:30: a way to move between neighborhoods from the map on each neighborhood page). Design Studio */
-#root .pk-hm{margin:18px 0 6px}
+#root .pk-hm{margin:18px 0 6px;max-width:760px}
 #root .pk-hm-h{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;margin:0 0 10px}
 #root .pk-hm-h p{margin:0;font:800 12px/1.2 'Bricolage Grotesque',sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#9FCB8A}
 #root .pk-hm-h span{display:block;margin-top:4px;font-size:14px;letter-spacing:0;text-transform:none;font-weight:600;color:#CFC9BC}
@@ -19,7 +19,8 @@
 #root .pk-hm-s.here i{width:44px;height:44px;margin:-22px 0 0 -22px;box-shadow:0 0 0 3px #F2CF62,0 0 0 6px rgba(31,28,29,.55),0 0 30px 14px rgba(242,207,98,.8);filter:none}
 #root .pk-hm-s.here b{top:48px;background:#F2CF62;color:#1F1C1D;font-size:12px}
 #root#root .pk-hm-s:focus-visible{outline:2px solid #F2CF62;outline-offset:2px}
-#root .pk-hm-zm{position:absolute;right:8px;bottom:8px;z-index:9;display:flex;gap:6px}
+#root .pk-hm-zm{position:absolute;right:8px;top:8px;z-index:9;display:flex;gap:6px}
+#root .pk-hm-s.nz b{opacity:0}
 #root#root#root#root#root .pk-hm-zm button{width:44px;height:44px;min-height:44px!important;padding:0;border-radius:8px!important;border:1.5px solid rgba(242,237,227,.5)!important;background:rgba(31,28,29,.88)!important;color:#F2EDE3;display:grid;place-items:center;cursor:pointer}
 #root .pk-hm-zm svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:round}
 #root#root .pk-hm-zm button:disabled{opacity:.35;cursor:default}
@@ -28,7 +29,7 @@
 <script id="pk-hm-js">
 (function () {
   var MW = 2041, MH = 3810, NAME = {};
-  var V = null, PT = {}, G = null, dragT = 0;
+  var V = null, VS = {}, PT = {}, G = null, dragT = 0;
   function hoods() { try { return (window.__pkSt.data || {}).hoods || {}; } catch (e) { return {}; } }
   function top() { try { var s = window.__pkSt.stack; return s[s.length - 1] || {}; } catch (e) { return {}; } }
   function nm(id) { var h = hoods()[id] || {}; return h.name || h.n || h.title || NAME[id] || id; }
@@ -38,7 +39,7 @@
     var w = document.querySelector('#root .pk-hm'); if (!w || !V) return; clampV();
     w.classList.toggle('anim', !!anim); if (anim) { clearTimeout(V.at); V.at = setTimeout(function () { w.classList.remove('anim'); }, 550); }
     var l = w.querySelector('.pk-hm-l'), k = V.s * V.z; l.style.width = MW * V.s + 'px'; l.style.height = MH * V.s + 'px'; l.style.transform = 'translate(' + V.tx.toFixed(1) + 'px,' + V.ty.toFixed(1) + 'px) scale(' + V.z.toFixed(3) + ')';
-    w.querySelectorAll('.pk-hm-s').forEach(function (b) { var p = V.P[b.getAttribute('data-h')]; var x = p[0] * k + V.tx, y = p[1] * k + V.ty; b.style.left = x.toFixed(1) + 'px'; b.style.top = y.toFixed(1) + 'px'; b.style.visibility = (x < 6 || y < 6 || x > V.vw - 6 || y > V.vh - 6) ? 'hidden' : ''; });
+    w.querySelectorAll('.pk-hm-s').forEach(function (b) { var p = V.P[b.getAttribute('data-h')]; var x = p[0] * k + V.tx, y = p[1] * k + V.ty; b.style.left = x.toFixed(1) + 'px'; b.style.top = y.toFixed(1) + 'px'; b.style.visibility = (x < 6 || y < 6 || x > V.vw - 6 || y > V.vh - 6) ? 'hidden' : ''; b.classList.toggle('nz', x > V.vw - 110 && y < 70 && !b.classList.contains('here')); });
     var zb = w.querySelectorAll('.pk-hm-zm button'); zb[0].disabled = V.z >= 2.4; zb[1].disabled = V.z <= V.zmin + 0.01;
   }
   function zoomAt(nz, cx, cy, anim) { nz = Math.max(V.zmin, Math.min(2.4, nz)); V.tx = cx - (cx - V.tx) * nz / V.z; V.ty = cy - (cy - V.ty) * nz / V.z; V.z = nz; apply(anim); }
@@ -49,9 +50,17 @@
     Object.keys(P).forEach(function (k) { var here = k === id; h += '<button type="button" class="pk-hm-s' + (here ? ' here' : '') + '" data-h="' + k + '" aria-label="' + (here ? nm(k) + ', you are here' : 'Go to ' + nm(k)) + '"' + (here ? ' aria-current="page"' : '') + '><i style="background-image:url(ic2/' + k + '.png)"></i><b>' + nm(k) + '</b></button>'; });
     h += '<div class="pk-hm-zm"><button type="button" data-z="1" aria-label="Zoom in"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 3v10M3 8h10"/></svg></button><button type="button" data-z="-1" aria-label="Zoom out"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10"/></svg></button></div></div>';
     w.innerHTML = h; host.parentNode.insertBefore(w, host.nextSibling);
-    var LO = (window.__pkCyLO || {})[id], m0 = w.querySelector('.pk-hm-m'), s0 = (m0.clientWidth || 340) / 760; if (LO) { var im = document.createElement('img'); im.className = 'pk-hm-lit'; im.alt = ''; im.src = 'farmmap/l/' + id + '.webp?v=33'; im.style.cssText = 'left:' + (LO[0] * s0).toFixed(1) + 'px;top:' + (LO[1] * s0).toFixed(1) + 'px;width:' + (LO[2] * s0).toFixed(1) + 'px;height:' + (LO[3] * s0).toFixed(1) + 'px'; w.querySelector('.pk-hm-l').appendChild(im); }
-    var m = w.querySelector('.pk-hm-m'), vw = m.clientWidth || 340, vh = m.clientHeight || 230, s = vw / 760;
-    if (V && V.h === id && V.vw === vw) { V.P = P; } else V = { h: id, P: P, s: s, z: 1, zmin: Math.min(1, vw / (MW * s)), vw: vw, vh: vh, tx: vw / 2 - P[id][0] * s, ty: vh / 2 - P[id][1] * s };
+    var LO = (window.__pkCyLO || {})[id], m0 = w.querySelector('.pk-hm-m'), s0 = Math.min(m0.clientWidth || 340, 480) / 760; if (LO) { var im = document.createElement('img'); im.className = 'pk-hm-lit'; im.alt = ''; im.src = 'farmmap/l/' + id + '.webp?v=33'; im.style.cssText = 'left:' + (LO[0] * s0).toFixed(1) + 'px;top:' + (LO[1] * s0).toFixed(1) + 'px;width:' + (LO[2] * s0).toFixed(1) + 'px;height:' + (LO[3] * s0).toFixed(1) + 'px'; w.querySelector('.pk-hm-l').appendChild(im); }
+    var m = w.querySelector('.pk-hm-m'), vw = m.clientWidth || 340, vh = m.clientHeight || 230, s = Math.min(vw, 480) / 760;   /* never blown up past the art's own size */
+    if (VS[id] && VS[id].vw === vw) V = VS[id];
+    else {
+      // start zoomed so the three nearest neighbors are in the frame with their names
+      var near = Object.keys(P).filter(function (k) { return k !== id; }).map(function (k) { return [k, Math.hypot(P[k][0] - P[id][0], P[k][1] - P[id][1])]; }).sort(function (a, b) { return a[1] - b[1]; }).slice(0, 3);
+      var dx = 0, dy = 0; near.forEach(function (n) { dx = Math.max(dx, Math.abs(P[n[0]][0] - P[id][0])); dy = Math.max(dy, Math.abs(P[n[0]][1] - P[id][1])); });
+      var z = Math.min(2.4, (vw / 2 - 46) / Math.max(1, dx * s), (vh / 2 - 34) / Math.max(1, dy * s)), zmin = Math.min(1, vw / (MW * s), vh / (MH * s));
+      z = Math.max(zmin, z);
+      V = VS[id] = { h: id, P: P, s: s, z: z, zmin: zmin, vw: vw, vh: vh, tx: vw / 2 - P[id][0] * s * z, ty: vh / 2 - P[id][1] * s * z };
+    }
     apply(); return w;
   }
   document.addEventListener('click', function (e) {
