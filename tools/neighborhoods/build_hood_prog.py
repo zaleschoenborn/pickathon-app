@@ -142,13 +142,15 @@ def curation():
         if len(parts) == 1: chef = parts[0]
         elif re.match(r'^Chefs? ', parts[0]) or y == 2026: chef, band = parts[0], parts[1]
         else: band, chef = parts[0], parts[1]
-        if nk(chef) == 'cheflunaofchelopdx': chef = 'Chef Luna Contreras of Chelo'
-        if chef: CH[nk(chef)].add(y); NM[nk(chef)] = re.sub(r'\s+', ' ', chef)
+        if chef:
+            kit = re.split(r'\s+of\s+', re.sub(r'\s+', ' ', chef), maxsplit=1)[-1].strip()
+            kit = {'AstralPDX': 'Astral PDX', 'Chelo PDX': 'Chelo', 'DesiPDX': 'DesiPDX'}.get(kit, kit)
+            CH[nk(kit)].add(y); NM[nk(kit)] = kit
         if band: BD[nk(band)].add(y); NM[nk(band)] = band
     def lst(G): return [[NM[k], sorted(G[k]), page_of(k)] for k in sorted(G, key=lambda k: (-max(G[k]), NM[k].lower()))]
-    kinds = [[n, L] for n, L in (('Chefs & kitchens', lst(CH)), ('Bands at the table', lst(BD)), ('DJs', lst(DJ))) if L]
+    kinds = [[n, L] for n, L in (('Kitchens', lst(CH)), ('Bands at the table', lst(BD)), ('DJs', lst(DJ))) if L]
     ys = sorted({y for y, _ in rows})
-    out['curation'] = {'y0': ys[0], 'y1': ys[-1], 'n': len(rows), 'w': len(CH) + len(BD) + len(DJ), 'stat': '%d meals on the schedule, with %d chefs and kitchens and %d bands and DJs at the table.' % (len(rows), len(CH), len(BD) + len(DJ)), 'kinds': kinds, 'regs': []}
+    out['curation'] = {'y0': ys[0], 'y1': ys[-1], 'n': len(rows), 'w': len(CH) + len(BD) + len(DJ), 'stat': '%d meals on the schedule, with %d kitchens and %d bands and DJs at the table.' % (len(rows), len(CH), len(BD) + len(DJ)), 'kinds': kinds, 'regs': []}
     print('curation', [(k[0], len(k[1])) for k in kinds])
 curation()
 # ---- stage neighborhoods: who played here, by class (music) or lineup (everything else) ----
@@ -196,5 +198,19 @@ for hid in STAGES:
     ys = sorted({y for y, _ in rows})
     out[hid] = {'mode': 'stage', 'y0': ys[0], 'y1': ys[-1], 'n': len(rows), 'w': len(YS), 'kinds': kinds, 'regs': regs}
     print(hid, ys[0], ys[-1], 'sets', len(rows), 'acts', len(YS), [(k[0], len(k[1])) for k in kinds], 'regulars', [r[0] for r in regs])
+# one row per thing: 'Liminal Glow Sound Healing' joins 'Liminal Glow' (same kind or not, the shorter name wins)
+for hid, P in out.items():
+    if P.get('mode') == 'stage' or hid == 'curation': continue
+    ent = {}
+    for kn, L in P['kinds']:
+        for e in L: ent[e[0]] = e
+    for a in sorted(ent, key=len, reverse=True):
+        for b in ent:
+            if b != a and len(b) >= 8 and a.lower().startswith(b.lower() + ' ') and a in ent and b in ent and ent[a] is not ent[b]:
+                ent[b][1] = sorted(set(ent[b][1]) | set(ent[a][1])); ent[b][2] = ent[b][2] or ent[a][2]
+                for kn, L in P['kinds']: L[:] = [e for e in L if e is not ent[a]]
+                del ent[a]; break
+    for kn, L in P['kinds']: L.sort(key=lambda e: (-len(e[1]), e[0].lower())) if hid != 'curation' else None
+    P['kinds'] = [k for k in P['kinds'] if k[1]]
 d['hoodProg'] = out
 json.dump(d, open(os.path.join(SITE, 'data.json'), 'w'), ensure_ascii=False, separators=(',', ':'))
