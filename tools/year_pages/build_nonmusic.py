@@ -22,8 +22,10 @@ def slug(s): return key(s)[:28]
 
 PAGE_LU = ('Family', 'Comedy', 'Literary', 'DJs')
 # organisations and services that run activities rather than perform: they stay in the lineup list, with no page
-NOT_ACT = {key(x) for x in ['Bridgetown Baby Family Feeding Nest', 'Cedarwood Waldorf School', 'Crafty Critters', 'Family Yoga with Shawna',
-           'Friends of Noise', 'Music Together of Portland', 'My Voice Music', 'Sellwood Community House', 'Trackers Earth']}
+NOT_ACT = {key(x) for x in ['Family Feeding Nest', 'Cedarwood Waldorf School', 'Crafty Critters', 'Family Yoga',
+           'Friends of Noise', 'Music Together of Portland', 'My Voice Music', 'Sellwood Community House', 'Trackers Earth', 'Learning Landscapes', 'BSD Future Bus',
+           'School of Rock', 'City Repair', 'Cardboard Songsters Workshop', 'Signal Fire']}
+def not_act(k): return any(x in k for x in NOT_ACT)
 KC = {'Legend': 'leg', 'Discovery': 'disc', 'Deep cut': 'deep'}
 LSING = {'Family': 'Family', 'Comedy': 'Comedy', 'Literary': 'Literary', 'DJs': 'DJ'}
 
@@ -45,9 +47,12 @@ def cl_of(n):
 # ---- the lineup names as the site lists them (yln), so the page key matches the list row ----
 YL = (d.get('yln') or {}).get(Y) or {}
 listed = {key(r['n']): r['n'] for L in PAGE_LU for r in (YL.get(L) or [])}
+import difflib
 def site_name(n):
     k = key(n)
     if k in listed: return listed[k]
+    close = difflib.get_close_matches(k, list(listed), n=1, cutoff=0.9)
+    if close: return listed[close[0]]
     for kk, nn in listed.items():
         if kk and (kk.startswith(k) or k.startswith(kk)) and min(len(k), len(kk)) >= 5: return nn
     return re.sub(r'\s*\((Host|Special)[^)]*\)\s*$', '', n).strip()
@@ -95,7 +100,7 @@ rows, seen, gaps = [], set(), []
 for r in W['rows']:
     if r['ln'] not in PAGE_LU: continue
     n = site_name(r['n']); k = key(n)
-    if k in seen or k in NOT_ACT: continue
+    if k in seen or not_act(k): continue
     seen.add(k)
     c, m = cl_of(n)
     kk = KC.get(c, 'none'); tg = TAGS.get(k) or []

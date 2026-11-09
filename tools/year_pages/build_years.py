@@ -114,7 +114,7 @@ for y in YEARS:
         dates = dates.replace(' - ', '–').replace('-', '–', 1) if re.search(r'\d-\d', dates) else dates
         badge = 'i/y%s-year-badge.svg' % y[2:]
         if os.path.exists(os.path.join(SITE, badge)):
-            d['yearBrand'][y] = {'badge': badge, 'band': band, 'warm': warm, 'light': light, 'stripe': [warm, light, inks[1], paper], 'dates': dates.replace('-', '–'), 'paper': paper, 'ink': inks[0], 'ink2': inks[1]}
+            d['yearBrand'][y] = {'card': (cl.get('art') if cl.get('art') and os.path.exists(os.path.join(SITE, cl.get('art'))) else ''), 'badge': badge, 'band': band, 'warm': warm, 'light': light, 'stripe': [warm, light, inks[1], paper], 'dates': dates.replace('-', '–'), 'paper': paper, 'ink': inks[0], 'ink2': inks[1]}
     # ---- the tour reel: the year's best acts that have a photo on the site ----
     if y not in (d.get('yearTour') or {}) and y not in d['yearReel']:
         reel = []
