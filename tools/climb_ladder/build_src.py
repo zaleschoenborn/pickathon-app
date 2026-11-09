@@ -2,30 +2,23 @@
 # not when we build it"). This writes climbSrc[year] = {l0: festival label, r: [[NAME, class, magnitude, confidence, festival rank, new]]}.
 # The festival order (real billing, or the classes as they stood then) is history and stays fixed; TODAY is computed in the page
 # by pkClimbLive (pk-climb.js), so a class change reaches the poster with the next data.json, with no poster rebuild.
-# Usage: python3 build_src.py <class_rows.txt year|act|L/D/C|conf|mag> <class_table.csv for Neither rows and missing years>
+# Usage: python3 build_src.py <class_table.csv>
 import json, csv, sys, re, os
 SITE = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..')
 d = json.load(open(os.path.join(SITE, 'data.json')))
 norm = lambda s: ' '.join(re.sub(r'[^a-z0-9 ]', '', str(s).lower().replace('&', ' and ').replace('“', '').replace('”', '').replace('"', '')).split())
 CF = {'h': 'high', 'm': 'medium', 'l': 'low'}
+# ONE source: the class table (Zale, Nov 9: builds come from master data, no side files, no hand placement).
+# Usage: python3 build_src.py <class_table.csv>   (the newest class_table_*.csv from Artist Classification)
 rows = {}
-for l in open(sys.argv[1], encoding='utf-8'):
-    if l.startswith('#') or not l.strip(): continue
-    y, a, c, f, m = l.rstrip('\n').split('|')
-    rows.setdefault(y, {})[norm(a)] = [a, {'L': 'Legend', 'D': 'Discovery', 'C': 'Deep cut'}[c], float(m or 0), CF.get(f, f)]
-for r in csv.DictReader(open(sys.argv[2], encoding='utf-8-sig')):
+for r in csv.DictReader(open(sys.argv[1], encoding='utf-8-sig')):
     if r.get('lineup') != 'Music' or (r.get('merged_into') or '').strip(): continue
     c = r.get('class') or ''
     if c not in ('Legend', 'Discovery', 'Deep cut', 'Neither'): continue
-    y = r['year']; k = norm(r['act'])
-    if k in rows.get(y, {}) : continue
-    if c != 'Neither' and y not in ('2023', '2024'): continue   # newer class rows come from the first file
     try: m = float(r.get('magnitude') or 0)
     except ValueError: m = 0.0
-    rows.setdefault(y, {})[k] = [r['act'], c, m, r.get('confidence') or '']
-sys.path.insert(0, os.path.join(SITE, 'tools', 'year_pages'))
-PIN = {}
-exec(re.search(r"PIN = \{.*?\}\n", open(os.path.join(SITE, 'tools/year_pages/build_years.py')).read(), re.S).group(0))
+    rows.setdefault(r['year'], {})[norm(r['act'])] = [r['act'], c, m, r.get('confidence') or '']
+PIN = {}   # no hand-pinned tops: the rank is magnitude, then confidence, then class, then name
 seen_before = {}; SEEN_N = set()
 out = {}
 for y in sorted(d.get('climb') or {}):
