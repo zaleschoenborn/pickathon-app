@@ -161,7 +161,7 @@
     var inset = Q.ph ? 14 : 24;
     var st = 'position:absolute;z-index:2;left:' + inset + 'px;top:' + inset + 'px;width:' + w + 'px;padding:0;border:0;background:transparent;transform:rotate(-6deg);color:' + ink + ';font-family:\'Bricolage Grotesque\',sans-serif;font-stretch:75%;font-variation-settings:\'wdth\' 75;font-weight:800;text-align:center';
     var ist = 'display:block;position:relative;padding:' + Math.round(7 * s) + 'px ' + Math.round(10 * s) + 'px ' + Math.round(9 * s) + 'px;box-sizing:border-box;border:' + Math.max(2, Math.round(2.5 * s)) + 'px solid ' + ink + ';outline:1px solid ' + ink + ';outline-offset:' + Math.max(2, Math.round(3 * s)) + 'px;-webkit-mask-image:' + WORN + ';mask-image:' + WORN + ';-webkit-mask-size:160px;mask-size:160px';
-    var rp = act && atEnd && !S.playing ? '<span class="pk-cl-rp" aria-hidden="true" style="position:absolute;left:0;right:0;top:100%;margin-top:' + Math.round(9 * s) + 'px;font-size:' + Math.max(11, Math.round(12 * s)) + 'px;letter-spacing:.12em;white-space:nowrap">↻ PLAY AGAIN</span>' : '';
+    var rp = act && atEnd && !S.playing && !STAT(y) ? '<span class="pk-cl-rp" aria-hidden="true" style="position:absolute;left:0;right:0;top:100%;margin-top:' + Math.round(9 * s) + 'px;font-size:' + Math.max(11, Math.round(12 * s)) + 'px;letter-spacing:.12em;white-space:nowrap">↻ PLAY AGAIN</span>' : '';
     return { act: act, st: st, html: '<span class="pk-cl-ink" style="' + ist + '">' + inner + '</span>' + rp, label: S.playing ? 'Stop' : 'Play ' + y + ' to today again' };
   }
 
@@ -171,26 +171,27 @@
     var y0 = +y, yNow = n > 1 ? Math.max(y0 + 1, Math.round(y0 + (TODAY - y0) * frac)) : TODAY;
     var line = n < 2 ? 'Ranked by how far each act has gone' : frac <= 0.001 ? (D.src === 'real billing' ? 'The bill as printed in ' + y : 'The bill as booked in ' + y) : (atEnd || yNow >= TODAY) ? 'Ranked today by how far each act has gone' : 'Re-ranked as of ' + yNow;
     var btn = S.playing ? '■ Stop' : atEnd ? '↻ Replay' : '▶ Play';
-    return { n: n, show: n > 1 && y0 < TODAY, frac: frac, yNow: Math.min(yNow, TODAY), line: line, btn: btn, aria: S.playing ? 'Stop' : atEnd ? 'Replay ' + y + ' to today' : 'Play ' + y + ' to today' };
+    return { n: n, show: n > 1 && y0 < TODAY && !STAT(y0), frac: frac, yNow: Math.min(yNow, TODAY), line: line, btn: btn, aria: S.playing ? 'Stop' : atEnd ? 'Replay ' + y + ' to today' : 'Play ' + y + ' to today' };
   }
   function caption(D, y, tp) {
     var n = D.labels.length, atEnd = tp >= n - 1 - 1e-3, derived = D.src !== 'real billing', age = TODAY - y;
     var since = age <= 0 ? 'THIS SUMMER' : (NW[age] || String(age)) + (age === 1 ? ' SUMMER ON' : ' SUMMERS ON');
     var place = D.clim ? (D.climTo === 0 ? ' TOPS THAT BILL.' : ' IS ' + ORD(D.climTo) + ' ON THAT BILL.') : '';
-    if (n < 2 || !D.clim) return 'TODAY’S ' + y + ' BILL, BY HOW FAR EACH ACT HAS GONE.';
+    if (n < 2 || !D.clim || STAT(y)) return 'TODAY’S ' + y + ' BILL, BY HOW FAR EACH ACT HAS GONE.';
     if (tp < 0.04) return D.clim + ': ' + (derived ? 'A SMALL NAME AT THE ' + y + ' FESTIVAL.' : (D.climFrom >= 10 ? 'A SMALL NAME' : ORD(D.climFrom)) + ' ON THE ' + y + ' POSTER.');
     if (!atEnd) return 'WATCH THE BILL GROW UP';
     return age < 3 ? since + ', SO FAR: ' + D.clim + place + ' IT TAKES A FEW SUMMERS TO KNOW.' : since + ': ' + D.clim + place;
   }
 
+  function STAT(y) { return +y <= 2005; } // 2005 and earlier stay still (Zale, Nov 9): the animated festival-to-now poster starts in 2006
   function stop() { if (S.raf) { cancelAnimationFrame(S.raf); S.raf = null; } S.playing = false; }
   function run(resume) {
-    var D = C[S.y], n = D.labels.length; if (n < 2) return; var from = resume && S.tp > 0 && S.tp < n - 1 - 1e-3 ? S.tp : 0; stop();
+    var D = C[S.y], n = D.labels.length; if (n < 2 || STAT(S.y)) return; var from = resume && S.tp > 0 && S.tp < n - 1 - 1e-3 ? S.tp : 0; stop();
     var HOLD = from ? 0 : 1400, tot = DUR * (n - 1), t0 = performance.now(), off = from * DUR; S.playing = true; S.tp = from;
     var fr = function (now) { var t = Math.max(0, Math.min(tot, now - t0 - HOLD + off)), done = now - t0 - HOLD + off >= tot; S.tp = done ? n - 1 : t / DUR; if (done) { S.playing = false; S.raf = null; } else S.raf = requestAnimationFrame(fr); draw(); };
     draw(); S.raf = requestAnimationFrame(function (now) { t0 = now; fr(now); });
   }
-  function go(y) { stop(); S.y = String(y); var n = C[y].labels.length; S.tp = (n > 1 && !RM) ? 0 : n - 1; S.seen[S.y] = 0; draw(); check(); }
+  function go(y) { stop(); S.y = String(y); var n = C[y].labels.length; S.tp = (n > 1 && !RM && !STAT(y)) ? 0 : n - 1; S.seen[S.y] = 0; draw(); check(); }
   function rand() { var P = POOL().filter(function (q) { return String(q) !== S.y; }); if (!S.bag.length) { S.bag = P.slice(); for (var i = S.bag.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)), t = S.bag[i]; S.bag[i] = S.bag[j]; S.bag[j] = t; } } var y = S.bag.pop(); if (String(y) === S.y && S.bag.length) y = S.bag.pop(); go(y); }
 
   function draw() {
@@ -250,7 +251,7 @@
     var m = document.querySelector('.pk-cl-mount');
     if (!m) { mountEl = null; return; }
     if (!C) { C = window.pkClimb || null; if (!C) return; }
-    if (m !== mountEl || !m.firstChild) { mountEl = m; mountEl._key = null; if (!S.y) { var y0 = window.pkClimbY0 && C[window.pkClimbY0] ? window.pkClimbY0 : POOL()[0]; S.y = String(y0); S.tp = (!RM && C[S.y].labels.length > 1) ? 0 : C[S.y].labels.length - 1; } draw(); }
+    if (m !== mountEl || !m.firstChild) { mountEl = m; mountEl._key = null; if (!S.y) { var y0 = window.pkClimbY0 && C[window.pkClimbY0] ? window.pkClimbY0 : POOL()[0]; S.y = String(y0); S.tp = (!RM && !STAT(S.y) && C[S.y].labels.length > 1) ? 0 : C[S.y].labels.length - 1; } draw(); }
     check();
   }
   setInterval(tick, 400); try { new MutationObserver(function () { var m = document.querySelector('.pk-cl-mount'); if (m && (m !== mountEl || !m.firstChild)) tick(); }).observe(document.body, { childList: true, subtree: true }); } catch (e) {} window.addEventListener('scroll', function () { if (mountEl) check(); }, { passive: true, capture: true });
