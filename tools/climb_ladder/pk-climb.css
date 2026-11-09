@@ -44,3 +44,4 @@ main:has(#pk-nh-climb)>section{content-visibility:visible!important;contain-intr
 /* review r2: names never draw past the paper; Another year clears the heading on phone */
 #root .pk-cl-p{overflow:hidden}
 @media (max-width:999px){#root .pk-cl-ht .pk-nh-h2{margin-top:22px!important}}
+#root#root#root#root .pk-cl-tb .pk-cl-rpl{min-height:44px!important;height:auto!important;padding:0 14px!important;font-size:13px!important;width:auto!important}
