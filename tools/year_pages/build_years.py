@@ -33,8 +33,10 @@ PIN = {'1999': ['Holy Modal Rounders'], '2000': ['Kelly Joe Phelps'], '2001': ['
        '2022': ['Wet Leg'], '2023': ['Wednesday'], '2024': ['Geese'], '2025': ['Taj Mahal'], '2026': ['Steve Earle']}
 
 # ---- class table ----
-CL = {}
+CL = {}; CTN = {}
 for r in csv.DictReader(open(CT, encoding='utf-8-sig')):
+    if r.get('lineup') == 'Music' and (r.get('class') or '') not in ('', 'NOT AN ACT', '(not classified)', 'not classified', 'Not classified') and not ((r.get('merged_into') or '').strip() and key(r['merged_into']) != key(r['act'])):
+        CTN.setdefault(r['year'], []).append(r['act'])
     if (r.get('merged_into') or '').strip() and key(r['merged_into']) != key(r['act']):
         continue  # merged rows show under their canonical act
     try: m = float(r.get('magnitude') or 0)
@@ -51,6 +53,7 @@ for x in (d['past'].get('deep') or []) + (d.get('deepcuts') or []):
     a.setdefault('g', x.get('g') or '')
     a.setdefault('l', x.get('l') or x.get('line') or '')
     a.setdefault('i', x.get('pi') or x.get('i') or '')
+    a.setdefault('py', x.get('pyr') or 0)
 for n, P in (d.get('legpi') or {}).items():
     a = ARCH.setdefault(key(n), {}); a.setdefault('i', P.get('i', ''))
 for n, u in (d.get('photoOf') or {}).items():
@@ -71,7 +74,14 @@ report = []
 d.setdefault('yearBrand', {}); d.setdefault('yearBill', {}); d.setdefault('yearReel', {})
 for y in YEARS:
     yr = next((q for q in d['past']['years'] if q['y'] == y), None)
-    names = (yr.get('all') or yr.get('names') or []) if yr else []
+    names = list((yr.get('all') or yr.get('names') or []) if yr else [])
+    # the site's year list is short for early years: every music act in the class table joins it (a billing like
+    # 'Billy Strings & Don Julin' stands for 'Billy Strings')
+    nk_ = [key(n) for n in names]
+    for a0 in CTN.get(y, []):
+        k0 = key(a0)
+        if not any(k0 == k1 or (min(len(k0), len(k1)) >= 6 and (k1.startswith(k0) or k0.startswith(k1))) for k1 in nk_):
+            names.append(a0); nk_.append(k0)
     # ---- the bill: every music act on our list for the year, ranked by the class table ----
     if y not in d['yearBill']:
         rows, seen = [], set()
@@ -79,12 +89,12 @@ for y in YEARS:
             k = key(n)
             if not k or k in seen: continue
             seen.add(k)
-            c = CL.get((y, k), {})
+            c = CL.get((y, k)) or next((v for (yy, kk), v in CL.items() if yy == y and min(len(kk), len(k)) >= 6 and (k.startswith(kk) or kk.startswith(k))), {})
             if c.get('lu') not in (None, '', 'Music'): continue
             rows.append({'n': n, 'k': KC.get(c.get('c'), 'none'), 'g': (ARCH.get(k) or {}).get('g', ''), 'm': c.get('m', 0.0), '_c': CONF.get(c.get('conf'), 0)})
         top = [key(p) for p in PIN.get(y, [])]
         def rank(r):
-            k = key(r['n']); pin = top.index(k) if k in top else 99
+            k = key(r['n']); pin = next((i for i, t in enumerate(top) if k == t or (min(len(k), len(t)) >= 6 and (k.startswith(t) or t.startswith(k)))), 99)
             band = 0 if r['k'] in ('leg', 'disc') else 1 if r['k'] == 'deep' else 2
             return (pin, band, -r['m'], -r['_c'], r['n'].lower())
         rows.sort(key=rank)
@@ -110,7 +120,10 @@ for y in YEARS:
         reel = []
         for r in d['yearBill'].get(y, []):
             a = ARCH.get(key(r['n'])) or {}
-            if not a.get('i') or not os.path.exists(os.path.join(SITE, a['i'])): continue
+            P = ((d.get('yearPhotos') or {}).get(y) or {}).get(r['n']) or {}
+            img = P.get('i') or (a.get('i') if str(a.get('py') or '') == y else '')   # same-year rule: that summer's photo only
+            if not img or not os.path.exists(os.path.join(SITE, img)): continue
+            a = dict(a, i=img)
             kind = {'leg': 'Legend', 'disc': 'Discovery', 'deep': 'Deep cut'}.get(r['k'], '')
             gl = GL.get(r.get('g') or a.get('g') or '', '')
             reel.append({'i': a['i'], 'n': r['n'], 'k': ' · '.join(x for x in (kind, gl) if x), 'l': first_sentence(a.get('l')), 's': ''})

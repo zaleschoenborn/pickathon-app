@@ -21,6 +21,9 @@ for f in sys.argv[1:]:
     for r in R:
         S = snap.setdefault(r['act'], {})
         if r['date'] not in S or r['date'] == ds[-1]: S[r['date']] = r
+    # A snapshot date counts only when most acts were rated by then; earlier dates with a few reconstructed rows
+    # would show everyone else as Neither (Nov 9: only 2024 has full six-month snapshots).
+    keep = [x for x in keep if sum(1 for S in snap.values() if any(k <= x for k in S)) >= 0.75 * len(snap)] or keep[-1:]
     acts = []
     for n, S in snap.items():
         c, m, last = [], [], None
@@ -29,7 +32,7 @@ for f in sys.argv[1:]:
             c.append(K.get((last or {}).get('class'), 'none') if last else 'none'); m.append(int(float((last or {}).get('mag') or 0)))
         acts.append({'n': n, 'c': c, 'm': m})
     acts.sort(key=lambda a: a['n'].lower())
-    fest = next(i for i, x in enumerate(keep) if x >= y + '-08-01')
+    fest = next((i for i, x in enumerate(keep) if x >= y + '-08-01'), len(keep) - 1)
     d['yearRatings'][y] = {'dates': keep, 'fest': fest, 'acts': acts}
     from collections import Counter
     print(y, keep, 'fest', keep[fest], 'now', Counter(a['c'][-1] for a in acts), 'then', Counter(a['c'][fest] for a in acts))
