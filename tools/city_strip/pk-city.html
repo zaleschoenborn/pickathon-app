@@ -34,6 +34,13 @@ html.pk-cy-in div:has(> button[aria-label="Listen to Pickathon"]){opacity:0!impo
 #root .pk-cy-f{position:relative;height:573px;border-radius:16px;overflow:hidden;cursor:pointer;background:#1A2017}
 #root .pk-cy-f>article{position:absolute!important;inset:0!important;width:auto!important;height:auto!important;margin:0!important;border-radius:0!important}
 #root .pk-cy-f>article .pk-nh-hit{pointer-events:none}
+/* the picked neighborhood's photo is a short reel of its best shots, like the hero (Zale, Nov 9 08:59) */
+#root .pk-cy-f .pk-cy-rl{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 1.1s ease;z-index:0}
+#root .pk-cy-f .pk-cy-rl.on{opacity:1}
+#root .pk-cy-f>article .pk-nh-ci{opacity:0}
+#root .pk-cy-f>article .pk-nh-cg{z-index:1}
+#root .pk-cy-f>article .pk-nh-ct,#root .pk-cy-f>article .pk-nh-at{z-index:2}
+@media (prefers-reduced-motion:reduce){#root .pk-cy-f .pk-cy-rl{transition:none}}
 #root .pk-cy-f:focus-visible{outline:3px solid #F2CF62;outline-offset:3px}
 #root .pk-cy-m{position:relative;width:420px;height:573px;border-radius:16px;overflow:hidden;background:#12160F no-repeat}
 #root .pk-cy-m::after{content:'';position:absolute;inset:0;border-radius:16px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.08);pointer-events:none}
@@ -42,8 +49,7 @@ html.pk-cy-in div:has(> button[aria-label="Listen to Pickathon"]){opacity:0!impo
 #root .pk-cy-s i{position:absolute;left:50%;top:50%;width:var(--iz,26px);height:var(--iz,26px);margin:calc(var(--iz,26px) / -2) 0 0 calc(var(--iz,26px) / -2);border-radius:50%;box-sizing:border-box;background:transparent center/100% no-repeat;filter:drop-shadow(0 2px 3px rgba(0,0,0,.55));transition:width .2s,height .2s,margin .2s}
 #root#root#root#root#root .pk-cy-s.on{z-index:30}
 #root .pk-cy-s:not(.on) i{box-shadow:0 0 0 2px rgba(242,237,227,.85)}
-#root .pk-cy-s.on i{--iz:42px;filter:none;box-shadow:0 0 0 3px #F2CF62,0 0 0 6px rgba(31,28,29,.55),0 0 30px 14px rgba(242,207,98,.8);animation:pk-cy-glow 1.4s ease-out 1}
-@keyframes pk-cy-glow{0%{box-shadow:0 0 0 3px #F2CF62,0 0 0 0 rgba(242,207,98,.95)}45%{box-shadow:0 0 0 3px #F2CF62,0 0 0 18px rgba(242,207,98,0)}100%{box-shadow:0 0 0 3px #F2CF62,0 0 0 6px rgba(31,28,29,.55),0 0 30px 14px rgba(242,207,98,.8)}}
+#root .pk-cy-s.on i{--iz:42px;filter:none;box-shadow:0 0 0 3px #F2CF62,0 0 0 6px rgba(31,28,29,.55),0 0 30px 14px rgba(242,207,98,.8)}
 #root .pk-cy.zn .pk-cy-s b{opacity:1;font-size:10.5px;padding:2px 6px;background:rgba(31,28,29,.88)}
 #root .pk-cy-s b{top:calc(50% + var(--iz,26px) / 2 + 3px)!important}
 #root .pk-cy-s.on b{top:calc(50% + 24px)!important}
@@ -125,7 +131,7 @@ html.pk-cy-in div:has(> button[aria-label="Listen to Pickathon"]){opacity:0!impo
   function used() { if (st.used) return; st.used = true; var hn = document.querySelector('#pk-nh-city .pk-cy-hint'); if (hn) hn.classList.add('off'); }
   function show(sec, now, quiet) {
     var A = cards(sec), a = A.filter(function (x) { return idOf(x) === st.pick; })[0] || A[0]; if (!a) return; var f = sec.querySelector('.pk-cy-f'); if (!f) return;
-    var c = a.cloneNode(true); c.removeAttribute('role'); [].forEach.call(c.querySelectorAll('button,a,[tabindex]'), function (x) { x.setAttribute('tabindex', '-1'); x.setAttribute('aria-hidden', 'true'); }); f.innerHTML = ''; f.appendChild(c);
+    var c = a.cloneNode(true); c.removeAttribute('role'); [].forEach.call(c.querySelectorAll('button,a,[tabindex]'), function (x) { x.setAttribute('tabindex', '-1'); x.setAttribute('aria-hidden', 'true'); }); f.innerHTML = ''; f.appendChild(c); reel(f, idOf(a), c);
     var txt = function (q) { return ((a.querySelector(q) || {}).textContent || '').trim(); }, nm = txt('.pk-nh-cn'), k = A.indexOf(a) + 1;
     var sp = sec.querySelector('.pk-cy-nv span'); if (sp) sp.textContent = k + ' of ' + A.length;
     f.setAttribute('aria-label', nm + ', ' + txt('.pk-nh-ck') + '. ' + txt('.pk-nh-cl') + ' Open the ' + nm + ' page');
@@ -133,6 +139,13 @@ html.pk-cy-in div:has(> button[aria-label="Listen to Pickathon"]){opacity:0!impo
     sec.querySelectorAll('.pk-cy-s').forEach(function (s) { var on = s.getAttribute('data-cy') === st.pick; s.classList.toggle('on', on); s.setAttribute('aria-pressed', String(on)); var bb = s.querySelector('b'); if (bb) bb.textContent = (s.getAttribute('aria-label') || '') + (on ? ' →' : ''); });
     lit(sec);
     if (!now) { centerOn(st.pick); apply(sec, true); }
+  }
+  var RT = null;
+  function reel(f, id, c) {
+    clearInterval(RT); var Lr = ((window.__pkNBHM || {})[id] || []).slice(0, 5), ci = c.querySelector('.pk-nh-ci'); if (!ci) return; if (!Lr.length) { ci.style.opacity = '1'; return; }
+    var ims = Lr.map(function (u, i) { var im = document.createElement('img'); im.className = 'pk-cy-rl' + (i === 0 ? ' on' : ''); im.alt = ''; im.decoding = 'async'; if (i < 2) im.src = u; else im.setAttribute('data-src', u); c.insertBefore(im, ci); return im; });
+    var k = 0, reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches; if (ims.length < 2 || reduce) return;
+    RT = setInterval(function () { if (document.hidden || !document.documentElement.classList.contains('pk-cy-in') || !document.contains(c)) return; var n = (k + 1) % ims.length, nx = ims[(n + 1) % ims.length]; if (nx.getAttribute('data-src')) { nx.src = nx.getAttribute('data-src'); nx.removeAttribute('data-src'); } if (!ims[n].complete) return; ims[k].classList.remove('on'); ims[n].classList.add('on'); k = n; }, 4200);
   }
   function lit(sec) { sec = sec || document.getElementById('pk-nh-city'); if (!sec) return; sec.querySelectorAll('.pk-cy-lit').forEach(function (im) { var id = im.getAttribute('data-lit'); im.classList.toggle('on', id === st.pick); im.classList.toggle('hv', id === st.hov && id !== st.pick); }); }
   // the neighborhood under a point on the map (its outline box, nearest center wins)
