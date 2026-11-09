@@ -1638,7 +1638,8 @@ html.pk-cy-in div:has(> button[aria-label="Listen to Pickathon"]){opacity:0!impo
       var off = D.names.filter(function (x) { return x[1][si] >= LN; }).sort(function (p, q) { return p[1][si] - q[1][si]; });
       var cl = D.names.filter(function (x) { return x[0] === D.clim; })[0], climOff = !!cl && cl[1][si] >= LN, FS = Q.FS, CFS = Q.CFS, SEP = 14 + 0.6 * FS * 0.8 + 12, sw = function (t, fs) { var m = mw(t, fs); return (m ? m : tw(t) * fs * 1.14) + t.length * 0.04 * fs + 2; };   /* measured, so the small names never touch (Zale, Nov 9 09:02) */
       var rows = [[]], rw = [0], shown = 0, hide = function (x0, fs) { P[x0[0]] = { x: IW / 2, y: ROW1, k: 0.5, f: fs, L: [x0[0]], ink: A, line: 30, on: false, vis: false }; };
-      off.forEach(function (x0) { var isC = x0[0] === D.clim, fs = isC ? CFS : FS, w = sw(x0[0], fs), r = rows.length - 1, add = rows[r].length ? SEP + w : w;
+      off.forEach(function (x0) { var isC = x0[0] === D.clim, fs = isC ? CFS : FS, w = sw(x0[0], fs); if (w > ROWMAX) { fs = Math.max(8, fs * ROWMAX / w * 0.97); w = sw(x0[0], fs); }  /* a long name shrinks to fit instead of running off both edges (Design Studio review, Nov 9) */
+        var r = rows.length - 1, add = rows[r].length ? SEP + w : w;
         var needC = climOff && !isC && !rows.some(function (row) { return row.some(function (q) { return q.isC; }); }) ? SEP + sw(cl[0], CFS) : 0;
         if (rw[r] + add + (r === 1 ? needC : 0) > ROWMAX) { if (r === 0) { rows.push([]); rw.push(0); r = 1; } else if (!isC) { hide(x0, fs); return; } }
         if (shown >= (Q.ph ? 6 : 16) && !isC) { hide(x0, fs); return; }
@@ -1831,6 +1832,7 @@ html.pk-cy-in div:has(> button[aria-label="Listen to Pickathon"]){opacity:0!impo
   setInterval(tick, 400); try { new MutationObserver(function () { var m = document.querySelector('.pk-cl-mount'); if (m && (m !== mountEl || !m.firstChild)) tick(); }).observe(document.body, { childList: true, subtree: true }); } catch (e) {} window.addEventListener('scroll', function () { if (mountEl) check(); }, { passive: true, capture: true });
   var lh = 0; window.addEventListener('resize', function () { var h = window.innerHeight; if (mountEl && h !== lh) { lh = h; mountEl._key = null; draw(); } });
   var lw = 0; window.addEventListener('resize', function () { var w = mountEl ? mountEl.clientWidth : 0; if (w && w !== lw) { lw = w; draw(); } });
+  window.__pkClimbGo = function (y) { go(y); };  // test hook
   window.pkClimbDraw = function () { draw(); };
   try { document.fonts && document.fonts.ready.then(function () { MCK = {}; if (mountEl) { mountEl._key = null; draw(); } }); } catch (e) {}
 })();
