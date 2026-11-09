@@ -21,7 +21,7 @@
 #root .pk-tn-cols{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:0 0 6px}
 #root .pk-tn-cols div{min-width:0;border-top:3px solid var(--c);padding-top:5px}
 #root .pk-tn-cols b{display:block;font:800 24px/1 'Bricolage Grotesque',sans-serif;color:var(--c)}
-#root .pk-tn-cols span{display:block;margin-top:2px;font-size:10.5px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:#B9B3A6;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#root .pk-tn-cols span{display:block;margin-top:2px;font-size:10.5px;font-weight:800;letter-spacing:.04em;line-height:1.2;text-transform:uppercase;color:#B9B3A6;white-space:normal;overflow-wrap:anywhere}
 #root .pk-tn-f{position:relative;margin:4px 0 0}
 #root#root .pk-tn-dot{position:absolute;left:0;top:0;width:var(--tn-d)!important;height:var(--tn-d);min-height:0;padding:0!important;border-radius:50%;border:0!important;background:var(--c)!important;transition:transform .7s cubic-bezier(.3,.7,.2,1),background-color .7s;box-shadow:none}
 #root#root .pk-tn-dot.mv{box-shadow:0 0 0 1.5px #12160F,0 0 0 3px #F2CF62}
@@ -82,7 +82,7 @@
       '<div class="pk-tn-cols">' + COL.map(function (c) { return '<div style="--c:' + c[3] + '"><b></b><span>' + c[1] + '</span></div>'; }).join('') + '</div>' +
       '<div class="pk-tn-f"><span class="pk-tn-tip" aria-hidden="true"></span>' + Y.acts.map(function (a, k) { return '<button type="button" class="pk-tn-dot" data-k="' + k + '"></button>'; }).join('') + '</div>' +
       '<div class="pk-tn-card" aria-live="polite"></div>' +
-      '<p class="pk-tn-fn">Scores 0–10' + (ONE ? '' : ' · next re-rating ' + nextRating()) + '</p>';
+      '<p class="pk-tn-fn">' + (ONE ? 'Rated with what we know now' : 'Checked again ' + nextRating()) + '</p>';
     var dots = w.querySelectorAll('.pk-tn-dot'), field = w.querySelector('.pk-tn-f'), tip = w.querySelector('.pk-tn-tip');
     function lab(a, i) { return COL[CI[a.c[i]]][2]; }
     function layout() {
@@ -115,8 +115,8 @@
       var ch = a.c[F] !== a.c[N], h = '<b>' + esc(a.n) + '</b>';
       if (ch) {
         var j = N; while (j > 0 && a.c[j - 1] === a.c[N]) j--;
-        h += '<span>At the festival: ' + lab(a, F) + ' ' + a.m[F] + ' → Now: ' + lab(a, N) + ' ' + a.m[N] + '</span><i>Became a' + (/^[AEIOU]/.test(lab(a, N)) ? 'n ' : ' ') + lab(a, N) + ': ' + mo(Y.dates[j]) + '</i>';
-      } else h += '<span>' + lab(a, N) + (ONE ? ' now' : ' at the festival and now') + ' · score ' + a.m[N] + '</span>';
+        h += '<span>At the festival: ' + lab(a, F) + ' → Now: ' + lab(a, N) + '</span><i>Became a' + (/^[AEIOU]/.test(lab(a, N)) ? 'n ' : ' ') + lab(a, N) + ': ' + mo(Y.dates[j]) + '</i>';
+      } else h += '<span>' + lab(a, N) + (ONE ? ' now' : ' at the festival and now') + '</span>';
       h += '<button type="button" class="pk-tn-go">Artist page →</button>';
       var card = w.querySelector('.pk-tn-card'); card.innerHTML = h;
       card.querySelector('.pk-tn-go').onclick = function () { openAct(a.n, y); };
