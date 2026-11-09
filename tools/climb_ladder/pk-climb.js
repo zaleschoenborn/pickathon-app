@@ -111,7 +111,7 @@
       var roomy = reach === 0 || d.cx - d.w / 2 - reach - p.f * fsM * 1.6 >= S[0].x;
       var cyEm = p.lead ? 0.61 + LH / 2 : two ? LH : LH / 2, nf = Math.min(16, Math.max(Q.ph ? 9 : 12, p.f * 0.2));
       var noteT = 'FROM #' + (x[1][0] + 1), shortT = '#' + (x[1][0] + 1), noteW = tw(noteT) * nf + noteT.length * 0.08 * nf, shortW = tw(shortT) * nf + shortT.length * 0.08 * nf, gapN = Math.max(8, p.f * 0.2);
-      var noteFits = d.cx + d.w / 2 + reach + gapN + noteW <= S[0].x + S[0].w + 30, noteO = Math.pow(Math.max(0, Math.min(1, rise)), 3);
+      var noteFits = d.cx + d.w / 2 + reach + gapN + noteW <= S[0].x + S[0].w + (Q.ph ? 4 : 30), noteO = Math.pow(Math.max(0, Math.min(1, rise)), 3);
       var isTop = x[1][n - 1] === 0, showNote = rise > 0.01 && roomy && noteO > 0.01 && D.src === 'real billing' && (!isTop || noteFits), triPx = p.f * fsM;
       var pre = '', post = '';
       if (p.sep) pre = '<span style="font-size:.6em;letter-spacing:0;color:' + B + ';margin-right:10px;vertical-align:.2em">★</span>';
@@ -196,8 +196,19 @@
     var fin = D.names.filter(function (x) { return x[1][n - 1] < Math.min(10, D.ranked || 10); }).sort(function (a, b) { return a[1][n - 1] - b[1][n - 1]; }).map(function (x) { return x[0]; });
     h += '<p class="pk-sr">Pickathon ' + y + ', ranked today by how far each act has gone: ' + esc(fin.join(', ')) + '.</p>';
     mountEl.innerHTML = h; mountEl.setAttribute('data-y', y); mountEl._key = key;
-    mountEl.style.minHeight = mountEl.offsetHeight + 'px';
+    fitScreen(PW, PH);
+    var me = mountEl; requestAnimationFrame(function () { try { document.documentElement.style.setProperty('--pkclh', me.offsetHeight + 'px'); } catch (e) {} });
     if (fk) { var nf = mountEl.querySelector('[data-cl="' + fk + '"]'); if (nf) try { nf.focus({ preventScroll: true }); } catch (e) {} }
+  }
+  function fitScreen(PW, PH) {
+    var pw = mountEl.querySelector('.pk-cl-pw'), hd = mountEl.querySelector('.pk-cl-hd'); if (!pw || !hd) return;
+    var vh = window.innerHeight || 800, top = 0, bot = 0;
+    try { [].forEach.call(document.querySelectorAll('header'), function (hb) { var r = hb.getBoundingClientRect(), cs = getComputedStyle(hb); if (r.height > 0 && (cs.position === 'sticky' || cs.position === 'fixed')) top = Math.max(top, Math.min(140, r.height)); }); var tb = document.querySelector('nav[aria-label="App"]'); if (tb) { var tr = tb.getBoundingClientRect(); if (tr.height > 0 && tr.top > vh / 2) bot = vh - tr.top; } } catch (e) {}
+    if (!bot && window.innerWidth < 1000) bot = 64;
+    var sec = mountEl.closest('section'), pad = 0; if (sec) { var cs = getComputedStyle(sec); pad = parseFloat(cs.paddingTop) + parseFloat(cs.paddingBottom); }
+    var avail = vh - top - bot - hd.offsetHeight - 22 - pad, sc = Math.min(1, Math.max(0.66, avail / PH));
+    pw.style.transformOrigin = 'top center'; pw.style.transform = sc < 0.999 ? 'scale(' + sc.toFixed(3) + ')' : '';
+    pw.style.marginBottom = sc < 0.999 ? (-(PH * (1 - sc))).toFixed(0) + 'px' : ''; mountEl.style.display = 'flow-root';
   }
   function check() {
     if (!mountEl || RM || S.seen[S.y] || S.playing) return;
@@ -220,6 +231,7 @@
     check();
   }
   setInterval(tick, 400); try { new MutationObserver(function () { var m = document.querySelector('.pk-cl-mount'); if (m && (m !== mountEl || !m.firstChild)) tick(); }).observe(document.body, { childList: true, subtree: true }); } catch (e) {} window.addEventListener('scroll', function () { if (mountEl) check(); }, { passive: true, capture: true });
+  var lh = 0; window.addEventListener('resize', function () { var h = window.innerHeight; if (mountEl && h !== lh) { lh = h; mountEl._key = null; draw(); } });
   var lw = 0; window.addEventListener('resize', function () { var w = mountEl ? mountEl.clientWidth : 0; if (w && w !== lw) { lw = w; draw(); } });
   window.pkClimbDraw = function () { draw(); };
 })();

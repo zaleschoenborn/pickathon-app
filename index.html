@@ -951,6 +951,7 @@ html.pk-nh-ontop #root [role=region][aria-label="Listen"],html.pk-nh-ontop #root
 <style id="pk-cl-css">
 /* pk-climb v2: the vertical ladder (home_flow.md section 5, Nov 9) */
 #root .pk-cl-mount{max-width:1120px;margin:0 auto;font-family:'Bricolage Grotesque',system-ui,sans-serif}
+#root .pk-cl-mount:empty{min-height:var(--pkclh,720px)}
 #root .pk-cl-hd{display:flex;align-items:flex-end;gap:16px;max-width:960px;margin:0 auto}
 #root .pk-cl-ht{flex:1;min-width:0}
 #root .pk-cl-cap{min-height:2.7em;margin:6px 0 0;font:800 13px/1.35 'Bricolage Grotesque',sans-serif;letter-spacing:1px}
@@ -1005,14 +1006,16 @@ html.pk-nh-ontop #root [role=region][aria-label="Listen"],html.pk-nh-ontop #root
   // today's map spots (farmmap/map.webp pixels; neighborhood_positions_by_year.csv, 2026 rows)
   var P = { cherryhill: [1392, 2302], courtyard: [1049, 3249], coyote: [1347, 2103], curation: [547, 3635], farmhouse: [1137, 3416], galaxy: [1038, 3129], grove: [1302, 2519], lucky: [858, 3232], lushcamp: [1258, 1545], market: [1562, 2369], orchard: [1048, 3340], paddock: [1052, 2789], quailtrail: [1773, 1778], southcamp: [1094, 3599], refuge: [1813, 2039], welcomelot: [1896, 3613], wildcamp: [876, 869], willowcamp: [1638, 3613], windmill: [889, 2628], woods: [1754, 1337] };
   var NM = { 'cherry hill': 'cherryhill', 'courtyard': 'courtyard', 'coyote': 'coyote', 'curation': 'curation', 'farmhouse': 'farmhouse', 'galaxy barn': 'galaxy', 'grove': 'grove', 'lucky': 'lucky', 'lush camp': 'lushcamp', 'market': 'market', 'orchard': 'orchard', 'paddock': 'paddock', 'quail trail': 'quailtrail', 'south camp': 'southcamp', 'the refuge': 'refuge', 'refuge': 'refuge', 'welcome lot': 'welcomelot', 'wild camp': 'wildcamp', 'willow camp': 'willowcamp', 'windmill': 'windmill', 'woods': 'woods', 'the woods': 'woods' };
-  var W = 420, X0 = 330, Y0 = 1150, MW = 2041, MH = 3810, S = W / (MW - X0), H = Math.round((MH - Y0) * S);
+  var W0 = 420, X0 = 330, Y0 = 1150, MW = 2041, MH = 3810, S0 = W0 / (MW - X0), H0 = Math.round((MH - Y0) * S0), W = W0, S = S0, H = H0;
   var st = { pick: null, sig: '' };
   function cards(sec) { return [].filter.call(sec.querySelectorAll('#pk-nh-cr > article'), function (a) { return !a.classList.contains('cn') && !a.classList.contains('all') && a.querySelector('.pk-nh-cn'); }); }
   function idOf(a) { var n = (a.querySelector('.pk-nh-cn') || {}).textContent || ''; return NM[n.trim().toLowerCase()] || null; }
   function spread(L) { // nudge close spots apart so none overlap (Galaxy Barn, Courtyard, Orchard, Lucky, Farmhouse)
     for (var it = 0; it < 40; it++) for (var i = 0; i < L.length; i++) for (var j = i + 1; j < L.length; j++) { var a = L[i], b = L[j], dx = b.x - a.x, dy = b.y - a.y, d = Math.hypot(dx, dy) || 0.01, m = 38; if (d < m) { var p = (m - d) / 2, ux = dx / d, uy = dy / d; a.x -= ux * p; a.y -= uy * p; b.x += ux * p; b.y += uy * p; } }
     L.forEach(function (q) { q.x = Math.max(18, Math.min(W - 18, q.x)); q.y = Math.max(18, Math.min(H - 18, q.y)); }); return L; }
+  function sizeFor() { var hmax = Math.max(440, (window.innerHeight || 900) - 250); if (H0 > hmax) { H = Math.round(hmax); S = H / (MH - Y0); W = Math.round((MW - X0) * S); } else { W = W0; S = S0; H = H0; } }
   function build(sec) {
+    sizeFor();
     var A = cards(sec); if (!A.length) return; var ids = A.map(idOf);
     var box = sec.querySelector('.pk-cy'); if (!box) { box = document.createElement('div'); box.className = 'pk-cy'; var hd = sec.querySelector('.pk-nh-head'); hd.parentNode.insertBefore(box, hd.nextSibling); }
     if (!sec.querySelector('.pk-cy-all')) { var all = [].filter.call(sec.querySelectorAll('#pk-nh-cr > article.all'), function (a) { return /map/i.test(a.textContent); })[0]; if (all) { var b = document.createElement('button'); b.type = 'button'; b.className = 'pk-cy-all'; var n = (all.querySelector('.pk-nh-an') || {}).textContent || 'All on the map'; b.textContent = n.trim() + ' →'; b.addEventListener('click', function () { var h = all.querySelector('.pk-nh-hit'); if (h) h.click(); }); sec.querySelector('.pk-nh-head').appendChild(b); } }
@@ -1020,7 +1023,7 @@ html.pk-nh-ontop #root [role=region][aria-label="Listen"],html.pk-nh-ontop #root
     var L = spread(ids.map(function (id, i) { return id && P[id] ? { id: id, i: i, x: (P[id][0] - X0) * S, y: (P[id][1] - Y0) * S, n: (A[i].querySelector('.pk-nh-cn') || {}).textContent || id } : null; }).filter(Boolean));
     var h = '<div class="pk-cy-f" role="link" tabindex="0" style="height:' + H + 'px"></div><div class="pk-cy-m" role="group" aria-label="The neighborhoods on the farm map" style="background-image:url(farmmap/map.webp);background-size:' + (MW * S).toFixed(1) + 'px auto;background-position:' + (-X0 * S).toFixed(1) + 'px ' + (-Y0 * S).toFixed(1) + 'px;height:' + H + 'px">';
     L.forEach(function (q) { h += '<button type="button" class="pk-cy-s' + (q.id === st.pick ? ' on' : '') + (q.x > W - 70 ? ' ed-r' : q.x < 70 ? ' ed-l' : '') + (q.y > H - 50 ? ' ed-b' : '') + '" data-cy="' + q.id + '" aria-pressed="' + (q.id === st.pick) + '" aria-label="' + q.n.replace(/"/g, '') + '" style="left:' + q.x.toFixed(1) + 'px;top:' + q.y.toFixed(1) + 'px"><i style="background-image:url(ic2/' + q.id + '.png)"></i><b>' + q.n + '</b></button>'; });
-    h += '</div>'; box.innerHTML = h; sec.classList.add('pk-cyon'); show(sec);
+    h += '</div>'; box.innerHTML = h; box.style.gridTemplateColumns = 'minmax(0,1fr) ' + W + 'px'; var mm = box.querySelector('.pk-cy-m'); if (mm) mm.style.width = W + 'px'; sec.classList.add('pk-cyon'); show(sec);
   }
   function show(sec) {
     var A = cards(sec), a = A.filter(function (x) { return idOf(x) === st.pick; })[0] || A[0]; if (!a) return; var f = sec.querySelector('.pk-cy-f'); if (!f) return;
@@ -1038,7 +1041,7 @@ html.pk-nh-ontop #root [role=region][aria-label="Listen"],html.pk-nh-ontop #root
     var sec = document.getElementById('pk-nh-city'); if (!sec) return;
     if (window.innerWidth < 1000) { if (sec.classList.contains('pk-cyon')) { sec.classList.remove('pk-cyon'); var b = sec.querySelector('.pk-cy'); if (b) b.remove(); var x = sec.querySelector('.pk-cy-all'); if (x) x.remove(); } return; }
     var A = cards(sec), sig = A.map(idOf).join(',');
-    if (sig && (sig !== st.sig || !sec.querySelector('.pk-cy'))) { st.sig = sig; build(sec); }
+    var vk = sig + '|' + (window.innerHeight || 0); if (sig && (vk !== st.sig || !sec.querySelector('.pk-cy'))) { st.sig = vk; build(sec); }
   }, 500);
 })();
 </script>
@@ -1155,7 +1158,7 @@ html.pk-nh-ontop #root [role=region][aria-label="Listen"],html.pk-nh-ontop #root
       var roomy = reach === 0 || d.cx - d.w / 2 - reach - p.f * fsM * 1.6 >= S[0].x;
       var cyEm = p.lead ? 0.61 + LH / 2 : two ? LH : LH / 2, nf = Math.min(16, Math.max(Q.ph ? 9 : 12, p.f * 0.2));
       var noteT = 'FROM #' + (x[1][0] + 1), shortT = '#' + (x[1][0] + 1), noteW = tw(noteT) * nf + noteT.length * 0.08 * nf, shortW = tw(shortT) * nf + shortT.length * 0.08 * nf, gapN = Math.max(8, p.f * 0.2);
-      var noteFits = d.cx + d.w / 2 + reach + gapN + noteW <= S[0].x + S[0].w + 30, noteO = Math.pow(Math.max(0, Math.min(1, rise)), 3);
+      var noteFits = d.cx + d.w / 2 + reach + gapN + noteW <= S[0].x + S[0].w + (Q.ph ? 4 : 30), noteO = Math.pow(Math.max(0, Math.min(1, rise)), 3);
       var isTop = x[1][n - 1] === 0, showNote = rise > 0.01 && roomy && noteO > 0.01 && D.src === 'real billing' && (!isTop || noteFits), triPx = p.f * fsM;
       var pre = '', post = '';
       if (p.sep) pre = '<span style="font-size:.6em;letter-spacing:0;color:' + B + ';margin-right:10px;vertical-align:.2em">★</span>';
@@ -1240,8 +1243,19 @@ html.pk-nh-ontop #root [role=region][aria-label="Listen"],html.pk-nh-ontop #root
     var fin = D.names.filter(function (x) { return x[1][n - 1] < Math.min(10, D.ranked || 10); }).sort(function (a, b) { return a[1][n - 1] - b[1][n - 1]; }).map(function (x) { return x[0]; });
     h += '<p class="pk-sr">Pickathon ' + y + ', ranked today by how far each act has gone: ' + esc(fin.join(', ')) + '.</p>';
     mountEl.innerHTML = h; mountEl.setAttribute('data-y', y); mountEl._key = key;
-    mountEl.style.minHeight = mountEl.offsetHeight + 'px';
+    fitScreen(PW, PH);
+    var me = mountEl; requestAnimationFrame(function () { try { document.documentElement.style.setProperty('--pkclh', me.offsetHeight + 'px'); } catch (e) {} });
     if (fk) { var nf = mountEl.querySelector('[data-cl="' + fk + '"]'); if (nf) try { nf.focus({ preventScroll: true }); } catch (e) {} }
+  }
+  function fitScreen(PW, PH) {
+    var pw = mountEl.querySelector('.pk-cl-pw'), hd = mountEl.querySelector('.pk-cl-hd'); if (!pw || !hd) return;
+    var vh = window.innerHeight || 800, top = 0, bot = 0;
+    try { [].forEach.call(document.querySelectorAll('header'), function (hb) { var r = hb.getBoundingClientRect(), cs = getComputedStyle(hb); if (r.height > 0 && (cs.position === 'sticky' || cs.position === 'fixed')) top = Math.max(top, Math.min(140, r.height)); }); var tb = document.querySelector('nav[aria-label="App"]'); if (tb) { var tr = tb.getBoundingClientRect(); if (tr.height > 0 && tr.top > vh / 2) bot = vh - tr.top; } } catch (e) {}
+    if (!bot && window.innerWidth < 1000) bot = 64;
+    var sec = mountEl.closest('section'), pad = 0; if (sec) { var cs = getComputedStyle(sec); pad = parseFloat(cs.paddingTop) + parseFloat(cs.paddingBottom); }
+    var avail = vh - top - bot - hd.offsetHeight - 22 - pad, sc = Math.min(1, Math.max(0.66, avail / PH));
+    pw.style.transformOrigin = 'top center'; pw.style.transform = sc < 0.999 ? 'scale(' + sc.toFixed(3) + ')' : '';
+    pw.style.marginBottom = sc < 0.999 ? (-(PH * (1 - sc))).toFixed(0) + 'px' : ''; mountEl.style.display = 'flow-root';
   }
   function check() {
     if (!mountEl || RM || S.seen[S.y] || S.playing) return;
@@ -1264,6 +1278,7 @@ html.pk-nh-ontop #root [role=region][aria-label="Listen"],html.pk-nh-ontop #root
     check();
   }
   setInterval(tick, 400); try { new MutationObserver(function () { var m = document.querySelector('.pk-cl-mount'); if (m && (m !== mountEl || !m.firstChild)) tick(); }).observe(document.body, { childList: true, subtree: true }); } catch (e) {} window.addEventListener('scroll', function () { if (mountEl) check(); }, { passive: true, capture: true });
+  var lh = 0; window.addEventListener('resize', function () { var h = window.innerHeight; if (mountEl && h !== lh) { lh = h; mountEl._key = null; draw(); } });
   var lw = 0; window.addEventListener('resize', function () { var w = mountEl ? mountEl.clientWidth : 0; if (w && w !== lw) { lw = w; draw(); } });
   window.pkClimbDraw = function () { draw(); };
 })();

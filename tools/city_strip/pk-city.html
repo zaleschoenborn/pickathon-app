@@ -26,14 +26,16 @@
   // today's map spots (farmmap/map.webp pixels; neighborhood_positions_by_year.csv, 2026 rows)
   var P = { cherryhill: [1392, 2302], courtyard: [1049, 3249], coyote: [1347, 2103], curation: [547, 3635], farmhouse: [1137, 3416], galaxy: [1038, 3129], grove: [1302, 2519], lucky: [858, 3232], lushcamp: [1258, 1545], market: [1562, 2369], orchard: [1048, 3340], paddock: [1052, 2789], quailtrail: [1773, 1778], southcamp: [1094, 3599], refuge: [1813, 2039], welcomelot: [1896, 3613], wildcamp: [876, 869], willowcamp: [1638, 3613], windmill: [889, 2628], woods: [1754, 1337] };
   var NM = { 'cherry hill': 'cherryhill', 'courtyard': 'courtyard', 'coyote': 'coyote', 'curation': 'curation', 'farmhouse': 'farmhouse', 'galaxy barn': 'galaxy', 'grove': 'grove', 'lucky': 'lucky', 'lush camp': 'lushcamp', 'market': 'market', 'orchard': 'orchard', 'paddock': 'paddock', 'quail trail': 'quailtrail', 'south camp': 'southcamp', 'the refuge': 'refuge', 'refuge': 'refuge', 'welcome lot': 'welcomelot', 'wild camp': 'wildcamp', 'willow camp': 'willowcamp', 'windmill': 'windmill', 'woods': 'woods', 'the woods': 'woods' };
-  var W = 420, X0 = 330, Y0 = 1150, MW = 2041, MH = 3810, S = W / (MW - X0), H = Math.round((MH - Y0) * S);
+  var W0 = 420, X0 = 330, Y0 = 1150, MW = 2041, MH = 3810, S0 = W0 / (MW - X0), H0 = Math.round((MH - Y0) * S0), W = W0, S = S0, H = H0;
   var st = { pick: null, sig: '' };
   function cards(sec) { return [].filter.call(sec.querySelectorAll('#pk-nh-cr > article'), function (a) { return !a.classList.contains('cn') && !a.classList.contains('all') && a.querySelector('.pk-nh-cn'); }); }
   function idOf(a) { var n = (a.querySelector('.pk-nh-cn') || {}).textContent || ''; return NM[n.trim().toLowerCase()] || null; }
   function spread(L) { // nudge close spots apart so none overlap (Galaxy Barn, Courtyard, Orchard, Lucky, Farmhouse)
     for (var it = 0; it < 40; it++) for (var i = 0; i < L.length; i++) for (var j = i + 1; j < L.length; j++) { var a = L[i], b = L[j], dx = b.x - a.x, dy = b.y - a.y, d = Math.hypot(dx, dy) || 0.01, m = 38; if (d < m) { var p = (m - d) / 2, ux = dx / d, uy = dy / d; a.x -= ux * p; a.y -= uy * p; b.x += ux * p; b.y += uy * p; } }
     L.forEach(function (q) { q.x = Math.max(18, Math.min(W - 18, q.x)); q.y = Math.max(18, Math.min(H - 18, q.y)); }); return L; }
+  function sizeFor() { var hmax = Math.max(440, (window.innerHeight || 900) - 250); if (H0 > hmax) { H = Math.round(hmax); S = H / (MH - Y0); W = Math.round((MW - X0) * S); } else { W = W0; S = S0; H = H0; } }
   function build(sec) {
+    sizeFor();
     var A = cards(sec); if (!A.length) return; var ids = A.map(idOf);
     var box = sec.querySelector('.pk-cy'); if (!box) { box = document.createElement('div'); box.className = 'pk-cy'; var hd = sec.querySelector('.pk-nh-head'); hd.parentNode.insertBefore(box, hd.nextSibling); }
     if (!sec.querySelector('.pk-cy-all')) { var all = [].filter.call(sec.querySelectorAll('#pk-nh-cr > article.all'), function (a) { return /map/i.test(a.textContent); })[0]; if (all) { var b = document.createElement('button'); b.type = 'button'; b.className = 'pk-cy-all'; var n = (all.querySelector('.pk-nh-an') || {}).textContent || 'All on the map'; b.textContent = n.trim() + ' →'; b.addEventListener('click', function () { var h = all.querySelector('.pk-nh-hit'); if (h) h.click(); }); sec.querySelector('.pk-nh-head').appendChild(b); } }
@@ -41,7 +43,7 @@
     var L = spread(ids.map(function (id, i) { return id && P[id] ? { id: id, i: i, x: (P[id][0] - X0) * S, y: (P[id][1] - Y0) * S, n: (A[i].querySelector('.pk-nh-cn') || {}).textContent || id } : null; }).filter(Boolean));
     var h = '<div class="pk-cy-f" role="link" tabindex="0" style="height:' + H + 'px"></div><div class="pk-cy-m" role="group" aria-label="The neighborhoods on the farm map" style="background-image:url(farmmap/map.webp);background-size:' + (MW * S).toFixed(1) + 'px auto;background-position:' + (-X0 * S).toFixed(1) + 'px ' + (-Y0 * S).toFixed(1) + 'px;height:' + H + 'px">';
     L.forEach(function (q) { h += '<button type="button" class="pk-cy-s' + (q.id === st.pick ? ' on' : '') + (q.x > W - 70 ? ' ed-r' : q.x < 70 ? ' ed-l' : '') + (q.y > H - 50 ? ' ed-b' : '') + '" data-cy="' + q.id + '" aria-pressed="' + (q.id === st.pick) + '" aria-label="' + q.n.replace(/"/g, '') + '" style="left:' + q.x.toFixed(1) + 'px;top:' + q.y.toFixed(1) + 'px"><i style="background-image:url(ic2/' + q.id + '.png)"></i><b>' + q.n + '</b></button>'; });
-    h += '</div>'; box.innerHTML = h; sec.classList.add('pk-cyon'); show(sec);
+    h += '</div>'; box.innerHTML = h; box.style.gridTemplateColumns = 'minmax(0,1fr) ' + W + 'px'; var mm = box.querySelector('.pk-cy-m'); if (mm) mm.style.width = W + 'px'; sec.classList.add('pk-cyon'); show(sec);
   }
   function show(sec) {
     var A = cards(sec), a = A.filter(function (x) { return idOf(x) === st.pick; })[0] || A[0]; if (!a) return; var f = sec.querySelector('.pk-cy-f'); if (!f) return;
@@ -59,7 +61,7 @@
     var sec = document.getElementById('pk-nh-city'); if (!sec) return;
     if (window.innerWidth < 1000) { if (sec.classList.contains('pk-cyon')) { sec.classList.remove('pk-cyon'); var b = sec.querySelector('.pk-cy'); if (b) b.remove(); var x = sec.querySelector('.pk-cy-all'); if (x) x.remove(); } return; }
     var A = cards(sec), sig = A.map(idOf).join(',');
-    if (sig && (sig !== st.sig || !sec.querySelector('.pk-cy'))) { st.sig = sig; build(sec); }
+    var vk = sig + '|' + (window.innerHeight || 0); if (sig && (vk !== st.sig || !sec.querySelector('.pk-cy'))) { st.sig = vk; build(sec); }
   }, 500);
 })();
 </script>

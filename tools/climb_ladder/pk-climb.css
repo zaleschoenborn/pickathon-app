@@ -1,5 +1,6 @@
 /* pk-climb v2: the vertical ladder (home_flow.md section 5, Nov 9) */
 #root .pk-cl-mount{max-width:1120px;margin:0 auto;font-family:'Bricolage Grotesque',system-ui,sans-serif}
+#root .pk-cl-mount:empty{min-height:var(--pkclh,720px)}
 #root .pk-cl-hd{display:flex;align-items:flex-end;gap:16px;max-width:960px;margin:0 auto}
 #root .pk-cl-ht{flex:1;min-width:0}
 #root .pk-cl-cap{min-height:2.7em;margin:6px 0 0;font:800 13px/1.35 'Bricolage Grotesque',sans-serif;letter-spacing:1px}
