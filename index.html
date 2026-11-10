@@ -1025,6 +1025,7 @@ main:has(#pk-nh-climb)>section{content-visibility:visible!important;contain-intr
 #root .pk-cl-ty{flex:none;font:800 15px/1 'Bricolage Grotesque',sans-serif;letter-spacing:.06em;color:#CFC9BC;font-variant-numeric:tabular-nums}
 #root .pk-cl-ty:first-child{color:#F2EDE3}
 #root .pk-cl-tr{position:relative;flex:1;min-width:60px;height:4px;border-radius:2px;background:rgba(242,237,227,.18)}
+#root .pk-cl-tr{touch-action:none}#root .pk-cl-tr::before{content:'';position:absolute;left:-6px;right:-6px;top:-18px;bottom:-18px}#root .pk-cl-tr.sc .pk-cl-tm{opacity:1!important}
 #root .pk-cl-tf{position:absolute;left:0;top:0;bottom:0;border-radius:2px;background:#F2CF62}
 #root .pk-cl-tm{position:absolute;top:-24px;transform:translateX(-50%);font:800 13px/1 'Bricolage Grotesque',sans-serif;color:#F2CF62;font-variant-numeric:tabular-nums;transition:opacity .2s;pointer-events:none}
 #root .pk-cl-tm::after{content:'';position:absolute;left:50%;top:20px;width:10px;height:10px;margin-left:-5px;border-radius:50%;background:#F2CF62}
@@ -1856,6 +1857,22 @@ html.pk-cy-in div:has(> button[aria-label="Listen to Pickathon"]){opacity:0!impo
     var pe = mountEl.querySelector('.pk-cl-p') || mountEl, r = pe.getBoundingClientRect(), vh = window.innerHeight || 800, vis = Math.min(r.bottom, vh) - Math.max(r.top, 0);
     if (vis >= Math.min(r.height, vh) * 0.6) { S.seen[S.y] = 1; if (C[S.y].labels.length > 1) setTimeout(run, 300); }
   }
+  // drag the clock to scrub between the festival bill and today (Zale, Nov 9 23:31): linear, in the same eased steps the run uses
+  (function () {
+    var drag = null;
+    function at(e) {
+      var tr = drag; if (!tr || !C || !S.y) return; var D = C[S.y], n = D.labels.length; if (n < 2) return;
+      var r = tr.getBoundingClientRect(), f = Math.max(0, Math.min(1, (e.clientX - r.left) / (r.width || 1))), x = f * (n - 1), kk = Math.min(n - 2, Math.floor(x)), g = Math.max(0, Math.min(1, x - kk));
+      S.tp = kk + Math.acos(1 - 2 * g) / Math.PI; draw();
+    }
+    document.addEventListener('pointerdown', function (e) {
+      var t = e.target && e.target.closest && e.target.closest('.pk-cl-tr'); if (!t || !mountEl || !mountEl.contains(t)) return;
+      e.preventDefault(); stop(); drag = t; t.classList.add('sc'); try { t.setPointerCapture(e.pointerId); } catch (x) {} S.seen[S.y] = 1; draw(); at(e);
+    }, true);
+    document.addEventListener('pointermove', function (e) { if (drag) at(e); }, true);
+    function up() { if (drag) { drag.classList.remove('sc'); drag = null; draw(); } }
+    document.addEventListener('pointerup', up, true); document.addEventListener('pointercancel', up, true);
+  })();
   document.addEventListener('click', function (e) {
     var b = e.target && e.target.closest && e.target.closest('[data-cl]'); if (!b || !mountEl || !mountEl.contains(b)) return;
     var a = b.getAttribute('data-cl'); e.preventDefault();

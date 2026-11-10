@@ -1710,6 +1710,7 @@ document.getElementById('cmore').onclick=e=>{ e.stopPropagation(); if(cur) goPag
     const r=pcl.getBoundingClientRect(); let best=null,bd=1e9; pcl.querySelectorAll('.pc').forEach(b=>{ const q=b.getBoundingClientRect(), d=Math.abs(q.left-r.left-15); if(d<bd){bd=d;best=b;} });
     if(best){ const h=HOODS.filter(x=>x.id===best.dataset.h)[0]; if(h) peek(h); } },140); },{passive:true});
 })();
+document.addEventListener('keydown',e=>{ if(e.key==='Escape'&&document.body.classList.contains('dooron')&&!document.querySelector('.dv.playing,#cvid.playing')) clearCur(); });
 document.getElementById('fx').onclick=e=>{ e.stopPropagation(); clearCur(); };
 document.getElementById('fback').onclick=e=>{ e.stopPropagation(); clearCur(); };
 setInterval(()=>{ if(LP()){ const cl=!cur&&k<=lpHome().k*1.25; if(document.body.classList.contains('lpclean')!==cl) document.body.classList.toggle('lpclean',cl); } else document.body.classList.remove('lpclean'); }, 120);
@@ -2320,6 +2321,7 @@ body.dooron #door{display:block}
 @media (min-width:1200px){
   #door{left:24px;bottom:calc(24px + var(--ckb,0px));width:450px;padding:14px 14px 16px;border-radius:16px;border:1px solid #3A4331;box-shadow:0 14px 44px rgba(0,0,0,.55)}
   body.doorR #door{left:auto;right:var(--drx,24px)}
+  #door .dx{display:flex}   /* Zale, Nov 9 23:34: the card covers the map and had no way to close on desktop */
   #card #full,#card #hero,#card #nav,#card #fx,#card #fback{display:none!important}
   #card #empty{display:block!important}
   body #card #empty #pcl .pc.sel .lg,body #card.intro #empty #pcl .pc.sel .lg{box-shadow:0 0 0 3px #12160F,0 0 0 6px #D6B54A,0 0 20px rgba(214,181,74,.45)!important}
