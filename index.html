@@ -1035,7 +1035,7 @@ main:has(#pk-nh-climb)>section{content-visibility:visible!important;contain-intr
 
 /* review r2: names never draw past the paper; Another year clears the heading on phone */
 #root .pk-cl-p{overflow:hidden}
-@media (max-width:999px){#root .pk-cl-ht .pk-nh-h2{margin-top:10px!important;font-size:24px!important}#root .pk-cl-cap{min-height:2.75em!important;margin-top:4px}#root .pk-cl-tb{margin-top:8px}#root .pk-cl-tl{margin:4px auto 6px!important;min-height:1.5em}}
+@media (max-width:999px){#root .pk-cl-ht .pk-nh-h2{margin-top:10px!important;font-size:24px!important}#root#root .pk-cl-cap{font-size:15px!important;line-height:1.3!important;height:3.9em!important;min-height:0!important;overflow:hidden;margin-top:4px}#root .pk-cl-tb{margin-top:8px}#root .pk-cl-tl{margin:4px auto 6px!important;min-height:1.5em}}
 #root#root#root#root .pk-cl-tb .pk-cl-rpl{min-height:44px!important;height:auto!important;padding:0 14px!important;font-size:13px!important;width:auto!important}
 </style>
 <style id="pk-hm-css">
@@ -1796,7 +1796,7 @@ html.pk-cy-in div:has(> button[aria-label="Listen to Pickathon"]){opacity:0!impo
     if (n < 2 || !D.clim || STAT(y)) return 'TODAY’S ' + y + ' BILL, BY HOW FAR EACH ACT HAS GONE.';
     if (tp < 0.04) return D.clim + ': ' + (derived ? 'A SMALL NAME AT THE ' + y + ' FESTIVAL.' : (D.climFrom >= 10 ? 'A SMALL NAME' : ORD(D.climFrom)) + ' ON THE ' + y + ' POSTER.');
     if (!atEnd) return 'WATCH THE BILL GROW UP';
-    return age < 3 ? since + ', SO FAR: ' + D.clim + place + ' IT TAKES A FEW SUMMERS TO KNOW.' : since + ': ' + D.clim + place;
+    return age < 3 ? since + ', SO FAR: ' + D.clim + place + (window.innerWidth < 1000 ? '' : ' IT TAKES A FEW SUMMERS TO KNOW.') : since + ': ' + D.clim + place;
   }
 
   function STAT(y) { var D = C && C[y]; return +y <= 2005; } // still posters: 2005 and earlier only. Every year 2006-2026 animates (Zale, Nov 9 16:58: "100% animated from 26 down to 2006"), whether its billing is real or built from the classes
@@ -1844,10 +1844,10 @@ html.pk-cy-in div:has(> button[aria-label="Listen to Pickathon"]){opacity:0!impo
     var pw = mountEl.querySelector('.pk-cl-pw'), hd = mountEl.querySelector('.pk-cl-hd'); if (!pw || !hd) return;
     var vh = window.innerHeight || 800, top = 0, bot = 0;
     try { [].forEach.call(document.querySelectorAll('header'), function (hb) { var r = hb.getBoundingClientRect(), cs = getComputedStyle(hb); if (r.height > 0 && (cs.position === 'sticky' || cs.position === 'fixed')) top = Math.max(top, Math.min(140, r.height)); }); var tb = document.querySelector('nav[aria-label="App"]'); if (tb) { var tr = tb.getBoundingClientRect(); if (tr.height > 0 && tr.top > vh / 2) bot = vh - tr.top; } } catch (e) {}
-    if (!bot && window.innerWidth < 1000) bot = 64;
+    if (!bot && window.innerWidth < 1000) bot = 64; if (!top && window.innerWidth < 1000) top = 80;
     var sec = mountEl.closest('section'), pad = 0; if (sec) { var cs = getComputedStyle(sec); pad = parseFloat(cs.paddingTop) + parseFloat(cs.paddingBottom); }
     var ex = 0; ['.pk-cl-tb', '.pk-cl-tl', '.pk-cl-ay'].forEach(function (q) { var e0 = mountEl.querySelector(q); if (e0) ex += e0.offsetHeight + 8; });
-    var avail = vh - top - bot - hd.offsetHeight - ex - 22 - pad, sc = Math.min(1, Math.max(0.66, avail / PH));
+    var avail = vh - top - bot - hd.offsetHeight - ex - 22 - pad, sc = Math.min(1, Math.max(0.6, avail / PH));
     pw.style.transformOrigin = 'top center'; pw.style.transform = sc < 0.999 ? 'scale(' + sc.toFixed(3) + ')' : '';
     pw.style.marginBottom = sc < 0.999 ? (-(PH * (1 - sc))).toFixed(0) + 'px' : ''; mountEl.style.display = 'flow-root';
   }
