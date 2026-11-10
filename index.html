@@ -3659,8 +3659,8 @@ html{-webkit-text-size-adjust:100%!important;text-size-adjust:100%!important}.pk
 <div class="pk-tb"><sc-for list="{{info.trip.basics}}" as="f" hint-placeholder-count="4"><p class="pk-tbf"><b>{{f.b}}</b><span>{{f.s}}</span></p></sc-for><button type="button" class="pk-cta pri pk-tbb" onClick="{{info.trip.tix}}">Tickets</button></div>
 <p class="pk-tk">How the trip goes</p>
 <div class="pk-tp"><sc-for list="{{info.trip.paths}}" as="p" hint-placeholder-count="3"><article class="pk-tpc"><img src="{{p.img}}" alt="" loading="lazy" decoding="async"><div class="pk-tpt"><h2>{{p.t}}</h2><p>{{p.x}}</p><sc-for list="{{p.l}}" as="i" hint-placeholder-count="3"><button type="button" class="pk-lnk" onClick="{{i.go}}"><span>{{i.t}}</span><span class="pk-arr" aria-hidden="true">→</span></button></sc-for></div></article></sc-for></div>
-<p class="pk-tk">For everyone</p>
-<div class="pk-te"><sc-for list="{{info.trip.every}}" as="e" hint-placeholder-count="5"><button type="button" class="pk-te-b" onClick="{{e.go}}">{{e.t}}</button></sc-for></div>
+<p class="pk-tk">Need a hand?</p>
+<div class="pk-te"><sc-for list="{{info.trip.every}}" as="e" hint-placeholder-count="5"><button type="button" class="pk-lnk" onClick="{{e.go}}"><span>{{e.t}}</span><span class="pk-arr" aria-hidden="true">→</span></button></sc-for></div>
 </div>
 <h2 style="{{h2}}; margin-top: 40px">Common questions</h2>
 <div style="margin: 12px 0 56px; max-width: 860px">
@@ -3991,7 +3991,7 @@ class Component extends DCLogic {
     super(props);
     var stars = null;
     try { stars = JSON.parse(window.localStorage.getItem('pk-site-mine-2026') || 'null'); } catch (e) { stars = null; }
-    this.state = { data: null, stack: [{ r: 'home' }], day: '2026-08-01', lineup: 'music', schedF: 'music', mapHood: 'paddock', mapHour: 20, mapView: 'venue', sheet: false, season: 'off', look: 'poster', me: null, geoMsg: '', geoDemo: false, meFocus: false, mineDay: '2026-08-01', faq: 0, cart: {}, tixPath: null, tixSleep: null, ckChoice: (function () { try { return window.localStorage.getItem('pk-ck') || ''; } catch (e) { return ''; } })(), q: '', sType: 'all', sYear: 'all', gq: '', more: {}, menu: false, stars: stars, seeded: !!stars };
+    this.state = { data: null, stack: [{ r: 'home' }], day: '2026-08-01', lineup: 'music', schedF: 'music', mapHood: 'paddock', mapHour: 20, mapView: 'venue', sheet: false, season: 'off', look: 'poster', me: null, geoMsg: '', geoDemo: false, meFocus: false, mineDay: '2026-08-01', faq: -1, cart: {}, tixPath: null, tixSleep: null, ckChoice: (function () { try { return window.localStorage.getItem('pk-ck') || ''; } catch (e) { return ''; } })(), q: '', sType: 'all', sYear: 'all', gq: '', more: {}, menu: false, stars: stars, seeded: !!stars };
     if (props && props.start) { var sa = {}; try { sa = props.startArg ? JSON.parse(props.startArg) : {}; } catch (e) { sa = {}; } this.state.stack = [Object.assign({ r: props.start }, sa)]; }
     if (props && props.season) this.state.season = props.season;
     if (props && props.today) this.state.today = props.today;
@@ -6998,7 +6998,7 @@ html:root:root:root:root:root body .pk-yreel .pk-yl,html:root:root:root:root:roo
 #root .pk-tpt .pk-lnk{display:flex;justify-content:space-between;gap:10px;width:100%;min-height:44px;padding:8px 0;border:0;border-top:1px solid rgba(242,237,227,.1);background:transparent;color:#F2EDE3;font:inherit;font-size:15px;text-align:left;cursor:pointer}
 #root .pk-te{display:flex;flex-wrap:wrap;gap:10px}
 #root .pk-te-b{min-height:44px;padding:0 16px;border-radius:6px;border:1px solid #F2EDE3;background:transparent;color:#F2EDE3;font-family:'Bricolage Grotesque',sans-serif;font-size:13px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;cursor:pointer}
-@media(min-width:1200px){#root .pk-tb{grid-template-columns:repeat(4,1fr) auto;align-items:center;padding:22px 26px}#root .pk-tbb{grid-column:auto;width:auto;min-width:180px}#root .pk-tp{grid-template-columns:repeat(3,1fr)}#root .pk-tpc img{height:200px}#root .pk-tbf b{font-size:22px}}
+@media(min-width:1200px){#root .pk-tb{grid-template-columns:repeat(4,1fr) auto;align-items:center;padding:22px 26px}#root .pk-tbb{grid-column:auto;width:auto;min-width:180px}#root .pk-tp{grid-template-columns:repeat(4,1fr)}#root .pk-tpc img{height:180px}#root .pk-tpc .pk-lnk{color:#F2EDE3}#root .pk-tpc .pk-arr{color:#F2B33D}#root .pk-te .pk-lnk{background:transparent;border:0;padding:0 2px;min-height:44px;color:#F2B33D;font-weight:800;font-size:15px;text-decoration:underline;cursor:pointer}#root .pk-tbf b{font-size:22px}}
 @media(min-width:700px) and (max-width:1199px){#root .pk-tpc img{height:170px}}
 </style>
 <style id="pk-lnt1">/*pk-lnt1: lineup tabs, music-only story bar label, non-music tiles (lineup_filter.md)*/
