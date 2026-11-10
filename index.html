@@ -1015,7 +1015,7 @@ html.pk-nh-ontop #root [role=region][aria-label="Listen"],html.pk-nh-ontop #root
 }
 /* Zale Nov 9 23:03: square play control first in the bar; Another year belongs to the poster; the section stands apart from the map above */
 #root#root#root#root .pk-cl-tb .pk-cl-rpl{width:48px!important;height:48px!important;min-height:48px!important;padding:0!important;font-size:20px!important;line-height:1;display:grid;place-items:center;border-radius:6px!important}
-#root .pk-cl-ay{display:flex;justify-content:flex-end;max-width:960px;margin:8px auto 0}
+#root .pk-cl-ay{display:grid;grid-template-columns:1fr 1fr;gap:10px;max-width:960px;margin:12px auto 0}#root#root#root#root .pk-cl-ay .pk-cl-an{width:100%;min-height:48px;justify-content:center;white-space:nowrap}#root#root#root#root .pk-cl-ay .pk-cl-go{background:transparent!important;border:2px solid #D6B54A!important;color:#F2CF62!important}@media (min-width:700px){#root .pk-cl-ay{max-width:520px}}
 #nh-sec-climb-sep{display:none}
 #pk-nh-climb{border-top:1px solid rgba(242,237,227,.16);margin-top:40px;padding-top:36px}
 /* Home renders every section up front: no content-visibility skipping (blank sections on phones, Zale Nov 9 06:30) */
@@ -1038,6 +1038,8 @@ main:has(#pk-nh-climb)>section{content-visibility:visible!important;contain-intr
 #root .pk-cl-p{overflow:hidden}
 @media (max-width:999px){#root .pk-cl-ht .pk-nh-h2{margin-top:10px!important;font-size:24px!important}#root#root .pk-cl-cap{font-size:15px!important;line-height:1.3!important;height:3.9em!important;min-height:0!important;overflow:hidden;margin-top:4px}#root .pk-cl-tb{margin-top:8px}#root .pk-cl-tl{margin:4px auto 6px!important;min-height:1.5em}}
 #root#root#root#root .pk-cl-tb .pk-cl-rpl{min-height:44px!important;height:auto!important;padding:0 14px!important;font-size:13px!important;width:auto!important}
+/* Nov 10 UI review: phone climb fits one screen with a full-width poster and the two buttons under it */
+@media (max-width:699px){#pk-nh-climb{padding-top:18px}#root .pk-cl-ht .pk-nh-k,#root .pk-cl-tl{display:none!important}#root .pk-cl-ht .pk-nh-h2{margin-top:0!important}#root .pk-cl-ay{margin-top:8px}}
 </style>
 <style id="pk-hm-css">
 /* Neighborhood page: "Where it is" map (Zale, Nov 9 08:30: a way to move between neighborhoods from the map on each neighborhood page). Design Studio */
@@ -1194,6 +1196,7 @@ html:root:root:root:root:root:root:root:root:root:root .pk-tly.z:not(.w){display
 .pk-tm{position:fixed;left:0;right:0;top:var(--tmtop,64px);z-index:19;display:flex;align-items:center;justify-content:center;gap:10px;min-height:44px;padding:4px 12px;background:var(--tmb,#2B2628);border-bottom:1px solid rgba(242,237,227,.25);color:#F2EDE3;font:800 13px/1 'Bricolage Grotesque',sans-serif;white-space:nowrap}
 .pk-tm img{height:26px;width:auto}
 .pk-tm b{font-weight:800;letter-spacing:.02em}
+.pk-tm button.pk-tm-yr{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 6px;border:0;background:transparent;color:#F2EDE3;font:800 14px 'Bricolage Grotesque',sans-serif;letter-spacing:.02em;text-transform:none;cursor:pointer}.pk-tm button.pk-tm-yr span{font-size:16px;color:var(--tma,#F2CF62)}
 .pk-tm button{min-height:36px;width:auto;white-space:nowrap;flex:none;padding:0 14px;border-radius:999px;border:0;background:#F2EDE3;color:#2B2628;font:800 12.5px 'Bricolage Grotesque',sans-serif;letter-spacing:.06em;text-transform:uppercase;cursor:pointer}
 html.pk-tmon #root header + *{margin-top:44px}
 </style>
@@ -1210,7 +1213,7 @@ html.pk-tmon #root header + *{margin-top:44px}
     if (!el || !document.body.contains(el)) { el = document.createElement('div'); el.className = 'pk-tm'; el.setAttribute('role', 'status'); document.body.appendChild(el); key = ''; }
     var H = root.querySelector('header'); if (H) { var hb = Math.round(H.getBoundingClientRect().bottom); if (hb >= 0 && hb < 200) el.style.setProperty('--tmtop', hb + 'px'); }
     document.documentElement.classList.add('pk-tmon');
-    if (key !== k) { key = k; el.style.setProperty('--tmb', B.band || '#2B2628'); el.innerHTML = (B.badge ? '<img src="' + B.badge + '" alt="">' : '') + '<b>You\u2019re in ' + y + '</b><button type="button">Back to 2027</button>'; el.querySelector('button').onclick = back; }
+    if (key !== k) { key = k; el.style.setProperty('--tmb', B.band || '#2B2628'); var LG = B.badge || (window.__pkYL || {})[y] || '', here = T.r === 'past'; el.innerHTML = (here ? (LG ? '<img src="' + LG + '" alt="">' : '') + '<b>You\u2019re in ' + y + '</b>' : '<button type="button" class="pk-tm-yr" aria-label="Open the Pickathon ' + y + ' page">' + (LG ? '<img src="' + LG + '" alt="">' : '') + '<b>Pickathon ' + y + '</b><span aria-hidden="true">\u2192</span></button>') + '<button type="button" class="pk-tm-bk">Back to 2027</button>'; el.querySelector('.pk-tm-bk').onclick = back; var yb = el.querySelector('.pk-tm-yr'); if (yb) yb.onclick = function () { try { window.pkOpenYear && window.pkOpenYear(y); } catch (e) {} }; }
   }, 250);
 })();
 </script>
@@ -1499,7 +1502,7 @@ html.pk-cy-in div:has(> button[aria-label="Listen to Pickathon"]){opacity:0!impo
   var Y1 = 1150; // desktop crop top (just above the Woods); phone/tablet pan, so they start at Wild Camp
   function sizeForPh(sec) { Y0 = 430; var w = (sec.querySelector('.pk-nh-head') || sec).clientWidth || 358; PH.w = w; W = Math.max(280, w); S = W / (MW - X0); H = Math.round((MH - Y0) * S);
     var hd = sec.querySelector('.pk-nh-head'), hb = hd ? hd.getBoundingClientRect().bottom - sec.getBoundingClientRect().top : 120, tb = 64, vis = (window.innerHeight || 800) - 76 - tb - hb - 14 - 12, av = Math.max(330, Math.min(vis, window.innerWidth < 700 ? 600 : 900));
-    PH.Hf = Math.round(av * (av < 460 ? 0.52 : 0.6)); PH.Vh = av - PH.Hf - 12; if (PH.Vh < 160) { PH.Vh = 160; PH.Hf = Math.max(160, av - 12 - 160); } }
+    PH.Hf = Math.max(268, Math.round(av * (av < 460 ? 0.52 : 0.6))); PH.Vh = av - PH.Hf - 12; if (PH.Vh < 160) { PH.Vh = 160; PH.Hf = Math.max(160, av - 12 - 160); } }
   function sizeFor() { Y0 = Y1; var hmax = Math.max(420, (window.innerHeight || 900) - 250 - (window.innerWidth < 1200 ? 64 : 0)); if (H0 > hmax) { H = Math.round(hmax); S = H / (MH - Y0); W = Math.round((MW - X0) * S); } else { W = W0; S = S0; H = H0; } }
   function focusKey(sec) { var a = document.activeElement; if (!a || !sec.contains(a)) return null; return a.getAttribute('data-cy') ? '[data-cy="' + a.getAttribute('data-cy') + '"]' : a.getAttribute('data-st') ? '.pk-cy-nv [data-st="' + a.getAttribute('data-st') + '"]' : a.classList.contains('pk-cy-f') ? '.pk-cy-f' : a.classList.contains('pk-cy-all') ? '.pk-cy-all' : null; }
   document.addEventListener('focusin', function (e) { var sec = document.getElementById('pk-nh-city'); st.fk = sec && sec.contains(e.target) ? focusKey(sec) : null; });
@@ -1518,7 +1521,7 @@ html.pk-cy-in div:has(> button[aria-label="Listen to Pickathon"]){opacity:0!impo
     h += '<div class="pk-cy-m" role="group" aria-label="The neighborhoods on the farm map. Drag to look around, pinch or use the zoom buttons." style="height:' + vh + 'px"><div class="pk-cy-l" style="' + bg + 'height:' + H + 'px;width:' + W + 'px">' + L.map(function (q) { var o = LO[q.id]; return o ? '<img class="pk-cy-lit" data-lit="' + q.id + '" alt="" src="farmmap/l/' + q.id + '.webp?v=33" style="left:' + ((o[0] - X0) * S).toFixed(1) + 'px;top:' + ((o[1] - Y0) * S).toFixed(1) + 'px;width:' + (o[2] * S).toFixed(1) + 'px;height:' + (o[3] * S).toFixed(1) + 'px">' : ''; }).join('') + '<i class="pk-cy-veil"></i></div><div class="pk-cy-zm"><button type="button" data-z="1" aria-label="Zoom in"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 3v10M3 8h10"/></svg></button><button type="button" data-z="-1" aria-label="Zoom out"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10"/></svg></button></div><div class="pk-cy-k">';
     L.forEach(function (q) { h += '<button type="button" class="pk-cy-s' + (q.id === st.pick ? ' on' : '') + '" data-cy="' + q.id + '" aria-pressed="' + (q.id === st.pick) + '" data-n="' + q.n.replace(/"/g, '') + '" aria-label="' + q.n.replace(/"/g, '') + '"><i style="background-image:url(ic2/' + q.id + '.png)"></i><b>' + q.n + '</b></button>'; });
     h += '</div>' + (st.used ? '' : '<span class="pk-cy-hint" aria-hidden="true">' + (PH.on ? 'Drag or pinch the map' : 'Zoom in to look around') + '</span>') + '</div>';
-    h += '<p class="pk-sr" aria-live="polite"></p>'; box.innerHTML = h; var nv0 = box.querySelector('.pk-cy-nv'); if (nv0) nv0.style.top = (PH.Hf - 56) + 'px'; box.classList.toggle('ph', PH.on); var mm = box.querySelector('.pk-cy-m');
+    h += '<p class="pk-sr" aria-live="polite"></p>'; box.innerHTML = h; var nv0 = box.querySelector('.pk-cy-nv'); if (nv0) nv0.style.top = '10px'; box.classList.toggle('ph', PH.on); var mm = box.querySelector('.pk-cy-m');
     if (PH.on) { box.style.gridTemplateColumns = ''; } else { box.style.gridTemplateColumns = 'minmax(0,1fr) ' + W + 'px'; if (mm) mm.style.width = W + 'px'; }
     var all = [].filter.call(sec.querySelectorAll('#pk-nh-cr > article.all'), function (a) { return /map/i.test(a.textContent); })[0];
     if (all) { var b = document.createElement('button'); b.type = 'button'; b.className = 'pk-cy-all' + (PH.on ? ' ph' : ''); b.textContent = ((all.querySelector('.pk-nh-an') || {}).textContent || 'All on the map').trim() + ' →'; b.addEventListener('click', function () { var hh = all.querySelector('.pk-nh-hit'); if (hh) hh.click(); }); if (!PH.on) sec.querySelector('.pk-nh-head').appendChild(b); }
@@ -1543,7 +1546,7 @@ html.pk-cy-in div:has(> button[aria-label="Listen to Pickathon"]){opacity:0!impo
   function used() { if (st.used) return; st.used = true; var hn = document.querySelector('#pk-nh-city .pk-cy-hint'); if (hn) hn.classList.add('off'); }
   function show(sec, now, quiet) {
     var A = cards(sec), a = A.filter(function (x) { return idOf(x) === st.pick; })[0] || A[0]; if (!a) return; var f = sec.querySelector('.pk-cy-f'); if (!f) return;
-    var c = a.cloneNode(true); c.removeAttribute('role'); [].forEach.call(c.querySelectorAll('button,a,[tabindex]'), function (x) { x.setAttribute('tabindex', '-1'); x.setAttribute('aria-hidden', 'true'); }); f.innerHTML = ''; f.appendChild(c); reel(f, idOf(a), c);
+    var c = a.cloneNode(true); c.removeAttribute('role'); [].forEach.call(c.querySelectorAll('button,a,[tabindex]'), function (x) { x.setAttribute('tabindex', '-1'); x.setAttribute('aria-hidden', 'true'); }); f.innerHTML = ''; f.appendChild(c); reel(f, idOf(a), c); deco(c, idOf(a));
     var txt = function (q) { return ((a.querySelector(q) || {}).textContent || '').trim(); }, nm = txt('.pk-nh-cn'), k = A.indexOf(a) + 1;
     var sp = sec.querySelector('.pk-cy-nv span'); if (sp) sp.textContent = k + ' of ' + A.length;
     f.setAttribute('aria-label', nm + ', ' + txt('.pk-nh-ck') + '. ' + txt('.pk-nh-cl') + ' Open the ' + nm + ' page');
@@ -1552,6 +1555,9 @@ html.pk-cy-in div:has(> button[aria-label="Listen to Pickathon"]){opacity:0!impo
     lit(sec);
     if (!now) { centerOn(st.pick); apply(sec, true); }
   }
+  // Nov 10: the picked neighborhood leads with its seal and name; the kind sits underneath
+  var HIC = null;
+  function deco(c, id) { try { var go = function () { var ct = c.querySelector('.pk-nh-ct'), nm = c.querySelector('.pk-nh-cn'), ck = c.querySelector('.pk-nh-ck'); if (!ct || !nm || ct.querySelector('.pk-cy-hd')) return; var row = document.createElement('div'); row.className = 'pk-cy-hd'; if (HIC && HIC[id]) { var im = document.createElement('img'); im.src = HIC[id]; im.alt = ''; im.width = 52; im.height = 52; row.appendChild(im); } ct.insertBefore(row, nm); row.appendChild(nm); if (ck) row.parentNode.insertBefore(ck, row.nextSibling); }; if (HIC) go(); else fetch('data.json').then(function (r) { return r.json(); }).then(function (d) { HIC = {}; Object.keys(d.hoods || {}).forEach(function (k) { if (d.hoods[k] && d.hoods[k].ic) HIC[k] = d.hoods[k].ic; }); go(); }).catch(function () { HIC = {}; go(); }); } catch (e) {} }
   var RT = null;
   function reel(f, id, c) {
     clearInterval(RT); var Lr = ((window.__pkNBHM || {})[id] || []).slice(0, 5), ci = c.querySelector('.pk-nh-ci'); if (!ci) return; if (!Lr.length) { ci.style.opacity = '1'; return; }
@@ -1657,11 +1663,11 @@ html.pk-cy-in div:has(> button[aria-label="Listen to Pickathon"]){opacity:0!impo
 
   // Sizes. Desktop: the paper is 960 wide (inner 880): art 330 at left, list column 524. Phone and tablet (phone-style): art small on top, list full width.
   function cfg(ph, wAvail) {
-    if (!ph) return { ph: false, IW: 880, PADX: 40, PADY: 22, ART: { x: 0, y: 118, w: 330 }, COLX: 356, COLW: 524, Y0: 0, LANES: [[80, 74, 2], [44, 41, 1], [44, 41, 1], [44, 41, 1], [33, 29, 1], [33, 29, 1], [33, 29, 1], [33, 29, 1], [33, 29, 1], [33, 29, 1]], GAP: 5, R1: 22, ROWH: 21, FS: 13, CFS: 15, DATES: 15, DGAP: 42, BOT: 100, RIB: [40, 14], STAMP: 0.92 };
+    if (!ph) return { ph: false, IW: 880, PADX: 40, PADY: 22, ART: { x: 0, y: 118, w: 330 }, COLX: 356, COLW: 524, Y0: 0, LANES: [[80, 74, 2], [44, 41, 1], [44, 41, 1], [44, 41, 1], [33, 29, 1], [33, 29, 1], [33, 29, 1], [33, 29, 1], [33, 29, 1], [33, 29, 1]], GAP: 5, R1: 22, ROWH: 21, FS: 13, CFS: 15, DATES: 15, DGAP: 42, BOT: 66, RIB: [0, 14], STAMP: 0.92 };
     var PW = Math.max(300, Math.min(wAvail, 720)), IW = PW - 32, k = Math.min(1.7, IW / 326), L = function (h, m, ml) { return [Math.round(h * k), Math.round(m * k), ml]; };
     var AW = Math.round(92 * k), CX = AW + Math.round(10 * k), LL = [L(36, 30, 2), L(26, 22, 1), L(26, 22, 1), L(26, 22, 1), L(20, 16, 1), L(20, 16, 1), L(20, 16, 1), L(20, 16, 1), L(20, 16, 1), L(20, 16, 1)], GP = Math.round(3 * k), listH = LL.reduce(function (a, l) { return a + l[0] + GP; }, -GP);
-    return { ph: true, IW: IW, PADX: 16, PADY: 14, ART: { x: 0, y: 4, w: AW, h: listH }, COLX: CX, COLW: IW - CX, Y0: 4,
-      LANES: LL, GAP: GP, R1: Math.round(13 * k), ROWH: Math.round(16 * k), FS: Math.max(11, 11 * k), CFS: Math.max(12, 12 * k), DATES: Math.max(11, 11 * k), DGAP: Math.round(30 * k), BOT: Math.round(30 * k) + Math.round(Math.max(11, 11 * k)) + 12 + Math.max(34, Math.round(32 * k)), RIB: [Math.max(34, Math.round(32 * k)), Math.max(12, 12 * k)], STAMP: 0.7 * k };
+    return { ph: true, IW: IW, PADX: 16, PADY: 10, ART: { x: 0, y: 4, w: AW, h: listH }, COLX: CX, COLW: IW - CX, Y0: 4,
+      LANES: LL, GAP: GP, R1: Math.round(13 * k), ROWH: Math.round(16 * k), FS: Math.max(11, 11 * k), CFS: Math.max(12, 12 * k), DATES: Math.max(11, 11 * k), DGAP: Math.round(30 * k), BOT: Math.round(30 * k) + Math.round(Math.max(11, 11 * k)) + 14, RIB: [0, Math.max(12, 12 * k)], STAMP: 0.7 * k };
   }
 
   // One frame of the ladder at time tp (0 = festival, n-1 = today). Returns the paper's inner HTML and its height.
@@ -1762,7 +1768,7 @@ html.pk-cy-in div:has(> button[aria-label="Listen to Pickathon"]){opacity:0!impo
     var dl = K.dates ? (K.dates.toUpperCase().replace(/ ?- ?/g, '–') + ' · PENDARVIS FARM' + (Q.ph ? '' : ' · HAPPY VALLEY, OREGON')) : 'PICKATHON ' + y;
     var dates = '<div style="position:absolute;left:0;right:0;top:' + DATESY + 'px;text-align:center;white-space:nowrap;' + FONT + ';font-size:' + Q.DATES + 'px;letter-spacing:.08em;color:' + A + '">' + dl.split(' · ').map(function (t, i) { return (i ? '<span style="font-size:.6em;color:' + B + ';margin:0 ' + (Q.ph ? 6 : 12) + 'px;vertical-align:.2em">★</span>' : '') + esc(t); }).join('') + '</div>';
     var rib = '<div style="position:absolute;left:0;right:0;bottom:0;display:flex;align-items:center"><span class="pk-cl-fl" style="--ink:' + A + '"></span><span style="flex:none;height:' + Q.RIB[0] + 'px;padding:0 ' + (Q.ph ? 16 : 36) + 'px;background:' + A + ' linear-gradient(' + PAPER + '80,' + PAPER + '80) 0 4px/100% 1.5px no-repeat;color:' + PAPER + ';' + FONT + ';font-size:' + Q.RIB[1] + 'px;letter-spacing:.1em;display:flex;align-items:center;white-space:nowrap;clip-path:polygon(0 0,100% 0,calc(100% - 14px) 50%,100% 100%,0 100%,14px 50%)">EXPLORE PICKATHON ' + y + ' →</span><span class="pk-cl-fr" style="--ink:' + A + '"></span></div>';
-    return { html: art + h + burst + rules + dates + rib, IW: IW, H: BOXH, A: A, B: B, PAPER: PAPER, ACC: ACC, LIGHT: GLOWINK };
+    return { html: art + h + burst + rules + dates, IW: IW, H: BOXH, A: A, B: B, PAPER: PAPER, ACC: ACC, LIGHT: GLOWINK };
   }
 
   // the clock on the poster: a date stamp that counts the summers from the festival to today; tapping it plays again
@@ -1833,7 +1839,7 @@ html.pk-cy-in div:has(> button[aria-label="Listen to Pickathon"]){opacity:0!impo
     h += '<div class="pk-cl-layer" aria-hidden="true" style="position:absolute;left:' + Q.PADX + 'px;top:' + Q.PADY + 'px;width:' + F.IW + 'px;height:' + F.H + 'px">' + F.html + '</div>';
     h += '</div>';
     h += '</div>';
-    h += '<div class="pk-cl-ay"><button type="button" class="pk-cl-an" data-cl="rand">↻ Another year</button></div>';
+    h += '<div class="pk-cl-ay"><button type="button" class="pk-cl-an" data-cl="rand">↻ Another year</button><button type="button" class="pk-cl-an pk-cl-go" data-cl="year">Explore ' + y + ' →</button></div>';
     var fin = D.names.filter(function (x) { return x[1][n - 1] < Math.min(10, D.ranked || 10); }).sort(function (a, b) { return a[1][n - 1] - b[1][n - 1]; }).map(function (x) { return x[0]; });
     h += '<p class="pk-sr">Pickathon ' + y + ', ranked today by how far each act has gone: ' + esc(fin.join(', ')) + '.</p>';
     mountEl.innerHTML = h; mountEl.setAttribute('data-y', y); mountEl._key = key;
@@ -2321,7 +2327,7 @@ window.addEventListener('scroll',tick,{passive:true,capture:true});setInterval(t
 <div class="pk-cn-g"><figure class="pk-cn-f"><img src="farmmap/h/cherryhill0.webp" alt="Cherry Hill at Pickathon" loading="lazy" decoding="async"><figcaption>Cherry Hill → nets for Ukraine</figcaption></figure>
 <div class="pk-cn-t"><p class="pk-cn-s">Portland State students built Cherry Hill. After the festival, its nets went to Ukraine to help shield villages from drones.</p>
 <p class="pk-cn-l">Every neighborhood is built with architects, schools and makers through Creative Neighborhoods, our nonprofit. Most get a second life. <button type="button" class="pk-cn-a" data-go="build">See where they went →</button></p>
-<div class="pk-cn-d"><div><p class="pk-cn-dk">Have a project?</p><button type="button" class="pk-cn-b" data-go="build">Build it with us →</button></div><div><p class="pk-cn-dk">Sponsor, donate or join the team</p><button type="button" class="pk-cn-b" data-go="build">Get involved →</button></div></div>
+<div class="pk-cn-d"><div><p class="pk-cn-dk">Have a project?</p><button type="button" class="pk-cn-b" data-go="build">Build it with us →</button></div><div><p class="pk-cn-dk">Sponsor or join</p><button type="button" class="pk-cn-b pk-cn-b2" data-go="build">Get involved →</button></div></div>
 </div></div></div></section>
 
 <section class="pk-nh-q" aria-label="What the press says" data-nhq="1"><div class="pk-nh-qs"><sc-for list="{{nh.quotes}}" as="q" hint-placeholder-count="2"><figure class="pk-nh-qf" data-i="{{q.i}}"><blockquote>“{{q.t}}”</blockquote><figcaption>{{q.s}}</figcaption></figure></sc-for></div><p class="pk-nh-qn" aria-hidden="true"><span class="pk-nh-qi">1</span> of {{nh.qN}}</p></section>
@@ -5239,7 +5245,7 @@ var pr27 = function (k) { var r = PR27[k]; return r ? Math.ceil(r[PCOL]) : 0; },
         var LNL = { music: 'Music', comedy: 'Comedy', lit: 'Literary', screen: 'TV, podcasts & film' }, ltabs = Object.keys(LNL).map(function (c0) { return { c: c0, n: all.filter(function (a) { return a.cat === c0; }).length }; }).filter(function (t) { return t.n > 0 || t.c === 'music'; }).sort(function (a, b) { return (a.c === 'music' ? -1 : 0) - (b.c === 'music' ? -1 : 0) || b.n - a.n; }).map(function (t) { var on = t.c === LNK; return { l: LNL[t.c], n: String(t.n), sel: on ? 'true' : 'false', cl: on ? 'pk-lnt-b on' : 'pk-lnt-b', pick: on ? function () {} : function () { var cc = all.filter(function (a) { return a.cat === t.c; }), k0 = cc.some(function (a) { return !a.dc && !a.leg; }) ? 'disc' : cc.some(function (a) { return !a.dc && a.leg; }) ? 'leg' : 'deep'; self.setState({ archLn: t.c, luYear: k0, archN: 24 }); } }; });
         return { ltabs: ltabs, hasLt: ltabs.length > 1, total: String(allN), hasMore: cards.length < allN, more: function () { self.setState({ archN: (st.archN || 24) + 24 }); }, items: cards, types: types, moreN: (function () { var S = {}; ((d.past || {}).years || []).forEach(function (y) { (y.all && y.all.length ? y.all : (y.names || [])).forEach(function (n) { S[n] = 1; }); }); var inA = 0; all.forEach(function (a) { if (S[a.n]) inA++; }); return String(Math.max(0, Object.keys(S).length - inA)); })(), goLineups: function () { self.go('past'); }, cats: cats, yearOpts: [{ v: '', t: 'All years', sel: !Y }].concat(yrs.map(function (y) { return { v: String(y), t: String(y), sel: String(y) === Y }; })), onYear: function (e) { self.setState({ archY: e && e.target ? e.target.value : '' }); }, clear: function () { self.setState({ archC: null, archY: '' }); }, cols: phone ? '1fr' : 'repeat(3, minmax(0, 1fr))', count: cards.length ? cards.length + ' ' + tl + (Y ? ' from ' + Y : '') : 'Nothing matches those filters yet.', hasG: false, genres: [], goTix: nav('tickets'), goPast: nav('past'), goWhy: function () { self.go('why', { sec: 'band' }); }, hasLead: !!st.archLead, backLead: function () { self.setState({ archLead: null }); self.back(); },
           head: v === 'deep' ? 'Critics\u2019 favorites, before the lists' : v === 'leg' ? 'Legends who chose the farm' : 'Small rooms then, big rooms now', lead: v === 'deep' ? 'Critics\u2019 favorites with the same kind of talent as the acts that went on to fill arenas. Their reviews, best-of lists and Grammy nods said what the room already knew. Even if it wasn\u2019t your genre, you would have loved them.' : v === 'leg' ? 'These artists defined their music worlds and had careers full of success long before they came here. They were well beyond needing us. They came because they wanted to: Pickathon is a place to play for people who are really listening, up close.' : 'A Discovery played the farm before the rest of the world caught on: small rooms then, far bigger stages since. Open a card to watch them the summer we had them first.' }; })();
-      out.act = (function () { try { window.__pkYB = d.yearBrand || {}; window.__pkYR = d.yearRatings || {}; window.__pkYGa = ''; } catch (e) {} if (R !== 'act') return { show: false }; var nk = function (x) { return String(x || '').toLowerCase().replace(/^the\s+/, '').replace(/[^a-z0-9]/g, ''); }, nm = cur.n || '', yr = String(cur.y || ''), key = nk(nm), AL0 = d.actAlias || {}; if (AL0[key]) key = AL0[key]; try { window.__pkYGa = yr; } catch (e) {}
+      out.act = (function () { try { window.__pkYB = d.yearBrand || {}; window.__pkYL = d.yearLogo || {}; window.__pkYR = d.yearRatings || {}; window.__pkYGa = ''; } catch (e) {} if (R !== 'act') return { show: false }; var nk = function (x) { return String(x || '').toLowerCase().replace(/^the\s+/, '').replace(/[^a-z0-9]/g, ''); }, nm = cur.n || '', yr = String(cur.y || ''), key = nk(nm), AL0 = d.actAlias || {}; if (AL0[key]) key = AL0[key]; try { window.__pkYGa = yr; } catch (e) {}
         var a0 = archAll().filter(function (x) { return nk(x.n) === key; })[0] || null, a = a0 || { n: nm, years: [+yr], line: '', img: '', g: '', kind: '' };
         var yb = ((d.yearBill || {})[yr] || []).filter(function (b) { return nk(b.n) === key; })[0] || null; if (yb && yb.f) nm = yb.n;   /* one name per act across years (actAlias) */
         var GLm = { indie: 'Indie rock & pop', folk: 'Folk & songwriters', country: 'Country & Americana', bluegrass: 'Bluegrass & string band', soul: 'Soul, funk & blues', global: 'Latin & global', punk: 'Punk & heavy', jazz: 'Jazz', psych: 'Psychedelic', americana: 'Country & Americana', blues: 'Soul, funk & blues', hiphop: 'Hip-hop', electronic: 'Electronic & dance', experimental: 'Experimental & jams' };
@@ -7115,6 +7121,48 @@ html:root:root:root:root:root body .pk-yreel .pk-yl,html:root:root:root:root:roo
 #root .pk-yhp.pk-bkb,#root .pk-sspill.pk-tour{min-height:50px!important}
 @media (min-width:601px){#root .pk-yhp.pk-bkb,#root .pk-sspill.pk-tour{min-height:56px!important}}
 #root a.pk-in-addr,#root main a[href^="https://www.google.com/maps"]{display:inline-flex;align-items:center;min-height:44px}
+</style>
+<style id="pk-ux1">
+/* Nov 10 UI review (Home): hero shading covers the whole hero, Photo tour is a quiet outlined pill on the content edge, Creative Neighborhoods buttons sit side by side */
+#root#root#root#root .pk-nh-hg{top:0!important;bottom:0!important;height:auto!important;background:linear-gradient(180deg,rgba(18,22,15,.55) 0%,rgba(18,22,15,.10) 22%,rgba(18,22,15,.38) 40%,rgba(18,22,15,.78) 60%,rgba(24,21,22,.92) 82%,#2B2628 100%)!important}
+#root#root#root#root .pk-nh-sea,#root#root#root#root .pk-nh-what{text-shadow:0 1px 10px rgba(0,0,0,.7)}
+#root#root#root#root#root .pk-nh-hero .pk-sspill.pk-tour{top:16px!important;right:max(16px,calc((100vw - 1280px)/2 + 24px))!important;min-height:44px!important;padding:0 16px 0 6px!important;gap:8px!important;background:rgba(18,22,15,.5)!important;color:#F2EDE3!important;border:1.5px solid rgba(242,237,227,.8)!important;box-shadow:none!important;font-size:13px!important;letter-spacing:.08em!important;text-transform:uppercase!important}
+#root#root#root#root#root .pk-nh-hero .pk-sspill.pk-tour>span{width:30px!important;height:30px!important;background:#F2EDE3!important;color:#12160F!important;font-size:11px!important}
+#root#root#root .pk-cn-d{display:grid!important;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px;align-items:end;max-width:560px}
+#root#root#root .pk-cn-d>div{min-width:0}
+#root#root#root .pk-cn-dk{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin:0 0 6px;font-size:11px}
+#root#root#root#root .pk-cn-d .pk-cn-b{width:100%;min-height:48px;padding:0 8px;white-space:nowrap;font-size:13px;background:transparent!important;border:2px solid #D6B54A!important;color:#F2CF62!important}
+#root#root#root#root .pk-cn-d .pk-cn-b2{border-color:rgba(242,237,227,.88)!important;color:#F2EDE3!important}
+#root#root#root .pk-cn-a{white-space:nowrap}
+</style>
+<style id="pk-ux2">
+/* Nov 10 UI review (neighborhood pages): what happens here, the video and who built it come first; the long record and schedule come after; desktop hero is shorter */
+#root#root section.pk-hd-w{display:flex;flex-direction:column}
+#root#root section.pk-hd-w>.pk-hd-desc{order:0}
+#root#root section.pk-hd-w>.pk-hd-cols{order:1}
+#root#root section.pk-hd-w>.pk-hd-who{order:2}
+#root#root section.pk-hd-w>.pk-hd-yh{order:3}
+#root#root section.pk-hd-w>.pk-hd-yw{order:4}
+#root#root section.pk-hd-w>.pk-nh,#root#root section.pk-hd-w>.pk-hyr{order:5}
+#root#root section.pk-hd-w>.pk-hm{order:6}
+#root#root section.pk-hd-w>.pk-hd-links{order:7}
+#root#root section.pk-hd-w>.pk-hd-end{order:8}
+@media (min-width:1000px){#root#root#root .pk-hd-hero{height:380px}#root#root#root .pk-hd-cols .pk-hd-vid{max-width:720px}}
+</style>
+<style id="pk-ux3">
+/* Nov 10: neighborhood preview = seal + name, kind underneath, a real Explore button; closing buttons side by side on phone; Listen sits in the header on phone */
+#root .pk-cy-f .pk-cy-hd{display:flex;align-items:center;gap:12px;min-width:0}
+#root .pk-cy-f .pk-cy-hd img{flex:none;width:52px;height:52px;border-radius:50%;object-fit:contain;background:rgba(18,22,15,.55)}
+#root .pk-cy-f .pk-cy-hd .pk-nh-cn{min-width:0}
+#root#root .pk-cy-f .pk-nh-ck{margin-top:6px;text-transform:none;letter-spacing:.04em;font-size:13px}
+#root#root#root#root .pk-cy-f .pk-nh-ct{top:auto!important;bottom:0!important;padding-bottom:14px}
+#root#root#root .pk-cy-f .pk-nh-cue{display:inline-flex!important;align-items:center;min-height:44px;margin-top:12px;padding:0 24px;align-self:flex-start;border-radius:999px;background:#F2B33D;color:#12160F!important;font:800 14px/1 'Bricolage Grotesque',sans-serif;letter-spacing:.04em;text-decoration:none!important;white-space:nowrap}
+@media (max-width:699px){#root#root#root .pk-nh-clb{display:grid;grid-template-columns:1fr 1fr;gap:10px}#root#root#root#root .pk-nh-clb .pk-cta{min-width:0;width:100%;padding:0 6px;white-space:normal!important;font-size:12px!important;letter-spacing:.02em!important;line-height:1.15;min-height:52px}}
+@media (max-width:999px){html:root:root #root [role=region][aria-label="Listen"][style*="height: 44px"],html:root:root [role=region][aria-label="Listen"][style*="height: 44px"]{top:17px!important;bottom:auto!important;right:52px!important;left:auto!important}}
+</style>
+<style id="pk-ux4">
+/* Nov 10 (Zale: each Home section fits one phone screen): Before they were big was 778px, now under 700 */
+@media (max-width:699px){#root#root#root #pk-nh-bands{padding-top:28px}#root#root#root #pk-nh-bands .pk-nh-in{font-size:15px;line-height:1.35;margin-top:6px}#root#root#root #pk-nh-bands .pk-nh-ball{min-height:48px}#root #pk-nh-bands article.pk-nh-c{height:392px!important;min-height:0!important}}
 </style>
 <style id="pk-trip1">
 #root .pk-trip{margin-top:20px}

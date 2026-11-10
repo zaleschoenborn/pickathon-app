@@ -1108,7 +1108,7 @@ function light(h){
 /* Zale, Nov 9: the card's bottom row never sits under the site's cookie bar, and it hops to the other side when the picked spot is under it */
 function ckLift(){ let h=0; try{ const fe=window.frameElement, pd=parent.document, b=pd&&pd.querySelector('[aria-label="Cookie choices"]'); if(b&&fe){ const br=b.getBoundingClientRect(), fr=fe.getBoundingClientRect(); h=Math.max(0,Math.round(fr.bottom-br.top)); } }catch(e){} if(document.body.style.getPropertyValue('--ckb')!==h+'px') document.body.style.setProperty('--ckb',h+'px'); return h; }
 setInterval(()=>{ try{ const b=ckLift(), dd=document.getElementById('door'), sig=b+':'+(dd?Math.round(dd.getBoundingClientRect().height):0)+':'+document.body.classList.contains('dooron'); if(window.__ckLast!==sig){ window.__ckLast=sig; place(); } }catch(e){} },300);
-function doorFlip(){
+function doorFlip(){ document.body.classList.remove('doorR'); return; /* Nov 10 review: the card stays bottom-left, never hops onto the neighborhood you just picked */
   const dr=document.getElementById('door'); if(!dr||LP()||innerWidth<1200) { document.body.classList.remove('doorR'); return; }
   if(!cur||!document.body.classList.contains('dooron')){ document.body.classList.remove('doorR'); return; }
   const sr=stage.getBoundingClientRect(), b=D.shapes[cur.id]&&D.shapes[cur.id].b; if(!b) return;
@@ -1144,7 +1144,7 @@ function place(){
   });
   light(cur);
   const fd=document.getElementById('finder'), FB=fd?Math.round(fd.getBoundingClientRect().bottom-stage.getBoundingClientRect().top)+8:0;
-  const SP=(W>=700&&H>=620)?31:23, TOP=11, BOT=HB-(LP()?18:26), CAP=Math.floor((BOT-TOP)/SP)+1;
+  const SP=(W>=700&&H>=620)?(innerWidth>=1200?38:31):23, TOP=11, BOT=HB-(LP()?18:26), CAP=Math.floor((BOT-TOP)/SP)+1;
   let L=live.filter(h=>h._ax< W/2), R=live.filter(h=>h._ax>=W/2);
   // The farm leans right, so the right rail overfills while the left sits half
   // empty. Spill the overflow across - the ones nearest the middle travel least.
@@ -1203,9 +1203,9 @@ function place(){
     h._el.classList.toggle('r',right);
     h._el.style.top=h._ly+'px';
     h._el.style.left = right?'auto':'7px';
-    h._el.style.right= right?(DST?'28px':'7px'):'auto';
+    h._el.style.right= right?(DST?'28px':(!LP()&&innerWidth>=1200?'18px':'7px')):'auto';
     if(DST&&!pinned&&(h===cur||h===peekH)){ const ly3=Math.max(TOP,Math.min(BOT0,h._wy)); h._ly=ly3; h._el.style.top=ly3+'px'; }
-    const lw=h._el.offsetWidth||90, lx = right ? W-(DST?28:7)-lw : 7+lw;
+    const lw=h._el.offsetWidth||90, lx = right ? W-(DST?28:(!LP()&&innerWidth>=1200?18:7))-lw : 7+lw;
     [h._u,h._o].forEach(e=>{
       e.setAttribute('x1',h._ax); e.setAttribute('y1',h._ay);
       e.setAttribute('x2',lx);    e.setAttribute('y2',h._ly);
@@ -2288,7 +2288,7 @@ body.dooron #door{display:block}
 @media (max-width:1199px) and (max-height:760px){#door .dv{aspect-ratio:2/1}}
 #door *{box-sizing:border-box}
 #door .dv{position:relative;display:block;aspect-ratio:16/9;border-radius:12px;overflow:hidden;background:#24301F;cursor:pointer}
-#door .dv.ph{cursor:default}
+#door .dv.ph{cursor:pointer}
 #door .dv img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
 #door .dring{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:64px;height:64px;border-radius:50%;border:2px solid rgba(255,255,255,.92);background:rgba(18,22,15,.35);display:flex;align-items:center;justify-content:center;pointer-events:auto;cursor:pointer}
 #door .dring b{display:block;width:0;height:0;margin-left:6px;border-left:20px solid #fff;border-top:12px solid transparent;border-bottom:12px solid transparent}
@@ -2458,11 +2458,11 @@ body.dooron #door{display:block}
   $('.dnext').addEventListener('click',e=>{ e.stopPropagation(); stepHood(1); });
   $('.dspin').addEventListener('click',e=>{ e.stopPropagation(); if(L.length>1){ vi=(vi+1)%L.length; putMedia(); try{ sessionStorage.setItem('pkmap.doorv.'+H.id,String(vi)); }catch(x){} } });
   $('.dx').addEventListener('click',e=>{ e.preventDefault(); e.stopPropagation(); const k0=H&&H.k; const _v=[k,tx,ty]; clearCur(); try{ cancelAnimationFrame(flyRaf); k=_v[0]; tx=_v[1]; ty=_v[2]; apply(); }catch(x){} if(k0) chipTo(k0==='stage'?'stage':k0==='camp'?'camp':'around'); if(innerWidth>=1200){ document.body.classList.add('dpdone'); try{ place(); }catch(x){} } });   /* Zale, Nov 9 23:43: closing the card leaves the map exactly where it is, no title, no move */
-  $('.dv').addEventListener('click',e=>{ if(e.target.closest('.dx')) return; e.preventDefault(); const v=$('.dv').__v; if(!v||!e.target.closest('.dring')) return;   /* design_studio-29: only the play ring plays; the picture opens the page */ const cv=document.getElementById('cvid'); cv.__v=v; cv.click(); });
+  $('.dv').addEventListener('click',e=>{ if(e.target.closest('.dx')) return; e.preventDefault(); const v=$('.dv').__v; if(!v) return;   /* design_studio-29: only the play ring plays; the picture opens the page */ const cv=document.getElementById('cvid'); cv.__v=v; cv.click(); });
   // map_page.md "The whole doorway is the link" (Nov 8): a tap anywhere on the card opens the neighborhood page, except the play area, arrows, spin and close
   door.addEventListener('wheel',e=>{ if(e.target.closest&&e.target.closest('.dvid,iframe,.dlist')) return; e.preventDefault(); stage.dispatchEvent(new WheelEvent('wheel',{deltaX:e.deltaX,deltaY:e.deltaY,deltaMode:e.deltaMode,ctrlKey:e.ctrlKey,clientX:e.clientX,clientY:e.clientY,bubbles:true,cancelable:true})); },{passive:false});   /* the wheel zooms the map even over the card */
   let dDown=null; door.addEventListener('pointerdown',e=>{ dDown={x:e.clientX,y:e.clientY}; },true);
-  door.addEventListener('click',e=>{ const moved=dDown&&Math.hypot(e.clientX-dDown.x,e.clientY-dDown.y)>12; if(moved||!H||fold) return; const t=e.target; if(t.closest('.dprev,.dnext,.dspin,.dx,.dgo,.dbar,input')) return; const dv=t.closest('.dv'); if(!dv&&t.closest('a')) return; if(dv&&dv.__v&&t.closest('.dring')) return; e.preventDefault(); goPage(H); });
+  door.addEventListener('click',e=>{ const moved=dDown&&Math.hypot(e.clientX-dDown.x,e.clientY-dDown.y)>12; if(moved||!H||fold) return; const t=e.target; if(t.closest('.dprev,.dnext,.dspin,.dx,.dgo,.dbar,input')) return; const dv=t.closest('.dv'); if(!dv&&t.closest('a')) return; if(dv&&dv.__v) return; /* Nov 10 review: with a video the whole picture plays; without one it opens the page */ e.preventDefault(); goPage(H); });
   // phone: swipe the sheet sideways for the next or previous neighborhood
   let sw=null; door.addEventListener('pointerdown',e=>{ sw={x:e.clientX,y:e.clientY}; });
   door.addEventListener('pointerup',e=>{ if(!sw||!LP()) return; const dx=e.clientX-sw.x, dy=e.clientY-sw.y; sw=null; if(Math.abs(dx)>50&&Math.abs(dx)>1.5*Math.abs(dy)) stepHood(dx<0?1:-1); });
