@@ -1515,7 +1515,7 @@ function clearCur(){ pinned=null; peek(null); cur=null; show(null); if(LP()){ li
 function goPage(h){
   setCur(h); show(h);
   // Embedded in the site: hand off to the site's own neighborhood page.
-  if(window.parent!==window && /[?&]embed=1/.test(location.search)){ try{ saveView(); parent.postMessage({pkMap:'open',id:h.id},'*'); return; }catch(e){} }
+  if(window.parent!==window && /[?&]embed=1/.test(location.search)){ try{ saveView(); if(YR&&h.l!==undefined&&!h.l) return; parent.postMessage({pkMap:'open',id:h.l||h.id},'*'); return; }catch(e){} }
   document.getElementById('pgname').textContent=h.n;
   document.getElementById('pgtag').textContent=h.t||'';
   const pk=document.getElementById('pgkind');
@@ -2044,7 +2044,7 @@ function yearMode(tm){
       let a=0; for(let i=0;i<xs.length;i++){ const j=(i+1)%xs.length; a+=xs[i]*ys[j]-xs[j]*ys[i]; }
       const c=[Math.round((x0+x1)/2),Math.round((y0+y1)/2)];
       SHAPES[id]={d:o.d,c:c,pts:xs.length,area:Math.round(Math.abs(a)/2/(MW*MH)*10000)/100,b:[x0,y0,x1,y1],fx:[1.8,1,1]};
-      HOODS.push({id:id,n:o.n,t:'',k:o.k,p:[c[0]/MW*100,c[1]/MH*100],amk:[],am:[]}); });
+      HOODS.push({id:id,l:o.l||'',n:o.n,t:'',k:o.k,p:[c[0]/MW*100,c[1]/MH*100],amk:[],am:[]}); });
     bn.innerHTML='<b>Pickathon '+YR+'</b><span>'+(YR==='2007'?'The farm then (estimated)':'The farm then')+'</span>';
   } else if(ids){
     for(let i=HOODS.length-1;i>=0;i--){ if(ids.indexOf(HOODS[i].id)<0){ delete SHAPES[HOODS[i].id]; HOODS.splice(i,1); } }
@@ -2060,7 +2060,7 @@ function yearMode(tm){
 }
 function bootYear(){
   if(!YR){ boot(); return; }
-  fetch('tm.json?v=1').then(r=>r.json()).then(tm=>{ try{ yearMode(tm); }catch(e){ console.error(e); } boot(); }).catch(()=>boot());
+  fetch('tm.json?v=2').then(r=>r.json()).then(tm=>{ try{ yearMode(tm); }catch(e){ console.error(e); } boot(); }).catch(()=>boot());
 }
 if(img.complete&&img.naturalWidth) bootYear(); else img.onload=bootYear;
 
