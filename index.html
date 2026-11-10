@@ -1300,14 +1300,20 @@ html.pk-tmon #root header + *{margin-top:44px}
       '<p class="pk-tn-fn">' + 'Rated with what we know now. Changes the research cannot date yet show at Today.' + '</p>';
     var dots = w.querySelectorAll('.pk-tn-dot'), field = w.querySelector('.pk-tn-f'), tip = w.querySelector('.pk-tn-tip');
     /* Play the years: one fixed-length run (7.2 s) from the festival to today, however many years that is; the date counts through and every dot glides to its column when its class changes (Zale, Nov 10) */
-    var PDUR = 7200, raf = null, playing = false, RMo = false; try { RMo = window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) {}
+    var PDUR = 7200, raf = null, playing = false, RMo = false, pu = 0, tmo = null; try { RMo = window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) {}
     function dstamp(fi) { var i = Math.min(N - 1, Math.floor(fi)), f = fi - i, A0 = Date.parse(Y.dates[i]), B0 = Date.parse(Y.dates[i + 1]), t = new Date(A0 + (B0 - A0) * f); return MON[t.getUTCMonth()].toUpperCase() + ' ' + t.getUTCFullYear(); }
-    function playUi() { var pb = w.querySelector('.pk-tn-playb'); if (pb) { pb.textContent = playing ? '\u275A\u275A Pause' : (s.i >= N ? '\u21BB Replay' : '\u25B6 Play'); pb.setAttribute('aria-pressed', String(playing)); } }
-    function stop() { if (raf) cancelAnimationFrame(raf); raf = null; playing = false; w.classList.remove('pk-tn-play'); playUi(); }
+    function playUi() { var pb = w.querySelector('.pk-tn-playb'); if (pb) { pb.textContent = playing ? '\u275A\u275A Pause' : (pu >= 1 || (pu === 0 && s.i >= N) ? '\u21BB Replay' : pu > 0 ? '\u25B6 Resume' : '\u25B6 Play'); pb.setAttribute('aria-pressed', String(playing)); } }
+    function stop() { if (raf) cancelAnimationFrame(raf); raf = null; if (tmo) clearTimeout(tmo); tmo = null; playing = false; w.classList.remove('pk-tn-play'); playUi(); }
+    /* one fixed-length run (7.2 s); a pause resumes where it stopped; a replay glides back to the festival, holds a second there, then runs (no jumps) */
     function play() {
-      if (N < 1) return; stop(); if (RMo) { s.i = N; paint(true); return; }
-      playing = true; w.classList.add('pk-tn-play'); s.i = 0; paint(true); playUi(); var t0 = null;
-      var step = function (now) { if (!playing) return; if (t0 == null) t0 = now; var u = Math.min(1, (now - t0) / PDUR), e = u < .5 ? 2 * u * u : 1 - Math.pow(-2 * u + 2, 2) / 2, fi = e * N, i = u >= 1 ? N : Math.floor(fi + 1e-6);
+      if (N < 1) return; var wasPlaying = playing; stop(); if (wasPlaying) return;
+      if (RMo) { pu = 1; s.i = N; paint(true); return; }
+      var resume = pu > 0 && pu < 1, lead = 0;
+      playing = true; w.classList.add('pk-tn-play');
+      if (!resume) { pu = 0; var back = s.i !== 0; s.i = 0; paint(true); lead = (back ? 950 : 0) + 1000; if (back) { var tb = w.querySelector('.pk-tn-dt b'); tb.textContent = mo(Y.dates[0]).toUpperCase(); } }
+      playUi(); var t0 = null, base = pu;
+      var step = function (now) { if (!playing) return; if (t0 == null) t0 = now + lead; if (now < t0) { raf = requestAnimationFrame(step); return; }
+        var u = Math.min(1, base + (now - t0) / PDUR); pu = u; var e = u < .5 ? 2 * u * u : 1 - Math.pow(-2 * u + 2, 2) / 2, fi = e * N, i = u >= 1 ? N : Math.floor(fi + 1e-6);
         if (i !== s.i) { s.i = i; paint(true); }
         if (u < 1) { w.querySelector('.pk-tn-dt b').textContent = dstamp(fi); raf = requestAnimationFrame(step); } else { stop(); paint(true); } };
       raf = requestAnimationFrame(step);
@@ -1356,8 +1362,8 @@ html.pk-tmon #root header + *{margin-top:44px}
     w.addEventListener('click', function (e) {
       var t = e.target.closest('button'); if (!t || !w.contains(t)) return;
       if (t.classList.contains('pk-tn-playb')) { s.played = true; if (playing) stop(); else play(); }
-      else if (t.classList.contains('pk-tn-sb')) { stop(); s.i = Math.max(0, Math.min(N, s.i + +t.dataset.d)); paint(true); }
-      else if (t.classList.contains('pk-tn-chip')) { stop(); s.i = +t.dataset.j; paint(true); }
+      else if (t.classList.contains('pk-tn-sb')) { stop(); s.i = Math.max(0, Math.min(N, s.i + +t.dataset.d)); pu = s.i / N; paint(true); }
+      else if (t.classList.contains('pk-tn-chip')) { stop(); s.i = +t.dataset.j; pu = s.i >= N ? 1 : 0; paint(true); }
       else if (t.classList.contains('pk-tn-dot')) { s.sel = +t.dataset.k; paint(); }
     });
     w.addEventListener('mouseover', function (e) {
@@ -1674,12 +1680,12 @@ html.pk-cy-in div:has(> button[aria-label="Listen to Pickathon"]){opacity:0!impo
         var smt = function (t) { t = Math.max(0, Math.min(1, t)); return t * t * (3 - 2 * t); };
         var win = D.names.map(function (x) { var a = ACT[nm(x[0])], t0 = T0, t1 = T1;
           if (a && a.c) { var ch = []; for (var i = 1; i <= NN; i++) if (a.c[i] !== a.c[i - 1]) ch.push(i);
-            if (ch.length) { var f1 = ch[0], l1 = ch[ch.length - 1]; if (l1 === NN && f1 === NN) { t0 = T1 - 1.2 * YM; t1 = T1; } else { t0 = ts[f1] - 0.7 * YM; t1 = Math.min(T1, ts[l1] + 0.7 * YM); } t0 = Math.max(T0, t0); } }
+            if (ch.length) { var f1 = ch[0], l1 = ch[ch.length - 1]; if (l1 === NN && f1 === NN) { t0 = T1 - 2.4 * YM; t1 = T1; } else { t0 = ts[f1] - 0.7 * YM; t1 = Math.min(T1, ts[l1] + 0.7 * YM); } t0 = Math.max(T0, t0); } }
           return [t0, Math.max(t1, t0 + 1)]; });
         var K = []; for (var k = 0; k <= NN; k++) { var v = D.names.map(function (x, i) { var f = x[1][0], e = x[1][1], pg = smt((ts[k] - win[i][0]) / (win[i][1] - win[i][0])); if (k === 0) pg = 0; if (k === NN) pg = 1; return [f + (e - f) * pg, e, f, i]; });
           v.sort(function (p, q) { return p[0] - q[0] || p[1] - q[1] || p[2] - q[2]; }); var rk = []; v.forEach(function (q, r) { rk[q[3]] = r; }); K.push(rk); }
         var cl = function (a) { return a.map(function (r) { return r < 12 ? r : 99; }).join(); }, keep = [0]; for (var k2 = 1; k2 < NN; k2++) if (cl(K[k2]) !== cl(K[keep[keep.length - 1]])) keep.push(k2); keep.push(NN);
-        if (keep.length > 10) { var thin = [0], step = (keep.length - 1) / 9; for (var q2 = 1; q2 < 9; q2++) thin.push(keep[Math.round(q2 * step)]); thin.push(NN); keep = thin.filter(function (v, i, A) { return A.indexOf(v) === i; }); }
+        if (keep.length > 14) { var thin = [0], step = (keep.length - 1) / 13; for (var q2 = 1; q2 < 13; q2++) thin.push(keep[Math.round(q2 * step)]); thin.push(NN); keep = thin.filter(function (v, i, A) { return A.indexOf(v) === i; }); }
         if (keep.length > 2) { D.names = D.names.map(function (x, i) { return [x[0], keep.map(function (kk) { return K[kk][i]; })]; });
           D.when = keep.map(function (kk) { return (ts[kk] - T0) / (T1 - T0); }); D.labels = keep.map(function (kk, i) { return i === 0 ? S0.l0 : i === keep.length - 1 ? 'TODAY' : String(new Date(ts[kk]).getUTCFullYear()); }); } } } catch (e2) {}
       out[y] = D; });
@@ -1835,10 +1841,17 @@ html.pk-cy-in div:has(> button[aria-label="Listen to Pickathon"]){opacity:0!impo
 
   function STAT(y) { var D = C && C[y]; return +y <= 2005 || !!(D && D.src !== 'real billing'); } // still posters: 2005 and earlier (Zale, Nov 9), and any year without real poster billing (Zale's rule: no source, show today only). Real billing so far: 2023, 2024
   function stop() { if (S.raf) { cancelAnimationFrame(S.raf); S.raf = null; } S.playing = false; }
+  var invFlow = function (v) { var lo = 0, hi = 1; for (var q = 0; q < 24; q++) { var m = (lo + hi) / 2; if (flow(m) < v) lo = m; else hi = m; } return (lo + hi) / 2; };
+  /* Play / replay (Zale, Nov 10): a pause resumes where it stopped; a replay first glides back to the printed bill, holds there a second so the start is clear, then runs. No jumps. */
   function run(resume) {
     var D = C[S.y], n = D.labels.length; if (n < 2 || STAT(S.y)) return; var from = resume && S.tp > 0 && S.tp < n - 1 - 1e-3 ? S.tp : 0; stop();
-    var HOLD = from ? 0 : 1400, tot = n > 2 ? TOTAL : DUR, t0 = performance.now(), off = (from / (n - 1)) * tot; S.playing = true; S.tp = from;
-    var fr = function (now) { var t = Math.max(0, Math.min(tot, now - t0 - HOLD + off)), done = now - t0 - HOLD + off >= tot; S.tp = done ? n - 1 : (n - 1) * flow(t / tot); if (done) { S.playing = false; S.raf = null; } else S.raf = requestAnimationFrame(fr); draw(); };
+    var tot = n > 2 ? TOTAL : DUR, REW = 900, HOLDS = 1000, t0 = performance.now(), u0 = from ? invFlow(from / (n - 1)) : 0, tp0 = S.tp, rew = !from && tp0 > 0.02 && !RM; S.playing = true;
+    if (!rew && !from) S.tp = 0;
+    var fr = function (now) { var el = now - t0;
+      if (rew && el < REW) { var q = el / REW, k = q * q * (3 - 2 * q); S.tp = tp0 * (1 - k); S.raf = requestAnimationFrame(fr); draw(); return; }
+      var lead = rew ? REW + HOLDS : (from ? 0 : 1000), t = el - lead;
+      if (t < 0) { S.tp = 0; S.raf = requestAnimationFrame(fr); draw(); return; }
+      var u = Math.min(1, u0 + t / tot), done = u >= 1; S.tp = done ? n - 1 : (n - 1) * flow(u); if (done) { S.playing = false; S.raf = null; } else S.raf = requestAnimationFrame(fr); draw(); };
     draw(); S.raf = requestAnimationFrame(function (now) { t0 = now; fr(now); });
   }
   function go(y) { stop(); S.y = String(y); var n = C[y].labels.length; S.tp = (n > 1 && !RM && !STAT(y)) ? 0 : n - 1; S.seen[S.y] = 0; draw(); check(); }

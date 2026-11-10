@@ -43,12 +43,12 @@
         var smt = function (t) { t = Math.max(0, Math.min(1, t)); return t * t * (3 - 2 * t); };
         var win = D.names.map(function (x) { var a = ACT[nm(x[0])], t0 = T0, t1 = T1;
           if (a && a.c) { var ch = []; for (var i = 1; i <= NN; i++) if (a.c[i] !== a.c[i - 1]) ch.push(i);
-            if (ch.length) { var f1 = ch[0], l1 = ch[ch.length - 1]; if (l1 === NN && f1 === NN) { t0 = T1 - 1.2 * YM; t1 = T1; } else { t0 = ts[f1] - 0.7 * YM; t1 = Math.min(T1, ts[l1] + 0.7 * YM); } t0 = Math.max(T0, t0); } }
+            if (ch.length) { var f1 = ch[0], l1 = ch[ch.length - 1]; if (l1 === NN && f1 === NN) { t0 = T1 - 2.4 * YM; t1 = T1; } else { t0 = ts[f1] - 0.7 * YM; t1 = Math.min(T1, ts[l1] + 0.7 * YM); } t0 = Math.max(T0, t0); } }
           return [t0, Math.max(t1, t0 + 1)]; });
         var K = []; for (var k = 0; k <= NN; k++) { var v = D.names.map(function (x, i) { var f = x[1][0], e = x[1][1], pg = smt((ts[k] - win[i][0]) / (win[i][1] - win[i][0])); if (k === 0) pg = 0; if (k === NN) pg = 1; return [f + (e - f) * pg, e, f, i]; });
           v.sort(function (p, q) { return p[0] - q[0] || p[1] - q[1] || p[2] - q[2]; }); var rk = []; v.forEach(function (q, r) { rk[q[3]] = r; }); K.push(rk); }
         var cl = function (a) { return a.map(function (r) { return r < 12 ? r : 99; }).join(); }, keep = [0]; for (var k2 = 1; k2 < NN; k2++) if (cl(K[k2]) !== cl(K[keep[keep.length - 1]])) keep.push(k2); keep.push(NN);
-        if (keep.length > 10) { var thin = [0], step = (keep.length - 1) / 9; for (var q2 = 1; q2 < 9; q2++) thin.push(keep[Math.round(q2 * step)]); thin.push(NN); keep = thin.filter(function (v, i, A) { return A.indexOf(v) === i; }); }
+        if (keep.length > 14) { var thin = [0], step = (keep.length - 1) / 13; for (var q2 = 1; q2 < 13; q2++) thin.push(keep[Math.round(q2 * step)]); thin.push(NN); keep = thin.filter(function (v, i, A) { return A.indexOf(v) === i; }); }
         if (keep.length > 2) { D.names = D.names.map(function (x, i) { return [x[0], keep.map(function (kk) { return K[kk][i]; })]; });
           D.when = keep.map(function (kk) { return (ts[kk] - T0) / (T1 - T0); }); D.labels = keep.map(function (kk, i) { return i === 0 ? S0.l0 : i === keep.length - 1 ? 'TODAY' : String(new Date(ts[kk]).getUTCFullYear()); }); } } } catch (e2) {}
       out[y] = D; });
@@ -204,10 +204,17 @@
 
   function STAT(y) { var D = C && C[y]; return +y <= 2005 || !!(D && D.src !== 'real billing'); } // still posters: 2005 and earlier (Zale, Nov 9), and any year without real poster billing (Zale's rule: no source, show today only). Real billing so far: 2023, 2024
   function stop() { if (S.raf) { cancelAnimationFrame(S.raf); S.raf = null; } S.playing = false; }
+  var invFlow = function (v) { var lo = 0, hi = 1; for (var q = 0; q < 24; q++) { var m = (lo + hi) / 2; if (flow(m) < v) lo = m; else hi = m; } return (lo + hi) / 2; };
+  /* Play / replay (Zale, Nov 10): a pause resumes where it stopped; a replay first glides back to the printed bill, holds there a second so the start is clear, then runs. No jumps. */
   function run(resume) {
     var D = C[S.y], n = D.labels.length; if (n < 2 || STAT(S.y)) return; var from = resume && S.tp > 0 && S.tp < n - 1 - 1e-3 ? S.tp : 0; stop();
-    var HOLD = from ? 0 : 1400, tot = n > 2 ? TOTAL : DUR, t0 = performance.now(), off = (from / (n - 1)) * tot; S.playing = true; S.tp = from;
-    var fr = function (now) { var t = Math.max(0, Math.min(tot, now - t0 - HOLD + off)), done = now - t0 - HOLD + off >= tot; S.tp = done ? n - 1 : (n - 1) * flow(t / tot); if (done) { S.playing = false; S.raf = null; } else S.raf = requestAnimationFrame(fr); draw(); };
+    var tot = n > 2 ? TOTAL : DUR, REW = 900, HOLDS = 1000, t0 = performance.now(), u0 = from ? invFlow(from / (n - 1)) : 0, tp0 = S.tp, rew = !from && tp0 > 0.02 && !RM; S.playing = true;
+    if (!rew && !from) S.tp = 0;
+    var fr = function (now) { var el = now - t0;
+      if (rew && el < REW) { var q = el / REW, k = q * q * (3 - 2 * q); S.tp = tp0 * (1 - k); S.raf = requestAnimationFrame(fr); draw(); return; }
+      var lead = rew ? REW + HOLDS : (from ? 0 : 1000), t = el - lead;
+      if (t < 0) { S.tp = 0; S.raf = requestAnimationFrame(fr); draw(); return; }
+      var u = Math.min(1, u0 + t / tot), done = u >= 1; S.tp = done ? n - 1 : (n - 1) * flow(u); if (done) { S.playing = false; S.raf = null; } else S.raf = requestAnimationFrame(fr); draw(); };
     draw(); S.raf = requestAnimationFrame(function (now) { t0 = now; fr(now); });
   }
   function go(y) { stop(); S.y = String(y); var n = C[y].labels.length; S.tp = (n > 1 && !RM && !STAT(y)) ? 0 : n - 1; S.seen[S.y] = 0; draw(); check(); }
