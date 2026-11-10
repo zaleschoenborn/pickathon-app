@@ -1009,16 +1009,11 @@ html.pk-nh-ontop #root [role=region][aria-label="Listen"],html.pk-nh-ontop #root
 #root .pk-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 @media (max-width:999px){
 #root .pk-cl-hd{position:relative;display:block}
-#root#root .pk-cl-an{padding:0 12px;font-size:12px}
+#root#root .pk-cl-an{position:absolute;right:0;top:-12px;padding:0 12px;font-size:12px}
 #root .pk-cl-cap{min-height:2.7em}
 #root .pk-cl-pw{margin-top:8px}
 #root .pk-cl-ht .pk-nh-h2{margin-top:14px}
 }
-/* Zale Nov 9 23:03: square play control first in the bar; Another year belongs to the poster; the section stands apart from the map above */
-#root#root#root#root .pk-cl-tb .pk-cl-rpl{width:48px!important;height:48px!important;min-height:48px!important;padding:0!important;font-size:20px!important;line-height:1;display:grid;place-items:center;border-radius:6px!important}
-#root .pk-cl-ay{display:grid;grid-template-columns:1fr 1fr;gap:10px;max-width:960px;margin:12px auto 0}#root#root#root#root .pk-cl-ay .pk-cl-an{width:100%;min-height:48px;justify-content:center;white-space:nowrap}#root#root#root#root .pk-cl-ay .pk-cl-go{background:transparent!important;border:2px solid #D6B54A!important;color:#F2CF62!important}@media (min-width:700px){#root .pk-cl-ay{max-width:520px}}
-#nh-sec-climb-sep{display:none}
-#pk-nh-climb{border-top:1px solid rgba(242,237,227,.16);margin-top:40px;padding-top:36px}
 /* Home renders every section up front: no content-visibility skipping (blank sections on phones, Zale Nov 9 06:30) */
 main:has(#pk-nh-climb)>section{content-visibility:visible!important;contain-intrinsic-size:none!important}
 /* time bar above the poster: the year it played to today, with Replay beside it (Zale, Nov 9 09:02) */
@@ -1026,7 +1021,6 @@ main:has(#pk-nh-climb)>section{content-visibility:visible!important;contain-intr
 #root .pk-cl-ty{flex:none;font:800 15px/1 'Bricolage Grotesque',sans-serif;letter-spacing:.06em;color:#CFC9BC;font-variant-numeric:tabular-nums}
 #root .pk-cl-ty:first-child{color:#F2EDE3}
 #root .pk-cl-tr{position:relative;flex:1;min-width:60px;height:4px;border-radius:2px;background:rgba(242,237,227,.18)}
-#root .pk-cl-tr{touch-action:none}#root .pk-cl-tr::before{content:'';position:absolute;left:-6px;right:-6px;top:-18px;bottom:-18px}#root .pk-cl-tr.sc .pk-cl-tm{opacity:1!important}
 #root .pk-cl-tf{position:absolute;left:0;top:0;bottom:0;border-radius:2px;background:#F2CF62}
 #root .pk-cl-tm{position:absolute;top:-24px;transform:translateX(-50%);font:800 13px/1 'Bricolage Grotesque',sans-serif;color:#F2CF62;font-variant-numeric:tabular-nums;transition:opacity .2s;pointer-events:none}
 #root .pk-cl-tm::after{content:'';position:absolute;left:50%;top:20px;width:10px;height:10px;margin-left:-5px;border-radius:50%;background:#F2CF62}
@@ -1037,10 +1031,8 @@ main:has(#pk-nh-climb)>section{content-visibility:visible!important;contain-intr
 
 /* review r2: names never draw past the paper; Another year clears the heading on phone */
 #root .pk-cl-p{overflow:hidden}
-@media (max-width:999px){#root .pk-cl-ht .pk-nh-h2{margin-top:10px!important;font-size:24px!important}#root#root .pk-cl-cap{font-size:15px!important;line-height:1.3!important;height:3.9em!important;min-height:0!important;overflow:hidden;margin-top:4px}#root .pk-cl-tb{margin-top:8px}#root .pk-cl-tl{margin:4px auto 6px!important;min-height:1.5em}}
+@media (max-width:999px){#root .pk-cl-ht .pk-nh-h2{margin-top:22px!important}}
 #root#root#root#root .pk-cl-tb .pk-cl-rpl{min-height:44px!important;height:auto!important;padding:0 14px!important;font-size:13px!important;width:auto!important}
-/* Nov 10 UI review: phone climb fits one screen with a full-width poster and the two buttons under it */
-@media (max-width:699px){#pk-nh-climb{padding-top:18px}#root .pk-cl-ht .pk-nh-k,#root .pk-cl-tl{display:none!important}#root .pk-cl-ht .pk-nh-h2{margin-top:0!important}#root .pk-cl-ay{margin-top:8px}}
 </style>
 <style id="pk-hm-css">
 /* Neighborhood page: "Where it is" map (Zale, Nov 9 08:30: a way to move between neighborhoods from the map on each neighborhood page). Design Studio */
@@ -1243,7 +1235,7 @@ html.pk-tmon #root header + *{margin-top:44px}
 #root .pk-tn-cols b{display:block;font:800 24px/1 'Bricolage Grotesque',sans-serif;color:var(--c)}
 #root .pk-tn-cols span{display:block;margin-top:2px;font-size:10.5px;font-weight:800;letter-spacing:.04em;line-height:1.2;text-transform:uppercase;color:#B9B3A6;white-space:normal;overflow-wrap:normal;word-break:normal;hyphens:none}@media (max-width:480px){#root .pk-tn-cols span{font-size:9.5px;letter-spacing:0}}
 #root .pk-tn-f{position:relative;margin:4px 0 0}
-#root#root .pk-tn-dot{position:absolute;left:0;top:0;width:var(--tn-d)!important;height:var(--tn-d);min-height:0;padding:0!important;border-radius:50%;border:0!important;background:var(--c)!important;transition:none;box-shadow:none}#root#root .pk-tn-anim .pk-tn-dot{transition:transform .7s cubic-bezier(.3,.7,.2,1),background-color .7s}#root .pk-tn-f:not(.on){visibility:hidden}
+#root#root .pk-tn-dot{position:absolute;left:0;top:0;width:var(--tn-d)!important;height:var(--tn-d);min-height:0;padding:0!important;border-radius:50%;border:0!important;background:var(--c)!important;transition:none;box-shadow:none}#root#root .pk-tn-anim .pk-tn-dot{transition:transform .7s cubic-bezier(.3,.7,.2,1),background-color .7s}#root .pk-tn-f:not(.on){visibility:hidden}#root#root .pk-tn-play .pk-tn-dot{transition:transform 1.15s cubic-bezier(.45,.05,.2,1),background-color .9s ease}
 #root#root .pk-tn-dot.mv{box-shadow:0 0 0 1.5px #12160F,0 0 0 3px #F2CF62}
 #root#root .pk-tn-dot.sel{box-shadow:0 0 0 2px #12160F,0 0 0 4.5px #F2EDE3;z-index:2}
 #root#root .pk-tn-dot:focus-visible{outline:2px solid #F2EDE3;outline-offset:3px}
@@ -1301,12 +1293,27 @@ html.pk-tmon #root header + *{margin-top:44px}
       '<div class="pk-tn-nav"><div class="pk-tn-step"><button type="button" class="pk-tn-sb" data-d="-1" aria-label="Earlier date"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>' +
       '<div class="pk-tn-dt" aria-live="polite"><b></b><span></span></div>' +
       '<button type="button" class="pk-tn-sb" data-d="1" aria-label="Later date"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button></div>' +
-      '<div class="pk-tn-chips"><button type="button" class="pk-tn-chip" data-j="' + F + '">At the festival</button><button type="button" class="pk-tn-chip" data-j="' + N + '">Now</button></div></div>' +
+      '<div class="pk-tn-chips"><button type="button" class="pk-tn-chip pk-tn-playb" aria-label="Play the years">\u25B6 Play</button><button type="button" class="pk-tn-chip" data-j="' + F + '">At the festival</button><button type="button" class="pk-tn-chip" data-j="' + N + '">Now</button></div></div>' +
       '<div class="pk-tn-cols">' + COL.map(function (c) { return '<div style="--c:' + c[3] + '"><b></b><span>' + c[1] + '</span></div>'; }).join('') + '</div>' +
       '<div class="pk-tn-f"><span class="pk-tn-tip" aria-hidden="true"></span>' + Y.acts.map(function (a, k) { return '<button type="button" class="pk-tn-dot" data-k="' + k + '"></button>'; }).join('') + '</div>' +
       '<div class="pk-tn-card" aria-live="polite"></div>' +
-      '<p class="pk-tn-fn">' + 'Rated with what we know now' + '</p>';
+      '<p class="pk-tn-fn">' + 'Rated with what we know now. Changes the research cannot date yet show at Today.' + '</p>';
     var dots = w.querySelectorAll('.pk-tn-dot'), field = w.querySelector('.pk-tn-f'), tip = w.querySelector('.pk-tn-tip');
+    /* Play the years: one fixed-length run (7.2 s) from the festival to today, however many years that is; the date counts through and every dot glides to its column when its class changes (Zale, Nov 10) */
+    var PDUR = 7200, raf = null, playing = false, RMo = false; try { RMo = window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) {}
+    function dstamp(fi) { var i = Math.min(N - 1, Math.floor(fi)), f = fi - i, A0 = Date.parse(Y.dates[i]), B0 = Date.parse(Y.dates[i + 1]), t = new Date(A0 + (B0 - A0) * f); return MON[t.getUTCMonth()].toUpperCase() + ' ' + t.getUTCFullYear(); }
+    function playUi() { var pb = w.querySelector('.pk-tn-playb'); if (pb) { pb.textContent = playing ? '\u275A\u275A Pause' : (s.i >= N ? '\u21BB Replay' : '\u25B6 Play'); pb.setAttribute('aria-pressed', String(playing)); } }
+    function stop() { if (raf) cancelAnimationFrame(raf); raf = null; playing = false; w.classList.remove('pk-tn-play'); playUi(); }
+    function play() {
+      if (N < 1) return; stop(); if (RMo) { s.i = N; paint(true); return; }
+      playing = true; w.classList.add('pk-tn-play'); s.i = 0; paint(true); playUi(); var t0 = null;
+      var step = function (now) { if (!playing) return; if (t0 == null) t0 = now; var u = Math.min(1, (now - t0) / PDUR), e = u < .5 ? 2 * u * u : 1 - Math.pow(-2 * u + 2, 2) / 2, fi = e * N, i = u >= 1 ? N : Math.floor(fi + 1e-6);
+        if (i !== s.i) { s.i = i; paint(true); }
+        if (u < 1) { w.querySelector('.pk-tn-dt b').textContent = dstamp(fi); raf = requestAnimationFrame(step); } else { stop(); paint(true); } };
+      raf = requestAnimationFrame(step);
+    }
+    w.__play = play;
+    if (!ONE && 'IntersectionObserver' in window) { var io = new IntersectionObserver(function (en) { en.forEach(function (x) { if (x.isIntersecting && !s.played && field.classList.contains('on')) { s.played = true; io.disconnect(); setTimeout(play, 500); } }); }, { threshold: 0.6 }); io.observe(field); }
     function lab(a, i) { return COL[CI[a.c[i]]][2]; }
     function layout(anim) {
       var cs = getComputedStyle(w), D = parseFloat(cs.getPropertyValue('--tn-d')) || 20, G = 4;
@@ -1329,7 +1336,7 @@ html.pk-tmon #root header + *{margin-top:44px}
       w.querySelector('.pk-tn-dt b').textContent = mo(Y.dates[i]).toUpperCase();
       w.querySelector('.pk-tn-dt span').textContent = cap(Y, i);
       w.querySelectorAll('.pk-tn-sb')[0].disabled = i === 0; w.querySelectorAll('.pk-tn-sb')[1].disabled = i === N;
-      w.querySelectorAll('.pk-tn-chip').forEach(function (c) { c.setAttribute('aria-pressed', String(+c.dataset.j === i)); });
+      w.querySelectorAll('.pk-tn-chip').forEach(function (c) { if (c.dataset.j != null) c.setAttribute('aria-pressed', String(+c.dataset.j === i)); }); playUi();
       dots.forEach(function (d, k) {
         var x = Y.acts[k]; d.style.setProperty('--c', COL[CI[x.c[i]]][3]);
         d.classList.toggle('mv', x.c[F] !== x.c[N]); d.classList.toggle('sel', k === s.sel);
@@ -1348,8 +1355,9 @@ html.pk-tmon #root header + *{margin-top:44px}
     }
     w.addEventListener('click', function (e) {
       var t = e.target.closest('button'); if (!t || !w.contains(t)) return;
-      if (t.classList.contains('pk-tn-sb')) { s.i = Math.max(0, Math.min(N, s.i + +t.dataset.d)); paint(true); }
-      else if (t.classList.contains('pk-tn-chip')) { s.i = +t.dataset.j; paint(true); }
+      if (t.classList.contains('pk-tn-playb')) { s.played = true; if (playing) stop(); else play(); }
+      else if (t.classList.contains('pk-tn-sb')) { stop(); s.i = Math.max(0, Math.min(N, s.i + +t.dataset.d)); paint(true); }
+      else if (t.classList.contains('pk-tn-chip')) { stop(); s.i = +t.dataset.j; paint(true); }
       else if (t.classList.contains('pk-tn-dot')) { s.sel = +t.dataset.k; paint(); }
     });
     w.addEventListener('mouseover', function (e) {
@@ -1628,7 +1636,9 @@ html.pk-cy-in div:has(> button[aria-label="Listen to Pickathon"]){opacity:0!impo
 (function () {
   var KIT = {"2000":{"dates":null,"head":"#7C3032","hc":3.16,"light":"#9B9E3A"},"2001":{"dates":null,"head":"#228CF0","hc":3.46,"light":"#FFFFFF"},"2002":{"dates":null,"head":"#8B6B52","hc":1.93,"light":"#B1A098"},"2003":{"dates":null,"head":"#7C3D3F","hc":2.13,"light":"#9C7D64"},"2004":{"dates":null,"head":"#63463F","hc":6.72,"light":"#EAE4DF"},"2005":{"dates":null,"head":"#CF6D48","hc":2.25,"light":"#F6C778"},"2006":{"dates":null,"head":"#D0623B","hc":2.86,"light":"#F0DEA5"},"2007":{"dates":"August 3-5, 2007","head":"#CA5D28","hc":3.55,"light":"#D5CC30"},"2008":{"dates":"August 1-3, 2008","head":"#934A20","hc":5.59,"light":"#8AB4BE"},"2009":{"dates":"August 7-9, 2009","head":"#CE5629","hc":3.63,"light":"#F0EEEA"},"2010":{"dates":"August 6-8, 2010","head":"#DF5B26","hc":3.2,"light":"#EFBFC8"},"2011":{"dates":"August 5-7, 2011","head":"#BA3E26","hc":4.76,"light":"#3187A9"},"2012":{"dates":"August 3-5, 2012","head":"#B68419","hc":2.2,"light":"#B5B878"},"2013":{"dates":"August 2-4, 2013","head":"#EC8015","hc":1.67,"light":"#ACC44D"},"2014":{"dates":"August 1-3, 2014","head":"#EF2A2C","hc":3.53,"light":"#AEC5D2"},"2015":{"dates":"August 7-9, 2015","head":"#EF2A2C","hc":3.53,"light":"#AEC5D2"},"2016":{"dates":"August 5-7, 2016","head":"#C9A820","hc":2.3,"light":"#879B9E"},"2017":{"dates":"August 4-6, 2017","head":"#FEAF49","hc":1.81,"light":"#AEB262"},"2018":{"dates":"August 3-5, 2018","head":"#DB463E","hc":3.81,"light":"#9B9778"},"2019":{"dates":"August 2-4, 2019","head":"#C2B076","hc":1.86,"light":"#B9C451"},"2022":{"dates":"August 4-7, 2022","head":"#E2BD23","hc":1.57,"light":"#79B2A7"},"2023":{"dates":"August 3-6, 2023","head":"#DD8747","hc":2.37,"light":"#9A9351"},"2024":{"dates":"August 1-4, 2024","head":"#A6503B","hc":5.4,"light":"#C5AC38"},"2025":{"dates":"July 31 - August 3, 2025","head":"#FF3087","hc":3.01,"light":"#FFF01C"},"2026":{"dates":"July 30 - August 2, 2026","head":"#CD6C0C","hc":3.6,"light":"#BACD32"}};
   var YC = {"2000":"#9B9E3A","2001":"#D6B54A","2002":"#B1A098","2003":"#D6B54A","2004":"#EAE4DF","2005":"#D6B54A","2006":"#F0DEA5","2007":"#D6B54A","2008":"#D6B54A","2009":"#D6B54A","2010":"#D6B54A","2011":"#D6B54A","2012":"#DBD588","2013":"#EC8015","2014":"#D6B54A","2015":"#D6B54A","2016":"#C9A820","2017":"#FEAF49","2018":"#D6B54A","2019":"#C2B076","2022":"#E2BD23","2023":"#DD8747","2024":"#D6B54A","2025":"#D6B54A","2026":"#D6B54A"};
-  var C = null, S = { y: null, tp: 1, playing: false, seen: {}, raf: null, bag: [] }, mountEl = null, RM = false, TODAY = 2026, DUR = 3800;
+  var C = null, S = { y: null, tp: 1, playing: false, seen: {}, raf: null, bag: [] }, mountEl = null, RM = false, TODAY = 2026, DUR = 3800, TOTAL = 6400; /* one fixed run however many keyframes a year has (Zale, Nov 10) */
+  var flow = function (u) { return u <= 0 ? 0 : u >= 1 ? 1 : 0.5 * u + 0.5 * (u * u * (3 - 2 * u)); };   /* gentle at both ends, never a stop in the middle */
+  var seg = function (n, fk) { return fk <= 0 ? 0 : fk >= 1 ? 1 : n > 2 ? 0.7 * fk + 0.3 * (fk * fk * (3 - 2 * fk)) : 0.5 - 0.5 * Math.cos(Math.PI * fk); };
   try { RM = window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) {}
   var NW = ['', 'ONE', 'TWO', 'THREE', 'FOUR', 'FIVE', 'SIX', 'SEVEN', 'EIGHT', 'NINE', 'TEN', 'ELEVEN', 'TWELVE', 'THIRTEEN', 'FOURTEEN', 'FIFTEEN', 'SIXTEEN', 'SEVENTEEN', 'EIGHTEEN', 'NINETEEN', 'TWENTY', 'TWENTY-ONE', 'TWENTY-TWO', 'TWENTY-THREE', 'TWENTY-FOUR', 'TWENTY-FIVE', 'TWENTY-SIX', 'TWENTY-SEVEN'];
   var ORD = function (k) { return (k + 1) + (k === 0 ? 'ST' : k === 1 ? 'ND' : k === 2 ? 'RD' : 'TH'); };
@@ -1656,7 +1666,23 @@ html.pk-cy-in div:has(> button[aria-label="Listen to Pickathon"]){opacity:0!impo
       var now = {}; R.forEach(function (r, i) { now[r[0]] = i; });
       var two = R.some(function (r) { return r[4] !== now[r[0]]; }), cands = R.filter(function (r) { return r[5] && r[4] - now[r[0]] >= 3; }).sort(function (a, b) { return now[a[0]] - now[b[0]]; }), clim = two && cands.length ? cands[0][0] : null;
       var D = Object.assign({}, D0); D.names = R.map(function (r) { return [r[0], clim ? [r[4], now[r[0]]] : [now[r[0]]]]; }); D.labels = clim ? [S0.l0, 'TODAY'] : ['TODAY']; D.clim = clim; D.climFrom = clim ? cands[0][4] : 0; D.climTo = clim ? now[clim] : 0;
-      D.ranked = R.filter(function (r) { return !N(r); }).length; D.more = Math.max(0, R.length - Math.min(10, D.ranked)); D.live = 1; out[y] = D; });
+      D.ranked = R.filter(function (r) { return !N(r); }).length; D.more = Math.max(0, R.length - Math.min(10, D.ranked)); D.live = 1;
+      /* Six-month keyframes (Nov 10): the class table now dates each class step, so the bill is re-ranked at every point between the festival and today instead of jumping straight there. Movers glide when their class changed; the rest drift. */
+      try { var YR = dd.yearRatings && dd.yearRatings[y]; if (clim && YR && YR.dates && YR.dates.length > 3) {
+        var ts = YR.dates.map(function (q) { return Date.parse(q); }), T0 = ts[0], T1 = ts[ts.length - 1], YM = 365.25 * 864e5, NN = ts.length - 1, ACT = {};
+        (YR.acts || []).forEach(function (a) { ACT[nm(a.n)] = a; });
+        var smt = function (t) { t = Math.max(0, Math.min(1, t)); return t * t * (3 - 2 * t); };
+        var win = D.names.map(function (x) { var a = ACT[nm(x[0])], t0 = T0, t1 = T1;
+          if (a && a.c) { var ch = []; for (var i = 1; i <= NN; i++) if (a.c[i] !== a.c[i - 1]) ch.push(i);
+            if (ch.length) { var f1 = ch[0], l1 = ch[ch.length - 1]; if (l1 === NN && f1 === NN) { t0 = T1 - 1.2 * YM; t1 = T1; } else { t0 = ts[f1] - 0.7 * YM; t1 = Math.min(T1, ts[l1] + 0.7 * YM); } t0 = Math.max(T0, t0); } }
+          return [t0, Math.max(t1, t0 + 1)]; });
+        var K = []; for (var k = 0; k <= NN; k++) { var v = D.names.map(function (x, i) { var f = x[1][0], e = x[1][1], pg = smt((ts[k] - win[i][0]) / (win[i][1] - win[i][0])); if (k === 0) pg = 0; if (k === NN) pg = 1; return [f + (e - f) * pg, e, f, i]; });
+          v.sort(function (p, q) { return p[0] - q[0] || p[1] - q[1] || p[2] - q[2]; }); var rk = []; v.forEach(function (q, r) { rk[q[3]] = r; }); K.push(rk); }
+        var cl = function (a) { return a.map(function (r) { return r < 12 ? r : 99; }).join(); }, keep = [0]; for (var k2 = 1; k2 < NN; k2++) if (cl(K[k2]) !== cl(K[keep[keep.length - 1]])) keep.push(k2); keep.push(NN);
+        if (keep.length > 10) { var thin = [0], step = (keep.length - 1) / 9; for (var q2 = 1; q2 < 9; q2++) thin.push(keep[Math.round(q2 * step)]); thin.push(NN); keep = thin.filter(function (v, i, A) { return A.indexOf(v) === i; }); }
+        if (keep.length > 2) { D.names = D.names.map(function (x, i) { return [x[0], keep.map(function (kk) { return K[kk][i]; })]; });
+          D.when = keep.map(function (kk) { return (ts[kk] - T0) / (T1 - T0); }); D.labels = keep.map(function (kk, i) { return i === 0 ? S0.l0 : i === keep.length - 1 ? 'TODAY' : String(new Date(ts[kk]).getUTCFullYear()); }); } } } catch (e2) {}
+      out[y] = D; });
     return out; } catch (e) { return dd.climb || {}; } };
   var ALLY = function () { return Object.keys(C).filter(function (k) { return C[k] && C[k].names && C[k].names.length; }).map(Number).sort(function (a, b) { return b - a; }); };
   // ANOTHER YEAR draws from every summer that has a climber, shuffled so nothing repeats until all have shown.
@@ -1664,11 +1690,11 @@ html.pk-cy-in div:has(> button[aria-label="Listen to Pickathon"]){opacity:0!impo
 
   // Sizes. Desktop: the paper is 960 wide (inner 880): art 330 at left, list column 524. Phone and tablet (phone-style): art small on top, list full width.
   function cfg(ph, wAvail) {
-    if (!ph) return { ph: false, IW: 880, PADX: 40, PADY: 22, ART: { x: 0, y: 118, w: 330 }, COLX: 356, COLW: 524, Y0: 0, LANES: [[80, 74, 2], [44, 41, 1], [44, 41, 1], [44, 41, 1], [33, 29, 1], [33, 29, 1], [33, 29, 1], [33, 29, 1], [33, 29, 1], [33, 29, 1]], GAP: 5, R1: 22, ROWH: 21, FS: 13, CFS: 15, DATES: 15, DGAP: 42, BOT: 66, RIB: [0, 14], STAMP: 0.92 };
+    if (!ph) return { ph: false, IW: 880, PADX: 40, PADY: 22, ART: { x: 0, y: 118, w: 330 }, COLX: 356, COLW: 524, Y0: 0, LANES: [[80, 74, 2], [44, 41, 1], [44, 41, 1], [44, 41, 1], [33, 29, 1], [33, 29, 1], [33, 29, 1], [33, 29, 1], [33, 29, 1], [33, 29, 1]], GAP: 5, R1: 22, ROWH: 21, FS: 13, CFS: 15, DATES: 15, DGAP: 42, BOT: 100, RIB: [40, 14], STAMP: 0.92 };
     var PW = Math.max(300, Math.min(wAvail, 720)), IW = PW - 32, k = Math.min(1.7, IW / 326), L = function (h, m, ml) { return [Math.round(h * k), Math.round(m * k), ml]; };
-    var AW = Math.round(92 * k), CX = AW + Math.round(10 * k), LL = [L(36, 30, 2), L(26, 22, 1), L(26, 22, 1), L(26, 22, 1), L(20, 16, 1), L(20, 16, 1), L(20, 16, 1), L(20, 16, 1), L(20, 16, 1), L(20, 16, 1)], GP = Math.round(3 * k), listH = LL.reduce(function (a, l) { return a + l[0] + GP; }, -GP);
-    return { ph: true, IW: IW, PADX: 16, PADY: 10, ART: { x: 0, y: 4, w: AW, h: listH }, COLX: CX, COLW: IW - CX, Y0: 4,
-      LANES: LL, GAP: GP, R1: Math.round(13 * k), ROWH: Math.round(16 * k), FS: Math.max(11, 11 * k), CFS: Math.max(12, 12 * k), DATES: Math.max(11, 11 * k), DGAP: Math.round(30 * k), BOT: Math.round(30 * k) + Math.round(Math.max(11, 11 * k)) + 14, RIB: [0, Math.max(12, 12 * k)], STAMP: 0.7 * k };
+    var AW = Math.round(96 * k);
+    return { ph: true, IW: IW, PADX: 16, PADY: 14, ART: { x: (IW - AW) / 2, y: 0, w: AW, h: Math.round(74 * k) }, COLX: 0, COLW: IW, Y0: Math.round(80 * k),
+      LANES: [L(42, 36, 2), L(27, 23, 1), L(27, 23, 1), L(27, 23, 1), L(21, 17, 1), L(21, 17, 1), L(21, 17, 1), L(21, 17, 1), L(21, 17, 1), L(21, 17, 1)], GAP: Math.round(3 * k), R1: Math.round(13 * k), ROWH: Math.round(16 * k), FS: Math.max(11, 11 * k), CFS: Math.max(12, 12 * k), DATES: Math.max(11, 11 * k), DGAP: Math.round(30 * k), BOT: Math.round(30 * k) + Math.round(Math.max(11, 11 * k)) + 12 + Math.max(34, Math.round(32 * k)), RIB: [Math.max(34, Math.round(32 * k)), Math.max(12, 12 * k)], STAMP: 0.7 * k };
   }
 
   // One frame of the ladder at time tp (0 = festival, n-1 = today). Returns the paper's inner HTML and its height.
@@ -1700,7 +1726,7 @@ html.pk-cy-in div:has(> button[aria-label="Listen to Pickathon"]){opacity:0!impo
     var k0 = Math.floor(tp), k1 = Math.min(n - 1, k0 + 1), fk = tp - k0, PA = posAt(k0), PB = posAt(k1);
     var same = function (a, b) { return a.x === b.x && a.y === b.y && a.f === b.f && a.k === b.k; };
     // every name takes the same time on one smooth curve (Zale, Nov 9 00:27)
-    var G = fk <= 0 ? 0 : fk >= 1 ? 1 : 0.5 - 0.5 * Math.cos(Math.PI * fk);
+    var G = seg(n, fk);
     var LAST = S[LN - 1], VOFF = function (nm, f0, src) { return { x: LAST.x + 0.5 * LAST.w, y: LAST.y + LAST.h + 14, k: 0.5, f: Math.min(f0 || LAST.mx, LAST.mx) * 0.8, L: src.L, lead: src.lead, ink: A, line: LN, on: true }; };
     var op = function (nm, a, b) { var va = a.vis !== false, vb = b.vis !== false;
       if (same(a, b)) return va ? [[a, a.on ? 1 : 1 - 0.7 * Math.sin(G * Math.PI), 0]] : [];
@@ -1762,14 +1788,14 @@ html.pk-cy-in div:has(> button[aria-label="Listen to Pickathon"]){opacity:0!impo
       h += '<span style="position:absolute;left:' + p.x.toFixed(1) + 'px;top:' + p.y.toFixed(1) + 'px;transform:translate(' + (-p.k * 100).toFixed(1) + '%,-100%);white-space:pre;text-align:' + al + ';' + FONT + ';line-height:' + LH + ';letter-spacing:' + (big ? '-.01em' : '.04em') + ';font-size:' + p.f.toFixed(2) + 'px;opacity:' + o.toFixed(3) + shadow + '">' + pre
         + '<span style="' + lineSt(p.lead, p.lead ? inkLead : inkMain) + '">' + esc(p.L[0]) + '</span>' + (two ? '<span style="' + lineSt(false, inkMain).replace(/^display:block;/, 'display:block;') + '">' + esc(p.L[1]) + '</span>' : '') + post + '</span>'; });
     var rules = (fk < 0.5 ? PA.__rules : PB.__rules).map(function (r) { return '<i style="position:absolute;left:0;width:' + Math.max(0, r.a).toFixed(0) + 'px;top:' + r.y + 'px;height:1.5px;background:' + B + '"></i><i style="position:absolute;left:' + r.b.toFixed(0) + 'px;right:0;top:' + r.y + 'px;height:1.5px;background:' + B + '"></i>'; }).join('');
-    var burst = fans ? '<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="' + IW + '" height="' + BOXH + '" style="position:absolute;left:0;top:0;pointer-events:none;overflow:visible;-webkit-mask-image:' + WORN + ';mask-image:' + WORN + ';-webkit-mask-size:200px;mask-size:200px">' + fans + '</svg>' : '';   /* inline, not a new data-URI image every frame: smoother on phones (Zale, Nov 9 23:03) */
+    var burst = fans ? '<i aria-hidden="true" style="position:absolute;left:0;top:0;width:' + IW + 'px;height:' + BOXH + 'px;background:' + enc('<svg xmlns="http://www.w3.org/2000/svg" width="' + IW + '" height="' + BOXH + '">' + fans + '</svg>') + ' 0 0/100% 100% no-repeat;pointer-events:none;-webkit-mask-image:' + WORN + ';mask-image:' + WORN + ';-webkit-mask-size:200px;mask-size:200px"></i>' : '';
     var artH = Q.ph ? Q.ART.h : (S[9].y + S[9].h - Q.ART.y);
     var art = D.art ? '<img src="' + esc(D.art) + '" alt="" loading="lazy" decoding="async" style="position:absolute;left:' + Q.ART.x + 'px;top:' + Q.ART.y + 'px;width:' + Q.ART.w + 'px;height:' + artH + 'px;object-fit:contain;object-position:center center">'
-      : '<div aria-hidden="true" style="position:absolute;left:' + (Q.ART.x + (Q.ph ? 0 : 40)) + 'px;top:' + (Q.ph ? Q.ART.y : 60) + 'px;width:' + (Q.ART.w - (Q.ph ? 0 : 80)) + 'px;height:' + (Q.ph ? artH : artH - 120) + 'px;display:flex;align-items:center;justify-content:center;text-align:center;' + FONT + ';line-height:.86;font-size:' + (Q.ph ? 17 : 80) + 'px;color:' + A + ';border:' + (Q.ph ? 3 : 6) + 'px solid ' + A + '">PICKATHON<br>' + y + '</div>';
+      : '<div aria-hidden="true" style="position:absolute;left:' + (Q.ART.x + (Q.ph ? 0 : 40)) + 'px;top:' + (Q.ph ? 0 : 60) + 'px;width:' + (Q.ART.w - (Q.ph ? 0 : 80)) + 'px;height:' + (Q.ph ? artH : artH - 120) + 'px;display:flex;align-items:center;justify-content:center;text-align:center;' + FONT + ';line-height:.86;font-size:' + (Q.ph ? 22 : 80) + 'px;color:' + A + ';border:' + (Q.ph ? 3 : 6) + 'px solid ' + A + '">PICKATHON<br>' + y + '</div>';
     var dl = K.dates ? (K.dates.toUpperCase().replace(/ ?- ?/g, '–') + ' · PENDARVIS FARM' + (Q.ph ? '' : ' · HAPPY VALLEY, OREGON')) : 'PICKATHON ' + y;
     var dates = '<div style="position:absolute;left:0;right:0;top:' + DATESY + 'px;text-align:center;white-space:nowrap;' + FONT + ';font-size:' + Q.DATES + 'px;letter-spacing:.08em;color:' + A + '">' + dl.split(' · ').map(function (t, i) { return (i ? '<span style="font-size:.6em;color:' + B + ';margin:0 ' + (Q.ph ? 6 : 12) + 'px;vertical-align:.2em">★</span>' : '') + esc(t); }).join('') + '</div>';
     var rib = '<div style="position:absolute;left:0;right:0;bottom:0;display:flex;align-items:center"><span class="pk-cl-fl" style="--ink:' + A + '"></span><span style="flex:none;height:' + Q.RIB[0] + 'px;padding:0 ' + (Q.ph ? 16 : 36) + 'px;background:' + A + ' linear-gradient(' + PAPER + '80,' + PAPER + '80) 0 4px/100% 1.5px no-repeat;color:' + PAPER + ';' + FONT + ';font-size:' + Q.RIB[1] + 'px;letter-spacing:.1em;display:flex;align-items:center;white-space:nowrap;clip-path:polygon(0 0,100% 0,calc(100% - 14px) 50%,100% 100%,0 100%,14px 50%)">EXPLORE PICKATHON ' + y + ' →</span><span class="pk-cl-fr" style="--ink:' + A + '"></span></div>';
-    return { html: art + h + burst + rules + dates, IW: IW, H: BOXH, A: A, B: B, PAPER: PAPER, ACC: ACC, LIGHT: GLOWINK };
+    return { html: art + h + burst + rules + dates + rib, IW: IW, H: BOXH, A: A, B: B, PAPER: PAPER, ACC: ACC, LIGHT: GLOWINK };
   }
 
   // the clock on the poster: a date stamp that counts the summers from the festival to today; tapping it plays again
@@ -1791,10 +1817,10 @@ html.pk-cy-in div:has(> button[aria-label="Listen to Pickathon"]){opacity:0!impo
 
   // the clock above the poster (Zale, Nov 9 09:02: the stamp on the poster crowded the headliner and hid Play again)
   function timebar(D, y, tp) {
-    var n = D.labels.length, atEnd = tp >= n - 1 - 1e-3, kk = Math.floor(tp), fk = tp - kk, g = fk <= 0 ? 0 : fk >= 1 ? 1 : 0.5 - 0.5 * Math.cos(Math.PI * fk), frac = n > 1 ? Math.min(1, (kk + g) / (n - 1)) : 1;
+    var n = D.labels.length, atEnd = tp >= n - 1 - 1e-3, kk = Math.floor(tp), fk = tp - kk, g = seg(n, fk), frac = n > 1 ? Math.min(1, D.when ? D.when[Math.min(kk, n - 1)] + ((D.when[Math.min(kk + 1, n - 1)] - D.when[Math.min(kk, n - 1)]) * g) : (kk + g) / (n - 1)) : 1;
     var y0 = +y, yNow = n > 1 ? Math.max(y0 + 1, Math.round(y0 + (TODAY - y0) * frac)) : TODAY;
     var line = n < 2 ? 'Ranked by how far each act has gone' : frac <= 0.001 ? (D.src === 'real billing' ? 'The bill as printed in ' + y : 'The bill as booked in ' + y) : (atEnd || yNow >= TODAY) ? 'Ranked today by how far each act has gone' : 'Re-ranked as of ' + yNow;
-    var btn = S.playing ? '■' : atEnd ? '↻' : '▶';
+    var btn = S.playing ? '■ Stop' : atEnd ? '↻ Replay' : '▶ Play';
     return { n: n, show: n > 1 && y0 < TODAY && !STAT(y0), frac: frac, yNow: Math.min(yNow, TODAY), line: line, btn: btn, aria: S.playing ? 'Stop' : atEnd ? 'Replay ' + y + ' to today' : 'Play ' + y + ' to today' };
   }
   function caption(D, y, tp) {
@@ -1804,15 +1830,15 @@ html.pk-cy-in div:has(> button[aria-label="Listen to Pickathon"]){opacity:0!impo
     if (n < 2 || !D.clim || STAT(y)) return 'TODAY’S ' + y + ' BILL, BY HOW FAR EACH ACT HAS GONE.';
     if (tp < 0.04) return D.clim + ': ' + (derived ? 'A SMALL NAME AT THE ' + y + ' FESTIVAL.' : (D.climFrom >= 10 ? 'A SMALL NAME' : ORD(D.climFrom)) + ' ON THE ' + y + ' POSTER.');
     if (!atEnd) return 'WATCH THE BILL GROW UP';
-    return age < 3 ? since + ', SO FAR: ' + D.clim + place + (window.innerWidth < 1000 ? '' : ' IT TAKES A FEW SUMMERS TO KNOW.') : since + ': ' + D.clim + place;
+    return age < 3 ? since + ', SO FAR: ' + D.clim + place + ' IT TAKES A FEW SUMMERS TO KNOW.' : since + ': ' + D.clim + place;
   }
 
-  function STAT(y) { var D = C && C[y]; return +y <= 2005; } // still posters: 2005 and earlier only. Every year 2006-2026 animates (Zale, Nov 9 16:58: "100% animated from 26 down to 2006"), whether its billing is real or built from the classes
+  function STAT(y) { var D = C && C[y]; return +y <= 2005 || !!(D && D.src !== 'real billing'); } // still posters: 2005 and earlier (Zale, Nov 9), and any year without real poster billing (Zale's rule: no source, show today only). Real billing so far: 2023, 2024
   function stop() { if (S.raf) { cancelAnimationFrame(S.raf); S.raf = null; } S.playing = false; }
   function run(resume) {
     var D = C[S.y], n = D.labels.length; if (n < 2 || STAT(S.y)) return; var from = resume && S.tp > 0 && S.tp < n - 1 - 1e-3 ? S.tp : 0; stop();
-    var HOLD = from ? 0 : 1400, tot = DUR * (n - 1), t0 = performance.now(), off = from * DUR; S.playing = true; S.tp = from;
-    var fr = function (now) { var t = Math.max(0, Math.min(tot, now - t0 - HOLD + off)), done = now - t0 - HOLD + off >= tot; S.tp = done ? n - 1 : t / DUR; if (done) { S.playing = false; S.raf = null; } else S.raf = requestAnimationFrame(fr); draw(); };
+    var HOLD = from ? 0 : 1400, tot = n > 2 ? TOTAL : DUR, t0 = performance.now(), off = (from / (n - 1)) * tot; S.playing = true; S.tp = from;
+    var fr = function (now) { var t = Math.max(0, Math.min(tot, now - t0 - HOLD + off)), done = now - t0 - HOLD + off >= tot; S.tp = done ? n - 1 : (n - 1) * flow(t / tot); if (done) { S.playing = false; S.raf = null; } else S.raf = requestAnimationFrame(fr); draw(); };
     draw(); S.raf = requestAnimationFrame(function (now) { t0 = now; fr(now); });
   }
   function go(y) { stop(); S.y = String(y); var n = C[y].labels.length; S.tp = (n > 1 && !RM && !STAT(y)) ? 0 : n - 1; S.seen[S.y] = 0; draw(); check(); }
@@ -1832,15 +1858,15 @@ html.pk-cy-in div:has(> button[aria-label="Listen to Pickathon"]){opacity:0!impo
     var fa = document.activeElement, fk = fa && mountEl.contains(fa) ? fa.getAttribute('data-cl') : null;
     var corner = function (cx, cy) { return 'radial-gradient(circle at ' + cx + ' ' + cy + ',#000 0,transparent 22%)'; }, cm = [corner('0', '0'), corner('100%', '0'), corner('0', '100%'), corner('100%', '100%')].join(',');
     var h = '<div class="pk-cl-hd"><div class="pk-cl-ht"><p class="pk-nh-k">Still happening</p><h2 class="pk-nh-h2" id="pk-cl-h">Wait, they all played <span style="color:' + (YC[y] || '#F2CF62') + '">Pickathon ' + y + '?</span></h2>'
-      + '<p class="pk-cl-cap" aria-live="polite" style="color:' + (atEnd ? '#F2CF62' : '#CFC9BC') + '">' + esc(cap) + '</p></div></div>';
-    if (TB.show) h += '<div class="pk-cl-tb"><button type="button" class="pk-cta sec pk-cl-rpl" data-cl="play" aria-label="' + TB.aria + '">' + TB.btn + '</button><span class="pk-cl-ty">' + y + '</span><span class="pk-cl-tr" aria-hidden="true"><i class="pk-cl-tf" style="width:' + (TB.frac * 100).toFixed(1) + '%"></i><b class="pk-cl-tm" style="left:' + (TB.frac * 100).toFixed(1) + '%;opacity:' + (TB.frac > 0.04 && TB.frac < 0.96 ? 1 : 0) + '">' + TB.yNow + '</b></span><span class="pk-cl-ty">' + TODAY + '</span></div><p class="pk-cl-tl" aria-hidden="true">' + esc(TB.line) + '</p>';
+      + '<p class="pk-cl-cap" aria-live="polite" style="color:' + (atEnd ? '#F2CF62' : '#CFC9BC') + '">' + esc(cap) + '</p></div>'
+      + '<button type="button" class="pk-cl-an" data-cl="rand">↻ Another year</button></div>';
+    if (TB.show) h += '<div class="pk-cl-tb"><span class="pk-cl-ty">' + y + '</span><span class="pk-cl-tr" aria-hidden="true"><i class="pk-cl-tf" style="width:' + (TB.frac * 100).toFixed(1) + '%"></i><b class="pk-cl-tm" style="left:' + (TB.frac * 100).toFixed(1) + '%;opacity:' + (TB.frac > 0.04 && TB.frac < 0.96 ? 1 : 0) + '">' + TB.yNow + '</b></span><span class="pk-cl-ty">' + TODAY + '</span><button type="button" class="pk-cta sec pk-cl-rpl" data-cl="play" aria-label="' + TB.aria + '">' + TB.btn + '</button></div><p class="pk-cl-tl" aria-hidden="true">' + esc(TB.line) + '</p>';
     h += '<div class="pk-cl-pw" style="width:' + PW + 'px;height:' + PH + 'px">';
     h += '<div class="pk-cl-p" data-cl="year" role="link" tabindex="0" aria-label="Pickathon ' + y + ': open the ' + y + ' page" style="width:' + PW + 'px;height:' + PH + 'px;background:' + F.PAPER + '">';
     h += '<i aria-hidden="true" class="pk-cl-tone" style="background-image:radial-gradient(' + F.B + ' 1.4px,transparent 1.9px);-webkit-mask-image:' + cm + ';mask-image:' + cm + '"></i><i aria-hidden="true" class="pk-cl-grain" style="background-image:' + GRAIN + '"></i><i aria-hidden="true" class="pk-cl-frame" style="border-color:' + F.A + ';inset:' + (Q.ph ? 8 : 14) + 'px"></i>';
     h += '<div class="pk-cl-layer" aria-hidden="true" style="position:absolute;left:' + Q.PADX + 'px;top:' + Q.PADY + 'px;width:' + F.IW + 'px;height:' + F.H + 'px">' + F.html + '</div>';
     h += '</div>';
     h += '</div>';
-    h += '<div class="pk-cl-ay"><button type="button" class="pk-cl-an" data-cl="rand">↻ Another year</button><button type="button" class="pk-cl-an pk-cl-go" data-cl="year">Explore ' + y + ' →</button></div>';
     var fin = D.names.filter(function (x) { return x[1][n - 1] < Math.min(10, D.ranked || 10); }).sort(function (a, b) { return a[1][n - 1] - b[1][n - 1]; }).map(function (x) { return x[0]; });
     h += '<p class="pk-sr">Pickathon ' + y + ', ranked today by how far each act has gone: ' + esc(fin.join(', ')) + '.</p>';
     mountEl.innerHTML = h; mountEl.setAttribute('data-y', y); mountEl._key = key;
@@ -1852,10 +1878,9 @@ html.pk-cy-in div:has(> button[aria-label="Listen to Pickathon"]){opacity:0!impo
     var pw = mountEl.querySelector('.pk-cl-pw'), hd = mountEl.querySelector('.pk-cl-hd'); if (!pw || !hd) return;
     var vh = window.innerHeight || 800, top = 0, bot = 0;
     try { [].forEach.call(document.querySelectorAll('header'), function (hb) { var r = hb.getBoundingClientRect(), cs = getComputedStyle(hb); if (r.height > 0 && (cs.position === 'sticky' || cs.position === 'fixed')) top = Math.max(top, Math.min(140, r.height)); }); var tb = document.querySelector('nav[aria-label="App"]'); if (tb) { var tr = tb.getBoundingClientRect(); if (tr.height > 0 && tr.top > vh / 2) bot = vh - tr.top; } } catch (e) {}
-    if (!bot && window.innerWidth < 1000) bot = 64; if (!top && window.innerWidth < 1000) top = 80;
+    if (!bot && window.innerWidth < 1000) bot = 64;
     var sec = mountEl.closest('section'), pad = 0; if (sec) { var cs = getComputedStyle(sec); pad = parseFloat(cs.paddingTop) + parseFloat(cs.paddingBottom); }
-    var ex = 0; ['.pk-cl-tb', '.pk-cl-tl', '.pk-cl-ay'].forEach(function (q) { var e0 = mountEl.querySelector(q); if (e0) ex += e0.offsetHeight + 8; });
-    var avail = vh - top - bot - hd.offsetHeight - ex - 22 - pad, sc = Math.min(1, Math.max(0.6, avail / PH));
+    var avail = vh - top - bot - hd.offsetHeight - 22 - pad, sc = Math.min(1, Math.max(0.66, avail / PH));
     pw.style.transformOrigin = 'top center'; pw.style.transform = sc < 0.999 ? 'scale(' + sc.toFixed(3) + ')' : '';
     pw.style.marginBottom = sc < 0.999 ? (-(PH * (1 - sc))).toFixed(0) + 'px' : ''; mountEl.style.display = 'flow-root';
   }
@@ -1864,22 +1889,6 @@ html.pk-cy-in div:has(> button[aria-label="Listen to Pickathon"]){opacity:0!impo
     var pe = mountEl.querySelector('.pk-cl-p') || mountEl, r = pe.getBoundingClientRect(), vh = window.innerHeight || 800, vis = Math.min(r.bottom, vh) - Math.max(r.top, 0);
     if (vis >= Math.min(r.height, vh) * 0.6) { S.seen[S.y] = 1; if (C[S.y].labels.length > 1) setTimeout(run, 300); }
   }
-  // drag the clock to scrub between the festival bill and today (Zale, Nov 9 23:31): linear, in the same eased steps the run uses
-  (function () {
-    var drag = null;
-    function at(e) {
-      var tr = drag; if (!tr || !C || !S.y) return; var D = C[S.y], n = D.labels.length; if (n < 2) return;
-      var r = tr.getBoundingClientRect(), f = Math.max(0, Math.min(1, (e.clientX - r.left) / (r.width || 1))), x = f * (n - 1), kk = Math.min(n - 2, Math.floor(x)), g = Math.max(0, Math.min(1, x - kk));
-      S.tp = kk + Math.acos(1 - 2 * g) / Math.PI; draw();
-    }
-    document.addEventListener('pointerdown', function (e) {
-      var t = e.target && e.target.closest && e.target.closest('.pk-cl-tr'); if (!t || !mountEl || !mountEl.contains(t)) return;
-      e.preventDefault(); stop(); drag = t; t.classList.add('sc'); try { t.setPointerCapture(e.pointerId); } catch (x) {} S.seen[S.y] = 1; draw(); at(e);
-    }, true);
-    document.addEventListener('pointermove', function (e) { if (drag) at(e); }, true);
-    function up() { if (drag) { drag.classList.remove('sc'); drag = null; draw(); } }
-    document.addEventListener('pointerup', up, true); document.addEventListener('pointercancel', up, true);
-  })();
   document.addEventListener('click', function (e) {
     var b = e.target && e.target.closest && e.target.closest('[data-cl]'); if (!b || !mountEl || !mountEl.contains(b)) return;
     var a = b.getAttribute('data-cl'); e.preventDefault();

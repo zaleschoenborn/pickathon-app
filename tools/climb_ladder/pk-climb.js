@@ -5,7 +5,9 @@
 (function () {
   var KIT = __KIT__;
   var YC = __YC__;
-  var C = null, S = { y: null, tp: 1, playing: false, seen: {}, raf: null, bag: [] }, mountEl = null, RM = false, TODAY = 2026, DUR = 3800;
+  var C = null, S = { y: null, tp: 1, playing: false, seen: {}, raf: null, bag: [] }, mountEl = null, RM = false, TODAY = 2026, DUR = 3800, TOTAL = 6400; /* one fixed run however many keyframes a year has (Zale, Nov 10) */
+  var flow = function (u) { return u <= 0 ? 0 : u >= 1 ? 1 : 0.5 * u + 0.5 * (u * u * (3 - 2 * u)); };   /* gentle at both ends, never a stop in the middle */
+  var seg = function (n, fk) { return fk <= 0 ? 0 : fk >= 1 ? 1 : n > 2 ? 0.7 * fk + 0.3 * (fk * fk * (3 - 2 * fk)) : 0.5 - 0.5 * Math.cos(Math.PI * fk); };
   try { RM = window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) {}
   var NW = ['', 'ONE', 'TWO', 'THREE', 'FOUR', 'FIVE', 'SIX', 'SEVEN', 'EIGHT', 'NINE', 'TEN', 'ELEVEN', 'TWELVE', 'THIRTEEN', 'FOURTEEN', 'FIFTEEN', 'SIXTEEN', 'SEVENTEEN', 'EIGHTEEN', 'NINETEEN', 'TWENTY', 'TWENTY-ONE', 'TWENTY-TWO', 'TWENTY-THREE', 'TWENTY-FOUR', 'TWENTY-FIVE', 'TWENTY-SIX', 'TWENTY-SEVEN'];
   var ORD = function (k) { return (k + 1) + (k === 0 ? 'ST' : k === 1 ? 'ND' : k === 2 ? 'RD' : 'TH'); };
@@ -33,7 +35,23 @@
       var now = {}; R.forEach(function (r, i) { now[r[0]] = i; });
       var two = R.some(function (r) { return r[4] !== now[r[0]]; }), cands = R.filter(function (r) { return r[5] && r[4] - now[r[0]] >= 3; }).sort(function (a, b) { return now[a[0]] - now[b[0]]; }), clim = two && cands.length ? cands[0][0] : null;
       var D = Object.assign({}, D0); D.names = R.map(function (r) { return [r[0], clim ? [r[4], now[r[0]]] : [now[r[0]]]]; }); D.labels = clim ? [S0.l0, 'TODAY'] : ['TODAY']; D.clim = clim; D.climFrom = clim ? cands[0][4] : 0; D.climTo = clim ? now[clim] : 0;
-      D.ranked = R.filter(function (r) { return !N(r); }).length; D.more = Math.max(0, R.length - Math.min(10, D.ranked)); D.live = 1; out[y] = D; });
+      D.ranked = R.filter(function (r) { return !N(r); }).length; D.more = Math.max(0, R.length - Math.min(10, D.ranked)); D.live = 1;
+      /* Six-month keyframes (Nov 10): the class table now dates each class step, so the bill is re-ranked at every point between the festival and today instead of jumping straight there. Movers glide when their class changed; the rest drift. */
+      try { var YR = dd.yearRatings && dd.yearRatings[y]; if (clim && YR && YR.dates && YR.dates.length > 3) {
+        var ts = YR.dates.map(function (q) { return Date.parse(q); }), T0 = ts[0], T1 = ts[ts.length - 1], YM = 365.25 * 864e5, NN = ts.length - 1, ACT = {};
+        (YR.acts || []).forEach(function (a) { ACT[nm(a.n)] = a; });
+        var smt = function (t) { t = Math.max(0, Math.min(1, t)); return t * t * (3 - 2 * t); };
+        var win = D.names.map(function (x) { var a = ACT[nm(x[0])], t0 = T0, t1 = T1;
+          if (a && a.c) { var ch = []; for (var i = 1; i <= NN; i++) if (a.c[i] !== a.c[i - 1]) ch.push(i);
+            if (ch.length) { var f1 = ch[0], l1 = ch[ch.length - 1]; if (l1 === NN && f1 === NN) { t0 = T1 - 1.2 * YM; t1 = T1; } else { t0 = ts[f1] - 0.7 * YM; t1 = Math.min(T1, ts[l1] + 0.7 * YM); } t0 = Math.max(T0, t0); } }
+          return [t0, Math.max(t1, t0 + 1)]; });
+        var K = []; for (var k = 0; k <= NN; k++) { var v = D.names.map(function (x, i) { var f = x[1][0], e = x[1][1], pg = smt((ts[k] - win[i][0]) / (win[i][1] - win[i][0])); if (k === 0) pg = 0; if (k === NN) pg = 1; return [f + (e - f) * pg, e, f, i]; });
+          v.sort(function (p, q) { return p[0] - q[0] || p[1] - q[1] || p[2] - q[2]; }); var rk = []; v.forEach(function (q, r) { rk[q[3]] = r; }); K.push(rk); }
+        var cl = function (a) { return a.map(function (r) { return r < 12 ? r : 99; }).join(); }, keep = [0]; for (var k2 = 1; k2 < NN; k2++) if (cl(K[k2]) !== cl(K[keep[keep.length - 1]])) keep.push(k2); keep.push(NN);
+        if (keep.length > 10) { var thin = [0], step = (keep.length - 1) / 9; for (var q2 = 1; q2 < 9; q2++) thin.push(keep[Math.round(q2 * step)]); thin.push(NN); keep = thin.filter(function (v, i, A) { return A.indexOf(v) === i; }); }
+        if (keep.length > 2) { D.names = D.names.map(function (x, i) { return [x[0], keep.map(function (kk) { return K[kk][i]; })]; });
+          D.when = keep.map(function (kk) { return (ts[kk] - T0) / (T1 - T0); }); D.labels = keep.map(function (kk, i) { return i === 0 ? S0.l0 : i === keep.length - 1 ? 'TODAY' : String(new Date(ts[kk]).getUTCFullYear()); }); } } } catch (e2) {}
+      out[y] = D; });
     return out; } catch (e) { return dd.climb || {}; } };
   var ALLY = function () { return Object.keys(C).filter(function (k) { return C[k] && C[k].names && C[k].names.length; }).map(Number).sort(function (a, b) { return b - a; }); };
   // ANOTHER YEAR draws from every summer that has a climber, shuffled so nothing repeats until all have shown.
@@ -77,7 +95,7 @@
     var k0 = Math.floor(tp), k1 = Math.min(n - 1, k0 + 1), fk = tp - k0, PA = posAt(k0), PB = posAt(k1);
     var same = function (a, b) { return a.x === b.x && a.y === b.y && a.f === b.f && a.k === b.k; };
     // every name takes the same time on one smooth curve (Zale, Nov 9 00:27)
-    var G = fk <= 0 ? 0 : fk >= 1 ? 1 : 0.5 - 0.5 * Math.cos(Math.PI * fk);
+    var G = seg(n, fk);
     var LAST = S[LN - 1], VOFF = function (nm, f0, src) { return { x: LAST.x + 0.5 * LAST.w, y: LAST.y + LAST.h + 14, k: 0.5, f: Math.min(f0 || LAST.mx, LAST.mx) * 0.8, L: src.L, lead: src.lead, ink: A, line: LN, on: true }; };
     var op = function (nm, a, b) { var va = a.vis !== false, vb = b.vis !== false;
       if (same(a, b)) return va ? [[a, a.on ? 1 : 1 - 0.7 * Math.sin(G * Math.PI), 0]] : [];
@@ -168,7 +186,7 @@
 
   // the clock above the poster (Zale, Nov 9 09:02: the stamp on the poster crowded the headliner and hid Play again)
   function timebar(D, y, tp) {
-    var n = D.labels.length, atEnd = tp >= n - 1 - 1e-3, kk = Math.floor(tp), fk = tp - kk, g = fk <= 0 ? 0 : fk >= 1 ? 1 : 0.5 - 0.5 * Math.cos(Math.PI * fk), frac = n > 1 ? Math.min(1, (kk + g) / (n - 1)) : 1;
+    var n = D.labels.length, atEnd = tp >= n - 1 - 1e-3, kk = Math.floor(tp), fk = tp - kk, g = seg(n, fk), frac = n > 1 ? Math.min(1, D.when ? D.when[Math.min(kk, n - 1)] + ((D.when[Math.min(kk + 1, n - 1)] - D.when[Math.min(kk, n - 1)]) * g) : (kk + g) / (n - 1)) : 1;
     var y0 = +y, yNow = n > 1 ? Math.max(y0 + 1, Math.round(y0 + (TODAY - y0) * frac)) : TODAY;
     var line = n < 2 ? 'Ranked by how far each act has gone' : frac <= 0.001 ? (D.src === 'real billing' ? 'The bill as printed in ' + y : 'The bill as booked in ' + y) : (atEnd || yNow >= TODAY) ? 'Ranked today by how far each act has gone' : 'Re-ranked as of ' + yNow;
     var btn = S.playing ? '■ Stop' : atEnd ? '↻ Replay' : '▶ Play';
@@ -188,8 +206,8 @@
   function stop() { if (S.raf) { cancelAnimationFrame(S.raf); S.raf = null; } S.playing = false; }
   function run(resume) {
     var D = C[S.y], n = D.labels.length; if (n < 2 || STAT(S.y)) return; var from = resume && S.tp > 0 && S.tp < n - 1 - 1e-3 ? S.tp : 0; stop();
-    var HOLD = from ? 0 : 1400, tot = DUR * (n - 1), t0 = performance.now(), off = from * DUR; S.playing = true; S.tp = from;
-    var fr = function (now) { var t = Math.max(0, Math.min(tot, now - t0 - HOLD + off)), done = now - t0 - HOLD + off >= tot; S.tp = done ? n - 1 : t / DUR; if (done) { S.playing = false; S.raf = null; } else S.raf = requestAnimationFrame(fr); draw(); };
+    var HOLD = from ? 0 : 1400, tot = n > 2 ? TOTAL : DUR, t0 = performance.now(), off = (from / (n - 1)) * tot; S.playing = true; S.tp = from;
+    var fr = function (now) { var t = Math.max(0, Math.min(tot, now - t0 - HOLD + off)), done = now - t0 - HOLD + off >= tot; S.tp = done ? n - 1 : (n - 1) * flow(t / tot); if (done) { S.playing = false; S.raf = null; } else S.raf = requestAnimationFrame(fr); draw(); };
     draw(); S.raf = requestAnimationFrame(function (now) { t0 = now; fr(now); });
   }
   function go(y) { stop(); S.y = String(y); var n = C[y].labels.length; S.tp = (n > 1 && !RM && !STAT(y)) ? 0 : n - 1; S.seen[S.y] = 0; draw(); check(); }

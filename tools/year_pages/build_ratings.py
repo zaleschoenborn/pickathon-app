@@ -1,56 +1,58 @@
-# Then and now dots data (year_page.md "Story card graphic"). Design Studio, Nov 9 2026.
-# Builds data.json yearRatings[year] from Artist Classification's rating_history_<year>.csv:
-# music rows only, snapshots from the Feb before the festival on; when two snapshots are under
-# 30 days apart the later one stands (Nov 7 and Nov 8 2026 are one re-rating).
-# Where a date has two rows for one act, history keeps the first and the newest date keeps the last.
-# Usage: python3 tools/year_pages/build_ratings.py tools/year_pages/src/history/rating_history_2024.csv [...]
-import csv, json, os, re, sys, datetime as dt
-SITE = os.path.join(os.path.dirname(__file__), '..', '..'); D = os.path.join(SITE, 'data.json')
-d = json.load(open(D)); d.setdefault('yearRatings', {})
-K = {'Legend': 'leg', 'Discovery': 'disc', 'Deep cut': 'deep'}
-for f in sys.argv[1:]:
-    y = re.search(r'(\d{4})', os.path.basename(f)).group(1)
-    R = [r for r in csv.DictReader(open(f, encoding='utf-8-sig')) if r['cat'] == 'Music' and r['date'] >= y + '-02-01']
-    ds = sorted({r['date'] for r in R}); keep = []
-    for x in ds:
-        if keep and (dt.date.fromisoformat(x) - dt.date.fromisoformat(keep[-1])).days < 30: keep[-1] = x
-        else: keep.append(x)
-    snap = {}
-    # A date can carry two rows for an act: the snapshot as rated then, and a later rewrite appended
-    # under the same date (the Nov 8 rooms pass). History keeps the first row; the latest date keeps the last.
-    for r in R:
-        S = snap.setdefault(r['act'], {})
-        if r['date'] not in S or r['date'] == ds[-1]: S[r['date']] = r
-    # A snapshot date counts only when most acts were rated by then; earlier dates with a few reconstructed rows
-    # would show everyone else as Neither (Nov 9: only 2024 has full six-month snapshots).
-    keep = [x for x in keep if sum(1 for S in snap.values() if any(k <= x for k in S)) >= 0.75 * len(snap)] or keep[-1:]
-    # Years with no real snapshot history (every year but 2024; Zale, Nov 9: treat the first rating as 'at the festival'):
-    # two dots, the first rating of each act (its call at the festival) and the newest one (today).
-    two = len(keep) < 2
-    if two:
-        ALL = [r for r in csv.DictReader(open(f, encoding='utf-8-sig')) if r['cat'] == 'Music']
-        ALL.sort(key=lambda r: r['date']); snap = {}
-        for r in ALL: snap.setdefault(r['act'], []).append(r)
-        last = max(r['date'] for r in ALL); keep = [y + '-08-01', last] if last > y + '-08-01' else [last]
-    acts = []
-    for n, S in snap.items():
-        if two:
-            rs = S; c0, c1 = rs[0], rs[-1]; cc = [c0, c1][:len(keep)]
-            acts.append({'n': n, 'c': [K.get(r['class'], 'none') for r in cc], 'm': [int(float(r.get('mag') or 0)) for r in cc]}); continue
-    for n, S in ([] if two else snap.items()):
-        c, m, last = [], [], None
-        for x in keep:
-            last = S.get(x) or last
-            c.append(K.get((last or {}).get('class'), 'none') if last else 'none'); m.append(int(float((last or {}).get('mag') or 0)))
-        acts.append({'n': n, 'c': c, 'm': m})
-    # The lineup is the source of truth (Zale, Nov 9): an act in the rating history that is not on that year's bill
-    # (2022 and 2023 MOTRIK; years before 2022 have partial bills, so they are not checked) stays out of the dots, so the Time Machine and the grid count the same acts.
-    nk = lambda t: re.sub(r'[^a-z0-9]', '', re.sub(r'^the\s+', '', str(t).lower()))
-    bill = {nk(b['n']) for b in d.get('yearBill', {}).get(y, []) if not b.get('f')}
-    if bill and int(y) >= 2022: acts = [a for a in acts if nk(a['n']) in bill or nk(a['n']) in {nk(x) for x in d.get('actAlias', {})}]
-    acts.sort(key=lambda a: a['n'].lower())
-    fest = next((i for i, x in enumerate(keep) if x >= y + '-08-01'), len(keep) - 1)
-    d['yearRatings'][y] = {'dates': keep, 'fest': fest, 'acts': acts}
-    from collections import Counter
-    print(y, keep, 'fest', keep[fest], 'now', Counter(a['c'][-1] for a in acts), 'then', Counter(a['c'][fest] for a in acts))
-json.dump(d, open(D, 'w'), ensure_ascii=False, separators=(',', ':'))
+# Rebuild yearRatings for every year from the class table's six-month paths (class_table_nov10.csv, draft 131 and later).
+# dates = the festival month, every six months after it, then Today. Each act's class at each point comes from class_path (dated steps);
+# magnitude is the at-festival value easing to the today value over time (only used to order the dots inside a column).
+# Usage: python3 build_ratings.py <class_table.csv>
+import json, csv, sys, re, os, unicodedata
+SITE = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..')
+def key(s):
+    s = unicodedata.normalize('NFKD', str(s or '')).encode('ascii', 'ignore').decode().lower(); s = re.sub(r'^the\s+', '', s); return re.sub(r'[^a-z0-9]', '', s)
+KC = lambda c: 'leg' if (c or '').startswith('Legend') else 'disc' if (c or '').startswith('Discovery') else 'deep' if (c or '').startswith('Deep cut') else 'none' if (c or '').startswith('Neither') else None
+RK = {'none': 0, 'deep': 1, 'disc': 2, 'leg': 3}
+MON = {m: i + 1 for i, m in enumerate('Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec'.split())}
+TODAY = '2026-11-10'
+def num(x):
+    try: return float(x)
+    except Exception: return None
+def steps(path):   # [(YYYY-MM, class)] for the dated steps (not the festival, not Today)
+    out = []
+    for part in [p.strip() for p in (path or '').split('|')]:
+        m = re.match(r'^([A-Z][a-z]{2}) (\d{4}): (.+)$', part)
+        if m and not part.startswith('At festival'): out.append(('%s-%02d' % (m.group(2), MON[m.group(1)]), KC(m.group(3))))
+    return out
+d = json.load(open(os.path.join(SITE, 'data.json'))); T = {}
+for r in csv.DictReader(open(sys.argv[1], encoding='utf-8-sig')):
+    if r.get('lineup') != 'Music' or (r.get('merged_into') or '').strip() or not KC(r.get('class')): continue
+    k = KC(r['class']); af = KC(r['at_festival_class']) or k; td = KC(r['today_class']) or KC(r['stature_now_class']) or k
+    if RK[td] < RK[af]: td = af
+    T[(r['year'], key(r['act']))] = dict(af=af, td=td, afm=num(r['at_festival_magnitude']) or num(r['magnitude']) or 0, tdm=num(r['today_magnitude']) or num(r['magnitude']) or 0, st=steps(r['class_path']))
+n_up = 0
+for y, R in d['yearRatings'].items():
+    yr = int(y); fm = '%d-08' % yr
+    grid = []; t = (yr, 8)
+    while (t[0], t[1]) < (2026, 8) or (t == (2026, 8) and yr < 2026):
+        grid.append('%d-%02d' % t); t = (t[0] + 1, 2) if t[1] == 8 else (t[0], 8)
+        if len(grid) > 60: break
+    if yr == 2026: grid = ['2026-08']
+    elif grid[-1] != '2026-08' and (2026, 8) > (yr, 8): grid.append('2026-08')
+    dates = [g + '-01' for g in grid] + [TODAY]
+    R['dates'] = dates; R['fest'] = 0; nn = len(dates)
+    span = max(1, nn - 1)
+    for a in R['acts']:
+        t = T.get((y, key(a['n'])))
+        if not t:   # keep what we have, flattened to the new date list
+            c0 = a['c'][a.get('fest', R.get('fest', 0))] if a.get('c') else 'none'; m0 = a['m'][0] if a.get('m') else 0; cn = a['c'][-1]; mn = a['m'][-1]
+            t = dict(af=c0, td=cn, afm=m0, tdm=mn, st=[])
+        c = []; cur = t['af']
+        for i, dd in enumerate(dates):
+            if i == nn - 1: cur = t['td']
+            else:
+                for sd, sc in t['st']:
+                    if sd <= dd[:7] and sd >= fm[:7]: cur = sc
+            if RK[cur] > RK[t['td']]: cur = t['td']
+            c.append(cur)
+        c[0] = t['af']
+        # a class change that is not dated sits at Today only
+        a['c'] = c; a['m'] = [int(round(t['afm'] + (t['tdm'] - t['afm']) * (i / span if span else 1))) for i in range(nn)]
+        if c[0] != c[-1]: n_up += 1
+json.dump(d, open(os.path.join(SITE, 'data.json'), 'w'), ensure_ascii=False, separators=(',', ':'))
+print('rebuilt yearRatings; acts that changed class:', n_up, 'points per year:', {y: len(R['dates']) for y, R in list(d['yearRatings'].items())[:30]})

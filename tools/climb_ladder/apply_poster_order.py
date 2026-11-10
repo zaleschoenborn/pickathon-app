@@ -48,4 +48,7 @@ for y, names in ORDER.items():
         k = key(r[0])
         if k in new: r[4] = new[k]
     print(y, 'placed', len(want), 'unmatched in data:', miss, '| unlisted left behind:', [disp[k] for k in rest[:6]])
+# Nov 10 (Zale: use the six-month data for proper animated posters): every year whose festival ranks now come from the printed poster order is real billing, so it animates (2005 and earlier stay still posters).
+for y in ORDER:
+    if y in d.get('climb', {}) and int(y) >= 2006: d['climb'][y]['src'] = 'real billing'
 json.dump(d, open(os.path.join(SITE, 'data.json'), 'w'), ensure_ascii=False, separators=(',', ':'))
