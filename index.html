@@ -7246,25 +7246,39 @@ html.pk-ovl [role=region][aria-label="Listen"],html.pk-ovl #root button.pk-tly{o
 <script id="pk-act-play">
 /* Nov 10: the big photo on an artist page is a small reel: the photo, then a still from each of the act's clips with where it was filmed (neighborhood seal), the year and the song. Tap plays the clip on screen. */
 (function () {
-  var NB = { slab: 'slab', pumphouse: 'pumphouse', woods: 'woods', paddock: 'paddock', galaxy: 'galaxy', grove: 'grove', windmill: 'windmill', lucky: 'lucky', cherryhill: 'cherry_hill', courtyard: 'courtyard', coyote: 'coyote', refuge: 'refuge', orchard: 'orchard', market: 'market', curation: 'curation' };
+  var NB = { slab: 'slab', pumphouse: 'pumphouse', woods: 'woods', paddock: 'paddock', galaxy: 'galaxy', grove: 'grove', windmill: 'windmill', lucky: 'lucky', cherryhill: 'cherry_hill', treeline: 'cherry_hill', mountain: 'paddock', mthood: 'paddock', courtyard: 'courtyard', coyote: 'coyote', refuge: 'refuge', orchard: 'orchard', market: 'market', curation: 'curation' };
   var RM = false; try { RM = window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) {}
   function nz(t) { return String(t || '').toLowerCase().replace(/\s*(stage|sessions?|barn)$/, '').replace(/[^a-z0-9]/g, ''); }
   function esc(t) { return String(t == null ? '' : t).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  var AP = null; try { fetch('reel/meta.json').then(function (r) { return r.json(); }).then(function (j) { AP = j; }); } catch (e) {}
+  function nk(t) { return String(t || '').toLowerCase().normalize('NFKD').replace(/[^a-z0-9]/g, ''); }
+  function photosFor(artist, yr) {
+    var Y = AP && AP[yr]; if (!Y) return null; var k = nk(artist);
+    for (var n in Y) { var q = nk(n); if (q === k || (k.length > 5 && (k.indexOf(q) === 0 || q.indexOf(k) === 0))) return Y[n]; }
+    return null;
+  }
   function build(sec) {
     var h = sec.querySelector('.pk-act-h'); if (!h || h.__rl) return;
     var tiles = [].slice.call(sec.querySelectorAll('button.pk-ev-t')).filter(function (b) { return /^Play /.test(b.getAttribute('aria-label') || '') && b.querySelector('img'); }).slice(0, 5);
     if (!tiles.length) return;
+    var m0 = (tiles[0].getAttribute('aria-label') || '').match(/^Play .* by (.*), Pickathon (\d{4})/), ph = m0 ? photosFor(m0[1], m0[2]) : null;
+    if (m0 && !AP) return;
     h.__rl = 1;
     var box = document.createElement('div'); box.className = 'pk-rl'; box.setAttribute('aria-hidden', 'true');
-    var html = '', dots = '<div class="pk-rl-d">';
+    var html = '', dots = '<div class="pk-rl-d">', items = [];
+    (ph || []).forEach(function (p) {
+      var k = NB[nz(p.s)];
+      html += '<div class="pk-rl-s"><img src="reel/' + esc(p.f) + '" alt="" loading="lazy"><span class="pk-rl-c">' + (k ? '<img src="nb-logos/pt-icon-' + k + '.png" alt="" onerror="this.remove()">' : '') + '<span><b>' + esc([p.s, 'Pickathon ' + m0[2]].filter(Boolean).join(' \u00b7 ')) + '</b></span></span></div>'; items.push(null);
+    });
     tiles.forEach(function (b, n) {
       var m = (b.getAttribute('aria-label') || '').match(/Pickathon (\d{4})/), yr = m ? m[1] : '', tt = b.querySelector('.pk-ev-tt'), vn = b.querySelector('.pk-ev-vn'), k = NB[nz(vn && vn.textContent)];
       html += '<div class="pk-rl-s"><img src="' + esc(b.querySelector('img').src) + '" alt="" loading="lazy"><span class="pk-rl-c">' + (k ? '<img src="nb-logos/pt-icon-' + k + '.png" alt="" onerror="this.remove()">' : '') + '<span><b>' + esc([vn && vn.textContent, yr ? 'Pickathon ' + yr : ''].filter(Boolean).join(' \u00b7 ')) + '</b>' + (tt && tt.textContent ? '<i>' + esc(tt.textContent) + '</i>' : '') + '</span></span></div>';
+      items.push(b);
     });
-    var N = tiles.length + 1; for (var q = 0; q < N; q++) dots += '<u' + (q === 0 ? ' class="on"' : '') + '></u>';
+    var N = items.length + 1; for (var q = 0; q < N; q++) dots += '<u' + (q === 0 ? ' class="on"' : '') + '></u>';
     box.innerHTML = html + dots + '</div>'; h.appendChild(box);
     var S = [].slice.call(box.querySelectorAll('.pk-rl-s')), D = [].slice.call(box.querySelectorAll('.pk-rl-d u')), cur = 0, vis = true;
-    h.__rlc = function () { return cur; }; h.__rlt = tiles;
+    h.__rlc = function () { return cur; }; h.__rlt = items.map(function (t) { return t || tiles[0]; });
     function show(i) { cur = i; S.forEach(function (e, n) { e.classList.toggle('on', n === i - 1); }); D.forEach(function (e, n) { e.classList.toggle('on', n === i); }); }
     try { new IntersectionObserver(function (en) { vis = en[0].isIntersecting; }).observe(h); } catch (e) {}
     if (!RM) setInterval(function () { if (vis && !document.hidden) show((cur + 1) % N); }, 3600);
