@@ -16,8 +16,8 @@ ORDER = {
           'Lost Bayou Ramblers', 'Revel in Dimes', 'John Craigie', 'The Dead Tongues', 'Milo', 'Mapache', 'Danny Barnes Trio', 'Paul Cauthen', 'Black Pumas',
           'Frazey Ford', "Zephaniah O'Hora", 'Rasheed Jamal', 'Overcoats', 'Caleb Klauder & Reeb Willms', 'Cut Worms', 'Circuit des Yeux', 'Bee Bee Sea',
           'Marisa Anderson', 'House and Land', 'Andrew Alli', 'Valley Queen'],
- '2019': ['Nathaniel Rateliff & The Night Sweats', 'Khruangbin', 'Mandolin Orange', 'Tyler Childers', 'Lucius', 'Preservation Hall Jazz Band', 'Fruit Bats', 'Mountain Man', 'Caamp', 'YOB', 'Damien Jurado', 'Lambchop'],
- '2022': ['Valerie June', 'Goth Babe', 'Sons of Kemet', 'Faye Webster', 'Built To Spill', 'Nate Smith + Kinfolk', 'Hurray for the Riff Raff', 'Sampa the Great',
+ '2019': ['Nathaniel Rateliff & The Night Sweats', 'Phil Lesh & The Terrapin Family Band', 'Khruangbin', 'Mandolin Orange', 'Tyler Childers', 'Lucius', 'Preservation Hall Jazz Band', 'Fruit Bats', 'Mountain Man', 'Caamp', 'YOB', 'Damien Jurado', 'Lambchop'],
+ '2022': ['Valerie June', 'Goth Babe', 'Sons of Kemet', 'Faye Webster', 'Built To Spill', 'Nate Smith + Kinfolk', 'Hurray for the Riff Raff', 'Sampa the Great', 'GZA',
           'Nubya Garcia', 'Chapo Trap House', 'Quantic', 'Armand Hammer', 'Lomelda', 'Cedric Burnside', 'Mike and the Moonpies', 'Inner Wave', "L'Rain",
           'Pearl Charles', 'Cassandra Jenkins', 'Yasmin Williams', 'TV Priest', 'Thee Sacred Souls', 'Feufollet', 'Emma-Jean Thackray', 'Guerilla Toss',
           'Operator Music Band', 'Rachel Baiman', 'Off Book', 'Tobacco City', 'Kassi Valazza', 'The Onlies'],   # the 7+5+6 middle rows are not named in the read; the bottom row is
