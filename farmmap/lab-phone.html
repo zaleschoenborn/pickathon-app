@@ -1091,7 +1091,23 @@ function light(h){
   schedTiles();
 }
 
+/* Zale, Nov 9: the card's bottom row never sits under the site's cookie bar, and it hops to the other side when the picked spot is under it */
+function ckLift(){ let h=0; try{ const fe=window.frameElement, pd=parent.document, b=pd&&pd.querySelector('[aria-label="Cookie choices"]'); if(b&&fe){ const br=b.getBoundingClientRect(), fr=fe.getBoundingClientRect(); h=Math.max(0,Math.round(fr.bottom-br.top)); } }catch(e){} if(document.body.style.getPropertyValue('--ckb')!==h+'px') document.body.style.setProperty('--ckb',h+'px'); return h; }
+setInterval(()=>{ try{ const b=ckLift(), dd=document.getElementById('door'), sig=b+':'+(dd?Math.round(dd.getBoundingClientRect().height):0)+':'+document.body.classList.contains('dooron'); if(window.__ckLast!==sig){ window.__ckLast=sig; place(); } }catch(e){} },300);
+function doorFlip(){
+  const dr=document.getElementById('door'); if(!dr||LP()||innerWidth<1200) { document.body.classList.remove('doorR'); return; }
+  if(!cur||!document.body.classList.contains('dooron')){ document.body.classList.remove('doorR'); return; }
+  const sr=stage.getBoundingClientRect(), b=D.shapes[cur.id]&&D.shapes[cur.id].b; if(!b) return;
+  const cx=sr.left+tx+(b[0]+b[2])/2*k, cy=sr.top+ty+(b[1]+b[3])/2*k, w=dr.offsetWidth||450, hh=dr.offsetHeight||300, vw=innerWidth, vh=innerHeight, lift=ckLift();
+  document.body.style.setProperty('--drx',(vw-sr.right+24)+'px');
+  const inL=cx>=24-20&&cx<=24+w+20&&cy>=vh-24-lift-hh-20&&cy<=vh;
+  const SRr=sr.right, inR=cx>=SRr-24-w-20&&cx<=SRr-24+20&&cy>=vh-24-lift-hh-20&&cy<=vh;
+  const R=document.body.classList.contains('doorR'); let want=R;
+  if(inL&&!inR) want=true; else if(inR&&!inL) want=false; else if(inL&&inR) want=Math.abs(cx-(24+w/2))<Math.abs(cx-(SRr-24-w/2));   /* under both spots (narrow window): take the side the spot is farther from */
+  if(want!==R) document.body.classList.toggle('doorR',want);
+}
 function place(){
+  try{ doorFlip(); }catch(e){}
   const W=stage.clientWidth, H=stage.clientHeight, M=6, live=[], HB=H-(LP()?LPVB:0);
   HOODS.forEach(h=>{
     // A label survives while ANY part of its footprint is on screen, not just
@@ -1136,11 +1152,12 @@ function place(){
     h._sk = (o!==undefined && wm) ? wm._ay-(5-o)*0.9 : h._wy; });
   R.forEach(h=>h._sk=(LBLCAP[h.id]!==undefined)?1e6+(h.id==='willowcamp'?0:1):h._wy);   // capped labels sit last: Willow Camp, then Welcome Lot at the bottom (their leaders don't cross)
   const BOT0=BOT;
+  if(!LP()){ const dr0=document.getElementById('door'); if(dr0&&document.body.classList.contains('dooron')){ const r0=dr0.getBoundingClientRect(), sr0=stage.getBoundingClientRect(); if(r0.height>0){ const bl=Math.min(BOT0,Math.round(r0.top-sr0.top)-18), cl=Math.max(3,Math.floor((bl-Math.max(TOP,FB+38))/SP)+1), fl=document.body.classList.contains('doorR'), A=fl?R:L, B=fl?L:R; while(A.length>cl){ A.sort((a,b)=>fl?a._ax-b._ax:b._ax-a._ax); B.push(A.shift()); } } } }   /* the left rail stops above the card: whatever does not fit there moves to the right rail instead of piling up */
   [L,R].forEach(arr=>{
     // phone inside the site: the right rail stops short of the corner where the site's music button sits
     let BOT=(arr===R&&LP()&&parent!==window)?BOT0-44:BOT0;
     // Zale, Nov 9: nothing ever sits under the open card; the left rail stops above it
-    if(arr===L&&!LP()){ const dr=document.getElementById('door'); if(dr&&document.body.classList.contains('dooron')){ const r=dr.getBoundingClientRect(), sr=stage.getBoundingClientRect(); if(r.height>0&&r.left-sr.left<W/2) BOT=Math.min(BOT,Math.round(r.top-sr.top)-18); } }
+    if(arr===(document.body.classList.contains('doorR')?R:L)&&!LP()){ const dr=document.getElementById('door'); if(dr&&document.body.classList.contains('dooron')){ const r=dr.getBoundingClientRect(), sr=stage.getBoundingClientRect(); if(r.height>0) BOT=Math.min(BOT,Math.round(r.top-sr.top)-18); } }
     arr.sort((a,b)=>a._sk-b._sk);
     // down the column first, then back up from the floor, so the bottom ones
     // spread instead of piling on the last slot
@@ -1585,7 +1602,9 @@ function iconAt(e){
     if(dx<=hw&&dy<=hh){ const d=Math.hypot(dx/hw,dy/hh); if(d<bd){ bd=d; best=a; } } });
   return best;
 }
+addEventListener('pointerdown',()=>{ window.__titleAtDown=titleHold(); },true);   /* remember whether the title was up when the press began: the press itself may already clear it */
 function tapAt(e){
+  if(window.__titleAtDown&&!pinned&&!(e.target&&e.target.closest&&e.target.closest('.lab'))){ document.body.classList.add('dpdone'); try{ place(); }catch(x){} return; }   /* Zale, Nov 9: the first click on the map only closes the title, it never opens what is under the cursor */
   if(window.__lpFreshDown){ window.__lpFreshDown=false; return; }   /* logo out: the first tap only clears the title; the map is already where it should be */
   const el=document.elementFromPoint(e.clientX,e.clientY);
   const h=el&&(el.__hood||(el.closest&&(el.closest('.lab')||{}).__hood));
@@ -1835,7 +1854,7 @@ function lpHome(){
     if(h.id==='lushcamp'||h.id==='wildcamp') return; l=Math.min(l,b[0]); r=Math.max(r,b[2]); });
   const x0=Math.max(0,l-MW*.015), x1=Math.min(MW,r+MW*.015);
   const kk=Math.max(W/MW,Hv/MH,Math.min(maxK(),W/(x1-x0)));
-  const c=clampV(kk, W/2-(x0+x1)/2*kk, -(top-MH*.012)*kk, Hv);
+  const c=clampV(kk, W/2-(x0+x1)/2*kk, -(top-MH*.012)*kk+(lpTitleOn()?lpTitleBot():0), Hv);
   return {k:kk,tx:c.tx,ty:c.ty};
 }
 // Picked: zoom in so the neighborhood fills most of the map that is still showing (between the top
@@ -2237,6 +2256,7 @@ body.dooron #door{display:block}
 #door .drow{display:flex;gap:8px;margin-top:14px}
 #door .dgo{flex:1;min-width:0;height:56px;border-radius:6px;border:2px solid #D6B54A;background:rgba(214,181,74,.18);color:#F2CF62;font:800 15px/1 var(--f);letter-spacing:1px;text-transform:uppercase;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:0 14px}
 #door .dgo:hover{filter:brightness(1.12)}
+@media (max-width:600px){#door .dgo{font-size:13px;letter-spacing:.4px;padding:0 8px;white-space:nowrap;overflow:hidden}}
 #door .drow .dib{width:56px;height:56px;font-size:24px}
 #door .dx{display:none;position:absolute;top:8px;right:8px;width:44px;height:44px;border-radius:4px;border:2px solid rgba(242,237,227,.85);background:rgba(18,22,15,.6);color:#F2EDE3;font:700 16px/1 var(--f);align-items:center;justify-content:center;cursor:pointer;padding:0;z-index:2}
 #door .dbar{display:none;align-items:center;gap:10px;height:56px;padding:0 6px 0 10px;cursor:pointer}
@@ -2248,7 +2268,8 @@ body.dooron #door{display:block}
 #door.fold{padding:0!important}
 /* desktop: the chooser column stays; the doorway floats over the map's lower left */
 @media (min-width:1200px){
-  #door{left:24px;bottom:24px;width:450px;padding:14px 14px 16px;border-radius:16px;border:1px solid #3A4331;box-shadow:0 14px 44px rgba(0,0,0,.55)}
+  #door{left:24px;bottom:calc(24px + var(--ckb,0px));width:450px;padding:14px 14px 16px;border-radius:16px;border:1px solid #3A4331;box-shadow:0 14px 44px rgba(0,0,0,.55)}
+  body.doorR #door{left:auto;right:var(--drx,24px)}
   #card #full,#card #hero,#card #nav,#card #fx,#card #fback{display:none!important}
   #card #empty{display:block!important}
   body #card #empty #pcl .pc.sel .lg,body #card.intro #empty #pcl .pc.sel .lg{box-shadow:0 0 0 3px #12160F,0 0 0 6px #D6B54A,0 0 20px rgba(214,181,74,.45)!important}
@@ -2346,6 +2367,7 @@ body.dooron #door{display:block}
     $('.dn img').src='../ic2/'+h.id+'.png'; $('.dn h2').textContent=h.n;
     const hk=(XD&&XD.h&&XD.h[h.id]&&XD.h[h.id].hook)||h.t||''; $('.dh').textContent=hk; $('.dh').hidden=!hk;
     $('.dgo').textContent='Explore '+short(h)+' →'; $('.dgo2').textContent='Explore →';
+    requestAnimationFrame(()=>{ const g=$('.dgo'); if(g&&g.scrollWidth>g.clientWidth+1) g.textContent='Explore →'; });   /* a name too long for the button on a small phone falls back to plain Explore */
     $('.dbar img').src='../ic2/'+h.id+'.png'; $('.dbar b').textContent=h.n;
   }
   function setFold(on){ fold=!!on; door.classList.toggle('fold',fold); if(LP()) { try{ lpSync(); }catch(e){} } }
@@ -2386,6 +2408,7 @@ body.dooron #door{display:block}
   $('.dx').addEventListener('click',e=>{ e.preventDefault(); e.stopPropagation(); const k0=H&&H.k; clearCur(); if(k0) chipTo(k0==='stage'?'stage':k0==='camp'?'camp':'around'); });
   $('.dv').addEventListener('click',e=>{ if(e.target.closest('.dx')) return; e.preventDefault(); const v=$('.dv').__v; if(!v||!e.target.closest('.dring')) return;   /* design_studio-29: only the play ring plays; the picture opens the page */ const cv=document.getElementById('cvid'); cv.__v=v; cv.click(); });
   // map_page.md "The whole doorway is the link" (Nov 8): a tap anywhere on the card opens the neighborhood page, except the play area, arrows, spin and close
+  door.addEventListener('wheel',e=>{ if(e.target.closest&&e.target.closest('.dvid,iframe,.dlist')) return; e.preventDefault(); stage.dispatchEvent(new WheelEvent('wheel',{deltaX:e.deltaX,deltaY:e.deltaY,deltaMode:e.deltaMode,ctrlKey:e.ctrlKey,clientX:e.clientX,clientY:e.clientY,bubbles:true,cancelable:true})); },{passive:false});   /* the wheel zooms the map even over the card */
   let dDown=null; door.addEventListener('pointerdown',e=>{ dDown={x:e.clientX,y:e.clientY}; },true);
   door.addEventListener('click',e=>{ const moved=dDown&&Math.hypot(e.clientX-dDown.x,e.clientY-dDown.y)>12; if(moved||!H||fold) return; const t=e.target; if(t.closest('.dprev,.dnext,.dspin,.dx,.dgo,.dbar,input')) return; const dv=t.closest('.dv'); if(!dv&&t.closest('a')) return; if(dv&&dv.__v&&t.closest('.dring')) return; e.preventDefault(); goPage(H); });
   // phone: swipe the sheet sideways for the next or previous neighborhood
