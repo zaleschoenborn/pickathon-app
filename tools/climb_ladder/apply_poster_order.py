@@ -27,6 +27,7 @@ ORDER = {
 }
 ALIAS = {'deryayildirimandgrupsimsek': 'deryayildirim', 'calebklauderandreebwillms': 'calebandreeb'}
 d = json.load(open(os.path.join(SITE, 'data.json')))
+# Zale Nov 10: Broken Social Scene played 2018 only, not 2019 (removed from the 2019 stores; the class table row is wrong, flagged to Artist Classification)
 nn = lambda s: norm(s).replace('yildirim', 'yildirim')
 def key(s):
     k = norm(str(s).lower().replace('ı', 'i').replace('ş', 's')).replace(' ', ''); return ALIAS.get(k, k)
