@@ -7165,6 +7165,19 @@ html:root:root:root:root:root body .pk-yreel .pk-yl,html:root:root:root:root:roo
 /* Nov 10 (Zale: each Home section fits one phone screen): Before they were big was 778px, now under 700 */
 @media (max-width:699px){#root#root#root #pk-nh-bands{padding-top:28px}#root#root#root #pk-nh-bands .pk-nh-in{font-size:15px;line-height:1.35;margin-top:6px}#root#root#root #pk-nh-bands .pk-nh-ball{min-height:48px}#root #pk-nh-bands article.pk-nh-c{height:392px!important;min-height:0!important}}
 </style>
+<style id="pk-ux5">#root .pk-act.pk-hv .pk-act-h{cursor:pointer}</style>
+<script id="pk-act-play">
+/* Nov 10: on an artist page the big photo plays the artist's clips, same as the Watch button */
+(function () {
+  function sec(e) { return e.closest && e.closest('.pk-act'); }
+  function mark() { document.querySelectorAll('.pk-act').forEach(function (s) { s.classList.toggle('pk-hv', !!s.querySelector('.pk-awb')); }); }
+  setInterval(mark, 700);
+  document.addEventListener('click', function (e) {
+    var h = e.target.closest && e.target.closest('.pk-act-h'); if (!h || e.target.closest('button,a')) return;
+    var s = sec(h), b = s && s.querySelector('.pk-awb'); if (b) { e.preventDefault(); b.click(); }
+  });
+})();
+</script>
 <style id="pk-trip1">
 #root .pk-trip{margin-top:20px}
 #root .pk-tb{display:grid;grid-template-columns:1fr 1fr;gap:16px 14px;padding:18px;border-radius:16px;background:#383234;border:1px solid #4F4749}
