@@ -1015,7 +1015,7 @@ html.pk-nh-ontop #root [role=region][aria-label="Listen"],html.pk-nh-ontop #root
 }
 /* Zale Nov 9 23:03: square play control first in the bar; Another year belongs to the poster; the section stands apart from the map above */
 #root#root#root#root .pk-cl-tb .pk-cl-rpl{width:48px!important;height:48px!important;min-height:48px!important;padding:0!important;font-size:20px!important;line-height:1;display:grid;place-items:center;border-radius:6px!important}
-#root .pk-cl-ay{display:flex;justify-content:flex-end;max-width:960px;margin:8px auto 0}
+#root .pk-cl-ay{display:grid;grid-template-columns:1fr 1fr;gap:10px;max-width:960px;margin:12px auto 0}#root#root#root#root .pk-cl-ay .pk-cl-an{width:100%;min-height:48px;justify-content:center;white-space:nowrap}#root#root#root#root .pk-cl-ay .pk-cl-go{background:transparent!important;border:2px solid #D6B54A!important;color:#F2CF62!important}@media (min-width:700px){#root .pk-cl-ay{max-width:520px}}
 #nh-sec-climb-sep{display:none}
 #pk-nh-climb{border-top:1px solid rgba(242,237,227,.16);margin-top:40px;padding-top:36px}
 /* Home renders every section up front: no content-visibility skipping (blank sections on phones, Zale Nov 9 06:30) */
@@ -1038,6 +1038,8 @@ main:has(#pk-nh-climb)>section{content-visibility:visible!important;contain-intr
 #root .pk-cl-p{overflow:hidden}
 @media (max-width:999px){#root .pk-cl-ht .pk-nh-h2{margin-top:10px!important;font-size:24px!important}#root#root .pk-cl-cap{font-size:15px!important;line-height:1.3!important;height:3.9em!important;min-height:0!important;overflow:hidden;margin-top:4px}#root .pk-cl-tb{margin-top:8px}#root .pk-cl-tl{margin:4px auto 6px!important;min-height:1.5em}}
 #root#root#root#root .pk-cl-tb .pk-cl-rpl{min-height:44px!important;height:auto!important;padding:0 14px!important;font-size:13px!important;width:auto!important}
+/* Nov 10 UI review: phone climb fits one screen with a full-width poster and the two buttons under it */
+@media (max-width:699px){#pk-nh-climb{padding-top:18px}#root .pk-cl-ht .pk-nh-k,#root .pk-cl-tl{display:none!important}#root .pk-cl-ht .pk-nh-h2{margin-top:0!important}#root .pk-cl-ay{margin-top:8px}}
 </style>
 <style id="pk-hm-css">
 /* Neighborhood page: "Where it is" map (Zale, Nov 9 08:30: a way to move between neighborhoods from the map on each neighborhood page). Design Studio */
@@ -1657,11 +1659,11 @@ html.pk-cy-in div:has(> button[aria-label="Listen to Pickathon"]){opacity:0!impo
 
   // Sizes. Desktop: the paper is 960 wide (inner 880): art 330 at left, list column 524. Phone and tablet (phone-style): art small on top, list full width.
   function cfg(ph, wAvail) {
-    if (!ph) return { ph: false, IW: 880, PADX: 40, PADY: 22, ART: { x: 0, y: 118, w: 330 }, COLX: 356, COLW: 524, Y0: 0, LANES: [[80, 74, 2], [44, 41, 1], [44, 41, 1], [44, 41, 1], [33, 29, 1], [33, 29, 1], [33, 29, 1], [33, 29, 1], [33, 29, 1], [33, 29, 1]], GAP: 5, R1: 22, ROWH: 21, FS: 13, CFS: 15, DATES: 15, DGAP: 42, BOT: 100, RIB: [40, 14], STAMP: 0.92 };
+    if (!ph) return { ph: false, IW: 880, PADX: 40, PADY: 22, ART: { x: 0, y: 118, w: 330 }, COLX: 356, COLW: 524, Y0: 0, LANES: [[80, 74, 2], [44, 41, 1], [44, 41, 1], [44, 41, 1], [33, 29, 1], [33, 29, 1], [33, 29, 1], [33, 29, 1], [33, 29, 1], [33, 29, 1]], GAP: 5, R1: 22, ROWH: 21, FS: 13, CFS: 15, DATES: 15, DGAP: 42, BOT: 66, RIB: [0, 14], STAMP: 0.92 };
     var PW = Math.max(300, Math.min(wAvail, 720)), IW = PW - 32, k = Math.min(1.7, IW / 326), L = function (h, m, ml) { return [Math.round(h * k), Math.round(m * k), ml]; };
     var AW = Math.round(92 * k), CX = AW + Math.round(10 * k), LL = [L(36, 30, 2), L(26, 22, 1), L(26, 22, 1), L(26, 22, 1), L(20, 16, 1), L(20, 16, 1), L(20, 16, 1), L(20, 16, 1), L(20, 16, 1), L(20, 16, 1)], GP = Math.round(3 * k), listH = LL.reduce(function (a, l) { return a + l[0] + GP; }, -GP);
-    return { ph: true, IW: IW, PADX: 16, PADY: 14, ART: { x: 0, y: 4, w: AW, h: listH }, COLX: CX, COLW: IW - CX, Y0: 4,
-      LANES: LL, GAP: GP, R1: Math.round(13 * k), ROWH: Math.round(16 * k), FS: Math.max(11, 11 * k), CFS: Math.max(12, 12 * k), DATES: Math.max(11, 11 * k), DGAP: Math.round(30 * k), BOT: Math.round(30 * k) + Math.round(Math.max(11, 11 * k)) + 12 + Math.max(34, Math.round(32 * k)), RIB: [Math.max(34, Math.round(32 * k)), Math.max(12, 12 * k)], STAMP: 0.7 * k };
+    return { ph: true, IW: IW, PADX: 16, PADY: 10, ART: { x: 0, y: 4, w: AW, h: listH }, COLX: CX, COLW: IW - CX, Y0: 4,
+      LANES: LL, GAP: GP, R1: Math.round(13 * k), ROWH: Math.round(16 * k), FS: Math.max(11, 11 * k), CFS: Math.max(12, 12 * k), DATES: Math.max(11, 11 * k), DGAP: Math.round(30 * k), BOT: Math.round(30 * k) + Math.round(Math.max(11, 11 * k)) + 14, RIB: [0, Math.max(12, 12 * k)], STAMP: 0.7 * k };
   }
 
   // One frame of the ladder at time tp (0 = festival, n-1 = today). Returns the paper's inner HTML and its height.
@@ -1762,7 +1764,7 @@ html.pk-cy-in div:has(> button[aria-label="Listen to Pickathon"]){opacity:0!impo
     var dl = K.dates ? (K.dates.toUpperCase().replace(/ ?- ?/g, '–') + ' · PENDARVIS FARM' + (Q.ph ? '' : ' · HAPPY VALLEY, OREGON')) : 'PICKATHON ' + y;
     var dates = '<div style="position:absolute;left:0;right:0;top:' + DATESY + 'px;text-align:center;white-space:nowrap;' + FONT + ';font-size:' + Q.DATES + 'px;letter-spacing:.08em;color:' + A + '">' + dl.split(' · ').map(function (t, i) { return (i ? '<span style="font-size:.6em;color:' + B + ';margin:0 ' + (Q.ph ? 6 : 12) + 'px;vertical-align:.2em">★</span>' : '') + esc(t); }).join('') + '</div>';
     var rib = '<div style="position:absolute;left:0;right:0;bottom:0;display:flex;align-items:center"><span class="pk-cl-fl" style="--ink:' + A + '"></span><span style="flex:none;height:' + Q.RIB[0] + 'px;padding:0 ' + (Q.ph ? 16 : 36) + 'px;background:' + A + ' linear-gradient(' + PAPER + '80,' + PAPER + '80) 0 4px/100% 1.5px no-repeat;color:' + PAPER + ';' + FONT + ';font-size:' + Q.RIB[1] + 'px;letter-spacing:.1em;display:flex;align-items:center;white-space:nowrap;clip-path:polygon(0 0,100% 0,calc(100% - 14px) 50%,100% 100%,0 100%,14px 50%)">EXPLORE PICKATHON ' + y + ' →</span><span class="pk-cl-fr" style="--ink:' + A + '"></span></div>';
-    return { html: art + h + burst + rules + dates + rib, IW: IW, H: BOXH, A: A, B: B, PAPER: PAPER, ACC: ACC, LIGHT: GLOWINK };
+    return { html: art + h + burst + rules + dates, IW: IW, H: BOXH, A: A, B: B, PAPER: PAPER, ACC: ACC, LIGHT: GLOWINK };
   }
 
   // the clock on the poster: a date stamp that counts the summers from the festival to today; tapping it plays again
@@ -1833,7 +1835,7 @@ html.pk-cy-in div:has(> button[aria-label="Listen to Pickathon"]){opacity:0!impo
     h += '<div class="pk-cl-layer" aria-hidden="true" style="position:absolute;left:' + Q.PADX + 'px;top:' + Q.PADY + 'px;width:' + F.IW + 'px;height:' + F.H + 'px">' + F.html + '</div>';
     h += '</div>';
     h += '</div>';
-    h += '<div class="pk-cl-ay"><button type="button" class="pk-cl-an" data-cl="rand">↻ Another year</button></div>';
+    h += '<div class="pk-cl-ay"><button type="button" class="pk-cl-an" data-cl="rand">↻ Another year</button><button type="button" class="pk-cl-an pk-cl-go" data-cl="year">Explore ' + y + ' →</button></div>';
     var fin = D.names.filter(function (x) { return x[1][n - 1] < Math.min(10, D.ranked || 10); }).sort(function (a, b) { return a[1][n - 1] - b[1][n - 1]; }).map(function (x) { return x[0]; });
     h += '<p class="pk-sr">Pickathon ' + y + ', ranked today by how far each act has gone: ' + esc(fin.join(', ')) + '.</p>';
     mountEl.innerHTML = h; mountEl.setAttribute('data-y', y); mountEl._key = key;
@@ -2321,7 +2323,7 @@ window.addEventListener('scroll',tick,{passive:true,capture:true});setInterval(t
 <div class="pk-cn-g"><figure class="pk-cn-f"><img src="farmmap/h/cherryhill0.webp" alt="Cherry Hill at Pickathon" loading="lazy" decoding="async"><figcaption>Cherry Hill → nets for Ukraine</figcaption></figure>
 <div class="pk-cn-t"><p class="pk-cn-s">Portland State students built Cherry Hill. After the festival, its nets went to Ukraine to help shield villages from drones.</p>
 <p class="pk-cn-l">Every neighborhood is built with architects, schools and makers through Creative Neighborhoods, our nonprofit. Most get a second life. <button type="button" class="pk-cn-a" data-go="build">See where they went →</button></p>
-<div class="pk-cn-d"><div><p class="pk-cn-dk">Have a project?</p><button type="button" class="pk-cn-b" data-go="build">Build it with us →</button></div><div><p class="pk-cn-dk">Sponsor, donate or join the team</p><button type="button" class="pk-cn-b" data-go="build">Get involved →</button></div></div>
+<div class="pk-cn-d"><div><p class="pk-cn-dk">Have a project?</p><button type="button" class="pk-cn-b" data-go="build">Build it with us →</button></div><div><p class="pk-cn-dk">Sponsor or join</p><button type="button" class="pk-cn-b pk-cn-b2" data-go="build">Get involved →</button></div></div>
 </div></div></div></section>
 
 <section class="pk-nh-q" aria-label="What the press says" data-nhq="1"><div class="pk-nh-qs"><sc-for list="{{nh.quotes}}" as="q" hint-placeholder-count="2"><figure class="pk-nh-qf" data-i="{{q.i}}"><blockquote>“{{q.t}}”</blockquote><figcaption>{{q.s}}</figcaption></figure></sc-for></div><p class="pk-nh-qn" aria-hidden="true"><span class="pk-nh-qi">1</span> of {{nh.qN}}</p></section>
@@ -7115,6 +7117,19 @@ html:root:root:root:root:root body .pk-yreel .pk-yl,html:root:root:root:root:roo
 #root .pk-yhp.pk-bkb,#root .pk-sspill.pk-tour{min-height:50px!important}
 @media (min-width:601px){#root .pk-yhp.pk-bkb,#root .pk-sspill.pk-tour{min-height:56px!important}}
 #root a.pk-in-addr,#root main a[href^="https://www.google.com/maps"]{display:inline-flex;align-items:center;min-height:44px}
+</style>
+<style id="pk-ux1">
+/* Nov 10 UI review (Home): hero shading covers the whole hero, Photo tour is a quiet outlined pill on the content edge, Creative Neighborhoods buttons sit side by side */
+#root#root#root#root .pk-nh-hg{top:0!important;bottom:0!important;height:auto!important;background:linear-gradient(180deg,rgba(18,22,15,.55) 0%,rgba(18,22,15,.10) 22%,rgba(18,22,15,.38) 40%,rgba(18,22,15,.78) 60%,rgba(24,21,22,.92) 82%,#2B2628 100%)!important}
+#root#root#root#root .pk-nh-sea,#root#root#root#root .pk-nh-what{text-shadow:0 1px 10px rgba(0,0,0,.7)}
+#root#root#root#root#root .pk-nh-hero .pk-sspill.pk-tour{top:16px!important;right:max(16px,calc((100vw - 1280px)/2 + 24px))!important;min-height:44px!important;padding:0 16px 0 6px!important;gap:8px!important;background:rgba(18,22,15,.5)!important;color:#F2EDE3!important;border:1.5px solid rgba(242,237,227,.8)!important;box-shadow:none!important;font-size:13px!important;letter-spacing:.08em!important;text-transform:uppercase!important}
+#root#root#root#root#root .pk-nh-hero .pk-sspill.pk-tour>span{width:30px!important;height:30px!important;background:#F2EDE3!important;color:#12160F!important;font-size:11px!important}
+#root#root#root .pk-cn-d{display:grid!important;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px;align-items:end;max-width:560px}
+#root#root#root .pk-cn-d>div{min-width:0}
+#root#root#root .pk-cn-dk{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin:0 0 6px;font-size:11px}
+#root#root#root#root .pk-cn-d .pk-cn-b{width:100%;min-height:48px;padding:0 8px;white-space:nowrap;font-size:13px;background:transparent!important;border:2px solid #D6B54A!important;color:#F2CF62!important}
+#root#root#root#root .pk-cn-d .pk-cn-b2{border-color:rgba(242,237,227,.88)!important;color:#F2EDE3!important}
+#root#root#root .pk-cn-a{white-space:nowrap}
 </style>
 <style id="pk-trip1">
 #root .pk-trip{margin-top:20px}
