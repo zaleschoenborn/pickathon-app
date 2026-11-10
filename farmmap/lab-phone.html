@@ -2060,7 +2060,7 @@ function yearMode(tm){
 }
 function bootYear(){
   if(!YR){ boot(); return; }
-  fetch('tm.json?v=2').then(r=>r.json()).then(tm=>{ try{ yearMode(tm); }catch(e){ console.error(e); } boot(); }).catch(()=>boot());
+  fetch('tm.json?v=3').then(r=>r.json()).then(tm=>{ try{ yearMode(tm); }catch(e){ console.error(e); } boot(); }).catch(()=>boot());
 }
 if(img.complete&&img.naturalWidth) bootYear(); else img.onload=bootYear;
 
