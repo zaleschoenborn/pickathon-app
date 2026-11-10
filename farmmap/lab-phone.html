@@ -2283,6 +2283,8 @@ function stepHood(dir,quiet){
 /* Nov 8 2026, design_specs/map_page.md (Option A): the chooser never goes away; the preview is a doorway. */
 #door{display:none;position:fixed;z-index:40;box-sizing:border-box;background:#1A2017;color:#F2EDE3;font-family:var(--f);-webkit-tap-highlight-color:transparent}
 body.dooron #door{display:block}
+#door::-webkit-scrollbar{display:none}
+@media (max-width:1199px) and (max-height:760px){#door .dv{aspect-ratio:2/1}}
 #door *{box-sizing:border-box}
 #door .dv{position:relative;display:block;aspect-ratio:16/9;border-radius:12px;overflow:hidden;background:#24301F;cursor:pointer}
 #door .dv.ph{cursor:default}
@@ -2326,7 +2328,7 @@ body.dooron #door{display:block}
 /* phone and tablet: chips + a swipe row of icons; the doorway is a sheet above the tab bar */
 @media (max-width:1199px){
   :root{--lps:calc(124px + var(--lpb))}
-  #door{left:0;right:0;bottom:0;padding:12px 16px calc(14px + var(--lpb,0px));border-radius:16px 16px 0 0;border-top:3px solid #D6B54A;box-shadow:0 -8px 28px rgba(0,0,0,.45);max-height:62vh;overflow:hidden;transform:translateY(0);transition:transform .26s cubic-bezier(.2,.8,.2,1)}
+  #door{left:0;right:0;bottom:0;padding:12px 16px calc(14px + var(--lpb,0px));border-radius:16px 16px 0 0;border-top:3px solid #D6B54A;box-shadow:0 -8px 28px rgba(0,0,0,.45);max-height:calc(100% - 64px);overflow-x:hidden;overflow-y:auto;scrollbar-width:none;-ms-overflow-style:none;transform:translateY(0);transition:transform .26s cubic-bezier(.2,.8,.2,1)}
   body.dooron.doorin #door{transform:translateY(110%)}
   #door .dx{display:flex}
   #door .dring{width:56px;height:56px}

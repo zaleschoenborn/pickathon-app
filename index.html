@@ -1008,11 +1008,16 @@ html.pk-nh-ontop #root [role=region][aria-label="Listen"],html.pk-nh-ontop #root
 #root .pk-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 @media (max-width:999px){
 #root .pk-cl-hd{position:relative;display:block}
-#root#root .pk-cl-an{position:absolute;right:0;top:-12px;padding:0 12px;font-size:12px}
+#root#root .pk-cl-an{padding:0 12px;font-size:12px}
 #root .pk-cl-cap{min-height:2.7em}
 #root .pk-cl-pw{margin-top:8px}
 #root .pk-cl-ht .pk-nh-h2{margin-top:14px}
 }
+/* Zale Nov 9 23:03: square play control first in the bar; Another year belongs to the poster; the section stands apart from the map above */
+#root#root#root#root .pk-cl-tb .pk-cl-rpl{width:48px!important;height:48px!important;min-height:48px!important;padding:0!important;font-size:20px!important;line-height:1;display:grid;place-items:center;border-radius:6px!important}
+#root .pk-cl-ay{display:flex;justify-content:flex-end;max-width:960px;margin:8px auto 0}
+#nh-sec-climb-sep{display:none}
+#pk-nh-climb{border-top:1px solid rgba(242,237,227,.16);margin-top:40px;padding-top:36px}
 /* Home renders every section up front: no content-visibility skipping (blank sections on phones, Zale Nov 9 06:30) */
 main:has(#pk-nh-climb)>section{content-visibility:visible!important;contain-intrinsic-size:none!important}
 /* time bar above the poster: the year it played to today, with Replay beside it (Zale, Nov 9 09:02) */
@@ -1030,7 +1035,7 @@ main:has(#pk-nh-climb)>section{content-visibility:visible!important;contain-intr
 
 /* review r2: names never draw past the paper; Another year clears the heading on phone */
 #root .pk-cl-p{overflow:hidden}
-@media (max-width:999px){#root .pk-cl-ht .pk-nh-h2{margin-top:22px!important}}
+@media (max-width:999px){#root .pk-cl-ht .pk-nh-h2{margin-top:10px!important;font-size:24px!important}#root .pk-cl-cap{min-height:2.75em!important;margin-top:4px}#root .pk-cl-tb{margin-top:8px}#root .pk-cl-tl{margin:4px auto 6px!important;min-height:1.5em}}
 #root#root#root#root .pk-cl-tb .pk-cl-rpl{min-height:44px!important;height:auto!important;padding:0 14px!important;font-size:13px!important;width:auto!important}
 </style>
 <style id="pk-hm-css">
@@ -1089,7 +1094,7 @@ main:has(#pk-nh-climb)>section{content-visibility:visible!important;contain-intr
   function build(host, id) {
     var P = window.__pkCyP; if (!P || !P[id]) return null;
     var w = document.createElement('section'); w.className = 'pk-hm'; w.setAttribute('data-h', id); w.setAttribute('aria-label', 'Where ' + nm(id) + ' is on the farm');
-    var h = '<div class="pk-hm-h"><p>Where it is<span>' + (window.matchMedia && matchMedia('(pointer:fine)').matches ? 'Click a neighbor to go there. Drag to look around.' : 'Tap a neighbor to go there. Drag or pinch to look around.') + '</span></p><button type="button" class="pk-hm-full">Full map →</button></div><div class="pk-hm-m" role="group" aria-label="The farm map around ' + nm(id) + '"><div class="pk-hm-l"></div>';
+    var h = '<div class="pk-hm-h"><p>Where it is<span>' + (window.matchMedia && matchMedia('(pointer:fine)').matches ? 'Click the map to open it full size. Click a neighbor to go there.' : 'Tap the map to open it full size. Tap a neighbor to go there.') + '</span></p></div><div class="pk-hm-m" role="group" aria-label="The farm map around ' + nm(id) + '"><div class="pk-hm-l"></div>';
     Object.keys(P).forEach(function (k) { var here = k === id; h += '<button type="button" class="pk-hm-s' + (here ? ' here' : '') + '" data-h="' + k + '" aria-label="' + (here ? nm(k) + ', you are here' : 'Go to ' + nm(k)) + '"' + (here ? ' aria-current="page"' : '') + '><i style="background-image:url(ic2/' + k + '.png)"></i><b>' + nm(k) + '</b></button>'; });
     h += '<div class="pk-hm-zm"><button type="button" data-z="1" aria-label="Zoom in"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 3v10M3 8h10"/></svg></button><button type="button" data-z="-1" aria-label="Zoom out"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10"/></svg></button></div></div>';
     w.innerHTML = h; host.parentNode.insertBefore(w, host.nextSibling);
@@ -1111,7 +1116,8 @@ main:has(#pk-nh-climb)>section{content-visibility:visible!important;contain-intr
   document.addEventListener('click', function (e) {
     var w = e.target.closest && e.target.closest('#root .pk-hm'); if (!w) return;
     var z = e.target.closest('.pk-hm-zm button'); if (z) { zoomAt(V.z * (+z.getAttribute('data-z') > 0 ? 1.5 : 1 / 1.5), V.vw / 2, V.vh / 2, true); return; }
-    if (e.target.closest('.pk-hm-full')) { var id = w.getAttribute('data-h'); try { sessionStorage.setItem('pkmap.focus', id); sessionStorage.setItem('pkmap.force', '1'); } catch (er) {} var lk = [].filter.call(document.querySelectorAll('.pk-hd-links button'), function (b) { return /on the map/i.test(b.textContent); })[0]; if (lk) lk.click(); else if (window.__pkGo) window.__pkGo('hoods'); return; }
+    var pinB = e.target.closest('.pk-hm-s');
+    if ((e.target.closest('.pk-hm-full') || (!(pinB && !pinB.classList.contains('here')) && e.target.closest('.pk-hm-m') && Date.now() - dragT > 300))) { var id = w.getAttribute('data-h'); try { sessionStorage.setItem('pkmap.focus', id); sessionStorage.setItem('pkmap.force', '1'); } catch (er) {} var lk = [].filter.call(document.querySelectorAll('.pk-hd-links button'), function (b) { return /on the map/i.test(b.textContent); })[0]; if (lk) lk.click(); else if (window.__pkGo) window.__pkGo('hoods'); return; }
     var b = e.target.closest('.pk-hm-s'); if (b && Date.now() - dragT > 300 && !b.classList.contains('here')) go(b.getAttribute('data-h'));
   });
   document.addEventListener('pointerdown', function (e) {
@@ -1652,9 +1658,9 @@ html.pk-cy-in div:has(> button[aria-label="Listen to Pickathon"]){opacity:0!impo
   function cfg(ph, wAvail) {
     if (!ph) return { ph: false, IW: 880, PADX: 40, PADY: 22, ART: { x: 0, y: 118, w: 330 }, COLX: 356, COLW: 524, Y0: 0, LANES: [[80, 74, 2], [44, 41, 1], [44, 41, 1], [44, 41, 1], [33, 29, 1], [33, 29, 1], [33, 29, 1], [33, 29, 1], [33, 29, 1], [33, 29, 1]], GAP: 5, R1: 22, ROWH: 21, FS: 13, CFS: 15, DATES: 15, DGAP: 42, BOT: 100, RIB: [40, 14], STAMP: 0.92 };
     var PW = Math.max(300, Math.min(wAvail, 720)), IW = PW - 32, k = Math.min(1.7, IW / 326), L = function (h, m, ml) { return [Math.round(h * k), Math.round(m * k), ml]; };
-    var AW = Math.round(96 * k);
-    return { ph: true, IW: IW, PADX: 16, PADY: 14, ART: { x: (IW - AW) / 2, y: 0, w: AW, h: Math.round(74 * k) }, COLX: 0, COLW: IW, Y0: Math.round(80 * k),
-      LANES: [L(42, 36, 2), L(27, 23, 1), L(27, 23, 1), L(27, 23, 1), L(21, 17, 1), L(21, 17, 1), L(21, 17, 1), L(21, 17, 1), L(21, 17, 1), L(21, 17, 1)], GAP: Math.round(3 * k), R1: Math.round(13 * k), ROWH: Math.round(16 * k), FS: Math.max(11, 11 * k), CFS: Math.max(12, 12 * k), DATES: Math.max(11, 11 * k), DGAP: Math.round(30 * k), BOT: Math.round(30 * k) + Math.round(Math.max(11, 11 * k)) + 12 + Math.max(34, Math.round(32 * k)), RIB: [Math.max(34, Math.round(32 * k)), Math.max(12, 12 * k)], STAMP: 0.7 * k };
+    var AW = Math.round(92 * k), CX = AW + Math.round(10 * k), LL = [L(36, 30, 2), L(26, 22, 1), L(26, 22, 1), L(26, 22, 1), L(20, 16, 1), L(20, 16, 1), L(20, 16, 1), L(20, 16, 1), L(20, 16, 1), L(20, 16, 1)], GP = Math.round(3 * k), listH = LL.reduce(function (a, l) { return a + l[0] + GP; }, -GP);
+    return { ph: true, IW: IW, PADX: 16, PADY: 14, ART: { x: 0, y: 4, w: AW, h: listH }, COLX: CX, COLW: IW - CX, Y0: 4,
+      LANES: LL, GAP: GP, R1: Math.round(13 * k), ROWH: Math.round(16 * k), FS: Math.max(11, 11 * k), CFS: Math.max(12, 12 * k), DATES: Math.max(11, 11 * k), DGAP: Math.round(30 * k), BOT: Math.round(30 * k) + Math.round(Math.max(11, 11 * k)) + 12 + Math.max(34, Math.round(32 * k)), RIB: [Math.max(34, Math.round(32 * k)), Math.max(12, 12 * k)], STAMP: 0.7 * k };
   }
 
   // One frame of the ladder at time tp (0 = festival, n-1 = today). Returns the paper's inner HTML and its height.
@@ -1748,10 +1754,10 @@ html.pk-cy-in div:has(> button[aria-label="Listen to Pickathon"]){opacity:0!impo
       h += '<span style="position:absolute;left:' + p.x.toFixed(1) + 'px;top:' + p.y.toFixed(1) + 'px;transform:translate(' + (-p.k * 100).toFixed(1) + '%,-100%);white-space:pre;text-align:' + al + ';' + FONT + ';line-height:' + LH + ';letter-spacing:' + (big ? '-.01em' : '.04em') + ';font-size:' + p.f.toFixed(2) + 'px;opacity:' + o.toFixed(3) + shadow + '">' + pre
         + '<span style="' + lineSt(p.lead, p.lead ? inkLead : inkMain) + '">' + esc(p.L[0]) + '</span>' + (two ? '<span style="' + lineSt(false, inkMain).replace(/^display:block;/, 'display:block;') + '">' + esc(p.L[1]) + '</span>' : '') + post + '</span>'; });
     var rules = (fk < 0.5 ? PA.__rules : PB.__rules).map(function (r) { return '<i style="position:absolute;left:0;width:' + Math.max(0, r.a).toFixed(0) + 'px;top:' + r.y + 'px;height:1.5px;background:' + B + '"></i><i style="position:absolute;left:' + r.b.toFixed(0) + 'px;right:0;top:' + r.y + 'px;height:1.5px;background:' + B + '"></i>'; }).join('');
-    var burst = fans ? '<i aria-hidden="true" style="position:absolute;left:0;top:0;width:' + IW + 'px;height:' + BOXH + 'px;background:' + enc('<svg xmlns="http://www.w3.org/2000/svg" width="' + IW + '" height="' + BOXH + '">' + fans + '</svg>') + ' 0 0/100% 100% no-repeat;pointer-events:none;-webkit-mask-image:' + WORN + ';mask-image:' + WORN + ';-webkit-mask-size:200px;mask-size:200px"></i>' : '';
+    var burst = fans ? '<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="' + IW + '" height="' + BOXH + '" style="position:absolute;left:0;top:0;pointer-events:none;overflow:visible;-webkit-mask-image:' + WORN + ';mask-image:' + WORN + ';-webkit-mask-size:200px;mask-size:200px">' + fans + '</svg>' : '';   /* inline, not a new data-URI image every frame: smoother on phones (Zale, Nov 9 23:03) */
     var artH = Q.ph ? Q.ART.h : (S[9].y + S[9].h - Q.ART.y);
     var art = D.art ? '<img src="' + esc(D.art) + '" alt="" loading="lazy" decoding="async" style="position:absolute;left:' + Q.ART.x + 'px;top:' + Q.ART.y + 'px;width:' + Q.ART.w + 'px;height:' + artH + 'px;object-fit:contain;object-position:center center">'
-      : '<div aria-hidden="true" style="position:absolute;left:' + (Q.ART.x + (Q.ph ? 0 : 40)) + 'px;top:' + (Q.ph ? 0 : 60) + 'px;width:' + (Q.ART.w - (Q.ph ? 0 : 80)) + 'px;height:' + (Q.ph ? artH : artH - 120) + 'px;display:flex;align-items:center;justify-content:center;text-align:center;' + FONT + ';line-height:.86;font-size:' + (Q.ph ? 22 : 80) + 'px;color:' + A + ';border:' + (Q.ph ? 3 : 6) + 'px solid ' + A + '">PICKATHON<br>' + y + '</div>';
+      : '<div aria-hidden="true" style="position:absolute;left:' + (Q.ART.x + (Q.ph ? 0 : 40)) + 'px;top:' + (Q.ph ? Q.ART.y : 60) + 'px;width:' + (Q.ART.w - (Q.ph ? 0 : 80)) + 'px;height:' + (Q.ph ? artH : artH - 120) + 'px;display:flex;align-items:center;justify-content:center;text-align:center;' + FONT + ';line-height:.86;font-size:' + (Q.ph ? 17 : 80) + 'px;color:' + A + ';border:' + (Q.ph ? 3 : 6) + 'px solid ' + A + '">PICKATHON<br>' + y + '</div>';
     var dl = K.dates ? (K.dates.toUpperCase().replace(/ ?- ?/g, '–') + ' · PENDARVIS FARM' + (Q.ph ? '' : ' · HAPPY VALLEY, OREGON')) : 'PICKATHON ' + y;
     var dates = '<div style="position:absolute;left:0;right:0;top:' + DATESY + 'px;text-align:center;white-space:nowrap;' + FONT + ';font-size:' + Q.DATES + 'px;letter-spacing:.08em;color:' + A + '">' + dl.split(' · ').map(function (t, i) { return (i ? '<span style="font-size:.6em;color:' + B + ';margin:0 ' + (Q.ph ? 6 : 12) + 'px;vertical-align:.2em">★</span>' : '') + esc(t); }).join('') + '</div>';
     var rib = '<div style="position:absolute;left:0;right:0;bottom:0;display:flex;align-items:center"><span class="pk-cl-fl" style="--ink:' + A + '"></span><span style="flex:none;height:' + Q.RIB[0] + 'px;padding:0 ' + (Q.ph ? 16 : 36) + 'px;background:' + A + ' linear-gradient(' + PAPER + '80,' + PAPER + '80) 0 4px/100% 1.5px no-repeat;color:' + PAPER + ';' + FONT + ';font-size:' + Q.RIB[1] + 'px;letter-spacing:.1em;display:flex;align-items:center;white-space:nowrap;clip-path:polygon(0 0,100% 0,calc(100% - 14px) 50%,100% 100%,0 100%,14px 50%)">EXPLORE PICKATHON ' + y + ' →</span><span class="pk-cl-fr" style="--ink:' + A + '"></span></div>';
@@ -1780,7 +1786,7 @@ html.pk-cy-in div:has(> button[aria-label="Listen to Pickathon"]){opacity:0!impo
     var n = D.labels.length, atEnd = tp >= n - 1 - 1e-3, kk = Math.floor(tp), fk = tp - kk, g = fk <= 0 ? 0 : fk >= 1 ? 1 : 0.5 - 0.5 * Math.cos(Math.PI * fk), frac = n > 1 ? Math.min(1, (kk + g) / (n - 1)) : 1;
     var y0 = +y, yNow = n > 1 ? Math.max(y0 + 1, Math.round(y0 + (TODAY - y0) * frac)) : TODAY;
     var line = n < 2 ? 'Ranked by how far each act has gone' : frac <= 0.001 ? (D.src === 'real billing' ? 'The bill as printed in ' + y : 'The bill as booked in ' + y) : (atEnd || yNow >= TODAY) ? 'Ranked today by how far each act has gone' : 'Re-ranked as of ' + yNow;
-    var btn = S.playing ? '■ Stop' : atEnd ? '↻ Replay' : '▶ Play';
+    var btn = S.playing ? '■' : atEnd ? '↻' : '▶';
     return { n: n, show: n > 1 && y0 < TODAY && !STAT(y0), frac: frac, yNow: Math.min(yNow, TODAY), line: line, btn: btn, aria: S.playing ? 'Stop' : atEnd ? 'Replay ' + y + ' to today' : 'Play ' + y + ' to today' };
   }
   function caption(D, y, tp) {
@@ -1818,15 +1824,15 @@ html.pk-cy-in div:has(> button[aria-label="Listen to Pickathon"]){opacity:0!impo
     var fa = document.activeElement, fk = fa && mountEl.contains(fa) ? fa.getAttribute('data-cl') : null;
     var corner = function (cx, cy) { return 'radial-gradient(circle at ' + cx + ' ' + cy + ',#000 0,transparent 22%)'; }, cm = [corner('0', '0'), corner('100%', '0'), corner('0', '100%'), corner('100%', '100%')].join(',');
     var h = '<div class="pk-cl-hd"><div class="pk-cl-ht"><p class="pk-nh-k">Still happening</p><h2 class="pk-nh-h2" id="pk-cl-h">Wait, they all played <span style="color:' + (YC[y] || '#F2CF62') + '">Pickathon ' + y + '?</span></h2>'
-      + '<p class="pk-cl-cap" aria-live="polite" style="color:' + (atEnd ? '#F2CF62' : '#CFC9BC') + '">' + esc(cap) + '</p></div>'
-      + '<button type="button" class="pk-cl-an" data-cl="rand">↻ Another year</button></div>';
-    if (TB.show) h += '<div class="pk-cl-tb"><span class="pk-cl-ty">' + y + '</span><span class="pk-cl-tr" aria-hidden="true"><i class="pk-cl-tf" style="width:' + (TB.frac * 100).toFixed(1) + '%"></i><b class="pk-cl-tm" style="left:' + (TB.frac * 100).toFixed(1) + '%;opacity:' + (TB.frac > 0.04 && TB.frac < 0.96 ? 1 : 0) + '">' + TB.yNow + '</b></span><span class="pk-cl-ty">' + TODAY + '</span><button type="button" class="pk-cta sec pk-cl-rpl" data-cl="play" aria-label="' + TB.aria + '">' + TB.btn + '</button></div><p class="pk-cl-tl" aria-hidden="true">' + esc(TB.line) + '</p>';
+      + '<p class="pk-cl-cap" aria-live="polite" style="color:' + (atEnd ? '#F2CF62' : '#CFC9BC') + '">' + esc(cap) + '</p></div></div>';
+    if (TB.show) h += '<div class="pk-cl-tb"><button type="button" class="pk-cta sec pk-cl-rpl" data-cl="play" aria-label="' + TB.aria + '">' + TB.btn + '</button><span class="pk-cl-ty">' + y + '</span><span class="pk-cl-tr" aria-hidden="true"><i class="pk-cl-tf" style="width:' + (TB.frac * 100).toFixed(1) + '%"></i><b class="pk-cl-tm" style="left:' + (TB.frac * 100).toFixed(1) + '%;opacity:' + (TB.frac > 0.04 && TB.frac < 0.96 ? 1 : 0) + '">' + TB.yNow + '</b></span><span class="pk-cl-ty">' + TODAY + '</span></div><p class="pk-cl-tl" aria-hidden="true">' + esc(TB.line) + '</p>';
     h += '<div class="pk-cl-pw" style="width:' + PW + 'px;height:' + PH + 'px">';
     h += '<div class="pk-cl-p" data-cl="year" role="link" tabindex="0" aria-label="Pickathon ' + y + ': open the ' + y + ' page" style="width:' + PW + 'px;height:' + PH + 'px;background:' + F.PAPER + '">';
     h += '<i aria-hidden="true" class="pk-cl-tone" style="background-image:radial-gradient(' + F.B + ' 1.4px,transparent 1.9px);-webkit-mask-image:' + cm + ';mask-image:' + cm + '"></i><i aria-hidden="true" class="pk-cl-grain" style="background-image:' + GRAIN + '"></i><i aria-hidden="true" class="pk-cl-frame" style="border-color:' + F.A + ';inset:' + (Q.ph ? 8 : 14) + 'px"></i>';
     h += '<div class="pk-cl-layer" aria-hidden="true" style="position:absolute;left:' + Q.PADX + 'px;top:' + Q.PADY + 'px;width:' + F.IW + 'px;height:' + F.H + 'px">' + F.html + '</div>';
     h += '</div>';
     h += '</div>';
+    h += '<div class="pk-cl-ay"><button type="button" class="pk-cl-an" data-cl="rand">↻ Another year</button></div>';
     var fin = D.names.filter(function (x) { return x[1][n - 1] < Math.min(10, D.ranked || 10); }).sort(function (a, b) { return a[1][n - 1] - b[1][n - 1]; }).map(function (x) { return x[0]; });
     h += '<p class="pk-sr">Pickathon ' + y + ', ranked today by how far each act has gone: ' + esc(fin.join(', ')) + '.</p>';
     mountEl.innerHTML = h; mountEl.setAttribute('data-y', y); mountEl._key = key;
@@ -1840,7 +1846,8 @@ html.pk-cy-in div:has(> button[aria-label="Listen to Pickathon"]){opacity:0!impo
     try { [].forEach.call(document.querySelectorAll('header'), function (hb) { var r = hb.getBoundingClientRect(), cs = getComputedStyle(hb); if (r.height > 0 && (cs.position === 'sticky' || cs.position === 'fixed')) top = Math.max(top, Math.min(140, r.height)); }); var tb = document.querySelector('nav[aria-label="App"]'); if (tb) { var tr = tb.getBoundingClientRect(); if (tr.height > 0 && tr.top > vh / 2) bot = vh - tr.top; } } catch (e) {}
     if (!bot && window.innerWidth < 1000) bot = 64;
     var sec = mountEl.closest('section'), pad = 0; if (sec) { var cs = getComputedStyle(sec); pad = parseFloat(cs.paddingTop) + parseFloat(cs.paddingBottom); }
-    var avail = vh - top - bot - hd.offsetHeight - 22 - pad, sc = Math.min(1, Math.max(0.66, avail / PH));
+    var ex = 0; ['.pk-cl-tb', '.pk-cl-tl', '.pk-cl-ay'].forEach(function (q) { var e0 = mountEl.querySelector(q); if (e0) ex += e0.offsetHeight + 8; });
+    var avail = vh - top - bot - hd.offsetHeight - ex - 22 - pad, sc = Math.min(1, Math.max(0.66, avail / PH));
     pw.style.transformOrigin = 'top center'; pw.style.transform = sc < 0.999 ? 'scale(' + sc.toFixed(3) + ')' : '';
     pw.style.marginBottom = sc < 0.999 ? (-(PH * (1 - sc))).toFixed(0) + 'px' : ''; mountEl.style.display = 'flow-root';
   }
