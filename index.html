@@ -6741,7 +6741,7 @@ setInterval(function () { var el = document.getElementById('pk-nh-br'); if (el &
   window.__pkCheckout = {
     open: function (order) {
       if (root) close(false);
-      O = order; prevFocus = document.activeElement;
+      O = order; if (window.PK_PAY_LATER === false) O.hasPlan = false; prevFocus = document.activeElement;
       S = { stage: 'pay', v: {}, err: {}, plan: '0', exp: Date.now() + 15 * 60 * 1000 };
       root = document.createElement('div'); root.id = 'pk-co'; root.setAttribute('role', 'dialog'); root.setAttribute('aria-modal', 'true'); root.setAttribute('aria-label', 'Checkout');
       document.body.appendChild(root);
