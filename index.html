@@ -3659,7 +3659,7 @@ html{-webkit-text-size-adjust:100%!important;text-size-adjust:100%!important}.pk
 <div class="pk-tb"><sc-for list="{{info.trip.basics}}" as="f" hint-placeholder-count="4"><p class="pk-tbf"><b>{{f.b}}</b><span>{{f.s}}</span></p></sc-for><button type="button" class="pk-cta pri pk-tbb" onClick="{{info.trip.tix}}">Tickets</button></div>
 <p class="pk-tk">How the trip goes</p>
 <div class="pk-tp"><sc-for list="{{info.trip.paths}}" as="p" hint-placeholder-count="3"><article class="pk-tpc"><img src="{{p.img}}" alt="" loading="lazy" decoding="async"><div class="pk-tpt"><h2>{{p.t}}</h2><p>{{p.x}}</p><sc-for list="{{p.l}}" as="i" hint-placeholder-count="3"><button type="button" class="pk-lnk" onClick="{{i.go}}"><span>{{i.t}}</span><span class="pk-arr" aria-hidden="true">→</span></button></sc-for></div></article></sc-for></div>
-<p class="pk-tk">Need a hand?</p>
+<p class="pk-tk">Also</p>
 <div class="pk-te"><sc-for list="{{info.trip.every}}" as="e" hint-placeholder-count="5"><button type="button" class="pk-lnk" onClick="{{e.go}}"><span>{{e.t}}</span><span class="pk-arr" aria-hidden="true">→</span></button></sc-for></div>
 </div>
 <h2 style="{{h2}}; margin-top: 40px">Common questions</h2>
@@ -5839,12 +5839,12 @@ var pr27 = function (k) { var r = PR27[k]; return r ? Math.ceil(r[PCOL]) : 0; },
       var tripP4 = pr27('p4'), tripTeenHalf = tripP4 && Math.abs(pr27('teen') * 2 - tripP4) <= 3, tripKidFree = pr27('child') === 0;
       var tripLn = function (t, k, v) { return { t: t, go: infoGo([t, k, v]) }; };
       var tripPaths = [
-        { t: '1 · Before you buy', img: 'i/p451.jpg', x: 'Which pass, what it costs and what to pack.', l: [tripLn('Passes, prices and what to pack', 'route', 'tickets')] },
+        { t: '1 · Before you buy', img: 'i/p451.jpg', x: 'Which pass, what it costs and what to pack.', l: [tripLn('Passes and prices', 'route', 'tickets'), tripLn('What to pack', 'page', 'what-to-bring-to-pickathon')] },
         { t: '2 · Arrive', img: 'i/p763.jpg', x: 'The Welcome Lot, the shuttle, biking in and gate hours.', l: [tripLn('Getting here: drive, shuttle, bike', 'page', 'traveling-to-pickathon')] },
         { t: '3 · Sleep', img: 'i/pk-lushcamp-04.jpg', x: 'Tents in the woods are included. Car camping and nearby stays are here too.', l: [tripLn('Camping and where to stay', 'page', 'camping')] },
-        { t: '4 · At the farm', img: 'i/p451.jpg', x: 'Twenty neighborhoods, food, kids at Coyote and zero waste.', l: [tripLn('Neighborhoods and map', 'route', 'hoods')] }
+        { t: '4 · At the farm', img: 'i/p451.jpg', x: 'Twenty neighborhoods on one map. Tap one for its stages, food and what’s there for kids.', l: [tripLn('Neighborhoods and map', 'route', 'hoods')] }
       ];
-      var tripEvery = [tripLn('Accessibility', 'page', 'ada-info')];
+      var tripEvery = [tripLn('Just for a day? Your easy day', 'page', 'easy-day'), tripLn('Accessibility', 'page', 'ada-info')];
       var tripBasics = [{ b: 'Aug 4–8, 2027', s: 'Wednesday early arrival' }, { b: 'Happy Valley, OR', s: '12 miles from Portland' }, { b: 'Camping included', s: 'Tents in the woods, free' }, { b: 'From ' + m27(pr27('p3')), s: '3-day weekend pass' }];
       out.info = { trip: { basics: tripBasics, tix: nav('tickets'), paths: tripPaths, every: tripEvery }, title: SEA === 'fest' ? 'Info & near me' : 'Plan your trip', showNear: SEA === 'fest', near: nearList, nearHead: meI ? 'Near you' : 'Near the main gate', nearSub: meI ? 'Walk times from where you are' + (meI.demo ? ' (demo spot)' : '') + '.' : 'Tap “Find me” to sort by where you are.', findMe: function () { self.findMe(); }, findLabel: meI ? 'Update' : 'Find me', paths: d.info.map(function (p, i) { var hot = p.feat ? p.feat.indexOf(SEA) >= 0 : i === 0; return { hot: hot, t: p.t, x: p.x || '', style: 'padding: 20px; border-radius: 16px; ' + (hot ? 'background: #24301F; color: #F2EDE3; border: 1px solid #3A4A33' : 'background: #1A2017; border: 1px solid #2A3125; color: #F2EDE3'), items: p.i.map(function (it) { return { t: it[0], go: infoGo(it) }; }) }; }).map(function (p, i) { p.i0 = i; return p; }).sort(function (a, b) { return ((b.hot ? 1 : 0) - (a.hot ? 1 : 0)) || (a.i0 - b.i0); }),
         faq: d.faq.map(function (f, i) { var o = st.faq === i; return { more: f[2] ? f[2][0] : 'More', go: f[2] ? infoGo(f[2]) : nav('info'), q: f[0], a: f[1], isOpen: o, open: o ? 'true' : 'false', sign: o ? '−' : '+', toggle: function () { self.setState({ faq: o ? -1 : i }); } }; }) };
