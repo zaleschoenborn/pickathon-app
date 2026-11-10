@@ -6,7 +6,18 @@ body.mapdrag #door{opacity:.18!important;pointer-events:none!important;transitio
 #dover h1,#lptitle b,#lpdeep b,#eyebrow+b,#cname,#pname,#pgname{font-family:"Pickathon 2014",var(--f)!important;text-transform:uppercase;letter-spacing:.02em!important;font-weight:400!important}
 #dover .dk,#lptitle small,#lpdeep small,#eyebrow,.pcg .gld,.pcg .gls,.pgh,#ckind,#pgkind,#ctag,#pgtag{font-family:var(--f)!important;font-weight:800!important;font-stretch:75%;font-variation-settings:'wdth' 75;text-transform:uppercase;letter-spacing:.12em!important}
 .pc span b,.lab,#fullmap,#finder,.pcb{font-family:var(--f)!important;font-weight:800!important;font-stretch:75%;font-variation-settings:'wdth' 75;letter-spacing:.04em!important;text-transform:uppercase}.pc span b{letter-spacing:0!important;font-size:.92em}
-</style></head><title>Farm Map Phone Test</title>
+</style><style id="yrcss">
+body.yr #pcl,body.yr #key,body.yr #amenbar{display:none!important}
+body.yr #art{background:#E3ECD9}
+body.yr #mapimg{opacity:.38;filter:saturate(.6)}
+body.yr img[src*="ic2/"]{visibility:hidden}
+#yrban{position:fixed;left:12px;top:12px;z-index:30;background:rgba(251,244,228,.94);color:#2a2418;border:1px solid rgba(0,0,0,.15);border-radius:12px;padding:7px 12px;font:600 13px/1.25 system-ui,sans-serif;pointer-events:none}
+#yrban span{display:block;font-weight:500;font-size:11.5px;opacity:.75}
+body.before #art,body.before #card{visibility:hidden}
+#yrbefore{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:32px;background:#E3ECD9;color:#2a2418;z-index:20;font-family:system-ui,sans-serif}
+#yrbefore b{font-size:22px;margin-bottom:8px}#yrbefore p{max-width:360px;font-size:15px;line-height:1.4;margin:0}
+</style>
+</head><title>Farm Map Phone Test</title>
 <style>
 /* The farm floats on its own paper colour. Shapes are real footprints traced
    from the art, so the same outline is both the glow and the hit area. */
@@ -2015,7 +2026,41 @@ function revealMap(){ if(_rvd) return; const i=document.getElementById('mapimg')
   else { i.addEventListener('load',()=>{ (i.decode?i.decode():Promise.resolve()).then(_rvGo,_rvGo); },{once:true}); i.addEventListener('error',_rvGo,{once:true}); } }
 setTimeout(_rvGo,20000);   /* never stay hidden */
 (function(){ const _b2=boot; boot=function(){ try{ _b2(); }finally{ requestAnimationFrame(function(){ requestAnimationFrame(function(){ setTimeout(revealMap,60); }); }); } }; })();
-if(img.complete&&img.naturalWidth) boot(); else img.onload=boot;
+/* ---- Time Machine: ?y=YYYY shows the farm as it was. Zones come from tm.json (history thread); no icons, clean base. ---- */
+const YR=(location.search.match(/[?&]y=(\d{4})/)||[])[1]||'';
+function yearMode(tm){
+  const b=document.body; b.classList.add('yr');
+  Object.keys(ICON_OWN).forEach(k=>delete ICON_OWN[k]);
+  Object.keys(ICON_AT).forEach(k=>{ ICON_AT[k]=[]; });
+  const bn=document.createElement('div'); bn.id='yrban';
+  const z=tm.years[YR], ids=tm.ids[YR];
+  if(z){
+    HOODS.length=0; Object.keys(SHAPES).forEach(k=>delete SHAPES[k]);
+    Object.keys(z).forEach(id=>{ const o=z[id], n=(o.d.match(/-?\d+(?:\.\d+)?/g)||[]).map(Number); const xs=[],ys=[];
+      for(let i=0;i+1<n.length;i+=2){ xs.push(n[i]); ys.push(n[i+1]); }
+      const x0=Math.min(...xs),x1=Math.max(...xs),y0=Math.min(...ys),y1=Math.max(...ys);
+      let a=0; for(let i=0;i<xs.length;i++){ const j=(i+1)%xs.length; a+=xs[i]*ys[j]-xs[j]*ys[i]; }
+      const c=[Math.round((x0+x1)/2),Math.round((y0+y1)/2)];
+      SHAPES[id]={d:o.d,c:c,pts:xs.length,area:Math.round(Math.abs(a)/2/(MW*MH)*10000)/100,b:[x0,y0,x1,y1],fx:[1.8,1,1]};
+      HOODS.push({id:id,n:o.n,t:'',k:o.k,p:[c[0]/MW*100,c[1]/MH*100],amk:[],am:[]}); });
+    bn.innerHTML='<b>Pickathon '+YR+'</b><span>'+(YR==='2007'?'The farm then (estimated)':'The farm then')+'</span>';
+  } else if(ids){
+    for(let i=HOODS.length-1;i>=0;i--){ if(ids.indexOf(HOODS[i].id)<0){ delete SHAPES[HOODS[i].id]; HOODS.splice(i,1); } }
+    bn.innerHTML='<b>Pickathon '+YR+'</b><span>The farm then</span>';
+  } else {
+    b.classList.add('before');
+    bn.innerHTML='<b>Pickathon '+YR+'</b><span>Before the farm</span>';
+    const c=document.createElement('div'); c.id='yrbefore';
+    c.innerHTML='<b>Before the farm</b><p>Pickathon '+YR+' was held at Horning’s Hideout, before the festival moved to Pendarvis Farm. There is no farm map for this year.</p>';
+    document.body.appendChild(c);
+  }
+  document.body.appendChild(bn);
+}
+function bootYear(){
+  if(!YR){ boot(); return; }
+  fetch('tm.json?v=1').then(r=>r.json()).then(tm=>{ try{ yearMode(tm); }catch(e){ console.error(e); } boot(); }).catch(()=>boot());
+}
+if(img.complete&&img.naturalWidth) bootYear(); else img.onload=bootYear;
 
 // ---- Walk the farm: swipe the card (or use the arrows) to go neighbourhood to
 // neighbourhood, and the map glides to frame each one. The order is a walk from
