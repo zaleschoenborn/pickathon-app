@@ -7165,7 +7165,33 @@ html:root:root:root:root:root body .pk-yreel .pk-yl,html:root:root:root:root:roo
 /* Nov 10 (Zale: each Home section fits one phone screen): Before they were big was 778px, now under 700 */
 @media (max-width:699px){#root#root#root #pk-nh-bands{padding-top:28px}#root#root#root #pk-nh-bands .pk-nh-in{font-size:15px;line-height:1.35;margin-top:6px}#root#root#root #pk-nh-bands .pk-nh-ball{min-height:48px}#root #pk-nh-bands article.pk-nh-c{height:392px!important;min-height:0!important}}
 </style>
-<style id="pk-ux5">#root .pk-act.pk-hv .pk-act-h{cursor:pointer}</style>
+<style id="pk-ux6">
+/* Nov 10 08:15 (Zale): tighter year header, compact See all, quieter neighborhood preview */
+html:root:root #root#root .pk-yb{margin:4px 0 14px;border-radius:12px}
+html:root:root #root#root .pk-yb .pk-yb-in{display:flex!important;flex-direction:row!important;align-items:center;gap:14px;padding:12px 16px!important;text-align:left}
+html:root:root #root#root .pk-yb .pk-yb-badge{flex:none;width:92px!important;height:92px!important;max-width:92px;object-fit:contain;margin:0!important}
+html:root:root #root#root .pk-yb .pk-yb-t{text-align:left;min-width:0}
+html:root:root #root#root .pk-yb .pk-yb-h{font-size:26px!important;line-height:1.05!important;margin:0!important}
+html:root:root #root#root .pk-yb .pk-yb-d{font-size:12px!important;line-height:1.35!important;margin:6px 0 0!important;letter-spacing:.08em}
+@media (min-width:1000px){html:root:root #root#root .pk-yb .pk-yb-badge{width:120px!important;height:120px!important;max-width:120px}html:root:root #root#root .pk-yb .pk-yb-h{font-size:36px!important}}
+@media (max-width:699px){#root#root#root #pk-nh-bands .pk-nh-ball-r{width:auto;justify-content:flex-start;min-height:38px;padding:0 14px;font-size:12px;margin-top:8px}}
+#root#root#root .pk-cy-f .pk-cy-hd img{width:34px;height:34px}
+#root#root#root .pk-cy-f .pk-cy-hd{gap:10px}
+#root#root#root .pk-cy-f .pk-nh-cn{font-size:20px!important;line-height:1.1}
+#root#root#root .pk-cy-f .pk-nh-ck{margin-top:4px;font-size:12px}
+#root#root#root .pk-cy-f .pk-nh-cue{min-height:38px;padding:0 18px;font-size:13px;margin-top:10px}
+#root#root#root#root .pk-cy .pk-cy-f>article .pk-nh-cg{background:linear-gradient(to top,rgba(20,17,18,.8) 0%,rgba(20,17,18,.34) 36%,rgba(20,17,18,0) 58%)!important}
+html:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root body .pk-yrp .pk-rs.pk-t0:not(:has(.pk-sts)) figcaption{position:absolute;left:0;right:0;bottom:0;display:flex!important;flex-direction:column;justify-content:flex-end;padding:56px 16px 18px!important;min-height:40%!important;height:auto!important;background:linear-gradient(to top,rgba(14,12,12,.82),rgba(14,12,12,0))}
+html:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root body .pk-yrp .pk-rs.pk-t0:not(:has(.pk-sts)) figcaption>b{display:block!important;font-size:30px!important;line-height:1.05!important;color:#F2EDE3}
+html:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root body .pk-yrp .pk-rs.pk-t0:not(:has(.pk-sts)) figcaption>img.pk-tl{position:static!important;order:0!important;width:56px!important;height:auto!important;max-width:56px!important;margin:0 0 8px!important}
+</style>
+<style id="pk-ux7">/* Nov 10: Listen lives in the phone header, so it stays put while scrolling, and steps aside whenever a full-screen layer (photo tour, video, checkout) is open */
+@media (max-width:999px){html.pk-scrolling [role=region][aria-label="Listen"][style*="height: 44px"]{transform:none!important;opacity:1!important}}
+@media (max-width:999px){html.pk-nh-ontop #root#root [role=region][aria-label="Listen"][style*="height: 44px"]{opacity:1!important;pointer-events:auto!important}}
+html.pk-ovl [role=region][aria-label="Listen"],html.pk-ovl #root button.pk-tly{opacity:0!important;pointer-events:none!important;visibility:hidden!important}</style>
+<script id="pk-ovl-js">(function(){function chk(){var on=false;try{var q=document.body.querySelectorAll('div,section,aside');for(var i=0;i<q.length&&!on;i++){var e=q[i];if(e.closest('[aria-label="Listen"]'))continue;var c=getComputedStyle(e);if(c.position!=='fixed')continue;var z=parseInt(c.zIndex,10);if(!(z>=100))continue;var r=e.getBoundingClientRect();if(r.width>=innerWidth*.9&&r.height>=innerHeight*.9&&c.display!=='none'&&c.visibility!=='hidden'&&+c.opacity>0)on=true}}catch(x){}document.documentElement.classList.toggle('pk-ovl',on)}setInterval(chk,400)})();</script>
+<style id="pk-ux5">#root .pk-act.pk-hv .pk-act-h{cursor:pointer;position:relative}
+#root#root .pk-act.pk-hv .pk-act-h::after{content:"";position:absolute;left:50%;top:50%;width:72px;height:72px;margin:-36px 0 0 -36px;border-radius:50%;border:3px solid #F2EDE3;background:rgba(18,16,16,.35) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23F2EDE3' d='M9 6.5v11l9-5.5z'/%3E%3C/svg%3E") center/34px no-repeat;pointer-events:none;box-shadow:0 2px 14px rgba(0,0,0,.4)}</style>
 <script id="pk-act-play">
 /* Nov 10: on an artist page the big photo plays the artist's clips, same as the Watch button */
 (function () {
