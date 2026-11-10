@@ -5,7 +5,8 @@
 import json, csv, sys, re, os, unicodedata
 SITE = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..')
 def key(s):
-    s = unicodedata.normalize('NFKD', str(s or '')).encode('ascii', 'ignore').decode().lower(); s = re.sub(r'^the\s+', '', s); return re.sub(r'[^a-z0-9]', '', s)
+    s = str(s or '').replace('\u00b3', '').replace(' ft Gordon Gano', '')  # Zale Nov 10: Giant\u00b3 Sand is the spelling; Lost Bayou Ramblers ft Gordon Gano is an alias of Lost Bayou Ramblers
+    s = unicodedata.normalize('NFKD', s).encode('ascii', 'ignore').decode().lower(); s = re.sub(r'^the\s+', '', s); return re.sub(r'[^a-z0-9]', '', s)
 KC = lambda c: 'leg' if (c or '').startswith('Legend') else 'disc' if (c or '').startswith('Discovery') else 'deep' if (c or '').startswith('Deep cut') else 'none' if (c or '').startswith('Neither') else None
 RK = {'none': 0, 'deep': 1, 'disc': 2, 'leg': 3}
 MON = {m: i + 1 for i, m in enumerate('Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec'.split())}

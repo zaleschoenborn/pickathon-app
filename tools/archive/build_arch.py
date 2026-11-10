@@ -9,7 +9,8 @@ GFIX = {'durandjones': 'soul'}
 import json, sys, re, os, csv, unicodedata
 SITE = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..')
 def key(s):
-    s = unicodedata.normalize('NFKD', str(s or '')).encode('ascii', 'ignore').decode().lower()
+    s = str(s or '').replace('\u00b3', '').replace(' ft Gordon Gano', '')  # Zale Nov 10: Giant\u00b3 Sand is the spelling; Lost Bayou Ramblers ft Gordon Gano is an alias of Lost Bayou Ramblers
+    s = unicodedata.normalize('NFKD', s).encode('ascii', 'ignore').decode().lower()
     s = re.sub(r'^the\s+', '', s); return re.sub(r'[^a-z0-9]', '', s)
 rows = [l.rstrip('\n').split('|') for l in open(sys.argv[1], encoding='utf-8') if l.strip() and not l.startswith('#')]
 have = {r[0] for r in rows}
