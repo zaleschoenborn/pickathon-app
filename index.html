@@ -6132,7 +6132,7 @@ var LTABS = [['Passes', ['p4', 'p3', 'teen', 'child', 'early', 'patron']], ['Day
           gives: [['tools', 'Fund the tools'], ['student', 'Sponsor a student']].filter(function (g) { return all2[g[0]]; }).map(function (g) { var on = (B.give || []).indexOf(g[0]) >= 0; return { t: (on ? '✓ ' : '') + g[1] + ' · ' + money(P(g[0])) + ' · no fee', on: on ? 'true' : 'false', style: chipS(on), pick: function () { var a = (B.give || []).slice(), ix = a.indexOf(g[0]); if (ix >= 0) a.splice(ix, 1); else a.push(g[0]); upd({ give: a }); } }; }),
           lines: lines, empty: !lines.length, fee: money(fee), total: money(sub + fee), hasPlan: !!inEB && sub > 300 && ready, plan: (function () { var T = Math.round((sub + fee) * 100), d0 = Math.ceil(T / 300) * 100, rest = T - d0, p1 = Math.ceil(rest / 2), p2 = rest - p1; return money(d0 / 100) + ' today, then ' + (p1 === p2 ? '2 monthly payments of ' + money(p1 / 100) : 'monthly payments of ' + money(p1 / 100) + ' and ' + money(p2 / 100)); })(),
           disabled: !ready, pay: function () { if (ready) self.setState({ paid: true }); }, paid: !!st.paid && ready, payLabel: ready ? (saleOpen ? 'Buy these passes' : 'Remind me when it opens') : (!passes ? 'Add a pass to start' : isDay && !B.days.length ? 'Pick your days' : fixes.length ? 'Choose an option above' : !(anyGo || B.unsure) ? 'Tell us how you’re getting there' : needSpot ? 'Pick a camping spot' : 'Finish above'),
-          next: function () { if (ready && !saleOpen) { try { var nf = document.getElementById('pk-notify'); if (nf) nf.scrollIntoView({ behavior: 'smooth', block: 'center' }); } catch (e) {} return; } if (ready) { self.setState({ paid: true }); setTimeout(function () { try { var el = document.querySelector('aside[aria-label="Your order"]'); if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch (e) {} }, 60); return; } var id = (!passes || fixes.length || (isDay && !B.days.length)) ? 'pk-tb-1' : 'pk-tb-2'; try { var el = document.getElementById(id); if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch (e) {} },
+          next: function () { if (ready && !saleOpen) { try { var nf = document.getElementById('pk-notify'); if (nf) nf.scrollIntoView({ behavior: 'smooth', block: 'center' }); } catch (e) {} return; } if (ready) { if (window.__pkCheckout) { window.__pkCheckout.open({ lines: lines.map(function (l) { return { q: l.q, n: l.n, t: l.t }; }), fee: money(fee), total: money(sub + fee), totalNum: Math.round((sub + fee) * 100) / 100, hasPlan: !!inEB && sub > 300 && ready, plan: (function () { var T = Math.round((sub + fee) * 100), d0 = Math.ceil(T / 300) * 100, rest = T - d0, p1 = Math.ceil(rest / 2), p2 = rest - p1; return money(d0 / 100) + ' today, then ' + (p1 === p2 ? '2 monthly payments of ' + money(p1 / 100) : 'monthly payments of ' + money(p1 / 100) + ' and ' + money(p2 / 100)); })() }); return; } self.setState({ paid: true }); setTimeout(function () { try { var el = document.querySelector('aside[aria-label="Your order"]'); if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch (e) {} }, 60); return; } var id = (!passes || fixes.length || (isDay && !B.days.length)) ? 'pk-tb-1' : 'pk-tb-2'; try { var el = document.getElementById(id); if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch (e) {} },
           needSpot: needSpot, spotNote: needSpot ? (B.vlen && !(VS[B.vlen] || []).some(function (x) { return !sold(x[0]); }) ? 'Those spots are sold out. Try another length, or tent camping (included).' : 'Pick a length and add a spot, or switch to tent camping.') : '',
           hasSwap: !!swap, swapT: swap ? 'A ' + swap[2] + ' costs ' + money(swapSave) + ' less per person than these days, and camping is included.' : '', swapGo: function () { if (!swap) return; var o = { dp: 0, days: [] }; o[swap[0]] = (B[swap[0]] || 0) + B.dp; upd(o); }, swapL: swap ? 'Switch to the ' + swap[2] : '',
           payStyle: 'width: 100%; min-height: 52px; margin-top: 14px; border-radius: 999px; border: 0; font: inherit; font-size: 16px; font-weight: 800; cursor: pointer; ' + (ready ? 'background: #F2B33D; color: #12160F; border: 0' : 'background: transparent; color: #F2EDE3; border: 1.5px solid #F2EDE3'),
@@ -6520,6 +6520,242 @@ function fix(el) { var P = per(el); if (!P) return; if (!el._pkLp) { el._pkLp = 
 document.addEventListener('scroll', function (e) { var el = e.target; if (el && el.id === 'pk-nh-br') fix(el); }, true);
 setInterval(function () { var el = document.getElementById('pk-nh-br'); if (el && !el._pkLp) fix(el); }, 400); })();</script>
 <style id="pk-nh-bball">/*pk-nh-bball: Home bands header, See all beside the heading on wide screens; on phone the heading takes the full row and the button sits full width under it (Zale, Nov 9)*/@media (max-width:699px){#root#root #pk-nh-bands .pk-nh-head{flex-wrap:wrap;align-items:flex-start}#root#root #pk-nh-bands .pk-nh-head>div:first-child{flex:1 1 100%}#root#root #pk-nh-bands .pk-nh-arrs{flex:1 1 100%}#root#root #pk-nh-bands .pk-nh-arr{display:none}#root#root#root #pk-nh-bands .pk-nh-ball-r{width:100%;justify-content:center;margin-top:0}}@media (min-width:700px){#root#root#root #pk-nh-bands .pk-nh-ball-r{margin-top:0}}</style>
+<style id="pk-co-css">
+#pk-co{position:fixed;inset:0;z-index:2000;overflow-y:auto;scrollbar-width:none;background:#0C0F0A;color:#F2EDE3;font-family:inherit;-webkit-overflow-scrolling:touch}
+#pk-co::-webkit-scrollbar{display:none}
+#pk-co *{box-sizing:border-box}
+#pk-co [id]{scroll-margin-top:76px}
+#pk-co .co-top{position:sticky;top:0;z-index:3;background:#0C0F0A;border-bottom:1px solid #2A3125}
+#pk-co .co-topin{max-width:1080px;margin:0 auto;padding:10px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:56px}
+#pk-co .co-back{min-height:44px;padding:0 4px;border:0;background:transparent;color:#F2EDE3;font:inherit;font-weight:700;font-size:15px}
+#pk-co .co-steps{display:flex;gap:6px;align-items:center;font-size:13px;color:#B9B3A6;list-style:none;margin:0;padding:0}
+#pk-co .co-steps li{padding:4px 10px;border-radius:999px;border:1px solid #2A3125}
+#pk-co .co-steps li[aria-current=step]{background:#F2EDE3;color:#12160F;border-color:#F2EDE3;font-weight:800}
+#pk-co .co-steps li.done{color:#9FCB8A;border-color:#3A4A33}
+#pk-co .co-wrap{max-width:1080px;margin:0 auto;padding:18px 16px 120px;display:grid;gap:22px;grid-template-columns:minmax(0,1fr)}
+#pk-co .co-h1{margin:0;font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:30px;line-height:1.1}
+#pk-co .co-card{background:#1A2017;border:1px solid #2A3125;border-radius:18px;padding:18px 18px 20px}
+#pk-co .co-card h2{margin:0 0 12px;font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:21px}
+#pk-co .co-eyebrow{margin:0 0 4px;font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#F2B33D}
+#pk-co .co-note{margin:0;font-size:13px;line-height:1.45;color:#B9B3A6}
+#pk-co .co-prev{margin:0;padding:10px 14px;border-radius:12px;background:#24301F;color:#DCE8D2;font-size:14px;line-height:1.45}
+#pk-co .co-g{display:grid;gap:12px;grid-template-columns:repeat(2,minmax(0,1fr))}
+#pk-co .co-f{display:grid;gap:5px;font-size:14px;font-weight:700;min-width:0}
+#pk-co .co-f.wide{grid-column:1/-1}
+#pk-co input[type=text],#pk-co input[type=email],#pk-co select{width:100%;min-height:48px;padding:0 14px;border-radius:12px;border:1px solid #4A5544;background:#12160F;color:#F2EDE3;font:inherit;font-weight:400;font-size:16px}
+#pk-co input[aria-invalid=true],#pk-co select[aria-invalid=true]{border-color:#E58A6B;border-width:2px}
+#pk-co .co-err{margin:0;font-size:13px;font-weight:700;color:#F0A58C}
+#pk-co .co-sum{padding:12px 14px;border-radius:12px;background:#3A2A12;color:#F6E2B8;font-size:14px;margin:0 0 14px}
+#pk-co .co-sum ul{margin:6px 0 0;padding-left:18px}
+#pk-co .co-sum a{color:#F2CF62;font-weight:700}
+#pk-co .co-opt{display:flex;gap:12px;align-items:flex-start;padding:14px;border-radius:14px;border:1px solid #4A5544;background:#12160F}
+#pk-co .co-opt[data-on=true]{background:#F2EDE3;color:#12160F;border-color:#F2EDE3}
+#pk-co .co-opt input{width:22px;height:22px;margin-top:2px;accent-color:#12160F;flex:none}
+#pk-co .co-opt small{display:block;font-weight:400;font-size:13px;margin-top:2px;opacity:.85}
+#pk-co .co-chk{display:flex;gap:12px;align-items:flex-start;font-size:15px;line-height:1.4;margin-top:12px}
+#pk-co .co-chk input{width:22px;height:22px;flex:none;margin-top:1px;accent-color:#9FCB8A}
+#pk-co .co-link{padding:0;border:0;background:transparent;color:#F2CF62;font:inherit;font-weight:700;text-decoration:underline;min-height:32px}
+#pk-co .co-terms{margin:10px 0 0;padding:12px 14px;max-height:180px;overflow-y:auto;scrollbar-width:none;border-radius:12px;background:#12160F;border:1px solid #2A3125;font-size:13px;line-height:1.5;color:#CFC9BC}
+#pk-co .co-terms::-webkit-scrollbar{display:none}
+#pk-co .co-btn{width:100%;min-height:52px;border-radius:999px;border:0;font:inherit;font-size:16px;font-weight:800;background:#F2B33D;color:#12160F}
+#pk-co .co-btn[disabled]{background:#2A3125;color:#8E897E}
+#pk-co .co-btn.sec{background:transparent;color:#F2EDE3;border:1.5px solid #F2EDE3}
+#pk-co .co-row{display:flex;justify-content:space-between;gap:10px;padding:6px 0;font-size:15px}
+#pk-co .co-row.line{border-bottom:1px solid #2A3125}
+#pk-co .co-mono{font-variant-numeric:tabular-nums;font-weight:700;white-space:nowrap}
+#pk-co .co-total{display:flex;justify-content:space-between;align-items:baseline;font-size:22px;font-weight:800;margin-top:10px}
+#pk-co .co-sumwrap{display:grid;gap:14px;align-content:start}
+#pk-co details.co-mobsum{background:#1A2017;border:1px solid #2A3125;border-radius:14px;padding:0 14px}
+#pk-co details.co-mobsum summary{min-height:52px;display:flex;align-items:center;justify-content:space-between;font-weight:800;list-style:none}
+#pk-co details.co-mobsum summary::-webkit-details-marker{display:none}
+#pk-co .co-bar{position:fixed;left:0;right:0;bottom:0;z-index:4;padding:10px 16px calc(10px + env(safe-area-inset-bottom,0px));background:#0C0F0A;border-top:1px solid #2A3125}
+#pk-co .co-bar .co-btn{max-width:640px;margin:0 auto;display:block}
+#pk-co .co-timer{font-size:14px;color:#F2CF62;font-weight:700}
+#pk-co .co-check{width:72px;height:72px;border-radius:50%;background:#24301F;border:2px solid #9FCB8A;display:flex;align-items:center;justify-content:center;font-size:36px;color:#9FCB8A}
+#pk-co .co-next{display:grid;gap:10px;grid-template-columns:repeat(3,minmax(0,1fr))}
+#pk-co .co-next>div{padding:14px;border-radius:14px;background:#12160F;border:1px solid #2A3125;font-size:14px;line-height:1.45}
+#pk-co .co-next b{display:block;font-size:15px;margin-bottom:4px}
+@media (min-width:900px){#pk-co .co-wrap{grid-template-columns:minmax(0,1fr) 360px;align-items:start;padding-bottom:60px}#pk-co .co-sumwrap{position:sticky;top:84px}#pk-co .co-bar{display:none}#pk-co details.co-mobsum{display:none}}
+@media (max-width:899px){#pk-co .co-desksum{display:none}#pk-co .co-g{grid-template-columns:minmax(0,1fr)}#pk-co .co-next{grid-template-columns:minmax(0,1fr)}#pk-co .co-h1{font-size:26px}#pk-co .co-steps li:not([aria-current=step]){display:none}}
+</style>
+<script id="pk-checkout">
+(function () {
+  var O = null, S = null, T = null, root = null, prevFocus = null;
+  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+  var TERMS = 'All sales are final. Your passes are tied to the event dates and cannot be refunded. If an event date changes or Pickathon cancels, we will email you with your options. Passes can be transferred to a friend from My Pickathon.';
+  var PLANTERMS = 'A Pickathon Payment Plan splits your total into a first payment today and monthly payments after that, charged to the card you enter here. Your passes are issued when the plan is complete. Missed payments can cancel the order.';
+  function money(n) { return '$' + (Math.round(n * 100) / 100).toLocaleString('en-US', { minimumFractionDigits: n % 1 ? 2 : 0, maximumFractionDigits: 2 }); }
+  function app() { return window.__pkApp; }
+  function sumHTML() {
+    var h = O.lines.map(function (l) { return '<div class="co-row line"><span>' + esc(l.q) + ' × ' + esc(l.n) + '</span><span class="co-mono">' + esc(l.t) + '</span></div>'; }).join('');
+    h += '<div class="co-row"><span style="color:#B9B3A6">Service fee (5%)</span><span class="co-mono">' + esc(O.fee) + '</span></div>';
+    h += '<div class="co-total"><span>Total</span><span style="color:#F2CF62">' + esc(O.total) + '</span></div>';
+    if (S.plan === '1' && O.hasPlan) h += '<p class="co-note" style="margin-top:8px;color:#DCE8D2">Plan: ' + esc(O.plan) + '</p>';
+    return h;
+  }
+  function field(id, label, opts) {
+    opts = opts || {};
+    var v = S.v[id] || '', e = S.err[id];
+    var inp = opts.select ? '<select id="co-' + id + '" name="' + id + '" autocomplete="' + (opts.ac || 'off') + '" aria-invalid="' + (e ? 'true' : 'false') + '"' + (e ? ' aria-describedby="co-' + id + '-e"' : '') + '>' + opts.select.map(function (o) { return '<option value="' + o[0] + '"' + (v === o[0] || (!v && o[0] === opts.def) ? ' selected' : '') + '>' + o[1] + '</option>'; }).join('') + '</select>'
+      : '<input type="' + (opts.type || 'text') + '" id="co-' + id + '" name="' + id + '" value="' + esc(v) + '" autocomplete="' + (opts.ac || 'off') + '"' + (opts.mode ? ' inputmode="' + opts.mode + '"' : '') + (opts.ph ? ' placeholder="' + esc(opts.ph) + '"' : '') + (opts.max ? ' maxlength="' + opts.max + '"' : '') + ' aria-invalid="' + (e ? 'true' : 'false') + '"' + (e ? ' aria-describedby="co-' + id + '-e"' : '') + '>';
+    return '<div class="co-f' + (opts.wide ? ' wide' : '') + '"><label for="co-' + id + '">' + label + '</label>' + inp + (e ? '<p class="co-err" id="co-' + id + '-e">' + esc(e) + '</p>' : '') + '</div>';
+  }
+  function steps(n) {
+    var L = ['Your order', 'Pay', 'Done'];
+    return '<ol class="co-steps" aria-label="Checkout steps">' + L.map(function (t, i) { return '<li' + (i === n ? ' aria-current="step"' : '') + (i < n ? ' class="done"' : '') + '>' + (i < n ? '✓ ' : (i + 1) + '. ') + t + '</li>'; }).join('') + '</ol>';
+  }
+  function payHTML() {
+    var errs = Object.keys(S.err);
+    var h = '<div class="co-top"><div class="co-topin"><button type="button" class="co-back" data-a="back">← Back to your order</button>' + steps(1) + '</div></div>';
+    h += '<div class="co-wrap"><div style="display:grid;gap:16px;min-width:0"><div><p class="co-eyebrow">Checkout</p><h1 class="co-h1" id="co-h1" tabindex="-1">Pay for your passes</h1><p class="co-timer" id="co-timer" role="timer" aria-live="off" style="margin:6px 0 0"></p></div>';
+    h += '<p class="co-prev">Preview checkout. Nothing is charged and nothing you type here is sent anywhere.</p>';
+    h += '<details class="co-mobsum"><summary><span>Order summary</span><span class="co-mono">' + esc(O.total) + ' ▾</span></summary><div style="padding:0 0 14px">' + sumHTML() + '</div></details>';
+    if (S.fail) h += '<div role="alert" class="co-sum"><b>We couldn’t process that card.</b> Nothing was charged. Check the card details or try another card.</div>';
+    if (errs.length) h += '<div role="alert" class="co-sum" id="co-sum"><b>Fix ' + errs.length + (errs.length === 1 ? ' thing' : ' things') + ' to continue:</b><ul>' + errs.map(function (k) { return '<li><a href="#co-' + k + '" data-f="' + k + '">' + esc(S.err[k]) + '</a></li>'; }).join('') + '</ul></div>';
+    h += '<form id="co-form" novalidate style="display:grid;gap:16px">';
+    h += '<section class="co-card" aria-labelledby="co-c1"><h2 id="co-c1">Who’s buying</h2><div class="co-g">' + field('first', 'First name', { ac: 'given-name' }) + field('last', 'Last name', { ac: 'family-name' }) + field('email', 'Email', { type: 'email', ac: 'email', wide: true, ph: 'you@example.com' }) + '</div><p class="co-note" style="margin-top:10px">Your receipt and tickets are emailed here. You can name each pass later in My Pickathon.</p></section>';
+    if (O.hasPlan) h += '<section class="co-card" aria-labelledby="co-c2"><h2 id="co-c2">When to pay</h2><div style="display:grid;gap:10px" role="radiogroup" aria-labelledby="co-c2">' +
+      '<label class="co-opt" data-on="' + (S.plan !== '1') + '"><input type="radio" name="plan" value="0"' + (S.plan !== '1' ? ' checked' : '') + '><span><b>Pay in full today</b><small>' + esc(O.total) + ' now</small></span></label>' +
+      '<label class="co-opt" data-on="' + (S.plan === '1') + '"><input type="radio" name="plan" value="1"' + (S.plan === '1' ? ' checked' : '') + '><span><b>Pay over time with a Pickathon Payment Plan</b><small>' + esc(O.plan) + '</small></span></label></div></section>';
+    h += '<section class="co-card" aria-labelledby="co-c3"><h2 id="co-c3">Card</h2><div class="co-g">' + field('card', 'Card number', { ac: 'cc-number', mode: 'numeric', ph: '•••• •••• •••• ••••', max: 23, wide: true }) + field('exp', 'Expires', { ac: 'cc-exp', mode: 'numeric', ph: 'MM/YY', max: 5 }) + field('cvc', 'Security code', { ac: 'cc-csc', mode: 'numeric', ph: '123', max: 4 }) + '</div></section>';
+    h += '<section class="co-card" aria-labelledby="co-c4"><h2 id="co-c4">Billing address</h2><div class="co-g">' + field('addr', 'Street address', { ac: 'street-address', wide: true }) + field('city', 'City', { ac: 'address-level2' }) + field('state', 'State', { ac: 'address-level1', ph: 'OR', max: 2 }) + field('zip', 'ZIP code', { ac: 'postal-code', mode: 'numeric', max: 10 }) + field('country', 'Country', { ac: 'country', select: [['US', 'United States'], ['CA', 'Canada'], ['GB', 'United Kingdom'], ['OTHER', 'Other']], def: 'US' }) + '</div></section>';
+    h += '<section class="co-card" aria-labelledby="co-c5"><h2 id="co-c5">Almost done</h2>' +
+      '<div class="co-row" style="padding-top:0"><span>Have a discount code?</span><button type="button" class="co-link" data-a="code">' + (S.codeOpen ? 'Hide' : 'Add it') + '</button></div>' +
+      (S.codeOpen ? '<div style="display:flex;gap:10px;align-items:flex-start"><div style="flex:1;min-width:0"><label for="co-code" class="co-note" style="display:block;margin-bottom:4px">Discount code</label><input type="text" id="co-code" name="code" value="' + esc(S.v.code || '') + '" autocomplete="off"></div><button type="button" class="co-btn sec" data-a="apply" style="width:auto;padding:0 20px;margin-top:22px">Apply</button></div>' + (S.codeMsg ? '<p class="co-note" role="status" style="margin-top:6px">' + esc(S.codeMsg) + '</p>' : '') : '') +
+      '<label class="co-chk"><input type="checkbox" name="news"' + (S.news ? ' checked' : '') + '><span>Send me the Pickathon newsletter</span></label>' +
+      '<label class="co-chk"><input type="checkbox" name="agree" id="co-agree"' + (S.agree ? ' checked' : '') + ' aria-invalid="' + (S.err.agree ? 'true' : 'false') + '"><span>I agree to the <button type="button" class="co-link" data-a="terms" style="min-height:0">terms and conditions</button> (all sales are final)</span></label>' +
+      (S.err.agree ? '<p class="co-err" style="margin-left:34px">' + esc(S.err.agree) + '</p>' : '') +
+      (S.termsOpen ? '<div class="co-terms" tabindex="0" role="region" aria-label="Terms and conditions">' + esc(TERMS) + '</div>' : '') +
+      (S.plan === '1' && O.hasPlan ? '<label class="co-chk"><input type="checkbox" name="agreeplan" id="co-agreeplan"' + (S.agreePlan ? ' checked' : '') + '><span>I agree to the <button type="button" class="co-link" data-a="planterms" style="min-height:0">payment plan terms</button></span></label>' + (S.err.agreePlan ? '<p class="co-err" style="margin-left:34px">' + esc(S.err.agreePlan) + '</p>' : '') + (S.planTermsOpen ? '<div class="co-terms" tabindex="0" role="region" aria-label="Payment plan terms">' + esc(PLANTERMS) + '</div>' : '') : '') +
+      '</section>';
+    h += '<div class="co-desksum"><button type="submit" class="co-btn" ' + (S.busy ? 'disabled' : '') + '>' + (S.busy ? 'Processing…' : btnLabel()) + '</button><p class="co-note" style="margin-top:8px;text-align:center">SSL encrypted · Refund policy applies</p></div></form></div>';
+    h += '<aside class="co-sumwrap co-desksum" aria-label="Order summary"><div class="co-card"><p class="co-eyebrow">Your order</p><h2>Summary</h2>' + sumHTML() + '</div></aside></div>';
+    h += '<div class="co-bar"><button type="submit" form="co-form" class="co-btn" ' + (S.busy ? 'disabled' : '') + '>' + (S.busy ? 'Processing…' : btnLabel()) + '</button></div>';
+    return h;
+  }
+  function btnLabel() { if (O.totalNum === 0) return 'Process order'; return S.plan === '1' && O.hasPlan ? 'Start my payment plan' : 'Pay ' + O.total; }
+  function doneHTML() {
+    var h = '<div class="co-top"><div class="co-topin"><span style="font-weight:800">Pickathon</span>' + steps(2).replace('aria-current="step"', 'aria-current="step"') + '</div></div>';
+    h += '<div class="co-wrap" style="grid-template-columns:minmax(0,720px);justify-content:center;padding-bottom:60px"><div style="display:grid;gap:18px;min-width:0">';
+    h += '<div class="co-check" aria-hidden="true">✓</div><div><p class="co-eyebrow">Order ' + esc(S.num) + '</p><h1 class="co-h1" id="co-h1" tabindex="-1">You’re going to Pickathon.</h1><p style="margin:10px 0 0;font-size:17px;line-height:1.5;color:#DCE8D2">Thank you for your order. We’re emailing your receipt to <b>' + esc(S.v.email || 'you') + '</b>. See you on the farm!</p></div>';
+    h += '<p class="co-prev">Preview checkout. Nothing was charged and no email was sent.</p>';
+    h += '<section class="co-card" aria-labelledby="co-d1"><h2 id="co-d1">What you bought</h2>' + sumHTML().replace('<div class="co-total"><span>Total</span>', '<div class="co-total"><span>' + (S.plan === '1' && O.hasPlan ? 'Total' : 'Paid') + '</span>') + '</section>';
+    h += '<section aria-labelledby="co-d2"><h2 id="co-d2" style="margin:0 0 10px;font-family:\'Bricolage Grotesque\',sans-serif;font-weight:800;font-size:21px">What happens next</h2><div class="co-next"><div><b>1. Name your passes</b>Open My Pickathon to put a name on each pass or send one to a friend.</div><div><b>2. Plan your trip</b>Camping, getting there and what to pack are all in Plan your trip.</div><div><b>3. Watch your inbox</b>We’ll email you the moment the lineup drops.</div></div></section>';
+    h += '<div style="display:grid;gap:10px"><button type="button" class="co-btn" data-a="mine">Go to My Pickathon</button><button type="button" class="co-btn sec" data-a="trip">Plan your trip</button><button type="button" class="co-btn sec" data-a="home">Back to home</button></div>';
+    h += '</div></div>';
+    return h;
+  }
+  function expiredHTML() {
+    return '<div class="co-top"><div class="co-topin"><button type="button" class="co-back" data-a="back">← Back to your order</button>' + steps(1) + '</div></div><div class="co-wrap" style="grid-template-columns:minmax(0,560px);justify-content:center"><div class="co-card" role="alert"><h1 class="co-h1" id="co-h1" tabindex="-1" style="font-size:24px">Your hold ended</h1><p style="margin:10px 0 16px;line-height:1.5">We hold passes for 15 minutes while you pay. Nothing was charged. Go back to your order to start again.</p><button type="button" class="co-btn" data-a="back">Back to your order</button></div></div>';
+  }
+  function render(focusSel) {
+    var h = S.stage === 'done' ? doneHTML() : S.stage === 'expired' ? expiredHTML() : payHTML();
+    var keep = root.scrollTop;
+    root.innerHTML = h;
+    root.scrollTop = keep;
+    tick();
+    var el = focusSel && root.querySelector(focusSel);
+    if (el) { try { el.focus(); } catch (e) {} }
+  }
+  function tick() {
+    if (!S || S.stage !== 'pay') return;
+    var left = Math.max(0, Math.round((S.exp - Date.now()) / 1000));
+    var tm = root.querySelector('#co-timer');
+    if (left <= 0) { S.stage = 'expired'; render('#co-h1'); return; }
+    if (tm) tm.textContent = 'We’re holding your passes for ' + Math.floor(left / 60) + ':' + ('0' + (left % 60)).slice(-2);
+  }
+  function read() {
+    var f = root.querySelector('#co-form'); if (!f) return;
+    ['first', 'last', 'email', 'card', 'exp', 'cvc', 'addr', 'city', 'state', 'zip', 'country', 'code'].forEach(function (k) { var e = f.elements[k]; if (e) S.v[k] = e.value; });
+    var n = f.elements.news, a = f.elements.agree, ap = f.elements.agreeplan;
+    if (n) S.news = n.checked; if (a) S.agree = a.checked; if (ap) S.agreePlan = ap.checked;
+  }
+  function validate() {
+    var v = S.v, e = {};
+    if (!(v.first || '').trim()) e.first = 'Enter your first name.';
+    if (!(v.last || '').trim()) e.last = 'Enter your last name.';
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test((v.email || '').trim())) e.email = 'Enter an email address like you@example.com.';
+    if (O.totalNum !== 0) {
+      var dg = (v.card || '').replace(/\D/g, '');
+      if (dg.length < 13 || dg.length > 19) e.card = 'Enter your card number.';
+      if (!/^(0[1-9]|1[0-2])\/\d{2}$/.test(v.exp || '')) e.exp = 'Enter the expiry as MM/YY.';
+      if (!/^\d{3,4}$/.test(v.cvc || '')) e.cvc = 'Enter the security code.';
+    }
+    if (!(v.addr || '').trim()) e.addr = 'Enter your street address.';
+    if (!(v.city || '').trim()) e.city = 'Enter your city.';
+    if (!(v.state || '').trim()) e.state = 'Enter your state.';
+    if (!/^[A-Za-z0-9 -]{3,10}$/.test((v.zip || '').trim())) e.zip = 'Enter your ZIP code.';
+    if (!S.agree) e.agree = 'Please accept the terms to continue.';
+    if (S.plan === '1' && O.hasPlan && !S.agreePlan) e.agreePlan = 'Please accept the payment plan terms.';
+    return e;
+  }
+  function close(restore) {
+    if (!root) return;
+    clearInterval(T); T = null;
+    root.remove(); root = null; S = null;
+    var r = document.getElementById('root'); if (r) { r.removeAttribute('inert'); r.removeAttribute('aria-hidden'); }
+    document.documentElement.style.overflow = '';
+    document.removeEventListener('keydown', onKey, true);
+    window.removeEventListener('popstate', onPop);
+    if (restore && prevFocus && prevFocus.focus) { try { prevFocus.focus(); } catch (e) {} }
+  }
+  function onKey(e) { if (e.key === 'Escape' && S && S.stage !== 'done' && !S.busy) { e.preventDefault(); close(true); } }
+  function onPop() { close(false); }
+  function click(e) {
+    var b = e.target.closest('[data-a],[data-f]'); if (!b || !S) return;
+    if (b.dataset.f) { e.preventDefault(); var t = root.querySelector('#co-' + b.dataset.f); if (t) { t.scrollIntoView({ block: 'center' }); t.focus(); } return; }
+    var a = b.dataset.a; read();
+    if (a === 'back') { close(true); return; }
+    if (a === 'code') { S.codeOpen = !S.codeOpen; render(S.codeOpen ? '#co-code' : null); return; }
+    if (a === 'apply') { S.codeMsg = (S.v.code || '').trim() ? 'This preview can’t check codes. The ticket system checks them at checkout and shows any discount here.' : 'Enter a code first.'; render(); return; }
+    if (a === 'terms') { S.termsOpen = !S.termsOpen; render(); return; }
+    if (a === 'planterms') { S.planTermsOpen = !S.planTermsOpen; render(); return; }
+    if (a === 'mine' || a === 'home' || a === 'trip') {
+      var ap = app(); close(false);
+      if (ap) { try { ap.setState({ paid: true }); if (a === 'trip') ap.go('page', { p: 'traveling-to-pickathon' }); else ap.reset(a === 'mine' ? 'mine' : 'home'); } catch (x) {} }
+    }
+  }
+  function change(e) {
+    if (!S) return;
+    if (e.target.name === 'plan') { read(); S.plan = e.target.value; render(); var r = root.querySelector('input[name=plan]:checked'); if (r) r.focus(); return; }
+    if (e.target.name === 'agree' || e.target.name === 'agreeplan' || e.target.name === 'news') { read(); if (S.err.agree && S.agree) delete S.err.agree; if (S.err.agreePlan && S.agreePlan) delete S.err.agreePlan; }
+  }
+  function input(e) {
+    var t = e.target;
+    if (t.name === 'card') { var d = t.value.replace(/\D/g, '').slice(0, 19); t.value = d.replace(/(.{4})/g, '$1 ').trim(); }
+    if (t.name === 'exp') { var x = t.value.replace(/\D/g, '').slice(0, 4); t.value = x.length > 2 ? x.slice(0, 2) + '/' + x.slice(2) : x; }
+    if (t.name === 'state') t.value = t.value.toUpperCase();
+  }
+  function submit(e) {
+    e.preventDefault(); if (!S || S.busy) return;
+    read(); S.fail = false; S.err = validate();
+    if (Object.keys(S.err).length) { var first = Object.keys(S.err)[0]; render(); var sm = root.querySelector('#co-sum'); if (sm) { sm.setAttribute('tabindex', '-1'); sm.focus(); } return; }
+    S.busy = true; render();
+    setTimeout(function () {
+      if (!S) return;
+      S.busy = false; S.stage = 'done'; S.num = 'PK-' + String(100000 + Math.floor(Math.random() * 899999));
+      render('#co-h1'); root.scrollTop = 0;
+      var ap = app(); try { if (ap) ap.setState({ paid: true }); } catch (x) {}
+    }, 1100);
+  }
+  window.__pkCheckout = {
+    open: function (order) {
+      if (root) close(false);
+      O = order; prevFocus = document.activeElement;
+      S = { stage: 'pay', v: {}, err: {}, plan: '0', exp: Date.now() + 15 * 60 * 1000 };
+      root = document.createElement('div'); root.id = 'pk-co'; root.setAttribute('role', 'dialog'); root.setAttribute('aria-modal', 'true'); root.setAttribute('aria-label', 'Checkout');
+      document.body.appendChild(root);
+      var r = document.getElementById('root'); if (r) { r.setAttribute('inert', ''); r.setAttribute('aria-hidden', 'true'); }
+      document.documentElement.style.overflow = 'hidden';
+      root.addEventListener('click', click); root.addEventListener('change', change); root.addEventListener('input', input); root.addEventListener('submit', submit);
+      document.addEventListener('keydown', onKey, true); window.addEventListener('popstate', onPop);
+      render('#co-h1'); T = setInterval(tick, 1000);
+    },
+    show: function (stage) { if (!S) return; if (stage === 'error') { S.fail = true; stage = 'pay'; } if (stage === 'done') { S.num = 'PK-123456'; S.v.email = S.v.email || 'you@example.com'; } S.stage = stage; render('#co-h1'); root.scrollTop = 0; },
+    close: function () { close(true); }
+  };
+})();
+</script>
 <style id="pk-btn-final">/*pk-btn-final*/
 html:root:root:root:root:root body .pk-std,html:root:root:root:root:root body .pk-bcc .pk-bcbr .pk-bcsee.pk-std{display:inline-flex!important;align-items:center!important;justify-content:center!important;position:static!important;flex:none!important;width:auto!important;min-height:46px!important;padding:0 18px!important;margin:0!important;border:2px solid #D6B54A!important;border-radius:6px!important;background:rgba(18,22,15,.34)!important;color:#F2EDE3!important;font:inherit!important;font-size:13px!important;font-weight:800!important;letter-spacing:.08em!important;text-transform:uppercase!important;line-height:1.15!important;white-space:nowrap!important;text-align:center!important;cursor:pointer!important;backdrop-filter:blur(5px)}
 html:root:root:root:root:root body .pk-std.pk-gold{background:rgba(214,181,74,.26)!important;color:#F2EDE3!important;width:100%!important;min-height:50px!important;position:absolute!important;left:16px!important;right:16px!important;bottom:16px!important;z-index:2!important}
