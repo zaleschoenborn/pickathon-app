@@ -27,7 +27,7 @@ ORDER = {
 }
 ALIAS = {'deryayildirimandgrupsimsek': 'deryayildirim', 'calebklauderandreebwillms': 'calebandreeb'}
 d = json.load(open(os.path.join(SITE, 'data.json')))
-# Nov 10: Broken Social Scene stays in 2019 (Lineup By Year master and class table draft 116 both list it; Legend, mag 7).
+# Nov 10: Broken Social Scene is not in 2019 (draft 120: DID NOT PLAY; played 2018 only).
 nn = lambda s: norm(s).replace('yildirim', 'yildirim')
 def key(s):
     k = norm(str(s).lower().replace('ı', 'i').replace('ş', 's')).replace(' ', ''); return ALIAS.get(k, k)
