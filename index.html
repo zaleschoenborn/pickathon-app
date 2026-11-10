@@ -6555,7 +6555,7 @@ html:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root:
   function sheetHtml() {
     var h = '<div class="sh" role="document"><button type="button" class="x" data-sh="close" aria-label="Close">×</button>';
     if (S.step === 'email') {
-      h += '<h2>See your tickets</h2><p>Enter the email you bought tickets with. We’ll send you a link to sign in. No password.</p>';
+      h += '<p class="bn">Preview: no email is sent yet, and the tickets shown are made-up samples.</p><h2>See your tickets</h2><p>Enter the email you bought tickets with. We’ll send you a link to sign in. No password.</p>';
       if (S.ban) h += '<p class="bn" role="alert">' + esc(S.ban) + '</p>';
       h += '<form data-sh="send"><input type="email" name="e" autocomplete="email" inputmode="email" aria-label="Email" value="' + esc(S.email) + '">' + (S.err ? '<p class="er" role="alert">' + esc(S.err) + '</p>' : '') + '<button class="pri" type="submit"' + (S.cool > 0 ? ' disabled' : '') + '>Email me a link</button></form>';
     } else if (S.step === 'check') {
