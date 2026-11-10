@@ -966,7 +966,7 @@ html.pk-nh-ontop #root [role=region][aria-label="Listen"],html.pk-nh-ontop #root
 #root#root .pk-tn-lead{margin:4px 0 0;font-size:14.5px;line-height:1.4;color:#DCD6C9}
 #root#root .pk-sxy-l.pk-sxy-col{max-height:300px;overflow:hidden;-webkit-mask-image:linear-gradient(#000 55%,transparent);mask-image:linear-gradient(#000 55%,transparent)}
 </style>
-<script id="pk-cn-js">document.addEventListener('click',function(e){var b=e.target&&e.target.closest&&e.target.closest('#pk-nh-cn [data-go]');if(!b)return;e.preventDefault();try{window.pkGo&&window.pkGo(b.getAttribute('data-go'))}catch(x){}});</script>
+<style id="pk-peek-css">/*Nov 10: Before they were big: cards snap to center, so the row opens with a card peeking on both sides*/#root#root #pk-nh-br{scroll-padding-left:0!important;scroll-padding-right:0!important}#root#root #pk-nh-br .pk-nh-c{scroll-snap-align:center!important}</style><script id="pk-cn-js">document.addEventListener('click',function(e){var b=e.target&&e.target.closest&&e.target.closest('#pk-nh-cn [data-go]');if(!b)return;e.preventDefault();try{window.pkGo&&window.pkGo(b.getAttribute('data-go'))}catch(x){}});</script>
 <style id="pk-cn-css">
 /* Creative Neighborhoods block on Home (home_flow.md section 4) */
 #root .pk-cn-in{margin:0 auto}
@@ -1428,7 +1428,7 @@ html.pk-cyon #root #pk-nh-city #pk-nh-cr,html.pk-cyon #root #pk-nh-city .pk-nh-a
 #root .pk-cy-m.fits{cursor:default}
 #root .pk-cy.anim .pk-cy-l,#root .pk-cy.anim .pk-cy-s{transition:transform .55s cubic-bezier(.45,0,.25,1),left .55s cubic-bezier(.45,0,.25,1),top .55s cubic-bezier(.45,0,.25,1)}
 /* phone: only the kind, the name and Explore sit on the photo (Zale, Nov 9 08:30: too much text over the image) */
-#root .pk-cy.ph .pk-cy-f .pk-nh-cl,#root .pk-cy.ph .pk-cy-f .pk-nh-cr{display:none!important}
+#root .pk-cy-f .pk-nh-cl,#root .pk-cy-f .pk-nh-cr{display:none!important}/*Nov 10: the Home neighborhood card is graphic only (logo, name, type, Explore) on every screen; the story lives on the neighborhood page*/
 @media (prefers-reduced-motion:reduce){#root .pk-cy.anim .pk-cy-l,#root .pk-cy.anim .pk-cy-s{transition:none}#root .pk-cy-s.on i{animation:none!important}}
 /* the floating Listen button steps aside while the city map is on screen (as on the map pages) */
 html.pk-cy-in div:has(> button[aria-label="Listen to Pickathon"]){opacity:0!important;visibility:hidden!important;transition:opacity .2s,visibility 0s .2s}
@@ -6655,7 +6655,7 @@ setInterval(dock,300);dock();var mn=document.querySelector('main');if(mn)mn.addE
 <script>/*pk-nx*/(function(){document.addEventListener('click',function(e){var t=e.target&&e.target.closest?e.target.closest('[data-next]'):null;if(!t)return;var card=t.closest('.pk-bcc');if(!card)return;e.preventDefault();e.stopPropagation();var n=card.nextElementSibling;while(n&&!n.classList.contains('pk-bcc'))n=n.nextElementSibling;if(!n){var p=card.parentElement;n=p&&p.querySelector('.pk-bcc');}if(n&&n!==card)n.scrollIntoView({behavior:'smooth',block:'nearest',inline:'start'});},true)})();</script>
 <script>/*pk-nh-loop: the Home bands row loops both ways (Zale, Nov 9 16:57). Three copies of the cards; scrolling past the first or last copy jumps by exactly one copy, so it never ends.*/
 (function () { function per(el) { var c = el.querySelectorAll('.pk-nh-c'), n = window.__nhN || 0; if (!n || c.length < n * 3) return 0; return c[n].offsetLeft - c[0].offsetLeft; }
-function fix(el) { var P = per(el); if (!P) return; if (!el._pkLp) { el._pkLp = 1; el.style.scrollSnapType = 'none'; el.scrollLeft = P; el.style.scrollSnapType = ''; return; } var x = el.scrollLeft; if (x < P * 0.5) { el.style.scrollSnapType = 'none'; el.scrollLeft = x + P; el.style.scrollSnapType = ''; } else if (x > P * 1.5) { el.style.scrollSnapType = 'none'; el.scrollLeft = x - P; el.style.scrollSnapType = ''; } }
+function fix(el) { var P = per(el); if (!P) return; if (!el._pkLp) { el._pkLp = 1; el.style.scrollSnapType = 'none'; var c0 = el.querySelectorAll('.pk-nh-c')[0]; el.scrollLeft = P + c0.offsetLeft - Math.max(0, (el.clientWidth - c0.offsetWidth) / 2); el.style.scrollSnapType = ''; return; } var x = el.scrollLeft; if (x < P * 0.5) { el.style.scrollSnapType = 'none'; el.scrollLeft = x + P; el.style.scrollSnapType = ''; } else if (x > P * 1.5) { el.style.scrollSnapType = 'none'; el.scrollLeft = x - P; el.style.scrollSnapType = ''; } }
 document.addEventListener('scroll', function (e) { var el = e.target; if (el && el.id === 'pk-nh-br') fix(el); }, true);
 setInterval(function () { var el = document.getElementById('pk-nh-br'); if (el && !el._pkLp) fix(el); }, 400); })();</script>
 <style id="pk-nh-bball">/*pk-nh-bball: Home bands header, See all beside the heading on wide screens; on phone the heading takes the full row and the button sits full width under it (Zale, Nov 9)*/@media (max-width:699px){#root#root #pk-nh-bands .pk-nh-head{flex-wrap:wrap;align-items:flex-start}#root#root #pk-nh-bands .pk-nh-head>div:first-child{flex:1 1 100%}#root#root #pk-nh-bands .pk-nh-arrs{flex:1 1 100%}#root#root #pk-nh-bands .pk-nh-arr{display:none}#root#root#root #pk-nh-bands .pk-nh-ball-r{width:100%;justify-content:center;margin-top:0}}@media (min-width:700px){#root#root#root #pk-nh-bands .pk-nh-ball-r{margin-top:0}}</style>
