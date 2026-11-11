@@ -48,7 +48,7 @@
     if ((s.season || 'off') !== 'off' || T.open) {
       var r = T.cur || T.show, end = r.endS ? 'Ends ' + r.endS + '.' : '';
       return { w: 'sale', line: '<b>' + esc(r.name) + '</b> <span class="pk-tl2-d">· from ' + from + (r.endS ? '<span class="pk-tl2-x"> · ends ' + esc(r.endS) + '</span>' : '') + '</span>', verb: 'Get tickets', btn: 'Get tickets', go: 'tickets', cta: 'Get tickets',
-        side: [r.name, (r.id === 'holiday' ? 'Lowest prices of the year. ' : '') + end], from: from };
+        side: [r.name, (r.id === 'holiday' ? 'Prices go up after it ends. ' : '') + end], from: from };
     }
     if (T.next) {
       var n = T.next, day = n.isToday ? 'today' : n.dayS, dayL = n.isToday ? 'today' : String(n.dayL || '').replace(/^(\w{3})\w*/, '$1');
@@ -132,6 +132,9 @@
       '<div class="h2-band-p"><small>3-Day Pass from</small><b class="h2-num" data-h2="from">' + (t ? t.from : '') + '</b><small>camping included</small></div></div>' +
       '<div class="h2-cta" data-h2="cta1"></div></div></section>';
     /* 2 PROOF: pk-climb draws the poster into .pk-cl-mount by itself */
+    /* design_studio-18 / home_flow.md: Home picks the poster's year once per visit from the Discovery years (2011-2024 with a climber),
+       as the old Home did, so the poster never opens on a year with nothing to watch. */
+    try { if (!window.pkClimbY0 && window.pkClimb) { var CY = Object.keys(window.pkClimb).map(Number).filter(function (y) { var D = window.pkClimb[y]; return y >= 2011 && y <= 2024 && D && D.clim; }); var k = 'pkHomeY'; var y0 = +(sessionStorage.getItem(k) || 0); if (CY.indexOf(y0) < 0) { y0 = CY.length ? CY[Math.floor(Math.random() * CY.length)] : 2019; try { sessionStorage.setItem(k, y0); } catch (e) {} } window.pkClimbY0 = y0; } } catch (e) {}
     h += '<section class="h2-s h2-s2" aria-labelledby="pk-cl-h"><div class="h2-s2in"><div class="pk-cl-mount"></div>' +
       '<div class="h2-strip" data-h2="strip" data-none><button type="button" class="h2-strip-ph" data-h2="wph" tabindex="-1" aria-hidden="true"><img alt="" loading="lazy" decoding="async"></button>' +
       '<div class="h2-strip-t"><button type="button" class="h2-pill h2-watch" data-h2="wbtn">' + PLAY + '<span></span></button><p class="h2-strip-c"><b data-h2="wa"></b> <span data-h2="wc"></span></p></div></div></div></section>';
