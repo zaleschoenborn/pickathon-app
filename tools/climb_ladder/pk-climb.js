@@ -63,9 +63,9 @@
   function cfg(ph, wAvail) {
     if (!ph) return { ph: false, IW: 880, PADX: 40, PADY: 22, ART: { x: 0, y: 118, w: 330 }, COLX: 356, COLW: 524, Y0: 0, LANES: [[80, 74, 2], [44, 41, 1], [44, 41, 1], [44, 41, 1], [33, 29, 1], [33, 29, 1], [33, 29, 1], [33, 29, 1], [33, 29, 1], [33, 29, 1]], GAP: 5, R1: 22, ROWH: 21, FS: 13, CFS: 15, DATES: 15, DGAP: 42, BOT: 100, RIB: [40, 14], STAMP: 0.92 };
     var PW = Math.max(300, Math.min(wAvail, 720)), IW = PW - 32, k = Math.min(1.7, IW / 326), L = function (h, m, ml) { return [Math.round(h * k), Math.round(m * k), ml]; };
-    var AW = Math.round(96 * k), CG = Math.round(12 * k);   /* Zale, Nov 11: phone keeps the horizontal poster, art static on the left, names move in the column on the right (spec home_climb_phone_nov9b section 1) */
+    var AW = Math.round(112 * k), CG = Math.round(12 * k);   /* Zale, Nov 11: phone keeps the horizontal poster, art static on the left, names move in the column on the right (spec home_climb_phone_nov9b section 1) */
     return { ph: true, IW: IW, PADX: 16, PADY: 14, ART: { x: 0, y: 0, w: AW }, COLX: AW + CG, COLW: IW - AW - CG, Y0: 0,
-      LANES: [L(40, 28, 2), L(27, 20, 1), L(27, 20, 1), L(27, 20, 1), L(20, 15, 1), L(20, 15, 1), L(20, 15, 1), L(20, 15, 1), L(20, 15, 1), L(20, 15, 1)], GAP: Math.round(3 * k), R1: Math.round(13 * k), ROWH: Math.round(16 * k), FS: Math.max(11, 11 * k), CFS: Math.max(12, 12 * k), DATES: Math.max(11, 11 * k), DGAP: Math.round(30 * k), BOT: Math.round(30 * k) + Math.round(Math.max(11, 11 * k)) + 12 + Math.max(34, Math.round(32 * k)), RIB: [Math.max(34, Math.round(32 * k)), Math.max(12, 12 * k)], STAMP: 0.7 * k };
+      LANES: [L(40, 28, 2), L(27, 20, 1), L(27, 20, 1), L(27, 20, 1), L(20, 15, 1), L(20, 15, 1), L(20, 15, 1), L(20, 15, 1), L(20, 15, 1), L(20, 15, 1)], GAP: Math.round(3 * k), R1: Math.round(20 * k), ROWH: Math.round(16 * k), FS: Math.max(11, 11 * k), CFS: Math.max(12, 12 * k), DATES: Math.max(11, 11 * k), DGAP: Math.round(30 * k), BOT: Math.round(30 * k) + Math.round(Math.max(11, 11 * k)) + 12 + Math.max(34, Math.round(32 * k)), RIB: [Math.max(34, Math.round(32 * k)), Math.max(12, 12 * k)], STAMP: 0.7 * k };
   }
 
   // One frame of the ladder at time tp (0 = festival, n-1 = today). Returns the paper's inner HTML and its height.
@@ -106,7 +106,7 @@
       var A0 = a.on ? a : VOFF(nm, b.f, b), B0 = b.on ? b : VOFF(nm, a.f, a), up = B0.f > A0.f;
       var swell = mv ? Math.sin(g * Math.PI) * (nm === D.clim ? 0.25 : up ? 0.15 : -0.08) : 0;
       var pos = { x: A0.x + (B0.x - A0.x) * g, y: A0.y + (B0.y - A0.y) * g, k: A0.k + (B0.k - A0.k) * g, f: (A0.f + (B0.f - A0.f) * g) * (1 + swell), ink: mix(A0.ink, B0.ink, g), moving: mv, on: true };
-      var o = 1 - (mv && !up ? 0.75 * Math.sin(g * Math.PI) : 0);   /* fallers step back while names cross (review r2) */ if (!a.on) o *= sm(g / 0.3); if (!b.on) o *= 1 - sm((g - 0.15) / 0.55);
+      var o = 1 - (mv && !up ? 0.2 * Math.sin(g * Math.PI) : 0);   /* fallers step back while names cross (review r2) */ if (!a.on) o *= sm(g / 0.3); if (!b.on) o *= 1 - sm((g - 0.15) / 0.55);
       var out = [], sameShape = A0.L.join('|') === B0.L.join('|') && !!A0.lead === !!B0.lead;
       if (sameShape) out.push([Object.assign({}, g < 0.5 ? A0 : B0, pos), o, g]);
       else { var s3 = sm((g - 0.35) / 0.3); out.push([Object.assign({}, A0, pos), o * (1 - s3), g], [Object.assign({}, B0, pos), o * s3, g]); }
@@ -161,7 +161,7 @@
     var rules = (fk < 0.5 ? PA.__rules : PB.__rules).map(function (r) { return '<i style="position:absolute;left:0;width:' + Math.max(0, r.a).toFixed(0) + 'px;top:' + r.y + 'px;height:1.5px;background:' + B + '"></i><i style="position:absolute;left:' + r.b.toFixed(0) + 'px;right:0;top:' + r.y + 'px;height:1.5px;background:' + B + '"></i>'; }).join('');
     var burst = fans ? '<i aria-hidden="true" style="position:absolute;left:0;top:0;width:' + IW + 'px;height:' + BOXH + 'px;background:' + enc('<svg xmlns="http://www.w3.org/2000/svg" width="' + IW + '" height="' + BOXH + '">' + fans + '</svg>') + ' 0 0/100% 100% no-repeat;pointer-events:none;-webkit-mask-image:' + WORN + ';mask-image:' + WORN + ';-webkit-mask-size:200px;mask-size:200px"></i>' : '';
     var artH = Q.ART.h || (S[9].y + S[9].h - Q.ART.y);
-    var art = D.art ? '<img src="' + esc(D.art) + '" alt="" decoding="async" style="position:absolute;left:' + Q.ART.x + 'px;top:' + Q.ART.y + 'px;width:' + Q.ART.w + 'px;height:' + artH + 'px;object-fit:contain;object-position:' + (Q.ph ? 'center top' : 'center center') + '">'
+    var art = D.art ? '<img src="' + esc(D.art) + '" alt="" decoding="async" style="position:absolute;left:' + Q.ART.x + 'px;top:' + Q.ART.y + 'px;width:' + Q.ART.w + 'px;height:' + artH + 'px;object-fit:contain;object-position:center center">'
       : '<div aria-hidden="true" style="position:absolute;left:' + (Q.ART.x + (Q.ph ? 0 : 40)) + 'px;top:' + (Q.ph ? 0 : 60) + 'px;width:' + (Q.ART.w - (Q.ph ? 0 : 80)) + 'px;height:' + (Q.ph ? Math.min(artH, Q.ART.w * 1.6) : artH - 120) + 'px;display:flex;align-items:center;justify-content:center;text-align:center;' + FONT + ';line-height:.86;font-size:' + (Q.ph ? 22 : 80) + 'px;color:' + A + ';border:' + (Q.ph ? 3 : 6) + 'px solid ' + A + '">PICKATHON<br>' + y + '</div>';
     var dl = K.dates ? (K.dates.toUpperCase().replace(/ ?- ?/g, '–') + ' · PENDARVIS FARM' + (Q.ph ? '' : ' · HAPPY VALLEY, OREGON')) : 'PICKATHON ' + y;
     var dates = '<div style="position:absolute;left:0;right:0;top:' + DATESY + 'px;text-align:center;white-space:nowrap;' + FONT + ';font-size:' + Q.DATES + 'px;letter-spacing:.08em;color:' + A + '">' + dl.split(' · ').map(function (t, i) { return (i ? '<span style="font-size:.6em;color:' + B + ';margin:0 ' + (Q.ph ? 6 : 12) + 'px;vertical-align:.2em">★</span>' : '') + esc(t); }).join('') + '</div>';
@@ -232,7 +232,7 @@
     var key = y + '|' + Q.ph + '|' + PW + '|' + PH + '|' + TB.show;
     if (mountEl._key === key && mountEl.querySelector('.pk-cl-layer')) {
       mountEl.querySelector('.pk-cl-layer').innerHTML = F.html;
-      var tb = mountEl.querySelector('.pk-cl-tb'); if (tb) { tb.querySelector('.pk-cl-tf').style.width = (TB.frac * 100).toFixed(1) + '%'; var mk = tb.querySelector('.pk-cl-tm'); mk.style.left = (TB.frac * 100).toFixed(1) + '%'; var cal = tb.querySelector('.pk-cl-cal'); if (cal) { var ch = calH(y, TB.frac); if (cal._h !== ch) { cal.innerHTML = ch; cal._h = ch; } } else { mk.textContent = TB.yNow; mk.style.opacity = TB.frac > 0.04 && TB.frac < 0.96 ? '1' : '0'; } var rb = tb.querySelector('.pk-cl-rpl'); if (rb) { rb.textContent = TB.btn; rb.setAttribute('aria-label', TB.aria); } var tl = mountEl.querySelector('.pk-cl-tl'); if (tl && tl.textContent !== TB.line) tl.textContent = TB.line; }
+      var tb = mountEl.querySelector('.pk-cl-tb'); if (tb && tb.querySelector('.pk-cl-tf')) { tb.querySelector('.pk-cl-tf').style.width = (TB.frac * 100).toFixed(1) + '%'; var mk = tb.querySelector('.pk-cl-tm'); mk.style.left = (TB.frac * 100).toFixed(1) + '%'; var cal = tb.querySelector('.pk-cl-cal'); if (cal) { var ch = calH(y, TB.frac); if (cal._h !== ch) { cal.innerHTML = ch; cal._h = ch; } } else { mk.textContent = TB.yNow; mk.style.opacity = TB.frac > 0.04 && TB.frac < 0.96 ? '1' : '0'; } var rb = tb.querySelector('.pk-cl-rpl'); if (rb) { rb.textContent = TB.btn; rb.setAttribute('aria-label', TB.aria); } var tl = mountEl.querySelector('.pk-cl-tl'); if (tl && tl.textContent !== TB.line) tl.textContent = TB.line; }
       var cp = mountEl.querySelector('.pk-cl-cap'); if (cp.textContent !== cap) cp.textContent = cap; cp.style.color = atEnd ? '#F2CF62' : '#CFC9BC';
       return;
     }
@@ -252,6 +252,7 @@
     h += '</div>';
     h += '</div>';
     if (Q.ph && TB.show) tbH = '<div class="pk-cl-tb pk-cl-tbp"><span class="pk-cl-cal" aria-hidden="true">' + calH(y, TB.frac) + '</span><span class="pk-cl-tr" aria-hidden="true"><i class="pk-cl-tf" style="width:' + (TB.frac * 100).toFixed(1) + '%"></i><b class="pk-cl-tm" style="left:' + (TB.frac * 100).toFixed(1) + '%;opacity:0"></b></span><span class="pk-cl-ty">' + TODAY + '</span><button type="button" class="pk-cta sec pk-cl-rpl" data-cl="play" aria-label="' + TB.aria + '">' + TB.btn + '</button></div>';
+    if (Q.ph && !TB.show) tbH = '<div class="pk-cl-tb pk-cl-tbp pk-cl-tbs"><span class="pk-cl-cal" aria-hidden="true">' + calH(y, 1) + '</span><span class="pk-cl-tls">Ranked today by how far each act has gone</span></div>';   /* every year keeps the same row, so ANOTHER YEAR never moves (review r1 A3) */
     if (Q.ph) h += '<div class="pk-cl-below">' + capH.replace('class="pk-cl-cap"', 'class="pk-cl-cap pk-sr"') + tbH + '<button type="button" class="pk-cl-an pk-cl-anb" data-cl="rand">↻ Another year</button></div>';   /* Zale, Nov 11: caption, time bar and Another year under the poster, full width */
     var fin = D.names.filter(function (x) { return x[1][n - 1] < Math.min(10, D.ranked || 10); }).sort(function (a, b) { return a[1][n - 1] - b[1][n - 1]; }).map(function (x) { return x[0]; });
     h += '<p class="pk-sr">Pickathon ' + y + ', ranked today by how far each act has gone: ' + esc(fin.join(', ')) + '.</p>';
@@ -266,7 +267,7 @@
     try { [].forEach.call(document.querySelectorAll('header'), function (hb) { var r = hb.getBoundingClientRect(), cs = getComputedStyle(hb); if (r.height > 0 && (cs.position === 'sticky' || cs.position === 'fixed' || (r.top <= 1 && r.bottom > 0))) top = Math.max(top, Math.min(140, r.bottom));   /* a header that stays on screen outside the scroller counts too */ }); var tb = document.querySelector('nav[aria-label="App"]'); if (tb) { var tr = tb.getBoundingClientRect(); if (tr.height > 0 && tr.top > vh / 2) bot = vh - tr.top; } } catch (e) {}
     if (!bot && window.innerWidth < 1000) bot = 64;
     var sec = mountEl.closest('section'), pad = 0; if (sec) { var cs = getComputedStyle(sec); pad = parseFloat(cs.paddingTop) + parseFloat(cs.paddingBottom); }
-    var bl = mountEl.querySelector('.pk-cl-below'), avail = vh - top - bot - hd.offsetHeight - 22 - pad - (bl ? bl.offsetHeight + 8 : 0), sc = Math.min(1, Math.max(0.66, avail / PH));
+    var bl = mountEl.querySelector('.pk-cl-below'), avail = vh - top - bot - hd.offsetHeight - 22 - pad - (bl ? bl.offsetHeight + 8 : 0), sc = Math.min(1, Math.max(window.innerWidth < 1000 ? 0.9 : 0.66, avail / PH));  /* a phone poster never shrinks to a postage stamp (review r1 A2) */
     pw.style.transformOrigin = 'top center'; pw.style.transform = sc < 0.999 ? 'scale(' + sc.toFixed(3) + ')' : '';
     pw.style.marginBottom = sc < 0.999 ? (-(PH * (1 - sc))).toFixed(0) + 'px' : ''; mountEl.style.display = 'flow-root';
   }

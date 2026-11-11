@@ -64,3 +64,7 @@ main:has(#pk-nh-climb)>section{content-visibility:visible!important;contain-intr
 #root .pk-cl-tr{touch-action:none;cursor:default}
 #root .pk-cl-tr::before{content:"";position:absolute;left:-6px;right:-6px;top:-20px;bottom:-20px}
 #root .pk-cl-tf::after{content:"";position:absolute;right:-8px;top:50%;width:16px;height:16px;margin-top:-8px;border-radius:50%;background:#F2CF62;box-shadow:0 0 0 2px #2B2628}
+/* review r1 */
+@media (max-width:999px){#root#root .pk-cl-ht .pk-nh-k{display:none}#root#root#root .pk-cl-ht .pk-nh-h2{margin-top:0!important}}
+#root#root#root#root#root .pk-cl-tbp .pk-cl-rpl{min-width:104px!important}
+#root .pk-cl-tls{flex:1;font-size:13px;line-height:1.3;color:#B9B3A6}
