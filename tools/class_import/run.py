@@ -46,9 +46,19 @@ for a in AL:
 d = json.loads(s)
 # Not lineup acts (square dance bands and callers) leave the year bills. Acts Zale ruled did not play (pickathon-lineup-by-year) leave too.
 # Other lineup questions stay on the bill with no class until Lineup rules (k = '').
-DNP = {('2017', 'khunnarin'), ('2022', 'hannahcohen'), ('2025', 'chosessauvages')}
-drop = {(a['year'], key(a['name_on_site'])) for a in AL if a['action'] == 'not a lineup act'} | DNP
-openq = {(a['year'], key(a['name_on_site'])) for a in AL if a['action'] == 'lineup question'} - DNP
+DNP = {(a['year'], key(a['name_on_site'])) for a in AL if a['action'] == 'did not play'}
+drop = {(a['year'], key(a['name_on_site'])) for a in AL if a['action'] in ('not a lineup act', 'did not play', 'duplicate') or a['action'].startswith('moved to')}
+# the posters drop them too, until the class table itself catches up
+pdrop = {k for k in drop if k not in {(x['year'], key(x['name_on_site'])) for x in AL if x['action'] == 'duplicate'}}
+for y, C in d.get('climb', {}).items():
+    if isinstance(C.get('names'), list): C['names'] = [x for x in C['names'] if (y, key(x[0])) not in pdrop]
+for y, C in d.get('climbSrc', {}).items():
+    if isinstance(C.get('r'), list): C['r'] = [x for x in C['r'] if (y, key(x[0])) not in pdrop]
+# the past-years name lists drop them too (not the schedule history, which Lineup owns)
+for e in d.get('past', {}).get('years', []):
+    for f in ('all', 'names'):
+        if isinstance(e.get(f), list): e[f] = [x for x in e[f] if not (isinstance(x, str) and (str(e.get('y')), key(x)) in drop)]
+openq = {(a['year'], key(a['name_on_site'])) for a in AL if a['action'] == 'lineup question'} - drop
 for y, L in d.get('yearBill', {}).items():
     d['yearBill'][y] = [b for b in L if (y, key(b['n'])) not in drop]
     for b in d['yearBill'][y]:
