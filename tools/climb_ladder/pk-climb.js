@@ -191,8 +191,8 @@
     var n = D.labels.length, atEnd = tp >= n - 1 - 1e-3, kk = Math.floor(tp), fk = tp - kk, g = seg(n, fk), frac = n > 1 ? Math.min(1, D.when ? D.when[Math.min(kk, n - 1)] + ((D.when[Math.min(kk + 1, n - 1)] - D.when[Math.min(kk, n - 1)]) * g) : (kk + g) / (n - 1)) : 1;
     var y0 = +y, yNow = n > 1 ? Math.max(y0 + 1, Math.round(y0 + (TODAY - y0) * frac)) : TODAY;
     var line = n < 2 ? 'Ranked by how far each act has gone' : frac <= 0.001 ? (D.src === 'real billing' ? 'The bill as printed in ' + y : 'The bill as booked in ' + y) : (atEnd || yNow >= TODAY) ? 'Ranked today by how far each act has gone' : 'Re-ranked as of ' + yNow;
-    var btn = S.playing ? '■ Stop' : atEnd ? '↻ Replay' : '▶ Play';
-    return { n: n, show: n > 1 && y0 < TODAY && !STAT(y0), frac: frac, yNow: Math.min(yNow, TODAY), line: line, btn: btn, aria: S.playing ? 'Stop' : atEnd ? 'Replay ' + y + ' to today' : 'Play ' + y + ' to today' };
+    var btn = '↺ Replay';   /* Zale, Nov 11 10:10: Home plays once by itself; the only controls are Replay and Another year */
+    return { n: n, show: n > 1 && y0 < TODAY && !STAT(y0) && !RM, frac: frac, yNow: Math.min(yNow, TODAY), line: line, btn: btn, aria: 'Replay ' + y + ', from the printed bill to today' };
   }
   function caption(D, y, tp) {
     var n = D.labels.length, atEnd = tp >= n - 1 - 1e-3, derived = D.src !== 'real billing', age = TODAY - y;
@@ -212,7 +212,7 @@
   var invFlow = function (v) { var lo = 0, hi = 1; for (var q = 0; q < 24; q++) { var m = (lo + hi) / 2; if (flow(m) < v) lo = m; else hi = m; } return (lo + hi) / 2; };
   /* Play / replay (Zale, Nov 10): a pause resumes where it stopped; a replay first glides back to the printed bill, holds there a second so the start is clear, then runs. No jumps. */
   function run(resume) {
-    var D = C[S.y], n = D.labels.length; if (n < 2 || STAT(S.y)) return; var from = resume && S.tp > 0 && S.tp < n - 1 - 1e-3 ? S.tp : 0; stop();
+    var D = C[S.y], n = D.labels.length; if (n < 2 || STAT(S.y)) return; S.seen[S.y] = 1;   /* whatever started it, this year has now played */ var from = resume && S.tp > 0 && S.tp < n - 1 - 1e-3 ? S.tp : 0; stop();
     var tot = n > 2 ? TOTAL : DUR, REW = 900, HOLDS = 1000, t0 = performance.now(), u0 = from ? invFlow(from / (n - 1)) : 0, tp0 = S.tp, rew = !from && tp0 > 0.02 && !RM; S.playing = true;
     if (!rew && !from) S.tp = 0;
     var fr = function (now) { var el = now - t0;
@@ -252,7 +252,12 @@
     h += '</div>';
     h += '</div>';
     if (Q.ph && TB.show) tbH = '<div class="pk-cl-tb pk-cl-tbp"><span class="pk-cl-cal" aria-hidden="true">' + calH(y, TB.frac) + '</span><span class="pk-cl-tr" aria-hidden="true"><i class="pk-cl-tf" style="width:' + (TB.frac * 100).toFixed(1) + '%"></i><b class="pk-cl-tm" style="left:' + (TB.frac * 100).toFixed(1) + '%;opacity:0"></b></span><span class="pk-cl-ty">' + TODAY + '</span><button type="button" class="pk-cta sec pk-cl-rpl" data-cl="play" aria-label="' + TB.aria + '">' + TB.btn + '</button></div>';
-    if (Q.ph && !TB.show) tbH = '<div class="pk-cl-tb pk-cl-tbp pk-cl-tbs"><span class="pk-cl-cal" aria-hidden="true">' + calH(y, 1) + '</span><span class="pk-cl-tls">Ranked today by how far each act has gone</span></div>';   /* every year keeps the same row, so ANOTHER YEAR never moves (review r1 A3) */
+    if (RM && n > 1 && !STAT(y)) {   /* Zale, Nov 11: with reduced motion, the printed bill and today's bill side by side, no movement */
+      var top8 = function (k) { return D.names.filter(function (x) { return x[1][k] < Math.min(10, D.ranked || 10); }).sort(function (a, b) { return a[1][k] - b[1][k]; }).slice(0, Q.ph ? 5 : 8).map(function (x) { return '<li>' + esc(x[0]) + '</li>'; }).join(''); };
+      tbH = '<div class="pk-cl-cmp"><div><p class="pk-cl-cmpk">' + (D.src === 'real billing' ? 'On the ' + y + ' poster' : 'As booked in ' + y) + '</p><ol>' + top8(0) + '</ol></div><div><p class="pk-cl-cmpk pk-cl-cmpn">Ranked today</p><ol>' + top8(n - 1) + '</ol></div></div>';
+      if (!Q.ph) h = h.replace('<div class="pk-cl-pw"', tbH + '<div class="pk-cl-pw"');
+    }
+    if (Q.ph && !TB.show && !(RM && n > 1 && !STAT(y))) tbH = '<div class="pk-cl-tb pk-cl-tbp pk-cl-tbs"><span class="pk-cl-cal" aria-hidden="true">' + calH(y, 1) + '</span><span class="pk-cl-tls">Ranked today by how far each act has gone</span></div>';   /* every year keeps the same row, so ANOTHER YEAR never moves (review r1 A3) */
     if (Q.ph) h += '<div class="pk-cl-below">' + capH.replace('class="pk-cl-cap"', 'class="pk-cl-cap pk-sr"') + tbH + '<button type="button" class="pk-cl-an pk-cl-anb" data-cl="rand">↻ Another year</button></div>';   /* Zale, Nov 11: caption, time bar and Another year under the poster, full width */
     var fin = D.names.filter(function (x) { return x[1][n - 1] < Math.min(10, D.ranked || 10); }).sort(function (a, b) { return a[1][n - 1] - b[1][n - 1]; }).map(function (x) { return x[0]; });
     h += '<p class="pk-sr">Pickathon ' + y + ', ranked today by how far each act has gone: ' + esc(fin.join(', ')) + '.</p>';
@@ -279,15 +284,11 @@
   document.addEventListener('click', function (e) {
     var b = e.target && e.target.closest && e.target.closest('[data-cl]'); if (!b || !mountEl || !mountEl.contains(b)) return;
     var a = b.getAttribute('data-cl'); e.preventDefault();
-    if (a === 'play') { e.stopPropagation(); if (S.playing) { stop(); draw(); } else run(true); }
+    if (a === 'play') { e.stopPropagation(); S.seen[S.y] = 1; run(false); }
     else if (a === 'rand') rand();
     else if (a === 'year') { try { window.pkOpenYear && window.pkOpenYear(S.y); } catch (x) {} }
   }, true);
-  /* Zale, Nov 11: the time bar is a slider. Drag it back and forth and the poster follows. */
-  var dragT = null, scrub = function (e) { var r = dragT.getBoundingClientRect(), x = Math.max(0, Math.min(1, (e.clientX - r.left) / Math.max(1, r.width))), D = C[S.y], n = D.labels.length, lo = 0, hi = n - 1; for (var q = 0; q < 22; q++) { var mid = (lo + hi) / 2; if (timebar(D, S.y, mid).frac < x) lo = mid; else hi = mid; } stop(); S.seen[S.y] = 1; S.tp = x >= 0.995 ? n - 1 : x <= 0.005 ? 0 : (lo + hi) / 2; draw(); };
-  document.addEventListener('pointerdown', function (e) { var t = e.target && e.target.closest && e.target.closest('.pk-cl-tr'); if (!t || !mountEl || !mountEl.contains(t)) return; dragT = t; e.preventDefault(); e.stopPropagation(); try { t.setPointerCapture(e.pointerId); } catch (x) {} scrub(e); }, true);
-  document.addEventListener('pointermove', function (e) { if (dragT) { e.preventDefault(); scrub(e); } }, true);
-  ['pointerup', 'pointercancel'].forEach(function (ev) { document.addEventListener(ev, function () { dragT = null; }, true); });
+  /* Zale, Nov 11 10:10: no slider on Home. The time bar only shows progress; the draggable version belongs on the year page. */
   document.addEventListener('keydown', function (e) { if ((e.key === 'Enter' || e.key === ' ') && e.target && e.target.classList && e.target.classList.contains('pk-cl-p') && mountEl && mountEl.contains(e.target)) { e.preventDefault(); try { window.pkOpenYear && window.pkOpenYear(S.y); } catch (x) {} } });
   function tick() {
     var m = document.querySelector('.pk-cl-mount');
