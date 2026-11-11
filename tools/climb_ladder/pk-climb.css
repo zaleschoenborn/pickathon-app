@@ -48,3 +48,15 @@ main:has(#pk-nh-climb)>section{content-visibility:visible!important;contain-intr
 
 /* Zale, Nov 11: ANOTHER YEAR under the poster, full width, on phone and tablet */
 #root#root .pk-cl-an.pk-cl-anb{position:static;display:flex;align-items:center;justify-content:center;width:100%;max-width:720px;margin:12px auto 0;top:auto;right:auto;padding:0 16px;font-size:13px;min-height:48px}
+#root .pk-cl-below{max-width:720px;margin:10px auto 0}
+#root .pk-cl-below .pk-cl-cap{min-height:2.7em;margin:0 0 4px}
+#root .pk-cl-below .pk-cl-tb{margin-top:4px}
+#root#root#root .pk-cl-below .pk-cl-tl{margin:4px 0 0!important}
+#root .pk-cl-art{pointer-events:none}
+/* Zale, Nov 11: phone time bar as a calendar page */
+#root .pk-cl-below{margin-top:12px}
+#root .pk-cl-tbp{gap:12px;margin:0}
+#root .pk-cl-cal{flex:none;display:flex;flex-direction:column;width:64px;border:2px solid #F2EDE3;border-radius:6px;overflow:hidden;text-align:center;font-family:'Bricolage Grotesque',sans-serif;font-variant-numeric:tabular-nums}
+#root .pk-cl-cal .pk-cl-mo{display:block;background:#F2CF62;color:#2B2628;font-size:12px;font-weight:800;letter-spacing:.14em;line-height:20px}
+#root .pk-cl-cal .pk-cl-yr{display:block;color:#F2EDE3;font-size:19px;font-weight:800;line-height:28px}
+#root .pk-cl-tbp .pk-cl-tm{display:none}
