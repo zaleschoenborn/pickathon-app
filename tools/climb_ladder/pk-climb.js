@@ -30,10 +30,12 @@
     Object.keys(B).forEach(function (y) { var D0 = B[y], S0 = SRC[y]; if (!S0 || !S0.r || !S0.r.length) { out[y] = D0; return; }
       var R = S0.r.filter(function (r) { return r[1] !== 'Neither'; }), pin = S0.pin || [], N = function (r) { return false; };  /* Zale, Nov 10: the poster shows Legends, Discoveries and Deep cuts only */
       R.sort(function (a, b) { var pa = pin.indexOf(nm(a[0])), pb = pin.indexOf(nm(b[0])); pa = pa < 0 ? 99 : pa; pb = pb < 0 ? 99 : pb; if (pa !== pb) return pa - pb;
-        /* Zale, Nov 10: class first (Legend, Discovery, Deep cut); then magnitude, with Deep cut at -1 for ranking; then confidence; then name. */
-        var adj = function (r) { return (+r[2] || 0) - (r[1] === 'Deep cut' ? 1 : 0); };
-        var ka = [CL[a[1]] || 0, -adj(a), -(CF[a[3]] || 0)], kb = [CL[b[1]] || 0, -adj(b), -(CF[b[3]] || 0)];
-        for (var i = 0; i < 3; i++) if (ka[i] !== kb[i]) return ka[i] - kb[i]; return a[0] < b[0] ? -1 : a[0] > b[0] ? 1 : 0; });
+        /* Nov 11 (Zale saw 2017 rank Courtney Granger 4th and Billy Strings off the top): TODAY ranks by each act's size today (r[6], the class
+           table's today_magnitude); acts with no size measured today go below the measured ones (a gap is not a zero); class, then confidence,
+           then name only break ties. Older data without r[6] falls back to the year's call. */
+        var td = function (r) { return r.length > 6 ? (r[6] === null || r[6] === '' ? null : +r[6]) : (+r[2] || 0); };
+        var ta = td(a), tb = td(b), ka = [ta === null ? 1 : 0, -(ta || 0), CL[a[1]] || 0, -(CF[a[3]] || 0)], kb = [tb === null ? 1 : 0, -(tb || 0), CL[b[1]] || 0, -(CF[b[3]] || 0)];
+        for (var i = 0; i < 4; i++) if (ka[i] !== kb[i]) return ka[i] - kb[i]; return a[0] < b[0] ? -1 : a[0] > b[0] ? 1 : 0; });
       var now = {}; R.forEach(function (r, i) { now[r[0]] = i; });
       var two = R.some(function (r) { return r[4] !== now[r[0]]; }), cands = R.filter(function (r) { return r[5] && r[4] - now[r[0]] >= 3; }).sort(function (a, b) { return now[a[0]] - now[b[0]]; }), clim = two && cands.length ? cands[0][0] : null;
       var D = Object.assign({}, D0); D.names = R.map(function (r) { return [r[0], clim ? [r[4], now[r[0]]] : [now[r[0]]]]; }); D.labels = clim ? [S0.l0, 'TODAY'] : ['TODAY']; D.clim = clim; D.climFrom = clim ? cands[0][4] : 0; D.climTo = clim ? now[clim] : 0;

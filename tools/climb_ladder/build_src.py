@@ -17,7 +17,10 @@ for r in csv.DictReader(open(sys.argv[1], encoding='utf-8-sig')):
     if c not in ('Legend', 'Discovery', 'Deep cut', 'Neither'): continue
     try: m = float(r.get('magnitude') or 0)
     except ValueError: m = 0.0
-    rows.setdefault(r['year'], {})[norm(r['act'])] = [r['act'], c, m, r.get('confidence') or '']
+    tdm = (r.get('today_magnitude') or r.get('stature_now') or '').strip()   # Nov 11: size today, for the poster's TODAY rank (blank = not measured)
+    try: tdm = float(tdm) if tdm else None
+    except ValueError: tdm = None
+    rows.setdefault(r['year'], {})[norm(r['act'])] = [r['act'], c, m, r.get('confidence') or '', tdm]
 PIN = {}   # no hand-pinned tops: the rank is magnitude, then confidence, then class, then name
 seen_before = {}; SEEN_N = set()
 out = {}
@@ -31,10 +34,10 @@ for y in sorted(d.get('climb') or {}):
     nxt = len(then)
     rr = []
     for k in keys:
-        a, c, m, f = R.get(k) or [disp.get(k, k), 'Neither', 0, '']
+        a, c, m, f, tdm = R.get(k) or [disp.get(k, k), 'Neither', 0, '', None]
         if k not in then: then[k] = nxt; nxt += 1
         new = all(k not in seen_before.get(yy, set()) for yy in seen_before)
-        rr.append([disp.get(k) or a.upper(), c, m, f, then[k], 1 if new and norm(disp.get(k) or a) not in SEEN_N else 0])
+        rr.append([disp.get(k) or a.upper(), c, m, f, then[k], 1 if new and norm(disp.get(k) or a) not in SEEN_N else 0, tdm])
         SEEN_N.add(norm(disp.get(k) or a))
     seen_before[y] = set(keys)
     lab = (D.get('labels') or [y + ' FESTIVAL'])[0] if two else (y + ' FESTIVAL')
