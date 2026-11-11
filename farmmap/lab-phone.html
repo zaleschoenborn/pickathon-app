@@ -1512,7 +1512,7 @@ function fullMap(){ pinned=null; peek(null); cur=null; show(null);
   const W=stage.clientWidth,H=stage.clientHeight; light(null);
   selOnce=false; document.body.classList.remove('dpdone','nodt'); armTitle(); try{ lmSync(); }catch(e){}
   flyView(deskHomeV(),null); }
-function clearCur(){ pinned=null; peek(null); cur=null; show(null); if(LP()){ light(null); lpSync(); lpFresh(true); flyView(lpHome(),null); } else apply(); }
+function clearCur(){ pinned=null; peek(null); cur=null; show(null); if(LP()){ light(null); lpSync(); apply(); } else apply(); }   /* Zale, Nov 11 08:14: tapping empty map or the X closes the card and keeps the zoom; only Full map zooms all the way out */
 function goPage(h){
   setCur(h); show(h);
   // Embedded in the site: hand off to the site's own neighborhood page.
