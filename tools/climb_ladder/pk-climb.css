@@ -45,3 +45,6 @@ main:has(#pk-nh-climb)>section{content-visibility:visible!important;contain-intr
 #root .pk-cl-p{overflow:hidden}
 @media (max-width:999px){#root .pk-cl-ht .pk-nh-h2{margin-top:22px!important}}
 #root#root#root#root .pk-cl-tb .pk-cl-rpl{min-height:44px!important;height:auto!important;padding:0 14px!important;font-size:13px!important;width:auto!important}
+
+/* Zale, Nov 11: ANOTHER YEAR under the poster, full width, on phone and tablet */
+#root#root .pk-cl-an.pk-cl-anb{position:static;display:flex;align-items:center;justify-content:center;width:100%;max-width:720px;margin:12px auto 0;top:auto;right:auto;padding:0 16px;font-size:13px;min-height:48px}
