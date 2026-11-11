@@ -3885,6 +3885,8 @@ html{-webkit-text-size-adjust:100%!important;text-size-adjust:100%!important}.pk
 </sc-if>
 
 <sc-if value="{{r.tickets}}" hint-placeholder-val="{{false}}">
+<sc-if value="{{r.tix2}}" hint-placeholder-val="{{false}}"><div id="tk2" class="tk2" data-pk-own="1"></div></sc-if>
+<sc-if value="{{r.tix1}}" hint-placeholder-val="{{false}}">
 <section style="{{wrapTop}}">
 <div class="pk-thero"><img src="i/p479.jpg" alt="A night crowd at the Woods stage" decoding="async"><div class="pk-thero-t"><p class="pkp-mono pk-thero-k">{{tix.eyebrow}}</p>
 <h1 style="{{h1Page}}">Tickets</h1></div></div>
@@ -4099,6 +4101,7 @@ html{-webkit-text-size-adjust:100%!important;text-size-adjust:100%!important}.pk
 <div style="height: 40px"></div>
 </sc-if>
 </section>
+</sc-if>
 </sc-if>
 
 <sc-if value="{{r.mine}}" hint-placeholder-val="{{false}}">
@@ -4498,7 +4501,7 @@ class Component extends DCLogic {
     if (d && !st.vip && Object.keys(d.hoods).some(function (k) { return d.hoods[k].vip; })) { if (!this._pubD || this._pubSrc !== d) { var hv = {}; Object.keys(d.hoods).forEach(function (k) { if (!d.hoods[k].vip) hv[k] = d.hoods[k]; }); this._pubD = Object.assign({}, d, { hoods: hv }); this._pubSrc = d; } d = this._pubD; }
     var cur = st.stack[st.stack.length - 1], R = cur.r;
     // design_studio-24 (Nov 8): the old Home, Why and Watch menu stay reachable at ?old=home, ?old=why, ?old=watch (restore point pre-merge-2026-11-08)
-    var OLDQ = (typeof location !== 'undefined' && (location.search.match(/[?&]old=([a-z,]+)/) || [])[1]) || '', OLD = { home: /\bhome\b/.test(OLDQ), why: /\bwhy\b/.test(OLDQ), watch: /\bwatch\b/.test(OLDQ) };
+    var OLDQ = (typeof location !== 'undefined' && (location.search.match(/[?&]old=([a-z,]+)/) || [])[1]) || '', OLD = { tickets: /\btickets\b/.test(OLDQ), home: /\bhome\b/.test(OLDQ), why: /\bwhy\b/.test(OLDQ), watch: /\bwatch\b/.test(OLDQ) };
     if (R === 'why' && !OLD.why) { R = 'home'; if (self._nhJ !== cur) { self._nhJ = cur; setTimeout(function () { try { var el = document.getElementById('pk-nh-bands'); if (el) el.scrollIntoView({ block: 'start' }); } catch (x) {} }, 160); } }
     if (R !== this._lastR) { try { sessionStorage.setItem('pkmap.from', this._lastR === 'hood' ? 'hood' : 'other'); } catch (e) {} this._lastR = R; }   // the farm map shows its title screen unless the visitor is coming back from a neighborhood page
     var secNav = function (spec) { var p = String(spec).split('#'); return function () { self.go(p[0]); if (p[1]) setTimeout(function () { try { var el = document.getElementById(p[1]); if (el) el.scrollIntoView({ block: 'start' }); } catch (e) {} }, 260); }; };
@@ -4524,6 +4527,7 @@ var planFaq = (function () { var fp = TIX.rounds.filter(function (r) { return r.
 // an email sign-up (sent to the Mailchimp list) and a calendar file the visitor's own phone or computer reminds them with. Set layloEndpoint and the text wording comes back.
 var SMSON = !!((typeof window !== 'undefined' && window.PK_SIGNUP || {}).layloEndpoint), askVia = SMSON ? 'a text or email' : 'an email', askVerb = SMSON ? 'text or email' : 'email';
 var pkCal = (function () { var N = TIX.next; if (!N || SEA !== 'off' || saleOpen) return { show: false, href: '', file: '', label: '' }; var z = function (n) { return (n < 10 ? '0' : '') + n; }, u = function (ms) { var D = new Date(ms); return D.getUTCFullYear() + z(D.getUTCMonth() + 1) + z(D.getUTCDate()) + 'T' + z(D.getUTCHours()) + z(D.getUTCMinutes()) + z(D.getUTCSeconds()) + 'Z'; }; var timed = !!N.time, dd = N.day.replace(/-/g, ''), nd = new Date(Date.parse(N.day + 'T12:00:00Z') + 864e5).toISOString().slice(0, 10).replace(/-/g, ''); var what = 'Pickathon 2027 tickets: the ' + N.name + ' opens' + (timed ? ' at ' + N.time : ''); var L = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Pickathon//Ticket reminder//EN', 'CALSCALE:GREGORIAN', 'METHOD:PUBLISH', 'BEGIN:VEVENT', 'UID:pickathon-2027-' + N.id + '-' + dd + '@pickathon.com', 'DTSTAMP:' + u(Date.now()), timed ? 'DTSTART:' + u(N.at) : 'DTSTART;VALUE=DATE:' + dd, timed ? 'DTEND:' + u(N.at + 30 * 60e3) : 'DTEND;VALUE=DATE:' + nd, 'SUMMARY:' + what, 'DESCRIPTION:Pickathon 2027\\, Aug 4-8. Buy at https://pickathon.com', 'URL:https://pickathon.com', 'BEGIN:VALARM', 'ACTION:DISPLAY', 'DESCRIPTION:' + what, timed ? 'TRIGGER:-PT15M' : 'TRIGGER:PT9H', 'END:VALARM'].concat(timed ? ['BEGIN:VALARM', 'ACTION:DISPLAY', 'DESCRIPTION:' + what, 'TRIGGER:PT0M', 'END:VALARM'] : []).concat(['END:VEVENT', 'END:VCALENDAR']); return { show: true, href: 'data:text/calendar;charset=utf-8,' + encodeURIComponent(L.join('\r\n') + '\r\n'), file: 'pickathon-' + N.id + '-sale.ics', label: 'Add ' + N.whenS + ' to my calendar →' }; })();
+var TIX2 = R === 'tickets' && !OLD.tickets && SEA !== 'fest' && !st.tixList && saleOpen;   // Tickets round 2 (script pk-tk2 draws it). The old builder stays at ?old=tickets, in festival season, and for the full price list.
 var PR27 = TIX.prices;   // prices live in the one settings block (pk-ticket-settings)
 var PCOL = TIX.col;
 var pr27 = function (k) { var r = PR27[k]; return r ? Math.ceil(r[PCOL]) : 0; }, m27 = function (n) { return '$' + n.toFixed(2).replace(/\.00$/, '').replace(/\B(?=(\d{3})+(?!\d))/g, ','); };
@@ -4557,12 +4561,12 @@ var pr27 = function (k) { var r = PR27[k]; return r ? Math.ceil(r[PCOL]) : 0; },
       goHome: function () { self.reset('home'); }, goBack: function () { var t = self.state.stack[self.state.stack.length - 1]; if (t && t.r === 'hood') { self.setState({ mapHood: t.h, mapView: 'venue', sheet: true }); if (typeof SEA !== 'undefined' && SEA === 'fest') { self.go('home'); return; } if (self.state.stack.length > 1) { self.back(); return; } /* back goes where you came from, with the same pick and view (Zale, Nov 9 08:32) */ self.go('hoods'); return; } self.back(); },
       goSearch: function () { if (R !== 'search') self.go('search'); },
       searchId2: phone ? 'pk-gq-phone' : 'pk-gq-desk',
-      deskBack: !phone && (st.stack.length > 1 || R === 'past') && R !== 'home' && R !== 'past' && R !== 'artist' && R !== 'act',
+      deskBack: !phone && (st.stack.length > 1 || R === 'past') && R !== 'home' && R !== 'past' && R !== 'artist' && R !== 'act' && !TIX2,
       backLabel: (function () { var p = st.stack[st.stack.length - 2]; if (!p) return R === 'past' ? 'home' : ''; return { home: 'home', lineup: 'lineup', artist: 'artist', schedule: 'schedule', map: 'map', hoods: 'neighborhoods', hood: 'neighborhood', info: (st.season || 'off') === 'fest' ? 'info' : 'Plan your trip', tickets: 'tickets', mine: 'My Pickathon', stories: 'stories', story: 'story', page: (st.season || 'off') === 'fest' ? 'info' : 'Plan your trip', search: 'search' }[p.r] || 'previous page'; })(),
-      goLineup: nav('lineup'), goLineupAll: function () { self.setState({ lineup: 'music', genre: '', luYear: '2026', luArch: true }); self.go('lineup', { keepArch: true }); }, goMap: function () { self.reset('home'); }, goHoods: nav('hoods'), goTickets: nav('tickets'), goMine: nav('mine'), goStories: nav('stories'), goPast: nav('past'), goDisc: function () { self.setState({ archLead: self._pickLead || self._featLead || null, luYear: 'disc', luArch: true, lineup: 'music', archT: null, archC: null, archY: '' }); self.go('lineup', { keepArch: true }); }, goEasy: function () { self.go('page', { p: 'easy-day' }); }, goWhy: nav('why'), bdEye: ((d && d.buildCopy) || {}).eye || '', bdNote: ((d && d.buildCopy) || {}).note || '', bdShort: ((d && d.buildCopy) || {}).short || '', ck: { show: !st.ckChoice, bottom: phone ? (R === 'tickets' ? 'calc(150px + env(safe-area-inset-bottom, 0px))' : 'calc(84px + env(safe-area-inset-bottom, 0px) - var(--pk-gap, 0px))') : '0px', yes: function () { self.setState({ ckChoice: 'yes' }); try { window.localStorage.setItem('pk-ck', 'yes'); } catch (e) {} }, no: function () { self.setState({ ckChoice: 'no' }); try { window.localStorage.setItem('pk-ck', 'no'); } catch (e) {} } }, pv: (function () { var on = !(typeof window !== 'undefined' && window.PK_LIVE); var sv = st.pvS || ((st.season || 'off') === 'off' ? ((function () { var M = { '2026-11-12': 'teaser', '2026-12-01': 'giving', '2027-01-13': 'reveal' }; M[RH.day] = 'sale'; M[RE.day] = 'early'; return M; })()[st.today || ''] || 'now') : st.season); var vv = st.pvV || (st.vip ? 'vip' : st.user ? 'signed' : (function () { var Y = (st.myYears || []).map(function (y) { return parseInt(String(y).slice(-4), 10); }).filter(function (n) { return n > 1990; }); if (!Y.length) return 'new'; return Math.max.apply(null, Y) < 2020 ? 'longago' : 'recent'; })()); var o = { saleL: RH.dayS + ' sale', earlyL: RE.dayS + ' early bird', show: on, bar: (phone && st.pvHide) ? 'display: none; ' : '', onState: function (e) { var v = e && e.target ? e.target.value : 'now'; var M = { now: ['off', undefined], teaser: ['off', '2026-11-12'], sale: ['off', RH.day], giving: ['off', '2026-12-01'], early: ['off', RE.day], reveal: ['off', '2027-01-13'], lineup: ['lineup', undefined], sched: ['sched', undefined], fest: ['fest', undefined] }[v] || ['off', undefined]; self.setState({ pvS: v, season: M[0], today: M[1] }); }, onView: function (e) { var v = e && e.target ? e.target.value : 'new'; var P = { new: { myYears: [], user: null }, recent: { myYears: ['2025', '2026'], user: null }, longago: { myYears: ['2010', '2012'], user: null }, signed: { myYears: ['2024', '2025', '2026'], user: { email: 'you@example.com', name: 'You' }, vip: false }, vip: { myYears: ['2024', '2025', '2026'], user: { email: 'crew@pickathon.com', name: 'Crew' }, vip: true } }[v] || { myYears: [], user: null }; if (P.vip === undefined) P.vip = false; P.pvV = v; self.setState(P); try { window.localStorage.setItem('pk-share-2027', JSON.stringify({ top3: self.state.top3 || [], myYears: P.myYears })); } catch (x) {} } }; ['now', 'teaser', 'sale', 'giving', 'early', 'reveal', 'lineup', 'sched', 'fest'].forEach(function (k) { o['s_' + k] = sv === k; }); ['new', 'recent', 'longago', 'signed', 'vip'].forEach(function (k) { o['v_' + k] = vv === k; }); return o; })(), ckReset: function () { self.setState({ ckChoice: '' }); try { window.localStorage.removeItem('pk-ck'); } catch (e) {} }, sv: (function () { var S = d && d.survey; var T = st.today || (function () { try { return new Date().toLocaleDateString('en-CA', { timeZone: 'America/Los_Angeles' }); } catch (e) { return new Date(Date.now() - 8 * 3600e3).toISOString().slice(0, 10); } })(); var on = !!(S && S.u && !/your-2026-survey/.test(S.u) && (st.stack[st.stack.length - 1] || {}).r === 'home' && (st.season || 'off') === 'off' && T >= S.start && T <= S.end); return { show: on, t: on ? S.t : '', x: on ? S.x : '', u: on ? S.u : '', closes: on ? S.closes : '' }; })(), ann: (function () { var L = (d && d.announce) || []; var T = st.today || (function () { try { return new Date().toLocaleDateString('en-CA', { timeZone: 'America/Los_Angeles' }); } catch (e) { return new Date(Date.now() - 8 * 3600e3).toISOString().slice(0, 10); } })(); var A = L.filter(function (x) { var inD = x.id === 'presale-soon' ? (T >= x.start && saleBefore) : x.id === 'presale' ? inHoliday : x.id === 'earlybird' ? !!(TIX.cur && TIX.cur.id === 'early' && T <= x.end) : (T >= x.start && T <= x.end); return (x.season || []).indexOf(st.season || 'off') >= 0 && inD; }).map(function (x) { if (x.id !== 'presale-soon' && x.id !== 'presale' && x.id !== 'earlybird') return x; var y = Object.assign({}, x), p3 = m27(pr27('p3')), rg = m27(Math.ceil(PR27.p3[TIX.regularCol])); if (x.id === 'presale-soon') y.t = RH.name + ' opens ' + RH.whenS; if (x.id === 'presale') y.t = 'The ' + RH.name + ' is on'; if (x.id === 'earlybird') { y.t = RE.name + ' pricing is on'; y.sub = TIX.plans ? 'Payment plans are open' : ''; } else y.sub = String(x.sub || '').replace(/\$[\d,.]+, regular \$[\d,.]+/, p3 + ', regular ' + rg).replace(/\$[\d,.]+/, p3); return y; }).sort(function (x, y) { return (x.pri || 9) - (y.pri || 9); })[0]; var on = !!(A && (st.stack[st.stack.length - 1] || {}).r === 'home'); return { show: on, feature: !!(A && A.feature), t: on ? A.t.replace('{left}', A.left || '') : '', cta: on ? A.cta : '', sub: on ? (A.sub || '') : '', line: on ? (A.short || A.t.replace('{left}', A.left || '')) : '', hasSub: !!(on && A.sub), isUrl: !!(on && A.url), isGo: !!(on && !A.url), url: on && A.url ? A.url : '', go: on && A.story ? function () { self.go('story', { s: A.story }); } : on && A.page ? function () { self.go('page', { p: A.page }); } : on && A.route ? (A.route === 'build' ? function () { self.go('build'); } : nav(A.route)) : nav('tickets') }; })(), schedEmptyText: (st.season || 'off') === 'off' ? (LUWHEN === 'January' ? 'The lineup drops early 2027' : 'The 2027 music lineup is coming soon') + ', and set times follow in early summer.' : 'Set times come out in early summer. Star artists in the lineup now and they’ll drop into My Pickathon with their times when the schedule lands.', nl: { ph: SMSON ? 'Email or mobile number' : 'Email address', ph2: SMSON ? 'you@email.com or 555 123 4567' : 'you@email.com', tixAsk: 'Get ' + askVia + ' the moment tickets are on.', luAsk: 'Hear the lineup first. We’ll ' + askVerb + ' you the moment it drops, plus the presale link.', calShow: pkCal.show, calHref: pkCal.href, calFile: pkCal.file, calLabel: pkCal.label, open: !st.nlDone, done: !!st.nlDone, doneMsg: 'You’re on the list. We’ll ' + (st.nlSms ? 'text' : 'email') + ' you ' + (SEA === 'off' && !saleOpen ? 'when tickets go on sale, and again when the lineup drops.' : 'the moment the lineup drops, with the presale link.'), genres: ((d && d.genres) || []).map(function (g) { var on = (st.nlG || (R === 'lineup' && st.genre ? [st.genre] : [])).indexOf(g.id) >= 0; return { label: g.n, on: on ? 'true' : 'false', style: 'min-height: 40px; padding: 0 12px; border-radius: 999px; font: inherit; font-size: 13px; font-weight: 700; cursor: pointer; ' + (on ? 'background: #12160F; color: #F2EDE3; border: 1px solid #12160F' : 'background: transparent; color: #12160F; border: 1px solid #8C947C'), pick: function () { var a = (self.state.nlG || (R === 'lineup' && self.state.genre ? [self.state.genre] : [])).slice(), i = a.indexOf(g.id); if (i >= 0) a.splice(i, 1); else if (a.length < 3) a.push(g.id); self.setState({ nlG: a }); } }; }), email: st.nlEmail || '', inv: st.nlErr ? 'true' : 'false', err: st.nlErr || '', hasErr: !!st.nlErr, onEmail: function (e) { self.setState({ nlEmail: e && e.target ? e.target.value : '' }); }, submit: function () { var v = (self.state.nlEmail || '').trim(); var isPh = /^[+()\d\s.-]{10,}$/.test(v) && v.replace(/\D/g, '').length >= 10; if (isPh && !SMSON) { self.setState({ nlErr: 'We can’t send texts yet. Enter an email address' + (pkCal.show ? ', or add the sale to your calendar.' : '.') }); return; } if (!isPh && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v)) { self.setState({ nlErr: SMSON ? 'Enter an email address or a mobile number.' : 'Enter an email address.' }); return; } if (isPh) { try { var fds = new URLSearchParams(); fds.append('PHONE', v); fetch(window.PK_SIGNUP.layloEndpoint, { method: 'POST', mode: 'no-cors', body: fds }).catch(function () {}); } catch (e) {} self.setState({ nlDone: true, nlErr: '', nlSms: true }); return; } var MC = (window.PK_SIGNUP || {}).mailchimpAction; if (MC) { try { var fdm = new URLSearchParams(); fdm.append('EMAIL', v); fdm.append('GENRES', (self.state.nlG || (R === 'lineup' && self.state.genre ? [self.state.genre] : [])).join(', ')); fdm.append('b_29c6a9fab7217f390ebe0a8f9_68c5bda2a2', ''); fetch(MC, { method: 'POST', mode: 'no-cors', body: fdm }).catch(function () {}); } catch (e) {} } self.setState({ nlDone: true, nlErr: '' }); } }, goBuild: function () { self.go('build'); }, goVolunteer: function () { self.go('page', { p: 'volunteer' }); }, goPress: nav('press'), goAbout: nav('about'), goAccount: nav('account'), acctLabel: st.user ? 'Your account' : 'Sign in', luH2: LUWHEN === 'January' ? 'The lineup drops early 2027!' : 'The 2027 music lineup is coming soon', luHead: LUWHEN === 'January' ? 'The lineup drops early 2027!' : 'The 2027 music lineup is coming soon.', lineupTixLink: saleOpen ? 'The ' + tierName.replace(/ sale$/i, '') + ' Sale is on now →' : saleBefore ? 'The ' + RH.name + ' opens ' + RH.whenL + ': remind me →' : RE.name + ' pricing opens ' + RE.whenS + ': remind me →', pr: (function () { if (!st.printing || !d) return { show: false }; var mine = d.sets.filter(function (x) { return stars[x.id]; }); return { show: true, year: d.year || '2026', sub: mine.length + ' sets · ' + 'Pendarvis Farm', days: d.days.map(function (dy) { return { t: (dy.f || dy.n), rows: mine.filter(function (x) { return x.d === dy.id; }).sort(function (a, b) { return a.s < b.s ? -1 : 1; }).map(function (x) { var stg = (d.stages || []).filter(function (q) { return q.id === x.st; })[0]; var h12 = function (t) { var H = +t.slice(11, 13), M = t.slice(14, 16); return ((H % 12) || 12) + (M !== '00' ? ':' + M : '') + (H < 12 ? ' AM' : ' PM'); }; return { t: h12(x.s) + '–' + h12(x.e), n: d.artists[x.a].n, w: stg ? stg.n : x.st }; }) }; }).filter(function (g) { return g.rows.length; }) }; })(), mapImg: MAPIMG, whenLine: 'Aug 4–8, 2027', whereLine: 'Happy Valley, Oregon', whereShort: 'Happy Valley', lineupBack: (st.season || 'off') === 'off', lineupBackNC: (st.season || 'off') === 'off' && !!st.luArch && ['food', 'beverages', 'craft'].indexOf(st.lineup) < 0, lineupH1: (st.luArch ? ((st.luYear === 'disc' || st.luYear === 'leg' || st.luYear === 'deep') ? 'Wait, they played here?' : (st.luYear ? 'Who played in ' + (st.luYear === '1999–2009' ? 'the early years, 1999–2009' : st.luYear) : 'The Pickathon Archive')) : ((st.season || 'off') === 'off' && ['food', 'beverages', 'craft'].indexOf(st.lineup) < 0 ? 'The 2027 lineup' : null)) || (st.luYear && st.luYear !== 'disc' && st.luYear !== 'leg' ? 'Who played in ' + (st.luYear === '1999–2009' ? 'the early years, 1999–2009' : st.luYear) : null) || ((({"food": {"h": "Meet Your Next Festival Craving", "x": "Come hungry. Pickathon’s food lineup is bringing smoky barbecue, fresh seafood, bold vegan dishes, and sweet treats to the farm. With returning favorites and newcomers joining the mix, your next great discovery might be between stages.", "imgs": ["food/4.jpg", "food/5.jpg", "food/2.jpg", "food/1.jpg", "food/3.jpg"]}, "beverages": {"h": "Great Music. Good Company. Better Drinks.", "x": "With more than 50 beverage partners, Pickathon’s drink lineup pours plenty of Pacific Northwest flavor into your festival weekend. Discover a new favorite and raise a glass to the farm.", "imgs": ["bev/1.jpg", "bev/5.jpg", "bev/3.jpg", "bev/6.jpg", "bev/2.jpg", "bev/4.jpg", "bev/7.jpg"]}, "craft": {"h": "Find Your Next Treasure Between Sets", "x": "Explore Pickathon’s Craft Marketplace for handmade jewelry, wearable art, vintage finds, and unexpected treasures. Stop by the new Craft Tent near Market Row for makers, artists, community organizations, and hands-on experiences under one roof.", "imgs": ["craft/2.jpg", "craft/1.jpg", "craft/3.jpg"]}})[st.lineup] || {}).h) || ((st.season || 'off') === 'off' ? ({ food: 'Who served in 2026', beverages: 'Who poured in 2026', craft: 'Who made things in 2026' }[st.lineup] || 'Who played in 2026') : '2027 Lineup'), lcat: (function () { var c = ({"food": {"h": "Meet Your Next Festival Craving", "x": "Come hungry. Pickathon’s food lineup is bringing smoky barbecue, fresh seafood, bold vegan dishes, and sweet treats to the farm. With returning favorites and newcomers joining the mix, your next great discovery might be between stages.", "imgs": ["food/4.jpg", "food/5.jpg", "food/2.jpg", "food/1.jpg", "food/3.jpg"]}, "beverages": {"h": "Great Music. Good Company. Better Drinks.", "x": "With more than 50 beverage partners, Pickathon’s drink lineup pours plenty of Pacific Northwest flavor into your festival weekend. Discover a new favorite and raise a glass to the farm.", "imgs": ["bev/1.jpg", "bev/5.jpg", "bev/3.jpg", "bev/6.jpg", "bev/2.jpg", "bev/4.jpg", "bev/7.jpg"]}, "craft": {"h": "Find Your Next Treasure Between Sets", "x": "Explore Pickathon’s Craft Marketplace for handmade jewelry, wearable art, vintage finds, and unexpected treasures. Stop by the new Craft Tent near Market Row for makers, artists, community organizations, and hands-on experiences under one roof.", "imgs": ["craft/2.jpg", "craft/1.jpg", "craft/3.jpg"]}})[st.lineup]; if (!c) return { show: false, isFood: false, cls: 'pk-lhero', x: '', first: '', imgs: [] }; if (st.luYear) return { show: false, isFood: false, cls: 'pk-lhero', x: '', first: '', imgs: [] }; var cim = shufS(c.imgs, 'lc' + st.lineup); return { show: true, isFood: st.lineup === 'food' || st.lineup === 'beverages', cls: 'pk-lhero n' + cim.length, x: c.x, first: cim[0], imgs: cim.slice(1).map(function (u, i) { return { u: u, st: 'animation-delay: ' + (i * 5 + 4) + 's' }; }) }; })(), goPartners: nav('partners'), social: ((d && d.social) || []).map(function (x) { var k = String(x[0]).toLowerCase(); var f = { isIg: k === 'instagram', isTt: k === 'tiktok', isFb: k === 'facebook', isYt: k === 'youtube', isSp: k === 'spotify', isAm: k === 'apple music', isYm: k === 'youtube music', isAz: k === 'amazon music', isTd: k === 'tidal', isX: k === 'x' || k === 'twitter' }; f.n = x[0]; f.u = x[1]; f.noIc = !(f.isIg || f.isTt || f.isFb || f.isYt || f.isSp || f.isAm || f.isYm || f.isAz || f.isTd || f.isX); return f; }), vidW: phone ? '72%' : '280px',
+      goLineup: nav('lineup'), goLineupAll: function () { self.setState({ lineup: 'music', genre: '', luYear: '2026', luArch: true }); self.go('lineup', { keepArch: true }); }, goMap: function () { self.reset('home'); }, goHoods: nav('hoods'), goTickets: nav('tickets'), goMine: nav('mine'), goStories: nav('stories'), goPast: nav('past'), goDisc: function () { self.setState({ archLead: self._pickLead || self._featLead || null, luYear: 'disc', luArch: true, lineup: 'music', archT: null, archC: null, archY: '' }); self.go('lineup', { keepArch: true }); }, goEasy: function () { self.go('page', { p: 'easy-day' }); }, goWhy: nav('why'), bdEye: ((d && d.buildCopy) || {}).eye || '', bdNote: ((d && d.buildCopy) || {}).note || '', bdShort: ((d && d.buildCopy) || {}).short || '', ck: { show: !st.ckChoice && !TIX2, bottom: phone ? (R === 'tickets' ? 'calc(150px + env(safe-area-inset-bottom, 0px))' : 'calc(84px + env(safe-area-inset-bottom, 0px) - var(--pk-gap, 0px))') : '0px', yes: function () { self.setState({ ckChoice: 'yes' }); try { window.localStorage.setItem('pk-ck', 'yes'); } catch (e) {} }, no: function () { self.setState({ ckChoice: 'no' }); try { window.localStorage.setItem('pk-ck', 'no'); } catch (e) {} } }, pv: (function () { var on = !(typeof window !== 'undefined' && window.PK_LIVE); var sv = st.pvS || ((st.season || 'off') === 'off' ? ((function () { var M = { '2026-11-12': 'teaser', '2026-12-01': 'giving', '2027-01-13': 'reveal' }; M[RH.day] = 'sale'; M[RE.day] = 'early'; return M; })()[st.today || ''] || 'now') : st.season); var vv = st.pvV || (st.vip ? 'vip' : st.user ? 'signed' : (function () { var Y = (st.myYears || []).map(function (y) { return parseInt(String(y).slice(-4), 10); }).filter(function (n) { return n > 1990; }); if (!Y.length) return 'new'; return Math.max.apply(null, Y) < 2020 ? 'longago' : 'recent'; })()); var o = { saleL: RH.dayS + ' sale', earlyL: RE.dayS + ' early bird', show: on, bar: (phone && st.pvHide) ? 'display: none; ' : '', onState: function (e) { var v = e && e.target ? e.target.value : 'now'; var M = { now: ['off', undefined], teaser: ['off', '2026-11-12'], sale: ['off', RH.day], giving: ['off', '2026-12-01'], early: ['off', RE.day], reveal: ['off', '2027-01-13'], lineup: ['lineup', undefined], sched: ['sched', undefined], fest: ['fest', undefined] }[v] || ['off', undefined]; self.setState({ pvS: v, season: M[0], today: M[1] }); }, onView: function (e) { var v = e && e.target ? e.target.value : 'new'; var P = { new: { myYears: [], user: null }, recent: { myYears: ['2025', '2026'], user: null }, longago: { myYears: ['2010', '2012'], user: null }, signed: { myYears: ['2024', '2025', '2026'], user: { email: 'you@example.com', name: 'You' }, vip: false }, vip: { myYears: ['2024', '2025', '2026'], user: { email: 'crew@pickathon.com', name: 'Crew' }, vip: true } }[v] || { myYears: [], user: null }; if (P.vip === undefined) P.vip = false; P.pvV = v; self.setState(P); try { window.localStorage.setItem('pk-share-2027', JSON.stringify({ top3: self.state.top3 || [], myYears: P.myYears })); } catch (x) {} } }; ['now', 'teaser', 'sale', 'giving', 'early', 'reveal', 'lineup', 'sched', 'fest'].forEach(function (k) { o['s_' + k] = sv === k; }); ['new', 'recent', 'longago', 'signed', 'vip'].forEach(function (k) { o['v_' + k] = vv === k; }); return o; })(), ckReset: function () { self.setState({ ckChoice: '' }); try { window.localStorage.removeItem('pk-ck'); } catch (e) {} }, sv: (function () { var S = d && d.survey; var T = st.today || (function () { try { return new Date().toLocaleDateString('en-CA', { timeZone: 'America/Los_Angeles' }); } catch (e) { return new Date(Date.now() - 8 * 3600e3).toISOString().slice(0, 10); } })(); var on = !!(S && S.u && !/your-2026-survey/.test(S.u) && (st.stack[st.stack.length - 1] || {}).r === 'home' && (st.season || 'off') === 'off' && T >= S.start && T <= S.end); return { show: on, t: on ? S.t : '', x: on ? S.x : '', u: on ? S.u : '', closes: on ? S.closes : '' }; })(), ann: (function () { var L = (d && d.announce) || []; var T = st.today || (function () { try { return new Date().toLocaleDateString('en-CA', { timeZone: 'America/Los_Angeles' }); } catch (e) { return new Date(Date.now() - 8 * 3600e3).toISOString().slice(0, 10); } })(); var A = L.filter(function (x) { var inD = x.id === 'presale-soon' ? (T >= x.start && saleBefore) : x.id === 'presale' ? inHoliday : x.id === 'earlybird' ? !!(TIX.cur && TIX.cur.id === 'early' && T <= x.end) : (T >= x.start && T <= x.end); return (x.season || []).indexOf(st.season || 'off') >= 0 && inD; }).map(function (x) { if (x.id !== 'presale-soon' && x.id !== 'presale' && x.id !== 'earlybird') return x; var y = Object.assign({}, x), p3 = m27(pr27('p3')), rg = m27(Math.ceil(PR27.p3[TIX.regularCol])); if (x.id === 'presale-soon') y.t = RH.name + ' opens ' + RH.whenS; if (x.id === 'presale') y.t = 'The ' + RH.name + ' is on'; if (x.id === 'earlybird') { y.t = RE.name + ' pricing is on'; y.sub = TIX.plans ? 'Payment plans are open' : ''; } else y.sub = String(x.sub || '').replace(/\$[\d,.]+, regular \$[\d,.]+/, p3 + ', regular ' + rg).replace(/\$[\d,.]+/, p3); return y; }).sort(function (x, y) { return (x.pri || 9) - (y.pri || 9); })[0]; var on = !!(A && (st.stack[st.stack.length - 1] || {}).r === 'home'); return { show: on, feature: !!(A && A.feature), t: on ? A.t.replace('{left}', A.left || '') : '', cta: on ? A.cta : '', sub: on ? (A.sub || '') : '', line: on ? (A.short || A.t.replace('{left}', A.left || '')) : '', hasSub: !!(on && A.sub), isUrl: !!(on && A.url), isGo: !!(on && !A.url), url: on && A.url ? A.url : '', go: on && A.story ? function () { self.go('story', { s: A.story }); } : on && A.page ? function () { self.go('page', { p: A.page }); } : on && A.route ? (A.route === 'build' ? function () { self.go('build'); } : nav(A.route)) : nav('tickets') }; })(), schedEmptyText: (st.season || 'off') === 'off' ? (LUWHEN === 'January' ? 'The lineup drops early 2027' : 'The 2027 music lineup is coming soon') + ', and set times follow in early summer.' : 'Set times come out in early summer. Star artists in the lineup now and they’ll drop into My Pickathon with their times when the schedule lands.', nl: { ph: SMSON ? 'Email or mobile number' : 'Email address', ph2: SMSON ? 'you@email.com or 555 123 4567' : 'you@email.com', tixAsk: 'Get ' + askVia + ' the moment tickets are on.', luAsk: 'Hear the lineup first. We’ll ' + askVerb + ' you the moment it drops, plus the presale link.', calShow: pkCal.show, calHref: pkCal.href, calFile: pkCal.file, calLabel: pkCal.label, open: !st.nlDone, done: !!st.nlDone, doneMsg: 'You’re on the list. We’ll ' + (st.nlSms ? 'text' : 'email') + ' you ' + (SEA === 'off' && !saleOpen ? 'when tickets go on sale, and again when the lineup drops.' : 'the moment the lineup drops, with the presale link.'), genres: ((d && d.genres) || []).map(function (g) { var on = (st.nlG || (R === 'lineup' && st.genre ? [st.genre] : [])).indexOf(g.id) >= 0; return { label: g.n, on: on ? 'true' : 'false', style: 'min-height: 40px; padding: 0 12px; border-radius: 999px; font: inherit; font-size: 13px; font-weight: 700; cursor: pointer; ' + (on ? 'background: #12160F; color: #F2EDE3; border: 1px solid #12160F' : 'background: transparent; color: #12160F; border: 1px solid #8C947C'), pick: function () { var a = (self.state.nlG || (R === 'lineup' && self.state.genre ? [self.state.genre] : [])).slice(), i = a.indexOf(g.id); if (i >= 0) a.splice(i, 1); else if (a.length < 3) a.push(g.id); self.setState({ nlG: a }); } }; }), email: st.nlEmail || '', inv: st.nlErr ? 'true' : 'false', err: st.nlErr || '', hasErr: !!st.nlErr, onEmail: function (e) { self.setState({ nlEmail: e && e.target ? e.target.value : '' }); }, submit: function () { var v = (self.state.nlEmail || '').trim(); var isPh = /^[+()\d\s.-]{10,}$/.test(v) && v.replace(/\D/g, '').length >= 10; if (isPh && !SMSON) { self.setState({ nlErr: 'We can’t send texts yet. Enter an email address' + (pkCal.show ? ', or add the sale to your calendar.' : '.') }); return; } if (!isPh && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v)) { self.setState({ nlErr: SMSON ? 'Enter an email address or a mobile number.' : 'Enter an email address.' }); return; } if (isPh) { try { var fds = new URLSearchParams(); fds.append('PHONE', v); fetch(window.PK_SIGNUP.layloEndpoint, { method: 'POST', mode: 'no-cors', body: fds }).catch(function () {}); } catch (e) {} self.setState({ nlDone: true, nlErr: '', nlSms: true }); return; } var MC = (window.PK_SIGNUP || {}).mailchimpAction; if (MC) { try { var fdm = new URLSearchParams(); fdm.append('EMAIL', v); fdm.append('GENRES', (self.state.nlG || (R === 'lineup' && self.state.genre ? [self.state.genre] : [])).join(', ')); fdm.append('b_29c6a9fab7217f390ebe0a8f9_68c5bda2a2', ''); fetch(MC, { method: 'POST', mode: 'no-cors', body: fdm }).catch(function () {}); } catch (e) {} } self.setState({ nlDone: true, nlErr: '' }); } }, goBuild: function () { self.go('build'); }, goVolunteer: function () { self.go('page', { p: 'volunteer' }); }, goPress: nav('press'), goAbout: nav('about'), goAccount: nav('account'), acctLabel: st.user ? 'Your account' : 'Sign in', luH2: LUWHEN === 'January' ? 'The lineup drops early 2027!' : 'The 2027 music lineup is coming soon', luHead: LUWHEN === 'January' ? 'The lineup drops early 2027!' : 'The 2027 music lineup is coming soon.', lineupTixLink: saleOpen ? 'The ' + tierName.replace(/ sale$/i, '') + ' Sale is on now →' : saleBefore ? 'The ' + RH.name + ' opens ' + RH.whenL + ': remind me →' : RE.name + ' pricing opens ' + RE.whenS + ': remind me →', pr: (function () { if (!st.printing || !d) return { show: false }; var mine = d.sets.filter(function (x) { return stars[x.id]; }); return { show: true, year: d.year || '2026', sub: mine.length + ' sets · ' + 'Pendarvis Farm', days: d.days.map(function (dy) { return { t: (dy.f || dy.n), rows: mine.filter(function (x) { return x.d === dy.id; }).sort(function (a, b) { return a.s < b.s ? -1 : 1; }).map(function (x) { var stg = (d.stages || []).filter(function (q) { return q.id === x.st; })[0]; var h12 = function (t) { var H = +t.slice(11, 13), M = t.slice(14, 16); return ((H % 12) || 12) + (M !== '00' ? ':' + M : '') + (H < 12 ? ' AM' : ' PM'); }; return { t: h12(x.s) + '–' + h12(x.e), n: d.artists[x.a].n, w: stg ? stg.n : x.st }; }) }; }).filter(function (g) { return g.rows.length; }) }; })(), mapImg: MAPIMG, whenLine: 'Aug 4–8, 2027', whereLine: 'Happy Valley, Oregon', whereShort: 'Happy Valley', lineupBack: (st.season || 'off') === 'off', lineupBackNC: (st.season || 'off') === 'off' && !!st.luArch && ['food', 'beverages', 'craft'].indexOf(st.lineup) < 0, lineupH1: (st.luArch ? ((st.luYear === 'disc' || st.luYear === 'leg' || st.luYear === 'deep') ? 'Wait, they played here?' : (st.luYear ? 'Who played in ' + (st.luYear === '1999–2009' ? 'the early years, 1999–2009' : st.luYear) : 'The Pickathon Archive')) : ((st.season || 'off') === 'off' && ['food', 'beverages', 'craft'].indexOf(st.lineup) < 0 ? 'The 2027 lineup' : null)) || (st.luYear && st.luYear !== 'disc' && st.luYear !== 'leg' ? 'Who played in ' + (st.luYear === '1999–2009' ? 'the early years, 1999–2009' : st.luYear) : null) || ((({"food": {"h": "Meet Your Next Festival Craving", "x": "Come hungry. Pickathon’s food lineup is bringing smoky barbecue, fresh seafood, bold vegan dishes, and sweet treats to the farm. With returning favorites and newcomers joining the mix, your next great discovery might be between stages.", "imgs": ["food/4.jpg", "food/5.jpg", "food/2.jpg", "food/1.jpg", "food/3.jpg"]}, "beverages": {"h": "Great Music. Good Company. Better Drinks.", "x": "With more than 50 beverage partners, Pickathon’s drink lineup pours plenty of Pacific Northwest flavor into your festival weekend. Discover a new favorite and raise a glass to the farm.", "imgs": ["bev/1.jpg", "bev/5.jpg", "bev/3.jpg", "bev/6.jpg", "bev/2.jpg", "bev/4.jpg", "bev/7.jpg"]}, "craft": {"h": "Find Your Next Treasure Between Sets", "x": "Explore Pickathon’s Craft Marketplace for handmade jewelry, wearable art, vintage finds, and unexpected treasures. Stop by the new Craft Tent near Market Row for makers, artists, community organizations, and hands-on experiences under one roof.", "imgs": ["craft/2.jpg", "craft/1.jpg", "craft/3.jpg"]}})[st.lineup] || {}).h) || ((st.season || 'off') === 'off' ? ({ food: 'Who served in 2026', beverages: 'Who poured in 2026', craft: 'Who made things in 2026' }[st.lineup] || 'Who played in 2026') : '2027 Lineup'), lcat: (function () { var c = ({"food": {"h": "Meet Your Next Festival Craving", "x": "Come hungry. Pickathon’s food lineup is bringing smoky barbecue, fresh seafood, bold vegan dishes, and sweet treats to the farm. With returning favorites and newcomers joining the mix, your next great discovery might be between stages.", "imgs": ["food/4.jpg", "food/5.jpg", "food/2.jpg", "food/1.jpg", "food/3.jpg"]}, "beverages": {"h": "Great Music. Good Company. Better Drinks.", "x": "With more than 50 beverage partners, Pickathon’s drink lineup pours plenty of Pacific Northwest flavor into your festival weekend. Discover a new favorite and raise a glass to the farm.", "imgs": ["bev/1.jpg", "bev/5.jpg", "bev/3.jpg", "bev/6.jpg", "bev/2.jpg", "bev/4.jpg", "bev/7.jpg"]}, "craft": {"h": "Find Your Next Treasure Between Sets", "x": "Explore Pickathon’s Craft Marketplace for handmade jewelry, wearable art, vintage finds, and unexpected treasures. Stop by the new Craft Tent near Market Row for makers, artists, community organizations, and hands-on experiences under one roof.", "imgs": ["craft/2.jpg", "craft/1.jpg", "craft/3.jpg"]}})[st.lineup]; if (!c) return { show: false, isFood: false, cls: 'pk-lhero', x: '', first: '', imgs: [] }; if (st.luYear) return { show: false, isFood: false, cls: 'pk-lhero', x: '', first: '', imgs: [] }; var cim = shufS(c.imgs, 'lc' + st.lineup); return { show: true, isFood: st.lineup === 'food' || st.lineup === 'beverages', cls: 'pk-lhero n' + cim.length, x: c.x, first: cim[0], imgs: cim.slice(1).map(function (u, i) { return { u: u, st: 'animation-delay: ' + (i * 5 + 4) + 's' }; }) }; })(), goPartners: nav('partners'), social: ((d && d.social) || []).map(function (x) { var k = String(x[0]).toLowerCase(); var f = { isIg: k === 'instagram', isTt: k === 'tiktok', isFb: k === 'facebook', isYt: k === 'youtube', isSp: k === 'spotify', isAm: k === 'apple music', isYm: k === 'youtube music', isAz: k === 'amazon music', isTd: k === 'tidal', isX: k === 'x' || k === 'twitter' }; f.n = x[0]; f.u = x[1]; f.noIc = !(f.isIg || f.isTt || f.isFb || f.isYt || f.isSp || f.isAm || f.isYm || f.isAz || f.isTd || f.isX); return f; }), vidW: phone ? '72%' : '280px',
       searchId: phone ? 'pk-q-phone' : 'pk-q-desk',
       toggleMenu: function () { self.setState({ menu: !st.menu }); },
-      r: { homeNew: NH, homeOld: R === 'home' && !NH, home: R === 'home', lineup: R === 'lineup', artist: R === 'artist', schedule: R === 'schedule', map: R === 'map', hoods: R === 'hoods', hood: R === 'hood', info: R === 'info', tickets: R === 'tickets', mine: R === 'mine', stories: R === 'stories', story: R === 'story', page: R === 'page', search: R === 'search', past: R === 'past', watch: R === 'watch', partners: R === 'partners', account: R === 'account', build: R === 'build', press: R === 'press', about: R === 'about', why: R === 'why', presents: R === 'presents', act: R === 'act' }
+      r: { tix2: TIX2, tix1: R === 'tickets' && !TIX2, homeNew: NH, homeOld: R === 'home' && !NH, home: R === 'home', lineup: R === 'lineup', artist: R === 'artist', schedule: R === 'schedule', map: R === 'map', hoods: R === 'hoods', hood: R === 'hood', info: R === 'info', tickets: R === 'tickets', mine: R === 'mine', stories: R === 'stories', story: R === 'story', page: R === 'page', search: R === 'search', past: R === 'past', watch: R === 'watch', partners: R === 'partners', account: R === 'account', build: R === 'build', press: R === 'press', about: R === 'about', why: R === 'why', presents: R === 'presents', act: R === 'act' }
     };
     out.clash = { list: [], has: false, more: '' };
     if ((R === 'schedule' || R === 'mine') && (SEA === 'sched' || SEA === 'fest') && stars) {
@@ -6532,6 +6536,7 @@ function patchNode(o,n){if(o.nodeType===3||o.nodeType===8){if(o.nodeValue!==n.no
   if(n.__h||o.__h){o.__h={};bindH(o,n)}
   const foc=document.activeElement===o;
   if(t==='TEXTAREA'){if(!foc&&o.value!==n.value)o.value=n.value;return}
+  if(o.hasAttribute('data-pk-own'))return;   /* a self-drawn island (Tickets round 2): the renderer never touches its inside */
   morphKids(o,n);
   if((t==='INPUT'||t==='SELECT')&&!foc){if(o.value!==n.value)o.value=n.value;if(t==='INPUT'&&o.checked!==n.checked)o.checked=n.checked}}
 function pathOf(el,root){const p=[];while(el&&el!==root){const par=el.parentNode;if(!par)return null;p.unshift([...par.children].indexOf(el));el=par}return el===root?p:null}
@@ -6854,6 +6859,644 @@ function fix(el) { var P = per(el); if (!P) return; if (!el._pkLp) { el._pkLp = 
 document.addEventListener('scroll', function (e) { var el = e.target; if (el && el.id === 'pk-nh-br') fix(el); }, true);
 setInterval(function () { var el = document.getElementById('pk-nh-br'); if (el && !el._pkLp) fix(el); }, 400); })();</script>
 <style id="pk-nh-bball">/*pk-nh-bball: Home bands header, See all beside the heading on wide screens; on phone the heading takes the full row and the button sits full width under it (Zale, Nov 9)*/@media (max-width:699px){#root#root #pk-nh-bands .pk-nh-head{flex-wrap:wrap;align-items:flex-start}#root#root #pk-nh-bands .pk-nh-head>div:first-child{flex:1 1 100%}#root#root #pk-nh-bands .pk-nh-arrs{flex:1 1 100%}#root#root #pk-nh-bands .pk-nh-arr{display:none}#root#root#root #pk-nh-bands .pk-nh-ball-r{width:100%;justify-content:center;margin-top:0}}@media (min-width:700px){#root#root#root #pk-nh-bands .pk-nh-ball-r{margin-top:0}}</style>
+<style id="pk-tk2-css">
+/* pk-tk2: Tickets, round 2 design (Nov 11 2026). Source: tools/tickets_r2/tk2.css, spliced into index.html by tools/tickets_r2/build.py.
+   Everything is scoped under .tk2 (the Tickets page root #tk2, the checkout page #pk-co and the sheets), so nothing else on the site changes.
+   Phone first. Tablet (600 to 1199) is phone-style in a narrower column. Desktop from 1200, the same switch the site uses for its own chrome. */
+.tk2{--ground:#2B2628;--deep:#221E20;--raise:#383133;--line:#5A5254;--line-strong:#8E8386;--cream:#F2EDE3;--cream-dim:#CFC9BC;--mute:#A9A294;--ink:#2B2628;--ink-dim:#5B5154;--paper:#F2EDE3;--paper-2:#E6E0D3;--gold:#F2CF62;--gold-deep:#D6B54A;--plum:#86526B;--plum-lt:#D7B3C6;--plum-deep:#5E3549;--ok:#A9D08F;--err:#FF9C86;
+  --display:"Pickathon 2014","Bricolage Grotesque",Impact,sans-serif;--text:"Bricolage Grotesque",Inter,system-ui,sans-serif;
+  --t-min:.75rem;--t-sm:.875rem;--t-md:1rem;--d-label:1.0625rem;--d-card:1.375rem;--d-sec:1.75rem;--d-hero:2.25rem;--gutter:16px;--pill:2.75rem;
+  font:400 1rem/1.4 var(--text);color:var(--cream);-webkit-font-smoothing:antialiased;text-align:left}
+@media (min-width:600px) and (max-width:1199px){.tk2{--gutter:32px}}
+@media (min-width:1200px){.tk2{--gutter:40px;--pill:2.25rem}}
+.tk2 *,.tk2 *::before,.tk2 *::after{box-sizing:border-box}
+.tk2 *{scrollbar-width:none}.tk2 *::-webkit-scrollbar{display:none}
+.tk2 h1,.tk2 h2,.tk2 h3,.tk2 p,.tk2 ul,.tk2 ol,.tk2 fieldset,.tk2 legend{margin:0;padding:0}
+.tk2 ul,.tk2 ol{list-style:none}
+.tk2 fieldset{border:0;min-width:0}
+.tk2 img{display:block;max-width:100%;height:auto}
+.tk2 a{color:inherit}
+.tk2 button,.tk2 input,.tk2 select{font:inherit;color:inherit}
+.tk2 button{cursor:default}
+.tk2 [hidden]{display:none!important}
+.tk2 .tk-vh{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0;padding:0;margin:-1px}
+.tk2 .tk-num{font-variant-numeric:tabular-nums}
+.tk2 .tk-dim{color:var(--cream-dim)}
+.tk2 .tk-paper{background:var(--paper);color:var(--ink);border-radius:0}
+.tk2 .tk-paper .tk-dim{color:var(--ink-dim)}
+/* display face: the site sets h1 and h2 with !important, so these do too */
+.tk2.tk2 .tk-d,#tk2#tk2 .tk-d{font-family:var(--display)!important;font-weight:400!important;letter-spacing:.02em!important;line-height:1.08!important;text-transform:uppercase!important;text-wrap:balance;color:inherit;max-width:none!important;min-height:0!important}
+.tk2.tk2 .tk-d-label,#tk2#tk2 .tk-d-label{font-size:var(--d-label)!important}.tk2.tk2 .tk-d-card,#tk2#tk2 .tk-d-card{font-size:var(--d-card)!important}.tk2.tk2 .tk-d-sec{font-size:var(--d-sec)!important}.tk2.tk2 .tk-d-hero{font-size:var(--d-hero)!important}
+.tk2 :focus-visible{outline:3px solid var(--gold);outline-offset:3px;border-radius:4px}
+.tk2 .tk-paper :focus-visible{outline-color:var(--plum)}
+.tk2 .tk-ic{width:1.5rem;height:1.5rem;flex:none;fill:currentColor;display:inline-block}
+.tk2 .tk-ic-sm{width:1.125rem;height:1.125rem}
+
+/* pills: outline goes somewhere, cream is the loop, gold is the one money or reminder action on a screen */
+.tk2 .tk-pill{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;min-height:var(--pill);padding:0 1.125rem;border-radius:999px;border:1.5px solid var(--line-strong);background:transparent;color:var(--cream);font-family:var(--text);font-weight:650;font-size:.9375rem;line-height:1;letter-spacing:0;text-transform:none;text-decoration:none;white-space:nowrap;cursor:pointer;transition:background-color .2s linear,color .2s linear,border-color .2s linear}
+.tk2 .tk-pill:hover{border-color:var(--cream)}
+.tk2 .tk-pill:active{background:rgba(242,237,227,.14)}
+.tk2 .tk-pill-cream{background:var(--cream);border-color:var(--cream);color:var(--ink)}
+.tk2 .tk-pill-cream:hover,.tk2 .tk-pill-cream:active{background:#DDD6C8;border-color:#DDD6C8}
+.tk2 .tk-pill-gold{background:var(--gold);border-color:var(--gold);color:var(--ink);font-weight:750}
+.tk2 .tk-pill-gold:hover,.tk2 .tk-pill-gold:active{background:var(--gold-deep);border-color:var(--gold-deep)}
+.tk2 .tk-pill[disabled],.tk2 .tk-pill[aria-disabled=true]{border-color:var(--line);color:var(--mute);background:transparent;cursor:default}
+.tk2 .tk-pill-sm{min-height:2rem;padding:0 .875rem;font-size:.875rem;position:relative}
+.tk2 .tk-pill-sm::after{content:"";position:absolute;inset:-6px -2px}
+.tk2 .tk-paper .tk-pill{border-color:var(--ink);color:var(--ink)}
+.tk2 .tk-paper .tk-pill:hover{background:rgba(43,38,40,.08)}
+.tk2 .tk-paper .tk-pill-ink{background:var(--ink);color:var(--paper)}
+.tk2 .tk-paper .tk-pill-ink:hover{background:#463E41}
+.tk2 .tk-paper .tk-pill-ink[disabled]{background:transparent;color:var(--ink-dim);border-color:rgba(43,38,40,.4)}
+.tk2 .tk-paper .tk-pill-gold{border-color:var(--gold);background:var(--gold)}
+.tk2 .tk-paper .tk-pill-gold:hover{background:var(--gold-deep);border-color:var(--gold-deep)}
+.tk2 .tk-paper .tk-pill-cream{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+.tk2 .tk-tlink{color:inherit;font:inherit;font-weight:650;text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1.5px;display:inline-block;padding:4px 0;min-height:24px;background:none;border:0;cursor:pointer;position:relative}
+.tk2 .tk-tlink::after{content:"";position:absolute;inset:-10px -4px}
+@media (prefers-reduced-motion:reduce){.tk2 *{transition:none!important}}
+.tk2 .tk-rule2{border:0;border-top:3px solid currentColor;position:relative;height:7px;margin:0}
+.tk2 .tk-rule2::after{content:"";position:absolute;left:0;right:0;top:3px;border-top:1px solid currentColor}
+
+/* day strip: W Th Fr Sa Su. W is the add-on day. */
+.tk2 .tk-days{display:grid;grid-template-columns:repeat(5,1.375rem);gap:2px;flex:none}
+.tk2 .tk-days i{height:1.875rem;display:grid;place-items:center;font-style:normal;font-size:.75rem;font-weight:750;border:1.5px solid rgba(43,38,40,.38);color:var(--ink-dim);line-height:1}
+.tk2 .tk-days i.on{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+.tk2 .tk-days i.w{border-style:dashed}
+.tk2 .tk-days i.w.on{border-style:solid;background:var(--plum);border-color:var(--plum);color:#fff}
+
+/* ---------- the page ---------- */
+#tk2{background:var(--ground);min-height:60vh}
+#tk2 .tk-head{display:flex;align-items:center;gap:14px;padding:10px var(--gutter) 0;min-height:84px;position:relative}
+#tk2 .tk-head::after{content:"";position:absolute;left:0;right:0;bottom:0;border-bottom:1px solid var(--ink);border-top:3px solid var(--ink);height:7px}
+#tk2 .tk-head img{height:58px;width:auto;flex:none;margin-bottom:8px}
+#tk2 .tk-head-t{margin-left:auto;text-align:right;padding-bottom:8px}
+#tk2#tk2 .tk-head h1{font-size:var(--d-sec)!important;line-height:1!important;color:var(--ink)!important;outline:0}
+#tk2 .tk-head p{font-size:var(--t-sm);font-weight:750;color:var(--plum);margin-top:4px;line-height:1.2}
+#tk2 .tk-main{padding:10px var(--gutter) 28px;max-width:1160px;margin:0 auto}
+#tk2#tk2 li{max-width:none}
+#tk2 .tk-leg{display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:40px;margin:0 0 4px;width:100%}
+#tk2 legend{float:left}
+
+.tk2 .tk-field{flex:1;min-width:0;min-height:3rem;border-radius:999px;border:1.5px solid var(--line-strong);background:var(--ground);padding:0 1rem;font-size:1rem;color:var(--cream);width:100%}
+.tk2 .tk-field::placeholder{color:var(--mute)}
+.tk2.tk2 .tk-field{border-color:var(--line-strong)!important}.tk2.tk2 .tk-field[aria-invalid=true]{border-color:var(--err)!important}
+.tk2 .tk-msg-err{margin-top:8px;color:var(--err);font-size:.875rem;font-weight:650;display:flex;gap:6px;align-items:center}
+#tk2 .tk-pre{display:grid;gap:8px;margin-bottom:10px}
+#tk2 .tk-pre>*{min-width:0}
+#tk2 .tk-pre-f{display:flex;gap:8px}
+#tk2 .tk-pre-ok{display:flex;gap:8px;align-items:center;font-size:var(--t-sm);font-weight:650;min-height:3rem}
+#tk2 .tk-pre-ok .tk-ic{color:var(--ok)}
+#tk2 .tk-pre .tk-msg-err{margin-top:0}
+#tk2 .tk-pre-n{font-size:var(--t-sm);color:var(--cream-dim);line-height:1.35}
+
+#tk2 .tk-slip{display:flex;align-items:center;gap:12px;padding:8px 10px 8px 12px;border:2px solid var(--ink);outline:1px solid var(--paper);outline-offset:-5px;margin-bottom:10px}
+#tk2 .tk-slip p{flex:1;min-width:0;font-size:var(--t-sm);line-height:1.25;color:var(--ink-dim)}
+#tk2 .tk-slip b{display:block;font-size:1.0625rem;color:var(--ink);font-weight:750}
+#tk2 .tk-signin{font-size:var(--t-sm);color:var(--cream-dim);min-height:32px;display:flex;align-items:center;margin-bottom:2px}
+
+.tk2 .tk-passes{display:grid;gap:6px;clear:both}
+.tk2 .tk-pass{display:flex;align-items:center;gap:12px;min-height:62px;padding:6px 0 6px 12px;cursor:pointer;position:relative;border:1px solid var(--paper)}
+.tk2 .tk-pass-t{flex:1;min-width:0;display:flex;flex-direction:column;gap:1px}
+.tk2 .tk-pass-t b{font-size:1.125rem;font-weight:750;line-height:1.15}
+.tk2 .tk-pass-t span{font-size:var(--t-sm);color:var(--ink-dim);line-height:1.25}
+.tk2 .tk-pass-p{flex:none;min-width:84px;align-self:stretch;display:flex;flex-direction:column;align-items:center;justify-content:center;border-left:2px dotted rgba(43,38,40,.5);line-height:1.05}
+.tk2 .tk-pass-p b{font-size:1.375rem;font-weight:800}
+.tk2 .tk-pass-p small{font-size:var(--t-min);color:var(--ink-dim);font-weight:600}
+.tk2 .tk-pass:has(input:checked){box-shadow:inset 0 0 0 3px var(--plum);border-color:var(--plum)}
+.tk2 .tk-pass:has(input:checked) .tk-days i.on{background:var(--plum);border-color:var(--plum);color:#fff}
+.tk2 .tk-pass:has(input:checked) .tk-pass-p b{color:var(--plum-deep)}
+.tk2 .tk-pass:has(input:focus-visible){outline:3px solid var(--gold);outline-offset:2px}
+.tk2 .tk-pass:has(input:disabled){opacity:.55;cursor:default}
+#tk2 .tk-wed{display:flex;align-items:center;gap:10px;min-height:48px;padding:4px 12px;background:var(--paper-2);color:var(--ink);margin-top:-6px;border:1px solid var(--plum);border-top:0;box-shadow:inset 0 0 0 2px var(--plum);cursor:pointer;font-size:var(--t-sm);line-height:1.25}
+#tk2 .tk-wed input{width:22px;height:22px;accent-color:var(--plum);flex:none;margin:0}
+#tk2 .tk-wed b{font-weight:750}
+#tk2 .tk-wed span{flex:1}
+#tk2 .tk-wed em{font-style:normal;font-weight:750;white-space:nowrap}
+#tk2 .tk-daypick{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin-top:-6px;padding:8px 10px 10px;background:var(--paper-2);box-shadow:inset 0 0 0 2px var(--plum)}
+#tk2 .tk-daypick label span{min-height:44px;display:flex;flex-direction:column;align-items:center;justify-content:center;border:1.5px solid var(--ink);font-size:var(--t-sm);line-height:1.15;cursor:pointer;color:var(--ink);text-align:center}
+#tk2 .tk-daypick b{font-size:.9375rem}
+#tk2 .tk-daypick input:checked+span{background:var(--plum);border-color:var(--plum);color:#fff}
+#tk2 .tk-daypick input:focus-visible+span{outline:3px solid var(--gold);outline-offset:2px}
+#tk2 .tk-daypick input:disabled+span{opacity:.5;cursor:default}
+
+#tk2 .tk-who{margin-top:12px}
+#tk2 .tk-who-g{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;clear:both}
+#tk2 .tk-step p{font-size:var(--t-sm);font-weight:700;margin-bottom:3px;line-height:1.2}
+#tk2 .tk-step p span{display:block;font-weight:500;color:var(--cream-dim);font-size:var(--t-sm);line-height:1.2}
+#tk2 .tk-step>div{display:flex;align-items:center;justify-content:space-between;border:1.5px solid var(--line-strong);border-radius:999px;background:var(--deep)}
+#tk2 .tk-step button{width:44px;height:44px;border:0;background:none;display:grid;place-items:center;border-radius:50%;cursor:pointer;padding:0;color:var(--cream)}
+#tk2 .tk-step button:hover{background:rgba(242,237,227,.1)}
+#tk2 .tk-step button[disabled]{color:#75696C;cursor:default;background:none}
+#tk2 .tk-step output{font-size:1.125rem;font-weight:750;min-width:18px;text-align:center}
+#tk2 .tk-step-row{display:flex;align-items:center;gap:14px;margin-top:8px}
+#tk2 .tk-step-row p{margin:0}
+#tk2 .tk-step-row>div{width:132px}
+#tk2 .tk-note{margin-top:8px;padding:8px 12px;border-left:3px solid var(--plum-lt);background:rgba(134,82,107,.22);font-size:var(--t-sm);line-height:1.35}
+
+#tk2 .tk-folds{margin-top:12px;border-top:1px solid var(--line)}
+#tk2 .tk-fold{border-bottom:1px solid var(--line)}
+#tk2 .tk-fold-row{width:100%;min-height:48px;display:flex;align-items:center;gap:10px;background:none;border:0;padding:0;text-align:left;cursor:pointer;font-size:.9375rem;color:var(--cream)}
+#tk2 .tk-fold-row .tk-ic{color:var(--cream-dim)}
+#tk2 .tk-fold-k{font-weight:750;flex:none}
+#tk2 .tk-fold-v{color:var(--cream-dim);min-width:0;line-height:1.2}
+#tk2 .tk-fold-v em{font-style:normal;color:var(--ok);font-weight:650}
+#tk2 .tk-fold-c{margin-left:auto;font-weight:700;font-size:var(--t-sm);flex:none;text-decoration:underline;text-underline-offset:3px}
+#tk2 .tk-fold-row[disabled]{cursor:default}
+#tk2 .tk-fold-row[disabled] .tk-fold-c{display:none}
+#tk2 .tk-fold-p{padding:2px 0 12px;display:grid;gap:6px}
+#tk2 .tk-opt{display:flex;align-items:center;gap:12px;min-height:64px;padding:6px 12px 6px 6px;border:1.5px solid var(--line);border-radius:8px;background:var(--raise);cursor:pointer}
+#tk2 .tk-opt-m{flex:none;width:84px;height:56px;object-fit:cover;background:#1c191a;border-radius:0}
+#tk2 .tk-opt-e{flex:none;width:84px;height:56px;display:flex;align-items:center;justify-content:center}
+#tk2 .tk-opt-e img{width:40px;height:40px}
+#tk2 .tk-opt-t{flex:1;min-width:0;font-size:var(--t-sm);line-height:1.3;color:var(--cream-dim)}
+#tk2 .tk-opt-t b{display:block;font-size:1rem;color:var(--cream);font-weight:750}
+#tk2 .tk-opt-p{flex:none;font-weight:750;text-align:right;line-height:1.15;font-size:1rem}
+#tk2 .tk-opt-p small{display:block;font-size:var(--t-sm);font-weight:500;color:var(--cream-dim)}
+#tk2 .tk-opt:has(input:checked){border-color:var(--cream);box-shadow:inset 0 0 0 1.5px var(--cream);background:#443C3F}
+#tk2 .tk-opt:has(input:focus-visible){outline:3px solid var(--gold);outline-offset:2px}
+#tk2 .tk-opt:has(input:disabled){opacity:.5;cursor:default}
+#tk2 .tk-patron{display:flex;align-items:center;gap:10px;min-height:52px;padding:6px 0;font-size:var(--t-sm);line-height:1.3;color:var(--cream-dim);border-bottom:1px solid var(--line)}
+#tk2 .tk-patron b{color:var(--cream);font-size:.9375rem}
+#tk2 .tk-patron .tk-num{color:var(--cream);font-weight:650}
+#tk2 .tk-patron .tk-pill{margin-left:auto;flex:none}
+/* the site restyles every button[aria-pressed] with three ids and !important; this is the pill again */
+#tk2#tk2#tk2#tk2 .tk-pill[aria-pressed]{min-height:2rem!important;border-radius:999px!important;border:1.5px solid var(--line-strong)!important;background:transparent!important;color:var(--cream)!important;cursor:pointer!important}
+#tk2#tk2#tk2#tk2 .tk-pill[aria-pressed=true]{background:var(--cream)!important;border-color:var(--cream)!important;color:var(--ink)!important}
+#tk2#tk2#tk2#tk2 .tk-pill[aria-pressed][disabled]{border-color:var(--line)!important;color:var(--mute)!important;cursor:default!important}
+
+#tk2 .tk-extra{margin-top:24px}
+#tk2 .tk-extra details{border-bottom:1px solid var(--line)}
+#tk2 .tk-extra details:first-of-type{border-top:1px solid var(--line)}
+#tk2 .tk-extra summary{list-style:none;min-height:48px;display:flex;align-items:center;justify-content:space-between;gap:12px;font-weight:650;cursor:pointer}
+#tk2 .tk-extra summary::-webkit-details-marker{display:none}
+#tk2 .tk-extra details p{padding:0 0 12px;color:var(--cream-dim);font-size:var(--t-sm);max-width:36em}
+#tk2 .tk-hand{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;margin-top:16px}
+.tk2 .tk-fine{margin-top:14px;font-size:var(--t-sm);color:var(--cream-dim);line-height:1.45;max-width:40em}
+.tk2 .tk-fine b{color:var(--cream)}
+
+/* total bar (phone, tablet): sits just above the site's tab bar; the summary opens the itemized order; never truncates */
+#tk2 .tk-bar{position:fixed;left:0;right:0;bottom:var(--tk-tabs,0px);z-index:35;padding:8px var(--gutter);display:flex;align-items:center;gap:10px;background:var(--deep);border-top:2px dotted var(--line-strong)}
+#tk2 .tk-bar-sum{flex:1;min-width:0;background:none;border:0;padding:0;text-align:left;cursor:pointer;font-size:var(--t-sm);font-weight:650;line-height:1.25;min-height:44px;display:flex;flex-direction:column;justify-content:center;color:var(--cream)}
+#tk2 .tk-bar-sum small{font-size:var(--t-min);font-weight:500;color:var(--cream-dim);display:inline-flex;align-items:center;gap:4px;white-space:nowrap}
+#tk2 .tk-bar-sum small span{text-decoration:underline;text-underline-offset:3px}
+#tk2 .tk-bar .tk-pill{min-height:3rem;padding:0 1.125rem;font-size:1.0625rem;flex:none}
+#tk2 .tk-bar-ok{display:flex;gap:8px;align-items:center;font-size:var(--t-sm);font-weight:650;min-height:44px}
+#tk2 .tk-bar-ok .tk-ic{color:var(--ok)}
+#tk2 .tk-main.has-bar{padding-bottom:120px}
+@media (max-width:379px){#tk2 .tk-who-g{grid-template-columns:1fr}#tk2 .tk-who-g .tk-step{display:flex;align-items:center;justify-content:space-between;gap:12px}#tk2 .tk-who-g .tk-step>div{width:140px;flex:none}#tk2 .tk-who-g .tk-step p{margin:0}#tk2 .tk-pre-f{flex-direction:column}.tk2 .tk-pass{gap:8px;padding-left:8px}.tk2 .tk-pass-p{min-width:74px}
+  #tk2 .tk-bar{flex-direction:column;align-items:stretch;gap:6px}#tk2 .tk-bar .tk-pill{width:100%}#tk2 .tk-main.has-bar{padding-bottom:160px}#tk2 .tk-slip{flex-wrap:wrap}}
+#tk2 .tk-order{display:none}
+.tk2 .tk-olines li{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-bottom:1px solid rgba(43,38,40,.25);font-size:.9375rem;line-height:1.3}
+.tk2 .tk-olines li span:last-child{font-weight:650;white-space:nowrap}
+.tk2 .tk-olines .fee{color:var(--ink-dim)}
+.tk2 .tk-olines .tk-order-empty{border:0;color:var(--ink-dim);padding:6px 0 2px}
+.tk2 .tk-otot{display:flex;justify-content:space-between;align-items:baseline;margin:12px 0 4px;font-weight:700}
+.tk2 .tk-otot b{font-size:1.625rem;font-weight:800}
+.tk2 .tk-otot small{font-weight:500;font-size:.875rem}
+.tk2 .tk-oplan{font-size:var(--t-sm);color:var(--ink-dim);line-height:1.35;margin-top:2px}
+.tk2 .tk-osheet{padding:14px 16px 16px;border:2px solid var(--ink);outline:1px solid var(--paper);outline-offset:-5px}
+.tk2 .tk-osheet .tk-fine{color:var(--ink-dim);margin-top:8px}
+.tk2 .tk-osheet .tk-fine b{color:var(--ink)}
+
+/* sheets: the only thing with a shadow */
+.tk2.tk-scrim{position:fixed;inset:0;z-index:2100;background:rgba(18,14,16,.62);display:flex;align-items:flex-end;justify-content:center}
+.tk2 .tk-sheet{width:100%;max-width:560px;max-height:calc(100svh - 24px);overflow:auto;background:var(--raise);border-radius:18px 18px 0 0;padding:10px var(--gutter) calc(22px + env(safe-area-inset-bottom,0px));box-shadow:0 -8px 40px rgba(0,0,0,.45)}
+.tk2 .tk-sheet-top{display:flex;align-items:center;justify-content:space-between;min-height:48px;margin-bottom:4px}
+.tk2 .tk-sheet-x{width:44px;height:44px;margin-right:-10px;display:grid;place-items:center;background:none;border:0;border-radius:50%;cursor:pointer;color:var(--cream);padding:0}
+.tk2 .tk-sheet .tk-sheet-go{width:100%;min-height:3rem;font-size:1.0625rem;margin-top:14px}
+@media (min-width:600px){.tk2 .tk-sheet{--gutter:28px}}
+@media (min-width:1200px){.tk2.tk-scrim{align-items:center}.tk2 .tk-sheet{border-radius:18px;padding:14px 28px 28px}}
+.tk2 .tk-help{display:grid;gap:6px}
+.tk2 .tk-help .tk-pass{cursor:default}
+.tk2 .tk-help .tk-pass-p{min-width:76px;border:0;padding-right:10px}
+.tk2 .tk-help-f{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px;font-size:var(--t-sm);text-align:center;line-height:1.25;color:var(--cream-dim)}
+.tk2 .tk-help-f b{display:block;color:var(--cream);font-family:var(--display);font-weight:400;letter-spacing:.03em;text-transform:uppercase;font-size:.875rem}
+
+@media (min-width:600px) and (max-width:1199px){
+  #tk2 .tk-main{max-width:704px}
+  #tk2 .tk-head{padding-left:max(var(--gutter),calc((100% - 640px)/2));padding-right:max(var(--gutter),calc((100% - 640px)/2));min-height:104px}
+  #tk2 .tk-head img{height:72px}
+  #tk2 .tk-bar{padding-left:max(var(--gutter),calc((100% - 640px)/2));padding-right:max(var(--gutter),calc((100% - 640px)/2))}
+}
+@media (min-width:1200px){
+  #tk2 .tk-head{min-height:96px;padding:10px max(var(--gutter),calc((100% - 1260px)/2 + var(--gutter))) 0}
+  #tk2 .tk-head img{height:66px}
+  #tk2 .tk-head-t{display:flex;align-items:baseline;gap:18px}
+  #tk2#tk2 .tk-head h1{font-size:2.5rem!important}
+  #tk2 .tk-head p{font-size:1rem;margin-top:0}
+  #tk2 .tk-main{max-width:1260px;padding-top:24px;padding-bottom:64px}
+  #tk2 .tk-cols{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:56px;align-items:start}
+  #tk2#tk2 .tk-leg .tk-d{font-size:var(--d-card)!important}
+  #tk2 .tk-passes{grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+  #tk2 .tk-pass{flex-direction:column;align-items:flex-start;gap:12px;padding:16px 16px 0;min-height:0}
+  #tk2 .tk-days{grid-template-columns:repeat(5,1.75rem)}
+  #tk2 .tk-days i{height:2.25rem;font-size:.8125rem}
+  #tk2 .tk-pass-t b{font-size:1.375rem}
+  #tk2 .tk-pass-p{align-self:stretch;border-left:0;border-top:2px dotted rgba(43,38,40,.5);flex-direction:row;align-items:baseline;justify-content:flex-start;gap:6px;padding:10px 0 12px;margin-top:auto}
+  #tk2 .tk-pass-p b{font-size:1.625rem}
+  #tk2 .tk-wed,#tk2 .tk-daypick{grid-column:1/-1;margin-top:0;max-width:560px;order:9;border-top:1px solid var(--plum)}
+  #tk2 .tk-pre{grid-template-columns:minmax(0,440px) 1fr;align-items:center;gap:8px 24px;margin-bottom:18px}
+  #tk2 .tk-slip{max-width:560px}
+  #tk2 .tk-who{margin-top:26px}
+  #tk2 .tk-who-g{grid-template-columns:repeat(3,180px);gap:16px}
+  #tk2 .tk-note{max-width:560px}
+  #tk2 .tk-folds{margin-top:24px}
+  #tk2 .tk-fold-row{min-height:56px;font-size:1rem}
+  #tk2 .tk-fold-p{grid-template-columns:1fr 1fr;gap:10px}
+  #tk2 .tk-patron{min-height:56px}
+  #tk2 .tk-bar{display:none!important}
+  #tk2 .tk-main.has-bar{padding-bottom:64px}
+  #tk2 .tk-order{display:block;position:sticky;top:calc(var(--tk-hdr,96px) + 24px)}
+  #tk2 .tk-order .tk-pill-gold,#tk2 .tk-order .tk-pill-cream{width:100%;min-height:3rem;font-size:1.0625rem;margin-top:12px}
+}
+/* narrow desktop: the four cards still hold the five-box strip */
+@media (min-width:1200px) and (max-width:1339px){#tk2 .tk-cols{grid-template-columns:minmax(0,1fr) 340px;gap:32px}#tk2 .tk-days{grid-template-columns:repeat(5,1.5rem)}#tk2 .tk-pass{padding:14px 14px 0}}
+</style>
+<script id="pk-tk2">
+/* pk-tk2: Tickets, round 2 design (Nov 11 2026). Source: tools/tickets_r2/tk2.js, spliced into index.html by tools/tickets_r2/build.py.
+   The page is drawn into <div id="tk2" data-pk-own> (the app's renderer leaves the inside of a data-pk-own element alone).
+   Every price, sale date and round name comes from window.pkTix() (the pk-ticket-settings block) or the live price feed. None is typed here.
+   The order is ONE record, kept in the browser (localStorage "pk27order") so a reload, a tab switch or a sleeping phone loses nothing.
+
+   RETURNING BUYERS ("Same again"). The ticket system must supply the signed-in buyer's last order through ONE function:
+     window.pkLastOrder()  ->  null (not signed in, or no earlier order)
+                           ->  { year: 2026,                      // festival year of that order (shown nowhere yet, kept for the record)
+                                 pass: 'p4' | 'p3' | 'd2' | 'd1',  // 4 days, 3 days, Sat + Sun, one day
+                                 day:  'dthu' | 'dfri' | 'dsat' | 'dsun' | null,   // only with pass 'd1'
+                                 adult: 2, teen: 0, kid: 0,        // people
+                                 wed: false,                       // Wednesday early arrival (4-day only)
+                                 sleep: 'tent' | 'wcar' | 'scar' | 'wrv' | 'none', // tent, car camp Willow, car camp South, RV Willow, not camping
+                                 go: 'drive' | 'shuttle' | 'bike' | 'drop' | 'later',
+                                 car: 1,                           // cars to park (with go 'drive')
+                                 patron: false }                   // one adult holds a Patron Pass
+   Here it returns null, so the page shows the sign-in line. It must answer at once (no waiting): fetch the order when the buyer signs in,
+   keep it, then call window.__pkTk2.refresh() and the "Welcome back" slip appears. It never calls the ticket system by itself.
+   PASSES ALREADY BOUGHT: window.pkMyPasses() -> null, or [{ name: '3-Day Pass', qty: 2 }]. Null here; a signed-in buyer sees a slip without a count. */
+(function () {
+  'use strict';
+  if (!window.pkLastOrder) window.pkLastOrder = function () { return null; };
+  if (!window.pkMyPasses) window.pkMyPasses = function () { return null; };
+
+  var FEE = 0.05, LS = 'pk27order', SSW = 'pk27where';
+  var YEAR = 2027, DAYS = [['w', 'W', 'Wed', 'Wednesday', 'Aug 4'], ['dthu', 'Th', 'Thu', 'Thursday', 'Aug 5'], ['dfri', 'Fr', 'Fri', 'Friday', 'Aug 6'], ['dsat', 'Sa', 'Sat', 'Saturday', 'Aug 7'], ['dsun', 'Su', 'Sun', 'Sunday', 'Aug 8']];
+  var DAY = {}; DAYS.forEach(function (d) { DAY[d[0]] = d; });
+  var PARK = { dthu: 'pthu', dfri: 'pfri', dsat: 'psat', dsun: 'psun' };
+  var N = { p4: '4-Day Pass', p3: '3-Day Pass', d2: 'Sat + Sun Ticket', dthu: 'Thursday Ticket', dfri: 'Friday Ticket', dsat: 'Saturday Ticket', dsun: 'Sunday Ticket' };
+  var NS = { p4: '4-Day', p3: '3-Day', d2: 'Sat + Sun', dthu: 'Thursday', dfri: 'Friday', dsat: 'Saturday', dsun: 'Sunday' };
+  var SLEEPN = { wcar: 'Car camp, Willow Camp', scar: 'Car camp, South Camp', wrv: 'RV, Willow Camp' };
+  var BLANK = { pass: null, day: null, adult: 1, teen: 0, kid: 0, wed: false, sleep: 'tent', go: 'later', car: 1, patron: false };
+  var OK = { pass: ['p4', 'p3', 'd2', 'd1'], day: ['dthu', 'dfri', 'dsat', 'dsun'], sleep: ['tent', 'wcar', 'scar', 'wrv', 'none'], go: ['later', 'drive', 'shuttle', 'bike', 'drop'] };
+
+  /* ---------- small helpers ---------- */
+  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+  function money(n) { return '$' + (Math.round(n * 100) / 100).toFixed(2).replace(/\.00$/, '').replace(/\B(?=(\d{3})+(?!\d))/g, ','); }
+  function plural(n, w) { return n + ' ' + w + (n === 1 ? '' : 's'); }
+  function oct(cx, cy, r) { var p = [], k = r * 0.414; [[-k, -r], [k, -r], [r, -k], [r, k], [k, r], [-k, r], [-r, k], [-r, -k]].forEach(function (a, i) { p.push((i ? 'L' : 'M') + (cx + a[0]).toFixed(1) + ' ' + (cy + a[1]).toFixed(1)); }); return p.join(' ') + ' Z'; }
+  function hex(cx, cy, r) { var p = []; for (var i = 0; i < 6; i++) { var a = Math.PI / 3 * i + Math.PI / 6; p.push((i ? 'L' : 'M') + (cx + r * Math.cos(a)).toFixed(1) + ' ' + (cy + r * Math.sin(a)).toFixed(1)); } return p.join(' ') + ' Z'; }
+  /* utility glyphs (the design kit's small one-color set): rows and buttons only, never enlarged */
+  var I = {
+    tent: ['M12 3 L22 20 L2 20 Z M12 10.5 L15.4 20 L8.6 20 Z', 'M10.6 2 L12 4.4 L13.4 2 L14.6 2.8 L12 7 L9.4 2.8 Z'],
+    car: ['M2 16.5 L2 12 L5 11 L7.5 6 L16.5 6 L19 11 L22 12 L22 16.5 Z M8.8 7.9 L15.2 7.9 L16.7 11 L7.3 11 Z', hex(6.6, 17.6, 2.7), hex(17.4, 17.6, 2.7)],
+    clock: [oct(12, 12, 9.6) + ' M11 6.4 h2 v5.1 l3.6 2.5 l-1.2 1.7 L11 12.6 Z'],
+    plus: ['M10.5 4 h3 v6.5 h6.5 v3 h-6.5 v6.5 h-3 v-6.5 H4 v-3 h6.5 Z'],
+    minus: ['M4 10.5 h16 v3 h-16 Z'],
+    check: ['M3.6 12.6 L6.2 10 L10 13.6 L17.6 5.4 L20.6 8 L10.2 19.2 Z'],
+    chev: ['M8 4 L16.6 12 L8 20 L6 18 L12 12 L6 6 Z'],
+    lock: ['M6 10 V7 L8.6 3.4 h6.8 L18 7 v3 h2 v11 H4 V10 Z M8.6 10 V7.6 l1.2 -1.6 h4.4 l1.2 1.6 V10 Z'],
+    info: [oct(12, 12, 9.6) + ' M11 6.4 h2 v2.2 h-2 Z M11 10.4 h2 v7.2 h-2 Z'],
+    x: ['M5.5 4 L12 10.5 L18.5 4 L20 5.5 L13.5 12 L20 18.5 L18.5 20 L12 13.5 L5.5 20 L4 18.5 L10.5 12 L4 5.5 Z'],
+    up: ['M12 4.5 L20 18.5 L4 18.5 Z']
+  };
+  function ic(n, c, st) { return '<svg class="tk-ic ' + (c || '') + '"' + (st ? ' style="' + st + '"' : '') + ' viewBox="0 0 24 24" aria-hidden="true" focusable="false">' + I[n].map(function (d) { return '<path fill-rule="evenodd" d="' + d + '"/>'; }).join('') + '</svg>'; }
+  /* the site styles every p, li and label inside main (size, color, width) and every non-heading's font; these two class names are its own opt-outs */
+  function guard(r) { if (!r) return; $$('p,li,label', r).forEach(function (e) { e.classList.add('pk-krtk'); }); $$('.tk-d', r).forEach(function (e) { e.classList.add('pkp-head'); }); }
+  function $(s, r) { return (r || document).querySelector(s); }
+  function $$(s, r) { return [].slice.call((r || document).querySelectorAll(s)); }
+  function app() { return window.comp || window.__pkApp || null; }
+  function site() { var a = app(); return (a && a.state) || window.__pkSt || {}; }
+
+  /* ---------- the sale: rounds, dates and prices, all from pkTix ---------- */
+  var T = null;
+  function readTix() { var s = site(); T = window.pkTix(s.today, s.season || 'off'); return T; }
+  function when() { var s = site(); if ((s.season || 'off') !== 'off' || T.open) return 'sale'; return T.next ? 'pre' : 'closed'; }
+  function P(id) { var f = window.pkFeedItem && window.pkFeedItem(id); if (f && f.price && typeof f.price.amount === 'number') return f.price.amount / 100; var r = T.prices[id]; return r ? Math.ceil(r[T.col]) : 0; }   // the site's one price rule: the live feed if it answered, else the settings block, whole dollars
+  function sold(id) { var f = window.pkFeedItem && window.pkFeedItem(id); return !!(f && f.soldOut); }
+  function minP(ids) { return Math.min.apply(null, ids.map(P)); }
+  function pacific(t) { return String(t || '').replace(/\s*PT$/, ' Pacific'); }
+  function planLine(total) {   // same sum as the site's planLine: first payment today, then monthly, the last by plans.lastPayment
+    var n = Math.max(2, T.planN), c = Math.round(total * 100), d0 = Math.ceil(c / (n * 100)) * 100, rest = c - d0, k = n - 1, p1 = Math.ceil(rest / k), pl = rest - p1 * (k - 1);
+    return money(d0 / 100) + ' today, then ' + (p1 === pl ? k + ' monthly payments of ' + money(p1 / 100) : k === 2 ? 'monthly payments of ' + money(p1 / 100) + ' and ' + money(pl / 100) : (k - 1) + ' monthly payments of ' + money(p1 / 100) + ' and one of ' + money(pl / 100));
+  }
+
+  /* ---------- the one order record ---------- */
+  var S = load();
+  function clean(s) {
+    var o = {}, k; s = s || {};
+    for (k in BLANK) o[k] = BLANK[k];
+    ['pass', 'day', 'sleep', 'go'].forEach(function (f) { if (OK[f].indexOf(s[f]) >= 0) o[f] = s[f]; });
+    ['adult', 'teen', 'kid', 'car'].forEach(function (f) { var n = parseInt(s[f], 10); if (n >= 0 && n <= 12) o[f] = n; });
+    if (o.car < 1) o.car = 1;
+    o.wed = !!s.wed && o.pass === 'p4'; o.patron = !!s.patron && o.adult > 0;
+    if (o.pass !== 'd1') o.day = null;
+    return o;
+  }
+  function load() { var s = null; try { s = JSON.parse(window.localStorage.getItem(LS) || 'null'); } catch (e) {} return clean(s); }
+  function save() { try { var o = clean(S); o.at = Date.now(); window.localStorage.setItem(LS, JSON.stringify(o)); } catch (e) {} }
+  function key(s) { return s.pass === 'd1' ? s.day : s.pass; }
+  function camping(s) { return s.pass === 'p4' || s.pass === 'p3'; }
+  function vehicle(s) { return camping(s) && /^(wcar|scar|wrv)$/.test(s.sleep); }
+  function strip(s) { var p = s.pass, on = p === 'p4' ? [s.wed || s.patron, 1, 1, 1, 1] : p === 'p3' ? [0, 0, 1, 1, 1] : p === 'd2' ? [0, 0, 0, 1, 1] : p === 'd1' ? DAYS.map(function (d) { return d[0] === s.day; }) : [0, 0, 0, 0, 0]; if (s.patron && key(s)) on = [1, 1, 1, 1, 1]; return on.map(function (x) { return !!x; }); }
+  function dates(s) { var on = strip(s), a = on.indexOf(true), b = on.lastIndexOf(true); if (a < 0) return ''; var m = DAYS[a][4].split(' '); return a === b ? DAYS[a][2] + ', ' + DAYS[a][4] + ', ' + YEAR : m[0] + ' ' + m[1] + '–' + DAYS[b][4].split(' ')[1] + ', ' + YEAR; }
+  function lines(s) {
+    var L = [], k = key(s), cam = camping(s), veh = vehicle(s); if (!k) return L;
+    var nA = s.adult - (s.patron ? 1 : 0);
+    if (nA > 0) L.push({ id: k, q: nA, n: N[k], amt: nA * P(k) });
+    if (s.patron) L.push({ id: 'patron', q: 1, n: 'Patron Pass', amt: P('patron') });
+    if (s.teen) { var tl = P('teen') < P(k); L.push({ id: tl ? 'teen' : k, q: s.teen, n: tl ? 'Teen Pass, 4 days, half price' : 'Teen ' + N[k], amt: s.teen * Math.min(P(k), P('teen')) }); }
+    if (s.kid) L.push({ id: 'child', q: s.kid, n: 'Kid, 12 and under', amt: 0 });
+    if (s.pass === 'p4' && s.wed && nA + s.teen > 0) L.push({ id: 'early', q: nA + s.teen, n: 'Wednesday early arrival', amt: (nA + s.teen) * P('early') });
+    if (cam) { if (s.sleep === 'tent') L.push({ id: 'tent', q: 0, n: 'Tent in the woods', amt: 0 }); else if (veh) L.push({ id: s.sleep, q: 0, n: s.sleep === 'wrv' ? 'RV spot, Willow Camp' : SLEEPN[s.sleep], amt: P(s.sleep) }); }
+    if (s.go === 'drive' && !veh) {
+      if (cam) L.push({ id: 'wpark', q: s.car, n: 'Weekend Parking', amt: s.car * P('wpark') });
+      else if (s.pass === 'd2') { L.push({ id: 'psat', q: s.car, n: 'Saturday Parking', amt: s.car * P('psat') }); L.push({ id: 'psun', q: s.car, n: 'Sunday Parking', amt: s.car * P('psun') }); }
+      else L.push({ id: PARK[s.day], q: s.car, n: DAY[s.day][3] + ' Parking', amt: s.car * P(PARK[s.day]) });
+    }
+    if (s.go === 'shuttle' && !veh) L.push({ id: 'shuttle', q: s.adult + s.teen, n: 'Shuttle Pass', amt: (s.adult + s.teen) * P('shuttle') });
+    if (s.go === 'bike' && !veh) L.push({ id: 'bike', q: 0, n: 'Bike parking', amt: 0 });
+    return L;
+  }
+  function totals(s) {
+    var L = lines(s), sub = L.reduce(function (a, b) { return a + b.amt; }, 0), fee = Math.round(sub * FEE * 100) / 100;
+    return { lines: L, sub: sub, fee: fee, total: Math.round((sub + fee) * 100) / 100, ready: L.length > 0 && s.adult > 0, unadded: s.go === 'later' && !vehicle(s) };
+  }
+  function short(s) {
+    var k = key(s); if (!k) return '';
+    var nA = s.adult - (s.patron ? 1 : 0), n = nA + s.teen, a = [];
+    a.push((n ? n + ' × ' + NS[k] : '') + (s.patron ? (n ? ' + ' : '') + '1 Patron' : '') + (s.kid ? ' + ' + plural(s.kid, 'kid') : ''));
+    if (s.pass === 'p4' && s.wed) a.push('Wed arrival');
+    if (camping(s)) a.push({ tent: 'tent', wcar: 'car camp', scar: 'car camp', wrv: 'RV', none: 'no camping' }[s.sleep]);
+    if (!vehicle(s)) { if (s.go === 'drive') a.push(plural(s.car, 'car')); if (s.go === 'shuttle') a.push('shuttle'); if (s.go === 'bike') a.push('bike'); }
+    return a.join(', ');
+  }
+  function lineLabel(l) { return (l.q ? l.q + ' × ' : '') + esc(l.n); }
+  function olines(t) {
+    return t.lines.map(function (l) { return '<li><span>' + lineLabel(l) + '</span><span class="tk-num">' + money(l.amt) + '</span></li>'; }).join('') +
+      (t.unadded ? '<li class="fee"><span>Parking or shuttle: not added</span><span></span></li>' : '') +
+      '<li class="fee"><span>Fee, ' + (FEE * 100) + '%</span><span class="tk-num">' + money(t.fee) + '</span></li>';
+  }
+  function hasPlan(t) { return !!(T.plans && t.sub > T.planMin && window.PK_PAY_LATER !== false); }
+  /* what Checkout, and later the ticket system, receives */
+  function order() {
+    readTix(); var t = totals(S);
+    return { ready: t.ready && when() === 'sale', round: T.show.id, roundName: T.show.name,
+      items: t.lines.filter(function (l) { return l.id !== 'tent'; }).map(function (l) { return { id: l.id, qty: l.q || 1, unit: l.q ? Math.round(l.amt / l.q * 100) / 100 : l.amt, name: l.n }; }),
+      lines: t.lines.map(function (l) { return { label: (l.q ? l.q + ' × ' : '') + l.n, price: money(l.amt), q: l.q || 1, n: l.n, t: money(l.amt) }; }), unadded: t.unadded, fee: money(t.fee), total: money(t.total),
+      feeRate: FEE, feeS: money(t.fee), totalS: money(t.total), totalNum: t.total, sub: t.sub,
+      hasPlan: hasPlan(t), plan: hasPlan(t) ? planLine(t.total) : '', strip: strip(S), dates: dates(S), summary: short(S), record: clean(S) };
+  }
+
+  /* ---------- sheets: a dialog; focus moves in, Escape closes, focus returns ---------- */
+  var scrim = null, opener = null, inerted = [];
+  function closeSheet(keepFocus) {
+    if (!scrim) return; scrim.remove(); scrim = null;
+    inerted.forEach(function (e) { e.removeAttribute('inert'); }); inerted = [];
+    if (!keepFocus && opener && opener.focus && document.contains(opener)) { try { opener.focus(); } catch (e) {} }
+  }
+  function sheet(html, label, opts) {
+    closeSheet(true); opts = opts || {}; opener = document.activeElement;
+    scrim = document.createElement('div'); scrim.className = 'tk2 tk-scrim';
+    scrim.innerHTML = '<div class="tk-sheet" role="dialog" aria-modal="true" aria-label="' + esc(label) + '">' + html + '</div>';
+    ['root', 'pk-co'].forEach(function (id) { var e = document.getElementById(id); if (e && !e.hasAttribute('inert')) { e.setAttribute('inert', ''); inerted.push(e); } });
+    document.body.appendChild(scrim); guard(scrim);
+    scrim.addEventListener('click', function (e) { if ((e.target === scrim && !opts.modal) || (e.target.closest && e.target.closest('[data-close]'))) closeSheet(); });
+    scrim.__modal = !!opts.modal;
+    var f = $('[data-focus]', scrim) || $('button,a,input', scrim); if (f) { try { f.focus(); } catch (e) {} }
+    return scrim;
+  }
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && scrim && !scrim.__modal) { e.stopPropagation(); closeSheet(); } }, true);
+  function sheetTop(t) { return '<div class="tk-sheet-top"><h2 class="tk-d tk-d-card">' + esc(t) + '</h2><button type="button" class="tk-sheet-x" data-close aria-label="Close">' + ic('x') + '</button></div>'; }
+
+  /* ---------- the page ---------- */
+  var root = null, lastKey = '';
+  function headline() {
+    var w = when(), r = T.show;
+    if (w === 'sale') return esc(r.name) + (r.endS ? ' · ends ' + esc(r.endS) : ' prices');
+    if (w === 'pre') return 'Open ' + esc(r.isToday ? 'today' : r.dayS) + (r.time ? ' · ' + esc(pacific(r.time)) : '');
+    return 'Not on sale right now';
+  }
+  function fineLine() {
+    return '<b>All sales final.</b> Send a pass to a friend any time from My Pickathon. ' + (T.show.plans ? 'Orders over ' + money(T.planMin) + ' can be paid monthly. ' : 'No payment plans during the ' + esc(T.show.name) + '. ') + 'Prices shown before the ' + (FEE * 100) + '% fee; your total always includes it.';
+  }
+  function passCard(v, title, sub, on, price, extra) {
+    return '<label class="tk-pass tk-paper"><input type="radio" name="tk-pass" value="' + v + '" class="tk-vh"><span class="tk-days" aria-hidden="true"' + (extra && extra.stripId ? ' id="' + extra.stripId + '"' : '') + '>' +
+      DAYS.map(function (d, i) { return '<i class="' + (i ? '' : 'w ') + (on[i] ? 'on' : '') + '"' + (i ? ' data-d="' + d[0] + '"' : ' id="tk-w-' + v + '"') + '>' + d[1] + '</i>'; }).join('') + '</span>' +
+      '<span class="tk-pass-t"><b>' + title + '</b><span' + (extra && extra.subId ? ' id="' + extra.subId + '"' : '') + '>' + sub + '</span></span><span class="tk-pass-p">' + price + '</span></label>';
+  }
+  function stepper(k, label, sub, one) {
+    return '<div class="tk-step' + (k === 'car' ? ' tk-step-row' : '') + '" data-k="' + k + '"' + (k === 'car' ? ' id="tk-carstep" hidden' : '') + '><p id="tk-l-' + k + '">' + label + (sub ? '<span>' + sub + '</span>' : '') + '</p><div><button type="button" data-step="-1" aria-label="One fewer ' + one + '">' + ic('minus', 'tk-ic-sm') + '</button><output aria-labelledby="tk-l-' + k + '">0</output><button type="button" data-step="1" aria-label="One more ' + one + '">' + ic('plus', 'tk-ic-sm') + '</button></div></div>';
+  }
+  function opt(name, v, media, title, why, price) { return '<label class="tk-opt"><input type="radio" name="' + name + '" value="' + v + '" class="tk-vh">' + media + '<span class="tk-opt-t"><b>' + title + '</b>' + why + '</span><span class="tk-opt-p tk-num" data-p="' + v + '">' + price + '</span></label>'; }
+  function hoodImg(h, slot) { var d = site().data, H = d && d.hoods && d.hoods[h]; return H && H.i ? '<img class="tk-opt-m" data-slot="' + slot + '" src="' + esc(H.i) + '" alt="" loading="lazy" width="84" height="56">' : '<span class="tk-opt-e"></span>'; }
+  function emblem(h) { return '<span class="tk-opt-e"><img src="ic2/' + h + '.png" alt="" width="40" height="40" loading="lazy"></span>'; }
+  function per(id, unit) { return sold(id) ? 'Sold out' : money(P(id)) + '<small>' + unit + '</small>'; }
+  function skeleton() {
+    var w = when(), minDay = minP(OK.day), h = '';
+    h += '<div class="tk-in"><div class="tk-paper tk-head"><img src="logo27-bat.png" alt="Pickathon 2027" width="700" height="260"><div class="tk-head-t"><h1 class="tk-d">Tickets</h1><p>' + headline() + '</p></div></div>';
+    h += '<div class="tk-main" id="tk-main">';
+    h += '<div id="tk-top"></div>';
+    h += '<div class="tk-cols"><div class="tk-build">';
+    h += '<fieldset><div class="tk-leg"><legend class="tk-d tk-d-label">How long?</legend><span id="tk-helpslot"></span></div><div class="tk-passes" id="tk-passes">' +
+      passCard('p4', '4 days', 'Camping included', [0, 1, 1, 1, 1], '<b class="tk-num">' + money(P('p4')) + '</b>') +
+      '<label class="tk-wed" id="tk-wed" hidden><input type="checkbox" id="tk-wedc"><span><b>Arrive ' + DAY.w[3] + ', ' + DAY.w[4] + '</b>, from 5 pm</span><em class="tk-num">+' + money(P('early')) + ' each</em></label>' +
+      passCard('p3', '3 days', 'Camping included', [0, 0, 1, 1, 1], '<b class="tk-num">' + money(P('p3')) + '</b>') +
+      passCard('d2', 'Sat + Sun', 'No camping', [0, 0, 0, 1, 1], '<b class="tk-num">' + money(P('d2')) + '</b>') +
+      passCard('d1', 'One day', 'Pick your day', [0, 0, 0, 1, 0], '<small id="tk-d1from">from</small><b class="tk-num" id="tk-d1p">' + money(minDay) + '</b>', { stripId: 'tk-d1strip', subId: 'tk-d1sub' }) +
+      '<div class="tk-daypick" id="tk-daypick" hidden role="radiogroup" aria-label="Which day?">' + OK.day.map(function (d) { return '<label><input type="radio" name="tk-day" value="' + d + '" class="tk-vh"><span>' + DAY[d][2] + ', ' + DAY[d][4] + '<b class="tk-num">' + (sold(d) ? 'Sold out' : money(P(d))) + '</b></span></label>'; }).join('') + '</div>' +
+      '</div></fieldset>';
+    h += '<fieldset class="tk-who"><div class="tk-leg"><legend class="tk-d tk-d-label">Who’s coming?</legend></div><div class="tk-who-g">' + stepper('adult', 'Adults', '18 and up', 'adult') + stepper('teen', 'Teens', '13–17, half price', 'teen') + stepper('kid', 'Kids', '12 &amp; under, free', 'kid') + '</div><p class="tk-note" id="tk-teennote" hidden></p></fieldset>';
+    h += '<div class="tk-folds">' +
+      '<div class="tk-fold" id="tk-f-sleep"><button type="button" class="tk-fold-row" aria-expanded="false" aria-controls="tk-p-sleep">' + ic('tent') + '<span class="tk-fold-k">Sleeping</span><span class="tk-fold-v" id="tk-v-sleep"></span><span class="tk-fold-c">Change</span></button>' +
+      '<div class="tk-fold-p" id="tk-p-sleep" hidden role="radiogroup" aria-label="Sleeping">' +
+      opt('tk-sleep', 'tent', hoodImg('lushcamp', 'tickets.sleep.tent'), 'Tent in the woods', 'Lush Camp or Wild Camp. Walk in, pick your spot.', 'Included') +
+      opt('tk-sleep', 'wcar', hoodImg('willowcamp', 'tickets.sleep.willow'), 'Car camp, Willow Camp', 'One car and a tent in 16′ × 18′. Half a mile to the gate, free shuttle.', per('wcar', 'a site')) +
+      opt('tk-sleep', 'scar', hoodImg('southcamp', 'tickets.sleep.south'), 'Car camp, South Camp', 'Same size site, right across from the main entrance. Sells out first.', per('scar', 'a site')) +
+      opt('tk-sleep', 'wrv', emblem('willowcamp'), 'RV, Willow Camp', '26′ to 36′. No generators. Parked until Monday.', per('wrv', 'a site')) +
+      opt('tk-sleep', 'none', '<span class="tk-opt-e"></span>', 'Not camping', 'Sleep at home or nearby. Come and go as you like.', money(0)) +
+      '<button type="button" class="tk-pill tk-pill-sm" data-go="hoods" style="justify-self:start;margin-top:4px">See the camps on the map</button></div></div>' +
+      '<div class="tk-fold" id="tk-f-go"><button type="button" class="tk-fold-row" aria-expanded="false" aria-controls="tk-p-go">' + ic('car') + '<span class="tk-fold-k">Getting there</span><span class="tk-fold-v" id="tk-v-go"></span><span class="tk-fold-c">Change</span></button>' +
+      '<div class="tk-fold-p" id="tk-p-go" hidden role="radiogroup" aria-label="Getting there">' +
+      opt('tk-go', 'drive', emblem('welcomelot'), 'Drive', 'Park in the Welcome Lot. One mile to the gate, free shuttle.', '') +
+      opt('tk-go', 'shuttle', '<span class="tk-opt-e"></span>', 'MAX + shuttle', 'From Lents Town Center MAX, about hourly, all weekend.', per('shuttle', 'a rider')) +
+      opt('tk-go', 'bike', '<span class="tk-opt-e"></span>', 'Bike', 'Staffed bike parking at the farm.', 'Free') +
+      opt('tk-go', 'drop', emblem('southcamp'), 'Dropped off', 'Rideshare or a friend, at the South Lot.', 'Free') +
+      opt('tk-go', 'later', '<span class="tk-opt-e"></span>', 'Decide later', 'Parking and shuttle passes can be added any time.', money(0)) +
+      stepper('car', 'Cars', '', 'car') + '</div></div></div>';
+    h += '<p class="tk-patron"><span><b>Patron Pass</b> <span class="tk-num">' + (sold('patron') ? 'Sold out' : money(P('patron'))) + '</span><br>Backstage hospitality, concierge, early entry. <span id="tk-patnote"></span></span><button type="button" class="tk-pill tk-pill-sm" id="tk-patron" aria-pressed="false"' + (sold('patron') ? ' disabled' : '') + '>Add</button></p>';
+    h += '<section class="tk-extra" aria-labelledby="tk-h-extra"><div class="tk-leg"><h2 class="tk-d tk-d-label" id="tk-h-extra">Anything else?</h2></div>' +
+      '<details><summary><span>Curation meals</span><span class="tk-num tk-dim">' + money(P('cfri')) + ' a seat</span></summary><p>One chef, one artist, 100 seats. Five meals, Friday dinner to Sunday brunch. Add them after you check out, from My Pickathon.</p></details>' +
+      '<details><summary><span>Cup and plate</span><span class="tk-num tk-dim">from ' + money(minP(['cup', 'plate'])) + '</span></summary><p>Your own steel cup and plate, waiting at the festival.</p></details>' +
+      '<details><summary><span>Give back</span><span class="tk-num tk-dim">from ' + money(minP(['tools', 'student'])) + '</span></summary><p>Fund tools or sponsor a student in the Creative Neighborhoods build program.</p></details>' +
+      '<div class="tk-hand"><button type="button" class="tk-pill" data-go="info">How the weekend works</button><button type="button" class="tk-tlink" data-go="list">Every pass and price</button></div>' +
+      '<p class="tk-fine">' + fineLine() + '</p></section>';
+    h += '</div><aside class="tk-order" aria-label="Your order"><div class="tk-paper tk-osheet"><p class="tk-d tk-d-card">Your order</p><hr class="tk-rule2" style="margin:8px 0 4px"><ul class="tk-olines" id="tk-lines"></ul>' +
+      '<p class="tk-otot" id="tk-otot" hidden><span>Total <small class="tk-dim">fee included</small></span><b class="tk-num" id="tk-ototv"></b></p><p class="tk-oplan" id="tk-oplan" hidden></p>' +
+      '<button type="button" class="tk-pill tk-pill-gold" id="tk-ogo" data-act="go" hidden></button><p class="tk-fine" id="tk-ofine" hidden><b>All sales final.</b> Send a pass to a friend any time from My Pickathon.</p></div></aside></div>';
+    h += '</div>';
+    h += '<div class="tk-bar" id="tk-bar" hidden role="region" aria-label="Order total"><button type="button" class="tk-bar-sum" id="tk-barsum" data-act="sheet" aria-haspopup="dialog"><span id="tk-bart"></span><small><span id="tk-barfee"></span>' + ic('up', 'tk-ic-sm', 'width:.75rem;height:.75rem') + '</small></button><button type="button" class="tk-pill tk-pill-gold" id="tk-bargo" data-act="go"></button></div>';
+    h += '<p class="tk-vh" role="status" aria-live="polite" id="tk-live"></p></div>';
+    return h;
+  }
+  /* returning buyer, sign-in line, passes already bought */
+  function topHTML() {
+    var w = when(), h = '', last = null, mine = null, user = site().user;
+    try { last = window.pkLastOrder(); } catch (e) {} try { mine = window.pkMyPasses(); } catch (e) {}
+    if (last) { var lo = clean(last); if (key(lo)) h += '<section class="tk-paper tk-slip" id="tk-again" aria-label="Your last order"><p>Welcome back. Last time<b>' + esc(short(lo)) + '</b></p><button type="button" class="tk-pill tk-pill-ink" data-act="again">Same again</button></section>'; }
+    if (user || (mine && mine.length)) h += '<section class="tk-paper tk-slip" aria-label="Your passes"><p>' + (mine && mine.length ? 'You have<b>' + mine.map(function (m) { return esc(m.qty + ' × ' + m.name); }).join(', ') + '</b>' : 'You’re signed in<b>Your passes are in My Pickathon</b>') + '</p><button type="button" class="tk-pill" data-go="mine">My Pickathon</button></section>';
+    else if (!last && w === 'sale') h += '<p class="tk-signin"><span>Been before? <button type="button" class="tk-tlink" data-act="signin">Sign in</button> to reuse your last order.</span></p>';
+    return h;
+  }
+  function draw(el) {
+    root = el; el.innerHTML = skeleton(); $('#tk-top', el).innerHTML = topHTML(); update();
+  }
+  function setRadio(name, v) { $$('input[name="' + name + '"]', root).forEach(function (i) { i.checked = i.value === v; }); }
+  function update() {
+    if (!root || !root.firstChild) return;
+    S = clean(S);
+    if (S.pass && S.pass !== 'd1' && sold(S.pass)) S.pass = null;
+    if (S.day && sold(S.day)) S.day = null;
+    if (/^(wcar|scar|wrv)$/.test(S.sleep) && sold(S.sleep)) S.sleep = 'tent';
+    if (S.patron && sold('patron')) S.patron = false;
+    save();
+    var w = when(), cam = camping(S), veh = vehicle(S), k = key(S);
+    setRadio('tk-pass', S.pass); setRadio('tk-day', S.day); setRadio('tk-sleep', S.pass && !cam ? 'none' : S.sleep); setRadio('tk-go', veh ? 'drive' : S.go);
+    $$('input[name="tk-pass"]', root).forEach(function (i) { i.disabled = i.value !== 'd1' && sold(i.value); });
+    $$('input[name="tk-day"]', root).forEach(function (i) { i.disabled = sold(i.value); });
+    $$('input[name="tk-sleep"]', root).forEach(function (i) { i.disabled = (!!S.pass && !cam && i.value !== 'none') || (/^(wcar|scar|wrv)$/.test(i.value) && sold(i.value)); });
+    $$('input[name="tk-go"]', root).forEach(function (i) { i.disabled = veh && i.value !== 'drive'; });
+    $('#tk-wed', root).hidden = S.pass !== 'p4'; $('#tk-wedc', root).checked = S.wed; $('#tk-w-p4', root).classList.toggle('on', S.pass === 'p4' && (S.wed || S.patron));
+    $('#tk-daypick', root).hidden = S.pass !== 'd1';
+    $$('#tk-d1strip i[data-d]', root).forEach(function (i) { i.classList.toggle('on', S.day ? i.getAttribute('data-d') === S.day : i.getAttribute('data-d') === 'dsat'); });
+    $('#tk-d1sub', root).textContent = S.day ? DAY[S.day][3] + ', ' + DAY[S.day][4] : 'Pick your day'; $('#tk-d1from', root).hidden = !!S.day; $('#tk-d1p', root).textContent = money(S.day ? P(S.day) : minP(OK.day));
+    $$('.tk-step', root).forEach(function (st) { var f = st.getAttribute('data-k'), v = S[f], b = $$('button', st); $('output', st).textContent = v; b[0].disabled = v <= (f === 'car' ? 1 : 0); b[1].disabled = v >= 12; });
+    var tn = $('#tk-teennote', root), note = '';
+    if (!S.adult && (S.teen || S.kid)) note = '<b>Add an adult.</b> Teens and kids come in with a ticketed adult.';
+    else if (S.teen > 0 && k) note = P(k) > P('teen') ? '<b>Teens get the lower price.</b> A Teen Pass is ' + money(P('teen')) + ': all four days, half price. Teens come in with a ticketed adult.' : '<b>Teens 13 to 17</b> pay the day price, ' + money(P(k)) + ', and come in with a ticketed adult.';
+    tn.hidden = !note; tn.innerHTML = note;
+    $('#tk-v-sleep', root).innerHTML = (S.pass && !cam) ? 'No camping with this ticket' : S.sleep === 'tent' ? 'Tent, <em>included</em>' : S.sleep === 'none' ? 'Not camping' : esc(SLEEPN[S.sleep]) + ', ' + money(P(S.sleep));
+    var fs = $('#tk-f-sleep .tk-fold-row', root); fs.disabled = !!S.pass && !cam; if (S.pass && !cam) fold(fs, false);
+    var dayPark = S.pass === 'd1' && S.day ? money(P(PARK[S.day])) + ' a day' : 'from ' + money(minP(['pthu', 'pfri', 'psat', 'psun'])) + ' a day', wk = cam || !S.pass;
+    $('#tk-v-go', root).textContent = veh ? 'You drive in with your camp' : { later: 'Not added · parking ' + (wk ? money(P('wpark')) + ' a car' : dayPark), drive: 'Drive, ' + plural(S.car, 'car') + ', ' + (wk ? money(P('wpark')) + ' each' : 'day parking'), shuttle: 'MAX + shuttle, ' + money(P('shuttle')) + ' a rider', bike: 'Bike, free', drop: 'Dropped off, free' }[S.go];
+    $('[data-p="drive"]', root).innerHTML = wk ? money(P('wpark')) + '<small>a car</small>' : (S.pass === 'd1' && S.day ? money(P(PARK[S.day])) : money(minP(['pthu', 'pfri', 'psat', 'psun'])) + '+') + '<small>a day</small>';
+    $('#tk-carstep', root).hidden = S.go !== 'drive' || veh;
+    var pb = $('#tk-patron', root); pb.setAttribute('aria-pressed', S.patron ? 'true' : 'false'); pb.textContent = S.patron ? 'Added' : 'Add';
+    $('#tk-patnote', root).textContent = S.patron ? 'One adult’s pass is now a Patron Pass.' : '';
+    var t = totals(S), ready = t.ready, go = goLabel(t);
+    var bar = $('#tk-bar', root); bar.hidden = !ready; $('#tk-main', root).classList.toggle('has-bar', ready);
+    if (ready) {
+      $('#tk-bart', root).textContent = short(S); $('#tk-barfee', root).textContent = w === 'sale' ? 'See the order' : money(t.total) + ' · see the order';
+      var bg = $('#tk-bargo', root); if (bg) { bg.textContent = go.t; bg.className = 'tk-pill ' + go.c; }
+      $('#tk-live', root).textContent = short(S) + '. Total ' + money(t.total) + ', fee included.';
+    } else $('#tk-live', root).textContent = '';
+    $('#tk-lines', root).innerHTML = ready ? olines(t) : '<li class="tk-order-empty">' + (k && !S.adult ? 'Add an adult to see your total.' : S.pass === 'd1' && !S.day ? 'Pick your day. Your total builds here, fee included.' : 'Pick a pass. Your total builds here, fee included.') + '</li>';
+    $('#tk-otot', root).hidden = $('#tk-ofine', root).hidden = !ready; $('#tk-ototv', root).textContent = money(t.total);
+    var op = $('#tk-oplan', root); op.hidden = !(ready && hasPlan(t)); op.textContent = hasPlan(t) ? 'Or pay over time: ' + planLine(t.total) + '.' : '';
+    var og = $('#tk-ogo', root); og.hidden = !ready; og.textContent = go.t; og.className = 'tk-pill ' + go.c;
+    guard(root);
+  }
+  function goLabel(t) { return { t: 'Checkout · ' + money(t.total), c: 'tk-pill-gold' }; }
+  function fold(row, open) { var p = document.getElementById(row.getAttribute('aria-controls')); p.hidden = !open; row.setAttribute('aria-expanded', open ? 'true' : 'false'); $('.tk-fold-c', row).textContent = open ? 'Done' : 'Change'; }
+  function orderSheet() {
+    var t = totals(S), go = goLabel(t);
+    sheet(sheetTop('Your order') + '<div class="tk-paper tk-osheet"><ul class="tk-olines">' + olines(t) + '</ul><p class="tk-otot"><span>Total <small class="tk-dim">fee included</small></span><b class="tk-num">' + money(t.total) + '</b></p>' +
+      (hasPlan(t) ? '<p class="tk-oplan">Or pay over time: ' + planLine(t.total) + '.</p>' : '') + '<p class="tk-fine"><b>All sales final.</b> Send a pass to a friend any time from My Pickathon.</p></div>' +
+      '<button type="button" class="tk-pill ' + go.c + ' tk-sheet-go" data-sheetgo>' + go.t + '</button>', 'Your order');
+    $('[data-sheetgo]', scrim).addEventListener('click', function () { closeSheet(true); proceed(); });
+  }
+  function checkout() {
+    var o = order(); if (!o.ready) return;
+    if (window.__pkCheckout) window.__pkCheckout.open(o);
+  }
+  function proceed() { checkout(); }
+  function nav(to) {
+    var a = app(); if (!a) return;
+    if (to === 'list') { a.setState({ tixList: true }); try { a.toTop(0); } catch (e) {} return; }
+    if (to === 'mine') { a.go('mine'); return; }
+    a.go(to);
+  }
+  function onChange(e) {
+    var t = e.target, n = t.name;
+    if (n === 'tk-pass') { S.pass = t.value; if (t.value !== 'p4') S.wed = false; if (t.value !== 'd1') S.day = null; }
+    else if (n === 'tk-day') S.day = t.value;
+    else if (n === 'tk-sleep') S.sleep = t.value;
+    else if (n === 'tk-go') S.go = t.value;
+    else if (t.id === 'tk-wedc') S.wed = t.checked;
+    else return;
+    update();
+  }
+  function onClick(e) {
+    var b = e.target.closest ? e.target.closest('button,[data-go],[data-act]') : null; if (!b || !root.contains(b)) return;
+    var stp = b.getAttribute('data-step');
+    if (stp) { var f = b.closest('.tk-step').getAttribute('data-k'); S[f] = Math.max(f === 'car' ? 1 : 0, Math.min(12, S[f] + (+stp))); if (!S.adult) S.patron = false; update(); return; }
+    if (b.classList.contains('tk-fold-row')) { fold(b, b.getAttribute('aria-expanded') !== 'true'); return; }
+    if (b.id === 'tk-patron') { S.patron = !S.patron; if (S.patron && !S.adult) S.adult = 1; update(); return; }
+    var act = b.getAttribute('data-act'), go = b.getAttribute('data-go');
+    if (go) { nav(go); return; }
+    if (act === 'go') { proceed(); return; }
+    if (act === 'sheet') { orderSheet(); return; }
+    if (act === 'signin') { if (window.__pkAcct && window.__pkAcct.signIn) window.__pkAcct.signIn(); else nav('account'); return; }
+    if (act === 'again') { var lo = null; try { lo = window.pkLastOrder(); } catch (x) {} if (lo) { S = clean(lo); b.textContent = 'Filled in'; b.disabled = true; update(); var bg = $('#tk-ogo', root); if (bg && bg.offsetParent) bg.focus(); else { bg = $('#tk-bargo', root); if (bg) bg.focus(); } } return; }
+  }
+
+  /* ---------- keeping in step with the app ---------- */
+  function where(v) { try { if (v) window.sessionStorage.setItem(SSW, v); else window.sessionStorage.removeItem(SSW); } catch (e) {} }
+  function stateKey() { var F = window.pkFeed || {}, lo = ''; try { lo = JSON.stringify(window.pkLastOrder() || '') + JSON.stringify(window.pkMyPasses() || ''); } catch (e) {} return [when(), T.show.id, T.col, T.show.isToday ? 1 : 0, T.plans ? 1 : 0, F.state, F.at, site().user ? 1 : 0, site().data ? 1 : 0, lo].join('|'); }
+  function vars() {
+    if (!root || !root.firstChild) return;
+    var n = $('#root nav[aria-label="App"]'), hd = $('#root header'), inn = root.firstChild;
+    inn.style.setProperty('--tk-tabs', (n ? n.offsetHeight : 0) + 'px');
+    var hh = 96; try { if (hd && /sticky|fixed/.test(getComputedStyle(hd).position)) hh = hd.getBoundingClientRect().bottom; else hh = 0; } catch (e) {}
+    inn.style.setProperty('--tk-hdr', Math.max(0, Math.round(hh)) + 'px');
+  }
+  var booting = true;
+  function sync() {
+    var el = document.getElementById('tk2');
+    if (!el) { root = null; if (!booting && !document.getElementById('pk-co')) where(''); return; }
+    readTix(); var k = stateKey();
+    if (el !== root || !el.firstChild || k !== lastKey) { lastKey = k; draw(el); }
+    root = el; vars();
+    if (!booting) where(document.getElementById('pk-co') ? 'checkout' : 'tickets');
+  }
+  var render0 = window.__render;
+  if (typeof render0 === 'function') window.__render = function () { var r = render0.apply(this, arguments); try { sync(); } catch (e) { if (window.console) console.error('pk-tk2', e); } return r; };
+  window.addEventListener('resize', function () { try { vars(); } catch (e) {} });
+  window.addEventListener('storage', function (e) { if (e.key === LS) { S = load(); try { update(); } catch (x) {} } });   // the same order open in two tabs stays one order
+  document.addEventListener('visibilitychange', function () { if (!document.hidden) { try { sync(); } catch (e) {} } });
+
+  window.__pkTk2 = {
+    refresh: function () { lastKey = ''; sync(); },
+    order: order, record: function () { return clean(S); }, set: function (o) { S = clean(Object.assign({}, S, o || {})); save(); update(); }, clear: function () { S = clean(null); save(); update(); },
+    sheet: sheet, closeSheet: closeSheet, guard: guard, sheetTop: sheetTop, ic: ic, esc: esc, money: money, where: where, days: DAYS
+  };
+  document.addEventListener('change', function (e) { if (root && root.contains(e.target)) onChange(e); });
+  document.addEventListener('click', function (e) { if (root && root.contains(e.target)) onClick(e); });
+
+  /* A reload or a tab the phone put to sleep comes back to where the buyer was: Tickets, or Checkout. A link ending #tickets opens Tickets too. */
+  var back = ''; try { back = window.sessionStorage.getItem(SSW) || ''; } catch (e) {}
+  var viaHash = /^#tickets\b/.test(window.location.hash || '');
+  function boot(n) {
+    var a = app();
+    if (!a || !a.state || !a.state.data) { if (n < 200) setTimeout(function () { boot(n + 1); }, 50); else booting = false; return; }
+    try {
+      var top = a.state.stack[a.state.stack.length - 1];
+      if ((back || viaHash) && (!top || top.r === 'home')) a.go('tickets');
+      booting = false; sync();
+      if (back === 'checkout' && window.__pkCheckout && window.__pkCheckout.resume) window.__pkCheckout.resume();
+    } catch (e) { booting = false; }
+  }
+  try { sync(); } catch (e) {}
+  boot(0);
+})();
+</script>
 <style id="pk-co-css">
 #pk-co{position:fixed;inset:0;z-index:2000;overflow-y:auto;scrollbar-width:none;background:#0C0F0A;color:#F2EDE3;font-family:inherit;-webkit-overflow-scrolling:touch}
 #pk-co::-webkit-scrollbar{display:none}
