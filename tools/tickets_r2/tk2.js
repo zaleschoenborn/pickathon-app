@@ -92,8 +92,9 @@
   function pacific(t) { return String(t || '').replace(/\s*PT$/, ' Pacific'); }
   function planLine(total) {   // same sum as the site's planLine: first payment today, then monthly, the last by plans.lastPayment
     var n = Math.max(2, T.planN), c = Math.round(total * 100), d0 = Math.ceil(c / (n * 100)) * 100, rest = c - d0, k = n - 1, p1 = Math.ceil(rest / k), pl = rest - p1 * (k - 1);
-    return money(d0 / 100) + ' today, then ' + (p1 === pl ? k + ' monthly payments of ' + money(p1 / 100) : k === 2 ? 'monthly payments of ' + money(p1 / 100) + ' and ' + money(pl / 100) : (k - 1) + ' monthly payments of ' + money(p1 / 100) + ' and one of ' + money(pl / 100));
+    return money(d0 / 100) + ' today, then ' + (p1 === pl ? k + ' monthly payments of ' + money(p1 / 100) : k === 2 ? 'monthly payments of ' + money(p1 / 100) + ' and ' + money(pl / 100) : (k - 1) + ' monthly payments of ' + money(p1 / 100) + ' and one of ' + money(pl / 100)) + lastBy();
   }
+  function lastBy() { var lp = ((window.PK_TICKETS || {}).plans || {}).lastPayment, m = /^(\d{4})-(\d\d)-(\d\d)$/.exec(lp || ''); if (!m) return ''; return ', the last by ' + ['January','February','March','April','May','June','July','August','September','October','November','December'][+m[2] - 1] + ' ' + (+m[3]) + ', ' + m[1]; }   // test r3: say when the plan ends
 
   /* ---------- the one order record ---------- */
   var S = load();
@@ -449,7 +450,7 @@
   window.__pkTk2 = {
     refresh: function () { lastKey = ''; sync(); },
     order: order, record: function () { return clean(S); }, set: function (o) { S = clean(Object.assign({}, S, o || {})); save(); update(); }, clear: function () { S = clean(null); save(); update(); },
-    gate: gate, sheet: sheet, closeSheet: closeSheet, guard: guard, sheetTop: sheetTop, ic: ic, esc: esc, money: money, where: where, days: DAYS
+    gate: gate, lastBy: lastBy, sheet: sheet, closeSheet: closeSheet, guard: guard, sheetTop: sheetTop, ic: ic, esc: esc, money: money, where: where, days: DAYS
   };
   document.addEventListener('change', function (e) { if (root && root.contains(e.target)) onChange(e); });
   document.addEventListener('click', function (e) { if (root && root.contains(e.target)) onClick(e); });

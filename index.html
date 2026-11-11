@@ -7128,6 +7128,10 @@ setInterval(function () { var el = document.getElementById('pk-nh-br'); if (el &
 
 .tk2 .tk-gate{max-width:34rem;margin:32px auto;padding:28px 24px;border:1px solid rgba(242,237,227,.18);border-radius:16px;text-align:center}
 .tk2 .tk-gate p{margin:10px 0 18px;opacity:.85}
+/* test r3: 44px tap targets on phone for the small pills and text buttons */
+@media (max-width:820px){.tk2 .tk-pill-sm,#tk2#tk2#tk2#tk2#tk2 .tk-pill[aria-pressed]{min-height:44px!important}.tk2 .tk-tlink{display:inline-flex;align-items:center;min-height:44px}}
+/* test r3: a clear focus ring on phone fields too, not only with :focus-visible */
+.tk2 input:focus,.tk2 select:focus{outline:3px solid #D6B54A;outline-offset:2px}
 </style>
 <script id="pk-tk2">
 /* pk-tk2: Tickets, round 2 design (Nov 11 2026). Source: tools/tickets_r2/tk2.js, spliced into index.html by tools/tickets_r2/build.py.
@@ -7224,8 +7228,9 @@ setInterval(function () { var el = document.getElementById('pk-nh-br'); if (el &
   function pacific(t) { return String(t || '').replace(/\s*PT$/, ' Pacific'); }
   function planLine(total) {   // same sum as the site's planLine: first payment today, then monthly, the last by plans.lastPayment
     var n = Math.max(2, T.planN), c = Math.round(total * 100), d0 = Math.ceil(c / (n * 100)) * 100, rest = c - d0, k = n - 1, p1 = Math.ceil(rest / k), pl = rest - p1 * (k - 1);
-    return money(d0 / 100) + ' today, then ' + (p1 === pl ? k + ' monthly payments of ' + money(p1 / 100) : k === 2 ? 'monthly payments of ' + money(p1 / 100) + ' and ' + money(pl / 100) : (k - 1) + ' monthly payments of ' + money(p1 / 100) + ' and one of ' + money(pl / 100));
+    return money(d0 / 100) + ' today, then ' + (p1 === pl ? k + ' monthly payments of ' + money(p1 / 100) : k === 2 ? 'monthly payments of ' + money(p1 / 100) + ' and ' + money(pl / 100) : (k - 1) + ' monthly payments of ' + money(p1 / 100) + ' and one of ' + money(pl / 100)) + lastBy();
   }
+  function lastBy() { var lp = ((window.PK_TICKETS || {}).plans || {}).lastPayment, m = /^(\d{4})-(\d\d)-(\d\d)$/.exec(lp || ''); if (!m) return ''; return ', the last by ' + ['January','February','March','April','May','June','July','August','September','October','November','December'][+m[2] - 1] + ' ' + (+m[3]) + ', ' + m[1]; }   // test r3: say when the plan ends
 
   /* ---------- the one order record ---------- */
   var S = load();
@@ -7581,7 +7586,7 @@ setInterval(function () { var el = document.getElementById('pk-nh-br'); if (el &
   window.__pkTk2 = {
     refresh: function () { lastKey = ''; sync(); },
     order: order, record: function () { return clean(S); }, set: function (o) { S = clean(Object.assign({}, S, o || {})); save(); update(); }, clear: function () { S = clean(null); save(); update(); },
-    gate: gate, sheet: sheet, closeSheet: closeSheet, guard: guard, sheetTop: sheetTop, ic: ic, esc: esc, money: money, where: where, days: DAYS
+    gate: gate, lastBy: lastBy, sheet: sheet, closeSheet: closeSheet, guard: guard, sheetTop: sheetTop, ic: ic, esc: esc, money: money, where: where, days: DAYS
   };
   document.addEventListener('change', function (e) { if (root && root.contains(e.target)) onChange(e); });
   document.addEventListener('click', function (e) { if (root && root.contains(e.target)) onClick(e); });
@@ -7730,7 +7735,7 @@ if (!window.pkOrders) window.pkOrders = (function () {
   var O = null, S = null, root = null, timer = null, prevFocus = null, prevTitle = '', pushed = false, saidLate = false;
   var esc = K.esc, ic = K.ic;
   var TERMS = 'All sales are final. Your passes are tied to the event dates and cannot be refunded. If an event date changes or Pickathon cancels, we will email you with your options. Passes can be transferred to a friend from My Pickathon.';
-  var PLANTERMS = 'A Pickathon Payment Plan splits your total into a first payment today and monthly payments after that, charged to the card you enter here. Your passes are issued when the plan is complete. Missed payments can cancel the order.';
+  var PLANTERMS = 'A Pickathon Payment Plan splits your total into a first payment today and monthly payments after that, charged to the card you enter here. Your passes are issued when the plan is complete. Missed payments can cancel the order.' + (K.lastBy && K.lastBy() ? ' Every payment is made' + K.lastBy().replace(', the last', '') + '.' : '');
   function app() { return window.comp || window.__pkApp || null; }
   function $(s) { return root ? root.querySelector(s) : null; }
   function stored() { try { return JSON.parse(window.localStorage.getItem(LSC) || 'null') || {}; } catch (e) { return {}; } }
