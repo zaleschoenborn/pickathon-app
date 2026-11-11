@@ -198,6 +198,7 @@ if (!window.pkOrders) window.pkOrders = (function () {
   function change(e) { if (!S) return; if (e.target.name === 'plan') { S.plan = e.target.value; keep(); $('#co-pay').textContent = payLabel(); var l = $('#co-planterms-l'); if (l) l.hidden = S.plan !== '1'; } }
   function input(e) { if (S && e.target && e.target.name && S.stage === 'pay') { read(); var f = $('#co-f-' + e.target.name); if (f && f.classList.contains('is-err')) { var r = FIELDS.filter(function (x) { return x[0] === e.target.name; })[0]; if (r && r[2].test(e.target.value.trim())) { f.classList.remove('is-err'); $('#co-e-' + r[0]).hidden = true; e.target.setAttribute('aria-invalid', 'false'); } } } }
   function open(order, resume) {
+    if (K.gate && K.gate()) { if (K.refresh) K.refresh(); return false; }   // no checkout on prices the ticket system did not send
     if (root) close(false);
     O = norm(order); var k = stored();
     prevFocus = document.activeElement; prevTitle = document.title;

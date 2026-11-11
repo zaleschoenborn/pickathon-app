@@ -66,7 +66,28 @@
   function readTix() { var s = site(); T = window.pkTix(s.today, s.season || 'off'); return T; }
   function when() { var s = site(); if ((s.season || 'off') !== 'off' || T.open) return 'sale'; return T.next ? 'pre' : 'closed'; }
   function P(id) { var f = window.pkFeedItem && window.pkFeedItem(id); if (f && f.price && typeof f.price.amount === 'number') return f.price.amount / 100; var r = T.prices[id]; return r ? Math.ceil(r[T.col]) : 0; }   // the site's one price rule: the live feed if it answered, else the settings block, whole dollars
-  function sold(id) { var f = window.pkFeedItem && window.pkFeedItem(id); return !!(f && f.soldOut); }
+  function sold(id) { var f = window.pkFeedItem && window.pkFeedItem(id); if (!f && needFeed() && (window.pkFeed || {}).state === 'live') return true; return !!(f && f.soldOut); }   // with the live feed required, a ticket the feed does not list is not offered
+  /* Once the site is live (PK_LIVE, set by the launch switch) the sale shows only prices the ticket system sent. If the feed has not answered yet,
+     or failed, the page says so instead of falling back to the built-in table, so a missed price update can never show a wrong price.
+     T.requireFeed in the settings block or ?feedreq=1 turns this on in test; ?feedreq=0 turns it off. */
+  function qp(k) { try { return new URLSearchParams(window.location.search).get(k); } catch (e) { return null; } }
+  function needFeed() { var q = qp('feedreq'); if (q === '0') return false; return !!(window.PK_LIVE || (T && T.requireFeed) || q === '1'); }
+  function gate() { if (!T) readTix(); if (when() !== 'sale' || !needFeed()) return ''; var F = window.pkFeed || {}; return F.state === 'live' ? '' : F.state === 'fallback' ? 'down' : 'loading'; }
+  function gateHTML(g) {
+    var t = g === 'down' ? 'Prices didn\u2019t load' : 'Getting today\u2019s prices', b = g === 'down' ? 'The ticket office didn\u2019t answer. Check your connection, then try again.' : 'One moment. Prices come straight from the ticket office.';
+    return '<div class="tk-in"><div class="tk-paper tk-head"><img src="logo27-bat.png" alt="Pickathon 2027" width="700" height="260"><div class="tk-head-t"><h1 class="tk-d">Tickets</h1></div></div>' +
+      '<div class="tk-main"><section class="tk-gate" role="status" aria-live="polite"><h2 class="tk-d tk-d-card">' + t + '</h2><p>' + b + '</p>' +
+      (g === 'down' ? '<button type="button" class="tk-pill tk-pill-cream" data-act="feedretry">Try again</button>' : '') + '</section></div></div>';
+  }
+  /* Staff check, from the browser console: pkPriceCheck() lists every ticket whose live price differs from the settings column for today's round,
+     and every ticket the feed does not list. Use it right after prices are changed in the ticket system. */
+  window.pkPriceCheck = function () {
+    readTix(); var F = window.pkFeed || {}, out = { feed: F.state, round: T.cur ? T.cur.id : null, differ: [], missing: [] };
+    if (F.state !== 'live') return out;
+    Object.keys(T.prices).forEach(function (id) { var f = window.pkFeedItem(id), r = T.prices[id], want = r ? Math.ceil(r[T.col]) : null;
+      if (!f) { out.missing.push(id); return; } var got = f.price.amount / 100; if (want !== null && got !== want) out.differ.push({ id: id, code: window.pkFeedCode ? window.pkFeedCode(id) : '', ticketSystem: got, settings: want }); });
+    return out;
+  };
   function minP(ids) { return Math.min.apply(null, ids.map(P)); }
   function pacific(t) { return String(t || '').replace(/\s*PT$/, ' Pacific'); }
   function planLine(total) {   // same sum as the site's planLine: first payment today, then monthly, the last by plans.lastPayment
@@ -290,11 +311,12 @@
     var ok = $('#tk-barok', root); if (ok && ok.offsetParent) { ok.setAttribute('tabindex', '-1'); ok.focus(); } else { var og = $('#tk-ogo', root); if (og) og.focus(); }
   }
   function draw(el) {
+    var g = gate(); if (g) { root = el; el.innerHTML = gateHTML(g); return; }
     root = el; el.innerHTML = skeleton(); $('#tk-top', el).innerHTML = topHTML(); preDraw(); update();
   }
   function setRadio(name, v) { $$('input[name="' + name + '"]', root).forEach(function (i) { i.checked = i.value === v; }); }
   function update() {
-    if (!root || !root.firstChild) return;
+    if (!root || !root.firstChild || !document.getElementById('tk-main')) return;
     S = clean(S);
     if (S.pass && S.pass !== 'd1' && sold(S.pass)) S.pass = null;
     if (S.day && sold(S.day)) S.day = null;
@@ -390,6 +412,7 @@
     if (b.classList.contains('tk-fold-row')) { fold(b, b.getAttribute('aria-expanded') !== 'true'); return; }
     if (b.id === 'tk-patron') { S.patron = !S.patron; if (S.patron && !S.adult) S.adult = 1; update(); return; }
     var act = b.getAttribute('data-act'), go = b.getAttribute('data-go');
+    if (act === 'feedretry') { window.pkFeed = { url: (window.pkFeed || {}).url, state: 'loading', byCode: null, at: Date.now() }; lastKey = ''; sync(); try { window.pkFeedLoad(function () { lastKey = ''; sync(); }); } catch (x) {} return; }
     if (go) { nav(go); return; }
     if (act === 'go') { proceed(); return; }
     if (act === 'sheet') { orderSheet(); return; }
@@ -426,7 +449,7 @@
   window.__pkTk2 = {
     refresh: function () { lastKey = ''; sync(); },
     order: order, record: function () { return clean(S); }, set: function (o) { S = clean(Object.assign({}, S, o || {})); save(); update(); }, clear: function () { S = clean(null); save(); update(); },
-    sheet: sheet, closeSheet: closeSheet, guard: guard, sheetTop: sheetTop, ic: ic, esc: esc, money: money, where: where, days: DAYS
+    gate: gate, sheet: sheet, closeSheet: closeSheet, guard: guard, sheetTop: sheetTop, ic: ic, esc: esc, money: money, where: where, days: DAYS
   };
   document.addEventListener('change', function (e) { if (root && root.contains(e.target)) onChange(e); });
   document.addEventListener('click', function (e) { if (root && root.contains(e.target)) onClick(e); });
