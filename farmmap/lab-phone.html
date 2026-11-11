@@ -1,6 +1,6 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="color-scheme" content="dark"><style>html{background:#12160F}
 body.mapdrag #door{opacity:.18!important;pointer-events:none!important;transition:opacity .15s}
-#door{transition:opacity .25s}
+#door{transition:opacity .25s;touch-action:pan-y}
 </style><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><style>@font-face{font-family:"Pickathon 2014";src:url(../fonts/pickathon-2014.ttf) format("truetype");font-weight:400;font-style:normal;font-display:swap}</style><style>@media (min-width:1200px){html body #card #empty #pinv,html body #card.intro #empty #pinv{display:none!important;height:0!important;margin:0!important;padding:0!important}}</style><style id="pk-sitetype">#dover{isolation:isolate}#dover::before{content:"";position:absolute;inset:-70px -90px -70px -60px;z-index:-1;background:radial-gradient(ellipse at 35% 50%,rgba(15,19,13,.9),rgba(15,19,13,.62) 55%,transparent 78%);pointer-events:none}
 #door .dprev,#door .dnext,#door .dspin,#door .dx,#finder,#fullmap,.lab,#pclose,#nprev,#nnext,#pcl .pc{cursor:default!important}#door .dgo,#door .dv{cursor:pointer!important}/* Zale, Nov 9: the map in the site's own type: Pickathon 2014 for titles and names, condensed Bricolage caps for kickers and labels */
 #dover h1,#lptitle b,#lpdeep b,#eyebrow+b,#cname,#pname,#pgname{font-family:"Pickathon 2014",var(--f)!important;text-transform:uppercase;letter-spacing:.02em!important;font-weight:400!important}
@@ -2440,7 +2440,7 @@ body.dooron #door{display:block}
   const _bar=lpBarH; lpBarH=function(){ if(LP()&&B.classList.contains('dooron')) return door.offsetHeight||_bar(); return _bar(); };
   // where a pick lands: desktop, in the space right of the card, at the current zoom; phone, in the strip above the sheet, zooming out only if it would not fit
   const _vf=viewFor; viewFor=function(h,fk){
-    if(LP()){ const fit=lpView(h,0), atHome=k<=(kMin||lpHome().k)*1.03; if(atHome) return fit; return fit.k<k?fit:lpView(h,k); }
+    if(LP()){ const fit=lpView(h,0); if(window.__vfRO&&window.__vfLast&&window.__vfLast.h===h){ const L0=window.__vfLast; return L0.home?fit:(fit.k<L0.k?fit:lpView(h,L0.k)); } const atHome=k<=(kMin||lpHome().k)*1.03, out=atHome?fit:(fit.k<k?fit:lpView(h,k)); window.__vfLast={h:h,home:atHome,k:out.k}; return out; }
     const home=typeof atHomeD==='function'&&atHomeD(); const v=_vf(h, fk||(home?0:k)); if(!v) return v;
     const W=stage.clientWidth, H2=stage.clientHeight, sh=D.shapes[h.id], b=sh&&sh.b; if(!b) return v;
     const cardR=24+450+24, cx=(b[0]+b[2])/2, cy=(b[1]+b[3])/2;
@@ -2453,7 +2453,7 @@ body.dooron #door{display:block}
   new MutationObserver(()=>{ B.classList.toggle('mapdrag',innerWidth>=1200&&stage.classList.contains('drag')); }).observe(stage,{attributes:true,attributeFilter:['class']});
   new MutationObserver(()=>{ if(innerWidth<1200&&stage.classList.contains('drag')&&B.classList.contains('dooron')&&!fold&&NOW()-pickAt>350&&(window.__dragDist||0)>110) setFold(true); })  /* Zale, Nov 9: on desktop the card stays open while you move the map */.observe(stage,{attributes:true,attributeFilter:['class']});
   $('.dbar').addEventListener('click',e=>{ if(e.target.closest('.dgo')) return; setFold(false); });
-  door.querySelectorAll('.dgo').forEach(b=>b.addEventListener('click',e=>{ e.stopPropagation(); if(H) goPage(H); }));
+  door.querySelectorAll('.dgo').forEach(b=>b.addEventListener('click',e=>{ e.stopPropagation(); if(NOW()-pickAt<600) return; /* a second quick tap on a strip icon must not fall through to Explore, which lands where the icon was (map test, Nov 11) */ if(H) goPage(H); }));
   $('.dprev').addEventListener('click',e=>{ e.stopPropagation(); stepHood(-1); });
   $('.dnext').addEventListener('click',e=>{ e.stopPropagation(); stepHood(1); });
   $('.dspin').addEventListener('click',e=>{ e.stopPropagation(); if(L.length>1){ vi=(vi+1)%L.length; putMedia(); try{ sessionStorage.setItem('pkmap.doorv.'+H.id,String(vi)); }catch(x){} } });
@@ -2462,7 +2462,7 @@ body.dooron #door{display:block}
   // map_page.md "The whole doorway is the link" (Nov 8): a tap anywhere on the card opens the neighborhood page, except the play area, arrows, spin and close
   door.addEventListener('wheel',e=>{ if(e.target.closest&&e.target.closest('.dvid,iframe,.dlist')) return; e.preventDefault(); stage.dispatchEvent(new WheelEvent('wheel',{deltaX:e.deltaX,deltaY:e.deltaY,deltaMode:e.deltaMode,ctrlKey:e.ctrlKey,clientX:e.clientX,clientY:e.clientY,bubbles:true,cancelable:true})); },{passive:false});   /* the wheel zooms the map even over the card */
   let dDown=null; door.addEventListener('pointerdown',e=>{ dDown={x:e.clientX,y:e.clientY}; },true);
-  door.addEventListener('click',e=>{ const moved=dDown&&Math.hypot(e.clientX-dDown.x,e.clientY-dDown.y)>12; if(moved||!H||fold) return; const t=e.target; if(t.closest('.dprev,.dnext,.dspin,.dx,.dgo,.dbar,input')) return; const dv=t.closest('.dv'); if(!dv&&t.closest('a')) return; if(dv&&dv.__v) return; /* Nov 10 review: with a video the whole picture plays; without one it opens the page */ e.preventDefault(); goPage(H); });
+  door.addEventListener('click',e=>{ const moved=dDown&&Math.hypot(e.clientX-dDown.x,e.clientY-dDown.y)>12; if(moved||!H||fold||NOW()-pickAt<600) return; const t=e.target; if(t.closest('.dprev,.dnext,.dspin,.dx,.dgo,.dbar,input')) return; const dv=t.closest('.dv'); if(!dv&&t.closest('a')) return; if(dv&&dv.__v) return; /* Nov 10 review: with a video the whole picture plays; without one it opens the page */ e.preventDefault(); goPage(H); });
   // phone: swipe the sheet sideways for the next or previous neighborhood
   let sw=null; door.addEventListener('pointerdown',e=>{ sw={x:e.clientX,y:e.clientY}; });
   door.addEventListener('pointerup',e=>{ if(!sw||!LP()) return; const dx=e.clientX-sw.x, dy=e.clientY-sw.y; sw=null; if(Math.abs(dx)>50&&Math.abs(dx)>1.5*Math.abs(dy)) stepHood(dx<0?1:-1); });
@@ -2478,7 +2478,7 @@ body.dooron #door{display:block}
   addEventListener('resize',()=>{ try{ if(LP()) chipsInit(); }catch(e){} });
   try{ if(LP()) chipsInit(); }catch(e){} setTimeout(()=>{ try{ if(LP()) chipsInit(); }catch(e){} if(cur&&!CARDID&&!B.classList.contains('dooron')) open(cur); },0);
   // the sheet's height settles after its text and font load: keep the pick framed for the first moments after a pick
-  if(window.ResizeObserver){ let h0=0; new ResizeObserver(()=>{ const hh=door.offsetHeight; if(!LP()||!cur||fold||Math.abs(hh-h0)<4){ h0=hh; return; } h0=hh; try{ lpSync(); }catch(e){} if(NOW()-pickAt<2000) flyView(viewFor(cur),cur); }).observe(door); }
+  if(window.ResizeObserver){ let h0=0; new ResizeObserver(()=>{ const hh=door.offsetHeight; if(!LP()||!cur||fold||Math.abs(hh-h0)<4){ h0=hh; return; } h0=hh; try{ lpSync(); }catch(e){} if(NOW()-pickAt<2000){ window.__vfRO=1; try{ flyView(viewFor(cur),cur); }finally{ window.__vfRO=0; } } }).observe(door); }
   window.__pickForTest=h=>{ setCur(h); pinned=h; flyTo(h); };
 })();
 </script>
