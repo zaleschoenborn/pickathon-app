@@ -3,7 +3,8 @@
    Every price, sale date and round name comes from window.pkTix() (the pk-ticket-settings block) or the live price feed. None is typed here.
    The order is ONE record, kept in the browser (localStorage "pk27order") so a reload, a tab switch or a sleeping phone loses nothing.
 
-   RETURNING BUYERS ("Same again"). The ticket system must supply the signed-in buyer's last order through ONE function:
+   RETURNING BUYERS ("Same again"). OFF by default: the switch is sameAgain in the pk-ticket-settings block. While it is off the sign-in line
+   and the shortcut never show. When it is on, the ticket system must supply the signed-in buyer's last order through ONE function:
      window.pkLastOrder()  ->  null (not signed in, or no earlier order)
                            ->  { year: 2026,                      // festival year of that order (shown nowhere yet, kept for the record)
                                  pass: 'p4' | 'p3' | 'd2' | 'd1',  // 4 days, 3 days, Sat + Sun, one day
@@ -134,7 +135,7 @@
   function order() {
     readTix(); var t = totals(S);
     return { ready: t.ready && when() === 'sale', round: T.show.id, roundName: T.show.name,
-      items: t.lines.filter(function (l) { return l.id !== 'tent'; }).map(function (l) { return { id: l.id, qty: l.q || 1, unit: l.q ? Math.round(l.amt / l.q * 100) / 100 : l.amt, name: l.n }; }),
+      items: t.lines.filter(function (l) { return l.id !== 'tent'; }).map(function (l) { return { id: l.id, code: window.pkFeedCode ? window.pkFeedCode(l.id) : '', qty: l.q || 1, unit: l.q ? Math.round(l.amt / l.q * 100) / 100 : l.amt, name: l.n }; }),
       lines: t.lines.map(function (l) { return { label: (l.q ? l.q + ' × ' : '') + l.n, price: money(l.amt) }; }), unadded: t.unadded,
       feeRate: FEE, feeS: money(t.fee), totalS: money(t.total), totalNum: t.total, sub: t.sub,
       hasPlan: hasPlan(t), plan: hasPlan(t) ? planLine(t.total) : '', strip: strip(S), dates: dates(S), summary: short(S), record: clean(S) };
@@ -235,10 +236,10 @@
   /* returning buyer, sign-in line, passes already bought */
   function topHTML() {
     var w = when(), h = '', last = null, mine = null, user = site().user;
-    try { last = window.pkLastOrder(); } catch (e) {} try { mine = window.pkMyPasses(); } catch (e) {}
+    if (T.sameAgain) { try { last = window.pkLastOrder(); } catch (e) {} } try { mine = window.pkMyPasses(); } catch (e) {}
     if (last) { var lo = clean(last); if (key(lo)) h += '<section class="tk-paper tk-slip" id="tk-again" aria-label="Your last order"><p>Welcome back. Last time<b>' + esc(short(lo)) + '</b></p><button type="button" class="tk-pill tk-pill-ink" data-act="again">Same again</button></section>'; }
     if (user || (mine && mine.length)) h += '<section class="tk-paper tk-slip" aria-label="Your passes"><p>' + (mine && mine.length ? 'You have<b>' + mine.map(function (m) { return esc(m.qty + ' × ' + m.name); }).join(', ') + '</b>' : 'You’re signed in<b>Your passes are in My Pickathon</b>') + '</p><button type="button" class="tk-pill" data-go="mine">My Pickathon</button></section>';
-    else if (!last && w === 'sale') h += '<p class="tk-signin"><span>Been before? <button type="button" class="tk-tlink" data-act="signin">Sign in</button> to reuse your last order.</span></p>';
+    else if (!last && w === 'sale' && T.sameAgain) h += '<p class="tk-signin"><span>Been before? <button type="button" class="tk-tlink" data-act="signin">Sign in</button> to reuse your last order.</span></p>';
     return h;
   }
   /* ---------- before the sale: the reminder first, then build and save the order ---------- */
@@ -399,7 +400,7 @@
 
   /* ---------- keeping in step with the app ---------- */
   function where(v) { try { if (v) window.sessionStorage.setItem(SSW, v); else window.sessionStorage.removeItem(SSW); } catch (e) {} }
-  function stateKey() { var F = window.pkFeed || {}, lo = ''; try { lo = JSON.stringify(window.pkLastOrder() || '') + JSON.stringify(window.pkMyPasses() || ''); } catch (e) {} return [when(), T.show.id, T.col, T.show.isToday ? 1 : 0, T.plans ? 1 : 0, F.state, F.at, site().user ? 1 : 0, site().data ? 1 : 0, lo, textsOn() ? 1 : 0].join('|'); }
+  function stateKey() { var F = window.pkFeed || {}, lo = ''; try { lo = JSON.stringify(window.pkLastOrder() || '') + JSON.stringify(window.pkMyPasses() || ''); } catch (e) {} return [when(), T.show.id, T.col, T.show.isToday ? 1 : 0, T.plans ? 1 : 0, F.state, F.at, T.sameAgain ? 1 : 0, site().user ? 1 : 0, site().data ? 1 : 0, lo, textsOn() ? 1 : 0].join('|'); }
   function vars() {
     if (!root || !root.firstChild) return;
     var n = $('#root nav[aria-label="App"]'), hd = $('#root header'), inn = root.firstChild;

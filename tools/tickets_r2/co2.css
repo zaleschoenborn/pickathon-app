@@ -32,6 +32,7 @@
 #pk-co .co-alert b{display:block}
 #pk-co .co-alert a{font-weight:650;display:block;padding:10px 0;min-height:44px}
 #pk-co .co-alert:focus{outline:0}
+#pk-co .co-holdfail{max-width:1040px;margin:12px auto 0;width:calc(100% - 2 * var(--gutter))}
 #pk-co .co-prev{font-size:var(--t-sm);line-height:1.4;color:var(--cream-dim);padding:8px 12px;border-left:3px solid var(--plum-lt);background:rgba(134,82,107,.22);margin-bottom:12px}
 #pk-co .co-stripe{border:1.5px dashed var(--line-strong);border-radius:8px;background:rgba(242,237,227,.04);display:grid;place-items:center;text-align:center;padding:10px 14px;color:var(--cream-dim);font-size:var(--t-sm);line-height:1.35}
 #pk-co .co-stripe b{display:block;color:var(--cream);font-weight:700}
