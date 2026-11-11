@@ -20,11 +20,40 @@ run('tools/year_pages/build_years.py', CSV)
 run('tools/year_pages/build_ratings.py', CSV)
 run('tools/climb_ladder/build_src.py', CSV)
 run('tools/climb_ladder/apply_poster_order.py')
-run('tools/year_pages/sync_class.py', CSV)
 
-d = json.load(open(DJ)); rows = list(csv.DictReader(open(CSV, encoding='utf-8-sig')))
+# Site names the class table spells differently (Artist Classification's answers, aliases.csv). Only the class sync sees
+# the extra alias rows, so a year bill entry spelled the site's way picks up its class without adding a second act anywhere else.
+rows = list(csv.DictReader(open(CSV, encoding='utf-8-sig')))
+AL = list(csv.DictReader(open(os.path.join(HERE, 'aliases.csv'), encoding='utf-8-sig')))
+idx = {(r['year'], key(r['act'])): r for r in rows}
+extra = []
+for a in AL:
+    if a['action'] == 'alias' and (a['year'], key(a['act_in_class_table'])) in idx:
+        r = dict(idx[(a['year'], key(a['act_in_class_table']))]); r['act'] = a['name_on_site']; extra.append(r)
+SYNC = os.path.join(HERE, '_sync_with_aliases.csv')
+with open(SYNC, 'w', newline='', encoding='utf-8') as f:
+    w = csv.DictWriter(f, fieldnames=list(rows[0].keys())); w.writeheader(); w.writerows(rows + extra)
+run('tools/year_pages/sync_class.py', SYNC); os.remove(SYNC)
+
+d = json.load(open(DJ))
 for y in HOLD_STILL:
     if y in d.get('climb', {}): d['climb'][y]['src'] = 'from the classes'
+
+# Spelling fixes the class team found on the site (alias rows noted "site spelling is off"): the site takes the table's spelling
+s = json.dumps(d, ensure_ascii=False)
+for a in AL:
+    if a['action'] == 'alias' and 'spelling is off' in (a.get('note') or ''): s = s.replace(a['name_on_site'], a['act_in_class_table'])
+d = json.loads(s)
+# Not lineup acts (square dance bands and callers) leave the year bills. Acts Zale ruled did not play (pickathon-lineup-by-year) leave too.
+# Other lineup questions stay on the bill with no class until Lineup rules (k = '').
+DNP = {('2017', 'khunnarin'), ('2022', 'hannahcohen'), ('2025', 'chosessauvages')}
+drop = {(a['year'], key(a['name_on_site'])) for a in AL if a['action'] == 'not a lineup act'} | DNP
+openq = {(a['year'], key(a['name_on_site'])) for a in AL if a['action'] == 'lineup question'} - DNP
+for y, L in d.get('yearBill', {}).items():
+    d['yearBill'][y] = [b for b in L if (y, key(b['n'])) not in drop]
+    for b in d['yearBill'][y]:
+        if (y, key(b['n'])) in openq: b['k'] = ''
+    seen = set(); d['yearBill'][y] = [b for b in d['yearBill'][y] if not (key(b['n']) in seen or seen.add(key(b['n'])))]   # a spelling fix can leave two entries for one act
 
 # "now a Legend" (guide, Nov 11): a yes on the act's first-year row puts lgNow on any card that isn't already a Legend
 LN = {(r['year'], key(r['act'])) for r in rows if r.get('legend_now') == 'yes' and r.get('class') != 'Legend' and r.get('year') == r.get('first_pickathon')}
@@ -70,5 +99,6 @@ print('lgNow cards:', n_ln)
 names = collections.defaultdict(set)
 for r in rows:
     if r.get('lineup') == 'Music' and r.get('class') not in ('', 'not an act'): names[r['year']].add(key(r['act']))
-miss = [(y, a['n']) for y, L in d.get('yearBill', {}).items() for a in L if 'l' not in a and key(a['n']) not in names.get(y, set())]
+known = {(a['year'], key(a['name_on_site'])) for a in AL}
+miss = [(y, a['n']) for y, L in d.get('yearBill', {}).items() for a in L if 'l' not in a and key(a['n']) not in names.get(y, set()) and (y, key(a['n'])) not in known]
 print('site music acts with no class row:', len(miss))
