@@ -227,7 +227,7 @@
     draw(); S.raf = requestAnimationFrame(function (now) { t0 = now; fr(now); });
   }
   function go(y) { stop(); S.y = String(y); var n = C[y].labels.length; S.tp = (n > 1 && !RM && !STAT(y)) ? 0 : n - 1; S.seen[S.y] = 0; draw(); check(); }
-  function rand() { var P = POOL().filter(function (q) { return String(q) !== S.y; }); if (!S.bag.length) { S.bag = P.slice(); for (var i = S.bag.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)), t = S.bag[i]; S.bag[i] = S.bag[j]; S.bag[j] = t; } } var y = S.bag.pop(); if (String(y) === S.y && S.bag.length) y = S.bag.pop(); go(y); }
+  function rand() { var O = (window.pkClimbOrder || []).map(String).filter(function (q) { return C[q] && C[q].clim; }); if (O.length > 1) { var oi = O.indexOf(S.y); go(+O[(oi + 1) % O.length]); return; } var P = POOL().filter(function (q) { return String(q) !== S.y; }); if (!S.bag.length) { S.bag = P.slice(); for (var i = S.bag.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)), t = S.bag[i]; S.bag[i] = S.bag[j]; S.bag[j] = t; } } var y = S.bag.pop(); if (String(y) === S.y && S.bag.length) y = S.bag.pop(); go(y); }
 
   function draw() {
     if (!mountEl || !C || !S.y) return;

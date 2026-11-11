@@ -1,3 +1,18 @@
+/* QA M1 (Nov 11): Home's poster opens on 2019 (founder spec, home_flow.md screen 2) and "Another year" walks the years by discovery strength, not at random:
+   a Discovery climber before any other, then the climber's magnitude in that year's class table (yearBill m; the year's top Discovery if the climber has no row), then the size of the climb, then the newer year.
+   pk-climb.js reads window.pkClimbOrder in rand(); the order cycles. */
+window.pkClimbRank = function (C, dd) {
+  var nk = function (x) { return String(x || '').normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/^the\s+/, '').replace(/[^a-z0-9]/g, ''); };
+  var YB = (dd && dd.yearBill) || {}, R = [];
+  Object.keys(C || {}).forEach(function (y) { var D = C[y]; if (!D || !D.clim || !D.labels || D.labels.length < 2) return;
+    var bill = YB[y] || [], hit = bill.filter(function (b) { return nk(b.n) === nk(D.clim); })[0], top = 0;
+    bill.forEach(function (b) { if (b.k === 'disc' && (b.m || 0) > top) top = b.m || 0; });
+    R.push({ y: +y, d: hit ? (hit.k === 'disc' ? 1 : 0) : (top > 0 ? 1 : 0), m: hit && hit.m != null ? +hit.m : top, c: (+D.climFrom || 0) - (+D.climTo || 0) }); });
+  R.sort(function (a, b) { return (b.d - a.d) || (b.m - a.m) || (b.c - a.c) || (b.y - a.y); });
+  var order = R.map(function (r) { return r.y; }), y0 = order.indexOf(2019) >= 0 ? 2019 : (order.filter(function (y) { return y >= 2011 && y <= 2024; })[0] || order[0] || 2019);
+  order = [y0].concat(order.filter(function (y) { return y !== y0; }));
+  return { order: order, y0: y0 };
+};
 /* pk-home2: Home round 2 and the Tickets button (Nov 11 2026). Source: tools/home_r2/home2.js, spliced into index.html by tools/home_r2/build.py.
    Drawn into three islands the app's renderer leaves alone (data-pk-own):
      #pkh2    the Home page (template: r.home2). The old Home stays at ?old=home, the one before it at ?old=home0.
@@ -134,7 +149,7 @@
     /* 2 PROOF: pk-climb draws the poster into .pk-cl-mount by itself */
     /* design_studio-18 / home_flow.md: Home picks the poster's year once per visit from the Discovery years (2011-2024 with a climber),
        as the old Home did, so the poster never opens on a year with nothing to watch. */
-    try { if (!window.pkClimbY0 && window.pkClimb) { var CY = Object.keys(window.pkClimb).map(Number).filter(function (y) { var D = window.pkClimb[y]; return y >= 2011 && y <= 2024 && D && D.clim; }); var k = 'pkHomeY'; var y0 = +(sessionStorage.getItem(k) || 0); if (CY.indexOf(y0) < 0) { y0 = CY.length ? CY[Math.floor(Math.random() * CY.length)] : 2019; try { sessionStorage.setItem(k, y0); } catch (e) {} } window.pkClimbY0 = y0; } } catch (e) {}
+    try { if (window.pkClimbRank && window.pkClimb) { var RK = window.pkClimbRank(window.pkClimb, d); window.pkClimbOrder = RK.order; if (!window.pkClimbY0 || window.pkClimbY0 !== RK.y0) window.pkClimbY0 = RK.y0; } } catch (e) {}
     h += '<section class="h2-s h2-s2" aria-labelledby="pk-cl-h"><div class="h2-s2in"><div class="pk-cl-mount"></div>' +
       '<div class="h2-strip" data-h2="strip" data-none><button type="button" class="h2-strip-ph" data-h2="wph" tabindex="-1" aria-hidden="true"><img alt="" loading="lazy" decoding="async"></button>' +
       '<div class="h2-strip-t"><button type="button" class="h2-pill h2-watch" data-h2="wbtn">' + PLAY + '<span></span></button><p class="h2-strip-c"><b data-h2="wa"></b> <span data-h2="wc"></span></p></div></div></div></section>';
