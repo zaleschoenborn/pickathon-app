@@ -1165,6 +1165,11 @@ main:has(#pk-nh-climb)>section{content-visibility:visible!important;contain-intr
 #root .pk-cl-cmpk{margin:0;font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#B9B3A6}
 #root .pk-cl-cmpn{color:#F2CF62}
 @media (max-width:999px){#root .pk-cl-cmp{gap:12px;margin:6px 0 10px}#root .pk-cl-cmp ol{font-size:13px;line-height:1.35}}
+/* Nov 11 refine: reduced motion keeps the whole section on one phone screen (Home's larger body type was blowing the two lists up) */
+#root#root#root .pk-cl-cmp .pk-cl-cmpk{margin:0!important;font:800 11px/1.2 'Bricolage Grotesque',sans-serif!important;letter-spacing:.12em!important;text-transform:uppercase}
+#root#root#root .pk-cl-cmp ol{margin:4px 0 0!important;padding-left:1.4em!important;font:600 13px/1.35 'Bricolage Grotesque',sans-serif!important;letter-spacing:.02em!important}
+#root#root#root .pk-cl-cmp ol li{font-size:13px!important;line-height:1.35!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+#root .pk-cl-cmp>div{min-width:0}
 </style>
 <style id="pk-hm-css">
 /* Neighborhood page: "Where it is" map (Zale, Nov 9 08:30: a way to move between neighborhoods from the map on each neighborhood page). Design Studio */
@@ -1793,9 +1798,7 @@ html.pk-cy-in div:has(> button[aria-label="Listen to Pickathon"]){opacity:0!impo
 (function () {
   var KIT = {"2000":{"dates":null,"head":"#7C3032","hc":3.16,"light":"#9B9E3A"},"2001":{"dates":null,"head":"#228CF0","hc":3.46,"light":"#FFFFFF"},"2002":{"dates":null,"head":"#8B6B52","hc":1.93,"light":"#B1A098"},"2003":{"dates":null,"head":"#7C3D3F","hc":2.13,"light":"#9C7D64"},"2004":{"dates":null,"head":"#63463F","hc":6.72,"light":"#EAE4DF"},"2005":{"dates":null,"head":"#CF6D48","hc":2.25,"light":"#F6C778"},"2006":{"dates":null,"head":"#D0623B","hc":2.86,"light":"#F0DEA5"},"2007":{"dates":"August 3-5, 2007","head":"#CA5D28","hc":3.55,"light":"#D5CC30"},"2008":{"dates":"August 1-3, 2008","head":"#934A20","hc":5.59,"light":"#8AB4BE"},"2009":{"dates":"August 7-9, 2009","head":"#CE5629","hc":3.63,"light":"#F0EEEA"},"2010":{"dates":"August 6-8, 2010","head":"#DF5B26","hc":3.2,"light":"#EFBFC8"},"2011":{"dates":"August 5-7, 2011","head":"#BA3E26","hc":4.76,"light":"#3187A9"},"2012":{"dates":"August 3-5, 2012","head":"#B68419","hc":2.2,"light":"#B5B878"},"2013":{"dates":"August 2-4, 2013","head":"#EC8015","hc":1.67,"light":"#ACC44D"},"2014":{"dates":"August 1-3, 2014","head":"#EF2A2C","hc":3.53,"light":"#AEC5D2"},"2015":{"dates":"August 7-9, 2015","head":"#EF2A2C","hc":3.53,"light":"#AEC5D2"},"2016":{"dates":"August 5-7, 2016","head":"#C9A820","hc":2.3,"light":"#879B9E"},"2017":{"dates":"August 4-6, 2017","head":"#FEAF49","hc":1.81,"light":"#AEB262"},"2018":{"dates":"August 3-5, 2018","head":"#DB463E","hc":3.81,"light":"#9B9778"},"2019":{"dates":"August 2-4, 2019","head":"#C2B076","hc":1.86,"light":"#B9C451"},"2022":{"dates":"August 4-7, 2022","head":"#E2BD23","hc":1.57,"light":"#79B2A7"},"2023":{"dates":"August 3-6, 2023","head":"#DD8747","hc":2.37,"light":"#9A9351"},"2024":{"dates":"August 1-4, 2024","head":"#A6503B","hc":5.4,"light":"#C5AC38"},"2025":{"dates":"July 31 - August 3, 2025","head":"#FF3087","hc":3.01,"light":"#FFF01C"},"2026":{"dates":"July 30 - August 2, 2026","head":"#CD6C0C","hc":3.6,"light":"#BACD32"}};
   var YC = {"2000":"#9B9E3A","2001":"#D6B54A","2002":"#B1A098","2003":"#D6B54A","2004":"#EAE4DF","2005":"#D6B54A","2006":"#F0DEA5","2007":"#D6B54A","2008":"#D6B54A","2009":"#D6B54A","2010":"#D6B54A","2011":"#D6B54A","2012":"#DBD588","2013":"#EC8015","2014":"#D6B54A","2015":"#D6B54A","2016":"#C9A820","2017":"#FEAF49","2018":"#D6B54A","2019":"#C2B076","2022":"#E2BD23","2023":"#DD8747","2024":"#D6B54A","2025":"#D6B54A","2026":"#D6B54A"};
-  var C = null, S = { y: null, tp: 1, playing: false, seen: {}, raf: null, bag: [] }, mountEl = null, RM = false, TODAY = 2026, DUR = 3800, TOTAL = 6400; /* one fixed run however many keyframes a year has (Zale, Nov 10) */
-  var flow = function (u) { return u <= 0 ? 0 : u >= 1 ? 1 : 0.5 * u + 0.5 * (u * u * (3 - 2 * u)); };   /* gentle at both ends, never a stop in the middle */
-  var seg = function (n, fk) { return fk <= 0 ? 0 : fk >= 1 ? 1 : n > 2 ? 0.7 * fk + 0.3 * (fk * fk * (3 - 2 * fk)) : 0.5 - 0.5 * Math.cos(Math.PI * fk); };
+  var C = null, S = { y: null, tp: 1, playing: false, seen: {}, raf: null, bag: [] }, mountEl = null, RM = false, TODAY = 2026;
   try { RM = window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) {}
   var NW = ['', 'ONE', 'TWO', 'THREE', 'FOUR', 'FIVE', 'SIX', 'SEVEN', 'EIGHT', 'NINE', 'TEN', 'ELEVEN', 'TWELVE', 'THIRTEEN', 'FOURTEEN', 'FIFTEEN', 'SIXTEEN', 'SEVENTEEN', 'EIGHTEEN', 'NINETEEN', 'TWENTY', 'TWENTY-ONE', 'TWENTY-TWO', 'TWENTY-THREE', 'TWENTY-FOUR', 'TWENTY-FIVE', 'TWENTY-SIX', 'TWENTY-SEVEN'];
   var ORD = function (k) { return (k + 1) + (k === 0 ? 'ST' : k === 1 ? 'ND' : k === 2 ? 'RD' : 'TH'); };
@@ -1853,112 +1856,158 @@ html.pk-cy-in div:has(> button[aria-label="Listen to Pickathon"]){opacity:0!impo
 
   // Sizes. Desktop: the paper is 960 wide (inner 880): art 330 at left, list column 524. Phone and tablet (phone-style): art small on top, list full width.
   function cfg(ph, wAvail) {
-    if (!ph) return { ph: false, IW: 880, PADX: 40, PADY: 22, ART: { x: 0, y: 118, w: 330 }, COLX: 356, COLW: 524, Y0: 0, LANES: [[80, 74, 2], [44, 41, 1], [44, 41, 1], [44, 41, 1], [33, 29, 1], [33, 29, 1], [33, 29, 1], [33, 29, 1], [33, 29, 1], [33, 29, 1]], GAP: 5, R1: 22, ROWH: 21, FS: 13, CFS: 15, DATES: 15, DGAP: 42, BOT: 100, RIB: [40, 14], STAMP: 0.92 };
+    if (!ph) return { ph: false, IW: 880, PADX: 40, PADY: 22, ART: { x: 0, y: 118, w: 330 }, COLX: 356, COLW: 524, Y0: 0, LANES: [[80, 74, 2], [44, 41, 2], [44, 41, 2], [44, 41, 2], [33, 29, 1], [33, 29, 1], [33, 29, 1], [33, 29, 1], [33, 29, 1], [33, 29, 1]], GAP: 5, R1: 22, ROWH: 21, FS: 13, CFS: 15, DATES: 15, DGAP: 42, BOT: 100, RIB: [40, 14], STAMP: 0.92 };
     var PW = Math.max(300, Math.min(wAvail, 720)), IW = PW - 32, k = Math.min(1.7, IW / 326), L = function (h, m, ml) { return [Math.round(h * k), Math.round(m * k), ml]; };
     var AW = Math.round(100 * k), CG = Math.round(12 * k);   /* Zale, Nov 11: phone keeps the horizontal poster, art static on the left, names move in the column on the right (spec home_climb_phone_nov9b section 1) */
     return { ph: true, IW: IW, PADX: 16, PADY: 14, ART: { x: 0, y: 0, w: AW }, COLX: AW + CG, COLW: IW - AW - CG, Y0: 0,
-      LANES: [L(40, 28, 2), L(27, 20, 1), L(27, 20, 1), L(27, 20, 1), L(20, 15, 1), L(20, 15, 1), L(20, 15, 1), L(20, 15, 1), L(20, 15, 1), L(20, 15, 1)], GAP: Math.round(3 * k), R1: Math.round(26 * k), ROWH: Math.round(16 * k), FS: Math.max(11, 11 * k), CFS: Math.max(12, 12 * k), DATES: Math.max(11, 11 * k), DGAP: Math.round(30 * k), BOT: Math.round(30 * k) + Math.round(Math.max(11, 11 * k)) + 12 + Math.max(34, Math.round(32 * k)), RIB: [Math.max(34, Math.round(32 * k)), Math.max(12, 12 * k)], STAMP: 0.7 * k };
+      LANES: [L(40, 28, 2), L(27, 20, 2), L(27, 20, 2), L(27, 20, 2), L(20, 15, 1), L(20, 15, 1), L(20, 15, 1), L(20, 15, 1), L(20, 15, 1), L(20, 15, 1)], GAP: Math.round(3 * k), R1: Math.round(26 * k), ROWH: Math.round(16 * k), FS: Math.max(11, 11 * k), CFS: Math.max(12, 12 * k), DATES: Math.max(11, 11 * k), DGAP: Math.round(30 * k), BOT: Math.round(30 * k) + Math.round(Math.max(11, 11 * k)) + 12 + Math.max(34, Math.round(32 * k)), RIB: [Math.max(34, Math.round(32 * k)), Math.max(12, 12 * k)], STAMP: 0.7 * k };
   }
 
-  // One frame of the ladder at time tp (0 = festival, n-1 = today). Returns the paper's inner HTML and its height.
-  function frame(D, y, tp, Q) {
-    var K = KIT[y] || {}, n = D.labels.length, PAPER = D.paper, A = D.inks[0], B = D.inks[1] || D.inks[0], H = K.head && K.hc >= 3 ? K.head : A;
-    var IW = Q.IW, LN = Math.min(10, D.ranked || 10);
-    var S = [], yy = Q.Y0; Q.LANES.forEach(function (L, r) { S.push({ x: Q.COLX, y: yy, w: Q.COLW, h: L[0], k: 0.5, mx: L[1], ml: L[2], ink: r === 0 ? H : r % 2 ? A : B, head: r === 0 }); yy += L[0] + Q.GAP; });
-    var ROW1 = S[9].y + S[9].h + Q.R1, ROWMAX = Math.round(IW * (Q.ph ? 0.88 : 0.8)), DATESY = ROW1 + Q.DGAP, BOXH = ROW1 + Q.BOT, TOP = Q.LANES[0][1];
-    var fit = function (nm, s) { var wd = nm.split(' '), opts = [{ L: [nm], lead: false }];
-      if (s.ml > 1) for (var i = 1; i < wd.length; i++) { var a = wd.slice(0, i).join(' '), b = wd.slice(i).join(' '); opts.push({ L: [a, b], lead: false }); if (LEAD.indexOf(a) >= 0 && b.length > 3) opts.push({ L: [a, b], lead: true }); }
-      var best = null; opts.forEach(function (o) { var ws = o.L.map(function (t, i) { return tw(t) * (o.lead && i === 0 ? 0.55 : 1); }), hs = o.L.length === 1 ? LH : o.lead ? LH * 1.55 + 0.04 : LH * 2 + 0.04;
-        var fanR = s.head && !Q.ph ? Math.min(s.mx * 0.62, 90) * 0.81 + Math.max(8, s.mx * 0.12) + 4 : 0, mw = Math.max.apply(null, ws), f = Math.min(s.mx, (s.w - 2 * Math.max(fanR, s.head ? (Q.ph ? 6 : 46) : 0)) * (Q.ph ? 0.88 : 0.97) / mw, s.h / hs);  /* phone: the headliner gets the whole column (review r1 A13) */
-        if (!best || f > best.f + (o.lead ? -2 : 0.5) || (Math.abs(f - best.f) <= 0.5 && o.L.length === best.L.length && !o.lead && !best.lead && mw < best.mw)) best = { f: f, mw: mw, L: o.L, lead: o.lead }; }); return best; };
-    var posAt = function (si) { var P = {};
-      D.names.forEach(function (x0) { var r = x0[1][si]; if (r < LN) { var s = S[r], b = fit(x0[0], s); P[x0[0]] = { x: s.x + s.k * s.w, y: s.y + s.h, k: s.k, f: b.f, L: b.L, lead: b.lead, ink: s.ink, head: !!s.head, line: r, on: true }; } });
-      var off = D.names.filter(function (x) { return x[1][si] >= LN; }).sort(function (p, q) { return p[1][si] - q[1][si]; });
-      var cl = D.names.filter(function (x) { return x[0] === D.clim; })[0], climOff = !!cl && cl[1][si] >= LN, FS = Q.FS, CFS = Q.CFS, SEP = 14 + 0.6 * FS * 0.8 + 12, sw = function (t, fs) { var m = mw(t, fs); return (m ? m : tw(t) * fs * 1.14) + t.length * 0.04 * fs + 2; };   /* measured, so the small names never touch (Zale, Nov 9 09:02) */
-      var rows = [[]], rw = [0], shown = 0, hide = function (x0, fs) { P[x0[0]] = { x: IW / 2, y: ROW1, k: 0.5, f: fs, L: [x0[0]], ink: A, line: 30, on: false, vis: false }; };
-      off.forEach(function (x0) { var isC = x0[0] === D.clim, fs = isC ? CFS : FS, w = sw(x0[0], fs); if (w > ROWMAX) { fs = Math.max(8, fs * ROWMAX / w * 0.97); w = sw(x0[0], fs); }  /* a long name shrinks to fit instead of running off both edges (Design Studio review, Nov 9) */
-        var r = rows.length - 1, add = rows[r].length ? SEP + w : w;
-        var needC = climOff && !isC && !rows.some(function (row) { return row.some(function (q) { return q.isC; }); }) ? SEP + sw(cl[0], CFS) : 0;
-        if (rw[r] + add + (r === 1 ? needC : 0) > ROWMAX) { if (r === 0) { rows.push([]); rw.push(0); r = 1; } else if (!isC) { hide(x0, fs); return; } }
-        if (shown >= (Q.ph ? 6 : 16) && !isC) { hide(x0, fs); return; }
-        rw[r] += rows[r].length ? SEP + w : w; rows[r].push({ x0: x0, fs: fs, w: w, isC: isC }); shown++; });
+  /* Nov 11 refine (Zale: "it needs to be smoother"): two posters and one move.
+     The cast is fixed for the whole run: the printed top of the bill plus today's top, nobody else, so nothing pops in or out.
+     Each act's path through the six-month steps is smoothed to one direction (no act climbs and falls back), the order at every step
+     comes from those smoothed values, and every name's position, size, ink and star ride one monotone curve through the step layouts
+     on one clock. Each name keeps one line break for the whole run, so nothing rewraps or crossfades. */
+  var PLANS = {};
+  var iso = function (r, dir) {   /* pool-adjacent-violators: the closest path to r that only moves one way (dir -1 = rank only falls, i.e. the act climbs) */
+    var B = []; r.forEach(function (v) { B.push({ s: v, c: 1 }); while (B.length > 1) { var a = B[B.length - 2], b = B[B.length - 1]; if (dir < 0 ? a.s / a.c >= b.s / b.c : a.s / a.c <= b.s / b.c) break; a.s += b.s; a.c += b.c; B.pop(); } });
+    var out = []; B.forEach(function (b) { for (var i = 0; i < b.c; i++) out.push(b.s / b.c); }); return out; };
+  var mono = function (X, Y) {   /* Fritsch-Carlson monotone cubic: smooth through every step, never overshoots, flat where the data is flat */
+    var n = X.length; if (n < 2) return function () { return Y[0]; };
+    var d = [], m = []; for (var i = 0; i < n - 1; i++) d.push((Y[i + 1] - Y[i]) / (X[i + 1] - X[i]));
+    m[0] = d[0]; m[n - 1] = d[n - 2]; for (var j = 1; j < n - 1; j++) m[j] = d[j - 1] * d[j] <= 0 ? 0 : (d[j - 1] + d[j]) / 2;
+    for (var k = 0; k < n - 1; k++) { if (d[k] === 0) { m[k] = 0; m[k + 1] = 0; continue; } var a = m[k] / d[k], b = m[k + 1] / d[k], s = a * a + b * b; if (s > 9) { var t = 3 / Math.sqrt(s); m[k] = t * a * d[k]; m[k + 1] = t * b * d[k]; } }
+    m[0] = 0; m[n - 1] = 0;   /* every name eases in at the start and settles at the end */
+    for (var q = 0; q < n - 1; q++) { if (d[q] === 0) continue; var a2 = m[q] / d[q], b2 = m[q + 1] / d[q], s2 = a2 * a2 + b2 * b2; if (s2 > 9) { var t2 = 3 / Math.sqrt(s2); m[q] = t2 * a2 * d[q]; m[q + 1] = t2 * b2 * d[q]; } }
+    return function (x) { if (x <= X[0]) return Y[0]; if (x >= X[n - 1]) return Y[n - 1]; var i = 0; while (i < n - 2 && x > X[i + 1]) i++; var h = X[i + 1] - X[i], t = (x - X[i]) / h, t2 = t * t, t3 = t2 * t;
+      return (2 * t3 - 3 * t2 + 1) * Y[i] + (t3 - 2 * t2 + t) * h * m[i] + (-2 * t3 + 3 * t2) * Y[i + 1] + (t3 - t2) * h * m[i + 1]; }; };
+  var rgb = function (c) { return [1, 3, 5].map(function (i) { return parseInt(c.slice(i, i + 2), 16); }); };
+  var hex = function (a) { return '#' + a.map(function (v) { return ('0' + Math.max(0, Math.min(255, Math.round(v))).toString(16)).slice(-2); }).join(''); };
+  var clamp01 = function (v) { return v < 0 ? 0 : v > 1 ? 1 : v; };
+
+  function plan(D, y, Q) {
+    var still = D.labels.length < 2 || STAT(y), key = y + '|' + Q.IW + '|' + Q.ph + '|' + still + '|' + D.names.length; if (PLANS[key]) return PLANS[key];
+    var K = KIT[y] || {}, n = D.labels.length, A = D.inks[0], B = D.inks[1] || D.inks[0], H = K.head && K.hc >= 3 ? K.head : A;
+    var IW = Q.IW, LN = Math.min(10, D.ranked || 10), TOP = Q.LANES[0][1];
+    var S = [], yy = Q.Y0; Q.LANES.forEach(function (L, r) { S.push({ x: Q.COLX, y: yy, w: Q.COLW, h: L[0], mx: L[1], ml: L[2], ink: r === 0 ? H : r % 2 ? A : B, head: r === 0 }); yy += L[0] + Q.GAP; });
+    var ROW1 = S[9].y + S[9].h + Q.R1, ROWMAX = Math.round(IW * (Q.ph ? 0.88 : 0.8)), BOXH = ROW1 + Q.BOT;
+    var opts = function (nm, s) { var wd = nm.split(' '), o = [{ L: [nm], lead: false }];
+      if (s.ml > 1) for (var i = 1; i < wd.length; i++) { var a = wd.slice(0, i).join(' '), b = wd.slice(i).join(' '); o.push({ L: [a, b], lead: false }); if (LEAD.indexOf(a) >= 0 && b.length > 3) o.push({ L: [a, b], lead: true }); } return o; };
+    var fitO = function (o, s) { var ws = o.L.map(function (t, i) { return tw(t) * (o.lead && i === 0 ? 0.55 : 1); }), hs = o.L.length === 1 ? LH : o.lead ? LH * 1.55 + 0.04 : LH * 2 + 0.04;
+      var fanR = s.head && !Q.ph ? Math.min(s.mx * 0.62, 90) * 0.81 + Math.max(8, s.mx * 0.12) + 4 : 0, mw0 = Math.max.apply(null, ws);
+      return { f: Math.min(s.mx, (s.w - 2 * Math.max(fanR, s.head ? (Q.ph ? 6 : 46) : 0)) * (Q.ph ? 0.88 : 0.97) / mw0, s.h / hs), mw: mw0, L: o.L, lead: o.lead }; };
+    var best = function (nm, s) { var b = null; opts(nm, s).forEach(function (o) { var r = fitO(o, s); if (!b || r.f > b.f + (o.lead ? -2 : 0.5) || (Math.abs(r.f - b.f) <= 0.5 && r.L.length === b.L.length && !r.lead && !b.lead && r.mw < b.mw)) b = r; }); return b; };
+    // the cast and the steps
+    var cast = still ? D.names.slice() : D.names.filter(function (x) { return x[1][0] < LN || x[1][n - 1] < LN; });
+    var KS = []; if (still) KS.push(n - 1); else for (var k = 0; k < n; k++) KS.push(k);
+    var V = cast.map(function (x) { if (still) return [x[1][n - 1]]; var r = x[1], s0 = r[0], e0 = r[n - 1], v = iso(r.slice(), e0 <= s0 ? -1 : 1), lo = Math.min(s0, e0), hi = Math.max(s0, e0);
+      v = v.map(function (q) { return Math.max(lo, Math.min(hi, q)); }); v[0] = s0; v[n - 1] = e0; return v; });
+    var POS = KS.map(function (k, j) { var idx = cast.map(function (x, i) { return i; }).sort(function (a, b) { return V[a][j] - V[b][j] || cast[a][1][n - 1] - cast[b][1][n - 1] || cast[a][1][0] - cast[b][1][0]; }); var p = []; idx.forEach(function (i, r) { p[i] = r; }); return p; });
+    // one shape per name for the whole run: its best fit at its biggest slot; a name that ever sits in the small print stays on one line
+    var SH = cast.map(function (x, i) { var mn = Math.min.apply(null, POS.map(function (p) { return p[i]; })), small = POS.some(function (p) { return p[i] >= LN; });
+      if (small || mn >= LN) return { L: [x[0]], lead: false }; var b = best(x[0], S[mn]); return { L: b.L, lead: b.lead }; });
+    // the small print: one size for the run, small enough that every step fits in two rows (the still posters keep their old cap)
+    var FS = Q.FS, CFS = Q.CFS, sw = function (t, fs) { var m = mw(t, fs); return (m ? m : tw(t) * fs * 1.14) + t.length * 0.04 * fs + 2; };
+    var rowsAt = function (j, sc) { var smalls = cast.map(function (x, i) { return i; }).filter(function (i) { return POS[j][i] >= LN; }).sort(function (a, b) { return POS[j][a] - POS[j][b]; });
+      var rows = [[]], rw = [0], shown = 0, hid = [], over = false;
+      smalls.forEach(function (i) { var nm = cast[i][0], isC = nm === D.clim, fs = (isC ? CFS : FS) * sc, w = sw(nm, fs); if (w > ROWMAX) { fs = Math.max(8, fs * ROWMAX / w * 0.97); w = sw(nm, fs); }
+        var SEP = 14 + 0.6 * fs * 0.8 + 12, r = rows.length - 1, add = rows[r].length ? SEP + w : w;
+        if (rw[r] + add > ROWMAX) { if (r === 0) { rows.push([]); rw.push(0); r = 1; add = w; } else { over = true; hid.push(i); return; } }
+        if (still && shown >= (Q.ph ? 6 : 16) && !isC) { hid.push(i); return; }
+        rw[r] += add; rows[r].push({ i: i, fs: fs, w: w, sep: SEP }); shown++; });
+      return { rows: rows, rw: rw, hid: hid, over: over }; };
+    var sc = 1; if (!still) for (var tries = 0; tries < 12; tries++) { var ok = true; for (var j0 = 0; j0 < KS.length; j0++) if (rowsAt(j0, sc).over) { ok = false; break; } if (ok) break; sc *= 0.94; }
+    // the layout at every step
+    var CH = ['x', 'y', 'k', 'f', 'r', 'g', 'b', 'sep', 'col', 'vis', 'v'], RCH = ['y', 'a', 'b', 'o'];
+    var LAY = KS.map(function (k, j) { var P = cast.map(function () { return null; }), R = rowsAt(j, sc);
+      cast.forEach(function (x, i) { var r = POS[j][i]; if (r < LN) { var s = S[r], f = fitO(SH[i], s).f, c = rgb(s.ink); P[i] = { x: s.x + 0.5 * s.w, y: s.y + s.h, k: 0.5, f: f, r: c[0], g: c[1], b: c[2], sep: 0, col: 1, vis: 1, v: V[i][j] }; } });
       var rules = [];
-      rows.forEach(function (row, ri) { var x = (IW - rw[ri]) / 2, yb = ROW1 + ri * Q.ROWH; if (row.length) rules.push({ y: yb - 8, a: x - 20, b: x + rw[ri] + 20 });
-        row.forEach(function (q, i) { if (i) x += SEP; P[q.x0[0]] = { x: x, y: yb, k: 0, f: q.fs, L: [q.x0[0]], sep: i > 0, ink: A, line: 10 + ri * 20 + i, on: false }; x += q.w; }); });
-      P.__rules = rules; return P; };
-    var k0 = Math.floor(tp), k1 = Math.min(n - 1, k0 + 1), fk = tp - k0, PA = posAt(k0), PB = posAt(k1);
-    var same = function (a, b) { return a.x === b.x && a.y === b.y && a.f === b.f && a.k === b.k; };
-    // every name takes the same time on one smooth curve (Zale, Nov 9 00:27)
-    var G = seg(n, fk);
-    var LAST = S[LN - 1], VOFF = function (nm, f0, src) { return { x: LAST.x + 0.5 * LAST.w, y: LAST.y + LAST.h + 14, k: 0.5, f: Math.min(f0 || LAST.mx, LAST.mx) * 0.8, L: src.L, lead: src.lead, ink: A, line: LN, on: true }; };
-    var op = function (nm, a, b) { var va = a.vis !== false, vb = b.vis !== false;
-      if (same(a, b)) return va ? [[a, 1, 0]] : [];   /* a name that stays put never dims (review r3 A3) */
-      var SW = 0.42, ln = Math.min(11, Math.max(0, Math.min(a.on ? a.line : 11, b.on ? b.line : 11))), g = sm((G - (ln / 11) * (1 - SW)) / SW), mv = g > 0 && g < 1;   /* names take turns, top of the bill first, so only a few are in flight at once (review r2 A5) */
-      if (!a.on && !b.on) { var s2 = sm((g - 0.3) / 0.4), dip = 1 - 0.7 * Math.sin(G * Math.PI); return [va ? [a, (1 - s2) * dip, g] : null, vb ? [b, s2 * dip, g] : null].filter(Boolean); }
-      var A0 = a.on ? a : VOFF(nm, b.f, b), B0 = b.on ? b : VOFF(nm, a.f, a), up = B0.f > A0.f;
-      var swell = mv ? Math.sin(g * Math.PI) * (nm === D.clim ? 0.06 : up ? 0 : -0.08) : 0;
-      var pos = { x: A0.x + (B0.x - A0.x) * g, y: A0.y + (B0.y - A0.y) * g, k: A0.k + (B0.k - A0.k) * g, f: (A0.f + (B0.f - A0.f) * g) * (1 + swell), ink: mix(A0.ink, B0.ink, g), moving: mv, on: true };
-      var o = 1 - (mv && !up ? 0.2 * Math.sin(g * Math.PI) : 0);   /* fallers step back while names cross (review r2) */ if (!a.on) o *= sm(g / 0.3); if (!b.on) o *= 1 - sm((g - 0.15) / 0.55);
-      var out = [], sameShape = A0.L.join('|') === B0.L.join('|') && !!A0.lead === !!B0.lead;
-      if (sameShape) out.push([Object.assign({}, g < 0.5 ? A0 : B0, pos), o, g]);
-      else { var s3 = sm((g - 0.35) / 0.3); out.push([Object.assign({}, A0, pos, { f: Math.min(pos.f, A0.f) }), o * (1 - s3), g], [Object.assign({}, B0, pos, { f: Math.min(pos.f, B0.f) }), o * s3, g]);   /* each shape stays at or under its own fitted size, so a name in flight stays inside the column (review r3 A4) */ }
-      if (!a.on && va) out.push([a, (1 - sm(g * 3)) * (1 - 0.7 * Math.sin(G * Math.PI)), g]);
-      if (!b.on && vb) out.push([b, sm((g - 0.6) / 0.4) * (1 - 0.7 * Math.sin(G * Math.PI)), g]);
-      return out; };
-    var drawn = []; D.names.forEach(function (x) { op(x[0], PA[x[0]], PB[x[0]]).forEach(function (q) { if (q[1] > 0.005) drawn.push([x, q]); }); });
-    var fTo = function (q) { var b = PB[q[0][0]], a = PA[q[0][0]]; return Math.max(q[1][0].f, b && b.on ? b.f : 0, a && a.on && !(b && b.on) ? 0 : 0); };
-    drawn.sort(function (u, v) { return fTo(u) - fTo(v); }); // bigger names in front, judged by where they are headed
-    var GLOWINK = (K.light && K.light.toUpperCase() !== PAPER.toUpperCase() && K.light.toUpperCase() !== '#FFFFFF') ? K.light : B;
-    var dims = function (p) { var w = Math.max.apply(null, p.L.map(function (t, i) { return tw(t) * (p.lead && i === 0 ? 0.55 : 1); })) * p.f, h = (p.L.length > 1 ? (p.lead ? 1.55 : 2) : 1) * LH * p.f; return { w: w, h: h, cx: p.x + (0.5 - p.k) * w, cy: p.y - h / 2 }; };
+      R.rows.forEach(function (row, ri) { var x = (IW - R.rw[ri]) / 2, yb = ROW1 + ri * Q.ROWH, c = rgb(A); rules.push({ y: yb - 8, a: x - 20, b: x + R.rw[ri] + 20, o: row.length ? 1 : 0 });
+        row.forEach(function (q, qi) { if (qi) x += q.sep; P[q.i] = { x: x, y: yb, k: 0, f: q.fs, r: c[0], g: c[1], b: c[2], sep: qi ? 1 : 0, col: 0, vis: 1, v: V[q.i][j] }; x += q.w; }); });
+      while (rules.length < 2) rules.push({ y: ROW1 + rules.length * Q.ROWH - 8, a: IW / 2, b: IW / 2, o: 0 });
+      R.hid.forEach(function (i) { var c = rgb(A); P[i] = { x: IW / 2, y: ROW1 + Q.ROWH, k: 0.5, f: FS, r: c[0], g: c[1], b: c[2], sep: 0, col: 0, vis: 0, v: V[i][j] }; });
+      return { P: P, rules: rules }; });
+    // step times: half by date, half evenly, so a short last step never turns into a hop
+    var W = D.when && D.when.length === n ? D.when : KS.map(function (k, j) { return KS.length > 1 ? j / (KS.length - 1) : 1; });
+    var E = KS.map(function (k, j) { return KS.length > 1 ? 0.5 * W[k] + 0.5 * j / (KS.length - 1) : 1; });
+    var FN = cast.map(function (x, i) { var o = {}; CH.forEach(function (c) { o[c] = mono(E, LAY.map(function (L) { return L.P[i][c]; })); }); return o; });
+    var RF = [0, 1].map(function (ri) { var o = {}; RCH.forEach(function (c) { o[c] = mono(E, LAY.map(function (L) { return L.rules[ri][c]; })); }); return o; });
+    var FR = mono(E, KS.map(function (k) { return W[k]; }));
+    var at = function (e) { return { N: FN.map(function (fn) { var o = {}; CH.forEach(function (c) { o[c] = fn[c](e); }); return o; }), R: RF.map(function (fn) { var o = {}; RCH.forEach(function (c) { o[c] = fn[c](e); }); return o; }) }; };
+    var lift = function (x) { return Math.log((x[1][0] + 1) / (x[1][n - 1] + 1)); }, gain = function (x) { return x[1][0] - x[1][n - 1]; };
+    var RISERS = still ? [] : cast.filter(function (x) { return x[1][n - 1] < LN && gain(x) >= 3 && lift(x) >= Math.log(2); }).sort(function (p, q) { return lift(q) - lift(p); }).slice(0, 3).map(function (x) { return x[0]; });
+    var drawOrder = cast.map(function (x, i) { return i; }).sort(function (a, b) { return cast[b][1][n - 1] - cast[a][1][n - 1]; });   /* today's biggest drawn last, on top */
+    return (PLANS[key] = { S: S, IW: IW, BOXH: BOXH, ROW1: ROW1, DATESY: ROW1 + Q.DGAP, TOP: TOP, A: A, B: B, H: H, cast: cast, SH: SH, at: at, frac: function (e) { return still ? 1 : clamp01(FR(e)); }, END: at(1), RISERS: RISERS, order: drawOrder, still: still, n: n }); }
+
+  // One frame at eased progress e (0 = the printed bill, 1 = today). back = { e0, k }: Replay's straight glide from e0 back to the printed bill.
+  function frame(D, y, e, Q, back) {
+    var K = KIT[y] || {}, PL = plan(D, y, Q), PAPER = D.paper, A = PL.A, B = PL.B, IW = PL.IW, BOXH = PL.BOXH, TOP = PL.TOP, S = PL.S, n = PL.n;
+    var lp = function (A0, A1, kk) { var lq = function (a, b) { var o = {}; for (var c in a) o[c] = a[c] + (b[c] - a[c]) * kk; return o; }; return { N: A0.N.map(function (a, i) { return lq(a, A1.N[i]); }), R: A0.R.map(function (a, i) { return lq(a, A1.R[i]); }) }; };
+    var B0 = back && !PL.still ? PL.at(back.e0) : null, B1 = B0 ? PL.at(0) : null;
+    var stAt = function (q) { return PL.still ? PL.END : B0 ? lp(B0, B1, q) : PL.at(q); }, par = B0 ? back.k : e, ST = stAt(par);
+    var dims = function (p, L, lead) { var w = Math.max.apply(null, L.map(function (t, i) { return tw(t) * (lead && i === 0 ? 0.55 : 1); })) * p.f, h = (L.length > 1 ? (lead ? 1.55 : 2) : 1) * LH * p.f; return { w: w, h: h, cx: p.x + (0.5 - p.k) * w, cy: p.y - h / 2 }; };
+    var items = PL.cast.map(function (x, i) { var p = ST.N[i]; return { x: x, p: p, sh: PL.SH[i], d: dims(p, PL.SH[i].L, PL.SH[i].lead), o: clamp01(p.vis), end: x[1][n - 1] }; });
+    /* when two names pass, the one lower on today's bill steps back. Crossings can last two or three frames, so the step-back is spread over
+       about half a second around each one (a tent-weighted look at nearby moments): it eases in and out instead of flashing. */
+    var over = function (N) { var D2 = N.map(function (p, i) { return dims(p, PL.SH[i].L, PL.SH[i].lead); }); return N.map(function (pa, i) { if (pa.vis <= 0) return 0; var dm = 0, a = D2[i];
+      N.forEach(function (pb, j) { if (j === i || pb.vis <= 0 || items[j].end >= items[i].end) return; var b = D2[j], ox = (a.w + b.w) / 2 - Math.abs(a.cx - b.cx), oy = (a.h + b.h) / 2 - Math.abs(a.cy - b.cy); if (ox <= 0 || oy <= 0) return;
+        dm = Math.max(dm, clamp01(oy / (Math.min(a.h, b.h) * 0.9)) * clamp01(ox / (Math.min(a.w, b.w) * 0.5))); }); return dm; }); };
+    if (!PL.still) { var ck = B0 ? 'b' + back.e0.toFixed(4) : 'run', CV = PL.dimC && PL.dimC[ck];
+      if (!CV) { var G = B0 ? 240 : 800, RAD = Math.round(G * (B0 ? 0.12 : 0.045)), raw = []; for (var gi = 0; gi <= G; gi++) raw.push(over(stAt(gi / G).N));
+        CV = raw.map(function (r, gi) { return r.map(function (v0, i) { var m = 0; for (var d = -RAD; d <= RAD; d++) { var g2 = gi + d; if (g2 < 0 || g2 > G) continue; m = Math.max(m, raw[g2][i] * (1 - Math.abs(d) / (RAD + 1))); } return m; }); });
+        PL.dimC = B0 ? { run: PL.dimC && PL.dimC.run } : (PL.dimC || {}); PL.dimC[ck] = CV; }
+      var gp = par * (CV.length - 1), g0 = Math.min(CV.length - 2, Math.floor(gp)), gf = gp - g0;
+      var sm1 = function (t) { t = clamp01(t); return t * t * (3 - 2 * t); }, edge = sm1(e / 0.06) * sm1((1 - e) / 0.06);   /* both printed bills rest in full ink */
+      var R0 = B0 && PL.dimC.run ? (function () { var C2 = PL.dimC.run, q2 = back.e0 * (C2.length - 1), h0 = Math.min(C2.length - 2, Math.floor(q2)), hf = q2 - h0; var ed = sm1(back.e0 / 0.06) * sm1((1 - back.e0) / 0.06); return C2[h0].map(function (v, i) { return (v + (C2[h0 + 1][i] - v) * hf) * ed; }); })() : null, kS = B0 ? back.k * back.k * (3 - 2 * back.k) : 0;
+      items.forEach(function (a, i) { var dv = (CV[g0][i] + (CV[g0 + 1][i] - CV[g0][i]) * gf) * (B0 ? 1 : edge); if (B0) dv = (R0 ? R0[i] : 0) * (1 - kS) + dv * Math.sin(Math.PI * back.k);   /* the replay glide starts from the run's own step-back and ends with none */
+        a.o *= 1 - 0.85 * dv; }); }
+    // the eye follows the climbers: an act on its way down steps back while it moves (one dip, on its own progress), then lands in full ink
+    items.forEach(function (a) { var v0 = a.x[1][0], v1 = a.x[1][n - 1]; if (PL.still || v1 <= v0) return; var pr = clamp01((a.p.v - v0) / (v1 - v0)); a.o *= 1 - 0.68 * clamp01((v1 - v0 - 1) / 5) * Math.sin(Math.PI * pr); });   /* a slip of a place or two barely shows; a real fall steps well back */
+    var GLOWINK = (K.light && K.light.toUpperCase() !== PAPER.toUpperCase() && K.light.toUpperCase() !== '#FFFFFF') ? K.light : B, ACC = K.head && K.hc >= 3 ? K.head : A;
     var h = '';
     // faint halftone glow behind the biggest names (Zale: subtle, never tacky)
-    drawn.forEach(function (q) { var p = q[1][0], o = q[1][1]; if (!p.on) return; var t = Math.max(0, Math.min(1, (p.f / TOP - 0.62) / 0.85)); if (t <= 0.02) return; var d = dims(p), W = d.w + p.f * 1.3, Hh = d.h + p.f * 0.8, dot = Q.ph ? 0.8 : 1.1;
-      h += '<i aria-hidden="true" style="position:absolute;left:' + (d.cx - W / 2).toFixed(1) + 'px;top:' + (d.cy - Hh / 2).toFixed(1) + 'px;width:' + W.toFixed(1) + 'px;height:' + Hh.toFixed(1) + 'px;pointer-events:none;background-image:radial-gradient(' + GLOWINK + ' ' + dot + 'px,transparent ' + (dot + 0.5) + 'px);background-size:' + (Q.ph ? 4 : 5) + 'px ' + (Q.ph ? 4 : 5) + 'px;opacity:' + (o * (0.12 + 0.26 * t)).toFixed(3) + ';-webkit-mask-image:radial-gradient(closest-side,#000 ' + (30 + 30 * t).toFixed(0) + '%,transparent 100%);mask-image:radial-gradient(closest-side,#000 ' + (30 + 30 * t).toFixed(0) + '%,transparent 100%)"></i>'; });
-    // the crown: the printed ray fans belong to the top line and pass to the new #1
-    var crownOf = [];
-    D.names.forEach(function (x) { var a = PA[x[0]], b = PB[x[0]], wa = a && a.on && a.line === 0 ? 1 : 0, wb = b && b.on && b.line === 0 ? 1 : 0; if (!wa && !wb) return;
-      var g = same(a, b) ? 1 : G, w = wa && wb ? 1 : wa ? 1 - sm(g * 1.4) : sm((g - 0.85) / 0.15); if (w > 0.01) crownOf.push([x[0], w]); });
-    var cwOf = function (nm) { var c = crownOf.filter(function (c) { return c[0] === nm; })[0]; return c ? c[1] : 0; };
-    // risers: the three biggest climbs relative to where they started (10th to 1st beats 41st to 5th), at least 3 places and at least double
-    var ACC = K.head && K.hc >= 3 ? K.head : A, lift = function (x) { return Math.log((x[1][0] + 1) / (x[1][n - 1] + 1)); }, gain = function (x) { return x[1][0] - x[1][n - 1]; };
-    var RISERS = n < 2 ? [] : D.names.filter(function (x) { return x[1][n - 1] < LN && gain(x) >= 3 && lift(x) >= Math.log(2); }).sort(function (p, q) { return lift(q) - lift(p); }).slice(0, 3).map(function (x) { return x[0]; });
-    var showRise = function (x) { if (RISERS.indexOf(x[0]) < 0) return 0; if (tp >= n - 1 - 1e-3) return 1; var now = x[1][k0] + (x[1][k1] - x[1][k0]) * G; return sm(Math.max(0, Math.min(1, (x[1][0] - now) / gain(x) * 1.6))); };
+    PL.order.forEach(function (i) { var q = items[i], p = q.p, o = q.o; if (o <= 0.005) return; var t = Math.max(0, Math.min(1, (p.f / TOP - 0.62) / 0.85)); if (t <= 0.02) return; var d = q.d, W = d.w + p.f * 1.3, Hh = d.h + p.f * 0.8, dot = Q.ph ? 0.8 : 1.1;
+      h += '<i aria-hidden="true" style="position:absolute;left:' + (d.cx - W / 2).toFixed(1) + 'px;top:' + (d.cy - Hh / 2).toFixed(1) + 'px;width:' + W.toFixed(1) + 'px;height:' + Hh.toFixed(1) + 'px;pointer-events:none;background-image:radial-gradient(' + GLOWINK + ' ' + dot + 'px,transparent ' + (dot + 0.5) + 'px);background-size:' + (Q.ph ? 4 : 5) + 'px ' + (Q.ph ? 4 : 5) + 'px;opacity:' + (o * (0.12 + 0.26 * t) * Math.min(1, t * 4)).toFixed(3) + ';-webkit-mask-image:radial-gradient(closest-side,#000 ' + (30 + 30 * t).toFixed(0) + '%,transparent 100%);mask-image:radial-gradient(closest-side,#000 ' + (30 + 30 * t).toFixed(0) + '%,transparent 100%)"></i>'; });
+    // the crown: the printed ray fans belong to the top line and pass to the new #1, weighted by how close each name is to that line
+    var s0 = S[0], crownW = function (p) { return clamp01(p.col) * clamp01(1 - Math.abs(p.y - (s0.y + s0.h)) / (S[1].y + S[1].h - s0.y - s0.h)); };   /* full on the top line, none by the second */
     var FONT = "font-family:'Bricolage Grotesque',sans-serif;font-stretch:75%;font-variation-settings:'wdth' 75;font-weight:800";
+    var reachOf = function (p, d, crw) { if (crw < 0.01) return 0; var gap = Math.max(8, p.f * 0.12), sp = Math.min(Math.min(p.f * 0.62, 90), d.cx - d.w / 2 - s0.x - gap); return sp < 20 ? 0 : (gap + sp * Math.cos(36 * Math.PI / 180) + 6) * crw; };   /* same threshold as the fans themselves: no room kept for rays that are not drawn */
+    // risers: where the FROM #n note goes is decided once, from today's bill, so it never switches sides mid-flight
+    if (!PL.noteAt) { PL.noteAt = {}; PL.cast.forEach(function (x, i) { if (PL.RISERS.indexOf(x[0]) < 0) return; var p = PL.END.N[i], d = dims(p, PL.SH[i].L, PL.SH[i].lead), crw = crownW(p), reach = reachOf(p, d, crw), fsM = Math.max(Q.ph ? 9 : 11, p.f * 0.42) / p.f, nf = Math.min(16, Math.max(Q.ph ? 9 : 12, p.f * 0.2));
+      var noteT = 'FROM #' + (x[1][0] + 1), noteW = tw(noteT) * nf + noteT.length * 0.08 * nf, gapN = Math.max(8, p.f * 0.2), fits = d.cx + d.w / 2 + reach + gapN + noteW <= s0.x + s0.w + (Q.ph ? 4 : 30), roomy = reach === 0 || d.cx - d.w / 2 - reach - p.f * fsM * 1.6 >= s0.x;
+      PL.noteAt[x[0]] = { fits: fits, roomy: roomy, show: roomy && D.src === 'real billing' && (Q.ph ? fits : (x[1][n - 1] !== 0 || fits)) }; }); }
     var fans = '';
-    drawn.forEach(function (q) { var x = q[0], p = q[1][0], o = q[1][1], g = q[1][2], cl = x[0] === D.clim, al = p.k < 0.25 ? 'left' : p.k > 0.75 ? 'right' : 'center', hh = hash(x[0]);
-      var two = p.L.length > 1, small = !p.on, big = p.f >= TOP * 0.5, inkMain = p.ink, inkLead = p.ink === A ? B : A;
-      var a0 = PA[x[0]], b0 = PB[x[0]], down = g > 0 && g < 1 && a0.on && (!b0.on || b0.line > a0.line); if (down) o = o * (1 - 0.15 * Math.sin(g * Math.PI));
-      var mask = big ? ';-webkit-mask-image:' + WORN + ';mask-image:' + WORN + ';-webkit-mask-size:200px;mask-size:200px;-webkit-mask-position:' + (hh % 200) + 'px ' + ((hh >> 8) % 200) + 'px;mask-position:' + (hh % 200) + 'px ' + ((hh >> 8) % 200) + 'px' : '';
-      var lineSt = function (isLead, ink) { return (small ? 'display:inline' : 'display:block;width:fit-content;' + (al === 'left' ? 'margin-right:auto' : al === 'right' ? 'margin-left:auto' : 'margin:0 auto')) + ';color:' + ink + (isLead ? ';font-size:.55em;line-height:1;margin-bottom:.06em' : '') + mask; };
-      var rise = small ? 0 : showRise(x), fsM = Math.max(Q.ph ? 9 : 11, p.f * 0.42) / p.f, crw = cwOf(x[0]), d = dims(p);
-      var reach = (function () { if (crw < 0.01 || small) return 0; var gap = Math.max(8, p.f * 0.12), sp = Math.min(Math.min(p.f * 0.62, 90), d.cx - d.w / 2 - S[0].x - gap); return sp < 9 ? 0 : (gap + sp * Math.cos(36 * Math.PI / 180) + 6) * crw; })();
-      if (crw > 0.01 && !small) { var gapF = Math.max(8, p.f * 0.12), len = Math.min(p.f * 0.62, 90), L0 = d.cx - d.w / 2, R0 = d.cx + d.w / 2, room = { l: L0 - S[0].x - gapF, r: S[0].x + S[0].w - R0 - gapF }, swd = Math.max(2, p.f * 0.035);
+    PL.order.forEach(function (i) { var q = items[i], x = q.x, p = q.p, o = q.o, d = q.d; if (o <= 0.005) return; var L = q.sh.L, lead = q.sh.lead, two = L.length > 1, hh = hash(x[0]);
+      var c = hex([p.r, p.g, p.b]), inkLead = c.toUpperCase() === A.toUpperCase() ? B : A, crw = crownW(p), reach = reachOf(p, d, crw);
+      var bigT = clamp01((p.f / TOP - 0.3) / 0.3), ls = (0.04 - 0.05 * bigT).toFixed(3) + 'em';   /* letter spacing follows the size, no switch */
+      var mask = ';-webkit-mask-image:' + WORN + ';mask-image:' + WORN + ';-webkit-mask-size:200px;mask-size:200px;-webkit-mask-position:' + (hh % 200) + 'px ' + ((hh >> 8) % 200) + 'px;mask-position:' + (hh % 200) + 'px ' + ((hh >> 8) % 200) + 'px';
+      var lineSt = function (isLead, ink) { return 'display:block;width:fit-content;margin:0 ' + (p.k < 0.25 ? 'auto 0 0' : 'auto') + ';color:' + ink + (isLead ? ';font-size:.55em;line-height:1;margin-bottom:.06em' : '') + mask; };
+      if (crw > 0.01) { var gapF = Math.max(8, p.f * 0.12), len = Math.min(p.f * 0.62, 90), L0 = d.cx - d.w / 2, R0 = d.cx + d.w / 2, room = { l: L0 - s0.x - gapF, r: s0.x + s0.w - R0 - gapF }, swd = Math.max(2, p.f * 0.035);
         var fan = function (side) { var sp = Math.min(len, room[side]); if (sp < 20) return ''; var x0 = side === 'l' ? L0 - gapF : R0 + gapF, dir = side === 'l' ? -1 : 1;
-          return [-36, -18, 0, 18, 36].map(function (deg, i) { var r = deg * Math.PI / 180, l = sp * (i % 2 ? 0.7 : 1); return '<line x1="' + x0.toFixed(1) + '" y1="' + (d.cy + Math.sin(r) * d.h * 0.18).toFixed(1) + '" x2="' + (x0 + dir * Math.cos(r) * l).toFixed(1) + '" y2="' + (d.cy + Math.sin(r) * (d.h * 0.18 + l)).toFixed(1) + '"/>'; }).join(''); };
-        fans += '<g stroke="' + (p.ink === A ? B : A) + '" stroke-width="' + swd.toFixed(1) + '" stroke-linecap="square" opacity="' + (crw * o).toFixed(3) + '">' + fan('l') + fan('r') + '</g>'; }
-      var roomy = reach === 0 || d.cx - d.w / 2 - reach - p.f * fsM * 1.6 >= S[0].x;
-      var cyEm = p.lead ? 0.61 + LH / 2 : two ? LH : LH / 2, nf = Math.min(16, Math.max(Q.ph ? 9 : 12, p.f * 0.2));
-      var noteT = 'FROM #' + (x[1][0] + 1), shortT = '#' + (x[1][0] + 1), noteW = tw(noteT) * nf + noteT.length * 0.08 * nf, shortW = tw(shortT) * nf + shortT.length * 0.08 * nf, gapN = Math.max(8, p.f * 0.2);
-      var noteFits = d.cx + d.w / 2 + reach + gapN + noteW <= S[0].x + S[0].w + (Q.ph ? 4 : 30), noteO = Math.pow(Math.max(0, Math.min(1, rise)), 3);
-      var isTop = x[1][n - 1] === 0, showNote = rise > 0.01 && roomy && noteO > 0.01 && D.src === 'real billing' && (Q.ph ? noteFits : (!isTop || noteFits)),   /* phone: a FROM #n note shows only where it fits to the right; the ▲ still marks the climb */ triPx = p.f * fsM;
+          return [-36, -18, 0, 18, 36].map(function (deg, j) { var r = deg * Math.PI / 180, l = sp * (j % 2 ? 0.7 : 1); return '<line x1="' + x0.toFixed(1) + '" y1="' + (d.cy + Math.sin(r) * d.h * 0.18).toFixed(1) + '" x2="' + (x0 + dir * Math.cos(r) * l).toFixed(1) + '" y2="' + (d.cy + Math.sin(r) * (d.h * 0.18 + l)).toFixed(1) + '"/>'; }).join(''); };
+        fans += '<g stroke="' + inkLead + '" stroke-width="' + swd.toFixed(1) + '" stroke-linecap="square" opacity="' + (crw * o).toFixed(3) + '">' + fan('l') + fan('r') + '</g>'; }
+      var NA = PL.noteAt[x[0]], rise = 0;
+      if (NA) { var v0 = x[1][0], v1 = x[1][n - 1]; rise = back ? clamp01(1 - back.k) * clamp01((v0 - PL.at(back.e0).N[i].v) / (v0 - v1) * 1.25) : clamp01((v0 - p.v) / (v0 - v1) * 1.25); rise = rise * rise * (3 - 2 * rise); }
+      var fsM = Math.max(Q.ph ? 9 : 11, p.f * 0.42) / p.f, cyEm = lead ? 0.61 + LH / 2 : two ? LH : LH / 2, nf = Math.min(16, Math.max(Q.ph ? 9 : 12, p.f * 0.2)), triPx = p.f * fsM;
+      var noteT = 'FROM #' + (x[1][0] + 1), shortT = '#' + (x[1][0] + 1), shortW = tw(shortT) * nf + shortT.length * 0.08 * nf, gapN = Math.max(8, p.f * 0.2), noteO = Math.pow(rise, 3), showNote = NA && NA.show && noteO > 0.01, nFits = NA && NA.fits;
       var pre = '', post = '';
-      if (p.sep) pre = '<span style="position:absolute;right:100%;top:.32em;margin-right:' + Math.round((26 + 0.48 * p.f) / 2) + 'px;transform:translateX(50%);font-size:.6em;line-height:1;letter-spacing:0;color:' + B + '">★</span>';   /* the star sits in the gap, never pushes the name (Zale, Nov 9 09:02) */
-      else if (rise > 0.01 && roomy && !(x[1][n - 1] === 0 && tp >= n - 1 - 1e-3) && crw < 0.5) pre = '<span aria-hidden="true" style="position:absolute;right:100%;top:' + (cyEm / fsM - 0.6 - (showNote && !noteFits ? (nf * 0.55 + 2) / triPx * noteO : 0)).toFixed(2) + 'em;margin-right:' + (0.5 + reach / (p.f * fsM)).toFixed(3) + 'em;font-size:' + fsM.toFixed(3) + 'em;line-height:1;letter-spacing:0;color:' + ACC + ';opacity:' + rise.toFixed(3) + '">▲</span>';
-      if (showNote) { var nst = 'font-size:' + nf.toFixed(1) + 'px;line-height:1;text-shadow:none;letter-spacing:.08em;white-space:nowrap;color:' + ACC + ';opacity:' + noteO.toFixed(3);
-        post = noteFits ? '<span aria-hidden="true" style="position:absolute;left:100%;top:' + (cyEm * p.f - nf * 0.5).toFixed(1) + 'px;margin-left:' + (gapN + reach).toFixed(1) + 'px;' + nst + '">' + noteT + '</span>'
+      if (p.sep > 0.01) pre = '<span aria-hidden="true" style="position:absolute;right:100%;top:.32em;margin-right:' + Math.round((26 + 0.48 * p.f) / 2) + 'px;transform:translateX(50%);font-size:.6em;line-height:1;letter-spacing:0;color:' + B + ';opacity:' + clamp01(p.sep * (1 - p.col)).toFixed(3) + '">★</span>';
+      if (NA && NA.roomy && rise > 0.01) pre += '<span aria-hidden="true" style="position:absolute;right:100%;top:' + (cyEm / fsM - 0.6 - (showNote && !nFits ? (nf * 0.55 + 2) / triPx * noteO : 0)).toFixed(2) + 'em;margin-right:' + (0.5 + reach / (p.f * fsM)).toFixed(3) + 'em;font-size:' + fsM.toFixed(3) + 'em;line-height:1;letter-spacing:0;color:' + ACC + ';opacity:' + rise.toFixed(3) + '">▲</span>';
+      if (showNote) { var nst = 'font-size:' + nf.toFixed(1) + 'px;line-height:1;letter-spacing:.08em;white-space:nowrap;color:' + ACC + ';opacity:' + noteO.toFixed(3);
+        post = nFits ? '<span aria-hidden="true" style="position:absolute;left:100%;top:' + (cyEm * p.f - nf * 0.5).toFixed(1) + 'px;margin-left:' + (gapN + reach).toFixed(1) + 'px;' + nst + '">' + noteT + '</span>'
           : '<span aria-hidden="true" style="position:absolute;right:100%;top:' + (cyEm * p.f + triPx * 0.42 + 3).toFixed(1) + 'px;margin-right:' + (0.5 * triPx + reach + (triPx * 0.8 - shortW) / 2).toFixed(1) + 'px;' + nst + '">' + shortT + '</span>'; }
-      var shadow = p.head ? ';text-shadow:' + (Q.ph ? 2 : 3) + 'px ' + (Q.ph ? 2 : 3) + 'px 0 ' + B + 'D9' : '';
-      h += '<span style="position:absolute;left:' + p.x.toFixed(1) + 'px;top:' + p.y.toFixed(1) + 'px;transform:translate(' + (-p.k * 100).toFixed(1) + '%,-100%);white-space:pre;text-align:' + al + ';' + FONT + ';line-height:' + LH + ';letter-spacing:' + (big ? '-.01em' : '.04em') + ';font-size:' + p.f.toFixed(2) + 'px;opacity:' + o.toFixed(3) + shadow + '">' + pre
-        + '<span style="' + lineSt(p.lead, p.lead ? inkLead : inkMain) + '">' + esc(p.L[0]) + '</span>' + (two ? '<span style="' + lineSt(false, inkMain).replace(/^display:block;/, 'display:block;') + '">' + esc(p.L[1]) + '</span>' : '') + post + '</span>'; });
-    var rules = (fk < 0.5 ? PA.__rules : PB.__rules).map(function (r) { return '<i style="position:absolute;left:0;width:' + Math.max(0, r.a).toFixed(0) + 'px;top:' + r.y + 'px;height:1.5px;background:' + B + '"></i><i style="position:absolute;left:' + r.b.toFixed(0) + 'px;right:0;top:' + r.y + 'px;height:1.5px;background:' + B + '"></i>'; }).join('');
+      h += '<span style="position:absolute;left:' + p.x.toFixed(2) + 'px;top:' + p.y.toFixed(2) + 'px;transform:translate(' + (-p.k * 100).toFixed(2) + '%,-100%);white-space:pre;text-align:' + (p.k < 0.25 ? 'left' : 'center') + ';' + FONT + ';line-height:' + LH + ';letter-spacing:' + ls + ';font-size:' + p.f.toFixed(2) + 'px;opacity:' + o.toFixed(3) + '">' + pre
+        + '<span style="' + lineSt(lead, lead ? inkLead : c) + '">' + esc(L[0]) + '</span>' + (two ? '<span style="' + lineSt(false, c) + '">' + esc(L[1]) + '</span>' : '') + post + '</span>'; });
+    var rules = ST.R.map(function (r) { if (r.o <= 0.01) return ''; var op = ';opacity:' + clamp01(r.o).toFixed(3); return '<i style="position:absolute;left:0;width:' + Math.max(0, r.a).toFixed(1) + 'px;top:' + r.y.toFixed(1) + 'px;height:1.5px;background:' + B + op + '"></i><i style="position:absolute;left:' + r.b.toFixed(1) + 'px;right:0;top:' + r.y.toFixed(1) + 'px;height:1.5px;background:' + B + op + '"></i>'; }).join('');
     var burst = fans ? '<i aria-hidden="true" style="position:absolute;left:0;top:0;width:' + IW + 'px;height:' + BOXH + 'px;background:' + enc('<svg xmlns="http://www.w3.org/2000/svg" width="' + IW + '" height="' + BOXH + '">' + fans + '</svg>') + ' 0 0/100% 100% no-repeat;pointer-events:none;-webkit-mask-image:' + WORN + ';mask-image:' + WORN + ';-webkit-mask-size:200px;mask-size:200px"></i>' : '';
     var artH = Q.ART.h || (S[9].y + S[9].h - Q.ART.y);
     var art = D.art ? '<img src="' + esc(D.art) + '" alt="" decoding="async" style="position:absolute;left:' + Q.ART.x + 'px;top:' + Q.ART.y + 'px;width:' + Q.ART.w + 'px;height:' + artH + 'px;object-fit:contain;object-position:center center">'
       : '<div aria-hidden="true" style="position:absolute;left:' + (Q.ART.x + (Q.ph ? 0 : 40)) + 'px;top:' + (Q.ph ? 0 : 60) + 'px;width:' + (Q.ART.w - (Q.ph ? 0 : 80)) + 'px;height:' + (Q.ph ? Math.min(artH, Q.ART.w * 1.6) : artH - 120) + 'px;display:flex;align-items:center;justify-content:center;text-align:center;' + FONT + ';line-height:.86;font-size:' + (Q.ph ? 22 : 80) + 'px;color:' + A + ';border:' + (Q.ph ? 3 : 6) + 'px solid ' + A + '">PICKATHON<br>' + y + '</div>';
     var dl = K.dates ? (K.dates.toUpperCase().replace(/ ?- ?/g, '–') + ' · PENDARVIS FARM' + (Q.ph ? '' : ' · HAPPY VALLEY, OREGON')) : 'PICKATHON ' + y;
-    var dates = '<div style="position:absolute;left:0;right:0;top:' + DATESY + 'px;text-align:center;white-space:nowrap;' + FONT + ';font-size:' + Q.DATES + 'px;letter-spacing:.08em;color:' + A + '">' + dl.split(' · ').map(function (t, i) { return (i ? '<span style="font-size:.6em;color:' + B + ';margin:0 ' + (Q.ph ? 6 : 12) + 'px;vertical-align:.2em">★</span>' : '') + esc(t); }).join('') + '</div>';
+    var dates = '<div style="position:absolute;left:0;right:0;top:' + PL.DATESY + 'px;text-align:center;white-space:nowrap;' + FONT + ';font-size:' + Q.DATES + 'px;letter-spacing:.08em;color:' + A + '">' + dl.split(' · ').map(function (t, i) { return (i ? '<span style="font-size:.6em;color:' + B + ';margin:0 ' + (Q.ph ? 6 : 12) + 'px;vertical-align:.2em">★</span>' : '') + esc(t); }).join('') + '</div>';
     var rib = '<div style="position:absolute;left:0;right:0;bottom:0;display:flex;align-items:center"><span class="pk-cl-fl" style="--ink:' + A + '"></span><span style="flex:none;height:' + Q.RIB[0] + 'px;padding:0 ' + (Q.ph ? 16 : 36) + 'px;background:' + A + ' linear-gradient(' + PAPER + '80,' + PAPER + '80) 0 4px/100% 1.5px no-repeat;color:' + PAPER + ';' + FONT + ';font-size:' + Q.RIB[1] + 'px;letter-spacing:.1em;display:flex;align-items:center;white-space:nowrap;clip-path:polygon(0 0,100% 0,calc(100% - 14px) 50%,100% 100%,0 100%,14px 50%)">EXPLORE PICKATHON ' + y + ' →</span><span class="pk-cl-fr" style="--ink:' + A + '"></span></div>';
-    return { art: art, html: h + burst + rules + dates + rib, IW: IW, H: BOXH, A: A, B: B, PAPER: PAPER, ACC: ACC, LIGHT: GLOWINK };
+    var frac = PL.still ? 1 : back ? PL.frac(back.e0) * (1 - back.k) : PL.frac(e);
+    return { art: art, html: h + burst + rules + dates + rib, IW: IW, H: BOXH, A: A, B: B, PAPER: PAPER, ACC: ACC, LIGHT: GLOWINK, frac: frac };
   }
 
   // the clock on the poster: a date stamp that counts the summers from the festival to today; tapping it plays again
@@ -1979,8 +2028,8 @@ html.pk-cy-in div:has(> button[aria-label="Listen to Pickathon"]){opacity:0!impo
   }
 
   // the clock above the poster (Zale, Nov 9 09:02: the stamp on the poster crowded the headliner and hid Play again)
-  function timebar(D, y, tp) {
-    var n = D.labels.length, atEnd = tp >= n - 1 - 1e-3, kk = Math.floor(tp), fk = tp - kk, g = seg(n, fk), frac = n > 1 ? Math.min(1, D.when ? D.when[Math.min(kk, n - 1)] + ((D.when[Math.min(kk + 1, n - 1)] - D.when[Math.min(kk, n - 1)]) * g) : (kk + g) / (n - 1)) : 1;
+  function timebar(D, y, tp, F) {
+    var n = D.labels.length, atEnd = tp >= n - 1 - 1e-3, frac = n > 1 ? F.frac : 1;   /* the calendar rides the same curve as the names (Nov 11 refine) */
     var y0 = +y, yNow = n > 1 ? Math.max(y0 + 1, Math.round(y0 + (TODAY - y0) * frac)) : TODAY;
     var line = n < 2 ? 'Ranked by how far each act has gone' : frac <= 0.001 ? (D.src === 'real billing' ? 'The bill as printed in ' + y : 'The bill as booked in ' + y) : (atEnd || yNow >= TODAY) ? 'Ranked today by how far each act has gone' : 'Re-ranked as of ' + yNow;
     var btn = '↺ Replay';   /* Zale, Nov 11 10:10: Home plays once by itself; the only controls are Replay and Another year */
@@ -2001,26 +2050,28 @@ html.pk-cy-in div:has(> button[aria-label="Listen to Pickathon"]){opacity:0!impo
   var MON = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
   function calH(y, frac) { var m0 = 7, tot = (TODAY - (+y)) * 12 + (10 - m0), m = m0 + Math.round(Math.max(0, Math.min(1, frac)) * tot); return '<b class="pk-cl-mo">' + MON[m % 12] + '</b><b class="pk-cl-yr">' + ((+y) + Math.floor(m / 12)) + '</b>'; }
   function stop() { if (S.raf) { cancelAnimationFrame(S.raf); S.raf = null; } S.playing = false; }
-  var invFlow = function (v) { var lo = 0, hi = 1; for (var q = 0; q < 24; q++) { var m = (lo + hi) / 2; if (flow(m) < v) lo = m; else hi = m; } return (lo + hi) / 2; };
   /* Play / replay (Zale, Nov 10): a pause resumes where it stopped; a replay first glides back to the printed bill, holds there a second so the start is clear, then runs. No jumps. */
-  function run(resume) {
-    var D = C[S.y], n = D.labels.length; if (n < 2 || STAT(S.y)) return; S.seen[S.y] = 1;   /* whatever started it, this year has now played */ var from = resume && S.tp > 0 && S.tp < n - 1 - 1e-3 ? S.tp : 0; stop();
-    var tot = n > 2 ? TOTAL : DUR, REW = 900, HOLDS = 1000, t0 = performance.now(), u0 = from ? invFlow(from / (n - 1)) : 0, tp0 = S.tp, rew = !from && tp0 > 0.02 && !RM; S.playing = true;
-    if (!rew && !from) S.tp = 0;
+  /* Play / replay. One fixed run for every year, however many six-month steps it has, on an ease that starts and stops at zero speed (Nov 11 refine:
+     the old curve ended at half speed, so the last moves stopped instead of settling). A replay glides every name straight back to the printed bill,
+     holds there a second so the start is clear, then runs. No jumps. */
+  var RUN = 6400, REW = 900, HOLD = 1000, ease = function (u) { return u <= 0 ? 0 : u >= 1 ? 1 : 0.5 - 0.5 * Math.cos(Math.PI * u); };
+  function run() {
+    var D = C[S.y], n = D.labels.length; if (n < 2 || STAT(S.y)) return; S.seen[S.y] = 1;   /* whatever started it, this year has now played */ stop();
+    var t0 = 0, e0 = S.back ? 0 : S.tp / (n - 1), rew = e0 > 0.002 && !RM; S.playing = true; S.back = null; if (!rew) S.tp = 0;
     var fr = function (now) { var el = now - t0;
-      if (rew && el < REW) { var q = el / REW, k = q * q * (3 - 2 * q); S.tp = tp0 * (1 - k); S.raf = requestAnimationFrame(fr); draw(); return; }
-      var lead = rew ? REW + HOLDS : (from ? 0 : 1000), t = el - lead;
+      if (rew && el < REW) { var q = el / REW; S.back = { e0: e0, k: q * q * (3 - 2 * q) }; S.tp = 0; S.raf = requestAnimationFrame(fr); draw(); return; }
+      S.back = null; var t = el - (rew ? REW + HOLD : 1000);
       if (t < 0) { S.tp = 0; S.raf = requestAnimationFrame(fr); draw(); return; }
-      var u = Math.min(1, u0 + t / tot), done = u >= 1; S.tp = done ? n - 1 : (n - 1) * flow(u); if (done) { S.playing = false; S.raf = null; } else S.raf = requestAnimationFrame(fr); draw(); };
-    draw(); S.raf = requestAnimationFrame(function (now) { t0 = now; fr(now); });
+      var u = Math.min(1, t / RUN), done = u >= 1; S.tp = (n - 1) * ease(u); if (done) { S.playing = false; S.raf = null; } else S.raf = requestAnimationFrame(fr); draw(); };
+    S.raf = requestAnimationFrame(function (now) { t0 = now; fr(now); });
   }
-  function go(y) { stop(); S.y = String(y); var n = C[y].labels.length; S.tp = (n > 1 && !RM && !STAT(y)) ? 0 : n - 1; S.seen[S.y] = 0; draw(); check(); }
+  function go(y) { stop(); S.back = null; S.y = String(y); var n = C[y].labels.length; S.tp = (n > 1 && !RM && !STAT(y)) ? 0 : n - 1; S.seen[S.y] = 0; draw(); check(); }
   function rand() { var P = POOL().filter(function (q) { return String(q) !== S.y; }); if (!S.bag.length) { S.bag = P.slice(); for (var i = S.bag.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)), t = S.bag[i]; S.bag[i] = S.bag[j]; S.bag[j] = t; } } var y = S.bag.pop(); if (String(y) === S.y && S.bag.length) y = S.bag.pop(); go(y); }
 
   function draw() {
     if (!mountEl || !C || !S.y) return;
     var y = S.y, D = C[y], n = D.labels.length, tp = Math.max(0, Math.min(n - 1, S.tp)), wAll = mountEl.clientWidth || 360, ph = wAll < 1000;
-    var Q = cfg(ph, wAll), F = frame(D, y, tp, Q), PW = F.IW + 2 * Q.PADX, PH = F.H + 2 * Q.PADY, TB = timebar(D, y, tp), cap = caption(D, +y, tp), atEnd = tp >= n - 1 - 1e-3;
+    var Q = cfg(ph, wAll), F = frame(D, y, n > 1 ? tp / (n - 1) : 1, Q, S.back), PW = F.IW + 2 * Q.PADX, PH = F.H + 2 * Q.PADY, TB = timebar(D, y, tp, F), cap = caption(D, +y, tp), atEnd = tp >= n - 1 - 1e-3;
     var key = y + '|' + Q.ph + '|' + PW + '|' + PH + '|' + TB.show;
     if (mountEl._key === key && mountEl.querySelector('.pk-cl-layer')) {
       mountEl.querySelector('.pk-cl-layer').innerHTML = F.html;
@@ -2045,7 +2096,7 @@ html.pk-cy-in div:has(> button[aria-label="Listen to Pickathon"]){opacity:0!impo
     h += '</div>';
     if (Q.ph && TB.show) tbH = '<div class="pk-cl-tb pk-cl-tbp"><span class="pk-cl-cal" aria-hidden="true">' + calH(y, TB.frac) + '</span><span class="pk-cl-tr" aria-hidden="true"><i class="pk-cl-tf" style="width:' + (TB.frac * 100).toFixed(1) + '%"></i><b class="pk-cl-tm" style="left:' + (TB.frac * 100).toFixed(1) + '%;opacity:0"></b></span><span class="pk-cl-ty">' + TODAY + '</span><button type="button" class="pk-cta sec pk-cl-rpl" data-cl="play" aria-label="' + TB.aria + '">' + TB.btn + '</button></div>';
     if (RM && n > 1 && !STAT(y)) {   /* Zale, Nov 11: with reduced motion, the printed bill and today's bill side by side, no movement */
-      var top8 = function (k) { return D.names.filter(function (x) { return x[1][k] < Math.min(10, D.ranked || 10); }).sort(function (a, b) { return a[1][k] - b[1][k]; }).slice(0, Q.ph ? 5 : 8).map(function (x) { return '<li>' + esc(x[0]) + '</li>'; }).join(''); };
+      var top8 = function (k) { return D.names.filter(function (x) { return x[1][k] < Math.min(10, D.ranked || 10); }).sort(function (a, b) { return a[1][k] - b[1][k]; }).slice(0, Q.ph ? 4 : 8).map(function (x) { return '<li>' + esc(x[0]) + '</li>'; }).join(''); };
       tbH = '<div class="pk-cl-cmp"><div><p class="pk-cl-cmpk">' + (D.src === 'real billing' ? 'On the ' + y + ' poster' : 'As booked in ' + y) + '</p><ol>' + top8(0) + '</ol></div><div><p class="pk-cl-cmpk pk-cl-cmpn">Ranked today</p><ol>' + top8(n - 1) + '</ol></div></div>';
       if (!Q.ph) h = h.replace('<div class="pk-cl-pw"', tbH + '<div class="pk-cl-pw"');
     }
