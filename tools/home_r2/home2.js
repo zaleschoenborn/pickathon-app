@@ -233,7 +233,16 @@ window.pkClimbRank = function (C, dd) {
     var st = $('[data-h2="strip"]', root), sh = st && window.innerWidth >= 600 ? Math.ceil(st.getBoundingClientRect().height) + 12 : 0;   /* phone: the pill sits in the Another year row */
     var v = Math.round(scr) + 'px|' + tl + 'px|' + sh + 'px';
     if (root._v !== v || !root.style.getPropertyValue('--scr')) {   /* the renderer resets the island's own attributes on every render */ root._v = v; root.style.setProperty('--scr', Math.round(scr) + 'px'); root.style.setProperty('--tl', tl + 'px'); root.style.setProperty('--strip', sh + 'px'); }
-    if (desk) poster(scr); else if (root._ps) { root._ps = ''; ['--h2-ps', '--h2-pmb', '--h2-pml', '--h2-st'].forEach(function (k) { root.style.removeProperty(k); }); }
+    if (desk) { root.style.removeProperty('--h2-hp'); poster(scr); } else fitPh(scr);
+  }
+  /* phone and tablet (QA M2, Nov 11): screens 2 and 3 must fit one screen under the ticket line. Clear the fit, measure the natural height,
+     then shrink only the poster (a scale, centered) and the neighborhood photo by what spills over. Load, resize and redraw only; one layout pass. */
+  function fitPh(scr) {
+    var r = root.style; ['--h2-ps', '--h2-pmb', '--h2-pml', '--h2-st', '--h2-hp'].forEach(function (k) { r.removeProperty(k); }); root._ps = '';
+    var s2 = $('.h2-s2', root), pw = s2 && $('.pk-cl-pw', s2);
+    if (pw) { var PH = pw.offsetHeight, o = s2.scrollHeight - scr; if (PH && o > 0) { var k = Math.max(0.7, (PH - o - 2) / PH); r.setProperty('--h2-ps', k.toFixed(4)); r.setProperty('--h2-pmb', (-(PH * (1 - k))).toFixed(1) + 'px'); } }
+    var s3 = $('.h2-s3', root), ph = s3 && $('.h2-hood-ph', s3);
+    if (ph) { var H = ph.offsetHeight, o3 = s3.scrollHeight - scr; if (H && o3 > 0) r.setProperty('--h2-hp', Math.max(72, H - o3 - 2) + 'px'); }
   }
   /* desktop: scale pk-climb's poster to the right-hand column and the screen, and set the watch strip under the time bar (on draw and resize only) */
   function poster(scr) {

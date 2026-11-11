@@ -278,3 +278,8 @@
   .pkh2 .h2-strip{left:0;right:auto;top:var(--h2-st,auto);width:calc((100% - 48px) * 4 / 10)}
 }
 @media (max-width:379px){.pkh2 .h2-s.h2-s2{padding-bottom:64px}.pkh2 .h2-strip{bottom:-52px;left:0;right:auto}}   /* narrow phones: the watch pill takes its own row under Another year */
+/* phone and tablet (QA M2): the fit set by fitPh() in home2.js. The poster scales from its top center; the photo takes the height left. */
+@media (max-width:1199px){
+  #pkh2 .h2-s2 .pk-cl-pw{transform-origin:top center!important;transform:scale(var(--h2-ps,1))!important;margin-bottom:var(--h2-pmb,0px)!important}
+  #pkh2[style*="--h2-hp"] .h2-s3 .h2-hood-ph{height:var(--h2-hp);aspect-ratio:auto}
+}
