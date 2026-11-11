@@ -12,7 +12,8 @@
      plans     true = payment plans are offered in this round
      season    rounds with no opensAt yet switch on with the site season (lineup out / schedule out / festival)
      working   true = the date is not final (shown to staff only, never to visitors)
-   plans: minOrder = smallest order (before fee) that can use a plan; payments = number of payments, first one today.
+   plans: minOrder = smallest order (before fee) that can use a plan; lastPayment = the date the final payment is due.
+          The number of payments is worked out from the order date: the first today, then one a month, the last on or before lastPayment.
    prices: dollars per item per round, before the 5% fee. Columns: Holiday, Early Bird, Line up, Fan, Summer, Discovery, Festival.
    regularRound: the round whose price is quoted as "regular". */
 window.PK_TICKETS = {
@@ -26,7 +27,7 @@ window.PK_TICKETS = {
     { id: 'festival', name: 'Festival', season: 'fest', plans: true }
   ],
   regularRound: 'fan',
-  plans: { minOrder: 300, payments: 3 },
+  plans: { minOrder: 300, lastPayment: '2027-07-21', lastPaymentWorking: true },   /* Zale, Nov 11 2026: a plan is as many monthly payments as fit between the day of the order and the last-payment date, so everything is paid before the festival. July 21 is the working date. */
   prices: { p4: [555, 570, 580, 600, 620, 635, 645], p3: [460, 475, 485, 505, 525, 540, 550], teen: [277.5, 285, 290, 300, 310, 317.5, 322.5], child: [0, 0, 0, 0, 0, 0, 0], early: [69, 71.25, 72.75, 126.25, 131.25, 135, 137.5], patron: [1720, 1900, 1940, 2020, 2100, 2160, 2200],
   d2: [391, 403.75, 455, 475, 510, 525, 535], dthu: [122.86, 142.5, 145.5, 166.65, 225.75, 232.2, 236.5], dfri: [215, 237.5, 242.5, 252.5, 262.5, 270, 275], dsat: [248, 257.5, 262.5, 272.5, 282.5, 290, 295], dsun: [223, 237.5, 242.5, 252.5, 262.5, 270, 275],
   wpark: [105, 105, 105, 105, 105, 105, 105], opark: [125, 125, 125, 125, 125, 125, 125], bike: [0, 0, 0, 0, 0, 0, 0], shuttle: [50, 50, 50, 50, 50, 50, 50], pthu: [40, 40, 40, 40, 40, 40, 40], pfri: [54.5, 55, 55, 55, 55, 55, 55], psat: [54.5, 55, 55, 55, 55, 55, 55], psun: [54.5, 55, 55, 55, 55, 55, 55],
@@ -71,7 +72,8 @@ window.pkTix = function (testDay, season) {
   dated.forEach(function (r) { if (!next && !r.opened) next = r; });
   if (season && season !== 'off') { var sr = R.filter(function (r) { return r.season === season; })[0]; if (sr) { cur = sr; next = null; } }
   var show = cur || next || dated[dated.length - 1] || R[0];
-  return { rounds: R, by: by, cur: cur, next: next, show: show, col: show.col, open: !!cur, plans: !!(cur && cur.plans), prices: C.prices, regularCol: (by[C.regularRound] || R[0]).col, planMin: C.plans.minOrder, planN: C.plans.payments, today: today };
+  var PLN = (function () { var P = C.plans; if (P.payments) return P.payments; var a = String(today).slice(0, 10).split('-').map(Number), b = String(P.lastPayment || '').split('-').map(Number); if (a.length < 3 || b.length < 3 || !a[0] || !b[0]) return 3; var m = (b[0] - a[0]) * 12 + (b[1] - a[1]) - (a[2] > b[2] ? 1 : 0); return Math.max(1, m + 1); })();
+  return { rounds: R, by: by, cur: cur, next: next, show: show, col: show.col, open: !!cur, plans: !!(cur && cur.plans && PLN >= 2), prices: C.prices, regularCol: (by[C.regularRound] || R[0]).col, planMin: C.plans.minOrder, planN: PLN, planLast: C.plans.lastPayment, today: today };
 };
 /* The page switches by itself at the moment a round opens or ends (no reload), and again when a sleeping tab wakes. */
 (function () {
@@ -4517,7 +4519,7 @@ var TIX = window.pkTix(st.today, SEA), RH = TIX.by.holiday, RE = TIX.by.early;
 var inHoliday = !!(TIX.cur && TIX.cur.id === 'holiday'); var saleOpen = SEA !== 'off' || TIX.open, saleBefore = !saleOpen && !!(TIX.next && TIX.next.id === 'holiday'), saleGap = !saleOpen && !saleBefore; var tierName = TIX.show.name;
 var planLine = function (total) { var N = Math.max(2, TIX.planN), T = Math.round(total * 100), d0 = Math.ceil(T / (N * 100)) * 100, rest = T - d0, k = N - 1, p1 = Math.ceil(rest / k), pl = rest - p1 * (k - 1), mm = function (n) { return '$' + n.toFixed(2).replace(/\.00$/, '').replace(/\B(?=(\d{3})+(?!\d))/g, ','); }; return mm(d0 / 100) + ' today, then ' + (p1 === pl ? k + ' monthly payments of ' + mm(p1 / 100) : k === 2 ? 'monthly payments of ' + mm(p1 / 100) + ' and ' + mm(pl / 100) : (k - 1) + ' monthly payments of ' + mm(p1 / 100) + ' and one of ' + mm(pl / 100)); };
 // 2027 price tiers from 2027_Pickathon_Ticket_Prices.xlsx. Columns: Holiday, Early Bird, Line up, Fan, Summer, Discovery, Festival.
-var planFaq = (function () { var fp = TIX.rounds.filter(function (r) { return r.plans; })[0], np = TIX.show, mm = function (n) { return '$' + String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ','); }; return (TIX.plans ? 'Yes. ' : 'Not during the ' + np.name + (fp ? '. Payment plans open with ' + fp.name + ' pricing. ' : '. ')) + 'Orders over ' + mm(TIX.planMin) + ' can be split into ' + TIX.planN + ' payments: the first today, the rest monthly. Your passes are issued when the plan is paid.'; })();   // the one description of payment plans (Tickets FAQ and Info FAQ)
+var planFaq = (function () { var fp = TIX.rounds.filter(function (r) { return r.plans; })[0], np = TIX.show, mm = function (n) { return '$' + String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ','); }; return (TIX.plans ? 'Yes. ' : 'Not during the ' + np.name + (fp ? '. Payment plans open with ' + fp.name + ' pricing. ' : '. ')) + 'Orders over ' + mm(TIX.planMin) + ' can be split into monthly payments: the first today, the last by ' + new Date(TIX.planLast + 'T12:00:00').toLocaleDateString('en-US', { month: 'long', day: 'numeric' }) + (TIX.planN > 1 ? '. Ordering today, that is ' + TIX.planN + ' payments' : '') + '. Your passes are issued when the plan is paid.'; })();   // the one description of payment plans (Tickets FAQ and Info FAQ)
 // Reminders (on-sale fix 1): there is no text service behind this site yet (PK_SIGNUP.layloEndpoint is blank), so the site only promises what it can do:
 // an email sign-up (sent to the Mailchimp list) and a calendar file the visitor's own phone or computer reminds them with. Set layloEndpoint and the text wording comes back.
 var SMSON = !!((typeof window !== 'undefined' && window.PK_SIGNUP || {}).layloEndpoint), askVia = SMSON ? 'a text or email' : 'an email', askVerb = SMSON ? 'text or email' : 'email';
