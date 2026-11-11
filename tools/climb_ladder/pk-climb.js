@@ -25,13 +25,15 @@
   var LH = 0.86;
   /* TODAY ranks from the class data at page load (Zale, Nov 9 09:54: live data for the posters, not when we build). climbSrc: tools/climb_ladder/build_src.py */
   window.pkClimbLive = function (dd) { try { var B = dd.climb || {}, SRC = dd.climbSrc; if (!SRC) return B; var out = {};
-    var G = { 'Discovery': 0, 'Legend': 0, 'Deep cut': 1, 'Neither': 2 }, CL = { 'Discovery': 0, 'Legend': 1, 'Deep cut': 2, 'Neither': 3 }, CF = { 'high': 5, 'medium-high': 4, 'medium': 3, 'low-medium': 2, 'low': 1 };
+    var G = { 'Discovery': 0, 'Legend': 0, 'Deep cut': 1, 'Neither': 2 }, CL = { 'Legend': 0, 'Discovery': 1, 'Deep cut': 2, 'Neither': 3 }, CF = { 'high': 5, 'medium-high': 4, 'medium': 3, 'low-medium': 2, 'low': 1 };
     var nm = function (s) { return String(s).toLowerCase().replace(/&/g, ' and ').replace(/[“”"]/g, '').replace(/[^a-z0-9 ]/g, '').split(/\s+/).filter(Boolean).join(' '); };
     Object.keys(B).forEach(function (y) { var D0 = B[y], S0 = SRC[y]; if (!S0 || !S0.r || !S0.r.length) { out[y] = D0; return; }
-      var R = S0.r.slice(), pin = S0.pin || [], N = function (r) { return r[1] === 'Neither'; };
+      var R = S0.r.filter(function (r) { return r[1] !== 'Neither'; }), pin = S0.pin || [], N = function (r) { return false; };  /* Zale, Nov 10: the poster shows Legends, Discoveries and Deep cuts only */
       R.sort(function (a, b) { var pa = pin.indexOf(nm(a[0])), pb = pin.indexOf(nm(b[0])); pa = pa < 0 ? 99 : pa; pb = pb < 0 ? 99 : pb; if (pa !== pb) return pa - pb;
-        var ka = [N(a) ? 1 : 0, N(a) ? 0 : -a[2], N(a) ? 0 : -(CF[a[3]] || 0), CL[a[1]] || 0], kb = [N(b) ? 1 : 0, N(b) ? 0 : -b[2], N(b) ? 0 : -(CF[b[3]] || 0), CL[b[1]] || 0];
-        for (var i = 0; i < 4; i++) if (ka[i] !== kb[i]) return ka[i] - kb[i]; return a[0] < b[0] ? -1 : a[0] > b[0] ? 1 : 0; });
+        /* Zale, Nov 10: class first (Legend, Discovery, Deep cut); then magnitude, with Deep cut at -1 for ranking; then confidence; then name. */
+        var adj = function (r) { return (+r[2] || 0) - (r[1] === 'Deep cut' ? 1 : 0); };
+        var ka = [CL[a[1]] || 0, -adj(a), -(CF[a[3]] || 0)], kb = [CL[b[1]] || 0, -adj(b), -(CF[b[3]] || 0)];
+        for (var i = 0; i < 3; i++) if (ka[i] !== kb[i]) return ka[i] - kb[i]; return a[0] < b[0] ? -1 : a[0] > b[0] ? 1 : 0; });
       var now = {}; R.forEach(function (r, i) { now[r[0]] = i; });
       var two = R.some(function (r) { return r[4] !== now[r[0]]; }), cands = R.filter(function (r) { return r[5] && r[4] - now[r[0]] >= 3; }).sort(function (a, b) { return now[a[0]] - now[b[0]]; }), clim = two && cands.length ? cands[0][0] : null;
       var D = Object.assign({}, D0); D.names = R.map(function (r) { return [r[0], clim ? [r[4], now[r[0]]] : [now[r[0]]]]; }); D.labels = clim ? [S0.l0, 'TODAY'] : ['TODAY']; D.clim = clim; D.climFrom = clim ? cands[0][4] : 0; D.climTo = clim ? now[clim] : 0;
@@ -61,9 +63,9 @@
   function cfg(ph, wAvail) {
     if (!ph) return { ph: false, IW: 880, PADX: 40, PADY: 22, ART: { x: 0, y: 118, w: 330 }, COLX: 356, COLW: 524, Y0: 0, LANES: [[80, 74, 2], [44, 41, 1], [44, 41, 1], [44, 41, 1], [33, 29, 1], [33, 29, 1], [33, 29, 1], [33, 29, 1], [33, 29, 1], [33, 29, 1]], GAP: 5, R1: 22, ROWH: 21, FS: 13, CFS: 15, DATES: 15, DGAP: 42, BOT: 100, RIB: [40, 14], STAMP: 0.92 };
     var PW = Math.max(300, Math.min(wAvail, 720)), IW = PW - 32, k = Math.min(1.7, IW / 326), L = function (h, m, ml) { return [Math.round(h * k), Math.round(m * k), ml]; };
-    var AW = Math.round(96 * k);
-    return { ph: true, IW: IW, PADX: 16, PADY: 14, ART: { x: (IW - AW) / 2, y: 0, w: AW, h: Math.round(74 * k) }, COLX: 0, COLW: IW, Y0: Math.round(80 * k),
-      LANES: [L(42, 36, 2), L(27, 23, 1), L(27, 23, 1), L(27, 23, 1), L(21, 17, 1), L(21, 17, 1), L(21, 17, 1), L(21, 17, 1), L(21, 17, 1), L(21, 17, 1)], GAP: Math.round(3 * k), R1: Math.round(13 * k), ROWH: Math.round(16 * k), FS: Math.max(11, 11 * k), CFS: Math.max(12, 12 * k), DATES: Math.max(11, 11 * k), DGAP: Math.round(30 * k), BOT: Math.round(30 * k) + Math.round(Math.max(11, 11 * k)) + 12 + Math.max(34, Math.round(32 * k)), RIB: [Math.max(34, Math.round(32 * k)), Math.max(12, 12 * k)], STAMP: 0.7 * k };
+    var AW = Math.round(96 * k), CG = Math.round(12 * k);   /* Zale, Nov 11: phone keeps the horizontal poster, art static on the left, names move in the column on the right (spec home_climb_phone_nov9b section 1) */
+    return { ph: true, IW: IW, PADX: 16, PADY: 14, ART: { x: 0, y: 0, w: AW }, COLX: AW + CG, COLW: IW - AW - CG, Y0: 0,
+      LANES: [L(40, 28, 2), L(27, 20, 1), L(27, 20, 1), L(27, 20, 1), L(20, 15, 1), L(20, 15, 1), L(20, 15, 1), L(20, 15, 1), L(20, 15, 1), L(20, 15, 1)], GAP: Math.round(3 * k), R1: Math.round(13 * k), ROWH: Math.round(16 * k), FS: Math.max(11, 11 * k), CFS: Math.max(12, 12 * k), DATES: Math.max(11, 11 * k), DGAP: Math.round(30 * k), BOT: Math.round(30 * k) + Math.round(Math.max(11, 11 * k)) + 12 + Math.max(34, Math.round(32 * k)), RIB: [Math.max(34, Math.round(32 * k)), Math.max(12, 12 * k)], STAMP: 0.7 * k };
   }
 
   // One frame of the ladder at time tp (0 = festival, n-1 = today). Returns the paper's inner HTML and its height.
@@ -146,7 +148,7 @@
       var cyEm = p.lead ? 0.61 + LH / 2 : two ? LH : LH / 2, nf = Math.min(16, Math.max(Q.ph ? 9 : 12, p.f * 0.2));
       var noteT = 'FROM #' + (x[1][0] + 1), shortT = '#' + (x[1][0] + 1), noteW = tw(noteT) * nf + noteT.length * 0.08 * nf, shortW = tw(shortT) * nf + shortT.length * 0.08 * nf, gapN = Math.max(8, p.f * 0.2);
       var noteFits = d.cx + d.w / 2 + reach + gapN + noteW <= S[0].x + S[0].w + (Q.ph ? 4 : 30), noteO = Math.pow(Math.max(0, Math.min(1, rise)), 3);
-      var isTop = x[1][n - 1] === 0, showNote = rise > 0.01 && roomy && noteO > 0.01 && D.src === 'real billing' && (!isTop || noteFits), triPx = p.f * fsM;
+      var isTop = x[1][n - 1] === 0, showNote = rise > 0.01 && roomy && noteO > 0.01 && D.src === 'real billing' && (Q.ph ? noteFits : (!isTop || noteFits)),   /* phone: a FROM #n note shows only where it fits to the right; the ▲ still marks the climb */ triPx = p.f * fsM;
       var pre = '', post = '';
       if (p.sep) pre = '<span style="position:absolute;right:100%;top:.32em;margin-right:' + Math.round((26 + 0.48 * p.f) / 2) + 'px;transform:translateX(50%);font-size:.6em;line-height:1;letter-spacing:0;color:' + B + '">★</span>';   /* the star sits in the gap, never pushes the name (Zale, Nov 9 09:02) */
       else if (rise > 0.01 && roomy && !(x[1][n - 1] === 0 && tp >= n - 1 - 1e-3) && crw < 0.5) pre = '<span aria-hidden="true" style="position:absolute;right:100%;top:' + (cyEm / fsM - 0.6 - (showNote && !noteFits ? (nf * 0.55 + 2) / triPx * noteO : 0)).toFixed(2) + 'em;margin-right:' + (0.5 + reach / (p.f * fsM)).toFixed(3) + 'em;font-size:' + fsM.toFixed(3) + 'em;line-height:1;letter-spacing:0;color:' + ACC + ';opacity:' + rise.toFixed(3) + '">▲</span>';
@@ -158,13 +160,13 @@
         + '<span style="' + lineSt(p.lead, p.lead ? inkLead : inkMain) + '">' + esc(p.L[0]) + '</span>' + (two ? '<span style="' + lineSt(false, inkMain).replace(/^display:block;/, 'display:block;') + '">' + esc(p.L[1]) + '</span>' : '') + post + '</span>'; });
     var rules = (fk < 0.5 ? PA.__rules : PB.__rules).map(function (r) { return '<i style="position:absolute;left:0;width:' + Math.max(0, r.a).toFixed(0) + 'px;top:' + r.y + 'px;height:1.5px;background:' + B + '"></i><i style="position:absolute;left:' + r.b.toFixed(0) + 'px;right:0;top:' + r.y + 'px;height:1.5px;background:' + B + '"></i>'; }).join('');
     var burst = fans ? '<i aria-hidden="true" style="position:absolute;left:0;top:0;width:' + IW + 'px;height:' + BOXH + 'px;background:' + enc('<svg xmlns="http://www.w3.org/2000/svg" width="' + IW + '" height="' + BOXH + '">' + fans + '</svg>') + ' 0 0/100% 100% no-repeat;pointer-events:none;-webkit-mask-image:' + WORN + ';mask-image:' + WORN + ';-webkit-mask-size:200px;mask-size:200px"></i>' : '';
-    var artH = Q.ph ? Q.ART.h : (S[9].y + S[9].h - Q.ART.y);
-    var art = D.art ? '<img src="' + esc(D.art) + '" alt="" loading="lazy" decoding="async" style="position:absolute;left:' + Q.ART.x + 'px;top:' + Q.ART.y + 'px;width:' + Q.ART.w + 'px;height:' + artH + 'px;object-fit:contain;object-position:center center">'
-      : '<div aria-hidden="true" style="position:absolute;left:' + (Q.ART.x + (Q.ph ? 0 : 40)) + 'px;top:' + (Q.ph ? 0 : 60) + 'px;width:' + (Q.ART.w - (Q.ph ? 0 : 80)) + 'px;height:' + (Q.ph ? artH : artH - 120) + 'px;display:flex;align-items:center;justify-content:center;text-align:center;' + FONT + ';line-height:.86;font-size:' + (Q.ph ? 22 : 80) + 'px;color:' + A + ';border:' + (Q.ph ? 3 : 6) + 'px solid ' + A + '">PICKATHON<br>' + y + '</div>';
+    var artH = Q.ART.h || (S[9].y + S[9].h - Q.ART.y);
+    var art = D.art ? '<img src="' + esc(D.art) + '" alt="" decoding="async" style="position:absolute;left:' + Q.ART.x + 'px;top:' + Q.ART.y + 'px;width:' + Q.ART.w + 'px;height:' + artH + 'px;object-fit:contain;object-position:' + (Q.ph ? 'center top' : 'center center') + '">'
+      : '<div aria-hidden="true" style="position:absolute;left:' + (Q.ART.x + (Q.ph ? 0 : 40)) + 'px;top:' + (Q.ph ? 0 : 60) + 'px;width:' + (Q.ART.w - (Q.ph ? 0 : 80)) + 'px;height:' + (Q.ph ? Math.min(artH, Q.ART.w * 1.6) : artH - 120) + 'px;display:flex;align-items:center;justify-content:center;text-align:center;' + FONT + ';line-height:.86;font-size:' + (Q.ph ? 22 : 80) + 'px;color:' + A + ';border:' + (Q.ph ? 3 : 6) + 'px solid ' + A + '">PICKATHON<br>' + y + '</div>';
     var dl = K.dates ? (K.dates.toUpperCase().replace(/ ?- ?/g, '–') + ' · PENDARVIS FARM' + (Q.ph ? '' : ' · HAPPY VALLEY, OREGON')) : 'PICKATHON ' + y;
     var dates = '<div style="position:absolute;left:0;right:0;top:' + DATESY + 'px;text-align:center;white-space:nowrap;' + FONT + ';font-size:' + Q.DATES + 'px;letter-spacing:.08em;color:' + A + '">' + dl.split(' · ').map(function (t, i) { return (i ? '<span style="font-size:.6em;color:' + B + ';margin:0 ' + (Q.ph ? 6 : 12) + 'px;vertical-align:.2em">★</span>' : '') + esc(t); }).join('') + '</div>';
     var rib = '<div style="position:absolute;left:0;right:0;bottom:0;display:flex;align-items:center"><span class="pk-cl-fl" style="--ink:' + A + '"></span><span style="flex:none;height:' + Q.RIB[0] + 'px;padding:0 ' + (Q.ph ? 16 : 36) + 'px;background:' + A + ' linear-gradient(' + PAPER + '80,' + PAPER + '80) 0 4px/100% 1.5px no-repeat;color:' + PAPER + ';' + FONT + ';font-size:' + Q.RIB[1] + 'px;letter-spacing:.1em;display:flex;align-items:center;white-space:nowrap;clip-path:polygon(0 0,100% 0,calc(100% - 14px) 50%,100% 100%,0 100%,14px 50%)">EXPLORE PICKATHON ' + y + ' →</span><span class="pk-cl-fr" style="--ink:' + A + '"></span></div>';
-    return { html: art + h + burst + rules + dates + rib, IW: IW, H: BOXH, A: A, B: B, PAPER: PAPER, ACC: ACC, LIGHT: GLOWINK };
+    return { art: art, html: h + burst + rules + dates + rib, IW: IW, H: BOXH, A: A, B: B, PAPER: PAPER, ACC: ACC, LIGHT: GLOWINK };
   }
 
   // the clock on the poster: a date stamp that counts the summers from the festival to today; tapping it plays again
@@ -203,6 +205,9 @@
   }
 
   function STAT(y) { var D = C && C[y]; return +y <= 2005 || !!(D && D.src !== 'real billing'); } // still posters: 2005 and earlier (Zale, Nov 9), and any year without real poster billing (Zale's rule: no source, show today only). Real billing so far: 2023, 2024
+  /* Zale, Nov 11: on phone the time reads as a calendar page that ticks from the festival month to today while the poster runs */
+  var MON = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+  function calH(y, frac) { var m0 = 7, tot = (TODAY - (+y)) * 12 + (10 - m0), m = m0 + Math.round(Math.max(0, Math.min(1, frac)) * tot); return '<b class="pk-cl-mo">' + MON[m % 12] + '</b><b class="pk-cl-yr">' + ((+y) + Math.floor(m / 12)) + '</b>'; }
   function stop() { if (S.raf) { cancelAnimationFrame(S.raf); S.raf = null; } S.playing = false; }
   var invFlow = function (v) { var lo = 0, hi = 1; for (var q = 0; q < 24; q++) { var m = (lo + hi) / 2; if (flow(m) < v) lo = m; else hi = m; } return (lo + hi) / 2; };
   /* Play / replay (Zale, Nov 10): a pause resumes where it stopped; a replay first glides back to the printed bill, holds there a second so the start is clear, then runs. No jumps. */
@@ -227,22 +232,27 @@
     var key = y + '|' + Q.ph + '|' + PW + '|' + PH + '|' + TB.show;
     if (mountEl._key === key && mountEl.querySelector('.pk-cl-layer')) {
       mountEl.querySelector('.pk-cl-layer').innerHTML = F.html;
-      var tb = mountEl.querySelector('.pk-cl-tb'); if (tb) { tb.querySelector('.pk-cl-tf').style.width = (TB.frac * 100).toFixed(1) + '%'; var mk = tb.querySelector('.pk-cl-tm'); mk.style.left = (TB.frac * 100).toFixed(1) + '%'; mk.textContent = TB.yNow; mk.style.opacity = TB.frac > 0.04 && TB.frac < 0.96 ? '1' : '0'; var rb = tb.querySelector('.pk-cl-rpl'); if (rb) { rb.textContent = TB.btn; rb.setAttribute('aria-label', TB.aria); } var tl = mountEl.querySelector('.pk-cl-tl'); if (tl.textContent !== TB.line) tl.textContent = TB.line; }
+      var tb = mountEl.querySelector('.pk-cl-tb'); if (tb) { tb.querySelector('.pk-cl-tf').style.width = (TB.frac * 100).toFixed(1) + '%'; var mk = tb.querySelector('.pk-cl-tm'); mk.style.left = (TB.frac * 100).toFixed(1) + '%'; var cal = tb.querySelector('.pk-cl-cal'); if (cal) { var ch = calH(y, TB.frac); if (cal._h !== ch) { cal.innerHTML = ch; cal._h = ch; } } else { mk.textContent = TB.yNow; mk.style.opacity = TB.frac > 0.04 && TB.frac < 0.96 ? '1' : '0'; } var rb = tb.querySelector('.pk-cl-rpl'); if (rb) { rb.textContent = TB.btn; rb.setAttribute('aria-label', TB.aria); } var tl = mountEl.querySelector('.pk-cl-tl'); if (tl && tl.textContent !== TB.line) tl.textContent = TB.line; }
       var cp = mountEl.querySelector('.pk-cl-cap'); if (cp.textContent !== cap) cp.textContent = cap; cp.style.color = atEnd ? '#F2CF62' : '#CFC9BC';
       return;
     }
     var fa = document.activeElement, fk = fa && mountEl.contains(fa) ? fa.getAttribute('data-cl') : null;
     var corner = function (cx, cy) { return 'radial-gradient(circle at ' + cx + ' ' + cy + ',#000 0,transparent 22%)'; }, cm = [corner('0', '0'), corner('100%', '0'), corner('0', '100%'), corner('100%', '100%')].join(',');
+    var capH = '<p class="pk-cl-cap" aria-live="polite" style="color:' + (atEnd ? '#F2CF62' : '#CFC9BC') + '">' + esc(cap) + '</p>', tbH = '';
     var h = '<div class="pk-cl-hd"><div class="pk-cl-ht"><p class="pk-nh-k">Still happening</p><h2 class="pk-nh-h2" id="pk-cl-h">Wait, they all played <span style="color:' + (YC[y] || '#F2CF62') + '">Pickathon ' + y + '?</span></h2>'
-      + '<p class="pk-cl-cap" aria-live="polite" style="color:' + (atEnd ? '#F2CF62' : '#CFC9BC') + '">' + esc(cap) + '</p></div>'
-      + '<button type="button" class="pk-cl-an" data-cl="rand">↻ Another year</button></div>';
-    if (TB.show) h += '<div class="pk-cl-tb"><span class="pk-cl-ty">' + y + '</span><span class="pk-cl-tr" aria-hidden="true"><i class="pk-cl-tf" style="width:' + (TB.frac * 100).toFixed(1) + '%"></i><b class="pk-cl-tm" style="left:' + (TB.frac * 100).toFixed(1) + '%;opacity:' + (TB.frac > 0.04 && TB.frac < 0.96 ? 1 : 0) + '">' + TB.yNow + '</b></span><span class="pk-cl-ty">' + TODAY + '</span><button type="button" class="pk-cta sec pk-cl-rpl" data-cl="play" aria-label="' + TB.aria + '">' + TB.btn + '</button></div><p class="pk-cl-tl" aria-hidden="true">' + esc(TB.line) + '</p>';
+      + (Q.ph ? '' : capH) + '</div>'
+      + (Q.ph ? '' : '<button type="button" class="pk-cl-an" data-cl="rand">↻ Another year</button>') + '</div>';
+    if (TB.show) tbH += '<div class="pk-cl-tb"><span class="pk-cl-ty">' + y + '</span><span class="pk-cl-tr" aria-hidden="true"><i class="pk-cl-tf" style="width:' + (TB.frac * 100).toFixed(1) + '%"></i><b class="pk-cl-tm" style="left:' + (TB.frac * 100).toFixed(1) + '%;opacity:' + (TB.frac > 0.04 && TB.frac < 0.96 ? 1 : 0) + '">' + TB.yNow + '</b></span><span class="pk-cl-ty">' + TODAY + '</span><button type="button" class="pk-cta sec pk-cl-rpl" data-cl="play" aria-label="' + TB.aria + '">' + TB.btn + '</button></div><p class="pk-cl-tl" aria-hidden="true">' + esc(TB.line) + '</p>';
+    if (!Q.ph) h += tbH;
     h += '<div class="pk-cl-pw" style="width:' + PW + 'px;height:' + PH + 'px">';
     h += '<div class="pk-cl-p" data-cl="year" role="link" tabindex="0" aria-label="Pickathon ' + y + ': open the ' + y + ' page" style="width:' + PW + 'px;height:' + PH + 'px;background:' + F.PAPER + '">';
     h += '<i aria-hidden="true" class="pk-cl-tone" style="background-image:radial-gradient(' + F.B + ' 1.4px,transparent 1.9px);-webkit-mask-image:' + cm + ';mask-image:' + cm + '"></i><i aria-hidden="true" class="pk-cl-grain" style="background-image:' + GRAIN + '"></i><i aria-hidden="true" class="pk-cl-frame" style="border-color:' + F.A + ';inset:' + (Q.ph ? 8 : 14) + 'px"></i>';
+    h += '<div class="pk-cl-art" aria-hidden="true" style="position:absolute;left:' + Q.PADX + 'px;top:' + Q.PADY + 'px;width:' + F.IW + 'px;height:' + F.H + 'px">' + F.art + '</div>';   /* static: drawn once per year, never in the animation frames */
     h += '<div class="pk-cl-layer" aria-hidden="true" style="position:absolute;left:' + Q.PADX + 'px;top:' + Q.PADY + 'px;width:' + F.IW + 'px;height:' + F.H + 'px">' + F.html + '</div>';
     h += '</div>';
     h += '</div>';
+    if (Q.ph && TB.show) tbH = '<div class="pk-cl-tb pk-cl-tbp"><span class="pk-cl-cal" aria-hidden="true">' + calH(y, TB.frac) + '</span><span class="pk-cl-tr" aria-hidden="true"><i class="pk-cl-tf" style="width:' + (TB.frac * 100).toFixed(1) + '%"></i><b class="pk-cl-tm" style="left:' + (TB.frac * 100).toFixed(1) + '%;opacity:0"></b></span><span class="pk-cl-ty">' + TODAY + '</span><button type="button" class="pk-cta sec pk-cl-rpl" data-cl="play" aria-label="' + TB.aria + '">' + TB.btn + '</button></div>';
+    if (Q.ph) h += '<div class="pk-cl-below">' + capH.replace('class="pk-cl-cap"', 'class="pk-cl-cap pk-sr"') + tbH + '<button type="button" class="pk-cl-an pk-cl-anb" data-cl="rand">↻ Another year</button></div>';   /* Zale, Nov 11: caption, time bar and Another year under the poster, full width */
     var fin = D.names.filter(function (x) { return x[1][n - 1] < Math.min(10, D.ranked || 10); }).sort(function (a, b) { return a[1][n - 1] - b[1][n - 1]; }).map(function (x) { return x[0]; });
     h += '<p class="pk-sr">Pickathon ' + y + ', ranked today by how far each act has gone: ' + esc(fin.join(', ')) + '.</p>';
     mountEl.innerHTML = h; mountEl.setAttribute('data-y', y); mountEl._key = key;
@@ -253,10 +263,10 @@
   function fitScreen(PW, PH) {
     var pw = mountEl.querySelector('.pk-cl-pw'), hd = mountEl.querySelector('.pk-cl-hd'); if (!pw || !hd) return;
     var vh = window.innerHeight || 800, top = 0, bot = 0;
-    try { [].forEach.call(document.querySelectorAll('header'), function (hb) { var r = hb.getBoundingClientRect(), cs = getComputedStyle(hb); if (r.height > 0 && (cs.position === 'sticky' || cs.position === 'fixed')) top = Math.max(top, Math.min(140, r.height)); }); var tb = document.querySelector('nav[aria-label="App"]'); if (tb) { var tr = tb.getBoundingClientRect(); if (tr.height > 0 && tr.top > vh / 2) bot = vh - tr.top; } } catch (e) {}
+    try { [].forEach.call(document.querySelectorAll('header'), function (hb) { var r = hb.getBoundingClientRect(), cs = getComputedStyle(hb); if (r.height > 0 && (cs.position === 'sticky' || cs.position === 'fixed' || (r.top <= 1 && r.bottom > 0))) top = Math.max(top, Math.min(140, r.bottom));   /* a header that stays on screen outside the scroller counts too */ }); var tb = document.querySelector('nav[aria-label="App"]'); if (tb) { var tr = tb.getBoundingClientRect(); if (tr.height > 0 && tr.top > vh / 2) bot = vh - tr.top; } } catch (e) {}
     if (!bot && window.innerWidth < 1000) bot = 64;
     var sec = mountEl.closest('section'), pad = 0; if (sec) { var cs = getComputedStyle(sec); pad = parseFloat(cs.paddingTop) + parseFloat(cs.paddingBottom); }
-    var avail = vh - top - bot - hd.offsetHeight - 22 - pad, sc = Math.min(1, Math.max(0.66, avail / PH));
+    var bl = mountEl.querySelector('.pk-cl-below'), avail = vh - top - bot - hd.offsetHeight - 22 - pad - (bl ? bl.offsetHeight + 8 : 0), sc = Math.min(1, Math.max(0.66, avail / PH));
     pw.style.transformOrigin = 'top center'; pw.style.transform = sc < 0.999 ? 'scale(' + sc.toFixed(3) + ')' : '';
     pw.style.marginBottom = sc < 0.999 ? (-(PH * (1 - sc))).toFixed(0) + 'px' : ''; mountEl.style.display = 'flow-root';
   }
@@ -272,6 +282,11 @@
     else if (a === 'rand') rand();
     else if (a === 'year') { try { window.pkOpenYear && window.pkOpenYear(S.y); } catch (x) {} }
   }, true);
+  /* Zale, Nov 11: the time bar is a slider. Drag it back and forth and the poster follows. */
+  var dragT = null, scrub = function (e) { var r = dragT.getBoundingClientRect(), x = Math.max(0, Math.min(1, (e.clientX - r.left) / Math.max(1, r.width))), D = C[S.y], n = D.labels.length, lo = 0, hi = n - 1; for (var q = 0; q < 22; q++) { var mid = (lo + hi) / 2; if (timebar(D, S.y, mid).frac < x) lo = mid; else hi = mid; } stop(); S.seen[S.y] = 1; S.tp = x >= 0.995 ? n - 1 : x <= 0.005 ? 0 : (lo + hi) / 2; draw(); };
+  document.addEventListener('pointerdown', function (e) { var t = e.target && e.target.closest && e.target.closest('.pk-cl-tr'); if (!t || !mountEl || !mountEl.contains(t)) return; dragT = t; e.preventDefault(); e.stopPropagation(); try { t.setPointerCapture(e.pointerId); } catch (x) {} scrub(e); }, true);
+  document.addEventListener('pointermove', function (e) { if (dragT) { e.preventDefault(); scrub(e); } }, true);
+  ['pointerup', 'pointercancel'].forEach(function (ev) { document.addEventListener(ev, function () { dragT = null; }, true); });
   document.addEventListener('keydown', function (e) { if ((e.key === 'Enter' || e.key === ' ') && e.target && e.target.classList && e.target.classList.contains('pk-cl-p') && mountEl && mountEl.contains(e.target)) { e.preventDefault(); try { window.pkOpenYear && window.pkOpenYear(S.y); } catch (x) {} } });
   function tick() {
     var m = document.querySelector('.pk-cl-mount');

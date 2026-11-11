@@ -1033,6 +1033,25 @@ main:has(#pk-nh-climb)>section{content-visibility:visible!important;contain-intr
 #root .pk-cl-p{overflow:hidden}
 @media (max-width:999px){#root .pk-cl-ht .pk-nh-h2{margin-top:22px!important}}
 #root#root#root#root .pk-cl-tb .pk-cl-rpl{min-height:44px!important;height:auto!important;padding:0 14px!important;font-size:13px!important;width:auto!important}
+
+/* Zale, Nov 11: ANOTHER YEAR under the poster, full width, on phone and tablet */
+#root#root .pk-cl-an.pk-cl-anb{position:static;display:flex;align-items:center;justify-content:center;width:100%;max-width:720px;margin:12px auto 0;top:auto;right:auto;padding:0 16px;font-size:13px;min-height:48px}
+#root .pk-cl-below{max-width:720px;margin:10px auto 0}
+#root .pk-cl-below .pk-cl-cap{min-height:2.7em;margin:0 0 4px}
+#root .pk-cl-below .pk-cl-tb{margin-top:4px}
+#root#root#root .pk-cl-below .pk-cl-tl{margin:4px 0 0!important}
+#root .pk-cl-art{pointer-events:none}
+/* Zale, Nov 11: phone time bar as a calendar page */
+#root .pk-cl-below{margin-top:12px}
+#root .pk-cl-tbp{gap:12px;margin:0}
+#root .pk-cl-cal{flex:none;display:flex;flex-direction:column;width:64px;border:2px solid #F2EDE3;border-radius:6px;overflow:hidden;text-align:center;font-family:'Bricolage Grotesque',sans-serif;font-variant-numeric:tabular-nums}
+#root .pk-cl-cal .pk-cl-mo{display:block;background:#F2CF62;color:#2B2628;font-size:12px;font-weight:800;letter-spacing:.14em;line-height:20px}
+#root .pk-cl-cal .pk-cl-yr{display:block;color:#F2EDE3;font-size:19px;font-weight:800;line-height:28px}
+#root .pk-cl-tbp .pk-cl-tm{display:none}
+/* Zale, Nov 11: the time bar is a slider */
+#root .pk-cl-tr{touch-action:none;cursor:default}
+#root .pk-cl-tr::before{content:"";position:absolute;left:-6px;right:-6px;top:-20px;bottom:-20px}
+#root .pk-cl-tf::after{content:"";position:absolute;right:-8px;top:50%;width:16px;height:16px;margin-top:-8px;border-radius:50%;background:#F2CF62;box-shadow:0 0 0 2px #2B2628}
 </style>
 <style id="pk-hm-css">
 /* Neighborhood page: "Where it is" map (Zale, Nov 9 08:30: a way to move between neighborhoods from the map on each neighborhood page). Design Studio */
@@ -1239,6 +1258,7 @@ html.pk-tmon #root header + *{margin-top:44px}
 #root#root .pk-tn-dot.mv{box-shadow:0 0 0 1.5px #12160F,0 0 0 3px #F2CF62}
 #root#root .pk-tn-dot.sel{box-shadow:0 0 0 2px #12160F,0 0 0 4.5px #F2EDE3;z-index:2}
 #root#root .pk-tn-dot:focus-visible{outline:2px solid #F2EDE3;outline-offset:3px}
+#root#root .pk-tn-dot::after{content:"";position:absolute;left:50%;top:50%;width:44px;height:44px;transform:translate(-50%,-50%);border-radius:50%;background:transparent}
 @media (prefers-reduced-motion:reduce){#root#root .pk-tn-dot{transition:none}}
 #root .pk-tn-tip{position:absolute;z-index:3;pointer-events:none;transform:translate(-50%,-100%);margin-top:-6px;padding:4px 8px;border-radius:4px;background:#F2EDE3;color:#12160F;font:800 12px 'Bricolage Grotesque',sans-serif;white-space:nowrap;display:none}
 @media (hover:hover) and (pointer:fine){#root .pk-tn-tip.on{display:block}}
@@ -1249,6 +1269,17 @@ html.pk-tmon #root header + *{margin-top:44px}
 #root#root .pk-tn-go{margin-left:auto;min-height:36px;padding:0 10px!important;border-radius:6px;border:1.5px solid rgba(242,237,227,.4)!important;background:transparent!important;color:#F2EDE3!important;font-size:12.5px!important;font-weight:800}
 #root .pk-tn-fn{margin:10px 0 0;font-size:11.5px;color:#9A9486}
 #root .pk-tn .pk-sr{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+#root .pk-pf>.pk-tn{margin:0 0 18px}
+/* Zale, Nov 11: far less text. One headline, the calendar and slider, the dots, and the card for the dot you tap. */
+#root#root#root .pk-tn .pk-tn-k,#root#root#root .pk-tn .pk-tn-mvs,#root#root#root .pk-tn .pk-tn-tg,#root#root#root .pk-tn .pk-tn-p,#root#root#root .pk-tn .pk-tn-fn,#root#root#root .pk-tn .pk-tn-lead{display:none!important}
+#root .pk-tn-h{margin:0 0 10px}
+#root#root .pk-tn-nav{display:flex;flex-direction:row;align-items:center;justify-content:flex-start;gap:12px;flex-wrap:nowrap}
+#root .pk-tn-cal{flex:none;display:flex;flex-direction:column;width:64px;border:2px solid #F2EDE3;border-radius:6px;overflow:hidden;text-align:center;font-family:'Bricolage Grotesque',sans-serif;font-variant-numeric:tabular-nums}
+#root .pk-tn-cal b:first-child{display:block;background:#F2CF62;color:#2B2628;font-size:12px;font-weight:800;letter-spacing:.14em;line-height:20px}
+#root .pk-tn-cal b:last-child{display:block;color:#F2EDE3;font-size:19px;font-weight:800;line-height:28px}
+#root .pk-tn-sl{flex:1;min-width:0}
+#root#root .pk-tn-rg{display:block;width:100%;height:44px;margin:0;padding:0;accent-color:#F2CF62;background:transparent;cursor:default}
+#root .pk-tn-cap{display:block;font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#F2CF62}
 @media (max-width:599px){#root .pk-tn{--tn-d:16px;padding:16px 14px 12px}#root .pk-tn-h{font-size:20px}#root .pk-tn-nav{flex-direction:column;align-items:stretch}#root .pk-tn-step{justify-content:space-between}#root .pk-tn-chips>*{flex:1}}
 </style>
 <script id="pk-tn-js">
@@ -1277,6 +1308,12 @@ html.pk-tmon #root header + *{margin-top:44px}
   function build(host, y, Y) {
     var s = ST[y] || (ST[y] = { i: Y.dates.length - 1, sel: null });
     var F = Y.fest, N = Y.dates.length - 1;
+    /* Zale, Nov 11: one calendar and a slider drive the dots. Position s.f is continuous; between two rated dates each act that changes class moves at its own steady point, so the in-between months read as a gradual reshuffle until the six-month data fills them in. */
+    if (s.f == null) s.f = s.i;
+    var hsh = function (t) { var h = 7; for (var q = 0; q < t.length; q++) h = (h * 31 + t.charCodeAt(q)) % 9973; return h / 9973; };
+    var TH = Y.acts.map(function (a) { return 0.18 + 0.64 * hsh(a.n); });
+    var ix = function (k, f) { var i0 = Math.min(N, Math.floor(f + 1e-6)), fr = f - i0; return (i0 < N && fr >= TH[k]) ? i0 + 1 : i0; };
+    var sig = function () { return Y.acts.map(function (a, k) { return ix(k, s.f); }).join(''); }, lastSig = '';
     if (s.sel == null) {
       var best = null, bv = -99;
       Y.acts.forEach(function (a, k) { if (a.c[F] !== a.c[N]) { var v = (a.m[N] - a.m[F]) * 100 + a.m[N]; if (v > bv) { bv = v; best = k; } } });
@@ -1285,15 +1322,12 @@ html.pk-tmon #root header + *{margin-top:44px}
     if (!window._tnTg) { window._tnTg = 1; document.addEventListener('click', function (e) { var b = e.target && e.target.closest && e.target.closest('.pk-tn-tg'); if (!b) return; var w0 = b.closest('.pk-tn'), o = w0.classList.toggle('pk-tn-open'); (window._tnOpen = window._tnOpen || {})[w0.getAttribute('data-y')] = o; b.setAttribute('aria-expanded', o ? 'true' : 'false'); b.textContent = o ? 'Hide the dots' : 'See who moved up'; }); }
     var ONE = !Y.dates || Y.dates.length < 2;   /* only a Now snapshot for this year: no date stepper, no festival claim */
     var w = document.createElement('div');
-    w.className = 'pk-tn' + (ONE ? ' pk-tn-one' : '') + (Y.dates && Y.dates.length === 2 ? ' pk-tn-two' : ''); w.setAttribute('data-y', y); var TNO = !!(window._tnOpen && window._tnOpen[y]); if (TNO) w.className += ' pk-tn-open'; w.setAttribute('role', 'group'); w.setAttribute('aria-label', 'Who broke out: how the ' + y + ' bands moved since the festival');
+    w.className = 'pk-tn' + (ONE ? ' pk-tn-one' : '') + (Y.dates && Y.dates.length === 2 ? ' pk-tn-two' : ''); w.setAttribute('data-y', y); var TNO = !(window._tnOpen && window._tnOpen[y] === false); if (TNO) w.className += ' pk-tn-open'; w.setAttribute('role', 'group'); w.setAttribute('aria-label', 'Who broke out: how the ' + y + ' bands moved since the festival');
     var RK = { leg: 3, disc: 2, deep: 1, none: 0 }, UP = ONE ? [] : Y.acts.filter(function (q) { return RK[q.c[q.c.length - 1]] > RK[q.c[0]]; }), NUP = UP.length, TOPU = UP.slice().sort(function (p1, q1) { return (RK[q1.c[q1.c.length - 1]] - RK[p1.c[p1.c.length - 1]]) || ((q1.m[q1.m.length - 1] || 0) - (p1.m[p1.m.length - 1] || 0)); }).slice(0, 3).map(function (q) { return q.n; }), TOPL = TOPU.length > 1 ? TOPU.slice(0, -1).join(', ') + ' and ' + TOPU[TOPU.length - 1] : (TOPU[0] || ''); if (!ONE && NUP === 0) w.style.setProperty('display', 'none', 'important');
     var TTL = ONE ? 'Where ' + y + ' stands now' : NUP === 0 ? 'Nobody has moved up since ' + y : (NUP === 1 ? 'One band has moved up since the ' : NUP + ' bands have moved up since the ') + y + ' festival', SUB = (!ONE && NUP > 0) ? (function () { var CL = { leg: ['Legend', '#D6B54A'], disc: ['Discovery', '#9FCB8A'], deep: ['Deep cut', '#7FD3E6'], none: ['More to hear', '#9A9486'] }, esc = function (t) { return String(t).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }; var rows = UP.slice().sort(function (p1, q1) { return (RK[q1.c[q1.c.length - 1]] - RK[p1.c[p1.c.length - 1]]) || ((q1.m[q1.m.length - 1] || 0) - (p1.m[p1.m.length - 1] || 0)); }).slice(0, 3).map(function (q) { var a = CL[q.c[0]] || CL.none, z = CL[q.c[q.c.length - 1]] || CL.none; return '<li class="pk-tn-mv"><b>' + esc(q.n) + '</b><span class="pk-tn-ch"><i style="background:' + a[1] + '"></i>' + a[0] + '<em aria-hidden="true">\u2192</em><i style="background:' + z[1] + '"></i>' + z[0] + '</span></li>'; }).join(''); return '<ul class="pk-tn-mvs" aria-label="Biggest movers">' + rows + '</ul>'; })() : '';
     w.innerHTML = '<p class="pk-tn-k">' + (ONE ? 'Where they stand' : 'Who broke out') + '</p><h3 class="pk-tn-h">' + TTL + '</h3>' + SUB + '<button type="button" class="pk-tn-tg" aria-expanded="' + (TNO ? 'true' : 'false') + '">' + (TNO ? 'Hide the dots' : (ONE ? 'See the dots' : 'See all ' + NUP + ' who moved up \u2192')) + '</button>' +
       (ONE ? '<p class="pk-tn-p">The ' + Y.acts.length + ' bands of ' + y + ', rated with what is known now. Tap a dot for each act.</p>' : Y.dates.length === 2 ? '<p class="pk-tn-p">The ' + Y.acts.length + ' bands of ' + y + ', as first rated at the festival and as rated today.</p>' : '<p class="pk-tn-p">The ' + Y.acts.length + ' bands of ' + y + ', re-rated every six months with what was known on each date. Nobody is a Discovery at the festival; it shows in the rooms they play after.</p>') +
-      '<div class="pk-tn-nav"><div class="pk-tn-step"><button type="button" class="pk-tn-sb" data-d="-1" aria-label="Earlier date"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>' +
-      '<div class="pk-tn-dt" aria-live="polite"><b></b><span></span></div>' +
-      '<button type="button" class="pk-tn-sb" data-d="1" aria-label="Later date"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button></div>' +
-      '<div class="pk-tn-chips"><button type="button" class="pk-tn-chip pk-tn-playb" aria-label="Play the years">\u25B6 Play</button><button type="button" class="pk-tn-chip" data-j="' + F + '">At the festival</button><button type="button" class="pk-tn-chip" data-j="' + N + '">Now</button></div></div>' +
+      '<div class="pk-tn-nav"><span class="pk-tn-cal" aria-hidden="true"><b></b><b></b></span><div class="pk-tn-sl"><input type="range" class="pk-tn-rg" min="0" max="1000" value="1000" aria-label="Slide from the ' + y + ' festival to today"><span class="pk-tn-cap" aria-live="polite"></span></div><button type="button" class="pk-tn-chip pk-tn-playb" aria-label="Play the years">\u25B6 Play</button></div>' +
       '<div class="pk-tn-cols">' + COL.map(function (c) { return '<div style="--c:' + c[3] + '"><b></b><span>' + c[1] + '</span></div>'; }).join('') + '</div>' +
       '<div class="pk-tn-f"><span class="pk-tn-tip" aria-hidden="true"></span>' + Y.acts.map(function (a, k) { return '<button type="button" class="pk-tn-dot" data-k="' + k + '"></button>'; }).join('') + '</div>' +
       '<div class="pk-tn-card" aria-live="polite"></div>' +
@@ -1307,15 +1341,15 @@ html.pk-tmon #root header + *{margin-top:44px}
     /* one fixed-length run (7.2 s); a pause resumes where it stopped; a replay glides back to the festival, holds a second there, then runs (no jumps) */
     function play() {
       if (N < 1) return; var wasPlaying = playing; stop(); if (wasPlaying) return;
-      if (RMo) { pu = 1; s.i = N; paint(true); return; }
+      if (RMo) { pu = 1; s.i = N; s.f = N; paint(true); return; }
       var resume = pu > 0 && pu < 1, lead = 0;
       playing = true; w.classList.add('pk-tn-play');
-      if (!resume) { pu = 0; var back = s.i !== 0; s.i = 0; paint(true); lead = (back ? 950 : 0) + 1000; if (back) { var tb = w.querySelector('.pk-tn-dt b'); tb.textContent = mo(Y.dates[0]).toUpperCase(); } }
+      if (!resume) { pu = 0; var back = s.f > 0.001; s.f = 0; s.i = 0; paint(true); lead = (back ? 950 : 0) + 1000; }
       playUi(); var t0 = null, base = pu;
       var step = function (now) { if (!playing) return; if (t0 == null) t0 = now + lead; if (now < t0) { raf = requestAnimationFrame(step); return; }
         var u = Math.min(1, base + (now - t0) / PDUR); pu = u; var e = u < .5 ? 2 * u * u : 1 - Math.pow(-2 * u + 2, 2) / 2, fi = e * N, i = u >= 1 ? N : Math.floor(fi + 1e-6);
-        if (i !== s.i) { s.i = i; paint(true); }
-        if (u < 1) { w.querySelector('.pk-tn-dt b').textContent = dstamp(fi); raf = requestAnimationFrame(step); } else { stop(); paint(true); } };
+        s.f = u >= 1 ? N : fi; s.i = Math.round(s.f); var sg = sig(); if (sg !== lastSig) paint(true); else clock();
+        if (u < 1) raf = requestAnimationFrame(step); else { stop(); paint(true); } };
       raf = requestAnimationFrame(step);
     }
     w.__play = play;
@@ -1329,22 +1363,22 @@ html.pk-tmon #root header + *{margin-top:44px}
       Y.dates.forEach(function (_, i) { var cn = [0, 0, 0, 0]; Y.acts.forEach(function (a) { cn[CI[a.c[i]]]++; }); cn.forEach(function (n) { maxRows = Math.max(maxRows, Math.ceil(n / per)); }); });
       field.style.height = (maxRows * (D + G) - G) + 'px';
       var i = s.i, groups = [[], [], [], []];
-      Y.acts.forEach(function (a, k) { groups[CI[a.c[i]]].push(k); });
+      Y.acts.forEach(function (a, k) { groups[CI[a.c[ix(k, s.f)]]].push(k); });
       groups.forEach(function (g, ci) {
-        g.sort(function (p, q) { return (Y.acts[q].m[i] - Y.acts[p].m[i]) || Y.acts[p].n.localeCompare(Y.acts[q].n); });
+        g.sort(function (p, q) { return (Y.acts[q].m[ix(q, s.f)] - Y.acts[p].m[ix(p, s.f)]) || Y.acts[p].n.localeCompare(Y.acts[q].n); });
         g.forEach(function (k, r) { var d = dots[k]; d.style.transform = 'translate(' + (cols[ci].offsetLeft - field.offsetLeft + (r % per) * (D + G)) + 'px,' + (Math.floor(r / per) * (D + G)) + 'px)'; });
       });
       w.querySelectorAll('.pk-tn-cols b').forEach(function (b, ci) { b.textContent = groups[ci].length; });
       field.classList.add('on');
     }
+    function clock() { var cal = w.querySelector('.pk-tn-cal'); if (!cal) return; var ds = (N < 1 || s.f >= N - 1e-6) ? mo(Y.dates[N]).toUpperCase() : dstamp(s.f), pp = ds.split(' '); if (cal.firstChild.textContent !== pp[0]) cal.firstChild.textContent = pp[0]; if (cal.lastChild.textContent !== pp[1]) cal.lastChild.textContent = pp[1];
+      var cp = w.querySelector('.pk-tn-cap'), ct = s.f >= N - 1e-6 ? 'Today' : Math.abs(s.f - F) < 1e-6 ? 'At the festival' : s.f < F ? 'Before the festival' : 'Since the festival'; if (cp.textContent !== ct) cp.textContent = ct;
+      var rg = w.querySelector('.pk-tn-rg'), rv = Math.round(s.f / Math.max(1, N) * 1000); if (rg && Math.abs(+rg.value - rv) > 1) rg.value = rv; }
     function paint(anim) {
       var i = s.i, a = Y.acts[s.sel];
-      w.querySelector('.pk-tn-dt b').textContent = mo(Y.dates[i]).toUpperCase();
-      w.querySelector('.pk-tn-dt span').textContent = cap(Y, i);
-      w.querySelectorAll('.pk-tn-sb')[0].disabled = i === 0; w.querySelectorAll('.pk-tn-sb')[1].disabled = i === N;
-      w.querySelectorAll('.pk-tn-chip').forEach(function (c) { if (c.dataset.j != null) c.setAttribute('aria-pressed', String(+c.dataset.j === i)); }); playUi();
+      clock(); playUi(); lastSig = sig();
       dots.forEach(function (d, k) {
-        var x = Y.acts[k]; d.style.setProperty('--c', COL[CI[x.c[i]]][3]);
+        var x = Y.acts[k]; d.style.setProperty('--c', COL[CI[x.c[ix(k, s.f)]]][3]);
         d.classList.toggle('mv', x.c[F] !== x.c[N]); d.classList.toggle('sel', k === s.sel);
         d.setAttribute('aria-label', x.n + ': ' + lab(x, i) + ' in ' + (i === N ? 'today' : mo(Y.dates[i])) + (x.c[F] !== x.c[N] ? ', changed since the festival' : ''));
         d.setAttribute('aria-pressed', String(k === s.sel));
@@ -1366,13 +1400,14 @@ html.pk-tmon #root header + *{margin-top:44px}
       else if (t.classList.contains('pk-tn-chip')) { stop(); s.i = +t.dataset.j; pu = s.i >= N ? 1 : 0; paint(true); }
       else if (t.classList.contains('pk-tn-dot')) { s.sel = +t.dataset.k; paint(); }
     });
+    var rg0 = w.querySelector('.pk-tn-rg'); if (rg0) rg0.addEventListener('input', function () { stop(); s.played = true; s.f = +rg0.value / 1000 * N; s.i = Math.round(s.f); var x = N ? s.f / N : 1; pu = x >= 1 ? 1 : x < .5 ? Math.sqrt(x / 2) : 1 - Math.sqrt((1 - x) / 2); if (sig() !== lastSig) paint(true); else { clock(); playUi(); } });
     w.addEventListener('mouseover', function (e) {
       var t = e.target.closest('.pk-tn-dot'); if (!t) { tip.classList.remove('on'); return; }
       var r = t.getBoundingClientRect(), fr = field.getBoundingClientRect();
       tip.textContent = Y.acts[+t.dataset.k].n; tip.style.left = (r.left - fr.left + r.width / 2) + 'px'; tip.style.top = (r.top - fr.top) + 'px'; tip.classList.add('on');
     });
     w.addEventListener('mouseleave', function () { tip.classList.remove('on'); });
-    host.parentNode.insertBefore(w, host); host.classList.add('pk-tn-off');
+    var st0 = host.closest('.pk-story'); (st0 ? st0.parentNode : host.parentNode).insertBefore(w, st0 || host); host.classList.add('pk-tn-off');
     w.__layout = layout; paint();
     return w;
   }
@@ -1381,7 +1416,7 @@ html.pk-tmon #root header + *{margin-top:44px}
     var R = window.__pkYR || {}, m = document.querySelector('.pk-yp-mount[data-y]'), mix = document.querySelector('#root .pk-story .pk-st-mix');
     if (!mix || !mix.offsetParent && !mix.classList.contains('pk-tn-off')) return;
     var y = m && m.getAttribute('data-y'), Y = y && R[y];
-    var old = mix.parentNode.querySelector('.pk-tn');
+    var old = (mix.closest('.pk-pf') || mix.parentNode).querySelector('.pk-tn');
     if (!Y || !Y.acts || !Y.acts.length) { if (old) old.remove(); mix.classList.remove('pk-tn-off'); return; }
     if (old && old.getAttribute('data-y') === y) return;
     if (old) old.remove();
@@ -1662,13 +1697,15 @@ html.pk-cy-in div:has(> button[aria-label="Listen to Pickathon"]){opacity:0!impo
   var LH = 0.86;
   /* TODAY ranks from the class data at page load (Zale, Nov 9 09:54: live data for the posters, not when we build). climbSrc: tools/climb_ladder/build_src.py */
   window.pkClimbLive = function (dd) { try { var B = dd.climb || {}, SRC = dd.climbSrc; if (!SRC) return B; var out = {};
-    var G = { 'Discovery': 0, 'Legend': 0, 'Deep cut': 1, 'Neither': 2 }, CL = { 'Discovery': 0, 'Legend': 1, 'Deep cut': 2, 'Neither': 3 }, CF = { 'high': 5, 'medium-high': 4, 'medium': 3, 'low-medium': 2, 'low': 1 };
+    var G = { 'Discovery': 0, 'Legend': 0, 'Deep cut': 1, 'Neither': 2 }, CL = { 'Legend': 0, 'Discovery': 1, 'Deep cut': 2, 'Neither': 3 }, CF = { 'high': 5, 'medium-high': 4, 'medium': 3, 'low-medium': 2, 'low': 1 };
     var nm = function (s) { return String(s).toLowerCase().replace(/&/g, ' and ').replace(/[“”"]/g, '').replace(/[^a-z0-9 ]/g, '').split(/\s+/).filter(Boolean).join(' '); };
     Object.keys(B).forEach(function (y) { var D0 = B[y], S0 = SRC[y]; if (!S0 || !S0.r || !S0.r.length) { out[y] = D0; return; }
-      var R = S0.r.slice(), pin = S0.pin || [], N = function (r) { return r[1] === 'Neither'; };
+      var R = S0.r.filter(function (r) { return r[1] !== 'Neither'; }), pin = S0.pin || [], N = function (r) { return false; };  /* Zale, Nov 10: the poster shows Legends, Discoveries and Deep cuts only */
       R.sort(function (a, b) { var pa = pin.indexOf(nm(a[0])), pb = pin.indexOf(nm(b[0])); pa = pa < 0 ? 99 : pa; pb = pb < 0 ? 99 : pb; if (pa !== pb) return pa - pb;
-        var ka = [N(a) ? 1 : 0, N(a) ? 0 : -a[2], N(a) ? 0 : -(CF[a[3]] || 0), CL[a[1]] || 0], kb = [N(b) ? 1 : 0, N(b) ? 0 : -b[2], N(b) ? 0 : -(CF[b[3]] || 0), CL[b[1]] || 0];
-        for (var i = 0; i < 4; i++) if (ka[i] !== kb[i]) return ka[i] - kb[i]; return a[0] < b[0] ? -1 : a[0] > b[0] ? 1 : 0; });
+        /* Zale, Nov 10: class first (Legend, Discovery, Deep cut); then magnitude, with Deep cut at -1 for ranking; then confidence; then name. */
+        var adj = function (r) { return (+r[2] || 0) - (r[1] === 'Deep cut' ? 1 : 0); };
+        var ka = [CL[a[1]] || 0, -adj(a), -(CF[a[3]] || 0)], kb = [CL[b[1]] || 0, -adj(b), -(CF[b[3]] || 0)];
+        for (var i = 0; i < 3; i++) if (ka[i] !== kb[i]) return ka[i] - kb[i]; return a[0] < b[0] ? -1 : a[0] > b[0] ? 1 : 0; });
       var now = {}; R.forEach(function (r, i) { now[r[0]] = i; });
       var two = R.some(function (r) { return r[4] !== now[r[0]]; }), cands = R.filter(function (r) { return r[5] && r[4] - now[r[0]] >= 3; }).sort(function (a, b) { return now[a[0]] - now[b[0]]; }), clim = two && cands.length ? cands[0][0] : null;
       var D = Object.assign({}, D0); D.names = R.map(function (r) { return [r[0], clim ? [r[4], now[r[0]]] : [now[r[0]]]]; }); D.labels = clim ? [S0.l0, 'TODAY'] : ['TODAY']; D.clim = clim; D.climFrom = clim ? cands[0][4] : 0; D.climTo = clim ? now[clim] : 0;
@@ -1698,9 +1735,9 @@ html.pk-cy-in div:has(> button[aria-label="Listen to Pickathon"]){opacity:0!impo
   function cfg(ph, wAvail) {
     if (!ph) return { ph: false, IW: 880, PADX: 40, PADY: 22, ART: { x: 0, y: 118, w: 330 }, COLX: 356, COLW: 524, Y0: 0, LANES: [[80, 74, 2], [44, 41, 1], [44, 41, 1], [44, 41, 1], [33, 29, 1], [33, 29, 1], [33, 29, 1], [33, 29, 1], [33, 29, 1], [33, 29, 1]], GAP: 5, R1: 22, ROWH: 21, FS: 13, CFS: 15, DATES: 15, DGAP: 42, BOT: 100, RIB: [40, 14], STAMP: 0.92 };
     var PW = Math.max(300, Math.min(wAvail, 720)), IW = PW - 32, k = Math.min(1.7, IW / 326), L = function (h, m, ml) { return [Math.round(h * k), Math.round(m * k), ml]; };
-    var AW = Math.round(96 * k);
-    return { ph: true, IW: IW, PADX: 16, PADY: 14, ART: { x: (IW - AW) / 2, y: 0, w: AW, h: Math.round(74 * k) }, COLX: 0, COLW: IW, Y0: Math.round(80 * k),
-      LANES: [L(42, 36, 2), L(27, 23, 1), L(27, 23, 1), L(27, 23, 1), L(21, 17, 1), L(21, 17, 1), L(21, 17, 1), L(21, 17, 1), L(21, 17, 1), L(21, 17, 1)], GAP: Math.round(3 * k), R1: Math.round(13 * k), ROWH: Math.round(16 * k), FS: Math.max(11, 11 * k), CFS: Math.max(12, 12 * k), DATES: Math.max(11, 11 * k), DGAP: Math.round(30 * k), BOT: Math.round(30 * k) + Math.round(Math.max(11, 11 * k)) + 12 + Math.max(34, Math.round(32 * k)), RIB: [Math.max(34, Math.round(32 * k)), Math.max(12, 12 * k)], STAMP: 0.7 * k };
+    var AW = Math.round(96 * k), CG = Math.round(12 * k);   /* Zale, Nov 11: phone keeps the horizontal poster, art static on the left, names move in the column on the right (spec home_climb_phone_nov9b section 1) */
+    return { ph: true, IW: IW, PADX: 16, PADY: 14, ART: { x: 0, y: 0, w: AW }, COLX: AW + CG, COLW: IW - AW - CG, Y0: 0,
+      LANES: [L(40, 28, 2), L(27, 20, 1), L(27, 20, 1), L(27, 20, 1), L(20, 15, 1), L(20, 15, 1), L(20, 15, 1), L(20, 15, 1), L(20, 15, 1), L(20, 15, 1)], GAP: Math.round(3 * k), R1: Math.round(13 * k), ROWH: Math.round(16 * k), FS: Math.max(11, 11 * k), CFS: Math.max(12, 12 * k), DATES: Math.max(11, 11 * k), DGAP: Math.round(30 * k), BOT: Math.round(30 * k) + Math.round(Math.max(11, 11 * k)) + 12 + Math.max(34, Math.round(32 * k)), RIB: [Math.max(34, Math.round(32 * k)), Math.max(12, 12 * k)], STAMP: 0.7 * k };
   }
 
   // One frame of the ladder at time tp (0 = festival, n-1 = today). Returns the paper's inner HTML and its height.
@@ -1783,7 +1820,7 @@ html.pk-cy-in div:has(> button[aria-label="Listen to Pickathon"]){opacity:0!impo
       var cyEm = p.lead ? 0.61 + LH / 2 : two ? LH : LH / 2, nf = Math.min(16, Math.max(Q.ph ? 9 : 12, p.f * 0.2));
       var noteT = 'FROM #' + (x[1][0] + 1), shortT = '#' + (x[1][0] + 1), noteW = tw(noteT) * nf + noteT.length * 0.08 * nf, shortW = tw(shortT) * nf + shortT.length * 0.08 * nf, gapN = Math.max(8, p.f * 0.2);
       var noteFits = d.cx + d.w / 2 + reach + gapN + noteW <= S[0].x + S[0].w + (Q.ph ? 4 : 30), noteO = Math.pow(Math.max(0, Math.min(1, rise)), 3);
-      var isTop = x[1][n - 1] === 0, showNote = rise > 0.01 && roomy && noteO > 0.01 && D.src === 'real billing' && (!isTop || noteFits), triPx = p.f * fsM;
+      var isTop = x[1][n - 1] === 0, showNote = rise > 0.01 && roomy && noteO > 0.01 && D.src === 'real billing' && (Q.ph ? noteFits : (!isTop || noteFits)),   /* phone: a FROM #n note shows only where it fits to the right; the ▲ still marks the climb */ triPx = p.f * fsM;
       var pre = '', post = '';
       if (p.sep) pre = '<span style="position:absolute;right:100%;top:.32em;margin-right:' + Math.round((26 + 0.48 * p.f) / 2) + 'px;transform:translateX(50%);font-size:.6em;line-height:1;letter-spacing:0;color:' + B + '">★</span>';   /* the star sits in the gap, never pushes the name (Zale, Nov 9 09:02) */
       else if (rise > 0.01 && roomy && !(x[1][n - 1] === 0 && tp >= n - 1 - 1e-3) && crw < 0.5) pre = '<span aria-hidden="true" style="position:absolute;right:100%;top:' + (cyEm / fsM - 0.6 - (showNote && !noteFits ? (nf * 0.55 + 2) / triPx * noteO : 0)).toFixed(2) + 'em;margin-right:' + (0.5 + reach / (p.f * fsM)).toFixed(3) + 'em;font-size:' + fsM.toFixed(3) + 'em;line-height:1;letter-spacing:0;color:' + ACC + ';opacity:' + rise.toFixed(3) + '">▲</span>';
@@ -1795,13 +1832,13 @@ html.pk-cy-in div:has(> button[aria-label="Listen to Pickathon"]){opacity:0!impo
         + '<span style="' + lineSt(p.lead, p.lead ? inkLead : inkMain) + '">' + esc(p.L[0]) + '</span>' + (two ? '<span style="' + lineSt(false, inkMain).replace(/^display:block;/, 'display:block;') + '">' + esc(p.L[1]) + '</span>' : '') + post + '</span>'; });
     var rules = (fk < 0.5 ? PA.__rules : PB.__rules).map(function (r) { return '<i style="position:absolute;left:0;width:' + Math.max(0, r.a).toFixed(0) + 'px;top:' + r.y + 'px;height:1.5px;background:' + B + '"></i><i style="position:absolute;left:' + r.b.toFixed(0) + 'px;right:0;top:' + r.y + 'px;height:1.5px;background:' + B + '"></i>'; }).join('');
     var burst = fans ? '<i aria-hidden="true" style="position:absolute;left:0;top:0;width:' + IW + 'px;height:' + BOXH + 'px;background:' + enc('<svg xmlns="http://www.w3.org/2000/svg" width="' + IW + '" height="' + BOXH + '">' + fans + '</svg>') + ' 0 0/100% 100% no-repeat;pointer-events:none;-webkit-mask-image:' + WORN + ';mask-image:' + WORN + ';-webkit-mask-size:200px;mask-size:200px"></i>' : '';
-    var artH = Q.ph ? Q.ART.h : (S[9].y + S[9].h - Q.ART.y);
-    var art = D.art ? '<img src="' + esc(D.art) + '" alt="" loading="lazy" decoding="async" style="position:absolute;left:' + Q.ART.x + 'px;top:' + Q.ART.y + 'px;width:' + Q.ART.w + 'px;height:' + artH + 'px;object-fit:contain;object-position:center center">'
-      : '<div aria-hidden="true" style="position:absolute;left:' + (Q.ART.x + (Q.ph ? 0 : 40)) + 'px;top:' + (Q.ph ? 0 : 60) + 'px;width:' + (Q.ART.w - (Q.ph ? 0 : 80)) + 'px;height:' + (Q.ph ? artH : artH - 120) + 'px;display:flex;align-items:center;justify-content:center;text-align:center;' + FONT + ';line-height:.86;font-size:' + (Q.ph ? 22 : 80) + 'px;color:' + A + ';border:' + (Q.ph ? 3 : 6) + 'px solid ' + A + '">PICKATHON<br>' + y + '</div>';
+    var artH = Q.ART.h || (S[9].y + S[9].h - Q.ART.y);
+    var art = D.art ? '<img src="' + esc(D.art) + '" alt="" decoding="async" style="position:absolute;left:' + Q.ART.x + 'px;top:' + Q.ART.y + 'px;width:' + Q.ART.w + 'px;height:' + artH + 'px;object-fit:contain;object-position:' + (Q.ph ? 'center top' : 'center center') + '">'
+      : '<div aria-hidden="true" style="position:absolute;left:' + (Q.ART.x + (Q.ph ? 0 : 40)) + 'px;top:' + (Q.ph ? 0 : 60) + 'px;width:' + (Q.ART.w - (Q.ph ? 0 : 80)) + 'px;height:' + (Q.ph ? Math.min(artH, Q.ART.w * 1.6) : artH - 120) + 'px;display:flex;align-items:center;justify-content:center;text-align:center;' + FONT + ';line-height:.86;font-size:' + (Q.ph ? 22 : 80) + 'px;color:' + A + ';border:' + (Q.ph ? 3 : 6) + 'px solid ' + A + '">PICKATHON<br>' + y + '</div>';
     var dl = K.dates ? (K.dates.toUpperCase().replace(/ ?- ?/g, '–') + ' · PENDARVIS FARM' + (Q.ph ? '' : ' · HAPPY VALLEY, OREGON')) : 'PICKATHON ' + y;
     var dates = '<div style="position:absolute;left:0;right:0;top:' + DATESY + 'px;text-align:center;white-space:nowrap;' + FONT + ';font-size:' + Q.DATES + 'px;letter-spacing:.08em;color:' + A + '">' + dl.split(' · ').map(function (t, i) { return (i ? '<span style="font-size:.6em;color:' + B + ';margin:0 ' + (Q.ph ? 6 : 12) + 'px;vertical-align:.2em">★</span>' : '') + esc(t); }).join('') + '</div>';
     var rib = '<div style="position:absolute;left:0;right:0;bottom:0;display:flex;align-items:center"><span class="pk-cl-fl" style="--ink:' + A + '"></span><span style="flex:none;height:' + Q.RIB[0] + 'px;padding:0 ' + (Q.ph ? 16 : 36) + 'px;background:' + A + ' linear-gradient(' + PAPER + '80,' + PAPER + '80) 0 4px/100% 1.5px no-repeat;color:' + PAPER + ';' + FONT + ';font-size:' + Q.RIB[1] + 'px;letter-spacing:.1em;display:flex;align-items:center;white-space:nowrap;clip-path:polygon(0 0,100% 0,calc(100% - 14px) 50%,100% 100%,0 100%,14px 50%)">EXPLORE PICKATHON ' + y + ' →</span><span class="pk-cl-fr" style="--ink:' + A + '"></span></div>';
-    return { html: art + h + burst + rules + dates + rib, IW: IW, H: BOXH, A: A, B: B, PAPER: PAPER, ACC: ACC, LIGHT: GLOWINK };
+    return { art: art, html: h + burst + rules + dates + rib, IW: IW, H: BOXH, A: A, B: B, PAPER: PAPER, ACC: ACC, LIGHT: GLOWINK };
   }
 
   // the clock on the poster: a date stamp that counts the summers from the festival to today; tapping it plays again
@@ -1840,6 +1877,9 @@ html.pk-cy-in div:has(> button[aria-label="Listen to Pickathon"]){opacity:0!impo
   }
 
   function STAT(y) { var D = C && C[y]; return +y <= 2005 || !!(D && D.src !== 'real billing'); } // still posters: 2005 and earlier (Zale, Nov 9), and any year without real poster billing (Zale's rule: no source, show today only). Real billing so far: 2023, 2024
+  /* Zale, Nov 11: on phone the time reads as a calendar page that ticks from the festival month to today while the poster runs */
+  var MON = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+  function calH(y, frac) { var m0 = 7, tot = (TODAY - (+y)) * 12 + (10 - m0), m = m0 + Math.round(Math.max(0, Math.min(1, frac)) * tot); return '<b class="pk-cl-mo">' + MON[m % 12] + '</b><b class="pk-cl-yr">' + ((+y) + Math.floor(m / 12)) + '</b>'; }
   function stop() { if (S.raf) { cancelAnimationFrame(S.raf); S.raf = null; } S.playing = false; }
   var invFlow = function (v) { var lo = 0, hi = 1; for (var q = 0; q < 24; q++) { var m = (lo + hi) / 2; if (flow(m) < v) lo = m; else hi = m; } return (lo + hi) / 2; };
   /* Play / replay (Zale, Nov 10): a pause resumes where it stopped; a replay first glides back to the printed bill, holds there a second so the start is clear, then runs. No jumps. */
@@ -1864,22 +1904,27 @@ html.pk-cy-in div:has(> button[aria-label="Listen to Pickathon"]){opacity:0!impo
     var key = y + '|' + Q.ph + '|' + PW + '|' + PH + '|' + TB.show;
     if (mountEl._key === key && mountEl.querySelector('.pk-cl-layer')) {
       mountEl.querySelector('.pk-cl-layer').innerHTML = F.html;
-      var tb = mountEl.querySelector('.pk-cl-tb'); if (tb) { tb.querySelector('.pk-cl-tf').style.width = (TB.frac * 100).toFixed(1) + '%'; var mk = tb.querySelector('.pk-cl-tm'); mk.style.left = (TB.frac * 100).toFixed(1) + '%'; mk.textContent = TB.yNow; mk.style.opacity = TB.frac > 0.04 && TB.frac < 0.96 ? '1' : '0'; var rb = tb.querySelector('.pk-cl-rpl'); if (rb) { rb.textContent = TB.btn; rb.setAttribute('aria-label', TB.aria); } var tl = mountEl.querySelector('.pk-cl-tl'); if (tl.textContent !== TB.line) tl.textContent = TB.line; }
+      var tb = mountEl.querySelector('.pk-cl-tb'); if (tb) { tb.querySelector('.pk-cl-tf').style.width = (TB.frac * 100).toFixed(1) + '%'; var mk = tb.querySelector('.pk-cl-tm'); mk.style.left = (TB.frac * 100).toFixed(1) + '%'; var cal = tb.querySelector('.pk-cl-cal'); if (cal) { var ch = calH(y, TB.frac); if (cal._h !== ch) { cal.innerHTML = ch; cal._h = ch; } } else { mk.textContent = TB.yNow; mk.style.opacity = TB.frac > 0.04 && TB.frac < 0.96 ? '1' : '0'; } var rb = tb.querySelector('.pk-cl-rpl'); if (rb) { rb.textContent = TB.btn; rb.setAttribute('aria-label', TB.aria); } var tl = mountEl.querySelector('.pk-cl-tl'); if (tl && tl.textContent !== TB.line) tl.textContent = TB.line; }
       var cp = mountEl.querySelector('.pk-cl-cap'); if (cp.textContent !== cap) cp.textContent = cap; cp.style.color = atEnd ? '#F2CF62' : '#CFC9BC';
       return;
     }
     var fa = document.activeElement, fk = fa && mountEl.contains(fa) ? fa.getAttribute('data-cl') : null;
     var corner = function (cx, cy) { return 'radial-gradient(circle at ' + cx + ' ' + cy + ',#000 0,transparent 22%)'; }, cm = [corner('0', '0'), corner('100%', '0'), corner('0', '100%'), corner('100%', '100%')].join(',');
+    var capH = '<p class="pk-cl-cap" aria-live="polite" style="color:' + (atEnd ? '#F2CF62' : '#CFC9BC') + '">' + esc(cap) + '</p>', tbH = '';
     var h = '<div class="pk-cl-hd"><div class="pk-cl-ht"><p class="pk-nh-k">Still happening</p><h2 class="pk-nh-h2" id="pk-cl-h">Wait, they all played <span style="color:' + (YC[y] || '#F2CF62') + '">Pickathon ' + y + '?</span></h2>'
-      + '<p class="pk-cl-cap" aria-live="polite" style="color:' + (atEnd ? '#F2CF62' : '#CFC9BC') + '">' + esc(cap) + '</p></div>'
-      + '<button type="button" class="pk-cl-an" data-cl="rand">↻ Another year</button></div>';
-    if (TB.show) h += '<div class="pk-cl-tb"><span class="pk-cl-ty">' + y + '</span><span class="pk-cl-tr" aria-hidden="true"><i class="pk-cl-tf" style="width:' + (TB.frac * 100).toFixed(1) + '%"></i><b class="pk-cl-tm" style="left:' + (TB.frac * 100).toFixed(1) + '%;opacity:' + (TB.frac > 0.04 && TB.frac < 0.96 ? 1 : 0) + '">' + TB.yNow + '</b></span><span class="pk-cl-ty">' + TODAY + '</span><button type="button" class="pk-cta sec pk-cl-rpl" data-cl="play" aria-label="' + TB.aria + '">' + TB.btn + '</button></div><p class="pk-cl-tl" aria-hidden="true">' + esc(TB.line) + '</p>';
+      + (Q.ph ? '' : capH) + '</div>'
+      + (Q.ph ? '' : '<button type="button" class="pk-cl-an" data-cl="rand">↻ Another year</button>') + '</div>';
+    if (TB.show) tbH += '<div class="pk-cl-tb"><span class="pk-cl-ty">' + y + '</span><span class="pk-cl-tr" aria-hidden="true"><i class="pk-cl-tf" style="width:' + (TB.frac * 100).toFixed(1) + '%"></i><b class="pk-cl-tm" style="left:' + (TB.frac * 100).toFixed(1) + '%;opacity:' + (TB.frac > 0.04 && TB.frac < 0.96 ? 1 : 0) + '">' + TB.yNow + '</b></span><span class="pk-cl-ty">' + TODAY + '</span><button type="button" class="pk-cta sec pk-cl-rpl" data-cl="play" aria-label="' + TB.aria + '">' + TB.btn + '</button></div><p class="pk-cl-tl" aria-hidden="true">' + esc(TB.line) + '</p>';
+    if (!Q.ph) h += tbH;
     h += '<div class="pk-cl-pw" style="width:' + PW + 'px;height:' + PH + 'px">';
     h += '<div class="pk-cl-p" data-cl="year" role="link" tabindex="0" aria-label="Pickathon ' + y + ': open the ' + y + ' page" style="width:' + PW + 'px;height:' + PH + 'px;background:' + F.PAPER + '">';
     h += '<i aria-hidden="true" class="pk-cl-tone" style="background-image:radial-gradient(' + F.B + ' 1.4px,transparent 1.9px);-webkit-mask-image:' + cm + ';mask-image:' + cm + '"></i><i aria-hidden="true" class="pk-cl-grain" style="background-image:' + GRAIN + '"></i><i aria-hidden="true" class="pk-cl-frame" style="border-color:' + F.A + ';inset:' + (Q.ph ? 8 : 14) + 'px"></i>';
+    h += '<div class="pk-cl-art" aria-hidden="true" style="position:absolute;left:' + Q.PADX + 'px;top:' + Q.PADY + 'px;width:' + F.IW + 'px;height:' + F.H + 'px">' + F.art + '</div>';   /* static: drawn once per year, never in the animation frames */
     h += '<div class="pk-cl-layer" aria-hidden="true" style="position:absolute;left:' + Q.PADX + 'px;top:' + Q.PADY + 'px;width:' + F.IW + 'px;height:' + F.H + 'px">' + F.html + '</div>';
     h += '</div>';
     h += '</div>';
+    if (Q.ph && TB.show) tbH = '<div class="pk-cl-tb pk-cl-tbp"><span class="pk-cl-cal" aria-hidden="true">' + calH(y, TB.frac) + '</span><span class="pk-cl-tr" aria-hidden="true"><i class="pk-cl-tf" style="width:' + (TB.frac * 100).toFixed(1) + '%"></i><b class="pk-cl-tm" style="left:' + (TB.frac * 100).toFixed(1) + '%;opacity:0"></b></span><span class="pk-cl-ty">' + TODAY + '</span><button type="button" class="pk-cta sec pk-cl-rpl" data-cl="play" aria-label="' + TB.aria + '">' + TB.btn + '</button></div>';
+    if (Q.ph) h += '<div class="pk-cl-below">' + capH.replace('class="pk-cl-cap"', 'class="pk-cl-cap pk-sr"') + tbH + '<button type="button" class="pk-cl-an pk-cl-anb" data-cl="rand">↻ Another year</button></div>';   /* Zale, Nov 11: caption, time bar and Another year under the poster, full width */
     var fin = D.names.filter(function (x) { return x[1][n - 1] < Math.min(10, D.ranked || 10); }).sort(function (a, b) { return a[1][n - 1] - b[1][n - 1]; }).map(function (x) { return x[0]; });
     h += '<p class="pk-sr">Pickathon ' + y + ', ranked today by how far each act has gone: ' + esc(fin.join(', ')) + '.</p>';
     mountEl.innerHTML = h; mountEl.setAttribute('data-y', y); mountEl._key = key;
@@ -1890,10 +1935,10 @@ html.pk-cy-in div:has(> button[aria-label="Listen to Pickathon"]){opacity:0!impo
   function fitScreen(PW, PH) {
     var pw = mountEl.querySelector('.pk-cl-pw'), hd = mountEl.querySelector('.pk-cl-hd'); if (!pw || !hd) return;
     var vh = window.innerHeight || 800, top = 0, bot = 0;
-    try { [].forEach.call(document.querySelectorAll('header'), function (hb) { var r = hb.getBoundingClientRect(), cs = getComputedStyle(hb); if (r.height > 0 && (cs.position === 'sticky' || cs.position === 'fixed')) top = Math.max(top, Math.min(140, r.height)); }); var tb = document.querySelector('nav[aria-label="App"]'); if (tb) { var tr = tb.getBoundingClientRect(); if (tr.height > 0 && tr.top > vh / 2) bot = vh - tr.top; } } catch (e) {}
+    try { [].forEach.call(document.querySelectorAll('header'), function (hb) { var r = hb.getBoundingClientRect(), cs = getComputedStyle(hb); if (r.height > 0 && (cs.position === 'sticky' || cs.position === 'fixed' || (r.top <= 1 && r.bottom > 0))) top = Math.max(top, Math.min(140, r.bottom));   /* a header that stays on screen outside the scroller counts too */ }); var tb = document.querySelector('nav[aria-label="App"]'); if (tb) { var tr = tb.getBoundingClientRect(); if (tr.height > 0 && tr.top > vh / 2) bot = vh - tr.top; } } catch (e) {}
     if (!bot && window.innerWidth < 1000) bot = 64;
     var sec = mountEl.closest('section'), pad = 0; if (sec) { var cs = getComputedStyle(sec); pad = parseFloat(cs.paddingTop) + parseFloat(cs.paddingBottom); }
-    var avail = vh - top - bot - hd.offsetHeight - 22 - pad, sc = Math.min(1, Math.max(0.66, avail / PH));
+    var bl = mountEl.querySelector('.pk-cl-below'), avail = vh - top - bot - hd.offsetHeight - 22 - pad - (bl ? bl.offsetHeight + 8 : 0), sc = Math.min(1, Math.max(0.66, avail / PH));
     pw.style.transformOrigin = 'top center'; pw.style.transform = sc < 0.999 ? 'scale(' + sc.toFixed(3) + ')' : '';
     pw.style.marginBottom = sc < 0.999 ? (-(PH * (1 - sc))).toFixed(0) + 'px' : ''; mountEl.style.display = 'flow-root';
   }
@@ -1909,6 +1954,11 @@ html.pk-cy-in div:has(> button[aria-label="Listen to Pickathon"]){opacity:0!impo
     else if (a === 'rand') rand();
     else if (a === 'year') { try { window.pkOpenYear && window.pkOpenYear(S.y); } catch (x) {} }
   }, true);
+  /* Zale, Nov 11: the time bar is a slider. Drag it back and forth and the poster follows. */
+  var dragT = null, scrub = function (e) { var r = dragT.getBoundingClientRect(), x = Math.max(0, Math.min(1, (e.clientX - r.left) / Math.max(1, r.width))), D = C[S.y], n = D.labels.length, lo = 0, hi = n - 1; for (var q = 0; q < 22; q++) { var mid = (lo + hi) / 2; if (timebar(D, S.y, mid).frac < x) lo = mid; else hi = mid; } stop(); S.seen[S.y] = 1; S.tp = x >= 0.995 ? n - 1 : x <= 0.005 ? 0 : (lo + hi) / 2; draw(); };
+  document.addEventListener('pointerdown', function (e) { var t = e.target && e.target.closest && e.target.closest('.pk-cl-tr'); if (!t || !mountEl || !mountEl.contains(t)) return; dragT = t; e.preventDefault(); e.stopPropagation(); try { t.setPointerCapture(e.pointerId); } catch (x) {} scrub(e); }, true);
+  document.addEventListener('pointermove', function (e) { if (dragT) { e.preventDefault(); scrub(e); } }, true);
+  ['pointerup', 'pointercancel'].forEach(function (ev) { document.addEventListener(ev, function () { dragT = null; }, true); });
   document.addEventListener('keydown', function (e) { if ((e.key === 'Enter' || e.key === ' ') && e.target && e.target.classList && e.target.classList.contains('pk-cl-p') && mountEl && mountEl.contains(e.target)) { e.preventDefault(); try { window.pkOpenYear && window.pkOpenYear(S.y); } catch (x) {} } });
   function tick() {
     var m = document.querySelector('.pk-cl-mount');
@@ -6400,10 +6450,10 @@ document.addEventListener('mousemove',function(e){var b=rowOf(e.target);if(b){va
 document.addEventListener('mouseout',function(e){var b=rowOf(e.target);if(!b)return;var n=e.relatedTarget,w=e.target.closest('.pk-bcw');if(!(n&&n.closest&&n.closest('.pk-bcw')===w))hov.delete(b)},{capture:true,passive:true});
 document.addEventListener('click',function(e){var btn=e.target.closest&&e.target.closest('.pk-bcnav button');if(!btn)return;var b=rowOf(btn);if(!b)return;e.stopPropagation();e.preventDefault();var half=b.scrollWidth/2,c=b.firstElementChild,step=c?c.getBoundingClientRect().width+12:b.clientWidth*.8,dir=btn.matches(':first-of-type')?-1:1;if(dir<0&&b.scrollLeft<step+2){b.scrollLeft+=half}b.scrollBy({left:dir*step,behavior:'smooth'});pause(b,6000);pos.delete(b)},true);
 function tick(t){var dt=last?Math.min(64,t-last):16;last=t;if(!(rm&&rm.matches)){document.querySelectorAll('.pk-bc').forEach(function(b){if(!b.offsetParent)return;var half=b.scrollWidth/2;if(half<=b.clientWidth)return;if(b.scrollLeft>=half&&t-(b.__sa||0)>180&&!b.__tt)b.scrollLeft-=half;if(!(mq&&mq.matches))return;if((hold.get(b)||0)>t){pos.delete(b);return}var r=b.getBoundingClientRect();if(r.bottom<0||r.top>innerHeight)return;var p=pos.has(b)?pos.get(b):b.scrollLeft;var f=hov.get(b),v=0.03;if(f!=null){var d=f-0.5,a=Math.abs(d),z=1/6;if(a<=z){v=0}else{var q=Math.min(1,(a-z)/(0.5-z));v=(d<0?-1:1)*(0.05+Math.pow(q,1.6)*0.7)}}p+=dt*v;if(p>=half)p-=half;if(p<0)p+=half;pos.set(b,p);b.scrollLeft=p})}requestAnimationFrame(tick)}requestAnimationFrame(tick)})();</script><script>/* One video player for the whole site: every clip (links, cards, radio, year films, the farm map) opens here, embedded, over the page. */
-(function(){if(/[?&]embed=1/.test(location.search))return;var o=null,col=null,box=null,fr=null,capEl=null,navEl=null,kickEl=null,nameEl=null,songEl=null,ticksEl=null,cntEl=null,upEl=null,upLab=null,Q=[],i=0,er=0,lastF=null,sv=null;
+(function(){if(/[?&]embed=1/.test(location.search))return;var o=null,col=null,box=null,fr=null,capEl=null,navEl=null,kickEl=null,nameEl=null,songEl=null,ticksEl=null,cntEl=null,upEl=null,upLab=null,Q=[],i=0,er=0,lastF=null,sv=null,started=false,muted=false,stT=0,sndEl=null;
 function css(){if(document.getElementById('pk-vo-css'))return;var s=document.createElement('style');s.id='pk-vo-css';s.textContent='.pk-vo:focus{outline:none}.pk-vo{position:fixed;inset:0;z-index:2147483000;background:#080A07;display:flex;align-items:flex-start;justify-content:center;overflow-y:auto;scrollbar-width:none;padding:16px 16px 16px;box-sizing:border-box;overscroll-behavior:contain;color:#F2EDE3;font-family:system-ui,-apple-system,sans-serif}'
 +'.pk-vo-col{position:relative;width:min(960px,100%,calc((100vh - 372px)*16/9));width:min(960px,100%,calc((100dvh - 372px)*16/9));margin:auto 0}'
-+'.pk-vo-fr{position:relative;width:100%;aspect-ratio:16/9;background:#000;border-radius:12px;overflow:hidden;box-shadow:0 18px 60px rgba(0,0,0,.55)}.pk-vo-fr.pk-sp{aspect-ratio:auto;height:352px;max-height:70vh;background:#121212}.pk-vo-fr iframe{position:absolute;inset:0;width:100%;height:100%;border:0;display:block}'
++'.pk-vo-fr{position:relative;width:100%;aspect-ratio:16/9;background:#000;border-radius:12px;overflow:hidden;box-shadow:0 18px 60px rgba(0,0,0,.55)}.pk-vo-fr.pk-sp{aspect-ratio:auto;height:352px;max-height:70vh;background:#121212}.pk-vo-fr iframe{position:absolute;inset:0;width:100%;height:100%;border:0;display:block}.pk-vo-snd{position:absolute;left:50%;bottom:16px;transform:translateX(-50%);z-index:3;min-height:44px;padding:0 18px;border-radius:999px;border:0;background:#F2CF62;color:#12160F;font:800 13px system-ui,sans-serif;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;box-shadow:0 6px 20px rgba(0,0,0,.4)}.pk-vo-snd[hidden]{display:none}'
 +'.pk-vo-g{position:absolute;left:0;right:0;top:0;height:58px;z-index:2;background:transparent}'
 +'.pk-vo-x{position:fixed;right:14px;top:14px;z-index:3;width:40px;height:40px;padding:0;border-radius:999px;border:1px solid rgba(242,237,227,.35);background:rgba(242,237,227,.06);color:#F2EDE3;font:400 17px/1 system-ui,sans-serif;display:flex;align-items:center;justify-content:center;cursor:pointer}.pk-vo-x:hover{background:rgba(242,237,227,.16)}.pk-vo-x:focus-visible,.pk-vo-nav button:focus-visible{outline:2px solid #F2B33D;outline-offset:2px}'
 +'.pk-vo-kick span i{display:block;font-style:normal}.pk-vo-kick span i+i{color:#B9B3A6;margin-top:3px;font-size:11px}'
@@ -6424,11 +6474,14 @@ function songOf(raw,a,vn){var s=String(raw||'').replace(/_/g,' ');if(!/ /.test(S
 function meta(t){var V=null,u=String(t.u||''),id=null;try{var m=u.match(/[?&]v=([\w-]{11})/)||u.match(/youtu\.be\/([\w-]{11})/)||u.match(/\/embed\/([\w-]{11})/);id=m&&m[1];var vm=u.match(/vimeo\.com\/(?:video\/)?(\d+)/);(window.__pkVids||[]).some(function(x){if((id&&x.id===id)||(vm&&x.vm===vm[1])){V=x;return true}return false})}catch(e){}var a=t.a||(V&&V.a)||'',y=t.y||(V&&V.y)||'',vn=t.vn||(V&&V.vn)||'';var th=(V&&V.th)||(id?'https://i.ytimg.com/vi/'+id+'/mqdefault.jpg':'');return{a:a,y:String(y||''),vn:String(vn).replace(/\s*Sessions?$/i,' Sessions'),song:songOf(t.s||(V&&V.s)||'',a,vn),th:th}}
 function song(s){return String(s||'').replace(/\s*[-|@].*Pickathon.*$/i,'').replace(/\s*@.*$/,'').trim().slice(0,80)}
 function capOf(t){if(t.c!=null)return t.c;var p=[];if(t.a)p.push(t.a);var s=t.vn?'':song(t.s);if(t.vn)p.push(String(t.vn).replace(/\s*Sessions?$/i,' Sessions'));if(t.a&&s.toLowerCase().indexOf(String(t.a).toLowerCase()+' - ')===0)s=s.slice(String(t.a).length+3);if(s&&s!==t.a)p.push(s);if(t.y)p.push('Pickathon '+t.y);if(t.o&&t.of)p.push(t.o+' of '+t.of);return p.join(' · ')}
-function onMsg(e){if(!fr||e.source!==fr.contentWindow||Q.length<2)return;var d=e.data;if(typeof d==='string'){try{d=JSON.parse(d)}catch(x){return}}if(!d)return;if(d.event==='onStateChange'&&d.info===1)er=0;if(d.event==='onStateChange'&&d.info===0)step(1);else if(d.event==='onError'){if(++er>=4){if(capEl)capEl.textContent='These clips would not load. Try again in a moment.';return}step(1)}else if(d.event==='finish')step(1);else if(d.event==='ready'&&String(e.origin).indexOf('vimeo')>=0){try{fr.contentWindow.postMessage(JSON.stringify({method:'addEventListener',value:'finish'}),'*')}catch(x){}}}
+function onMsg(e){if(!fr||e.source!==fr.contentWindow)return;var d=e.data;if(typeof d==='string'){try{d=JSON.parse(d)}catch(x){return}}if(!d)return;if((d.event==='onStateChange'&&d.info===1)||d.event==='play'||(d.method==='getPaused'&&d.value===false)||(d.event==='infoDelivery'&&d.info&&d.info.playerState===1)){started=true;er=0}if(Q.length<2)return;if(d.event==='onStateChange'&&d.info===0)step(1);else if(d.event==='onError'){if(++er>=4){if(capEl)capEl.textContent='These clips would not load. Try again in a moment.';return}step(1)}else if(d.event==='finish')step(1);else if(d.event==='ready'&&String(e.origin).indexOf('vimeo')>=0){try{fr.contentWindow.postMessage(JSON.stringify({method:'addEventListener',value:'finish'}),'*');fr.contentWindow.postMessage(JSON.stringify({method:'addEventListener',value:'play'}),'*')}catch(x){}}}
 function key(e){if(!o)return;if(e.key==='Escape'){e.preventDefault();e.stopPropagation();close()}else if(Q.length>1&&e.key==='ArrowRight'){e.stopPropagation();step(1)}else if(Q.length>1&&e.key==='ArrowLeft'){e.stopPropagation();step(-1)}}
 function step(d){if(!o||!Q.length)return;i=(i+d+Q.length)%Q.length;play()}
-function play(){var t=Q[i],S=src(t.u);if(!S){if(Q.length>1)step(1);return}box.querySelectorAll('iframe').forEach(function(n){n.remove()});fr=document.createElement('iframe');fr.src=S.s;fr.title=S.sp?'Spotify player':'Video player';box.classList.toggle('pk-sp',!!S.sp);fr.allow='autoplay; encrypted-media; fullscreen; picture-in-picture';fr.setAttribute('allowfullscreen','');fr.setAttribute('referrerpolicy','strict-origin-when-cross-origin');box.insertBefore(fr,box.firstChild);
-var f=fr;f.addEventListener('load',function(){var go=function(){try{if(S.y){var P=function(x){f.contentWindow.postMessage(JSON.stringify(x),'*')};P({event:'listening',id:1,channel:'widget'});P({event:'command',func:'loadModule',args:['captions']});P({event:'command',func:'setOption',args:['captions','track',{}]})}else{f.contentWindow.postMessage(JSON.stringify({method:'addEventListener',value:'finish'}),'*');f.contentWindow.postMessage(JSON.stringify({method:'disableTextTrack'}),'*')}}catch(x){}};[300,1200,2500,4500].forEach(function(ms){setTimeout(go,ms)})});fill(t)}
+function play(mu){var t=Q[i],S=src(t.u);if(!S){if(Q.length>1)step(1);return}box.querySelectorAll('iframe').forEach(function(n){n.remove()});clearTimeout(stT);started=false;muted=!!mu;if(sndEl)sndEl.hidden=!mu;fr=document.createElement('iframe');fr.src=mu&&!S.sp?(S.y?S.s.replace('autoplay=1','autoplay=1&mute=1'):S.s.replace('autoplay=1','autoplay=1&muted=1')):S.s;fr.title=S.sp?'Spotify player':'Video player';box.classList.toggle('pk-sp',!!S.sp);fr.allow='autoplay; encrypted-media; fullscreen; picture-in-picture';fr.setAttribute('allowfullscreen','');fr.setAttribute('referrerpolicy','strict-origin-when-cross-origin');box.insertBefore(fr,box.firstChild);
+var f=fr;f.addEventListener('load',function(){var go=function(){try{if(S.y){var P=function(x){f.contentWindow.postMessage(JSON.stringify(x),'*')};P({event:'listening',id:1,channel:'widget'});P({event:'command',func:'loadModule',args:['captions']});P({event:'command',func:'setOption',args:['captions','track',{}]})}else{f.contentWindow.postMessage(JSON.stringify({method:'addEventListener',value:'finish'}),'*');f.contentWindow.postMessage(JSON.stringify({method:'addEventListener',value:'play'}),'*');f.contentWindow.postMessage(JSON.stringify({method:'disableTextTrack'}),'*')}}catch(x){}};[300,1200,2500,4500].forEach(function(ms){setTimeout(go,ms)})});if(!S.sp&&!mu){var me=f;stT=setTimeout(function(){if(fr!==me||started)return;try{me.contentWindow.postMessage(JSON.stringify({method:'getPaused'}),'*')}catch(x){}stT=setTimeout(function(){if(fr===me&&!started)play(true)},700)},3500)}fill(t)}
+function unmute(){if(!fr)return;try{var w=fr.contentWindow;w.postMessage(JSON.stringify({method:'setMuted',value:false}),'*');w.postMessage(JSON.stringify({method:'setVolume',value:1}),'*');w.postMessage(JSON.stringify({event:'command',func:'unMute',args:[]}),'*');w.postMessage(JSON.stringify({event:'command',func:'setVolume',args:[100]}),'*');w.postMessage(JSON.stringify({method:'play'}),'*');w.postMessage(JSON.stringify({event:'command',func:'playVideo',args:[]}),'*')}catch(x){}muted=false;if(sndEl)sndEl.hidden=true}
+/* a single video keeps going: the next songs are other single-song clips, same year first (Zale, Nov 11: never stop after one) */
+function more(t){var V=window.__pkVids||[],u=String(t.u||''),vm=(u.match(/vimeo\.com\/(?:video\/)?(\d+)/)||[])[1],yt=(u.match(/[?&]v=([\w-]{11})/)||u.match(/youtu\.be\/([\w-]{11})/)||[])[1],y0=null;V.some(function(v){if((vm&&v.vm===vm)||(yt&&v.id===yt)){y0=v.y;return true}return false});var ok=V.filter(function(v){return v.f!==1&&!v.cad&&+v.y<2026&&!((vm&&v.vm===vm)||(yt&&v.id===yt))}),sh=function(a){for(var k=a.length-1;k>0;k--){var j=Math.floor(Math.random()*(k+1)),z=a[k];a[k]=a[j];a[j]=z}return a};var a=sh(ok.filter(function(v){return y0&&v.y===y0})),b=sh(ok.filter(function(v){return !(y0&&v.y===y0)}));return a.concat(b).slice(0,30).map(function(v){return{u:v.vm?'https://vimeo.com/'+v.vm+(v.vh?'/'+v.vh:''):'https://www.youtube.com/watch?v='+v.id}})}
 function fill(t){var M=meta(t);capEl.textContent=(!M.a&&t.c)?String(t.c):'';nameEl.textContent=M.a||'';songEl.textContent=M.song||'';kickEl.textContent='';var lg=M.y&&window.__pkYL&&window.__pkYL[M.y];try{var vk=nz(String(M.vn||'').replace(/\s*(stage|sessions?|barn)\s*$/i,'')),NB={slab:'slab',pumphouse:'pumphouse',woods:'woods',paddock:'paddock',galaxy:'galaxy',grove:'grove',windmill:'windmill',lucky:'lucky',cherryhill:'cherry_hill',courtyard:'courtyard',coyote:'coyote',refuge:'refuge',orchard:'orchard',market:'market',curation:'curation'};if(NB[vk])lg='nb-logos/pt-icon-'+NB[vk]+'.png'}catch(x){}if(lg){var im=document.createElement('img');im.src=lg;im.alt='';im.setAttribute('aria-hidden','true');kickEl.appendChild(im)}var tx=['Pickathon'+(M.y?' '+M.y:'')];if(M.vn)tx.push(M.vn);var sp=document.createElement('span');tx.forEach(function(t){var ii=document.createElement('i');ii.textContent=t;sp.appendChild(ii)});kickEl.appendChild(sp);cntEl.textContent=Q.length>1?(i+1)+' of '+Q.length:'';
 Array.prototype.forEach.call(ticksEl.children,function(e,n){e.className=n<i?'d':(n===i?'on':'')});
 upEl.textContent='';var n2=Math.min(Q.length-1,10);upLab.hidden=upEl.hidden=n2<1;for(var k=1;k<=n2;k++){(function(idx){var q=Q[idx],m=meta(q),b=document.createElement('button');b.type='button';b.setAttribute('aria-label','Play '+(m.a||'next song')+(m.song?', '+m.song:''));var pic=document.createElement('span');pic.className='tb';if(m.th){var pi=document.createElement('img');pi.src=m.th;pi.alt='';pi.loading='lazy';pic.appendChild(pi)}b.appendChild(pic);var bb=document.createElement('b');bb.textContent=m.a||'Next';var em=document.createElement('em');em.textContent=m.song||m.vn||'';b.appendChild(bb);b.appendChild(em);b.onclick=function(){i=idx;play()};upEl.appendChild(b)})((i+k)%Q.length)}}
@@ -6436,9 +6489,9 @@ function lock(){var de=document.documentElement,b=document.body;sv={x:window.scr
 function unlock(){if(!sv)return;var de=document.documentElement,b=document.body,s=sv;sv=null;de.style.overflow=s.ho;b.style.overflow=s.bo;if(window.scrollX!==s.x||window.scrollY!==s.y)window.scrollTo(s.x,s.y)}
 function close(){if(!o)return;try{if(document.fullscreenElement&&o.contains(document.fullscreenElement))document.exitFullscreen()}catch(x){}o.remove();o=null;fr=null;Q=[];window.removeEventListener('message',onMsg);document.removeEventListener('keydown',key,true);unlock();try{if(lastF&&lastF.focus&&document.contains(lastF))lastF.focus({preventScroll:true})}catch(x){}lastF=null}
 function openSp(u){try{window.__pkOpenMusic(u)}catch(x){try{window.open(u,'_blank','noopener')}catch(y){}}}
-function show(list,label){if(!list||!list.length)return false;var s0=String(list[0]&&list[0].u||'');if(/open\.spotify\.com\/(?:intl-[a-z]+\/)?track\//.test(s0)){openSp(s0);return true}css();var keep=!!o;if(o){o.remove();o=null}Q=list.slice();i=0;er=0;if(!keep){lastF=document.activeElement;lock()}
+function show(list,label){if(!list||!list.length)return false;var s0=String(list[0]&&list[0].u||'');if(/open\.spotify\.com\/(?:intl-[a-z]+\/)?track\//.test(s0)){openSp(s0);return true}css();var keep=!!o;if(o){o.remove();o=null}Q=list.slice();if(Q.length===1)Q=Q.concat(more(Q[0]));i=0;er=0;if(!keep){lastF=document.activeElement;lock()}
 o=document.createElement('div');o.className='pk-vo';o.setAttribute('role','dialog');o.setAttribute('aria-modal','true');o.setAttribute('aria-label',label?'Pickathon Radio · '+label:'Video');
-col=document.createElement('div');col.className='pk-vo-col';box=document.createElement('div');box.className='pk-vo-fr';var g=document.createElement('div');g.className='pk-vo-g';g.setAttribute('aria-hidden','true');box.appendChild(g);
+col=document.createElement('div');col.className='pk-vo-col';box=document.createElement('div');box.className='pk-vo-fr';var g=document.createElement('div');g.className='pk-vo-g';g.setAttribute('aria-hidden','true');box.appendChild(g);sndEl=document.createElement('button');sndEl.type='button';sndEl.className='pk-vo-snd';sndEl.textContent='🔊 Tap for sound';sndEl.hidden=true;sndEl.onclick=unmute;box.appendChild(sndEl);
 var x=document.createElement('button');x.type='button';x.className='pk-vo-x';x.textContent='✕';x.setAttribute('aria-label','Close video');x.onclick=close;
 var low=document.createElement('div');low.className='pk-vo-low';kickEl=document.createElement('div');kickEl.className='pk-vo-kick';nameEl=document.createElement('h2');nameEl.className='pk-vo-name';songEl=document.createElement('p');songEl.className='pk-vo-song';capEl=document.createElement('div');capEl.className='pk-vo-cap';ticksEl=document.createElement('div');ticksEl.className='pk-vo-ticks';ticksEl.hidden=Q.length<2;
 for(var ti=0;ti<Q.length&&ti<80;ti++){(function(n){var e=document.createElement('i');e.onclick=function(){i=n;play()};ticksEl.appendChild(e)})(ti)}
