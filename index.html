@@ -1239,6 +1239,7 @@ html.pk-tmon #root header + *{margin-top:44px}
 #root#root .pk-tn-dot.mv{box-shadow:0 0 0 1.5px #12160F,0 0 0 3px #F2CF62}
 #root#root .pk-tn-dot.sel{box-shadow:0 0 0 2px #12160F,0 0 0 4.5px #F2EDE3;z-index:2}
 #root#root .pk-tn-dot:focus-visible{outline:2px solid #F2EDE3;outline-offset:3px}
+#root#root .pk-tn-dot::after{content:"";position:absolute;left:50%;top:50%;width:44px;height:44px;transform:translate(-50%,-50%);border-radius:50%;background:transparent}
 @media (prefers-reduced-motion:reduce){#root#root .pk-tn-dot{transition:none}}
 #root .pk-tn-tip{position:absolute;z-index:3;pointer-events:none;transform:translate(-50%,-100%);margin-top:-6px;padding:4px 8px;border-radius:4px;background:#F2EDE3;color:#12160F;font:800 12px 'Bricolage Grotesque',sans-serif;white-space:nowrap;display:none}
 @media (hover:hover) and (pointer:fine){#root .pk-tn-tip.on{display:block}}
