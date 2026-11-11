@@ -44,7 +44,7 @@ if (!window.pkOrders) window.pkOrders = (function () {
   var O = null, S = null, root = null, timer = null, prevFocus = null, prevTitle = '', pushed = false, saidLate = false;
   var esc = K.esc, ic = K.ic;
   var TERMS = 'All sales are final. Your passes are tied to the event dates and cannot be refunded. If an event date changes or Pickathon cancels, we will email you with your options. Passes can be transferred to a friend from My Pickathon.';
-  var PLANTERMS = 'A Pickathon Payment Plan splits your total into a first payment today and monthly payments after that, charged to the card you enter here. Your passes are issued when the plan is complete. Missed payments can cancel the order.';
+  var PLANTERMS = 'A Pickathon Payment Plan splits your total into a first payment today and monthly payments after that, charged to the card you enter here. Your passes are issued when the plan is complete. Missed payments can cancel the order.' + (K.lastBy && K.lastBy() ? ' Every payment is made' + K.lastBy().replace(', the last', '') + '.' : '');
   function app() { return window.comp || window.__pkApp || null; }
   function $(s) { return root ? root.querySelector(s) : null; }
   function stored() { try { return JSON.parse(window.localStorage.getItem(LSC) || 'null') || {}; } catch (e) { return {}; } }
