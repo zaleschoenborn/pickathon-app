@@ -22,7 +22,7 @@
   if (!window.pkLastOrder) window.pkLastOrder = function () { return null; };
   if (!window.pkMyPasses) window.pkMyPasses = function () { return null; };
 
-  var FEE = 0.05, LS = 'pk27order', SSW = 'pk27where';
+  var FEE = 0.05, LS = 'pk27order', SSW = 'pk27where', LSR = 'pk27remind', LSS = 'pk27saved';
   var YEAR = 2027, DAYS = [['w', 'W', 'Wed', 'Wednesday', 'Aug 4'], ['dthu', 'Th', 'Thu', 'Thursday', 'Aug 5'], ['dfri', 'Fr', 'Fri', 'Friday', 'Aug 6'], ['dsat', 'Sa', 'Sat', 'Saturday', 'Aug 7'], ['dsun', 'Su', 'Sun', 'Sunday', 'Aug 8']];
   var DAY = {}; DAYS.forEach(function (d) { DAY[d[0]] = d; });
   var PARK = { dthu: 'pthu', dfri: 'pfri', dsat: 'psat', dsun: 'psun' };
@@ -188,6 +188,7 @@
     var w = when(), minDay = minP(OK.day), h = '';
     h += '<div class="tk-in"><div class="tk-paper tk-head"><img src="logo27-bat.png" alt="Pickathon 2027" width="700" height="260"><div class="tk-head-t"><h1 class="tk-d">Tickets</h1><p>' + headline() + '</p></div></div>';
     h += '<div class="tk-main" id="tk-main">';
+    if (w === 'pre') h += '<section class="tk-pre" id="tk-pre" aria-label="Reminder"></section>';
     h += '<div id="tk-top"></div>';
     h += '<div class="tk-cols"><div class="tk-build">';
     h += '<fieldset><div class="tk-leg"><legend class="tk-d tk-d-label">How long?</legend><span id="tk-helpslot"></span></div><div class="tk-passes" id="tk-passes">' +
@@ -227,7 +228,7 @@
       '<p class="tk-otot" id="tk-otot" hidden><span>Total <small class="tk-dim">fee included</small></span><b class="tk-num" id="tk-ototv"></b></p><p class="tk-oplan" id="tk-oplan" hidden></p>' +
       '<button type="button" class="tk-pill tk-pill-gold" id="tk-ogo" data-act="go" hidden></button><p class="tk-fine" id="tk-ofine" hidden><b>All sales final.</b> Send a pass to a friend any time from My Pickathon.</p></div></aside></div>';
     h += '</div>';
-    h += '<div class="tk-bar" id="tk-bar" hidden role="region" aria-label="Order total"><button type="button" class="tk-bar-sum" id="tk-barsum" data-act="sheet" aria-haspopup="dialog"><span id="tk-bart"></span><small><span id="tk-barfee"></span>' + ic('up', 'tk-ic-sm', 'width:.75rem;height:.75rem') + '</small></button><button type="button" class="tk-pill tk-pill-gold" id="tk-bargo" data-act="go"></button></div>';
+    h += '<div class="tk-bar" id="tk-bar" hidden role="region" aria-label="Order total"><button type="button" class="tk-bar-sum" id="tk-barsum" data-act="sheet" aria-haspopup="dialog"><span id="tk-bart"></span><small><span id="tk-barfee"></span>' + ic('up', 'tk-ic-sm', 'width:.75rem;height:.75rem') + '</small></button><button type="button" class="tk-pill tk-pill-gold" id="tk-bargo" data-act="go"></button><p class="tk-bar-ok" id="tk-barok" role="status" hidden>' + ic('check') + '<span></span></p></div>';
     h += '<p class="tk-vh" role="status" aria-live="polite" id="tk-live"></p></div>';
     return h;
   }
@@ -240,8 +241,55 @@
     else if (!last && w === 'sale') h += '<p class="tk-signin"><span>Been before? <button type="button" class="tk-tlink" data-act="signin">Sign in</button> to reuse your last order.</span></p>';
     return h;
   }
+  /* ---------- before the sale: the reminder first, then build and save the order ---------- */
+  function ls(k, v) { try { if (v === undefined) return window.localStorage.getItem(k); if (v === null) window.localStorage.removeItem(k); else window.localStorage.setItem(k, v); } catch (e) {} return null; }
+  function textsOn() { return !!((window.PK_SIGNUP || {}).layloEndpoint); }   // no text service yet: the field takes an email only
+  function fieldName() { return textsOn() ? 'Email or mobile number' : 'Email address'; }
+  function reminded() { return !!ls(LSR) || !!site().nlDone; }
+  function openDay() { var r = T.show; return (r.isToday ? 'today' : r.dayL) + (r.time ? ' at ' + pacific(r.time) : ''); }
+  function ordinal(n) { var v = n % 100; return n + (v > 10 && v < 14 ? 'th' : ({ 1: 'st', 2: 'nd', 3: 'rd' }[n % 10] || 'th')); }
+  function preNote() {
+    var r = T.show, d = parseInt(String(r.day).slice(8), 10), range = r.dayS;
+    if (r.endS) range += ' to ' + (r.endS.split(' ')[0] === r.dayS.split(' ')[0] ? r.endS.split(' ')[1] : r.endS); else range = 'from ' + range;
+    return esc(r.name) + ' prices, ' + esc(range) + ', are below. Build your order now and pay in one tap ' + (r.isToday ? 'when it opens' : 'on the ' + ordinal(d)) + '.';
+  }
+  /* one sign-up path for the whole site: the app's own handler (email to the Mailchimp list; a phone number is turned away until texts exist) */
+  function remind(v) {
+    var a = app(); if (!a) return 'Enter an email address.';
+    try { a.setState({ nlEmail: v, nlErr: '', nlDone: false }); a.renderVals().nl.submit(); } catch (e) { return 'Enter an email address.'; }
+    if (a.state.nlDone) { ls(LSR, '1'); return ''; }
+    return a.state.nlErr || 'Enter an email address.';
+  }
+  function remindForm(id, btn) { return '<form class="tk-pre-f" id="' + id + '-f" novalidate><label class="tk-vh" for="' + id + '-i">' + fieldName() + '</label><input class="tk-field" id="' + id + '-i" type="text" inputmode="email" autocomplete="email" autocapitalize="off" spellcheck="false" placeholder="' + fieldName() + '" aria-describedby="' + id + '-e"' + (id === 'tk-rm' ? ' data-focus' : '') + '><button class="tk-pill tk-pill-gold" type="submit">' + btn + '</button></form><p class="tk-msg-err" id="' + id + '-e" hidden role="alert">' + ic('info', 'tk-ic-sm') + '<span></span></p>'; }
+  function wireForm(scope, id, ok) {
+    $('#' + id + '-f', scope).addEventListener('submit', function (e) {
+      e.preventDefault(); var i = $('#' + id + '-i', scope), er = $('#' + id + '-e', scope), msg = remind(i.value.trim());
+      if (msg) { i.setAttribute('aria-invalid', 'true'); $('span', er).textContent = msg; er.hidden = false; i.focus(); return; }
+      ok();
+    });
+  }
+  function preDraw() {
+    var el = root && $('#tk-pre', root); if (!el) return;
+    var cal = root.getAttribute('data-cal') || '', calL = root.getAttribute('data-callabel') || '', calF = root.getAttribute('data-calfile') || 'pickathon-tickets.ics';
+    var calH = cal ? '<a class="tk-tlink" href="' + esc(cal) + '" download="' + esc(calF) + '">' + esc(calL) + '</a>' : '';
+    if (reminded()) el.innerHTML = '<p class="tk-pre-ok" role="status">' + ic('check') + '<span>You\u2019re on the list. One email ' + esc(openDay()) + '.</span></p><p class="tk-pre-n">' + preNote() + (calH ? ' ' + calH : '') + '</p>';
+    else { el.innerHTML = '<div>' + remindForm('tk-pre', 'Remind me') + '</div><p class="tk-pre-n">' + preNote() + (calH ? ' ' + calH : '') + '</p>'; wireForm(el, 'tk-pre', function () { preDraw(); var p = $('.tk-pre-ok', root); if (p) { p.setAttribute('tabindex', '-1'); p.focus(); } }); }
+    guard(el);
+  }
+  function sig() { return T.show.id + JSON.stringify(clean(S)); }   // saved for this round, this exact order
+  function saved() { return ls(LSS) === sig(); }
+  function saveOrder() {
+    if (!totals(S).ready) return;
+    if (!reminded()) {
+      var sh = sheet(sheetTop('Remind me') + '<p>Tickets open <b>' + esc(openDay()) + '</b>. One email when they do, and your order is saved for then.</p><div style="margin-top:14px">' + remindForm('tk-rm', 'Remind me') + '</div>', 'Remind me');
+      wireForm(sh, 'tk-rm', function () { closeSheet(true); preDraw(); saveOrder(); });
+      return;
+    }
+    ls(LSS, sig()); update();
+    var ok = $('#tk-barok', root); if (ok && ok.offsetParent) { ok.setAttribute('tabindex', '-1'); ok.focus(); } else { var og = $('#tk-ogo', root); if (og) og.focus(); }
+  }
   function draw(el) {
-    root = el; el.innerHTML = skeleton(); $('#tk-top', el).innerHTML = topHTML(); update();
+    root = el; el.innerHTML = skeleton(); $('#tk-top', el).innerHTML = topHTML(); preDraw(); update();
   }
   function setRadio(name, v) { $$('input[name="' + name + '"]', root).forEach(function (i) { i.checked = i.value === v; }); }
   function update() {
@@ -279,16 +327,18 @@
     var bar = $('#tk-bar', root); bar.hidden = !ready; $('#tk-main', root).classList.toggle('has-bar', ready);
     if (ready) {
       $('#tk-bart', root).textContent = short(S); $('#tk-barfee', root).textContent = w === 'sale' ? 'See the order' : money(t.total) + ' · see the order';
-      var bg = $('#tk-bargo', root); if (bg) { bg.textContent = go.t; bg.className = 'tk-pill ' + go.c; }
+      var bg = $('#tk-bargo', root), bs = $('#tk-barsum', root), bo = $('#tk-barok', root), sv = w === 'pre' && saved();
+      bg.textContent = go.t; bg.className = 'tk-pill ' + go.c; bg.hidden = bs.hidden = sv || w === 'closed'; bo.hidden = !sv; if (sv) $('span', bo).textContent = 'Order saved on this device. It will be here, ready to pay, on ' + T.show.dayS + '.';
+      if (w === 'closed') bar.hidden = true;
       $('#tk-live', root).textContent = short(S) + '. Total ' + money(t.total) + ', fee included.';
     } else $('#tk-live', root).textContent = '';
     $('#tk-lines', root).innerHTML = ready ? olines(t) : '<li class="tk-order-empty">' + (k && !S.adult ? 'Add an adult to see your total.' : S.pass === 'd1' && !S.day ? 'Pick your day. Your total builds here, fee included.' : 'Pick a pass. Your total builds here, fee included.') + '</li>';
     $('#tk-otot', root).hidden = $('#tk-ofine', root).hidden = !ready; $('#tk-ototv', root).textContent = money(t.total);
     var op = $('#tk-oplan', root); op.hidden = !(ready && hasPlan(t)); op.textContent = hasPlan(t) ? 'Or pay over time: ' + planLine(t.total) + '.' : '';
-    var og = $('#tk-ogo', root); og.hidden = !ready; og.textContent = go.t; og.className = 'tk-pill ' + go.c;
+    var og = $('#tk-ogo', root); og.hidden = !ready; og.textContent = go.t; og.className = 'tk-pill ' + go.c; if (go.off) og.setAttribute('aria-disabled', 'true'); else og.removeAttribute('aria-disabled');
     guard(root);
   }
-  function goLabel(t) { return { t: 'Checkout · ' + money(t.total), c: 'tk-pill-gold' }; }
+  function goLabel(t) { var w = when(); if (w === 'sale') return { t: 'Checkout · ' + money(t.total), c: 'tk-pill-gold' }; if (w === 'pre') return saved() ? { t: 'Saved for ' + T.show.dayS, c: 'tk-pill-cream', off: true } : { t: 'Save for ' + T.show.dayS, c: 'tk-pill-cream' }; return { t: 'Not on sale right now', c: '', off: true }; }
   function fold(row, open) { var p = document.getElementById(row.getAttribute('aria-controls')); p.hidden = !open; row.setAttribute('aria-expanded', open ? 'true' : 'false'); $('.tk-fold-c', row).textContent = open ? 'Done' : 'Change'; }
   function orderSheet() {
     var t = totals(S), go = goLabel(t);
@@ -301,7 +351,7 @@
     var o = order(); if (!o.ready) return;
     if (window.__pkCheckout) window.__pkCheckout.open(o);
   }
-  function proceed() { checkout(); }
+  function proceed() { var w = when(); if (w === 'sale') checkout(); else if (w === 'pre' && !saved()) saveOrder(); }
   function nav(to) {
     var a = app(); if (!a) return;
     if (to === 'list') { a.setState({ tixList: true }); try { a.toTop(0); } catch (e) {} return; }
@@ -334,7 +384,7 @@
 
   /* ---------- keeping in step with the app ---------- */
   function where(v) { try { if (v) window.sessionStorage.setItem(SSW, v); else window.sessionStorage.removeItem(SSW); } catch (e) {} }
-  function stateKey() { var F = window.pkFeed || {}, lo = ''; try { lo = JSON.stringify(window.pkLastOrder() || '') + JSON.stringify(window.pkMyPasses() || ''); } catch (e) {} return [when(), T.show.id, T.col, T.show.isToday ? 1 : 0, T.plans ? 1 : 0, F.state, F.at, site().user ? 1 : 0, site().data ? 1 : 0, lo].join('|'); }
+  function stateKey() { var F = window.pkFeed || {}, lo = ''; try { lo = JSON.stringify(window.pkLastOrder() || '') + JSON.stringify(window.pkMyPasses() || ''); } catch (e) {} return [when(), T.show.id, T.col, T.show.isToday ? 1 : 0, T.plans ? 1 : 0, F.state, F.at, site().user ? 1 : 0, site().data ? 1 : 0, lo, textsOn() ? 1 : 0].join('|'); }
   function vars() {
     if (!root || !root.firstChild) return;
     var n = $('#root nav[aria-label="App"]'), hd = $('#root header'), inn = root.firstChild;
