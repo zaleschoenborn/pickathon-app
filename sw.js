@@ -20,4 +20,9 @@ self.addEventListener('fetch',e=>{const r=e.request;if(r.method!=='GET')return;c
  const fresh=r.mode==='navigate'||/(\.html|data\.json|manifest\.json)$/.test(u.pathname)||u.pathname.endsWith('/');
  if(fresh){const net=fetch(r,{cache:'reload'}).then(x=>{const c=x.clone();e.waitUntil(caches.open(V).then(h=>h.put(r,c)));return x});e.respondWith(caches.match(r).then(m=>{if(!m)return net.catch(()=>caches.match('index.html'));return net.then(x=>x.ok?x:m).catch(()=>m)}));return}
  const media=/pack[\w-]*\.json$|ssindex|\/i\/|\/m\/|\/m\/|\/ss\/|\/fonts\//.test(u.pathname);
- e.respondWith(caches.match(r).then(m=>m||once(r.url,()=>fetch(r).then(x=>{if(x.ok){const c=x.clone();e.waitUntil(caches.open(media?M:V).then(h=>h.put(r,c)))}return x}))))});
+ /* QA M16 (Nov 11): emblems, photos and scripts were cache-first forever, so a phone kept a stale copy after the file was fixed.
+    Each saved copy now carries the build it was saved under (x-pk-v). A copy from an older build is served at once (offline still works)
+    and fetched again in the background, once per build, so the next view has the current file. Failed fetches never replace a good copy. */
+ const store=x=>x.clone().blob().then(b=>{const h=new Headers(x.headers);h.set('x-pk-v',V);return caches.open(media?M:V).then(c=>c.put(r,new Response(b,{status:x.status,statusText:x.statusText,headers:h})))});
+ const get=(mode)=>once(r.url+'|'+mode,()=>fetch(r,mode?{cache:mode}:undefined).then(x=>{if(x.ok&&x.status===200&&x.type==='basic')e.waitUntil(store(x).catch(()=>{}));return x}));
+ e.respondWith(caches.match(r).then(m=>{if(!m)return get('');if(m.headers.get('x-pk-v')!==V)e.waitUntil(get('no-cache').catch(()=>{}));return m}))});
