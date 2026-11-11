@@ -77,7 +77,7 @@
     var fit = function (nm, s) { var wd = nm.split(' '), opts = [{ L: [nm], lead: false }];
       if (s.ml > 1) for (var i = 1; i < wd.length; i++) { var a = wd.slice(0, i).join(' '), b = wd.slice(i).join(' '); opts.push({ L: [a, b], lead: false }); if (LEAD.indexOf(a) >= 0 && b.length > 3) opts.push({ L: [a, b], lead: true }); }
       var best = null; opts.forEach(function (o) { var ws = o.L.map(function (t, i) { return tw(t) * (o.lead && i === 0 ? 0.55 : 1); }), hs = o.L.length === 1 ? LH : o.lead ? LH * 1.55 + 0.04 : LH * 2 + 0.04;
-        var fanR = s.head ? Math.min(s.mx * 0.62, 90) * 0.81 + Math.max(8, s.mx * 0.12) + 4 : 0, mw = Math.max.apply(null, ws), f = Math.min(s.mx, (s.w - 2 * Math.max(fanR, s.head ? 46 : 0)) * 0.97 / mw, s.h / hs);
+        var fanR = s.head && !Q.ph ? Math.min(s.mx * 0.62, 90) * 0.81 + Math.max(8, s.mx * 0.12) + 4 : 0, mw = Math.max.apply(null, ws), f = Math.min(s.mx, (s.w - 2 * Math.max(fanR, s.head ? (Q.ph ? 2 : 46) : 0)) * 0.97 / mw, s.h / hs);  /* phone: the headliner gets the whole column (review r1 A13) */
         if (!best || f > best.f + (o.lead ? -2 : 0.5) || (Math.abs(f - best.f) <= 0.5 && o.L.length === best.L.length && !o.lead && !best.lead && mw < best.mw)) best = { f: f, mw: mw, L: o.L, lead: o.lead }; }); return best; };
     var posAt = function (si) { var P = {};
       D.names.forEach(function (x0) { var r = x0[1][si]; if (r < LN) { var s = S[r], b = fit(x0[0], s); P[x0[0]] = { x: s.x + s.k * s.w, y: s.y + s.h, k: s.k, f: b.f, L: b.L, lead: b.lead, ink: s.ink, head: !!s.head, line: r, on: true }; } });
