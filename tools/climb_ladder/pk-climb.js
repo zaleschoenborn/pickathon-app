@@ -14,8 +14,8 @@
   var esc = function (s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;'); };
   var sm = function (t) { return t <= 0 ? 0 : t >= 1 ? 1 : t * t * (3 - 2 * t); };
   var cw = function (c) { return ' .,\'’“”"!:'.indexOf(c) >= 0 ? 0.24 : 'IJ1'.indexOf(c) >= 0 ? 0.25 : 'MW'.indexOf(c) >= 0 ? 0.62 : 0.47; };
-  var tw = function (t) { var m = mw(t, 100); if (m) return m / 100; var s = 0; for (var i = 0; i < t.length; i++) s += cw(t[i]); return s + t.length * 0.012; };   /* measured with the real font when it can be */
-  var MC = null, MCK = {}; var mw = function (t, fs) { try { var k = t + '|' + fs; if (MCK[k]) return MCK[k]; if (!MC) { MC = document.createElement('canvas').getContext('2d'); } MC.font = '800 ' + fs + "px 'Bricolage Grotesque'"; try { MC.fontStretch = 'condensed'; } catch (e) {} return (MCK[k] = MC.measureText(t).width); } catch (e) { return 0; } };
+  var tw = function (t) { var m = mw(t, 24); if (m) return m / 24; var s = 0; for (var i = 0; i < t.length; i++) s += cw(t[i]); return s + t.length * 0.012; };   /* measured with the real font when it can be */
+  var MC = null, MCK = {}; var mw = function (t, fs) { try { var k = t + '|' + fs; if (MCK[k]) return MCK[k]; if (!MC) { MC = document.createElement('span'); MC.setAttribute('aria-hidden', 'true'); MC.style.cssText = "position:absolute;left:-9999px;top:0;visibility:hidden;white-space:nowrap;pointer-events:none;font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-stretch:75%;font-variation-settings:'wdth' 75;letter-spacing:0;text-transform:none"; } if (!MC.parentNode) document.body.appendChild(MC); MC.style.fontSize = fs + 'px'; MC.textContent = t; var w = MC.getBoundingClientRect().width; var ok = !document.fonts || document.fonts.check("700 " + Math.max(8, Math.round(fs)) + "px 'Bricolage Grotesque'"); if (!ok) return w * 1.04; return (MCK[k] = w); } catch (e) { return 0; } };   /* measured in the page at the drawn size, weight and width: the font is wider at small sizes, and the old canvas measure ran about 17% narrow (review r3 A2) */
   var hash = function (s) { var h = 7; for (var i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) >>> 0; return h; };
   var mix = function (c1, c2, t) { var p = function (c) { return [1, 3, 5].map(function (i) { return parseInt(c.slice(i, i + 2), 16); }); }; var a1 = p(c1), a2 = p(c2); return '#' + a1.map(function (v, i) { return ('0' + Math.round(v + (a2[i] - v) * t).toString(16)).slice(-2); }).join(''); };
   var enc = function (s) { return "url('data:image/svg+xml," + encodeURIComponent(s).replace(/'/g, '%27') + "')"; };
@@ -100,16 +100,16 @@
     var G = seg(n, fk);
     var LAST = S[LN - 1], VOFF = function (nm, f0, src) { return { x: LAST.x + 0.5 * LAST.w, y: LAST.y + LAST.h + 14, k: 0.5, f: Math.min(f0 || LAST.mx, LAST.mx) * 0.8, L: src.L, lead: src.lead, ink: A, line: LN, on: true }; };
     var op = function (nm, a, b) { var va = a.vis !== false, vb = b.vis !== false;
-      if (same(a, b)) return va ? [[a, a.on ? 1 : 1 - 0.7 * Math.sin(G * Math.PI), 0]] : [];
+      if (same(a, b)) return va ? [[a, 1, 0]] : [];   /* a name that stays put never dims (review r3 A3) */
       var SW = 0.42, ln = Math.min(11, Math.max(0, Math.min(a.on ? a.line : 11, b.on ? b.line : 11))), g = sm((G - (ln / 11) * (1 - SW)) / SW), mv = g > 0 && g < 1;   /* names take turns, top of the bill first, so only a few are in flight at once (review r2 A5) */
       if (!a.on && !b.on) { var s2 = sm((g - 0.3) / 0.4), dip = 1 - 0.7 * Math.sin(G * Math.PI); return [va ? [a, (1 - s2) * dip, g] : null, vb ? [b, s2 * dip, g] : null].filter(Boolean); }
       var A0 = a.on ? a : VOFF(nm, b.f, b), B0 = b.on ? b : VOFF(nm, a.f, a), up = B0.f > A0.f;
-      var swell = mv ? Math.sin(g * Math.PI) * (nm === D.clim ? 0.25 : up ? 0.15 : -0.08) : 0;
+      var swell = mv ? Math.sin(g * Math.PI) * (nm === D.clim ? 0.06 : up ? 0 : -0.08) : 0;
       var pos = { x: A0.x + (B0.x - A0.x) * g, y: A0.y + (B0.y - A0.y) * g, k: A0.k + (B0.k - A0.k) * g, f: (A0.f + (B0.f - A0.f) * g) * (1 + swell), ink: mix(A0.ink, B0.ink, g), moving: mv, on: true };
       var o = 1 - (mv && !up ? 0.2 * Math.sin(g * Math.PI) : 0);   /* fallers step back while names cross (review r2) */ if (!a.on) o *= sm(g / 0.3); if (!b.on) o *= 1 - sm((g - 0.15) / 0.55);
       var out = [], sameShape = A0.L.join('|') === B0.L.join('|') && !!A0.lead === !!B0.lead;
       if (sameShape) out.push([Object.assign({}, g < 0.5 ? A0 : B0, pos), o, g]);
-      else { var s3 = sm((g - 0.35) / 0.3); out.push([Object.assign({}, A0, pos), o * (1 - s3), g], [Object.assign({}, B0, pos), o * s3, g]); }
+      else { var s3 = sm((g - 0.35) / 0.3); out.push([Object.assign({}, A0, pos, { f: Math.min(pos.f, A0.f) }), o * (1 - s3), g], [Object.assign({}, B0, pos, { f: Math.min(pos.f, B0.f) }), o * s3, g]);   /* each shape stays at or under its own fitted size, so a name in flight stays inside the column (review r3 A4) */ }
       if (!a.on && va) out.push([a, (1 - sm(g * 3)) * (1 - 0.7 * Math.sin(G * Math.PI)), g]);
       if (!b.on && vb) out.push([b, sm((g - 0.6) / 0.4) * (1 - 0.7 * Math.sin(G * Math.PI)), g]);
       return out; };
