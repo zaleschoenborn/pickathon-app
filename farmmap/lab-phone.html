@@ -2404,6 +2404,8 @@ body.dooron #door{display:block}
   const vTh=v=>v.vm?v.th:'https://i.ytimg.com/vi/'+v.id+'/hqdefault.jpg';
   const short=h=>String(h.n||'').replace(/^The /,'');
   let H=null, L=[], vi=0, fold=false, pickAt=0;
+  /* for 2 s after a pick, a tap that lands where the icon strip was is a second tap on the strip, not a press on the sheet (map test r2 #2) */
+  const ghost=e=>{ const r=window.__stripR; return !!(r&&NOW()-pickAt<2000&&e.clientX>=r.left&&e.clientX<=r.right&&e.clientY>=r.top-4&&e.clientY<=r.bottom+4); };
   function photo(h){ const x=XD&&XD.h&&XD.h[h.id], q=x&&(x.hi||x.i); if(q) return !/^(https?:|\.\.\/|\/)/.test(q)?'../'+q:q; return ((HERO[h.id]||[])[0])||''; }  // site photos are root paths; the map's own h/ heroes sit next to this page
   function putMedia(){
     const a=$('.dv'), im=a.querySelector('img'), v=L.length?L[vi%L.length]:null;
@@ -2427,7 +2429,7 @@ body.dooron #door{display:block}
     const was=B.classList.contains('dooron');
     fill(h); if(!(h===H&&fold&&NOW()-pickAt>600&&false)) setFold(false);
     if(!was){ B.classList.add('dooron'); if(LP()){ B.classList.add('doorin'); void door.offsetWidth; requestAnimationFrame(()=>B.classList.remove('doorin')); } }
-    pickAt=NOW(); if(LP()){ try{ lpSync(); }catch(e){} }
+    pickAt=NOW(); try{ const lm=document.getElementById('lpmenu'); window.__stripR=lm?lm.getBoundingClientRect():null; }catch(e){ window.__stripR=null; } if(LP()){ try{ lpSync(); }catch(e){} }
   }
   function close(){ B.classList.remove('dooron'); setFold(false); }
   // every pick goes through show(): the doorway follows it
@@ -2453,7 +2455,7 @@ body.dooron #door{display:block}
   new MutationObserver(()=>{ B.classList.toggle('mapdrag',innerWidth>=1200&&stage.classList.contains('drag')); }).observe(stage,{attributes:true,attributeFilter:['class']});
   new MutationObserver(()=>{ if(innerWidth<1200&&stage.classList.contains('drag')&&B.classList.contains('dooron')&&!fold&&NOW()-pickAt>350&&(window.__dragDist||0)>110) setFold(true); })  /* Zale, Nov 9: on desktop the card stays open while you move the map */.observe(stage,{attributes:true,attributeFilter:['class']});
   $('.dbar').addEventListener('click',e=>{ if(e.target.closest('.dgo')) return; setFold(false); });
-  door.querySelectorAll('.dgo').forEach(b=>b.addEventListener('click',e=>{ e.stopPropagation(); if(NOW()-pickAt<600) return; /* a second quick tap on a strip icon must not fall through to Explore, which lands where the icon was (map test, Nov 11) */ if(H) goPage(H); }));
+  door.querySelectorAll('.dgo').forEach(b=>b.addEventListener('click',e=>{ e.stopPropagation(); if(NOW()-pickAt<600||ghost(e)) return; /* a second quick tap on a strip icon must not fall through to Explore, which lands where the icon was (map test, Nov 11) */ if(H) goPage(H); }));
   $('.dprev').addEventListener('click',e=>{ e.stopPropagation(); stepHood(-1); });
   $('.dnext').addEventListener('click',e=>{ e.stopPropagation(); stepHood(1); });
   $('.dspin').addEventListener('click',e=>{ e.stopPropagation(); if(L.length>1){ vi=(vi+1)%L.length; putMedia(); try{ sessionStorage.setItem('pkmap.doorv.'+H.id,String(vi)); }catch(x){} } });
@@ -2462,7 +2464,7 @@ body.dooron #door{display:block}
   // map_page.md "The whole doorway is the link" (Nov 8): a tap anywhere on the card opens the neighborhood page, except the play area, arrows, spin and close
   door.addEventListener('wheel',e=>{ if(e.target.closest&&e.target.closest('.dvid,iframe,.dlist')) return; e.preventDefault(); stage.dispatchEvent(new WheelEvent('wheel',{deltaX:e.deltaX,deltaY:e.deltaY,deltaMode:e.deltaMode,ctrlKey:e.ctrlKey,clientX:e.clientX,clientY:e.clientY,bubbles:true,cancelable:true})); },{passive:false});   /* the wheel zooms the map even over the card */
   let dDown=null; door.addEventListener('pointerdown',e=>{ dDown={x:e.clientX,y:e.clientY}; },true);
-  door.addEventListener('click',e=>{ const moved=dDown&&Math.hypot(e.clientX-dDown.x,e.clientY-dDown.y)>12; if(moved||!H||fold||NOW()-pickAt<600) return; const t=e.target; if(t.closest('.dprev,.dnext,.dspin,.dx,.dgo,.dbar,input')) return; const dv=t.closest('.dv'); if(!dv&&t.closest('a')) return; if(dv&&dv.__v) return; /* Nov 10 review: with a video the whole picture plays; without one it opens the page */ e.preventDefault(); goPage(H); });
+  door.addEventListener('click',e=>{ const moved=dDown&&Math.hypot(e.clientX-dDown.x,e.clientY-dDown.y)>12; if(moved||!H||fold||NOW()-pickAt<600||ghost(e)) return; const t=e.target; if(t.closest('.dprev,.dnext,.dspin,.dx,.dgo,.dbar,input')) return; const dv=t.closest('.dv'); if(!dv&&t.closest('a')) return; if(dv&&dv.__v) return; /* Nov 10 review: with a video the whole picture plays; without one it opens the page */ e.preventDefault(); goPage(H); });
   // phone: swipe the sheet sideways for the next or previous neighborhood
   let sw=null; door.addEventListener('pointerdown',e=>{ sw={x:e.clientX,y:e.clientY}; });
   door.addEventListener('pointerup',e=>{ if(!sw||!LP()) return; const dx=e.clientX-sw.x, dy=e.clientY-sw.y; sw=null; if(Math.abs(dx)>50&&Math.abs(dx)>1.5*Math.abs(dy)) stepHood(dx<0?1:-1); });
