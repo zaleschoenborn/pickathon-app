@@ -1,5 +1,5 @@
 // Pickathon service worker. Build 20261105-1230
-const V='pk-20261111-5180',M='pkmedia-3',KEEP=["ssindex-b6158b1d.json"],SHELL=['./','index.html','data.json','focus.json','focus-tall.json','focus-hero.json','focus.js','manifest.json','icon-192.png','apple-touch-icon.png','fonts/pickathon-2014.ttf','farmmap/index.html?embed=1','farmmap/lab-phone.html?embed=1'];
+const V='pk-20261111-5181',M='pkmedia-3',KEEP=["ssindex-b6158b1d.json"],SHELL=['./','index.html','data.json','focus.json','focus-tall.json','focus-hero.json','focus.js','manifest.json','icon-192.png','apple-touch-icon.png','fonts/pickathon-2014.ttf','farmmap/index.html?embed=1','farmmap/lab-phone.html?embed=1'];
 const MP='pkmap-1';
 const fl=new Map();/* one network request per URL at a time (icons are asked for twice by the page) */
 const once=(k,f)=>{let p=fl.get(k);if(!p){p=f().finally(()=>fl.delete(k));fl.set(k,p)}return p.then(x=>x.clone())};
@@ -20,4 +20,9 @@ self.addEventListener('fetch',e=>{const r=e.request;if(r.method!=='GET')return;c
  const fresh=r.mode==='navigate'||/(\.html|data\.json|manifest\.json)$/.test(u.pathname)||u.pathname.endsWith('/');
  if(fresh){const net=fetch(r,{cache:'reload'}).then(x=>{const c=x.clone();e.waitUntil(caches.open(V).then(h=>h.put(r,c)));return x});e.respondWith(caches.match(r).then(m=>{if(!m)return net.catch(()=>caches.match('index.html'));return net.then(x=>x.ok?x:m).catch(()=>m)}));return}
  const media=/pack[\w-]*\.json$|ssindex|\/i\/|\/m\/|\/m\/|\/ss\/|\/fonts\//.test(u.pathname);
- e.respondWith(caches.match(r).then(m=>m||once(r.url,()=>fetch(r).then(x=>{if(x.ok){const c=x.clone();e.waitUntil(caches.open(media?M:V).then(h=>h.put(r,c)))}return x}))))});
+ /* QA M16 (Nov 11): emblems, photos and scripts were cache-first forever, so a phone kept a stale copy after the file was fixed.
+    Each saved copy now carries the build it was saved under (x-pk-v). A copy from an older build is served at once (offline still works)
+    and fetched again in the background, once per build, so the next view has the current file. Failed fetches never replace a good copy. */
+ const store=x=>x.clone().blob().then(b=>{const h=new Headers(x.headers);h.set('x-pk-v',V);return caches.open(media?M:V).then(c=>c.put(r,new Response(b,{status:x.status,statusText:x.statusText,headers:h})))});
+ const get=(mode)=>once(r.url+'|'+mode,()=>fetch(r,mode?{cache:mode}:undefined).then(x=>{if(x.ok&&x.status===200&&x.type==='basic')e.waitUntil(store(x).catch(()=>{}));return x}));
+ e.respondWith(caches.match(r).then(m=>{if(!m)return get('');if(m.headers.get('x-pk-v')!==V)e.waitUntil(get('no-cache').catch(()=>{}));return m}))});
