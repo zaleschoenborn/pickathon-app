@@ -1,0 +1,280 @@
+/* pk-home2: Home round 2 and the Tickets button (Nov 11 2026). Source: tools/home_r2/home2.css, spliced into index.html by tools/home_r2/build.py.
+   Scoped to three islands the app's renderer leaves alone: #pkh2 (the Home page), #pk-tl2 (the phone and tablet ticket line) and #pk-tb2 (the desktop header pill).
+   Phone first. Tablet (600 to 1199) is phone-style in a held column. Desktop from 1200, the same switch the site uses for its own chrome.
+   Rules (build_notes.md): type in rem, nothing under 12px; pills 44px phone and tablet, 36px desktop; outline goes somewhere, cream is the loop,
+   gold is the one money or reminder action; printed things square with an ink keyline; photos square; 200ms color and opacity only; no scroll bars. */
+.pkh2,.pk-tl2w,.pk-tb2w{--ground:#2B2628;--deep:#221E20;--raise:#383133;--line:#5A5254;--line-strong:#8E8386;--cream:#F2EDE3;--cream-dim:#CFC9BC;--mute:#A9A294;
+  --ink:#2B2628;--ink-dim:#5B5154;--paper:#F2EDE3;--gold:#F2CF62;--gold-deep:#D6B54A;--plum:#86526B;
+  --display:"Pickathon 2014","Bricolage Grotesque",Impact,sans-serif;--text:"Bricolage Grotesque",Inter,system-ui,sans-serif;
+  --t-min:.75rem;--t-sm:.875rem;--t-md:1rem;--t-lg:1.125rem;--d-card:1.375rem;--d-sec:1.75rem;--d-hero:2.25rem;--gutter:16px;--pill:2.75rem}
+@media (min-width:600px) and (max-width:1199px){.pkh2,.pk-tl2w{--gutter:32px}}
+@media (min-width:1200px){.pkh2,.pk-tb2w{--gutter:40px;--pill:2.25rem}}
+
+/* ---------- the Tickets button, phone and tablet: a 44px line under the header ---------- */
+.pk-tl2w{display:block;flex:none;position:relative;z-index:15}
+.pk-tl2w[data-off]{display:none}
+.pk-tl2w.on-home{margin-bottom:-44px}                      /* on Home it floats over the page, so screen 1 keeps its full height */
+.pk-tl2w.is-tucked{visibility:hidden}                       /* Home: hidden while screen 1 (which has the price and the button) is in view */
+#root .pk-tl2{display:flex;align-items:center;gap:8px;width:100%;min-height:44px;margin:0;padding:4px var(--gutter);background:var(--deep);border:0;border-bottom:2px dotted var(--line-strong);
+  color:var(--cream);font:600 .875rem/1.25 var(--text);text-align:left;text-decoration:none;cursor:pointer;border-radius:0;box-sizing:border-box}
+#root .pk-tl2 b{font-weight:750}
+#root .pk-tl2 .pk-tl2-t{min-width:0}
+#root .pk-tl2 .pk-tl2-d{color:var(--cream-dim)}
+#root .pk-tl2 .pk-tl2-x{display:none}
+@media (min-width:430px){#root .pk-tl2 .pk-tl2-x{display:inline}}
+#root .pk-tl2 .pk-tl2-go{margin-left:auto;color:var(--gold);font-weight:750;display:inline-flex;align-items:center;gap:2px;white-space:nowrap}
+#root .pk-tl2 svg{width:1.125rem;height:1.125rem;fill:currentColor;flex:none}
+#root .pk-tl2:focus-visible{outline:3px solid var(--gold);outline-offset:-3px}
+@media (min-width:1200px){.pk-tl2w{display:none}}
+
+/* ---------- the Tickets button, desktop: an outline pill at the right of the header ---------- */
+.pk-tb2w{display:inline-flex;flex:none;margin-left:8px;transition:opacity .2s linear}
+.pk-tb2w[data-off]{display:none}
+.pk-tb2w.is-tucked{opacity:0;pointer-events:none}
+#root .pk-tb2{display:inline-flex;align-items:center;justify-content:center;min-height:2.75rem;padding:0 1.25rem;border-radius:999px;border:1.5px solid var(--line-strong);background:transparent;
+  color:var(--cream);font:650 .9375rem/1 var(--text);letter-spacing:0;text-transform:none;white-space:nowrap;cursor:pointer;transition:border-color .2s linear,background-color .2s linear}
+#root .pk-tb2:hover{border-color:var(--cream)}
+#root .pk-tb2:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+
+/* ---------- Home ---------- */
+.pkh2{display:block;width:100%;color:var(--cream);font:400 1rem/1.4 var(--text);-webkit-font-smoothing:antialiased;text-align:left;--scr:calc(100svh - 125px);--tl:44px;background:var(--ground)}
+.pkh2 *,.pkh2 *::before,.pkh2 *::after{box-sizing:border-box}
+.pkh2 *{scrollbar-width:none}.pkh2 *::-webkit-scrollbar{display:none}
+.pkh2 h1,.pkh2 h2,.pkh2 h3,.pkh2 p,.pkh2 ul,.pkh2 ol,.pkh2 blockquote,.pkh2 figure{margin:0;padding:0}
+.pkh2 ul,.pkh2 ol{list-style:none}
+.pkh2 img{display:block;max-width:100%;height:auto}
+.pkh2 a{color:inherit}
+.pkh2 button{font:inherit;color:inherit}
+.pkh2 [hidden]{display:none!important}
+.pkh2 .h2-vh{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0;padding:0;margin:-1px}
+.pkh2 .h2-num{font-variant-numeric:tabular-nums}
+#pkh2#pkh2 p,#pkh2#pkh2 li{max-width:none;font-size:inherit;line-height:inherit;color:inherit;margin:0}
+/* display face: the site sets h1 and h2 with !important, so these do too */
+#pkh2#pkh2 .h2-d{font-family:var(--display)!important;font-weight:400!important;letter-spacing:.02em!important;line-height:1.08!important;text-transform:uppercase!important;text-wrap:balance;color:inherit;max-width:none!important;margin:0!important;padding:0!important;min-height:0!important}
+#pkh2#pkh2 .h2-hero{font-size:var(--d-hero)!important}
+#pkh2#pkh2 .h2-sec{font-size:var(--d-sec)!important}
+#pkh2#pkh2 .h2-card{font-size:var(--d-card)!important}
+.pkh2 :focus-visible{outline:3px solid var(--gold);outline-offset:3px;border-radius:4px}
+.pkh2 .h2-paper :focus-visible{outline-color:var(--plum)}
+
+/* pills: one family. outline = goes somewhere; cream = the loop; gold = the one money or reminder action; watch = small gold pill with the play glyph */
+#pkh2 .h2-pill{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;min-height:var(--pill);padding:0 1.125rem;border-radius:999px;border:1.5px solid var(--line-strong);background:transparent;color:var(--cream);
+  font:650 .9375rem/1 var(--text);letter-spacing:0;text-transform:none;text-decoration:none;white-space:nowrap;cursor:pointer;transition:background-color .2s linear,color .2s linear,border-color .2s linear}
+#pkh2 .h2-pill:hover{border-color:var(--cream)}
+#pkh2 .h2-pill:active{background:rgba(242,237,227,.14)}
+#pkh2 .h2-cream{background:var(--cream);border-color:var(--cream);color:var(--ink)}
+#pkh2 .h2-cream:hover,#pkh2 .h2-cream:active{background:#DDD6C8;border-color:#DDD6C8}
+#pkh2 .h2-gold{background:var(--gold);border-color:var(--gold);color:var(--ink);font-weight:750}
+#pkh2 .h2-gold:hover,#pkh2 .h2-gold:active{background:var(--gold-deep);border-color:var(--gold-deep)}
+#pkh2 .h2-big{min-height:3rem;padding:0 1.5rem;font-size:1.0625rem}
+#pkh2 .h2-watch{min-height:1.875rem;padding:0 .75rem 0 .625rem;font-size:.8125rem;font-weight:750;background:var(--gold);border-color:var(--gold);color:var(--ink);position:relative;gap:.375rem}
+#pkh2 .h2-watch::after{content:"";position:absolute;inset:-7px -2px}
+#pkh2 .h2-watch:hover{background:var(--gold-deep);border-color:var(--gold-deep)}
+#pkh2 .h2-watch svg{width:.875rem;height:.875rem;fill:currentColor}
+#pkh2 .h2-paper .h2-pill{border-color:var(--ink);color:var(--ink)}
+#pkh2 .h2-paper .h2-gold{border-color:var(--gold);background:var(--gold)}
+@media (prefers-reduced-motion:reduce){.pkh2 *,.pk-tb2w,#root .pk-tb2{transition:none!important}}
+
+/* printed things */
+.pkh2 .h2-paper{background:var(--paper);color:var(--ink);border-radius:0}
+.pkh2 .h2-days{display:grid;grid-template-columns:repeat(5,1.375rem);gap:2px;flex:none}
+.pkh2 .h2-days i{height:1.875rem;display:grid;place-items:center;font-style:normal;font-size:.75rem;font-weight:750;border:1.5px solid rgba(43,38,40,.38);color:var(--ink-dim);line-height:1}
+.pkh2 .h2-days i.on{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+.pkh2 .h2-days i.w{border-style:dashed}
+
+/* sections: one screen each. --scr is the visible screen under the header and above the tabs (set on load and resize). */
+.pkh2 .h2-s{min-height:var(--scr);display:flex;flex-direction:column;padding:12px var(--gutter);gap:8px;position:relative}
+.pkh2 .h2-s + .h2-s{border-top:1px solid #1c191a}
+.pkh2 .h2-s.h2-s2,.pkh2 .h2-s.h2-s3,.pkh2 .h2-s.h2-s4{padding-top:calc(var(--tl) + 12px)}   /* the ticket line floats over the top of these */
+.pkh2 .h2-sub{font-size:var(--t-md);color:var(--cream-dim);line-height:1.35}
+.pkh2 .h2-row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+
+/* 1 PROMISE */
+.pkh2 .h2-s1{padding:0 0 14px;gap:12px}
+.pkh2 .h2-s1ph{position:relative;flex:1;min-height:300px;overflow:hidden;background:#1c191a}
+.pkh2 .h2-s1ph img{position:absolute;inset:0;width:100%;height:100%;max-width:none;object-fit:cover;object-position:50% 62%}
+.pkh2 .h2-s1ph::before{content:"";position:absolute;inset:0 0 45% 0;z-index:1;background:linear-gradient(rgba(20,16,18,.82),rgba(20,16,18,.5) 60%,rgba(20,16,18,0))}
+#pkh2#pkh2 .h2-s1 h1{position:absolute!important;z-index:2;left:var(--gutter);right:var(--gutter);top:16px;text-shadow:0 1px 14px rgba(0,0,0,.55);color:var(--cream)}
+.pkh2 .h2-s1 h1 span{display:block}
+.pkh2 .h2-s1b{padding:0 var(--gutter);display:grid;gap:12px}
+#pkh2#pkh2 .h2-lead{font-size:var(--t-lg);line-height:1.3;font-weight:500}
+.pkh2 .h2-band{display:flex;border:2px solid var(--ink);outline:2px solid var(--paper);outline-offset:-5px;padding:3px}
+.pkh2 .h2-band-m{flex:1;min-width:0;padding:10px 12px}
+#pkh2#pkh2 .h2-band-d{font-size:var(--d-card)!important;line-height:1.05!important}
+#pkh2#pkh2 .h2-band-w{font-size:var(--t-sm);line-height:1.3;margin-top:4px;color:var(--ink-dim);font-weight:500}
+.pkh2 .h2-band-p{flex:none;padding:8px 12px;border-left:2px dotted rgba(43,38,40,.55);text-align:center;display:flex;flex-direction:column;justify-content:center;line-height:1.15}
+.pkh2 .h2-band-p small{font-size:var(--t-sm);color:var(--ink-dim);font-weight:600}
+.pkh2 .h2-band-p b{font-size:1.625rem;font-weight:800}
+.pkh2 .h2-cta{display:flex;align-items:center;gap:14px}
+#pkh2#pkh2 .h2-cta p{font-size:var(--t-sm);line-height:1.3;font-weight:650}
+.pkh2 .h2-cta p span{display:block;color:var(--cream-dim);font-weight:500}
+
+/* 2 PROOF: the Home poster (pk-climb: plays once, Replay, Another year), and under it one single-song video from that year */
+.pkh2 .h2-s2{padding-bottom:calc(var(--strip,0px) + 12px)}
+.pkh2 .h2-s2 .pk-cl-mount{width:100%}
+#pkh2 .h2-s2 .pk-cl-hd .pk-nh-k{display:none}
+#root#root #pkh2 .h2-s2 .pk-cl-an{display:inline-flex;align-items:center;justify-content:center;min-height:var(--pill)!important;padding:0 1.125rem!important;border-radius:999px!important;border:1.5px solid var(--cream)!important;background:var(--cream)!important;color:var(--ink)!important;
+  font:650 .9375rem/1 var(--text)!important;letter-spacing:0!important;text-transform:none!important;box-shadow:none;cursor:pointer}
+#root#root #pkh2 .h2-s2 .pk-cl-rpl{min-height:2.25rem!important;padding:0 .875rem!important;border-radius:999px!important;border:1.5px solid var(--line-strong)!important;background:transparent!important;color:var(--cream)!important;font:650 .875rem/1 var(--text)!important;letter-spacing:0!important;text-transform:none!important;box-shadow:none}
+.pkh2 .h2-s2in{position:relative;width:100%}
+.pkh2 .h2-strip{position:absolute;left:0;right:0;top:calc(100% + 12px);display:flex;gap:12px;align-items:center;min-height:62px}   /* in the space the section reserves under the poster (--strip) */
+.pkh2 .h2-strip[data-none]{visibility:hidden}
+.pkh2 .h2-strip-ph{flex:none;width:110px;aspect-ratio:16/9;object-fit:cover;background:#1c191a;cursor:pointer;border:0;padding:0}
+.pkh2 .h2-strip-ph img{width:100%;height:100%;object-fit:cover}
+.pkh2 .h2-strip-t{min-width:0;display:grid;gap:5px;justify-items:start}
+#pkh2#pkh2 .h2-strip-c{font-size:var(--t-sm);line-height:1.3;overflow:hidden;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2}
+.pkh2 .h2-strip-c b{font-weight:750}
+.pkh2 .h2-strip-c span{color:var(--cream-dim)}
+@media (max-width:379px){.pkh2 .h2-strip-ph{width:84px}#pkh2 .h2-watch{font-size:.75rem;padding:0 .5rem}#pkh2#pkh2 .h2-hero{font-size:1.875rem!important}#pkh2#pkh2 .h2-sec{font-size:1.5rem!important}}
+
+/* 3 PLACE */
+.pkh2 .h2-hood{display:block;text-decoration:none;cursor:pointer;background:none;border:0;padding:0;width:100%;text-align:left;color:inherit}
+.pkh2 .h2-hood-ph{width:100%;aspect-ratio:2.1/1;object-fit:cover;background:#1c191a}
+.pkh2 .h2-hood-c{display:flex;align-items:center;gap:10px;margin-top:8px}
+.pkh2 .h2-hood-c>img{display:none;width:44px;height:44px;flex:none}
+.pkh2 .h2-hood-t{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;min-width:0}
+#pkh2#pkh2 .h2-hood-n{font-size:var(--d-card)!important;line-height:1.05!important}
+.pkh2 .h2-hood-k{display:none;font-size:var(--t-sm);color:var(--cream-dim);line-height:1.3}
+.pkh2 .h2-hood-tag{display:none;font-size:var(--t-sm);color:var(--cream-dim)}
+.pkh2 .h2-hood-go{margin-left:auto;font-weight:700;font-size:var(--t-sm);white-space:nowrap}
+.pkh2 .h2-city{display:grid;gap:4px}
+#pkh2#pkh2 .h2-city-k{font-size:.8125rem;font-weight:700;color:var(--mute);margin-top:2px}
+#pkh2#pkh2 .h2-city-k.is-on{color:var(--cream)}
+.pkh2 .h2-city-r{display:flex;gap:3px;flex-wrap:wrap}
+#pkh2 .h2-em{width:36px;height:36px;padding:0;background:none;border:0;border-radius:50%;cursor:pointer;position:relative;flex:none}
+#pkh2 .h2-em::after{content:"";position:absolute;inset:-4px -1px}
+#pkh2 .h2-em img{width:100%;height:100%;opacity:.78;transition:opacity .2s linear}
+#pkh2 .h2-em:hover img{opacity:1}
+#pkh2 .h2-em[aria-pressed=true]{box-shadow:0 0 0 2px var(--cream)}
+#pkh2 .h2-em[aria-pressed=true] img{opacity:1}
+.pkh2 .h2-s3sub{font-size:var(--t-sm);margin-top:4px}
+
+/* 4 ACT */
+.pkh2 .h2-s4{gap:14px}
+.pkh2 .h2-s4ph{position:relative;margin:calc(-12px) calc(-1 * var(--gutter)) 0;flex:1;min-height:150px;overflow:hidden;background:#1c191a}
+.pkh2 .h2-s4ph img{position:absolute;inset:0;width:100%;height:100%;max-width:none;object-fit:cover;filter:brightness(.58)}
+#pkh2#pkh2 .h2-s4ph h2{position:absolute!important;left:var(--gutter);right:var(--gutter);bottom:14px;text-shadow:0 1px 14px rgba(0,0,0,.6);max-width:16ch!important;color:var(--cream)}
+.pkh2 .h2-stub{border:2px solid var(--ink);outline:2px solid var(--paper);outline-offset:-5px;padding:14px 16px;position:relative;z-index:2}
+.pkh2 .h2-stub-top{display:flex;align-items:flex-end;gap:12px;justify-content:space-between}
+.pkh2 .h2-stub-logo{width:60%;max-width:250px;height:auto}
+#pkh2#pkh2 .h2-stub-d{font-size:var(--d-sec)!important;margin-top:8px!important}
+#pkh2#pkh2 .h2-stub-w{font-size:var(--t-sm);color:var(--ink-dim);font-weight:500;margin-top:2px}
+.pkh2 .h2-stub-inc{display:grid;grid-template-columns:repeat(3,1fr);margin:12px 0 0;border-top:3px solid var(--ink);border-bottom:1px solid var(--ink)}
+#pkh2#pkh2 .h2-stub-inc li{font-family:var(--display)!important;font-size:.8125rem;letter-spacing:.03em;text-transform:uppercase;line-height:1.2;padding:8px 6px;text-align:center}
+.pkh2 .h2-stub-inc li + li{border-left:1px solid var(--ink)}
+.pkh2 .h2-stub-buy{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:12px;padding-top:12px;border-top:2px dotted rgba(43,38,40,.55)}
+.pkh2 .h2-stub-buy small{display:block;font-size:var(--t-sm);color:var(--ink-dim);font-weight:600}
+.pkh2 .h2-stub-buy b{font-size:1.625rem;font-weight:800;line-height:1.1}
+#pkh2#pkh2 .h2-quote{font-size:var(--t-lg);line-height:1.3;font-weight:600;margin:0}
+.pkh2 .h2-s4end cite{font-style:normal;font-size:var(--t-sm);color:var(--cream-dim);font-weight:500}
+.pkh2 .h2-s4end{display:flex;align-items:center;justify-content:space-between;gap:14px}
+.pkh2 .h2-s4h{display:none}
+
+/* phone and tablet: the desktop wrappers flatten, children follow the mockup's order */
+@media (max-width:1199px){
+  .pkh2 .h2-s3l,.pkh2 .h2-s4in,.pkh2 .h2-s4side,.pkh2 .h2-s4solid{display:contents}
+  .pkh2 .h2-s3head{order:0}.pkh2 .h2-hood{order:1}.pkh2 .h2-city{order:2}.pkh2 .h2-s3 .h2-row{order:3}
+  .pkh2 .h2-s4ph{order:0}.pkh2 .h2-stub{order:1}.pkh2 .h2-quote{order:2}.pkh2 .h2-s4end{order:3}
+}
+/* tablet: phone-style, content held to a readable column */
+@media (min-width:600px) and (max-width:1199px){
+  .pkh2 .h2-s{align-items:center;justify-content:center;gap:16px;padding-top:24px;padding-bottom:24px}
+  .pkh2 .h2-s>*{width:100%;max-width:640px}
+  .pkh2 .h2-s.h2-s2,.pkh2 .h2-s.h2-s3,.pkh2 .h2-s.h2-s4{padding-top:calc(var(--tl) + 24px)}
+  .pkh2 .h2-s2{justify-content:flex-start;padding-bottom:calc(var(--strip,0px) + 24px)}
+  .pkh2 .h2-s2>.h2-s2in{max-width:none}
+  .pkh2 .h2-strip{left:50%;right:auto;width:min(640px,100%);transform:translateX(-50%)}
+  .pkh2 .h2-s1{padding-top:0;align-items:stretch;justify-content:flex-start}.pkh2 .h2-s1>*{max-width:none}
+  .pkh2 .h2-s1b{max-width:640px;width:100%;margin:0 auto;padding:0}
+  #pkh2#pkh2 .h2-s1 h1{font-size:3rem!important;top:32px}
+  #pkh2#pkh2 .h2-sec{font-size:2.25rem!important}
+  .pkh2 .h2-strip-ph{width:160px}
+  #pkh2 .h2-em{width:44px;height:44px}
+  .pkh2 .h2-hood-c>img{display:block}.pkh2 .h2-hood-t{display:grid;gap:0}.pkh2 .h2-hood-k{display:block}.pkh2 .h2-s3sub{font-size:var(--t-lg)}
+  .pkh2 .h2-s4{justify-content:flex-start}.pkh2 .h2-s4ph{max-width:none;width:auto;align-self:stretch;margin:calc(-1 * var(--tl) - 24px) 0 0;padding-top:var(--tl)}
+  .pkh2 .h2-stub{padding:24px}
+}
+@media (max-width:599px){.pkh2 .h2-s2{padding-top:calc(var(--tl) + 8px)}.pkh2 .h2-s4ph{margin-top:calc(-1 * var(--tl) - 12px)}}
+
+/* desktop */
+@media (min-width:1200px){
+  .pkh2{--tl:0px}
+  .pkh2 .h2-s{padding:40px max(var(--gutter),calc((100vw - 1160px)/2));display:grid;gap:0 64px;align-items:center}
+  #pkh2#pkh2 .h2-sec{font-size:2.5rem!important}
+  .pkh2 .h2-s1{margin:0;padding:0;grid-template-columns:1fr 1fr;grid-template-rows:1fr auto auto 1fr;gap:0}
+  .pkh2 .h2-s1ph{grid-column:2;grid-row:1/-1;height:100%;min-height:0}
+  .pkh2 .h2-s1ph::before{display:none}
+  .pkh2 .h2-s1ph img{object-position:50% 50%}
+  .pkh2 .h2-s1b{grid-column:1;grid-row:3;padding:26px 48px 0 max(var(--gutter),calc((100vw - 1160px)/2));gap:22px}
+  #pkh2#pkh2 .h2-s1 h1{position:static!important;text-shadow:none;font-size:2.375rem!important;grid-column:1;grid-row:2;padding:0 48px 0 max(var(--gutter),calc((100vw - 1160px)/2))!important}
+  #pkh2#pkh2 .h2-lead{font-size:1.375rem}
+  .pkh2 .h2-band{max-width:460px}#pkh2#pkh2 .h2-band-d{font-size:1.75rem!important}
+  .pkh2 .h2-s2{display:block;padding-top:28px;padding-bottom:calc(var(--strip,0px) + 28px)}
+  .pkh2 .h2-strip-ph{width:160px}
+  #pkh2#pkh2 .h2-strip-c{font-size:1rem;max-width:62ch}
+  .pkh2 .h2-s3{grid-template-columns:7fr 5fr}
+  .pkh2 .h2-s3l{grid-column:2;display:grid;gap:22px;align-content:center}
+  .pkh2 .h2-hood{grid-column:1;grid-row:1}
+  .pkh2 .h2-hood-ph{aspect-ratio:4/3;max-height:calc(var(--scr) - 200px)}
+  .pkh2 .h2-hood-c>img{display:block;width:56px;height:56px}#pkh2#pkh2 .h2-hood-n{font-size:1.75rem!important}
+  #pkh2 .h2-em{width:40px;height:40px}
+  .pkh2 .h2-hood-t{display:grid;gap:2px}.pkh2 .h2-hood-k,.pkh2 .h2-hood-tag{display:block}.pkh2 .h2-s3sub{font-size:var(--t-lg)}
+  .pkh2 .h2-s4{padding:0;display:flex;align-items:center;justify-content:center;gap:0}
+  .pkh2 .h2-s4ph{position:absolute;inset:0;margin:0;min-height:0}
+  #pkh2#pkh2 .h2-s4ph h2{display:none}
+  .pkh2 .h2-s4in{position:relative;z-index:2;display:grid;grid-template-columns:1fr 480px;gap:64px;align-items:center;width:100%;max-width:1160px;padding:0 var(--gutter)}
+  #pkh2#pkh2 .h2-s4h{display:block;font-size:3.25rem!important;text-shadow:0 1px 18px rgba(0,0,0,.6);max-width:12ch!important;color:var(--cream)}
+  .pkh2 .h2-stub{margin:0;padding:26px 28px}
+  .pkh2 .h2-s4side{display:grid;gap:22px}
+  .pkh2 .h2-s4solid{background:var(--ground);padding:18px 20px;display:grid;gap:14px;max-width:440px}
+}
+
+/* the Remind me sheet (drawn with the Tickets kit's sheet, so it sits inside .tk2) */
+.tk2 .pkh2-rm p{font-size:1rem;line-height:1.4;margin:0}
+.tk2 .pkh2-rmn{margin-top:16px;padding-top:14px;border-top:1px solid var(--line);display:flex;align-items:center;gap:12px;justify-content:space-between}
+.tk2 .pkh2-rmn p{font-size:.875rem;color:var(--cream-dim)}
+
+/* the site's own blanket rules that reach inside #pkh2 (found by measuring): pressed buttons turn gold and get 44px boxes; "section h2 + p" sets the lead size */
+#root#root#root#root #pkh2 .h2-em{min-height:0!important;min-width:0!important;border:0!important;border-radius:50%!important;background:none!important;color:inherit!important;padding:0!important}
+#root#root#root#root #pkh2 .h2-em[aria-pressed=true]{background:none!important;box-shadow:0 0 0 2px var(--cream)!important}
+#root#root #pkh2 .h2-sub{font-size:var(--t-md)!important;line-height:1.35!important;color:var(--cream-dim)!important}
+#root#root #pkh2 .h2-s3sub{font-size:var(--t-sm)!important}
+@media (min-width:600px){#root#root #pkh2 .h2-s3sub{font-size:var(--t-lg)!important}}
+/* phone: the watch pill shares the row with Another year (pk-climb's own button), so the poster keeps its size and the section still fits one screen */
+@media (max-width:599px){
+  .pkh2 .h2-s.h2-s2{padding-top:calc(var(--tl) + 8px);padding-bottom:12px}
+  #root#root #pkh2 .h2-s2 .pk-cl-an{width:auto!important}
+  .pkh2 .h2-strip{left:auto;right:0;top:auto;bottom:0;min-height:0;height:var(--pill);gap:0}   /* phone: in the Another year row */
+  .pkh2 .h2-strip-ph,#pkh2#pkh2 .h2-strip-c{display:none}
+  .pkh2 .h2-strip-t{display:flex;align-items:center;height:100%}
+  #pkh2 .h2-strip .h2-watch{min-height:var(--pill);padding:0 .75rem 0 .625rem;font-size:.8125rem}
+  #root#root #pkh2 .h2-s2 .pk-cl-an{padding:0 .875rem!important;font-size:.875rem!important}
+}
+
+/* tablet: children of the flattened wrappers get the same held column as direct children; screen 4's photo runs edge to edge */
+@media (min-width:600px) and (max-width:1199px){
+  .pkh2 .h2-s3head,.pkh2 .h2-city,.pkh2 .h2-s3 .h2-row,.pkh2 .h2-stub,.pkh2 .h2-quote,.pkh2 .h2-s4end{width:100%;max-width:640px}
+  .pkh2 .h2-s4 .h2-s4ph{margin-left:calc(-1 * var(--gutter));margin-right:calc(-1 * var(--gutter));width:auto;align-self:stretch}
+}
+/* phone: a slightly wider neighborhood photo keeps screen 3 inside one screen with the test bar open */
+@media (max-width:599px){.pkh2 .h2-hood-ph{aspect-ratio:2.35/1}.pkh2 .h2-s3{gap:6px}#pkh2#pkh2 .h2-city-k{margin-top:0}}
+
+/* desktop: the poster section in two columns, the mockup's layout. pk-climb keeps drawing its desktop poster (it needs a mount 1000px or wider);
+   this grid places its parts: heading, Another year, time bar and Replay on the left with the watch strip under them, the poster on the right,
+   scaled by --h2-ps (set from the poster's own size, on draw and resize) so the whole section stays inside one screen. */
+@media (min-width:1200px){
+  .pkh2 .h2-s.h2-s2{padding-bottom:28px}
+  #pkh2 .h2-s2 .pk-cl-mount{display:grid!important;grid-template-columns:minmax(0,4fr) minmax(0,6fr);grid-template-rows:1fr auto auto auto var(--strip,0px) 1fr;column-gap:48px;max-width:1160px;margin:0 auto;min-height:calc(var(--scr) - 56px)}
+  #pkh2#pkh2 .h2-s2 .pk-cl-hd{grid-column:1;grid-row:2;display:block;max-width:none;margin:0}
+  #pkh2#pkh2 .h2-s2 .pk-cl-an{margin-top:18px}
+  #pkh2 .h2-s2 .pk-cl-tb{width:100%;max-width:none;margin-left:0;margin-right:0}
+  #root#root #pkh2 .h2-s2 .pk-cl-tl{text-align:left!important;margin-left:0!important}
+  #pkh2 .h2-s2 .pk-cl-tb{grid-column:1;grid-row:3;margin-top:22px}
+  #pkh2 .h2-s2 .pk-cl-tl{grid-column:1;grid-row:4}
+  #pkh2 .h2-s2 .pk-cl-cmp{grid-column:1;grid-row:3/5}
+  #pkh2 .h2-s2 .pk-cl-pw{grid-column:2;grid-row:1/-1;justify-self:start;align-self:center;transform-origin:top left!important;transform:scale(var(--h2-ps,1))!important;margin:0 0 var(--h2-pmb,0px) var(--h2-pml,0px)!important}
+  #pkh2 .h2-s2 .pk-cl-mount>.pk-sr{position:absolute}
+  .pkh2 .h2-s2in{max-width:1160px;margin:0 auto}
+  .pkh2 .h2-strip{left:0;right:auto;top:var(--h2-st,auto);width:calc((100% - 48px) * 4 / 10)}
+}
+@media (max-width:379px){.pkh2 .h2-s.h2-s2{padding-bottom:64px}.pkh2 .h2-strip{bottom:-52px;left:0;right:auto}}   /* narrow phones: the watch pill takes its own row under Another year */
