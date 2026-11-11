@@ -1048,6 +1048,10 @@ main:has(#pk-nh-climb)>section{content-visibility:visible!important;contain-intr
 #root .pk-cl-cal .pk-cl-mo{display:block;background:#F2CF62;color:#2B2628;font-size:12px;font-weight:800;letter-spacing:.14em;line-height:20px}
 #root .pk-cl-cal .pk-cl-yr{display:block;color:#F2EDE3;font-size:19px;font-weight:800;line-height:28px}
 #root .pk-cl-tbp .pk-cl-tm{display:none}
+/* Zale, Nov 11: the time bar is a slider */
+#root .pk-cl-tr{touch-action:none;cursor:default}
+#root .pk-cl-tr::before{content:"";position:absolute;left:-6px;right:-6px;top:-20px;bottom:-20px}
+#root .pk-cl-tf::after{content:"";position:absolute;right:-8px;top:50%;width:16px;height:16px;margin-top:-8px;border-radius:50%;background:#F2CF62;box-shadow:0 0 0 2px #2B2628}
 </style>
 <style id="pk-hm-css">
 /* Neighborhood page: "Where it is" map (Zale, Nov 9 08:30: a way to move between neighborhoods from the map on each neighborhood page). Design Studio */
@@ -1265,6 +1269,17 @@ html.pk-tmon #root header + *{margin-top:44px}
 #root#root .pk-tn-go{margin-left:auto;min-height:36px;padding:0 10px!important;border-radius:6px;border:1.5px solid rgba(242,237,227,.4)!important;background:transparent!important;color:#F2EDE3!important;font-size:12.5px!important;font-weight:800}
 #root .pk-tn-fn{margin:10px 0 0;font-size:11.5px;color:#9A9486}
 #root .pk-tn .pk-sr{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+#root .pk-pf>.pk-tn{margin:0 0 18px}
+/* Zale, Nov 11: far less text. One headline, the calendar and slider, the dots, and the card for the dot you tap. */
+#root#root#root .pk-tn .pk-tn-k,#root#root#root .pk-tn .pk-tn-mvs,#root#root#root .pk-tn .pk-tn-tg,#root#root#root .pk-tn .pk-tn-p,#root#root#root .pk-tn .pk-tn-fn,#root#root#root .pk-tn .pk-tn-lead{display:none!important}
+#root .pk-tn-h{margin:0 0 10px}
+#root#root .pk-tn-nav{display:flex;flex-direction:row;align-items:center;justify-content:flex-start;gap:12px;flex-wrap:nowrap}
+#root .pk-tn-cal{flex:none;display:flex;flex-direction:column;width:64px;border:2px solid #F2EDE3;border-radius:6px;overflow:hidden;text-align:center;font-family:'Bricolage Grotesque',sans-serif;font-variant-numeric:tabular-nums}
+#root .pk-tn-cal b:first-child{display:block;background:#F2CF62;color:#2B2628;font-size:12px;font-weight:800;letter-spacing:.14em;line-height:20px}
+#root .pk-tn-cal b:last-child{display:block;color:#F2EDE3;font-size:19px;font-weight:800;line-height:28px}
+#root .pk-tn-sl{flex:1;min-width:0}
+#root#root .pk-tn-rg{display:block;width:100%;height:36px;margin:0;padding:0;accent-color:#F2CF62;background:transparent;cursor:default}
+#root .pk-tn-cap{display:block;font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#F2CF62}
 @media (max-width:599px){#root .pk-tn{--tn-d:16px;padding:16px 14px 12px}#root .pk-tn-h{font-size:20px}#root .pk-tn-nav{flex-direction:column;align-items:stretch}#root .pk-tn-step{justify-content:space-between}#root .pk-tn-chips>*{flex:1}}
 </style>
 <script id="pk-tn-js">
@@ -1293,6 +1308,12 @@ html.pk-tmon #root header + *{margin-top:44px}
   function build(host, y, Y) {
     var s = ST[y] || (ST[y] = { i: Y.dates.length - 1, sel: null });
     var F = Y.fest, N = Y.dates.length - 1;
+    /* Zale, Nov 11: one calendar and a slider drive the dots. Position s.f is continuous; between two rated dates each act that changes class moves at its own steady point, so the in-between months read as a gradual reshuffle until the six-month data fills them in. */
+    if (s.f == null) s.f = s.i;
+    var hsh = function (t) { var h = 7; for (var q = 0; q < t.length; q++) h = (h * 31 + t.charCodeAt(q)) % 9973; return h / 9973; };
+    var TH = Y.acts.map(function (a) { return 0.18 + 0.64 * hsh(a.n); });
+    var ix = function (k, f) { var i0 = Math.min(N, Math.floor(f + 1e-6)), fr = f - i0; return (i0 < N && fr >= TH[k]) ? i0 + 1 : i0; };
+    var sig = function () { return Y.acts.map(function (a, k) { return ix(k, s.f); }).join(''); }, lastSig = '';
     if (s.sel == null) {
       var best = null, bv = -99;
       Y.acts.forEach(function (a, k) { if (a.c[F] !== a.c[N]) { var v = (a.m[N] - a.m[F]) * 100 + a.m[N]; if (v > bv) { bv = v; best = k; } } });
@@ -1301,15 +1322,12 @@ html.pk-tmon #root header + *{margin-top:44px}
     if (!window._tnTg) { window._tnTg = 1; document.addEventListener('click', function (e) { var b = e.target && e.target.closest && e.target.closest('.pk-tn-tg'); if (!b) return; var w0 = b.closest('.pk-tn'), o = w0.classList.toggle('pk-tn-open'); (window._tnOpen = window._tnOpen || {})[w0.getAttribute('data-y')] = o; b.setAttribute('aria-expanded', o ? 'true' : 'false'); b.textContent = o ? 'Hide the dots' : 'See who moved up'; }); }
     var ONE = !Y.dates || Y.dates.length < 2;   /* only a Now snapshot for this year: no date stepper, no festival claim */
     var w = document.createElement('div');
-    w.className = 'pk-tn' + (ONE ? ' pk-tn-one' : '') + (Y.dates && Y.dates.length === 2 ? ' pk-tn-two' : ''); w.setAttribute('data-y', y); var TNO = !!(window._tnOpen && window._tnOpen[y]); if (TNO) w.className += ' pk-tn-open'; w.setAttribute('role', 'group'); w.setAttribute('aria-label', 'Who broke out: how the ' + y + ' bands moved since the festival');
+    w.className = 'pk-tn' + (ONE ? ' pk-tn-one' : '') + (Y.dates && Y.dates.length === 2 ? ' pk-tn-two' : ''); w.setAttribute('data-y', y); var TNO = !(window._tnOpen && window._tnOpen[y] === false); if (TNO) w.className += ' pk-tn-open'; w.setAttribute('role', 'group'); w.setAttribute('aria-label', 'Who broke out: how the ' + y + ' bands moved since the festival');
     var RK = { leg: 3, disc: 2, deep: 1, none: 0 }, UP = ONE ? [] : Y.acts.filter(function (q) { return RK[q.c[q.c.length - 1]] > RK[q.c[0]]; }), NUP = UP.length, TOPU = UP.slice().sort(function (p1, q1) { return (RK[q1.c[q1.c.length - 1]] - RK[p1.c[p1.c.length - 1]]) || ((q1.m[q1.m.length - 1] || 0) - (p1.m[p1.m.length - 1] || 0)); }).slice(0, 3).map(function (q) { return q.n; }), TOPL = TOPU.length > 1 ? TOPU.slice(0, -1).join(', ') + ' and ' + TOPU[TOPU.length - 1] : (TOPU[0] || ''); if (!ONE && NUP === 0) w.style.setProperty('display', 'none', 'important');
     var TTL = ONE ? 'Where ' + y + ' stands now' : NUP === 0 ? 'Nobody has moved up since ' + y : (NUP === 1 ? 'One band has moved up since the ' : NUP + ' bands have moved up since the ') + y + ' festival', SUB = (!ONE && NUP > 0) ? (function () { var CL = { leg: ['Legend', '#D6B54A'], disc: ['Discovery', '#9FCB8A'], deep: ['Deep cut', '#7FD3E6'], none: ['More to hear', '#9A9486'] }, esc = function (t) { return String(t).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }; var rows = UP.slice().sort(function (p1, q1) { return (RK[q1.c[q1.c.length - 1]] - RK[p1.c[p1.c.length - 1]]) || ((q1.m[q1.m.length - 1] || 0) - (p1.m[p1.m.length - 1] || 0)); }).slice(0, 3).map(function (q) { var a = CL[q.c[0]] || CL.none, z = CL[q.c[q.c.length - 1]] || CL.none; return '<li class="pk-tn-mv"><b>' + esc(q.n) + '</b><span class="pk-tn-ch"><i style="background:' + a[1] + '"></i>' + a[0] + '<em aria-hidden="true">\u2192</em><i style="background:' + z[1] + '"></i>' + z[0] + '</span></li>'; }).join(''); return '<ul class="pk-tn-mvs" aria-label="Biggest movers">' + rows + '</ul>'; })() : '';
     w.innerHTML = '<p class="pk-tn-k">' + (ONE ? 'Where they stand' : 'Who broke out') + '</p><h3 class="pk-tn-h">' + TTL + '</h3>' + SUB + '<button type="button" class="pk-tn-tg" aria-expanded="' + (TNO ? 'true' : 'false') + '">' + (TNO ? 'Hide the dots' : (ONE ? 'See the dots' : 'See all ' + NUP + ' who moved up \u2192')) + '</button>' +
       (ONE ? '<p class="pk-tn-p">The ' + Y.acts.length + ' bands of ' + y + ', rated with what is known now. Tap a dot for each act.</p>' : Y.dates.length === 2 ? '<p class="pk-tn-p">The ' + Y.acts.length + ' bands of ' + y + ', as first rated at the festival and as rated today.</p>' : '<p class="pk-tn-p">The ' + Y.acts.length + ' bands of ' + y + ', re-rated every six months with what was known on each date. Nobody is a Discovery at the festival; it shows in the rooms they play after.</p>') +
-      '<div class="pk-tn-nav"><div class="pk-tn-step"><button type="button" class="pk-tn-sb" data-d="-1" aria-label="Earlier date"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>' +
-      '<div class="pk-tn-dt" aria-live="polite"><b></b><span></span></div>' +
-      '<button type="button" class="pk-tn-sb" data-d="1" aria-label="Later date"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button></div>' +
-      '<div class="pk-tn-chips"><button type="button" class="pk-tn-chip pk-tn-playb" aria-label="Play the years">\u25B6 Play</button><button type="button" class="pk-tn-chip" data-j="' + F + '">At the festival</button><button type="button" class="pk-tn-chip" data-j="' + N + '">Now</button></div></div>' +
+      '<div class="pk-tn-nav"><span class="pk-tn-cal" aria-hidden="true"><b></b><b></b></span><div class="pk-tn-sl"><input type="range" class="pk-tn-rg" min="0" max="1000" value="1000" aria-label="Slide from the ' + y + ' festival to today"><span class="pk-tn-cap" aria-live="polite"></span></div><button type="button" class="pk-tn-chip pk-tn-playb" aria-label="Play the years">\u25B6 Play</button></div>' +
       '<div class="pk-tn-cols">' + COL.map(function (c) { return '<div style="--c:' + c[3] + '"><b></b><span>' + c[1] + '</span></div>'; }).join('') + '</div>' +
       '<div class="pk-tn-f"><span class="pk-tn-tip" aria-hidden="true"></span>' + Y.acts.map(function (a, k) { return '<button type="button" class="pk-tn-dot" data-k="' + k + '"></button>'; }).join('') + '</div>' +
       '<div class="pk-tn-card" aria-live="polite"></div>' +
@@ -1323,15 +1341,15 @@ html.pk-tmon #root header + *{margin-top:44px}
     /* one fixed-length run (7.2 s); a pause resumes where it stopped; a replay glides back to the festival, holds a second there, then runs (no jumps) */
     function play() {
       if (N < 1) return; var wasPlaying = playing; stop(); if (wasPlaying) return;
-      if (RMo) { pu = 1; s.i = N; paint(true); return; }
+      if (RMo) { pu = 1; s.i = N; s.f = N; paint(true); return; }
       var resume = pu > 0 && pu < 1, lead = 0;
       playing = true; w.classList.add('pk-tn-play');
-      if (!resume) { pu = 0; var back = s.i !== 0; s.i = 0; paint(true); lead = (back ? 950 : 0) + 1000; if (back) { var tb = w.querySelector('.pk-tn-dt b'); tb.textContent = mo(Y.dates[0]).toUpperCase(); } }
+      if (!resume) { pu = 0; var back = s.f > 0.001; s.f = 0; s.i = 0; paint(true); lead = (back ? 950 : 0) + 1000; }
       playUi(); var t0 = null, base = pu;
       var step = function (now) { if (!playing) return; if (t0 == null) t0 = now + lead; if (now < t0) { raf = requestAnimationFrame(step); return; }
         var u = Math.min(1, base + (now - t0) / PDUR); pu = u; var e = u < .5 ? 2 * u * u : 1 - Math.pow(-2 * u + 2, 2) / 2, fi = e * N, i = u >= 1 ? N : Math.floor(fi + 1e-6);
-        if (i !== s.i) { s.i = i; paint(true); }
-        if (u < 1) { w.querySelector('.pk-tn-dt b').textContent = dstamp(fi); raf = requestAnimationFrame(step); } else { stop(); paint(true); } };
+        s.f = u >= 1 ? N : fi; s.i = Math.round(s.f); var sg = sig(); if (sg !== lastSig) paint(true); else clock();
+        if (u < 1) raf = requestAnimationFrame(step); else { stop(); paint(true); } };
       raf = requestAnimationFrame(step);
     }
     w.__play = play;
@@ -1345,22 +1363,22 @@ html.pk-tmon #root header + *{margin-top:44px}
       Y.dates.forEach(function (_, i) { var cn = [0, 0, 0, 0]; Y.acts.forEach(function (a) { cn[CI[a.c[i]]]++; }); cn.forEach(function (n) { maxRows = Math.max(maxRows, Math.ceil(n / per)); }); });
       field.style.height = (maxRows * (D + G) - G) + 'px';
       var i = s.i, groups = [[], [], [], []];
-      Y.acts.forEach(function (a, k) { groups[CI[a.c[i]]].push(k); });
+      Y.acts.forEach(function (a, k) { groups[CI[a.c[ix(k, s.f)]]].push(k); });
       groups.forEach(function (g, ci) {
-        g.sort(function (p, q) { return (Y.acts[q].m[i] - Y.acts[p].m[i]) || Y.acts[p].n.localeCompare(Y.acts[q].n); });
+        g.sort(function (p, q) { return (Y.acts[q].m[ix(q, s.f)] - Y.acts[p].m[ix(p, s.f)]) || Y.acts[p].n.localeCompare(Y.acts[q].n); });
         g.forEach(function (k, r) { var d = dots[k]; d.style.transform = 'translate(' + (cols[ci].offsetLeft - field.offsetLeft + (r % per) * (D + G)) + 'px,' + (Math.floor(r / per) * (D + G)) + 'px)'; });
       });
       w.querySelectorAll('.pk-tn-cols b').forEach(function (b, ci) { b.textContent = groups[ci].length; });
       field.classList.add('on');
     }
+    function clock() { var cal = w.querySelector('.pk-tn-cal'); if (!cal) return; var ds = (N < 1 || s.f >= N - 1e-6) ? mo(Y.dates[N]).toUpperCase() : dstamp(s.f), pp = ds.split(' '); if (cal.firstChild.textContent !== pp[0]) cal.firstChild.textContent = pp[0]; if (cal.lastChild.textContent !== pp[1]) cal.lastChild.textContent = pp[1];
+      var cp = w.querySelector('.pk-tn-cap'), ct = s.f >= N - 1e-6 ? 'Today' : Math.abs(s.f - F) < 1e-6 ? 'At the festival' : s.f < F ? 'Before the festival' : 'Since the festival'; if (cp.textContent !== ct) cp.textContent = ct;
+      var rg = w.querySelector('.pk-tn-rg'), rv = Math.round(s.f / Math.max(1, N) * 1000); if (rg && Math.abs(+rg.value - rv) > 1) rg.value = rv; }
     function paint(anim) {
       var i = s.i, a = Y.acts[s.sel];
-      w.querySelector('.pk-tn-dt b').textContent = mo(Y.dates[i]).toUpperCase();
-      w.querySelector('.pk-tn-dt span').textContent = cap(Y, i);
-      w.querySelectorAll('.pk-tn-sb')[0].disabled = i === 0; w.querySelectorAll('.pk-tn-sb')[1].disabled = i === N;
-      w.querySelectorAll('.pk-tn-chip').forEach(function (c) { if (c.dataset.j != null) c.setAttribute('aria-pressed', String(+c.dataset.j === i)); }); playUi();
+      clock(); playUi(); lastSig = sig();
       dots.forEach(function (d, k) {
-        var x = Y.acts[k]; d.style.setProperty('--c', COL[CI[x.c[i]]][3]);
+        var x = Y.acts[k]; d.style.setProperty('--c', COL[CI[x.c[ix(k, s.f)]]][3]);
         d.classList.toggle('mv', x.c[F] !== x.c[N]); d.classList.toggle('sel', k === s.sel);
         d.setAttribute('aria-label', x.n + ': ' + lab(x, i) + ' in ' + (i === N ? 'today' : mo(Y.dates[i])) + (x.c[F] !== x.c[N] ? ', changed since the festival' : ''));
         d.setAttribute('aria-pressed', String(k === s.sel));
@@ -1382,13 +1400,14 @@ html.pk-tmon #root header + *{margin-top:44px}
       else if (t.classList.contains('pk-tn-chip')) { stop(); s.i = +t.dataset.j; pu = s.i >= N ? 1 : 0; paint(true); }
       else if (t.classList.contains('pk-tn-dot')) { s.sel = +t.dataset.k; paint(); }
     });
+    var rg0 = w.querySelector('.pk-tn-rg'); if (rg0) rg0.addEventListener('input', function () { stop(); s.played = true; s.f = +rg0.value / 1000 * N; s.i = Math.round(s.f); var x = N ? s.f / N : 1; pu = x >= 1 ? 1 : x < .5 ? Math.sqrt(x / 2) : 1 - Math.sqrt((1 - x) / 2); if (sig() !== lastSig) paint(true); else { clock(); playUi(); } });
     w.addEventListener('mouseover', function (e) {
       var t = e.target.closest('.pk-tn-dot'); if (!t) { tip.classList.remove('on'); return; }
       var r = t.getBoundingClientRect(), fr = field.getBoundingClientRect();
       tip.textContent = Y.acts[+t.dataset.k].n; tip.style.left = (r.left - fr.left + r.width / 2) + 'px'; tip.style.top = (r.top - fr.top) + 'px'; tip.classList.add('on');
     });
     w.addEventListener('mouseleave', function () { tip.classList.remove('on'); });
-    host.parentNode.insertBefore(w, host); host.classList.add('pk-tn-off');
+    var st0 = host.closest('.pk-story'); (st0 ? st0.parentNode : host.parentNode).insertBefore(w, st0 || host); host.classList.add('pk-tn-off');
     w.__layout = layout; paint();
     return w;
   }
@@ -1397,7 +1416,7 @@ html.pk-tmon #root header + *{margin-top:44px}
     var R = window.__pkYR || {}, m = document.querySelector('.pk-yp-mount[data-y]'), mix = document.querySelector('#root .pk-story .pk-st-mix');
     if (!mix || !mix.offsetParent && !mix.classList.contains('pk-tn-off')) return;
     var y = m && m.getAttribute('data-y'), Y = y && R[y];
-    var old = mix.parentNode.querySelector('.pk-tn');
+    var old = (mix.closest('.pk-pf') || mix.parentNode).querySelector('.pk-tn');
     if (!Y || !Y.acts || !Y.acts.length) { if (old) old.remove(); mix.classList.remove('pk-tn-off'); return; }
     if (old && old.getAttribute('data-y') === y) return;
     if (old) old.remove();
@@ -1935,6 +1954,11 @@ html.pk-cy-in div:has(> button[aria-label="Listen to Pickathon"]){opacity:0!impo
     else if (a === 'rand') rand();
     else if (a === 'year') { try { window.pkOpenYear && window.pkOpenYear(S.y); } catch (x) {} }
   }, true);
+  /* Zale, Nov 11: the time bar is a slider. Drag it back and forth and the poster follows. */
+  var dragT = null, scrub = function (e) { var r = dragT.getBoundingClientRect(), x = Math.max(0, Math.min(1, (e.clientX - r.left) / Math.max(1, r.width))), D = C[S.y], n = D.labels.length, lo = 0, hi = n - 1; for (var q = 0; q < 22; q++) { var mid = (lo + hi) / 2; if (timebar(D, S.y, mid).frac < x) lo = mid; else hi = mid; } stop(); S.seen[S.y] = 1; S.tp = x >= 0.995 ? n - 1 : x <= 0.005 ? 0 : (lo + hi) / 2; draw(); };
+  document.addEventListener('pointerdown', function (e) { var t = e.target && e.target.closest && e.target.closest('.pk-cl-tr'); if (!t || !mountEl || !mountEl.contains(t)) return; dragT = t; e.preventDefault(); e.stopPropagation(); try { t.setPointerCapture(e.pointerId); } catch (x) {} scrub(e); }, true);
+  document.addEventListener('pointermove', function (e) { if (dragT) { e.preventDefault(); scrub(e); } }, true);
+  ['pointerup', 'pointercancel'].forEach(function (ev) { document.addEventListener(ev, function () { dragT = null; }, true); });
   document.addEventListener('keydown', function (e) { if ((e.key === 'Enter' || e.key === ' ') && e.target && e.target.classList && e.target.classList.contains('pk-cl-p') && mountEl && mountEl.contains(e.target)) { e.preventDefault(); try { window.pkOpenYear && window.pkOpenYear(S.y); } catch (x) {} } });
   function tick() {
     var m = document.querySelector('.pk-cl-mount');

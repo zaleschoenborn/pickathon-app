@@ -282,6 +282,11 @@
     else if (a === 'rand') rand();
     else if (a === 'year') { try { window.pkOpenYear && window.pkOpenYear(S.y); } catch (x) {} }
   }, true);
+  /* Zale, Nov 11: the time bar is a slider. Drag it back and forth and the poster follows. */
+  var dragT = null, scrub = function (e) { var r = dragT.getBoundingClientRect(), x = Math.max(0, Math.min(1, (e.clientX - r.left) / Math.max(1, r.width))), D = C[S.y], n = D.labels.length, lo = 0, hi = n - 1; for (var q = 0; q < 22; q++) { var mid = (lo + hi) / 2; if (timebar(D, S.y, mid).frac < x) lo = mid; else hi = mid; } stop(); S.seen[S.y] = 1; S.tp = x >= 0.995 ? n - 1 : x <= 0.005 ? 0 : (lo + hi) / 2; draw(); };
+  document.addEventListener('pointerdown', function (e) { var t = e.target && e.target.closest && e.target.closest('.pk-cl-tr'); if (!t || !mountEl || !mountEl.contains(t)) return; dragT = t; e.preventDefault(); e.stopPropagation(); try { t.setPointerCapture(e.pointerId); } catch (x) {} scrub(e); }, true);
+  document.addEventListener('pointermove', function (e) { if (dragT) { e.preventDefault(); scrub(e); } }, true);
+  ['pointerup', 'pointercancel'].forEach(function (ev) { document.addEventListener(ev, function () { dragT = null; }, true); });
   document.addEventListener('keydown', function (e) { if ((e.key === 'Enter' || e.key === ' ') && e.target && e.target.classList && e.target.classList.contains('pk-cl-p') && mountEl && mountEl.contains(e.target)) { e.preventDefault(); try { window.pkOpenYear && window.pkOpenYear(S.y); } catch (x) {} } });
   function tick() {
     var m = document.querySelector('.pk-cl-mount');
