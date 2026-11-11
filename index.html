@@ -7250,7 +7250,7 @@ setInterval(function () { var el = document.getElementById('pk-nh-br'); if (el &
     readTix(); var t = totals(S);
     return { ready: t.ready && when() === 'sale', round: T.show.id, roundName: T.show.name,
       items: t.lines.filter(function (l) { return l.id !== 'tent'; }).map(function (l) { return { id: l.id, qty: l.q || 1, unit: l.q ? Math.round(l.amt / l.q * 100) / 100 : l.amt, name: l.n }; }),
-      lines: t.lines.map(function (l) { return { label: (l.q ? l.q + ' × ' : '') + l.n, price: money(l.amt), q: l.q || 1, n: l.n, t: money(l.amt) }; }), unadded: t.unadded, fee: money(t.fee), total: money(t.total),
+      lines: t.lines.map(function (l) { return { label: (l.q ? l.q + ' × ' : '') + l.n, price: money(l.amt) }; }), unadded: t.unadded,
       feeRate: FEE, feeS: money(t.fee), totalS: money(t.total), totalNum: t.total, sub: t.sub,
       hasPlan: hasPlan(t), plan: hasPlan(t) ? planLine(t.total) : '', strip: strip(S), dates: dates(S), summary: short(S), record: clean(S) };
   }
@@ -7493,254 +7493,272 @@ setInterval(function () { var el = document.getElementById('pk-nh-br'); if (el &
       if (back === 'checkout' && window.__pkCheckout && window.__pkCheckout.resume) window.__pkCheckout.resume();
     } catch (e) { booting = false; }
   }
+  window.addEventListener('hashchange', function () { if (/^#tickets\b/.test(window.location.hash || '')) { var a = app(); try { var top = a.state.stack[a.state.stack.length - 1]; if (top.r !== 'tickets') a.go('tickets'); } catch (e) {} } });
   try { sync(); } catch (e) {}
   boot(0);
 })();
 </script>
 <style id="pk-co-css">
-#pk-co{position:fixed;inset:0;z-index:2000;overflow-y:auto;scrollbar-width:none;background:#0C0F0A;color:#F2EDE3;font-family:inherit;-webkit-overflow-scrolling:touch}
-#pk-co::-webkit-scrollbar{display:none}
-#pk-co *{box-sizing:border-box}
-#pk-co [id]{scroll-margin-top:76px}
-#pk-co .co-top{position:sticky;top:0;z-index:3;background:#0C0F0A;border-bottom:1px solid #2A3125}
-#pk-co .co-topin{max-width:1080px;margin:0 auto;padding:10px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:56px}
-#pk-co .co-back{min-height:44px;padding:0 4px;border:0;background:transparent;color:#F2EDE3;font:inherit;font-weight:700;font-size:15px}
-#pk-co .co-steps{display:flex;gap:6px;align-items:center;font-size:13px;color:#B9B3A6;list-style:none;margin:0;padding:0}
-#pk-co .co-steps li{padding:4px 10px;border-radius:999px;border:1px solid #2A3125}
-#pk-co .co-steps li[aria-current=step]{background:#F2EDE3;color:#12160F;border-color:#F2EDE3;font-weight:800}
-#pk-co .co-steps li.done{color:#9FCB8A;border-color:#3A4A33}
-#pk-co .co-wrap{max-width:1080px;margin:0 auto;padding:18px 16px 120px;display:grid;gap:22px;grid-template-columns:minmax(0,1fr)}
-#pk-co .co-h1{margin:0;font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:30px;line-height:1.1}
-#pk-co .co-card{background:#1A2017;border:1px solid #2A3125;border-radius:18px;padding:18px 18px 20px}
-#pk-co .co-card h2{margin:0 0 12px;font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:21px}
-#pk-co .co-eyebrow{margin:0 0 4px;font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#F2B33D}
-#pk-co .co-note{margin:0;font-size:13px;line-height:1.45;color:#B9B3A6}
-#pk-co .co-prev{margin:0;padding:10px 14px;border-radius:12px;background:#24301F;color:#DCE8D2;font-size:14px;line-height:1.45}
-#pk-co .co-g{display:grid;gap:12px;grid-template-columns:repeat(2,minmax(0,1fr))}
-#pk-co .co-f{display:grid;gap:5px;font-size:14px;font-weight:700;min-width:0}
-#pk-co .co-f.wide{grid-column:1/-1}
-#pk-co input[type=text],#pk-co input[type=email],#pk-co select{width:100%;min-height:48px;padding:0 14px;border-radius:12px;border:1px solid #8C9884;background:#12160F;color:#F2EDE3;font:inherit;font-weight:400;font-size:16px}
-#pk-co input[aria-invalid=true],#pk-co select[aria-invalid=true]{border-color:#E58A6B!important;border-width:2px}
-#pk-co input:focus-visible,#pk-co select:focus-visible,#pk-co button:focus-visible,#pk-co a:focus-visible,#pk-co summary:focus-visible,#pk-co [tabindex]:focus-visible{outline:2px solid #F2CF62!important;outline-offset:2px}
-#pk-co .co-hold{margin:8px 0 0;padding:10px 14px;border-radius:12px;background:#3A2A12;color:#F6E2B8;font-size:14px;font-weight:700;display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px}
-#pk-co .co-hold:empty{display:none}
-#pk-co .co-hold .co-btn{width:auto;min-height:44px;padding:0 16px}
-#pk-co .co-btn[aria-disabled=true]{background:#1A2017;color:#B9B3A6;border-color:#4A5544}
-#pk-co .co-err{margin:0;font-size:13px;font-weight:700;color:#F0A58C}
-#pk-co .co-sum{padding:12px 14px;border-radius:12px;background:#3A2A12;color:#F6E2B8;font-size:14px;margin:0 0 14px}
-#pk-co .co-sum ul{margin:6px 0 0;padding-left:18px}
-#pk-co .co-sum a{color:#F2CF62;font-weight:700}
-#pk-co .co-opt{display:flex;gap:12px;align-items:flex-start;padding:14px;border-radius:14px;border:1px solid #8C9884;background:#12160F}
-#pk-co .co-opt[data-on=true]{background:#F2EDE3;color:#12160F;border-color:#F2EDE3}
-#pk-co .co-opt input{width:22px;height:22px;margin-top:2px;accent-color:#12160F;flex:none}
-#pk-co .co-opt small{display:block;font-weight:400;font-size:13px;margin-top:2px;opacity:.85}
-#pk-co .co-chk{min-height:44px;align-items:center;display:flex;gap:12px;align-items:flex-start;font-size:15px;line-height:1.4;margin-top:12px}
-#pk-co .co-chk input{width:22px;height:22px;flex:none;margin-top:1px;accent-color:#9FCB8A}
-#pk-co .co-link{min-height:44px;min-width:44px;padding:0 4px;border:0;background:transparent;color:#F2CF62;font:inherit;font-weight:700;text-decoration:underline;display:inline-flex;align-items:center}
-#pk-co .co-terms{margin:10px 0 0;padding:12px 14px;max-height:180px;overflow-y:auto;scrollbar-width:none;border-radius:12px;background:#12160F;border:1px solid #2A3125;font-size:13px;line-height:1.5;color:#CFC9BC}
-#pk-co .co-terms::-webkit-scrollbar{display:none}
-#pk-co .co-btn{width:100%;min-height:52px;border-radius:6px;border:2px solid #D6B54A;font:inherit;font-size:14px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;background:rgba(214,181,74,.18);color:#F2CF62}
-#pk-co .co-btn[disabled]{background:#1A2017;color:#8E897E;border-color:#2A3125}
-#pk-co .co-btn.sec{background:rgba(18,22,15,.26);color:#F2EDE3;border:2px solid rgba(242,237,227,.88)}
-#pk-co .co-row{display:flex;justify-content:space-between;gap:10px;padding:6px 0;font-size:15px}
-#pk-co .co-row.line{border-bottom:1px solid #2A3125}
-#pk-co .co-mono{font-variant-numeric:tabular-nums;font-weight:700;white-space:nowrap}
-#pk-co .co-total{display:flex;justify-content:space-between;align-items:baseline;font-size:22px;font-weight:800;margin-top:10px}
-#pk-co .co-sumwrap{display:grid;gap:14px;align-content:start}
-#pk-co details.co-mobsum{background:#1A2017;border:1px solid #2A3125;border-radius:14px;padding:0 14px}
-#pk-co details.co-mobsum summary{min-height:52px;display:flex;align-items:center;justify-content:space-between;font-weight:800;list-style:none}
-#pk-co details.co-mobsum summary::-webkit-details-marker{display:none}
-#pk-co details.co-mobsum .co-arw::before{content:'▾'}
-#pk-co details.co-mobsum[open] .co-arw::before{content:'▴'}
-#pk-co .co-bar{position:fixed;left:0;right:0;bottom:0;z-index:4;padding:10px 16px calc(10px + env(safe-area-inset-bottom,0px));background:#0C0F0A;border-top:1px solid #2A3125}
-#pk-co .co-bar .co-btn{max-width:640px;margin:0 auto;display:block}
-#pk-co .co-timer{font-size:14px;color:#F2CF62;font-weight:700}
-#pk-co .co-check{width:72px;height:72px;border-radius:50%;background:#24301F;border:2px solid #9FCB8A;display:flex;align-items:center;justify-content:center;font-size:36px;color:#9FCB8A}
-#pk-co .co-next{display:grid;gap:10px;grid-template-columns:repeat(3,minmax(0,1fr))}
-#pk-co .co-next>div{padding:14px;border-radius:14px;background:#12160F;border:1px solid #2A3125;font-size:14px;line-height:1.45}
-#pk-co .co-next b{display:block;font-size:15px;margin-bottom:4px}
-@media (min-width:900px){#pk-co .co-wrap{grid-template-columns:minmax(0,1fr) 360px;align-items:start;padding-bottom:60px}#pk-co .co-sumwrap{position:sticky;top:84px}#pk-co .co-bar{display:none}#pk-co details.co-mobsum{display:none}}
-@media (max-width:899px){#pk-co .co-desksum{display:none}#pk-co .co-g{grid-template-columns:minmax(0,1fr)}#pk-co .co-next{grid-template-columns:minmax(0,1fr)}#pk-co .co-h1{font-size:26px}#pk-co .co-steps li:not([aria-current=step]){display:none}}
+/* pk-co: Checkout, round 2 design (Nov 11 2026). Source: tools/tickets_r2/co2.css. Uses the .tk2 tokens and pills from pk-tk2-css.
+   A page, not a dialog: no tabs, no ticket line, no banners. The card field and wallet buttons are Stripe's own; here they are plain labeled blocks. */
+#pk-co{position:fixed;inset:0;z-index:2000;overflow-y:auto;overflow-x:hidden;background:var(--ground);-webkit-overflow-scrolling:touch;--hdr:60px}
+#pk-co [id]{scroll-margin-top:124px}
+#pk-co .co-hdr{position:sticky;top:0;z-index:30;height:var(--hdr);display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:0 var(--gutter);background:#433D3F;border-bottom:1px solid #1c191a}
+#pk-co .co-back{display:inline-flex;align-items:center;gap:4px;min-height:44px;font-weight:650;font-size:.9375rem;justify-self:start;background:none;border:0;padding:0 6px 0 0;color:var(--cream);cursor:pointer}
+#pk-co .co-back .tk-ic{transform:rotate(180deg)}
+#pk-co .co-hdr img{height:44px;width:auto}
+#pk-co .co-sec{justify-self:end;display:inline-flex;align-items:center;gap:6px;font-size:var(--t-sm);color:var(--cream-dim);font-weight:600}
+#pk-co .co-hold{position:sticky;top:var(--hdr);z-index:29;display:flex;align-items:center;gap:10px;min-height:48px;padding:6px var(--gutter);background:var(--deep);font-size:var(--t-sm);font-weight:600;border-bottom:1px solid #4F4749}
+#pk-co .co-hold b{font-size:1.0625rem;font-weight:800;font-variant-numeric:tabular-nums}
+#pk-co .co-hold .tk-pill{margin-left:auto;flex:none}
+#pk-co .co-hold.is-late{background:var(--plum-deep)}
+#pk-co .co-hold.is-late .tk-pill{background:var(--cream);border-color:var(--cream);color:var(--ink)}
+#pk-co .co-main{max-width:1040px;margin:0 auto;padding:16px var(--gutter) 48px;display:grid;gap:22px}
+#pk-co .co-main>*{min-width:0}
+#pk-co .co-h2{margin-bottom:8px;display:flex;align-items:baseline;flex-wrap:wrap;gap:2px 10px}
+#pk-co .co-h2 i{font-style:normal;text-transform:none;font-family:var(--text)!important;font-size:var(--t-sm);font-weight:700;letter-spacing:0;color:var(--mute)}
+#pk-co .co-recv{padding:14px 16px;border:2px solid var(--ink);outline:1px solid var(--paper);outline-offset:-5px}
+#pk-co .co-recv-top{display:flex;align-items:center;justify-content:space-between;gap:10px}
+#pk-co .tk-otot{margin:10px 0 0}
+#pk-co .co-fields{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+#pk-co .co-f{display:grid;gap:4px;min-width:0;align-content:start}
+#pk-co .co-f-w{grid-column:1/-1}
+#pk-co .co-f label{font-size:var(--t-sm);font-weight:650}
+#pk-co .co-f label small{font-weight:500;color:var(--cream-dim);font-size:var(--t-sm)}
+#pk-co .co-f input{min-height:3rem;border-radius:8px;border:1.5px solid var(--line-strong);background:var(--deep);padding:0 .875rem;font-size:1rem;color:var(--cream);width:100%}
+#pk-co .co-f input:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+#pk-co .co-f.is-err input{border-color:var(--err);border-width:2px}
+#pk-co .co-f-e{color:var(--err);font-size:var(--t-sm);font-weight:650;display:flex;gap:6px;align-items:center}
+#pk-co .co-alert{padding:12px 14px;border-left:4px solid var(--err);background:rgba(255,156,134,.12);font-size:.9375rem;line-height:1.4}
+#pk-co .co-alert b{display:block}
+#pk-co .co-alert a{font-weight:650;display:block;padding:10px 0;min-height:44px}
+#pk-co .co-alert:focus{outline:0}
+#pk-co .co-prev{font-size:var(--t-sm);line-height:1.4;color:var(--cream-dim);padding:8px 12px;border-left:3px solid var(--plum-lt);background:rgba(134,82,107,.22);margin-bottom:12px}
+#pk-co .co-stripe{border:1.5px dashed var(--line-strong);border-radius:8px;background:rgba(242,237,227,.04);display:grid;place-items:center;text-align:center;padding:10px 14px;color:var(--cream-dim);font-size:var(--t-sm);line-height:1.35}
+#pk-co .co-stripe b{display:block;color:var(--cream);font-weight:700}
+#pk-co .co-stripe-wallet{min-height:56px}
+#pk-co .co-stripe-card{min-height:168px;margin-top:10px}
+#pk-co .co-or{display:flex;align-items:center;gap:12px;font-size:var(--t-sm);color:var(--cream-dim);margin-top:10px}
+#pk-co .co-or::before,#pk-co .co-or::after{content:"";flex:1;border-top:1px solid var(--line)}
+#pk-co .co-pay{width:100%;min-height:3.5rem;font-size:1.1875rem;margin-top:16px}
+#pk-co .co-pay[aria-busy=true]{background:var(--gold-deep);border-color:var(--gold-deep);cursor:default}
+#pk-co .co-plan{display:grid;gap:8px}
+#pk-co .co-opt{display:flex;align-items:center;gap:12px;min-height:56px;padding:8px 14px;border:1.5px solid var(--line);border-radius:8px;background:var(--raise);cursor:pointer;font-size:var(--t-sm);line-height:1.3;color:var(--cream-dim)}
+#pk-co .co-opt b{display:block;font-size:1rem;color:var(--cream);font-weight:750}
+#pk-co .co-opt input{width:22px;height:22px;flex:none;margin:0;accent-color:var(--cream)}
+#pk-co .co-opt:has(input:checked){border-color:var(--cream);box-shadow:inset 0 0 0 1.5px var(--cream);background:#443C3F}
+#pk-co .co-terms{margin-top:8px;font-size:var(--t-sm);line-height:1.45;color:var(--cream-dim);padding:10px 12px;border:1px solid var(--line);border-radius:8px}
+#pk-co .tk-fine{margin-top:12px;max-width:none}
+/* you're in */
+#pk-co .co-done{max-width:560px;margin:0 auto;padding:20px var(--gutter) 48px;display:grid;gap:16px}
+#pk-co .co-done-p{padding:20px 18px 16px;border:2px solid var(--ink);outline:1px solid var(--paper);outline-offset:-5px;text-align:center}
+#pk-co .co-done-p img{width:62%;max-width:260px;margin:0 auto}
+#pk-co.tk2 .co-done-p h1{margin:10px 0 4px;color:var(--ink)!important;outline:0}
+#pk-co .co-done-d{margin-top:8px}
+#pk-co .co-done-p .tk-days{margin:10px auto 0;justify-content:center}
+#pk-co .co-done-p .tk-olines{text-align:left;margin-top:14px;border-top:3px solid var(--ink)}
+#pk-co .co-done-k{font-size:var(--t-sm);color:var(--ink-dim);margin-top:10px;line-height:1.45}
+#pk-co .co-done-n{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+#pk-co .co-done-n .tk-pill{min-height:2.75rem}
+#pk-co .co-done-s{font-size:.9375rem;color:var(--cream-dim);text-align:center;line-height:1.45}
+#pk-co .co-done-s b{color:var(--cream)}
+@media (max-width:379px){#pk-co .co-hold{flex-wrap:wrap}#pk-co .co-sec span{display:none}}
+@media (min-width:600px) and (max-width:1199px){#pk-co .co-main{max-width:704px}}
+@media (min-width:1200px){
+  #pk-co{--hdr:72px}
+  #pk-co .co-hdr img{height:50px}
+  #pk-co .co-main{grid-template-columns:minmax(0,1fr) 400px;gap:22px 64px;padding-top:32px;align-items:start}
+  #pk-co .co-order{grid-column:2;grid-row:1/span 3;position:sticky;top:calc(var(--hdr) + 72px)}
+  #pk-co .co-errsum{grid-column:1}
+  #pk-co .co-form{grid-column:1}
+  #pk-co.tk2 .co-h2{font-size:var(--d-card)!important}
+  #pk-co .co-hold{justify-content:center}
+  #pk-co .co-hold .tk-pill{margin-left:16px}
+}
 </style>
 <script id="pk-checkout">
+/* pk-checkout: Checkout, round 2 design (Nov 11 2026). Source: tools/tickets_r2/co2.js.
+   A full page laid over the site (no tabs, no banners). The order comes from the Tickets page (window.__pkTk2.order()).
+   PREVIEW ENDING, KEPT ON PURPOSE: nothing is charged and nothing typed here is sent anywhere. There is no card form and no payment key on this page.
+   Stripe's own elements mount in the two labeled blocks: #pk-stripe-express (Express Checkout Element: Apple Pay, Google Pay, Link) and
+   #pk-stripe-payment (Payment Element, card only, with postal code).
+   THE ONE PLACE PAYMENT PLUGS IN:
+     window.pkStripePay(order, buyer) -> a Promise of { ok: true, orderNumber: 'PK27-48213' }   paid; the page shows "You're in."
+                                                      { ok: false, declined: true }             card declined; nothing charged; the page says so and keeps the hold
+       order = { round, items: [{ id, qty, unit, name }], sub, feeRate, totalNum, plan: true|false, record }   (ids are the site's ticket ids; the feed map turns them into ticket-system codes)
+       buyer = { email, first, last }
+     Here it is the preview: it waits a moment and answers { ok: true, preview: true }.
+   THE HOLD is kept by this page for now (15 minutes from the moment Checkout opens, 10 more on request). The start and end times are stored,
+   so a reload or a sleeping phone picks the clock up where it was. The ticket system must own the real hold: start, extend and expire.
+   What is stored in the browser (localStorage "pk27co"): that checkout is open, the hold end time, email, first and last name, the pay-over-time choice. Never card data. */
 (function () {
-  var O = null, S = null, T = null, root = null, prevFocus = null, KEEP = null;   // KEEP: what the buyer typed (never the card), kept in memory so closing checkout by mistake loses nothing
-  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+  'use strict';
+  var K = window.__pkTk2; if (!K) return;
+  var LSC = 'pk27co', HOLD = 15 * 60e3, MORE = 10 * 60e3, LATE = 120;
+  var O = null, S = null, root = null, timer = null, prevFocus = null, prevTitle = '', pushed = false, saidLate = false;
+  var esc = K.esc, ic = K.ic;
   var TERMS = 'All sales are final. Your passes are tied to the event dates and cannot be refunded. If an event date changes or Pickathon cancels, we will email you with your options. Passes can be transferred to a friend from My Pickathon.';
   var PLANTERMS = 'A Pickathon Payment Plan splits your total into a first payment today and monthly payments after that, charged to the card you enter here. Your passes are issued when the plan is complete. Missed payments can cancel the order.';
-  function money(n) { return '$' + (Math.round(n * 100) / 100).toLocaleString('en-US', { minimumFractionDigits: n % 1 ? 2 : 0, maximumFractionDigits: 2 }); }
-  function app() { return window.__pkApp; }
-  function sumHTML() {
-    var h = O.lines.map(function (l) { return '<div class="co-row line"><span>' + esc(l.q) + ' × ' + esc(l.n) + '</span><span class="co-mono">' + esc(l.t) + '</span></div>'; }).join('');
-    h += '<div class="co-row"><span style="color:#B9B3A6">Service fee (5%)</span><span class="co-mono">' + esc(O.fee) + '</span></div>';
-    h += '<div class="co-total"><span>Total</span><span style="color:#F2CF62">' + esc(O.total) + '</span></div>';
-    if (S.plan === '1' && O.hasPlan) h += '<p class="co-note" style="margin-top:8px;color:#DCE8D2">Plan: ' + esc(O.plan) + '</p>';
-    return h;
+  if (!window.pkStripePay) window.pkStripePay = function () { return new Promise(function (res) { setTimeout(function () { res({ ok: true, preview: true }); }, 900); }); };
+  function app() { return window.comp || window.__pkApp || null; }
+  function $(s) { return root ? root.querySelector(s) : null; }
+  function stored() { try { return JSON.parse(window.localStorage.getItem(LSC) || 'null') || {}; } catch (e) { return {}; } }
+  function keep() { if (!S) return; try { window.localStorage.setItem(LSC, JSON.stringify({ open: S.stage !== 'done', exp: S.exp, start: S.start, v: S.v, plan: S.plan })); } catch (e) {} }
+  function forget(all) { try { if (all) window.localStorage.removeItem(LSC); else { var k = stored(); k.open = false; delete k.exp; delete k.start; window.localStorage.setItem(LSC, JSON.stringify(k)); } } catch (e) {} }
+  function norm(o) {   // the old builder (festival season, ?old=tickets) hands over { lines: [{ q, n, t }], fee, total }
+    o = Object.assign({}, o || {});
+    o.lines = (o.lines || []).map(function (l) { return { label: l.label || (l.q + ' × ' + l.n), price: l.price || l.t || '' }; });
+    o.feeS = o.feeS || o.fee || ''; o.totalS = o.totalS || o.total || ''; o.feeRate = o.feeRate || 0.05;
+    if (window.PK_PAY_LATER === false) o.hasPlan = false;
+    return o;
   }
-  function field(id, label, opts) {
-    opts = opts || {};
-    var v = S.v[id] || '', e = S.err[id];
-    var inp = opts.select ? '<select id="co-' + id + '" name="' + id + '" autocomplete="' + (opts.ac || 'off') + '" aria-invalid="' + (e ? 'true' : 'false') + '"' + (e ? ' aria-describedby="co-' + id + '-e"' : '') + '>' + opts.select.map(function (o) { return '<option value="' + o[0] + '"' + (v === o[0] || (!v && o[0] === opts.def) ? ' selected' : '') + '>' + o[1] + '</option>'; }).join('') + '</select>'
-      : '<input type="' + (opts.type || 'text') + '" id="co-' + id + '" name="' + id + '" value="' + esc(v) + '" autocomplete="' + (opts.ac || 'off') + '"' + (opts.mode ? ' inputmode="' + opts.mode + '"' : '') + (opts.ph ? ' placeholder="' + esc(opts.ph) + '"' : '') + (opts.max ? ' maxlength="' + opts.max + '"' : '') + ' required aria-required="true" aria-invalid="' + (e ? 'true' : 'false') + '"' + (e ? ' aria-describedby="co-' + id + '-e"' : '') + '>';
-    return '<div class="co-f' + (opts.wide ? ' wide' : '') + '"><label for="co-' + id + '">' + label + '</label>' + inp + (e ? '<p class="co-err" id="co-' + id + '-e">' + esc(e) + '</p>' : '') + '</div>';
+  function linesHTML() {
+    return O.lines.map(function (l) { return '<li><span>' + esc(l.label) + '</span><span class="tk-num">' + esc(l.price) + '</span></li>'; }).join('') +
+      (O.unadded ? '<li class="fee"><span>Parking or shuttle: not added</span><span></span></li>' : '') +
+      '<li class="fee"><span>Fee, ' + (O.feeRate * 100) + '%</span><span class="tk-num">' + esc(O.feeS) + '</span></li>';
   }
-  function steps(n) {
-    var L = ['Your order', 'Pay', 'Done'];
-    return '<ol class="co-steps" aria-label="Checkout steps">' + L.map(function (t, i) { return '<li' + (i === n ? ' aria-current="step"' : '') + (i < n ? ' class="done"' : '') + '>' + (i < n ? '✓ ' : (i + 1) + '. ') + t + '</li>'; }).join('') + '</ol>';
+  function field(id, label, small, ac, type, msg, wide) {
+    return '<div class="co-f' + (wide ? ' co-f-w' : '') + '" id="co-f-' + id + '"><label for="co-' + id + '">' + label + (small ? ' <small>' + small + '</small>' : '') + '</label><input id="co-' + id + '" name="' + id + '" type="' + (type || 'text') + '" autocomplete="' + ac + '"' + (type === 'email' ? ' inputmode="email" autocapitalize="off" spellcheck="false"' : '') + ' required aria-required="true" aria-describedby="co-e-' + id + '" value="' + esc(S.v[id] || '') + '"><p class="co-f-e" id="co-e-' + id + '" hidden>' + ic('info', 'tk-ic-sm') + '<span>' + msg + '</span></p></div>';
   }
+  var FIELDS = [['email', 'Enter your email so we can send your passes', /^[^@\s]+@[^@\s]+\.[^@\s]+$/], ['first', 'Enter your first name', /\S/], ['last', 'Enter your last name', /\S/]];
+  function header(done) { return '<header class="co-hdr">' + (done ? '<span></span>' : '<button type="button" class="co-back" data-a="back">' + ic('chev', 'tk-ic-sm') + 'Your order</button>') + '<img src="logo27-gold.png" alt="Pickathon 2027" width="84" height="44"><p class="co-sec">' + ic('lock', 'tk-ic-sm') + '<span>Secure</span></p></header>'; }
   function payHTML() {
-    var errs = Object.keys(S.err);
-    var h = '<div class="co-top"><div class="co-topin"><button type="button" class="co-back" data-a="back">← Back to your order</button>' + steps(1) + '</div></div>';
-    h += '<div class="co-wrap"><div style="display:grid;gap:16px;min-width:0"><div><p class="co-eyebrow">Checkout</p><h1 class="co-h1" id="co-h1" tabindex="-1">Pay for your passes</h1><p style="margin:6px 0 0;color:#DCE8D2">Pickathon · Aug 4–8, 2027 · Pendarvis Farm, Happy Valley</p><p class="co-timer" id="co-timer" role="timer" aria-live="off" tabindex="-1" style="margin:6px 0 0"></p><div class="co-hold" id="co-hold" role="alert"></div><p class="co-note" style="margin:8px 0 0">Name, email, card and billing address are all required.</p></div>';
+    var h = header(false);
+    h += '<div class="co-hold" id="co-hold">' + ic('clock') + '<span><span id="co-hl">Passes held for </span><b id="co-t" role="timer" aria-live="off"></b></span><button type="button" class="tk-pill tk-pill-sm" id="co-more" data-a="more">Need more time?</button></div>';
+    h += '<p class="tk-vh" role="status" aria-live="polite" id="co-live"></p>';
+    h += '<div class="co-main" role="main"><h1 class="tk-vh" id="co-h1" tabindex="-1">Checkout</h1>';
+    h += '<div class="co-alert co-errsum" id="co-errsum" hidden role="alert" tabindex="-1"></div>';
+    h += '<section class="co-order" aria-labelledby="co-h-o"><div class="tk-paper co-recv"><div class="co-recv-top"><h2 class="tk-d tk-d-card" id="co-h-o">Your order</h2><button type="button" class="tk-pill tk-pill-sm" data-a="back">Change</button></div><hr class="tk-rule2" style="margin:8px 0 2px"><ul class="tk-olines">' + linesHTML() + '</ul><p class="tk-otot"><span>Total <small class="tk-dim">fee included</small></span><b class="tk-num">' + esc(O.totalS) + '</b></p></div></section>';
+    h += '<form class="co-form" id="co-form" novalidate>';
+    h += '<section aria-labelledby="co-h-d"><h2 class="tk-d tk-d-label co-h2" id="co-h-d">Your details <i>All three are required</i></h2><div class="co-fields">' + field('email', 'Email', 'for your passes and receipt', 'email', 'email', FIELDS[0][1], true) + field('first', 'First name', '', 'given-name', 'text', FIELDS[1][1]) + field('last', 'Last name', '', 'family-name', 'text', FIELDS[2][1]) + '</div></section>';
+    if (O.hasPlan) h += '<section aria-labelledby="co-h-w" style="margin-top:22px"><h2 class="tk-d tk-d-label co-h2" id="co-h-w">When to pay</h2><div class="co-plan" role="radiogroup" aria-labelledby="co-h-w"><label class="co-opt"><input type="radio" name="plan" value="0"' + (S.plan !== '1' ? ' checked' : '') + '><span><b>Pay in full today</b>' + esc(O.totalS) + ' now</span></label><label class="co-opt"><input type="radio" name="plan" value="1"' + (S.plan === '1' ? ' checked' : '') + '><span><b>Pay over time</b>' + esc(O.plan) + '</span></label></div></section>';
+    h += '<section aria-labelledby="co-h-p" style="margin-top:22px"><h2 class="tk-d tk-d-label co-h2" id="co-h-p">Pay</h2>';
+    h += '<div class="co-alert" id="co-declined" hidden role="alert" tabindex="-1" style="margin-bottom:12px"><b>Your card was declined. Nothing was charged.</b>Your passes are still held. Try another card or a wallet.</div>';
     h += '<p class="co-prev">Preview checkout. Nothing is charged and nothing you type here is sent anywhere.</p>';
-    h += '<details class="co-mobsum" open><summary><span>Order summary</span><span class="co-mono">' + esc(O.total) + ' <span class="co-arw" aria-hidden="true"></span></span></summary><div style="padding:0 0 14px">' + sumHTML() + '</div></details>';
-    if (S.fail) h += '<div role="alert" id="co-fail" tabindex="-1" class="co-sum"><b>We couldn’t process that card.</b> Nothing was charged. Check the card details or try another card.</div>';
-    if (errs.length) h += '<div role="alert" class="co-sum" id="co-sum"><b>Fix ' + errs.length + (errs.length === 1 ? ' thing' : ' things') + ' to continue:</b><ul>' + errs.map(function (k) { return '<li><a href="#co-' + k + '" data-f="' + k + '" style="display:inline-block;min-height:32px;padding:4px 0">' + esc(S.err[k]) + '</a></li>'; }).join('') + '</ul></div>';
-    h += '<form id="co-form" novalidate style="display:grid;gap:16px">';
-    h += '<section class="co-card" aria-labelledby="co-c1"><h2 id="co-c1">Who’s buying</h2><div class="co-g">' + field('first', 'First name', { ac: 'given-name' }) + field('last', 'Last name', { ac: 'family-name' }) + field('email', 'Email', { type: 'email', ac: 'email', wide: true, ph: 'you@example.com' }) + '</div><p class="co-note" style="margin-top:10px">Your receipt and tickets are emailed here. You can name each pass later in My Pickathon.</p></section>';
-    if (O.hasPlan) h += '<section class="co-card" aria-labelledby="co-c2"><h2 id="co-c2">When to pay</h2><div style="display:grid;gap:10px" role="radiogroup" aria-labelledby="co-c2">' +
-      '<label class="co-opt" data-on="' + (S.plan !== '1') + '"><input type="radio" name="plan" value="0"' + (S.plan !== '1' ? ' checked' : '') + '><span><b>Pay in full today</b><small>' + esc(O.total) + ' now</small></span></label>' +
-      '<label class="co-opt" data-on="' + (S.plan === '1') + '"><input type="radio" name="plan" value="1"' + (S.plan === '1' ? ' checked' : '') + '><span><b>Pay over time with a Pickathon Payment Plan</b><small>' + esc(O.plan) + '</small></span></label></div></section>';
-    h += '<section class="co-card" aria-labelledby="co-c3"><h2 id="co-c3">Card</h2><p class="co-note" style="margin:-4px 0 12px">' + (S.plan === '1' && O.hasPlan ? 'Your card is charged the first payment today.' : 'You’ll be charged ' + esc(O.total) + ' today.') + '</p><div class="co-g">' + field('card', 'Card number', { ac: 'cc-number', mode: 'numeric', ph: '•••• •••• •••• ••••', max: 23, wide: true }) + field('exp', 'Expires', { ac: 'cc-exp', mode: 'numeric', ph: 'MM/YY', max: 5 }) + field('cvc', 'Security code', { ac: 'cc-csc', mode: 'numeric', ph: '123', max: 4 }) + '</div></section>';
-    h += '<section class="co-card" aria-labelledby="co-c4"><h2 id="co-c4">Billing address</h2><div class="co-g">' + field('addr', 'Street address', { ac: 'street-address', wide: true }) + field('city', 'City', { ac: 'address-level2' }) + field('state', 'State', { ac: 'address-level1', ph: 'OR', max: 2 }) + field('zip', 'ZIP code', { ac: 'postal-code', mode: 'numeric', max: 10 }) + field('country', 'Country', { ac: 'country', select: [['US', 'United States'], ['CA', 'Canada'], ['GB', 'United Kingdom'], ['OTHER', 'Other']], def: 'US' }) + '</div></section>';
-    h += '<section class="co-card" aria-labelledby="co-c5"><h2 id="co-c5">Almost done</h2>' +
-      '<div class="co-row" style="padding-top:0"><span>Have a discount code?</span><button type="button" class="co-link" data-a="code">' + (S.codeOpen ? 'Hide' : 'Add it') + '</button></div>' +
-      (S.codeOpen ? '<div style="display:flex;gap:10px;align-items:flex-start"><div style="flex:1;min-width:0"><label for="co-code" class="co-note" style="display:block;margin-bottom:4px">Discount code</label><input type="text" id="co-code" name="code" value="' + esc(S.v.code || '') + '" autocomplete="off"></div><button type="button" class="co-btn sec" data-a="apply" style="width:auto;padding:0 20px;margin-top:22px">Apply</button></div>' + (S.codeMsg ? '<p class="co-note" role="status" style="margin-top:6px">' + esc(S.codeMsg) + '</p>' : '') : '') +
-      '<label class="co-chk"><input type="checkbox" name="news"' + (S.news ? ' checked' : '') + '><span>Send me the Pickathon newsletter</span></label>' +
-      '<label class="co-chk"><input type="checkbox" name="agree" id="co-agree"' + (S.agree ? ' checked' : '') + ' aria-required="true" aria-invalid="' + (S.err.agree ? 'true' : 'false') + '"' + (S.err.agree ? ' aria-describedby="co-agree-e"' : '') + '><span>I agree to the <button type="button" class="co-link" data-a="terms">terms and conditions</button> (all sales are final)</span></label>' +
-      (S.err.agree ? '<p class="co-err" id="co-agree-e" style="margin-left:34px">' + esc(S.err.agree) + '</p>' : '') +
-      (S.termsOpen ? '<div class="co-terms" tabindex="0" role="region" aria-label="Terms and conditions">' + esc(TERMS) + '</div>' : '') +
-      (S.plan === '1' && O.hasPlan ? '<label class="co-chk"><input type="checkbox" name="agreeplan" id="co-agreeplan"' + (S.agreePlan ? ' checked' : '') + '><span>I agree to the <button type="button" class="co-link" data-a="planterms">payment plan terms</button></span></label>' + (S.err.agreePlan ? '<p class="co-err" style="margin-left:34px">' + esc(S.err.agreePlan) + '</p>' : '') + (S.planTermsOpen ? '<div class="co-terms" tabindex="0" role="region" aria-label="Payment plan terms">' + esc(PLANTERMS) + '</div>' : '') : '') +
-      '</section>';
-    h += '<div class="co-desksum"><button type="submit" class="co-btn" ' + (S.busy ? 'aria-disabled="true"' : '') + '>' + (S.busy ? 'Processing…' : btnLabel()) + '</button><p class="co-note" style="margin-top:8px;text-align:center">SSL encrypted · Refund policy applies</p></div></form></div>';
-    h += '<aside class="co-sumwrap co-desksum" aria-label="Order summary"><div class="co-card"><p class="co-eyebrow">Your order</p><h2>Summary</h2>' + sumHTML() + '</div></aside></div>';
-    h += '<div class="co-bar"><button type="submit" form="co-form" class="co-btn" ' + (S.busy ? 'aria-disabled="true"' : '') + '>' + (S.busy ? 'Processing…' : btnLabel()) + '</button></div>';
+    h += '<div class="co-stripe co-stripe-wallet" id="pk-stripe-express" data-stripe="express-checkout"><span><b>Apple Pay · Google Pay · Link</b>Stripe’s own wallet buttons load here, only the ones this device supports.</span></div>';
+    h += '<p class="co-or" id="co-or">or pay by card</p>';
+    h += '<div class="co-stripe co-stripe-card" id="pk-stripe-payment" data-stripe="payment-element"><span><b>Stripe card field</b>Card number, expiry, security code and ZIP.<br>Loaded from Stripe. Card details never touch pickathon.com.<br>Stripe shows its own errors inside this field.</span></div>';
+    h += '<button class="tk-pill tk-pill-gold co-pay" type="submit" id="co-pay"></button>';
+    h += '<p class="tk-fine"><b>All sales final.</b> Send a pass to a friend any time from My Pickathon. By paying you agree to the <button type="button" class="tk-tlink" data-a="terms" aria-expanded="false" aria-controls="co-terms">ticket terms</button><span id="co-planterms-l"' + (O.hasPlan && S.plan === '1' ? '' : ' hidden') + '> and the payment plan terms</span>.</p>';
+    h += '<div class="co-terms" id="co-terms" hidden><p>' + esc(TERMS) + '</p>' + (O.hasPlan ? '<p style="margin-top:8px">' + esc(PLANTERMS) + '</p>' : '') + '</div>';
+    h += '</section></form></div>';
     return h;
   }
-  function btnLabel() { if (O.totalNum === 0) return 'Process order'; return S.plan === '1' && O.hasPlan ? 'Start my payment plan' : 'Pay ' + O.total; }
   function doneHTML() {
-    var h = '<div class="co-top"><div class="co-topin"><span style="font-weight:800">Pickathon</span>' + steps(2).replace('aria-current="step"', 'aria-current="step"') + '</div></div>';
-    h += '<div class="co-wrap" style="grid-template-columns:minmax(0,720px);justify-content:center;padding-bottom:60px"><div style="display:grid;gap:18px;min-width:0">';
-    h += '<div class="co-check" aria-hidden="true">✓</div><div><p class="co-eyebrow">Order ' + esc(S.num) + '</p><h1 class="co-h1" id="co-h1" tabindex="-1">You’re going to Pickathon.</h1><p style="margin:10px 0 0;font-size:17px;line-height:1.5;color:#DCE8D2">Thank you for your order. We’re emailing your receipt to <b>' + esc(S.v.email || 'you') + '</b>. See you on the farm!</p></div>';
-    h += '<p class="co-prev">Preview checkout. Nothing was charged and no email was sent.</p>';
-    h += '<section class="co-card" aria-labelledby="co-d1"><h2 id="co-d1">What you bought</h2>' + sumHTML().replace('<div class="co-total"><span>Total</span>', '<div class="co-total"><span>' + (S.plan === '1' && O.hasPlan ? 'Total' : 'Paid') + '</span>') + '</section>';
-    h += '<section aria-labelledby="co-d2"><h2 id="co-d2" style="margin:0 0 10px;font-family:\'Bricolage Grotesque\',sans-serif;font-weight:800;font-size:21px">What happens next</h2><div class="co-next"><div><b>1. Name your passes</b>Open My Pickathon to put a name on each pass or send one to a friend.</div><div><b>2. Plan your trip</b>Camping, getting there and what to pack are all in Plan your trip.</div><div><b>3. Watch your inbox</b>Your receipt is on its way. We’ll also email you the moment the lineup drops in early 2027.</div></div></section>';
-    h += '<div style="display:grid;gap:10px"><button type="button" class="co-btn" data-a="mine">Go to My Pickathon</button><button type="button" class="co-btn sec" data-a="trip">Plan your trip</button><button type="button" class="co-btn sec" data-a="home">Back to home</button></div>';
-    h += '</div></div>';
+    var days = K.days, on = O.strip || [], h = header(true);
+    h += '<div class="co-done" role="main"><div class="tk-paper co-done-p"><img src="logo27-bat.png" alt="Pickathon 2027" width="700" height="260"><h1 class="tk-d tk-d-hero" id="co-h1" tabindex="-1">You’re in.</h1>';
+    if (O.dates) h += '<p class="tk-d tk-d-card co-done-d">' + esc(O.dates) + '</p>';
+    h += '<p class="co-done-k" style="margin-top:2px">Pendarvis Farm, Happy Valley, Oregon</p>';
+    if (on.length) h += '<span class="tk-days" aria-hidden="true">' + days.map(function (d, i) { return '<i class="' + (i ? '' : 'w ') + (on[i] ? 'on' : '') + '">' + d[1] + '</i>'; }).join('') + '</span>';
+    h += '<ul class="tk-olines">' + linesHTML() + '</ul><p class="tk-otot"><span>' + (S.plan === '1' && O.hasPlan ? 'Total' : 'Paid') + '</span><b class="tk-num">' + esc(O.totalS) + '</b></p>';
+    if (S.plan === '1' && O.hasPlan) h += '<p class="co-done-k" style="margin-top:4px">' + esc(O.plan) + '</p>';
+    h += '<p class="co-done-k">' + (S.num ? 'Order ' + esc(S.num) + ' · Receipt sent to ' + esc(S.v.email || '') : 'Preview checkout. Nothing was charged and no email was sent.') + '</p></div>';
+    h += '<p class="co-done-s"><b>Your passes are in My Pickathon.</b> Nothing to print. Bring ID in August.</p>';
+    h += '<div class="co-done-n"><button type="button" class="tk-pill tk-pill-cream" data-a="trip">Plan your trip</button><button type="button" class="tk-pill" data-a="mine">My passes</button><button type="button" class="tk-pill" data-a="mine">Send a pass to a friend</button></div></div>';
     return h;
   }
-  function expiredHTML() {
-    return '<div class="co-top"><div class="co-topin"><button type="button" class="co-back" data-a="back">← Back to your order</button>' + steps(1) + '</div></div><div class="co-wrap" style="grid-template-columns:minmax(0,560px);justify-content:center"><div class="co-card" role="alert"><h1 class="co-h1" id="co-h1" tabindex="-1" style="font-size:24px">Your hold ended</h1><p style="margin:10px 0 16px;line-height:1.5">We hold passes for 15 minutes while you pay. Nothing was charged, and what you typed is still here (except the card).</p><div style="display:grid;gap:10px"><button type="button" class="co-btn" data-a="resume">Keep going</button><button type="button" class="co-btn sec" data-a="back">Back to your order</button></div></div></div>';
+  function payLabel() { return S.busy ? 'Paying…' : (S.plan === '1' && O.hasPlan ? 'Start my payment plan' : 'Pay ' + O.totalS); }
+  function title(t) { try { document.title = t; } catch (e) {} }
+  function render() {
+    root.innerHTML = S.stage === 'done' ? doneHTML() : payHTML(); K.guard(root);
+    if (S.stage === 'done') { title('You’re in · Pickathon 2027'); return; }
+    title('Checkout · Pickathon 2027'); $('#co-pay').textContent = payLabel(); saidLate = false; tick();
   }
-  function render(focusSel) {
-    var h = S.stage === 'done' ? doneHTML() : S.stage === 'expired' ? expiredHTML() : payHTML();
-    var keep = root.scrollTop;
-    root.innerHTML = h;
-    root.scrollTop = keep;
-    tick();
-    var el = focusSel && root.querySelector(focusSel);
-    if (el) { try { el.focus(); } catch (e) {} }
-  }
+  function left() { return Math.max(0, Math.round((S.exp - Date.now()) / 1000)); }
   function tick() {
-    if (!S || S.stage !== 'pay') return;
-    var left = Math.max(0, Math.round((S.exp - Date.now()) / 1000));
-    var tm = root.querySelector('#co-timer');
-    if (left <= 0) { read(); delete S.v.card; delete S.v.exp; delete S.v.cvc; S.stage = 'expired'; render('#co-h1'); return; }
-    var hd = root.querySelector('#co-hold');   // two minutes left: say so once, with a way to keep the passes (the countdown itself stays silent)
-    if (hd) { if (left <= 120 && !hd.firstChild) hd.innerHTML = '<span>Your passes are held for 2 more minutes.</span><button type="button" class="co-btn sec" data-a="more">Keep my passes 10 more minutes</button>'; else if (left > 120 && hd.firstChild) hd.innerHTML = ''; }
-    if (tm) tm.textContent = 'We’re holding your passes for ' + Math.floor(left / 60) + ':' + ('0' + (left % 60)).slice(-2);
+    if (!S || !root || S.stage !== 'pay') return;
+    var s = left(), late = s <= LATE, hold = $('#co-hold'); if (!hold) return;
+    $('#co-t').textContent = Math.floor(s / 60) + ':' + ('0' + s % 60).slice(-2);
+    hold.classList.toggle('is-late', late); $('#co-more').textContent = late ? 'Keep them 10 more minutes' : 'Need more time?'; $('#co-hl').textContent = late ? 'Held for ' : 'Passes held for ';
+    if (late && s > 0 && !saidLate) { saidLate = true; $('#co-live').textContent = 'Two minutes left on your hold.'; }
+    if (!late) saidLate = false;
+    if (s <= 0 && !S.expired && !S.busy) expired();
   }
-  function read() {
-    var f = root.querySelector('#co-form'); if (!f) return;
-    ['first', 'last', 'email', 'card', 'exp', 'cvc', 'addr', 'city', 'state', 'zip', 'country', 'code'].forEach(function (k) { var e = f.elements[k]; if (e) S.v[k] = e.value; });
-    var n = f.elements.news, a = f.elements.agree, ap = f.elements.agreeplan;
-    if (n) S.news = n.checked; if (a) S.agree = a.checked; if (ap) S.agreePlan = ap.checked;
+  function expired() {   // nothing typed is cleared
+    S.expired = true; keep();
+    var sh = K.sheet('<div class="tk-sheet-top"><h2 class="tk-d tk-d-card">Your hold ended</h2></div><p>Nothing was charged. Your order and what you typed are saved.</p><button type="button" class="tk-pill tk-pill-cream tk-sheet-go" data-close data-focus>Hold my passes again</button>', 'Your hold ended', { modal: true });
+    sh.addEventListener('click', function (e) { if (e.target.closest && e.target.closest('[data-close]') && S) { S.expired = false; S.start = Date.now(); S.exp = S.start + HOLD; keep(); tick(); var l = $('#co-live'); if (l) l.textContent = 'Your passes are held again for 15 minutes.'; } });
   }
-  function validate() {
-    var v = S.v, e = {};
-    if (!(v.first || '').trim()) e.first = 'Enter your first name.';
-    if (!(v.last || '').trim()) e.last = 'Enter your last name.';
-    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test((v.email || '').trim())) e.email = 'Enter an email address like you@example.com.';
-    if (O.totalNum !== 0) {
-      var dg = (v.card || '').replace(/\D/g, '');
-      if (dg.length < 13 || dg.length > 19) e.card = 'Enter your card number.';
-      if (!/^(0[1-9]|1[0-2])\/\d{2}$/.test(v.exp || '')) e.exp = 'Enter the expiry as MM/YY.';
-      if (!/^\d{3,4}$/.test(v.cvc || '')) e.cvc = 'Enter the security code.';
-    }
-    if (!(v.addr || '').trim()) e.addr = 'Enter your street address.';
-    if (!(v.city || '').trim()) e.city = 'Enter your city.';
-    if (!(v.state || '').trim()) e.state = 'Enter your state.';
-    if (!/^[A-Za-z0-9 -]{3,10}$/.test((v.zip || '').trim())) e.zip = 'Enter your ZIP code.';
-    if (!S.agree) e.agree = 'Please accept the terms to continue.';
-    if (S.plan === '1' && O.hasPlan && !S.agreePlan) e.agreePlan = 'Please accept the payment plan terms.';
-    return e;
+  function read() { if (!S || !root) return; FIELDS.forEach(function (r) { var e = $('#co-' + r[0]); if (e) S.v[r[0]] = e.value; }); keep(); }
+  function check() {
+    var bad = [];
+    FIELDS.forEach(function (r) { var ok = r[2].test(String(S.v[r[0]] || '').trim()); $('#co-f-' + r[0]).classList.toggle('is-err', !ok); $('#co-e-' + r[0]).hidden = ok; $('#co-' + r[0]).setAttribute('aria-invalid', ok ? 'false' : 'true'); if (!ok) bad.push(r); });
+    var e = $('#co-errsum'); e.hidden = !bad.length;
+    if (bad.length) { title(bad.length + ' to fix · Checkout'); e.innerHTML = '<b>' + bad.length + (bad.length > 1 ? ' things' : ' thing') + ' to fix before you pay</b>' + bad.map(function (r) { return '<a href="#co-' + r[0] + '" data-f="' + r[0] + '">' + r[1] + '</a>'; }).join(''); K.guard(e); try { root.scrollTop = 0; e.focus(); } catch (x) {} }
+    else title('Checkout · Pickathon 2027');
+    return !bad.length;
   }
-  function close(restore) {
-    if (!root) return;
-    if (S && S.stage !== 'done') { if (S.stage === 'pay') read(); KEEP = { v: Object.assign({}, S.v), news: !!S.news }; delete KEEP.v.card; delete KEEP.v.exp; delete KEEP.v.cvc; } else KEEP = null;
-    clearInterval(T); T = null;
-    root.remove(); root = null; S = null;
-    var r = document.getElementById('root'); if (r) { r.removeAttribute('inert'); r.removeAttribute('aria-hidden'); }
-    document.documentElement.style.overflow = '';
-    document.removeEventListener('keydown', onKey, true);
-    window.removeEventListener('popstate', onPop);
-    if (restore && prevFocus && prevFocus.focus) { try { prevFocus.focus(); } catch (e) {} }
-  }
-  function onKey(e) { if (e.key === 'Escape' && S && S.stage !== 'done' && !S.busy) { var f = document.activeElement; if (f && root.contains(f) && /^(INPUT|SELECT|TEXTAREA)$/.test(f.tagName)) return;   /* Escape inside a field closes the browser's autofill list, not checkout */ e.preventDefault(); close(true); } }
-  function onPop() { close(false); }
-  function click(e) {
-    var b = e.target.closest('[data-a],[data-f]'); if (!b || !S) return;
-    if (b.dataset.f) { e.preventDefault(); var t = root.querySelector('#co-' + b.dataset.f); if (t) { t.scrollIntoView({ block: 'center' }); t.focus(); } return; }
-    var a = b.dataset.a; read();
-    if (a === 'back') { close(true); return; }
-    if (a === 'code') { S.codeOpen = !S.codeOpen; render(S.codeOpen ? '#co-code' : null); return; }
-    if (a === 'apply') { S.codeMsg = (S.v.code || '').trim() ? 'This preview can’t check codes. The ticket system checks them at checkout and shows any discount here.' : 'Enter a code first.'; render(); return; }
-    if (a === 'terms') { S.termsOpen = !S.termsOpen; render('[data-a=terms]'); return; }
-    if (a === 'planterms') { S.planTermsOpen = !S.planTermsOpen; render('[data-a=planterms]'); return; }
-    if (a === 'more') { S.exp += 10 * 60 * 1000; render('#co-timer'); return; }
-    if (a === 'resume') { S.stage = 'pay'; S.err = {}; S.exp = Date.now() + 15 * 60 * 1000; render('#co-h1'); return; }
-    if (a === 'mine' || a === 'home' || a === 'trip') {
-      var ap = app(); close(false);
-      if (ap) { try { ap.setState({ paid: true }); if (a === 'trip') ap.go('page', { p: 'traveling-to-pickathon' }); else ap.reset(a === 'mine' ? 'mine' : 'home'); } catch (x) {} }
-    }
-  }
-  function change(e) {
-    if (!S) return;
-    if (e.target.name === 'plan') { read(); S.plan = e.target.value; render(); var r = root.querySelector('input[name=plan]:checked'); if (r) r.focus(); return; }
-    if (e.target.name === 'agree' || e.target.name === 'agreeplan' || e.target.name === 'news') { read(); if (S.err.agree && S.agree) delete S.err.agree; if (S.err.agreePlan && S.agreePlan) delete S.err.agreePlan; }
-  }
-  function input(e) {
-    var t = e.target;
-    if (t.name === 'card') { var d = t.value.replace(/\D/g, '').slice(0, 19); t.value = d.replace(/(.{4})/g, '$1 ').trim(); }
-    if (t.name === 'exp') { var x = t.value.replace(/\D/g, '').slice(0, 4); t.value = x.length > 2 ? x.slice(0, 2) + '/' + x.slice(2) : x; }
-    if (t.name === 'state') t.value = t.value.toUpperCase();
+  function declined() { S.busy = false; var p = $('#co-pay'); p.removeAttribute('aria-busy'); p.textContent = payLabel(); var d = $('#co-declined'); d.hidden = false; title('Card declined · Checkout'); try { d.scrollIntoView({ block: 'center' }); d.focus(); } catch (e) {} }
+  function done(num) {
+    S.busy = false; S.stage = 'done'; S.num = num || ''; clearInterval(timer); timer = null; forget(true);
+    render(); root.scrollTop = 0; try { $('#co-h1').focus(); } catch (e) {}
+    try { if (K.clear && O.record) K.clear(); } catch (e) {}
+    var a = app(); try { if (a) a.setState({ paid: true }); } catch (e) {}
   }
   function submit(e) {
-    e.preventDefault(); if (!S || S.busy) return;
-    read(); S.fail = false; S.err = validate();
-    if (Object.keys(S.err).length) { var first = Object.keys(S.err)[0]; render(); var sm = root.querySelector('#co-sum'); if (sm) { sm.setAttribute('tabindex', '-1'); sm.focus(); } return; }
-    S.busy = true; render(); try { var sb = [].slice.call(root.querySelectorAll('button[type=submit]')).filter(function (x) { return x.offsetParent !== null; })[0]; if (sb) sb.focus(); } catch (x) {}
-    setTimeout(function () {
-      if (!S) return;
-      S.busy = false; S.stage = 'done'; S.num = 'PK-' + String(100000 + Math.floor(Math.random() * 899999));
-      render('#co-h1'); root.scrollTop = 0;
-      var ap = app(); try { if (ap) ap.setState({ paid: true }); } catch (x) {}
-    }, 1100);
+    e.preventDefault(); if (!S || S.busy || S.stage !== 'pay') return;
+    read(); $('#co-declined').hidden = true; if (!check()) return;
+    if (left() <= 0) { expired(); return; }
+    S.busy = true; var p = $('#co-pay'); p.setAttribute('aria-busy', 'true'); p.textContent = payLabel(); $('#co-live').textContent = 'Paying. Do not close this page.';
+    var order = { round: O.round, items: O.items || [], sub: O.sub, feeRate: O.feeRate, totalNum: O.totalNum, plan: S.plan === '1' && !!O.hasPlan, record: O.record || null };
+    var buyer = { email: String(S.v.email).trim(), first: String(S.v.first).trim(), last: String(S.v.last).trim() };
+    Promise.resolve().then(function () { return window.pkStripePay(order, buyer); }).then(function (r) { if (!S || !root) return; if (r && r.ok) done(r.orderNumber); else declined(); }, function () { if (S && root) declined(); });
   }
+  function close(restore, viaPop) {
+    if (!root) return;
+    if (S && S.stage === 'pay') { read(); forget(false); }
+    clearInterval(timer); timer = null; K.closeSheet(true);
+    root.remove(); root = null; S = null; O = null;
+    var r = document.getElementById('root'); if (r) { r.removeAttribute('inert'); r.removeAttribute('aria-hidden'); }
+    document.documentElement.style.overflow = '';
+    document.removeEventListener('keydown', onKey, true); window.removeEventListener('popstate', onPop);
+    if (prevTitle) title(prevTitle);
+    if (pushed && !viaPop) { pushed = false; var a = app(); try { if (a) a._skipPop = 1; history.back(); } catch (e) {} }
+    pushed = false; K.where('tickets');
+    if (restore && prevFocus && prevFocus.focus && document.contains(prevFocus)) { try { prevFocus.focus(); } catch (e) {} }
+  }
+  function onPop() { close(true, true); }
+  function onKey(e) { if (e.key === 'Tab' && root && !root.contains(document.activeElement) && !document.querySelector('.tk-scrim')) { e.preventDefault(); var f = root.querySelector('button,input,a'); if (f) f.focus(); } }
+  function click(e) {
+    var b = e.target.closest ? e.target.closest('[data-a],[data-f]') : null; if (!b || !S) return;
+    var f = b.getAttribute('data-f'); if (f) { e.preventDefault(); var t = $('#co-' + f); if (t) { t.scrollIntoView({ block: 'center' }); t.focus(); } return; }
+    var a = b.getAttribute('data-a');
+    if (a === 'back') { if (!S.busy) close(true); return; }
+    if (a === 'more') { S.exp = Math.max(S.exp, Date.now()) + MORE; keep(); tick(); $('#co-live').textContent = 'Ten minutes added. Your passes are held.'; return; }
+    if (a === 'terms') { var tm = $('#co-terms'), o = tm.hidden; tm.hidden = !o; b.setAttribute('aria-expanded', o ? 'true' : 'false'); return; }
+    if (a === 'mine' || a === 'trip') { var ap = app(); close(false, true); if (ap) { try { if (a === 'trip') ap.go('info'); else ap.reset('mine'); } catch (x) {} } }
+  }
+  function change(e) { if (!S) return; if (e.target.name === 'plan') { S.plan = e.target.value; keep(); $('#co-pay').textContent = payLabel(); var l = $('#co-planterms-l'); if (l) l.hidden = S.plan !== '1'; } }
+  function input(e) { if (S && e.target && e.target.name && S.stage === 'pay') { read(); var f = $('#co-f-' + e.target.name); if (f && f.classList.contains('is-err')) { var r = FIELDS.filter(function (x) { return x[0] === e.target.name; })[0]; if (r && r[2].test(e.target.value.trim())) { f.classList.remove('is-err'); $('#co-e-' + r[0]).hidden = true; e.target.setAttribute('aria-invalid', 'false'); } } } }
+  function open(order, resume) {
+    if (root) close(false);
+    O = norm(order); var k = stored(), now = Date.now();
+    prevFocus = document.activeElement; prevTitle = document.title;
+    S = { stage: 'pay', v: Object.assign({}, k.v || {}), plan: O.hasPlan && k.plan === '1' ? '1' : '0', busy: false, expired: false };
+    if (resume && k.exp) { S.exp = k.exp; S.start = k.start || k.exp - HOLD; } else { S.start = now; S.exp = now + HOLD; }
+    root = document.createElement('div'); root.id = 'pk-co'; root.className = 'tk2'; root.setAttribute('aria-label', 'Checkout');
+    document.body.appendChild(root);
+    var r = document.getElementById('root'); if (r) { r.setAttribute('inert', ''); r.setAttribute('aria-hidden', 'true'); }
+    document.documentElement.style.overflow = 'hidden';
+    root.addEventListener('click', click); root.addEventListener('change', change); root.addEventListener('input', input); root.addEventListener('submit', submit);
+    document.addEventListener('keydown', onKey, true); window.addEventListener('popstate', onPop);
+    try { history.pushState({ pk: (history.state && history.state.pk) || 1, co: 1 }, ''); pushed = true; } catch (e) { pushed = false; }
+    render(); keep(); K.where('checkout');
+    timer = setInterval(tick, 1000);
+    try { $('#co-h1').focus({ preventScroll: true }); } catch (e) {}
+  }
+  document.addEventListener('visibilitychange', function () { if (!document.hidden) tick(); });
+  window.addEventListener('pageshow', function () { tick(); });
   window.__pkCheckout = {
-    open: function (order) {
-      if (root) close(false);
-      O = order; if (window.PK_PAY_LATER === false) O.hasPlan = false; prevFocus = document.activeElement;
-      S = { stage: 'pay', v: KEEP ? Object.assign({}, KEEP.v) : {}, news: !!(KEEP && KEEP.news), err: {}, plan: '0', exp: Date.now() + 15 * 60 * 1000 };
-      root = document.createElement('div'); root.id = 'pk-co'; root.setAttribute('role', 'dialog'); root.setAttribute('aria-modal', 'true'); root.setAttribute('aria-label', 'Checkout');
-      document.body.appendChild(root);
-      var r = document.getElementById('root'); if (r) { r.setAttribute('inert', ''); r.setAttribute('aria-hidden', 'true'); }
-      document.documentElement.style.overflow = 'hidden';
-      root.addEventListener('click', click); root.addEventListener('change', change); root.addEventListener('input', input); root.addEventListener('submit', submit);
-      document.addEventListener('keydown', onKey, true); window.addEventListener('popstate', onPop);
-      render('#co-h1'); T = setInterval(tick, 1000);
+    open: function (order) { open(order, false); },
+    resume: function () { var k = stored(); if (!k.open || root) return false; var o = K.order(); if (!o.ready) { forget(false); return false; } open(o, true); return true; },   // after a reload: same order, same details, the same clock
+    show: function (stage) {   // staff and test hook: 'error' (declined), 'late' (two minutes left), 'expired', 'done'
+      if (!S || !root) return;
+      if (stage === 'error') { declined(); return; }
+      if (stage === 'late') { S.exp = Date.now() + (LATE - 2) * 1000; keep(); tick(); return; }
+      if (stage === 'expired') { S.exp = Date.now() - 1000; keep(); tick(); return; }
+      if (stage === 'done') { read(); if (!S.v.email) S.v.email = 'you@example.com'; done(''); }
     },
-    show: function (stage) { if (!S) return; if (stage === 'error') { S.fail = true; S.err = {}; stage = 'pay'; S.stage = 'pay'; render('#co-fail'); return; } if (stage === 'done') { S.num = 'PK-123456'; S.v.email = S.v.email || 'you@example.com'; } S.stage = stage; render('#co-h1'); root.scrollTop = 0; },
     close: function () { close(true); }
   };
 })();

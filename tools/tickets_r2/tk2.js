@@ -135,7 +135,7 @@
     readTix(); var t = totals(S);
     return { ready: t.ready && when() === 'sale', round: T.show.id, roundName: T.show.name,
       items: t.lines.filter(function (l) { return l.id !== 'tent'; }).map(function (l) { return { id: l.id, qty: l.q || 1, unit: l.q ? Math.round(l.amt / l.q * 100) / 100 : l.amt, name: l.n }; }),
-      lines: t.lines.map(function (l) { return { label: (l.q ? l.q + ' × ' : '') + l.n, price: money(l.amt), q: l.q || 1, n: l.n, t: money(l.amt) }; }), unadded: t.unadded, fee: money(t.fee), total: money(t.total),
+      lines: t.lines.map(function (l) { return { label: (l.q ? l.q + ' × ' : '') + l.n, price: money(l.amt) }; }), unadded: t.unadded,
       feeRate: FEE, feeS: money(t.fee), totalS: money(t.total), totalNum: t.total, sub: t.sub,
       hasPlan: hasPlan(t), plan: hasPlan(t) ? planLine(t.total) : '', strip: strip(S), dates: dates(S), summary: short(S), record: clean(S) };
   }
@@ -378,6 +378,7 @@
       if (back === 'checkout' && window.__pkCheckout && window.__pkCheckout.resume) window.__pkCheckout.resume();
     } catch (e) { booting = false; }
   }
+  window.addEventListener('hashchange', function () { if (/^#tickets\b/.test(window.location.hash || '')) { var a = app(); try { var top = a.state.stack[a.state.stack.length - 1]; if (top.r !== 'tickets') a.go('tickets'); } catch (e) {} } });
   try { sync(); } catch (e) {}
   boot(0);
 })();
