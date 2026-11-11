@@ -206,9 +206,11 @@
 @media (min-width:1200px){.tk2.tk-scrim{align-items:center}.tk2 .tk-sheet{border-radius:18px;padding:14px 28px 28px}}
 .tk2 .tk-help{display:grid;gap:6px}
 .tk2 .tk-help .tk-pass{cursor:default}
+.tk2 .tk-help .tk-pass{padding-top:8px;padding-bottom:8px}
 .tk2 .tk-help .tk-pass-p{min-width:76px;border:0;padding-right:10px}
+.tk2 .tk-help .tk-pill{min-height:2.75rem;padding:0 1rem}
 .tk2 .tk-help-f{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px;font-size:var(--t-sm);text-align:center;line-height:1.25;color:var(--cream-dim)}
-.tk2 .tk-help-f b{display:block;color:var(--cream);font-family:var(--display);font-weight:400;letter-spacing:.03em;text-transform:uppercase;font-size:.875rem}
+.tk2 .tk-help-f b{display:block;color:var(--cream);font-size:.875rem;margin-bottom:2px}
 
 @media (min-width:600px) and (max-width:1199px){
   #tk2 .tk-main{max-width:704px}

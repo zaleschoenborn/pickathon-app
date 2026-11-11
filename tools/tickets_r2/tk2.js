@@ -191,7 +191,7 @@
     if (w === 'pre') h += '<section class="tk-pre" id="tk-pre" aria-label="Reminder"></section>';
     h += '<div id="tk-top"></div>';
     h += '<div class="tk-cols"><div class="tk-build">';
-    h += '<fieldset><div class="tk-leg"><legend class="tk-d tk-d-label">How long?</legend><span id="tk-helpslot"></span></div><div class="tk-passes" id="tk-passes">' +
+    h += '<fieldset><div class="tk-leg"><legend class="tk-d tk-d-label">How long?</legend><button type="button" class="tk-pill tk-pill-sm" data-act="help" aria-haspopup="dialog">Help me choose</button></div><div class="tk-passes" id="tk-passes">' +
       passCard('p4', '4 days', 'Camping included', [0, 1, 1, 1, 1], '<b class="tk-num">' + money(P('p4')) + '</b>') +
       '<label class="tk-wed" id="tk-wed" hidden><input type="checkbox" id="tk-wedc"><span><b>Arrive ' + DAY.w[3] + ', ' + DAY.w[4] + '</b>, from 5 pm</span><em class="tk-num">+' + money(P('early')) + ' each</em></label>' +
       passCard('p3', '3 days', 'Camping included', [0, 0, 1, 1, 1], '<b class="tk-num">' + money(P('p3')) + '</b>') +
@@ -347,6 +347,20 @@
       '<button type="button" class="tk-pill ' + go.c + ' tk-sheet-go" data-sheetgo>' + go.t + '</button>', 'Your order');
     $('[data-sheetgo]', scrim).addEventListener('click', function () { closeSheet(true); proceed(); });
   }
+  /* help me choose: Pick sets the pass and nothing else */
+  function help() {
+    var rows = [['p4', 'Everything, and camp', '4 days, ' + money(P('p4')), [0, 1, 1, 1, 1]], ['p3', 'The weekend, and camp', '3 days, ' + money(P('p3')), [0, 0, 1, 1, 1]], ['d2', 'Two big days, home at night', 'Sat + Sun, ' + money(P('d2')), [0, 0, 0, 1, 1]], ['d1', 'A first taste', 'One day, from ' + money(minP(OK.day)), [0, 0, 0, 1, 0]]];
+    var sh = sheet(sheetTop('Which pass fits?') + '<div class="tk-help">' + rows.map(function (r) {
+      var so = r[0] !== 'd1' && sold(r[0]);
+      return '<div class="tk-pass tk-paper"><span class="tk-days" aria-hidden="true">' + DAYS.map(function (d, i) { return '<i' + (r[3][i] ? ' class="on"' : '') + '>' + d[1] + '</i>'; }).join('') + '</span><span class="tk-pass-t"><b>' + r[1] + '</b><span>' + r[2] + '</span></span><span class="tk-pass-p"><button type="button" class="tk-pill tk-pill-ink" data-pick="' + r[0] + '" aria-label="Pick ' + r[2].split(',')[0] + '"' + (so ? ' disabled' : '') + '>' + (so ? 'Sold out' : 'Pick') + '</button></span></div>';
+    }).join('') + '</div><div class="tk-help-f"><p><b class="tk-d">Every stage</b>all day, every pass</p><p><b class="tk-d">Kids free</b>12 and under</p><p><b class="tk-d">Teens half</b>' + money(P('teen')) + ', all 4 days</p></div>', 'Which pass fits?');
+    sh.addEventListener('click', function (e) {
+      var b = e.target.closest ? e.target.closest('[data-pick]') : null; if (!b) return;
+      S.pass = b.getAttribute('data-pick'); if (S.pass !== 'p4') S.wed = false; if (S.pass !== 'd1') S.day = null;
+      closeSheet(true); update();
+      var i = $('input[name="tk-pass"][value="' + S.pass + '"]', root); if (i) { try { i.focus(); i.closest('label').scrollIntoView({ block: 'nearest' }); } catch (x) {} }
+    });
+  }
   function checkout() {
     var o = order(); if (!o.ready) return;
     if (window.__pkCheckout) window.__pkCheckout.open(o);
@@ -378,6 +392,7 @@
     if (go) { nav(go); return; }
     if (act === 'go') { proceed(); return; }
     if (act === 'sheet') { orderSheet(); return; }
+    if (act === 'help') { help(); return; }
     if (act === 'signin') { if (window.__pkAcct && window.__pkAcct.signIn) window.__pkAcct.signIn(); else nav('account'); return; }
     if (act === 'again') { var lo = null; try { lo = window.pkLastOrder(); } catch (x) {} if (lo) { S = clean(lo); b.textContent = 'Filled in'; b.disabled = true; update(); var bg = $('#tk-ogo', root); if (bg && bg.offsetParent) bg.focus(); else { bg = $('#tk-bargo', root); if (bg) bg.focus(); } } return; }
   }
