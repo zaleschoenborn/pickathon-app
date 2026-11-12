@@ -11603,6 +11603,15 @@ html body:not(#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1) .
 html body:not(#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1) .pk-hd-cgr figcaption{margin:6px 2px 0;font-size:12.5px;line-height:1.35;color:#B9B3A6}
 @media (min-width:700px) and (max-width:1199px){html body:not(#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1) .pk-hd-cgr{margin:0 -24px;padding:0 24px 4px}html body:not(#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1) .pk-hd-cgr figure{flex-basis:44%}}
 @media (min-width:1200px){html body:not(#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1) .pk-hd-cgr{margin:0;padding:0;overflow:visible;display:grid;grid-template-columns:repeat(4,minmax(0,1fr))}}
+
+/* ---- G (mock m6): controls on a past year's paper stay inside the six-shape button set, colors from yearBrand.
+   Primary: ink2 border and text, the warm color only as an 18% tint (gold #F2CF62/#D6B54A fails on every paper).
+   Secondary: ink border and text. Chosen chip: solid ink, paper text, the year's stripe along its foot. ---- */
+html body:not(#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1) article[aria-label^="Pickathon "] .pk-lh-b.pk-g1-pri{border-color:var(--yb-ink2)!important;color:var(--yb-ink2)!important;-webkit-text-fill-color:var(--yb-ink2)!important;background:color-mix(in srgb,var(--yb-warm,var(--yb-ink2)) 18%,transparent)!important}
+html body:not(#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1) article[aria-label^="Pickathon "] .pk-lh-b.pk-lh-t5{border-color:var(--yb-ink)!important;color:var(--yb-ink)!important;-webkit-text-fill-color:var(--yb-ink)!important;background:transparent!important}
+html body:not(#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1) article[aria-label^="Pickathon "] .pk-yb .pk-share1,html body:not(#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1) article[aria-label^="Pickathon "] .pk-yb .pk-share1 *{color:var(--yb-ink)!important;-webkit-text-fill-color:var(--yb-ink)!important;border-color:var(--yb-ink)!important;stroke:currentColor}
+html body:not(#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1) article[aria-label^="Pickathon "] .pk-yb .pk-share1{background:transparent!important}
+html body:not(#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1) article[aria-label^="Pickathon "] :is(.pk-sxy-db,.pk-sxy-kb)[aria-pressed="true"]{background:var(--yb-ink)!important;color:var(--yb-paper)!important;-webkit-text-fill-color:var(--yb-paper)!important;border-color:var(--yb-ink)!important;background-image:linear-gradient(90deg,var(--yb-s1) 0 25%,var(--yb-s2) 25% 50%,var(--yb-s3) 50% 75%,var(--yb-s4) 75% 100%)!important;background-size:100% 4px!important;background-repeat:no-repeat!important;background-position:0 100%!important}
 </style>
 <script id="pk-y1-js">
 /* Years package (Nov 12 2026): DOM touch-ups the templates can't express. Runs after renders (one observer, no timers). */
