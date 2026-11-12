@@ -4052,7 +4052,7 @@ div[aria-label="Preview controls"] { display: none !important }
 <sc-if value="{{hood.hasCg}}" hint-placeholder-val="{{false}}"><section class="pk-hd-cg" aria-label="Around {{hood.hdShort}}"><h2 class="pk-hd-yh">Around {{hood.hdShort}}</h2><div class="pk-hd-cgr"><sc-for list="{{hood.cg}}" as="g" hint-placeholder-count="3"><figure><img src="{{g.i}}" alt="" loading="lazy"><sc-if value="{{g.hasCap}}" hint-placeholder-val="{{true}}"><figcaption>{{g.cap}}</figcaption></sc-if></figure></sc-for></div></section></sc-if>
 <sc-if value="{{hood.hdHasYr}}" hint-placeholder-val="{{true}}"><h2 class="pk-hd-yh">{{hood.hdShort}}, year by year</h2>
 <div class="pk-hd-yw"><sc-if value="{{hood.hdMore}}" hint-placeholder-val="{{false}}"><button type="button" class="pk-hd-arr l" aria-label="Earlier cards" onClick="{{hood.hdArr}}">‹</button></sc-if><div class="pk-hd-row" data-hdrow="1"><sc-for list="{{hood.hdYr}}" as="y" hint-placeholder-count="3"><article class="pk-hd-yc {{y.cls}}"><div class="pk-hd-ym"><sc-if value="{{y.hasTag}}" hint-placeholder-val="{{false}}"><span class="pk-hd-ytag">{{y.tag}}</span></sc-if><sc-if value="{{y.hasImg}}" hint-placeholder-val="{{true}}"><img src="{{y.img}}" alt="" loading="lazy"></sc-if><sc-if value="{{y.noImg}}" hint-placeholder-val="{{false}}"><span class="pk-yph" aria-hidden="true"><i>Pickathon</i><b>{{y.y}}</b></span></sc-if></div><div class="pk-hd-yt"><div class="pk-hd-yy">{{y.y}}</div><div class="pk-hd-yb">{{y.b}}</div><sc-if value="{{y.hasL}}" hint-placeholder-val="{{true}}"><p class="pk-hd-yl">{{y.l}}</p></sc-if></div></article></sc-for></div><sc-if value="{{hood.hdMore}}" hint-placeholder-val="{{false}}"><button type="button" class="pk-hd-arr r" aria-label="More cards" onClick="{{hood.hdArr}}">›</button></sc-if></div></sc-if>
-<sc-if value="{{hood.hdWho}}" hint-placeholder-val="{{true}}"><div class="pk-hd-card pk-hd-who">
+<sc-if value="{{hood.hdWho}}" hint-placeholder-val="{{true}}"><div class="pk-hd-card pk-hd-who {{hood.whoCls}}">
 <div><sc-if value="{{hood.hasWhoH}}" hint-placeholder-val="{{true}}"><h2>{{hood.whoH}}</h2></sc-if><sc-if value="{{hood.hdHasCr}}" hint-placeholder-val="{{true}}"><div class="pk-hd-creds"><sc-for list="{{hood.hdCr}}" as="c" hint-placeholder-count="3"><div><b>{{c.k}}</b><span>{{c.v}}</span></div></sc-for></div></sc-if><sc-if value="{{hood.hasNx}}" hint-placeholder-val="{{true}}"><p class="pk-hd-nx"><b>↻ Next life</b>{{hood.nx}}</p></sc-if></div>
 <div class="pk-hd-pitch"><p>Every neighborhood is designed and built new with partners, then moves on to a permanent home. Want one of your own?</p><button type="button" class="pk-cta pri" onClick="{{hood.goBuild}}">Build with Pickathon</button></div>
 </div></sc-if>
@@ -6084,7 +6084,7 @@ window.__pkMapH = mapH; window.__pkGoFarm = goFarm;   // pk-home2: the Home neig
           o.hdHasWalk = !!o.hdWalk;
           /* Years package D (Nov 12, Zale Nov 11): a past year's page is that year's place: its name with "The ground that is X today" under it, a same-year hero (or the name set as type in the year's ink),
              year cards led by that year, that year's builders only (2026's hidden). A year with nothing on this ground keeps today's page with a one-line note. */
-          o.whoH = 'Who built it'; o.hasWhoH = true; o.hdVidN = o.hdShort; o.pyCls = ''; o.pySt = ''; o.pyStripe = []; o.hasGround = false; o.pyGone = false; o.hasPyCap = false; o.pySlug = false; o.hdYr.forEach(function (x) { x.cls = ''; x.tag = ''; x.hasTag = false; });
+          o.whoH = 'Who built it'; o.hasWhoH = true; o.whoCls = ''; o.hdVidN = o.hdShort; o.pyCls = ''; o.pySt = ''; o.pyStripe = []; o.hasGround = false; o.pyGone = false; o.hasPyCap = false; o.pySlug = false; o.hdYr.forEach(function (x) { x.cls = ''; x.tag = ''; x.hasTag = false; });
           var PY = window.pkPY ? window.pkPY(d, cur && cur.y, hid2) : null;
           if (PY && PY.gone) { o.pyGone = true; o.pyNote = (H2.n || '') + ' isn’t in the ' + PY.y + ' schedule. This is ' + (H2.n || '') + ' today.'; o.pyNoteL = 'Where it happened in ' + PY.y; o.pyNoteGo = function () { self.go('past', { y: PY.y }); var n = 0, f = function () { var e = document.querySelector('#root .pk-hy'); if (e) e.scrollIntoView({ block: 'start' }); else if (++n < 20) setTimeout(f, 150); }; setTimeout(f, 300); }; }
           else if (PY && PY.pl) {
@@ -6102,7 +6102,7 @@ window.__pkMapH = mapH; window.__pkGoFarm = goFarm;   // pk-home2: the Home neig
             else { o.pySlug = true; o.pyCls += ' pk-hd-slug'; o.hdImg = ''; o.pySt = '--py-paper: ' + (BRp.paper || '#F2EDE3') + '; --py-ink: ' + (BRp.ink || '#2B2628') + '; --py-ink2: ' + (BRp.ink2 || BRp.ink || '#2B2628'); o.pyStripe = (window.pkStripe(BRp).length ? window.pkStripe(BRp) : [BRp.ink || '#2B2628']).map(function (c) { return { st: 'background: ' + c }; }); }
             /* who built it: that year's credits only */
             var crY = []; if (PBy) { if (PBy.de) crY.push({ k: 'Design', v: PBy.de }); if (PBy.bu) crY.push({ k: 'Build', v: PBy.bu }); if (PBy.eng) crY.push({ k: 'Engineering', v: PBy.eng }); }
-            o.hdCr = crY; o.hdHasCr = crY.length > 0; o.hasNx = !!(PBy && PBy.pt); o.nx = PBy && PBy.pt ? PBy.pt : ''; o.hdWho = true; o.hasWhoH = crY.length > 0 || o.hasNx; o.whoH = 'Who built it in ' + PY.y;
+            o.hdCr = crY; o.hdHasCr = crY.length > 0; o.hasNx = !!(PBy && PBy.pt); o.nx = PBy && PBy.pt ? PBy.pt : ''; o.hdWho = true; o.hasWhoH = crY.length > 0 || o.hasNx; o.whoH = 'Who built it in ' + PY.y; o.whoCls = o.hasWhoH ? '' : 'pk-hd-who1';   /* Gate 2 design 6: no builders that year, so the card is the pitch alone, one column */
             /* year cards follow the year: that year's card leads (made from its own name and hero when the year has no build card), marked as the year you're in */
             var L = o.hdYr.filter(function (x) { return x.y === PY.y; })[0];
             if (!L) L = { y: PY.y, b: NM, l: '', hasL: false, img: hero, hasImg: !!hero, noImg: !hero }; else if (!L.hasImg && hero) { L.img = hero; L.hasImg = true; L.noImg = false; }
@@ -11635,6 +11635,10 @@ html body:not(#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1) :
 html body:not(#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1) .pk-shr>.pk-shc:first-child:has(>.pk-b3ph) .pk-star{box-shadow:inset 0 0 0 1.5px color-mix(in srgb,var(--yb-paper,#F2EDE3) 55%,transparent)!important}
 /* Gate 2 design 5: below 768 a slug name is three lines at most, every tile size */
 @media (max-width:767px){html body:not(#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1) :is(.pk-shc,.pk-sh-big .pk-shc,.pk-b3):has(>.pk-b3ph)>b{max-height:calc(3 * .96em)!important}html body:not(#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1) :is(.pk-b1,.pk-b2):has(>.pk-bph) .pk-bcap>b{max-height:calc(3 * .96em)!important}}
+/* Gate 2 design 6: a past year with no builders on record: the card is the pitch alone, one column */
+html body:not(#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1) .pk-hd-who.pk-hd-who1{grid-template-columns:1fr!important}
+html body:not(#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1) .pk-hd-who.pk-hd-who1>div:first-child{display:none!important}
+html body:not(#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1) .pk-hd-who.pk-hd-who1 .pk-hd-pitch{margin:0!important;padding:0!important;border:0!important}
 </style>
 <script id="pk-y1-js">
 /* Years package (Nov 12 2026): DOM touch-ups the templates can't express. Runs after renders (one observer, no timers). */

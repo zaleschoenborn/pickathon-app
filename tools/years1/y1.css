@@ -134,3 +134,7 @@ $P :is(.pk-shc,.pk-b3,.pk-b1,.pk-b2):has(>.pk-b3ph,>.pk-bph) .pk-star::after{con
 $P .pk-shr>.pk-shc:first-child:has(>.pk-b3ph) .pk-star{box-shadow:inset 0 0 0 1.5px color-mix(in srgb,var(--yb-paper,#F2EDE3) 55%,transparent)!important}
 /* Gate 2 design 5: below 768 a slug name is three lines at most, every tile size */
 @media (max-width:767px){$P :is(.pk-shc,.pk-sh-big .pk-shc,.pk-b3):has(>.pk-b3ph)>b{max-height:calc(3 * .96em)!important}$P :is(.pk-b1,.pk-b2):has(>.pk-bph) .pk-bcap>b{max-height:calc(3 * .96em)!important}}
+/* Gate 2 design 6: a past year with no builders on record: the card is the pitch alone, one column */
+$P .pk-hd-who.pk-hd-who1{grid-template-columns:1fr!important}
+$P .pk-hd-who.pk-hd-who1>div:first-child{display:none!important}
+$P .pk-hd-who.pk-hd-who1 .pk-hd-pitch{margin:0!important;padding:0!important;border:0!important}
