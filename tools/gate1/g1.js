@@ -47,8 +47,21 @@
     document.querySelectorAll('.pk-hd-vid button.pk-cta.sec').forEach(function (b) { kind(b, 'sec'); });
     document.querySelectorAll('.pk-lh-bs .pk-lh-b').forEach(function (b) { kind(b, b.classList.contains('pk-lh-t5') ? 'sec' : 'pri'); });
   }
+  /* Fix 9: the iPhone Add to Home Screen tip lives as an inline row at the top of My Pickathon (not a floating toast) */
+  var IOS = /iphone|ipad/i.test(navigator.userAgent) && !navigator.standalone && !(window.matchMedia && matchMedia('(display-mode: standalone)').matches);
+  function iosRow() {
+    if (!IOS) return; var off = false; try { off = localStorage.getItem('pk-ios-row') === 'x'; } catch (e) {}
+    var h = /^#\/(\d{4}\/)?mine\b/.test(location.hash) && [].slice.call(document.querySelectorAll('h1')).filter(function (e) { return /My Pickathon|Your Pickathon/.test(e.textContent) && vis(e); })[0];
+    var r = document.querySelector('.pk-g1-ios');
+    if (!h || off) { if (r) r.remove(); return; }
+    if (r && r.previousElementSibling === h) return; if (r) r.remove();
+    r = document.createElement('div'); r.className = 'pk-g1-ios'; r.setAttribute('role', 'note');
+    r.innerHTML = '<p><b>Get the app:</b> tap Share \u2350, then Add to Home Screen.</p><button type="button" aria-label="Dismiss the app tip">\u2715</button>';
+    r.querySelector('button').addEventListener('click', function () { try { localStorage.setItem('pk-ios-row', 'x'); localStorage.setItem('pk-ios-tip', '1'); } catch (e) {} r.remove(); });
+    h.insertAdjacentElement('afterend', r);
+  }
   var q = 0;
-  function run() { q = 0; try { pills(); listen(); tabs(); iw(); btns(); } catch (e) { if (window.console) console.error('pk-g1', e); } }
+  function run() { q = 0; try { pills(); listen(); tabs(); iw(); btns(); iosRow(); } catch (e) { if (window.console) console.error('pk-g1', e); } }
   function soon() { if (!q) q = requestAnimationFrame(run); }
   try { new MutationObserver(soon).observe(document.documentElement, { childList: true, subtree: true }); } catch (e) {}
   window.addEventListener('hashchange', soon); window.addEventListener('resize', soon); soon();

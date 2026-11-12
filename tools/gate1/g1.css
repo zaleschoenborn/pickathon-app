@@ -87,3 +87,9 @@ $P .pk-hd-vid .pk-cta.sec.pk-g1-b{width:100%!important;margin-top:12px}
 $P .pk-lh-bs .pk-lh-b.pk-g1-b{flex:1 1 0!important;min-width:0!important}
 @media (min-width:600px){ $P .pk-lh-bs .pk-lh-b.pk-g1-b{flex:0 1 auto!important;min-width:180px!important} }
 $P .pk-ah .pk-ah-btns>.pk-bkb{min-width:180px!important;flex:0 1 220px!important}
+
+/* -- Fix 9 (D8): on iPhone, My Pickathon carries the Add to Home Screen tip as a quiet inline row (dismiss with a 44px ✕). -- */
+$P .pk-g1-ios{display:flex;align-items:center;gap:10px;margin:10px 0 14px;padding:4px 4px 4px 14px;min-height:52px;box-sizing:border-box;border:2px solid rgba(242,237,227,.28);border-radius:6px;background:rgba(242,237,227,.06);color:#F2EDE3;font:600 14px/1.35 'Inter',system-ui,sans-serif}
+$P .pk-g1-ios p{margin:0;flex:1 1 auto;min-width:0}
+$P .pk-g1-ios b{font-weight:800}
+$P .pk-g1-ios button{flex:none;width:44px;height:44px;border:0;background:transparent;color:#F2EDE3;font-size:18px;line-height:1;cursor:pointer;border-radius:4px}
