@@ -23,7 +23,7 @@
   if (!window.pkLastOrder) window.pkLastOrder = function () { return null; };
   if (!window.pkMyPasses) window.pkMyPasses = function () { return null; };
 
-  var FEE = 0.05, LS = 'pk27order', SSW = 'pk27where', LSR = 'pk27remind', LSS = 'pk27saved';
+  var FEE = (window.pkFeeRate ? window.pkFeeRate() : 0.05), LS = 'pk27order', SSW = 'pk27where', LSR = 'pk27remind', LSS = 'pk27saved';
   var YEAR = 2027, DAYS = [['w', 'W', 'Wed', 'Wednesday', 'Aug 4'], ['dthu', 'Th', 'Thu', 'Thursday', 'Aug 5'], ['dfri', 'Fr', 'Fri', 'Friday', 'Aug 6'], ['dsat', 'Sa', 'Sat', 'Saturday', 'Aug 7'], ['dsun', 'Su', 'Sun', 'Sunday', 'Aug 8']];
   var DAY = {}; DAYS.forEach(function (d) { DAY[d[0]] = d; });
   var PARK = { dthu: 'pthu', dfri: 'pfri', dsat: 'psat', dsun: 'psun' };
@@ -66,6 +66,8 @@
   function readTix() { var s = site(); T = window.pkTix(s.today, s.season || 'off'); return T; }
   function when() { var s = site(); if ((s.season || 'off') !== 'off' || T.open) return 'sale'; return T.next ? 'pre' : 'closed'; }
   function P(id) { var f = window.pkFeedItem && window.pkFeedItem(id); if (f && f.price && typeof f.price.amount === 'number') return f.price.amount / 100; var r = T.prices[id]; return r ? Math.ceil(r[T.col]) : 0; }   // the site's one price rule: the live feed if it answered, else the settings block, whole dollars
+  function WF(n) { return window.pkWithFee ? window.pkWithFee(n) : Math.round(n * (1 + FEE) * 100) / 100; }   // A12: every price shown includes the fee (the head block's one rule)
+  function PS(id) { return WF(P(id)); }
   function sold(id) { var f = window.pkFeedItem && window.pkFeedItem(id); if (!f && needFeed() && (window.pkFeed || {}).state === 'live') return true; return !!(f && f.soldOut); }   // with the live feed required, a ticket the feed does not list is not offered
   /* Once the site is live (PK_LIVE, set by the launch switch) the sale shows only prices the ticket system sent. If the feed has not answered yet,
      or failed, the page says so instead of falling back to the built-in table, so a missed price update can never show a wrong price.
@@ -89,6 +91,7 @@
     return out;
   };
   function minP(ids) { return Math.min.apply(null, ids.map(P)); }
+  function minPS(ids) { return WF(minP(ids)); }
   function pacific(t) { return String(t || '').replace(/\s*PT$/, ' Pacific'); }
   function planLine(total) {   // same sum as the site's planLine: first payment today, then monthly, the last by plans.lastPayment
     var n = Math.max(2, T.planN), c = Math.round(total * 100), d0 = Math.ceil(c / (n * 100)) * 100, rest = c - d0, k = n - 1, p1 = Math.ceil(rest / k), pl = rest - p1 * (k - 1);
@@ -134,8 +137,9 @@
     return L;
   }
   function totals(s) {
-    var L = lines(s), sub = L.reduce(function (a, b) { return a + b.amt; }, 0), fee = Math.round(sub * FEE * 100) / 100;
-    return { lines: L, sub: sub, fee: fee, total: Math.round((sub + fee) * 100) / 100, ready: L.length > 0 && s.adult > 0, unadded: s.go === 'later' && !vehicle(s) };
+    /* A12: the total is the shown (fee-in) unit prices x quantity, so it always equals what the pass cards said; the fee line is the difference */
+    var L = lines(s), sub = L.reduce(function (a, b) { return a + b.amt; }, 0), total = Math.round(L.reduce(function (a, b) { var u = b.q ? b.amt / b.q : b.amt; return a + (b.q || 1) * WF(u); }, 0) * 100) / 100, fee = Math.round((total - sub) * 100) / 100;
+    return { lines: L, sub: sub, fee: fee, total: total, ready: L.length > 0 && s.adult > 0, unadded: s.go === 'later' && !vehicle(s) };
   }
   function short(s) {
     var k = key(s); if (!k) return '';
@@ -193,7 +197,7 @@
     return 'Not on sale right now';
   }
   function fineLine() {
-    return '<b>All sales final.</b> Send a pass to a friend any time from My Pickathon. ' + (T.show.plans ? 'Orders over ' + money(T.planMin) + ' can be paid monthly. ' : 'No payment plans during the ' + esc(T.show.name) + '. ' + (T.planNote ? esc(T.planNote) + ' ' : '')) + 'Prices shown before the ' + (FEE * 100) + '% fee; your total always includes it.';
+    return '<b>All sales final.</b> Send a pass to a friend any time from My Pickathon. ' + (T.show.plans ? 'Orders over ' + money(T.planMin) + ' can be paid monthly. ' : 'No payment plans during the ' + esc(T.show.name) + '. ' + (T.planNote ? esc(T.planNote) + ' ' : '')) + 'Every price includes the ' + (FEE * 100) + '% fee.';
   }
   function passCard(v, title, sub, on, price, extra) {
     return '<label class="tk-pass tk-paper"><input type="radio" name="tk-pass" value="' + v + '" class="tk-vh"><span class="tk-days" aria-hidden="true"' + (extra && extra.stripId ? ' id="' + extra.stripId + '"' : '') + '>' +
@@ -206,21 +210,21 @@
   function opt(name, v, media, title, why, price) { return '<label class="tk-opt"><input type="radio" name="' + name + '" value="' + v + '" class="tk-vh">' + media + '<span class="tk-opt-t"><b>' + title + '</b>' + why + '</span><span class="tk-opt-p tk-num" data-p="' + v + '">' + price + '</span></label>'; }
   function hoodImg(h, slot) { var d = site().data, H = d && d.hoods && d.hoods[h]; return H && H.i ? '<img class="tk-opt-m" data-slot="' + slot + '" src="' + esc(H.i) + '" alt="" loading="lazy" width="84" height="56">' : '<span class="tk-opt-e"></span>'; }
   function emblem(h) { return '<span class="tk-opt-e"><img src="ic2/' + h + '.png" alt="" width="40" height="40" loading="lazy"></span>'; }
-  function per(id, unit) { return sold(id) ? 'Sold out' : money(P(id)) + '<small>' + unit + '</small>'; }
+  function per(id, unit) { return sold(id) ? 'Sold out' : money(PS(id)) + '<small>' + unit + '</small>'; }
   function skeleton() {
-    var w = when(), minDay = minP(OK.day), h = '';
+    var w = when(), minDay = minPS(OK.day), h = '';
     h += '<div class="tk-in"><div class="tk-paper tk-head"><img src="logo27-bat.png" alt="Pickathon 2027" width="700" height="260"><div class="tk-head-t"><h1 class="tk-d">Tickets</h1><p>' + headline() + '</p></div></div>';
     h += '<div class="tk-main" id="tk-main">';
     if (w === 'pre') h += '<section class="tk-pre" id="tk-pre" aria-label="Reminder"></section>';
     h += '<div id="tk-top"></div>';
     h += '<div class="tk-cols"><div class="tk-build">';
-    h += '<fieldset><div class="tk-leg"><legend class="tk-d tk-d-label">How long?</legend><button type="button" class="tk-pill tk-pill-sm" data-act="help" aria-haspopup="dialog">Help me choose</button></div><div class="tk-passes" id="tk-passes">' +
-      passCard('p4', '4 days', 'Camping included', [0, 1, 1, 1, 1], '<b class="tk-num">' + money(P('p4')) + '</b>') +
-      '<label class="tk-wed" id="tk-wed" hidden><input type="checkbox" id="tk-wedc"><span><b>Arrive ' + DAY.w[3] + ', ' + DAY.w[4] + '</b>, from 5 pm</span><em class="tk-num">+' + money(P('early')) + ' each</em></label>' +
-      passCard('p3', '3 days', 'Camping included', [0, 0, 1, 1, 1], '<b class="tk-num">' + money(P('p3')) + '</b>') +
-      passCard('d2', 'Sat + Sun', 'No camping', [0, 0, 0, 1, 1], '<b class="tk-num">' + money(P('d2')) + '</b>') +
+    h += '<fieldset><div class="tk-leg"><legend class="tk-d tk-d-label">How long?</legend><button type="button" class="tk-pill tk-pill-sm" data-act="help" aria-haspopup="dialog">Help me choose</button></div><p class="tk-feenote">Prices include the ' + (FEE * 100) + '% fee.</p><div class="tk-passes" id="tk-passes">' +
+      passCard('p4', '4 days', 'Camping included', [0, 1, 1, 1, 1], '<b class="tk-num">' + money(PS('p4')) + '</b>') +
+      '<label class="tk-wed" id="tk-wed" hidden><input type="checkbox" id="tk-wedc"><span><b>Arrive ' + DAY.w[3] + ', ' + DAY.w[4] + '</b>, from 5 pm</span><em class="tk-num">+' + money(PS('early')) + ' each</em></label>' +
+      passCard('p3', '3 days', 'Camping included', [0, 0, 1, 1, 1], '<b class="tk-num">' + money(PS('p3')) + '</b>') +
+      passCard('d2', 'Sat + Sun', 'No camping', [0, 0, 0, 1, 1], '<b class="tk-num">' + money(PS('d2')) + '</b>') +
       passCard('d1', 'One day', 'Pick your day', [0, 0, 0, 1, 0], '<small id="tk-d1from">from</small><b class="tk-num" id="tk-d1p">' + money(minDay) + '</b>', { stripId: 'tk-d1strip', subId: 'tk-d1sub' }) +
-      '<div class="tk-daypick" id="tk-daypick" hidden role="radiogroup" aria-label="Which day?">' + OK.day.map(function (d) { return '<label><input type="radio" name="tk-day" value="' + d + '" class="tk-vh"><span>' + DAY[d][2] + ', ' + DAY[d][4] + '<b class="tk-num">' + (sold(d) ? 'Sold out' : money(P(d))) + '</b></span></label>'; }).join('') + '</div>' +
+      '<div class="tk-daypick" id="tk-daypick" hidden role="radiogroup" aria-label="Which day?">' + OK.day.map(function (d) { return '<label><input type="radio" name="tk-day" value="' + d + '" class="tk-vh"><span>' + DAY[d][2] + ', ' + DAY[d][4] + '<b class="tk-num">' + (sold(d) ? 'Sold out' : money(PS(d))) + '</b></span></label>'; }).join('') + '</div>' +
       '</div></fieldset>';
     h += '<fieldset class="tk-who"><div class="tk-leg"><legend class="tk-d tk-d-label">Who’s coming?</legend></div><div class="tk-who-g">' + stepper('adult', 'Adults', '18 and up', 'adult') + stepper('teen', 'Teens', '13–17, half price', 'teen') + stepper('kid', 'Kids', '12 &amp; under, free', 'kid') + '</div><p class="tk-note" id="tk-teennote" hidden></p></fieldset>';
     h += '<div class="tk-folds">' +
@@ -240,11 +244,11 @@
       opt('tk-go', 'drop', emblem('southcamp'), 'Dropped off', 'Rideshare or a friend, at the South Lot.', 'Free') +
       opt('tk-go', 'later', '<span class="tk-opt-e"></span>', 'Decide later', 'Parking and shuttle passes can be added any time.', money(0)) +
       stepper('car', 'Cars', '', 'car') + '</div></div></div>';
-    h += '<p class="tk-patron"><span><b>Patron Pass</b> <span class="tk-num">' + (sold('patron') ? 'Sold out' : money(P('patron'))) + '</span><br>Backstage hospitality, concierge, early entry. <span id="tk-patnote"></span></span><button type="button" class="tk-pill tk-pill-sm" id="tk-patron" aria-pressed="false"' + (sold('patron') ? ' disabled' : '') + '>Add</button></p>';
+    h += '<p class="tk-patron"><span><b>Patron Pass</b> <span class="tk-num">' + (sold('patron') ? 'Sold out' : money(PS('patron'))) + '</span><br>Backstage hospitality, concierge, early entry. <span id="tk-patnote"></span></span><button type="button" class="tk-pill tk-pill-sm" id="tk-patron" aria-pressed="false"' + (sold('patron') ? ' disabled' : '') + '>Add</button></p>';
     h += '<section class="tk-extra" aria-labelledby="tk-h-extra"><div class="tk-leg"><h2 class="tk-d tk-d-label" id="tk-h-extra">Anything else?</h2></div>' +
-      '<details><summary><span>Curation meals</span><span class="tk-num tk-dim">' + money(P('cfri')) + ' a seat</span></summary><p>One chef, one artist, 100 seats. Five meals, Friday dinner to Sunday brunch. Add them after you check out, from My Pickathon.</p></details>' +
-      '<details><summary><span>Cup and plate</span><span class="tk-num tk-dim">from ' + money(minP(['cup', 'plate'])) + '</span></summary><p>Your own steel cup and plate, waiting at the festival.</p></details>' +
-      '<details><summary><span>Give back</span><span class="tk-num tk-dim">from ' + money(minP(['tools', 'student'])) + '</span></summary><p>Fund tools or sponsor a student in the Creative Neighborhoods build program.</p></details>' +
+      '<details><summary><span>Curation meals</span><span class="tk-num tk-dim">' + money(PS('cfri')) + ' a seat</span></summary><p>One chef, one artist, 100 seats. Five meals, Friday dinner to Sunday brunch. Add them after you check out, from My Pickathon.</p></details>' +
+      '<details><summary><span>Cup and plate</span><span class="tk-num tk-dim">from ' + money(minPS(['cup', 'plate'])) + '</span></summary><p>Your own steel cup and plate, waiting at the festival.</p></details>' +
+      '<details><summary><span>Give back</span><span class="tk-num tk-dim">from ' + money(minPS(['tools', 'student'])) + '</span></summary><p>Fund tools or sponsor a student in the Creative Neighborhoods build program.</p></details>' +
       '<div class="tk-hand"><button type="button" class="tk-pill" data-go="info">How the weekend works</button><button type="button" class="tk-tlink" data-go="list">Every pass and price</button></div>' +
       '<p class="tk-fine">' + fineLine() + '</p></section>';
     h += '</div><aside class="tk-order" aria-label="Your order"><div class="tk-paper tk-osheet"><p class="tk-d tk-d-card">Your order</p><hr class="tk-rule2" style="margin:8px 0 4px"><ul class="tk-olines" id="tk-lines"></ul>' +
@@ -333,17 +337,17 @@
     $('#tk-wed', root).hidden = S.pass !== 'p4'; $('#tk-wedc', root).checked = S.wed; $('#tk-w-p4', root).classList.toggle('on', S.pass === 'p4' && (S.wed || S.patron));
     $('#tk-daypick', root).hidden = S.pass !== 'd1';
     $$('#tk-d1strip i[data-d]', root).forEach(function (i) { i.classList.toggle('on', S.day ? i.getAttribute('data-d') === S.day : i.getAttribute('data-d') === 'dsat'); });
-    $('#tk-d1sub', root).textContent = S.day ? DAY[S.day][3] + ', ' + DAY[S.day][4] : 'Pick your day'; $('#tk-d1from', root).hidden = !!S.day; $('#tk-d1p', root).textContent = money(S.day ? P(S.day) : minP(OK.day));
+    $('#tk-d1sub', root).textContent = S.day ? DAY[S.day][3] + ', ' + DAY[S.day][4] : 'Pick your day'; $('#tk-d1from', root).hidden = !!S.day; $('#tk-d1p', root).textContent = money(S.day ? PS(S.day) : minPS(OK.day));
     $$('.tk-step', root).forEach(function (st) { var f = st.getAttribute('data-k'), v = S[f], b = $$('button', st); $('output', st).textContent = v; b[0].disabled = v <= (f === 'car' ? 1 : 0); b[1].disabled = v >= 12; });
     var tn = $('#tk-teennote', root), note = '';
     if (!S.adult && (S.teen || S.kid)) note = '<b>Add an adult.</b> Teens and kids come in with a ticketed adult.';
-    else if (S.teen > 0 && k) note = P(k) > P('teen') ? '<b>Teens get the lower price.</b> A Teen Pass is ' + money(P('teen')) + ': all four days, half price. Teens come in with a ticketed adult.' : '<b>Teens 13 to 17</b> pay the day price, ' + money(P(k)) + ', and come in with a ticketed adult.';
+    else if (S.teen > 0 && k) note = P(k) > P('teen') ? '<b>Teens get the lower price.</b> A Teen Pass is ' + money(PS('teen')) + ': all four days, half price. Teens come in with a ticketed adult.' : '<b>Teens 13 to 17</b> pay the day price, ' + money(PS(k)) + ', and come in with a ticketed adult.';
     tn.hidden = !note; tn.innerHTML = note;
-    $('#tk-v-sleep', root).innerHTML = (S.pass && !cam) ? 'No camping with this ticket' : S.sleep === 'tent' ? 'Tent, <em>included</em>' : S.sleep === 'none' ? 'Not camping' : esc(SLEEPN[S.sleep]) + ', ' + money(P(S.sleep));
+    $('#tk-v-sleep', root).innerHTML = (S.pass && !cam) ? 'No camping with this ticket' : S.sleep === 'tent' ? 'Tent, <em>included</em>' : S.sleep === 'none' ? 'Not camping' : esc(SLEEPN[S.sleep]) + ', ' + money(PS(S.sleep));
     var fs = $('#tk-f-sleep .tk-fold-row', root); fs.disabled = !!S.pass && !cam; if (S.pass && !cam) fold(fs, false);
-    var dayPark = S.pass === 'd1' && S.day ? money(P(PARK[S.day])) + ' a day' : 'from ' + money(minP(['pthu', 'pfri', 'psat', 'psun'])) + ' a day', wk = cam || !S.pass;
-    $('#tk-v-go', root).textContent = veh ? 'You drive in with your camp' : { later: 'Not added · parking ' + (wk ? money(P('wpark')) + ' a car' : dayPark), drive: 'Drive, ' + plural(S.car, 'car') + ', ' + (wk ? money(P('wpark')) + ' each' : 'day parking'), shuttle: 'MAX + shuttle, ' + money(P('shuttle')) + ' a rider', bike: 'Bike, free', drop: 'Dropped off, free' }[S.go];
-    $('[data-p="drive"]', root).innerHTML = wk ? money(P('wpark')) + '<small>a car</small>' : (S.pass === 'd1' && S.day ? money(P(PARK[S.day])) : money(minP(['pthu', 'pfri', 'psat', 'psun'])) + '+') + '<small>a day</small>';
+    var dayPark = S.pass === 'd1' && S.day ? money(PS(PARK[S.day])) + ' a day' : 'from ' + money(minPS(['pthu', 'pfri', 'psat', 'psun'])) + ' a day', wk = cam || !S.pass;
+    $('#tk-v-go', root).textContent = veh ? 'You drive in with your camp' : { later: 'Not added · parking ' + (wk ? money(PS('wpark')) + ' a car' : dayPark), drive: 'Drive, ' + plural(S.car, 'car') + ', ' + (wk ? money(PS('wpark')) + ' each' : 'day parking'), shuttle: 'MAX + shuttle, ' + money(PS('shuttle')) + ' a rider', bike: 'Bike, free', drop: 'Dropped off, free' }[S.go];
+    $('[data-p="drive"]', root).innerHTML = wk ? money(PS('wpark')) + '<small>a car</small>' : (S.pass === 'd1' && S.day ? money(PS(PARK[S.day])) : money(minPS(['pthu', 'pfri', 'psat', 'psun'])) + '+') + '<small>a day</small>';
     $('#tk-carstep', root).hidden = S.go !== 'drive' || veh;
     var pb = $('#tk-patron', root); pb.setAttribute('aria-pressed', S.patron ? 'true' : 'false'); pb.textContent = S.patron ? 'Added' : 'Add';
     $('#tk-patnote', root).textContent = S.patron ? 'One adult’s pass is now a Patron Pass.' : '';
@@ -373,11 +377,11 @@
   }
   /* help me choose: Pick sets the pass and nothing else */
   function help() {
-    var rows = [['p4', 'Everything, and camp', '4 days, ' + money(P('p4')), [0, 1, 1, 1, 1]], ['p3', 'The weekend, and camp', '3 days, ' + money(P('p3')), [0, 0, 1, 1, 1]], ['d2', 'Two big days, home at night', 'Sat + Sun, ' + money(P('d2')), [0, 0, 0, 1, 1]], ['d1', 'A first taste', 'One day, from ' + money(minP(OK.day)), [0, 0, 0, 1, 0]]];
+    var rows = [['p4', 'Everything, and camp', '4 days, ' + money(PS('p4')), [0, 1, 1, 1, 1]], ['p3', 'The weekend, and camp', '3 days, ' + money(PS('p3')), [0, 0, 1, 1, 1]], ['d2', 'Two big days, home at night', 'Sat + Sun, ' + money(PS('d2')), [0, 0, 0, 1, 1]], ['d1', 'A first taste', 'One day, from ' + money(minPS(OK.day)), [0, 0, 0, 1, 0]]];
     var sh = sheet(sheetTop('Which pass fits?') + '<div class="tk-help">' + rows.map(function (r) {
       var so = r[0] !== 'd1' && sold(r[0]);
       return '<div class="tk-pass tk-paper"><span class="tk-days" aria-hidden="true">' + DAYS.map(function (d, i) { return '<i' + (r[3][i] ? ' class="on"' : '') + '>' + d[1] + '</i>'; }).join('') + '</span><span class="tk-pass-t"><b>' + r[1] + '</b><span>' + r[2] + '</span></span><span class="tk-pass-p"><button type="button" class="tk-pill tk-pill-ink" data-pick="' + r[0] + '" aria-label="Pick ' + r[2].split(',')[0] + '"' + (so ? ' disabled' : '') + '>' + (so ? 'Sold out' : 'Pick') + '</button></span></div>';
-    }).join('') + '</div><div class="tk-help-f"><p><b class="tk-d">Every stage</b>all day, every pass</p><p><b class="tk-d">Kids free</b>12 and under</p><p><b class="tk-d">Teens half</b>' + money(P('teen')) + ', all 4 days</p></div>', 'Which pass fits?');
+    }).join('') + '</div><div class="tk-help-f"><p><b class="tk-d">Every stage</b>all day, every pass</p><p><b class="tk-d">Kids free</b>12 and under</p><p><b class="tk-d">Teens half</b>' + money(PS('teen')) + ', all 4 days</p></div>', 'Which pass fits?');
     sh.addEventListener('click', function (e) {
       var b = e.target.closest ? e.target.closest('[data-pick]') : null; if (!b) return;
       S.pass = b.getAttribute('data-pick'); if (S.pass !== 'p4') S.wed = false; if (S.pass !== 'd1') S.day = null;

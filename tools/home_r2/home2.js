@@ -56,7 +56,7 @@ window.pkClimbRank = function (C, dd) {
   function reminded() { return !!ls(LSR) || !!site().nlDone; }
   /* the state of the Tickets button and of Home's two money buttons: pre (before the round opens), sale, has (passes bought), or null (nothing to sell) */
   function tix() {
-    readTix(); var s = site(), from = money(P('p3'));
+    readTix(); var s = site(), from = money(window.pkWithFee ? window.pkWithFee(P('p3')) : P('p3'));   // A12: fee-in
     var mp = passes();
     if (mp) { var q = mp[0], nm = String(q.name || 'Pass').replace(/ Pass$/, ''), qty = q.qty ? q.qty + ' × ' : '';
       return { w: 'has', line: '<b>Your passes</b> <span class="pk-tl2-d">· ' + esc(qty + nm) + '</span>', verb: 'Add extras', btn: 'Your passes', go: 'mine', cta: 'Your passes', side: [qty + (q.name || 'Pass'), 'Add parking, camping or a friend'], from: from }; }

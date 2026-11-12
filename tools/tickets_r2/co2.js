@@ -53,7 +53,7 @@ if (!window.pkOrders) window.pkOrders = (function () {
   function norm(o) {   // the old builder (festival season, ?old=tickets) hands over { lines: [{ q, n, t }], fee, total }
     o = Object.assign({}, o || {});
     o.lines = (o.lines || []).map(function (l) { return { label: l.label || (l.q + ' × ' + l.n), price: l.price || l.t || '' }; });
-    o.feeS = o.feeS || o.fee || ''; o.totalS = o.totalS || o.total || ''; o.feeRate = o.feeRate || 0.05;
+    o.feeS = o.feeS || o.fee || ''; o.totalS = o.totalS || o.total || ''; o.feeRate = o.feeRate || (window.pkFeeRate ? window.pkFeeRate() : 0.05);
     if (window.PK_PAY_LATER === false) o.hasPlan = false;
     return o;
   }
