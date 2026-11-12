@@ -8007,7 +8007,7 @@ body:has(#tk2 #tk-bar:not([hidden])) #pk-toast,body:has(#pk-co) #pk-toast{displa
     var nA = s.adult;
     if (kd === 'pat') { if (nA > 0) L.push({ id: 'patron', q: nA, n: 'Patron Pass, any age, Wed to Sun', amt: nA * P('patron') }); }
     else if (nA > 0) L.push({ id: k, q: nA, n: kd === 'day' ? N[k] + ', 13 and up' : N[k] + ', adult', amt: nA * P(k) });
-    if (kd === 'wk' && s.teen) L.push({ id: 'teen', q: s.teen, n: 'Teen weekend pass, half price', amt: s.teen * P('teen') });   // Zale, Nov 12: the teen ticket is the half-price weekend ticket; Wednesday is an add-on. FMS has one teen code, T4D (question for Kris)
+    if (kd === 'wk' && s.teen) L.push({ id: 'teen', q: s.teen, n: 'Teen 4-Day, half price', amt: s.teen * P('teen') });   // Zale, Nov 12: the teen ticket is half the 4-Day (T4D), Thu–Sun on any weekend order; Wednesday is an add-on
     if (kd !== 'pat' && s.kid) L.push({ id: 'child', q: s.kid, n: 'Kid, 12 and under, free', amt: 0 });
     if (s.pass === 'p4' && s.wed && nA + s.teen > 0) L.push({ id: 'early', q: nA + s.teen, n: 'Wednesday early arrival, Aug 4', amt: (nA + s.teen) * P('early') });
     if (cam) { if (s.sleep === 'tent') L.push({ id: 'tent', q: 0, n: 'Tent in the woods', amt: 0 }); else if (veh) L.push({ id: s.sleep, q: 0, n: s.sleep === 'wrv' ? 'RV site, Willow Camp' : SLEEPN[s.sleep] + ' site', amt: P(s.sleep) }); }
@@ -8228,7 +8228,7 @@ body:has(#tk2 #tk-bar:not([hidden])) #pk-toast,body:has(#pk-co) #pk-toast{displa
     /* who's coming: the rows follow the ticket kind, and each says only what is true for it */
     var who = kd === 'day' ? { adult: ['Ages 13 and up', k ? 'One price · ' + money(PS(k)) : 'One price', 'person 13 and up'], kid: ['Kids', '12 and under · free', 'kid'] }
       : kd === 'pat' ? { adult: ['Patron Passes', 'One each, any age, kids too: ' + money(PS('patron')), 'Patron Pass'] }
-      : kd === 'wk' ? { adult: ['Adults', '18 and up · ' + money(PS(k)), 'adult'], teen: ['Teens', '13 to 17 · half price, ' + money(PS('teen')), 'teen'], kid: ['Kids', '12 and under · free', 'kid'] }
+      : kd === 'wk' ? { adult: ['Adults', '18 and up · ' + money(PS(k)), 'adult'], teen: ['Teens', '13 to 17 · 4-Day (Thu–Sun) at half price, ' + money(PS('teen')), 'teen'], kid: ['Kids', '12 and under · free', 'kid'] }
       : { adult: ['Adults', '18 and up', 'adult'], teen: ['Teens', '13 to 17', 'teen'], kid: ['Kids', '12 and under', 'kid'] };
     $$('.tk-step', root).forEach(function (st) { var f = st.getAttribute('data-k'), v = S[f], b = $$('button', st); $('output', st).textContent = v; b[0].disabled = v <= (f === 'car' || (f === 'adult' && kd === 'pat') ? 1 : 0); b[1].disabled = v >= 12;
       if (f === 'car') return; var r = who[f]; st.hidden = !r; if (!r) return; $('#tk-ln-' + f, root).textContent = r[0]; $('#tk-ls-' + f, root).textContent = r[1]; b[0].setAttribute('aria-label', 'One fewer ' + r[2]); b[1].setAttribute('aria-label', 'One more ' + r[2]); });
