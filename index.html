@@ -9341,6 +9341,14 @@ html:root:root #root#root#root#root#root#root#root#root#root#root#root#root#root
   #pkh2#pkh2 .h2-s2 .pk-cl-below{grid-column:1;grid-row:2;max-width:none;margin:18px 0 0}
   #pkh2#pkh2 .h2-s2 .pk-cl-below .pk-cl-an{width:auto!important;max-width:none;margin:14px 0 0}
 }
+
+/* Gate 1 (user panel P1): on sale day the buy buttons use the strong gold primary of Checkout (solid #F2CF62, ink text); Remind me keeps the quiet tint */
+#root #pkh2 .h2-pill.h2-gold.h2-sale,#root #pkh2 .h2-paper .h2-pill.h2-gold.h2-sale{background:#F2CF62;border-color:#F2CF62;color:#2B2628}
+#root #pkh2 .h2-pill.h2-gold.h2-sale:hover,#root #pkh2 .h2-paper .h2-pill.h2-gold.h2-sale:hover{background:#D6B54A;border-color:#D6B54A}
+#root .pk-tl2.is-sale .pk-tl2-go{display:inline-flex;align-items:center;gap:2px;min-height:34px;padding:0 10px 0 12px;border-radius:6px;background:#F2CF62;color:#2B2628}
+#root .pk-tl2.is-sale .pk-tl2-go svg{fill:currentColor;stroke:currentColor}
+#root .pk-tb2.is-sale{background:#F2CF62;border-color:#F2CF62;color:#2B2628}
+#root .pk-tb2.is-sale:hover{background:#D6B54A;border-color:#D6B54A}
 </style>
 <script id="pk-home2">
 /* QA M1 (Nov 11): Home's poster opens on 2019 (founder spec, home_flow.md screen 2) and "Another year" walks the years by discovery strength, not at random:
@@ -9461,14 +9469,14 @@ window.pkClimbRank = function (C, dd) {
     if (tl) {
       tl.classList.add('pk-tl2w'); if (offL) tl.setAttribute('data-off', ''); else tl.removeAttribute('data-off');
       tl.classList.toggle('on-home', home); tl.classList.toggle('is-tucked', home && tucked);
-      var hl = offL ? '' : '<button type="button" class="pk-tl2" data-h2tix="1"' + (home && tucked ? ' tabindex="-1"' : '') + '><span class="pk-tl2-t">' + t.line + '</span><span class="pk-tl2-go">' + esc(t.verb) + CHEV + '</span></button>';
+      var hl = offL ? '' : '<button type="button" class="pk-tl2' + (t.w === 'sale' ? ' is-sale' : '') + '" data-h2tix="1"' + (home && tucked ? ' tabindex="-1"' : '') + '><span class="pk-tl2-t">' + t.line + '</span><span class="pk-tl2-go">' + esc(t.verb) + CHEV + '</span></button>';
       if (tl._h !== hl) { tl.innerHTML = hl; tl._h = hl; }
     }
     var tb = document.getElementById('pk-tb2');
     if (tb) {
       tb.classList.add('pk-tb2w'); if (off) tb.setAttribute('data-off', ''); else tb.removeAttribute('data-off');
       tb.classList.toggle('is-tucked', home && tucked);
-      var hb = off ? '' : '<button type="button" class="pk-tb2" data-h2tix="1"' + (home && tucked ? ' tabindex="-1"' : '') + '>' + esc(t.btn) + '</button>';
+      var hb = off ? '' : '<button type="button" class="pk-tb2' + (t.w === 'sale' ? ' is-sale' : '') + '" data-h2tix="1"' + (home && tucked ? ' tabindex="-1"' : '') + '>' + esc(t.btn) + '</button>';
       if (tb._h !== hb) { tb.innerHTML = hb; tb._h = hb; }
     }
   }
@@ -9480,7 +9488,7 @@ window.pkClimbRank = function (C, dd) {
   function hoodImg(d, k) { var L = (window.pkNBHM || {})[k] || []; return L[0] || d.hoods[k].i || ''; }   /* the curated Home photo for that neighborhood (NBHM in the app), else its lead photo */
   function ctaHTML(t, big) {
     if (!t) return '';
-    var cls = 'h2-pill h2-gold' + (big ? ' h2-big' : '');
+    var cls = 'h2-pill h2-gold' + (big ? ' h2-big' : '') + (t.w === 'sale' ? ' h2-sale' : '');   /* Gate 1 (panel P1): on sale the buy button is the strong gold primary, as at Checkout; Remind me stays quiet */
     return '<button type="button" class="' + cls + '" data-h2tix="1">' + esc(t.cta) + '</button>';
   }
   function skeleton(d) {

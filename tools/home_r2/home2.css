@@ -542,3 +542,11 @@ html:root:root #root#root#root#root#root#root#root#root#root#root#root#root#root
   #pkh2#pkh2 .h2-s2 .pk-cl-below{grid-column:1;grid-row:2;max-width:none;margin:18px 0 0}
   #pkh2#pkh2 .h2-s2 .pk-cl-below .pk-cl-an{width:auto!important;max-width:none;margin:14px 0 0}
 }
+
+/* Gate 1 (user panel P1): on sale day the buy buttons use the strong gold primary of Checkout (solid #F2CF62, ink text); Remind me keeps the quiet tint */
+#root #pkh2 .h2-pill.h2-gold.h2-sale,#root #pkh2 .h2-paper .h2-pill.h2-gold.h2-sale{background:#F2CF62;border-color:#F2CF62;color:#2B2628}
+#root #pkh2 .h2-pill.h2-gold.h2-sale:hover,#root #pkh2 .h2-paper .h2-pill.h2-gold.h2-sale:hover{background:#D6B54A;border-color:#D6B54A}
+#root .pk-tl2.is-sale .pk-tl2-go{display:inline-flex;align-items:center;gap:2px;min-height:34px;padding:0 10px 0 12px;border-radius:6px;background:#F2CF62;color:#2B2628}
+#root .pk-tl2.is-sale .pk-tl2-go svg{fill:currentColor;stroke:currentColor}
+#root .pk-tb2.is-sale{background:#F2CF62;border-color:#F2CF62;color:#2B2628}
+#root .pk-tb2.is-sale:hover{background:#D6B54A;border-color:#D6B54A}

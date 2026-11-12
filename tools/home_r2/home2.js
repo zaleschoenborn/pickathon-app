@@ -116,14 +116,14 @@ window.pkClimbRank = function (C, dd) {
     if (tl) {
       tl.classList.add('pk-tl2w'); if (offL) tl.setAttribute('data-off', ''); else tl.removeAttribute('data-off');
       tl.classList.toggle('on-home', home); tl.classList.toggle('is-tucked', home && tucked);
-      var hl = offL ? '' : '<button type="button" class="pk-tl2" data-h2tix="1"' + (home && tucked ? ' tabindex="-1"' : '') + '><span class="pk-tl2-t">' + t.line + '</span><span class="pk-tl2-go">' + esc(t.verb) + CHEV + '</span></button>';
+      var hl = offL ? '' : '<button type="button" class="pk-tl2' + (t.w === 'sale' ? ' is-sale' : '') + '" data-h2tix="1"' + (home && tucked ? ' tabindex="-1"' : '') + '><span class="pk-tl2-t">' + t.line + '</span><span class="pk-tl2-go">' + esc(t.verb) + CHEV + '</span></button>';
       if (tl._h !== hl) { tl.innerHTML = hl; tl._h = hl; }
     }
     var tb = document.getElementById('pk-tb2');
     if (tb) {
       tb.classList.add('pk-tb2w'); if (off) tb.setAttribute('data-off', ''); else tb.removeAttribute('data-off');
       tb.classList.toggle('is-tucked', home && tucked);
-      var hb = off ? '' : '<button type="button" class="pk-tb2" data-h2tix="1"' + (home && tucked ? ' tabindex="-1"' : '') + '>' + esc(t.btn) + '</button>';
+      var hb = off ? '' : '<button type="button" class="pk-tb2' + (t.w === 'sale' ? ' is-sale' : '') + '" data-h2tix="1"' + (home && tucked ? ' tabindex="-1"' : '') + '>' + esc(t.btn) + '</button>';
       if (tb._h !== hb) { tb.innerHTML = hb; tb._h = hb; }
     }
   }
@@ -135,7 +135,7 @@ window.pkClimbRank = function (C, dd) {
   function hoodImg(d, k) { var L = (window.pkNBHM || {})[k] || []; return L[0] || d.hoods[k].i || ''; }   /* the curated Home photo for that neighborhood (NBHM in the app), else its lead photo */
   function ctaHTML(t, big) {
     if (!t) return '';
-    var cls = 'h2-pill h2-gold' + (big ? ' h2-big' : '');
+    var cls = 'h2-pill h2-gold' + (big ? ' h2-big' : '') + (t.w === 'sale' ? ' h2-sale' : '');   /* Gate 1 (panel P1): on sale the buy button is the strong gold primary, as at Checkout; Remind me stays quiet */
     return '<button type="button" class="' + cls + '" data-h2tix="1">' + esc(t.cta) + '</button>';
   }
   function skeleton(d) {
