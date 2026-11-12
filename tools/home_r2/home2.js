@@ -22,7 +22,7 @@ window.pkClimbRank = function (C, dd) {
    The Home poster is pk-climb (tools/climb_ladder): it mounts itself into .pk-cl-mount, plays once, Replay and Another year. This file only places it. */
 (function () {
   'use strict';
-  var YEAR = 2027, DATES = 'Aug 5–8, 2027', DAYSW = 'Thursday to Sunday. Early arrival Wed, Aug 4.', DAYSS = 'Thu to Sun · Early arrival Wed, Aug 4';
+  var YEAR = 2027, DATES = 'Aug 4–8, 2027', DAYSW = 'Thu–Sun, early arrival Wed', DAYSS = 'Thu–Sun, early arrival Wed';   /* Round 3 (A2): one date form sitewide */
   var LSR = 'pk27remind';
   /* "Another neighborhood" leads with the strong ones (design: home.html), then the rest in data order */
   var LEAD = ['cherryhill', 'woods', 'galaxy', 'windmill', 'market', 'coyote', 'paddock', 'lushcamp', 'grove', 'curation'];
@@ -56,7 +56,7 @@ window.pkClimbRank = function (C, dd) {
   function reminded() { return !!ls(LSR) || !!site().nlDone; }
   /* the state of the Tickets button and of Home's two money buttons: pre (before the round opens), sale, has (passes bought), or null (nothing to sell) */
   function tix() {
-    readTix(); var s = site(), from = money(P('p3'));
+    readTix(); var s = site(), from = money(window.pkWithFee ? window.pkWithFee(P('p3')) : P('p3'));   // A12: fee-in
     var mp = passes();
     if (mp) { var q = mp[0], nm = String(q.name || 'Pass').replace(/ Pass$/, ''), qty = q.qty ? q.qty + ' × ' : '';
       return { w: 'has', line: '<b>Your passes</b> <span class="pk-tl2-d">· ' + esc(qty + nm) + '</span>', verb: 'Add extras', btn: 'Your passes', go: 'mine', cta: 'Your passes', side: [qty + (q.name || 'Pass'), 'Add parking, camping or a friend'], from: from }; }
@@ -233,14 +233,15 @@ window.pkClimbRank = function (C, dd) {
     var st = $('[data-h2="strip"]', root), sh = st && window.innerWidth >= 600 ? Math.ceil(st.getBoundingClientRect().height) + 12 : 0;   /* phone: the pill sits in the Another year row */
     var v = Math.round(scr) + 'px|' + tl + 'px|' + sh + 'px';
     if (root._v !== v || !root.style.getPropertyValue('--scr')) {   /* the renderer resets the island's own attributes on every render */ root._v = v; root.style.setProperty('--scr', Math.round(scr) + 'px'); root.style.setProperty('--tl', tl + 'px'); root.style.setProperty('--strip', sh + 'px'); }
-    if (desk) { root.style.removeProperty('--h2-hp'); poster(scr); } else fitPh(scr);
+    var wideTab = !desk && window.innerWidth >= 1000 && window.innerWidth > window.innerHeight;   /* Round 3 (A11): sideways tablet uses the desktop poster columns (home2.css) */
+    if (desk) { root.style.removeProperty('--h2-hp'); poster(scr); } else { fitPh(scr); if (wideTab) poster(scr); }
   }
   /* phone and tablet (QA M2, Nov 11): screens 2 and 3 must fit one screen under the ticket line. Clear the fit, measure the natural height,
      then shrink only the poster (a scale, centered) and the neighborhood photo by what spills over. Load, resize and redraw only; one layout pass. */
   function fitPh(scr) {
     var r = root.style; ['--h2-ps', '--h2-pmb', '--h2-pml', '--h2-st', '--h2-hp'].forEach(function (k) { r.removeProperty(k); }); root._ps = '';
     var s2 = $('.h2-s2', root), pw = s2 && $('.pk-cl-pw', s2);
-    if (pw) { var PH = pw.offsetHeight, o = s2.scrollHeight - scr; if (PH && o > 0) { var k = Math.max(0.7, (PH - o - 2) / PH); r.setProperty('--h2-ps', k.toFixed(4)); r.setProperty('--h2-pmb', (-(PH * (1 - k))).toFixed(1) + 'px'); } }
+    if (pw) { var PH = pw.offsetHeight, o = s2.scrollHeight - scr; if (PH && o > 0) { var k = Math.max(window.innerWidth >= 700 ? 0.5 : 0.7, (PH - o - 2) / PH);   /* Round 3 (A11): a wide tablet held sideways has room for a smaller poster; the floor only guards narrow phones */ r.setProperty('--h2-ps', k.toFixed(4)); r.setProperty('--h2-pmb', (-(PH * (1 - k))).toFixed(1) + 'px'); } }
     var s3 = $('.h2-s3', root), ph = s3 && $('.h2-hood-ph', s3);
     if (ph) { var H = ph.offsetHeight, o3 = s3.scrollHeight - scr; if (H && o3 > 0) r.setProperty('--h2-hp', Math.max(72, H - o3 - 2) + 'px'); }
   }
@@ -248,9 +249,9 @@ window.pkClimbRank = function (C, dd) {
   function poster(scr) {
     var s2 = $('.h2-s2', root), m = s2 && $('.pk-cl-mount', s2), pw = m && $('.pk-cl-pw', m); if (!pw) return;
     var PW = parseFloat(pw.style.width) || 0, PH = parseFloat(pw.style.height) || 0; if (!PW || !PH) return;
-    var colW = (m.clientWidth - 48) * 6 / 10, cs = getComputedStyle(s2), availH = scr - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom);
+    var gapC = parseFloat(getComputedStyle(m).columnGap) || 48, colW = (m.clientWidth - gapC) * 6 / 10, cs = getComputedStyle(s2), availH = scr - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom);
     var k = Math.min(1, colW / PW, availH / PH), mb = -(PH * (1 - k));
-    var last = m.querySelector('.pk-cl-tl') || m.querySelector('.pk-cl-tb') || m.querySelector('.pk-cl-hd'), st = $('[data-h2="strip"]', root);
+    var last = null, st = $('[data-h2="strip"]', root); ['.pk-cl-hd', '.pk-cl-tb', '.pk-cl-tl', '.pk-cl-cmp'].forEach(function (q) { var e = m.querySelector(q); if (e && e.offsetParent && (!last || e.getBoundingClientRect().bottom > last.getBoundingClientRect().bottom)) last = e; });   /* Round 3 (A11): the watch strip goes under the lowest block, the reduced-motion lists included */
     var wr = $('.h2-s2in', s2), top = last && wr ? Math.round(last.getBoundingClientRect().bottom - wr.getBoundingClientRect().top + 18) : 0, ml = Math.max(0, colW - PW * k);
     var key = k.toFixed(4) + '|' + top + '|' + Math.round(ml); if (root._ps === key && root.style.getPropertyValue('--h2-ps')) return; root._ps = key;
     root.style.setProperty('--h2-ps', k.toFixed(4)); root.style.setProperty('--h2-pmb', mb.toFixed(1) + 'px'); root.style.setProperty('--h2-pml', ml.toFixed(1) + 'px'); if (top) root.style.setProperty('--h2-st', top + 'px');

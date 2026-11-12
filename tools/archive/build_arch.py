@@ -40,3 +40,7 @@ d = json.load(open(os.path.join(SITE, 'data.json'))); d['archCT'] = out
 json.dump(d, open(os.path.join(SITE, 'data.json'), 'w'), ensure_ascii=False, separators=(',', ':'))
 from collections import Counter
 print(len(out), Counter(o['k'] for o in out), 'with line', sum(1 for o in out if o.get('l')))
+
+# Founder rule (Nov 11): scores and show counts never come back through an import
+import subprocess as _sp, sys as _sys, os as _os
+_sp.run([_sys.executable, _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), '..', 'copy_rules', 'apply.py')], check=True)

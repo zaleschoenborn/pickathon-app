@@ -17,7 +17,7 @@ for r in csv.DictReader(open(sys.argv[1], encoding='utf-8-sig')):
     if c not in ('Legend', 'Discovery', 'Deep cut', 'Neither'): continue
     try: m = float(r.get('magnitude') or 0)
     except ValueError: m = 0.0
-    tdm = (r.get('today_magnitude') or r.get('stature_now') or '').strip()   # Nov 11: size today, for the poster's TODAY rank (blank = not measured)
+    tdm = (r.get('magnitude_dec') or r.get('today_magnitude') or r.get('stature_now') or '').strip()   # Nov 11 18:14 (Classification): magnitude_dec, the peak since booking (one decimal), is the poster's TODAY rank; older tables fall back
     try: tdm = float(tdm) if tdm else None
     except ValueError: tdm = None
     rows.setdefault(r['year'], {})[norm(r['act'])] = [r['act'], c, m, r.get('confidence') or '', tdm]

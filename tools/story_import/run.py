@@ -23,3 +23,7 @@ for r in csv.DictReader(open(sys.argv[1], encoding='utf-8-sig')):
 d['storyFacts'] = out
 json.dump(d, open(DJ, 'w'), ensure_ascii=False, separators=(',', ':'))
 print('storyFacts:', n, 'act-years;', sum(v['hand'] for y in out.values() for v in y.values()), 'hand-researched')
+
+# Founder rule (Nov 11): scores and show counts never come back through an import
+import subprocess as _sp, sys as _sys, os as _os
+_sp.run([_sys.executable, _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), '..', 'copy_rules', 'apply.py')], check=True)

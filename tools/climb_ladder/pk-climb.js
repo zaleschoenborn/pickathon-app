@@ -156,18 +156,18 @@
     var items = PL.cast.map(function (x, i) { var p = ST.N[i]; return { x: x, p: p, sh: PL.SH[i], d: dims(p, PL.SH[i].L, PL.SH[i].lead), o: clamp01(p.vis), end: x[1][n - 1] }; });
     /* when two names pass, the one lower on today's bill steps back. Crossings can last two or three frames, so the step-back is spread over
        about half a second around each one (a tent-weighted look at nearby moments): it eases in and out instead of flashing. */
-    var over = function (N) { var D2 = N.map(function (p, i) { return dims(p, PL.SH[i].L, PL.SH[i].lead); }); return N.map(function (pa, i) { if (pa.vis <= 0) return 0; var dm = 0, a = D2[i];
-      N.forEach(function (pb, j) { if (j === i || pb.vis <= 0 || items[j].end >= items[i].end) return; var b = D2[j], ox = (a.w + b.w) / 2 - Math.abs(a.cx - b.cx), oy = (a.h + b.h) / 2 - Math.abs(a.cy - b.cy); if (ox <= 0 || oy <= 0) return;
-        dm = Math.max(dm, clamp01(oy / (Math.min(a.h, b.h) * 0.9)) * clamp01(ox / (Math.min(a.w, b.w) * 0.5))); }); return dm; }); };
+    var over = function (N) { var D2 = N.map(function (p, i) { var q = dims(p, PL.SH[i].L, PL.SH[i].lead), ch = Math.max.apply(null, PL.SH[i].L.map(function (t) { return t.length; })); q.w += ch * 0.06 * p.f; return q; });   /* + letter spacing and the heavier cut, which the width model leaves out */ return N.map(function (pa, i) { if (pa.vis <= 0) return 0; var dm = 0, a = D2[i];
+      N.forEach(function (pb, j) { if (j === i || pb.vis <= 0 || items[j].end >= items[i].end) return; var b = D2[j], mh = Math.min(a.h, b.h), mw2 = Math.min(a.w, b.w), ox = (a.w + b.w) / 2 + mh * 1.0 - Math.abs(a.cx - b.cx), oy = (a.h + b.h) / 2 + mh * 0.35 - Math.abs(a.cy - b.cy); if (ox <= 0 || oy <= 0) return;
+        var sq = function (t) { t = clamp01(t); return t * t * (3 - 2 * t); }; dm = Math.max(dm, sq(oy / (mh * 0.35)) * sq(ox / (mh * 1.0))); }); return dm; }); };   /* Round 3 B5: each box carries a margin (a third of a line above and below, one line-height at the sides); the name lower on today's bill fades as the margins meet and is fully out by the time two names would touch, so no ghosted pairs mid-flight */
     if (!PL.still) { var ck = B0 ? 'b' + back.e0.toFixed(4) : 'run', CV = PL.dimC && PL.dimC[ck];
-      if (!CV) { var G = B0 ? 240 : 800, RAD = Math.round(G * (B0 ? 0.12 : 0.045)), raw = []; for (var gi = 0; gi <= G; gi++) raw.push(over(stAt(gi / G).N));
+      if (!CV) { var G = B0 ? 240 : 400, RAD = Math.round(G * (B0 ? 0.12 : 0.045)), raw = []; for (var gi = 0; gi <= G; gi++) raw.push(over(stAt(gi / G).N));
         CV = raw.map(function (r, gi) { return r.map(function (v0, i) { var m = 0; for (var d = -RAD; d <= RAD; d++) { var g2 = gi + d; if (g2 < 0 || g2 > G) continue; m = Math.max(m, raw[g2][i] * (1 - Math.abs(d) / (RAD + 1))); } return m; }); });
         PL.dimC = B0 ? { run: PL.dimC && PL.dimC.run } : (PL.dimC || {}); PL.dimC[ck] = CV; }
       var gp = par * (CV.length - 1), g0 = Math.min(CV.length - 2, Math.floor(gp)), gf = gp - g0;
-      var sm1 = function (t) { t = clamp01(t); return t * t * (3 - 2 * t); }, edge = sm1(e / 0.06) * sm1((1 - e) / 0.06);   /* both printed bills rest in full ink */
+      var sm1 = function (t) { t = clamp01(t); return t * t * (3 - 2 * t); }, edge = sm1(e / 0.02) * sm1((1 - e) / 0.02);   /* both printed bills rest in full ink (Round 3 B5: a 2% ramp, was 6%, which let the first and last passes ghost) */
       var R0 = B0 && PL.dimC.run ? (function () { var C2 = PL.dimC.run, q2 = back.e0 * (C2.length - 1), h0 = Math.min(C2.length - 2, Math.floor(q2)), hf = q2 - h0; var ed = sm1(back.e0 / 0.06) * sm1((1 - back.e0) / 0.06); return C2[h0].map(function (v, i) { return (v + (C2[h0 + 1][i] - v) * hf) * ed; }); })() : null, kS = B0 ? back.k * back.k * (3 - 2 * back.k) : 0;
       items.forEach(function (a, i) { var dv = (CV[g0][i] + (CV[g0 + 1][i] - CV[g0][i]) * gf) * (B0 ? 1 : edge); if (B0) dv = (R0 ? R0[i] : 0) * (1 - kS) + dv * Math.sin(Math.PI * back.k);   /* the replay glide starts from the run's own step-back and ends with none */
-        a.o *= 1 - 0.85 * dv; }); }
+        a.o *= 1 - clamp01(dv); }); }   /* Round 3 B5: a name being passed steps all the way back (was 85%, which left a ghost under the climber) */
     // the eye follows the climbers: an act on its way down steps back while it moves (one dip, on its own progress), then lands in full ink
     items.forEach(function (a) { var v0 = a.x[1][0], v1 = a.x[1][n - 1]; if (PL.still || v1 <= v0) return; var pr = clamp01((a.p.v - v0) / (v1 - v0)); a.o *= 1 - 0.68 * clamp01((v1 - v0 - 1) / 5) * Math.sin(Math.PI * pr); });   /* a slip of a place or two barely shows; a real fall steps well back */
     var GLOWINK = (K.light && K.light.toUpperCase() !== PAPER.toUpperCase() && K.light.toUpperCase() !== '#FFFFFF') ? K.light : B, ACC = K.head && K.hc >= 3 ? K.head : A;
@@ -351,6 +351,7 @@
   var lh = 0; window.addEventListener('resize', function () { var h = window.innerHeight; if (mountEl && h !== lh) { lh = h; mountEl._key = null; draw(); } });
   var lw = 0; window.addEventListener('resize', function () { var w = mountEl ? mountEl.clientWidth : 0; if (w && w !== lw) { lw = w; draw(); } });
   window.__pkClimbGo = function (y) { go(y); };  // test hook
+  window.__pkClimbAt = function (u) { stop(); S.back = null; var n = C[S.y].labels.length; S.tp = (n - 1) * Math.max(0, Math.min(1, u)); draw(); };  // test hook: draw the run at eased progress u (0 = printed bill, 1 = today)
   window.pkClimbDraw = function () { draw(); };
   try { document.fonts && document.fonts.ready.then(function () { MCK = {}; if (mountEl) { mountEl._key = null; draw(); } }); } catch (e) {}
 })();
