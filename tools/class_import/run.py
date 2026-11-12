@@ -66,7 +66,34 @@ for y, L in d.get('yearBill', {}).items():
     seen = set(); d['yearBill'][y] = [b for b in d['yearBill'][y] if not (key(b['n']) in seen or seen.add(key(b['n'])))]   # a spelling fix can leave two entries for one act
 
 # "now a Legend" (guide, Nov 11): a yes on the act's first-year row puts lgNow on any card that isn't already a Legend
-LN = {(r['year'], key(r['act'])) for r in rows if r.get('legend_now') == 'yes' and r.get('class') != 'Legend' and r.get('year') == r.get('first_pickathon')}
+def yr(v):
+    try: return str(int(float(v)))
+    except (TypeError, ValueError): return str(v or '')
+LN = {(r['year'], key(r['act'])) for r in rows if r.get('legend_now') == 'yes' and r.get('class') != 'Legend' and r.get('year') == yr(r.get('first_pickathon'))}   # first_pickathon arrives as '2017.0'
+
+# The archive pool (archCT: Before they were big, Legends, Deep cuts) follows the table's first-year class (Nov 11 18:14 reload).
+# Genre (g) and story hook (l) are kept from the existing cards: their source (lineup research) isn't in the class table.
+# m is magnitude_dec, the site's one number.
+G2 = {'Legend': 'leg', 'Discovery': 'disc', 'Deep cut': 'deep'}
+old_ct = {key(c['n']): c for c in d.get('archCT', [])}
+acts = {}
+for r in rows:
+    if r.get('lineup') != 'Music' or (r.get('merged_into') or '').strip() or r.get('class') not in G2: continue
+    if (r['year'], key(r['act'])) in drop: continue
+    k = key(r['act']); A = acts.setdefault(k, {'ys': set()}); A['ys'].add(int(r['year']))
+    if 'y' not in A or int(r['year']) < A['y']:
+        try: m = float(r.get('magnitude_dec') or r.get('magnitude') or 0)
+        except ValueError: m = 0.0
+        A.update({'n': r['act'], 'k': G2[r['class']], 'y': int(r['year']), 'm': m})
+ct = []
+for k, A in acts.items():
+    o0 = old_ct.get(k, {}); o = {'n': o0.get('n') or A['n'], 'k': A['k'], 'y': A['y'], 'ys': sorted(A['ys']), 'm': A['m'], 'g': o0.get('g', '')}
+    if o0.get('l'): o['l'] = o0['l']
+    ct.append(o)
+ct.sort(key=lambda o: (o['y'], o['n'].lower()))
+moved = sum(1 for o in ct if key(o['n']) in old_ct and (old_ct[key(o['n'])].get('k'), old_ct[key(o['n'])].get('y')) != (o['k'], o['y']))
+d['archCT'] = ct
+print('archive pool:', len(ct), collections.Counter(o['k'] for o in ct), 'first-year class or year changed:', moved, 'new:', sum(1 for o in ct if key(o['n']) not in old_ct))
 def first(y): return y[0] if isinstance(y, list) and y else y
 n_ln = 0
 for store in (d.get('past', {}).get('deep', []), d.get('archCT', []), d.get('deepcuts', [])):
