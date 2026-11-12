@@ -2484,3 +2484,26 @@ body.dooron #door{display:block}
   window.__pickForTest=h=>{ setCur(h); pinned=h; flyTo(h); };
 })();
 </script>
+<style id="pk-buttons-nov11">/*pk-buttons-nov11 (Nov 11, QA defect M9): the map's buttons join the site's one button system (index.html, block of the same id), matching Home's pills.
+Outline = goes somewhere (Find, Full map, Explore), with a dark see-through fill over the map; cream = the pressed kind chip; round icons for close and arrows.
+Pills are fully round, 44px on phone and tablet, 38px on desktop (1200+), sentence case, 14-15px bold. Selectors keep the arrow cursor.*/
+html body #lpchips button{height:44px!important;min-height:44px!important;border-radius:999px!important;border:1.5px solid rgba(242,237,227,.55)!important;background:transparent!important;color:#F2EDE3!important;font:700 15px/1 var(--f)!important;letter-spacing:.01em!important;text-transform:none!important;font-stretch:normal!important;font-variation-settings:normal!important;cursor:default!important}
+html body #lpchips button[aria-pressed="true"]{background:#F2EDE3!important;border-color:#F2EDE3!important;color:#2B2628!important}
+html body #fullmap,html body #finder #ptog{min-height:44px!important;height:44px!important;padding:0 16px 0 13px!important;border-radius:999px!important;border:1.5px solid rgba(242,237,227,.6)!important;background:rgba(18,22,15,.55)!important;-webkit-backdrop-filter:blur(6px)!important;backdrop-filter:blur(6px)!important;box-shadow:none!important;color:#F2EDE3!important;font:700 15px/1 var(--f)!important;letter-spacing:.01em!important;text-transform:none!important;font-stretch:normal!important;font-variation-settings:normal!important;gap:8px!important}
+html body #finder #ptog[aria-expanded="true"],html body #finder #ptog.on{background:#F2EDE3!important;border-color:#F2EDE3!important;color:#2B2628!important}
+html body #finder #ptog.on{padding:0 10px 0 5px!important}
+html body #door .dgo{height:44px!important;min-height:44px!important;border-radius:999px!important;border:1.5px solid rgba(242,237,227,.55)!important;background:transparent!important;color:#F2EDE3!important;font:700 15px/1 var(--f)!important;letter-spacing:.01em!important;text-transform:none!important;filter:none!important}
+html body #door .dgo:hover,html body #door .dib:hover,html body #pclose:hover{border-color:#F2EDE3!important}
+html body #door .dbar .dgo{font-size:14px!important;padding:0 14px!important}
+html body #door .dib,html body #pclose{width:44px!important;height:44px!important;min-width:44px!important;padding:0!important;border-radius:999px!important;border:1.5px solid rgba(242,237,227,.55)!important;background:transparent!important;color:#F2EDE3!important;font:700 18px/1 var(--f)!important;display:inline-flex!important;align-items:center!important;justify-content:center!important}
+@media (min-width:1200px){
+html body #fullmap,html body #finder #ptog{min-height:38px!important;height:38px!important;font-size:14px!important}
+html body #door .dgo{height:38px!important;min-height:38px!important;font-size:14px!important}
+html body #door .dib,html body #pclose{width:38px!important;height:38px!important;min-width:38px!important;font-size:16px!important}
+}
+</style>
+<style id="pk-buttons-nov11b">/*pk-buttons-nov11, part 2: the Creative Neighborhoods asks on the desktop map are outline pills (gold is only for money and reminders)*/
+html body #ibuild{min-height:38px!important;padding:0 16px!important;border-radius:999px!important;border:1.5px solid rgba(242,237,227,.55)!important;background:transparent!important;color:#F2EDE3!important;font:700 14px/1 var(--f)!important;letter-spacing:.01em!important;text-transform:none!important}
+html body .pcb{display:flex!important;align-items:center!important;justify-content:center!important;width:fit-content!important;max-width:100%!important;box-sizing:border-box!important;min-height:38px!important;margin:12px auto 4px!important;padding:0 16px!important;border:1.5px solid rgba(242,237,227,.55)!important;border-radius:999px!important;color:#F2EDE3!important;font:700 14px/1.1 var(--f)!important;letter-spacing:.01em!important;text-transform:none!important;font-stretch:normal!important;font-variation-settings:normal!important}
+html body .pcb:hover,html body #ibuild:hover{border-color:#F2EDE3!important;color:#F2EDE3!important}
+</style>
