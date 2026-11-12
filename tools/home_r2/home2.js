@@ -28,7 +28,7 @@ window.pkClimbRank = function (C, dd) {
   var LEAD = ['cherryhill', 'woods', 'galaxy', 'windmill', 'market', 'coyote', 'paddock', 'lushcamp', 'grove', 'curation'];
   var KIND = { stage: 'Stage neighborhood', around: 'Gathering neighborhood', camp: 'Camping neighborhood' }, GROUPS = [['stage', 'Stage'], ['around', 'Gathering'], ['camp', 'Camping']];
   var HERO = 'i/r3-home-hero.jpg', ACT = 'i/pk-paddock-c11.jpg';   /* HERO is only the fallback: the hero cycles data.homeHero (Round 3.5, Zale Nov 11 23:30) */
-  var HERO_MS = 7000;   /* each hero photo holds 7 s, then a 1.6 s crossfade (home2.css). No motion with reduced motion: the first frame stays. */
+  var HERO_MS = 5000;   /* each hero photo holds 5 s (the 5174 pace), with a slow settle from 104% (home2.css). No motion with reduced motion: the first frame stays. */
   var WALL = /[?&]wall=1\b/.test(location.search);   /* the name wall, for review only */
   var QUOTE = ['You need to know about Pickathon.', 'USA Today'];
 
@@ -111,7 +111,7 @@ window.pkClimbRank = function (C, dd) {
   function tixHidden(line) { var r = route(); return r === 'tickets' || !!document.getElementById('pk-co') || (site().season || 'off') === 'fest' || (line && r === 'hoods'); }
   function drawButtons() {
     var t = null; try { t = tix(); } catch (e) {}
-    var off = !t || tixHidden(), offL = !t || tixHidden(true), home = !!document.getElementById('pkh2');
+    var home = !!document.getElementById('pkh2'), off = !t || tixHidden(), offL = !t || tixHidden(true) || home;   /* Zale Nov 12 07:39: no sticky ticket line on Home (5174 had none), before the sale or on it */
     var tl = document.getElementById('pk-tl2');
     if (tl) {
       tl.classList.add('pk-tl2w'); if (offL) tl.setAttribute('data-off', ''); else tl.removeAttribute('data-off');
@@ -142,18 +142,16 @@ window.pkClimbRank = function (C, dd) {
     var t = null; try { t = tix(); } catch (e) {}
     var ids = hoodIds(d), cnt = function (g) { return ids.filter(function (i) { return d.hoods[i].k === g; }).length; };
     var h = '';
-    /* 1 PROMISE */
+    /* 1 PROMISE (Zale, Nov 12 07:39): back to the build 5174 hero. The 25-photo shuffled gallery full-bleed, the headline over the photo, one line,
+       the sale line, one button, Photo tour top right. No credit on the photo (credits stay in the data). Nothing else on this screen. */
     var HL = heroes(d);
-    h += '<section class="h2-s h2-s1" aria-labelledby="h2-h1"><div class="h2-s1ph" data-slot="home.hero" role="group" aria-roledescription="photos" aria-label="Photos from past Pickathons">' + HL.map(function (x, k) {
-        return '<img class="h2-hf' + (k ? '' : ' is-on') + '" ' + (k ? 'data-src' : 'src') + '="' + esc(heroSrc(x)) + '" alt="' + esc(x.alt || '') + '"' + (k ? ' aria-hidden="true"' : '') + ' style="object-position:' + esc(x.p || '50% 50%') + '"' + (k ? ' loading="lazy"' : ' fetchpriority="high" loading="eager"') + ' decoding="async">'; }).join('') +
-      '<p class="h2-hcap" data-h2="hcap">' + esc(heroCap(HL[0])) + '</p>' +
-      '<button type="button" class="h2-tour" data-h2="tour"><span aria-hidden="true">▶</span>Take the tour</button>' +
-      (HL.length > 1 ? '<button type="button" class="h2-hpz" data-h2="hpause" aria-pressed="false" aria-label="Pause the photos"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path class="pz" d="M7 5h3.5v14H7zM13.5 5H17v14h-3.5z"/><path class="pl" d="M8 5 L19 12 L8 19 Z"/></svg></button>' : '') + '</div>' +
-      '<h1 class="h2-d h2-hero pkp-head" id="h2-h1"><span>Your new favorite band</span><span>is playing.</span><span>You just haven’t</span><span>met them yet.</span></h1>' +
-      '<div class="h2-s1b"><p class="h2-lead">Four days of music on a forest farm in Happy Valley, Oregon.</p>' +
-      '<div class="h2-paper h2-band"><div class="h2-band-m"><p class="h2-d h2-band-d pkp-head">' + DATES + '</p><p class="h2-band-w">' + DAYSW + '</p></div>' +
-      '<div class="h2-band-p"><small>3-Day Pass from</small><b class="h2-num" data-h2="from">' + (t ? t.from : '') + '</b><small>camping included</small><small>kids 12 &amp; under free</small></div></div>' +
-      '<div class="h2-cta" data-h2="cta1"></div></div></section>';
+    h += '<section class="h2-s h2-s0" aria-labelledby="h2-h1"><div class="h2-oh-ph" data-slot="home.hero" aria-hidden="true">' + HL.map(function (x, k) {
+        return '<img class="h2-hf' + (k ? '' : ' is-on') + '" ' + (k ? 'data-src' : 'src') + '="' + esc(x.i) + '" alt=""' + (k ? ' loading="lazy"' : ' fetchpriority="high" loading="eager"') + ' decoding="async">'; }).join('') +
+      '</div><div class="h2-oh-g" aria-hidden="true"></div>' +
+      '<button type="button" class="h2-oh-tour" data-h2="tour" aria-label="Photo tour"><span aria-hidden="true">' + PLAY + '</span>Photo tour</button>' +
+      '<div class="h2-oh-in"><h1 class="h2-d h2-oh-h1 pkp-head" id="h2-h1">Your new favorite band is playing. You just haven’t met them yet.</h1>' +
+      '<p class="h2-oh-what">A four-day music festival on a forest farm in Happy Valley, Oregon<span> · </span><b>' + DATES + '</b></p>' +
+      '<div class="h2-oh-cta" data-h2="cta1"></div></div></section>';
     var hP = h; h = '';
     /* 4 PROOF: the poster climb (pk-climb draws into .pk-cl-mount, plays once, Replay, Another year). Zale 23:38: it stays on Home; make the before
        and after obvious. Home adds the two labeled states above it (drawBA): "As printed, YYYY" and "Re-ordered by today", lit as the names move.
@@ -175,10 +173,11 @@ window.pkClimbRank = function (C, dd) {
       '<span class="h2-hood-o"><span class="h2-hood-k" data-h2="hk"></span><span class="h2-d h2-hood-n pkp-head" data-h2="hn"></span><span class="h2-hood-tag" data-h2="htag"></span></span>' +
       '<span class="h2-hood-go" aria-hidden="true"><span>Explore</span>' + CHEV + '</span></button>' +
       '<button type="button" class="h2-hmap" data-h2="hmap">' + mapSVG(d) + '</button></div>' +
-      '<div class="h2-city" role="group" aria-label="Pick a neighborhood">' + GROUPS.map(function (g) {
+      /* Zale Nov 12 07:39: the twenty emblems as ONE swipe row, grouped Stage, Gathering, Camping, a small kind label where each group starts */
+      '<div class="h2-strip" role="group" aria-label="Pick a neighborhood">' + GROUPS.map(function (g) {
         var L = ids.filter(function (i) { return d.hoods[i].k === g[0]; });
-        return '<p class="h2-city-k" data-g="' + g[0] + '"><i class="h2-dot" aria-hidden="true"></i>' + cnt(g[0]) + ' ' + g[1] + ' neighborhoods</p><div class="h2-city-r">' + L.map(function (i) {
-          var H = d.hoods[i]; return '<button type="button" class="h2-em" data-h="' + i + '" aria-pressed="false" aria-label="' + esc(H.n) + '" title="' + esc(H.n) + '"><img src="' + esc(H.icw || ('ic2/' + i + '.png')) + '" alt="" width="44" height="44" loading="lazy"></button>'; }).join('') + '</div>';
+        return '<div class="h2-sg" data-g="' + g[0] + '"><p class="h2-sg-k" aria-hidden="true"><i class="h2-dot"></i>' + g[1] + '</p><div class="h2-sg-r">' + L.map(function (i) {
+          var H = d.hoods[i]; return '<button type="button" class="h2-em" data-h="' + i + '" aria-pressed="false" aria-label="' + esc(H.n) + ', ' + KIND[H.k] + '" title="' + esc(H.n) + '"><img src="' + esc(H.icw || ('ic2/' + i + '.png')) + '" alt="" width="48" height="48" loading="lazy"></button>'; }).join('') + '</div></div>';
       }).join('') + '</div>' +
       '<div class="h2-row h2-s3row"><button type="button" class="h2-pill" data-h2="allhoods">Explore all neighborhoods</button></div></section>';
     var hPlace = h; h = '';
@@ -193,19 +192,32 @@ window.pkClimbRank = function (C, dd) {
       '<div class="h2-stub-buy"><p><small>3-Day Pass from</small><b class="h2-num" data-h2="from">' + (t ? t.from : '') + '</b></p><span data-h2="cta4"></span></div></div></div></section>';
     /* 2 CONCEPT (Round 3 E1/E2, Zale approved the blend Nov 11): one Discovery at a time, the fact first. The photo and the gold pill play
        the video; the words open the archive at that artist; Another discovery walks the ranking; See all opens the archive. */
-    var hBand = '<section class="h2-s h2-s5" aria-labelledby="h2-h5"><div class="h2-s5head"><h2 class="h2-d h2-sec pkp-head" id="h2-h5">Be there before they’re big</h2>' +
+    /* 2 CONCEPT (Zale Nov 12 ~08:20): a carousel again, as build 5174, in today's ranking (magnitude_dec). Card: the photo full-bleed with the
+       transparent play ring centered when there is a clip (no gold pill); kind left and first year right; name; the fact; the clip and
+       "Pickathon YYYY" in the caption. Photo plays, words open the archive at that artist. See all Discoveries under it. Filled by drawBand(). */
+    var hBand = '<section class="h2-s h2-s5" aria-labelledby="h2-h5"><div class="h2-s5head"><div><h2 class="h2-d h2-sec pkp-head" id="h2-h5">Be there before they’re big</h2>' +
       '<p class="h2-sub h2-s5sub">You don’t know this year’s lineup yet. Neither did anyone who saw these bands here first.</p></div>' +
-      '<article class="h2-bc" data-h2="band" aria-live="polite"><button type="button" class="h2-bc-ph" data-h2="bph"><img alt="" decoding="async"><span class="h2-pill h2-watch h2-bc-w" data-h2="bw">' + PLAY + '<span></span></span></button>' +
-      '<button type="button" class="h2-bc-t" data-h2="barch"><span class="h2-bc-k"><span data-h2="bk"></span><span class="h2-bc-y" data-h2="by"></span></span><span class="h2-d h2-bc-n pkp-head" data-h2="bn"></span><span class="h2-bc-l" data-h2="bl"></span><span class="h2-bc-q" data-h2="bq"></span></button></article>' +
-      '<div class="h2-row h2-s5row"><button type="button" class="h2-pill h2-cream" data-h2="nextdisc">Another discovery</button><button type="button" class="h2-pill" data-h2="alldisc">See all Discoveries</button></div></section>';
+      '<div class="h2-cc-nav"><button type="button" class="h2-ib" data-h2="cprev" aria-label="Previous discoveries">' + CHEV + '</button><button type="button" class="h2-ib" data-h2="cnext" aria-label="More discoveries">' + CHEV + '</button></div></div>' +
+      '<div class="h2-cc-r" data-h2="cards" role="list" aria-label="Discoveries, ranked by how big they are today"></div>' +
+      '<div class="h2-row h2-s5row"><button type="button" class="h2-pill" data-h2="alldisc">See all Discoveries</button></div></section>';
     return hP + hBand + hPlace + hPoster + h;
   }
-  function ctaKey(t) { return t ? [t.w, t.cta, t.from, t.side.join('|')].join('#') : '-'; }
+  /* the hero's sale line and its one button (5174 wording). Before the round: "Holiday Sale opens Nov 19, 10 am PT" + Alert me when it opens (the
+     remind sheet; quiet gold primary). On sale: "Tickets are running out" + Get tickets (solid strong gold). Passes bought: Your passes. */
+  function heroCTA(t) {
+    if (!t) return '';
+    var line = '', btn = t.cta, sale = t.w === 'sale';
+    if (t.w === 'pre') { var n = (T && T.next) || {}; line = n.name + ' opens ' + (n.isToday ? 'today' + (n.time ? ', ' + n.time : '') : (window.innerWidth >= 1200 ? n.whenL : n.whenC)); btn = 'Alert me when it opens'; }
+    else if (sale) { line = 'Tickets are running out'; btn = 'Get tickets'; }
+    else line = t.side[0] || '';
+    return (line ? '<p class="h2-oh-sea pk-krtk">' + esc(line) + '</p>' : '') + '<button type="button" class="h2-oh-btn' + (sale ? ' is-sale' : '') + '" data-h2tix="1">' + esc(btn) + '</button>';
+  }
+  function ctaKey(t) { return t ? [t.w, t.cta, t.from, t.side.join('|'), window.innerWidth >= 1200].join('#') : '-'; }
   function drawCTA() {
     if (!root) return; var t = null; try { t = tix(); } catch (e) {}
     var k = ctaKey(t); if (root._cta === k) return; root._cta = k;
     var c1 = $('[data-h2="cta1"]', root), c4 = $('[data-h2="cta4"]', root), c6 = $('[data-h2="cta6"]', root);
-    if (c1) { c1.innerHTML = t ? ctaHTML(t, true) + '<p class="pk-krtk">' + esc(t.side[0]) + (t.side[1] ? '<span>' + esc(t.side[1]) + '</span>' : '') + '</p>' : ''; }
+    if (c1) c1.innerHTML = heroCTA(t);
     if (c4) c4.innerHTML = ctaHTML(t, true);
     if (c6) c6.innerHTML = ctaHTML(t, false);
     $$('[data-h2="from"]', root).forEach(function (e) { e.textContent = t ? t.from : ''; });
@@ -222,7 +234,7 @@ window.pkClimbRank = function (C, dd) {
   function mapPick(k) {
     var sv = root && $('.h2-msvg', root); if (!sv || !HH) return;
     var W = HH.size[0], H = HH.size[1], p = HH.pts[k] || [50, 50], px = p[0] / 100 * W, py = p[1] / 100 * H;
-    var bw = sv.clientWidth || 1, bh = sv.clientHeight || 1, vw = W, vh = H, x0 = 0, y0 = 0, whole = window.innerWidth < 600, sc, pin;
+    var bw = sv.clientWidth || 1, bh = sv.clientHeight || 1, vw = W, vh = H, x0 = 0, y0 = 0, whole = false, sc, pin;   /* Home 3: the phone map fills its column too (cropped on the pick), no empty bands above and below */
     /* Gate 1 fix 11 (D10): on phone the map column shows the whole farm (meet), with the pick lit and its emblem on it */
     sv.setAttribute('preserveAspectRatio', whole ? 'xMidYMid meet' : 'xMidYMid slice');
     if (whole) { sv.setAttribute('viewBox', '0 0 ' + W + ' ' + H); sc = Math.min(bw / W, bh / H); pin = 28 / sc; }
@@ -250,15 +262,22 @@ window.pkClimbRank = function (C, dd) {
     var r = s3.getBoundingClientRect(), vh = window.innerHeight; if (r.bottom < vh * 0.4 || r.top > vh * 0.6) return;   /* only while the section is the one on screen */
     if (hoodSet(cur).length < 2) return; hpI++; hoodShow(cur, hpI, true);
   }
+  /* keep the picked emblem in view in the swipe row (no page scroll, only the row) */
+  function stripTo(k) {
+    var r = root && $('.h2-strip', root), b = r && $('.h2-em[data-h="' + k + '"]', r); if (!r || !b || r.scrollWidth <= r.clientWidth + 1) return;
+    var bl = b.offsetLeft - r.offsetLeft, pad = 56;
+    if (bl < r.scrollLeft + pad || bl + b.offsetWidth > r.scrollLeft + r.clientWidth - pad) { try { r.scrollTo({ left: Math.max(0, bl - r.clientWidth / 2 + b.offsetWidth / 2), behavior: reduced() ? 'auto' : 'smooth' }); } catch (e) { r.scrollLeft = bl - r.clientWidth / 2; } }
+  }
   function hood(k) {
     var d = D, H = d && d.hoods[k]; if (!H) return; cur = k; hpI = 0;
     hoodShow(k, 0, false);
     $('[data-h2="hood"]', root).setAttribute('data-slot', 'home.place.' + k);
     $('[data-h2="hn"]', root).textContent = H.n; $('[data-h2="hk"]', root).textContent = KIND[H.k]; $('[data-h2="htag"]', root).textContent = H.t || '';
-    $('[data-h2="hood"]', root).setAttribute('aria-label', H.n + ', ' + KIND[H.k] + (H.t ? ', ' + H.t : '') + '. Explore it on the map');
+    $('[data-h2="hood"]', root).setAttribute('aria-label', H.n + ', ' + KIND[H.k] + (H.t ? ', ' + H.t : '') + '. Open its page');
     var mb = $('[data-h2="hmap"]', root); if (mb) mb.setAttribute('aria-label', 'Where ' + H.n + ' is on the farm. Open the map');
     $$('.h2-em', root).forEach(function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-h') === k ? 'true' : 'false'); });
-    $$('.h2-city-k', root).forEach(function (p) { p.classList.toggle('is-on', p.getAttribute('data-g') === H.k); });
+    $$('.h2-sg', root).forEach(function (p) { p.classList.toggle('is-on', p.getAttribute('data-g') === H.k); });
+    stripTo(k);
     mapPick(k);
     if (!hpT) hpT = setInterval(hoodTick, 4000);
   }
@@ -276,19 +295,45 @@ window.pkClimbRank = function (C, dd) {
     }).filter(function (a) { return a.img; });
     BL.sort(window.pkRankCmp || function () { return 0; }); BLd = D; return BL;
   }
+  var NCARD = 30;   /* the top 30 by today's rank; See all opens the whole archive */
+  var RING = '<span class="h2-ring" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path d="M8.5 5.5 L19 12 L8.5 18.5 Z"/></svg></span>';
+  /* a song name from a raw video title: drop the act's name, "Pickathon YYYY", @pickathon tags and series names; nothing left = no song */
+  function cleanSong(t, n) {
+    var x = String(t || ''), q = String(n || '').replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    x = x.replace(/\s*[@(\[]?\s*pickathon\b[^)\]]*[)\]]?/ig, ' ').replace(/\b(On The Farm Sessions?|Live at|Full set|Live)\b/ig, ' ');
+    if (q) x = x.replace(new RegExp(q, 'ig'), ' ');
+    x = x.replace(/\s*[-–—|:,]\s*$/g, '').replace(/^\s*[-–—|:,]\s*/g, '').replace(/\s*[-–—|]\s*[-–—|]\s*/g, ' – ').replace(/\s{2,}/g, ' ').trim();
+    x = x.replace(/^[-–—|:,\s"“”']+|[-–—|:,\s"“”']+$/g, '');
+    x = x.replace(/[\u200b-\u200f\u2060\ufeff]/g, '').replace(/^[^-–]*\(S\d+E\d+\)\s*[-–]\s*/i, '').replace(/\s*[-–]\s*[^-–]*\b(Stage|Sessions?|Barn)\s*$/i, '').replace(/\s*\([^)]*$/, '');
+    x = x.replace(/^[-–—|:,\s"“”']+|[-–—|:,\s"“”']+$/g, '');
+    return x.length >= 2 && !/^\d{4}$/.test(x) ? x : '';
+  }
+  function clipCap(a) {
+    if (!a.vu) return '';
+    var r = vidRec(vidOf(a.vu));
+    var t = r && r.s ? cleanSong(r.s, a.n) : '';
+    if (t) return '“' + t + '” · Pickathon ' + (r.y || a.y);
+    if (r && /full set/i.test(r.s || '')) return 'Full set · Pickathon ' + (r.y || a.y);
+    return (/^Listen/.test(a.vt || '') ? 'Listen · ' : '') + 'Pickathon ' + a.y;
+  }
   function drawBand() {
     if (!root) return; var L = bandList(), s = $('.h2-s5', root); if (!s) return;
     if (!L.length) { s.hidden = true; return; } s.hidden = false;
-    var a = L[((bi % L.length) + L.length) % L.length], ph = $('[data-h2="bph"]', s), w = $('[data-h2="bw"]', s);
-    $('img', ph).src = a.img; $('img', ph).alt = '';
-    ph.setAttribute('aria-label', a.vu ? (/^Listen/.test(a.vt) ? 'Listen to ' : 'Watch ') + a.n + ' at Pickathon ' + a.y : a.n + ': see the archive');
-    w.hidden = !a.vu; $('span', w).textContent = a.vu ? a.vt : '';
-    $('[data-h2="bk"]', s).textContent = a.kind; $('[data-h2="by"]', s).textContent = a.y;
-    $('[data-h2="bn"]', s).textContent = a.n; $('[data-h2="bl"]', s).textContent = a.line;
-    $('[data-h2="bq"]', s).textContent = a.vu ? '' : 'Played Pickathon ' + a.y;
-    $('[data-h2="barch"]', s).setAttribute('aria-label', a.n + ', ' + a.kind + ', Pickathon ' + a.y + '. See ' + a.n + ' in the archive');
-    s._a = a;
-    if (window.innerWidth < 1200) { try { vars(); } catch (e) {} }   /* a longer or shorter fact: the photo takes what is left, so the section stays one screen */
+    var box = $('[data-h2="cards"]', s), key = L.length + '|' + (L[0] || {}).n; if (box._k === key) return; box._k = key;
+    box.innerHTML = L.slice(0, NCARD).map(function (a, i) {
+      var cap = clipCap(a);
+      return '<article class="h2-cc" role="listitem"><button type="button" class="h2-cc-ph" data-h2="bph" data-i="' + i + '" aria-label="' + esc(a.vu ? (/^Listen/.test(a.vt || '') ? 'Listen to ' : 'Watch ') + a.n + ', Pickathon ' + a.y : a.n + ': see the archive') + '">' +
+        '<img src="' + esc(a.img) + '" alt="" loading="' + (i < 3 ? 'eager' : 'lazy') + '" decoding="async">' + (a.vu ? RING : '') + '</button>' +
+        '<button type="button" class="h2-cc-t" data-h2="barch" data-i="' + i + '" aria-label="' + esc(a.n + ', ' + a.kind + ', Pickathon ' + a.y + '. See ' + a.n + ' in the archive') + '">' +
+        '<span class="h2-cc-k"><span>' + esc(a.kind) + '</span><span class="h2-cc-y">' + esc(a.y) + '</span></span><span class="h2-d h2-cc-n pkp-head">' + esc(a.n) + '</span>' +
+        '<span class="h2-cc-l">' + esc(a.line) + '</span>' + (cap ? '<span class="h2-cc-c">' + esc(cap) + '</span>' : '') + '</button></article>';
+    }).join('');
+    guard(box); s._L = L;
+  }
+  function cardStep(dir) {
+    var r = root && $('[data-h2="cards"]', root), c = r && $('.h2-cc', r); if (!r || !c) return;
+    var step = (c.offsetWidth + (parseFloat(getComputedStyle(r).columnGap) || 16)) * Math.max(1, Math.floor(r.clientWidth / (c.offsetWidth + 16)));
+    try { r.scrollBy({ left: dir * step, behavior: reduced() ? 'auto' : 'smooth' }); } catch (e) { r.scrollLeft += dir * step; }
   }
   /* the card's fact, about 100 characters (funnel panel, Nov 11: the section must fit 360x740). The long story stays in the archive.
      Mechanical until the story file brings a short hook per act: the whole line if it is short; else the sentence with the strongest
@@ -343,9 +388,11 @@ window.pkClimbRank = function (C, dd) {
     var b = $('[data-h2="alldisc"]', s); if (b) b.textContent = 'See all ' + L.length;
   }
   /* ---------- 1. the hero: a slow crossfade through data.homeHero (architecture, crowd, performance; best first) ---------- */
-  function heroes(d) { var L = ((d && d.homeHero) || []).filter(function (x) { return x && x.i; }); return L.length ? L : [{ i: HERO, p: '50% 62%', alt: 'A band on a hand-built stage at night, the crowd close in front' }]; }
-  function heroSrc(x) { return (window.innerWidth <= 820 && x.m) ? x.m : x.i; }   /* phone and portrait tablet: a 900px square crop on the photo's subject */
-  function heroCap(x) { return x ? [x.place, x.y ? 'Pickathon ' + x.y : '', x.by].filter(Boolean).join(' · ') : ''; }
+  /* the build 5174 gallery (982fdcb, home reel), shuffled once per visit; data.homeHero is no longer used on Home */
+  var REEL = ['i/318.jpg', 'i/p573.jpg', 'court-lily-night-2026-a.jpg', 'court-fish-night-2025-a.jpg', 'i/p9002.jpg', 'i/p574.jpg', 'i/p656.jpg', 'i/p563.jpg', 'i/p775.jpg', 'i/p632.jpg', 'i/p750.jpg', 'i/p729.jpg', 'i/p536.jpg',
+    'i/p592.jpg', 'i/p479.jpg', 'i/p640.jpg', 'i/p629.jpg', 'i/p652.jpg', 'i/p766.jpg', 'i/p439.jpg', 'i/p659.jpg', 'i/p476.jpg', 'i/p746.jpg', 'i/p747.jpg', 'i/p595.jpg'];
+  var HSH = null;
+  function heroes() { if (!HSH) { var A = REEL.slice(); for (var i = A.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)), x = A[i]; A[i] = A[j]; A[j] = x; } HSH = A.map(function (i) { return { i: i }; }); } return HSH; }
   var hi = 0, hPaused = false, hTimer = null;
   function reduced() { try { return window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { return false; } }
   function heroLoad(k) { var I = $$('.h2-hf', root)[k]; if (I && I.getAttribute('data-src')) { I.src = I.getAttribute('data-src'); I.removeAttribute('data-src'); I.loading = 'eager'; } return I; }
@@ -354,7 +401,6 @@ window.pkClimbRank = function (C, dd) {
     var I = $$('.h2-hf', root); if (I.length < 2) return; var nx = (hi + 1) % I.length, N = heroLoad(nx);
     if (!N || !N.complete || !N.naturalWidth) return;   /* not loaded yet: try again next tick */
     I[hi].classList.remove('is-on'); I[hi].setAttribute('aria-hidden', 'true'); N.classList.add('is-on'); N.removeAttribute('aria-hidden'); hi = nx;
-    var c = $('[data-h2="hcap"]', root); if (c) c.textContent = heroCap(heroes(D)[hi]);
     heroLoad((hi + 1) % I.length);   /* the next one loads during this one's 7 s */
   }
   function heroStart() { if (hTimer) clearInterval(hTimer); hi = 0; hTimer = setInterval(heroStep, HERO_MS); setTimeout(function () { if (root) heroLoad(1); }, 2500); }
@@ -387,7 +433,7 @@ window.pkClimbRank = function (C, dd) {
     var r = root.style; ['--h2-ps', '--h2-pmb', '--h2-pml', '--h2-hp'].forEach(function (k) { r.removeProperty(k); }); root._ps = '';
     var s2 = $('.h2-s2', root), pw = s2 && $('.pk-cl-pw', s2);
     if (pw) { var PH = pw.offsetHeight, o = s2.scrollHeight - scr; if (PH && o > 0) { var k = Math.max(window.innerWidth >= 700 ? 0.5 : (window.innerHeight < 700 ? 0.42 : 0.52), (PH - o - 2) / PH);   /* short phones (Safari bars showing) let the poster go smaller so the screen still fits */ r.setProperty('--h2-ps', k.toFixed(4)); r.setProperty('--h2-pmb', (-(PH * (1 - k))).toFixed(1) + 'px'); } }
-    var s5 = $('.h2-s5', root), bp = s5 && $('.h2-bc-ph', s5);
+    var s5 = $('.h2-s5', root), bp = null;
     if (bp) { r.removeProperty('--h2-bp'); var BH = bp.offsetHeight, o5 = s5.scrollHeight - scr; if (BH && o5 > 0) r.setProperty('--h2-bp', Math.max(96, BH - o5 - 2) + 'px'); }
     var s3 = $('.h2-s3', root), ph = s3 && $('.h2-hmv', s3);
     if (ph) { var H = ph.offsetHeight, o3 = s3.scrollHeight - scr; if (H && o3 > 0) r.setProperty('--h2-hp', Math.max(72, H - o3 - 2) + 'px'); }
@@ -417,7 +463,7 @@ window.pkClimbRank = function (C, dd) {
   }
   function watchS1() {
     if (io) { io.disconnect(); io = null; }
-    var s1 = root && $('.h2-s1', root); if (!s1 || !('IntersectionObserver' in window)) { tucked = false; return; }
+    var s1 = root && $('.h2-s0', root); if (!s1 || !('IntersectionObserver' in window)) { tucked = false; return; }
     io = new IntersectionObserver(function (en) { var t = en[0].intersectionRatio > 0.35; if (t !== tucked) { tucked = t; drawButtons(); } }, { threshold: [0, 0.35, 0.6, 1] });
     io.observe(s1);
   }
@@ -439,11 +485,13 @@ window.pkClimbRank = function (C, dd) {
     if (!root || !root.contains(b)) return;
     if (b.classList.contains('h2-em')) { hood(b.getAttribute('data-h')); return; }
     var a = b.getAttribute('data-h2');
-    if (a === 'nextdisc') { bi++; drawBand(); return; }
+    if (a === 'cprev' || a === 'cnext') { cardStep(a === 'cnext' ? 1 : -1); return; }
     if (a === 'alldisc') { toArchive(null); return; }
-    if (a === 'barch') { var sa = $('.h2-s5', root); toArchive(sa && sa._a ? sa._a.n : null); return; }
-    if (a === 'bph') { var sb = $('.h2-s5', root), ba = sb && sb._a; if (!ba) return; if (!ba.vu) { toArchive(ba.n); return; } try { if (/open\.spotify\.com/.test(ba.vu) && window.__pkOpenMusic) { window.__pkOpenMusic(ba.vu); return; } if (window.__pkPlayVid) window.__pkPlayVid(ba.vu, ba.n + ' · Pickathon ' + ba.y); } catch (x) {} return; }
-    if (a === 'hood' || a === 'hmap') { if (window.__pkMapH) window.__pkMapH(cur)(); else go('hoods'); return; }
+    if (a === 'barch' || a === 'bph') { var sl = $('.h2-s5', root), ba = sl && sl._L && sl._L[+b.getAttribute('data-i')]; if (!ba) return;
+      if (a === 'barch' || !ba.vu) { toArchive(ba.n); return; }
+      try { if (/open\.spotify\.com/.test(ba.vu) && window.__pkOpenMusic) { window.__pkOpenMusic(ba.vu); return; } if (window.__pkPlayVid) window.__pkPlayVid(ba.vu, clipCap(ba) || (ba.n + ' · Pickathon ' + ba.y)); } catch (x) {} return; }
+    if (a === 'hood') { if (cur) go('hood', { h: cur }); return; }   /* Zale Nov 12: the photo opens that neighborhood's own page (#/hood/<key>) */
+    if (a === 'hmap') { if (window.__pkMapH) window.__pkMapH(cur)(); else go('hoods'); return; }   /* the map beside it opens Places on it */
     if (a === 'allhoods') { if (window.__pkGoFarm) window.__pkGoFarm(); else go('hoods'); return; }
     if (a === 'plan') { go('info'); return; }
     if (a === 'face') { toArchive(b.getAttribute('data-n')); return; }
