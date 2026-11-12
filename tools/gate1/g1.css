@@ -133,3 +133,5 @@ $P .pk-g1-vh{position:absolute!important;width:1px!important;height:1px!importan
 /* A: the year reel caption sits above the figure's fade layer on tablet and desktop */
 $P .pk-yrp .pk-rs figcaption{z-index:2}
 @media not all and (max-width:600px) and (orientation:portrait){ $P .pk-yrp .pk-rs figcaption{position:relative} }
+/* B: on phone and tablet the reel photo carries one control, the gold pill; its "Watch the summer" chip goes (the story panel has that button) */
+@media (max-width:1024px){ $P .pk-yrp .pk-ytour{display:none!important} }
