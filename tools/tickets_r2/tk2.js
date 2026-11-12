@@ -74,7 +74,21 @@
      T.requireFeed in the settings block or ?feedreq=1 turns this on in test; ?feedreq=0 turns it off. */
   function qp(k) { try { return new URLSearchParams(window.location.search).get(k); } catch (e) { return null; } }
   function needFeed() { var q = qp('feedreq'); if (q === '0') return false; return !!(window.PK_LIVE || (T && T.requireFeed) || q === '1'); }
-  function gate() { if (!T) readTix(); if (when() !== 'sale' || !needFeed()) return ''; var F = window.pkFeed || {}; return F.state === 'live' ? '' : F.state === 'fallback' ? 'down' : 'loading'; }
+  function gate() { if (!T) readTix(); if (when() === 'sale' && noIds) return 'down'; if (when() !== 'sale' || !needFeed()) return ''; var F = window.pkFeed || {}; return F.state === 'live' ? '' : F.state === 'fallback' ? 'down' : 'loading'; }
+  /* C3 (Zale, Nov 11): Checkout hands the order to the pickathon.com pay page. It posts tickets[<id>]=quantity, one field per line, with the
+     ticket system's own ids from the live feed (ticketTypes[].id). If any line has no id the order can't be handed over: the page holds on
+     "Prices didn't load" (Try again reloads the feed). The in-site preview sheet only opens when staff turn on checkoutPreview. */
+  var noIds = false;
+  function fmsId(id) { var f = window.pkFeedItem && window.pkFeedItem(id); return f && f.id !== undefined && f.id !== null && String(f.id) !== '' ? String(f.id) : ''; }
+  function handoff(o) {
+    var C = window.PK_TICKETS || {}, url = String(C.checkoutUrl || 'https://pickathon.com/tickets-new'), F = window.pkFeed || {};
+    var lines = (o.items || []).filter(function (i) { return (i.qty || 0) > 0; }), bad = lines.filter(function (i) { return !fmsId(i.id); });
+    if (F.state !== 'live' || !lines.length || bad.length) { noIds = true; lastKey = ''; sync(); try { window.scrollTo(0, 0); var m = document.getElementById('pk-scroll-phone'); if (m) m.scrollTop = 0; var g = $('.tk-gate', root); if (g) { g.setAttribute('tabindex', '-1'); g.focus(); } } catch (e) {} return false; }
+    var f = document.createElement('form'); f.method = 'POST'; f.action = url; f.style.display = 'none'; f.setAttribute('data-pk-handoff', '1');
+    var sum = {}; lines.forEach(function (i) { var k = fmsId(i.id); sum[k] = (sum[k] || 0) + (i.qty || 1); });
+    Object.keys(sum).forEach(function (k) { var inp = document.createElement('input'); inp.type = 'hidden'; inp.name = 'tickets[' + k + ']'; inp.value = String(sum[k]); f.appendChild(inp); });
+    document.body.appendChild(f); save(); f.submit(); return true;
+  }
   function gateHTML(g) {
     var t = g === 'down' ? 'Prices didn\u2019t load' : 'Getting today\u2019s prices', b = g === 'down' ? 'The ticket office didn\u2019t answer. Check your connection, then try again.' : 'One moment. Prices come straight from the ticket office.';
     return '<div class="tk-in"><div class="tk-paper tk-head"><img src="logo27-bat.png" alt="Pickathon 2027" width="700" height="260"><div class="tk-head-t"><h1 class="tk-d">Tickets</h1></div></div>' +
@@ -391,7 +405,8 @@
   }
   function checkout() {
     var o = order(); if (!o.ready) return;
-    if (window.__pkCheckout) window.__pkCheckout.open(o);
+    if ((window.PK_TICKETS || {}).checkoutPreview && window.__pkCheckout) { window.__pkCheckout.open(o); return; }
+    handoff(o);
   }
   function proceed() { var w = when(); if (w === 'sale') checkout(); else if (w === 'pre' && !saved()) saveOrder(); }
   function nav(to) {
@@ -417,7 +432,7 @@
     if (b.classList.contains('tk-fold-row')) { fold(b, b.getAttribute('aria-expanded') !== 'true'); return; }
     if (b.id === 'tk-patron') { S.patron = !S.patron; if (S.patron && !S.adult) S.adult = 1; update(); return; }
     var act = b.getAttribute('data-act'), go = b.getAttribute('data-go');
-    if (act === 'feedretry') { window.pkFeed = { url: (window.pkFeed || {}).url, state: 'loading', byCode: null, at: Date.now() }; lastKey = ''; sync(); try { window.pkFeedLoad(function () { lastKey = ''; sync(); }); } catch (x) {} return; }
+    if (act === 'feedretry') { noIds = false; window.pkFeed = { url: (window.pkFeed || {}).url, state: 'loading', byCode: null, at: Date.now() }; lastKey = ''; sync(); try { window.pkFeedLoad(function () { lastKey = ''; sync(); }); } catch (x) {} return; }
     if (go) { nav(go); return; }
     if (act === 'go') { proceed(); return; }
     if (act === 'sheet') { orderSheet(); return; }
@@ -469,7 +484,7 @@
       var top = a.state.stack[a.state.stack.length - 1];
       if ((back || viaHash) && (!top || top.r === 'home')) a.go('tickets');
       booting = false; sync();
-      if (back === 'checkout' && window.__pkCheckout && window.__pkCheckout.resume) window.__pkCheckout.resume();
+      if (back === 'checkout' && (window.PK_TICKETS || {}).checkoutPreview && window.__pkCheckout && window.__pkCheckout.resume) window.__pkCheckout.resume();   // the preview sheet only comes back for staff
     } catch (e) { booting = false; }
   }
   window.addEventListener('hashchange', function () { if (/^#tickets\b/.test(window.location.hash || '')) { var a = app(); try { var top = a.state.stack[a.state.stack.length - 1]; if (top.r !== 'tickets') a.go('tickets'); } catch (e) {} } });

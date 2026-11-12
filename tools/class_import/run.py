@@ -84,10 +84,11 @@ for r in rows:
     if 'y' not in A or int(r['year']) < A['y']:
         try: m = float(r.get('magnitude_dec') or r.get('magnitude') or 0)
         except ValueError: m = 0.0
-        A.update({'n': r['act'], 'k': G2[r['class']], 'y': int(r['year']), 'm': m})
+        A.update({'n': r['act'], 'k': G2[r['class']], 'y': int(r['year']), 'm': m, 'c': (r.get('confidence') or '').strip().lower()})
 ct = []
 for k, A in acts.items():
     o0 = old_ct.get(k, {}); o = {'n': o0.get('n') or A['n'], 'k': A['k'], 'y': A['y'], 'ys': sorted(A['ys']), 'm': A['m'], 'g': o0.get('g', '')}
+    if A.get('c'): o['c'] = A['c']   # confidence of the first-year call: the ranking's tie-break after magnitude_dec and class (Round 3 D2)
     if o0.get('l'): o['l'] = o0['l']
     ct.append(o)
 ct.sort(key=lambda o: (o['y'], o['n'].lower()))
