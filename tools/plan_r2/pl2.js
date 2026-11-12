@@ -19,12 +19,12 @@
      Nothing outside this block is unbacked copy.
      ====================================================================================== */
   var COPY = {
-    newDates: 'Thu–Sun, early arrival Wed. Wednesday is an add-on to the 4-Day Pass',   // Round 3 (A2, A5): the price is added from the price table, "+$NN each"          // What's new line 1 (dates are the founder brief; the line does not yet say new or same as 2026)
+    newDates: 'Gates open Wed, Aug 4. Wednesday is an add-on to the 4-Day Pass',   // Round 3 (A2, A5): the price is added from the price table, "+$NN each"          // What's new line 1 (dates are the founder brief; the line does not yet say new or same as 2026)
     newCheckout: 'You pay right here on pickathon.com. Passes land in My Pickathon.',                // What's new line 3 ("Passes land in My Pickathon" is the design's, not yet confirmed)
     zaleLines: [],                                                                                    // up to three more What's new lines from Zale, as ['Label', 'Text, saying new or same as 2026']; none yet, so nothing shows
     daysRun: 'Music runs from morning until late night. 2027 set times post closer to the festival.' // Full details, "How the days run"
   };
-  var FEST = { dates: 'Aug 4–8, 2027', long: 'August 4–8, 2027', place: 'Pendarvis Farm, Happy Valley, Oregon', mail: 'info@pickathon.com', copy: '© 1999–2026 Pickathon LLC' };
+  var FEST = { dates: 'Aug 5–8, 2027', long: 'August 5–8, 2027', place: 'Pendarvis Farm, Happy Valley, Oregon', mail: 'info@pickathon.com', copy: '© 1999–2026 Pickathon LLC' };
 
   var LS = 'pk27order', LSP = 'pk27plan', FEE = (window.pkFeeRate ? window.pkFeeRate() : 0.05);
   var BLANK = { pass: null, day: null, adult: 1, teen: 0, kid: 0, wed: false, sleep: 'tent', go: 'later', car: 1, patron: false };
@@ -189,7 +189,7 @@
       row('days', 'cal', 'How the days run', [esc(COPY.daysRun), lnk('See how 2026 ran', 'route:schedule')]);
   }
   function newHTML() {
-    var L = [['Aug 4–8', esc(COPY.newDates) + (P('early') ? ', +' + money(PS('early')) + ' each.' : '.')]], H = T && T.by && T.by.holiday;
+    var L = [['Aug 5–8', esc(COPY.newDates) + (P('early') ? ', +' + money(PS('early')) + ' each.' : '.')]], H = T && T.by && T.by.holiday;
     if (H && H.dated && !H.over) L.push([esc(H.dayS) + '–' + esc(String(H.endS).replace(/^[A-Za-z]+ /, '')), esc(H.name) + (lowestNow() ? ', the lowest prices of the year.' : '.') + (H.plans ? '' : ' No payment plans during the sale.' + (T.planNote ? ' ' + esc(T.planNote) : ''))]);
     else if (T && T.cur) L.push([esc(T.cur.name), 'On sale now.' + (T.plans ? ' Orders over ' + money(T.planMin) + ' can be paid in monthly payments, all paid before the festival.' : '')]);
     L.push(['Checkout', esc(COPY.newCheckout)]);

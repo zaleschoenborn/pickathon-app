@@ -95,7 +95,7 @@ html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root
     var nw = art.querySelector(':scope>.pk-now');
     if (+y >= 2020) { if (nw) nw.remove(); return; }
     if (!nw) { nw = document.createElement('section'); nw.className = 'pk-now'; nw.setAttribute('aria-label', 'Pickathon now');
-      nw.innerHTML = '<p class="pk-now-k">Pickathon now</p><h2 class="pk-now-h">Today it’s a city of neighborhoods</h2><p class="pk-now-p">Since 2022, Pendarvis Farm fills with twenty neighborhoods built by hand for one weekend. Pickathon 2027 is Aug 4–8.</p><div class="pk-now-b"><button type="button" class="pk-now-go pk-now-hd">Explore the neighborhoods</button><button type="button" class="pk-now-go pk-now-27">See Pickathon 2027 →</button></div>';
+      nw.innerHTML = '<p class="pk-now-k">Pickathon now</p><h2 class="pk-now-h">Today it’s a city of neighborhoods</h2><p class="pk-now-p">Since 2022, Pendarvis Farm fills with twenty neighborhoods built by hand for one weekend. Pickathon 2027 is Aug 5–8, with gates open Wednesday, Aug 4.</p><div class="pk-now-b"><button type="button" class="pk-now-go pk-now-hd">Explore the neighborhoods</button><button type="button" class="pk-now-go pk-now-27">See Pickathon 2027 →</button></div>';
       nw.querySelector('.pk-now-hd').onclick = function () { home('hoods'); }; nw.querySelector('.pk-now-27').onclick = function () { home('lineup'); }; }
     if (art.lastElementChild !== nw) art.appendChild(nw);
   }, 400);
