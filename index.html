@@ -1250,6 +1250,11 @@ main:has(#pk-nh-climb)>section{content-visibility:visible!important;contain-intr
 #root .pk-cl-below .pk-cl-cap{min-height:2.7em;margin:0 0 4px}
 #root .pk-cl-below .pk-cl-tb{margin-top:4px}
 #root#root#root .pk-cl-below .pk-cl-tl{margin:4px 0 0!important}
+/* Zale, Nov 12: Explore YYYY and Another year under the poster; Play again on the paper, only once the poster has landed on today */
+#root .pk-cl-pw{position:relative}
+#root .pk-cl-btns{display:flex;gap:10px;align-items:stretch;margin:12px 0 0}
+#root#root#root .pk-cl-btns>*{flex:1 1 0!important;width:auto!important;max-width:none!important;min-width:0!important;margin:0!important;min-height:48px!important;white-space:nowrap}
+#root#root#root .pk-cl-pa{position:absolute;z-index:3;min-height:44px;padding:0 14px;border-radius:6px;border:1.5px solid currentColor;background:transparent;color:#2B2628;font:800 12px 'Bricolage Grotesque',sans-serif;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:opacity .35s linear}
 #root .pk-cl-art{pointer-events:none}
 /* Zale, Nov 11: phone time bar as a calendar page */
 #root .pk-cl-below{margin-top:12px}
@@ -2488,7 +2493,18 @@ html.pk-cy-in div:has(> button[aria-label="Listen to Pickathon"]){opacity:0!impo
       var D = Object.assign({}, D0); D.names = R.map(function (r) { return [r[0], clim ? [r[4], now[r[0]]] : [now[r[0]]]]; }); D.labels = clim ? [S0.l0, 'TODAY'] : ['TODAY']; D.clim = clim; D.climFrom = clim ? cands[0][4] : 0; D.climTo = clim ? now[clim] : 0;
       D.ranked = R.filter(function (r) { return !N(r); }).length; D.more = Math.max(0, R.length - Math.min(10, D.ranked)); D.live = 1;
       /* Six-month keyframes (Nov 10): the class table now dates each class step, so the bill is re-ranked at every point between the festival and today instead of jumping straight there. Movers glide when their class changed; the rest drift. */
-      try { var YR = dd.yearRatings && dd.yearRatings[y]; if (clim && YR && YR.dates && YR.dates.length > 3) {
+      try { var YR = dd.yearRatings && dd.yearRatings[y]; if (y === '2024' && clim && YR && YR.dates && YR.dates.length > 3) {
+        /* Zale, Nov 12: 2024 is the only year with real six-month scores. Each window's order is that window's own magnitude (minus 1 for Deep cuts); ties fall to today's order. The first frame is the printed bill, the last is today's magnitude ranking. No interpolation. */
+        var ts = YR.dates.map(function (q) { return Date.parse(q); }), NN = ts.length - 1, ACT = {};
+        (YR.acts || []).forEach(function (a) { ACT[nm(a.n)] = a; });
+        var prt = D.names.map(function (x) { return x[1][0]; }), tdy = D.names.map(function (x) { return x[1][1]; }), kfs = [prt];
+        for (var k = 1; k < NN; k++) { var sc = D.names.map(function (x) { var a = ACT[nm(x[0])]; return a && a.m[k] != null ? a.m[k] - (a.c[k] === 'deep' ? 1 : 0) : -9; });
+          var ord = D.names.map(function (x, i) { return i; }).sort(function (p, q) { return sc[q] - sc[p] || tdy[p] - tdy[q]; }), rk = []; ord.forEach(function (i, r) { rk[i] = r; }); kfs.push(rk); }
+        kfs.push(tdy);
+        D.names = D.names.map(function (x, i) { return [x[0], kfs.map(function (rk) { return rk[i]; })]; });
+        D.when = ts.map(function (t) { return (t - ts[0]) / (ts[NN] - ts[0]); });
+        D.labels = ts.map(function (t, i) { return i === 0 ? S0.l0 : i === NN ? 'TODAY' : String(new Date(t).getUTCFullYear()); }); D.real = 1;
+      } else if (false) {
         var ts = YR.dates.map(function (q) { return Date.parse(q); }), T0 = ts[0], T1 = ts[ts.length - 1], YM = 365.25 * 864e5, NN = ts.length - 1, ACT = {};
         (YR.acts || []).forEach(function (a) { ACT[nm(a.n)] = a; });
         var smt = function (t) { t = Math.max(0, Math.min(1, t)); return t * t * (3 - 2 * t); };
@@ -2510,11 +2526,11 @@ html.pk-cy-in div:has(> button[aria-label="Listen to Pickathon"]){opacity:0!impo
 
   // Sizes. Desktop: the paper is 960 wide (inner 880): art 330 at left, list column 524. Phone and tablet (phone-style): art small on top, list full width.
   function cfg(ph, wAvail) {
-    if (!ph) return { ph: false, IW: 880, PADX: 40, PADY: 22, ART: { x: 0, y: 118, w: 330 }, COLX: 356, COLW: 524, Y0: 0, LANES: [[80, 74, 2], [44, 41, 2], [44, 41, 2], [44, 41, 2], [33, 29, 1], [33, 29, 1], [33, 29, 1], [33, 29, 1], [33, 29, 1], [33, 29, 1]], GAP: 5, R1: 22, ROWH: 21, FS: 13, CFS: 15, DATES: 15, DGAP: 14, BOT: 72, RIB: [40, 14], STAMP: 0.92 };
+    if (!ph) return { ph: false, IW: 880, PADX: 40, PADY: 22, TOPH: 46, ART: { x: 0, y: 164, w: 330 }, COLX: 356, COLW: 524, Y0: 46, LANES: [[80, 74, 2], [44, 41, 2], [44, 41, 2], [44, 41, 2], [33, 29, 1], [33, 29, 1], [33, 29, 1], [33, 29, 1], [33, 29, 1], [33, 29, 1]], GAP: 5, R1: 10, ROWH: 21, FS: 13, CFS: 15, DATES: 15, DGAP: 14, BOT: 56, RIB: [40, 14], STAMP: 0.92 };
     var PW = Math.max(300, Math.min(wAvail, 720)), IW = PW - 32, k = Math.min(1.7, IW / 326), L = function (h, m, ml) { return [Math.round(h * k), Math.round(m * k), ml]; };
     var AW = Math.round(100 * k), CG = Math.round(12 * k);   /* Zale, Nov 11: phone keeps the horizontal poster, art static on the left, names move in the column on the right (spec home_climb_phone_nov9b section 1) */
-    return { ph: true, IW: IW, PADX: 16, PADY: 14, ART: { x: 0, y: 0, w: AW }, COLX: AW + CG, COLW: IW - AW - CG, Y0: 0,
-      LANES: [L(40, 28, 2), L(27, 20, 2), L(27, 20, 2), L(27, 20, 2), L(20, 15, 1), L(20, 15, 1), L(20, 15, 1), L(20, 15, 1), L(20, 15, 1), L(20, 15, 1)], GAP: Math.round(3 * k), R1: Math.round(26 * k), ROWH: Math.round(16 * k), FS: Math.max(11, 11 * k), CFS: Math.max(12, 12 * k), DATES: Math.max(11, 11 * k), DGAP: Math.round(10 * k), BOT: Math.round(10 * k) + Math.round(Math.max(11, 11 * k)) + 12 + Math.max(34, Math.round(32 * k)), RIB: [Math.max(34, Math.round(32 * k)), Math.max(12, 12 * k)], STAMP: 0.7 * k };
+    return { ph: true, IW: IW, PADX: 16, PADY: 14, TOPH: 46, ART: { x: 0, y: 46, w: AW }, COLX: AW + CG, COLW: IW - AW - CG, Y0: 46,
+      LANES: [L(40, 28, 2), L(27, 20, 2), L(27, 20, 2), L(27, 20, 2), L(20, 15, 1), L(20, 15, 1), L(20, 15, 1), L(20, 15, 1), L(20, 15, 1), L(20, 15, 1)], GAP: Math.round(3 * k), R1: Math.round(10 * k), ROWH: Math.round(16 * k), FS: Math.max(11, 11 * k), CFS: Math.max(12, 12 * k), DATES: Math.max(11, 11 * k), DGAP: Math.round(10 * k), BOT: Math.round(52 * k), RIB: [Math.max(34, Math.round(32 * k)), Math.max(12, 12 * k)], STAMP: 0.7 * k };
   }
 
   /* Nov 11 refine (Zale: "it needs to be smoother"): two posters and one move.
@@ -2552,9 +2568,9 @@ html.pk-cy-in div:has(> button[aria-label="Listen to Pickathon"]){opacity:0!impo
       return { f: Math.min(s.mx, (s.w - 2 * Math.max(fanR, s.head ? (Q.ph ? 6 : 46) : 0)) * (Q.ph ? 0.88 : 0.97) / mw0, s.h / hs), mw: mw0, L: o.L, lead: o.lead }; };
     var best = function (nm, s) { var b = null; opts(nm, s).forEach(function (o) { var r = fitO(o, s); if (!b || r.f > b.f + (o.lead ? -2 : 0.5) || (Math.abs(r.f - b.f) <= 0.5 && r.L.length === b.L.length && !r.lead && !b.lead && r.mw < b.mw)) b = r; }); return b; };
     // the cast and the steps
-    var cast = still ? D.names.slice() : D.names.filter(function (x) { return x[1][0] < LN || x[1][n - 1] < LN; });
+    var cast = still ? D.names.slice() : D.names.filter(function (x) { return D.real ? x[1].some(function (r) { return r < LN; }) : (x[1][0] < LN || x[1][n - 1] < LN); });
     var KS = []; if (still) KS.push(n - 1); else for (var k = 0; k < n; k++) KS.push(k);
-    var V = cast.map(function (x) { if (still) return [x[1][n - 1]]; var r = x[1], s0 = r[0], e0 = r[n - 1], v = iso(r.slice(), e0 <= s0 ? -1 : 1), lo = Math.min(s0, e0), hi = Math.max(s0, e0);
+    var V = cast.map(function (x) { if (still) return [x[1][n - 1]]; var r = x[1], s0 = r[0], e0 = r[n - 1]; if (D.real) return r.slice(); var v = iso(r.slice(), e0 <= s0 ? -1 : 1), lo = Math.min(s0, e0), hi = Math.max(s0, e0);
       v = v.map(function (q) { return Math.max(lo, Math.min(hi, q)); }); v[0] = s0; v[n - 1] = e0; return v; });
     var POS = KS.map(function (k, j) { var idx = cast.map(function (x, i) { return i; }).sort(function (a, b) { return V[a][j] - V[b][j] || cast[a][1][n - 1] - cast[b][1][n - 1] || cast[a][1][0] - cast[b][1][0]; }); var p = []; idx.forEach(function (i, r) { p[i] = r; }); return p; });
     // one shape per name for the whole run: its best fit at its biggest slot; a name that ever sits in the small print stays on one line
@@ -2589,7 +2605,7 @@ html.pk-cy-in div:has(> button[aria-label="Listen to Pickathon"]){opacity:0!impo
     var FR = mono(E, KS.map(function (k) { return W[k]; }));
     var at = function (e) { return { N: FN.map(function (fn) { var o = {}; CH.forEach(function (c) { o[c] = fn[c](e); }); return o; }), R: RF.map(function (fn) { var o = {}; RCH.forEach(function (c) { o[c] = fn[c](e); }); return o; }) }; };
     var lift = function (x) { return Math.log((x[1][0] + 1) / (x[1][n - 1] + 1)); }, gain = function (x) { return x[1][0] - x[1][n - 1]; };
-    var RISERS = still ? [] : cast.filter(function (x) { return x[1][n - 1] < LN && gain(x) >= 3 && lift(x) >= Math.log(2); }).sort(function (p, q) { return lift(q) - lift(p); }).slice(0, 3).map(function (x) { return x[0]; });
+    var RISERS = true ? [] : cast.filter(function (x) { return x[1][n - 1] < LN && gain(x) >= 3 && lift(x) >= Math.log(2); }).sort(function (p, q) { return lift(q) - lift(p); }).slice(0, 3).map(function (x) { return x[0]; });
     var drawOrder = cast.map(function (x, i) { return i; }).sort(function (a, b) { return cast[b][1][n - 1] - cast[a][1][n - 1]; });   /* today's biggest drawn last, on top */
     return (PLANS[key] = { S: S, IW: IW, BOXH: BOXH, ROW1: ROW1, DATESY: ROW1 + Q.DGAP, TOP: TOP, A: A, B: B, H: H, cast: cast, SH: SH, at: at, frac: function (e) { return still ? 1 : clamp01(FR(e)); }, END: at(1), RISERS: RISERS, order: drawOrder, still: still, n: n }); }
 
@@ -2662,7 +2678,15 @@ html.pk-cy-in div:has(> button[aria-label="Listen to Pickathon"]){opacity:0!impo
     var rib = '<div style="position:absolute;left:0;right:0;bottom:0;display:flex;align-items:center"><span class="pk-cl-fl" style="--ink:' + A + '"></span><span style="flex:none;height:' + Q.RIB[0] + 'px;padding:0 ' + (Q.ph ? 16 : 36) + 'px;background:' + A + ' linear-gradient(' + PAPER + '80,' + PAPER + '80) 0 4px/100% 1.5px no-repeat;color:' + PAPER + ';' + FONT + ';font-size:' + Q.RIB[1] + 'px;letter-spacing:.1em;display:flex;align-items:center;white-space:nowrap;clip-path:polygon(0 0,100% 0,calc(100% - 14px) 50%,100% 100%,0 100%,14px 50%)">EXPLORE PICKATHON ' + y + ' →</span><span class="pk-cl-fr" style="--ink:' + A + '"></span></div>';
     var frac = PL.still ? 1 : back ? PL.frac(back.e0) * (1 - back.k) : PL.frac(e);
     var LNf = Math.min(10, D.ranked || 10), fineRise = PL.cast.some(function (x) { return PL.RISERS.indexOf(x[0]) >= 0 && x[1][0] >= LNf; });
-    return { fineRise: fineRise, art: art, html: h + burst + rules + dates + rib, IW: IW, H: BOXH, A: A, B: B, PAPER: PAPER, ACC: ACC, LIGHT: GLOWINK, frac: frac };
+    var tc = function (t) { return String(t).toLowerCase().replace(/(^|[\s“"(])([a-z])/g, function (m, a, b) { return a + b.toUpperCase(); }); };
+    var fz = Q.ph ? 11 : 12, SF = 'font-family:\'Bricolage Grotesque\',sans-serif;font-weight:800;letter-spacing:.1em;text-transform:uppercase;font-size:' + fz + 'px;line-height:14px;white-space:nowrap;color:' + A;
+    var strip;   /* Zale, Nov 12: "As printed 2024 to Today" is the time slider; no dates, no place line, no ribbon on the poster */
+    if (PL.still) strip = '<div style="position:absolute;left:0;right:0;top:0;height:' + (Q.TOPH - 10) + 'px"><span style="position:absolute;left:0;top:0;' + SF + '">Today\u2019s top 10</span></div>';
+    else { var fr = clamp01(frac); strip = '<div style="position:absolute;left:0;right:0;top:0;height:' + (Q.TOPH - 10) + 'px"><span style="position:absolute;left:0;top:0;' + SF + ';opacity:' + (1 - 0.45 * clamp01(fr * 6)).toFixed(2) + '">' + (D.src === 'real billing' ? 'As printed ' : 'At the festival ') + y + '</span><span style="position:absolute;right:0;top:0;' + SF + ';opacity:' + (0.55 + 0.45 * clamp01((fr - 0.85) / 0.15)).toFixed(2) + '">Today</span>'
+      + '<i style="position:absolute;left:0;right:0;top:24px;height:3px;border-radius:2px;background:' + A + ';opacity:.22"></i><i style="position:absolute;left:0;top:24px;height:3px;border-radius:2px;width:' + (fr * 100).toFixed(1) + '%;background:' + A + '"></i><i style="position:absolute;top:20px;left:calc(' + (fr * 100).toFixed(1) + '% - 5px);width:10px;height:10px;border-radius:50%;background:' + A + '"></i></div>'; }
+    var hasNote = !!(D.clim && D.src === 'real billing' && D.climFrom != null && D.climTo != null), np = hasNote ? (PL.still ? 1 : clamp01((frac - 0.92) / 0.08)) : 0, NH = Q.BOT - 8;
+    var note = hasNote ? '<i style="position:absolute;left:0;right:0;bottom:' + NH + 'px;height:1.5px;background:' + B + ';opacity:' + np.toFixed(2) + '"></i><div style="position:absolute;left:0;bottom:0;height:' + (NH - 6) + 'px;width:' + (IW - (PL.still ? 0 : (Q.ph ? 130 : 130))) + 'px;display:flex;align-items:center;text-wrap:balance;font:600 ' + (Q.ph ? 13 : 15) + 'px/1.25 Inter,system-ui,sans-serif;color:' + A + ';opacity:' + np.toFixed(2) + '">' + esc(tc(D.clim) + ': ' + ORD(D.climFrom).toLowerCase() + ' on the ' + y + ' poster. #' + (D.climTo + 1) + ' today.') + '</div>' : '';
+    return { fineRise: fineRise, art: art, html: h + burst + rules + strip + note, IW: IW, H: BOXH, A: A, B: B, PAPER: PAPER, ACC: ACC, LIGHT: GLOWINK, frac: frac };
   }
 
   // the clock on the poster: a date stamp that counts the summers from the festival to today; tapping it plays again
@@ -2688,7 +2712,7 @@ html.pk-cy-in div:has(> button[aria-label="Listen to Pickathon"]){opacity:0!impo
     var y0 = +y, yNow = n > 1 ? Math.max(y0 + 1, Math.round(y0 + (TODAY - y0) * frac)) : TODAY;
     var line = n < 2 ? 'Ranked by how far each act has gone' : frac <= 0.001 ? (D.src === 'real billing' ? 'The bill as printed in ' + y : 'The bill as booked in ' + y) : (atEnd || yNow >= TODAY) ? 'Ranked today by how far each act has gone' : 'Re-ranked as of ' + yNow;
     var btn = 'Play again';   /* Zale, Nov 12: text only, no glyph; shows only when the motion is live */
-    return { n: n, show: n > 1 && y0 < TODAY && !STAT(y0) && !RM, frac: frac, yNow: Math.min(yNow, TODAY), line: line, btn: btn, aria: 'Play pickathon ' + y + ' again, from the opening top 10 to today' };
+    return { n: n, show: false, frac: frac, yNow: Math.min(yNow, TODAY), line: line, btn: btn, aria: 'Play pickathon ' + y + ' again, from the opening top 10 to today' };
   }
   function endSub(D, y) { if (!D.clim || STAT(y) || D.labels.length < 2) return ''; return String(D.clim).toUpperCase() + (D.climTo === 0 ? ' NOW TOPS THE BILL' : ' IS NOW ' + ORD(D.climTo) + ' ON THE BILL'); }
   function caption(D, y, tp) {
@@ -2701,7 +2725,7 @@ html.pk-cy-in div:has(> button[aria-label="Listen to Pickathon"]){opacity:0!impo
     return age < 3 ? since + ', SO FAR: ' + D.clim + place + ' IT TAKES A FEW SUMMERS TO KNOW.' : since + ': ' + D.clim + place;
   }
 
-  function STAT(y) { return true; /* Zale, Nov 12: the poster holds only the top 10, and its motion is on hold until six-month scores exist for every year (design_studio-59). Every year shows today's top 10, still. */ var D = C && C[y]; return +y <= 2005 || !!(D && D.src !== 'real billing'); } // still posters: 2005 and earlier (Zale, Nov 9), and any year without real poster billing (Zale's rule: no source, show today only). Real billing so far: 2023, 2024
+  function STAT(y) { var D0 = C && C[y]; return !(D0 && D0.real && D0.labels.length > 2); }   /* Zale, Nov 12: only 2024 has six-month scores, so only 2024 moves; every other year is today's top 10, still, until the all-years data exists (design_studio-59) */
   /* Zale, Nov 11: on phone the time reads as a calendar page that ticks from the festival month to today while the poster runs */
   var MON = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
   function calH(y, frac) { var m0 = 7, tot = (TODAY - (+y)) * 12 + (10 - m0), m = m0 + Math.round(Math.max(0, Math.min(1, frac)) * tot); return '<b class="pk-cl-mo">' + MON[m % 12] + '</b><b class="pk-cl-yr">' + ((+y) + Math.floor(m / 12)) + '</b>'; }
@@ -2733,7 +2757,7 @@ html.pk-cy-in div:has(> button[aria-label="Listen to Pickathon"]){opacity:0!impo
       mountEl.querySelector('.pk-cl-layer').innerHTML = F.html;
       var tb = mountEl.querySelector('.pk-cl-tb'); if (tb && tb.querySelector('.pk-cl-tf')) { tb.querySelector('.pk-cl-tf').style.width = (TB.frac * 100).toFixed(1) + '%'; var mk = tb.querySelector('.pk-cl-tm'); mk.style.left = (TB.frac * 100).toFixed(1) + '%'; var cal = tb.querySelector('.pk-cl-cal'); if (cal) { var ch = calH(y, TB.frac); if (cal._h !== ch) { cal.innerHTML = ch; cal._h = ch; } } else { mk.textContent = TB.yNow; mk.style.opacity = TB.frac > 0.04 && TB.frac < 0.96 ? '1' : '0'; } var rb = tb.querySelector('.pk-cl-rpl'); if (rb) { rb.textContent = TB.btn; rb.setAttribute('aria-label', TB.aria); } var tl = mountEl.querySelector('.pk-cl-tl'); if (tl && tl.textContent !== TB.line) tl.textContent = TB.line; }
       var cp = mountEl.querySelector('.pk-cl-cap'); if (cp.textContent !== cap) cp.textContent = cap; cp.style.color = atEnd ? '#F2CF62' : '#CFC9BC';
-      var sb = mountEl.querySelector('.pk-g1-sub'); if (sb) sb.style.visibility = atEnd ? 'visible' : 'hidden';
+      var sb = mountEl.querySelector('.pk-g1-sub'); if (sb) sb.style.visibility = atEnd ? 'visible' : 'hidden'; var pa = mountEl.querySelector('.pk-cl-pa'); if (pa) { pa.style.opacity = atEnd ? '1' : '0'; pa.style.visibility = atEnd ? 'visible' : 'hidden'; }
       return;
     }
     var fa = document.activeElement, fk = fa && mountEl.contains(fa) ? fa.getAttribute('data-cl') : null;
@@ -2742,8 +2766,8 @@ html.pk-cy-in div:has(> button[aria-label="Listen to Pickathon"]){opacity:0!impo
     var subT = endSub(D, +y), subH = Q.ph && subT ? '<p class="pk-g1-sub" aria-hidden="true" style="visibility:' + (atEnd ? 'visible' : 'hidden') + '">' + esc(subT) + '</p>' : '';   /* Gate 1 fix 12 (D11): the phone's end state says who climbed */
     var keyH = false && Q.ph && F.fineRise && !STAT(y) && n > 1 ? '<p class="pk-g1-key">\u25B2 in ' + y + '\u2019s fine print</p>' : '';
     var h = '<div class="pk-cl-hd"><div class="pk-cl-ht"><p class="pk-nh-k">Still happening</p><h2 class="pk-nh-h2" id="pk-cl-h">Wait, they all played <span style="color:' + (YC[y] || '#F2CF62') + '">Pickathon ' + y + '?</span></h2>'
-      + subH + (Q.ph ? '' : capH) + '</div>'
-      + (Q.ph ? '' : '<button type="button" class="pk-cl-an" data-cl="rand">↻ Another year</button>') + '</div>';
+      + '' + '</div>'
+      + '</div>';
     if (TB.show) tbH += '<div class="pk-cl-tb"><span class="pk-cl-ty">' + y + '</span><span class="pk-cl-tr" aria-hidden="true"><i class="pk-cl-tf" style="width:' + (TB.frac * 100).toFixed(1) + '%"></i><b class="pk-cl-tm" style="left:' + (TB.frac * 100).toFixed(1) + '%;opacity:' + (TB.frac > 0.04 && TB.frac < 0.96 ? 1 : 0) + '">' + TB.yNow + '</b></span><span class="pk-cl-ty">' + TODAY + '</span><button type="button" class="pk-cta sec pk-cl-rpl" data-cl="play" aria-label="' + TB.aria + '">' + TB.btn + '</button></div><p class="pk-cl-tl" aria-hidden="true">' + esc(TB.line) + '</p>';
     if (!Q.ph) h += tbH;
     h += '<div class="pk-cl-pw" style="width:' + PW + 'px;height:' + PH + 'px">';
@@ -2752,6 +2776,7 @@ html.pk-cy-in div:has(> button[aria-label="Listen to Pickathon"]){opacity:0!impo
     h += '<div class="pk-cl-art" aria-hidden="true" style="position:absolute;left:' + Q.PADX + 'px;top:' + Q.PADY + 'px;width:' + F.IW + 'px;height:' + F.H + 'px">' + F.art + '</div>';   /* static: drawn once per year, never in the animation frames */
     h += '<div class="pk-cl-layer" aria-hidden="true" style="position:absolute;left:' + Q.PADX + 'px;top:' + Q.PADY + 'px;width:' + F.IW + 'px;height:' + F.H + 'px">' + F.html + '</div>';
     h += '</div>';
+    if (!STAT(y)) h += '<button type="button" class="pk-cl-pa" data-cl="play" aria-label="' + TB.aria + '" style="color:' + F.A + ';right:' + Q.PADX + 'px;bottom:' + (Q.PADY + 4) + 'px;opacity:' + (atEnd ? 1 : 0) + ';visibility:' + (atEnd ? 'visible' : 'hidden') + '">Play again</button>';
     h += '</div>';
     if (Q.ph && TB.show) tbH = '<div class="pk-cl-tb pk-cl-tbp"><span class="pk-cl-cal" aria-hidden="true">' + calH(y, TB.frac) + '</span><span class="pk-cl-tr" aria-hidden="true"><i class="pk-cl-tf" style="width:' + (TB.frac * 100).toFixed(1) + '%"></i><b class="pk-cl-tm" style="left:' + (TB.frac * 100).toFixed(1) + '%;opacity:0"></b></span><span class="pk-cl-ty">' + TODAY + '</span><button type="button" class="pk-cta sec pk-cl-rpl" data-cl="play" aria-label="' + TB.aria + '">' + TB.btn + '</button></div>';
     if (RM && n > 1 && !STAT(y)) {   /* Zale, Nov 11: with reduced motion, the printed bill and today's bill side by side, no movement */
@@ -2759,8 +2784,8 @@ html.pk-cy-in div:has(> button[aria-label="Listen to Pickathon"]){opacity:0!impo
       tbH = '<div class="pk-cl-cmp"><div><p class="pk-cl-cmpk">' + (D.src === 'real billing' ? 'On the ' + y + ' poster' : 'As booked in ' + y) + '</p><ol>' + top8(0) + '</ol></div><div><p class="pk-cl-cmpk pk-cl-cmpn">Ranked today</p><ol>' + top8(n - 1) + '</ol></div></div>';
       if (!Q.ph) h = h.replace('<div class="pk-cl-pw"', tbH + '<div class="pk-cl-pw"');
     }
-    if (Q.ph && !TB.show && !(RM && n > 1 && !STAT(y))) tbH = '<div class="pk-cl-tb pk-cl-tbp pk-cl-tbs"><span class="pk-cl-cal" aria-hidden="true">' + calH(y, 1) + '</span><span class="pk-cl-tls">Ranked today by how far each act has gone</span></div>';   /* every year keeps the same row, so ANOTHER YEAR never moves (review r1 A3) */
-    if (Q.ph) h += '<div class="pk-cl-below">' + keyH + capH.replace('class="pk-cl-cap"', 'class="pk-cl-cap pk-sr"') + tbH + '<button type="button" class="pk-cl-an pk-cl-anb" data-cl="rand">↻ Another year</button></div>';   /* Zale, Nov 11: caption, time bar and Another year under the poster, full width */
+    if (Q.ph && !TB.show && !(RM && n > 1 && !STAT(y))) tbH = '';
+    h += '<div class="pk-cl-below">' + capH.replace('class="pk-cl-cap"', 'class="pk-cl-cap pk-sr"') + (Q.ph ? tbH : '') + '<div class="pk-cl-btns"><button type="button" class="pk-bkb pri pk-cl-ex" data-cl="year">Explore ' + y + '</button><button type="button" class="pk-cl-an pk-cl-anb" data-cl="rand">↻ Another year</button></div></div>';
     var fin = D.names.filter(function (x) { return x[1][n - 1] < Math.min(10, D.ranked || 10); }).sort(function (a, b) { return a[1][n - 1] - b[1][n - 1]; }).map(function (x) { return x[0]; });
     h += '<p class="pk-sr">Pickathon ' + y + ', ranked today by how far each act has gone: ' + esc(fin.join(', ')) + '.</p>';
     mountEl.innerHTML = h; mountEl.setAttribute('data-y', y); mountEl._key = key;
