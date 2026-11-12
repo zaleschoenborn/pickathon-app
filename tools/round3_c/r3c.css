@@ -1,0 +1,76 @@
+/* pk-r3c (Round 3 batch C, Nov 12): Share, the status line, and the year wall (B8). Source: tools/round3_c/r3c.css */
+/* Share: the site's small in-text chip (14px, 44px tall, outline), in the color of the page it sits on */
+#root#root#root button.pk-share1{display:inline-flex!important;align-items:center;gap:7px;width:auto!important;min-width:0!important;max-width:max-content!important;min-height:44px!important;height:44px!important;margin:12px 0 0!important;padding:0 16px 0 13px!important;border-radius:999px!important;border:1.5px solid currentColor!important;background:transparent!important;color:inherit!important;font:800 14px/1 'Bricolage Grotesque',system-ui,sans-serif!important;letter-spacing:.02em!important;text-transform:none!important;box-shadow:none!important;cursor:pointer;opacity:.92}
+#root#root#root button.pk-share1:hover{opacity:1}
+#root#root#root button.pk-share1:focus-visible{outline:3px solid #F2CF62!important;outline-offset:2px}
+#root .pk-share1 svg{width:17px;height:17px;flex:none}
+/* the year banner keeps its height: Share sits at its right edge in the year's ink, the label hidden on phones */
+#root .pk-yb-in{position:relative}
+#root#root#root .pk-yb-t button.pk-share1{position:absolute;right:12px;top:50%;transform:translateY(-50%);margin:0!important;color:var(--yi,#2B2628)!important}
+#root .pk-hd-hi button.pk-share1{color:#F2EDE3!important}
+#root .pk-ah-btns button.pk-share1,#root .pk-alb~button.pk-share1{margin:0!important;align-self:center}
+@media (max-width:999px){#root#root#root .pk-yb-t button.pk-share1{top:auto;bottom:6px;right:6px;transform:none;width:44px!important;min-width:44px!important;max-width:44px!important;padding:0!important;justify-content:center}#root .pk-yb-t button.pk-share1 span{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}}
+@media (min-width:1000px){html:root:root #root#root .pk-yb .pk-yb-t{padding-right:150px!important}}
+.pk-r3-toast{position:fixed;left:50%;bottom:calc(92px + env(safe-area-inset-bottom,0px));z-index:1300;max-width:min(520px,calc(100vw - 32px));transform:translate(-50%,12px);padding:12px 18px;border-radius:10px;background:#F2EDE3;color:#2B2628;font:700 14px/1.35 'Bricolage Grotesque',system-ui,sans-serif;box-shadow:0 10px 30px rgba(0,0,0,.35);opacity:0;pointer-events:none;transition:opacity .16s,transform .16s;overflow-wrap:anywhere}
+.pk-r3-toast.on{opacity:1;transform:translate(-50%,0)}
+@media (min-width:1200px){.pk-r3-toast{bottom:32px}}
+@media (prefers-reduced-motion:reduce){.pk-r3-toast{transition:none}}
+
+/* ---------- the year wall ---------- */
+.pkw-scrim{position:fixed;inset:0;z-index:1200;background:rgba(10,8,9,.62);opacity:0;transition:opacity .16s}
+.pkw-scrim.in{opacity:1}
+.pkw{position:fixed;z-index:1201;box-sizing:border-box;background:#1C191A;color:#F2EDE3;font-family:'Bricolage Grotesque',system-ui,sans-serif;opacity:0;transition:opacity .16s,transform .16s;overflow:hidden}
+.pkw.in{opacity:1}
+.pkw *{box-sizing:border-box}
+/* phone and tablet: a bottom sheet over the tabs */
+.pkw-sh{left:0;right:0;bottom:0;margin:0 auto;width:100%;max-width:760px;max-height:calc(100dvh - 24px);padding:20px 16px calc(16px + env(safe-area-inset-bottom,0px));border-radius:18px 18px 0 0;transform:translateY(24px);box-shadow:0 -16px 40px rgba(0,0,0,.45)}
+.pkw-sh.in{transform:none}
+/* desktop: a panel dropped from the year strip, the page dimmed below */
+.pkw-dk{top:var(--ywtop,140px);left:50%;width:860px;max-width:calc(100vw - 48px);padding:26px 32px 24px;border-radius:0 0 14px 14px;transform:translate(-50%,-10px);box-shadow:0 24px 50px rgba(0,0,0,.5)}
+.pkw-dk.in{transform:translate(-50%,0)}
+html.pkw-on .pkw-scrim{top:0}
+@media (prefers-reduced-motion:reduce){.pkw,.pkw-scrim{transition:none}.pkw-sh,.pkw-dk.in,.pkw-dk{transform:none}.pkw-dk{transform:translateX(-50%)}}
+.pkw-hd{display:flex;align-items:flex-start;justify-content:space-between;gap:16px}
+.pkw .pkw-k{margin:0 0 4px;font:800 12px/1.2 'Bricolage Grotesque',system-ui,sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#CFC9BC}
+.pkw .pkw-h{margin:0;font:400 26px/1 "Pickathon 2014","Work Sans",sans-serif!important;letter-spacing:.04em;text-transform:none;color:#F2EDE3}
+.pkw-dk .pkw-h{font-size:32px!important}
+.pkw button.pkw-x{flex:none;display:grid;place-items:center;width:46px;height:46px;min-height:46px;padding:0;margin:-4px -2px 0 0;border-radius:999px;border:1.5px solid rgba(242,237,227,.55);background:transparent;color:#F2EDE3;cursor:pointer}
+.pkw-x svg{width:18px;height:18px}
+.pkw button:focus-visible{outline:3px solid #F2CF62;outline-offset:2px}
+.pkw .pkw-lg{display:flex;flex-wrap:wrap;gap:4px 16px;margin:12px 0 0;font:600 14px/1.35 'Bricolage Grotesque',system-ui,sans-serif;color:#E6E0D3}
+.pkw-lg span{display:inline-flex;align-items:center;gap:7px}
+.pkw .pkw-lg .pkw-m{position:static;--i2:#F2CF62}
+.pkw-here{display:inline-block;width:14px;height:14px;border-radius:3px;background:#F2EDE3;box-shadow:0 0 0 2px #F2CF62}
+.pkw-g{margin:14px 0 0;display:grid;gap:10px}
+.pkw-r{display:grid;gap:5px}
+.pkw .pkw-rl{margin:0;display:flex;flex-direction:column;font:800 12px/1.25 'Bricolage Grotesque',system-ui,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#E6E0D3}
+.pkw-rl span{font-weight:700;color:#B9B3A6;letter-spacing:.1em}
+.pkw-rt{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px}
+.pkw-dk .pkw-g{gap:12px;margin-top:18px}
+.pkw-dk .pkw-r{grid-template-columns:150px minmax(0,1fr);align-items:center;gap:14px}
+.pkw-dk .pkw-rt{gap:8px}
+/* the tile: a printed thing on the year's own paper, its ink keyline and its four-color stripe along the foot */
+.pkw button.pkw-t{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;height:56px;min-height:44px;min-width:0;width:auto;padding:0 0 4px;margin:0;border:0;border-radius:3px;background:var(--p);color:var(--i);cursor:pointer;box-shadow:0 1px 0 rgba(0,0,0,.25);font:inherit;text-transform:none;letter-spacing:0;transition:transform .12s}
+.pkw button.pkw-t::before{content:"";position:absolute;inset:2px 2px 6px;border:1px solid var(--i);border-radius:2px;opacity:.85;pointer-events:none}
+.pkw button.pkw-t::after{content:"";position:absolute;left:0;right:0;bottom:0;height:4px;background:var(--s,transparent);border-radius:0 0 3px 3px}
+.pkw .pkw-c{display:block;font:800 10px/1 'Bricolage Grotesque',system-ui,sans-serif;letter-spacing:.24em;padding-left:.24em}
+.pkw .pkw-y{display:block;font:400 23px/.9 "Pickathon 2014","Work Sans",sans-serif!important;letter-spacing:.02em}
+.pkw-t.is-now{box-shadow:inset 0 0 0 1px rgba(242,207,98,.45)}
+.pkw-t.is-now::before{border-color:rgba(242,207,98,.5)!important}
+.pkw button.pkw-t.is-cur{background:var(--i);color:var(--p);box-shadow:0 0 0 2px #F2CF62}
+.pkw button.pkw-t.is-cur::before{border-color:var(--p)}
+.pkw button.pkw-t.is-now.is-cur{background:#F2CF62;color:#2B2628}
+@media (hover:hover){.pkw button.pkw-t:hover{transform:translateY(-2px)}}
+@media (prefers-reduced-motion:reduce){.pkw button.pkw-t{transition:none}.pkw button.pkw-t:hover{transform:none}}
+.pkw .pkw-m{position:absolute;top:5px;right:5px;width:9px;height:9px;border-radius:50%;background:var(--i2);display:inline-block}
+.pkw .pkw-m.pkw-old{background:transparent;box-shadow:inset 0 0 0 2.2px var(--i2)}
+.pkw-t.is-cur .pkw-m{--i2:var(--p)}
+.pkw-none{display:flex;align-items:center;justify-content:center;height:56px;padding:2px;border:1.5px dashed rgba(242,237,227,.35);border-radius:3px;font:700 10.5px/1.15 'Bricolage Grotesque',system-ui,sans-serif;text-align:center;color:#B9B3A6}
+.pkw .pkw-f{margin:14px 0 0;font:500 14px/1.4 'Bricolage Grotesque',system-ui,sans-serif;color:#CFC9BC}
+@media (min-width:600px){.pkw-sh{padding:24px 24px calc(20px + env(safe-area-inset-bottom,0px))}.pkw button.pkw-t,.pkw-none{height:68px}.pkw .pkw-y{font-size:28px!important}.pkw .pkw-c{font-size:11px}.pkw-rt{gap:6px}}
+.pkw-dk button.pkw-t,.pkw-dk .pkw-none{height:86px!important}
+.pkw-dk .pkw-y{font-size:34px!important}
+.pkw-dk .pkw-c{font-size:12.5px!important}
+.pkw-dk button.pkw-t::before{inset:4px 4px 8px}
+.pkw-dk .pkw-m{top:8px;right:8px;width:11px;height:11px}
+@media (max-height:700px) and (max-width:1199px){.pkw button.pkw-t,.pkw-none{height:48px}.pkw-g{gap:6px}.pkw .pkw-y{font-size:21px!important}}
