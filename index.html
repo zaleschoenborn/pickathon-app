@@ -9005,6 +9005,14 @@ if (!window.pkOrders) window.pkOrders = (function () {
   #pkh2 .h2-em::after{inset:0}
   .pkh2 .h2-s5row .h2-pill{flex:1 1 0;padding:0 .625rem}
 }
+/* Gate 1 fix 4 (D2): 360-wide phones. The card photo is 16:9 and at most 180px (the fit can still shrink it), the fact is two lines,
+   and the two buttons sit side by side, equal width, 8px apart, so the whole screen clears the tab bar. */
+@media (max-width:380px){
+  .pkh2 .h2-bc-ph{aspect-ratio:16/9;max-height:180px}
+  .pkh2 .h2-bc-l{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2;overflow:hidden}
+  .pkh2 .h2-s5row{display:flex;flex-wrap:nowrap;gap:8px}
+  .pkh2 .h2-s5row .h2-pill{flex:1 1 0;min-width:0;padding:0 .5rem;white-space:normal;line-height:1.15}
+}
 @media (max-width:1199px){.pkh2 .h2-s5head{order:0}.pkh2 .h2-bc{order:1}.pkh2 .h2-s5row{order:2}}
 @media (min-width:600px) and (max-width:1199px){
   .pkh2 .h2-s5head,.pkh2 .h2-bc,.pkh2 .h2-s5row{width:100%;max-width:640px}
