@@ -7911,6 +7911,12 @@ setInterval(function () { var el = document.getElementById('pk-nh-br'); if (el &
 body:has(#tk2 #tk-bar:not([hidden])) #pk-toast,body:has(#pk-co) #pk-toast{display:none!important}
 /* QC Round 3.5: prices wait (at most 1.5 s) for the build check before they show */
 #tk2.tk-vchk{visibility:hidden}
+
+/* Gate 1 fix 8 (D6): no 32-36px buttons. Every Tickets button is 50px on phone/tablet and 56px on desktop, 6px corners, 2px border
+   (the pass steppers and the small choice chips keep their own 44px sizes). */
+#tk2#tk2 .tk-pill,#tk2#tk2 .tk-pill-sm{min-height:50px;border-width:2px;padding:0 1.125rem}
+@media (min-width:1025px){#tk2#tk2 .tk-pill,#tk2#tk2 .tk-pill-sm{min-height:56px}}
+#tk2#tk2#tk2#tk2#tk2 .tk-pill[aria-pressed]{min-height:44px!important;border-width:2px!important}
 </style>
 <script id="pk-tk2">
 /* pk-tk2: Tickets, round 2 design (Nov 11 2026). Source: tools/tickets_r2/tk2.js, spliced into index.html by tools/tickets_r2/build.py.
@@ -9277,6 +9283,12 @@ html:root:root #root#root#root#root#root#root#root#root#root#root#root#root#root
   #pkh2 .h2-s2 .pk-cl-mount>.pk-sr{position:absolute}
   .pkh2 .h2-ba{margin:0 0 14px calc((100% - 48px) * .4 + 48px);font-size:.8125rem}
 }
+
+/* Gate 1 fix 8 (D6): Home keeps its look but matches specs/buttons.md sizes: 50px phone/tablet, 56px desktop, 2px borders.
+   (The Tour oval and the header LISTEN keep their own sizes; LISTEN is a 44px compact float.) */
+#root #pkh2 .h2-pill:not(.h2-watch),#root #pkh2 .h2-pill.h2-big{min-height:50px;border-width:2px}
+#root#root#root #pkh2 .h2-s2 .pk-cl-an,#root#root#root #pkh2 .h2-s2 .pk-cl-rpl{min-height:50px!important;border-width:2px!important}
+@media (min-width:1025px){#root #pkh2 .h2-pill:not(.h2-watch),#root #pkh2 .h2-pill.h2-big{min-height:56px}#root#root#root #pkh2 .h2-s2 .pk-cl-an,#root#root#root #pkh2 .h2-s2 .pk-cl-rpl{min-height:56px!important}}
 </style>
 <script id="pk-home2">
 /* QA M1 (Nov 11): Home's poster opens on 2019 (founder spec, home_flow.md screen 2) and "Another year" walks the years by discovery strength, not at random:
@@ -11164,6 +11176,37 @@ html body:not(#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1) butt
 html body:not(#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1) button.pk-g1-iw *{color:#F2EDE3!important;-webkit-text-fill-color:#F2EDE3!important}
 html body:not(#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1) button.pk-g1-iw.gold{background:rgba(214,181,74,.18)!important}
 html body:not(#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1) .pk-ch .pk-cht li div[style*="font-weight: 800"]{color:#F2EDE3!important}
+
+/* -- Fix 8 (D6): before-launch button subset, specs/buttons.md. Primary: gold tint, 2px #D6B54A, #F2CF62 text. Secondary: 2px cream on a dark
+      wash, cream text. 50px phone+tablet, 56px desktop, 6px corners, Bricolage 800 13px caps .08em. Share = 44px icon button. -- */
+html body:not(#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1) .pk-g1-b{display:inline-flex!important;align-items:center!important;justify-content:center!important;gap:8px!important;min-height:50px!important;height:auto!important;padding:0 16px!important;box-sizing:border-box!important;border-radius:6px!important;font:800 13px/1.15 'Bricolage Grotesque',system-ui,sans-serif!important;letter-spacing:.08em!important;text-transform:uppercase!important;text-align:center!important;white-space:normal!important;box-shadow:none!important;transition:none!important}
+html body:not(#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1) .pk-g1-b.pk-g1-pri{background:rgba(214,181,74,.18)!important;border:2px solid #D6B54A!important;color:#F2CF62!important;-webkit-text-fill-color:#F2CF62!important}
+html body:not(#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1) .pk-g1-b.pk-g1-sec{background:rgba(18,22,15,.26)!important;border:2px solid rgba(242,237,227,.88)!important;color:#F2EDE3!important;-webkit-text-fill-color:#F2EDE3!important}
+/* on a year's paper page the same two kinds use the year's ink for text (gold #F2CF62 can't be read on paper) */
+html.pk-ypp body:not(#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1) .pk-g1-b.pk-g1-pri{color:var(--yi,#2B2628)!important;-webkit-text-fill-color:var(--yi,#2B2628)!important;background:rgba(214,181,74,.18)!important;border-color:#D6B54A!important}
+html.pk-ypp body:not(#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1) .pk-g1-b.pk-g1-sec{background:transparent!important;border-color:var(--yi2,var(--yi,#2B2628))!important;color:var(--yi,#2B2628)!important;-webkit-text-fill-color:var(--yi,#2B2628)!important}
+@media (min-width:1025px){ html body:not(#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1) .pk-g1-b{min-height:56px!important} }
+/* artist row: WATCH + LISTEN equal halves, Share a 44x44 icon button */
+html body:not(#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1) .pk-act-acts,html body:not(#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1) .pk-ah .pk-ah-btns{flex-wrap:nowrap!important;align-items:center!important;gap:8px!important}
+html body:not(#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1) .pk-act-acts{grid-template-columns:minmax(0,1fr) minmax(0,1fr) 44px!important;grid-template-rows:auto!important;grid-auto-flow:column!important}
+html body:not(#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1) .pk-act-acts>*{grid-column:auto!important;grid-row:auto!important;justify-self:stretch}
+html body:not(#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1) .pk-act-acts>.pk-share1{justify-self:end}
+html body:not(#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1) .pk-act-acts>.pk-bkb,html body:not(#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1) .pk-ah .pk-ah-btns>.pk-bkb{flex:1 1 0!important;min-width:0!important;width:auto!important;margin:0!important}
+html body:not(#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1) .pk-act-acts>.pk-bkb::after,html body:not(#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1) .pk-ah .pk-ah-btns>.pk-bkb::after{font-size:13px;letter-spacing:.08em}
+html body:not(#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1) .pk-act-acts>.pk-bkb.pk-g1-short,html body:not(#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1) .pk-ah .pk-ah-btns>.pk-bkb.pk-g1-short{font-size:0!important}
+html body:not(#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1) .pk-act-acts>.pk-awb.pk-g1-short::after,html body:not(#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1) .pk-ah .pk-ah-btns>.pk-awb.pk-g1-short::after{content:"Watch";content:"Watch" / ""}
+html body:not(#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1) .pk-act-acts>.pk-svb.pk-g1-short::after,html body:not(#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1) .pk-ah .pk-ah-btns>.pk-svb.pk-g1-short::after{content:"Listen";content:"Listen" / ""}
+html body:not(#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1) .pk-share1{flex:none!important;width:44px!important;min-width:44px!important;height:44px!important;min-height:44px!important;padding:0!important;display:inline-grid!important;place-items:center!important;border-radius:4px!important;border:2px solid #6A6163!important;background:transparent!important;color:#F2EDE3!important;margin:0!important}
+html body:not(#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1) .pk-share1>span{position:absolute!important;width:1px!important;height:1px!important;overflow:hidden!important;clip:rect(0 0 0 0)!important;white-space:nowrap!important}
+html body:not(#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1) .pk-share1 svg{width:20px!important;height:20px!important;margin:0!important}
+@media (min-width:600px){ html body:not(#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1) .pk-act-acts{max-width:532px} }
+/* neighborhood "Another performance at …" is a secondary */
+html body:not(#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1) .pk-hd-vid .pk-cta.sec.pk-g1-b{width:100%!important;margin-top:12px}
+@media (min-width:600px){ html body:not(#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1) .pk-hd-vid .pk-cta.sec.pk-g1-b{width:auto!important;min-width:280px} }
+/* year lineup header: "Were you there?" primary, "★ Pick my top 5" secondary */
+html body:not(#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1) .pk-lh-bs .pk-lh-b.pk-g1-b{flex:1 1 0!important;min-width:0!important}
+@media (min-width:600px){ html body:not(#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1) .pk-lh-bs .pk-lh-b.pk-g1-b{flex:0 1 auto!important;min-width:180px!important} }
+html body:not(#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1) .pk-ah .pk-ah-btns>.pk-bkb{min-width:180px!important;flex:0 1 220px!important}
 </style>
 <script id="pk-g1-js">
 /* Gate 1 fixes (Nov 12 2026): small DOM touch-ups the templates can't express. Runs after every render. */
@@ -11205,8 +11248,18 @@ html body:not(#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1) .pk-
   function tabs() { document.querySelectorAll('nav button').forEach(function (b) { if (b.querySelector(':scope > svg path[d^="m12 3 2.8 5.7"]') && !b.getAttribute('aria-label')) b.setAttribute('aria-label', 'My Pickathon'); }); }
   /* Fix 7: mark the top-5 panel's "I was there in YYYY" button (it sits on the dark panel) */
   function iw() { document.querySelectorAll('button.pk-sqb').forEach(function (b) { if (/I was there in \d{4}/.test(b.textContent)) b.classList.add('pk-g1-iw'); }); }
+  /* Fix 8: tag the before-launch buttons with the shared kinds (pk-g1-b pri|sec); the artist row reads WATCH / LISTEN (full name kept for screen readers) */
+  function kind(b, k) { if (!b) return; b.classList.add('pk-g1-b'); b.classList.toggle('pk-g1-pri', k === 'pri'); b.classList.toggle('pk-g1-sec', k === 'sec'); }
+  function btns() {
+    document.querySelectorAll('.pk-act-acts>.pk-bkb, .pk-ah .pk-ah-btns>.pk-bkb').forEach(function (b) {
+      var t = b.textContent.trim(); if (t && b.getAttribute('aria-label') !== t) b.setAttribute('aria-label', t);
+      kind(b, (b.classList.contains('pk-awb') || b.classList.contains('pri')) ? 'pri' : 'sec'); b.classList.add('pk-g1-short');
+    });
+    document.querySelectorAll('.pk-hd-vid button.pk-cta.sec').forEach(function (b) { kind(b, 'sec'); });
+    document.querySelectorAll('.pk-lh-bs .pk-lh-b').forEach(function (b) { kind(b, b.classList.contains('pk-lh-t5') ? 'sec' : 'pri'); });
+  }
   var q = 0;
-  function run() { q = 0; try { pills(); listen(); tabs(); iw(); } catch (e) { if (window.console) console.error('pk-g1', e); } }
+  function run() { q = 0; try { pills(); listen(); tabs(); iw(); btns(); } catch (e) { if (window.console) console.error('pk-g1', e); } }
   function soon() { if (!q) q = requestAnimationFrame(run); }
   try { new MutationObserver(soon).observe(document.documentElement, { childList: true, subtree: true }); } catch (e) {}
   window.addEventListener('hashchange', soon); window.addEventListener('resize', soon); soon();

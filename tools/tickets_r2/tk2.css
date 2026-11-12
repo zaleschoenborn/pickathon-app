@@ -304,3 +304,9 @@
 body:has(#tk2 #tk-bar:not([hidden])) #pk-toast,body:has(#pk-co) #pk-toast{display:none!important}
 /* QC Round 3.5: prices wait (at most 1.5 s) for the build check before they show */
 #tk2.tk-vchk{visibility:hidden}
+
+/* Gate 1 fix 8 (D6): no 32-36px buttons. Every Tickets button is 50px on phone/tablet and 56px on desktop, 6px corners, 2px border
+   (the pass steppers and the small choice chips keep their own 44px sizes). */
+#tk2#tk2 .tk-pill,#tk2#tk2 .tk-pill-sm{min-height:50px;border-width:2px;padding:0 1.125rem}
+@media (min-width:1025px){#tk2#tk2 .tk-pill,#tk2#tk2 .tk-pill-sm{min-height:56px}}
+#tk2#tk2#tk2#tk2#tk2 .tk-pill[aria-pressed]{min-height:44px!important;border-width:2px!important}

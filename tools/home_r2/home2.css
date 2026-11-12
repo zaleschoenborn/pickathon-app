@@ -513,3 +513,9 @@ html:root:root #root#root#root#root#root#root#root#root#root#root#root#root#root
   #pkh2 .h2-s2 .pk-cl-mount>.pk-sr{position:absolute}
   .pkh2 .h2-ba{margin:0 0 14px calc((100% - 48px) * .4 + 48px);font-size:.8125rem}
 }
+
+/* Gate 1 fix 8 (D6): Home keeps its look but matches specs/buttons.md sizes: 50px phone/tablet, 56px desktop, 2px borders.
+   (The Tour oval and the header LISTEN keep their own sizes; LISTEN is a 44px compact float.) */
+#root #pkh2 .h2-pill:not(.h2-watch),#root #pkh2 .h2-pill.h2-big{min-height:50px;border-width:2px}
+#root#root#root #pkh2 .h2-s2 .pk-cl-an,#root#root#root #pkh2 .h2-s2 .pk-cl-rpl{min-height:50px!important;border-width:2px!important}
+@media (min-width:1025px){#root #pkh2 .h2-pill:not(.h2-watch),#root #pkh2 .h2-pill.h2-big{min-height:56px}#root#root#root #pkh2 .h2-s2 .pk-cl-an,#root#root#root #pkh2 .h2-s2 .pk-cl-rpl{min-height:56px!important}}

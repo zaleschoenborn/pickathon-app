@@ -56,3 +56,34 @@ $P button.pk-g1-iw{color:#F2EDE3!important;-webkit-text-fill-color:#F2EDE3!impor
 $P button.pk-g1-iw *{color:#F2EDE3!important;-webkit-text-fill-color:#F2EDE3!important}
 $P button.pk-g1-iw.gold{background:rgba(214,181,74,.18)!important}
 $P .pk-ch .pk-cht li div[style*="font-weight: 800"]{color:#F2EDE3!important}
+
+/* -- Fix 8 (D6): before-launch button subset, specs/buttons.md. Primary: gold tint, 2px #D6B54A, #F2CF62 text. Secondary: 2px cream on a dark
+      wash, cream text. 50px phone+tablet, 56px desktop, 6px corners, Bricolage 800 13px caps .08em. Share = 44px icon button. -- */
+$P .pk-g1-b{display:inline-flex!important;align-items:center!important;justify-content:center!important;gap:8px!important;min-height:50px!important;height:auto!important;padding:0 16px!important;box-sizing:border-box!important;border-radius:6px!important;font:800 13px/1.15 'Bricolage Grotesque',system-ui,sans-serif!important;letter-spacing:.08em!important;text-transform:uppercase!important;text-align:center!important;white-space:normal!important;box-shadow:none!important;transition:none!important}
+$P .pk-g1-b.pk-g1-pri{background:rgba(214,181,74,.18)!important;border:2px solid #D6B54A!important;color:#F2CF62!important;-webkit-text-fill-color:#F2CF62!important}
+$P .pk-g1-b.pk-g1-sec{background:rgba(18,22,15,.26)!important;border:2px solid rgba(242,237,227,.88)!important;color:#F2EDE3!important;-webkit-text-fill-color:#F2EDE3!important}
+/* on a year's paper page the same two kinds use the year's ink for text (gold #F2CF62 can't be read on paper) */
+html.pk-ypp $Q .pk-g1-b.pk-g1-pri{color:var(--yi,#2B2628)!important;-webkit-text-fill-color:var(--yi,#2B2628)!important;background:rgba(214,181,74,.18)!important;border-color:#D6B54A!important}
+html.pk-ypp $Q .pk-g1-b.pk-g1-sec{background:transparent!important;border-color:var(--yi2,var(--yi,#2B2628))!important;color:var(--yi,#2B2628)!important;-webkit-text-fill-color:var(--yi,#2B2628)!important}
+@media (min-width:1025px){ $P .pk-g1-b{min-height:56px!important} }
+/* artist row: WATCH + LISTEN equal halves, Share a 44x44 icon button */
+$P .pk-act-acts,$P .pk-ah .pk-ah-btns{flex-wrap:nowrap!important;align-items:center!important;gap:8px!important}
+$P .pk-act-acts{grid-template-columns:minmax(0,1fr) minmax(0,1fr) 44px!important;grid-template-rows:auto!important;grid-auto-flow:column!important}
+$P .pk-act-acts>*{grid-column:auto!important;grid-row:auto!important;justify-self:stretch}
+$P .pk-act-acts>.pk-share1{justify-self:end}
+$P .pk-act-acts>.pk-bkb,$P .pk-ah .pk-ah-btns>.pk-bkb{flex:1 1 0!important;min-width:0!important;width:auto!important;margin:0!important}
+$P .pk-act-acts>.pk-bkb::after,$P .pk-ah .pk-ah-btns>.pk-bkb::after{font-size:13px;letter-spacing:.08em}
+$P .pk-act-acts>.pk-bkb.pk-g1-short,$P .pk-ah .pk-ah-btns>.pk-bkb.pk-g1-short{font-size:0!important}
+$P .pk-act-acts>.pk-awb.pk-g1-short::after,$P .pk-ah .pk-ah-btns>.pk-awb.pk-g1-short::after{content:"Watch";content:"Watch" / ""}
+$P .pk-act-acts>.pk-svb.pk-g1-short::after,$P .pk-ah .pk-ah-btns>.pk-svb.pk-g1-short::after{content:"Listen";content:"Listen" / ""}
+$P .pk-share1{flex:none!important;width:44px!important;min-width:44px!important;height:44px!important;min-height:44px!important;padding:0!important;display:inline-grid!important;place-items:center!important;border-radius:4px!important;border:2px solid #6A6163!important;background:transparent!important;color:#F2EDE3!important;margin:0!important}
+$P .pk-share1>span{position:absolute!important;width:1px!important;height:1px!important;overflow:hidden!important;clip:rect(0 0 0 0)!important;white-space:nowrap!important}
+$P .pk-share1 svg{width:20px!important;height:20px!important;margin:0!important}
+@media (min-width:600px){ $P .pk-act-acts{max-width:532px} }
+/* neighborhood "Another performance at …" is a secondary */
+$P .pk-hd-vid .pk-cta.sec.pk-g1-b{width:100%!important;margin-top:12px}
+@media (min-width:600px){ $P .pk-hd-vid .pk-cta.sec.pk-g1-b{width:auto!important;min-width:280px} }
+/* year lineup header: "Were you there?" primary, "★ Pick my top 5" secondary */
+$P .pk-lh-bs .pk-lh-b.pk-g1-b{flex:1 1 0!important;min-width:0!important}
+@media (min-width:600px){ $P .pk-lh-bs .pk-lh-b.pk-g1-b{flex:0 1 auto!important;min-width:180px!important} }
+$P .pk-ah .pk-ah-btns>.pk-bkb{min-width:180px!important;flex:0 1 220px!important}

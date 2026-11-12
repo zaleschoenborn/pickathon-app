@@ -37,8 +37,18 @@
   function tabs() { document.querySelectorAll('nav button').forEach(function (b) { if (b.querySelector(':scope > svg path[d^="m12 3 2.8 5.7"]') && !b.getAttribute('aria-label')) b.setAttribute('aria-label', 'My Pickathon'); }); }
   /* Fix 7: mark the top-5 panel's "I was there in YYYY" button (it sits on the dark panel) */
   function iw() { document.querySelectorAll('button.pk-sqb').forEach(function (b) { if (/I was there in \d{4}/.test(b.textContent)) b.classList.add('pk-g1-iw'); }); }
+  /* Fix 8: tag the before-launch buttons with the shared kinds (pk-g1-b pri|sec); the artist row reads WATCH / LISTEN (full name kept for screen readers) */
+  function kind(b, k) { if (!b) return; b.classList.add('pk-g1-b'); b.classList.toggle('pk-g1-pri', k === 'pri'); b.classList.toggle('pk-g1-sec', k === 'sec'); }
+  function btns() {
+    document.querySelectorAll('.pk-act-acts>.pk-bkb, .pk-ah .pk-ah-btns>.pk-bkb').forEach(function (b) {
+      var t = b.textContent.trim(); if (t && b.getAttribute('aria-label') !== t) b.setAttribute('aria-label', t);
+      kind(b, (b.classList.contains('pk-awb') || b.classList.contains('pri')) ? 'pri' : 'sec'); b.classList.add('pk-g1-short');
+    });
+    document.querySelectorAll('.pk-hd-vid button.pk-cta.sec').forEach(function (b) { kind(b, 'sec'); });
+    document.querySelectorAll('.pk-lh-bs .pk-lh-b').forEach(function (b) { kind(b, b.classList.contains('pk-lh-t5') ? 'sec' : 'pri'); });
+  }
   var q = 0;
-  function run() { q = 0; try { pills(); listen(); tabs(); iw(); } catch (e) { if (window.console) console.error('pk-g1', e); } }
+  function run() { q = 0; try { pills(); listen(); tabs(); iw(); btns(); } catch (e) { if (window.console) console.error('pk-g1', e); } }
   function soon() { if (!q) q = requestAnimationFrame(run); }
   try { new MutationObserver(soon).observe(document.documentElement, { childList: true, subtree: true }); } catch (e) {}
   window.addEventListener('hashchange', soon); window.addEventListener('resize', soon); soon();
