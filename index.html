@@ -9468,6 +9468,41 @@ html:root:root #root#root#root#root#root#root#root#root#root#root#root#root#root
   #pkh2#pkh2 .h2-oh-what{font-size:1.1825rem;max-width:none}#pkh2#pkh2 .h2-oh-sea{font-size:1.1825rem}#root #pkh2 .h2-oh-btn{min-height:56px;width:auto;min-width:320px;display:inline-flex}
   #pkh2 .h2-oh-tour{top:16px;right:max(24px,calc((100vw - 1440px)/2 + 104px))}}
 @media (prefers-reduced-motion:reduce){.pkh2 .h2-oh-ph .h2-hf{transition:none!important;transform:none!important}}
+
+/* 3. Neighborhoods, simplified: one big photo (kind, name, gold title on it; the whole photo opens Places) beside the still farm map, the twenty emblems
+   as ONE swipe row grouped Stage, Gathering, Camping, and one button. One phone screen at 360x740, 390x844, 430x932. */
+@media (max-width:1199px){
+  .pkh2 .h2-s.h2-s3{height:var(--scr);min-height:0;gap:10px;padding-bottom:14px}
+  .pkh2 .h2-s3 .h2-hmv{flex:1 1 0;height:auto!important;min-height:150px;gap:8px}
+  .pkh2 .h2-s3 .h2-hood{flex:0 0 calc((100% - 8px) * .62);height:100%}
+  .pkh2 .h2-s3 .h2-hmap{flex:1 1 0;min-width:0;height:100%}
+}
+.pkh2 .h2-strip{display:flex;align-items:flex-end;gap:14px;flex:none;overflow-x:auto;overflow-y:hidden;margin:0 calc(-1 * var(--gutter));padding:0 var(--gutter) 2px;
+  scroll-snap-type:x proximity;scroll-padding:0 var(--gutter);-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;scrollbar-width:none;
+  -webkit-mask-image:linear-gradient(90deg,transparent 0,#000 var(--gutter),#000 calc(100% - 28px),transparent);mask-image:linear-gradient(90deg,transparent 0,#000 var(--gutter),#000 calc(100% - 28px),transparent)}
+.pkh2 .h2-strip::-webkit-scrollbar{display:none}
+.pkh2 .h2-strip::after{content:"";flex:0 0 1px}
+.pkh2 .h2-sg{flex:none;display:flex;flex-direction:column;gap:4px;scroll-snap-align:start}
+#pkh2#pkh2 .h2-sg-k{display:flex;align-items:center;gap:6px;font-size:.75rem;line-height:1;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--mute);padding-left:2px}
+#pkh2#pkh2 .h2-sg.is-on .h2-sg-k{color:var(--cream)}
+.pkh2 .h2-sg .h2-dot{flex:none;width:8px;height:8px;border-radius:50%;background:#F2CF62}
+.pkh2 .h2-sg[data-g=around] .h2-dot{background:#F0896B}.pkh2 .h2-sg[data-g=camp] .h2-dot{background:#7FB6E6}
+.pkh2 .h2-sg-r{display:flex;gap:6px;padding:4px 2px}
+#pkh2 .h2-strip .h2-em{width:48px;height:48px}
+#pkh2 .h2-strip .h2-em::after{inset:0}
+#pkh2 .h2-strip .h2-em img{width:48px;height:48px}
+@media (min-width:1200px){
+  .pkh2 .h2-s.h2-s3{grid-template-columns:minmax(0,7fr) minmax(0,3fr) auto;grid-template-rows:auto minmax(0,1fr) auto}
+  .pkh2 .h2-hood{grid-column:1;grid-row:2}
+  .pkh2 .h2-hmap{grid-column:2/4;grid-row:2}
+  .pkh2 .h2-strip::after{display:none}
+  .pkh2 .h2-strip{grid-column:1/-1;grid-row:3;align-self:end;justify-content:space-between;margin:0;padding:0 0 2px;gap:16px;overflow:visible;-webkit-mask-image:none;mask-image:none}
+  .pkh2 .h2-s3head{grid-column:1/3}
+  .pkh2 .h2-s3row{grid-column:3;grid-row:1;align-self:end;justify-content:flex-end}
+  #pkh2 .h2-strip .h2-em,#pkh2 .h2-strip .h2-em img{width:48px;height:48px}
+}
+@media (min-width:600px) and (max-width:1199px){.pkh2 .h2-strip{width:100%;max-width:640px;margin:0 auto;padding:0 0 2px;scroll-padding:0;
+  -webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 28px),transparent);mask-image:linear-gradient(90deg,#000 calc(100% - 28px),transparent)}}
 </style>
 <script id="pk-home2">
 /* QA M1 (Nov 11): Home's poster opens on 2019 (founder spec, home_flow.md screen 2) and "Another year" walks the years by discovery strength, not at random:
@@ -9645,10 +9680,11 @@ window.pkClimbRank = function (C, dd) {
       '<span class="h2-hood-o"><span class="h2-hood-k" data-h2="hk"></span><span class="h2-d h2-hood-n pkp-head" data-h2="hn"></span><span class="h2-hood-tag" data-h2="htag"></span></span>' +
       '<span class="h2-hood-go" aria-hidden="true"><span>Explore</span>' + CHEV + '</span></button>' +
       '<button type="button" class="h2-hmap" data-h2="hmap">' + mapSVG(d) + '</button></div>' +
-      '<div class="h2-city" role="group" aria-label="Pick a neighborhood">' + GROUPS.map(function (g) {
+      /* Zale Nov 12 07:39: the twenty emblems as ONE swipe row, grouped Stage, Gathering, Camping, a small kind label where each group starts */
+      '<div class="h2-strip" role="group" aria-label="Pick a neighborhood">' + GROUPS.map(function (g) {
         var L = ids.filter(function (i) { return d.hoods[i].k === g[0]; });
-        return '<p class="h2-city-k" data-g="' + g[0] + '"><i class="h2-dot" aria-hidden="true"></i>' + cnt(g[0]) + ' ' + g[1] + ' neighborhoods</p><div class="h2-city-r">' + L.map(function (i) {
-          var H = d.hoods[i]; return '<button type="button" class="h2-em" data-h="' + i + '" aria-pressed="false" aria-label="' + esc(H.n) + '" title="' + esc(H.n) + '"><img src="' + esc(H.icw || ('ic2/' + i + '.png')) + '" alt="" width="44" height="44" loading="lazy"></button>'; }).join('') + '</div>';
+        return '<div class="h2-sg" data-g="' + g[0] + '"><p class="h2-sg-k" aria-hidden="true"><i class="h2-dot"></i>' + g[1] + '</p><div class="h2-sg-r">' + L.map(function (i) {
+          var H = d.hoods[i]; return '<button type="button" class="h2-em" data-h="' + i + '" aria-pressed="false" aria-label="' + esc(H.n) + ', ' + KIND[H.k] + '" title="' + esc(H.n) + '"><img src="' + esc(H.icw || ('ic2/' + i + '.png')) + '" alt="" width="48" height="48" loading="lazy"></button>'; }).join('') + '</div></div>';
       }).join('') + '</div>' +
       '<div class="h2-row h2-s3row"><button type="button" class="h2-pill" data-h2="allhoods">Explore all neighborhoods</button></div></section>';
     var hPlace = h; h = '';
@@ -9702,7 +9738,7 @@ window.pkClimbRank = function (C, dd) {
   function mapPick(k) {
     var sv = root && $('.h2-msvg', root); if (!sv || !HH) return;
     var W = HH.size[0], H = HH.size[1], p = HH.pts[k] || [50, 50], px = p[0] / 100 * W, py = p[1] / 100 * H;
-    var bw = sv.clientWidth || 1, bh = sv.clientHeight || 1, vw = W, vh = H, x0 = 0, y0 = 0, whole = window.innerWidth < 600, sc, pin;
+    var bw = sv.clientWidth || 1, bh = sv.clientHeight || 1, vw = W, vh = H, x0 = 0, y0 = 0, whole = false, sc, pin;   /* Home 3: the phone map fills its column too (cropped on the pick), no empty bands above and below */
     /* Gate 1 fix 11 (D10): on phone the map column shows the whole farm (meet), with the pick lit and its emblem on it */
     sv.setAttribute('preserveAspectRatio', whole ? 'xMidYMid meet' : 'xMidYMid slice');
     if (whole) { sv.setAttribute('viewBox', '0 0 ' + W + ' ' + H); sc = Math.min(bw / W, bh / H); pin = 28 / sc; }
@@ -9730,6 +9766,12 @@ window.pkClimbRank = function (C, dd) {
     var r = s3.getBoundingClientRect(), vh = window.innerHeight; if (r.bottom < vh * 0.4 || r.top > vh * 0.6) return;   /* only while the section is the one on screen */
     if (hoodSet(cur).length < 2) return; hpI++; hoodShow(cur, hpI, true);
   }
+  /* keep the picked emblem in view in the swipe row (no page scroll, only the row) */
+  function stripTo(k) {
+    var r = root && $('.h2-strip', root), b = r && $('.h2-em[data-h="' + k + '"]', r); if (!r || !b || r.scrollWidth <= r.clientWidth + 1) return;
+    var bl = b.offsetLeft - r.offsetLeft, pad = 56;
+    if (bl < r.scrollLeft + pad || bl + b.offsetWidth > r.scrollLeft + r.clientWidth - pad) { try { r.scrollTo({ left: Math.max(0, bl - r.clientWidth / 2 + b.offsetWidth / 2), behavior: reduced() ? 'auto' : 'smooth' }); } catch (e) { r.scrollLeft = bl - r.clientWidth / 2; } }
+  }
   function hood(k) {
     var d = D, H = d && d.hoods[k]; if (!H) return; cur = k; hpI = 0;
     hoodShow(k, 0, false);
@@ -9738,7 +9780,8 @@ window.pkClimbRank = function (C, dd) {
     $('[data-h2="hood"]', root).setAttribute('aria-label', H.n + ', ' + KIND[H.k] + (H.t ? ', ' + H.t : '') + '. Explore it on the map');
     var mb = $('[data-h2="hmap"]', root); if (mb) mb.setAttribute('aria-label', 'Where ' + H.n + ' is on the farm. Open the map');
     $$('.h2-em', root).forEach(function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-h') === k ? 'true' : 'false'); });
-    $$('.h2-city-k', root).forEach(function (p) { p.classList.toggle('is-on', p.getAttribute('data-g') === H.k); });
+    $$('.h2-sg', root).forEach(function (p) { p.classList.toggle('is-on', p.getAttribute('data-g') === H.k); });
+    stripTo(k);
     mapPick(k);
     if (!hpT) hpT = setInterval(hoodTick, 4000);
   }

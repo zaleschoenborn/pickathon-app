@@ -173,10 +173,11 @@ window.pkClimbRank = function (C, dd) {
       '<span class="h2-hood-o"><span class="h2-hood-k" data-h2="hk"></span><span class="h2-d h2-hood-n pkp-head" data-h2="hn"></span><span class="h2-hood-tag" data-h2="htag"></span></span>' +
       '<span class="h2-hood-go" aria-hidden="true"><span>Explore</span>' + CHEV + '</span></button>' +
       '<button type="button" class="h2-hmap" data-h2="hmap">' + mapSVG(d) + '</button></div>' +
-      '<div class="h2-city" role="group" aria-label="Pick a neighborhood">' + GROUPS.map(function (g) {
+      /* Zale Nov 12 07:39: the twenty emblems as ONE swipe row, grouped Stage, Gathering, Camping, a small kind label where each group starts */
+      '<div class="h2-strip" role="group" aria-label="Pick a neighborhood">' + GROUPS.map(function (g) {
         var L = ids.filter(function (i) { return d.hoods[i].k === g[0]; });
-        return '<p class="h2-city-k" data-g="' + g[0] + '"><i class="h2-dot" aria-hidden="true"></i>' + cnt(g[0]) + ' ' + g[1] + ' neighborhoods</p><div class="h2-city-r">' + L.map(function (i) {
-          var H = d.hoods[i]; return '<button type="button" class="h2-em" data-h="' + i + '" aria-pressed="false" aria-label="' + esc(H.n) + '" title="' + esc(H.n) + '"><img src="' + esc(H.icw || ('ic2/' + i + '.png')) + '" alt="" width="44" height="44" loading="lazy"></button>'; }).join('') + '</div>';
+        return '<div class="h2-sg" data-g="' + g[0] + '"><p class="h2-sg-k" aria-hidden="true"><i class="h2-dot"></i>' + g[1] + '</p><div class="h2-sg-r">' + L.map(function (i) {
+          var H = d.hoods[i]; return '<button type="button" class="h2-em" data-h="' + i + '" aria-pressed="false" aria-label="' + esc(H.n) + ', ' + KIND[H.k] + '" title="' + esc(H.n) + '"><img src="' + esc(H.icw || ('ic2/' + i + '.png')) + '" alt="" width="48" height="48" loading="lazy"></button>'; }).join('') + '</div></div>';
       }).join('') + '</div>' +
       '<div class="h2-row h2-s3row"><button type="button" class="h2-pill" data-h2="allhoods">Explore all neighborhoods</button></div></section>';
     var hPlace = h; h = '';
@@ -230,7 +231,7 @@ window.pkClimbRank = function (C, dd) {
   function mapPick(k) {
     var sv = root && $('.h2-msvg', root); if (!sv || !HH) return;
     var W = HH.size[0], H = HH.size[1], p = HH.pts[k] || [50, 50], px = p[0] / 100 * W, py = p[1] / 100 * H;
-    var bw = sv.clientWidth || 1, bh = sv.clientHeight || 1, vw = W, vh = H, x0 = 0, y0 = 0, whole = window.innerWidth < 600, sc, pin;
+    var bw = sv.clientWidth || 1, bh = sv.clientHeight || 1, vw = W, vh = H, x0 = 0, y0 = 0, whole = false, sc, pin;   /* Home 3: the phone map fills its column too (cropped on the pick), no empty bands above and below */
     /* Gate 1 fix 11 (D10): on phone the map column shows the whole farm (meet), with the pick lit and its emblem on it */
     sv.setAttribute('preserveAspectRatio', whole ? 'xMidYMid meet' : 'xMidYMid slice');
     if (whole) { sv.setAttribute('viewBox', '0 0 ' + W + ' ' + H); sc = Math.min(bw / W, bh / H); pin = 28 / sc; }
@@ -258,6 +259,12 @@ window.pkClimbRank = function (C, dd) {
     var r = s3.getBoundingClientRect(), vh = window.innerHeight; if (r.bottom < vh * 0.4 || r.top > vh * 0.6) return;   /* only while the section is the one on screen */
     if (hoodSet(cur).length < 2) return; hpI++; hoodShow(cur, hpI, true);
   }
+  /* keep the picked emblem in view in the swipe row (no page scroll, only the row) */
+  function stripTo(k) {
+    var r = root && $('.h2-strip', root), b = r && $('.h2-em[data-h="' + k + '"]', r); if (!r || !b || r.scrollWidth <= r.clientWidth + 1) return;
+    var bl = b.offsetLeft - r.offsetLeft, pad = 56;
+    if (bl < r.scrollLeft + pad || bl + b.offsetWidth > r.scrollLeft + r.clientWidth - pad) { try { r.scrollTo({ left: Math.max(0, bl - r.clientWidth / 2 + b.offsetWidth / 2), behavior: reduced() ? 'auto' : 'smooth' }); } catch (e) { r.scrollLeft = bl - r.clientWidth / 2; } }
+  }
   function hood(k) {
     var d = D, H = d && d.hoods[k]; if (!H) return; cur = k; hpI = 0;
     hoodShow(k, 0, false);
@@ -266,7 +273,8 @@ window.pkClimbRank = function (C, dd) {
     $('[data-h2="hood"]', root).setAttribute('aria-label', H.n + ', ' + KIND[H.k] + (H.t ? ', ' + H.t : '') + '. Explore it on the map');
     var mb = $('[data-h2="hmap"]', root); if (mb) mb.setAttribute('aria-label', 'Where ' + H.n + ' is on the farm. Open the map');
     $$('.h2-em', root).forEach(function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-h') === k ? 'true' : 'false'); });
-    $$('.h2-city-k', root).forEach(function (p) { p.classList.toggle('is-on', p.getAttribute('data-g') === H.k); });
+    $$('.h2-sg', root).forEach(function (p) { p.classList.toggle('is-on', p.getAttribute('data-g') === H.k); });
+    stripTo(k);
     mapPick(k);
     if (!hpT) hpT = setInterval(hoodTick, 4000);
   }
