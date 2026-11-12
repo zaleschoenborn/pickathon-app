@@ -11612,6 +11612,18 @@ html body:not(#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1) a
 html body:not(#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1) article[aria-label^="Pickathon "] .pk-yb .pk-share1,html body:not(#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1) article[aria-label^="Pickathon "] .pk-yb .pk-share1 *{color:var(--yb-ink)!important;-webkit-text-fill-color:var(--yb-ink)!important;border-color:var(--yb-ink)!important;stroke:currentColor}
 html body:not(#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1) article[aria-label^="Pickathon "] .pk-yb .pk-share1{background:transparent!important}
 html body:not(#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1) article[aria-label^="Pickathon "] :is(.pk-sxy-db,.pk-sxy-kb)[aria-pressed="true"]{background:var(--yb-ink)!important;color:var(--yb-paper)!important;-webkit-text-fill-color:var(--yb-paper)!important;border-color:var(--yb-ink)!important;background-image:linear-gradient(90deg,var(--yb-s1) 0 25%,var(--yb-s2) 25% 50%,var(--yb-s3) 50% 75%,var(--yb-s4) 75% 100%)!important;background-size:100% 4px!important;background-repeat:no-repeat!important;background-position:0 100%!important}
+
+/* ---- quick ones (item 8) ---- */
+/* the year banner fits its box at 360 ("PICKATHON 2025" was cut); dates keep clear of the Share button */
+@media (max-width:999px){
+html body:not(#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1) .pk-yb .pk-yb-t{container-type:inline-size;flex:1 1 auto}
+html body:not(#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1) .pk-yb .pk-yb-h{font-size:min(26px,11.6cqw)!important}
+html body:not(#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1) .pk-yb .pk-yb-d{padding-right:48px}
+}
+/* tile names may run to three lines (15px small tiles, 17px big); the genre line is one line */
+html body:not(#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1) .pk-shc:not(:has(>.pk-b3ph))>b{font-size:15px!important;-webkit-line-clamp:3!important;line-height:1.12!important}
+html body:not(#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1) .pk-sh-big .pk-shc:not(:has(>.pk-b3ph))>b{font-size:17px!important}
+html body:not(#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1) :is(.pk-shc .pk-shk,.pk-b2 .pk-bk,.pk-b1 .pk-bk,.pk-b3>b~span:not(.pk-star)){display:block;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;-webkit-line-clamp:unset}
 </style>
 <script id="pk-y1-js">
 /* Years package (Nov 12 2026): DOM touch-ups the templates can't express. Runs after renders (one observer, no timers). */
