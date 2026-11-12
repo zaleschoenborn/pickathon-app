@@ -550,3 +550,6 @@ html:root:root #root#root#root#root#root#root#root#root#root#root#root#root#root
 #root .pk-tl2.is-sale .pk-tl2-go svg{fill:currentColor;stroke:currentColor}
 #root .pk-tb2.is-sale{background:#F2CF62;border-color:#F2CF62;color:#2B2628}
 #root .pk-tb2.is-sale:hover{background:#D6B54A;border-color:#D6B54A}
+
+/* Gate 1 fix 16 (D14): phone/tablet hero, a top scrim so the headline reads over the bright frames (green lotus, the Windmill crowd-surf) */
+@media (max-width:1199px){.pkh2 .h2-s1ph::before{inset:0;background:linear-gradient(180deg,rgba(20,16,18,.72) 0,rgba(20,16,18,.35) 55%,transparent 78%)}}
