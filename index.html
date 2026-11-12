@@ -2598,8 +2598,12 @@ html.pk-cy-in div:has(> button[aria-label="Listen to Pickathon"]){opacity:0!impo
     var LAY = KS.map(function (k, j) { var P = cast.map(function () { return null; }), R = rowsAt(j, sc);
       if (D.real) {   /* Zale, Nov 12: each name's type size is its own score at that moment (today's #1 = the biggest type); the stack is as tall as the sizes make it and sits centered in the frame */
         var vs = cast.map(function (x, i) { return i; }).filter(function (i) { return POS[j][i] < LN; }).sort(function (a, b) { return POS[j][a] - POS[j][b]; });
-        var fz = vs.map(function (i) { return Math.max(Q.ph ? 12 : 14, Math.min(TOP * cast[i][2][k] / SCT, WF[i])); });
         var hh = function (i, f) { var o = SH[i]; return f * (o.L.length === 1 ? LH : o.lead ? LH * 1.55 + 0.04 : LH * 2 + 0.04); }, gp = function (f) { return Math.max(Q.GAP, 0.3 * f); };
+        var tk = Math.max.apply(null, vs.map(function (i) { return cast[i][2][k]; }));   /* Zale, Nov 12: at every moment the biggest name there is the biggest type and fills the card; the rest are sized by score relative to it */
+        var fzAt = function (sc) { return vs.map(function (i) { return Math.max(Q.ph ? 12 : 14, Math.min(sc * cast[i][2][k] / tk, WF[i])); }); };
+        var hAt = function (fa) { var t = 0; vs.forEach(function (i, q) { t += hh(i, fa[q]) + (q < vs.length - 1 ? gp(fa[q]) : 0); }); return t; };
+        var lo = 8, hi = 400, avH = S[9].y + S[9].h - S[0].y; for (var it = 0; it < 24; it++) { var md = (lo + hi) / 2; if (hAt(fzAt(md)) > avH) hi = md; else lo = md; }
+        var fz = fzAt(lo);
         var tot = 0; vs.forEach(function (i, q) { tot += hh(i, fz[q]) + (q < vs.length - 1 ? gp(fz[q]) : 0); });
         var av = S[9].y + S[9].h - S[0].y, k2 = tot > av ? av / tot : 1, y2 = S[0].y + (av - tot * k2) / 2;
         vs.forEach(function (i, q) { var f = fz[q] * k2, c = rgb(q === 0 ? H : q % 2 ? A : B); y2 += hh(i, f); P[i] = { x: Q.COLX + 0.5 * Q.COLW, y: y2, k: 0.5, f: f, r: c[0], g: c[1], b: c[2], sep: 0, col: 1, vis: 1, v: V[i][j] }; y2 += gp(f); });
