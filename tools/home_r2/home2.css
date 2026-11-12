@@ -553,3 +553,6 @@ html:root:root #root#root#root#root#root#root#root#root#root#root#root#root#root
 
 /* Gate 1 fix 16 (D14): phone/tablet hero, a top scrim so the headline reads over the bright frames (green lotus, the Windmill crowd-surf) */
 @media (max-width:1199px){.pkh2 .h2-s1ph::before{inset:0;background:linear-gradient(180deg,rgba(20,16,18,.72) 0,rgba(20,16,18,.35) 55%,transparent 78%)}}
+
+/* Gate 1 loop 2 C: at <=380 the two Before-they-were-big labels fit their boxes with room to spare (12px, .03em, 8px padding, one line) */
+@media (max-width:380px){#root#root #pkh2 .h2-s5row .h2-pill{font-size:12px!important;letter-spacing:.03em!important;padding:0 8px!important;white-space:nowrap!important}}
