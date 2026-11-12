@@ -27,7 +27,7 @@ window.pkClimbRank = function (C, dd) {
   /* "Another neighborhood" leads with the strong ones (design: home.html), then the rest in data order */
   var LEAD = ['cherryhill', 'woods', 'galaxy', 'windmill', 'market', 'coyote', 'paddock', 'lushcamp', 'grove', 'curation'];
   var KIND = { stage: 'Stage neighborhood', around: 'Gathering neighborhood', camp: 'Camping neighborhood' }, GROUPS = [['stage', 'Stage'], ['around', 'Gathering'], ['camp', 'Camping']];
-  var HERO = 'i/318.jpg', ACT = 'i/pk-paddock-c11.jpg';   /* stand-ins until the photo director's picks for slots home.hero and home.act land (photo_slots.csv) */
+  var HERO = 'i/r3-home-hero.jpg', ACT = 'i/pk-paddock-c11.jpg';   /* stand-ins until the photo director's picks for slots home.hero and home.act land (photo_slots.csv) */
   var QUOTE = ['You need to know about Pickathon.', 'USA Today'];
 
   /* ---------- helpers ---------- */
