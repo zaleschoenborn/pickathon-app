@@ -146,23 +146,26 @@ window.pkClimbRank = function (C, dd) {
       '<div class="h2-paper h2-band"><div class="h2-band-m"><p class="h2-d h2-band-d pkp-head">' + DATES + '</p><p class="h2-band-w">' + DAYSW + '</p></div>' +
       '<div class="h2-band-p"><small>3-Day Pass from</small><b class="h2-num" data-h2="from">' + (t ? t.from : '') + '</b><small>camping included</small></div></div>' +
       '<div class="h2-cta" data-h2="cta1"></div></div></section>';
-    /* 2 PROOF: pk-climb draws the poster into .pk-cl-mount by itself */
+    var hP = h; h = '';
+    /* 4 PROOF: pk-climb draws the poster into .pk-cl-mount by itself */
     /* design_studio-18 / home_flow.md: Home picks the poster's year once per visit from the Discovery years (2011-2024 with a climber),
        as the old Home did, so the poster never opens on a year with nothing to watch. */
     try { if (window.pkClimbRank && window.pkClimb) { var RK = window.pkClimbRank(window.pkClimb, d); window.pkClimbOrder = RK.order; if (!window.pkClimbY0 || window.pkClimbY0 !== RK.y0) window.pkClimbY0 = RK.y0; } } catch (e) {}
     h += '<section class="h2-s h2-s2" aria-labelledby="pk-cl-h"><div class="h2-s2in"><div class="pk-cl-mount"></div>' +
       '<div class="h2-strip" data-h2="strip" data-none><button type="button" class="h2-strip-ph" data-h2="wph" tabindex="-1" aria-hidden="true"><img alt="" loading="lazy" decoding="async"></button>' +
       '<div class="h2-strip-t"><button type="button" class="h2-pill h2-watch" data-h2="wbtn">' + PLAY + '<span></span></button><p class="h2-strip-c"><b data-h2="wa"></b> <span data-h2="wc"></span></p></div></div></div></section>';
-    /* 3 PLACE */
+    var hPoster = h; h = '';
+    /* 3 PLACE (Round 3 E3): the emblems are the picker; one button, Explore all neighborhoods */
     h += '<section class="h2-s h2-s3" aria-labelledby="h2-h3">' +
       '<button type="button" class="h2-hood" data-h2="hood"><img class="h2-hood-ph" data-h2="hph" alt="" loading="lazy" decoding="async"><span class="h2-hood-c"><img data-h2="hem" alt="" width="44" height="44" loading="lazy"><span class="h2-hood-t"><span class="h2-d h2-hood-n pkp-head" data-h2="hn"></span><span class="h2-hood-k" data-h2="hk"></span><span class="h2-hood-tag" data-h2="htag"></span></span><span class="h2-hood-go">Explore →</span></span></button>' +
-      '<div class="h2-s3l"><div class="h2-s3head"><h2 class="h2-d h2-sec pkp-head" id="h2-h3">Live inside a temporary city of wonder</h2><p class="h2-sub h2-s3sub">' + (ids.length === 20 ? 'Twenty' : ids.length) + ' neighborhoods, built by hand for one weekend.</p></div>' +
+      '<div class="h2-s3l"><div class="h2-s3head"><h2 class="h2-d h2-sec pkp-head" id="h2-h3">Live inside a temporary city of wonder</h2><p class="h2-sub h2-s3sub">' + (ids.length === 20 ? 'Twenty' : ids.length) + ' neighborhoods, built by hand for one weekend. Pick one and step inside.</p></div>' +
       '<div class="h2-city" role="group" aria-label="Pick a neighborhood">' + GROUPS.map(function (g) {
         var L = ids.filter(function (i) { return d.hoods[i].k === g[0]; });
         return '<p class="h2-city-k" data-g="' + g[0] + '">' + cnt(g[0]) + ' ' + g[1] + ' neighborhoods</p><div class="h2-city-r">' + L.map(function (i) {
-          var H = d.hoods[i]; return '<button type="button" class="h2-em" data-h="' + i + '" aria-pressed="false" aria-label="' + esc(H.n) + '" title="' + esc(H.n) + '"><img src="' + esc(H.icw || ('ic2/' + i + '.png')) + '" alt="" width="36" height="36" loading="lazy"></button>'; }).join('') + '</div>';
+          var H = d.hoods[i]; return '<button type="button" class="h2-em" data-h="' + i + '" aria-pressed="false" aria-label="' + esc(H.n) + '" title="' + esc(H.n) + '"><img src="' + esc(H.icw || ('ic2/' + i + '.png')) + '" alt="" width="44" height="44" loading="lazy"></button>'; }).join('') + '</div>';
       }).join('') + '</div>' +
-      '<div class="h2-row"><button type="button" class="h2-pill h2-cream" data-h2="nexthood">Another neighborhood</button><button type="button" class="h2-pill" data-h2="allhoods">Explore all neighborhoods</button></div></div></section>';
+      '<div class="h2-row"><button type="button" class="h2-pill" data-h2="allhoods">Explore all neighborhoods</button></div></div></section>';
+    var hPlace = h; h = '';
     /* 4 ACT */
     h += '<section class="h2-s h2-s4" aria-labelledby="h2-h4"><div class="h2-s4ph" data-slot="home.act"><img src="' + ACT + '" alt="" width="1600" height="1067" loading="lazy" decoding="async"><h2 class="h2-d h2-sec pkp-head" id="h2-h4">Four days in the woods. Come.</h2></div>' +
       '<div class="h2-s4in"><div class="h2-s4side"><p class="h2-d h2-s4h pkp-head" aria-hidden="true">Four days in the woods. Come.</p>' +
@@ -172,7 +175,14 @@ window.pkClimbRank = function (C, dd) {
       '<p class="h2-d h2-stub-d pkp-head">' + DATES + '</p><p class="h2-stub-w">' + DAYSS + '</p>' +
       '<ul class="h2-stub-inc"><li>Camping included</li><li>Kids 12 &amp; under free</li><li>Free water</li></ul>' +
       '<div class="h2-stub-buy"><p><small>3-Day Pass from</small><b class="h2-num" data-h2="from">' + (t ? t.from : '') + '</b></p><span data-h2="cta4"></span></div></div></div></section>';
-    return h;
+    /* 2 CONCEPT (Round 3 E1/E2, Zale approved the blend Nov 11): one Discovery at a time, the fact first. The photo and the gold pill play
+       the video; the words open the archive at that artist; Another discovery walks the ranking; See all opens the archive. */
+    var hBand = '<section class="h2-s h2-s5" aria-labelledby="h2-h5"><div class="h2-s5head"><h2 class="h2-d h2-sec pkp-head" id="h2-h5">Be there before they’re big</h2>' +
+      '<p class="h2-sub h2-s5sub">You don’t know this year’s lineup yet. Neither did anyone who saw these bands here first.</p></div>' +
+      '<article class="h2-bc" data-h2="band" aria-live="polite"><button type="button" class="h2-bc-ph" data-h2="bph"><img alt="" decoding="async"><span class="h2-pill h2-watch h2-bc-w" data-h2="bw">' + PLAY + '<span></span></span></button>' +
+      '<button type="button" class="h2-bc-t" data-h2="barch"><span class="h2-bc-k"><span data-h2="bk"></span><span class="h2-bc-y" data-h2="by"></span></span><span class="h2-d h2-bc-n pkp-head" data-h2="bn"></span><span class="h2-bc-l" data-h2="bl"></span><span class="h2-bc-q" data-h2="bq"></span></button></article>' +
+      '<div class="h2-row h2-s5row"><button type="button" class="h2-pill h2-cream" data-h2="nextdisc">Another discovery</button><button type="button" class="h2-pill" data-h2="alldisc">See all Discoveries</button></div></section>';
+    return hP + hBand + hPlace + hPoster + h;
   }
   function ctaKey(t) { return t ? [t.w, t.cta, t.from, t.side.join('|')].join('#') : '-'; }
   function drawCTA() {
@@ -194,6 +204,36 @@ window.pkClimbRank = function (C, dd) {
     $$('.h2-em', root).forEach(function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-h') === k ? 'true' : 'false'); });
     $$('.h2-city-k', root).forEach(function (p) { p.classList.toggle('is-on', p.getAttribute('data-g') === H.k); });
   }
+  /* ---------- 2. Before they were big: Discoveries only (archCT k = disc, one card per artist at that first year), ranked by pkRankCmp
+     (magnitude_dec first). Cards need a photo and a fact line. The acts on the poster's opening year step aside, so the two band sections never show the same act. ---------- */
+  var BL = null, BLd = null, bi = 0;
+  function bandList() {
+    if (BL && BLd === D) return BL;
+    var pool = []; try { pool = window.__pkArchPool ? window.__pkArchPool() : []; } catch (e) { pool = []; }
+    var PV = (D && D.preview) || {}, cy = window.pkClimbY0, CN = {};
+    try { (((window.pkClimb || {})[cy] || {}).names || []).forEach(function (x) { CN[nk(x[0])] = 1; }); } catch (e) {}
+    BL = pool.filter(function (a) { return a.cat === 'music' && a.ctk === 'disc' && !a.dc && !a.leg && a.line && !CN[nk(a.n)]; }).map(function (a) {
+      var pv = PV[a.n], img = (pv && String(pv.y) === String(a.yr) && pv.i) || a.img || (pv && pv.i) || '';
+      var v = vidOf(a.vu), r = vidRec(v), full = !!(r && r.f), watch = !!a.vu && !full && /^(Watch|Listen)/.test(a.vt || '');
+      return { n: a.n, kind: a.kind || 'Discovery', y: String(a.yr || ''), line: a.line, img: img, vu: watch ? a.vu : '', vt: watch ? a.vt : '', m: a.m, k: 'disc', c: a.cf };
+    }).filter(function (a) { return a.img; });
+    BL.sort(window.pkRankCmp || function () { return 0; }); BLd = D; return BL;
+  }
+  function drawBand() {
+    if (!root) return; var L = bandList(), s = $('.h2-s5', root); if (!s) return;
+    if (!L.length) { s.hidden = true; return; } s.hidden = false;
+    var a = L[((bi % L.length) + L.length) % L.length], ph = $('[data-h2="bph"]', s), w = $('[data-h2="bw"]', s);
+    $('img', ph).src = a.img; $('img', ph).alt = '';
+    ph.setAttribute('aria-label', a.vu ? (/^Listen/.test(a.vt) ? 'Listen to ' : 'Watch ') + a.n + ' at Pickathon ' + a.y : a.n + ': see the archive');
+    w.hidden = !a.vu; $('span', w).textContent = a.vu ? a.vt : '';
+    $('[data-h2="bk"]', s).textContent = a.kind; $('[data-h2="by"]', s).textContent = a.y;
+    $('[data-h2="bn"]', s).textContent = a.n; $('[data-h2="bl"]', s).textContent = a.line;
+    $('[data-h2="bq"]', s).textContent = a.vu ? '' : 'Played Pickathon ' + a.y;
+    $('[data-h2="barch"]', s).setAttribute('aria-label', a.n + ', ' + a.kind + ', Pickathon ' + a.y + '. See ' + a.n + ' in the archive');
+    s._a = a;
+    if (window.innerWidth < 1200) { try { vars(); } catch (e) {} }   /* a longer or shorter fact: the photo takes what is left, so the section stays one screen */
+  }
+  function toArchive(n) { var A = app(); if (!A) return; A.setState({ archLead: n || null, luYear: 'disc', luArch: true, lineup: 'music', archT: null, archC: null, archY: '' }); A.go('lineup', { keepArch: true }); }
   function hoodOrder() { var ids = hoodIds(D); return LEAD.filter(function (k) { return ids.indexOf(k) >= 0; }).concat(ids.filter(function (k) { return LEAD.indexOf(k) < 0; })); }
 
   /* the watch strip under the poster: one single-song video from the poster's year, from the "Before they were big" cards (past.deep).
@@ -242,6 +282,8 @@ window.pkClimbRank = function (C, dd) {
     var r = root.style; ['--h2-ps', '--h2-pmb', '--h2-pml', '--h2-st', '--h2-hp'].forEach(function (k) { r.removeProperty(k); }); root._ps = '';
     var s2 = $('.h2-s2', root), pw = s2 && $('.pk-cl-pw', s2);
     if (pw) { var PH = pw.offsetHeight, o = s2.scrollHeight - scr; if (PH && o > 0) { var k = Math.max(window.innerWidth >= 700 ? 0.5 : 0.7, (PH - o - 2) / PH);   /* Round 3 (A11): a wide tablet held sideways has room for a smaller poster; the floor only guards narrow phones */ r.setProperty('--h2-ps', k.toFixed(4)); r.setProperty('--h2-pmb', (-(PH * (1 - k))).toFixed(1) + 'px'); } }
+    var s5 = $('.h2-s5', root), bp = s5 && $('.h2-bc-ph', s5);
+    if (bp) { r.removeProperty('--h2-bp'); var BH = bp.offsetHeight, o5 = s5.scrollHeight - scr; if (BH && o5 > 0) r.setProperty('--h2-bp', Math.max(96, BH - o5 - 2) + 'px'); }
     var s3 = $('.h2-s3', root), ph = s3 && $('.h2-hood-ph', s3);
     if (ph) { var H = ph.offsetHeight, o3 = s3.scrollHeight - scr; if (H && o3 > 0) r.setProperty('--h2-hp', Math.max(72, H - o3 - 2) + 'px'); }
   }
@@ -269,7 +311,7 @@ window.pkClimbRank = function (C, dd) {
     if (el !== root || !el.firstChild || built !== (D.year + '|' + hoodIds(D).length)) {
       root = el; built = D.year + '|' + hoodIds(D).length; stripY = '';
       el.classList.add('pkh2'); el.innerHTML = skeleton(D); guard(el); el._cta = '';
-      hood(cur && D.hoods[cur] ? cur : hoodOrder()[0]);
+      hood(cur && D.hoods[cur] ? cur : hoodOrder()[0]); BL = null; drawBand();
       tucked = true; watchS1(); vars();
     }
     drawCTA(); drawStrip();
@@ -280,7 +322,10 @@ window.pkClimbRank = function (C, dd) {
     if (!root || !root.contains(b)) return;
     if (b.classList.contains('h2-em')) { hood(b.getAttribute('data-h')); return; }
     var a = b.getAttribute('data-h2');
-    if (a === 'nexthood') { var L = hoodOrder(), i = L.indexOf(cur); hood(L[(i + 1) % L.length]); return; }
+    if (a === 'nextdisc') { bi++; drawBand(); return; }
+    if (a === 'alldisc') { toArchive(null); return; }
+    if (a === 'barch') { var sa = $('.h2-s5', root); toArchive(sa && sa._a ? sa._a.n : null); return; }
+    if (a === 'bph') { var sb = $('.h2-s5', root), ba = sb && sb._a; if (!ba) return; if (!ba.vu) { toArchive(ba.n); return; } try { if (/open\.spotify\.com/.test(ba.vu) && window.__pkOpenMusic) { window.__pkOpenMusic(ba.vu); return; } if (window.__pkPlayVid) window.__pkPlayVid(ba.vu, ba.n + ' · Pickathon ' + ba.y); } catch (x) {} return; }
     if (a === 'hood') { if (window.__pkMapH) window.__pkMapH(cur)(); else go('hoods'); return; }
     if (a === 'allhoods') { if (window.__pkGoFarm) window.__pkGoFarm(); else go('hoods'); return; }
     if (a === 'plan') { go('info'); return; }

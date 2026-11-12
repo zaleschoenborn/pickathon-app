@@ -298,3 +298,67 @@
   #pkh2 .h2-s2 .pk-cl-mount>.pk-sr{position:absolute}
   #pkh2#pkh2 .h2-strip{left:0;right:auto;transform:none;top:var(--h2-st,auto);width:calc((100% - 40px) * 4 / 10)}
 }
+
+/* Round 3 E1-E3 (Nov 12): the Home blend. hero, Before they were big (.h2-s5), neighborhoods (.h2-s3), poster (.h2-s2), tickets (.h2-s4).
+   Before they were big: one Discovery card at a time. Card anatomy (BRIEF card rules): the photo with the small gold pill (it plays), then the kicker row
+   (kind on the left, the year on the right), the name with no arrow, the fact. The words open the archive at that artist. */
+.pkh2 .h2-s.h2-s5{padding-top:calc(var(--tl) + 12px)}
+.pkh2 .h2-s5sub{margin-top:4px}
+.pkh2 .h2-bc{display:flex;flex-direction:column;min-height:0;background:var(--deep);border-radius:4px;overflow:hidden}
+.pkh2 .h2-bc-ph{position:relative;display:block;width:100%;aspect-ratio:16/10;overflow:hidden;padding:0;margin:0;border:0;background:#1c191a;cursor:pointer;flex:none}
+.pkh2 .h2-bc-ph img{width:100%;height:100%;max-width:none;object-fit:cover;object-position:50% 30%}
+#pkh2[style*="--h2-bp"] .h2-bc-ph{height:var(--h2-bp);aspect-ratio:auto}
+#pkh2 .h2-bc-w{position:absolute;left:10px;bottom:10px;pointer-events:none}
+.pkh2 .h2-bc-t{display:grid;gap:4px;width:100%;padding:12px 14px 14px;margin:0;border:0;background:none;text-align:left;color:inherit;cursor:pointer}
+.pkh2 .h2-bc-k{display:flex;justify-content:space-between;gap:12px;font-size:.8125rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#9FCB8A}
+.pkh2 .h2-bc-y{color:var(--cream-dim);font-variant-numeric:tabular-nums;letter-spacing:.06em}
+#pkh2#pkh2 .h2-bc-n{font-size:var(--d-card)!important;line-height:1.05!important}
+.pkh2 .h2-bc-l{font-size:var(--t-md);line-height:1.38;color:var(--cream-dim)}
+.pkh2 .h2-bc-q{font-size:var(--t-sm);color:var(--mute)}
+.pkh2 .h2-bc-q:empty{display:none}
+.pkh2 .h2-bc-t:hover .h2-bc-n{text-decoration:underline;text-underline-offset:4px;text-decoration-thickness:2px}
+/* neighborhoods: the emblems are the picker, 44px targets, the chosen one with a quiet static glow */
+#pkh2 .h2-em{width:44px;height:44px}
+#root#root#root#root #pkh2 .h2-em[aria-pressed=true]{box-shadow:0 0 0 2px var(--cream),0 0 14px 2px rgba(242,207,98,.45)!important}
+@media (max-width:599px){
+  .pkh2 .h2-s.h2-s5{gap:8px}
+  .pkh2 .h2-city-r{gap:6px}
+  .pkh2 .h2-city-k[data-g=stage]+.h2-city-r{max-width:calc(5 * 44px + 4 * 6px)}   /* nine stage emblems: five and four, not eight and an orphan */
+  #pkh2 .h2-em::after{inset:0}
+  .pkh2 .h2-s5row .h2-pill{flex:1 1 0;padding:0 .625rem}
+}
+@media (max-width:1199px){.pkh2 .h2-s5head{order:0}.pkh2 .h2-bc{order:1}.pkh2 .h2-s5row{order:2}}
+@media (min-width:600px) and (max-width:1199px){
+  .pkh2 .h2-s5head,.pkh2 .h2-bc,.pkh2 .h2-s5row{width:100%;max-width:640px}
+  .pkh2 .h2-s.h2-s5{padding-top:calc(var(--tl) + 24px)}
+  .pkh2 .h2-bc-t{padding:16px 18px 18px}
+  .pkh2 .h2-s5sub{font-size:var(--t-lg)}
+}
+@media (min-width:1200px){
+  .pkh2 .h2-s5{grid-template-columns:5fr 7fr;grid-template-rows:1fr auto auto 1fr}
+  .pkh2 .h2-s5head{grid-column:1;grid-row:2;display:grid;gap:14px}
+  .pkh2 .h2-s5row{grid-column:1;grid-row:3;margin-top:26px}
+  .pkh2 .h2-bc{grid-column:2;grid-row:1/-1;align-self:center}
+  .pkh2 .h2-bc-ph{aspect-ratio:16/9;max-height:calc(var(--scr) - 250px)}
+  .pkh2 .h2-bc-t{padding:16px 20px 20px;gap:6px}
+  #pkh2#pkh2 .h2-bc-n{font-size:1.75rem!important}
+  .pkh2 .h2-bc-l{font-size:var(--t-lg)}
+  #root#root #pkh2 .h2-s5sub{font-size:var(--t-lg)!important}
+  #pkh2 .h2-bc-w{left:16px;bottom:16px}
+  #pkh2 .h2-em{width:44px;height:44px}
+}
+/* a tablet held sideways (1000-1199 wide, landscape) is short: the neighborhoods and Before they were big take the desktop's two columns, so each fits its screen */
+@media (min-width:1000px) and (max-width:1199px) and (orientation:landscape){
+  .pkh2 .h2-s.h2-s3,.pkh2 .h2-s.h2-s5{display:grid;align-items:center;gap:0 40px;padding:calc(var(--tl) + 16px) 32px 16px}
+  .pkh2 .h2-s.h2-s3>*,.pkh2 .h2-s.h2-s5>*{max-width:none}
+  .pkh2 .h2-s3{grid-template-columns:7fr 5fr}
+  .pkh2 .h2-s3l{grid-column:2;display:grid;gap:16px;align-content:center}
+  .pkh2 .h2-hood{grid-column:1;grid-row:1;align-self:center}
+  #pkh2#pkh2 .h2-s3 .h2-hood-ph{height:auto;aspect-ratio:4/3;max-height:calc(var(--scr) - var(--tl) - 120px)}
+  .pkh2 .h2-s3head,.pkh2 .h2-city,.pkh2 .h2-s3 .h2-row{width:auto}
+  .pkh2 .h2-s5{grid-template-columns:5fr 7fr;grid-template-rows:1fr auto auto 1fr}
+  .pkh2 .h2-s5head{grid-column:1;grid-row:2;display:grid;gap:12px;width:auto}
+  .pkh2 .h2-s5row{grid-column:1;grid-row:3;margin-top:20px;width:auto}
+  .pkh2 .h2-bc{grid-column:2;grid-row:1/-1;align-self:center;width:auto}
+  #pkh2#pkh2 .h2-s5 .h2-bc-ph{height:auto;aspect-ratio:16/9;max-height:calc(var(--scr) - var(--tl) - 230px)}
+}
