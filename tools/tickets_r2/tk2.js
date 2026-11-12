@@ -216,7 +216,7 @@
     var d = site().data, H = (d && d.hoods) || {}, L = [['lushcamp', 'Tent in the woods · included'], ['wildcamp', 'Tent in the woods · included'], ['southcamp', 'Car camping site · South Camp'], ['willowcamp', 'Car camping or RV site · Willow Camp']];
     var rows = L.filter(function (x) { return H[x[0]]; }).map(function (x) { var o = H[x[0]], im = o.hi || o.i;
       return '<li class="tk-camp">' + (im ? '<img src="' + esc(im) + '" alt="' + esc(o.n) + ' at Pickathon" loading="lazy">' : '') + '<div><b>' + esc(o.n) + '</b><span class="tk-camp-t">' + esc(o.t || '') + '</span><p>' + esc(o.hook || '') + '</p><span class="tk-camp-b">' + esc(x[1]) + '</span></div></li>'; }).join('');
-    sheet(sheetTop('The camps') + '<p class="tk-camps-l">Every weekend pass includes a tent spot in Lush or Wild Camp. Car camping and RV sites are extra.</p><ul class="tk-camps">' + rows + '</ul><button type="button" class="tk-pill tk-pill-gold tk-camps-x" data-close>Back to my order</button>', 'The camps');
+    sheet(sheetTop('The camps') + '<p class="tk-camps-l">Every weekend pass includes a tent spot in Lush or Wild Camp. Car camping and RV sites are extra.</p><ul class="tk-camps">' + rows + '</ul><button type="button" class="tk-camps-x" data-close>Back to my order</button>', 'The camps');
   }
   function sheetTop(t) { return '<div class="tk-sheet-top"><h2 class="tk-d tk-d-card">' + esc(t) + '</h2><button type="button" class="tk-sheet-x" data-close aria-label="Close">' + ic('x') + '</button></div>'; }
 

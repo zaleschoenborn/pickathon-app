@@ -7957,6 +7957,14 @@ body:has(#tk2 #tk-bar:not([hidden])) #pk-toast,body:has(#pk-co) #pk-toast{displa
 .tk2 .tk-camp .tk-camp-b{display:inline-block;font-size:.75rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--cream)}
 .tk2 .tk-camps-x{width:100%;margin-top:14px}
 @media (max-width:379px){.tk2 .tk-camp{grid-template-columns:88px minmax(0,1fr)}.tk2 .tk-camp img{width:88px;height:72px}}
+
+/* Gate 1 loop 2 E: the camps sheet's "Back to my order" is a primary (gold tint, 2px #D6B54A, #F2CF62 caps), 50px (56 desktop), pinned to the
+   sheet's bottom; "See the camps" is a 50px secondary on phone */
+#tk2 .tk-camps-x,.tk2 .tk-sheet .tk-camps-x{position:sticky;bottom:0;z-index:2;display:flex;align-items:center;justify-content:center;width:100%;min-height:50px;margin-top:14px;padding:0 16px;border-radius:6px;border:2px solid #D6B54A;background:#3A3420;background:linear-gradient(rgba(214,181,74,.18),rgba(214,181,74,.18)),var(--raise);color:#F2CF62;font:800 13px/1.1 'Bricolage Grotesque',system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;box-shadow:0 -14px 14px var(--raise)}
+.tk2 .tk-sheet .tk-camps-x:hover{border-color:#F2CF62}
+@media (min-width:1025px){.tk2 .tk-sheet .tk-camps-x{min-height:56px}}
+@media (max-width:1024px){#tk2#tk2#tk2 [data-act="camps"]{min-height:50px!important;height:auto!important}}
+@media (max-width:599px){#tk2#tk2 [data-act="camps"]{min-height:50px;border:2px solid rgba(242,237,227,.88);background:rgba(18,22,15,.26);color:#F2EDE3;font:800 13px/1.1 'Bricolage Grotesque',system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;padding:0 14px}}
 </style>
 <script id="pk-tk2">
 /* pk-tk2: Tickets, round 2 design (Nov 11 2026). Source: tools/tickets_r2/tk2.js, spliced into index.html by tools/tickets_r2/build.py.
@@ -8177,7 +8185,7 @@ body:has(#tk2 #tk-bar:not([hidden])) #pk-toast,body:has(#pk-co) #pk-toast{displa
     var d = site().data, H = (d && d.hoods) || {}, L = [['lushcamp', 'Tent in the woods · included'], ['wildcamp', 'Tent in the woods · included'], ['southcamp', 'Car camping site · South Camp'], ['willowcamp', 'Car camping or RV site · Willow Camp']];
     var rows = L.filter(function (x) { return H[x[0]]; }).map(function (x) { var o = H[x[0]], im = o.hi || o.i;
       return '<li class="tk-camp">' + (im ? '<img src="' + esc(im) + '" alt="' + esc(o.n) + ' at Pickathon" loading="lazy">' : '') + '<div><b>' + esc(o.n) + '</b><span class="tk-camp-t">' + esc(o.t || '') + '</span><p>' + esc(o.hook || '') + '</p><span class="tk-camp-b">' + esc(x[1]) + '</span></div></li>'; }).join('');
-    sheet(sheetTop('The camps') + '<p class="tk-camps-l">Every weekend pass includes a tent spot in Lush or Wild Camp. Car camping and RV sites are extra.</p><ul class="tk-camps">' + rows + '</ul><button type="button" class="tk-pill tk-pill-gold tk-camps-x" data-close>Back to my order</button>', 'The camps');
+    sheet(sheetTop('The camps') + '<p class="tk-camps-l">Every weekend pass includes a tent spot in Lush or Wild Camp. Car camping and RV sites are extra.</p><ul class="tk-camps">' + rows + '</ul><button type="button" class="tk-camps-x" data-close>Back to my order</button>', 'The camps');
   }
   function sheetTop(t) { return '<div class="tk-sheet-top"><h2 class="tk-d tk-d-card">' + esc(t) + '</h2><button type="button" class="tk-sheet-x" data-close aria-label="Close">' + ic('x') + '</button></div>'; }
 
