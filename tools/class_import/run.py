@@ -112,3 +112,6 @@ for r in rows:
 known = {(a['year'], key(a['name_on_site'])) for a in AL}
 miss = [(y, a['n']) for y, L in d.get('yearBill', {}).items() for a in L if 'l' not in a and key(a['n']) not in names.get(y, set()) and (y, key(a['n'])) not in known]
 print('site music acts with no class row:', len(miss))
+# Round 3 (A8): any copy the import brought back gets its current-room-size lines taken out again
+import subprocess as _sp
+_sp.run([sys.executable, os.path.join(os.path.dirname(os.path.abspath(__file__)), 'strip_room_lines.py')], check=False)

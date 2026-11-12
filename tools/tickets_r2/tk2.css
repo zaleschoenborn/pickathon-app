@@ -73,6 +73,7 @@
 #tk2 .tk-main{padding:10px var(--gutter) 28px;max-width:1160px;margin:0 auto}
 #tk2#tk2 li{max-width:none}
 #tk2 .tk-leg{display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:40px;margin:0 0 4px;width:100%}
+#tk2 .tk-feenote{margin:0 0 10px;font-size:13px;line-height:1.35;color:var(--cream-dim)}   /* A12: one quiet note by the first price */
 #tk2 legend{float:left}
 
 .tk2 .tk-field{flex:1;min-width:0;min-height:3rem;border-radius:999px;border:1.5px solid var(--line-strong);background:var(--ground);padding:0 1rem;font-size:1rem;color:var(--cream);width:100%}
@@ -258,3 +259,5 @@
 @media (max-width:820px){.tk2 .tk-pill-sm,#tk2#tk2#tk2#tk2#tk2 .tk-pill[aria-pressed]{min-height:44px!important}.tk2 .tk-tlink{display:inline-flex;align-items:center;min-height:44px}}
 /* test r3: a clear focus ring on phone fields too, not only with :focus-visible */
 .tk2 input:focus,.tk2 select:focus{outline:3px solid #D6B54A;outline-offset:2px}
+/* Round 3 (A11): any touch screen, a sideways tablet included, gets 44px targets (the 820px rule above only caught narrow ones) */
+@media (pointer:coarse){#tk2#tk2 .tk-pill,#tk2#tk2 .tk-pill-sm,#tk2#tk2#tk2#tk2#tk2 .tk-pill[aria-pressed]{min-height:44px!important}#tk2#tk2 .tk-tlink{display:inline-flex;align-items:center;min-height:44px}}

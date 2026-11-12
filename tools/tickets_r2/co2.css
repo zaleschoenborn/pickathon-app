@@ -75,3 +75,5 @@
   #pk-co .co-hold{justify-content:center}
   #pk-co .co-hold .tk-pill{margin-left:16px}
 }
+/* Round 3 (A11): a clear focus ring on the fields, not just a border tint */
+#pk-co#pk-co .co-f input:focus,#pk-co#pk-co .co-f input:focus-visible{outline:3px solid var(--gold)!important;outline-offset:2px!important;border-color:var(--gold)!important}

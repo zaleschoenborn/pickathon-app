@@ -19,14 +19,14 @@
      Nothing outside this block is unbacked copy.
      ====================================================================================== */
   var COPY = {
-    newDates: 'Thursday to Sunday, with early arrival Wednesday for 4-Day Pass holders.',          // What's new line 1 (dates are the founder brief; the line does not yet say new or same as 2026)
+    newDates: 'Thu–Sun, early arrival Wed. Wednesday is an add-on to the 4-Day Pass',   // Round 3 (A2, A5): the price is added from the price table, "+$NN each"          // What's new line 1 (dates are the founder brief; the line does not yet say new or same as 2026)
     newCheckout: 'You pay right here on pickathon.com. Passes land in My Pickathon.',                // What's new line 3 ("Passes land in My Pickathon" is the design's, not yet confirmed)
     zaleLines: [],                                                                                    // up to three more What's new lines from Zale, as ['Label', 'Text, saying new or same as 2026']; none yet, so nothing shows
     daysRun: 'Music runs from morning until late night. 2027 set times post closer to the festival.' // Full details, "How the days run"
   };
   var FEST = { dates: 'Aug 4–8, 2027', long: 'August 4–8, 2027', place: 'Pendarvis Farm, Happy Valley, Oregon', mail: 'info@pickathon.com', copy: '© 1999–2026 Pickathon LLC' };
 
-  var LS = 'pk27order', LSP = 'pk27plan', FEE = 0.05;
+  var LS = 'pk27order', LSP = 'pk27plan', FEE = (window.pkFeeRate ? window.pkFeeRate() : 0.05);
   var BLANK = { pass: null, day: null, adult: 1, teen: 0, kid: 0, wed: false, sleep: 'tent', go: 'later', car: 1, patron: false };
   var NS = { p4: '4-Day', p3: '3-Day', d2: 'Sat + Sun', dthu: 'Thursday', dfri: 'Friday', dsat: 'Saturday', dsun: 'Sunday' };
   var PARK = { dthu: 'pthu', dfri: 'pfri', dsat: 'psat', dsun: 'psun' };
@@ -72,6 +72,8 @@
   /* ---------- the sale, from the one settings block ---------- */
   var T = null;
   function readTix() { var s = site(); try { T = window.pkTix(s.today, s.season || 'off'); } catch (e) { T = null; } return T; }
+  function WF(n) { return window.pkWithFee ? window.pkWithFee(n) : Math.round(n * (1 + FEE) * 100) / 100; }   // A12: shown prices include the fee
+  function PS(id) { return WF(P(id)); }
   function P(id) { var f = window.pkFeedItem && window.pkFeedItem(id); if (f && f.price && typeof f.price.amount === 'number') return f.price.amount / 100; var r = T && T.prices[id]; return r ? Math.ceil(r[T.col]) : 0; }   // the site's one price rule (same as Tickets)
   function has() { try { return !!(window.pkMyPasses && window.pkMyPasses()); } catch (e) { return false; } }
   function when() { if (has()) return 'has'; var s = site(); if ((s.season || 'off') !== 'off' || (T && T.open)) return 'sale'; return T && T.next ? 'pre' : 'closed'; }
@@ -83,16 +85,17 @@
   function vehicle(s) { return camping(s) && /^(wcar|scar|wrv)$/.test(s.sleep); }
   function totals(s) {
     var L = [], k = key(s), cam = camping(s), veh = vehicle(s); if (!k) return { sub: 0, total: 0, n: 0 };
-    var nA = s.adult - (s.patron ? 1 : 0);
-    if (nA > 0) L.push(nA * P(k));
-    if (s.patron) L.push(P('patron'));
-    if (s.teen) L.push(s.teen * Math.min(P(k), P('teen')));
-    if (s.pass === 'p4' && s.wed && nA + s.teen > 0) L.push((nA + s.teen) * P('early'));
-    if (veh) L.push(P(s.sleep));
-    if (s.go === 'drive' && !veh) { if (cam) L.push(s.car * P('wpark')); else if (s.pass === 'd2') L.push(s.car * (P('psat') + P('psun'))); else L.push(s.car * P(PARK[s.day])); }
-    if (s.go === 'shuttle' && !veh) L.push((s.adult + s.teen) * P('shuttle'));
-    var sub = L.reduce(function (a, b) { return a + b; }, 0), fee = Math.round(sub * FEE * 100) / 100;
-    return { sub: sub, total: Math.round((sub + fee) * 100) / 100, n: L.length };
+    var nA = s.adult - (s.patron ? 1 : 0), add = function (q, u) { L.push([q, u]); };   // [quantity, base unit]
+    if (nA > 0) add(nA, P(k));
+    if (s.patron) add(1, P('patron'));
+    if (s.teen) add(s.teen, Math.min(P(k), P('teen')));
+    if (s.pass === 'p4' && s.wed && nA + s.teen > 0) add(nA + s.teen, P('early'));
+    if (veh) add(1, P(s.sleep));
+    if (s.go === 'drive' && !veh) { if (cam) add(s.car, P('wpark')); else if (s.pass === 'd2') { add(s.car, P('psat')); add(s.car, P('psun')); } else add(s.car, P(PARK[s.day])); }
+    if (s.go === 'shuttle' && !veh) add(s.adult + s.teen, P('shuttle'));
+    /* A12: same sum as Tickets: shown (fee-in) unit prices x quantity */
+    var sub = L.reduce(function (a, b) { return a + b[0] * b[1]; }, 0), total = Math.round(L.reduce(function (a, b) { return a + b[0] * WF(b[1]); }, 0) * 100) / 100;
+    return { sub: sub, total: total, n: L.length };
   }
   function short(s) {
     var k = key(s); if (!k) return '';
@@ -156,9 +159,9 @@
   function detailsHTML() {
     var row = function (id, icn, t, lines) { return '<details id="pl-d-' + id + '"><summary>' + ic(icn) + '<span>' + t + '</span>' + ic('chev', 'pl-ic-sm pl-chev') + '</summary><ul>' + lines.map(function (l) { return '<li>' + l + '</li>'; }).join('') + '</ul></details>'; };
     return row('go', 'car', 'Getting there', [
-        '<b>Driving:</b> Welcome Lot, 19208 SE Foster Rd. You need a day, weekend or oversize parking pass (Weekend Parking ' + money(P('wpark')) + ' a car). Come and go as you like.',
+        '<b>Driving:</b> Welcome Lot, 19208 SE Foster Rd. You need a day, weekend or oversize parking pass (Weekend Parking ' + money(PS('wpark')) + ' a car). Come and go as you like.',
         '<b>Gear:</b> no cars inside the festival. Load heavy bags on the gear trucks at the Welcome Lot and meet them at the Gear Drop nearest your camp.',
-        '<b>MAX + shuttle:</b> Green Line to Lents Town Center, then the Pickathon shuttle, ' + money(P('shuttle')) + ' a rider. No parking at the stop.',
+        '<b>MAX + shuttle:</b> Green Line to Lents Town Center, then the Pickathon shuttle, ' + money(PS('shuttle')) + ' a rider. No parking at the stop.',
         '<b>Rideshare and drop-off:</b> South Lot, 16581 SE Hagen Rd, if you can carry everything. Otherwise the Welcome Lot.',
         '<b>Flying:</b> PDX is 20 minutes away. Portland is 12 miles.',
         lnk('Read the whole Getting there page', 'page:traveling-to-pickathon')]) +
@@ -186,8 +189,8 @@
       row('days', 'cal', 'How the days run', [esc(COPY.daysRun), lnk('See how 2026 ran', 'route:schedule')]);
   }
   function newHTML() {
-    var L = [['Aug 4–8', esc(COPY.newDates)]], H = T && T.by && T.by.holiday;
-    if (H && H.dated && !H.over) L.push([esc(H.dayS) + '–' + esc(String(H.endS).replace(/^[A-Za-z]+ /, '')), esc(H.name) + (lowestNow() ? ', the lowest prices of the year.' : '.') + (H.plans ? '' : ' No payment plans during the sale.')]);
+    var L = [['Aug 4–8', esc(COPY.newDates) + (P('early') ? ', +' + money(PS('early')) + ' each.' : '.')]], H = T && T.by && T.by.holiday;
+    if (H && H.dated && !H.over) L.push([esc(H.dayS) + '–' + esc(String(H.endS).replace(/^[A-Za-z]+ /, '')), esc(H.name) + (lowestNow() ? ', the lowest prices of the year.' : '.') + (H.plans ? '' : ' No payment plans during the sale.' + (T.planNote ? ' ' + esc(T.planNote) : ''))]);
     else if (T && T.cur) L.push([esc(T.cur.name), 'On sale now.' + (T.plans ? ' Orders over ' + money(T.planMin) + ' can be paid in monthly payments, all paid before the festival.' : '')]);
     L.push(['Checkout', esc(COPY.newCheckout)]);
     COPY.zaleLines.slice(0, 3).forEach(function (z) { L.push([esc(z[0]), esc(z[1])]); });
@@ -195,10 +198,10 @@
   }
   function trail(e) {
     var len = e.len, camp = e.camp, sl = e.sleep, veh = e.veh, go = e.go;
-    var A = { p4: ['Thu, Aug 5', 'gates 9 am', 'Gates open 9 am to 11 pm. With <b>Wednesday early arrival</b> (' + money(P('early')) + ' each) you come in from 5 pm on Aug 4.'], p3: ['Fri, Aug 6', 'gates 9 am', 'Gates open 9 am to 11 pm, Thursday to Sunday.'], d2: ['Sat, Aug 7', 'gates 9 am', 'Gates open 9 am to 11 pm both days. Come and go as you like.'], d1: ['Your day', 'gates 9 am', 'Gates open 9 am to 11 pm. Come and go as you like.'] }[len];
-    var Pk = veh ? [sl === 'car' ? 'Willow or South Camp' : 'Willow Camp', 'your gate is on your pass', 'You park where you sleep. ' + (sl === 'car' ? 'Car camping from ' + money(Math.min(P('wcar'), P('scar'))) + ' a site: one car and a tent in 16′ × 18′.' : 'RV spot ' + money(P('wrv')) + ', 26′ to 36′.'), em('willowcamp', 'Willow Camp')]
-      : go === 'drive' ? ['19208 SE Foster Rd', 'Welcome Lot', '<b>Type this address, not “Pickathon”, into GPS.</b> ' + (camp ? 'Weekend Parking ' + money(P('wpark')) + ' a car.' : 'Day parking from ' + money(Math.min(P('pthu'), P('pfri'), P('psat'), P('psun'))) + ' a car.'), em('welcomelot', 'Welcome Lot')]
-      : go === 'shuttle' ? ['Lents Town Center', 'MAX Green Line', 'Ride MAX to Lents, then the Pickathon shuttle. ' + money(P('shuttle')) + ' a rider. No parking at the stop.', '']
+    var A = { p4: ['Thu, Aug 5', 'gates 9 am', 'Gates open 9 am to 11 pm. With <b>Wednesday early arrival</b> (' + money(PS('early')) + ' each) you come in from 5 pm on Aug 4.'], p3: ['Fri, Aug 6', 'gates 9 am', 'Gates open 9 am to 11 pm, Thursday to Sunday.'], d2: ['Sat, Aug 7', 'gates 9 am', 'Gates open 9 am to 11 pm both days. Come and go as you like.'], d1: ['Your day', 'gates 9 am', 'Gates open 9 am to 11 pm. Come and go as you like.'] }[len];
+    var Pk = veh ? [sl === 'car' ? 'Willow or South Camp' : 'Willow Camp', 'your gate is on your pass', 'You park where you sleep. ' + (sl === 'car' ? 'Car camping from ' + money(WF(Math.min(P('wcar'), P('scar')))) + ' a site: one car and a tent in 16′ × 18′.' : 'RV spot ' + money(PS('wrv')) + ', 26′ to 36′.'), em('willowcamp', 'Willow Camp')]
+      : go === 'drive' ? ['19208 SE Foster Rd', 'Welcome Lot', '<b>Type this address, not “Pickathon”, into GPS.</b> ' + (camp ? 'Weekend Parking ' + money(PS('wpark')) + ' a car.' : 'Day parking from ' + money(WF(Math.min(P('pthu'), P('pfri'), P('psat'), P('psun')))) + ' a car.'), em('welcomelot', 'Welcome Lot')]
+      : go === 'shuttle' ? ['Lents Town Center', 'MAX Green Line', 'Ride MAX to Lents, then the Pickathon shuttle. ' + money(PS('shuttle')) + ' a rider. No parking at the stop.', '']
       : go === 'bike' ? ['Free bike parking', 'reserve a space', 'A staffed corral at the farm. Most people ride the Springwater Corridor from Portland.', '']
       : ['16581 SE Hagen Rd', 'South Lot drop-off', 'For people who can carry everything. Need the gear truck? Get dropped at the Welcome Lot instead.', em('farmhouse', 'Farmhouse')];
     var W = veh ? ['½ mile', 'or the free shuttle', 'From Willow Camp to the gate. South Camp is across the road from it.', '']

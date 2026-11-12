@@ -28,7 +28,8 @@
     var actYears = {};   // actKey -> {y:1}; "Sunday Valley (Sturgill Simpson)" counts for both names, "Bad Livers (reunion)" for Bad Livers
     var addY = function (n, y) { var m = String(n).match(/^(.*?)\s*\((.*)\)\s*$/), ks = m ? [key(m[1]), key(m[2])] : [key(n)]; ks.forEach(function (k) { if (k) (actYears[k] = actYears[k] || {})[y] = 1; }); };
     var YB = d.yearBill || {}; Object.keys(YB).forEach(function (y) { (YB[y] || []).forEach(function (a) { addY(a.n, y); }); });
-    (d.archCT || []).forEach(function (a) { (a.ys || []).forEach(function (y) { addY(a.n, String(y)); }); });
+    // the lineup (yearBill) is the source of truth for years; archCT only fills acts the bill doesn't name (17 archCT years disagree, e.g. the 2001->2002 moves)
+    (d.archCT || []).forEach(function (a) { var m = String(a.n).match(/^(.*?)\s*\((.*)\)\s*$/), k = m ? key(m[1]) : key(a.n); if (actYears[k]) return; (a.ys || []).forEach(function (y) { addY(a.n, String(y)); }); });
     IDXd = d; IDX = { HO: HO, ORDER: ORDER, key: key, byYear: byYear, hoodYears: hoodYears, actPlaces: actPlaces, actYears: actYears };
     return IDX;
   }
@@ -46,7 +47,7 @@
     var hn = (I.HO[h] || {}).n || h, now = label !== hn ? ', today ' + hn : '';
     return '<button type="button" class="pk-way-c pk-way-p" data-way="h:' + esc(h) + ':' + y + '" aria-label="' + esc(label + now + ', in ' + y) + '">' + emb(h) + '<span>' + esc(label) + '</span></button>';
   }
-  function row(kick, pills, label) { return '<nav class="pk-way" aria-label="' + esc(label) + '"><p class="pk-way-k">' + esc(kick) + '</p><div class="pk-way-r">' + pills + '</div></nav>'; }
+  function row(kick, pills, label) { return '<nav class="pk-way" aria-label="' + esc(label) + '">' + (kick ? '<p class="pk-way-k">' + esc(kick) + '</p>' : '') + '<div class="pk-way-r">' + pills + '</div></nav>'; }
 
   /* ---------- what each page shows ---------- */
   function forYear(I, y) {   // stage neighborhoods with sets that year, in the site's map order
@@ -57,7 +58,7 @@
   function forHood(I, h, cur) {   // every year with sets there, newest first
     var ys = Object.keys(I.hoodYears[h] || {}).sort(function (a, b) { return b - a; }); if (!ys.length) return null;
     var hn = (I.HO[h] || {}).n || h;
-    return { key: 'h|' + h + '|' + cur, html: row('Years at ' + hn, ys.map(function (y) { return yearPill(y, y === cur); }).join(''), hn + ' by year') };
+    return { key: 'h|' + h + '|' + cur, html: row('', ys.map(function (y) { return yearPill(y, y === cur); }).join(''), hn + ' by year').replace('class="pk-way"', 'class="pk-way pk-way-hd"') };
   }
   function forAct(I, n, y) {
     var k = I.key(n), ys = Object.keys(I.actYears[k] || {}); if (y && ys.indexOf(y) < 0) ys.push(y);
@@ -73,21 +74,22 @@
   function spot(r) {
     var m = document.querySelector('#root main') || document.getElementById('root'); if (!m) return null;
     if (r === 'past') { var yb = m.querySelector('article > section.pk-yb'); return yb ? [yb.parentNode, yb.nextSibling] : null; }
-    if (r === 'hood') { var w = m.querySelector('section.pk-hd-w'); return w ? [w, w.firstChild] : null; }
+    if (r === 'hood') { var yh = m.querySelector('section.pk-hd-w > .pk-hd-yh'); return yh ? [yh.parentNode, yh.nextSibling] : null; }   // under the "X, year by year" header
     if (r === 'act') { var s = m.querySelector('section.pk-act'); if (!s) return null; var a = s.querySelector(':scope > .pk-act-acts') || s.querySelector(':scope > .pk-act-l') || s.querySelector(':scope > .pk-act-h, :scope > .pk-ah'); return a ? [s, a.nextSibling] : null; }
     return null;
   }
   function want() {
     var A = app(); if (!A || !A.state) return null; var st = A.state, d = st.data; if (!d || !d.pastSched) return null;
     var S = st.stack || [], t = S[S.length - 1] || {}, I = index(d), y4 = function (v) { v = String(v || ''); return /^\d{4}$/.test(v) ? v : ''; };
-    if (t.r === 'past') { var y = y4(st.pastY || t.y); return y ? forYear(I, y) : null; }
+    /* Round 3 ruling (art director, Nov 11): no row on year or artist pages. The year page's "Where it happened" and the
+       artist page's "Where X played" read this file's data instead (window.__pkWay below). Neighborhood pages keep the
+       year pills, moved into the "year by year" header. */
     if (t.r === 'hood' && t.h) return forHood(I, t.h, y4(st.hoodYear || st.tmY));
-    if (t.r === 'act' && t.n) return forAct(I, t.n, y4(t.y));
     return null;
   }
   var cur = null;   // the row element, kept so a re-render that drops it puts back the same node (scroll position and all)
   function sync() {
-    if (cur && (cur.className !== 'pk-way' || !cur.querySelector('.pk-way-r'))) { cur = null; lastKey = ''; }   // never re-use a node the app has taken over
+    if (cur && (!/^pk-way( pk-way-hd)?$/.test(cur.className) || !cur.querySelector('.pk-way-r'))) { cur = null; lastKey = ''; }   // never re-use a node the app has taken over
     var w = want(), old = document.querySelectorAll('#root .pk-way');
     if (!w) { for (var i = 0; i < old.length; i++) old[i].remove(); lastKey = ''; cur = null; return; }
     var r = ((app().state.stack || []).slice(-1)[0] || {}).r, at = spot(r); if (!at) return;
@@ -104,6 +106,15 @@
     var x = c.getBoundingClientRect().left - q.getBoundingClientRect().left + q.scrollLeft, to = Math.max(0, Math.round(x - (q.clientWidth - c.offsetWidth) / 2));
     if (to > 0) q.scrollLeft = to;
   }
+
+  /* ---------- data for the app's own sections ---------- */
+  window.__pkWay = {
+    // years an act played (yearBill + archCT, aliases and renamed acts merged), oldest first
+    actYears: function (d, n) { var I = index(d); return Object.keys(I.actYears[I.key(n)] || {}).sort(); },
+    // places with sets in a year: [{h, n: stage name that year, sets}], in map order
+    places: function (d, y) { var I = index(d), Y = I.byYear[String(y)] || {}; return I.ORDER.filter(function (h) { return Y[h]; }).map(function (h) { return { h: h, n: placeName(I, h, Y[h].names), sets: Y[h].n }; }); },
+    key: function (d, n) { return index(d).key(n); }
+  };
 
   document.addEventListener('click', function (e) {
     var b = e.target && e.target.closest && e.target.closest('.pk-way [data-way]'); if (!b || !window.__pkGo) return;

@@ -283,3 +283,18 @@
   #pkh2 .h2-s2 .pk-cl-pw{transform-origin:top center!important;transform:scale(var(--h2-ps,1))!important;margin-bottom:var(--h2-pmb,0px)!important}
   #pkh2[style*="--h2-hp"] .h2-s3 .h2-hood-ph{height:var(--h2-hp);aspect-ratio:auto}
 }
+/* Round 3 (A11): a tablet held sideways (1000-1199 wide, landscape) is short; the poster section takes the desktop's two columns
+   (heading, Another year, time bar and the watch strip on the left, the poster on the right) so it fits the screen under the ticket line. */
+@media (min-width:1000px) and (max-width:1199px) and (orientation:landscape){
+  .pkh2 .h2-s.h2-s2{display:block;padding:calc(var(--tl) + 12px) 24px 12px}
+  .pkh2 .h2-s.h2-s2>.h2-s2in{max-width:1160px;width:100%;margin:0 auto}
+  #pkh2 .h2-s2 .pk-cl-mount{display:grid!important;grid-template-columns:minmax(0,4fr) minmax(0,6fr);grid-template-rows:1fr auto auto auto var(--strip,0px) 1fr;column-gap:40px;max-width:1160px;margin:0 auto;min-height:calc(var(--scr) - var(--tl) - 24px)}
+  #pkh2#pkh2 .h2-s2 .pk-cl-hd{grid-column:1;grid-row:2;display:block;max-width:none;margin:0}
+  #pkh2#pkh2 .h2-s2 .pk-cl-an{margin-top:14px}
+  #pkh2#pkh2 .h2-s2 .pk-cl-tb{grid-column:1;grid-row:3;width:100%;max-width:none;margin:18px 0 0}
+  #root#root #pkh2 .h2-s2 .pk-cl-tl{grid-column:1;grid-row:4;text-align:left!important;margin-left:0!important}
+  #pkh2#pkh2 .h2-s2 .pk-cl-cmp{grid-column:1;grid-row:3/5}
+  #pkh2#pkh2 .h2-s2 .pk-cl-pw{grid-column:2;grid-row:1/-1;justify-self:start;align-self:center;transform-origin:top left!important;transform:scale(var(--h2-ps,1))!important;margin:0 0 var(--h2-pmb,0px) var(--h2-pml,0px)!important}
+  #pkh2 .h2-s2 .pk-cl-mount>.pk-sr{position:absolute}
+  #pkh2#pkh2 .h2-strip{left:0;right:auto;transform:none;top:var(--h2-st,auto);width:calc((100% - 40px) * 4 / 10)}
+}

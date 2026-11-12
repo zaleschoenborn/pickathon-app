@@ -65,7 +65,7 @@ GL = {'indie': 'Indie rock', 'folk': 'Folk', 'country': 'Country', 'bluegrass': 
 def first_sentence(t, n=150):
     t = re.sub(r'\s+', ' ', str(t or '')).strip()
     if not t: return ''
-    m = re.match(r'(.+?[.!?])(\s|$)', t)
+    m = re.match(r'(.+?(?<!\bNo)(?<!\bSt)(?<!\bMr)(?<!\bDr)(?<!\bJr)(?<!\bvs)(?<!\bVol)(?<!\b[A-Z])[.!?])(\s|$)', t)   # Round 3 (A8): 'Pitchfork's No. 5' is not a sentence end
     s = m.group(1) if m else t
     return s if len(s) <= n else s[:n - 1].rsplit(' ', 1)[0] + '…'
 
