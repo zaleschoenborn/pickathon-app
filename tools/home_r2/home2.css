@@ -85,7 +85,7 @@
 /* sections: one screen each. --scr is the visible screen under the header and above the tabs (set on load and resize). */
 .pkh2 .h2-s{min-height:var(--scr);display:flex;flex-direction:column;padding:12px var(--gutter);gap:8px;position:relative}
 .pkh2 .h2-s + .h2-s{border-top:1px solid #1c191a}
-.pkh2 .h2-s.h2-s2,.pkh2 .h2-s.h2-s3,.pkh2 .h2-s.h2-s4{padding-top:calc(var(--tl) + 12px)}   /* the ticket line floats over the top of these */
+.pkh2 .h2-s.h2-s6,.pkh2 .h2-s.h2-s3,.pkh2 .h2-s.h2-s4{padding-top:calc(var(--tl) + 12px)}   /* the ticket line floats over the top of these */
 .pkh2 .h2-sub{font-size:var(--t-md);color:var(--cream-dim);line-height:1.35}
 .pkh2 .h2-row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
 
@@ -109,34 +109,9 @@
 #pkh2#pkh2 .h2-cta p{font-size:var(--t-sm);line-height:1.3;font-weight:650}
 .pkh2 .h2-cta p span{display:block;color:var(--cream-dim);font-weight:500}
 
-/* 2 PROOF: the Home poster (pk-climb: plays once, Replay, Another year), and under it one single-song video from that year */
-.pkh2 .h2-s2{padding-bottom:calc(var(--strip,0px) + 12px)}
-.pkh2 .h2-s2 .pk-cl-mount{width:100%}
-#pkh2 .h2-s2 .pk-cl-hd .pk-nh-k{display:none}
-#root#root #pkh2 .h2-s2 .pk-cl-an{display:inline-flex;align-items:center;justify-content:center;min-height:var(--pill)!important;padding:0 1.125rem!important;border-radius:999px!important;border:1.5px solid var(--cream)!important;background:var(--cream)!important;color:var(--ink)!important;
-  font:650 .9375rem/1 var(--text)!important;letter-spacing:0!important;text-transform:none!important;box-shadow:none;cursor:pointer}
-#root#root #pkh2 .h2-s2 .pk-cl-rpl{min-height:2.25rem!important;padding:0 .875rem!important;border-radius:999px!important;border:1.5px solid var(--line-strong)!important;background:transparent!important;color:var(--cream)!important;font:650 .875rem/1 var(--text)!important;letter-spacing:0!important;text-transform:none!important;box-shadow:none}
-.pkh2 .h2-s2in{position:relative;width:100%}
-.pkh2 .h2-strip{position:absolute;left:0;right:0;top:calc(100% + 12px);display:flex;gap:12px;align-items:center;min-height:62px}   /* in the space the section reserves under the poster (--strip) */
-.pkh2 .h2-strip[data-none]{visibility:hidden}
-.pkh2 .h2-strip-ph{flex:none;width:110px;aspect-ratio:16/9;object-fit:cover;background:#1c191a;cursor:pointer;border:0;padding:0}
-.pkh2 .h2-strip-ph img{width:100%;height:100%;object-fit:cover}
-.pkh2 .h2-strip-t{min-width:0;display:grid;gap:5px;justify-items:start}
-#pkh2#pkh2 .h2-strip-c{font-size:var(--t-sm);line-height:1.3;overflow:hidden;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2}
-.pkh2 .h2-strip-c b{font-weight:750}
-.pkh2 .h2-strip-c span{color:var(--cream-dim)}
-@media (max-width:379px){.pkh2 .h2-strip-ph{width:84px}#pkh2 .h2-watch{font-size:.75rem;padding:0 .5rem}#pkh2#pkh2 .h2-hero{font-size:1.875rem!important}#pkh2#pkh2 .h2-sec{font-size:1.5rem!important}}
+@media (max-width:379px){#pkh2 .h2-watch{font-size:.75rem;padding:0 .5rem}#pkh2#pkh2 .h2-hero{font-size:1.875rem!important}#pkh2#pkh2 .h2-sec{font-size:1.5rem!important}}
 
 /* 3 PLACE */
-.pkh2 .h2-hood{display:block;text-decoration:none;cursor:pointer;background:none;border:0;padding:0;width:100%;text-align:left;color:inherit}
-.pkh2 .h2-hood-ph{width:100%;aspect-ratio:2.1/1;object-fit:cover;background:#1c191a}
-.pkh2 .h2-hood-c{display:flex;align-items:center;gap:10px;margin-top:8px}
-.pkh2 .h2-hood-c>img{display:none;width:44px;height:44px;flex:none}
-.pkh2 .h2-hood-t{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;min-width:0}
-#pkh2#pkh2 .h2-hood-n{font-size:var(--d-card)!important;line-height:1.05!important}
-.pkh2 .h2-hood-k{display:none;font-size:var(--t-sm);color:var(--cream-dim);line-height:1.3}
-.pkh2 .h2-hood-tag{display:none;font-size:var(--t-sm);color:var(--cream-dim)}
-.pkh2 .h2-hood-go{margin-left:auto;font-weight:700;font-size:var(--t-sm);white-space:nowrap}
 .pkh2 .h2-city{display:grid;gap:4px}
 #pkh2#pkh2 .h2-city-k{font-size:.8125rem;font-weight:700;color:var(--mute);margin-top:2px}
 #pkh2#pkh2 .h2-city-k.is-on{color:var(--cream)}
@@ -172,29 +147,23 @@
 
 /* phone and tablet: the desktop wrappers flatten, children follow the mockup's order */
 @media (max-width:1199px){
-  .pkh2 .h2-s3l,.pkh2 .h2-s4in,.pkh2 .h2-s4side,.pkh2 .h2-s4solid{display:contents}
-  .pkh2 .h2-s3head{order:0}.pkh2 .h2-hood{order:1}.pkh2 .h2-city{order:2}.pkh2 .h2-s3 .h2-row{order:3}
+  .pkh2 .h2-s4in,.pkh2 .h2-s4side,.pkh2 .h2-s4solid{display:contents}
   .pkh2 .h2-s4ph{order:0}.pkh2 .h2-stub{order:1}.pkh2 .h2-quote{order:2}.pkh2 .h2-s4end{order:3}
 }
 /* tablet: phone-style, content held to a readable column */
 @media (min-width:600px) and (max-width:1199px){
   .pkh2 .h2-s{align-items:center;justify-content:center;gap:16px;padding-top:24px;padding-bottom:24px}
   .pkh2 .h2-s>*{width:100%;max-width:640px}
-  .pkh2 .h2-s.h2-s2,.pkh2 .h2-s.h2-s3,.pkh2 .h2-s.h2-s4{padding-top:calc(var(--tl) + 24px)}
-  .pkh2 .h2-s2{justify-content:flex-start;padding-bottom:calc(var(--strip,0px) + 24px)}
-  .pkh2 .h2-s2>.h2-s2in{max-width:none}
-  .pkh2 .h2-strip{left:50%;right:auto;width:min(640px,100%);transform:translateX(-50%)}
+  .pkh2 .h2-s.h2-s6,.pkh2 .h2-s.h2-s3,.pkh2 .h2-s.h2-s4{padding-top:calc(var(--tl) + 24px)}
   .pkh2 .h2-s1{padding-top:0;align-items:stretch;justify-content:flex-start}.pkh2 .h2-s1>*{max-width:none}
   .pkh2 .h2-s1b{max-width:640px;width:100%;margin:0 auto;padding:0}
   #pkh2#pkh2 .h2-s1 h1{font-size:3rem!important;top:32px}
   #pkh2#pkh2 .h2-sec{font-size:2.25rem!important}
-  .pkh2 .h2-strip-ph{width:160px}
   #pkh2 .h2-em{width:44px;height:44px}
-  .pkh2 .h2-hood-c>img{display:block}.pkh2 .h2-hood-t{display:grid;gap:0}.pkh2 .h2-hood-k{display:block}.pkh2 .h2-s3sub{font-size:var(--t-lg)}
   .pkh2 .h2-s4{justify-content:flex-start}.pkh2 .h2-s4ph{max-width:none;width:auto;align-self:stretch;margin:calc(-1 * var(--tl) - 24px) 0 0;padding-top:var(--tl)}
   .pkh2 .h2-stub{padding:24px}
 }
-@media (max-width:599px){.pkh2 .h2-s2{padding-top:calc(var(--tl) + 8px)}.pkh2 .h2-s4ph{margin-top:calc(-1 * var(--tl) - 12px)}}
+@media (max-width:599px){.pkh2 .h2-s4ph{margin-top:calc(-1 * var(--tl) - 12px)}}
 
 /* desktop */
 @media (min-width:1200px){
@@ -209,16 +178,7 @@
   #pkh2#pkh2 .h2-s1 h1{position:static!important;text-shadow:none;font-size:2.375rem!important;grid-column:1;grid-row:2;padding:0 48px 0 max(var(--gutter),calc((100vw - 1160px)/2))!important}
   #pkh2#pkh2 .h2-lead{font-size:1.375rem}
   .pkh2 .h2-band{max-width:460px}#pkh2#pkh2 .h2-band-d{font-size:1.75rem!important}
-  .pkh2 .h2-s2{display:block;padding-top:28px;padding-bottom:calc(var(--strip,0px) + 28px)}
-  .pkh2 .h2-strip-ph{width:160px}
-  #pkh2#pkh2 .h2-strip-c{font-size:1rem;max-width:62ch}
-  .pkh2 .h2-s3{grid-template-columns:7fr 5fr}
-  .pkh2 .h2-s3l{grid-column:2;display:grid;gap:22px;align-content:center}
-  .pkh2 .h2-hood{grid-column:1;grid-row:1}
-  .pkh2 .h2-hood-ph{aspect-ratio:4/3;max-height:calc(var(--scr) - 200px)}
-  .pkh2 .h2-hood-c>img{display:block;width:56px;height:56px}#pkh2#pkh2 .h2-hood-n{font-size:1.75rem!important}
   #pkh2 .h2-em{width:40px;height:40px}
-  .pkh2 .h2-hood-t{display:grid;gap:2px}.pkh2 .h2-hood-k,.pkh2 .h2-hood-tag{display:block}.pkh2 .h2-s3sub{font-size:var(--t-lg)}
   .pkh2 .h2-s4{padding:0;display:flex;align-items:center;justify-content:center;gap:0}
   .pkh2 .h2-s4ph{position:absolute;inset:0;margin:0;min-height:0}
   #pkh2#pkh2 .h2-s4ph h2{display:none}
@@ -240,16 +200,6 @@
 #root#root #pkh2 .h2-sub{font-size:var(--t-md)!important;line-height:1.35!important;color:var(--cream-dim)!important}
 #root#root #pkh2 .h2-s3sub{font-size:var(--t-sm)!important}
 @media (min-width:600px){#root#root #pkh2 .h2-s3sub{font-size:var(--t-lg)!important}}
-/* phone: the watch pill shares the row with Another year (pk-climb's own button), so the poster keeps its size and the section still fits one screen */
-@media (max-width:599px){
-  .pkh2 .h2-s.h2-s2{padding-top:calc(var(--tl) + 8px);padding-bottom:12px}
-  #root#root #pkh2 .h2-s2 .pk-cl-an{width:auto!important}
-  .pkh2 .h2-strip{left:auto;right:0;top:auto;bottom:0;min-height:0;height:var(--pill);gap:0}   /* phone: in the Another year row */
-  .pkh2 .h2-strip-ph,#pkh2#pkh2 .h2-strip-c{display:none}
-  .pkh2 .h2-strip-t{display:flex;align-items:center;height:100%}
-  #pkh2 .h2-strip .h2-watch{min-height:var(--pill);padding:0 .75rem 0 .625rem;font-size:.8125rem}
-  #root#root #pkh2 .h2-s2 .pk-cl-an{padding:0 .875rem!important;font-size:.875rem!important}
-}
 
 /* tablet: children of the flattened wrappers get the same held column as direct children; screen 4's photo runs edge to edge */
 @media (min-width:600px) and (max-width:1199px){
@@ -257,49 +207,13 @@
   .pkh2 .h2-s4 .h2-s4ph{margin-left:calc(-1 * var(--gutter));margin-right:calc(-1 * var(--gutter));width:auto;align-self:stretch}
 }
 /* phone: a slightly wider neighborhood photo keeps screen 3 inside one screen with the test bar open */
-@media (max-width:599px){.pkh2 .h2-hood-ph{aspect-ratio:2.35/1}.pkh2 .h2-s3{gap:6px}#pkh2#pkh2 .h2-city-k{margin-top:0}}
+@media (max-width:599px){.pkh2 .h2-s3{gap:6px}#pkh2#pkh2 .h2-city-k{margin-top:0}}
 
-/* desktop: the poster section in two columns, the mockup's layout. pk-climb keeps drawing its desktop poster (it needs a mount 1000px or wider);
-   this grid places its parts: heading, Another year, time bar and Replay on the left with the watch strip under them, the poster on the right,
-   scaled by --h2-ps (set from the poster's own size, on draw and resize) so the whole section stays inside one screen. */
-@media (min-width:1200px){
-  .pkh2 .h2-s.h2-s2{padding-bottom:28px}
-  #pkh2 .h2-s2 .pk-cl-mount{display:grid!important;grid-template-columns:minmax(0,4fr) minmax(0,6fr);grid-template-rows:1fr auto auto auto var(--strip,0px) 1fr;column-gap:48px;max-width:1160px;margin:0 auto;min-height:calc(var(--scr) - 56px)}
-  #pkh2#pkh2 .h2-s2 .pk-cl-hd{grid-column:1;grid-row:2;display:block;max-width:none;margin:0}
-  #pkh2#pkh2 .h2-s2 .pk-cl-an{margin-top:18px}
-  #pkh2 .h2-s2 .pk-cl-tb{width:100%;max-width:none;margin-left:0;margin-right:0}
-  #root#root #pkh2 .h2-s2 .pk-cl-tl{text-align:left!important;margin-left:0!important}
-  #pkh2 .h2-s2 .pk-cl-tb{grid-column:1;grid-row:3;margin-top:22px}
-  #pkh2 .h2-s2 .pk-cl-tl{grid-column:1;grid-row:4}
-  #pkh2 .h2-s2 .pk-cl-cmp{grid-column:1;grid-row:3/5}
-  #pkh2 .h2-s2 .pk-cl-pw{grid-column:2;grid-row:1/-1;justify-self:start;align-self:center;transform-origin:top left!important;transform:scale(var(--h2-ps,1))!important;margin:0 0 var(--h2-pmb,0px) var(--h2-pml,0px)!important}
-  #pkh2 .h2-s2 .pk-cl-mount>.pk-sr{position:absolute}
-  .pkh2 .h2-s2in{max-width:1160px;margin:0 auto}
-  .pkh2 .h2-strip{left:0;right:auto;top:var(--h2-st,auto);width:calc((100% - 48px) * 4 / 10)}
-}
-@media (max-width:379px){.pkh2 .h2-s.h2-s2{padding-bottom:64px}.pkh2 .h2-strip{bottom:-52px;left:0;right:auto}}   /* narrow phones: the watch pill takes its own row under Another year */
-/* phone and tablet (QA M2): the fit set by fitPh() in home2.js. The poster scales from its top center; the photo takes the height left. */
+/* phone and tablet (QA M2): the fit set by fitPh() in home2.js; the neighborhood photo takes the height left. */
 @media (max-width:1199px){
-  #pkh2 .h2-s2 .pk-cl-pw{transform-origin:top center!important;transform:scale(var(--h2-ps,1))!important;margin-bottom:var(--h2-pmb,0px)!important}
-  #pkh2[style*="--h2-hp"] .h2-s3 .h2-hood-ph{height:var(--h2-hp);aspect-ratio:auto}
-}
-/* Round 3 (A11): a tablet held sideways (1000-1199 wide, landscape) is short; the poster section takes the desktop's two columns
-   (heading, Another year, time bar and the watch strip on the left, the poster on the right) so it fits the screen under the ticket line. */
-@media (min-width:1000px) and (max-width:1199px) and (orientation:landscape){
-  .pkh2 .h2-s.h2-s2{display:block;padding:calc(var(--tl) + 12px) 24px 12px}
-  .pkh2 .h2-s.h2-s2>.h2-s2in{max-width:1160px;width:100%;margin:0 auto}
-  #pkh2 .h2-s2 .pk-cl-mount{display:grid!important;grid-template-columns:minmax(0,4fr) minmax(0,6fr);grid-template-rows:1fr auto auto auto var(--strip,0px) 1fr;column-gap:40px;max-width:1160px;margin:0 auto;min-height:calc(var(--scr) - var(--tl) - 24px)}
-  #pkh2#pkh2 .h2-s2 .pk-cl-hd{grid-column:1;grid-row:2;display:block;max-width:none;margin:0}
-  #pkh2#pkh2 .h2-s2 .pk-cl-an{margin-top:14px}
-  #pkh2#pkh2 .h2-s2 .pk-cl-tb{grid-column:1;grid-row:3;width:100%;max-width:none;margin:18px 0 0}
-  #root#root #pkh2 .h2-s2 .pk-cl-tl{grid-column:1;grid-row:4;text-align:left!important;margin-left:0!important}
-  #pkh2#pkh2 .h2-s2 .pk-cl-cmp{grid-column:1;grid-row:3/5}
-  #pkh2#pkh2 .h2-s2 .pk-cl-pw{grid-column:2;grid-row:1/-1;justify-self:start;align-self:center;transform-origin:top left!important;transform:scale(var(--h2-ps,1))!important;margin:0 0 var(--h2-pmb,0px) var(--h2-pml,0px)!important}
-  #pkh2 .h2-s2 .pk-cl-mount>.pk-sr{position:absolute}
-  #pkh2#pkh2 .h2-strip{left:0;right:auto;transform:none;top:var(--h2-st,auto);width:calc((100% - 40px) * 4 / 10)}
 }
 
-/* Round 3 E1-E3 (Nov 12): the Home blend. hero, Before they were big (.h2-s5), neighborhoods (.h2-s3), poster (.h2-s2), tickets (.h2-s4).
+/* Round 3 E1-E3 (Nov 12): the Home blend. hero, Before they were big (.h2-s5), neighborhoods (.h2-s3), everyone who broke out (.h2-s6), tickets (.h2-s4).
    Before they were big: one Discovery card at a time. Card anatomy (BRIEF card rules): the photo with the small gold pill (it plays), then the kicker row
    (kind on the left, the year on the right), the name with no arrow, the fact. The words open the archive at that artist. */
 .pkh2 .h2-s.h2-s5{padding-top:calc(var(--tl) + 12px)}
@@ -349,16 +263,245 @@
 }
 /* a tablet held sideways (1000-1199 wide, landscape) is short: the neighborhoods and Before they were big take the desktop's two columns, so each fits its screen */
 @media (min-width:1000px) and (max-width:1199px) and (orientation:landscape){
-  .pkh2 .h2-s.h2-s3,.pkh2 .h2-s.h2-s5{display:grid;align-items:center;gap:0 40px;padding:calc(var(--tl) + 16px) 32px 16px}
-  .pkh2 .h2-s.h2-s3>*,.pkh2 .h2-s.h2-s5>*{max-width:none}
-  .pkh2 .h2-s3{grid-template-columns:7fr 5fr}
-  .pkh2 .h2-s3l{grid-column:2;display:grid;gap:16px;align-content:center}
-  .pkh2 .h2-hood{grid-column:1;grid-row:1;align-self:center}
-  #pkh2#pkh2 .h2-s3 .h2-hood-ph{height:auto;aspect-ratio:4/3;max-height:calc(var(--scr) - var(--tl) - 120px)}
-  .pkh2 .h2-s3head,.pkh2 .h2-city,.pkh2 .h2-s3 .h2-row{width:auto}
+  .pkh2 .h2-s.h2-s5{display:grid;align-items:center;gap:0 40px;padding:calc(var(--tl) + 16px) 32px 16px}
+  .pkh2 .h2-s.h2-s5>*{max-width:none}
   .pkh2 .h2-s5{grid-template-columns:5fr 7fr;grid-template-rows:1fr auto auto 1fr}
   .pkh2 .h2-s5head{grid-column:1;grid-row:2;display:grid;gap:12px;width:auto}
   .pkh2 .h2-s5row{grid-column:1;grid-row:3;margin-top:20px;width:auto}
   .pkh2 .h2-bc{grid-column:2;grid-row:1/-1;align-self:center;width:auto}
   #pkh2#pkh2 .h2-s5 .h2-bc-ph{height:auto;aspect-ratio:16/9;max-height:calc(var(--scr) - var(--tl) - 230px)}
+}
+
+/* ---------- Round 3.5 (Zale, Nov 11 23:30) ---------- */
+/* HERO: a slow, calm crossfade through data.homeHero (home2.js heroStep). Every frame sits under the same two local scrims, so the headline (top)
+   and the tour, caption and pause (bottom) read on any photo. Reduced motion: no fade and no rotation, the first frame stays. */
+.pkh2 .h2-s1ph .h2-hf{position:absolute;inset:0;width:100%;height:100%;max-width:none;object-fit:cover;opacity:0;transition:opacity 1.6s ease-in-out;z-index:0}
+.pkh2 .h2-s1ph .h2-hf.is-on{opacity:1}
+.pkh2 .h2-s1ph::after{content:"";position:absolute;inset:auto 0 0 0;height:96px;z-index:1;pointer-events:none;background:linear-gradient(rgba(20,16,18,0),rgba(20,16,18,.72))}
+@media (prefers-reduced-motion:reduce){.pkh2 .h2-s1ph .h2-hf{transition:none!important}.pkh2 .h2-hpz{display:none!important}}
+#pkh2#pkh2 .h2-hcap{position:absolute;z-index:3;right:calc(var(--gutter) + 48px);bottom:14px;max-width:calc(100% - 2 * var(--gutter) - 48px - 172px);text-align:right;font-size:.75rem;line-height:1.25;font-weight:600;color:rgba(242,237,227,.86);text-shadow:0 1px 8px rgba(0,0,0,.7)}
+/* the Tour: buttons.md's one rounded button (an oval), the old Home's "Photo tour" back on the hero */
+#pkh2 .h2-tour{position:absolute;z-index:3;left:var(--gutter);bottom:12px;display:inline-flex;align-items:center;gap:.5rem;min-height:44px;padding:0 1.125rem;border-radius:999px;
+  border:1.5px solid rgba(242,237,227,.75);background:rgba(20,16,18,.45);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);color:var(--cream);
+  font:800 .8125rem/1 var(--text);letter-spacing:.08em;text-transform:uppercase;white-space:nowrap;cursor:pointer;transition:background-color .2s linear,border-color .2s linear}
+#pkh2 .h2-tour span{font-size:.75rem;letter-spacing:0}
+#pkh2 .h2-tour:hover{background:rgba(20,16,18,.65);border-color:var(--cream)}
+#pkh2 .h2-hpz{position:absolute;z-index:3;right:var(--gutter);bottom:16px;width:36px;height:36px;padding:0;border-radius:999px;border:1.5px solid rgba(242,237,227,.6);background:rgba(20,16,18,.45);color:var(--cream);display:grid;place-items:center;cursor:pointer}
+#pkh2 .h2-hpz::after{content:"";position:absolute;inset:-4px}
+#pkh2 .h2-hpz svg{width:14px;height:14px;fill:currentColor}
+#pkh2 .h2-hpz .pl,#pkh2 .h2-hpz[aria-pressed=true] .pz{display:none}
+#pkh2 .h2-hpz[aria-pressed=true] .pl{display:inline}
+#root#root#root #pkh2 .h2-hpz{min-height:0!important;min-width:0!important}
+@media (min-width:1200px){#pkh2 .h2-tour{left:24px;bottom:20px}#pkh2 .h2-hpz{right:24px;bottom:24px}#pkh2#pkh2 .h2-hcap{right:76px;bottom:28px}}
+.pkh2 .h2-band-p small + small{margin-top:1px}
+
+/* 4 PROOF: Everyone who broke out here. One screen at every size: heading, six photos, then the wall of names fills what is left and fades out. */
+.pkh2 .h2-s.h2-s6{display:flex;flex-direction:column;height:var(--scr);min-height:0;gap:10px;overflow:hidden}
+.pkh2 .h2-s6sub{margin-top:4px}
+.pkh2 .h2-faces{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px;flex:none}
+.pkh2 .h2-face{position:relative;display:block;aspect-ratio:1/1;overflow:hidden;padding:0;margin:0;border:0;background:#1c191a;cursor:pointer;text-align:left;color:#fff}
+.pkh2 .h2-face img{width:100%;height:100%;max-width:none;object-fit:cover;object-position:50% 30%;transition:transform .4s ease}
+.pkh2 .h2-face:hover img{transform:scale(1.03)}
+.pkh2 .h2-face-t{position:absolute;left:0;right:0;bottom:0;padding:22px 7px 7px;display:grid;gap:3px;background:linear-gradient(rgba(20,16,18,0),rgba(20,16,18,.9) 55%)}
+#pkh2#pkh2 .h2-face-n{font-size:.8125rem!important;line-height:1.05!important;color:#fff}
+.pkh2 .h2-face-y{font-size:.75rem;font-weight:800;letter-spacing:.04em;line-height:1}
+.pkh2 .h2-wall{flex:1 1 0;min-height:0;overflow:hidden;text-align:center;line-height:1.28;text-wrap:balance;
+  -webkit-mask-image:linear-gradient(#000 calc(100% - 44px),transparent);mask-image:linear-gradient(#000 calc(100% - 44px),transparent)}
+.pkh2 .h2-wn{display:inline-block;margin:0 .32em;white-space:nowrap;font-family:var(--display);text-transform:uppercase;letter-spacing:.02em;color:var(--cream)}
+.pkh2 .h2-wn i{font:800 .62em/1 var(--text);font-style:normal;letter-spacing:.02em;vertical-align:.55em;margin-left:.22em}
+.pkh2 .h2-wn.w1{font-size:1rem}.pkh2 .h2-wn.w2{font-size:.8125rem}.pkh2 .h2-wn.w3{font-size:.75rem;color:var(--cream-dim)}
+.pkh2 .h2-wn.w3 i{font-size:.7em}
+.pkh2 .h2-s6row{flex:none}
+.pkh2 .h2-s6cta{display:contents}
+@media (min-width:600px){
+  .pkh2 .h2-faces{grid-template-columns:repeat(6,minmax(0,1fr));gap:5px}
+  .pkh2 .h2-wn.w1{font-size:1.125rem}.pkh2 .h2-wn.w2{font-size:.9375rem}.pkh2 .h2-wn.w3{font-size:.8125rem}
+}
+@media (min-width:600px) and (max-width:1199px){.pkh2 .h2-s.h2-s6{justify-content:flex-start}.pkh2 .h2-s6head,.pkh2 .h2-faces,.pkh2 .h2-wall,.pkh2 .h2-s6row{width:100%;max-width:640px}}
+@media (min-width:1000px) and (max-width:1199px) and (orientation:landscape){.pkh2 .h2-s6head,.pkh2 .h2-faces,.pkh2 .h2-wall,.pkh2 .h2-s6row{max-width:900px}}
+@media (min-width:1200px){
+  .pkh2 .h2-s.h2-s6{display:flex;padding-top:32px;padding-bottom:32px;gap:16px}
+  .pkh2 .h2-s6head{display:flex;align-items:baseline;gap:24px;flex-wrap:wrap}
+  .pkh2 .h2-faces{gap:8px}
+  #pkh2#pkh2 .h2-face-n{font-size:1.0625rem!important}.pkh2 .h2-face-y{font-size:.8125rem}.pkh2 .h2-face-t{padding:30px 10px 10px}
+  .pkh2 .h2-wn.w1{font-size:1.375rem}.pkh2 .h2-wn.w2{font-size:1.0625rem}.pkh2 .h2-wn.w3{font-size:.875rem}
+}
+
+/* BUTTONS (design_specs/buttons.md, Zale Nov 8): 6px corners, one height, Bricolage 800 13px caps .08em. Primary = a gold tint with a gold border
+   (one per screen); secondary = cream outline. The gold "Watch from Pickathon YYYY" pill and the Tour oval keep their round shapes. */
+#root #pkh2 .h2-pill:not(.h2-watch){min-height:48px;padding:0 1.25rem;border-radius:6px;border:1.5px solid rgba(242,237,227,.6);background:transparent;color:var(--cream);
+  font:800 .8125rem/1 var(--text);letter-spacing:.08em;text-transform:uppercase}
+#root #pkh2 .h2-pill:not(.h2-watch):hover{border-color:var(--cream);background:rgba(242,237,227,.06)}
+#root #pkh2 .h2-pill.h2-cream{background:transparent;border-color:rgba(242,237,227,.6);color:var(--cream)}
+#root #pkh2 .h2-pill.h2-gold{background:rgba(214,181,74,.22);border-color:var(--gold-deep);color:var(--cream)}
+#root #pkh2 .h2-pill.h2-gold:hover{background:rgba(214,181,74,.34);border-color:var(--gold)}
+#root #pkh2 .h2-paper .h2-pill.h2-gold{background:rgba(214,181,74,.38);border-color:#B8962E;color:var(--ink)}
+#root #pkh2 .h2-paper .h2-pill.h2-gold:hover{background:rgba(214,181,74,.55)}
+#root #pkh2 .h2-pill.h2-big{min-height:48px;font-size:.8125rem;padding:0 1.5rem}
+#pkh2 .h2-row>.h2-pill,#pkh2 .h2-s6cta>.h2-pill{flex:1 1 0;min-width:0;padding:0 .625rem}
+@media (min-width:600px){#pkh2 .h2-row>.h2-pill,#pkh2 .h2-s6cta>.h2-pill{flex:0 1 236px}}
+#pkh2 .h2-s3 .h2-row>.h2-pill{flex:0 1 auto;padding:0 1.25rem}
+@media (min-width:1200px){.pkh2 .h2-s.h2-s6{align-items:stretch}.pkh2 .h2-s6row{flex-wrap:nowrap}}
+
+/* 3 PLACE, Round 3.5 hybrid (neighborhood panel, Nov 11): photo that says what the place is + a still farm map that shows where it is + the emblem picker.
+   Phone and portrait tablet: heading, photo and map side by side, emblems, one button. Desktop and landscape tablet: photo, map, emblem column. */
+.pkh2 .h2-s.h2-s3{display:flex;flex-direction:column;gap:8px}
+.pkh2 .h2-hmv{display:flex;gap:6px;height:var(--h2-hp,clamp(150px,30svh,300px));min-height:0;flex:none}
+.pkh2 .h2-hood{position:relative;display:block;flex:1 1 auto;min-width:0;height:100%;padding:0;margin:0;border:0;background:#1c191a;overflow:hidden;cursor:pointer;text-align:left;color:var(--cream)}
+.pkh2 .h2-hood .h2-hp{position:absolute;inset:0;width:100%;height:100%;max-width:none;object-fit:cover;opacity:0;transition:opacity 1s ease-in-out}
+.pkh2 .h2-hood .h2-hp.is-on{opacity:1}
+.pkh2 .h2-hood::after{content:"";position:absolute;inset:auto 0 0 0;height:62%;background:linear-gradient(rgba(20,16,18,0),rgba(20,16,18,.86));pointer-events:none}
+.pkh2 .h2-hood-o{position:absolute;z-index:2;left:12px;right:12px;bottom:10px;display:grid;gap:2px}
+.pkh2 .h2-hood-k{font-size:.75rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--cream-dim);line-height:1.2}
+#pkh2#pkh2 .h2-hood-n{font-size:1.375rem!important;line-height:1.02!important;color:var(--cream)}
+.pkh2 .h2-hood-tag{font-size:.9375rem;font-weight:700;color:var(--gold);line-height:1.2}
+.pkh2 .h2-hood-go{position:absolute;z-index:2;top:8px;right:8px;width:36px;height:36px;display:grid;place-items:center;border-radius:6px;border:1.5px solid rgba(242,237,227,.6);background:rgba(20,16,18,.45);color:var(--cream)}
+.pkh2 .h2-hood-go span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.pkh2 .h2-hood-go svg{width:18px;height:18px;fill:currentColor}
+.pkh2 .h2-hmap{position:relative;flex:0 0 clamp(80px,27%,150px);height:100%;padding:0;margin:0;border:0;background:#1c191a;overflow:hidden;cursor:pointer}
+.pkh2 .h2-msvg{display:block;width:100%;height:100%}
+.pkh2 .h2-mt path{fill-opacity:.4;stroke:none}
+.pkh2 .h2-mt .k-stage{fill:#F2CF62}.pkh2 .h2-mt .k-around{fill:#F0896B}.pkh2 .h2-mt .k-camp{fill:#7FB6E6}
+.pkh2 .h2-msel{fill:rgba(242,207,98,.32);stroke:#F2CF62;stroke-linejoin:round}
+.pkh2 .h2-mhalo{fill:none;stroke:rgba(242,207,98,.38);stroke-linejoin:round}
+.pkh2 .h2-dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:7px;vertical-align:.08em;background:#F2CF62}
+.pkh2 .h2-city-k[data-g=around] .h2-dot{background:#F0896B}.pkh2 .h2-city-k[data-g=camp] .h2-dot{background:#7FB6E6}
+.pkh2 .h2-s3row{flex:none}
+@media (prefers-reduced-motion:reduce){.pkh2 .h2-hood .h2-hp{transition:none}}
+@media (max-width:599px) and (max-height:720px){.pkh2 .h2-s3sub{display:none}}   /* the panel's fit rule: short phones drop the intro line */
+@media (min-width:600px) and (max-width:1199px){.pkh2 .h2-s.h2-s3{justify-content:flex-start}.pkh2 .h2-hmv{height:var(--h2-hp,clamp(220px,32svh,380px))}#pkh2#pkh2 .h2-hood-n{font-size:1.75rem!important}}
+/* desktop and the tablet held sideways: photo | map | emblems, the button at the foot of the emblem column */
+@media (min-width:1200px),(min-width:1000px) and (orientation:landscape){
+  .pkh2 .h2-s.h2-s3{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,2.3fr) minmax(0,3.3fr);grid-template-rows:auto minmax(0,1fr) auto;gap:20px 24px;align-items:stretch;height:var(--scr);padding-top:calc(var(--tl) + 28px);padding-bottom:28px}
+  .pkh2 .h2-s.h2-s3>*{max-width:none;width:auto}
+  .pkh2 .h2-s3head{grid-column:1/-1;grid-row:1;display:flex;align-items:baseline;gap:8px 24px;flex-wrap:wrap}
+  .pkh2 .h2-hmv{display:contents}
+  .pkh2 .h2-hood{grid-column:1;grid-row:2/4;height:auto}
+  .pkh2 .h2-hmap{grid-column:2;grid-row:2/4;height:auto}
+  .pkh2 .h2-city{grid-column:3;grid-row:2;align-self:start;gap:6px}
+  .pkh2 .h2-s3row{grid-column:3;grid-row:3;align-self:end}
+  .pkh2 .h2-hood-o{left:22px;right:22px;bottom:20px;gap:4px}
+  #pkh2#pkh2 .h2-hood-n{font-size:2rem!important}.pkh2 .h2-hood-tag{font-size:1.125rem}.pkh2 .h2-hood-k{font-size:.8125rem}
+  .pkh2 .h2-hood-go{top:auto;bottom:20px;right:22px;width:auto;height:auto;border:0;background:none;display:inline-flex;align-items:center;gap:4px;font-weight:800;font-size:.9375rem}
+  .pkh2 .h2-hood-go span{position:static;width:auto;height:auto;clip:auto}
+  .pkh2 .h2-city-k[data-g=stage]+.h2-city-r{max-width:none}
+  #pkh2#pkh2 .h2-city-k{margin-top:8px}
+}
+@media (min-width:1000px) and (max-width:1199px) and (orientation:landscape){.pkh2 .h2-s.h2-s3{padding-left:32px;padding-right:32px;gap:14px 18px}#pkh2#pkh2 .h2-hood-n{font-size:1.625rem!important}}
+/* small phones (under 380 wide): the hero photo gives up height first, and the dates never break mid-range */
+#pkh2#pkh2 .h2-band-d{white-space:nowrap}
+@media (max-width:379px){.pkh2 .h2-s1ph{min-height:200px}#pkh2#pkh2 .h2-band-d{font-size:1.125rem!important}.pkh2 .h2-band-m{padding:8px 10px}.pkh2 .h2-band-p{padding:6px 8px}.pkh2 .h2-band-p small{font-size:.75rem}.pkh2 .h2-band-p b{font-size:1.375rem}}
+/* phone: the hybrid needs the room for its photo and map; the heading sets on two lines and the picker packs tighter */
+@media (max-width:599px){
+  #pkh2#pkh2 .h2-s3 .h2-sec{font-size:1.625rem!important}
+  .pkh2 .h2-s3 .h2-city{gap:2px}
+  .pkh2 .h2-s3 .h2-city-r{row-gap:4px}
+  .pkh2 .h2-s3 .h2-city-k[data-g=stage]+.h2-city-r{max-width:none}
+  .pkh2 .h2-s.h2-s3{gap:8px}
+}
+@media (max-width:599px) and (max-height:760px){.pkh2 .h2-s3sub{display:none}}
+@media (max-width:379px){#pkh2#pkh2 .h2-s3 .h2-sec{font-size:1.375rem!important}.pkh2 .h2-s3 .h2-city-r{column-gap:2px}#pkh2#pkh2 .h2-s3 .h2-city-k{font-size:.75rem}}
+@media (max-width:379px){.pkh2 .h2-s4ph{min-height:96px}.pkh2 .h2-s4{gap:10px}}
+
+/* LISTEN (Round 3.5, Zale Nov 11 22:57): a labeled button ("♫ LISTEN"), not a bare note. buttons.md secondary style (6px corners, cream outline,
+   Bricolage 800 13px caps). Phone and tablet: in the header row left of Search (dates move left beside the logo to make room). Desktop: bottom right,
+   as before. It opens the Listen panel (pick a Pickathon year and playlist, then it opens in your Spotify, Apple Music or other app).
+   Still hidden on the map and neighborhood pages (the app's own rule). */
+html:root:root #root#root#root#root#root#root#root#root#root#root#root#root#root [role="region"][aria-label="Listen"] > button[aria-label="Listen to Pickathon"]{
+  display:inline-flex!important;align-items:center!important;gap:6px!important;width:auto!important;min-width:0!important;height:40px!important;min-height:40px!important;padding:0 12px 0 10px!important;
+  border-radius:6px!important;border:1.5px solid rgba(242,237,227,.6)!important;background:rgba(20,16,18,.55)!important;-webkit-backdrop-filter:blur(6px)!important;backdrop-filter:blur(6px)!important;box-shadow:none!important;
+  color:#F2EDE3!important;font:800 13px/1 "Bricolage Grotesque",Inter,system-ui,sans-serif!important;letter-spacing:.08em!important;text-transform:uppercase!important}
+html:root:root #root#root#root#root#root#root#root#root#root#root#root#root#root [role="region"][aria-label="Listen"] > button[aria-label="Listen to Pickathon"]:hover{border-color:#F2EDE3!important}
+html:root:root #root#root#root#root#root#root#root#root#root#root#root#root#root [role="region"][aria-label="Listen"] > button[aria-label="Listen to Pickathon"] > span{display:inline!important;color:#F2EDE3!important}
+html:root:root #root#root#root#root#root#root#root#root#root#root#root#root#root [role="region"][aria-label="Listen"] > button[aria-label="Listen to Pickathon"] svg{width:16px!important;height:16px!important}
+html:root:root #root#root#root#root#root#root#root#root#root#root#root#root#root [role="region"][aria-label="Listen"] > button[aria-label="Listen to Pickathon"] svg path{stroke:#F2CF62!important}
+html:root:root #root#root#root#root#root#root#root#root#root#root#root#root#root [role="region"][aria-label="Listen"] > button[aria-label="Listen to Pickathon"] svg circle{fill:#F2CF62!important}
+@media (max-width:999px){
+  html:root:root:root #root [role=region][aria-label="Listen"][style*="height: 44px"],html:root:root:root [role=region][aria-label="Listen"][style*="height: 44px"]{top:calc(var(--pk-hd-top,0px) + 19px)!important;right:54px!important;height:40px!important}
+  html:root:root:root #root header button[aria-label="Pickathon home"] > span.pkp-mono{margin:0!important;text-align:left!important;max-width:none!important}
+  html:root:root body:has([role=region][aria-label="Listen"][style*="height: 44px"]) #root header span.pkp-mono{max-width:none}
+}
+@media (max-width:389px){html:root:root:root #root header button[aria-label="Pickathon home"] > img{height:38px!important}}
+@media (max-width:999px){html.pk-scrolling:root:root [role=region][aria-label="Listen"][style*="height: 44px"]{transform:none!important;opacity:1!important}}   /* it sits in the header now: it stays put while the page scrolls */
+/* real phones with the browser's bars showing (iPhone 14 Safari is 390x664): every screen still fits. The photos give up height first,
+   then the repeats go (the act screen's included-strip repeats the hero; the neighborhood group names repeat the photo's kind line). */
+@media (max-width:599px){.pkh2 .h2-s1ph{min-height:170px}.pkh2 .h2-s4ph{min-height:90px}}
+@media (max-width:599px) and (max-height:760px){.pkh2 .h2-stub-inc{display:none}.pkh2 .h2-stub{padding:12px 14px}#pkh2#pkh2 .h2-stub-d{font-size:1.375rem!important}.pkh2 .h2-stub-logo{width:46%}}
+@media (max-width:599px) and (max-height:700px){.pkh2 .h2-s3 .h2-city-k{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}.pkh2 .h2-s3 .h2-city{gap:6px}
+  .pkh2 .h2-s3 .h2-city-r::before{content:"";flex:none;align-self:center;width:8px;height:8px;border-radius:50%;margin-right:4px;background:var(--dotc,#F2CF62)}
+  .pkh2 .h2-s3 .h2-city-k[data-g=around]+.h2-city-r{--dotc:#F0896B}.pkh2 .h2-s3 .h2-city-k[data-g=camp]+.h2-city-r{--dotc:#7FB6E6}
+  #pkh2#pkh2 .h2-s5 .h2-bc-l{font-size:.9375rem}}
+@media (max-width:389px){html:root:root #root#root#root#root#root#root#root#root#root#root#root#root#root [role="region"][aria-label="Listen"] > button[aria-label="Listen to Pickathon"]{padding:0 8px 0 7px!important;gap:5px!important;letter-spacing:.05em!important}
+  html:root:root:root #root [role=region][aria-label="Listen"][style*="height: 44px"],html:root:root:root [role=region][aria-label="Listen"][style*="height: 44px"]{right:50px!important}}
+/* short phones: the headline gets the photo; the place caption steps aside so nothing sits on the words */
+@media (max-width:599px) and (max-height:760px){#pkh2#pkh2 .h2-s1 .h2-hero{font-size:1.75rem!important}.pkh2 .h2-s1 .h2-hcap{display:none}#pkh2 .h2-tour{min-height:40px;padding:0 .875rem}#pkh2#pkh2 .h2-lead{font-size:1rem}}
+/* COOKIE BANNER on phones (funnel risk 1, Zale 23:15: it must not cover a button on first visit): a compact strip, and Home's screens shrink by its height
+   while it shows (home2.js vars), so it never sits on a button. */
+@media (max-width:599px){
+  html:root:root #root [role=dialog][aria-label="Cookie choices"]{flex-wrap:nowrap!important;gap:10px!important;padding:8px 12px!important;align-items:center!important}
+  html:root:root #root [role=dialog][aria-label="Cookie choices"] p{flex:1 1 auto!important;font-size:12px!important;line-height:1.3!important}
+  html:root:root #root [role=dialog][aria-label="Cookie choices"] p a{padding:6px 0!important;margin:-6px 0!important}
+  html:root:root #root [role=dialog][aria-label="Cookie choices"] > div{flex-direction:row!important;gap:6px!important}
+  html:root:root #root [role=dialog][aria-label="Cookie choices"] button{min-height:36px!important;padding:0 12px!important;font-size:12px!important}
+}
+@media (max-width:599px) and (max-height:760px){.pkh2 .h2-s1ph{min-height:140px}}
+.pkh2.h2-ck .h2-s1ph{min-height:190px}
+@media (max-height:760px){.pkh2.h2-ck .h2-s1 .h2-lead{display:none}.pkh2.h2-ck .h2-s1{gap:10px}}   /* while the cookie strip shows, the hero photo gives way so the ticket button stays clear */
+@media (max-width:599px) and (max-height:760px){.pkh2.h2-ck .h2-s1ph{min-height:168px}#pkh2#pkh2.h2-ck .h2-s1 .h2-hero{font-size:1.5625rem!important;top:12px}.pkh2.h2-ck .h2-band-m{padding:6px 10px}.pkh2.h2-ck .h2-band-p{padding:4px 10px}.pkh2.h2-ck .h2-s1{padding-bottom:8px}}
+/* the wall's quiet second beat (Zale 23:34): a text link to a past poster re-ordered by today (the 2019 year page's poster climb) */
+#pkh2 .h2-s6lnk{display:inline-flex;align-items:center;min-height:32px;margin:2px 0 0;padding:0;border:0;background:none;color:var(--cream);font:700 .875rem/1.2 var(--text);text-decoration:underline;text-decoration-color:rgba(242,207,98,.7);text-underline-offset:4px;cursor:pointer}
+#pkh2 .h2-s6lnk:hover{text-decoration-color:var(--gold)}
+#root#root#root #pkh2 .h2-s6lnk{min-height:32px!important;width:auto!important}
+@media (min-width:1200px){#pkh2 .h2-s6lnk{margin:0 0 0 auto;font-size:.9375rem}}
+/* the tablet held sideways (1024x768): the act screen takes the desktop layout (photo behind, words left, ticket stub right) so it fits */
+@media (min-width:1000px) and (max-width:1199px) and (orientation:landscape){
+  #pkh2 .h2-s.h2-s4{padding:calc(var(--tl) + 16px) 0 16px;display:flex;align-items:center;justify-content:center;gap:0}
+  #pkh2 .h2-s4 .h2-s4ph{position:absolute;inset:0;margin:0;min-height:0;width:auto;max-width:none;padding:0}
+  #pkh2#pkh2 .h2-s4ph h2{display:none}
+  #pkh2 .h2-s4 .h2-s4in{position:relative;z-index:2;display:grid;grid-template-columns:1fr 440px;gap:40px;align-items:center;width:100%;max-width:1000px;padding:0 32px}
+  #pkh2 .h2-s4 .h2-s4side{display:grid;gap:18px}
+  #pkh2#pkh2 .h2-s4 .h2-s4h{display:block;font-size:2.75rem!important;text-shadow:0 1px 18px rgba(0,0,0,.6);max-width:12ch!important;color:var(--cream)}
+  #pkh2 .h2-s4 .h2-s4solid{display:grid;background:var(--ground);padding:16px 18px;gap:12px;max-width:420px}
+  #pkh2 .h2-s4 .h2-stub,#pkh2 .h2-s4 .h2-quote,#pkh2 .h2-s4 .h2-s4end{width:auto;max-width:none}
+  #pkh2 .h2-s4 .h2-stub{margin:0;padding:20px 22px}
+}
+
+/* 4 PROOF, the poster climb back on Home (Zale 23:38). pk-climb draws into .pk-cl-mount; Home places it and adds the before/after strip (.h2-ba). */
+.pkh2 .h2-s.h2-s2{padding-top:calc(var(--tl) + 10px);padding-bottom:12px}
+.pkh2 .h2-s2 .pk-cl-mount{width:100%}
+#pkh2 .h2-s2 .pk-cl-hd .pk-nh-k{display:none}
+.pkh2 .h2-s2in{position:relative;width:100%}
+/* the line under the time bar repeats the strip: kept for screen readers only */
+#root#root #pkh2 .h2-s2 .pk-cl-tl{position:absolute!important;width:1px!important;height:1px!important;overflow:hidden!important;clip:rect(0 0 0 0)!important;margin:0!important;padding:0!important}
+/* buttons.md: Another year = secondary (cream outline, 6px corners); Replay = the small icon-and-word kind */
+#root#root #pkh2 .h2-s2 .pk-cl-an{display:inline-flex;align-items:center;justify-content:center;min-height:48px!important;padding:0 1.25rem!important;border-radius:6px!important;border:1.5px solid rgba(242,237,227,.6)!important;background:transparent!important;color:var(--cream)!important;
+  font:800 .8125rem/1 var(--text)!important;letter-spacing:.08em!important;text-transform:uppercase!important;box-shadow:none;cursor:pointer}
+#root#root #pkh2 .h2-s2 .pk-cl-rpl{min-height:36px!important;padding:0 .75rem!important;border-radius:6px!important;border:1.5px solid rgba(242,237,227,.45)!important;background:transparent!important;color:var(--cream)!important;font:800 .75rem/1 var(--text)!important;letter-spacing:.06em!important;text-transform:uppercase!important;box-shadow:none}
+/* BEFORE / AFTER strip: two labeled states in that year's paper and ink, the line between fills as the names move */
+.pkh2 .h2-ba{display:flex;align-items:center;gap:8px;margin:0 0 8px;font:800 .75rem/1.15 var(--text);letter-spacing:.08em;text-transform:uppercase}
+.pkh2 .h2-ba-a,.pkh2 .h2-ba-b{flex:none;padding:7px 9px;border-radius:3px;opacity:.45;transition:opacity .35s linear,box-shadow .35s linear}
+.pkh2 .h2-ba-a{background:var(--ba-p,#F0EEEA);color:var(--ba-i,#2B2628)}
+.pkh2 .h2-ba-b{background:var(--ba-i,#454661);color:var(--ba-p,#F0EEEA);box-shadow:inset 0 0 0 1.5px var(--ba-p,#F0EEEA)}
+.pkh2 .h2-ba.is-a .h2-ba-a,.pkh2 .h2-ba.is-b .h2-ba-b{opacity:1}
+.pkh2 .h2-ba.is-b .h2-ba-b{box-shadow:inset 0 0 0 1.5px var(--ba-p,#F0EEEA),0 0 0 3px rgba(242,207,98,.55)}
+.pkh2 .h2-ba-t{position:relative;flex:1;height:2px;background:rgba(242,237,227,.22)}
+.pkh2 .h2-ba-t i{position:absolute;left:0;top:-1px;height:4px;width:0;background:var(--gold);border-radius:2px}
+.pkh2 .h2-ba-t::after{content:"";position:absolute;right:-1px;top:-4px;border:5px solid transparent;border-left:7px solid rgba(242,237,227,.5);border-right:0}
+@media (prefers-reduced-motion:reduce){.pkh2 .h2-ba{display:none}}   /* pk-climb shows the two orders side by side instead */
+@media (max-width:379px){.pkh2 .h2-ba{font-size:.6875rem;letter-spacing:.05em}.pkh2 .h2-ba-a,.pkh2 .h2-ba-b{padding:6px 7px}}
+@media (min-width:600px) and (max-width:1199px){.pkh2 .h2-s.h2-s2{padding-top:calc(var(--tl) + 20px);justify-content:flex-start}.pkh2 .h2-s2>.h2-s2in{max-width:none}.pkh2 .h2-ba{max-width:640px;margin:0 auto 12px;font-size:.8125rem}}
+@media (max-width:1199px){#pkh2 .h2-s2 .pk-cl-pw{transform-origin:top center!important;transform:scale(var(--h2-ps,1))!important;margin-bottom:var(--h2-pmb,0px)!important}}
+@media (max-width:599px){#root#root #pkh2 .h2-s2 .pk-cl-an{width:auto!important;padding:0 .875rem!important}}
+/* desktop and the sideways tablet: heading, Another year, time bar and Replay on the left; the strip and the poster on the right */
+@media (min-width:1200px),(min-width:1000px) and (orientation:landscape){
+  .pkh2 .h2-s.h2-s2{display:block;padding:calc(var(--tl) + 24px) max(24px,calc((100vw - 1160px)/2)) 20px}
+  .pkh2 .h2-s2in{max-width:1160px;margin:0 auto}
+  #pkh2 .h2-s2 .pk-cl-mount{display:grid!important;grid-template-columns:minmax(0,4fr) minmax(0,6fr);grid-template-rows:1fr auto auto auto 1fr;column-gap:48px;max-width:1160px;margin:0 auto;min-height:calc(var(--scr) - var(--tl) - 44px - 46px)}
+  #pkh2#pkh2 .h2-s2 .pk-cl-hd{grid-column:1;grid-row:2;display:block;max-width:none;margin:0}
+  #pkh2#pkh2 .h2-s2 .pk-cl-an{margin-top:18px}
+  #pkh2#pkh2 .h2-s2 .pk-cl-tb{grid-column:1;grid-row:3;width:100%;max-width:none;margin:22px 0 0}
+  #pkh2#pkh2 .h2-s2 .pk-cl-cmp{grid-column:1;grid-row:3/5}
+  #pkh2#pkh2 .h2-s2 .pk-cl-pw{grid-column:2;grid-row:1/-1;justify-self:start;align-self:start;transform-origin:top left!important;transform:scale(var(--h2-ps,1))!important;margin:0 0 var(--h2-pmb,0px) var(--h2-pml,0px)!important}
+  #pkh2 .h2-s2 .pk-cl-mount>.pk-sr{position:absolute}
+  .pkh2 .h2-ba{margin:0 0 14px calc((100% - 48px) * .4 + 48px);font-size:.8125rem}
 }

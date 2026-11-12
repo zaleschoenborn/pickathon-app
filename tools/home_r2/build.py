@@ -18,6 +18,8 @@ def put(s, tag, id_, body, after=None):
     if not m: sys.exit('no place for ' + id_)
     return s[:m.end()] + '\n' + new + s[m.end():]
 s = put(s, 'style', 'pk-home2-css', rd('home2.css'), after=r'<script id="pk-checkout">.*?</script>')
-s = put(s, 'script', 'pk-home2', rd('home2.js'), after=r'<style id="pk-home2-css">.*?</style>')
+import json
+HH = json.dumps(json.load(open(os.path.join(D, 'hoods_home.json'), encoding='utf-8')), ensure_ascii=False, separators=(',', ':'))   # make_hoods.py
+s = put(s, 'script', 'pk-home2', rd('home2.js').replace('/*@HOODS_HOME*/null', HH), after=r'<style id="pk-home2-css">.*?</style>')
 open(IDX, 'w', encoding='utf-8').write(s)
 print('index.html', len(s))

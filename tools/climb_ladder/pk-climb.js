@@ -329,7 +329,7 @@
   function check() {
     if (!mountEl || RM || S.seen[S.y] || S.playing) return;
     var pe = mountEl.querySelector('.pk-cl-p') || mountEl, r = pe.getBoundingClientRect(), vh = window.innerHeight || 800, vis = Math.min(r.bottom, vh) - Math.max(r.top, 0);
-    if (vis >= Math.min(r.height, vh) * 0.6) { S.seen[S.y] = 1; if (C[S.y].labels.length > 1) setTimeout(run, 300); }
+    if (vis >= Math.min(r.height, vh) * 0.6) { S.seen[S.y] = 1; if (C[S.y].labels.length > 1) setTimeout(run, 1500); }   /* Zale 23:38: hold on the bill as printed long enough to read it before it moves */
   }
   document.addEventListener('click', function (e) {
     var b = e.target && e.target.closest && e.target.closest('[data-cl]'); if (!b || !mountEl || !mountEl.contains(b)) return;
