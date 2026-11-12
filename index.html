@@ -2510,11 +2510,11 @@ html.pk-cy-in div:has(> button[aria-label="Listen to Pickathon"]){opacity:0!impo
 
   // Sizes. Desktop: the paper is 960 wide (inner 880): art 330 at left, list column 524. Phone and tablet (phone-style): art small on top, list full width.
   function cfg(ph, wAvail) {
-    if (!ph) return { ph: false, IW: 880, PADX: 40, PADY: 22, ART: { x: 0, y: 118, w: 330 }, COLX: 356, COLW: 524, Y0: 0, LANES: [[80, 74, 2], [44, 41, 2], [44, 41, 2], [44, 41, 2], [33, 29, 1], [33, 29, 1], [33, 29, 1], [33, 29, 1], [33, 29, 1], [33, 29, 1]], GAP: 5, R1: 22, ROWH: 21, FS: 13, CFS: 15, DATES: 15, DGAP: 42, BOT: 100, RIB: [40, 14], STAMP: 0.92 };
+    if (!ph) return { ph: false, IW: 880, PADX: 40, PADY: 22, ART: { x: 0, y: 118, w: 330 }, COLX: 356, COLW: 524, Y0: 0, LANES: [[80, 74, 2], [44, 41, 2], [44, 41, 2], [44, 41, 2], [33, 29, 1], [33, 29, 1], [33, 29, 1], [33, 29, 1], [33, 29, 1], [33, 29, 1]], GAP: 5, R1: 22, ROWH: 21, FS: 13, CFS: 15, DATES: 15, DGAP: 14, BOT: 72, RIB: [40, 14], STAMP: 0.92 };
     var PW = Math.max(300, Math.min(wAvail, 720)), IW = PW - 32, k = Math.min(1.7, IW / 326), L = function (h, m, ml) { return [Math.round(h * k), Math.round(m * k), ml]; };
     var AW = Math.round(100 * k), CG = Math.round(12 * k);   /* Zale, Nov 11: phone keeps the horizontal poster, art static on the left, names move in the column on the right (spec home_climb_phone_nov9b section 1) */
     return { ph: true, IW: IW, PADX: 16, PADY: 14, ART: { x: 0, y: 0, w: AW }, COLX: AW + CG, COLW: IW - AW - CG, Y0: 0,
-      LANES: [L(40, 28, 2), L(27, 20, 2), L(27, 20, 2), L(27, 20, 2), L(20, 15, 1), L(20, 15, 1), L(20, 15, 1), L(20, 15, 1), L(20, 15, 1), L(20, 15, 1)], GAP: Math.round(3 * k), R1: Math.round(26 * k), ROWH: Math.round(16 * k), FS: Math.max(11, 11 * k), CFS: Math.max(12, 12 * k), DATES: Math.max(11, 11 * k), DGAP: Math.round(30 * k), BOT: Math.round(30 * k) + Math.round(Math.max(11, 11 * k)) + 12 + Math.max(34, Math.round(32 * k)), RIB: [Math.max(34, Math.round(32 * k)), Math.max(12, 12 * k)], STAMP: 0.7 * k };
+      LANES: [L(40, 28, 2), L(27, 20, 2), L(27, 20, 2), L(27, 20, 2), L(20, 15, 1), L(20, 15, 1), L(20, 15, 1), L(20, 15, 1), L(20, 15, 1), L(20, 15, 1)], GAP: Math.round(3 * k), R1: Math.round(26 * k), ROWH: Math.round(16 * k), FS: Math.max(11, 11 * k), CFS: Math.max(12, 12 * k), DATES: Math.max(11, 11 * k), DGAP: Math.round(10 * k), BOT: Math.round(10 * k) + Math.round(Math.max(11, 11 * k)) + 12 + Math.max(34, Math.round(32 * k)), RIB: [Math.max(34, Math.round(32 * k)), Math.max(12, 12 * k)], STAMP: 0.7 * k };
   }
 
   /* Nov 11 refine (Zale: "it needs to be smoother"): two posters and one move.
@@ -2569,7 +2569,7 @@ html.pk-cy-in div:has(> button[aria-label="Listen to Pickathon"]){opacity:0!impo
         if (rw[r] + add > ROWMAX) { if (r === 0) { rows.push([]); rw.push(0); r = 1; add = w; } else { over = true; hid.push(i); return; } }
         if (still && shown >= (Q.ph ? 6 : 16) && !isC) { hid.push(i); return; }
         rw[r] += add; rows[r].push({ i: i, fs: fs, w: w, sep: SEP }); shown++; });
-      return { rows: rows, rw: rw, hid: hid, over: over }; };
+      return { rows: [[]], rw: [0], hid: smalls, over: false }; };   /* Zale, Nov 12: the poster is the top 10 only; nothing else is drawn */
     var sc = 1; if (!still) for (var tries = 0; tries < 12; tries++) { var ok = true; for (var j0 = 0; j0 < KS.length; j0++) if (rowsAt(j0, sc).over) { ok = false; break; } if (ok) break; sc *= 0.94; }
     // the layout at every step
     var CH = ['x', 'y', 'k', 'f', 'r', 'g', 'b', 'sep', 'col', 'vis', 'v'], RCH = ['y', 'a', 'b', 'o'];
@@ -2687,8 +2687,8 @@ html.pk-cy-in div:has(> button[aria-label="Listen to Pickathon"]){opacity:0!impo
     var n = D.labels.length, atEnd = tp >= n - 1 - 1e-3, frac = n > 1 ? F.frac : 1;   /* the calendar rides the same curve as the names (Nov 11 refine) */
     var y0 = +y, yNow = n > 1 ? Math.max(y0 + 1, Math.round(y0 + (TODAY - y0) * frac)) : TODAY;
     var line = n < 2 ? 'Ranked by how far each act has gone' : frac <= 0.001 ? (D.src === 'real billing' ? 'The bill as printed in ' + y : 'The bill as booked in ' + y) : (atEnd || yNow >= TODAY) ? 'Ranked today by how far each act has gone' : 'Re-ranked as of ' + yNow;
-    var btn = '↺ Replay';   /* Zale, Nov 11 10:10: Home plays once by itself; the only controls are Replay and Another year */
-    return { n: n, show: n > 1 && y0 < TODAY && !STAT(y0) && !RM, frac: frac, yNow: Math.min(yNow, TODAY), line: line, btn: btn, aria: 'Replay ' + y + ', from the printed bill to today' };
+    var btn = 'Play again';   /* Zale, Nov 12: text only, no glyph; shows only when the motion is live */
+    return { n: n, show: n > 1 && y0 < TODAY && !STAT(y0) && !RM, frac: frac, yNow: Math.min(yNow, TODAY), line: line, btn: btn, aria: 'Play pickathon ' + y + ' again, from the opening top 10 to today' };
   }
   function endSub(D, y) { if (!D.clim || STAT(y) || D.labels.length < 2) return ''; return String(D.clim).toUpperCase() + (D.climTo === 0 ? ' NOW TOPS THE BILL' : ' IS NOW ' + ORD(D.climTo) + ' ON THE BILL'); }
   function caption(D, y, tp) {
@@ -2701,7 +2701,7 @@ html.pk-cy-in div:has(> button[aria-label="Listen to Pickathon"]){opacity:0!impo
     return age < 3 ? since + ', SO FAR: ' + D.clim + place + ' IT TAKES A FEW SUMMERS TO KNOW.' : since + ': ' + D.clim + place;
   }
 
-  function STAT(y) { var D = C && C[y]; return +y <= 2005 || !!(D && D.src !== 'real billing'); } // still posters: 2005 and earlier (Zale, Nov 9), and any year without real poster billing (Zale's rule: no source, show today only). Real billing so far: 2023, 2024
+  function STAT(y) { return true; /* Zale, Nov 12: the poster holds only the top 10, and its motion is on hold until six-month scores exist for every year (design_studio-59). Every year shows today's top 10, still. */ var D = C && C[y]; return +y <= 2005 || !!(D && D.src !== 'real billing'); } // still posters: 2005 and earlier (Zale, Nov 9), and any year without real poster billing (Zale's rule: no source, show today only). Real billing so far: 2023, 2024
   /* Zale, Nov 11: on phone the time reads as a calendar page that ticks from the festival month to today while the poster runs */
   var MON = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
   function calH(y, frac) { var m0 = 7, tot = (TODAY - (+y)) * 12 + (10 - m0), m = m0 + Math.round(Math.max(0, Math.min(1, frac)) * tot); return '<b class="pk-cl-mo">' + MON[m % 12] + '</b><b class="pk-cl-yr">' + ((+y) + Math.floor(m / 12)) + '</b>'; }
@@ -2740,7 +2740,7 @@ html.pk-cy-in div:has(> button[aria-label="Listen to Pickathon"]){opacity:0!impo
     var corner = function (cx, cy) { return 'radial-gradient(circle at ' + cx + ' ' + cy + ',#000 0,transparent 22%)'; }, cm = [corner('0', '0'), corner('100%', '0'), corner('0', '100%'), corner('100%', '100%')].join(',');
     var capH = '<p class="pk-cl-cap" aria-live="polite" style="color:' + (atEnd ? '#F2CF62' : '#CFC9BC') + '">' + esc(cap) + '</p>', tbH = '';
     var subT = endSub(D, +y), subH = Q.ph && subT ? '<p class="pk-g1-sub" aria-hidden="true" style="visibility:' + (atEnd ? 'visible' : 'hidden') + '">' + esc(subT) + '</p>' : '';   /* Gate 1 fix 12 (D11): the phone's end state says who climbed */
-    var keyH = Q.ph && F.fineRise && !STAT(y) && n > 1 ? '<p class="pk-g1-key">\u25B2 in ' + y + '\u2019s fine print</p>' : '';
+    var keyH = false && Q.ph && F.fineRise && !STAT(y) && n > 1 ? '<p class="pk-g1-key">\u25B2 in ' + y + '\u2019s fine print</p>' : '';
     var h = '<div class="pk-cl-hd"><div class="pk-cl-ht"><p class="pk-nh-k">Still happening</p><h2 class="pk-nh-h2" id="pk-cl-h">Wait, they all played <span style="color:' + (YC[y] || '#F2CF62') + '">Pickathon ' + y + '?</span></h2>'
       + subH + (Q.ph ? '' : capH) + '</div>'
       + (Q.ph ? '' : '<button type="button" class="pk-cl-an" data-cl="rand">↻ Another year</button>') + '</div>';
@@ -9372,6 +9372,7 @@ html:root:root #root#root#root#root#root#root#root#root#root#root#root#root#root
 .pkh2 .h2-ba-t i{position:absolute;left:0;top:-1px;height:4px;width:0;background:var(--gold);border-radius:2px}
 .pkh2 .h2-ba-t::after{content:"";position:absolute;right:-1px;top:-4px;border:5px solid transparent;border-left:7px solid rgba(242,237,227,.5);border-right:0}
 @media (prefers-reduced-motion:reduce){.pkh2 .h2-ba{display:none}}   /* pk-climb shows the two orders side by side instead */
+#pkh2#pkh2 .h2-ba{display:none!important}   /* Zale, Nov 12: the poster is a still top 10 while its motion is on hold, so there is no then/now strip. Remove this line when the motion goes live. */
 @media (max-width:379px){.pkh2 .h2-ba{font-size:.6875rem;letter-spacing:.05em}.pkh2 .h2-ba-a,.pkh2 .h2-ba-b{padding:6px 7px}}
 @media (min-width:600px) and (max-width:1199px){.pkh2 .h2-s.h2-s2{padding-top:calc(var(--tl) + 20px);justify-content:flex-start}.pkh2 .h2-s2>.h2-s2in{max-width:none}.pkh2 .h2-ba{max-width:640px;margin:0 auto 12px;font-size:.8125rem}}
 @media (max-width:1199px){#pkh2 .h2-s2 .pk-cl-pw{transform-origin:top center!important;transform:scale(var(--h2-ps,1))!important;margin-bottom:var(--h2-pmb,0px)!important}}
