@@ -148,3 +148,12 @@ $P .pk-yph.pk-hd-yslug>.pk-hd-slugs{position:absolute;left:0;right:0;bottom:0;di
 /* the type hero keeps a 32px breath before the page text */
 $P .pk-hd-hero.pk-hd-slug ~ .pk-hd-w .pk-hd-desc0{margin-top:32px!important}
 $P .pk-hd-ym:has(.pk-hd-yslug) .pk-hd-ytag{display:none!important}
+/* Gate 2 design 9: a place card with no same-year photo is a place slug on the year's paper: that year's name in ink, "Today: Paddock" in ink2,
+   the year's stripe along its foot; no black fade, no empty photo box above the type */
+$P .pk-hy-c.pk-hy-slug{min-height:0!important;justify-content:flex-start!important;padding:18px 0 14px!important;background:var(--yb-paper,#F2EDE3)!important;color:var(--yb-ink,#2B2628)!important;box-shadow:inset 0 0 0 1.5px color-mix(in srgb,var(--yb-ink2,#2B2628) 38%,transparent)}
+$P .pk-hy-c.pk-hy-slug::after{content:""!important;inset:auto 0 0 0!important;height:7px!important;background:var(--yb-stripe,var(--yb-ink))!important}
+$P .pk-hy-c.pk-hy-slug .pk-hy-ic{display:none!important}
+$P .pk-hy-c.pk-hy-slug .pk-hy-t b{font-family:'Pickathon 2014',sans-serif!important;font-weight:400!important;font-size:28px!important;line-height:1!important;color:var(--yb-ink)!important;-webkit-text-fill-color:var(--yb-ink);text-shadow:none!important}
+$P .pk-hy-c.pk-hy-slug .pk-hy-now{padding-top:6px!important;color:var(--yb-ink2)!important;-webkit-text-fill-color:var(--yb-ink2);text-shadow:none!important}
+$P .pk-hy-c.pk-hy-slug .pk-hy-a{margin:8px 0 10px!important;color:var(--yb-ink)!important;-webkit-text-fill-color:var(--yb-ink);text-shadow:none!important}
+$P .pk-hy-c.pk-hy-slug .pk-hy-a em{color:var(--yb-ink2)!important;-webkit-text-fill-color:var(--yb-ink2)}
