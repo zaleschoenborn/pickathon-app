@@ -156,9 +156,9 @@ def curation():
 curation()
 # ---- stage neighborhoods: who played here, by class (music) or lineup (everything else) ----
 STAGES = ['woods', 'paddock', 'cherryhill', 'grove', 'windmill', 'galaxy', 'lucky', 'farmhouse', 'orchard']
-KL = {'leg': 'Legends', 'disc': 'Discoveries', 'deep': 'Deep cuts', 'none': 'More to hear'}
+KL = {'leg': 'Legends', 'disc': 'Discoveries', 'deep': 'Deep cuts', 'none': 'Also played'}
 LUK = {'DJs': 'DJs', 'Comedy': 'Comedy & readings', 'Literary': 'Comedy & readings', 'Family': 'Family'}
-ORDER = ['Legends', 'Discoveries', 'Deep cuts', 'More to hear', 'DJs', 'Comedy & readings', 'Family', 'Showcases & other']
+ORDER = ['Legends', 'Discoveries', 'Deep cuts', 'Also played', 'DJs', 'Comedy & readings', 'Family', 'Showcases & other']
 ROW = {}
 for y, bb in d['yearBill'].items():
     for b in bb: ROW[(int(y), nk(b['n']))] = b
@@ -180,7 +180,7 @@ for hid in STAGES:
     for y, r, kw in exp:
         t4 = re.sub(r'\s*\((?:21\+|courtyard)\)\s*$|\s+[\u2013-]\s+(?:Galaxy Barn|Lucky)\s*$', '', r[4], flags=re.I).strip()   # '(21+)' late sets are the same act
         k0 = kw or nk(t4); k = AL.get(k0, k0); b = ROW.get((y, k))
-        if b and not b.get('f'): kn = KL.get(b.get('k') or 'none', 'More to hear'); MU.add(k)
+        if b and not b.get('f'): kn = KL.get(b.get('k') or 'none', 'Also played'); MU.add(k)
         elif b: kn = LUK.get(b.get('lu'), 'More')
         else: kn = 'Showcases & other'
         NM[k] = b['n'] if b else re.sub(r'\s+', ' ', t4).strip(); YS[k].add(y); MG[k] = max(MG[k], float((b or {}).get('m') or 0))

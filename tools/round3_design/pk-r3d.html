@@ -1,0 +1,103 @@
+<style id="pk-r3d-css">
+/* Round 3, design batch B (Nov 12). B1 one bar and one back control · B2 the year page on its year's paper and inks ·
+   B3 a photo in the first screen on wide screens · B4 the reel badge clears faces · B6 a quiet way forward from pre-2020 years.
+   Source: tools/round3_design/pk-r3d.html (spliced in by tools/round3_design/splice.py, right after pk-yg-js). */
+
+/* ---------- B1: the year strip, one drawing on every width ---------- */
+html body .pk-tm button.pk-tm-yr{display:inline-flex!important;align-items:center!important;gap:9px!important;min-height:44px!important;margin:0!important;padding:0 6px 0 0!important;background:transparent!important;border:0!important;color:#F2EDE3!important;cursor:pointer;text-transform:none!important;letter-spacing:0!important;flex:0 1 auto!important;width:auto!important}
+html body .pk-tm .pk-tm-seal{display:grid;place-items:center;width:32px;height:32px;flex:none;border-radius:50%;background:var(--tmp,#F2EDE3);box-shadow:0 0 0 1.5px rgba(242,237,227,.9);overflow:hidden}
+html body .pk-tm .pk-tm-seal:empty{display:none}
+html body .pk-tm button.pk-tm-yr .pk-tm-seal img{display:block!important;width:27px!important;height:27px!important;object-fit:contain}
+html body .pk-tm .pk-tm-y{font:400 26px/1 "Pickathon 2014",'Bricolage Grotesque',sans-serif!important;letter-spacing:.04em!important;padding-top:4px;color:#F2EDE3!important}
+html body .pk-tm .pk-tm-dn{width:16px;height:16px;flex:none;margin-left:-4px}
+html body .pk-tm button.pk-tm-yr span.pk-tm-sub{font:750 12.5px/1 'Bricolage Grotesque',sans-serif!important;letter-spacing:.07em!important;text-transform:uppercase;color:#F2EDE3!important;opacity:.82;margin:0!important;padding-top:3px}
+html body .pk-tm .pk-tm-yr:focus-visible,html body .pk-tm .pk-tm-bk:focus-visible{outline:3px solid #F2CF62;outline-offset:2px;border-radius:999px}
+@media (min-width:1200px){
+  html body .pk-tm{min-height:52px!important;padding:0 max(24px,calc((100vw - 1152px) / 2))!important;justify-content:space-between!important;border-bottom:0!important;box-shadow:inset 0 -4px 0 rgba(0,0,0,.08)}
+  html body .pk-tm::after{content:"";position:absolute;left:0;right:0;bottom:0;height:4px;background:var(--tms,none)}
+  html.pk-tmon #root header + *{margin-top:52px!important}
+  html.pk-tmon body #root#root#root#root#root#root#root#root#root#root#root#root#root#root .pk-yhd .pk-yhp{display:none!important}   /* the strip's year opens the chooser now */
+}
+
+/* ---------- B1: below 1200 px the strip becomes the header: one bar, one back control ---------- */
+@media (max-width:1199px){
+  html.pk-tmon.pk-tmbar body .pk-tm{top:var(--r3t,0px)!important;left:var(--r3l,52px)!important;right:var(--r3r,52px)!important;height:var(--r3h,60px)!important;min-height:0!important;padding:0!important;gap:8px!important;background:transparent!important;border:0!important;box-shadow:none!important;z-index:40!important;justify-content:space-between!important}
+  html.pk-tmon.pk-tmbar body #root#root#root#root .pkp>header{background:var(--tmb,#2B2628)!important;border-bottom:0!important;position:relative}
+  html.pk-tmon.pk-tmbar body #root#root#root#root .pkp>header::after{content:"";position:absolute;left:0;right:0;bottom:0;height:4px;background:var(--tms,none);pointer-events:none}
+  html.pk-tmon.pk-tmbar body #root#root#root#root .pkp>header>div:first-child>button[aria-label="Pickathon home"],
+  html.pk-tmon.pk-tmbar body #root#root#root#root .pkp>header>div:first-child>span{visibility:hidden!important}
+  html.pk-tmon.pk-tmbar body #root#root#root#root .pkp>header button{color:#F2EDE3!important}
+  html.pk-tmon.pk-tmbar body #root#root#root#root .pkp>#pk-tl2{display:none!important}   /* the sale line steps aside inside a past year; Tickets stays in the tab bar */
+  html.pk-tmon.pk-tmbar body #root#root#root header+*{margin-top:0!important}
+  html.pk-tmon.pk-tmbar body #root#root#root#root#root#root#root#root#root#root#root#root#root#root .pk-yhd,
+  html.pk-tmon.pk-tmbar body #root#root#root#root#root#root#root#root#root#root#root#root#root#root .pk-act-back{display:none!important}
+  html.pk-tmon.pk-tmbar body .pk-tm button.pk-tm-bk{font-size:13px!important;padding:0 12px!important}
+}
+@media (max-width:359px){html.pk-tmon.pk-tmbar body .pk-tm .pk-tm-y{font-size:22px!important}html.pk-tmon.pk-tmbar body .pk-tm button.pk-tm-bk{font-size:12px!important;padding:0 9px!important}}
+
+/* ---------- B2: the year page on its year's paper, type in its inks (ruling 3) ----------
+   Dark blocks (the breakout panel, the photo reel, the story, the place cards) stay dark: night prints on the paper. */
+html.pk-yg.pk-ypp,html.pk-yg.pk-ypp body,html.pk-yg.pk-ypp body #root#root#root#root#root#root#root#root .pkp,
+html.pk-yg.pk-ypp body #root#root#root#root#root#root#root#root main,html.pk-yg.pk-ypp body #root#root#root#root#root#root#root#root main>section{background:var(--yp)!important}
+html.pk-yg.pk-ypp body #root#root#root#root#root#root#root#root main article{color:var(--yi)}
+html.pk-yg.pk-ypp body #root#root#root#root#root#root#root#root#root#root#root#root#root#root main :is(.pk-way-k,.pk-ev-k,.pk-shl,.pk-lgd-tot em,.pk-sx-p,article>section:not([class])>figure>figcaption,article>section:not([class])>figure>figcaption a){color:var(--yi2)!important;-webkit-text-fill-color:var(--yi2)!important}
+html.pk-yg.pk-ypp body #root#root#root#root#root#root#root#root#root#root#root#root#root#root main :is(.pk-pyl,.pk-lh-h,.pk-lgd li b,.pk-lgd li span,.pk-lgd-tot b,.pk-clsnote,.pk-shd,.pk-ev-h,.pk-sxy-t,.pk-sxy-ab,section.pk-pf>div:not([class]) *,section.pk-pf>p:not([class]) span:not(.pkp-mono),article>section:not([class]) h2,article>section:not([class]) blockquote,article>section:not([class]) summary,article>section:not([class]) details,article>section:not([class]) p){color:var(--yi)!important;-webkit-text-fill-color:var(--yi)!important}
+html.pk-yg.pk-ypp body #root#root#root#root#root#root#root#root#root#root#root#root#root#root main section.pk-pf>p .pkp-mono{color:var(--yi2)!important}
+/* one button system on paper: the outline pill draws in ink; chosen = ink fill; gold still means "this plays" */
+html.pk-yg.pk-ypp body #root#root#root#root#root#root#root#root#root#root#root#root#root#root main :is(.pk-yhd .pk-bkb.sec,.pk-yhb,.pk-sqb.out,.pk-sqb.gold,.pk-sha,.pk-way-c,.pk-sxy-db,.pk-sxy-kb,.pk-sxy-more):not(.pk-tn *):not(#pk-yh-reel *){background:transparent!important;color:var(--yi)!important;-webkit-text-fill-color:var(--yi)!important;border:1.5px solid var(--yi)!important;box-shadow:none!important}
+html.pk-yg.pk-ypp body #root#root#root#root#root#root#root#root#root#root#root#root#root#root main :is(.pk-sha,.pk-yhd .pk-bkb.sec,.pk-sxy-more)::before{border-color:var(--yi)!important}
+html.pk-yg.pk-ypp body #root#root#root#root#root#root#root#root#root#root#root#root#root#root main :is(.pk-sxy-db,.pk-sxy-kb,.pk-way-c):is([aria-pressed="true"],[aria-current],.on,.sel){background:var(--yi)!important;color:var(--yp)!important;-webkit-text-fill-color:var(--yp)!important}
+html.pk-yg.pk-ypp body #root#root#root#root#root#root#root#root#root#root#root#root#root#root main :is(.pk-sxy-db,.pk-sxy-kb,.pk-way-c):is([aria-pressed="true"],[aria-current],.on,.sel) *{color:inherit!important;-webkit-text-fill-color:inherit!important}
+html.pk-yg.pk-ypp body #root#root#root#root#root#root#root#root#root#root#root#root#root#root main .pk-way-c span{color:inherit!important}
+html.pk-yg.pk-ypp body #root#root#root#root#root#root#root#root#root#root#root#root#root#root main .pk-way-c img{background:var(--yi)!important;border-radius:50%!important;box-shadow:none!important}   /* the white place emblems need their dark disc on paper */
+/* the masthead now sits on its own paper: the white mat goes, the printed keyline stays */
+html.pk-yg.pk-ypp body #root#root#root#root#root#root#root#root main section.pk-yb{border-color:transparent!important;outline:0!important}
+
+/* ---------- B4: the reel's year badge sits in the top corner away from the subject (never on a face) ---------- */
+@media (min-width:1200px){
+  html:root:root:root:root:root:root:root:root body #pk-yh-reel .pk-rs figcaption>img.pk-tl{position:absolute!important;top:26px!important;right:30px!important;left:auto!important;bottom:auto!important;width:116px!important;height:auto!important;margin:0!important;transform:none!important;filter:drop-shadow(0 2px 8px rgba(0,0,0,.45))}
+  html:root:root:root:root:root:root:root:root body #pk-yh-reel .pk-rs.pk-tl-l figcaption>img.pk-tl{right:auto!important;left:30px!important}
+}
+html:root:root:root:root:root:root:root:root body #pk-yh-reel.pk-yfull .pk-rs figcaption>img.pk-tl{position:absolute!important;top:clamp(20px,3vh,40px)!important;right:clamp(20px,3vw,48px)!important;left:auto!important;bottom:auto!important;width:clamp(110px,10vw,180px)!important;height:auto!important;margin:0!important;transform:none!important}
+html:root:root:root:root:root:root:root:root body #pk-yh-reel.pk-yfull .pk-rs.pk-tl-l figcaption>img.pk-tl{right:auto!important;left:clamp(20px,3vw,48px)!important}
+
+/* ---------- B6: pre-2020 years end with a quiet way forward ---------- */
+.pk-now{margin:40px 0 8px;padding:16px 0 4px;border-top:3px solid var(--yi,#F2EDE3);position:relative;color:var(--yi,#F2EDE3)}
+.pk-now::before{content:"";position:absolute;left:0;right:0;top:2px;border-top:1px solid var(--yi,#F2EDE3)}
+.pk-now-k{margin:0 0 6px;font:800 12.5px/1.2 'Bricolage Grotesque',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--yi2,#D6B54A)}
+.pk-now-h{margin:0;font:400 clamp(22px,5.4vw,30px)/1.08 "Pickathon 2014",'Bricolage Grotesque',sans-serif;letter-spacing:.02em;text-transform:uppercase;color:var(--yi,#F2EDE3)}
+.pk-now-p{margin:8px 0 0;max-width:56ch;font:500 16px/1.45 'Bricolage Grotesque',sans-serif;color:var(--yi,#F2EDE3)}
+.pk-now-b{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root main .pk-now button.pk-now-go{display:inline-flex;align-items:center;min-height:44px;padding:0 18px;border-radius:999px;border:1.5px solid var(--yi,#F2EDE3);background:transparent;color:var(--yi,#F2EDE3);font:750 15px/1 'Bricolage Grotesque',sans-serif;letter-spacing:.01em;text-transform:none;cursor:pointer;width:auto}
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root main .pk-now button.pk-now-27{background:var(--yi,#F2EDE3);color:var(--yp,#2B2628)}
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root main .pk-now button.pk-now-go:focus-visible{outline:3px solid var(--yi,#F2EDE3);outline-offset:3px}
+@media (min-width:1200px){.pk-now{margin-top:56px}.pk-now-b{gap:12px}}
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root main .pk-now :is(.pk-now-h,.pk-now-p){color:var(--yi,#F2EDE3)!important;-webkit-text-fill-color:var(--yi,#F2EDE3)!important}
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root main .pk-now .pk-now-k{color:var(--yi2,#D6B54A)!important;-webkit-text-fill-color:var(--yi2,#D6B54A)!important;font-size:12.5px!important}
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root main .pk-now .pk-now-p{font-size:16px!important}
+</style>
+<script id="pk-r3d-js">
+(function () {
+  function A() { return window.__pkApp; }
+  function home(r) { var a = A(); if (!a) return; try { a.state.tmY = ''; } catch (e) {} a.go(r); }
+  setInterval(function () {
+    var m = document.querySelector('.pk-yp-mount[data-y]'), art = m && m.parentElement, y = m && m.getAttribute('data-y');
+    if (!art || art.offsetParent === null) return;
+    /* B3: on wide screens the photo reel comes straight under the masthead and the breakout panel follows it, so a photo is in the first screen */
+    var tn = art.querySelector(':scope>.pk-tn'), rl = art.querySelector(':scope>#pk-yh-reel'), wide = window.innerWidth >= 1000;
+    if (tn && rl) { var after = !!(rl.compareDocumentPosition(tn) & Node.DOCUMENT_POSITION_FOLLOWING);
+      if (wide && !after) art.insertBefore(tn, rl.nextSibling); else if (!wide && after) art.insertBefore(tn, rl); }
+    /* B4: the badge goes to the top corner on the far side of the photo's subject (its focus point) */
+    if (rl && window.innerWidth >= 1200 || document.querySelector('#pk-yh-reel.pk-yfull')) [].forEach.call(document.querySelectorAll('#pk-yh-reel .pk-rs'), function (f) {
+      if (f.__tlk) return; var im = f.querySelector('img:not(.pk-tl):not(.pk-rhi)'); if (!im || !im.complete) return;
+      var x = parseFloat((getComputedStyle(im).objectPosition || '50%').split(' ')[0]); f.classList.toggle('pk-tl-l', x > 55); f.__tlk = 1; });
+    /* B6: years before 2020 end with a quiet way forward to today's neighborhoods and 2027 */
+    var nw = art.querySelector(':scope>.pk-now');
+    if (+y >= 2020) { if (nw) nw.remove(); return; }
+    if (!nw) { nw = document.createElement('section'); nw.className = 'pk-now'; nw.setAttribute('aria-label', 'Pickathon now');
+      nw.innerHTML = '<p class="pk-now-k">Pickathon now</p><h2 class="pk-now-h">Today it’s a city of neighborhoods</h2><p class="pk-now-p">Since 2022, Pendarvis Farm fills with twenty neighborhoods built by hand for one weekend. Pickathon 2027 is Aug 4–8.</p><div class="pk-now-b"><button type="button" class="pk-now-go pk-now-hd">Explore the neighborhoods</button><button type="button" class="pk-now-go pk-now-27">See Pickathon 2027 →</button></div>';
+      nw.querySelector('.pk-now-hd').onclick = function () { home('hoods'); }; nw.querySelector('.pk-now-27').onclick = function () { home('lineup'); }; }
+    if (art.lastElementChild !== nw) art.appendChild(nw);
+  }, 400);
+})();
+</script>
