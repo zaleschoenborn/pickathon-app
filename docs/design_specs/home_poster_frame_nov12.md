@@ -8,7 +8,7 @@ Supersedes "open on the printed poster, then collapse to the top 10" from the No
 - End state: today's top 10 by magnitude ranking (minus 1 for Deep cuts only).
 - Motion is on HOLD until six-month scores exist for every year (design_studio-59). Until then, build the static frame with no motion.
 - 2016 opens labeled "At the festival" (Zale, Nov 12), the same label as any year ordered by the at-festival score.
-- Open: how a first-time visitor reads the motion (hold on Then, move, hold on Today, plus a caption naming the biggest climber).
+- Reading the motion (Zale, Nov 12): hold on the opening top 10, move, hold on today's top 10, with one caption under the frame naming the biggest climber. No other labels or controls. The caption waits for the six-month data, since the climber comes from it.
 
 ## Replay control (Zale, Nov 12)
 - Labeled "Play again", text only, no glyph, small secondary button beside "Another year". Hidden while the motion is on hold; it appears when the motion goes live.
