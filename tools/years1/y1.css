@@ -93,3 +93,16 @@ $P .pk-tn button.pk-tn-dot.sel{box-shadow:none!important;z-index:auto}
 $P .pk-tn button.pk-tn-dot.mv{box-shadow:0 0 0 1.5px #12160F,0 0 0 3px #F2CF62!important}
 $P .pk-tn .pk-tn-now{margin:6px 0 6px;font:800 11px/1.2 'Inter',system-ui,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#F2EDE3}
 $P .pk-tn .pk-tn-cols small{display:block;margin-top:3px;font:600 11px/1.25 'Inter',system-ui,sans-serif;letter-spacing:0;text-transform:none;color:#B9B3A6}
+
+/* ---- one "This summer at" design (art review 11): the slim card everywhere; a camp's booking button sits on its own row ---- */
+$P .pk-hd-sum.pk-slim .pk-hd-camp{flex:1 1 100%;margin-top:8px}
+$P .pk-hd-sum.pk-slim .pk-hd-camp p{margin:8px 0 0!important}
+$P .pk-hd-sum.pk-slim .pk-hd-am{flex:1 1 100%}
+/* camp pages: a short photo strip, "Around Lush Camp" (phone: swipe row, no visible scroll bar; desktop: a row of up to four) */
+$P .pk-hd-cgr{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;margin:0 -16px;padding:0 16px 4px;scroll-padding-inline:16px;scrollbar-width:none}
+$P .pk-hd-cgr::-webkit-scrollbar{display:none}
+$P .pk-hd-cgr figure{flex:0 0 78%;margin:0;scroll-snap-align:start}
+$P .pk-hd-cgr img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:14px;background:#1A2017}
+$P .pk-hd-cgr figcaption{margin:6px 2px 0;font-size:12.5px;line-height:1.35;color:#B9B3A6}
+@media (min-width:700px) and (max-width:1199px){$P .pk-hd-cgr{margin:0 -24px;padding:0 24px 4px}$P .pk-hd-cgr figure{flex-basis:44%}}
+@media (min-width:1200px){$P .pk-hd-cgr{margin:0;padding:0;overflow:visible;display:grid;grid-template-columns:repeat(4,minmax(0,1fr))}}

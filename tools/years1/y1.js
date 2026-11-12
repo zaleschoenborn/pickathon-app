@@ -6,8 +6,8 @@
     var L = document.querySelectorAll('#root :is(.pk-shc,.pk-b3):has(>.pk-b3ph)>b, #root :is(.pk-b1,.pk-b2):has(>.pk-bph) .pk-bcap>b');
     for (var i = 0; i < L.length; i++) {
       var b = L[i]; if (!b.offsetWidth) continue; var key = b.textContent + '|' + b.offsetWidth + '|' + fontGen;
-      var cap = b.parentElement.classList.contains('pk-bcap') ? b.parentElement : null, fs = parseFloat(getComputedStyle(b).fontSize) || 17, n = 0;
-      var over = function () { var t = Math.ceil(fs * 0.3) + 1; return b.scrollWidth > b.clientWidth + 1 || b.scrollHeight > b.clientHeight + t || (cap && cap.scrollHeight > cap.clientHeight + 2); };   /* glyphs overhang a .96 line box by a few px; only a whole lost line counts */
+      var cap = b.parentElement.classList.contains('pk-bcap') ? b.parentElement : null, sub = cap ? null : b.parentElement.querySelector(':scope>.pk-shk, :scope>b~span:not(.pk-star)'), fs = parseFloat(getComputedStyle(b).fontSize) || 17, n = 0;
+      var over = function () { var t = Math.ceil(fs * 0.3) + 1; return b.scrollWidth > b.clientWidth + 1 || b.scrollHeight > b.clientHeight + t || (cap && cap.scrollHeight > cap.clientHeight + 2) || (sub && sub.offsetHeight && sub.textContent.trim() && b.offsetTop + b.offsetHeight > sub.offsetTop - 4); };   /* glyphs overhang a .96 line box by a few px; only a whole lost line counts */
       if (b.__fit === key && !over()) continue;
       b.style.removeProperty('font-size'); fs = parseFloat(getComputedStyle(b).fontSize) || 17;
       while (n++ < 30 && fs > 11 && over()) { fs -= 1; b.style.setProperty('font-size', fs + 'px', 'important'); }
