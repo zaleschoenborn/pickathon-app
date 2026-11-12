@@ -1432,7 +1432,7 @@ html.pk-tmon #root header + *{margin-top:44px}
     if (b) b.click();
   }
   function build(host, y, Y) {
-    var RM0 = false; try { RM0 = window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) {} var s = ST[y] || (ST[y] = { i: (Y.dates.length > 1 && !RM0) ? 0 : Y.dates.length - 1, sel: null });  /* loads in the festival arrangement and plays forward once (review r1 C2) */
+    var RM0 = false; try { RM0 = window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) {} var s = ST[y] || (ST[y] = { i: Y.dates.length - 1, sel: null });  /* Round 3 (M7): opens on Today, so its counts match the bill's classes; it still plays forward once when it scrolls into view */
     var F = Y.fest, N = Y.dates.length - 1;
     /* Zale, Nov 11: one calendar and a slider drive the dots. Position s.f is continuous; between two rated dates each act that changes class moves at its own steady point, so the in-between months read as a gradual reshuffle until the six-month data fills them in. */
     if (s.f == null) s.f = s.i;
@@ -1481,6 +1481,7 @@ html.pk-tmon #root header + *{margin-top:44px}
     w.__play = play;
     if (!ONE && 'IntersectionObserver' in window) { var io = new IntersectionObserver(function (en) { en.forEach(function (x) { if (x.isIntersecting && !s.played && field.classList.contains('on')) { s.played = true; io.disconnect(); setTimeout(play, 500); } }); }, { threshold: 0.6 }); io.observe(field); }
     function lab(a, i) { return COL[CI[a.c[i]]][2]; }
+    function dateOK(n, i) { return window.__pkTnDateOK ? window.__pkTnDateOK(y, Y, n, i) : i < N; }
     function layout(anim) {
       var cols = w.querySelectorAll('.pk-tn-cols div'); if (!cols.length || !cols[0].offsetWidth) return; w.classList.toggle('pk-tn-anim', !!anim && field.classList.contains('on'));
       /* measure once per layout, and only when the width changed: reading offsets inside the dot loop forced a style recalculation per dot (review r2: 0.6-1 s per slider step) */
@@ -1513,8 +1514,9 @@ html.pk-tmon #root header + *{margin-top:44px}
         /* QA M7 (Nov 11): nobody is a Discovery at the festival. Discovery is earned after, and the card shows it as that year's class,
            so a breakout reads as 'A YYYY Discovery', with what it was rated at the festival and when it broke out. */
         var dI = -1; for (var q3 = F + 1; q3 <= N; q3++) if (a.c[q3] === 'disc') { dI = q3; break; }
-        if (dI > 0 && a.c[F] !== 'disc') h += '<span>A ' + esc(y) + ' Discovery: rated ' + lab(a, F) + ' at the festival' + (a.c[N] === 'leg' ? ', now a Legend' : '') + '</span><i>Broke out ' + mo(Y.dates[dI]) + '</i>';
-        else h += '<span>At the festival: ' + lab(a, F) + ' → Now: ' + lab(a, N) + '</span><i>Became a' + (/^[AEIOU]/.test(lab(a, N)) ? 'n ' : ' ') + lab(a, N) + ': ' + mo(Y.dates[j]) + '</i>';
+        /* Round 3 (A7): a month shows only when the class table dated the step (a step at Today is undated) and it agrees with the act's own copy */
+        if (dI > 0 && a.c[F] !== 'disc') h += '<span>A ' + esc(y) + ' Discovery: rated ' + lab(a, F) + ' at the festival' + (a.c[N] === 'leg' ? ', now a Legend' : '') + '</span>' + (dateOK(a.n, dI) ? '<i>Broke out ' + mo(Y.dates[dI]) + '</i>' : '');
+        else h += '<span>At the festival: ' + lab(a, F) + ' → Now: ' + lab(a, N) + '</span>' + (dateOK(a.n, j) ? '<i>Became a' + (/^[AEIOU]/.test(lab(a, N)) ? 'n ' : ' ') + lab(a, N) + ': ' + mo(Y.dates[j]) + '</i>' : '');
       } else h += '<span>' + lab(a, N) + (ONE ? ' now' : ' at the festival and now') + '</span>';
       h += '<button type="button" class="pk-tn-go">Artist page →</button>';
       var card = w.querySelector('.pk-tn-card'); if (card.__h === h) { layout(anim); return; } card.__h = h; card.innerHTML = h;
@@ -1540,6 +1542,25 @@ html.pk-tmon #root header + *{margin-top:44px}
     w.__layout = layout; paint();
     return w;
   }
+  /* Round 3 (A7, M7): the panel's bands are the year's music bill (lineup is the source of truth): acts the bill dropped
+     (did not play, moved year) leave, bill acts the ratings lack join with their bill class at every date. */
+  var nkT = function (x) { return String(x || '').normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/^the\s+/, '').replace(/[^a-z0-9]/g, ''); };
+  function data() { try { return window.__pkApp.state.data || null; } catch (e) { return null; } }
+  function reconcile(y, Y) {
+    var d = data(), B = d && d.yearBill && d.yearBill[y]; if (!B || !Y || !Y.acts) return Y;
+    var bill = B.filter(function (b) { return !b.f; }), inB = {}, have = {}; bill.forEach(function (b) { inB[nkT(b.n)] = b; });
+    var acts = Y.acts.filter(function (a) { var k = nkT(a.n); if (!inB[k] || have[k]) return false; have[k] = 1; return true; }), n = Y.dates.length;
+    bill.forEach(function (b) { var k = nkT(b.n); if (have[k]) return; have[k] = 1; var c = b.k && /^(leg|disc|deep)$/.test(b.k) ? b.k : 'none', m = +b.m || 0, A = [], M = []; for (var i = 0; i < n; i++) { A.push(c); M.push(m); } acts.push({ n: b.n, c: A, m: M }); });
+    return Object.assign({}, Y, { acts: acts });
+  }
+  /* A breakout month shows only when it is dated before Today and no later than any year the act's own copy (artist card and page lines) names after the festival */
+  window.__pkTnDateOK = function (y, Y, n, i) {
+    var N = Y.dates.length - 1; if (i >= N || i <= 0) return false;
+    var by = +String(Y.dates[i]).slice(0, 4), fy = +y, d = data(), k = nkT(n), txt = [];
+    try { [(d.past || {}).deep || [], d.deepcuts || [], d.archCT || []].forEach(function (L) { L.forEach(function (x) { if (x && nkT(x.n) === k) txt.push(x.l || '', x.line || ''); }); }); } catch (e) {}
+    var yrs = (txt.join(' ').match(/\b(19|20)\d\d\b/g) || []).map(Number).filter(function (v) { return v > fy && v < by; });
+    return !yrs.length;
+  };
   var ro = null;
   function tick() {
     var R = window.__pkYR || {}, m = document.querySelector('.pk-yp-mount[data-y]'), mix = document.querySelector('#root .pk-story .pk-st-mix');
@@ -1549,7 +1570,7 @@ html.pk-tmon #root header + *{margin-top:44px}
     if (!Y || !Y.acts || !Y.acts.length) { if (old) old.remove(); mix.classList.remove('pk-tn-off'); return; }
     if (old && old.getAttribute('data-y') === y) return;
     if (old) old.remove();
-    var w = build(mix, y, Y); w.setAttribute('data-y', y);
+    var w = build(mix, y, reconcile(y, Y)); w.setAttribute('data-y', y);
     if (window.ResizeObserver) { if (ro) ro.disconnect(); ro = new ResizeObserver(function () { w.__layout(); }); ro.observe(w.querySelector('.pk-tn-cols')); }
   }
   setInterval(tick, 400);
