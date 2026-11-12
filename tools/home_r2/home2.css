@@ -519,3 +519,15 @@ html:root:root #root#root#root#root#root#root#root#root#root#root#root#root#root
 #root #pkh2 .h2-pill:not(.h2-watch),#root #pkh2 .h2-pill.h2-big{min-height:50px;border-width:2px}
 #root#root#root #pkh2 .h2-s2 .pk-cl-an,#root#root#root #pkh2 .h2-s2 .pk-cl-rpl{min-height:50px!important;border-width:2px!important}
 @media (min-width:1025px){#root #pkh2 .h2-pill:not(.h2-watch),#root #pkh2 .h2-pill.h2-big{min-height:56px}#root#root#root #pkh2 .h2-s2 .pk-cl-an,#root#root#root #pkh2 .h2-s2 .pk-cl-rpl{min-height:56px!important}}
+
+/* Gate 1 fix 11 (D10): phone hybrid. Photo and map side by side 62/38 with an 8px gap, 220px tall (the fit can still shrink it); the map shows the
+   whole farm with the pick lit (static glow, no pulse). The nine stage emblems sit five over four. */
+@media (max-width:599px){
+  .pkh2 .h2-hmv{gap:8px;height:var(--h2-hp,220px)}
+  .pkh2 .h2-hood{flex:0 0 calc((100% - 8px) * .62)}
+  .pkh2 .h2-hmap{flex:1 1 0;min-width:0;background:#1c191a}
+  .pkh2 .h2-mhalo{stroke:rgba(242,207,98,.5)}
+  .pkh2 .h2-s3 .h2-city-k[data-g=stage]+.h2-city-r{display:grid;grid-template-columns:repeat(5,44px);column-gap:6px;row-gap:4px;max-width:none;position:relative}
+  .pkh2 .h2-s3 .h2-city-k[data-g=stage]+.h2-city-r::before{position:absolute;left:-12px;top:18px;margin:0}
+}
+@media (max-width:379px){.pkh2 .h2-s3 .h2-city-k[data-g=stage]+.h2-city-r{column-gap:4px}}

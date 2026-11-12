@@ -222,10 +222,15 @@ window.pkClimbRank = function (C, dd) {
   function mapPick(k) {
     var sv = root && $('.h2-msvg', root); if (!sv || !HH) return;
     var W = HH.size[0], H = HH.size[1], p = HH.pts[k] || [50, 50], px = p[0] / 100 * W, py = p[1] / 100 * H;
-    var bw = sv.clientWidth || 1, bh = sv.clientHeight || 1, vw = W, vh = H, x0 = 0, y0 = 0;
+    var bw = sv.clientWidth || 1, bh = sv.clientHeight || 1, vw = W, vh = H, x0 = 0, y0 = 0, whole = window.innerWidth < 600, sc, pin;
+    /* Gate 1 fix 11 (D10): on phone the map column shows the whole farm (meet), with the pick lit and its emblem on it */
+    sv.setAttribute('preserveAspectRatio', whole ? 'xMidYMid meet' : 'xMidYMid slice');
+    if (whole) { sv.setAttribute('viewBox', '0 0 ' + W + ' ' + H); sc = Math.min(bw / W, bh / H); pin = 28 / sc; }
+    else {
     if (bw / bh < W / H) { vw = H * bw / bh; x0 = Math.max(0, Math.min(W - vw, px - vw / 2)); } else { vh = W * bh / bw; y0 = Math.max(0, Math.min(H - vh, py - vh / 2)); }
     sv.setAttribute('viewBox', [x0, y0, vw, vh].map(function (n) { return Math.round(n); }).join(' '));
-    var sc = bw / vw, pin = Math.max(26, Math.min(40, bw * 0.24)) / sc;   /* about 30px on screen whatever the box */
+    sc = bw / vw; pin = Math.max(26, Math.min(40, bw * 0.24)) / sc;   /* about 30px on screen whatever the box */
+    }
     var sel = $('.h2-msel', sv), hal = $('.h2-mhalo', sv); sel.setAttribute('d', HH.shapes[k] || ''); sel.style.strokeWidth = (2.5 / sc).toFixed(1); hal.setAttribute('d', HH.shapes[k] || ''); hal.style.strokeWidth = (10 / sc).toFixed(1);
     var o = (D.hoods[k] || {}), im = $('.h2-mpin', sv); im.setAttribute('href', o.icw || ('ic2/' + k + '.png')); im.setAttribute('width', pin); im.setAttribute('height', pin); im.setAttribute('x', px - pin / 2); im.setAttribute('y', py - pin / 2);
   }

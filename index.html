@@ -9292,6 +9292,18 @@ html:root:root #root#root#root#root#root#root#root#root#root#root#root#root#root
 #root #pkh2 .h2-pill:not(.h2-watch),#root #pkh2 .h2-pill.h2-big{min-height:50px;border-width:2px}
 #root#root#root #pkh2 .h2-s2 .pk-cl-an,#root#root#root #pkh2 .h2-s2 .pk-cl-rpl{min-height:50px!important;border-width:2px!important}
 @media (min-width:1025px){#root #pkh2 .h2-pill:not(.h2-watch),#root #pkh2 .h2-pill.h2-big{min-height:56px}#root#root#root #pkh2 .h2-s2 .pk-cl-an,#root#root#root #pkh2 .h2-s2 .pk-cl-rpl{min-height:56px!important}}
+
+/* Gate 1 fix 11 (D10): phone hybrid. Photo and map side by side 62/38 with an 8px gap, 220px tall (the fit can still shrink it); the map shows the
+   whole farm with the pick lit (static glow, no pulse). The nine stage emblems sit five over four. */
+@media (max-width:599px){
+  .pkh2 .h2-hmv{gap:8px;height:var(--h2-hp,220px)}
+  .pkh2 .h2-hood{flex:0 0 calc((100% - 8px) * .62)}
+  .pkh2 .h2-hmap{flex:1 1 0;min-width:0;background:#1c191a}
+  .pkh2 .h2-mhalo{stroke:rgba(242,207,98,.5)}
+  .pkh2 .h2-s3 .h2-city-k[data-g=stage]+.h2-city-r{display:grid;grid-template-columns:repeat(5,44px);column-gap:6px;row-gap:4px;max-width:none;position:relative}
+  .pkh2 .h2-s3 .h2-city-k[data-g=stage]+.h2-city-r::before{position:absolute;left:-12px;top:18px;margin:0}
+}
+@media (max-width:379px){.pkh2 .h2-s3 .h2-city-k[data-g=stage]+.h2-city-r{column-gap:4px}}
 </style>
 <script id="pk-home2">
 /* QA M1 (Nov 11): Home's poster opens on 2019 (founder spec, home_flow.md screen 2) and "Another year" walks the years by discovery strength, not at random:
@@ -9518,10 +9530,15 @@ window.pkClimbRank = function (C, dd) {
   function mapPick(k) {
     var sv = root && $('.h2-msvg', root); if (!sv || !HH) return;
     var W = HH.size[0], H = HH.size[1], p = HH.pts[k] || [50, 50], px = p[0] / 100 * W, py = p[1] / 100 * H;
-    var bw = sv.clientWidth || 1, bh = sv.clientHeight || 1, vw = W, vh = H, x0 = 0, y0 = 0;
+    var bw = sv.clientWidth || 1, bh = sv.clientHeight || 1, vw = W, vh = H, x0 = 0, y0 = 0, whole = window.innerWidth < 600, sc, pin;
+    /* Gate 1 fix 11 (D10): on phone the map column shows the whole farm (meet), with the pick lit and its emblem on it */
+    sv.setAttribute('preserveAspectRatio', whole ? 'xMidYMid meet' : 'xMidYMid slice');
+    if (whole) { sv.setAttribute('viewBox', '0 0 ' + W + ' ' + H); sc = Math.min(bw / W, bh / H); pin = 28 / sc; }
+    else {
     if (bw / bh < W / H) { vw = H * bw / bh; x0 = Math.max(0, Math.min(W - vw, px - vw / 2)); } else { vh = W * bh / bw; y0 = Math.max(0, Math.min(H - vh, py - vh / 2)); }
     sv.setAttribute('viewBox', [x0, y0, vw, vh].map(function (n) { return Math.round(n); }).join(' '));
-    var sc = bw / vw, pin = Math.max(26, Math.min(40, bw * 0.24)) / sc;   /* about 30px on screen whatever the box */
+    sc = bw / vw; pin = Math.max(26, Math.min(40, bw * 0.24)) / sc;   /* about 30px on screen whatever the box */
+    }
     var sel = $('.h2-msel', sv), hal = $('.h2-mhalo', sv); sel.setAttribute('d', HH.shapes[k] || ''); sel.style.strokeWidth = (2.5 / sc).toFixed(1); hal.setAttribute('d', HH.shapes[k] || ''); hal.style.strokeWidth = (10 / sc).toFixed(1);
     var o = (D.hoods[k] || {}), im = $('.h2-mpin', sv); im.setAttribute('href', o.icw || ('ic2/' + k + '.png')); im.setAttribute('width', pin); im.setAttribute('height', pin); im.setAttribute('x', px - pin / 2); im.setAttribute('y', py - pin / 2);
   }
