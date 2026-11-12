@@ -11,3 +11,7 @@ Supersedes "open on the printed poster, then collapse to the top 10" from the No
 
 ## Replay control (Zale, Nov 12)
 - Labeled "Play again", text only, no glyph, small secondary button beside "Another year". Hidden while the motion is on hold; it appears when the motion goes live.
+
+## Play again transition (Zale, Nov 12)
+- Nothing abrupt. Tapping "Play again" cross-fades the current top 10 into the opening "Then" top 10 (about 0.6 s), holds one second, then runs. No reverse glide.
+- Reduced motion: cross-fade only, ending on the final order; no run.
