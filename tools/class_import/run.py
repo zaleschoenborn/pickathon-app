@@ -115,3 +115,7 @@ print('site music acts with no class row:', len(miss))
 # Round 3 (A8): any copy the import brought back gets its current-room-size lines taken out again
 import subprocess as _sp
 _sp.run([sys.executable, os.path.join(os.path.dirname(os.path.abspath(__file__)), 'strip_room_lines.py')], check=False)
+
+# Founder rule (Nov 11): scores and show counts never come back through an import
+import subprocess as _sp, sys as _sys, os as _os
+_sp.run([_sys.executable, _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), '..', 'copy_rules', 'apply.py')], check=True)

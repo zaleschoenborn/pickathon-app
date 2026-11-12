@@ -1,0 +1,2050 @@
+[
+ {
+  "file": "data.json",
+  "json_path": [
+   "yearStory",
+   "2001",
+   "acts",
+   4,
+   "proof"
+  ],
+  "old": "Vancouver folk-rock, bluegrass and Celtic band formed in 1993; seven independent albums, two on Nettwerk, and more than 2,500 shows in the U.S. and Canada.",
+  "new": "Vancouver folk-rock, bluegrass and Celtic band formed in 1993; seven independent albums, two on Nettwerk, and decades of touring the U.S. and Canada.",
+  "why": "show count -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "yearStory",
+   "2004",
+   "acts",
+   2,
+   "proof"
+  ],
+  "old": "Portland duo toured about 150 shows a year at its peak; a song ran in Sons of Anarchy season three and Meet Me at the Bottom was in the 2016 Hail, Caesar! trailer, then licensed by Yeti.",
+  "new": "Portland duo toured nearly year-round at its peak; a song ran in Sons of Anarchy season three and Meet Me at the Bottom was in the 2016 Hail, Caesar! trailer, then licensed by Yeti.",
+  "why": "show count -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "yearStory",
+   "2006",
+   "acts",
+   3,
+   "proof"
+  ],
+  "old": "Led his late father Clifton's band after 1987; Paul Simon featured him on The Rhythm of the Saints and the 1990 tour; 1997 Living Blues Critics' Poll Award; played the Chicago Blues Festival before about 60,000 in 2001.",
+  "new": "Led his late father Clifton's band after 1987; Paul Simon featured him on The Rhythm of the Saints and the 1990 tour; 1997 Living Blues Critics' Poll Award; played to a huge crowd at the 2001 Chicago Blues Festival.",
+  "why": "crowd number -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "yearStory",
+   "2011",
+   "acts",
+   18,
+   "proof"
+  ],
+  "old": "In 2011 he was grinding out around 200 shows a year in small bars and clubs. By 2018 Hard Times and White Lines hit No. 2 on Billboard's Heatseekers chart and he played the Ryman Auditorium in Nashville for the first time.",
+  "new": "In 2011 he was on the road most of the year, grinding it out in small bars and clubs. By 2018 Hard Times and White Lines hit No. 2 on Billboard's Heatseekers chart and he played the Ryman Auditorium in Nashville for the first time.",
+  "why": "show count -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "yearStory",
+   "2012",
+   "acts",
+   5,
+   "proof"
+  ],
+  "old": "Muchacho (2013) scored 85 on Metacritic, 8.8 from Pitchfork, and peaked No. 59 on the Billboard 200.",
+  "new": "Muchacho (2013) drew rave reviews, Pitchfork's among them, and peaked No. 59 on the Billboard 200.",
+  "why": "critic score -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "yearStory",
+   "2012",
+   "acts",
+   6,
+   "proof"
+  ],
+  "old": "Floating Coffin (April 2013) drew universal acclaim: Metacritic 82, Uncut 9/10, Pitchfork 8.0.",
+  "new": "Floating Coffin (April 2013) drew universal acclaim, with strong reviews from Uncut and Pitchfork.",
+  "why": "critic score -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "yearStory",
+   "2012",
+   "acts",
+   10,
+   "proof"
+  ],
+  "old": "SPIN ranked Wit's End and Humor Risk together at No. 25 on its 50 best albums of 2011. Humor Risk scored 78 on Metacritic and 7.6 from Pitchfork.",
+  "new": "SPIN ranked Wit's End and Humor Risk together at No. 25 on its 50 best albums of 2011. Humor Risk drew strong reviews, Pitchfork's among them.",
+  "why": "critic score -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "yearStory",
+   "2012",
+   "acts",
+   20,
+   "proof"
+  ],
+  "old": "Debut awE naturalE (Sub Pop, March 2012) scored 75 on Metacritic, 7.5 from Pitchfork, and was No. 62 on MusicOMH's top 100 albums of 2012.",
+  "new": "Debut awE naturalE (Sub Pop, March 2012) drew good reviews, Pitchfork's among them, and was No. 62 on MusicOMH's top 100 albums of 2012.",
+  "why": "critic score -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "yearStory",
+   "2013",
+   "acts",
+   4,
+   "proof"
+  ],
+  "old": "Self-titled debut (Jan. 2013) peaked No. 64 on the Billboard 200 with a Metacritic score of 79; later Americana Awards Duo/Group nominee, and Then Came the Morning reached No. 44.",
+  "new": "Self-titled debut (Jan. 2013) peaked No. 64 on the Billboard 200 to strong reviews; later Americana Awards Duo/Group nominee, and Then Came the Morning reached No. 44.",
+  "why": "critic score -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "yearStory",
+   "2013",
+   "acts",
+   6,
+   "proof"
+  ],
+  "old": "Light Up Gold (reissued 2013) scored 84/100 on Metacritic and 8.0 from Pitchfork; follow-up Sunbathing Animal (2014) peaked No. 55 on the Billboard 200 and No. 55 in the UK.",
+  "new": "Light Up Gold (reissued 2013) drew strong reviews, Pitchfork's among them; follow-up Sunbathing Animal (2014) peaked No. 55 on the Billboard 200 and No. 55 in the UK.",
+  "why": "critic score -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "yearStory",
+   "2013",
+   "acts",
+   13,
+   "proof"
+  ],
+  "old": "Black Up was No. 14 on Pitchfork's best albums of 2011 and No. 1 on the Seattle Times list; Metacritic 83/100. On Sub Pop.",
+  "new": "Black Up was No. 14 on Pitchfork's best albums of 2011 and No. 1 on the Seattle Times list; rave reviews across the board. On Sub Pop.",
+  "why": "critic score -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "yearStory",
+   "2013",
+   "acts",
+   14,
+   "proof"
+  ],
+  "old": "Tramp debuted No. 75 on the Billboard 200 and was No. 42 on Stereogum's top 50 of 2012; Pitchfork 7.9. Later played Glastonbury (2019).",
+  "new": "Tramp debuted No. 75 on the Billboard 200 and was No. 42 on Stereogum's top 50 of 2012 and drew a strong Pitchfork review. Later played Glastonbury (2019).",
+  "why": "critic score -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "yearStory",
+   "2014",
+   "acts",
+   26,
+   "proof"
+  ],
+  "old": "Visual artist whose work is in the High Museum and American Folk Art Museum; MITH (2018) and National Freedom (2020) scored 7.9 and 8.0 on Pitchfork; named a 2022 United States Artists Fellow.",
+  "new": "Visual artist whose work is in the High Museum and American Folk Art Museum; MITH (2018) and National Freedom (2020) both drew strong Pitchfork reviews; named a 2022 United States Artists Fellow.",
+  "why": "critic score -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "yearStory",
+   "2015",
+   "acts",
+   12,
+   "proof"
+  ],
+  "old": "Attack on Memory was Pitchfork Best New Music (8.6) and ranked No. 19 on Pitchfork's, No. 21 on Rolling Stone's and No. 6 on Stereogum's 2012 lists.",
+  "new": "Attack on Memory was Pitchfork Best New Music and ranked No. 19 on Pitchfork's, No. 21 on Rolling Stone's and No. 6 on Stereogum's 2012 lists.",
+  "why": "critic score -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "yearStory",
+   "2015",
+   "acts",
+   17,
+   "proof"
+  ],
+  "old": "Primrose Green ranked No. 27 on Rough Trade's albums of the year 2015 and drew a 9/10 from Uncut.",
+  "new": "Primrose Green ranked No. 27 on Rough Trade's albums of the year 2015 and drew a rave from Uncut.",
+  "why": "critic score -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "yearStory",
+   "2015",
+   "acts",
+   18,
+   "proof"
+  ],
+  "old": "Oshin ranked No. 40 on Pitchfork's and No. 22 on Stereogum's top 50 albums of 2012 (Pitchfork 8.3).",
+  "new": "Oshin ranked No. 40 on Pitchfork's and No. 22 on Stereogum's top 50 albums of 2012.",
+  "why": "critic score -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "yearStory",
+   "2016",
+   "acts",
+   6,
+   "proof"
+  ],
+  "old": "Pitchfork gave I Can Hear the Heart Beating as One a 9.7 out of 10 (1997); the band played a cover band on Parks and Recreation (2014).",
+  "new": "Pitchfork gave I Can Hear the Heart Beating as One a rave review (1997); the band played a cover band on Parks and Recreation (2014).",
+  "why": "critic score -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "yearStory",
+   "2016",
+   "acts",
+   21,
+   "proof"
+  ],
+  "old": "Pitchfork rated debut Dry Food 8.0 out of 10; Metacritic score 78/100.",
+  "new": "Pitchfork gave debut Dry Food a strong review, and critics broadly agreed.",
+  "why": "critic score -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "yearStory",
+   "2018",
+   "acts",
+   14,
+   "proof"
+  ],
+  "old": "On Obama's summer playlist (Aug 2015). Dirty Pictures (Part 2) got four stars from Rolling Stone; Late Night with Seth Meyers debut Aug 13, 2018.",
+  "new": "On Obama's summer playlist (Aug 2015). Dirty Pictures (Part 2) drew a strong Rolling Stone review; Late Night with Seth Meyers debut Aug 13, 2018.",
+  "why": "critic score -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "yearStory",
+   "2018",
+   "acts",
+   11,
+   "proof"
+  ],
+  "old": "Need to Feel Your Love (July 2017) placed No. 6 at Paste and Slant, No. 14 at Spin, No. 22 at Rolling Stone and No. 21 at NME on 2017 year-end lists; Pitchfork 8.0.",
+  "new": "Need to Feel Your Love (July 2017) placed No. 6 at Paste and Slant, No. 14 at Spin, No. 22 at Rolling Stone and No. 21 at NME on 2017 year-end lists, with a strong Pitchfork review.",
+  "why": "critic score -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "yearStory",
+   "2018",
+   "acts",
+   16,
+   "proof"
+  ],
+  "old": "Named a Stereogum Artist to Watch (Jan 2018); debut I Need to Start a Garden got Pitchfork 7.3 and an NPR review; NPR Tiny Desk in August 2018.",
+  "new": "Named a Stereogum Artist to Watch (Jan 2018); debut I Need to Start a Garden got Pitchfork and NPR reviews; NPR Tiny Desk in August 2018.",
+  "why": "critic score -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "yearStory",
+   "2018",
+   "acts",
+   17,
+   "proof"
+  ],
+  "old": "Cloud Corner (Thrill Jockey, June 2018) scored 83 on Metacritic ('universal acclaim') and Pitchfork 7.8.",
+  "new": "Cloud Corner (Thrill Jockey, June 2018) drew universal acclaim from critics, Pitchfork included.",
+  "why": "critic score -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "yearStory",
+   "2018",
+   "acts",
+   20,
+   "proof"
+  ],
+  "old": "Debut Hollow Ground (Jagjaguwar, May 4, 2018) got Metacritic 80 and Pitchfork 7.2, three months before Pickathon.",
+  "new": "Debut Hollow Ground (Jagjaguwar, May 4, 2018) drew good reviews, Pitchfork's among them, three months before Pickathon.",
+  "why": "critic score -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "yearStory",
+   "2022",
+   "acts",
+   11,
+   "proof"
+  ],
+  "old": "Haram placed No. 26 on Pitchfork's and No. 16 on Paste's 50 best albums of 2021; Metacritic 83/100.",
+  "new": "Haram placed No. 26 on Pitchfork's and No. 16 on Paste's 50 best albums of 2021, to rave reviews.",
+  "why": "critic score -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "yearStory",
+   "2022",
+   "acts",
+   13,
+   "proof"
+  ],
+  "old": "An Overview on Phenomenal Nature scored 8.3 at both Pitchfork and Paste and 9/10 at Line of Best Fit.",
+  "new": "An Overview on Phenomenal Nature drew raves from Pitchfork, Paste and The Line of Best Fit.",
+  "why": "critic score -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "yearStory",
+   "2022",
+   "acts",
+   16,
+   "proof"
+  ],
+  "old": "Hannah (2020) earned Pitchfork's Best New Music tag with an 8.3.",
+  "new": "Hannah (2020) earned Pitchfork's Best New Music tag.",
+  "why": "critic score -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "yearStory",
+   "2023",
+   "acts",
+   7,
+   "proof"
+  ],
+  "old": "Birmingham bluegrass quartet signed to Dualtone; won IBMA's Momentum award and sold out more than 30 shows in 2025.",
+  "new": "Birmingham bluegrass quartet signed to Dualtone; won IBMA's Momentum award and sold out shows across 2025.",
+  "why": "show count -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "yearStory",
+   "2024",
+   "acts",
+   13,
+   "proof"
+  ],
+  "old": "U.S. National Youth Poet Laureate in 2019; debut album was Pitchfork Best New Music, Metacritic 90 from four reviews.",
+  "new": "U.S. National Youth Poet Laureate in 2019; debut album was Pitchfork Best New Music, to universal acclaim.",
+  "why": "critic score -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "yearStory",
+   "2024",
+   "acts",
+   17,
+   "proof"
+  ],
+  "old": "Solo debut Wait Til I Get Over (Dead Oceans, 2023) scored 88 on Metacritic from seven reviews, 'universal acclaim'.",
+  "new": "Solo debut Wait Til I Get Over (Dead Oceans, 2023) drew universal acclaim from critics.",
+  "why": "critic score -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "yearStory",
+   "2024",
+   "acts",
+   18,
+   "proof"
+  ],
+  "old": "Who Sent You? ranked No. 2 on Stereogum's 10 Best Jazz Albums of 2020 and scored 87 on Metacritic from four reviews.",
+  "new": "Who Sent You? ranked No. 2 on Stereogum's 10 Best Jazz Albums of 2020 and drew universal acclaim from critics.",
+  "why": "critic score -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "yearStory",
+   "2024",
+   "acts",
+   20,
+   "proof"
+  ],
+  "old": "Singin' to an Empty Chair (Feb. 2026) scored 8.4 at Pitchfork and 85 on Metacritic; they now headline rooms several times the size of the clubs they played before Pickathon 2024.",
+  "new": "Singin' to an Empty Chair (Feb. 2026) drew rave reviews, Pitchfork's among them; they now headline rooms several times the size of the clubs they played before Pickathon 2024.",
+  "why": "critic score -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "yearStory",
+   "2025",
+   "scenes",
+   1,
+   "blurb"
+  ],
+  "old": "Critics' favorites from 2024 and 2025 records: Pitchfork scores in the 7s and 8s, Album of the Week picks, still club-sized.",
+  "new": "Critics' favorites from 2024 and 2025 records: strong Pitchfork reviews, Album of the Week picks, still club-sized.",
+  "why": "critic score -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "yearStory",
+   "2025",
+   "acts",
+   11,
+   "proof"
+  ],
+  "old": "Free Energy (Trouble in Mind, 2024) was Stereogum's Album of the Week and got an 8.0 from Pitchfork.",
+  "new": "Free Energy (Trouble in Mind, 2024) was Stereogum's Album of the Week and drew a strong Pitchfork review.",
+  "why": "critic score -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "yearStory",
+   "2025",
+   "acts",
+   12,
+   "proof"
+  ],
+  "old": "I Love People (Drag City, July 25, 2025) earned 7.7 from Pitchfork and four stars from Uncut.",
+  "new": "I Love People (Drag City, July 25, 2025) drew strong reviews from Pitchfork and Uncut.",
+  "why": "critic score -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "yearStory",
+   "2025",
+   "acts",
+   13,
+   "proof"
+  ],
+  "old": "Earthstar Mountain (Bella Union, March 28, 2025) featured Sufjan Stevens and Clairo; New Noise gave it five stars, Mojo four.",
+  "new": "Earthstar Mountain (Bella Union, March 28, 2025) featured Sufjan Stevens and Clairo; New Noise and Mojo both raved.",
+  "why": "critic score -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "yearStory",
+   "2025",
+   "acts",
+   14,
+   "proof"
+  ],
+  "old": "Yarın Yoksa (Big Crown, March 2025), produced by Leon Michels, got 9/10 from PopMatters.",
+  "new": "Yarın Yoksa (Big Crown, March 2025), produced by Leon Michels, drew a rave from PopMatters.",
+  "why": "critic score -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "yearStory",
+   "2025",
+   "acts",
+   15,
+   "proof"
+  ],
+  "old": "Malegría (Psychic Hotline, 2024) got 7.7 from Pitchfork; she played Newport Folk 2024 and toured with Portugal. The Man.",
+  "new": "Malegría (Psychic Hotline, 2024) drew a strong Pitchfork review; she played Newport Folk 2024 and toured with Portugal. The Man.",
+  "why": "critic score -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "yearStory",
+   "2017",
+   "acts",
+   13,
+   "proof"
+  ],
+  "old": "Nothing Feels Natural (January 2017) was No. 3 on Stereogum, No. 6 on A.V. Club and No. 8 on The Atlantic year-end lists; Metacritic 83.",
+  "new": "Nothing Feels Natural (January 2017) was No. 3 on Stereogum, No. 6 on A.V. Club and No. 8 on The Atlantic year-end lists, to rave reviews.",
+  "why": "critic score -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "yearStory",
+   "2017",
+   "acts",
+   20,
+   "proof"
+  ],
+  "old": "Ta det lugnt (2004) scored 9.3 from Pitchfork and Metacritic 88, ranked tenth best album of 2004 by Metacritic.",
+  "new": "Ta det lugnt (2004) drew a Pitchfork rave and was one of the best-reviewed albums of 2004.",
+  "why": "critic score -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "yearStory",
+   "2009",
+   "acts",
+   16,
+   "proof"
+  ],
+  "old": "Tight Knit came out on Sub Pop Feb. 17, 2009 (Pitchfork 7.2); toured with Devendra Banhart, Joanna Newsom, Fleet Foxes, The Shins and Wilco.",
+  "new": "Tight Knit came out on Sub Pop Feb. 17, 2009, to a good Pitchfork review; toured with Devendra Banhart, Joanna Newsom, Fleet Foxes, The Shins and Wilco.",
+  "why": "critic score -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "past",
+   "deep",
+   63,
+   "l"
+  ],
+  "old": "Won the 1997 Living Blues Critics' Poll Award for The Big Squeeze. He has led his father Clifton's band since 1987, toured with Paul Simon, and played to about 60,000 at the 2001 Chicago Blues Festival.",
+  "new": "Won the 1997 Living Blues Critics' Poll Award for The Big Squeeze. He has led his father Clifton's band since 1987, toured with Paul Simon, and played to a huge crowd at the 2001 Chicago Blues Festival.",
+  "why": "crowd number -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "past",
+   "deep",
+   102,
+   "l"
+  ],
+  "old": "Granddaughters of Sam Cooke, signed to Daptone with one EP and no album. They opened for Al Green at the Hollywood Bowl and supported Thee Sacred Souls on a 24-date amphitheater tour.",
+  "new": "Granddaughters of Sam Cooke, signed to Daptone with one EP and no album. They opened for Al Green at the Hollywood Bowl and supported Thee Sacred Souls on an amphitheater tour.",
+  "why": "show count -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "past",
+   "deep",
+   142,
+   "l"
+  ],
+  "old": "In 2011 he was grinding out around 200 shows a year in small bars and clubs. By 2018 Hard Times and White Lines hit No. 2 on Billboard's Heatseekers chart and he played the Ryman Auditorium in Nashville for the first time.",
+  "new": "In 2011 he was on the road most of the year, grinding it out in small bars and clubs. By 2018 Hard Times and White Lines hit No. 2 on Billboard's Heatseekers chart and he played the Ryman Auditorium in Nashville for the first time.",
+  "why": "show count -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "past",
+   "deep",
+   153,
+   "l"
+  ],
+  "old": "Vincent Neil Emerson released Blue Stars in April 2026, an album Saving Country Music scored 8.2 out of 10. He first played Pickathon in 2024, the summer he opened for Whiskey Myers at Red Rocks.",
+  "new": "Vincent Neil Emerson released Blue Stars in April 2026, an album Saving Country Music praised. He first played Pickathon in 2024, the summer he opened for Whiskey Myers at Red Rocks.",
+  "why": "critic score -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "past",
+   "deep",
+   159,
+   "l"
+  ],
+  "old": "The Chicago band played clubs at Pickathon 2024 after The Window topped Treble's and Under the Radar's lists. Singin' to an Empty Chair (Feb. 2026) then scored 8.4 at Pitchfork and led to their own headline rooms.",
+  "new": "The Chicago band played clubs at Pickathon 2024 after The Window topped Treble's and Under the Radar's lists. Singin' to an Empty Chair (Feb. 2026) then won strong reviews from Pitchfork and led to their own headline rooms.",
+  "why": "critic score -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "past",
+   "deep",
+   160,
+   "l"
+  ],
+  "old": "In 2026 Bella White released her third album, A Sign in the Weather, and Saving Country Music gave it 8 out of 10. She first played Pickathon in 2022 and returned in 2024, a year after her song “Burn Me Once” appeared on The Hunger Games: The Ballad of Songbirds & Snakes soundtrack.",
+  "new": "In 2026 Bella White released her third album, A Sign in the Weather, and Saving Country Music gave it a strong review. She first played Pickathon in 2022 and returned in 2024, a year after her song “Burn Me Once” appeared on The Hunger Games: The Ballad of Songbirds & Snakes soundtrack.",
+  "why": "critic score -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "past",
+   "deep",
+   172,
+   "l"
+  ],
+  "old": "In January 2026 Saving Country Music called Ellis Bullard a “honky tonk hardliner” at Mile 0 Fest in Key West, after Rolling Stone ran a feature on him in 2025. He first played Pickathon in 2024 with two 8-out-of-10 Saving Country Music reviews behind him and was invited back in 2025.",
+  "new": "In January 2026 Saving Country Music called Ellis Bullard a “honky tonk hardliner” at Mile 0 Fest in Key West, after Rolling Stone ran a feature on him in 2025. He first played Pickathon in 2024 with two strong Saving Country Music reviews behind him and was invited back in 2025.",
+  "why": "critic score -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "deepcuts",
+   24,
+   "acc",
+   2,
+   "t"
+  ],
+  "old": "In These Times: Metacritic 87",
+  "new": "In These Times: universal acclaim from critics",
+  "why": "critic score -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "deepcuts",
+   63,
+   "acc",
+   0,
+   "t"
+  ],
+  "old": "Pitchfork review 9.3/10, Ta det lugnt",
+  "new": "Pitchfork rave review, Ta det lugnt",
+  "why": "critic score -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "deepcuts",
+   63,
+   "acc",
+   1,
+   "t"
+  ],
+  "old": "Metacritic's No. 10 album of 2004 (Ta det lugnt)",
+  "new": "One of the best-reviewed albums of 2004 (Ta det lugnt)",
+  "why": "critic score -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "deepcuts",
+   78,
+   "acc",
+   0,
+   "t"
+  ],
+  "old": "Pitchfork Best New Music (MCII, 8.4)",
+  "new": "Pitchfork Best New Music (MCII)",
+  "why": "critic score -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "deepcuts",
+   90,
+   "line"
+  ],
+  "old": "Verbena's frontman reborn as a hushed solo writer. Spin gave 2011's Believers eight out of ten, then he vanished for eight years.",
+  "new": "Verbena's frontman reborn as a hushed solo writer. Spin praised 2011's Believers, then he vanished for eight years.",
+  "why": "critic score -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "deepcuts",
+   125,
+   "line"
+  ],
+  "old": "Two Fire Talk albums nearly every critic liked, then Fat Possum signed them. The hometown room is still Thalia Hall, about a thousand people, same as before.",
+  "new": "Two Fire Talk albums nearly every critic liked, then Fat Possum signed them. The hometown room is still Thalia Hall, same as before.",
+  "why": "crowd number -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "deepcuts",
+   141,
+   "line"
+  ],
+  "old": "Nashville-born country songwriter whose third album drew an 8.2 from Saving Country Music and No Depression's praise, with no radio to match.",
+  "new": "Nashville-born country songwriter whose third album drew strong reviews from Saving Country Music and No Depression, with no radio to match.",
+  "why": "critic score -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "deepcuts",
+   155,
+   "line"
+  ],
+  "old": "A former high-school English teacher from Oregon whose 2023 record scored 88 and sold almost nothing.",
+  "new": "A former high-school English teacher from Oregon whose 2023 record won universal acclaim and sold almost nothing.",
+  "why": "critic score -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "deepcuts",
+   161,
+   "line"
+  ],
+  "old": "Robert's Western World's house fiddler, whose Third Man debut Mr. Jukebox drew 8 out of 10 from Saving Country Music that April.",
+  "new": "Robert's Western World's house fiddler, whose Third Man debut Mr. Jukebox drew a strong Saving Country Music review that April.",
+  "why": "critic score -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "deepcuts",
+   172,
+   "line"
+  ],
+  "old": "Adam Weiner's Philadelphia band - a Rolling Stone four-star act on Obama's playlist, and still selling only clubs.",
+  "new": "Adam Weiner's Philadelphia band - a Rolling Stone favorite on Obama's playlist, and still selling only clubs.",
+  "why": "critic score -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "deepcuts",
+   174,
+   "line"
+  ],
+  "old": "Colombian-American band in New York whose Mezcla earned four stars from Songlines in 2016 on Glitterbeat, with no commercial profile.",
+  "new": "Colombian-American band in New York whose Mezcla earned a strong Songlines review in 2016 on Glitterbeat, with no commercial profile.",
+  "why": "critic score -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "deepcuts",
+   183,
+   "line"
+  ],
+  "old": "Sergio Mendoza's Tucson mambo orchestra took four stars in Songlines for Vamos a Guarachar (2016, Glitterbeat) and was a WOMEX showcase artist.",
+  "new": "Sergio Mendoza's Tucson mambo orchestra drew a strong Songlines review for Vamos a Guarachar (2016, Glitterbeat) and was a WOMEX showcase artist.",
+  "why": "critic score -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "deepcuts",
+   191,
+   "line"
+  ],
+  "old": "A Dallas holiness minister playing cigar-box slide blues. The Austin Chronicle gave 2010's When I Rise three and a half stars; the rooms stayed juke joints.",
+  "new": "A Dallas holiness minister playing cigar-box slide blues. The Austin Chronicle praised 2010's When I Rise; the rooms stayed juke joints.",
+  "why": "critic score -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "deepcuts",
+   194,
+   "line"
+  ],
+  "old": "The Deslondes' deep-voiced singer, whose New West solo debut earned an 8 from Holler and the quiet audience that goes with it.",
+  "new": "The Deslondes' deep-voiced singer, whose New West solo debut earned praise from Holler and the quiet audience that goes with it.",
+  "why": "critic score -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "deepcuts",
+   211,
+   "line"
+  ],
+  "old": "Lo-fi post-punk duo who recorded in a disused lab. NME gave the debut four stars, BrooklynVegan named it indie album of the week, and the clubs stayed small.",
+  "new": "Lo-fi post-punk duo who recorded in a disused lab. NME praised the debut, BrooklynVegan named it indie album of the week, and the clubs stayed small.",
+  "why": "critic score -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "deepcuts",
+   221,
+   "line"
+  ],
+  "old": "Pacific Northwest old-time quartet who started as kids; Saving Country Music scored their 2020 album 8 and called them the form's most respected young group.",
+  "new": "Pacific Northwest old-time quartet who started as kids; Saving Country Music praised their 2020 album and called them the form's most respected young group.",
+  "why": "critic score -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "deepcuts",
+   295,
+   "line"
+  ],
+  "old": "Psychedelic duo Ripley Johnson and Sanae Yamada, formed in San Francisco in 2009. Pitchfork gave Circles a 76, and NPR called Shadow of the Sun “the best Moon Duo record to date.”",
+  "new": "Psychedelic duo Ripley Johnson and Sanae Yamada, formed in San Francisco in 2009. Pitchfork reviewed Circles, and NPR called Shadow of the Sun “the best Moon Duo record to date.”",
+  "why": "critic score -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "deepcuts",
+   318,
+   "line"
+  ],
+  "old": "Two Runner released Porchlight on Gar Hole Records on August 28, 2026, and a review called it a “fully assured sophomore release.” They first played Pickathon in 2024, a year after more than a hundred dates behind their debut, Modern Cowboy.",
+  "new": "Two Runner released Porchlight on Gar Hole Records on August 28, 2026, and a review called it a “fully assured sophomore release.” They first played Pickathon in 2024, a year after touring hard behind their debut, Modern Cowboy.",
+  "why": "show count -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "deepcuts",
+   319,
+   "line"
+  ],
+  "old": "Headlined La Cigale in Paris in April 2024, after North Sea Jazz and Nice Jazz Fest in 2023. The Portland Mercury named her one of nine Pickathon picks, and her album Lotus Glow (2023) earned 7/10 from The Line of Best Fit.",
+  "new": "Headlined La Cigale in Paris in April 2024, after North Sea Jazz and Nice Jazz Fest in 2023. The Portland Mercury named her one of nine Pickathon picks, and her album Lotus Glow (2023) drew a good review from The Line of Best Fit.",
+  "why": "critic score -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "deepcuts",
+   324,
+   "line"
+  ],
+  "old": "In 2025 Sami Braman played fiddle in Willie Watson's band on the Alison Krauss & Union Station tour, and her string band The Onlies earned four stars from Songlines for You Climb the Mountain. She first played Pickathon in 2024, a year after her solo debut of original fiddle tunes, Riveter.",
+  "new": "In 2025 Sami Braman played fiddle in Willie Watson's band on the Alison Krauss & Union Station tour, and her string band The Onlies earned a strong Songlines review for You Climb the Mountain. She first played Pickathon in 2024, a year after her solo debut of original fiddle tunes, Riveter.",
+  "why": "critic score -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "deepcuts",
+   327,
+   "line"
+  ],
+  "old": "PACKS' album Melt the Honey earned a 73 on Metacritic from six reviews, including 7.3 from Pitchfork and 7.5 from Paste. The Toronto band, led by Madeline Link, first played Pickathon in 2024 and shared the single “before i was bleeding” in February 2025.",
+  "new": "PACKS' album Melt the Honey drew good reviews, including Pitchfork's and Paste's. The Toronto band, led by Madeline Link, first played Pickathon in 2024 and shared the single “before i was bleeding” in February 2025.",
+  "why": "critic score -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "legacc",
+   "Bonnie “Prince” Billy"
+  ],
+  "old": "I See a Darkness earned a perfect 10 from Pitchfork and ranked ninth on its list of the best albums of the 1990s.",
+  "new": "I See a Darkness earned a perfect review from Pitchfork and ranked ninth on its list of the best albums of the 1990s.",
+  "why": "critic score -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "yearReel",
+   "2024",
+   4,
+   "l"
+  ],
+  "old": "McKinley Dixon’s Beloved! Paradise! Jazz!? scored 83 on Metacritic and made Consequence’s best of 2023 at No. 7.",
+  "new": "McKinley Dixon’s Beloved! Paradise! Jazz!? drew rave reviews and made Consequence’s best of 2023 at No. 7.",
+  "why": "critic score -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "actPages",
+   "geese",
+   "story",
+   2,
+   "more",
+   0
+  ],
+  "old": "Getting Killed topped year-end lists at The New Yorker, NME and Stereogum and earned a 9.0 and Best New Music from Pitchfork. Geese were the musical guest on Saturday Night Live in January 2026.",
+  "new": "Getting Killed topped year-end lists at The New Yorker, NME and Stereogum and earned Pitchfork's Best New Music. Geese were the musical guest on Saturday Night Live in January 2026.",
+  "why": "critic score -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "actPages",
+   "geese",
+   "story",
+   2,
+   "more",
+   1
+  ],
+  "old": "Their 86-show world tour mostly sold out theaters. On October 2, 2026 they headlined Forest Hills Stadium in Queens, their biggest headline show yet.",
+  "new": "Their world tour mostly sold out theaters. On October 2, 2026 they headlined Forest Hills Stadium in Queens, their biggest headline show yet.",
+  "why": "show count -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "actPages",
+   "thisislorelei",
+   "story",
+   0,
+   "more",
+   1
+  ],
+  "old": "The record came out seven weeks before Pickathon. Pitchfork rated it 7.8 and picked it as a best-of-the-week, and Paste gave it 8.4.",
+  "new": "The record came out seven weeks before Pickathon. Pitchfork picked it as a best-of-the-week, and Paste gave it a strong review.",
+  "why": "critic score -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "actPages",
+   "waterfromyoureyes",
+   "story",
+   0,
+   "more",
+   0
+  ],
+  "old": "In April 2024, a few months before Pickathon, they opened for Interpol at a free show in Mexico City’s Zócalo, in front of about 160,000 people.",
+  "new": "In April 2024, a few months before Pickathon, they opened for Interpol at a free show in Mexico City’s Zócalo, in front of a huge crowd.",
+  "why": "crowd number -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "actPages",
+   "waterfromyoureyes",
+   "story",
+   0,
+   "more",
+   1
+  ],
+  "old": "Everyone’s Crushed was Pitchfork Best New Music (8.3) and No. 36 on Rolling Stone’s best albums of 2023. They toured with Squid in February 2024 and Real Estate that May.",
+  "new": "Everyone’s Crushed was Pitchfork Best New Music and No. 36 on Rolling Stone’s best albums of 2023. They toured with Squid in February 2024 and Real Estate that May.",
+  "why": "critic score -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "actPages",
+   "ratboys",
+   "story",
+   0,
+   "more",
+   0
+  ],
+  "old": "It is soft-hearted Midwestern indie rock with a quiet Americana twist, from fuzzy power pop to fiddle-tinged country. Stereogum made it Album of the Week and Paste gave it a 9.0.",
+  "new": "It is soft-hearted Midwestern indie rock with a quiet Americana twist, from fuzzy power pop to fiddle-tinged country. Stereogum made it Album of the Week and Paste gave it a rave review.",
+  "why": "critic score -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "actPages",
+   "ratboys",
+   "story",
+   2,
+   "t"
+  ],
+  "old": "A Deep cut at Pickathon 2024, a Discovery by August 2026. Ratboys signed with New West, and Singin’ to an Empty Chair (February 2026) earned 8.4 at Pitchfork. They sold out Portland’s Aladdin Theater that spring and played NPR’s Tiny Desk in September.",
+  "new": "A Deep cut at Pickathon 2024, a Discovery by August 2026. Ratboys signed with New West, and Singin’ to an Empty Chair (February 2026) won strong reviews from Pitchfork. They sold out Portland’s Aladdin Theater that spring and played NPR’s Tiny Desk in September.",
+  "why": "critic score -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "actPages",
+   "jesswilliamson",
+   "story",
+   0,
+   "more",
+   0
+  ],
+  "old": "It scored 84 on Metacritic and landed on more than a dozen 2023 year-end lists, high on Stereogum’s best country albums of the year.",
+  "new": "It drew rave reviews and landed on more than a dozen 2023 year-end lists, high on Stereogum’s best country albums of the year.",
+  "why": "critic score -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "actPages",
+   "rog",
+   "story",
+   0,
+   "t"
+  ],
+  "old": "Rogê is a Rio de Janeiro songwriter from the Lapa scene, making warm retro samba-funk in the line of Jorge Ben and Gilberto Gil. His album Curyman (Diamond West, May 2023) was produced by Thomas Brenneck, with strings by Arthur Verocai, and earned four stars from Songlines.",
+  "new": "Rogê is a Rio de Janeiro songwriter from the Lapa scene, making warm retro samba-funk in the line of Jorge Ben and Gilberto Gil. His album Curyman (Diamond West, May 2023) was produced by Thomas Brenneck, with strings by Arthur Verocai, and drew a strong review from Songlines.",
+  "why": "critic score -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "actPages",
+   "billiemarten",
+   "story",
+   0,
+   "t"
+  ],
+  "old": "Billie Marten is a Yorkshire songwriter making hushed, intimate folk, and she has been releasing records since 2016. Drop Cherries (Fiction, April 2023) scored 82 on Metacritic and took No. 5 on The Independent’s best albums of 2023.",
+  "new": "Billie Marten is a Yorkshire songwriter making hushed, intimate folk, and she has been releasing records since 2016. Drop Cherries (Fiction, April 2023) drew rave reviews and took No. 5 on The Independent’s best albums of 2023.",
+  "why": "critic score -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "actPages",
+   "billiemarten",
+   "story",
+   0,
+   "more",
+   0
+  ],
+  "old": "The Independent gave Drop Cherries five stars.",
+  "new": "The Independent gave Drop Cherries a rave review.",
+  "why": "critic score -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "actPages",
+   "billiemarten",
+   "story",
+   2,
+   "t"
+  ],
+  "old": "A Deep cut at Pickathon 2024 and still one now. Dog Eared (July 2025, her fifth album) scored 88 on Metacritic and went to No. 1 on the UK folk albums chart. She opened for Tennis in the US and played UK dates with Elbow, headlined London’s O2 Forum Kentish Town on November 15, 2025, and took the record to Australia and New Zealand in February.",
+  "new": "A Deep cut at Pickathon 2024 and still one now. Dog Eared (July 2025, her fifth album) drew rave reviews and went to No. 1 on the UK folk albums chart. She opened for Tennis in the US and played UK dates with Elbow, headlined London’s O2 Forum Kentish Town on November 15, 2025, and took the record to Australia and New Zealand in February.",
+  "why": "critic score -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "actPages",
+   "melissacarper",
+   "story",
+   2,
+   "t"
+  ],
+  "old": "A Deep cut at Pickathon 2024 and still one now. Borned in Ya (Thirty Tigers, 2024) landed at No. 7 on Folk Alley’s best albums of the year. In December 2025 she opened all 14 dates of JD McPherson’s tour, ending at First Avenue in Minneapolis, and on February 6, 2026 she and fellow Pickathon 2024 act Theo Lawrence released the duet album Havin’ a Talk on Warner Records.",
+  "new": "A Deep cut at Pickathon 2024 and still one now. Borned in Ya (Thirty Tigers, 2024) landed at No. 7 on Folk Alley’s best albums of the year. In December 2025 she opened every date of JD McPherson’s tour, ending at First Avenue in Minneapolis, and on February 6, 2026 she and fellow Pickathon 2024 act Theo Lawrence released the duet album Havin’ a Talk on Warner Records.",
+  "why": "show count -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "actPages",
+   "gregfreeman",
+   "story",
+   2,
+   "t"
+  ],
+  "old": "Not yet a Discovery at Pickathon 2024, a Discovery by late 2026: a small-room support act who made one of 2025’s most praised rock records and now headlines on his own. I Looked Out was reissued in November 2024 on Canvasback and Transgressive, and Burnover (August 22, 2025) scored 8.4 at Paste, which called him “a rock hero in the making” and ranked it No. 47 of 2025. This month he headlined Portland’s Aladdin Theater, and a new album, All Set the Bone, is announced.",
+  "new": "Not yet a Discovery at Pickathon 2024, a Discovery by late 2026: a small-room support act who made one of 2025’s most praised rock records and now headlines on his own. I Looked Out was reissued in November 2024 on Canvasback and Transgressive, and Burnover (August 22, 2025) drew a rave from Paste, which called him “a rock hero in the making” and ranked it No. 47 of 2025. This month he headlined Portland’s Aladdin Theater, and a new album, All Set the Bone, is announced.",
+  "why": "critic score -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "actPages",
+   "vincentneilemerson",
+   "story",
+   2,
+   "t"
+  ],
+  "old": "Not yet a Discovery at Pickathon 2024, a Discovery by early 2026, though not a certain one, because his earlier rooms were already similar. In 2025 he began headlining on his own, including New York’s Bowery Ballroom on August 15. Blue Stars (April 2026, produced by Patrick Lyons) earned an 8.2 out of 10 from Saving Country Music, and the tour behind it included two nights at Denver’s Bluebird Theater.",
+  "new": "Not yet a Discovery at Pickathon 2024, a Discovery by early 2026, though not a certain one, because his earlier rooms were already similar. In 2025 he began headlining on his own, including New York’s Bowery Ballroom on August 15. Blue Stars (April 2026, produced by Patrick Lyons) earned a strong review from Saving Country Music, and the tour behind it included two nights at Denver’s Bluebird Theater.",
+  "why": "critic score -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "actPages",
+   "bellawhite",
+   "story",
+   2,
+   "t"
+  ],
+  "old": "A Deep cut at Pickathon 2024, a Discovery by fall 2026: she went from a Rounder-label favorite to headlining her own fall tour, including Denver’s Gothic Theatre on October 23. A Sign in the Weather, her third album, came out this year and Saving Country Music gave it 8 out of 10.",
+  "new": "A Deep cut at Pickathon 2024, a Discovery by fall 2026: she went from a Rounder-label favorite to headlining her own fall tour, including Denver’s Gothic Theatre on October 23. A Sign in the Weather, her third album, came out this year and Saving Country Music gave it a strong review.",
+  "why": "critic score -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "actPages",
+   "theolawrence",
+   "story",
+   2,
+   "t"
+  ],
+  "old": "A Deep cut at Pickathon 2024 and still one now: a Warner Records deal and a long run opening for Alison Krauss could tip him toward Discovery once his own rooms grow. He released a duet single with Melissa Carper in January 2025, and their duets album Havin’ A Talk came out February 6, 2026. In April 2026 he made his national TV debut on CBS Saturday Morning, and he is opening more than 75 dates for Alison Krauss & Union Station, from April to October, ahead of a debut full-length on Warner and Reprise.",
+  "new": "A Deep cut at Pickathon 2024 and still one now: a Warner Records deal and a long run opening for Alison Krauss could tip him toward Discovery once his own rooms grow. He released a duet single with Melissa Carper in January 2025, and their duets album Havin’ A Talk came out February 6, 2026. In April 2026 he made his national TV debut on CBS Saturday Morning, and he is opening for Alison Krauss & Union Station from April to October, ahead of a debut full-length on Warner and Reprise.",
+  "why": "show count -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "actPages",
+   "durandjones",
+   "story",
+   0,
+   "t"
+  ],
+  "old": "Durand Jones is the singer and saxophonist who fronts Durand Jones & The Indications, a soul band from Bloomington, Indiana, with Dead Oceans albums through 2021. He came to Pickathon off Wait Til I Get Over (May 2023), his first solo album, which scored 88 on Metacritic and five stars from NME.",
+  "new": "Durand Jones is the singer and saxophonist who fronts Durand Jones & The Indications, a soul band from Bloomington, Indiana, with Dead Oceans albums through 2021. He came to Pickathon off Wait Til I Get Over (May 2023), his first solo album, which drew rave reviews, NME’s among them.",
+  "why": "critic score -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "actPages",
+   "ellisbullard",
+   "story",
+   0,
+   "t"
+  ],
+  "old": "Ellis Bullard is an Austin honky-tonk singer who leads a band called Jake & The Hill People. His mother sang in the Muscle Shoals studios in the 1960s and ‘70s. Piss-Hot Freightlining Country Music (2022) and then Honky Tonk Ain’t Noise Pollution (Feel So Good Records, February 9, 2024) each earned an 8 out of 10 from Saving Country Music, and Joe Rogan has praised the band on his podcast.",
+  "new": "Ellis Bullard is an Austin honky-tonk singer who leads a band called Jake & The Hill People. His mother sang in the Muscle Shoals studios in the 1960s and ‘70s. Piss-Hot Freightlining Country Music (2022) and then Honky Tonk Ain’t Noise Pollution (Feel So Good Records, February 9, 2024) each earned a strong review from Saving Country Music, and Joe Rogan has praised the band on his podcast.",
+  "why": "critic score -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "actPages",
+   "erinrae",
+   "story",
+   0,
+   "t"
+  ],
+  "old": "Erin Rae is a Nashville singer-songwriter with a hushed, indie-folk voice. Putting On Airs (2018) earned her an Emerging Act nomination at the 2019 Americana Music Awards, Lighten Up (2022) got four stars from Mojo, and in 2023 she won Newport Folk’s Jim James Award for the most sit-ins. Her voice was on Tyler Childers’ Rustin’ in the Rain that September.",
+  "new": "Erin Rae is a Nashville singer-songwriter with a hushed, indie-folk voice. Putting On Airs (2018) earned her an Emerging Act nomination at the 2019 Americana Music Awards, Lighten Up (2022) drew a strong Mojo review, and in 2023 she won Newport Folk’s Jim James Award for the most sit-ins. Her voice was on Tyler Childers’ Rustin’ in the Rain that September.",
+  "why": "critic score -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "actPages",
+   "tworunner",
+   "story",
+   0,
+   "t"
+  ],
+  "old": "Two Runner is Paige Anderson and Emilie Rose, who grew up in Nevada City, California and began playing together in 2020. Anderson is a multi-instrumentalist who toured for a decade with her family band, and Rose is a Berklee-trained fiddler. They call their sound Americana-folk-roots-old time-bluegrass, with close harmony and a rougher edge. Their self-produced debut, Modern Cowboy, came out in 2023 after more than 100 dates that year.",
+  "new": "Two Runner is Paige Anderson and Emilie Rose, who grew up in Nevada City, California and began playing together in 2020. Anderson is a multi-instrumentalist who toured for a decade with her family band, and Rose is a Berklee-trained fiddler. They call their sound Americana-folk-roots-old time-bluegrass, with close harmony and a rougher edge. Their self-produced debut, Modern Cowboy, came out in 2023, a year of steady touring.",
+  "why": "show count -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "actPages",
+   "packs",
+   "story",
+   0,
+   "t"
+  ],
+  "old": "PACKS is the Toronto indie-rock project of Madeline Link, a band since 2019 with Shane Hooper, Dexter Nash and Noah O’Neil. They signed to Fire Talk in 2020 and made Take the Cake (2021) and Crispy Crunchy Nothing (2023, partly recorded in a rural Quebec cabin). Melt the Honey came out January 19, 2024, six months before Pickathon, and earned a 73 on Metacritic.",
+  "new": "PACKS is the Toronto indie-rock project of Madeline Link, a band since 2019 with Shane Hooper, Dexter Nash and Noah O’Neil. They signed to Fire Talk in 2020 and made Take the Cake (2021) and Crispy Crunchy Nothing (2023, partly recorded in a rural Quebec cabin). Melt the Honey came out January 19, 2024, six months before Pickathon, and drew good reviews.",
+  "why": "critic score -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "actPages",
+   "newconstellations",
+   "story",
+   2,
+   "t"
+  ],
+  "old": "Not yet a Discovery at Pickathon 2024, a Discovery by August 2025: a song that found millions of listeners turned into headline tours of their own, about 80 shows in 2025. The Chicago Reader said the duo had “caught lightning in a bottle.” In 2026 they toured with The Midnight and released their debut album, It Comes in Waves, on May 15. Their own headline show at New York’s Bowery Ballroom was announced in September.",
+  "new": "Not yet a Discovery at Pickathon 2024, a Discovery by August 2025: a song that found millions of listeners turned into headline tours of their own through 2025. The Chicago Reader said the duo had “caught lightning in a bottle.” In 2026 they toured with The Midnight and released their debut album, It Comes in Waves, on May 15. Their own headline show at New York’s Bowery Ballroom was announced in September.",
+  "why": "show count -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "actPages",
+   "deanjohnson",
+   "story",
+   0,
+   "more",
+   1
+  ],
+  "old": "Paste scored the record 8.6 and wrote that “Dean Johnson is no longer Seattle’s best-kept secret.”",
+  "new": "Paste gave the record a rave review and wrote that “Dean Johnson is no longer Seattle’s best-kept secret.”",
+  "why": "critic score -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "archCT",
+   50,
+   "l"
+  ],
+  "old": "He played sixty-five shows the year before Pendarvis and sixty-five more the year he came - opera houses in small towns, the Old Town School in Chicago, a folk circuit he had worked for thirty years. Then it stopped. Two shows in 2024, one the year after. Pickathon caught the last full stretch of a working life on the road.",
+  "new": "He toured steadily the year before Pendarvis and the year he came - opera houses in small towns, the Old Town School in Chicago, a folk circuit he had worked for thirty years. Then it stopped: by 2024 he had all but come off the road. Pickathon caught the last full stretch of a working life on the road.",
+  "why": "show count -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "archCT",
+   51,
+   "l"
+  ],
+  "old": "She played twenty-two shows the year before Pendarvis. She played thirty-six last year, in bigger rooms. Two decades after the farm, at an age when most of her peers have come off the road, she is busier than she was when we booked her.",
+  "new": "She plays more often now than the year before Pendarvis, and in bigger rooms. Two decades after the farm, at an age when most of her peers have come off the road, she is busier than she was when we booked her.",
+  "why": "show count -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "archCT",
+   231,
+   "l"
+  ],
+  "old": "Four shows on the books in 2012: a bar in Austin and a basement room in Nashville. He came to the farm the next summer as his first solo record landed - though he had already played it in 2011, fronting a band called Sunday Valley. Ten years on he was playing Hampton Coliseum and Bridgestone Arena.",
+  "new": "Hardly anything on the books in 2012: a bar in Austin and a basement room in Nashville. He came to the farm the next summer as his first solo record landed - though he had already played it in 2011, fronting a band called Sunday Valley. Ten years on he was playing Hampton Coliseum and Bridgestone Arena.",
+  "why": "show count -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "archCT",
+   276,
+   "l"
+  ],
+  "old": "Two albums out, rated by fourteen people between them, and two shows on the calendar the year he came to the farm. Nobody had reviewed him. Now he headlines arenas, his records average 81 across twenty-eight reviews, and he has played a Tiny Desk - but in nineteen years of critics' year-end lists his name has never once been ranked.",
+  "new": "Two albums out that almost nobody had rated, and almost nothing on the calendar the year he came to the farm. Nobody had reviewed him. Now he headlines arenas, his records draw strong reviews, and he has played a Tiny Desk - but in nineteen years of critics' year-end lists his name has never once been ranked.",
+  "why": "critic score -> words; show count -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "archCT",
+   389,
+   "l"
+  ],
+  "old": "NJ band that played 200 shows the year Cardinal broke.",
+  "new": "NJ band that toured nonstop the year Cardinal broke.",
+  "why": "show count -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "archCT",
+   563,
+   "l"
+  ],
+  "old": "The only show on their record the year before Pickathon was at a public library in Hoover, Alabama. They have a hundred and sixteen dates booked for next year. Whether the rooms grow with the schedule is the open question about them.",
+  "new": "The only show on their record the year before Pickathon was at a public library in Hoover, Alabama. They have a full calendar booked for next year. Whether the rooms grow with the schedule is the open question about them.",
+  "why": "show count -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "archCT",
+   589,
+   "l"
+  ],
+  "old": "Billie Marten came to Pickathon after Drop Cherries scored 82 on Metacritic and took No. 5 on The Independent's best albums of 2023.",
+  "new": "Billie Marten came to Pickathon after Drop Cherries drew rave reviews and took No. 5 on The Independent's best albums of 2023.",
+  "why": "critic score -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "archCT",
+   593,
+   "l"
+  ],
+  "old": "Durand Jones came to Pickathon off Wait Til I Get Over, a 2023 solo album that scored 88 on Metacritic.",
+  "new": "Durand Jones came to Pickathon off Wait Til I Get Over, a 2023 solo album that drew universal acclaim.",
+  "why": "critic score -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "archCT",
+   595,
+   "l"
+  ],
+  "old": "Ellis Bullard came to Pickathon as the hot thing in Austin's honky-tonks, with two 8 out of 10 Saving Country Music reviews behind him.",
+  "new": "Ellis Bullard came to Pickathon as the hot thing in Austin's honky-tonks, with two strong Saving Country Music reviews behind him.",
+  "why": "critic score -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "archCT",
+   604,
+   "l"
+  ],
+  "old": "Jeffrey Martin came to Pickathon from Portland off Thank God We Left the Garden, a 2023 album that scored 88 on Metacritic.",
+  "new": "Jeffrey Martin came to Pickathon from Portland off Thank God We Left the Garden, a 2023 album that drew universal acclaim.",
+  "why": "critic score -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "archCT",
+   630,
+   "l"
+  ],
+  "old": "Two Runner is a Nevada City duo, Paige Anderson and Emilie Rose, who played more than a hundred dates in 2023.",
+  "new": "Two Runner is a Nevada City duo, Paige Anderson and Emilie Rose, who spent most of 2023 on the road.",
+  "why": "show count -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "storyFacts",
+   "2024",
+   "Dean Johnson",
+   "ab",
+   0
+  ],
+  "old": "Paste 8.6 (May 8 2023); No Depression review.",
+  "new": "Paste rave review (May 8 2023); No Depression review.",
+  "why": "storyFacts (data only, unrendered); critic score -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "storyFacts",
+   "2024",
+   "This Is Lorelei",
+   "ab",
+   0
+  ],
+  "old": "Stereogum Album of the Week; Paste 8.4; Pitchfork 7.8 and a Pitchfork best-of-the-week pick (Jun 2024).",
+  "new": "Stereogum Album of the Week; strong Paste and Pitchfork reviews and a Pitchfork best-of-the-week pick (Jun 2024).",
+  "why": "storyFacts (data only, unrendered); critic score -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "storyFacts",
+   "2024",
+   "Water From Your Eyes",
+   "ab",
+   0
+  ],
+  "old": "Pitchfork Best New Music, 8.3 (2023); Pitchfork No. 27 and Rolling Stone No. 36 of 2023; Metacritic 84.",
+  "new": "Pitchfork Best New Music (2023); Pitchfork No. 27 and Rolling Stone No. 36 of 2023; universal acclaim from critics.",
+  "why": "storyFacts (data only, unrendered); critic score -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "storyFacts",
+   "2024",
+   "Vincent Neil Emerson",
+   "pk",
+   0
+  ],
+  "old": "Blue Stars (Apr 2026), Saving Country Music 8.2/10, produced by Patrick Lyons.",
+  "new": "Blue Stars (Apr 2026), a strong Saving Country Music review, produced by Patrick Lyons.",
+  "why": "storyFacts (data only, unrendered); critic score -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "storyFacts",
+   "2024",
+   "Rogê",
+   "ab",
+   0
+  ],
+  "old": "Songlines four stars for Curyman (2023); Latin Grammy nomination with Arlindo Cruz (year to confirm).",
+  "new": "A strong Songlines review for Curyman (2023); Latin Grammy nomination with Arlindo Cruz (year to confirm).",
+  "why": "storyFacts (data only, unrendered); critic score -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "storyFacts",
+   "2024",
+   "Billie Marten",
+   "pk",
+   0
+  ],
+  "old": "Dog Eared (Jul 18 2025), Metacritic 88, UK Folk Albums No. 1, UK Albums No. 46.",
+  "new": "Dog Eared (Jul 18 2025), rave reviews, UK Folk Albums No. 1, UK Albums No. 46.",
+  "why": "storyFacts (data only, unrendered); critic score -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "storyFacts",
+   "2024",
+   "Billie Marten",
+   "ab",
+   0
+  ],
+  "old": "Metacritic 82; The Independent 5/5; No. 5 on The Independent's 30 best albums of 2023.",
+  "new": "Rave reviews, The Independent's among them; No. 5 on The Independent's 30 best albums of 2023.",
+  "why": "storyFacts (data only, unrendered); critic score -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "storyFacts",
+   "2024",
+   "Bella White",
+   "ab",
+   0
+  ],
+  "old": "Americana UK 8/10, with Rolling Stone calling her songwriting \"sublime Appalachian heartbreak\" (2020).",
+  "new": "A strong Americana UK review, with Rolling Stone calling her songwriting \"sublime Appalachian heartbreak\" (2020).",
+  "why": "storyFacts (data only, unrendered); critic score -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "storyFacts",
+   "2024",
+   "PACKS",
+   "ab",
+   0
+  ],
+  "old": "Fire Talk signed them in 2020 after 2019 singles; Take the Cake (2021) and Crispy Crunchy Nothing (2023, recorded in a rural Quebec cabin, with the sauna as the vocal booth). Melt the Honey drew reviews from Pitchfork (7.3), Paste (7.5), Exclaim (8) and FLOOD.",
+  "new": "Fire Talk signed them in 2020 after 2019 singles; Take the Cake (2021) and Crispy Crunchy Nothing (2023, recorded in a rural Quebec cabin, with the sauna as the vocal booth). Melt the Honey drew reviews from Pitchfork, Paste, Exclaim and FLOOD.",
+  "why": "storyFacts (data only, unrendered); critic score -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "storyFacts",
+   "2024",
+   "Johnny Franco",
+   "ab",
+   0
+  ],
+  "old": "signed to Sterling Fox's Blanket Fort label and, per the Pickathon bio, sold out the Doug Fir twice (Doug Fir holds about 450). Bio only, strength 6; say \"per their Pickathon bio\" or leave it out.",
+  "new": "signed to Sterling Fox's Blanket Fort label and, per the Pickathon bio, sold out the Doug Fir twice. Bio only, strength 6; say \"per their Pickathon bio\" or leave it out.",
+  "why": "storyFacts (data only, unrendered); crowd number -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "storyFacts",
+   "2024",
+   "Two Runner",
+   "ab",
+   0
+  ],
+  "old": "They began playing together in 2020 and played more than 100 dates in 2023. Anderson spent a decade touring with her family band; Rose is a Berklee-trained fiddler.",
+  "new": "They began playing together in 2020 and toured hard through 2023. Anderson spent a decade touring with her family band; Rose is a Berklee-trained fiddler.",
+  "why": "storyFacts (data only, unrendered); show count -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "storyFacts",
+   "2024",
+   "Logan Halstead",
+   "ab",
+   0
+  ],
+  "old": "he supported Town Mountain and, in 2024, headlined a 12-city run of small rooms such as Southgate House Revival and Row One at Cannery Hall.",
+  "new": "he supported Town Mountain and, in 2024, headlined a run of small rooms such as Southgate House Revival and Row One at Cannery Hall.",
+  "why": "storyFacts (data only, unrendered); show count -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "storyFacts",
+   "2024",
+   "Greg Freeman",
+   "pk",
+   0
+  ],
+  "old": "Burnover (Aug 22 2025), Paste 8.4 and No. 47 on Paste's best albums of 2025.",
+  "new": "Burnover (Aug 22 2025), a strong Paste review and No. 47 on Paste's best albums of 2025.",
+  "why": "storyFacts (data only, unrendered); critic score -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "storyFacts",
+   "2018",
+   "Colter Wall",
+   "wb",
+   0
+  ],
+  "old": "The booking window for an August 2018 festival is October 2017 to January 2018, so his 2017 rooms ARE the before picture: fifty-two own shows at 200-to-500-capacity clubs — Neurolux, 7th St Entry, the Starlite Room, Songbyrd, Hi-Tone, Jack Rabbits, and a Waterloo Records in-store",
+  "new": "The booking window for an August 2018 festival is October 2017 to January 2018, so his 2017 rooms ARE the before picture: his own shows at small clubs — Neurolux, 7th St Entry, the Starlite Room, Songbyrd, Hi-Tone, Jack Rabbits, and a Waterloo Records in-store",
+  "why": "storyFacts (data only, unrendered); show count -> words, crowd number -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "storyFacts",
+   "2018",
+   "Colter Wall",
+   "pk",
+   0
+  ],
+  "old": "A 2021 fall headline tour had seventeen sold-out dates including the 9:30 Club, the Majestic in Detroit, the Van Buren and the Ryman — the tour was later postponed",
+  "new": "A 2021 fall headline tour had a run of sold-out dates including the 9:30 Club, the Majestic in Detroit, the Van Buren and the Ryman — the tour was later postponed",
+  "why": "storyFacts (data only, unrendered); show count -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "storyFacts",
+   "2018",
+   "Colter Wall",
+   "lp",
+   0
+  ],
+  "old": "Cain's Ballroom and the Tower Theatre by 2022; by 2025, twenty own shows at 2,500-to-4,000-capacity halls — the Northern Alberta Jubilee Auditorium, Miller High Life Theatre, the Auditorium Theatre, TCU Place, Treasure Island Amphitheater, the Paramount and the Royal",
+  "new": "Cain's Ballroom and the Tower Theatre by 2022; by 2025, his own shows at large theaters and halls — the Northern Alberta Jubilee Auditorium, Miller High Life Theatre, the Auditorium Theatre, TCU Place, Treasure Island Amphitheater, the Paramount and the Royal",
+  "why": "storyFacts (data only, unrendered); show count -> words, crowd number -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "storyFacts",
+   "2018",
+   "The War and Treaty",
+   "lp",
+   0
+  ],
+  "old": "By 2026 they have sixty-eight own shows on a national theatre circuit — First Avenue, Thalia Hall, the Fillmore Silver Spring, Saint Andrew's Hall, the Buckhead Theatre, the Foundry at the Fillmore Philadelphia — with two Ryman appearances along the way",
+  "new": "By 2026 they play their own shows on a national theatre circuit — First Avenue, Thalia Hall, the Fillmore Silver Spring, Saint Andrew's Hall, the Buckhead Theatre, the Foundry at the Fillmore Philadelphia — with two Ryman appearances along the way",
+  "why": "storyFacts (data only, unrendered); show count -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "storyFacts",
+   "2018",
+   "Paul Cauthen",
+   "lp",
+   0
+  ],
+  "old": "By 2022, forty-six own shows at White Oak Music Hall, Gruene Hall, The Wilma, Belly Up Aspen, Bimbo's 365 Club and the Toulouse Theatre; by 2025, fifty-nine own at the Heights Theater, Manchester Music Hall, the Princess Theatre and the Greenfield Lake Amphitheatre",
+  "new": "By 2022, own shows at White Oak Music Hall, Gruene Hall, The Wilma, Belly Up Aspen, Bimbo's 365 Club and the Toulouse Theatre; by 2025, own shows at the Heights Theater, Manchester Music Hall, the Princess Theatre and the Greenfield Lake Amphitheatre",
+  "why": "storyFacts (data only, unrendered); show count -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "storyFacts",
+   "2018",
+   "Haley Heynderickx",
+   "pk",
+   0
+  ],
+  "old": "A Pitchfork 7.3 for the debut; NPR said the album \"captivates\"",
+  "new": "A good Pitchfork review for the debut; NPR said the album \"captivates\"",
+  "why": "storyFacts (data only, unrendered); critic score -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "storyFacts",
+   "2018",
+   "Haley Heynderickx",
+   "lp",
+   0
+  ],
+  "old": "2018 brought forty-six own shows including the Danforth Music Hall, Revolution Hall and Lodge Room; 2022 the Mt. Baker Theatre and the Soreng Theater at the Hult Center; 2026 the Bowery Ballroom, the Neptune, the Aladdin and Mackintosh Church in Glasgow",
+  "new": "2018 brought her own shows at rooms including the Danforth Music Hall, Revolution Hall and Lodge Room; 2022 the Mt. Baker Theatre and the Soreng Theater at the Hult Center; 2026 the Bowery Ballroom, the Neptune, the Aladdin and Mackintosh Church in Glasgow",
+  "why": "storyFacts (data only, unrendered); show count -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "storyFacts",
+   "2018",
+   "Lonnie Holley",
+   "pk",
+   0
+  ],
+  "old": "Oh Me Oh My (Mar 2023) took a Pitchfork 8.5 and a place in Paste's top ten albums of 2023",
+  "new": "Oh Me Oh My (Mar 2023) took a strong Pitchfork review and a place in Paste's top ten albums of 2023",
+  "why": "storyFacts (data only, unrendered); critic score -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "storyFacts",
+   "2018",
+   "Low Cut Connie",
+   "wb",
+   0
+  ],
+  "old": "Call Me Sylvia scored a Metacritic 80 and was picked for Obama's 2015 summer playlist",
+  "new": "Call Me Sylvia drew good reviews and was picked for Obama's 2015 summer playlist",
+  "why": "storyFacts (data only, unrendered); critic score -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "storyFacts",
+   "2018",
+   "Low Cut Connie",
+   "pk",
+   0
+  ],
+  "old": "Their rooms grew modestly: by 2026, thirty-nine own shows at the Bowery Ballroom, the Granada and Antone's",
+  "new": "Their rooms grew modestly: by 2026, their own shows at the Bowery Ballroom, the Granada and Antone's",
+  "why": "storyFacts (data only, unrendered); show count -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "storyFacts",
+   "2018",
+   "Low Cut Connie",
+   "lp",
+   0
+  ],
+  "old": "Their rooms grew modestly: by 2026, thirty-nine own shows at the Bowery Ballroom, the Granada and Antone's",
+  "new": "Their rooms grew modestly: by 2026, their own shows at the Bowery Ballroom, the Granada and Antone's",
+  "why": "storyFacts (data only, unrendered); show count -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "storyFacts",
+   "2018",
+   "Phosphorescent",
+   "wb",
+   0
+  ],
+  "old": "Pride (2007) scored a Pitchfork 8.0 and placed 12 on Stylus's 2007 year-end list",
+  "new": "Pride (2007) drew a strong Pitchfork review and placed 12 on Stylus's 2007 year-end list",
+  "why": "storyFacts (data only, unrendered); critic score -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "storyFacts",
+   "2018",
+   "Tinariwen",
+   "lp",
+   0
+  ],
+  "old": "Their 2026 circuit is thirty-nine own shows across Canadian theatres",
+  "new": "Their 2026 circuit is a run of their own shows across Canadian theatres",
+  "why": "storyFacts (data only, unrendered); show count -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "storyFacts",
+   "2018",
+   "Built to Spill",
+   "pk",
+   0
+  ],
+  "old": "2022 was their busiest year: sixty own shows across the Roxy, the Commodore Ballroom, The Showbox, Revolution Hall and Pappy and Harriet's",
+  "new": "2022 was their busiest year, with their own shows across the Roxy, the Commodore Ballroom, The Showbox, Revolution Hall and Pappy and Harriet's",
+  "why": "storyFacts (data only, unrendered); show count -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "storyFacts",
+   "2018",
+   "Built to Spill",
+   "lp",
+   0
+  ],
+  "old": "Newest: a 2026 circuit of twenty-four own shows, with a new lineup around Martsch",
+  "new": "Newest: a 2026 circuit of their own shows, with a new lineup around Martsch",
+  "why": "storyFacts (data only, unrendered); show count -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "storyFacts",
+   "2018",
+   "DakhaBrakha",
+   "lp",
+   0
+  ],
+  "old": "Newest: a 2026 circuit of forty-eight own shows, including Union Chapel and the Konzerthaus Dortmund",
+  "new": "Newest: a 2026 circuit of their own shows, including Union Chapel and the Konzerthaus Dortmund",
+  "why": "storyFacts (data only, unrendered); show count -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "storyFacts",
+   "2018",
+   "Danny Barnes Trio",
+   "lp",
+   0
+  ],
+  "old": "Gap: four own shows in 2017, five in 2018, and none at all in 2022 or 2026",
+  "new": "Gap: only a handful of own shows in 2017 and 2018, and none at all in 2022 or 2026",
+  "why": "storyFacts (data only, unrendered); show count -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "storyFacts",
+   "2018",
+   "Shakey Graves",
+   "pk",
+   0
+  ],
+  "old": "His own tier is a real sustained draw: forty-seven own shows in 2018 at the Roseland, KOKO London, the McDonald Theatre and La Maroquinerie; 2022 including Vicar Street and the Cadence Bank Amphitheatre at Chastain Park; by 2026, thirty-two own shows at Webster Hall, History Toronto, the Charleston Gaillard Center, The Showbox and the Murat Egyptian Room",
+  "new": "His own tier is a real sustained draw: own shows in 2018 at the Roseland, KOKO London, the McDonald Theatre and La Maroquinerie; 2022 including Vicar Street and the Cadence Bank Amphitheatre at Chastain Park; by 2026, own shows at Webster Hall, History Toronto, the Charleston Gaillard Center, The Showbox and the Murat Egyptian Room",
+  "why": "storyFacts (data only, unrendered); show count -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "storyFacts",
+   "2018",
+   "Shakey Graves",
+   "lp",
+   0
+  ],
+  "old": "His own tier is a real sustained draw: forty-seven own shows in 2018 at the Roseland, KOKO London, the McDonald Theatre and La Maroquinerie; 2022 including Vicar Street and the Cadence Bank Amphitheatre at Chastain Park; by 2026, thirty-two own shows at Webster Hall, History Toronto, the Charleston Gaillard Center, The Showbox and the Murat Egyptian Room",
+  "new": "His own tier is a real sustained draw: own shows in 2018 at the Roseland, KOKO London, the McDonald Theatre and La Maroquinerie; 2022 including Vicar Street and the Cadence Bank Amphitheatre at Chastain Park; by 2026, own shows at Webster Hall, History Toronto, the Charleston Gaillard Center, The Showbox and the Murat Egyptian Room",
+  "why": "storyFacts (data only, unrendered); show count -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "storyFacts",
+   "2018",
+   "Shovels & Rope",
+   "pk",
+   0
+  ],
+  "old": "Fifty-two own shows in 2018 including the Ryman, the Napa Valley Opera House, the Colonial Theatre and the Ridgefield Playhouse; forty-five in 2022; forty-one in 2026 at Pappy and Harriet's, The Guild Theatre and Charleston Music Hall",
+  "new": "Steady own shows in 2018 including the Ryman, the Napa Valley Opera House, the Colonial Theatre and the Ridgefield Playhouse, through 2022, and in 2026 at Pappy and Harriet's, The Guild Theatre and Charleston Music Hall",
+  "why": "storyFacts (data only, unrendered); show count -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "storyFacts",
+   "2018",
+   "Alela Diane",
+   "pk",
+   0
+  ],
+  "old": "She has a substantial European theatre circuit that nothing on the old row hinted at: forty-one own shows in 2018 across a UK, French and Dutch theatre run — Union Chapel, St George's Hall, the De La Warr Pavilion, Le Trianon in Paris, Le Rocher De Palmer, Het Depot; and forty own shows in 2026 across the Magyar Zene Háza in Budapest, the Columbia Theater Berlin, the Mojo Club and Bonlieu Scène Nationale Annecy",
+  "new": "She has a substantial European theatre circuit that nothing on the old row hinted at: a 2018 UK, French and Dutch theatre run of her own shows — Union Chapel, St George's Hall, the De La Warr Pavilion, Le Trianon in Paris, Le Rocher De Palmer, Het Depot; and her own shows in 2026 across the Magyar Zene Háza in Budapest, the Columbia Theater Berlin, the Mojo Club and Bonlieu Scène Nationale Annecy",
+  "why": "storyFacts (data only, unrendered); show count -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "storyFacts",
+   "2018",
+   "Alela Diane",
+   "lp",
+   0
+  ],
+  "old": "She has a substantial European theatre circuit that nothing on the old row hinted at: forty-one own shows in 2018 across a UK, French and Dutch theatre run — Union Chapel, St George's Hall, the De La Warr Pavilion, Le Trianon in Paris, Le Rocher De Palmer, Het Depot; and forty own shows in 2026 across the Magyar Zene Háza in Budapest, the Columbia Theater Berlin, the Mojo Club and Bonlieu Scène Nationale Annecy",
+  "new": "She has a substantial European theatre circuit that nothing on the old row hinted at: a 2018 UK, French and Dutch theatre run of her own shows — Union Chapel, St George's Hall, the De La Warr Pavilion, Le Trianon in Paris, Le Rocher De Palmer, Het Depot; and her own shows in 2026 across the Magyar Zene Háza in Budapest, the Columbia Theater Berlin, the Mojo Club and Bonlieu Scène Nationale Annecy",
+  "why": "storyFacts (data only, unrendered); show count -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "storyFacts",
+   "2019",
+   "Tyler Childers",
+   "wb",
+   0
+  ],
+  "old": "At booking, October 2018 to January 2019, he was already selling out theatre-tier rooms: a fall 2018 tour with nineteen sold-out dates including the 9:30 Club, the Ogden and The Pageant",
+  "new": "At booking, October 2018 to January 2019, he was already selling out theatre-tier rooms: a fall 2018 tour of sold-out dates including the 9:30 Club, the Ogden and The Pageant",
+  "why": "storyFacts (data only, unrendered); show count -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "storyFacts",
+   "2019",
+   "Khruangbin",
+   "wb",
+   0
+  ],
+  "old": "In the booking window, October 2018 to January 2019, they were already headlining 1,200-to-1,800-capacity theatres on both continents — Paradiso, Le Trabendo, Botanique, VEGA and Astra Kulturhaus in late October, then the Fox Oakland, the Observatory North Park, The Wiltern, El Rey, the Crystal Ballroom, the Vogue, Union Transfer, the 9:30 Club, the Ogden and two consecutive nights at Brooklyn Steel that December",
+  "new": "In the booking window, October 2018 to January 2019, they were already headlining theatres on both continents — Paradiso, Le Trabendo, Botanique, VEGA and Astra Kulturhaus in late October, then the Fox Oakland, the Observatory North Park, The Wiltern, El Rey, the Crystal Ballroom, the Vogue, Union Transfer, the 9:30 Club, the Ogden and two consecutive nights at Brooklyn Steel that December",
+  "why": "storyFacts (data only, unrendered); crowd number -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "storyFacts",
+   "2019",
+   "Sudan Archives",
+   "pk",
+   0
+  ],
+  "old": "Athena, her debut studio album, came out Nov 1 2019 — three months after she played. Metacritic 83 and ten year-end placements, including the New York Times' top 10 albums at number 4, Passion of the Weiss at 6, Clash at 8, MusicOMH at 17 and DJ Mag at 24",
+  "new": "Athena, her debut studio album, came out Nov 1 2019 — three months after she played. Rave reviews and ten year-end placements, including the New York Times' top 10 albums at number 4, Passion of the Weiss at 6, Clash at 8, MusicOMH at 17 and DJ Mag at 24",
+  "why": "storyFacts (data only, unrendered); critic score -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "storyFacts",
+   "2019",
+   "Mike and the Moonpies",
+   "wb",
+   0
+  ],
+  "old": "At booking and through the festival year their own rooms were essentially all Texas bars, honky-tonks, dance halls and casinos — the Southbound Bar & Grill, River Road Icehouse, the Redneck Country Club, Skinny Dennis, the Silver Dollar Saloon, the Old Coupland Inn, Hank's Texas Grill, Whiskey Ranch — at roughly 200-to-400 capacity, across twenty-nine own shows in 2018 and fifty-seven in 2019",
+  "new": "At booking and through the festival year their own rooms were essentially all Texas bars, honky-tonks, dance halls and casinos — the Southbound Bar & Grill, River Road Icehouse, the Redneck Country Club, Skinny Dennis, the Silver Dollar Saloon, the Old Coupland Inn, Hank's Texas Grill, Whiskey Ranch — small rooms, with their own shows growing from 2018 to 2019",
+  "why": "storyFacts (data only, unrendered); show count -> words, crowd number -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "storyFacts",
+   "2019",
+   "Black Belt Eagle Scout",
+   "wb",
+   0
+  ],
+  "old": "Mother of My Children (Sept 2018, Saddle Creek) took a Metacritic 81 from six reviews, \"universal acclaim,\" with a Pitchfork 7.2, and Q called it \"one of 2018's gems\"",
+  "new": "Mother of My Children (Sept 2018, Saddle Creek) drew \"universal acclaim\" from critics, Pitchfork included, and Q called it \"one of 2018's gems\"",
+  "why": "storyFacts (data only, unrendered); critic score -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "storyFacts",
+   "2019",
+   "Black Belt Eagle Scout",
+   "lp",
+   0
+  ],
+  "old": "Newest: her 2026 circuit is five own shows at small theatres — The Cedar, the Lincoln Theatre, the Walters Cultural Arts Center",
+  "new": "Newest: her 2026 circuit is a short run of her own shows at small theatres — The Cedar, the Lincoln Theatre, the Walters Cultural Arts Center",
+  "why": "storyFacts (data only, unrendered); show count -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "storyFacts",
+   "2019",
+   "Laura Veirs",
+   "wb",
+   0
+  ],
+  "old": "case/lang/veirs (2016), with Neko Case and k.d. lang, took a Metacritic 82 — and she was the lead songwriter",
+  "new": "case/lang/veirs (2016), with Neko Case and k.d. lang, drew rave reviews — and she was the lead songwriter",
+  "why": "storyFacts (data only, unrendered); critic score -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "storyFacts",
+   "2019",
+   "Julia Jacklin",
+   "wb",
+   0
+  ],
+  "old": "Crushing (Feb 22 2019) reached number 8 in Australia on a Metacritic 85 from 26 reviews — out five months before she played",
+  "new": "Crushing (Feb 22 2019) reached number 8 in Australia to rave reviews — out five months before she played",
+  "why": "storyFacts (data only, unrendered); critic score -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "storyFacts",
+   "2019",
+   "Altın Gün",
+   "lp",
+   0
+  ],
+  "old": "Newest: 2025 brought twenty-three own shows including the İzmir Arena and large outdoor venues",
+  "new": "Newest: 2025 brought their own shows at rooms including the İzmir Arena and large outdoor venues",
+  "why": "storyFacts (data only, unrendered); show count -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "storyFacts",
+   "2019",
+   "Makaya McCraven",
+   "pk",
+   0
+  ],
+  "old": "His 2019 rooms rose to the TivoliVredenburg Grote Zaal and Village Underground; 2022 brought forty-seven own shows including the Paradiso Grote Zaal and Islington Assembly Hall",
+  "new": "His 2019 rooms rose to the TivoliVredenburg Grote Zaal and Village Underground; 2022 brought his own shows at rooms including the Paradiso Grote Zaal and Islington Assembly Hall",
+  "why": "storyFacts (data only, unrendered); show count -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "storyFacts",
+   "2022",
+   "Cassandra Jenkins",
+   "wb",
+   0
+  ],
+  "old": "A year and a half before she played, An Overview on Phenomenal Nature (Ba Da Bing, Feb 19 2021) landed at number 17 on Pitchfork's 50 best albums of 2021, number 17 at Paste and number 32 at The Guardian, on a Metacritic of 87",
+  "new": "A year and a half before she played, An Overview on Phenomenal Nature (Ba Da Bing, Feb 19 2021) landed at number 17 on Pitchfork's 50 best albums of 2021, number 17 at Paste and number 32 at The Guardian, to universal acclaim",
+  "why": "storyFacts (data only, unrendered); critic score -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "storyFacts",
+   "2022",
+   "Cassandra Jenkins",
+   "pk",
+   0
+  ],
+  "old": "My Light, My Destroyer (Dead Oceans, July 12 2024) scored a Metacritic 89 and a Pitchfork 8.0, and placed at number 11 at Uncut, 14 at MOJO and 22 at Exclaim!",
+  "new": "My Light, My Destroyer (Dead Oceans, July 12 2024) drew rave reviews, Pitchfork's among them, and placed at number 11 at Uncut, 14 at MOJO and 22 at Exclaim!",
+  "why": "storyFacts (data only, unrendered); critic score -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "storyFacts",
+   "2022",
+   "Sweeping Promises",
+   "pk",
+   0
+  ],
+  "old": "Good Living Is Coming for You (Feel It/Sub Pop, Jun 30 2023) took a Pitchfork 7.8 and a Paste 8.2 Album of the Week",
+  "new": "Good Living Is Coming for You (Feel It/Sub Pop, Jun 30 2023) took a strong Pitchfork review and a Paste Album of the Week",
+  "why": "storyFacts (data only, unrendered); critic score -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "storyFacts",
+   "2022",
+   "Rosali",
+   "pk",
+   0
+  ],
+  "old": "Bite Down (Merge, Mar 22 2024) drew 4.5 out of 5 at AllMusic and an 8.5 at Paste",
+  "new": "Bite Down (Merge, Mar 22 2024) drew strong reviews at AllMusic and Paste",
+  "why": "storyFacts (data only, unrendered); critic score -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "storyFacts",
+   "2022",
+   "Cassandra Jenkins",
+   "lp",
+   0
+  ],
+  "old": "My Light, My Destroyer (Dead Oceans, July 12 2024) scored a Metacritic 89 and a Pitchfork 8.0, and placed at number 11 at Uncut, 14 at MOJO and 22 at Exclaim!",
+  "new": "My Light, My Destroyer (Dead Oceans, July 12 2024) drew rave reviews, Pitchfork's among them, and placed at number 11 at Uncut, 14 at MOJO and 22 at Exclaim!",
+  "why": "storyFacts (data only, unrendered); critic score -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "storyFacts",
+   "2022",
+   "Sweeping Promises",
+   "lp",
+   0
+  ],
+  "old": "Good Living Is Coming for You (Feel It/Sub Pop, Jun 30 2023) took a Pitchfork 7.8 and a Paste 8.2 Album of the Week",
+  "new": "Good Living Is Coming for You (Feel It/Sub Pop, Jun 30 2023) took a strong Pitchfork review and a Paste Album of the Week",
+  "why": "storyFacts (data only, unrendered); critic score -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "storyFacts",
+   "2022",
+   "Rosali",
+   "lp",
+   0
+  ],
+  "old": "Bite Down (Merge, Mar 22 2024) drew 4.5 out of 5 at AllMusic and an 8.5 at Paste",
+  "new": "Bite Down (Merge, Mar 22 2024) drew strong reviews at AllMusic and Paste",
+  "why": "storyFacts (data only, unrendered); critic score -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "storyFacts",
+   "2022",
+   "Armand Hammer",
+   "pk",
+   0
+  ],
+  "old": "We Buy Diabetic Test Strips (Fat Possum, Sept 29 2023) landed at number 2 at BrooklynVegan, 6 at Vulture, 7 at The Ringer, 14 at Beats Per Minute, 23 at Gorilla vs. Bear and 23 at PopMatters, on a Metacritic 87",
+  "new": "We Buy Diabetic Test Strips (Fat Possum, Sept 29 2023) landed at number 2 at BrooklynVegan, 6 at Vulture, 7 at The Ringer, 14 at Beats Per Minute, 23 at Gorilla vs. Bear and 23 at PopMatters, to universal acclaim",
+  "why": "storyFacts (data only, unrendered); critic score -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "storyFacts",
+   "2022",
+   "Deeper",
+   "lp",
+   0
+  ],
+  "old": "They supported Depeche Mode across seven European shows in March and April 2024 — support slots, which the rule excludes",
+  "new": "They supported Depeche Mode on a European run in March and April 2024 — support slots, which the rule excludes",
+  "why": "storyFacts (data only, unrendered); show count -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "storyFacts",
+   "2023",
+   "MJ Lenderman",
+   "pk",
+   0
+  ],
+  "old": "Manning Fireworks (Sep 6 2024) landed Pitchfork Best New Music and a Metacritic 88",
+  "new": "Manning Fireworks (Sep 6 2024) landed Pitchfork Best New Music and rave reviews",
+  "why": "storyFacts (data only, unrendered); critic score -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "storyFacts",
+   "2023",
+   "Say She She",
+   "pk",
+   0
+  ],
+  "old": "Silver (Karma Chief, Sep 29 2023) took a Metacritic 81 and was KCRW's album of the year, 7 at WXPN, 8 at God Is in the TV, 26 at Piccadilly, 36 at MusicOMH, 37 at Far Out",
+  "new": "Silver (Karma Chief, Sep 29 2023) drew rave reviews and was KCRW's album of the year, 7 at WXPN, 8 at God Is in the TV, 26 at Piccadilly, 36 at MusicOMH, 37 at Far Out",
+  "why": "storyFacts (data only, unrendered); critic score -> words"
+ },
+ {
+  "file": "data.json",
+  "json_path": [
+   "storyFacts",
+   "2023",
+   "Pachyman",
+   "pk",
+   0
+  ],
+  "old": "Switched-On (Sep 2023) drew 4 out of 5 at AllMusic and a Mojo review",
+  "new": "Switched-On (Sep 2023) drew a strong AllMusic review and a Mojo review",
+  "why": "storyFacts (data only, unrendered); critic score -> words"
+ }
+]
