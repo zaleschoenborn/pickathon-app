@@ -1,0 +1,86 @@
+{
+ "court-fish-night-2025-a.jpg": {
+  "xy": [
+   60,
+   100
+  ],
+  "why": "architecture frame: the rule went to the audience at the right edge; 60 keeps the arches and the lit fish"
+ },
+ "i/p656.jpg": {
+  "xy": [
+   45,
+   100
+  ],
+  "why": "architecture frame: x=0 showed one end of the orange slat structure; 45 is its center with the green glow"
+ },
+ "i/p775.jpg": {
+  "xy": [
+   75,
+   100
+  ],
+  "why": "Woods crowd: the rule centered an audience member; 75 keeps the lit stage tunnel with the crowd"
+ },
+ "i/p729.jpg": {
+  "xy": [
+   60,
+   100
+  ],
+  "why": "the subject is the butterfly structure; x=100 cut it to the dancers only; 60 keeps the structure and the dancers"
+ },
+ "i/p479.jpg": {
+  "xy": [
+   45,
+   100
+  ],
+  "why": "the rule and the old crop sat on trees and audience at the right; 45 keeps the lit stage and the crowd"
+ },
+ "i/p629.jpg": {
+  "xy": [
+   35,
+   100
+  ],
+  "why": "the rule sat on an audience member at the bottom; the band plays at left-center under the curtain, 35 keeps it whole"
+ },
+ "i/p9002.jpg": {
+  "xy": [
+   63,
+   100
+  ],
+  "why": "architecture frame: the rule went to a tiny figure at the right edge; the old 63 keeps the lattice heart"
+ },
+ "i/p632.jpg": {
+  "xy": [
+   100,
+   100
+  ],
+  "why": "crowd silhouette against the light beams; the raised hands at right are the subject, old 100 is right"
+ },
+ "i/r3-home-lushcamp.jpg": {
+  "xy": [
+   25,
+   50
+  ],
+  "why": "camping: the rule took the man at the back; the woman in the hammock is the subject"
+ },
+ "i/p584.jpg": {
+  "xy": [
+   25,
+   50
+  ],
+  "why": "architecture: the old crop showed only crowd; 25 keeps the slat structure with people under it"
+ },
+ "i/pk-windmill-h1.jpg": {
+  "xy": [
+   45,
+   50
+  ],
+  "why": "the windmill wheel is the subject; the old 83 cut it in half, the rule went to an audience member"
+ },
+ "i/r3-btb-marias.jpg": {
+  "xy": [
+   55,
+   50
+  ],
+  "why": "The Mar\u00edas: the rule took the guitarist at left; Mar\u00eda (singer) is center"
+ }
+}
