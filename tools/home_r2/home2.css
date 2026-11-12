@@ -556,3 +556,40 @@ html:root:root #root#root#root#root#root#root#root#root#root#root#root#root#root
 
 /* Gate 1 loop 2 C: at <=380 the two Before-they-were-big labels fit their boxes with room to spare (12px, .03em, 8px padding, one line) */
 @media (max-width:400px){#root#root #pkh2 .h2-s5row .h2-pill{font-size:12px!important;letter-spacing:.03em!important;padding:0 8px!important;white-space:nowrap!important}}
+
+/* ---------- Home 3 (Zale, Nov 12 07:39): restore and simplify ----------
+   1. The first screen is the build 5174 hero: the shuffled gallery full-bleed, the 5174 gradient, the headline over the photo, one line,
+      the sale line, one button, Photo tour top right. One idea, one button. Sizes are 5174's measured values. */
+.pkh2 .h2-s.h2-s0{position:relative;display:flex;flex-direction:column;justify-content:flex-end;height:var(--scr);min-height:420px;padding:0;gap:0;overflow:hidden;background:#12160F}
+.pkh2 .h2-oh-ph{position:absolute;inset:0;z-index:0;overflow:hidden}
+.pkh2 .h2-oh-ph .h2-hf{position:absolute;inset:0;width:100%;height:100%;max-width:none;object-fit:cover;object-position:50% 50%;opacity:0;transform:scale(1.04);
+  transition:opacity .9s ease-in-out,transform 6.5s linear;will-change:opacity,transform}
+.pkh2 .h2-oh-ph .h2-hf.is-on{opacity:1;transform:scale(1)}
+.pkh2 .h2-oh-g{position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:linear-gradient(rgba(18,22,15,.55) 0%,rgba(18,22,15,.1) 22%,rgba(18,22,15,.38) 40%,rgba(18,22,15,.78) 60%,rgba(24,21,22,.92) 82%,#2B2628 100%)}
+#pkh2 .h2-oh-tour{position:absolute;z-index:3;top:16px;right:16px;display:inline-flex;align-items:center;gap:10px;min-height:44px;padding:0 16px 0 6px;border-radius:999px;
+  border:1px solid rgba(242,237,227,.8);background:rgba(18,22,15,.5);color:#F2EDE3;font:800 13px/1.15 var(--text);letter-spacing:.08em;text-transform:uppercase;cursor:pointer;white-space:nowrap}
+#pkh2 .h2-oh-tour span{display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:#F2EDE3;color:#12160F}
+#pkh2 .h2-oh-tour svg{width:13px;height:13px;fill:currentColor;margin-left:2px}
+#pkh2 .h2-oh-tour:hover{background:rgba(18,22,15,.7);border-color:#F2EDE3}
+#root#root#root #pkh2 .h2-oh-tour{min-height:44px!important;border-radius:999px!important}
+.pkh2 .h2-oh-in{position:relative;z-index:2;width:100%;max-width:1280px;margin:0 auto;padding:40px 16px 24px}
+#pkh2#pkh2 .h2-oh-h1{font-size:clamp(1.75rem,9.2vw,4rem)!important;line-height:1.05!important;letter-spacing:-.01em!important;max-width:880px!important;color:#F2EDE3;text-shadow:0 2px 16px rgba(0,0,0,.55)}
+#pkh2#pkh2 .h2-oh-what{margin-top:14px;max-width:560px;font-size:1rem;line-height:1.5;font-weight:600;color:#E8E2D5;text-shadow:0 1px 10px rgba(0,0,0,.7)}
+.pkh2 .h2-oh-what b{font-weight:600;white-space:nowrap}
+#pkh2#pkh2 .h2-oh-sea{margin-top:16px;font-size:1rem;line-height:1.5;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:#E8E2D5;text-shadow:0 1px 10px rgba(0,0,0,.7)}
+/* the one button: Alert me = the gold primary (buttons.md kind 1); Get tickets on sale = solid strong gold */
+#root #pkh2 .h2-oh-btn{display:flex;align-items:center;justify-content:center;width:100%;max-width:420px;min-height:50px;margin-top:14px;padding:0 16px;border-radius:6px;
+  border:2px solid #D6B54A;background:rgba(214,181,74,.18);color:#F2CF62;font:800 .8125rem/1.15 var(--text);letter-spacing:1px;text-transform:uppercase;cursor:pointer;
+  -webkit-backdrop-filter:blur(2px);backdrop-filter:blur(2px);transition:background-color .2s linear,border-color .2s linear}
+#root #pkh2 .h2-oh-btn:hover{background:rgba(214,181,74,.3);border-color:#F2CF62}
+#root #pkh2 .h2-oh-btn.is-sale{background:#F2CF62;border-color:#F2CF62;color:#2B2628}
+#root #pkh2 .h2-oh-btn.is-sale:hover{background:#D6B54A;border-color:#D6B54A}
+@media (max-width:379px){#pkh2#pkh2 .h2-oh-h1{font-size:1.875rem!important}.pkh2 .h2-oh-in{padding-bottom:18px}#pkh2#pkh2 .h2-oh-sea{font-size:.9375rem;letter-spacing:.03em}}
+@media (max-height:700px) and (max-width:599px){.pkh2 .h2-oh-in{padding-top:24px;padding-bottom:16px}#pkh2#pkh2 .h2-oh-sea{margin-top:10px}}
+@media (min-width:600px) and (max-width:1199px){.pkh2 .h2-oh-in{padding:56px 32px 40px}#pkh2#pkh2 .h2-oh-h1{font-size:clamp(2.5rem,6.4vw,3.5rem)!important}#pkh2#pkh2 .h2-oh-what{font-size:1.125rem;max-width:640px}#pkh2 .h2-oh-tour{top:24px;right:32px}}
+@media (min-width:1200px){.pkh2 .h2-oh-in{align-self:stretch;padding:72px 24px 56px;margin:0 max(80px,calc((100% - 1280px)/2));max-width:1280px;width:auto}#pkh2#pkh2 .h2-oh-h1{font-size:4rem!important;line-height:.86!important}
+  #pkh2#pkh2 .h2-oh-what{font-size:1.1825rem;max-width:none}#pkh2#pkh2 .h2-oh-sea{font-size:1.1825rem}#root #pkh2 .h2-oh-btn{min-height:56px;width:auto;min-width:320px;display:inline-flex}
+  #pkh2 .h2-oh-tour{top:16px;right:max(24px,calc((100vw - 1440px)/2 + 104px))}}
+@media (prefers-reduced-motion:reduce){.pkh2 .h2-oh-ph .h2-hf{transition:none!important;transform:none!important}}
+
