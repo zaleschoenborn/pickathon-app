@@ -6,7 +6,8 @@
         year or Lineup page -> that year's page, at the top
         neighborhood page   -> that place in that year (a dot), or that summer's "Where it happened" (no dot); 2027 is the place today
         artist page         -> the top of that year's page, on every tile (Zale's rule)
-        My Pickathon        -> that year's discoveries
+        My Pickathon        -> that year's discoveries (#/YYYY/mine, with the year bar)
+        Schedule            -> that year's "Who played when"; 2027 stays on the schedule
       Opened by the year in the Time Machine bar, and by "Another year" on the year and Lineup pages. It replaces "Pick another year" and the
       "Pick a year" sheet. Colors come only from yearBrand (paper, ink, ink2, stripe). Escape, X, the dim area and Back close it. */
 (function () {
@@ -66,7 +67,8 @@
     } else if (top.r === 'mine') {
       c.cur = +top.y || NOW; c.kick = 'Your Pickathon'; c.title = 'Another year'; c.foot = 'Each year opens your discoveries from that summer.';
       (S.myYears || []).forEach(function (y) { c.marks[+String(y).slice(0, 4)] = 'on'; }); if (Object.keys(c.marks).length) c.legend.push(['on', 'Years you came']);
-    } else if (top.r === 'lineup') c.cur = NOW;
+    } else if (top.r === 'schedule') { c.kick = 'The schedule'; c.title = 'Another year'; c.foot = 'You land on that year’s weekend, hour by hour.'; }   /* Round 3.5: Schedule's Pick a year */
+    else if (top.r === 'lineup') c.cur = NOW;
     return c;
   }
   function tileLabel(c, y) {
@@ -133,6 +135,10 @@
       if (y === NOW) return close(go('hood', { h: c.h, tm0: 1 }));
       if (c.marks[y]) return close(function () { A.go('hood', { h: c.h, y: String(y) }); if (c.marks[y] === 'old') toast('In ' + y + ' this ground was the ' + c.names[y] + '.', 4200); });
       return close(function () { A.go('past', { y: String(y) }); var n = 0, find = function () { var e = document.querySelector('#root .pk-hy'); if (e) { e.scrollIntoView({ block: 'start' }); toast(c.hn + '’s ground wasn’t a stage yet in ' + y + '. Here’s where it happened that summer.', 5000); } else if (++n < 20) setTimeout(find, 150); }; setTimeout(find, 300); });
+    }
+    if (c.r === 'schedule') {   /* the same schedule section that year: the year page's "Who played when"; 2027 is this page */
+      if (y === NOW) return close();
+      return close(function () { A.go('past', { y: String(y) }); var n = 0, find = function () { var h = [].slice.call(document.querySelectorAll('#root h2')).filter(function (e) { return /who played when/i.test(e.textContent || ''); })[0]; if (h) { var bars = [].slice.call(document.querySelectorAll('#root header, .pk-tm')).map(function (b) { var r = b.getBoundingClientRect(); return r.height && r.top < 200 ? r.bottom : 0; }); h.style.scrollMarginTop = (Math.max.apply(null, bars.concat([0])) + 12) + 'px'; h.scrollIntoView({ block: 'start' }); } else if (++n < 20) setTimeout(find, 150); }; setTimeout(find, 300); });
     }
     if (c.r === 'mine') { if (y === c.cur && y !== NOW) return close(); return close(y === NOW ? go('mine', {}) : go('mine', { y: String(y) })); }
     if (y === c.cur && c.r !== 'act') return close();

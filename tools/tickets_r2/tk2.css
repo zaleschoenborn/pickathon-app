@@ -302,3 +302,5 @@
 
 /* phone: the app's install / update toast never sits over the order bar or Checkout (it sat at the same height, bottom 84px) */
 body:has(#tk2 #tk-bar:not([hidden])) #pk-toast,body:has(#pk-co) #pk-toast{display:none!important}
+/* QC Round 3.5: prices wait (at most 1.5 s) for the build check before they show */
+#tk2.tk-vchk{visibility:hidden}
