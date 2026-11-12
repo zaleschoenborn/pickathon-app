@@ -402,3 +402,106 @@
 @media (max-width:599px) and (max-height:760px){.pkh2 .h2-s3sub{display:none}}
 @media (max-width:379px){#pkh2#pkh2 .h2-s3 .h2-sec{font-size:1.375rem!important}.pkh2 .h2-s3 .h2-city-r{column-gap:2px}#pkh2#pkh2 .h2-s3 .h2-city-k{font-size:.75rem}}
 @media (max-width:379px){.pkh2 .h2-s4ph{min-height:96px}.pkh2 .h2-s4{gap:10px}}
+
+/* LISTEN (Round 3.5, Zale Nov 11 22:57): a labeled button ("♫ LISTEN"), not a bare note. buttons.md secondary style (6px corners, cream outline,
+   Bricolage 800 13px caps). Phone and tablet: in the header row left of Search (dates move left beside the logo to make room). Desktop: bottom right,
+   as before. It opens the Listen panel (pick a Pickathon year and playlist, then it opens in your Spotify, Apple Music or other app).
+   Still hidden on the map and neighborhood pages (the app's own rule). */
+html:root:root #root#root#root#root#root#root#root#root#root#root#root#root#root [role="region"][aria-label="Listen"] > button[aria-label="Listen to Pickathon"]{
+  display:inline-flex!important;align-items:center!important;gap:6px!important;width:auto!important;min-width:0!important;height:40px!important;min-height:40px!important;padding:0 12px 0 10px!important;
+  border-radius:6px!important;border:1.5px solid rgba(242,237,227,.6)!important;background:rgba(20,16,18,.55)!important;-webkit-backdrop-filter:blur(6px)!important;backdrop-filter:blur(6px)!important;box-shadow:none!important;
+  color:#F2EDE3!important;font:800 13px/1 "Bricolage Grotesque",Inter,system-ui,sans-serif!important;letter-spacing:.08em!important;text-transform:uppercase!important}
+html:root:root #root#root#root#root#root#root#root#root#root#root#root#root#root [role="region"][aria-label="Listen"] > button[aria-label="Listen to Pickathon"]:hover{border-color:#F2EDE3!important}
+html:root:root #root#root#root#root#root#root#root#root#root#root#root#root#root [role="region"][aria-label="Listen"] > button[aria-label="Listen to Pickathon"] > span{display:inline!important;color:#F2EDE3!important}
+html:root:root #root#root#root#root#root#root#root#root#root#root#root#root#root [role="region"][aria-label="Listen"] > button[aria-label="Listen to Pickathon"] svg{width:16px!important;height:16px!important}
+html:root:root #root#root#root#root#root#root#root#root#root#root#root#root#root [role="region"][aria-label="Listen"] > button[aria-label="Listen to Pickathon"] svg path{stroke:#F2CF62!important}
+html:root:root #root#root#root#root#root#root#root#root#root#root#root#root#root [role="region"][aria-label="Listen"] > button[aria-label="Listen to Pickathon"] svg circle{fill:#F2CF62!important}
+@media (max-width:999px){
+  html:root:root:root #root [role=region][aria-label="Listen"][style*="height: 44px"],html:root:root:root [role=region][aria-label="Listen"][style*="height: 44px"]{top:calc(var(--pk-hd-top,0px) + 19px)!important;right:54px!important;height:40px!important}
+  html:root:root:root #root header button[aria-label="Pickathon home"] > span.pkp-mono{margin:0!important;text-align:left!important;max-width:none!important}
+  html:root:root body:has([role=region][aria-label="Listen"][style*="height: 44px"]) #root header span.pkp-mono{max-width:none}
+}
+@media (max-width:389px){html:root:root:root #root header button[aria-label="Pickathon home"] > img{height:38px!important}}
+@media (max-width:999px){html.pk-scrolling:root:root [role=region][aria-label="Listen"][style*="height: 44px"]{transform:none!important;opacity:1!important}}   /* it sits in the header now: it stays put while the page scrolls */
+/* real phones with the browser's bars showing (iPhone 14 Safari is 390x664): every screen still fits. The photos give up height first,
+   then the repeats go (the act screen's included-strip repeats the hero; the neighborhood group names repeat the photo's kind line). */
+@media (max-width:599px){.pkh2 .h2-s1ph{min-height:170px}.pkh2 .h2-s4ph{min-height:90px}}
+@media (max-width:599px) and (max-height:760px){.pkh2 .h2-stub-inc{display:none}.pkh2 .h2-stub{padding:12px 14px}#pkh2#pkh2 .h2-stub-d{font-size:1.375rem!important}.pkh2 .h2-stub-logo{width:46%}}
+@media (max-width:599px) and (max-height:700px){.pkh2 .h2-s3 .h2-city-k{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}.pkh2 .h2-s3 .h2-city{gap:6px}
+  .pkh2 .h2-s3 .h2-city-r::before{content:"";flex:none;align-self:center;width:8px;height:8px;border-radius:50%;margin-right:4px;background:var(--dotc,#F2CF62)}
+  .pkh2 .h2-s3 .h2-city-k[data-g=around]+.h2-city-r{--dotc:#F0896B}.pkh2 .h2-s3 .h2-city-k[data-g=camp]+.h2-city-r{--dotc:#7FB6E6}
+  #pkh2#pkh2 .h2-s5 .h2-bc-l{font-size:.9375rem}}
+@media (max-width:389px){html:root:root #root#root#root#root#root#root#root#root#root#root#root#root#root [role="region"][aria-label="Listen"] > button[aria-label="Listen to Pickathon"]{padding:0 8px 0 7px!important;gap:5px!important;letter-spacing:.05em!important}
+  html:root:root:root #root [role=region][aria-label="Listen"][style*="height: 44px"],html:root:root:root [role=region][aria-label="Listen"][style*="height: 44px"]{right:50px!important}}
+/* short phones: the headline gets the photo; the place caption steps aside so nothing sits on the words */
+@media (max-width:599px) and (max-height:760px){#pkh2#pkh2 .h2-s1 .h2-hero{font-size:1.75rem!important}.pkh2 .h2-s1 .h2-hcap{display:none}#pkh2 .h2-tour{min-height:40px;padding:0 .875rem}#pkh2#pkh2 .h2-lead{font-size:1rem}}
+/* COOKIE BANNER on phones (funnel risk 1, Zale 23:15: it must not cover a button on first visit): a compact strip, and Home's screens shrink by its height
+   while it shows (home2.js vars), so it never sits on a button. */
+@media (max-width:599px){
+  html:root:root #root [role=dialog][aria-label="Cookie choices"]{flex-wrap:nowrap!important;gap:10px!important;padding:8px 12px!important;align-items:center!important}
+  html:root:root #root [role=dialog][aria-label="Cookie choices"] p{flex:1 1 auto!important;font-size:12px!important;line-height:1.3!important}
+  html:root:root #root [role=dialog][aria-label="Cookie choices"] p a{padding:6px 0!important;margin:-6px 0!important}
+  html:root:root #root [role=dialog][aria-label="Cookie choices"] > div{flex-direction:row!important;gap:6px!important}
+  html:root:root #root [role=dialog][aria-label="Cookie choices"] button{min-height:36px!important;padding:0 12px!important;font-size:12px!important}
+}
+@media (max-width:599px) and (max-height:760px){.pkh2 .h2-s1ph{min-height:140px}}
+.pkh2.h2-ck .h2-s1ph{min-height:190px}
+@media (max-height:760px){.pkh2.h2-ck .h2-s1 .h2-lead{display:none}.pkh2.h2-ck .h2-s1{gap:10px}}   /* while the cookie strip shows, the hero photo gives way so the ticket button stays clear */
+@media (max-width:599px) and (max-height:760px){.pkh2.h2-ck .h2-s1ph{min-height:168px}#pkh2#pkh2.h2-ck .h2-s1 .h2-hero{font-size:1.5625rem!important;top:12px}.pkh2.h2-ck .h2-band-m{padding:6px 10px}.pkh2.h2-ck .h2-band-p{padding:4px 10px}.pkh2.h2-ck .h2-s1{padding-bottom:8px}}
+/* the wall's quiet second beat (Zale 23:34): a text link to a past poster re-ordered by today (the 2019 year page's poster climb) */
+#pkh2 .h2-s6lnk{display:inline-flex;align-items:center;min-height:32px;margin:2px 0 0;padding:0;border:0;background:none;color:var(--cream);font:700 .875rem/1.2 var(--text);text-decoration:underline;text-decoration-color:rgba(242,207,98,.7);text-underline-offset:4px;cursor:pointer}
+#pkh2 .h2-s6lnk:hover{text-decoration-color:var(--gold)}
+#root#root#root #pkh2 .h2-s6lnk{min-height:32px!important;width:auto!important}
+@media (min-width:1200px){#pkh2 .h2-s6lnk{margin:0 0 0 auto;font-size:.9375rem}}
+/* the tablet held sideways (1024x768): the act screen takes the desktop layout (photo behind, words left, ticket stub right) so it fits */
+@media (min-width:1000px) and (max-width:1199px) and (orientation:landscape){
+  #pkh2 .h2-s.h2-s4{padding:calc(var(--tl) + 16px) 0 16px;display:flex;align-items:center;justify-content:center;gap:0}
+  #pkh2 .h2-s4 .h2-s4ph{position:absolute;inset:0;margin:0;min-height:0;width:auto;max-width:none;padding:0}
+  #pkh2#pkh2 .h2-s4ph h2{display:none}
+  #pkh2 .h2-s4 .h2-s4in{position:relative;z-index:2;display:grid;grid-template-columns:1fr 440px;gap:40px;align-items:center;width:100%;max-width:1000px;padding:0 32px}
+  #pkh2 .h2-s4 .h2-s4side{display:grid;gap:18px}
+  #pkh2#pkh2 .h2-s4 .h2-s4h{display:block;font-size:2.75rem!important;text-shadow:0 1px 18px rgba(0,0,0,.6);max-width:12ch!important;color:var(--cream)}
+  #pkh2 .h2-s4 .h2-s4solid{display:grid;background:var(--ground);padding:16px 18px;gap:12px;max-width:420px}
+  #pkh2 .h2-s4 .h2-stub,#pkh2 .h2-s4 .h2-quote,#pkh2 .h2-s4 .h2-s4end{width:auto;max-width:none}
+  #pkh2 .h2-s4 .h2-stub{margin:0;padding:20px 22px}
+}
+
+/* 4 PROOF, the poster climb back on Home (Zale 23:38). pk-climb draws into .pk-cl-mount; Home places it and adds the before/after strip (.h2-ba). */
+.pkh2 .h2-s.h2-s2{padding-top:calc(var(--tl) + 10px);padding-bottom:12px}
+.pkh2 .h2-s2 .pk-cl-mount{width:100%}
+#pkh2 .h2-s2 .pk-cl-hd .pk-nh-k{display:none}
+.pkh2 .h2-s2in{position:relative;width:100%}
+/* the line under the time bar repeats the strip: kept for screen readers only */
+#root#root #pkh2 .h2-s2 .pk-cl-tl{position:absolute!important;width:1px!important;height:1px!important;overflow:hidden!important;clip:rect(0 0 0 0)!important;margin:0!important;padding:0!important}
+/* buttons.md: Another year = secondary (cream outline, 6px corners); Replay = the small icon-and-word kind */
+#root#root #pkh2 .h2-s2 .pk-cl-an{display:inline-flex;align-items:center;justify-content:center;min-height:48px!important;padding:0 1.25rem!important;border-radius:6px!important;border:1.5px solid rgba(242,237,227,.6)!important;background:transparent!important;color:var(--cream)!important;
+  font:800 .8125rem/1 var(--text)!important;letter-spacing:.08em!important;text-transform:uppercase!important;box-shadow:none;cursor:pointer}
+#root#root #pkh2 .h2-s2 .pk-cl-rpl{min-height:36px!important;padding:0 .75rem!important;border-radius:6px!important;border:1.5px solid rgba(242,237,227,.45)!important;background:transparent!important;color:var(--cream)!important;font:800 .75rem/1 var(--text)!important;letter-spacing:.06em!important;text-transform:uppercase!important;box-shadow:none}
+/* BEFORE / AFTER strip: two labeled states in that year's paper and ink, the line between fills as the names move */
+.pkh2 .h2-ba{display:flex;align-items:center;gap:8px;margin:0 0 8px;font:800 .75rem/1.15 var(--text);letter-spacing:.08em;text-transform:uppercase}
+.pkh2 .h2-ba-a,.pkh2 .h2-ba-b{flex:none;padding:7px 9px;border-radius:3px;opacity:.45;transition:opacity .35s linear,box-shadow .35s linear}
+.pkh2 .h2-ba-a{background:var(--ba-p,#F0EEEA);color:var(--ba-i,#2B2628)}
+.pkh2 .h2-ba-b{background:var(--ba-i,#454661);color:var(--ba-p,#F0EEEA);box-shadow:inset 0 0 0 1.5px var(--ba-p,#F0EEEA)}
+.pkh2 .h2-ba.is-a .h2-ba-a,.pkh2 .h2-ba.is-b .h2-ba-b{opacity:1}
+.pkh2 .h2-ba.is-b .h2-ba-b{box-shadow:inset 0 0 0 1.5px var(--ba-p,#F0EEEA),0 0 0 3px rgba(242,207,98,.55)}
+.pkh2 .h2-ba-t{position:relative;flex:1;height:2px;background:rgba(242,237,227,.22)}
+.pkh2 .h2-ba-t i{position:absolute;left:0;top:-1px;height:4px;width:0;background:var(--gold);border-radius:2px}
+.pkh2 .h2-ba-t::after{content:"";position:absolute;right:-1px;top:-4px;border:5px solid transparent;border-left:7px solid rgba(242,237,227,.5);border-right:0}
+@media (prefers-reduced-motion:reduce){.pkh2 .h2-ba{display:none}}   /* pk-climb shows the two orders side by side instead */
+@media (max-width:379px){.pkh2 .h2-ba{font-size:.6875rem;letter-spacing:.05em}.pkh2 .h2-ba-a,.pkh2 .h2-ba-b{padding:6px 7px}}
+@media (min-width:600px) and (max-width:1199px){.pkh2 .h2-s.h2-s2{padding-top:calc(var(--tl) + 20px);justify-content:flex-start}.pkh2 .h2-s2>.h2-s2in{max-width:none}.pkh2 .h2-ba{max-width:640px;margin:0 auto 12px;font-size:.8125rem}}
+@media (max-width:1199px){#pkh2 .h2-s2 .pk-cl-pw{transform-origin:top center!important;transform:scale(var(--h2-ps,1))!important;margin-bottom:var(--h2-pmb,0px)!important}}
+@media (max-width:599px){#root#root #pkh2 .h2-s2 .pk-cl-an{width:auto!important;padding:0 .875rem!important}}
+/* desktop and the sideways tablet: heading, Another year, time bar and Replay on the left; the strip and the poster on the right */
+@media (min-width:1200px),(min-width:1000px) and (orientation:landscape){
+  .pkh2 .h2-s.h2-s2{display:block;padding:calc(var(--tl) + 24px) max(24px,calc((100vw - 1160px)/2)) 20px}
+  .pkh2 .h2-s2in{max-width:1160px;margin:0 auto}
+  #pkh2 .h2-s2 .pk-cl-mount{display:grid!important;grid-template-columns:minmax(0,4fr) minmax(0,6fr);grid-template-rows:1fr auto auto auto 1fr;column-gap:48px;max-width:1160px;margin:0 auto;min-height:calc(var(--scr) - var(--tl) - 44px - 46px)}
+  #pkh2#pkh2 .h2-s2 .pk-cl-hd{grid-column:1;grid-row:2;display:block;max-width:none;margin:0}
+  #pkh2#pkh2 .h2-s2 .pk-cl-an{margin-top:18px}
+  #pkh2#pkh2 .h2-s2 .pk-cl-tb{grid-column:1;grid-row:3;width:100%;max-width:none;margin:22px 0 0}
+  #pkh2#pkh2 .h2-s2 .pk-cl-cmp{grid-column:1;grid-row:3/5}
+  #pkh2#pkh2 .h2-s2 .pk-cl-pw{grid-column:2;grid-row:1/-1;justify-self:start;align-self:start;transform-origin:top left!important;transform:scale(var(--h2-ps,1))!important;margin:0 0 var(--h2-pmb,0px) var(--h2-pml,0px)!important}
+  #pkh2 .h2-s2 .pk-cl-mount>.pk-sr{position:absolute}
+  .pkh2 .h2-ba{margin:0 0 14px calc((100% - 48px) * .4 + 48px);font-size:.8125rem}
+}

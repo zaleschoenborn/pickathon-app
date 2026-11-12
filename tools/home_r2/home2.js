@@ -29,6 +29,7 @@ window.pkClimbRank = function (C, dd) {
   var KIND = { stage: 'Stage neighborhood', around: 'Gathering neighborhood', camp: 'Camping neighborhood' }, GROUPS = [['stage', 'Stage'], ['around', 'Gathering'], ['camp', 'Camping']];
   var HERO = 'i/r3-home-hero.jpg', ACT = 'i/pk-paddock-c11.jpg';   /* HERO is only the fallback: the hero cycles data.homeHero (Round 3.5, Zale Nov 11 23:30) */
   var HERO_MS = 7000;   /* each hero photo holds 7 s, then a 1.6 s crossfade (home2.css). No motion with reduced motion: the first frame stays. */
+  var WALL = /[?&]wall=1\b/.test(location.search);   /* the name wall, for review only */
   var QUOTE = ['You need to know about Pickathon.', 'USA Today'];
 
   /* ---------- helpers ---------- */
@@ -154,13 +155,18 @@ window.pkClimbRank = function (C, dd) {
       '<div class="h2-band-p"><small>3-Day Pass from</small><b class="h2-num" data-h2="from">' + (t ? t.from : '') + '</b><small>camping included</small><small>kids 12 &amp; under free</small></div></div>' +
       '<div class="h2-cta" data-h2="cta1"></div></div></section>';
     var hP = h; h = '';
-    /* 4 PROOF (Round 3.5, Zale Nov 11 23:30: "very visual: the weight of these bands"). Not one year's poster: every Discovery since the first,
-       the biggest six as photos, the rest as a wall of names in their first year's colors, ranked by pkRankCmp. Drawn by drawWall(). The 2019 poster
-       climb (pk-climb) now lives only on the year pages. */
-    h += '<section class="h2-s h2-s6" aria-labelledby="h2-h6"><div class="h2-s6head"><h2 class="h2-d h2-sec pkp-head" id="h2-h6">Everyone who broke out here</h2>' +
-      '<p class="h2-sub h2-s6sub" data-h2="wsub"></p></div>' +
-      '<div class="h2-faces" data-h2="faces"></div><div class="h2-wall" data-h2="wall" aria-hidden="true"></div>' +
-      '<div class="h2-row h2-s6row"><button type="button" class="h2-pill" data-h2="alldisc" data-h2n="wall">See them all</button><span class="h2-s6cta" data-h2="cta6"></span></div></section>';
+    /* 4 PROOF: the poster climb (pk-climb draws into .pk-cl-mount, plays once, Replay, Another year). Zale 23:38: it stays on Home; make the before
+       and after obvious. Home adds the two labeled states above it (drawBA): "As printed, YYYY" and "Re-ordered by today", lit as the names move.
+       The "Everyone who broke out here" wall (Round 3.5 first take) is kept behind ?wall=1 for review; it is not on Home. */
+    try { if (window.pkClimbRank && window.pkClimb) { var RK = window.pkClimbRank(window.pkClimb, d); window.pkClimbOrder = RK.order; if (!window.pkClimbY0 || window.pkClimbY0 !== RK.y0) window.pkClimbY0 = RK.y0; } } catch (e) {}
+    if (WALL) {
+      h += '<section class="h2-s h2-s6" aria-labelledby="h2-h6"><div class="h2-s6head"><h2 class="h2-d h2-sec pkp-head" id="h2-h6">Everyone who broke out here</h2>' +
+        '<p class="h2-sub h2-s6sub" data-h2="wsub"></p><button type="button" class="h2-s6lnk" data-h2="climb">See a past poster re-ordered by today<span aria-hidden="true"> →</span></button></div>' +
+        '<div class="h2-faces" data-h2="faces"></div><div class="h2-wall" data-h2="wall" aria-hidden="true"></div>' +
+        '<div class="h2-row h2-s6row"><button type="button" class="h2-pill" data-h2="alldisc" data-h2n="wall">See them all</button><span class="h2-s6cta" data-h2="cta6"></span></div></section>';
+    } else {
+      h += '<section class="h2-s h2-s2" aria-labelledby="pk-cl-h"><div class="h2-s2in"><div class="h2-ba" data-h2="ba" aria-hidden="true"><span class="h2-ba-a" data-h2="baa"></span><span class="h2-ba-t"><i data-h2="baf"></i></span><span class="h2-ba-b">Re-ordered by today</span></div><div class="pk-cl-mount"></div></div></section>';
+    }
     var hPoster = h; h = '';
     /* 3 PLACE (Round 3.5 hybrid, neighborhood panel Nov 11): the emblems are the picker; the photo says what the place is (kind, name, its title in gold)
        and cycles its preview set; a still farm map shows where it is (tints by kind, the picked outline in gold with its emblem). Photo or map opens Places. */
@@ -318,7 +324,7 @@ window.pkClimbRank = function (C, dd) {
     if (!root) return; var s = $('.h2-s6', root); if (!s) return; var L = wallList();
     if (!L.length) { s.hidden = true; return; } s.hidden = false;
     var lead = (bandList()[0] || {}).n, y0 = L.reduce(function (a, b) { return Math.min(a, +b.y || 9999); }, 9999);
-    var nF = window.innerWidth < 380 ? 3 : 6, F = [];
+    var nF = (window.innerWidth < 380 || (window.innerWidth < 600 && window.innerHeight < 760)) ? 3 : 6, F = [];   /* short or narrow phones: one row of photos, so the wall still shows */
     L.forEach(function (a) { if (F.length < nF && a.n !== lead && /^(i|alum)\//.test(a.img)) F.push(a); });
     var inF = {}; F.forEach(function (a) { inF[a.n] = 1; });
     var key = nF + '|' + L.length + '|' + lead; if (s._k === key) return; s._k = key;
@@ -359,21 +365,50 @@ window.pkClimbRank = function (C, dd) {
     var desk = window.innerWidth >= 1200, scr, tl = 0;
     if (desk) { var hd = $('#root header'), hb = hd ? hd.getBoundingClientRect().bottom : 0; scr = window.innerHeight - Math.max(0, Math.min(hb, 200)); }
     else { var mn = document.getElementById('pk-scroll-phone'); scr = mn ? mn.clientHeight : window.innerHeight - 125; var t = document.getElementById('pk-tl2'); tl = t && !t.hasAttribute('data-off') ? 44 : 0; }
+    var ck = !desk && document.querySelector('[role=dialog][aria-label="Cookie choices"]'), ckh = 0;
+    if (ck && mn) { var cr = ck.getBoundingClientRect(), mr = mn.getBoundingClientRect(); if (cr.height > 0 && cr.height < 200) ckh = Math.max(0, Math.ceil(mr.bottom - cr.top)); }
+    if (ckh) scr -= ckh; root.classList.toggle('h2-ck', !!ckh);   /* the cookie strip (first visit): each screen ends above it */
     var v = Math.round(scr) + 'px|' + tl + 'px';
     if (root._v !== v || !root.style.getPropertyValue('--scr')) {   /* the renderer resets the island's own attributes on every render */ root._v = v; root.style.setProperty('--scr', Math.round(scr) + 'px'); root.style.setProperty('--tl', tl + 'px'); }
-    if (desk) root.style.removeProperty('--h2-hp'); else fitPh(scr);
+    var wideTab = !desk && window.innerWidth >= 1000 && window.innerWidth > window.innerHeight;   /* Round 3 (A11): sideways tablet uses the desktop poster columns */
+    if (desk) { root.style.removeProperty('--h2-hp'); poster(scr); } else { fitPh(scr); if (wideTab) poster(scr); }
     if (cur) mapPick(cur);   /* the map box changed size: re-frame the pin */
-    try { drawWall(); } catch (e) {}   /* three photos or six follows the width */
+    if (WALL) try { drawWall(); } catch (e) {}   /* three photos or six follows the width */
   }
   /* phone and tablet (QA M2, Nov 11): screens 2 and 3 must fit one screen under the ticket line. Clear the fit, measure the natural height,
      then shrink only the card photo and the neighborhood photo by what spills over. Load, resize and redraw only; one layout pass.
      Screen 4 (the wall) needs no fit: its wall of names takes whatever height is left. */
   function fitPh(scr) {
-    var r = root.style; r.removeProperty('--h2-hp');
+    var r = root.style; ['--h2-ps', '--h2-pmb', '--h2-pml', '--h2-hp'].forEach(function (k) { r.removeProperty(k); }); root._ps = '';
+    var s2 = $('.h2-s2', root), pw = s2 && $('.pk-cl-pw', s2);
+    if (pw) { var PH = pw.offsetHeight, o = s2.scrollHeight - scr; if (PH && o > 0) { var k = Math.max(window.innerWidth >= 700 ? 0.5 : (window.innerHeight < 700 ? 0.42 : 0.52), (PH - o - 2) / PH);   /* short phones (Safari bars showing) let the poster go smaller so the screen still fits */ r.setProperty('--h2-ps', k.toFixed(4)); r.setProperty('--h2-pmb', (-(PH * (1 - k))).toFixed(1) + 'px'); } }
     var s5 = $('.h2-s5', root), bp = s5 && $('.h2-bc-ph', s5);
     if (bp) { r.removeProperty('--h2-bp'); var BH = bp.offsetHeight, o5 = s5.scrollHeight - scr; if (BH && o5 > 0) r.setProperty('--h2-bp', Math.max(96, BH - o5 - 2) + 'px'); }
     var s3 = $('.h2-s3', root), ph = s3 && $('.h2-hmv', s3);
     if (ph) { var H = ph.offsetHeight, o3 = s3.scrollHeight - scr; if (H && o3 > 0) r.setProperty('--h2-hp', Math.max(72, H - o3 - 2) + 'px'); }
+  }
+  /* desktop and the sideways tablet: scale pk-climb's poster to the right-hand column and the screen (on draw and resize only) */
+  function poster(scr) {
+    var s2 = $('.h2-s2', root), m = s2 && $('.pk-cl-mount', s2), pw = m && $('.pk-cl-pw', m); if (!pw) return;
+    var PW = parseFloat(pw.style.width) || 0, PH = parseFloat(pw.style.height) || 0; if (!PW || !PH) return;
+    var gapC = parseFloat(getComputedStyle(m).columnGap) || 48, colW = (m.clientWidth - gapC) * 6 / 10, cs = getComputedStyle(s2), ba = $('.h2-ba', s2), availH = scr - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom) - (ba && ba.offsetHeight ? ba.offsetHeight + 14 : 0);
+    var k = Math.min(1, colW / PW, availH / PH), mb = -(PH * (1 - k)), ml = Math.max(0, colW - PW * k);
+    var key = k.toFixed(4) + '|' + Math.round(ml); if (root._ps === key && root.style.getPropertyValue('--h2-ps')) return; root._ps = key;
+    root.style.setProperty('--h2-ps', k.toFixed(4)); root.style.setProperty('--h2-pmb', mb.toFixed(1) + 'px'); root.style.setProperty('--h2-pml', ml.toFixed(1) + 'px');
+  }
+  /* BEFORE AND AFTER (Zale 23:38): two labeled states over the poster, in that year's paper and ink. The left one is lit while the bill is as printed,
+     the line between them fills as the names move (it follows pk-climb's own time bar), the right one is lit when the bill rests on today's order. */
+  var baT = null;
+  function drawBA() {
+    if (!root) return; var s2 = $('.h2-s2', root), ba = s2 && $('.h2-ba', s2), m = s2 && $('.pk-cl-mount', s2); if (!ba || !m) return;
+    var y = m.getAttribute('data-y') || window.pkClimbY0 || '', C = ((window.pkClimb || {})[y]) || {}, P = C.paper || '#F0EEEA', I = (C.inks || [])[0] || '#2B2628';
+    var tf = $('.pk-cl-tf', m), f = tf ? (parseFloat(tf.style.width) || 0) / 100 : 1, tl = $('.pk-cl-tl', m), txt = tl ? tl.textContent : '';
+    if (/as printed|as booked/i.test(txt)) f = 0; else if (/today/i.test(txt) && !tf) f = 1;
+    var key = y + '|' + f.toFixed(2); if (ba._k === key) return; ba._k = key;
+    ba.style.setProperty('--ba-p', P); ba.style.setProperty('--ba-i', I);
+    $('[data-h2="baa"]', ba).textContent = (C.src === 'real billing' ? 'As printed, ' : 'As booked, ') + y;
+    $('[data-h2="baf"]', ba).style.width = (f * 100).toFixed(1) + '%';
+    ba.classList.toggle('is-a', f < 0.02); ba.classList.toggle('is-b', f > 0.98);
   }
   function watchS1() {
     if (io) { io.disconnect(); io = null; }
@@ -388,7 +423,7 @@ window.pkClimbRank = function (C, dd) {
     if (el !== root || !el.firstChild || built !== (D.year + '|' + hoodIds(D).length)) {
       root = el; built = D.year + '|' + hoodIds(D).length;
       el.classList.add('pkh2'); el.innerHTML = skeleton(D); guard(el); el._cta = '';
-      hood(cur && D.hoods[cur] ? cur : hoodOrder()[0]); BL = null; WL = null; drawBand(); drawWall();
+      hood(cur && D.hoods[cur] ? cur : hoodOrder()[0]); BL = null; WL = null; drawBand(); if (WALL) drawWall();
       tucked = true; watchS1(); vars(); heroStart();
     }
     drawCTA();
@@ -407,19 +442,25 @@ window.pkClimbRank = function (C, dd) {
     if (a === 'allhoods') { if (window.__pkGoFarm) window.__pkGoFarm(); else go('hoods'); return; }
     if (a === 'plan') { go('info'); return; }
     if (a === 'face') { toArchive(b.getAttribute('data-n')); return; }
+    if (a === 'climb') { try { if (window.pkOpenYear) { window.pkOpenYear(2019); return; } } catch (x) {} return; }   /* Zale 23:34: the second beat, the 2019 poster climb on its year page */
     if (a === 'hpause') { heroPause(b); return; }
     if (a === 'tour') { var A = app(); try { if (A && A.ssOpen) { A.ssOpen(); return; } } catch (x) {} return; }   /* the full-screen photo tour (the screensaver), as the old Home's "Photo tour" */
   }
 
   /* ---------- keeping in step with the app ---------- */
-  function syncAll() { try { drawHome(); } catch (e) { if (window.console) console.error('pk-home2', e); } try { drawButtons(); } catch (e) { if (window.console) console.error('pk-home2 tix', e); } try { vars(); watchMain(); } catch (e) {} }
+  /* Listen (Round 3.5, Zale: "I had no idea that little button was for listening"): the labeled button sits in the phone and tablet header row.
+     It is a fixed float, so it follows the header's top (the test bar pushes the header down until the launch switch). Style: home2.css. */
+  function hdTop() { var h = document.querySelector('#root header'), t = h ? Math.max(0, Math.round(h.getBoundingClientRect().top)) : 0; if (t !== hdTop._t) { hdTop._t = t; document.documentElement.style.setProperty('--pk-hd-top', t + 'px'); } }
+  function syncAll() { try { hdTop(); } catch (e) {} try { drawHome(); } catch (e) { if (window.console) console.error('pk-home2', e); } try { drawButtons(); } catch (e) { if (window.console) console.error('pk-home2 tix', e); } try { vars(); watchMain(); } catch (e) {} }
   var render0 = window.__render;
   if (typeof render0 === 'function') window.__render = function () { var r = render0.apply(this, arguments); syncAll(); return r; };
   document.addEventListener('click', onClick);
-  window.addEventListener('resize', function () { try { vars(); } catch (e) {} });
+  window.addEventListener('resize', function () { try { hdTop(); vars(); } catch (e) {} });
   var ro = null, roOn = null;   /* the phone scroller changes height without a resize event (a bar above it opening or closing) */
   function watchMain() { var m = document.getElementById('pk-scroll-phone'); if (m === roOn || !('ResizeObserver' in window)) return; if (ro) ro.disconnect(); roOn = m; if (!m) return; ro = new ResizeObserver(function () { try { vars(); } catch (e) {} }); ro.observe(m); }
   document.addEventListener('visibilitychange', function () { if (!document.hidden) syncAll(); });
+  try { new MutationObserver(function () { if (root && $('.h2-s2', root)) { root._ps = ''; vars(); drawBA(); } }).observe(document.body, { attributes: true, attributeFilter: ['data-y'], subtree: true }); } catch (e) {}
+  setInterval(function () { if (!root || document.hidden) return; var s2 = $('.h2-s2', root); if (!s2) return; var r = s2.getBoundingClientRect(); if (r.bottom > 0 && r.top < window.innerHeight) drawBA(); }, 120);   /* only while the poster is on screen */
   window.__pkHome2 = { refresh: function () { built = ''; if (root) root._cta = ''; syncAll(); }, tix: function () { return tix(); }, remind: remindSheet, hood: function (k) { hood(k); } };
   syncAll();
 })();
