@@ -121,3 +121,19 @@
   function link() { try { var A = window.comp || window.__pkApp, s = A.state.stack, h = hashOf(s[s.length - 1]); return window.location.origin + window.location.pathname + h; } catch (e) { return window.location.href.split('#')[0]; } }
   window.pkRoute = { slug: slug, hashOf: hashOf, fromHash: fromHash, push: push, sync: sync, same: same, onPop: onPop, boot: boot, link: link, hoodId: hoodId };
 })();
+/* pkRank (Round 3 D2, BRIEF Nov 11 18:14): the one ranking rule, used by the archive, Home's "Before they were big" and the year page's
+   top names (the poster's TODAY order in pk-climb.js follows the same rule from climbSrc r[6]).
+   magnitude_dec (archCT m, yearBill m), minus 1 for a Deep cut; a Discovery goes ahead of a Legend only on an exact tie; then confidence; then name.
+   Acts with no number go below the measured ones. Item fields: m, k ('disc' | 'leg' | 'deep' or the class names), c (confidence), n. */
+(function () {
+  var TIE = { disc: 0, Discovery: 0, leg: 1, Legend: 1, deep: 2, 'Deep cut': 2 }, CF = { high: 5, 'medium-high': 4, medium: 3, 'low-medium': 2, low: 1 };
+  function val(a) { var m = a && a.m; if (m === null || m === undefined || m === '' || isNaN(+m)) return null; return +m - (a.k === 'deep' || a.k === 'Deep cut' ? 1 : 0); }
+  window.pkRankCmp = function (a, b) {
+    var va = val(a), vb = val(b);
+    if ((va === null) !== (vb === null)) return va === null ? 1 : -1;
+    if (va !== vb) return (vb || 0) - (va || 0);
+    var ta = TIE[a.k], tb = TIE[b.k]; ta = ta === undefined ? 3 : ta; tb = tb === undefined ? 3 : tb; if (ta !== tb) return ta - tb;
+    var ca = CF[String(a.c || '').toLowerCase()] || 0, cb = CF[String(b.c || '').toLowerCase()] || 0; if (ca !== cb) return cb - ca;
+    return String(a.n || '').localeCompare(String(b.n || ''));
+  };
+})();
