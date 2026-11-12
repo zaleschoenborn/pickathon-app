@@ -111,7 +111,7 @@ window.pkClimbRank = function (C, dd) {
   function tixHidden(line) { var r = route(); return r === 'tickets' || !!document.getElementById('pk-co') || (site().season || 'off') === 'fest' || (line && r === 'hoods'); }
   function drawButtons() {
     var t = null; try { t = tix(); } catch (e) {}
-    var off = !t || tixHidden(), offL = !t || tixHidden(true), home = !!document.getElementById('pkh2');
+    var home = !!document.getElementById('pkh2'), off = !t || tixHidden(), offL = !t || tixHidden(true) || home;   /* Zale Nov 12 07:39: no sticky ticket line on Home (5174 had none), before the sale or on it */
     var tl = document.getElementById('pk-tl2');
     if (tl) {
       tl.classList.add('pk-tl2w'); if (offL) tl.setAttribute('data-off', ''); else tl.removeAttribute('data-off');
