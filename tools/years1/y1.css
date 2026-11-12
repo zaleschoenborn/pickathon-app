@@ -157,3 +157,6 @@ $P .pk-hy-c.pk-hy-slug .pk-hy-t b{font-family:'Pickathon 2014',sans-serif!import
 $P .pk-hy-c.pk-hy-slug .pk-hy-now{padding-top:6px!important;color:var(--yb-ink2)!important;-webkit-text-fill-color:var(--yb-ink2);text-shadow:none!important}
 $P .pk-hy-c.pk-hy-slug .pk-hy-a{margin:8px 0 10px!important;color:var(--yb-ink)!important;-webkit-text-fill-color:var(--yb-ink);text-shadow:none!important}
 $P .pk-hy-c.pk-hy-slug .pk-hy-a em{color:var(--yb-ink2)!important;-webkit-text-fill-color:var(--yb-ink2)}
+/* Gate 2 design 10: the ring explained in one line; narrow phones keep the column labels apart */
+$P .pk-tn .pk-tn-ring{margin:10px 0 0!important;font:600 12.5px/1.35 'Inter',system-ui,sans-serif!important;color:#CFC9BC!important}
+@media (max-width:374px){$P .pk-tn .pk-tn-cols span{font-size:9.5px!important;letter-spacing:0!important}}

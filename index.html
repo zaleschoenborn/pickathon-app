@@ -1719,9 +1719,9 @@ html.pk-tmon #root header + *{margin-top:44px}
     w.innerHTML = '<p class="pk-tn-k">' + (ONE ? 'Where they stand' : 'Who broke out') + '</p><h3 class="pk-tn-h">' + TTL + '</h3>' + SUB + '<button type="button" class="pk-tn-tg" aria-expanded="' + (TNO ? 'true' : 'false') + '">' + (TNO ? 'Hide the dots' : (ONE ? 'See the dots' : 'See all ' + NUP + ' who moved up \u2192')) + '</button>' +
       (ONE ? '<p class="pk-tn-p">The ' + Y.acts.length + ' bands of ' + y + ', by class now.</p>' : Y.dates.length === 2 ? '<p class="pk-tn-p">The ' + Y.acts.length + ' bands of ' + y + ', by class at the festival and now.</p>' : '<p class="pk-tn-p">The ' + Y.acts.length + ' bands of ' + y + ', by class at the festival and now. Nobody is a Discovery at the festival; it shows in the rooms they play after.</p>') +
       '<div class="pk-tn-nav"><span class="pk-tn-cal" aria-hidden="true"><b></b><b></b></span><div class="pk-tn-sl"><input type="range" class="pk-tn-rg" min="0" max="1000" value="1000" aria-label="Slide from the ' + y + ' festival to today"><span class="pk-tn-cap" aria-live="polite"></span></div><button type="button" class="pk-tn-chip pk-tn-playb" aria-label="Play the years">\u25B6 Play</button></div>' +
-      '<p class="pk-tn-now">' + 'Now' + '</p><div class="pk-tn-cols">' + COL.map(function (c, ci) { var nF = 0; if (!ONE) Y.acts.forEach(function (a) { if (CI[a.c[F]] === ci) nF++; }); return '<div style="--c:' + c[3] + '"><b></b><span>' + c[1] + '</span>' + (ONE ? '' : '<small>' + nF + ' at the festival</small>') + '</div>'; }).join('') + '</div>' +
+      '<p class="pk-tn-now">' + 'Now' + '</p><div class="pk-tn-cols">' + COL.map(function (c, ci) { var nF = 0; if (!ONE) Y.acts.forEach(function (a) { if (CI[a.c[F]] === ci) nF++; }); return '<div style="--c:' + c[3] + '"><b></b><span>' + c[1] + '</span>' + (ONE ? '' : '<small>' + (c[0] === 'disc' ? 'after the festival' : nF + ' at the festival') + '</small>') + '</div>'; }).join('') + '</div>' +
       '<div class="pk-tn-f" aria-hidden="true"><span class="pk-tn-tip" aria-hidden="true"></span>' + Y.acts.map(function (a, k) { return '<button type="button" class="pk-tn-dot" tabindex="-1" data-k="' + k + '"></button>'; }).join('') + '</div>' +
-      '<div class="pk-tn-card" aria-live="polite"></div>' +
+      (!ONE && Y.acts.some(function (a) { return a.c[F] !== a.c[N]; }) ? '<p class="pk-tn-ring">Ringed: changed class since the festival.</p>' : '') + '<div class="pk-tn-card" aria-live="polite"></div>' +
       '<p class="pk-tn-fn">' + 'Classes use what we know now.' + '</p>';
     var dots = w.querySelectorAll('.pk-tn-dot'), field = w.querySelector('.pk-tn-f'), tip = w.querySelector('.pk-tn-tip');
     /* Play the years: one fixed-length run (7.2 s) from the festival to today, however many years that is; the date counts through and every dot glides to its column when its class changes (Zale, Nov 10) */
@@ -11660,6 +11660,9 @@ html body:not(#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1) .
 html body:not(#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1) .pk-hy-c.pk-hy-slug .pk-hy-now{padding-top:6px!important;color:var(--yb-ink2)!important;-webkit-text-fill-color:var(--yb-ink2);text-shadow:none!important}
 html body:not(#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1) .pk-hy-c.pk-hy-slug .pk-hy-a{margin:8px 0 10px!important;color:var(--yb-ink)!important;-webkit-text-fill-color:var(--yb-ink);text-shadow:none!important}
 html body:not(#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1) .pk-hy-c.pk-hy-slug .pk-hy-a em{color:var(--yb-ink2)!important;-webkit-text-fill-color:var(--yb-ink2)}
+/* Gate 2 design 10: the ring explained in one line; narrow phones keep the column labels apart */
+html body:not(#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1) .pk-tn .pk-tn-ring{margin:10px 0 0!important;font:600 12.5px/1.35 'Inter',system-ui,sans-serif!important;color:#CFC9BC!important}
+@media (max-width:374px){html body:not(#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1) .pk-tn .pk-tn-cols span{font-size:9.5px!important;letter-spacing:0!important}}
 </style>
 <script id="pk-y1-js">
 /* Years package (Nov 12 2026): DOM touch-ups the templates can't express. Runs after renders (one observer, no timers). */
