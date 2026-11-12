@@ -60,8 +60,17 @@
     r.querySelector('button').addEventListener('click', function () { try { localStorage.setItem('pk-ios-row', 'x'); localStorage.setItem('pk-ios-tip', '1'); } catch (e) {} r.remove(); });
     h.insertAdjacentElement('afterend', r);
   }
+  /* Fix 14: tag the stray small targets (no stable class of their own) */
+  function t44() {
+    document.querySelectorAll('a,button').forEach(function (e) {
+      var t = (e.textContent || '').trim();
+      if (/^Mark my years/.test(t)) e.classList.add('pk-g1-t44');
+      else if (e.tagName === 'A' && /^mailto:/.test(e.getAttribute('href') || '')) e.classList.add('pk-g1-mail');
+      else if (t.length && t.length <= 8 && (e.closest('footer') || e.classList.contains('pk-nh-a'))) e.classList.add('pk-g1-w44');
+    });
+  }
   var q = 0;
-  function run() { q = 0; try { pills(); listen(); tabs(); iw(); btns(); iosRow(); } catch (e) { if (window.console) console.error('pk-g1', e); } }
+  function run() { q = 0; try { pills(); listen(); tabs(); iw(); btns(); iosRow(); t44(); } catch (e) { if (window.console) console.error('pk-g1', e); } }
   function soon() { if (!q) q = requestAnimationFrame(run); }
   try { new MutationObserver(soon).observe(document.documentElement, { childList: true, subtree: true }); } catch (e) {}
   window.addEventListener('hashchange', soon); window.addEventListener('resize', soon); soon();

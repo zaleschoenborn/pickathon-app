@@ -100,3 +100,21 @@ $P .pk-hd-hero .pk-hd-kick{color:rgba(242,237,227,.85)!important;-webkit-text-fi
 $P .pk-hd-hero .pk-hd-nm h1,$P .pk-hd-hero .pk-hd-t{text-shadow:0 1px 3px rgba(0,0,0,.6)!important}
 $P .pk-hd-hero .pk-hd-shade{background:linear-gradient(to top,rgba(20,16,18,.88) 0%,rgba(20,16,18,.55) 45%,rgba(20,16,18,0) 72%)!important;opacity:1!important;top:0!important;bottom:0!important;left:0!important;right:0!important;height:auto!important}
 @media (max-width:1024px){ $P .pk-hd-hero[aria-label="Cherry Hill"]>img{object-position:50% 78%!important} }
+
+/* -- Fix 14 (Q5, panel P6): every tap target is at least 44x44 -- */
+/* LISTEN (header on phone/tablet, float on desktop) */
+$P [role="region"][aria-label="Listen"] > button[aria-label="Listen to Pickathon"]{height:44px!important;min-height:44px!important}
+@media (max-width:999px){ $P [role=region][aria-label="Listen"][style*="height: 44px"]{height:44px!important;top:calc(var(--pk-hd-top,0px) + 17px)!important} }
+/* header logo buttons (home wordmark at 360, the small logo beside a back arrow) */
+$P header button[aria-label="Pickathon home"]{min-height:44px!important;align-items:center!important}
+/* Home and Why hero: Pause the photos; Take the tour on short phones */
+$P .h2-hpz{width:44px!important;height:44px!important;min-width:44px!important;min-height:44px!important}
+$P #pkh2 .h2-tour{min-height:44px!important}
+/* the video player's close */
+$P .pk-vo-x{width:44px!important;height:44px!important;min-width:44px!important;min-height:44px!important}
+/* My Pickathon: "Mark my years →"; artist "← Back" on desktop */
+$P .pk-g1-t44{display:inline-block!important;padding-top:7px!important;padding-bottom:7px!important;margin-top:-7px!important;margin-bottom:-7px!important}
+$P .pk-act-back{min-height:44px!important}
+/* footer: the email link and short links get a 44px tall hit area without moving the text */
+$P .pk-g1-mail{display:inline-block;padding:14px 0;margin:-14px 0}
+$P .pk-g1-w44{min-width:44px!important;display:inline-flex;justify-content:center}

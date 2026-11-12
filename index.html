@@ -11277,6 +11277,24 @@ html body:not(#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1) .pk-
 html body:not(#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1) .pk-hd-hero .pk-hd-nm h1,html body:not(#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1) .pk-hd-hero .pk-hd-t{text-shadow:0 1px 3px rgba(0,0,0,.6)!important}
 html body:not(#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1) .pk-hd-hero .pk-hd-shade{background:linear-gradient(to top,rgba(20,16,18,.88) 0%,rgba(20,16,18,.55) 45%,rgba(20,16,18,0) 72%)!important;opacity:1!important;top:0!important;bottom:0!important;left:0!important;right:0!important;height:auto!important}
 @media (max-width:1024px){ html body:not(#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1) .pk-hd-hero[aria-label="Cherry Hill"]>img{object-position:50% 78%!important} }
+
+/* -- Fix 14 (Q5, panel P6): every tap target is at least 44x44 -- */
+/* LISTEN (header on phone/tablet, float on desktop) */
+html body:not(#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1) [role="region"][aria-label="Listen"] > button[aria-label="Listen to Pickathon"]{height:44px!important;min-height:44px!important}
+@media (max-width:999px){ html body:not(#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1) [role=region][aria-label="Listen"][style*="height: 44px"]{height:44px!important;top:calc(var(--pk-hd-top,0px) + 17px)!important} }
+/* header logo buttons (home wordmark at 360, the small logo beside a back arrow) */
+html body:not(#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1) header button[aria-label="Pickathon home"]{min-height:44px!important;align-items:center!important}
+/* Home and Why hero: Pause the photos; Take the tour on short phones */
+html body:not(#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1) .h2-hpz{width:44px!important;height:44px!important;min-width:44px!important;min-height:44px!important}
+html body:not(#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1) #pkh2 .h2-tour{min-height:44px!important}
+/* the video player's close */
+html body:not(#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1) .pk-vo-x{width:44px!important;height:44px!important;min-width:44px!important;min-height:44px!important}
+/* My Pickathon: "Mark my years →"; artist "← Back" on desktop */
+html body:not(#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1) .pk-g1-t44{display:inline-block!important;padding-top:7px!important;padding-bottom:7px!important;margin-top:-7px!important;margin-bottom:-7px!important}
+html body:not(#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1) .pk-act-back{min-height:44px!important}
+/* footer: the email link and short links get a 44px tall hit area without moving the text */
+html body:not(#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1) .pk-g1-mail{display:inline-block;padding:14px 0;margin:-14px 0}
+html body:not(#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1) .pk-g1-w44{min-width:44px!important;display:inline-flex;justify-content:center}
 </style>
 <script id="pk-g1-js">
 /* Gate 1 fixes (Nov 12 2026): small DOM touch-ups the templates can't express. Runs after every render. */
@@ -11341,8 +11359,17 @@ html body:not(#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1) .pk-
     r.querySelector('button').addEventListener('click', function () { try { localStorage.setItem('pk-ios-row', 'x'); localStorage.setItem('pk-ios-tip', '1'); } catch (e) {} r.remove(); });
     h.insertAdjacentElement('afterend', r);
   }
+  /* Fix 14: tag the stray small targets (no stable class of their own) */
+  function t44() {
+    document.querySelectorAll('a,button').forEach(function (e) {
+      var t = (e.textContent || '').trim();
+      if (/^Mark my years/.test(t)) e.classList.add('pk-g1-t44');
+      else if (e.tagName === 'A' && /^mailto:/.test(e.getAttribute('href') || '')) e.classList.add('pk-g1-mail');
+      else if (t.length && t.length <= 8 && (e.closest('footer') || e.classList.contains('pk-nh-a'))) e.classList.add('pk-g1-w44');
+    });
+  }
   var q = 0;
-  function run() { q = 0; try { pills(); listen(); tabs(); iw(); btns(); iosRow(); } catch (e) { if (window.console) console.error('pk-g1', e); } }
+  function run() { q = 0; try { pills(); listen(); tabs(); iw(); btns(); iosRow(); t44(); } catch (e) { if (window.console) console.error('pk-g1', e); } }
   function soon() { if (!q) q = requestAnimationFrame(run); }
   try { new MutationObserver(soon).observe(document.documentElement, { childList: true, subtree: true }); } catch (e) {}
   window.addEventListener('hashchange', soon); window.addEventListener('resize', soon); soon();
