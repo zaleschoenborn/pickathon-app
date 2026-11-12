@@ -9777,7 +9777,7 @@ window.pkClimbRank = function (C, dd) {
     hoodShow(k, 0, false);
     $('[data-h2="hood"]', root).setAttribute('data-slot', 'home.place.' + k);
     $('[data-h2="hn"]', root).textContent = H.n; $('[data-h2="hk"]', root).textContent = KIND[H.k]; $('[data-h2="htag"]', root).textContent = H.t || '';
-    $('[data-h2="hood"]', root).setAttribute('aria-label', H.n + ', ' + KIND[H.k] + (H.t ? ', ' + H.t : '') + '. Explore it on the map');
+    $('[data-h2="hood"]', root).setAttribute('aria-label', H.n + ', ' + KIND[H.k] + (H.t ? ', ' + H.t : '') + '. Open its page');
     var mb = $('[data-h2="hmap"]', root); if (mb) mb.setAttribute('aria-label', 'Where ' + H.n + ' is on the farm. Open the map');
     $$('.h2-em', root).forEach(function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-h') === k ? 'true' : 'false'); });
     $$('.h2-sg', root).forEach(function (p) { p.classList.toggle('is-on', p.getAttribute('data-g') === H.k); });
@@ -9967,7 +9967,8 @@ window.pkClimbRank = function (C, dd) {
     if (a === 'alldisc') { toArchive(null); return; }
     if (a === 'barch') { var sa = $('.h2-s5', root); toArchive(sa && sa._a ? sa._a.n : null); return; }
     if (a === 'bph') { var sb = $('.h2-s5', root), ba = sb && sb._a; if (!ba) return; if (!ba.vu) { toArchive(ba.n); return; } try { if (/open\.spotify\.com/.test(ba.vu) && window.__pkOpenMusic) { window.__pkOpenMusic(ba.vu); return; } if (window.__pkPlayVid) window.__pkPlayVid(ba.vu, ba.n + ' · Pickathon ' + ba.y); } catch (x) {} return; }
-    if (a === 'hood' || a === 'hmap') { if (window.__pkMapH) window.__pkMapH(cur)(); else go('hoods'); return; }
+    if (a === 'hood') { if (cur) go('hood', { h: cur }); return; }   /* Zale Nov 12: the photo opens that neighborhood's own page (#/hood/<key>) */
+    if (a === 'hmap') { if (window.__pkMapH) window.__pkMapH(cur)(); else go('hoods'); return; }   /* the map beside it opens Places on it */
     if (a === 'allhoods') { if (window.__pkGoFarm) window.__pkGoFarm(); else go('hoods'); return; }
     if (a === 'plan') { go('info'); return; }
     if (a === 'face') { toArchive(b.getAttribute('data-n')); return; }
