@@ -67,7 +67,7 @@
     } else if (top.r === 'mine') {
       c.cur = +top.y || NOW; c.kick = 'Your Pickathon'; c.title = 'Another year'; c.foot = 'Each year opens your discoveries from that summer.';
       (S.myYears || []).forEach(function (y) { c.marks[+String(y).slice(0, 4)] = 'on'; }); if (Object.keys(c.marks).length) c.legend.push(['on', 'Years you came']);
-    } else if (top.r === 'schedule') { c.kick = 'The schedule'; c.title = 'Another year'; c.foot = 'You land on that year’s weekend, hour by hour.'; }   /* Round 3.5: Schedule's Pick a year */
+    } else if (top.r === 'schedule') { c.kick = 'The schedule'; c.title = 'Another year'; c.foot = 'You land on that year’s weekend, hour by hour (“Who played when”), where its schedule survives.'; }   /* Gate 1 fix 15 (Q6): it does land there; the sentence now says so, and says what happens for the early years */   /* Round 3.5: Schedule's Pick a year */
     else if (top.r === 'lineup') c.cur = NOW;
     return c;
   }
@@ -138,7 +138,7 @@
     }
     if (c.r === 'schedule') {   /* the same schedule section that year: the year page's "Who played when"; 2027 is this page */
       if (y === NOW) return close();
-      return close(function () { A.go('past', { y: String(y) }); var n = 0, find = function () { var h = [].slice.call(document.querySelectorAll('#root h2')).filter(function (e) { return /who played when/i.test(e.textContent || ''); })[0]; if (h) { var bars = [].slice.call(document.querySelectorAll('#root header, .pk-tm')).map(function (b) { var r = b.getBoundingClientRect(); return r.height && r.top < 200 ? r.bottom : 0; }); h.style.scrollMarginTop = (Math.max.apply(null, bars.concat([0])) + 12) + 'px'; h.scrollIntoView({ block: 'start' }); } else if (++n < 20) setTimeout(find, 150); }; setTimeout(find, 300); });
+      return close(function () { A.go('past', { y: String(y) }); var n = 0, find = function () { var h = [].slice.call(document.querySelectorAll('#root h2')).filter(function (e) { return /who played when/i.test(e.textContent || ''); })[0]; if (h) { var bars = [].slice.call(document.querySelectorAll('#root header, .pk-tm')).map(function (b) { var r = b.getBoundingClientRect(); return r.height && r.top < 200 ? r.bottom : 0; }); h.style.scrollMarginTop = (Math.max.apply(null, bars.concat([0])) + 12) + 'px'; h.scrollIntoView({ block: 'start' }); } else if (++n < 20) setTimeout(find, 150); else toast('No hour-by-hour schedule survives from ' + y + '. Here’s that year’s lineup.', 5000); }; setTimeout(find, 300); });
     }
     if (c.r === 'mine') { if (y === c.cur && y !== NOW) return close(); return close(y === NOW ? go('mine', {}) : go('mine', { y: String(y) })); }
     if (y === c.cur && c.r !== 'act') return close();
