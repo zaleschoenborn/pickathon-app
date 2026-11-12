@@ -192,11 +192,14 @@ window.pkClimbRank = function (C, dd) {
       '<div class="h2-stub-buy"><p><small>3-Day Pass from</small><b class="h2-num" data-h2="from">' + (t ? t.from : '') + '</b></p><span data-h2="cta4"></span></div></div></div></section>';
     /* 2 CONCEPT (Round 3 E1/E2, Zale approved the blend Nov 11): one Discovery at a time, the fact first. The photo and the gold pill play
        the video; the words open the archive at that artist; Another discovery walks the ranking; See all opens the archive. */
-    var hBand = '<section class="h2-s h2-s5" aria-labelledby="h2-h5"><div class="h2-s5head"><h2 class="h2-d h2-sec pkp-head" id="h2-h5">Be there before they’re big</h2>' +
+    /* 2 CONCEPT (Zale Nov 12 ~08:20): a carousel again, as build 5174, in today's ranking (magnitude_dec). Card: the photo full-bleed with the
+       transparent play ring centered when there is a clip (no gold pill); kind left and first year right; name; the fact; the clip and
+       "Pickathon YYYY" in the caption. Photo plays, words open the archive at that artist. See all Discoveries under it. Filled by drawBand(). */
+    var hBand = '<section class="h2-s h2-s5" aria-labelledby="h2-h5"><div class="h2-s5head"><div><h2 class="h2-d h2-sec pkp-head" id="h2-h5">Be there before they’re big</h2>' +
       '<p class="h2-sub h2-s5sub">You don’t know this year’s lineup yet. Neither did anyone who saw these bands here first.</p></div>' +
-      '<article class="h2-bc" data-h2="band" aria-live="polite"><button type="button" class="h2-bc-ph" data-h2="bph"><img alt="" decoding="async"><span class="h2-pill h2-watch h2-bc-w" data-h2="bw">' + PLAY + '<span></span></span></button>' +
-      '<button type="button" class="h2-bc-t" data-h2="barch"><span class="h2-bc-k"><span data-h2="bk"></span><span class="h2-bc-y" data-h2="by"></span></span><span class="h2-d h2-bc-n pkp-head" data-h2="bn"></span><span class="h2-bc-l" data-h2="bl"></span><span class="h2-bc-q" data-h2="bq"></span></button></article>' +
-      '<div class="h2-row h2-s5row"><button type="button" class="h2-pill h2-cream" data-h2="nextdisc">Another discovery</button><button type="button" class="h2-pill" data-h2="alldisc">See all Discoveries</button></div></section>';
+      '<div class="h2-cc-nav"><button type="button" class="h2-ib" data-h2="cprev" aria-label="Previous discoveries">' + CHEV + '</button><button type="button" class="h2-ib" data-h2="cnext" aria-label="More discoveries">' + CHEV + '</button></div></div>' +
+      '<div class="h2-cc-r" data-h2="cards" role="list" aria-label="Discoveries, ranked by how big they are today"></div>' +
+      '<div class="h2-row h2-s5row"><button type="button" class="h2-pill" data-h2="alldisc">See all Discoveries</button></div></section>';
     return hP + hBand + hPlace + hPoster + h;
   }
   /* the hero's sale line and its one button (5174 wording). Before the round: "Holiday Sale opens Nov 19, 10 am PT" + Alert me when it opens (the
@@ -292,19 +295,45 @@ window.pkClimbRank = function (C, dd) {
     }).filter(function (a) { return a.img; });
     BL.sort(window.pkRankCmp || function () { return 0; }); BLd = D; return BL;
   }
+  var NCARD = 30;   /* the top 30 by today's rank; See all opens the whole archive */
+  var RING = '<span class="h2-ring" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path d="M8.5 5.5 L19 12 L8.5 18.5 Z"/></svg></span>';
+  /* a song name from a raw video title: drop the act's name, "Pickathon YYYY", @pickathon tags and series names; nothing left = no song */
+  function cleanSong(t, n) {
+    var x = String(t || ''), q = String(n || '').replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    x = x.replace(/\s*[@(\[]?\s*pickathon\b[^)\]]*[)\]]?/ig, ' ').replace(/\b(On The Farm Sessions?|Live at|Full set|Live)\b/ig, ' ');
+    if (q) x = x.replace(new RegExp(q, 'ig'), ' ');
+    x = x.replace(/\s*[-–—|:,]\s*$/g, '').replace(/^\s*[-–—|:,]\s*/g, '').replace(/\s*[-–—|]\s*[-–—|]\s*/g, ' – ').replace(/\s{2,}/g, ' ').trim();
+    x = x.replace(/^[-–—|:,\s"“”']+|[-–—|:,\s"“”']+$/g, '');
+    x = x.replace(/[\u200b-\u200f\u2060\ufeff]/g, '').replace(/^[^-–]*\(S\d+E\d+\)\s*[-–]\s*/i, '').replace(/\s*[-–]\s*[^-–]*\b(Stage|Sessions?|Barn)\s*$/i, '').replace(/\s*\([^)]*$/, '');
+    x = x.replace(/^[-–—|:,\s"“”']+|[-–—|:,\s"“”']+$/g, '');
+    return x.length >= 2 && !/^\d{4}$/.test(x) ? x : '';
+  }
+  function clipCap(a) {
+    if (!a.vu) return '';
+    var r = vidRec(vidOf(a.vu));
+    var t = r && r.s ? cleanSong(r.s, a.n) : '';
+    if (t) return '“' + t + '” · Pickathon ' + (r.y || a.y);
+    if (r && /full set/i.test(r.s || '')) return 'Full set · Pickathon ' + (r.y || a.y);
+    return (/^Listen/.test(a.vt || '') ? 'Listen · ' : '') + 'Pickathon ' + a.y;
+  }
   function drawBand() {
     if (!root) return; var L = bandList(), s = $('.h2-s5', root); if (!s) return;
     if (!L.length) { s.hidden = true; return; } s.hidden = false;
-    var a = L[((bi % L.length) + L.length) % L.length], ph = $('[data-h2="bph"]', s), w = $('[data-h2="bw"]', s);
-    $('img', ph).src = a.img; $('img', ph).alt = '';
-    ph.setAttribute('aria-label', a.vu ? (/^Listen/.test(a.vt) ? 'Listen to ' : 'Watch ') + a.n + ' at Pickathon ' + a.y : a.n + ': see the archive');
-    w.hidden = !a.vu; $('span', w).textContent = a.vu ? a.vt : '';
-    $('[data-h2="bk"]', s).textContent = a.kind; $('[data-h2="by"]', s).textContent = a.y;
-    $('[data-h2="bn"]', s).textContent = a.n; $('[data-h2="bl"]', s).textContent = a.line;
-    $('[data-h2="bq"]', s).textContent = a.vu ? '' : 'Played Pickathon ' + a.y;
-    $('[data-h2="barch"]', s).setAttribute('aria-label', a.n + ', ' + a.kind + ', Pickathon ' + a.y + '. See ' + a.n + ' in the archive');
-    s._a = a;
-    if (window.innerWidth < 1200) { try { vars(); } catch (e) {} }   /* a longer or shorter fact: the photo takes what is left, so the section stays one screen */
+    var box = $('[data-h2="cards"]', s), key = L.length + '|' + (L[0] || {}).n; if (box._k === key) return; box._k = key;
+    box.innerHTML = L.slice(0, NCARD).map(function (a, i) {
+      var cap = clipCap(a);
+      return '<article class="h2-cc" role="listitem"><button type="button" class="h2-cc-ph" data-h2="bph" data-i="' + i + '" aria-label="' + esc(a.vu ? (/^Listen/.test(a.vt || '') ? 'Listen to ' : 'Watch ') + a.n + ', Pickathon ' + a.y : a.n + ': see the archive') + '">' +
+        '<img src="' + esc(a.img) + '" alt="" loading="' + (i < 3 ? 'eager' : 'lazy') + '" decoding="async">' + (a.vu ? RING : '') + '</button>' +
+        '<button type="button" class="h2-cc-t" data-h2="barch" data-i="' + i + '" aria-label="' + esc(a.n + ', ' + a.kind + ', Pickathon ' + a.y + '. See ' + a.n + ' in the archive') + '">' +
+        '<span class="h2-cc-k"><span>' + esc(a.kind) + '</span><span class="h2-cc-y">' + esc(a.y) + '</span></span><span class="h2-d h2-cc-n pkp-head">' + esc(a.n) + '</span>' +
+        '<span class="h2-cc-l">' + esc(a.line) + '</span>' + (cap ? '<span class="h2-cc-c">' + esc(cap) + '</span>' : '') + '</button></article>';
+    }).join('');
+    guard(box); s._L = L;
+  }
+  function cardStep(dir) {
+    var r = root && $('[data-h2="cards"]', root), c = r && $('.h2-cc', r); if (!r || !c) return;
+    var step = (c.offsetWidth + (parseFloat(getComputedStyle(r).columnGap) || 16)) * Math.max(1, Math.floor(r.clientWidth / (c.offsetWidth + 16)));
+    try { r.scrollBy({ left: dir * step, behavior: reduced() ? 'auto' : 'smooth' }); } catch (e) { r.scrollLeft += dir * step; }
   }
   /* the card's fact, about 100 characters (funnel panel, Nov 11: the section must fit 360x740). The long story stays in the archive.
      Mechanical until the story file brings a short hook per act: the whole line if it is short; else the sentence with the strongest
@@ -404,7 +433,7 @@ window.pkClimbRank = function (C, dd) {
     var r = root.style; ['--h2-ps', '--h2-pmb', '--h2-pml', '--h2-hp'].forEach(function (k) { r.removeProperty(k); }); root._ps = '';
     var s2 = $('.h2-s2', root), pw = s2 && $('.pk-cl-pw', s2);
     if (pw) { var PH = pw.offsetHeight, o = s2.scrollHeight - scr; if (PH && o > 0) { var k = Math.max(window.innerWidth >= 700 ? 0.5 : (window.innerHeight < 700 ? 0.42 : 0.52), (PH - o - 2) / PH);   /* short phones (Safari bars showing) let the poster go smaller so the screen still fits */ r.setProperty('--h2-ps', k.toFixed(4)); r.setProperty('--h2-pmb', (-(PH * (1 - k))).toFixed(1) + 'px'); } }
-    var s5 = $('.h2-s5', root), bp = s5 && $('.h2-bc-ph', s5);
+    var s5 = $('.h2-s5', root), bp = null;
     if (bp) { r.removeProperty('--h2-bp'); var BH = bp.offsetHeight, o5 = s5.scrollHeight - scr; if (BH && o5 > 0) r.setProperty('--h2-bp', Math.max(96, BH - o5 - 2) + 'px'); }
     var s3 = $('.h2-s3', root), ph = s3 && $('.h2-hmv', s3);
     if (ph) { var H = ph.offsetHeight, o3 = s3.scrollHeight - scr; if (H && o3 > 0) r.setProperty('--h2-hp', Math.max(72, H - o3 - 2) + 'px'); }
@@ -456,10 +485,11 @@ window.pkClimbRank = function (C, dd) {
     if (!root || !root.contains(b)) return;
     if (b.classList.contains('h2-em')) { hood(b.getAttribute('data-h')); return; }
     var a = b.getAttribute('data-h2');
-    if (a === 'nextdisc') { bi++; drawBand(); return; }
+    if (a === 'cprev' || a === 'cnext') { cardStep(a === 'cnext' ? 1 : -1); return; }
     if (a === 'alldisc') { toArchive(null); return; }
-    if (a === 'barch') { var sa = $('.h2-s5', root); toArchive(sa && sa._a ? sa._a.n : null); return; }
-    if (a === 'bph') { var sb = $('.h2-s5', root), ba = sb && sb._a; if (!ba) return; if (!ba.vu) { toArchive(ba.n); return; } try { if (/open\.spotify\.com/.test(ba.vu) && window.__pkOpenMusic) { window.__pkOpenMusic(ba.vu); return; } if (window.__pkPlayVid) window.__pkPlayVid(ba.vu, ba.n + ' · Pickathon ' + ba.y); } catch (x) {} return; }
+    if (a === 'barch' || a === 'bph') { var sl = $('.h2-s5', root), ba = sl && sl._L && sl._L[+b.getAttribute('data-i')]; if (!ba) return;
+      if (a === 'barch' || !ba.vu) { toArchive(ba.n); return; }
+      try { if (/open\.spotify\.com/.test(ba.vu) && window.__pkOpenMusic) { window.__pkOpenMusic(ba.vu); return; } if (window.__pkPlayVid) window.__pkPlayVid(ba.vu, clipCap(ba) || (ba.n + ' · Pickathon ' + ba.y)); } catch (x) {} return; }
     if (a === 'hood') { if (cur) go('hood', { h: cur }); return; }   /* Zale Nov 12: the photo opens that neighborhood's own page (#/hood/<key>) */
     if (a === 'hmap') { if (window.__pkMapH) window.__pkMapH(cur)(); else go('hoods'); return; }   /* the map beside it opens Places on it */
     if (a === 'allhoods') { if (window.__pkGoFarm) window.__pkGoFarm(); else go('hoods'); return; }
