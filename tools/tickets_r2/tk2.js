@@ -210,6 +210,14 @@
     return scrim;
   }
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && scrim && !scrim.__modal) { e.stopPropagation(); closeSheet(); } }, true);
+  /* Gate 1 (user panel P3): "See the camps" opens the four camps right here, in a sheet, so the order and the page stay put
+     (it used to leave for the Places map on Stages, with no way back). Each camp: its photo, what it is, and which choice below books it. */
+  function camps() {
+    var d = site().data, H = (d && d.hoods) || {}, L = [['lushcamp', 'Tent in the woods · included'], ['wildcamp', 'Tent in the woods · included'], ['southcamp', 'Car camping site · South Camp'], ['willowcamp', 'Car camping or RV site · Willow Camp']];
+    var rows = L.filter(function (x) { return H[x[0]]; }).map(function (x) { var o = H[x[0]], im = o.hi || o.i;
+      return '<li class="tk-camp">' + (im ? '<img src="' + esc(im) + '" alt="' + esc(o.n) + ' at Pickathon" loading="lazy">' : '') + '<div><b>' + esc(o.n) + '</b><span class="tk-camp-t">' + esc(o.t || '') + '</span><p>' + esc(o.hook || '') + '</p><span class="tk-camp-b">' + esc(x[1]) + '</span></div></li>'; }).join('');
+    sheet(sheetTop('The camps') + '<p class="tk-camps-l">Every weekend pass includes a tent spot in Lush or Wild Camp. Car camping and RV sites are extra.</p><ul class="tk-camps">' + rows + '</ul><button type="button" class="tk-pill tk-pill-gold tk-camps-x" data-close>Back to my order</button>', 'The camps');
+  }
   function sheetTop(t) { return '<div class="tk-sheet-top"><h2 class="tk-d tk-d-card">' + esc(t) + '</h2><button type="button" class="tk-sheet-x" data-close aria-label="Close">' + ic('x') + '</button></div>'; }
 
   /* ---------- the page ---------- */
@@ -259,7 +267,7 @@
       passCard('pat', 'Patron Pass', '<span class="tk-nw">Wed Aug 4</span> – <span class="tk-nw">Sun Aug 8</span>', [1, 1, 1, 1, 1], sold('patron') ? '<b>Sold out</b>' : '<b class="tk-num">' + money(PS('patron')) + '</b>', { note: 'Tent camping in the woods is included, the same as every weekend pass. Car camping and RV sites are extra.' }) +
       '</div></fieldset>';
     h += '<fieldset class="tk-who"><div class="tk-leg"><legend class="tk-d tk-d-label">Who’s coming?</legend></div><div class="tk-who-g">' + stepper('adult', 'Adults', '18 and up', 'adult') + stepper('teen', 'Teens', '13 to 17', 'teen') + stepper('kid', 'Kids', '12 and under', 'kid') + '</div><p class="tk-note" id="tk-teennote" hidden></p></fieldset>';
-    h += '<section class="tk-sec" id="tk-s-sleep" aria-labelledby="tk-h-sleep"><div class="tk-leg"><h2 class="tk-d tk-d-label" id="tk-h-sleep">Camping</h2><button type="button" class="tk-pill tk-pill-sm" data-go="hoods">See the camps</button></div>' +
+    h += '<section class="tk-sec" id="tk-s-sleep" aria-labelledby="tk-h-sleep"><div class="tk-leg"><h2 class="tk-d tk-d-label" id="tk-h-sleep">Camping</h2><button type="button" class="tk-pill tk-pill-sm" data-act="camps">See the camps</button></div>' +
       '<div class="tk-opts" role="radiogroup" aria-labelledby="tk-h-sleep">' +
       opt('tk-sleep', 'tent', hoodImg('lushcamp', 'tickets.sleep.tent'), 'Tent in the woods', 'Lush Camp or Wild Camp. Walk in, pick your spot.', 'Included') +
       opt('tk-sleep', 'wcar', hoodImg('willowcamp', 'tickets.sleep.willow'), 'Car camping · Willow Camp', 'One car and a tent on a 16′ × 18′ site. Half a mile to the gate, free shuttle.', per('wcar', 'a site')) +
@@ -465,6 +473,7 @@
     if (act === 'go') { proceed(); return; }
     if (act === 'sheet') { orderSheet(); return; }
     if (act === 'help') { help(); return; }
+    if (act === 'camps') { camps(); return; }
     if (act === 'signin') { if (window.__pkAcct && window.__pkAcct.signIn) window.__pkAcct.signIn(); else nav('account'); return; }
     if (act === 'again') { var lo = null; try { lo = window.pkLastOrder(); } catch (x) {} if (lo) { S = clean(lo); b.textContent = 'Filled in'; b.disabled = true; update(); var bg = $('#tk-ogo', root); if (bg && bg.offsetParent) bg.focus(); else { bg = $('#tk-bargo', root); if (bg) bg.focus(); } } return; }
   }

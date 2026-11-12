@@ -326,3 +326,15 @@ body:has(#tk2 #tk-bar:not([hidden])) #pk-toast,body:has(#pk-co) #pk-toast{displa
   #tk2#tk2 .tk-who-g .tk-step p span{font-size:.8125rem;opacity:.7;color:var(--cream);white-space:normal}
   #tk2#tk2 .tk-who-g .tk-step>div{margin:0;width:120px}
 }
+
+/* Gate 1 (user panel P3): the camps sheet */
+.tk2 .tk-camps-l{margin:0 0 12px;color:var(--cream-dim);font-size:var(--t-sm);line-height:1.4}
+.tk2 .tk-camps{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+.tk2 .tk-camp{display:grid;grid-template-columns:112px minmax(0,1fr);gap:12px;align-items:start;padding:10px;border-radius:6px;background:var(--raise)}
+.tk2 .tk-camp img{width:112px;height:84px;object-fit:cover;border-radius:4px;display:block}
+.tk2 .tk-camp b{display:block;font-size:1rem;font-weight:800;color:var(--cream)}
+.tk2 .tk-camp .tk-camp-t{display:block;font-size:var(--t-sm);font-weight:700;color:var(--gold)}
+.tk2 .tk-camp p{margin:4px 0 6px;font-size:var(--t-sm);line-height:1.35;color:var(--cream-dim)}
+.tk2 .tk-camp .tk-camp-b{display:inline-block;font-size:.75rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--cream)}
+.tk2 .tk-camps-x{width:100%;margin-top:14px}
+@media (max-width:379px){.tk2 .tk-camp{grid-template-columns:88px minmax(0,1fr)}.tk2 .tk-camp img{width:88px;height:72px}}
