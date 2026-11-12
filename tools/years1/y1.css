@@ -108,9 +108,9 @@ $P .pk-hd-cgr figcaption{margin:6px 2px 0;font-size:12.5px;line-height:1.35;colo
 @media (min-width:1200px){$P .pk-hd-cgr{margin:0;padding:0;overflow:visible;display:grid;grid-template-columns:repeat(4,minmax(0,1fr))}}
 
 /* ---- G (mock m6): controls on a past year's paper stay inside the six-shape button set, colors from yearBrand.
-   Primary: ink2 border and text, the warm color only as an 18% tint (gold #F2CF62/#D6B54A fails on every paper).
+   Primary: ink2 border, the warm color only as an 18% tint, text in yearBrand.btnInk (ink2 darkened until it reaches 4.5:1 on that tint) (gold #F2CF62/#D6B54A fails on every paper).
    Secondary: ink border and text. Chosen chip: solid ink, paper text, the year's stripe along its foot. ---- */
-$P article[aria-label^="Pickathon "] .pk-lh-b.pk-g1-pri{border-color:var(--yb-ink2)!important;color:var(--yb-ink2)!important;-webkit-text-fill-color:var(--yb-ink2)!important;background:color-mix(in srgb,var(--yb-warm,var(--yb-ink2)) 18%,transparent)!important}
+$P article[aria-label^="Pickathon "] .pk-lh-b.pk-g1-pri{border-color:var(--yb-ink2)!important;color:var(--yb-btnink,var(--yb-ink2))!important;-webkit-text-fill-color:var(--yb-btnink,var(--yb-ink2))!important;background:color-mix(in srgb,var(--yb-warm,var(--yb-ink2)) 18%,transparent)!important}
 $P article[aria-label^="Pickathon "] .pk-lh-b.pk-lh-t5{border-color:var(--yb-ink)!important;color:var(--yb-ink)!important;-webkit-text-fill-color:var(--yb-ink)!important;background:transparent!important}
 $P article[aria-label^="Pickathon "] .pk-yb .pk-share1,$P article[aria-label^="Pickathon "] .pk-yb .pk-share1 *{color:var(--yb-ink)!important;-webkit-text-fill-color:var(--yb-ink)!important;border-color:var(--yb-ink)!important;stroke:currentColor}
 $P article[aria-label^="Pickathon "] .pk-yb .pk-share1{background:transparent!important}
