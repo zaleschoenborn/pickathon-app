@@ -140,3 +140,11 @@ $P .pk-hd-who.pk-hd-who1>div:first-child{display:none!important}
 $P .pk-hd-who.pk-hd-who1 .pk-hd-pitch{margin:0!important;padding:0!important;border:0!important}
 /* Gate 2 design 7: Cherry Hill 2016 hero at desktop shows Kevin Morby's face, not his eyes cut by the frame (a src*= rule, so focus.js treats it as a hand crop) */
 @media (min-width:1000px){$P .pk-hd-hero.pk-hd-py>img[src*="y16b-kevinmorby.jpg"]{object-position:50% 22%!important}}
+/* Gate 2 design 8: a year card with no photo is a slug: that year's paper, the place's name in ink, "Pickathon 2012" in ink2, the stripe along its foot */
+$P .pk-yph.pk-hd-yslug{background:var(--ys-paper)!important;color:var(--ys-ink)!important;align-items:flex-start!important;justify-content:center!important;gap:8px!important;padding:0 18px 10px;box-sizing:border-box}
+$P .pk-yph.pk-hd-yslug>i{font:800 11.5px/1.2 'Inter',system-ui,sans-serif!important;letter-spacing:.14em!important;color:var(--ys-ink2)!important;-webkit-text-fill-color:var(--ys-ink2)}
+$P .pk-yph.pk-hd-yslug>b{font-family:'Pickathon 2014',sans-serif!important;font-weight:400!important;font-size:clamp(34px,10vw,52px)!important;line-height:.95!important;color:var(--ys-ink)!important;-webkit-text-fill-color:var(--ys-ink);text-transform:uppercase;overflow-wrap:anywhere}
+$P .pk-yph.pk-hd-yslug>.pk-hd-slugs{position:absolute;left:0;right:0;bottom:0;display:flex;height:8px}
+/* the type hero keeps a 32px breath before the page text */
+$P .pk-hd-hero.pk-hd-slug ~ .pk-hd-w .pk-hd-desc0{margin-top:32px!important}
+$P .pk-hd-ym:has(.pk-hd-yslug) .pk-hd-ytag{display:none!important}
