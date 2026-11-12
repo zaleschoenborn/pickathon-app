@@ -46,7 +46,7 @@
     if (y === NOW) return { p: '#2B2628', i: '#F2CF62', i2: '#F2EDE3', s: '' };
     if (!B || y === 1999) return { p: '#F2EDE3', i: '#2B2628', i2: '#7C6E4D', s: '' };   // 1999 is set in type only: cream paper, one ink, no stripe (ruling 5)
     var S = B.stripe || [];
-    return { p: B.paper || '#F2EDE3', i: B.ink || '#2B2628', i2: B.ink2 || B.ink || '#2B2628', s: S.length === 4 ? 'linear-gradient(90deg,' + S[0] + ' 0 25%,' + S[1] + ' 0 50%,' + S[2] + ' 0 75%,' + S[3] + ' 0)' : '' };
+    return { p: B.paper || '#F2EDE3', i: B.ink || '#2B2628', i2: B.ink2 || B.ink || '#2B2628', s: window.pkStripeGrad ? window.pkStripeGrad(B) : (S.length === 4 ? 'linear-gradient(90deg,' + S[0] + ' 0 25%,' + S[1] + ' 0 50%,' + S[2] + ' 0 75%,' + S[3] + ' 0)' : '') };   /* Gate 2 design 4: paper-colored stripe segments dropped */
   }
   /* what page the wall was opened from, and what each year means there */
   function context() {
