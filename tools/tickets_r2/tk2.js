@@ -451,13 +451,22 @@
     var hh = 96; try { if (hd && /sticky|fixed/.test(getComputedStyle(hd).position)) hh = hd.getBoundingClientRect().bottom; else hh = 0; } catch (e) {}
     inn.style.setProperty('--tk-hdr', Math.max(0, Math.round(hh)) + 'px');
   }
+  /* QC Round 3.5: before prices show, ask whether a newer build is out (version.json); if one is and no order is in progress the page
+     reloads on the same address, so a returning buyer never sees an old price. The prices wait at most 1.5 s for the answer. */
+  function vcheck(el) {
+    if (typeof window.pkBuildCheck !== 'function') return;
+    el.classList.add('tk-vchk'); var done = function () { el.classList.remove('tk-vchk'); }, t = setTimeout(done, 1500);
+    Promise.resolve(window.pkBuildCheck(false)).then(function (reloading) { if (!reloading) { clearTimeout(t); done(); } }, function () { clearTimeout(t); done(); });
+  }
   var booting = true;
   function sync() {
     var el = document.getElementById('tk2');
     if (!el) { root = null; if (!booting && !document.getElementById('pk-co')) where(''); return; }
     readTix(); var k = stateKey();
+    var fresh = el !== root;
     if (el !== root || !el.firstChild || k !== lastKey) { lastKey = k; draw(el); }
     root = el; vars();
+    if (fresh) vcheck(el);
     if (!booting) where(document.getElementById('pk-co') ? 'checkout' : 'tickets');
   }
   var render0 = window.__render;

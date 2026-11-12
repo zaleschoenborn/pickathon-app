@@ -261,3 +261,6 @@
 .tk2 input:focus,.tk2 select:focus{outline:3px solid #D6B54A;outline-offset:2px}
 /* Round 3 (A11): any touch screen, a sideways tablet included, gets 44px targets (the 820px rule above only caught narrow ones) */
 @media (pointer:coarse){#tk2#tk2 .tk-pill,#tk2#tk2 .tk-pill-sm,#tk2#tk2#tk2#tk2#tk2 .tk-pill[aria-pressed]{min-height:44px!important}#tk2#tk2 .tk-tlink{display:inline-flex;align-items:center;min-height:44px}}
+
+/* QC Round 3.5: prices wait (at most 1.5 s) for the build check before they show */
+#tk2.tk-vchk{visibility:hidden}
