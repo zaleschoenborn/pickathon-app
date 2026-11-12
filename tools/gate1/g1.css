@@ -49,3 +49,10 @@ $P .pk-ev-t .pk-g1-pill{bottom:auto;top:calc(76% - 42px);left:8px;max-width:calc
 /* -- Fix 6 (D4): South Camp's hero is now adults at their cars, tents and trailers (Rob Kerr, i/r3b-hood-southcamp-2.jpg), replacing the
       kids-up-front shot with a CREW shirt. Frame on the people and the vehicles behind them. -- */
 $P .pk-hd-hero img[src$="r3b-hood-southcamp-2.jpg"]{object-position:64% 6%!important}
+
+/* -- Fix 7 (D5): never a year's ink on a dark panel. In the top-5 panel "I was there in YYYY" is cream text + 2px cream border; the warm
+      color shows only as an 18% tint when chosen. The act names in the dark Legends panel on year pages are cream. -- */
+$P button.pk-g1-iw{color:#F2EDE3!important;-webkit-text-fill-color:#F2EDE3!important;border:2px solid #F2EDE3!important;background:transparent!important;min-height:44px!important;border-radius:6px!important;font-weight:800!important;opacity:1!important;transition:none!important}
+$P button.pk-g1-iw *{color:#F2EDE3!important;-webkit-text-fill-color:#F2EDE3!important}
+$P button.pk-g1-iw.gold{background:rgba(214,181,74,.18)!important}
+$P .pk-ch .pk-cht li div[style*="font-weight: 800"]{color:#F2EDE3!important}
