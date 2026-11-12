@@ -134,7 +134,7 @@
       if (y === c.cur && y !== NOW) return close();
       if (y === NOW) return close(go('hood', { h: c.h, tm0: 1 }));
       if (c.marks[y]) return close(function () { A.go('hood', { h: c.h, y: String(y) }); if (c.marks[y] === 'old') toast('In ' + y + ' this ground was the ' + c.names[y] + '.', 4200); });
-      return close(function () { A.go('past', { y: String(y) }); var n = 0, find = function () { var e = document.querySelector('#root .pk-hy'); if (e) { e.scrollIntoView({ block: 'start' }); toast(c.hn + '’s ground wasn’t a stage yet in ' + y + '. Here’s where it happened that summer.', 5000); } else if (++n < 20) setTimeout(find, 150); }; setTimeout(find, 300); });
+      return close(function () { A.go('past', { y: String(y) }); var n = 0, find = function () { var e = document.querySelector('#root .pk-hy'); if (e) { e.scrollIntoView({ block: 'start' }); toast(c.hn + ' isn’t in the ' + y + ' schedule. Here’s where it happened that summer.', 5000);   /* Gate 2 C1: same words as the page note */ } else if (++n < 20) setTimeout(find, 150); }; setTimeout(find, 300); });
     }
     if (c.r === 'schedule') {   /* the same schedule section that year: the year page's "Who played when"; 2027 is this page */
       if (y === NOW) return close();
