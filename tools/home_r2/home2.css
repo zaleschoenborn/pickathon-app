@@ -531,3 +531,14 @@ html:root:root #root#root#root#root#root#root#root#root#root#root#root#root#root
   .pkh2 .h2-s3 .h2-city-k[data-g=stage]+.h2-city-r::before{position:absolute;left:-12px;top:18px;margin:0}
 }
 @media (max-width:379px){.pkh2 .h2-s3 .h2-city-k[data-g=stage]+.h2-city-r{column-gap:4px}}
+
+/* Gate 1 fix 12 (D11): the poster screen. Desktop: the left column starts at the top with the poster (heading, time bar, then the rest), 32px in.
+   Sideways tablet (1024x768 draws the phone poster in two columns): heading and subtitle, then the scrubber with REPLAY, then ANOTHER YEAR, all on the left. */
+@media (min-width:1200px),(min-width:1000px) and (orientation:landscape){
+  #pkh2 .h2-s2 .pk-cl-mount{grid-template-rows:auto auto auto 1fr!important;align-items:start}
+  #pkh2#pkh2 .h2-s2 .pk-cl-hd{grid-row:1;padding-top:32px}
+  #pkh2#pkh2 .h2-s2 .pk-cl-tb{grid-row:2}
+  #pkh2#pkh2 .h2-s2 .pk-cl-cmp{grid-row:2/4}
+  #pkh2#pkh2 .h2-s2 .pk-cl-below{grid-column:1;grid-row:2;max-width:none;margin:18px 0 0}
+  #pkh2#pkh2 .h2-s2 .pk-cl-below .pk-cl-an{width:auto!important;max-width:none;margin:14px 0 0}
+}

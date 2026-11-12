@@ -180,9 +180,9 @@
     var FONT = "font-family:'Bricolage Grotesque',sans-serif;font-stretch:75%;font-variation-settings:'wdth' 75;font-weight:800";
     var reachOf = function (p, d, crw) { if (crw < 0.01) return 0; var gap = Math.max(8, p.f * 0.12), sp = Math.min(Math.min(p.f * 0.62, 90), d.cx - d.w / 2 - s0.x - gap); return sp < 20 ? 0 : (gap + sp * Math.cos(36 * Math.PI / 180) + 6) * crw; };   /* same threshold as the fans themselves: no room kept for rays that are not drawn */
     // risers: where the FROM #n note goes is decided once, from today's bill, so it never switches sides mid-flight
-    if (!PL.noteAt) { PL.noteAt = {}; PL.cast.forEach(function (x, i) { if (PL.RISERS.indexOf(x[0]) < 0) return; var p = PL.END.N[i], d = dims(p, PL.SH[i].L, PL.SH[i].lead), crw = crownW(p), reach = reachOf(p, d, crw), fsM = Math.max(Q.ph ? 9 : 11, p.f * 0.42) / p.f, nf = Math.min(16, Math.max(Q.ph ? 9 : 12, p.f * 0.2));
-      var noteT = 'FROM #' + (x[1][0] + 1), noteW = tw(noteT) * nf + noteT.length * 0.08 * nf, gapN = Math.max(8, p.f * 0.2), fits = d.cx + d.w / 2 + reach + gapN + noteW <= s0.x + s0.w + (Q.ph ? 4 : 30), roomy = reach === 0 || d.cx - d.w / 2 - reach - p.f * fsM * 1.6 >= s0.x;
-      PL.noteAt[x[0]] = { fits: fits, roomy: roomy, show: roomy && D.src === 'real billing' && (Q.ph ? fits : (x[1][n - 1] !== 0 || fits)) }; }); }
+    if (!PL.noteAt) { PL.noteAt = {}; PL.cast.forEach(function (x, i) { if (PL.RISERS.indexOf(x[0]) < 0) return; var p = PL.END.N[i], d = dims(p, PL.SH[i].L, PL.SH[i].lead), crw = crownW(p), reach = reachOf(p, d, crw), fsM = Math.max(Q.ph ? 9 : 11, p.f * 0.42) / p.f, nf = Math.min(16, Math.max(Q.ph ? 11 : 12, p.f * 0.2));
+      var noteT = 'FROM THE FINE PRINT', noteW = tw(noteT) * nf + noteT.length * 0.08 * nf, gapN = Math.max(8, p.f * 0.2), fits = d.cx + d.w / 2 + reach + gapN + noteW <= s0.x + s0.w + (Q.ph ? 4 : 30), roomy = reach === 0 || d.cx - d.w / 2 - reach - p.f * fsM * 1.6 >= s0.x, fine = x[1][0] >= Math.min(10, D.ranked || 10);
+      PL.noteAt[x[0]] = { fits: fits, roomy: roomy, show: roomy && fine && fits && D.src === 'real billing' }; }); }   /* Gate 1 fix 12 (D11): 'FROM #58' read like a chart rank; only a riser from the small print gets a note, 'FROM THE FINE PRINT', and only where it fits */
     var fans = '';
     PL.order.forEach(function (i) { var q = items[i], x = q.x, p = q.p, o = q.o, d = q.d; if (o <= 0.005) return; var L = q.sh.L, lead = q.sh.lead, two = L.length > 1, hh = hash(x[0]);
       var c = hex([p.r, p.g, p.b]), inkLead = c.toUpperCase() === A.toUpperCase() ? B : A, crw = crownW(p), reach = reachOf(p, d, crw);
@@ -195,8 +195,8 @@
         fans += '<g stroke="' + inkLead + '" stroke-width="' + swd.toFixed(1) + '" stroke-linecap="square" opacity="' + (crw * o).toFixed(3) + '">' + fan('l') + fan('r') + '</g>'; }
       var NA = PL.noteAt[x[0]], rise = 0;
       if (NA) { var v0 = x[1][0], v1 = x[1][n - 1]; rise = back ? clamp01(1 - back.k) * clamp01((v0 - PL.at(back.e0).N[i].v) / (v0 - v1) * 1.25) : clamp01((v0 - p.v) / (v0 - v1) * 1.25); rise = rise * rise * (3 - 2 * rise); }
-      var fsM = Math.max(Q.ph ? 9 : 11, p.f * 0.42) / p.f, cyEm = lead ? 0.61 + LH / 2 : two ? LH : LH / 2, nf = Math.min(16, Math.max(Q.ph ? 9 : 12, p.f * 0.2)), triPx = p.f * fsM;
-      var noteT = 'FROM #' + (x[1][0] + 1), shortT = '#' + (x[1][0] + 1), shortW = tw(shortT) * nf + shortT.length * 0.08 * nf, gapN = Math.max(8, p.f * 0.2), noteO = Math.pow(rise, 3), showNote = NA && NA.show && noteO > 0.01, nFits = NA && NA.fits;
+      var fsM = Math.max(Q.ph ? 9 : 11, p.f * 0.42) / p.f, cyEm = lead ? 0.61 + LH / 2 : two ? LH : LH / 2, nf = Math.min(16, Math.max(Q.ph ? 11 : 12, p.f * 0.2)), triPx = p.f * fsM;
+      var noteT = 'FROM THE FINE PRINT', shortT = '', shortW = tw(shortT) * nf + shortT.length * 0.08 * nf, gapN = Math.max(8, p.f * 0.2), noteO = Math.pow(rise, 3), showNote = NA && NA.show && noteO > 0.01, nFits = NA && NA.fits;
       var pre = '', post = '';
       if (p.sep > 0.01) pre = '<span aria-hidden="true" style="position:absolute;right:100%;top:.32em;margin-right:' + Math.round((26 + 0.48 * p.f) / 2) + 'px;transform:translateX(50%);font-size:.6em;line-height:1;letter-spacing:0;color:' + B + ';opacity:' + clamp01(p.sep * (1 - p.col)).toFixed(3) + '">★</span>';
       if (NA && NA.roomy && rise > 0.01) pre += '<span aria-hidden="true" style="position:absolute;right:100%;top:' + (cyEm / fsM - 0.6 - (showNote && !nFits ? (nf * 0.55 + 2) / triPx * noteO : 0)).toFixed(2) + 'em;margin-right:' + (0.5 + reach / (p.f * fsM)).toFixed(3) + 'em;font-size:' + fsM.toFixed(3) + 'em;line-height:1;letter-spacing:0;color:' + ACC + ';opacity:' + rise.toFixed(3) + '">▲</span>';
@@ -214,7 +214,8 @@
     var dates = '<div style="position:absolute;left:0;right:0;top:' + PL.DATESY + 'px;text-align:center;white-space:nowrap;' + FONT + ';font-size:' + Q.DATES + 'px;letter-spacing:.08em;color:' + A + '">' + dl.split(' · ').map(function (t, i) { return (i ? '<span style="font-size:.6em;color:' + B + ';margin:0 ' + (Q.ph ? 6 : 12) + 'px;vertical-align:.2em">★</span>' : '') + esc(t); }).join('') + '</div>';
     var rib = '<div style="position:absolute;left:0;right:0;bottom:0;display:flex;align-items:center"><span class="pk-cl-fl" style="--ink:' + A + '"></span><span style="flex:none;height:' + Q.RIB[0] + 'px;padding:0 ' + (Q.ph ? 16 : 36) + 'px;background:' + A + ' linear-gradient(' + PAPER + '80,' + PAPER + '80) 0 4px/100% 1.5px no-repeat;color:' + PAPER + ';' + FONT + ';font-size:' + Q.RIB[1] + 'px;letter-spacing:.1em;display:flex;align-items:center;white-space:nowrap;clip-path:polygon(0 0,100% 0,calc(100% - 14px) 50%,100% 100%,0 100%,14px 50%)">EXPLORE PICKATHON ' + y + ' →</span><span class="pk-cl-fr" style="--ink:' + A + '"></span></div>';
     var frac = PL.still ? 1 : back ? PL.frac(back.e0) * (1 - back.k) : PL.frac(e);
-    return { art: art, html: h + burst + rules + dates + rib, IW: IW, H: BOXH, A: A, B: B, PAPER: PAPER, ACC: ACC, LIGHT: GLOWINK, frac: frac };
+    var LNf = Math.min(10, D.ranked || 10), fineRise = PL.cast.some(function (x) { return PL.RISERS.indexOf(x[0]) >= 0 && x[1][0] >= LNf; });
+    return { fineRise: fineRise, art: art, html: h + burst + rules + dates + rib, IW: IW, H: BOXH, A: A, B: B, PAPER: PAPER, ACC: ACC, LIGHT: GLOWINK, frac: frac };
   }
 
   // the clock on the poster: a date stamp that counts the summers from the festival to today; tapping it plays again
@@ -242,6 +243,7 @@
     var btn = '↺ Replay';   /* Zale, Nov 11 10:10: Home plays once by itself; the only controls are Replay and Another year */
     return { n: n, show: n > 1 && y0 < TODAY && !STAT(y0) && !RM, frac: frac, yNow: Math.min(yNow, TODAY), line: line, btn: btn, aria: 'Replay ' + y + ', from the printed bill to today' };
   }
+  function endSub(D, y) { if (!D.clim || STAT(y) || D.labels.length < 2) return ''; return String(D.clim).toUpperCase() + (D.climTo === 0 ? ' NOW TOPS THE BILL' : ' IS NOW ' + ORD(D.climTo) + ' ON THE BILL'); }
   function caption(D, y, tp) {
     var n = D.labels.length, atEnd = tp >= n - 1 - 1e-3, derived = D.src !== 'real billing', age = TODAY - y;
     var since = age <= 0 ? 'THIS SUMMER' : (NW[age] || String(age)) + (age === 1 ? ' SUMMER ON' : ' SUMMERS ON');
@@ -284,13 +286,16 @@
       mountEl.querySelector('.pk-cl-layer').innerHTML = F.html;
       var tb = mountEl.querySelector('.pk-cl-tb'); if (tb && tb.querySelector('.pk-cl-tf')) { tb.querySelector('.pk-cl-tf').style.width = (TB.frac * 100).toFixed(1) + '%'; var mk = tb.querySelector('.pk-cl-tm'); mk.style.left = (TB.frac * 100).toFixed(1) + '%'; var cal = tb.querySelector('.pk-cl-cal'); if (cal) { var ch = calH(y, TB.frac); if (cal._h !== ch) { cal.innerHTML = ch; cal._h = ch; } } else { mk.textContent = TB.yNow; mk.style.opacity = TB.frac > 0.04 && TB.frac < 0.96 ? '1' : '0'; } var rb = tb.querySelector('.pk-cl-rpl'); if (rb) { rb.textContent = TB.btn; rb.setAttribute('aria-label', TB.aria); } var tl = mountEl.querySelector('.pk-cl-tl'); if (tl && tl.textContent !== TB.line) tl.textContent = TB.line; }
       var cp = mountEl.querySelector('.pk-cl-cap'); if (cp.textContent !== cap) cp.textContent = cap; cp.style.color = atEnd ? '#F2CF62' : '#CFC9BC';
+      var sb = mountEl.querySelector('.pk-g1-sub'); if (sb) sb.style.visibility = atEnd ? 'visible' : 'hidden';
       return;
     }
     var fa = document.activeElement, fk = fa && mountEl.contains(fa) ? fa.getAttribute('data-cl') : null;
     var corner = function (cx, cy) { return 'radial-gradient(circle at ' + cx + ' ' + cy + ',#000 0,transparent 22%)'; }, cm = [corner('0', '0'), corner('100%', '0'), corner('0', '100%'), corner('100%', '100%')].join(',');
     var capH = '<p class="pk-cl-cap" aria-live="polite" style="color:' + (atEnd ? '#F2CF62' : '#CFC9BC') + '">' + esc(cap) + '</p>', tbH = '';
+    var subT = endSub(D, +y), subH = Q.ph && subT ? '<p class="pk-g1-sub" aria-hidden="true" style="visibility:' + (atEnd ? 'visible' : 'hidden') + '">' + esc(subT) + '</p>' : '';   /* Gate 1 fix 12 (D11): the phone's end state says who climbed */
+    var keyH = Q.ph && F.fineRise && !STAT(y) && n > 1 ? '<p class="pk-g1-key">\u25B2 in ' + y + '\u2019s fine print</p>' : '';
     var h = '<div class="pk-cl-hd"><div class="pk-cl-ht"><p class="pk-nh-k">Still happening</p><h2 class="pk-nh-h2" id="pk-cl-h">Wait, they all played <span style="color:' + (YC[y] || '#F2CF62') + '">Pickathon ' + y + '?</span></h2>'
-      + (Q.ph ? '' : capH) + '</div>'
+      + subH + (Q.ph ? '' : capH) + '</div>'
       + (Q.ph ? '' : '<button type="button" class="pk-cl-an" data-cl="rand">↻ Another year</button>') + '</div>';
     if (TB.show) tbH += '<div class="pk-cl-tb"><span class="pk-cl-ty">' + y + '</span><span class="pk-cl-tr" aria-hidden="true"><i class="pk-cl-tf" style="width:' + (TB.frac * 100).toFixed(1) + '%"></i><b class="pk-cl-tm" style="left:' + (TB.frac * 100).toFixed(1) + '%;opacity:' + (TB.frac > 0.04 && TB.frac < 0.96 ? 1 : 0) + '">' + TB.yNow + '</b></span><span class="pk-cl-ty">' + TODAY + '</span><button type="button" class="pk-cta sec pk-cl-rpl" data-cl="play" aria-label="' + TB.aria + '">' + TB.btn + '</button></div><p class="pk-cl-tl" aria-hidden="true">' + esc(TB.line) + '</p>';
     if (!Q.ph) h += tbH;
@@ -308,7 +313,7 @@
       if (!Q.ph) h = h.replace('<div class="pk-cl-pw"', tbH + '<div class="pk-cl-pw"');
     }
     if (Q.ph && !TB.show && !(RM && n > 1 && !STAT(y))) tbH = '<div class="pk-cl-tb pk-cl-tbp pk-cl-tbs"><span class="pk-cl-cal" aria-hidden="true">' + calH(y, 1) + '</span><span class="pk-cl-tls">Ranked today by how far each act has gone</span></div>';   /* every year keeps the same row, so ANOTHER YEAR never moves (review r1 A3) */
-    if (Q.ph) h += '<div class="pk-cl-below">' + capH.replace('class="pk-cl-cap"', 'class="pk-cl-cap pk-sr"') + tbH + '<button type="button" class="pk-cl-an pk-cl-anb" data-cl="rand">↻ Another year</button></div>';   /* Zale, Nov 11: caption, time bar and Another year under the poster, full width */
+    if (Q.ph) h += '<div class="pk-cl-below">' + keyH + capH.replace('class="pk-cl-cap"', 'class="pk-cl-cap pk-sr"') + tbH + '<button type="button" class="pk-cl-an pk-cl-anb" data-cl="rand">↻ Another year</button></div>';   /* Zale, Nov 11: caption, time bar and Another year under the poster, full width */
     var fin = D.names.filter(function (x) { return x[1][n - 1] < Math.min(10, D.ranked || 10); }).sort(function (a, b) { return a[1][n - 1] - b[1][n - 1]; }).map(function (x) { return x[0]; });
     h += '<p class="pk-sr">Pickathon ' + y + ', ranked today by how far each act has gone: ' + esc(fin.join(', ')) + '.</p>';
     mountEl.innerHTML = h; mountEl.setAttribute('data-y', y); mountEl._key = key;
