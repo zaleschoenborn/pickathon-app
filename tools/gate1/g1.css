@@ -45,3 +45,7 @@ $P .pk-ev-t .pk-g1-pill{bottom:auto;top:calc(76% - 42px);left:8px;max-width:calc
   $P nav button:has(> svg path[d^="m12 3 2.8 5.7"]) > span{font-size:0!important}
   $P nav button:has(> svg path[d^="m12 3 2.8 5.7"]) > span::after{content:"Mine";content:"Mine" / "";font-size:11px;letter-spacing:0}
 }
+
+/* -- Fix 6 (D4): South Camp's hero is now adults at their cars, tents and trailers (Rob Kerr, i/r3b-hood-southcamp-2.jpg), replacing the
+      kids-up-front shot with a CREW shirt. Frame on the people and the vehicles behind them. -- */
+$P .pk-hd-hero img[src$="r3b-hood-southcamp-2.jpg"]{object-position:64% 6%!important}
