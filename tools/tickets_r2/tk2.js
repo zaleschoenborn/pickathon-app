@@ -206,7 +206,7 @@
     document.body.appendChild(scrim); guard(scrim);
     scrim.addEventListener('click', function (e) { if ((e.target === scrim && !opts.modal) || (e.target.closest && e.target.closest('[data-close]'))) closeSheet(); });
     scrim.__modal = !!opts.modal;
-    var f = $('[data-focus]', scrim) || $('button,a,input', scrim); if (f) { try { f.focus(); } catch (e) {} }
+    var f = $('[data-focus]', scrim) || $('.tk-sheet-top h2[tabindex]', scrim) || $('button,a,input', scrim);   /* Gate 1 loop 2 F: open on the heading, not the close button */ if (f) { try { f.focus(); } catch (e) {} }
     return scrim;
   }
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && scrim && !scrim.__modal) { e.stopPropagation(); closeSheet(); } }, true);
@@ -218,7 +218,7 @@
       return '<li class="tk-camp">' + (im ? '<img src="' + esc(im) + '" alt="' + esc(o.n) + ' at Pickathon" loading="lazy">' : '') + '<div><b>' + esc(o.n) + '</b><span class="tk-camp-t">' + esc(o.t || '') + '</span><p>' + esc(o.hook || '') + '</p><span class="tk-camp-b">' + esc(x[1]) + '</span></div></li>'; }).join('');
     sheet(sheetTop('The camps') + '<p class="tk-camps-l">Every weekend pass includes a tent spot in Lush or Wild Camp. Car camping and RV sites are extra.</p><ul class="tk-camps">' + rows + '</ul><button type="button" class="tk-camps-x" data-close>Back to my order</button>', 'The camps');
   }
-  function sheetTop(t) { return '<div class="tk-sheet-top"><h2 class="tk-d tk-d-card">' + esc(t) + '</h2><button type="button" class="tk-sheet-x" data-close aria-label="Close">' + ic('x') + '</button></div>'; }
+  function sheetTop(t) { return '<div class="tk-sheet-top"><h2 class="tk-d tk-d-card" tabindex="-1">' + esc(t) + '</h2><button type="button" class="tk-sheet-x" data-close aria-label="Close">' + ic('x') + '</button></div>'; }
 
   /* ---------- the page ---------- */
   var root = null, lastKey = '';

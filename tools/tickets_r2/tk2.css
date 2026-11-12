@@ -346,3 +346,6 @@ body:has(#tk2 #tk-bar:not([hidden])) #pk-toast,body:has(#pk-co) #pk-toast{displa
 @media (min-width:1025px){.tk2 .tk-sheet .tk-camps-x{min-height:56px}}
 @media (max-width:1024px){#tk2#tk2#tk2 [data-act="camps"]{min-height:50px!important;height:auto!important}}
 @media (max-width:599px){#tk2#tk2 [data-act="camps"]{min-height:50px;border:2px solid rgba(242,237,227,.88);background:rgba(18,22,15,.26);color:#F2EDE3;font:800 13px/1.1 'Bricolage Grotesque',system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;padding:0 14px}}
+/* Gate 1 loop 2 F: a sheet opens with focus on its heading (no ring for touch and mouse); the close shows a ring only for the keyboard */
+.tk2 .tk-sheet-top h2[tabindex]:focus{outline:none}
+.tk2 .tk-sheet-x:focus:not(:focus-visible){outline:none}

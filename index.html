@@ -7965,6 +7965,9 @@ body:has(#tk2 #tk-bar:not([hidden])) #pk-toast,body:has(#pk-co) #pk-toast{displa
 @media (min-width:1025px){.tk2 .tk-sheet .tk-camps-x{min-height:56px}}
 @media (max-width:1024px){#tk2#tk2#tk2 [data-act="camps"]{min-height:50px!important;height:auto!important}}
 @media (max-width:599px){#tk2#tk2 [data-act="camps"]{min-height:50px;border:2px solid rgba(242,237,227,.88);background:rgba(18,22,15,.26);color:#F2EDE3;font:800 13px/1.1 'Bricolage Grotesque',system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;padding:0 14px}}
+/* Gate 1 loop 2 F: a sheet opens with focus on its heading (no ring for touch and mouse); the close shows a ring only for the keyboard */
+.tk2 .tk-sheet-top h2[tabindex]:focus{outline:none}
+.tk2 .tk-sheet-x:focus:not(:focus-visible){outline:none}
 </style>
 <script id="pk-tk2">
 /* pk-tk2: Tickets, round 2 design (Nov 11 2026). Source: tools/tickets_r2/tk2.js, spliced into index.html by tools/tickets_r2/build.py.
@@ -8175,7 +8178,7 @@ body:has(#tk2 #tk-bar:not([hidden])) #pk-toast,body:has(#pk-co) #pk-toast{displa
     document.body.appendChild(scrim); guard(scrim);
     scrim.addEventListener('click', function (e) { if ((e.target === scrim && !opts.modal) || (e.target.closest && e.target.closest('[data-close]'))) closeSheet(); });
     scrim.__modal = !!opts.modal;
-    var f = $('[data-focus]', scrim) || $('button,a,input', scrim); if (f) { try { f.focus(); } catch (e) {} }
+    var f = $('[data-focus]', scrim) || $('.tk-sheet-top h2[tabindex]', scrim) || $('button,a,input', scrim);   /* Gate 1 loop 2 F: open on the heading, not the close button */ if (f) { try { f.focus(); } catch (e) {} }
     return scrim;
   }
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && scrim && !scrim.__modal) { e.stopPropagation(); closeSheet(); } }, true);
@@ -8187,7 +8190,7 @@ body:has(#tk2 #tk-bar:not([hidden])) #pk-toast,body:has(#pk-co) #pk-toast{displa
       return '<li class="tk-camp">' + (im ? '<img src="' + esc(im) + '" alt="' + esc(o.n) + ' at Pickathon" loading="lazy">' : '') + '<div><b>' + esc(o.n) + '</b><span class="tk-camp-t">' + esc(o.t || '') + '</span><p>' + esc(o.hook || '') + '</p><span class="tk-camp-b">' + esc(x[1]) + '</span></div></li>'; }).join('');
     sheet(sheetTop('The camps') + '<p class="tk-camps-l">Every weekend pass includes a tent spot in Lush or Wild Camp. Car camping and RV sites are extra.</p><ul class="tk-camps">' + rows + '</ul><button type="button" class="tk-camps-x" data-close>Back to my order</button>', 'The camps');
   }
-  function sheetTop(t) { return '<div class="tk-sheet-top"><h2 class="tk-d tk-d-card">' + esc(t) + '</h2><button type="button" class="tk-sheet-x" data-close aria-label="Close">' + ic('x') + '</button></div>'; }
+  function sheetTop(t) { return '<div class="tk-sheet-top"><h2 class="tk-d tk-d-card" tabindex="-1">' + esc(t) + '</h2><button type="button" class="tk-sheet-x" data-close aria-label="Close">' + ic('x') + '</button></div>'; }
 
   /* ---------- the page ---------- */
   var root = null, lastKey = '';
