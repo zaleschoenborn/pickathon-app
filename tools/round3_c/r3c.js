@@ -46,7 +46,7 @@
     if (y === NOW) return { p: '#2B2628', i: '#F2CF62', i2: '#F2EDE3', s: '' };
     if (!B || y === 1999) return { p: '#F2EDE3', i: '#2B2628', i2: '#7C6E4D', s: '' };   // 1999 is set in type only: cream paper, one ink, no stripe (ruling 5)
     var S = B.stripe || [];
-    return { p: B.paper || '#F2EDE3', i: B.ink || '#2B2628', i2: B.ink2 || B.ink || '#2B2628', s: S.length === 4 ? 'linear-gradient(90deg,' + S[0] + ' 0 25%,' + S[1] + ' 0 50%,' + S[2] + ' 0 75%,' + S[3] + ' 0)' : '' };
+    return { p: B.paper || '#F2EDE3', i: B.ink || '#2B2628', i2: B.ink2 || B.ink || '#2B2628', s: window.pkStripeGrad ? window.pkStripeGrad(B) : (S.length === 4 ? 'linear-gradient(90deg,' + S[0] + ' 0 25%,' + S[1] + ' 0 50%,' + S[2] + ' 0 75%,' + S[3] + ' 0)' : '') };   /* Gate 2 design 4: paper-colored stripe segments dropped */
   }
   /* what page the wall was opened from, and what each year means there */
   function context() {
@@ -134,10 +134,11 @@
       if (y === c.cur && y !== NOW) return close();
       if (y === NOW) return close(go('hood', { h: c.h, tm0: 1 }));
       if (c.marks[y]) return close(function () { A.go('hood', { h: c.h, y: String(y) }); if (c.marks[y] === 'old') toast('In ' + y + ' this ground was the ' + c.names[y] + '.', 4200); });
-      return close(function () { A.go('past', { y: String(y) }); var n = 0, find = function () { var e = document.querySelector('#root .pk-hy'); if (e) { e.scrollIntoView({ block: 'start' }); toast(c.hn + '’s ground wasn’t a stage yet in ' + y + '. Here’s where it happened that summer.', 5000); } else if (++n < 20) setTimeout(find, 150); }; setTimeout(find, 300); });
+      return close(function () { A.go('past', { y: String(y) }); var n = 0, find = function () { var e = document.querySelector('#root .pk-hy'); if (e) { e.scrollIntoView({ block: 'start' }); toast(c.hn + ' isn’t in the ' + y + ' schedule. Here’s where it happened that summer.', 5000);   /* Gate 2 C1: same words as the page note */ } else if (++n < 20) setTimeout(find, 150); }; setTimeout(find, 300); });
     }
     if (c.r === 'schedule') {   /* the same schedule section that year: the year page's "Who played when"; 2027 is this page */
       if (y === NOW) return close();
+      if (!(((st().data || {}).pastSched || {})[String(y)] || []).length) return close(function () { A.go('past', { y: String(y) }); setTimeout(function () { toast('No hour-by-hour schedule survives from ' + y + '. Here’s that year’s lineup.', 5000); }, 350); });   /* Gate 2 C2: a year with no surviving schedule (1999) says so every time, without waiting on the page */
       return close(function () { A.go('past', { y: String(y) }); var n = 0, find = function () { var h = [].slice.call(document.querySelectorAll('#root h2')).filter(function (e) { return /who played when/i.test(e.textContent || ''); })[0]; if (h) { var bars = [].slice.call(document.querySelectorAll('#root header, .pk-tm')).map(function (b) { var r = b.getBoundingClientRect(); return r.height && r.top < 200 ? r.bottom : 0; }); h.style.scrollMarginTop = (Math.max.apply(null, bars.concat([0])) + 12) + 'px'; h.scrollIntoView({ block: 'start' }); } else if (++n < 20 && !(n > 2 && document.querySelector('#root section[aria-label="Who played ' + y + '"]'))) setTimeout(find, 150); else toast('No hour-by-hour schedule survives from ' + y + '. Here’s that year’s lineup.', 5000); }; setTimeout(find, 300); });
     }
     if (c.r === 'mine') { if (y === c.cur && y !== NOW) return close(); return close(y === NOW ? go('mine', {}) : go('mine', { y: String(y) })); }

@@ -1,0 +1,175 @@
+/* Years package (Nov 12 2026). Colors on year pages come only from yearBrand (set as custom properties by the templates). */
+
+/* ---- D: a past year's neighborhood page ---- */
+$P .pk-hd-ground{margin:10px 0 0;font:700 var(--t-lead,19px)/1.3 'Inter',system-ui,sans-serif;color:#F2EDE3;max-width:640px}
+$P .pk-hd-pycap{margin:10px 0 0;font-size:13px;line-height:1.4;color:rgba(242,237,227,.78)}
+$P .pk-hd-pyn{margin:12px 0 0;max-width:640px;font-size:16px;line-height:1.45;color:#F2EDE3}
+$P .pk-hd-pyl{display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:0;border:0;background:none;color:#F2CF62;font:800 16px/1.2 'Inter',system-ui,sans-serif;cursor:pointer}
+$P .pk-hd-desc:empty{display:none}
+/* no same-year photo: the place's name set as type on the year's paper, the year's four-color stripe as its rule (a bill slug) */
+$P .pk-hd-hero.pk-hd-slug{background:var(--py-paper)!important;height:auto!important;min-height:300px;padding-top:56px}
+$P .pk-hd-hero.pk-hd-slug .pk-hd-shade{display:none}
+$P .pk-hd-slugh{position:absolute;left:0;right:0;bottom:0;z-index:1}
+$P .pk-hd-slugs{display:flex;height:10px}
+$P .pk-hd-slugs i{flex:1 1 0}
+$P .pk-hd-hero.pk-hd-slug .pk-hd-hi{padding-bottom:40px}
+$P .pk-hd-hero.pk-hd-slug .pk-hd-kick{color:var(--py-ink2)!important}
+$P .pk-hd-hero.pk-hd-slug .pk-hd-nm h1{color:var(--py-ink)!important;font-size:clamp(52px,15vw,132px)!important;line-height:.9!important}
+$P .pk-hd-hero.pk-hd-slug .pk-hd-t,$P .pk-hd-hero.pk-hd-slug .pk-hd-ground,$P .pk-hd-hero.pk-hd-slug .pk-hd-pycap{color:var(--py-ink)!important}
+$P .pk-hd-hero.pk-hd-slug .pk-hd-hi button.pk-share1{color:var(--py-ink)!important;border-color:var(--py-ink2)!important;background:transparent!important}
+/* the year you're in leads the year cards */
+$P .pk-hd-yc.pk-hd-ycur{box-shadow:0 0 0 2px #F2CF62}
+$P .pk-hd-ytag{position:absolute;left:10px;top:10px;z-index:2;padding:4px 9px;border-radius:4px;background:rgba(12,15,10,.82);color:#F2CF62;font:800 11px/1 'Inter',system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase}
+$P .pk-hd-ym{position:relative}
+$P .pk-hd-hero.pk-hd-slug .pk-hd-hi *{text-shadow:none!important;-webkit-text-fill-color:currentColor!important}
+$P .pk-hd-hero.pk-hd-slug .pk-hd-nm img{display:none!important}
+@media (min-width:1200px){$P .pk-hd-hero.pk-hd-slug{min-height:380px}}
+
+/* ---- B: bill slugs. A tile with no same-year photo is the act's name set as type in the year's ink on its paper,
+   the year's four-color stripe along its foot (like a bill on a show poster). Never the year's art repeated. ---- */
+$P :is(.pk-shc,.pk-b3,.pk-b1,.pk-b2):has(>.pk-b3ph,>.pk-bph){background:var(--yb-paper,#F2EDE3)!important;color:var(--yb-ink,#2B2628)!important;box-shadow:inset 0 0 0 1.5px color-mix(in srgb,var(--yb-ink2,#2B2628) 38%,transparent);container-type:inline-size}
+$P :is(.pk-shc,.pk-b3,.pk-b1,.pk-b2)>:is(.pk-b3ph,.pk-bph){display:none!important}
+$P :is(.pk-shc,.pk-b3,.pk-b1,.pk-b2):has(>.pk-b3ph,>.pk-bph)::before{content:""!important;display:block!important;position:absolute!important;left:0!important;right:0!important;bottom:0!important;top:auto!important;height:7px!important;z-index:1!important;background:var(--yb-stripe)!important;pointer-events:none}
+$P :is(.pk-shc,.pk-b3,.pk-b1,.pk-b2):has(>.pk-b3ph,>.pk-bph)::after{display:none!important}
+$P :is(.pk-shc,.pk-b3):has(>.pk-b3ph)>b{position:absolute!important;left:11px!important;right:11px!important;top:40px!important;bottom:auto!important;z-index:2;display:block!important;-webkit-line-clamp:unset!important;overflow:hidden;font-family:'Bricolage Grotesque',sans-serif!important;font-weight:800!important;font-stretch:78%;font-variation-settings:'wdth' 78,'opsz' 48;font-size:clamp(18px,17.5cqw,34px)!important;line-height:.96!important;letter-spacing:.005em;text-transform:uppercase;color:var(--yb-ink,#2B2628)!important;-webkit-text-fill-color:currentColor;text-shadow:none!important;hyphens:manual;overflow-wrap:normal;word-break:normal;max-height:calc(4 * .96em)}
+$P :is(.pk-shc,.pk-b3):has(>.pk-b3ph)>:is(.pk-shk,span:not(.pk-star)){position:absolute!important;left:11px!important;right:11px!important;bottom:13px!important;top:auto!important;z-index:2;margin:0!important;font:800 10px/1.2 'Inter',system-ui,sans-serif!important;letter-spacing:.09em;text-transform:uppercase;color:var(--yb-ink2,#2B2628)!important;-webkit-text-fill-color:currentColor;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-shadow:none!important}
+$P :is(.pk-shc,.pk-b3):has(>.pk-b3ph) .pk-star{color:var(--yb-ink,#2B2628)!important;-webkit-text-fill-color:currentColor;text-shadow:none!important;background:transparent!important;box-shadow:none!important;backdrop-filter:none!important}
+/* the first slug in a row is printed solid, the way a bill sets its top name in a block */
+$P .pk-shr>.pk-shc:first-child:has(>.pk-b3ph){background:var(--yb-ink,#2B2628)!important;box-shadow:none}
+$P .pk-shr>.pk-shc:first-child:has(>.pk-b3ph)>b,$P .pk-shr>.pk-shc:first-child:has(>.pk-b3ph) .pk-star{color:var(--yb-paper,#F2EDE3)!important}
+$P .pk-shr>.pk-shc:first-child:has(>.pk-b3ph)>.pk-shk{color:color-mix(in srgb,var(--yb-paper,#F2EDE3) 78%,var(--yb-ink))!important}
+/* 1999 has no kit: a designed "Pickathon 1999" type mark on cream paper in one ink */
+$P article[aria-label="Pickathon 1999"] :is(.pk-shc,.pk-b3):has(>.pk-b3ph)::after{content:"Pickathon 1999"!important;display:block!important;position:absolute!important;left:11px!important;top:auto!important;right:auto!important;bottom:14px!important;z-index:2;background:none!important;font:800 9.5px/1 'Inter',system-ui,sans-serif;letter-spacing:.16em;text-transform:uppercase;color:var(--yb-ink,#2B2628);padding-bottom:5px;border-bottom:1.5px solid currentColor}
+
+$P article[aria-label="Pickathon 1999"] :is(.pk-shc,.pk-b3):has(>.pk-b3ph)>:is(.pk-shk,span:not(.pk-star)){bottom:34px!important}
+$P article[aria-label="Pickathon 1999"] .pk-shr>.pk-shc:first-child:has(>.pk-b3ph)::after{color:var(--yb-paper,#F2EDE3)}
+/* the big bill tiles (desktop rows) carry their name and kind in a caption block */
+$P :is(.pk-b1,.pk-b2):has(>.pk-bph) .pk-bcap{position:absolute!important;inset:44px 14px 18px 14px!important;z-index:2;display:flex!important;flex-direction:column-reverse!important;justify-content:space-between!important;gap:8px;background:none!important;padding:0!important}
+$P :is(.pk-b1,.pk-b2):has(>.pk-bph) .pk-bcap>b{position:static!important;flex:none!important;display:block!important;-webkit-line-clamp:unset!important;overflow:hidden;max-height:calc(4 * .96em);font-family:'Bricolage Grotesque',sans-serif!important;font-weight:800!important;font-stretch:78%;font-variation-settings:'wdth' 78,'opsz' 48;font-size:clamp(20px,15cqw,40px)!important;line-height:.96!important;text-transform:uppercase;color:var(--yb-ink,#2B2628)!important;-webkit-text-fill-color:currentColor;text-shadow:none!important;overflow-wrap:normal;word-break:normal}
+$P :is(.pk-b1,.pk-b2):has(>.pk-bph) .pk-bcap>.pk-bk{position:static!important;inset:auto!important;margin:0!important;font:800 10.5px/1.25 'Inter',system-ui,sans-serif!important;letter-spacing:.09em;text-transform:uppercase;-webkit-text-fill-color:var(--yb-ink2,#2B2628);text-shadow:none!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+$P :is(.pk-b1,.pk-b2,.pk-b3,.pk-shc):has(>.pk-b3ph,>.pk-bph) :is(.pk-shk,.pk-bk,b+span){-webkit-text-fill-color:var(--yb-ink2,#2B2628)!important}
+$P :is(.pk-b1,.pk-b2):has(>.pk-bph) .pk-star{color:var(--yb-ink,#2B2628)!important;-webkit-text-fill-color:currentColor;background:transparent!important;box-shadow:none!important;backdrop-filter:none!important}
+$P .pk-shc:has(>.pk-b3ph)>b{max-height:calc(3 * .96em)!important}
+$P .pk-sh-big .pk-shc:has(>.pk-b3ph)>b{max-height:calc(4 * .96em)!important}
+$P .pk-shr>.pk-shc:first-child:has(>.pk-b3ph)>.pk-shk{-webkit-text-fill-color:color-mix(in srgb,var(--yb-paper,#F2EDE3) 80%,var(--yb-ink,#2B2628))!important}
+$P article[aria-label="Pickathon 1999"] .pk-shc:has(>.pk-b3ph)>b{font-size:clamp(16px,14.5cqw,30px)!important;top:36px!important}
+
+/* ---- C: 1999-2008 open on the year's own artwork with the place line (the CD covers and posters the site has; 1999 a type poster) ---- */
+$P .pk-yth.pk-yth-c{display:flex!important;flex-direction:column!important;justify-content:flex-start!important;align-items:stretch!important;gap:14px!important;min-height:0!important;padding:20px clamp(16px,4.6vw,40px) 26px!important}
+$P .pk-yth.pk-yth-c .pk-yth-era{position:static!important;max-width:none!important;margin:0!important;font:800 11.5px/1.35 'Inter',system-ui,sans-serif!important;letter-spacing:.14em!important;color:var(--yth-ink2,var(--yth-ink))!important;opacity:1!important}
+$P .pk-yth-art{margin:0!important;padding:10px;border:2px solid var(--yth-ink);background:color-mix(in srgb,var(--yth-paper) 88%,var(--yth-ink));box-sizing:border-box}
+$P .pk-yth-art img{display:block;width:100%;height:auto;margin:0 auto}
+$P .pk-yth-art.pk-yth-tall{align-self:center;width:auto;max-width:100%}
+$P .pk-yth-art.pk-yth-tall img{width:auto;max-width:100%;max-height:min(64vh,620px)}
+$P .pk-yth-art figcaption{margin:9px 0 0;font:700 11px/1.3 'Inter',system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--yth-ink2,var(--yth-ink))}
+$P .pk-yth.pk-yth-c .pk-yth-y{margin:6px 0 0!important;font-size:clamp(84px,24vw,168px)!important}
+$P .pk-yth-place{margin:-4px 0 2px;font:800 12.5px/1.4 'Inter',system-ui,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--yth-ink2,var(--yth-ink))}
+$P .pk-yth.pk-yth-c .pk-yth-bill{border-left:0!important;border-top:2px solid var(--yth-ink)!important;padding:14px 0 0!important}
+$P .pk-yth-sh{display:flex}
+$P .pk-yth-sh .pk-share1{color:var(--yth-ink)!important;border-color:var(--yth-ink)!important;background:transparent!important}
+/* 1999: no artwork exists, so the poster slot is set in type: one ink on cream */
+$P .pk-yth-tart{container-type:inline-size;aspect-ratio:4/3;display:flex;flex-direction:column;align-items:flex-start;gap:10px;padding:22px 20px 20px;background:transparent;border:2px solid var(--yth-ink);box-shadow:inset 0 0 0 5px var(--yth-paper),inset 0 0 0 6.5px var(--yth-ink)}
+$P .pk-yth-tart .pk-yth-tk,$P .pk-yth-tart .pk-yth-tp{font:800 11.5px/1.3 'Inter',system-ui,sans-serif;letter-spacing:.16em;text-transform:uppercase;color:var(--yth-ink)}
+$P .pk-yth-tart b{display:block;width:100%;font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-stretch:75%;font-variation-settings:'wdth' 75,'opsz' 96;font-size:clamp(48px,28cqw,190px);line-height:.82;margin-top:auto;letter-spacing:-.01em;text-transform:uppercase;color:var(--yth-ink);padding-bottom:10px;border-bottom:2px solid var(--yth-ink)}
+@media (min-width:700px) and (max-width:1199px){$P .pk-yth-art.pk-yth-sq,$P .pk-yth-tart{width:min(100%,520px);align-self:flex-start}}   /* Gate 2 design 11: kicker, art and year share the left edge */
+@media (min-width:1200px){
+$P .pk-yth.pk-yth-c{display:grid!important;grid-template-columns:minmax(300px,440px) minmax(0,1fr)!important;grid-template-rows:auto auto auto auto 1fr auto!important;column-gap:clamp(36px,4vw,64px)!important;row-gap:12px!important;align-items:start!important;padding:36px 40px 40px!important}
+$P .pk-yth.pk-yth-c>*{grid-column:2!important}
+$P .pk-yth.pk-yth-c>.pk-yth-art{grid-column:1!important;grid-row:1/-1!important;align-self:start!important;width:100%}
+$P .pk-yth.pk-yth-c>.pk-yth-art.pk-yth-tall{width:auto;justify-self:center}
+$P .pk-yth.pk-yth-c .pk-yth-era{grid-row:1!important}
+$P .pk-yth.pk-yth-c .pk-yth-y{grid-row:2!important;font-size:clamp(120px,10vw,176px)!important}
+$P .pk-yth.pk-yth-c .pk-yth-place{grid-row:3!important}
+$P .pk-yth.pk-yth-c .pk-yth-bill{grid-row:4!important;font-size:clamp(20px,1.7vw,26px)!important}
+$P .pk-yth.pk-yth-c .pk-yth-t{grid-row:5!important}
+$P .pk-yth.pk-yth-c .pk-yth-sh{grid-row:6!important}
+}
+@media (min-width:1200px){$P .pk-yth-tart{aspect-ratio:1/1}}
+
+/* ---- "Who broke out": one labeled snapshot (Now, matching the lineup tiers below), each column notes its count at the festival; dots are a picture, not controls ---- */
+$P .pk-tn .pk-tn-nav,$P .pk-tn .pk-tn-card,$P .pk-tn .pk-tn-tip{display:none!important}
+$P .pk-tn .pk-tn-f{pointer-events:none}
+$P .pk-tn button.pk-tn-dot.sel{box-shadow:none!important;z-index:auto}
+$P .pk-tn button.pk-tn-dot.mv{box-shadow:0 0 0 1.5px #12160F,0 0 0 3px #F2CF62!important}
+$P .pk-tn .pk-tn-now{margin:6px 0 6px;font:800 11px/1.2 'Inter',system-ui,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#F2EDE3}
+$P .pk-tn .pk-tn-cols small{display:block;margin-top:3px;font:600 11px/1.25 'Inter',system-ui,sans-serif;letter-spacing:0;text-transform:none;color:#B9B3A6}
+
+/* ---- one "This summer at" design (art review 11): the slim card everywhere; a camp's booking button sits on its own row ---- */
+$P .pk-hd-sum.pk-slim .pk-hd-camp{flex:1 1 100%;margin-top:8px}
+$P .pk-hd-sum.pk-slim .pk-hd-camp p{margin:8px 0 0!important}
+$P .pk-hd-sum.pk-slim .pk-hd-am{flex:1 1 100%}
+/* camp pages: a short photo strip, "Around Lush Camp" (phone: swipe row, no visible scroll bar; desktop: a row of up to four) */
+$P .pk-hd-cgr{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;margin:0 -16px;padding:0 16px 4px;scroll-padding-inline:16px;scrollbar-width:none}
+$P .pk-hd-cgr::-webkit-scrollbar{display:none}
+$P .pk-hd-cgr figure{flex:0 0 78%;margin:0;scroll-snap-align:start}
+$P .pk-hd-cgr img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:14px;background:#1A2017}
+$P .pk-hd-cgr figcaption{margin:6px 2px 0;font-size:12.5px;line-height:1.35;color:#B9B3A6}
+@media (min-width:700px) and (max-width:1199px){$P .pk-hd-cgr{margin:0 -24px;padding:0 24px 4px}$P .pk-hd-cgr figure{flex-basis:44%}}
+@media (min-width:1200px){$P .pk-hd-cgr{margin:0;padding:0;overflow:visible;display:grid;grid-template-columns:repeat(4,minmax(0,1fr))}}
+
+/* ---- G (mock m6): controls on a past year's paper stay inside the six-shape button set, colors from yearBrand.
+   Primary: ink2 border, the warm color only as an 18% tint, text in yearBrand.btnInk (ink2 darkened until it reaches 4.5:1 on that tint) (gold #F2CF62/#D6B54A fails on every paper).
+   Secondary: ink border and text. Chosen chip: solid ink, paper text, the year's stripe along its foot. ---- */
+$P article[aria-label^="Pickathon "] .pk-lh-b.pk-g1-pri{border-color:var(--yb-ink2)!important;color:var(--yb-btnink,var(--yb-ink2))!important;-webkit-text-fill-color:var(--yb-btnink,var(--yb-ink2))!important;background:color-mix(in srgb,var(--yb-warm,var(--yb-ink2)) 18%,transparent)!important}
+$P article[aria-label^="Pickathon "] .pk-lh-b.pk-lh-t5{border-color:var(--yb-ink)!important;color:var(--yb-ink)!important;-webkit-text-fill-color:var(--yb-ink)!important;background:transparent!important}
+$P article[aria-label^="Pickathon "] .pk-yb .pk-share1,$P article[aria-label^="Pickathon "] .pk-yb .pk-share1 *{color:var(--yb-ink)!important;-webkit-text-fill-color:var(--yb-ink)!important;border-color:var(--yb-ink)!important;stroke:currentColor}
+$P article[aria-label^="Pickathon "] .pk-yb .pk-share1{background:transparent!important}
+$P article[aria-label^="Pickathon "] :is(.pk-sxy-db,.pk-sxy-kb)[aria-pressed="true"]{background:var(--yb-ink)!important;color:var(--yb-paper)!important;-webkit-text-fill-color:var(--yb-paper)!important;border-color:var(--yb-ink)!important;background-image:var(--yb-stripe)!important;background-size:100% 4px!important;background-repeat:no-repeat!important;background-position:0 100%!important}
+
+/* ---- quick ones (item 8) ---- */
+/* the year banner fits its box at 360 ("PICKATHON 2025" was cut); dates keep clear of the Share button */
+@media (max-width:999px){
+$P .pk-yb .pk-yb-t{container-type:inline-size;flex:1 1 auto}
+$P .pk-yb .pk-yb-h{font-size:min(26px,11.6cqw)!important}
+$P .pk-yb .pk-yb-d{padding-right:48px}
+}
+/* tile names may run to three lines (15px small tiles, 17px big); the genre line is one line */
+$P .pk-shc:not(:has(>.pk-b3ph))>b{font-size:15px!important;-webkit-line-clamp:3!important;line-height:1.12!important}
+$P .pk-sh-big .pk-shc:not(:has(>.pk-b3ph))>b{font-size:17px!important}
+$P :is(.pk-shc .pk-shk,.pk-b2 .pk-bk,.pk-b1 .pk-bk,.pk-b3>b~span:not(.pk-star)){display:block;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;-webkit-line-clamp:unset}
+
+/* Gate 2 design 3: the star on a slug is a quiet 30px ring in the year's ink2 at the tile's top-left corner (6px in), its tap area still 46px */
+$P :is(.pk-shc,.pk-b3,.pk-b1,.pk-b2):has(>.pk-b3ph,>.pk-bph) .pk-star{position:absolute!important;top:6px!important;left:6px!important;right:auto!important;bottom:auto!important;margin:0!important;width:30px!important;height:30px!important;min-width:30px!important;min-height:30px!important;padding:0!important;border:0!important;border-color:transparent!important;border-radius:50%!important;box-shadow:inset 0 0 0 1.5px color-mix(in srgb,var(--yb-ink2,#2B2628) 45%,transparent)!important;font-size:15px!important;line-height:1!important;display:flex!important;align-items:center!important;justify-content:center!important;overflow:visible!important}
+$P :is(.pk-shc,.pk-b3,.pk-b1,.pk-b2):has(>.pk-b3ph,>.pk-bph) .pk-star::after{content:"";position:absolute;inset:-8px;border-radius:50%}
+$P .pk-shr>.pk-shc:first-child:has(>.pk-b3ph) .pk-star{box-shadow:inset 0 0 0 1.5px color-mix(in srgb,var(--yb-paper,#F2EDE3) 55%,transparent)!important}
+/* Gate 2 design 5: below 768 a slug name is three lines at most, every tile size */
+@media (max-width:767px){$P :is(.pk-shc,.pk-sh-big .pk-shc,.pk-b3):has(>.pk-b3ph)>b{max-height:calc(3 * .96em)!important}$P :is(.pk-b1,.pk-b2):has(>.pk-bph) .pk-bcap>b{max-height:calc(3 * .96em)!important}}
+/* Gate 2 design 6: a past year with no builders on record: the card is the pitch alone, one column */
+$P .pk-hd-who.pk-hd-who1{grid-template-columns:1fr!important}
+$P .pk-hd-who.pk-hd-who1>div:first-child{display:none!important}
+$P .pk-hd-who.pk-hd-who1 .pk-hd-pitch{margin:0!important;padding:0!important;border:0!important}
+/* Gate 2 design 7: Cherry Hill 2016 hero at desktop shows Kevin Morby's face, not his eyes cut by the frame (a src*= rule, so focus.js treats it as a hand crop) */
+@media (min-width:1000px){$P .pk-hd-hero.pk-hd-py>img[src*="y16b-kevinmorby.jpg"]{object-position:50% 22%!important}}
+/* Gate 2 design 8: a year card with no photo is a slug: that year's paper, the place's name in ink, "Pickathon 2012" in ink2, the stripe along its foot */
+$P .pk-yph.pk-hd-yslug{background:var(--ys-paper)!important;color:var(--ys-ink)!important;align-items:flex-start!important;justify-content:center!important;gap:8px!important;padding:0 18px 10px;box-sizing:border-box}
+$P .pk-yph.pk-hd-yslug>i{font:800 11.5px/1.2 'Inter',system-ui,sans-serif!important;letter-spacing:.14em!important;color:var(--ys-ink2)!important;-webkit-text-fill-color:var(--ys-ink2)}
+$P .pk-yph.pk-hd-yslug>b{font-family:'Pickathon 2014',sans-serif!important;font-weight:400!important;font-size:clamp(34px,10vw,52px)!important;line-height:.95!important;color:var(--ys-ink)!important;-webkit-text-fill-color:var(--ys-ink);text-transform:uppercase;overflow-wrap:anywhere}
+$P .pk-yph.pk-hd-yslug>.pk-hd-slugs{position:absolute;left:0;right:0;bottom:0;display:flex;height:8px}
+/* the type hero keeps a 32px breath before the page text */
+$P .pk-hd-hero.pk-hd-slug ~ .pk-hd-w .pk-hd-desc0{margin-top:32px!important}
+$P .pk-hd-ym:has(.pk-hd-yslug) .pk-hd-ytag{display:none!important}
+/* Gate 2 design 9: a place card with no same-year photo is a place slug on the year's paper: that year's name in ink, "Today: Paddock" in ink2,
+   the year's stripe along its foot; no black fade, no empty photo box above the type */
+$P .pk-hy-c.pk-hy-slug{min-height:0!important;justify-content:flex-start!important;padding:18px 0 14px!important;background:var(--yb-paper,#F2EDE3)!important;color:var(--yb-ink,#2B2628)!important;box-shadow:inset 0 0 0 1.5px color-mix(in srgb,var(--yb-ink2,#2B2628) 38%,transparent)}
+$P .pk-hy-c.pk-hy-slug::after{content:""!important;inset:auto 0 0 0!important;height:7px!important;background:var(--yb-stripe,var(--yb-ink))!important}
+$P .pk-hy-c.pk-hy-slug .pk-hy-ic{display:none!important}
+$P .pk-hy-c.pk-hy-slug .pk-hy-t b{font-family:'Pickathon 2014',sans-serif!important;font-weight:400!important;font-size:28px!important;line-height:1!important;color:var(--yb-ink)!important;-webkit-text-fill-color:var(--yb-ink);text-shadow:none!important}
+$P .pk-hy-c.pk-hy-slug .pk-hy-now{padding-top:6px!important;color:var(--yb-ink2)!important;-webkit-text-fill-color:var(--yb-ink2);text-shadow:none!important}
+$P .pk-hy-c.pk-hy-slug .pk-hy-a{margin:8px 0 10px!important;color:var(--yb-ink)!important;-webkit-text-fill-color:var(--yb-ink);text-shadow:none!important}
+$P .pk-hy-c.pk-hy-slug .pk-hy-a em{color:var(--yb-ink2)!important;-webkit-text-fill-color:var(--yb-ink2)}
+/* Gate 2 design 10: the ring explained in one line; narrow phones keep the column labels apart */
+$P .pk-tn .pk-tn-ring{margin:10px 0 0!important;font:600 12.5px/1.35 'Inter',system-ui,sans-serif!important;color:#CFC9BC!important}
+@media (max-width:374px){$P .pk-tn .pk-tn-cols span{font-size:9.5px!important;letter-spacing:0!important}}
+
+/* Gate 2 design 11: the 1999 show card fills its frame: PICKATHON, the year big, a rule, the place, "A KBOO benefit"; the page's own year and place lines step aside (kept for readers of the page structure) */
+$P .pk-yth-tart{justify-content:space-between!important;gap:6px!important}
+$P .pk-yth-tart b{margin-top:0!important;padding-bottom:0!important;border-bottom:0!important;font-size:clamp(44px,24cqw,160px)!important}
+$P .pk-yth-tart .pk-yth-ty{display:block;font-family:'Pickathon 2014',sans-serif;font-size:clamp(84px,44cqw,300px);line-height:.82;color:var(--yth-ink);margin:2px 0 0}
+$P .pk-yth-tart .pk-yth-tr{display:block;width:100%;height:0;border-top:2px solid var(--yth-ink);margin:10px 0 6px}
+$P .pk-yth-tart .pk-yth-tp{font:800 clamp(12px,3.8cqw,17px)/1.25 'Inter',system-ui,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--yth-ink)}
+$P .pk-yth-tart .pk-yth-tk{font:600 clamp(12px,3.6cqw,16px)/1.3 'Inter',system-ui,sans-serif;letter-spacing:.02em;text-transform:none;color:var(--yth-ink)}
+$P .pk-yth.pk-yth-c1 .pk-yth-y,$P .pk-yth.pk-yth-c1 .pk-yth-place{position:absolute!important;width:1px!important;height:1px!important;overflow:hidden!important;clip:rect(0 0 0 0)!important;white-space:nowrap!important;margin:0!important;padding:0!important}
+$P .pk-yth-tart .pk-yth-ty{font-family:'Pickathon 2014',sans-serif!important;font-weight:400!important}
+@media (max-width:1199px){$P .pk-yth.pk-yth-c>*:not(.pk-yth-art){align-self:stretch!important;grid-column:auto!important;grid-row:auto!important}}
+/* Gate 2 design 12: one seal in the header and one in the brand box; the reel's corner seal steps aside when the brand box is on the page */
+$P article[aria-label^="Pickathon "]:has(>.pk-yb) .pk-yrp img.pk-tl{display:none!important}
