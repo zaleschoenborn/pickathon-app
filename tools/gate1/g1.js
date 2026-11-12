@@ -23,8 +23,18 @@
     });
     document.querySelectorAll('.pk-ev-t').forEach(function (b) { pill(b, yr(b.getAttribute('aria-label'))); });
   }
+  /* Fix 2: hide the LISTEN float on phone/tablet when it would sit on another header control */
+  function vis(e) { if (!e || !e.checkVisibility || !e.checkVisibility()) return false; var r = e.getBoundingClientRect(); return r.width > 0 && r.height > 0; }
+  function listen() {
+    var H = document.documentElement, b = document.querySelector('button[aria-label="Listen to Pickathon"]'), on = false;
+    if (b && innerWidth <= 1024) {
+      var bk = [].slice.call(document.querySelectorAll('.pk-tm-bk')).some(vis);
+      if (bk) on = true;   /* the header carries 'Back to 2027' on the right: that is where the float would land */
+    }
+    H.classList.toggle('pk-g1-nolsn', on);
+  }
   var q = 0;
-  function run() { q = 0; try { pills(); } catch (e) { if (window.console) console.error('pk-g1', e); } }
+  function run() { q = 0; try { pills(); listen(); } catch (e) { if (window.console) console.error('pk-g1', e); } }
   function soon() { if (!q) q = requestAnimationFrame(run); }
   try { new MutationObserver(soon).observe(document.documentElement, { childList: true, subtree: true }); } catch (e) {}
   window.addEventListener('hashchange', soon); window.addEventListener('resize', soon); soon();

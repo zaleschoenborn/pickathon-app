@@ -33,3 +33,7 @@ $P .pk-ev-t .pk-g1-pill{bottom:auto;top:calc(76% - 42px);left:8px;max-width:calc
 }
 /* Geese template: the circle shows from 1200 px; there the outline Watch button on the photo goes (never both) */
 @media (min-width:1200px){ $P .pk-ah .pk-ah-btns .pk-bkb.pri{display:none!important} }
+
+/* -- Fix 2 (Q1/D7): on phone/tablet the floating LISTEN never sits on a header that already has a right-side control
+      ("Back to 2027" and the like). It is hidden there (visibility, so it can still be measured), never overlapping. -- */
+@media (max-width:1024px){ html.pk-g1-nolsn div:has(> button[aria-label="Listen to Pickathon"]){visibility:hidden!important;pointer-events:none!important;opacity:0!important} }
