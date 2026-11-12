@@ -259,3 +259,5 @@
 @media (max-width:820px){.tk2 .tk-pill-sm,#tk2#tk2#tk2#tk2#tk2 .tk-pill[aria-pressed]{min-height:44px!important}.tk2 .tk-tlink{display:inline-flex;align-items:center;min-height:44px}}
 /* test r3: a clear focus ring on phone fields too, not only with :focus-visible */
 .tk2 input:focus,.tk2 select:focus{outline:3px solid #D6B54A;outline-offset:2px}
+/* Round 3 (A11): any touch screen, a sideways tablet included, gets 44px targets (the 820px rule above only caught narrow ones) */
+@media (pointer:coarse){#tk2#tk2 .tk-pill,#tk2#tk2 .tk-pill-sm,#tk2#tk2#tk2#tk2#tk2 .tk-pill[aria-pressed]{min-height:44px!important}#tk2#tk2 .tk-tlink{display:inline-flex;align-items:center;min-height:44px}}

@@ -7229,6 +7229,8 @@ setInterval(function () { var el = document.getElementById('pk-nh-br'); if (el &
 @media (max-width:820px){.tk2 .tk-pill-sm,#tk2#tk2#tk2#tk2#tk2 .tk-pill[aria-pressed]{min-height:44px!important}.tk2 .tk-tlink{display:inline-flex;align-items:center;min-height:44px}}
 /* test r3: a clear focus ring on phone fields too, not only with :focus-visible */
 .tk2 input:focus,.tk2 select:focus{outline:3px solid #D6B54A;outline-offset:2px}
+/* Round 3 (A11): any touch screen, a sideways tablet included, gets 44px targets (the 820px rule above only caught narrow ones) */
+@media (pointer:coarse){#tk2#tk2 .tk-pill,#tk2#tk2 .tk-pill-sm,#tk2#tk2#tk2#tk2#tk2 .tk-pill[aria-pressed]{min-height:44px!important}#tk2#tk2 .tk-tlink{display:inline-flex;align-items:center;min-height:44px}}
 </style>
 <script id="pk-tk2">
 /* pk-tk2: Tickets, round 2 design (Nov 11 2026). Source: tools/tickets_r2/tk2.js, spliced into index.html by tools/tickets_r2/build.py.
@@ -7788,6 +7790,8 @@ setInterval(function () { var el = document.getElementById('pk-nh-br'); if (el &
   #pk-co .co-hold{justify-content:center}
   #pk-co .co-hold .tk-pill{margin-left:16px}
 }
+/* Round 3 (A11): a clear focus ring on the fields, not just a border tint */
+#pk-co#pk-co .co-f input:focus,#pk-co#pk-co .co-f input:focus-visible{outline:3px solid var(--gold)!important;outline-offset:2px!important;border-color:var(--gold)!important}
 </style>
 <script id="pk-checkout">
 /* pk-checkout: Checkout, round 2 design (Nov 11 2026). Source: tools/tickets_r2/co2.js.
@@ -9812,6 +9816,18 @@ html.pl2-zoom{-webkit-text-size-adjust:auto!important;text-size-adjust:auto!impo
   boot(0);
 })();
 </script>
+<style id="pk-r3-a11">
+/* Archive cards (small videos): the gold watch pill on the photo, not the big play ring (pk-noPill), on every form factor */
+#root#root#root#root .pk-arch-c .pk-ai .pk-bnd-p{position:absolute!important;left:10px!important;bottom:10px!important;top:auto!important;right:auto!important;transform:none!important;width:auto!important;height:auto!important;aspect-ratio:auto!important;min-height:30px!important;max-width:calc(100% - 20px)!important;padding:3px 11px 3px 3px!important;margin:0!important;border:0!important;border-radius:999px!important;background:#D6B54A!important;color:#12160F!important;box-shadow:0 1px 8px rgba(0,0,0,.35)!important;display:inline-flex!important;align-items:center!important;justify-content:flex-start!important;gap:6px!important;font-size:12px!important;font-weight:800!important;line-height:1.1!important;white-space:nowrap!important}
+#root#root#root#root .pk-arch-c .pk-ai .pk-bnd-p>span{display:inline-grid!important;place-items:center!important;flex:none!important;width:24px!important;height:24px!important;margin:0!important;padding:0 0 0 1px!important;border-radius:50%!important;background:#12160F!important;color:#D6B54A!important;font-size:10px!important}
+#root#root#root#root .pk-arch-c .pk-ai .pk-bnd-p>i{display:inline!important;font-style:normal!important;overflow:hidden!important;text-overflow:ellipsis!important;color:#12160F!important}
+/* Phone header title beside the Listen button (pk-ux3 parks it in the header): smaller, so "The Pickathon Archive" ends before the button instead of under it */
+@media (max-width:699px){body:has([role=region][aria-label="Listen"][style*="height: 44px"]) #root header span[style*="text-overflow: ellipsis"][style*="font-size: 16px"]{font-size:14px!important;letter-spacing:-.01em!important;max-width:calc(100vw - 230px)!important}}
+/* Round 3 (A11). Neighborhood "Who played" names: a 44px tall target without moving the text (padding inside, the same margin taken back). */
+#root#root#root .pk-nh-a{padding-top:10px!important;padding-bottom:10px!important;margin-top:-10px!important;margin-bottom:-10px!important}
+/* "Who broke out" dots stay 14-20px to fit 60+ acts, but each takes a 44px touch area (taps also go to the nearest dot within 24px) */
+#root#root#root .pk-tn-dot::after{content:"";position:absolute;left:50%;top:50%;width:44px;height:44px;transform:translate(-50%,-50%);border-radius:50%}
+</style>
 <style id="pk-way-css">
 /*pk-way-css: the way-finder row (flow/wayfinder/plan.md). Outline pills that match the shared pill in pk-buttons-nov11
   (44px phone and tablet, 38px desktop 1200+, sentence case, thin cream line, no fill). Current year: full cream line, never a fill.
