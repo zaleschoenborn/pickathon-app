@@ -139,3 +139,6 @@ $P .pk-yrp .pk-rs figcaption{z-index:2}
 @media (max-width:374px){ $P .pk-lh-bs .pk-lh-b.pk-g1-b{font-size:12px!important;letter-spacing:.03em!important;padding:0 8px!important;white-space:nowrap!important} }
 /* H: the all-time top-5 card's button is a secondary (50px, 56 desktop) on its dark card, even on a year's paper page; it reads "Pick my all-time top 5" */
 html $Q .pk-g1-b.pk-g1-sec.pk-g1-alltime,html.pk-ypp $Q .pk-g1-b.pk-g1-sec.pk-g1-alltime{background:rgba(18,22,15,.26)!important;border:2px solid rgba(242,237,227,.88)!important;color:#F2EDE3!important;-webkit-text-fill-color:#F2EDE3!important;flex:0 0 auto!important;width:auto!important}
+/* QC re-check: in a year's "Who played when", short artist and place names (toe, EDJ, Fust, Grove) still get a 44px-wide target, text centered */
+$P .pk-sxy-ab,$P .pk-sx-p{min-width:44px!important;box-sizing:border-box;text-align:center}
+$P a.pk-sxy-ab,$P button.pk-sxy-ab,$P a.pk-sx-p,$P button.pk-sx-p{display:inline-flex;justify-content:center;align-items:center}
