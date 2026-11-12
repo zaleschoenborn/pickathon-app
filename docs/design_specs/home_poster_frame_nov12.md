@@ -7,7 +7,8 @@ Supersedes "open on the printed poster, then collapse to the top 10" from the No
 - Opening state: the year's top 10 in "Then" order (printed poster, then WordPress order, then press announcement order, then the at-festival score labeled "At the festival").
 - End state: today's top 10 by magnitude ranking (minus 1 for Deep cuts only).
 - Motion is on HOLD until six-month scores exist for every year (design_studio-59). Until then, build the static frame with no motion.
-- Open: the 2016 label, and how a first-time visitor reads the motion.
+- 2016 opens labeled "At the festival" (Zale, Nov 12), the same label as any year ordered by the at-festival score.
+- Open: how a first-time visitor reads the motion (hold on Then, move, hold on Today, plus a caption naming the biggest climber).
 
 ## Replay control (Zale, Nov 12)
 - Labeled "Play again", text only, no glyph, small secondary button beside "Another year". Hidden while the motion is on hold; it appears when the motion goes live.
