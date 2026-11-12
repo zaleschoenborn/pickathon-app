@@ -69,8 +69,21 @@
       else if (t.length && t.length <= 8 && (e.closest('footer') || e.classList.contains('pk-nh-a'))) e.classList.add('pk-g1-w44');
     });
   }
+  /* Panel P7: on the Lineup page "2027" + "Another year" become one opener, seal + "2027 ▾", like the year bar on every other page */
+  function lineupOpener() {
+    document.querySelectorAll('h2.pk-pyl').forEach(function (h) {
+      var y = (h.textContent || '').trim(), b = h.nextElementSibling;
+      if (!/^\d{4}$/.test(y) || !b || b.tagName !== 'BUTTON' || b.getAttribute('aria-haspopup') !== 'dialog') return;
+      if (b.classList.contains('pk-g1-op') && b.getAttribute('data-y') === y && b.querySelector('.pk-g1-seal')) return;
+      var lg = (window.__pkYL || {})[y] || (y === '2027' ? 'logo27-bat-only.png' : '');
+      b.classList.add('pk-g1-op'); b.classList.remove('pk-g1-b'); b.setAttribute('data-y', y); b.setAttribute('aria-label', 'Pickathon ' + y + '. Another year');
+      b.innerHTML = (lg ? '<i class="pk-g1-seal" aria-hidden="true"><img src="' + lg + '" alt=""></i>' : '') + '<b>' + y + '</b><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+      var cs = getComputedStyle(h); ['font-size', 'letter-spacing', 'font-family', 'font-weight', 'text-transform'].forEach(function (k) { b.style.setProperty(k, cs.getPropertyValue(k), 'important'); });
+      h.classList.add('pk-g1-vh');
+    });
+  }
   var q = 0;
-  function run() { q = 0; try { pills(); listen(); tabs(); iw(); btns(); iosRow(); t44(); } catch (e) { if (window.console) console.error('pk-g1', e); } }
+  function run() { q = 0; try { pills(); listen(); tabs(); iw(); btns(); iosRow(); t44(); lineupOpener(); } catch (e) { if (window.console) console.error('pk-g1', e); } }
   function soon() { if (!q) q = requestAnimationFrame(run); }
   try { new MutationObserver(soon).observe(document.documentElement, { childList: true, subtree: true }); } catch (e) {}
   window.addEventListener('hashchange', soon); window.addEventListener('resize', soon); soon();

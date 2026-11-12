@@ -118,3 +118,12 @@ $P .pk-act-back{min-height:44px!important}
 /* footer: the email link and short links get a 44px tall hit area without moving the text */
 $P .pk-g1-mail{display:inline-block;padding:14px 0;margin:-14px 0}
 $P .pk-g1-w44{min-width:44px!important;display:inline-flex;justify-content:center}
+
+/* -- User panel P7: the Lineup page's year control is the same opener as every other page: seal + "2027 ▾" (opens the year chooser) -- */
+$P button.pk-g1-op{display:inline-flex!important;align-items:center!important;gap:8px!important;min-height:44px!important;height:auto!important;padding:0 6px 0 0!important;margin:0!important;border:0!important;border-radius:6px!important;background:transparent!important;box-shadow:none!important;color:inherit!important;cursor:default!important;width:auto!important}
+$P button.pk-g1-op .pk-g1-seal{display:grid;place-items:center;width:36px;height:36px;flex:none;border-radius:50%;background:#F2EDE3;box-shadow:0 0 0 1.5px rgba(242,237,227,.9);overflow:hidden}
+$P button.pk-g1-op .pk-g1-seal img{display:block;width:30px;height:30px;object-fit:contain}
+$P button.pk-g1-op b{font-family:inherit!important;font-weight:inherit!important;font-size:inherit!important;letter-spacing:inherit!important;line-height:1}
+$P button.pk-g1-op svg{width:18px;height:18px;flex:none;margin-left:-2px}
+$P button.pk-g1-op:focus-visible{outline:3px solid #F2CF62;outline-offset:3px}
+$P .pk-g1-vh{position:absolute!important;width:1px!important;height:1px!important;overflow:hidden!important;clip:rect(0 0 0 0)!important;white-space:nowrap!important;margin:0!important}
