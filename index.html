@@ -2198,6 +2198,7 @@ html.pkw-on .pkw-scrim{top:0}
     }
     if (c.r === 'schedule') {   /* the same schedule section that year: the year page's "Who played when"; 2027 is this page */
       if (y === NOW) return close();
+      if (!(((st().data || {}).pastSched || {})[String(y)] || []).length) return close(function () { A.go('past', { y: String(y) }); setTimeout(function () { toast('No hour-by-hour schedule survives from ' + y + '. Here’s that year’s lineup.', 5000); }, 350); });   /* Gate 2 C2: a year with no surviving schedule (1999) says so every time, without waiting on the page */
       return close(function () { A.go('past', { y: String(y) }); var n = 0, find = function () { var h = [].slice.call(document.querySelectorAll('#root h2')).filter(function (e) { return /who played when/i.test(e.textContent || ''); })[0]; if (h) { var bars = [].slice.call(document.querySelectorAll('#root header, .pk-tm')).map(function (b) { var r = b.getBoundingClientRect(); return r.height && r.top < 200 ? r.bottom : 0; }); h.style.scrollMarginTop = (Math.max.apply(null, bars.concat([0])) + 12) + 'px'; h.scrollIntoView({ block: 'start' }); } else if (++n < 20 && !(n > 2 && document.querySelector('#root section[aria-label="Who played ' + y + '"]'))) setTimeout(find, 150); else toast('No hour-by-hour schedule survives from ' + y + '. Here’s that year’s lineup.', 5000); }; setTimeout(find, 300); });
     }
     if (c.r === 'mine') { if (y === c.cur && y !== NOW) return close(); return close(y === NOW ? go('mine', {}) : go('mine', { y: String(y) })); }
