@@ -6094,18 +6094,19 @@ window.__pkMapH = mapH; window.__pkGoFarm = goFarm;   // pk-home2: the Home neig
             var PBy = (H2.pb || []).filter(function (x) { return String(x.y) === PY.y; })[0] || null;
             if (!same) { o.hdDesc = PBy && PBy.d ? PBy.d : ''; }
             /* hero: this place's own photo from that summer, else a photo from that year's catalog taken on this stage (tagged stage), headliners first, never a promo shot */
-            var hero = '', hA = '', hBy = '';
+            var hero = '', hA = '', hBy = '', alt = '';   /* alt: the next-best photo of the same place that summer, for that year's card (never the hero twice) */
             (H2.hr || []).some(function (r) { if (String(r.y) === PY.y && r.i) { hero = r.i; hA = r.band || ''; hBy = r.by || ''; return true; } return false; });
             if (!hero) { var YPh = (d.yearPhotos || {})[PY.y] || {}, ord = ((d.yearBill || {})[PY.y] || []).map(function (b) { return b.n; }), ks = Object.keys(YPh), rk = {}; ord.forEach(function (n, i) { rk[nkA(n)] = i + 1; }); ks.sort(function (a, b) { return (rk[nkA(a)] || 9999) - (rk[nkA(b)] || 9999); });
-              ks.some(function (a) { var P = YPh[a]; if (!P || !P.i || P.promo) return false; var sk = PY.nk(P.s); if (sk && (PY.stageKeys[sk] || sk === PY.nk(NM))) { hero = P.i; hA = a; hBy = P.ph || ''; return true; } return false; }); }
-            if (hero) { o.hdImg = hero; o.hdPos = '50% 35%'; o.hasPyCap = !!(hA || hBy); o.pyCap = [hA ? hA + ', ' + NM + ' ' + PY.y : '', hBy ? 'Photo ' + hBy : ''].filter(Boolean).join(' · '); }
+              ks.some(function (a) { var P = YPh[a]; if (!P || !P.i || P.promo) return false; var sk = PY.nk(P.s); if (sk && (PY.stageKeys[sk] || sk === PY.nk(NM))) { if (!hero) { hero = P.i; hA = a; hBy = P.ph || ''; return false; } alt = P.i; return true; } return false; }); }
+            else { (H2.hr || []).some(function (r) { if (String(r.y) === PY.y && r.i && r.i !== hero) { alt = r.i; return true; } return false; }); }
+            if (hero) { o.hdImg = hero; o.hdPos = '50% 22%';   /* Gate 2 design 7: faces, not eyes, at 1440 */ o.hasPyCap = !!(hA || hBy); o.pyCap = [hA ? hA + ', ' + NM + ' ' + PY.y : '', hBy ? 'Photo ' + hBy : ''].filter(Boolean).join(' · '); }
             else { o.pySlug = true; o.pyCls += ' pk-hd-slug'; o.hdImg = ''; o.pySt = '--py-paper: ' + (BRp.paper || '#F2EDE3') + '; --py-ink: ' + (BRp.ink || '#2B2628') + '; --py-ink2: ' + (BRp.ink2 || BRp.ink || '#2B2628'); o.pyStripe = (window.pkStripe(BRp).length ? window.pkStripe(BRp) : [BRp.ink || '#2B2628']).map(function (c) { return { st: 'background: ' + c }; }); }
             /* who built it: that year's credits only */
             var crY = []; if (PBy) { if (PBy.de) crY.push({ k: 'Design', v: PBy.de }); if (PBy.bu) crY.push({ k: 'Build', v: PBy.bu }); if (PBy.eng) crY.push({ k: 'Engineering', v: PBy.eng }); }
             o.hdCr = crY; o.hdHasCr = crY.length > 0; o.hasNx = !!(PBy && PBy.pt); o.nx = PBy && PBy.pt ? PBy.pt : ''; o.hdWho = true; o.hasWhoH = crY.length > 0 || o.hasNx; o.whoH = 'Who built it in ' + PY.y; o.whoCls = o.hasWhoH ? '' : 'pk-hd-who1';   /* Gate 2 design 6: no builders that year, so the card is the pitch alone, one column */
             /* year cards follow the year: that year's card leads (made from its own name and hero when the year has no build card), marked as the year you're in */
             var L = o.hdYr.filter(function (x) { return x.y === PY.y; })[0];
-            if (!L) L = { y: PY.y, b: NM, l: '', hasL: false, img: hero, hasImg: !!hero, noImg: !hero }; else if (!L.hasImg && hero) { L.img = hero; L.hasImg = true; L.noImg = false; }
+            if (!L) L = { y: PY.y, b: NM, l: '', hasL: false, img: alt, hasImg: !!alt, noImg: !alt }; else if (!L.hasImg && alt) { L.img = alt; L.hasImg = true; L.noImg = false; } else if (L.img === hero && L.img) { L.img = alt; L.hasImg = !!alt; L.noImg = !alt; }
             L.cls = 'pk-hd-ycur'; L.tag = 'Pickathon ' + PY.y; L.hasTag = true;
             o.hdYr = [L].concat(o.hdYr.filter(function (x) { return x !== L && x.y !== PY.y; })); o.hdHasYr = true; o.hdMore = o.hdYr.length > 3;
           }
@@ -11639,6 +11640,8 @@ html body:not(#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1) .
 html body:not(#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1) .pk-hd-who.pk-hd-who1{grid-template-columns:1fr!important}
 html body:not(#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1) .pk-hd-who.pk-hd-who1>div:first-child{display:none!important}
 html body:not(#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1) .pk-hd-who.pk-hd-who1 .pk-hd-pitch{margin:0!important;padding:0!important;border:0!important}
+/* Gate 2 design 7: Cherry Hill 2016 hero at desktop shows Kevin Morby's face, not his eyes cut by the frame (a src*= rule, so focus.js treats it as a hand crop) */
+@media (min-width:1000px){html body:not(#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1) .pk-hd-hero.pk-hd-py>img[src*="y16b-kevinmorby.jpg"]{object-position:50% 22%!important}}
 </style>
 <script id="pk-y1-js">
 /* Years package (Nov 12 2026): DOM touch-ups the templates can't express. Runs after renders (one observer, no timers). */

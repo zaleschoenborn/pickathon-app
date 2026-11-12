@@ -138,3 +138,5 @@ $P .pk-shr>.pk-shc:first-child:has(>.pk-b3ph) .pk-star{box-shadow:inset 0 0 0 1.
 $P .pk-hd-who.pk-hd-who1{grid-template-columns:1fr!important}
 $P .pk-hd-who.pk-hd-who1>div:first-child{display:none!important}
 $P .pk-hd-who.pk-hd-who1 .pk-hd-pitch{margin:0!important;padding:0!important;border:0!important}
+/* Gate 2 design 7: Cherry Hill 2016 hero at desktop shows Kevin Morby's face, not his eyes cut by the frame (a src*= rule, so focus.js treats it as a hand crop) */
+@media (min-width:1000px){$P .pk-hd-hero.pk-hd-py>img[src*="y16b-kevinmorby.jpg"]{object-position:50% 22%!important}}
