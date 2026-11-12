@@ -33,8 +33,10 @@
     }
     H.classList.toggle('pk-g1-nolsn', on);
   }
+  /* Fix 5: the My Pickathon tab shows "Mine" under 375px; its accessible name stays "My Pickathon" */
+  function tabs() { document.querySelectorAll('nav button').forEach(function (b) { if (b.querySelector(':scope > svg path[d^="m12 3 2.8 5.7"]') && !b.getAttribute('aria-label')) b.setAttribute('aria-label', 'My Pickathon'); }); }
   var q = 0;
-  function run() { q = 0; try { pills(); listen(); } catch (e) { if (window.console) console.error('pk-g1', e); } }
+  function run() { q = 0; try { pills(); listen(); tabs(); } catch (e) { if (window.console) console.error('pk-g1', e); } }
   function soon() { if (!q) q = requestAnimationFrame(run); }
   try { new MutationObserver(soon).observe(document.documentElement, { childList: true, subtree: true }); } catch (e) {}
   window.addEventListener('hashchange', soon); window.addEventListener('resize', soon); soon();

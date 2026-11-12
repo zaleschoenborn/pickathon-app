@@ -37,3 +37,11 @@ $P .pk-ev-t .pk-g1-pill{bottom:auto;top:calc(76% - 42px);left:8px;max-width:calc
 /* -- Fix 2 (Q1/D7): on phone/tablet the floating LISTEN never sits on a header that already has a right-side control
       ("Back to 2027" and the like). It is hidden there (visibility, so it can still be measured), never overlapping. -- */
 @media (max-width:1024px){ html.pk-g1-nolsn div:has(> button[aria-label="Listen to Pickathon"]){visibility:hidden!important;pointer-events:none!important;opacity:0!important} }
+
+/* -- Fix 5 (D3): 360-wide phones clipped the tab label "My Pickathon" (81px of text in a 71px tab). At <=374px the tab labels are
+      11px with no letter spacing, and that one tab reads "Mine" (the button keeps its full name for screen readers). -- */
+@media (max-width:400px){ $P nav button:has(> svg) > span{font-size:11px!important;letter-spacing:0!important} }   /* 390 clipped the last "n" too */
+@media (max-width:374px){
+  $P nav button:has(> svg path[d^="m12 3 2.8 5.7"]) > span{font-size:0!important}
+  $P nav button:has(> svg path[d^="m12 3 2.8 5.7"]) > span::after{content:"Mine";content:"Mine" / "";font-size:11px;letter-spacing:0}
+}

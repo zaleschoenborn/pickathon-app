@@ -11145,6 +11145,14 @@ html body:not(#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1) .pk-
 /* -- Fix 2 (Q1/D7): on phone/tablet the floating LISTEN never sits on a header that already has a right-side control
       ("Back to 2027" and the like). It is hidden there (visibility, so it can still be measured), never overlapping. -- */
 @media (max-width:1024px){ html.pk-g1-nolsn div:has(> button[aria-label="Listen to Pickathon"]){visibility:hidden!important;pointer-events:none!important;opacity:0!important} }
+
+/* -- Fix 5 (D3): 360-wide phones clipped the tab label "My Pickathon" (81px of text in a 71px tab). At <=374px the tab labels are
+      11px with no letter spacing, and that one tab reads "Mine" (the button keeps its full name for screen readers). -- */
+@media (max-width:400px){ html body:not(#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1) nav button:has(> svg) > span{font-size:11px!important;letter-spacing:0!important} }   /* 390 clipped the last "n" too */
+@media (max-width:374px){
+  html body:not(#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1) nav button:has(> svg path[d^="m12 3 2.8 5.7"]) > span{font-size:0!important}
+  html body:not(#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1) nav button:has(> svg path[d^="m12 3 2.8 5.7"]) > span::after{content:"Mine";content:"Mine" / "";font-size:11px;letter-spacing:0}
+}
 </style>
 <script id="pk-g1-js">
 /* Gate 1 fixes (Nov 12 2026): small DOM touch-ups the templates can't express. Runs after every render. */
@@ -11182,8 +11190,10 @@ html body:not(#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1) .pk-
     }
     H.classList.toggle('pk-g1-nolsn', on);
   }
+  /* Fix 5: the My Pickathon tab shows "Mine" under 375px; its accessible name stays "My Pickathon" */
+  function tabs() { document.querySelectorAll('nav button').forEach(function (b) { if (b.querySelector(':scope > svg path[d^="m12 3 2.8 5.7"]') && !b.getAttribute('aria-label')) b.setAttribute('aria-label', 'My Pickathon'); }); }
   var q = 0;
-  function run() { q = 0; try { pills(); listen(); } catch (e) { if (window.console) console.error('pk-g1', e); } }
+  function run() { q = 0; try { pills(); listen(); tabs(); } catch (e) { if (window.console) console.error('pk-g1', e); } }
   function soon() { if (!q) q = requestAnimationFrame(run); }
   try { new MutationObserver(soon).observe(document.documentElement, { childList: true, subtree: true }); } catch (e) {}
   window.addEventListener('hashchange', soon); window.addEventListener('resize', soon); soon();
