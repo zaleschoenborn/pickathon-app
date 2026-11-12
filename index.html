@@ -7929,6 +7929,22 @@ body:has(#tk2 #tk-bar:not([hidden])) #pk-toast,body:has(#pk-co) #pk-toast{displa
 #tk2#tk2 .tk-pill,#tk2#tk2 .tk-pill-sm{min-height:50px;border-width:2px;padding:0 1.125rem}
 @media (min-width:1025px){#tk2#tk2 .tk-pill,#tk2#tk2 .tk-pill-sm{min-height:56px}}
 #tk2#tk2#tk2#tk2#tk2 .tk-pill[aria-pressed]{min-height:44px!important;border-width:2px!important}
+
+/* Gate 1 fix 13 (D12/Q7, panel P4/P5): "Who's coming?" on phone is three full-width rows: label (16px) and its one-line sublabel (13px, 70%)
+   on the left, the price, then the stepper at the far right. Pass prices keep 12px off the card edge; date ranges never break. */
+#tk2 .tk-nw{white-space:nowrap}
+#tk2 .tk-pass-p{padding-right:12px;box-sizing:border-box}
+#tk2 .tk-step-pr{font-weight:800;color:var(--cream);font-size:1rem;white-space:nowrap}
+#tk2 .tk-step-pr:empty{display:none}
+@media (max-width:599px){
+  #tk2#tk2 .tk-who-g,#tk2#tk2 .tk-who-g[data-n]{display:grid;grid-template-columns:1fr;gap:8px;max-width:none}
+  #tk2#tk2 .tk-who-g .tk-step{display:grid;grid-template-columns:minmax(0,1fr) auto auto;align-items:center;column-gap:12px;padding:6px 0;border-bottom:1px solid rgba(242,237,227,.12)}
+  #tk2#tk2 .tk-who-g .tk-step[hidden]{display:none}
+  #tk2#tk2 .tk-who-g .tk-step p{margin:0;font-size:1rem;line-height:1.25}
+  #tk2#tk2 .tk-who-g .tk-step p b{font-size:1rem;font-weight:750;color:var(--cream)}
+  #tk2#tk2 .tk-who-g .tk-step p span{font-size:.8125rem;opacity:.7;color:var(--cream);white-space:normal}
+  #tk2#tk2 .tk-who-g .tk-step>div{margin:0;width:120px}
+}
 </style>
 <script id="pk-tk2">
 /* pk-tk2: Tickets, round 2 design (Nov 11 2026). Source: tools/tickets_r2/tk2.js, spliced into index.html by tools/tickets_r2/build.py.
@@ -8099,8 +8115,8 @@ body:has(#tk2 #tk-bar:not([hidden])) #pk-toast,body:has(#pk-co) #pk-toast{displa
   }
   function short(s) {
     var k = key(s); if (!k) return '';
-    var n = s.adult + s.teen, a = [];
-    a.push((n ? n + ' × ' + NS[k] : '') + (s.kid ? ' + ' + plural(s.kid, 'kid') : ''));
+    var wk = kind(s.pass) === 'wk', n = s.adult + (wk ? 0 : s.teen), a = [];   /* Gate 1 fix 13 (Q7): teens are their own pass, 'Teen 4-Day' */
+    a.push([n ? n + ' × ' + NS[k] : '', wk && s.teen ? s.teen + ' × Teen 4-Day' : ''].filter(Boolean).join(', ') + (s.kid ? ' + ' + plural(s.kid, 'kid') : ''));
     if (s.pass === 'p4' && s.wed) a.push('Wed arrival');
     if (camping(s)) a.push({ tent: 'tent', wcar: 'car camping', scar: 'car camping', wrv: 'RV', none: 'no camping' }[s.sleep]);
     if (!vehicle(s)) { if (s.go === 'drive') a.push((s.pass === 'd2' && s.dp ? 'Sat + Sun parking' : parkShort(parkId(s))) + ' × ' + s.car); if (s.go === 'shuttle') a.push('shuttle'); if (s.go === 'bike') a.push('bike'); }
@@ -8163,9 +8179,9 @@ body:has(#tk2 #tk-bar:not([hidden])) #pk-toast,body:has(#pk-co) #pk-toast{displa
   }
   /* a group heading over the ticket cards: each claim sits only over the tickets it is true for */
   function group(c, title, sub) { return '<p class="tk-gl tk-gl-' + c + '"><b>' + title + '</b><span>' + sub + '</span></p>'; }
-  function span(a, b) { return DAY[a][2] + '–' + DAY[b][2] + ' · ' + DAY[a][4] + '–' + DAY[b][4].split(' ')[1]; }   // 'Thu–Sun · Aug 5–8'
+  function span(a, b) { return '<span class="tk-nw">' + DAY[a][2] + '–' + DAY[b][2] + '</span> · <span class="tk-nw">' + DAY[a][4] + '–' + DAY[b][4].split(' ')[1] + '</span>'; }   /* Gate 1 (panel P4): a date range never breaks before its last digit */   // 'Thu–Sun · Aug 5–8'
   function stepper(k, label, sub, one) {
-    return '<div class="tk-step' + (k === 'car' ? ' tk-step-row' : '') + '" data-k="' + k + '"' + (k === 'car' ? ' id="tk-carstep" hidden' : '') + '><p id="tk-l-' + k + '"><b id="tk-ln-' + k + '">' + label + '</b>' + (sub !== null ? '<span id="tk-ls-' + k + '">' + sub + '</span>' : '') + '</p><div><button type="button" data-step="-1" aria-label="One fewer ' + one + '">' + ic('minus', 'tk-ic-sm') + '</button><output aria-labelledby="tk-ln-' + k + '">0</output><button type="button" data-step="1" aria-label="One more ' + one + '">' + ic('plus', 'tk-ic-sm') + '</button></div></div>';
+    return '<div class="tk-step' + (k === 'car' ? ' tk-step-row' : '') + '" data-k="' + k + '"' + (k === 'car' ? ' id="tk-carstep" hidden' : '') + '><p id="tk-l-' + k + '"><b id="tk-ln-' + k + '">' + label + '</b>' + (sub !== null ? '<span id="tk-ls-' + k + '">' + sub + '</span>' : '') + '</p>' + (k !== 'car' ? '<span class="tk-step-pr tk-num" id="tk-lp-' + k + '"></span>' : '') + '<div><button type="button" data-step="-1" aria-label="One fewer ' + one + '">' + ic('minus', 'tk-ic-sm') + '</button><output aria-labelledby="tk-ln-' + k + '">0</output><button type="button" data-step="1" aria-label="One more ' + one + '">' + ic('plus', 'tk-ic-sm') + '</button></div></div>';
   }
   function opt(name, v, media, title, why, price) { return '<label class="tk-opt"><input type="radio" name="' + name + '" value="' + v + '" class="tk-vh">' + media + '<span class="tk-opt-t"><b data-t="' + v + '">' + title + '</b><span data-w="' + v + '">' + why + '</span></span><span class="tk-opt-p tk-num" data-p="' + v + '">' + price + '</span></label>'; }
   function hoodImg(h, slot) { var d = site().data, H = d && d.hoods && d.hoods[h]; return H && H.i ? '<img class="tk-opt-m" data-slot="' + slot + '" src="' + esc(H.i) + '" alt="" loading="lazy" width="84" height="56">' : '<span class="tk-opt-e"></span>'; }
@@ -8189,7 +8205,7 @@ body:has(#tk2 #tk-bar:not([hidden])) #pk-toast,body:has(#pk-co) #pk-toast{displa
       passCard('d1', 'One day', 'Pick your day', [0, 0, 0, 1, 0], '<small id="tk-d1from">from</small><b class="tk-num" id="tk-d1p">' + money(minDay) + '</b>', { stripId: 'tk-d1strip', subId: 'tk-d1sub' }) +
       '<div class="tk-daypick" id="tk-daypick" hidden role="radiogroup" aria-label="Which day?">' + OK.day.map(function (d) { return '<label><input type="radio" name="tk-day" value="' + d + '" class="tk-vh"><span>' + DAY[d][2] + ', ' + DAY[d][4] + '<b class="tk-num">' + (sold(d) ? 'Sold out' : money(PS(d))) + '</b></span></label>'; }).join('') + '</div>' +
       group('pat', 'Patron', 'Its own ticket · everyone needs one, kids too · backstage hospitality, concierge, early entry') +
-      passCard('pat', 'Patron Pass', span('w', 'dsun'), [1, 1, 1, 1, 1], sold('patron') ? '<b>Sold out</b>' : '<b class="tk-num">' + money(PS('patron')) + '</b>', { note: 'Tent camping in the woods is included, the same as every weekend pass. Car camping and RV sites are extra.' }) +
+      passCard('pat', 'Patron Pass', '<span class="tk-nw">Wed Aug 4</span> – <span class="tk-nw">Sun Aug 8</span>', [1, 1, 1, 1, 1], sold('patron') ? '<b>Sold out</b>' : '<b class="tk-num">' + money(PS('patron')) + '</b>', { note: 'Tent camping in the woods is included, the same as every weekend pass. Car camping and RV sites are extra.' }) +
       '</div></fieldset>';
     h += '<fieldset class="tk-who"><div class="tk-leg"><legend class="tk-d tk-d-label">Who’s coming?</legend></div><div class="tk-who-g">' + stepper('adult', 'Adults', '18 and up', 'adult') + stepper('teen', 'Teens', '13 to 17', 'teen') + stepper('kid', 'Kids', '12 and under', 'kid') + '</div><p class="tk-note" id="tk-teennote" hidden></p></fieldset>';
     h += '<section class="tk-sec" id="tk-s-sleep" aria-labelledby="tk-h-sleep"><div class="tk-leg"><h2 class="tk-d tk-d-label" id="tk-h-sleep">Camping</h2><button type="button" class="tk-pill tk-pill-sm" data-go="hoods">See the camps</button></div>' +
@@ -8302,12 +8318,13 @@ body:has(#tk2 #tk-bar:not([hidden])) #pk-toast,body:has(#pk-co) #pk-toast{displa
     $$('#tk-d1strip i[data-d]', root).forEach(function (i) { i.classList.toggle('on', S.day ? i.getAttribute('data-d') === S.day : i.getAttribute('data-d') === 'dsat'); });
     $('#tk-d1sub', root).textContent = S.day ? DAY[S.day][3] + ', ' + DAY[S.day][4] : 'Pick your day'; $('#tk-d1from', root).hidden = !!S.day; $('#tk-d1p', root).textContent = money(S.day ? PS(S.day) : minPS(OK.day));
     /* who's coming: the rows follow the ticket kind, and each says only what is true for it */
-    var who = kd === 'day' ? { adult: ['Ages 13 and up', k ? 'One price · ' + money(PS(k)) : 'One price', 'person 13 and up'], kid: ['Kids', '12 and under · free', 'kid'] }
-      : kd === 'pat' ? { adult: ['Patron Passes', 'One each, any age, kids too: ' + money(PS('patron')), 'Patron Pass'] }
-      : kd === 'wk' ? { adult: ['Adults', '18 and up · ' + money(PS(k)), 'adult'], teen: ['Teens', '13 to 17 · 4-Day (Thu–Sun) at half price, ' + money(PS('teen')), 'teen'], kid: ['Kids', '12 and under · free', 'kid'] }
-      : { adult: ['Adults', '18 and up', 'adult'], teen: ['Teens', '13 to 17', 'teen'], kid: ['Kids', '12 and under', 'kid'] };
+    /* Gate 1 fix 13 (D12/Q7, panel P5): three full-width rows, label and one-line sublabel on the left, the price, then the stepper */
+    var who = kd === 'day' ? { adult: ['Ages 13 and up', 'One price', 'person 13 and up', k ? money(PS(k)) : ''], kid: ['Kids', '12 and under', 'kid', 'Free'] }
+      : kd === 'pat' ? { adult: ['Patron Passes', 'One each, any age, kids too', 'Patron Pass', money(PS('patron'))] }
+      : kd === 'wk' ? { adult: ['Adults', '18 and up', 'adult', money(PS(k))], teen: ['Teens', '13–17 · 4-Day at half price', 'teen', money(PS('teen'))], kid: ['Kids', '12 and under', 'kid', 'Free'] }
+      : { adult: ['Adults', '18 and up', 'adult', ''], teen: ['Teens', '13–17', 'teen', ''], kid: ['Kids', '12 and under', 'kid', ''] };
     $$('.tk-step', root).forEach(function (st) { var f = st.getAttribute('data-k'), v = S[f], b = $$('button', st); $('output', st).textContent = v; b[0].disabled = v <= (f === 'car' || (f === 'adult' && kd === 'pat') ? 1 : 0); b[1].disabled = v >= 12;
-      if (f === 'car') return; var r = who[f]; st.hidden = !r; if (!r) return; $('#tk-ln-' + f, root).textContent = r[0]; $('#tk-ls-' + f, root).textContent = r[1]; b[0].setAttribute('aria-label', 'One fewer ' + r[2]); b[1].setAttribute('aria-label', 'One more ' + r[2]); });
+      if (f === 'car') return; var r = who[f]; st.hidden = !r; if (!r) return; $('#tk-ln-' + f, root).textContent = r[0]; $('#tk-ls-' + f, root).textContent = r[1]; var lp = $('#tk-lp-' + f, root); if (lp) lp.textContent = r[3] || ''; b[0].setAttribute('aria-label', 'One fewer ' + r[2]); b[1].setAttribute('aria-label', 'One more ' + r[2]); });
     $('.tk-who-g', root).setAttribute('data-n', String(Object.keys(who).length));
     var tn = $('#tk-teennote', root), note = '';
     if (!S.adult && (S.teen || S.kid)) note = kd === 'day' ? '<b>Add a ticket for someone 13 or older.</b> Kids come in with them.' : '<b>Add an adult.</b> Teens and kids come in with a ticketed adult.';

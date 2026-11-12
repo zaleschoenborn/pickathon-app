@@ -310,3 +310,19 @@ body:has(#tk2 #tk-bar:not([hidden])) #pk-toast,body:has(#pk-co) #pk-toast{displa
 #tk2#tk2 .tk-pill,#tk2#tk2 .tk-pill-sm{min-height:50px;border-width:2px;padding:0 1.125rem}
 @media (min-width:1025px){#tk2#tk2 .tk-pill,#tk2#tk2 .tk-pill-sm{min-height:56px}}
 #tk2#tk2#tk2#tk2#tk2 .tk-pill[aria-pressed]{min-height:44px!important;border-width:2px!important}
+
+/* Gate 1 fix 13 (D12/Q7, panel P4/P5): "Who's coming?" on phone is three full-width rows: label (16px) and its one-line sublabel (13px, 70%)
+   on the left, the price, then the stepper at the far right. Pass prices keep 12px off the card edge; date ranges never break. */
+#tk2 .tk-nw{white-space:nowrap}
+#tk2 .tk-pass-p{padding-right:12px;box-sizing:border-box}
+#tk2 .tk-step-pr{font-weight:800;color:var(--cream);font-size:1rem;white-space:nowrap}
+#tk2 .tk-step-pr:empty{display:none}
+@media (max-width:599px){
+  #tk2#tk2 .tk-who-g,#tk2#tk2 .tk-who-g[data-n]{display:grid;grid-template-columns:1fr;gap:8px;max-width:none}
+  #tk2#tk2 .tk-who-g .tk-step{display:grid;grid-template-columns:minmax(0,1fr) auto auto;align-items:center;column-gap:12px;padding:6px 0;border-bottom:1px solid rgba(242,237,227,.12)}
+  #tk2#tk2 .tk-who-g .tk-step[hidden]{display:none}
+  #tk2#tk2 .tk-who-g .tk-step p{margin:0;font-size:1rem;line-height:1.25}
+  #tk2#tk2 .tk-who-g .tk-step p b{font-size:1rem;font-weight:750;color:var(--cream)}
+  #tk2#tk2 .tk-who-g .tk-step p span{font-size:.8125rem;opacity:.7;color:var(--cream);white-space:normal}
+  #tk2#tk2 .tk-who-g .tk-step>div{margin:0;width:120px}
+}
