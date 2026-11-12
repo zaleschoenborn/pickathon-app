@@ -126,10 +126,21 @@
 #tk2 .tk-who-g[data-n="2"]{grid-template-columns:repeat(2,1fr)}
 #tk2 .tk-who-g[data-n="1"]{grid-template-columns:1fr;max-width:260px}
 #tk2 .tk-step p b{font-weight:700}
+/* the three counters line up at the bottom whatever their labels say */
+#tk2 .tk-who-g .tk-step{display:flex;flex-direction:column}
+#tk2 .tk-who-g .tk-step>div{margin-top:auto}
+/* a full-width line under a ticket card (Patron: what camping is included) */
+.tk2 .tk-pass{flex-wrap:wrap}
+.tk2 .tk-pass-n{flex-basis:100%;order:9;padding:6px 12px 4px 0;border-top:1px dotted rgba(43,38,40,.4);font-size:var(--t-sm);line-height:1.3;color:var(--ink)}
 #tk2 .tk-sec{margin-top:20px}
 #tk2 .tk-opts{display:grid;gap:6px;clear:both}
 #tk2 .tk-park{display:grid;gap:8px;padding:2px 0 6px}
 #tk2 .tk-park .tk-step-row{margin-top:0}
+#tk2 .tk-pnote{font-size:var(--t-sm);line-height:1.35;color:var(--cream-dim);max-width:36em}
+/* Tickets head: the festival dates (Zale: Aug 5-8, 2027; gates open Wed, Aug 4) */
+#tk2 .tk-when{display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 10px;margin:0 0 12px;font-size:var(--t-sm);color:var(--cream-dim)}
+#tk2 .tk-when b{color:var(--cream);font-weight:750;font-size:1rem}
+.tk2 .tk-olines .tk-feeq{border-bottom:0;font-size:var(--t-sm)}
 /* chips (buttons.md): 44 px, 6 px corners, the chosen one solid gold */
 #tk2 .tk-chips{display:flex;flex-wrap:wrap;gap:6px}
 #tk2 .tk-chip span{min-height:44px;display:flex;align-items:center;gap:8px;padding:0 14px;border:1.5px solid var(--line-strong);border-radius:6px;font-size:var(--t-sm);font-weight:650;line-height:1.2;cursor:pointer;color:var(--cream)}
@@ -200,7 +211,7 @@
 #tk2 .tk-bar-ok{display:flex;gap:8px;align-items:center;font-size:var(--t-sm);font-weight:650;min-height:44px}
 #tk2 .tk-bar-ok .tk-ic{color:var(--ok)}
 #tk2 .tk-main.has-bar{padding-bottom:120px}
-@media (max-width:379px){#tk2 .tk-who-g{grid-template-columns:1fr}#tk2 .tk-who-g .tk-step{display:flex;align-items:center;justify-content:space-between;gap:12px}#tk2 .tk-who-g .tk-step>div{width:140px;flex:none}#tk2 .tk-who-g .tk-step p{margin:0}.tk2 .tk-pre-f{flex-direction:column}.tk2 .tk-pass{gap:8px;padding-left:8px}.tk2 .tk-pass-p{min-width:74px}
+@media (max-width:379px){#tk2 .tk-who-g,#tk2 .tk-who-g[data-n]{grid-template-columns:1fr;max-width:none}#tk2 .tk-who-g .tk-step{display:flex;flex-direction:row;align-items:center;justify-content:space-between;gap:12px}#tk2 .tk-who-g .tk-step>div{width:140px;flex:none;margin-top:0}#tk2 .tk-who-g .tk-step p{margin:0}.tk2 .tk-pre-f{flex-direction:column}.tk2 .tk-pass{gap:8px;padding-left:8px}.tk2 .tk-pass-p{min-width:74px}
   #tk2 .tk-bar{flex-direction:column;align-items:stretch;gap:6px}#tk2 .tk-bar .tk-pill{width:100%}#tk2 .tk-main.has-bar{padding-bottom:160px}#tk2 .tk-slip{flex-wrap:wrap}}
 #tk2 .tk-order{display:none}
 .tk2 .tk-olines li{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-bottom:1px solid rgba(43,38,40,.25);font-size:.9375rem;line-height:1.3}
@@ -259,6 +270,7 @@
   #tk2 .tk-gl-wk{grid-column:1/3;grid-row:1}#tk2 .tk-gl-day{grid-column:3/5;grid-row:1}#tk2 .tk-gl-pat{grid-column:1/-1;grid-row:4;margin-top:6px}
   #tk2 .tk-pass-p4{grid-column:1;grid-row:2}#tk2 .tk-pass-p3{grid-column:2;grid-row:2}#tk2 .tk-pass-d2{grid-column:3;grid-row:2}#tk2 .tk-pass-d1{grid-column:4;grid-row:2}
   #tk2 .tk-pass-pat{grid-column:1/3;grid-row:5}
+  #tk2 .tk-pass{flex-wrap:nowrap}#tk2 .tk-pass-n{align-self:stretch;padding:8px 0 12px;margin-top:-4px}
   #tk2 .tk-opts{grid-template-columns:1fr 1fr;gap:10px}
   #tk2 .tk-park{grid-column:1/-1}
   #tk2 .tk-sec{margin-top:28px}
@@ -287,3 +299,6 @@
 .tk2 input:focus,.tk2 select:focus{outline:3px solid #D6B54A;outline-offset:2px}
 /* Round 3 (A11): any touch screen, a sideways tablet included, gets 44px targets (the 820px rule above only caught narrow ones) */
 @media (pointer:coarse){#tk2#tk2 .tk-pill,#tk2#tk2 .tk-pill-sm,#tk2#tk2#tk2#tk2#tk2 .tk-pill[aria-pressed]{min-height:44px!important}#tk2#tk2 .tk-tlink{display:inline-flex;align-items:center;min-height:44px}}
+
+/* phone: the app's install / update toast never sits over the order bar or Checkout (it sat at the same height, bottom 84px) */
+body:has(#tk2 #tk-bar:not([hidden])) #pk-toast,body:has(#pk-co) #pk-toast{display:none!important}
