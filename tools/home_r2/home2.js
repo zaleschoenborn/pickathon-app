@@ -22,7 +22,7 @@ window.pkClimbRank = function (C, dd) {
    The Home poster is pk-climb (tools/climb_ladder): it mounts itself into .pk-cl-mount, plays once, Replay and Another year. This file only places it. */
 (function () {
   'use strict';
-  var YEAR = 2027, DATES = 'Aug 5–8, 2027', DAYSW = 'Thursday to Sunday. Early arrival Wed, Aug 4.', DAYSS = 'Thu to Sun · Early arrival Wed, Aug 4';
+  var YEAR = 2027, DATES = 'Aug 4–8, 2027', DAYSW = 'Thu–Sun, early arrival Wed', DAYSS = 'Thu–Sun, early arrival Wed';   /* Round 3 (A2): one date form sitewide */
   var LSR = 'pk27remind';
   /* "Another neighborhood" leads with the strong ones (design: home.html), then the rest in data order */
   var LEAD = ['cherryhill', 'woods', 'galaxy', 'windmill', 'market', 'coyote', 'paddock', 'lushcamp', 'grove', 'curation'];

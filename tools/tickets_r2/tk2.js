@@ -193,7 +193,7 @@
     return 'Not on sale right now';
   }
   function fineLine() {
-    return '<b>All sales final.</b> Send a pass to a friend any time from My Pickathon. ' + (T.show.plans ? 'Orders over ' + money(T.planMin) + ' can be paid monthly. ' : 'No payment plans during the ' + esc(T.show.name) + '. ') + 'Prices shown before the ' + (FEE * 100) + '% fee; your total always includes it.';
+    return '<b>All sales final.</b> Send a pass to a friend any time from My Pickathon. ' + (T.show.plans ? 'Orders over ' + money(T.planMin) + ' can be paid monthly. ' : 'No payment plans during the ' + esc(T.show.name) + '. ' + (T.planNote ? esc(T.planNote) + ' ' : '')) + 'Prices shown before the ' + (FEE * 100) + '% fee; your total always includes it.';
   }
   function passCard(v, title, sub, on, price, extra) {
     return '<label class="tk-pass tk-paper"><input type="radio" name="tk-pass" value="' + v + '" class="tk-vh"><span class="tk-days" aria-hidden="true"' + (extra && extra.stripId ? ' id="' + extra.stripId + '"' : '') + '>' +
