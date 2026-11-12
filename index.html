@@ -945,7 +945,7 @@ setInterval(function(){if(bar)bar.style.display=document.querySelector('[aria-mo
  setInterval(function(){reg.update().catch(function(){})},5*60*1000); reg.update().catch(function(){}); try{navigator.storage&&navigator.storage.persist&&navigator.storage.persist()}catch(e){} navigator.serviceWorker.ready.then(function(r){r.active&&r.active.postMessage('pack')}).catch(function(){});
  window.__pkReg=reg;document.addEventListener('visibilitychange',function(){if(!document.hidden)reg.update().catch(function(){})});
 }).catch(function(){});
-window.__pkBuild='20261111-5191';
+window.__pkBuild='20261112-5191';
 /* New builds reach returning visitors (QC Round 3.5, Nov 11). tools/stamp_build.py writes the build into __pkBuild, sw.js and version.json.
    On load and on every return to the page, version.json (no-store) and the service worker say whether a newer build is waiting or active;
    if so the page reloads on that return. Touching the page never blocks it; only an order in progress does: the checkout open, a ticket
