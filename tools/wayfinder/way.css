@@ -1,0 +1,30 @@
+/*pk-way-css: the way-finder row (flow/wayfinder/plan.md). Outline pills that match the shared pill in pk-buttons-nov11
+  (44px phone and tablet, 38px desktop 1200+, sentence case, thin cream line, no fill). Current year: full cream line, never a fill.
+  Phone and tablet: one line you swipe, running to the screen edge, no visible scroll bar. Desktop: wraps.
+  Specificity: eight #root ids so no older chain or the shared pill restyles these. */
+#root#root#root#root#root#root#root#root .pk-way{display:block!important;box-sizing:border-box!important;margin:22px 0 6px!important;padding:0!important;min-width:0!important;max-width:100%!important;border:0!important;background:none!important}
+#root#root#root#root#root#root#root#root .pk-hd-w > .pk-way{margin:22px 0 22px!important}
+#root#root#root#root#root#root#root#root .pk-way-k{margin:0 0 10px!important;padding:0!important;font-family:"Bricolage Grotesque",Inter,system-ui,sans-serif!important;font-size:13px!important;font-weight:800!important;line-height:1.2!important;letter-spacing:.12em!important;text-transform:uppercase!important;color:#D6B54A!important;text-align:left!important}
+#root#root#root#root#root#root#root#root .pk-way-r{display:flex!important;flex-wrap:nowrap!important;align-items:center!important;gap:8px!important;margin:0 -16px!important;padding:0 16px 2px!important;overflow-x:auto!important;overflow-y:hidden!important;scroll-snap-type:x proximity;scroll-padding-inline:16px;scrollbar-width:none!important;-ms-overflow-style:none!important;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
+#root#root#root#root#root#root#root#root .pk-way-r::-webkit-scrollbar{display:none!important;width:0!important;height:0!important}
+#root#root#root#root#root#root#root#root .pk-way-c{display:inline-flex!important;flex:0 0 auto!important;align-items:center!important;justify-content:center!important;gap:7px!important;box-sizing:border-box!important;
+  height:auto!important;min-height:44px!important;width:auto!important;min-width:44px!important;max-width:none!important;margin:0!important;padding:0 16px!important;scroll-snap-align:start;
+  border-radius:999px!important;border:1.5px solid rgba(242,237,227,.55)!important;background:transparent!important;color:#F2EDE3!important;box-shadow:none!important;
+  font-family:"Bricolage Grotesque",Inter,system-ui,sans-serif!important;font-size:15px!important;font-weight:700!important;line-height:1.1!important;letter-spacing:.01em!important;text-transform:none!important;text-decoration:none!important;text-shadow:none!important;white-space:nowrap!important;
+  cursor:pointer!important;transition:border-color .2s linear,box-shadow .2s linear!important;-webkit-tap-highlight-color:transparent}
+#root#root#root#root#root#root#root#root .pk-way-c *{font:inherit!important;color:inherit!important;letter-spacing:inherit!important;text-transform:none!important}
+#root#root#root#root#root#root#root#root .pk-way-p{padding-left:8px!important}
+#root#root#root#root#root#root#root#root .pk-way-e{display:block!important;flex:none!important;width:28px!important;height:28px!important;max-width:none!important;margin:0!important;border-radius:50%!important;object-fit:contain!important}
+@media (hover:hover){#root#root#root#root#root#root#root#root .pk-way-c:hover{border-color:#F2EDE3!important}}
+#root#root#root#root#root#root#root#root .pk-way-c:focus-visible{outline:2px solid #F2CF62!important;outline-offset:2px!important}
+#root#root#root#root#root#root#root#root .pk-way-c[aria-current]{border-color:#F2EDE3!important;box-shadow:inset 0 0 0 1px #F2EDE3!important}
+#root#root#root#root#root#root#root#root .pk-way-sep{display:block!important;flex:none!important;width:1px!important;height:24px!important;margin:0 4px!important;background:rgba(242,237,227,.3)!important}
+@media (min-width:1200px){
+  #root#root#root#root#root#root#root#root .pk-way{margin:28px 0 8px!important}
+  #root#root#root#root#root#root#root#root .pk-hd-w > .pk-way{margin:28px 0 28px!important}
+  #root#root#root#root#root#root#root#root .pk-way-r{flex-wrap:wrap!important;overflow:visible!important;margin:0!important;padding:0!important}
+  #root#root#root#root#root#root#root#root .pk-way-c{min-height:38px!important;font-size:14px!important;padding:0 15px!important}
+  #root#root#root#root#root#root#root#root .pk-way-p{padding-left:6px!important}
+  #root#root#root#root#root#root#root#root .pk-way-e{width:26px!important;height:26px!important}
+}
+@media (prefers-reduced-motion:reduce){#root#root#root#root#root#root#root#root .pk-way-c{transition:none!important}}
