@@ -190,7 +190,7 @@
   }
   function newHTML() {
     var L = [['Aug 4–8', esc(COPY.newDates) + (P('early') ? ', +' + money(PS('early')) + ' each.' : '.')]], H = T && T.by && T.by.holiday;
-    if (H && H.dated && !H.over) L.push([esc(H.dayS) + '–' + esc(String(H.endS).replace(/^[A-Za-z]+ /, '')), esc(H.name) + (lowestNow() ? ', the lowest prices of the year.' : '.') + (H.plans ? '' : ' No payment plans during the sale.' + (T.planNote ? ' ' + esc(T.planNote) : ''))]);
+    if (H && H.dated && !H.over) L.push([H.endS ? esc(H.dayS) + '–' + esc(String(H.endS).replace(/^[A-Za-z]+ /, '')) : 'From ' + esc(H.dayS), esc(H.name) + (lowestNow() ? ', the lowest prices of the year.' : '.') + (H.plans ? '' : ' No payment plans during the sale.' + (T.planNote ? ' ' + esc(T.planNote) : ''))]);
     else if (T && T.cur) L.push([esc(T.cur.name), 'On sale now.' + (T.plans ? ' Orders over ' + money(T.planMin) + ' can be paid in monthly payments, all paid before the festival.' : '')]);
     L.push(['Checkout', esc(COPY.newCheckout)]);
     COPY.zaleLines.slice(0, 3).forEach(function (z) { L.push([esc(z[0]), esc(z[1])]); });
