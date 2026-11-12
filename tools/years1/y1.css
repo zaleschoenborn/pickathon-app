@@ -85,3 +85,11 @@ $P .pk-yth.pk-yth-c .pk-yth-t{grid-row:5!important}
 $P .pk-yth.pk-yth-c .pk-yth-sh{grid-row:6!important}
 }
 @media (min-width:1200px){$P .pk-yth-tart{aspect-ratio:1/1}}
+
+/* ---- "Who broke out": one labeled snapshot (Now, matching the lineup tiers below), each column notes its count at the festival; dots are a picture, not controls ---- */
+$P .pk-tn .pk-tn-nav,$P .pk-tn .pk-tn-card,$P .pk-tn .pk-tn-tip{display:none!important}
+$P .pk-tn .pk-tn-f{pointer-events:none}
+$P .pk-tn button.pk-tn-dot.sel{box-shadow:none!important;z-index:auto}
+$P .pk-tn button.pk-tn-dot.mv{box-shadow:0 0 0 1.5px #12160F,0 0 0 3px #F2CF62!important}
+$P .pk-tn .pk-tn-now{margin:6px 0 6px;font:800 11px/1.2 'Inter',system-ui,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#F2EDE3}
+$P .pk-tn .pk-tn-cols small{display:block;margin-top:3px;font:600 11px/1.25 'Inter',system-ui,sans-serif;letter-spacing:0;text-transform:none;color:#B9B3A6}
