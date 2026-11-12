@@ -960,10 +960,15 @@ window.__pkBuild='20261111-5191';
   return Promise.all([server(),ask(reg&&reg.waiting),ask(sw&&sw.controller)]).then(function(a){var on=a[0],newer=(on&&on!==B)||num(a[1])>me||num(a[2])>me;last=Date.now();lastR=newer;return newer})}
  function reload(){if(going)return;var g=null;try{g=JSON.parse(sessionStorage.getItem('pk-rl')||'null')}catch(e){}
   if(!g||g.b!==B||Date.now()-g.t>120000)g={b:B,n:0};if(g.n>=3)return;g.n++;g.t=Date.now();try{sessionStorage.setItem('pk-rl',JSON.stringify(g))}catch(e){}
-  going=true;var reg=window.__pkReg;try{reg&&reg.waiting&&reg.waiting.postMessage('skip')}catch(e){}
+  going=true;var reg=window.__pkReg,sw=navigator.serviceWorker;
+  /* if the new build's service worker is still installing or waiting, let it take over first (up to 3 s): a reload in the middle of its
+     takeover restarts the old worker and leaves the new one stuck waiting */
+  var upd=reg?Promise.race([reg.update().catch(function(){}),new Promise(function(r){setTimeout(r,2000)})]):Promise.resolve();
+  var settle=upd.then(function(){return new Promise(function(res){var nw=reg&&(reg.waiting||reg.installing);if(!nw||!sw)return res();var t=setTimeout(res,3000),done=function(){clearTimeout(t);res()};
+   sw.addEventListener('controllerchange',done,{once:true});var kick=function(){try{reg.waiting&&reg.waiting.postMessage('skip')}catch(e){}};kick();
+   try{nw.addEventListener('statechange',function(){if(nw.state==='installed')kick();if(nw.state==='activated'||nw.state==='redundant')done()})}catch(e){}})});
   /* a second try for the same build clears this site's saved pages first, so a bad saved copy can't loop */
-  var clr=g.n>=2&&window.caches?caches.keys().then(function(k){return Promise.all(k.filter(function(n){return n.indexOf('pk-')===0}).map(function(n){return caches.delete(n)}))}).catch(function(){}):Promise.resolve();
-  clr.then(function(){location.reload()})}
+  settle.then(function(){return g.n>=2&&window.caches?caches.keys().then(function(k){return Promise.all(k.filter(function(n){return n.indexOf('pk-')===0}).map(function(n){return caches.delete(n)}))}).catch(function(){}):0}).then(function(){location.reload()})}
  function check(fresh){if(going||document.hidden)return Promise.resolve(false);return stale(fresh).then(function(n){if(n&&!busy()&&!document.hidden){reload();return true}return false})}
  window.pkBuildCheck=check;window.pkBuildStale=stale;window.pkOrderBusy=busy;
  check(true);
