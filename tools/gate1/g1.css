@@ -127,3 +127,8 @@ $P button.pk-g1-op b{font-family:inherit!important;font-weight:inherit!important
 $P button.pk-g1-op svg{width:18px;height:18px;flex:none;margin-left:-2px}
 $P button.pk-g1-op:focus-visible{outline:3px solid #F2CF62;outline-offset:3px}
 $P .pk-g1-vh{position:absolute!important;width:1px!important;height:1px!important;overflow:hidden!important;clip:rect(0 0 0 0)!important;white-space:nowrap!important;margin:0!important}
+
+/* ==== Gate 1 fix loop 2 (Design re-review A–H) ==== */
+/* A: the year reel caption sits above the figure's fade layer on tablet and desktop */
+$P .pk-yrp .pk-rs figcaption{z-index:2}
+@media not all and (max-width:600px) and (orientation:portrait){ $P .pk-yrp .pk-rs figcaption{position:relative} }

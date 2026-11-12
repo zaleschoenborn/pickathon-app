@@ -11336,6 +11336,11 @@ html body:not(#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1) butt
 html body:not(#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1) button.pk-g1-op svg{width:18px;height:18px;flex:none;margin-left:-2px}
 html body:not(#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1) button.pk-g1-op:focus-visible{outline:3px solid #F2CF62;outline-offset:3px}
 html body:not(#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1) .pk-g1-vh{position:absolute!important;width:1px!important;height:1px!important;overflow:hidden!important;clip:rect(0 0 0 0)!important;white-space:nowrap!important;margin:0!important}
+
+/* ==== Gate 1 fix loop 2 (Design re-review A–H) ==== */
+/* A: the year reel caption sits above the figure's fade layer on tablet and desktop */
+html body:not(#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1) .pk-yrp .pk-rs figcaption{z-index:2}
+@media not all and (max-width:600px) and (orientation:portrait){ html body:not(#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1) .pk-yrp .pk-rs figcaption{position:relative} }
 </style>
 <script id="pk-g1-js">
 /* Gate 1 fixes (Nov 12 2026): small DOM touch-ups the templates can't express. Runs after every render. */
