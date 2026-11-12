@@ -1,0 +1,144 @@
+/* ==== Gate 1 fixes (Nov 12 2026). $P = html body:not(#g1 x20), spliced by splice.py, outranks the older chains. ==== */
+
+/* -- Fix 1 (D1) play controls: small videos carry only the gold pill; one 80 px circle only on a large single desktop video -- */
+$P .pk-g1-pill{min-height:0;position:absolute;left:12px;bottom:12px;z-index:4;display:inline-flex;align-items:center;gap:6px;height:30px;max-width:calc(100% - 24px);padding:0 12px;box-sizing:border-box;border-radius:999px;background:#D6B54A;color:#2B2628;font:800 12px/1 'Bricolage Grotesque',system-ui,sans-serif;letter-spacing:.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;pointer-events:none;box-shadow:0 1px 6px rgba(0,0,0,.28)}
+$P .pk-g1-pill i{font-style:normal;font-size:10px}
+/* the reel's caption pill only shows when the caption sits over the photo (phone); never beside a desktop circle */
+$P .pk-yrp .pk-rs figcaption .pk-g1-pill{display:none}
+/* every-video thumbnails (artist pages) are small at every size: pill, no ring */
+$P .pk-ev-ring{display:none!important}
+$P .pk-ev-t .pk-g1-pill{bottom:auto;top:calc(76% - 42px);left:8px;max-width:calc(100% - 16px);padding:0 7px;gap:4px;font-size:11px}
+@media (max-width:1024px){
+  /* artist hero: nothing on the photo (the gold Watch button sits right under it); the whole photo still plays */
+  $P .pk-act.pk-hv .pk-act-iw::after,$P .pk-act.pk-hv .pk-act-h::after{content:none!important;display:none!important}
+  /* neighborhood video: pill instead of the circle */
+  $P .pk-hd-play{display:none!important}
+  /* year-page reel: pill instead of the circle */
+  $P .pk-yrp .pk-rs::after,$P .pk-yrp .pk-rs:has(.pk-rv)::after{content:none!important;display:none!important}
+  $P .pk-yrp .pk-rim{position:relative}
+  /* phone: when the caption sits over the photo, the pill rides at the top of the caption instead (never over the words) */
+  $P .pk-yrp .pk-rs.pk-g1-capov .pk-rim .pk-rvo{display:none!important}
+  $P .pk-yrp .pk-rs.pk-g1-capov figcaption .pk-g1-pill{display:inline-flex;position:static;align-self:flex-start;margin:0 0 10px;flex:none;order:-9}
+  $P .pk-yrp .pk-rs .pk-rvo{display:inline-flex!important;align-items:center;gap:6px;position:absolute!important;left:12px!important;bottom:12px!important;top:auto!important;right:auto!important;transform:none!important;z-index:4;height:30px!important;min-height:0!important;max-height:30px!important;line-height:30px!important;padding:0 12px!important;margin:0!important;box-sizing:border-box!important;border:0!important;border-radius:999px!important;background:#D6B54A!important;color:#2B2628!important;font:800 12px/1 'Bricolage Grotesque',system-ui,sans-serif!important;letter-spacing:.01em!important;text-transform:none!important;white-space:nowrap;width:auto!important;max-width:calc(100% - 24px);pointer-events:none;box-shadow:0 1px 6px rgba(0,0,0,.28)}
+}
+@media (min-width:1025px){
+  $P .pk-g1-dk-hide{display:none!important}
+  /* one 80 px circle, 3 px cream ring, 35% dark fill, centered on the image wrapper */
+  $P .pk-act.pk-hv .pk-act-h::after{content:none!important;display:none!important}
+  $P .pk-act.pk-hv .pk-act-iw::after,$P .pk-yrp .pk-rs:has(.pk-rv) .pk-rim::after{content:""!important;display:block!important;position:absolute!important;left:50%!important;top:50%!important;right:auto!important;bottom:auto!important;width:80px!important;height:80px!important;margin:-40px 0 0 -40px!important;box-sizing:border-box!important;border-radius:50%!important;border:3px solid #F2EDE3!important;background:rgba(18,16,16,.35) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23F2EDE3' d='M9 6.5v11l9-5.5z'/%3E%3C/svg%3E") 55% 50%/38px no-repeat!important;box-shadow:0 2px 14px rgba(0,0,0,.4)!important;pointer-events:none!important;z-index:3!important;transform:none!important}
+  $P .pk-yrp .pk-rs:has(.pk-rv)::after{content:none!important;display:none!important}
+  $P .pk-yrp .pk-rs .pk-rim{position:relative}
+  $P .pk-hd-play{width:80px!important;height:80px!important;border:3px solid #F2EDE3!important;background:rgba(18,16,16,.35)!important}
+  $P .pk-hd-play b{margin-left:7px!important;border-left-width:26px!important;border-top-width:16px!important;border-bottom-width:16px!important;border-left-color:#F2EDE3!important}
+  $P .pk-ah .pk-ah-play{width:80px!important;height:80px!important;left:50%!important;top:50%!important;margin:-40px 0 0 -40px!important;transform:none!important;border:3px solid #F2EDE3!important;background-color:rgba(18,16,16,.35)!important;border-radius:50%!important}
+}
+/* Geese template: the circle shows from 1200 px; there the outline Watch button on the photo goes (never both) */
+@media (min-width:1200px){ $P .pk-ah .pk-ah-btns .pk-bkb.pri{display:none!important} }
+
+/* -- Fix 2 (Q1/D7): on phone/tablet the floating LISTEN never sits on a header that already has a right-side control
+      ("Back to 2027" and the like). It is hidden there (visibility, so it can still be measured), never overlapping. -- */
+@media (max-width:1024px){ html.pk-g1-nolsn div:has(> button[aria-label="Listen to Pickathon"]){visibility:hidden!important;pointer-events:none!important;opacity:0!important} }
+
+/* -- Fix 5 (D3): 360-wide phones clipped the tab label "My Pickathon" (81px of text in a 71px tab). At <=374px the tab labels are
+      11px with no letter spacing, and that one tab reads "Mine" (the button keeps its full name for screen readers). -- */
+@media (max-width:400px){ $P nav button:has(> svg) > span{font-size:11px!important;letter-spacing:0!important} }   /* 390 clipped the last "n" too */
+@media (max-width:374px){
+  $P nav button:has(> svg path[d^="m12 3 2.8 5.7"]) > span{font-size:0!important}
+  $P nav button:has(> svg path[d^="m12 3 2.8 5.7"]) > span::after{content:"Mine";content:"Mine" / "";font-size:11px;letter-spacing:0}
+}
+
+/* -- Fix 6 (D4): South Camp's hero is now adults at their cars, tents and trailers (Rob Kerr, i/r3b-hood-southcamp-2.jpg), replacing the
+      kids-up-front shot with a CREW shirt. Frame on the people and the vehicles behind them. -- */
+$P .pk-hd-hero img[src$="r3b-hood-southcamp-2.jpg"]{object-position:64% 6%!important}
+
+/* -- Fix 7 (D5): never a year's ink on a dark panel. In the top-5 panel "I was there in YYYY" is cream text + 2px cream border; the warm
+      color shows only as an 18% tint when chosen. The act names in the dark Legends panel on year pages are cream. -- */
+$P button.pk-g1-iw{color:#F2EDE3!important;-webkit-text-fill-color:#F2EDE3!important;border:2px solid #F2EDE3!important;background:transparent!important;min-height:44px!important;border-radius:6px!important;font-weight:800!important;opacity:1!important;transition:none!important}
+$P button.pk-g1-iw *{color:#F2EDE3!important;-webkit-text-fill-color:#F2EDE3!important}
+$P button.pk-g1-iw.gold{background:rgba(214,181,74,.18)!important}
+$P .pk-ch .pk-cht li div[style*="font-weight: 800"]{color:#F2EDE3!important}
+
+/* -- Fix 8 (D6): before-launch button subset, specs/buttons.md. Primary: gold tint, 2px #D6B54A, #F2CF62 text. Secondary: 2px cream on a dark
+      wash, cream text. 50px phone+tablet, 56px desktop, 6px corners, Bricolage 800 13px caps .08em. Share = 44px icon button. -- */
+$P .pk-g1-b{display:inline-flex!important;align-items:center!important;justify-content:center!important;gap:8px!important;min-height:50px!important;height:auto!important;padding:0 16px!important;box-sizing:border-box!important;border-radius:6px!important;font:800 13px/1.15 'Bricolage Grotesque',system-ui,sans-serif!important;letter-spacing:.08em!important;text-transform:uppercase!important;text-align:center!important;white-space:normal!important;box-shadow:none!important;transition:none!important}
+$P .pk-g1-b.pk-g1-pri{background:rgba(214,181,74,.18)!important;border:2px solid #D6B54A!important;color:#F2CF62!important;-webkit-text-fill-color:#F2CF62!important}
+$P .pk-g1-b.pk-g1-sec{background:rgba(18,22,15,.26)!important;border:2px solid rgba(242,237,227,.88)!important;color:#F2EDE3!important;-webkit-text-fill-color:#F2EDE3!important}
+/* on a year's paper page the same two kinds use the year's ink for text (gold #F2CF62 can't be read on paper) */
+html.pk-ypp $Q .pk-g1-b.pk-g1-pri{color:var(--yi,#2B2628)!important;-webkit-text-fill-color:var(--yi,#2B2628)!important;background:rgba(214,181,74,.18)!important;border-color:#D6B54A!important}
+html.pk-ypp $Q .pk-g1-b.pk-g1-sec{background:transparent!important;border-color:var(--yi2,var(--yi,#2B2628))!important;color:var(--yi,#2B2628)!important;-webkit-text-fill-color:var(--yi,#2B2628)!important}
+@media (min-width:1025px){ $P .pk-g1-b{min-height:56px!important} }
+/* artist row: WATCH + LISTEN equal halves, Share a 44x44 icon button */
+$P .pk-act-acts,$P .pk-ah .pk-ah-btns{flex-wrap:nowrap!important;align-items:center!important;gap:8px!important}
+$P .pk-act-acts{grid-template-columns:minmax(0,1fr) minmax(0,1fr) 44px!important;grid-template-rows:auto!important;grid-auto-flow:column!important}
+$P .pk-act-acts>*{grid-column:auto!important;grid-row:auto!important;justify-self:stretch}
+$P .pk-act-acts>.pk-share1{justify-self:end}
+$P .pk-act-acts>.pk-bkb,$P .pk-ah .pk-ah-btns>.pk-bkb{flex:1 1 0!important;min-width:0!important;width:auto!important;margin:0!important}
+$P .pk-act-acts>.pk-bkb::after,$P .pk-ah .pk-ah-btns>.pk-bkb::after{font-size:13px;letter-spacing:.08em}
+$P .pk-act-acts>.pk-bkb.pk-g1-short,$P .pk-ah .pk-ah-btns>.pk-bkb.pk-g1-short{font-size:0!important}
+$P .pk-act-acts>.pk-awb.pk-g1-short::after,$P .pk-ah .pk-ah-btns>.pk-awb.pk-g1-short::after{content:"Watch";content:"Watch" / ""}
+$P .pk-act-acts>.pk-svb.pk-g1-short::after,$P .pk-ah .pk-ah-btns>.pk-svb.pk-g1-short::after{content:"Listen";content:"Listen" / ""}
+$P .pk-share1{flex:none!important;width:44px!important;min-width:44px!important;height:44px!important;min-height:44px!important;padding:0!important;display:inline-grid!important;place-items:center!important;border-radius:4px!important;border:2px solid #6A6163!important;background:transparent!important;color:#F2EDE3!important;margin:0!important}
+$P .pk-share1>span{position:absolute!important;width:1px!important;height:1px!important;overflow:hidden!important;clip:rect(0 0 0 0)!important;white-space:nowrap!important}
+$P .pk-share1 svg{width:20px!important;height:20px!important;margin:0!important}
+@media (min-width:600px){ $P .pk-act-acts{max-width:532px} }
+/* neighborhood "Another performance at …" is a secondary */
+$P .pk-hd-vid .pk-cta.sec.pk-g1-b{width:100%!important;margin-top:12px}
+@media (min-width:600px){ $P .pk-hd-vid .pk-cta.sec.pk-g1-b{width:auto!important;min-width:280px} }
+/* year lineup header: "Were you there?" primary, "★ Pick my top 5" secondary */
+$P .pk-lh-bs .pk-lh-b.pk-g1-b{flex:1 1 0!important;min-width:0!important}
+@media (min-width:600px){ $P .pk-lh-bs .pk-lh-b.pk-g1-b{flex:0 1 auto!important;min-width:180px!important} }
+$P .pk-ah .pk-ah-btns>.pk-bkb{min-width:180px!important;flex:0 1 220px!important}
+
+/* -- Fix 9 (D8): on iPhone, My Pickathon carries the Add to Home Screen tip as a quiet inline row (dismiss with a 44px ✕). -- */
+$P .pk-g1-ios{display:flex;align-items:center;gap:10px;margin:10px 0 14px;padding:4px 4px 4px 14px;min-height:52px;box-sizing:border-box;border:2px solid rgba(242,237,227,.28);border-radius:6px;background:rgba(242,237,227,.06);color:#F2EDE3;font:600 14px/1.35 'Inter',system-ui,sans-serif}
+$P .pk-g1-ios p{margin:0;flex:1 1 auto;min-width:0}
+$P .pk-g1-ios b{font-weight:800}
+$P .pk-g1-ios button{flex:none;width:44px;height:44px;border:0;background:transparent;color:#F2EDE3;font-size:18px;line-height:1;cursor:pointer;border-radius:4px}
+
+/* -- Fix 10 (D9): neighborhood hero labels read on any photo: kind label cream at 85% with a soft shadow, one scrim from the bottom,
+      and Cherry Hill's phone/tablet crop drops to the structure and crowd. -- */
+$P .pk-hd-hero .pk-hd-kick{color:rgba(242,237,227,.85)!important;-webkit-text-fill-color:rgba(242,237,227,.85)!important;text-shadow:0 1px 3px rgba(0,0,0,.6)!important}
+$P .pk-hd-hero .pk-hd-nm h1,$P .pk-hd-hero .pk-hd-t{text-shadow:0 1px 3px rgba(0,0,0,.6)!important}
+$P .pk-hd-hero .pk-hd-shade{background:linear-gradient(to top,rgba(20,16,18,.88) 0%,rgba(20,16,18,.55) 45%,rgba(20,16,18,0) 72%)!important;opacity:1!important;top:0!important;bottom:0!important;left:0!important;right:0!important;height:auto!important}
+@media (max-width:1024px){ $P .pk-hd-hero[aria-label="Cherry Hill"]>img{object-position:50% 78%!important} }
+
+/* -- Fix 14 (Q5, panel P6): every tap target is at least 44x44 -- */
+/* LISTEN (header on phone/tablet, float on desktop) */
+$P [role="region"][aria-label="Listen"] > button[aria-label="Listen to Pickathon"]{height:44px!important;min-height:44px!important}
+@media (max-width:999px){ $P [role=region][aria-label="Listen"][style*="height: 44px"]{height:44px!important;top:calc(var(--pk-hd-top,0px) + 17px)!important} }
+/* header logo buttons (home wordmark at 360, the small logo beside a back arrow) */
+$P header button[aria-label="Pickathon home"]{min-height:44px!important;align-items:center!important}
+/* Home and Why hero: Pause the photos; Take the tour on short phones */
+$P .h2-hpz{width:44px!important;height:44px!important;min-width:44px!important;min-height:44px!important}
+$P #pkh2 .h2-tour{min-height:44px!important}
+/* the video player's close */
+$P .pk-vo-x{width:44px!important;height:44px!important;min-width:44px!important;min-height:44px!important}
+/* My Pickathon: "Mark my years →"; artist "← Back" on desktop */
+$P .pk-g1-t44{display:inline-block!important;padding-top:7px!important;padding-bottom:7px!important;margin-top:-7px!important;margin-bottom:-7px!important}
+$P .pk-act-back{min-height:44px!important}
+/* footer: the email link and short links get a 44px tall hit area without moving the text */
+$P .pk-g1-mail{display:inline-block;padding:14px 0;margin:-14px 0}
+$P .pk-g1-w44{min-width:44px!important;display:inline-flex;justify-content:center}
+
+/* -- User panel P7: the Lineup page's year control is the same opener as every other page: seal + "2027 ▾" (opens the year chooser) -- */
+$P button.pk-g1-op{display:inline-flex!important;align-items:center!important;gap:8px!important;min-height:44px!important;height:auto!important;padding:0 6px 0 0!important;margin:0!important;border:0!important;border-radius:6px!important;background:transparent!important;box-shadow:none!important;color:inherit!important;cursor:default!important;width:auto!important}
+$P button.pk-g1-op .pk-g1-seal{display:grid;place-items:center;width:36px;height:36px;flex:none;border-radius:50%;background:#F2EDE3;box-shadow:0 0 0 1.5px rgba(242,237,227,.9);overflow:hidden}
+$P button.pk-g1-op .pk-g1-seal img{display:block;width:30px;height:30px;object-fit:contain}
+$P button.pk-g1-op b{font-family:inherit!important;font-weight:inherit!important;font-size:inherit!important;letter-spacing:inherit!important;line-height:1}
+$P button.pk-g1-op svg{width:18px;height:18px;flex:none;margin-left:-2px}
+$P button.pk-g1-op:focus-visible{outline:3px solid #F2CF62;outline-offset:3px}
+$P .pk-g1-vh{position:absolute!important;width:1px!important;height:1px!important;overflow:hidden!important;clip:rect(0 0 0 0)!important;white-space:nowrap!important;margin:0!important}
+
+/* ==== Gate 1 fix loop 2 (Design re-review A–H) ==== */
+/* A: the year reel caption sits above the figure's fade layer on tablet and desktop */
+$P .pk-yrp .pk-rs figcaption{z-index:2}
+@media not all and (max-width:600px) and (orientation:portrait){ $P .pk-yrp .pk-rs figcaption{position:relative} }
+/* B: on phone and tablet the reel photo carries one control, the gold pill; its "Watch the summer" chip goes (the story panel has that button) */
+@media (max-width:1024px){ $P .pk-yrp .pk-ytour{display:none!important} }
+/* D: at <=374 the lineup header pair stays one line each (same treatment as Home: 12px, .03em, 8px padding) */
+@media (max-width:400px){ $P .pk-lh-bs .pk-lh-b.pk-g1-b{font-size:12px!important;letter-spacing:.03em!important;padding:0 8px!important;white-space:nowrap!important} }
+/* H: the all-time top-5 card's button is a secondary (50px, 56 desktop) on its dark card, even on a year's paper page; it reads "Pick my all-time top 5" */
+html $Q .pk-g1-b.pk-g1-sec.pk-g1-alltime,html.pk-ypp $Q .pk-g1-b.pk-g1-sec.pk-g1-alltime{background:rgba(18,22,15,.26)!important;border:2px solid rgba(242,237,227,.88)!important;color:#F2EDE3!important;-webkit-text-fill-color:#F2EDE3!important;flex:0 0 auto!important;width:auto!important}
+/* QC re-check: in a year's "Who played when", short artist and place names (toe, EDJ, Fust, Grove) still get a 44px-wide target, text centered */
+$P .pk-sxy-ab,$P .pk-sx-p{min-width:44px!important;box-sizing:border-box;text-align:center}
+$P a.pk-sxy-ab,$P button.pk-sxy-ab,$P a.pk-sx-p,$P button.pk-sx-p{display:inline-flex;justify-content:center;align-items:center}

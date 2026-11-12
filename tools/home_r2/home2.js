@@ -22,12 +22,14 @@ window.pkClimbRank = function (C, dd) {
    The Home poster is pk-climb (tools/climb_ladder): it mounts itself into .pk-cl-mount, plays once, Replay and Another year. This file only places it. */
 (function () {
   'use strict';
-  var YEAR = 2027, DATES = 'Aug 4–8, 2027', DAYSW = 'Thu–Sun, early arrival Wed', DAYSS = 'Thu–Sun, early arrival Wed';   /* Round 3 (A2): one date form sitewide */
+  var YEAR = 2027, DATES = 'Aug 5–8, 2027', DAYSW = 'Gates open Wed, Aug 4', DAYSS = 'Gates open Wed, Aug 4';   /* Zale's rule (lead, Nov 11 night): Aug 5–8 with gates open Wed, Aug 4; Round 3's 'Aug 4–8' was wrong */
   var LSR = 'pk27remind';
   /* "Another neighborhood" leads with the strong ones (design: home.html), then the rest in data order */
   var LEAD = ['cherryhill', 'woods', 'galaxy', 'windmill', 'market', 'coyote', 'paddock', 'lushcamp', 'grove', 'curation'];
   var KIND = { stage: 'Stage neighborhood', around: 'Gathering neighborhood', camp: 'Camping neighborhood' }, GROUPS = [['stage', 'Stage'], ['around', 'Gathering'], ['camp', 'Camping']];
-  var HERO = 'i/r3-home-hero.jpg', ACT = 'i/pk-paddock-c11.jpg';   /* stand-ins until the photo director's picks for slots home.hero and home.act land (photo_slots.csv) */
+  var HERO = 'i/r3-home-hero.jpg', ACT = 'i/pk-paddock-c11.jpg';   /* HERO is only the fallback: the hero cycles data.homeHero (Round 3.5, Zale Nov 11 23:30) */
+  var HERO_MS = 7000;   /* each hero photo holds 7 s, then a 1.6 s crossfade (home2.css). No motion with reduced motion: the first frame stays. */
+  var WALL = /[?&]wall=1\b/.test(location.search);   /* the name wall, for review only */
   var QUOTE = ['You need to know about Pickathon.', 'USA Today'];
 
   /* ---------- helpers ---------- */
@@ -61,9 +63,10 @@ window.pkClimbRank = function (C, dd) {
     if (mp) { var q = mp[0], nm = String(q.name || 'Pass').replace(/ Pass$/, ''), qty = q.qty ? q.qty + ' × ' : '';
       return { w: 'has', line: '<b>Your passes</b> <span class="pk-tl2-d">· ' + esc(qty + nm) + '</span>', verb: 'Add extras', btn: 'Your passes', go: 'mine', cta: 'Your passes', side: [qty + (q.name || 'Pass'), 'Add parking, camping or a friend'], from: from }; }
     if ((s.season || 'off') !== 'off' || T.open) {
-      var r = T.cur || T.show, end = r.endS ? 'Ends ' + r.endS + '.' : '';
-      return { w: 'sale', line: '<b>' + esc(r.name) + '</b> <span class="pk-tl2-d">· from ' + from + (r.endS ? '<span class="pk-tl2-x"> · ends ' + esc(r.endS) + '</span>' : '') + '</span>', verb: 'Get tickets', btn: 'Get tickets', go: 'tickets', cta: 'Get tickets',
-        side: [r.name, (r.id === 'holiday' && end ? String(end).replace(/\.\s*$/, '') + '. Prices go up after.' : end)], from: from };
+      /* Zale, Nov 11 23:30: no end date and no price-rise claim on Home or the ticket line; plain urgency only (the Tickets page is the ticket team's) */
+      var r = T.cur || T.show;
+      return { w: 'sale', line: '<b>' + esc(r.name) + '</b> <span class="pk-tl2-d">· from ' + from + '</span>', verb: 'Get tickets', btn: 'Get tickets', go: 'tickets', cta: 'Get tickets',
+        side: [r.name + ' prices', 'Tickets are running out'], from: from };
     }
     if (T.next) {
       var n = T.next, day = n.isToday ? 'today' : n.dayS, dayL = n.isToday ? 'today' : String(n.dayL || '').replace(/^(\w{3})\w*/, '$1');
@@ -113,14 +116,14 @@ window.pkClimbRank = function (C, dd) {
     if (tl) {
       tl.classList.add('pk-tl2w'); if (offL) tl.setAttribute('data-off', ''); else tl.removeAttribute('data-off');
       tl.classList.toggle('on-home', home); tl.classList.toggle('is-tucked', home && tucked);
-      var hl = offL ? '' : '<button type="button" class="pk-tl2" data-h2tix="1"' + (home && tucked ? ' tabindex="-1"' : '') + '><span class="pk-tl2-t">' + t.line + '</span><span class="pk-tl2-go">' + esc(t.verb) + CHEV + '</span></button>';
+      var hl = offL ? '' : '<button type="button" class="pk-tl2' + (t.w === 'sale' ? ' is-sale' : '') + '" data-h2tix="1"' + (home && tucked ? ' tabindex="-1"' : '') + '><span class="pk-tl2-t">' + t.line + '</span><span class="pk-tl2-go">' + esc(t.verb) + CHEV + '</span></button>';
       if (tl._h !== hl) { tl.innerHTML = hl; tl._h = hl; }
     }
     var tb = document.getElementById('pk-tb2');
     if (tb) {
       tb.classList.add('pk-tb2w'); if (off) tb.setAttribute('data-off', ''); else tb.removeAttribute('data-off');
       tb.classList.toggle('is-tucked', home && tucked);
-      var hb = off ? '' : '<button type="button" class="pk-tb2" data-h2tix="1"' + (home && tucked ? ' tabindex="-1"' : '') + '>' + esc(t.btn) + '</button>';
+      var hb = off ? '' : '<button type="button" class="pk-tb2' + (t.w === 'sale' ? ' is-sale' : '') + '" data-h2tix="1"' + (home && tucked ? ' tabindex="-1"' : '') + '>' + esc(t.btn) + '</button>';
       if (tb._h !== hb) { tb.innerHTML = hb; tb._h = hb; }
     }
   }
@@ -132,7 +135,7 @@ window.pkClimbRank = function (C, dd) {
   function hoodImg(d, k) { var L = (window.pkNBHM || {})[k] || []; return L[0] || d.hoods[k].i || ''; }   /* the curated Home photo for that neighborhood (NBHM in the app), else its lead photo */
   function ctaHTML(t, big) {
     if (!t) return '';
-    var cls = 'h2-pill h2-gold' + (big ? ' h2-big' : '');
+    var cls = 'h2-pill h2-gold' + (big ? ' h2-big' : '') + (t.w === 'sale' ? ' h2-sale' : '');   /* Gate 1 (panel P1): on sale the buy button is the strong gold primary, as at Checkout; Remind me stays quiet */
     return '<button type="button" class="' + cls + '" data-h2tix="1">' + esc(t.cta) + '</button>';
   }
   function skeleton(d) {
@@ -140,31 +143,44 @@ window.pkClimbRank = function (C, dd) {
     var ids = hoodIds(d), cnt = function (g) { return ids.filter(function (i) { return d.hoods[i].k === g; }).length; };
     var h = '';
     /* 1 PROMISE */
-    h += '<section class="h2-s h2-s1" aria-labelledby="h2-h1"><div class="h2-s1ph" data-slot="home.hero"><img src="' + HERO + '" alt="A band on a hand-built stage at night, the crowd close in front" width="2000" height="1334" fetchpriority="high" loading="eager" decoding="async"></div>' +
+    var HL = heroes(d);
+    h += '<section class="h2-s h2-s1" aria-labelledby="h2-h1"><div class="h2-s1ph" data-slot="home.hero" role="group" aria-roledescription="photos" aria-label="Photos from past Pickathons">' + HL.map(function (x, k) {
+        return '<img class="h2-hf' + (k ? '' : ' is-on') + '" ' + (k ? 'data-src' : 'src') + '="' + esc(heroSrc(x)) + '" alt="' + esc(x.alt || '') + '"' + (k ? ' aria-hidden="true"' : '') + ' style="object-position:' + esc(x.p || '50% 50%') + '"' + (k ? ' loading="lazy"' : ' fetchpriority="high" loading="eager"') + ' decoding="async">'; }).join('') +
+      '<p class="h2-hcap" data-h2="hcap">' + esc(heroCap(HL[0])) + '</p>' +
+      '<button type="button" class="h2-tour" data-h2="tour"><span aria-hidden="true">▶</span>Take the tour</button>' +
+      (HL.length > 1 ? '<button type="button" class="h2-hpz" data-h2="hpause" aria-pressed="false" aria-label="Pause the photos"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path class="pz" d="M7 5h3.5v14H7zM13.5 5H17v14h-3.5z"/><path class="pl" d="M8 5 L19 12 L8 19 Z"/></svg></button>' : '') + '</div>' +
       '<h1 class="h2-d h2-hero pkp-head" id="h2-h1"><span>Your new favorite band</span><span>is playing.</span><span>You just haven’t</span><span>met them yet.</span></h1>' +
       '<div class="h2-s1b"><p class="h2-lead">Four days of music on a forest farm in Happy Valley, Oregon.</p>' +
       '<div class="h2-paper h2-band"><div class="h2-band-m"><p class="h2-d h2-band-d pkp-head">' + DATES + '</p><p class="h2-band-w">' + DAYSW + '</p></div>' +
-      '<div class="h2-band-p"><small>3-Day Pass from</small><b class="h2-num" data-h2="from">' + (t ? t.from : '') + '</b><small>camping included</small></div></div>' +
+      '<div class="h2-band-p"><small>3-Day Pass from</small><b class="h2-num" data-h2="from">' + (t ? t.from : '') + '</b><small>camping included</small><small>kids 12 &amp; under free</small></div></div>' +
       '<div class="h2-cta" data-h2="cta1"></div></div></section>';
     var hP = h; h = '';
-    /* 4 PROOF: pk-climb draws the poster into .pk-cl-mount by itself */
-    /* design_studio-18 / home_flow.md: Home picks the poster's year once per visit from the Discovery years (2011-2024 with a climber),
-       as the old Home did, so the poster never opens on a year with nothing to watch. */
+    /* 4 PROOF: the poster climb (pk-climb draws into .pk-cl-mount, plays once, Replay, Another year). Zale 23:38: it stays on Home; make the before
+       and after obvious. Home adds the two labeled states above it (drawBA): "As printed, YYYY" and "Re-ordered by today", lit as the names move.
+       The "Everyone who broke out here" wall (Round 3.5 first take) is kept behind ?wall=1 for review; it is not on Home. */
     try { if (window.pkClimbRank && window.pkClimb) { var RK = window.pkClimbRank(window.pkClimb, d); window.pkClimbOrder = RK.order; if (!window.pkClimbY0 || window.pkClimbY0 !== RK.y0) window.pkClimbY0 = RK.y0; } } catch (e) {}
-    h += '<section class="h2-s h2-s2" aria-labelledby="pk-cl-h"><div class="h2-s2in"><div class="pk-cl-mount"></div>' +
-      '<div class="h2-strip" data-h2="strip" data-none><button type="button" class="h2-strip-ph" data-h2="wph" tabindex="-1" aria-hidden="true"><img alt="" loading="lazy" decoding="async"></button>' +
-      '<div class="h2-strip-t"><button type="button" class="h2-pill h2-watch" data-h2="wbtn">' + PLAY + '<span></span></button><p class="h2-strip-c"><b data-h2="wa"></b> <span data-h2="wc"></span></p></div></div></div></section>';
+    if (WALL) {
+      h += '<section class="h2-s h2-s6" aria-labelledby="h2-h6"><div class="h2-s6head"><h2 class="h2-d h2-sec pkp-head" id="h2-h6">Everyone who broke out here</h2>' +
+        '<p class="h2-sub h2-s6sub" data-h2="wsub"></p><button type="button" class="h2-s6lnk" data-h2="climb">See a past poster re-ordered by today<span aria-hidden="true"> →</span></button></div>' +
+        '<div class="h2-faces" data-h2="faces"></div><div class="h2-wall" data-h2="wall" aria-hidden="true"></div>' +
+        '<div class="h2-row h2-s6row"><button type="button" class="h2-pill" data-h2="alldisc" data-h2n="wall">See them all</button><span class="h2-s6cta" data-h2="cta6"></span></div></section>';
+    } else {
+      h += '<section class="h2-s h2-s2" aria-labelledby="pk-cl-h"><div class="h2-s2in"><div class="h2-ba" data-h2="ba" aria-hidden="true"><span class="h2-ba-a" data-h2="baa"></span><span class="h2-ba-t"><i data-h2="baf"></i></span><span class="h2-ba-b">Re-ordered by today</span></div><div class="pk-cl-mount"></div></div></section>';
+    }
     var hPoster = h; h = '';
-    /* 3 PLACE (Round 3 E3): the emblems are the picker; one button, Explore all neighborhoods */
-    h += '<section class="h2-s h2-s3" aria-labelledby="h2-h3">' +
-      '<button type="button" class="h2-hood" data-h2="hood"><img class="h2-hood-ph" data-h2="hph" alt="" loading="lazy" decoding="async"><span class="h2-hood-c"><img data-h2="hem" alt="" width="44" height="44" loading="lazy"><span class="h2-hood-t"><span class="h2-d h2-hood-n pkp-head" data-h2="hn"></span><span class="h2-hood-k" data-h2="hk"></span><span class="h2-hood-tag" data-h2="htag"></span></span><span class="h2-hood-go">Explore →</span></span></button>' +
-      '<div class="h2-s3l"><div class="h2-s3head"><h2 class="h2-d h2-sec pkp-head" id="h2-h3">Live inside a temporary city of wonder</h2><p class="h2-sub h2-s3sub">' + (ids.length === 20 ? 'Twenty' : ids.length) + ' neighborhoods, built by hand for one weekend. Pick one and step inside.</p></div>' +
+    /* 3 PLACE (Round 3.5 hybrid, neighborhood panel Nov 11): the emblems are the picker; the photo says what the place is (kind, name, its title in gold)
+       and cycles its preview set; a still farm map shows where it is (tints by kind, the picked outline in gold with its emblem). Photo or map opens Places. */
+    h += '<section class="h2-s h2-s3" aria-labelledby="h2-h3"><div class="h2-s3head"><h2 class="h2-d h2-sec pkp-head" id="h2-h3">Live inside a temporary city of wonder</h2><p class="h2-sub h2-s3sub">' + (ids.length === 20 ? 'Twenty' : ids.length) + ' neighborhoods, built by hand for one weekend. Pick one and step inside.</p></div>' +
+      '<div class="h2-hmv"><button type="button" class="h2-hood" data-h2="hood"><img class="h2-hp is-on" alt="" decoding="async"><img class="h2-hp" alt="" decoding="async" aria-hidden="true">' +
+      '<span class="h2-hood-o"><span class="h2-hood-k" data-h2="hk"></span><span class="h2-d h2-hood-n pkp-head" data-h2="hn"></span><span class="h2-hood-tag" data-h2="htag"></span></span>' +
+      '<span class="h2-hood-go" aria-hidden="true"><span>Explore</span>' + CHEV + '</span></button>' +
+      '<button type="button" class="h2-hmap" data-h2="hmap">' + mapSVG(d) + '</button></div>' +
       '<div class="h2-city" role="group" aria-label="Pick a neighborhood">' + GROUPS.map(function (g) {
         var L = ids.filter(function (i) { return d.hoods[i].k === g[0]; });
-        return '<p class="h2-city-k" data-g="' + g[0] + '">' + cnt(g[0]) + ' ' + g[1] + ' neighborhoods</p><div class="h2-city-r">' + L.map(function (i) {
+        return '<p class="h2-city-k" data-g="' + g[0] + '"><i class="h2-dot" aria-hidden="true"></i>' + cnt(g[0]) + ' ' + g[1] + ' neighborhoods</p><div class="h2-city-r">' + L.map(function (i) {
           var H = d.hoods[i]; return '<button type="button" class="h2-em" data-h="' + i + '" aria-pressed="false" aria-label="' + esc(H.n) + '" title="' + esc(H.n) + '"><img src="' + esc(H.icw || ('ic2/' + i + '.png')) + '" alt="" width="44" height="44" loading="lazy"></button>'; }).join('') + '</div>';
       }).join('') + '</div>' +
-      '<div class="h2-row"><button type="button" class="h2-pill" data-h2="allhoods">Explore all neighborhoods</button></div></div></section>';
+      '<div class="h2-row h2-s3row"><button type="button" class="h2-pill" data-h2="allhoods">Explore all neighborhoods</button></div></section>';
     var hPlace = h; h = '';
     /* 4 ACT */
     h += '<section class="h2-s h2-s4" aria-labelledby="h2-h4"><div class="h2-s4ph" data-slot="home.act"><img src="' + ACT + '" alt="" width="1600" height="1067" loading="lazy" decoding="async"><h2 class="h2-d h2-sec pkp-head" id="h2-h4">Four days in the woods. Come.</h2></div>' +
@@ -188,21 +204,63 @@ window.pkClimbRank = function (C, dd) {
   function drawCTA() {
     if (!root) return; var t = null; try { t = tix(); } catch (e) {}
     var k = ctaKey(t); if (root._cta === k) return; root._cta = k;
-    var c1 = $('[data-h2="cta1"]', root), c4 = $('[data-h2="cta4"]', root);
+    var c1 = $('[data-h2="cta1"]', root), c4 = $('[data-h2="cta4"]', root), c6 = $('[data-h2="cta6"]', root);
     if (c1) { c1.innerHTML = t ? ctaHTML(t, true) + '<p class="pk-krtk">' + esc(t.side[0]) + (t.side[1] ? '<span>' + esc(t.side[1]) + '</span>' : '') + '</p>' : ''; }
     if (c4) c4.innerHTML = ctaHTML(t, true);
+    if (c6) c6.innerHTML = ctaHTML(t, false);
     $$('[data-h2="from"]', root).forEach(function (e) { e.textContent = t ? t.from : ''; });
   }
+  /* the still farm map: farmmap/home-map.webp under the outlines from farmmap/index.html (make_hoods.py). One SVG; the picked outline and pin move. */
+  var HH = /*@HOODS_HOME*/null;
+  function mapSVG(d) {
+    if (!HH) return '';
+    var W = HH.size[0], H = HH.size[1];
+    return '<svg class="h2-msvg" viewBox="0 0 ' + W + ' ' + H + '" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><image href="farmmap/home-map.webp" x="0" y="0" width="' + W + '" height="' + H + '"/>' +
+      '<g class="h2-mt">' + Object.keys(HH.shapes).map(function (k) { var o = d.hoods[k]; return o ? '<path class="k-' + esc(o.k) + '" d="' + HH.shapes[k] + '"/>' : ''; }).join('') + '</g>' +
+      '<path class="h2-mhalo" d=""/><path class="h2-msel" d=""/><image class="h2-mpin" href="" width="1" height="1"/></svg>';
+  }
+  function mapPick(k) {
+    var sv = root && $('.h2-msvg', root); if (!sv || !HH) return;
+    var W = HH.size[0], H = HH.size[1], p = HH.pts[k] || [50, 50], px = p[0] / 100 * W, py = p[1] / 100 * H;
+    var bw = sv.clientWidth || 1, bh = sv.clientHeight || 1, vw = W, vh = H, x0 = 0, y0 = 0, whole = window.innerWidth < 600, sc, pin;
+    /* Gate 1 fix 11 (D10): on phone the map column shows the whole farm (meet), with the pick lit and its emblem on it */
+    sv.setAttribute('preserveAspectRatio', whole ? 'xMidYMid meet' : 'xMidYMid slice');
+    if (whole) { sv.setAttribute('viewBox', '0 0 ' + W + ' ' + H); sc = Math.min(bw / W, bh / H); pin = 28 / sc; }
+    else {
+    if (bw / bh < W / H) { vw = H * bw / bh; x0 = Math.max(0, Math.min(W - vw, px - vw / 2)); } else { vh = W * bh / bw; y0 = Math.max(0, Math.min(H - vh, py - vh / 2)); }
+    sv.setAttribute('viewBox', [x0, y0, vw, vh].map(function (n) { return Math.round(n); }).join(' '));
+    sc = bw / vw; pin = Math.max(26, Math.min(40, bw * 0.24)) / sc;   /* about 30px on screen whatever the box */
+    }
+    var sel = $('.h2-msel', sv), hal = $('.h2-mhalo', sv); sel.setAttribute('d', HH.shapes[k] || ''); sel.style.strokeWidth = (2.5 / sc).toFixed(1); hal.setAttribute('d', HH.shapes[k] || ''); hal.style.strokeWidth = (10 / sc).toFixed(1);
+    var o = (D.hoods[k] || {}), im = $('.h2-mpin', sv); im.setAttribute('href', o.icw || ('ic2/' + k + '.png')); im.setAttribute('width', pin); im.setAttribute('height', pin); im.setAttribute('x', px - pin / 2); im.setAttribute('y', py - pin / 2);
+  }
+  /* the photo: the photo director's preview set for the place (lead first), cycling every 4 s while the section is on screen; still with reduced motion */
+  var hpI = 0, hpT = null;
+  function hoodSet(k) { var L = (HH && HH.prev && HH.prev[k]) || []; if (!L.length) { var im = hoodImg(D, k), o = D.hoods[k] || {}; if (im) L = [{ i: im, p: (im === o.i && o.p) ? o.p[0] + '% ' + o.p[1] + '%' : '' }]; } return L; }
+  function hoodShow(k, n, fade) {
+    var L = hoodSet(k); if (!L.length || !root) return; var x = L[n % L.length], I = $$('.h2-hp', root); if (I.length < 2) return;
+    var on = I[0].classList.contains('is-on') ? 0 : 1, nx = fade ? 1 - on : on, el = I[nx], phone = window.innerWidth < 600;
+    var go = function () { el.style.objectPosition = (phone || window.innerWidth < 1200) && x.p ? x.p : ''; if (fade) { I[on].classList.remove('is-on'); el.classList.add('is-on'); } };
+    el.alt = (D.hoods[k] || {}).n ? D.hoods[k].n + ' at Pickathon' : '';
+    if (el.getAttribute('src') === x.i) go(); else { el.onload = function () { el.onload = null; if (cur === k) go(); }; el.src = x.i; }
+    var nxt = L[(n + 1) % L.length]; if (nxt && L.length > 1) { var pre = new Image(); pre.src = nxt.i; }
+  }
+  function hoodTick() {
+    if (!root || !cur || reduced() || document.hidden) return; var s3 = $('.h2-s3', root); if (!s3) return;
+    var r = s3.getBoundingClientRect(), vh = window.innerHeight; if (r.bottom < vh * 0.4 || r.top > vh * 0.6) return;   /* only while the section is the one on screen */
+    if (hoodSet(cur).length < 2) return; hpI++; hoodShow(cur, hpI, true);
+  }
   function hood(k) {
-    var d = D, H = d && d.hoods[k]; if (!H) return; cur = k;
-    var im = hoodImg(d, k), ph = $('[data-h2="hph"]', root);
-    ph.src = im; ph.alt = H.n + ' at Pickathon'; ph.setAttribute('data-slot', 'home.place.' + k);
-    ph.style.objectPosition = (im === H.i && H.p) ? H.p[0] + '% ' + H.p[1] + '%' : '';
-    $('[data-h2="hem"]', root).src = H.icw || ('ic2/' + k + '.png');
+    var d = D, H = d && d.hoods[k]; if (!H) return; cur = k; hpI = 0;
+    hoodShow(k, 0, false);
+    $('[data-h2="hood"]', root).setAttribute('data-slot', 'home.place.' + k);
     $('[data-h2="hn"]', root).textContent = H.n; $('[data-h2="hk"]', root).textContent = KIND[H.k]; $('[data-h2="htag"]', root).textContent = H.t || '';
-    $('[data-h2="hood"]', root).setAttribute('aria-label', H.n + ', ' + KIND[H.k] + '. Explore it on the map');
+    $('[data-h2="hood"]', root).setAttribute('aria-label', H.n + ', ' + KIND[H.k] + (H.t ? ', ' + H.t : '') + '. Explore it on the map');
+    var mb = $('[data-h2="hmap"]', root); if (mb) mb.setAttribute('aria-label', 'Where ' + H.n + ' is on the farm. Open the map');
     $$('.h2-em', root).forEach(function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-h') === k ? 'true' : 'false'); });
     $$('.h2-city-k', root).forEach(function (p) { p.classList.toggle('is-on', p.getAttribute('data-g') === H.k); });
+    mapPick(k);
+    if (!hpT) hpT = setInterval(hoodTick, 4000);
   }
   /* ---------- 2. Before they were big: Discoveries only (archCT k = disc, one card per artist at that first year), ranked by pkRankCmp
      (magnitude_dec first). Cards need a photo and a fact line. The acts on the poster's opening year step aside, so the two band sections never show the same act. ---------- */
@@ -210,12 +268,11 @@ window.pkClimbRank = function (C, dd) {
   function bandList() {
     if (BL && BLd === D) return BL;
     var pool = []; try { pool = window.__pkArchPool ? window.__pkArchPool() : []; } catch (e) { pool = []; }
-    var PV = (D && D.preview) || {}, cy = window.pkClimbY0, CN = {};
-    try { (((window.pkClimb || {})[cy] || {}).names || []).forEach(function (x) { CN[nk(x[0])] = 1; }); } catch (e) {}
-    BL = pool.filter(function (a) { return a.cat === 'music' && a.ctk === 'disc' && !a.dc && !a.leg && a.line && !CN[nk(a.n)]; }).map(function (a) {
+    var PV = (D && D.preview) || {};
+    BL = pool.filter(function (a) { return a.cat === 'music' && a.ctk === 'disc' && !a.dc && !a.leg && a.line; }).map(function (a) {
       var pv = PV[a.n], img = (pv && String(pv.y) === String(a.yr) && pv.i) || a.img || (pv && pv.i) || '';
       var v = vidOf(a.vu), r = vidRec(v), full = !!(r && r.f), watch = !!a.vu && !full && /^(Watch|Listen)/.test(a.vt || '');
-      return { n: a.n, kind: a.kind || 'Discovery', y: String(a.yr || ''), line: a.line, img: img, vu: watch ? a.vu : '', vt: watch ? a.vt : '', m: a.m, k: 'disc', c: a.cf };
+      return { n: a.n, kind: a.kind || 'Discovery', y: String(a.yr || ''), line: shortLine(a.line), img: img, vu: watch ? a.vu : '', vt: watch ? a.vt : '', m: a.m, k: 'disc', c: a.cf };
     }).filter(function (a) { return a.img; });
     BL.sort(window.pkRankCmp || function () { return 0; }); BLd = D; return BL;
   }
@@ -233,70 +290,130 @@ window.pkClimbRank = function (C, dd) {
     s._a = a;
     if (window.innerWidth < 1200) { try { vars(); } catch (e) {} }   /* a longer or shorter fact: the photo takes what is left, so the section stays one screen */
   }
+  /* the card's fact, about 100 characters (funnel panel, Nov 11: the section must fit 360x740). The long story stays in the archive.
+     Mechanical until the story file brings a short hook per act: the whole line if it is short; else the sentence with the strongest
+     proof a stranger knows (Grammy, Red Rocks, arenas...), short enough; else the first sentence that fits. Never cut mid-sentence. */
+  var PROOF = /Grammy|Red Rocks|arena|Ryman|Madison Square|Hollywood Bowl|Greek|Coachella|Glastonbury|Bowl|headlin|sold[- ]out|Brooklyn Steel|Letterman|Polaris|Juno|Bridgestone|Gorge/i;
+  function shortLine(s) {
+    s = String(s || '').trim(); if (s.length <= 118) return s;
+    var S = s.match(/[^.!?]+[.!?]+(?=\s|$)/g) || [s], best = null, bs = -1;
+    S.forEach(function (x, k) { x = x.trim(); if (x.length > 125 || x.length < 30) return; var sc = (PROOF.test(x) ? 10 : 0) - k - (/^(Then|They|He|She|His|Her|It|By|Within|After)\b/.test(x) ? 3 : 0); PROOF.lastIndex = 0; if (sc > bs) { bs = sc; best = x; } });
+    if (best) return best;
+    for (var i = 0; i < S.length; i++) { var x = S[i].trim(); if (x.length <= 125) return x; }
+    return S[0].trim();
+  }
   function toArchive(n) { var A = app(); if (!A) return; A.setState({ archLead: n || null, luYear: 'disc', luArch: true, lineup: 'music', archT: null, archC: null, archY: '' }); A.go('lineup', { keepArch: true }); }
   function hoodOrder() { var ids = hoodIds(D); return LEAD.filter(function (k) { return ids.indexOf(k) >= 0; }).concat(ids.filter(function (k) { return LEAD.indexOf(k) < 0; })); }
 
-  /* the watch strip under the poster: one single-song video from the poster's year, from the "Before they were big" cards (past.deep).
-     The act that climbed the bill leads; a card counts only when its video is from that same year and is not a full set. */
-  var stripY = '';
+  /* ---------- 4. Everyone who broke out here: the same Discoveries as the archive (one per artist, first Discovery year, pkRankCmp).
+     Six photos lead (local photos only; the act opening Before they were big steps aside so the two screens never show the same picture),
+     then every other name, sized by how big they got, with the first Pickathon year in that year's color. The wall is cut by its box with a fade:
+     it always fits one screen, and See them all opens the archive. ---------- */
+  var WL = null, WLd = null;
+  function wallList() {
+    if (WL && WLd === D) return WL;
+    var pool = []; try { pool = window.__pkArchPool ? window.__pkArchPool() : []; } catch (e) { pool = []; }
+    WL = pool.filter(function (a) { return a.cat === 'music' && a.ctk === 'disc' && !a.dc && !a.leg; })
+      .map(function (a) { return { n: a.n, y: String(a.yr || ''), m: a.m, c: a.cf, k: 'disc', img: a.img || '' }; });
+    WL.sort(window.pkRankCmp || function () { return 0; }); WLd = D; return WL;
+  }
+  function lum(h) { var m = /^#?([0-9a-f]{6})$/i.exec(h || ''); if (!m) return 0; var v = parseInt(m[1], 16), f = function (c) { c /= 255; return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4); }; return 0.2126 * f(v >> 16) + 0.7152 * f((v >> 8) & 255) + 0.0722 * f(v & 255); }
+  /* the year's own color that reads on the dark ground (contrast 4.5 or better against #2B2628), avoiding plain white; else cream-dim */
+  var YCOL = {};
+  function yearCol(y) {
+    if (YCOL[y]) return YCOL[y]; var B = ((D && D.yearBrand) || {})[y] || {}, g = lum('#2B2628'), out = '#CFC9BC';
+    [B.light, B.warm, B.ink2, (B.stripe || [])[1], (B.stripe || [])[0]].some(function (c) { if (!c || /^#(F{6}|FFFEF2|FFFFFA|F0EEEA|EEEDDD|F4F3EB|EAE4DF)$/i.test(c)) return false; var r = (lum(c) + 0.05) / (g + 0.05); if (r >= 4.5) { out = c; return true; } return false; });
+    return (YCOL[y] = out);
+  }
+  function drawWall() {
+    if (!root) return; var s = $('.h2-s6', root); if (!s) return; var L = wallList();
+    if (!L.length) { s.hidden = true; return; } s.hidden = false;
+    var lead = (bandList()[0] || {}).n, y0 = L.reduce(function (a, b) { return Math.min(a, +b.y || 9999); }, 9999);
+    var nF = (window.innerWidth < 380 || (window.innerWidth < 600 && window.innerHeight < 760)) ? 3 : 6, F = [];   /* short or narrow phones: one row of photos, so the wall still shows */
+    L.forEach(function (a) { if (F.length < nF && a.n !== lead && /^(i|alum)\//.test(a.img)) F.push(a); });
+    var inF = {}; F.forEach(function (a) { inF[a.n] = 1; });
+    var key = nF + '|' + L.length + '|' + lead; if (s._k === key) return; s._k = key;
+    $('[data-h2="wsub"]', s).textContent = 'Since ' + y0 + ', ' + L.length + ' bands played Pickathon before the world caught on.';
+    $('[data-h2="faces"]', s).innerHTML = F.map(function (a) {
+      return '<button type="button" class="h2-face" data-h2="face" data-n="' + esc(a.n) + '" aria-label="' + esc(a.n + ', first played Pickathon ' + a.y + '. See them in the archive') + '"><img src="' + esc(a.img) + '" alt="" loading="lazy" decoding="async">' +
+        '<span class="h2-face-t"><span class="h2-d h2-face-n">' + esc(a.n) + '</span><span class="h2-face-y" style="color:' + yearCol(a.y) + '">Pickathon ' + esc(a.y) + '</span></span></button>'; }).join('');
+    $('[data-h2="wall"]', s).innerHTML = L.filter(function (a) { return !inF[a.n]; }).map(function (a) {
+      var m = +a.m || 0, t = m >= 5.5 ? 'w1' : m >= 3.5 ? 'w2' : 'w3';
+      return '<span class="h2-wn ' + t + '">' + esc(a.n) + '<i style="color:' + yearCol(a.y) + '">' + esc(a.y) + '</i></span>'; }).join(' ');
+    var b = $('[data-h2="alldisc"]', s); if (b) b.textContent = 'See all ' + L.length;
+  }
+  /* ---------- 1. the hero: a slow crossfade through data.homeHero (architecture, crowd, performance; best first) ---------- */
+  function heroes(d) { var L = ((d && d.homeHero) || []).filter(function (x) { return x && x.i; }); return L.length ? L : [{ i: HERO, p: '50% 62%', alt: 'A band on a hand-built stage at night, the crowd close in front' }]; }
+  function heroSrc(x) { return (window.innerWidth <= 820 && x.m) ? x.m : x.i; }   /* phone and portrait tablet: a 900px square crop on the photo's subject */
+  function heroCap(x) { return x ? [x.place, x.y ? 'Pickathon ' + x.y : '', x.by].filter(Boolean).join(' · ') : ''; }
+  var hi = 0, hPaused = false, hTimer = null;
+  function reduced() { try { return window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { return false; } }
+  function heroLoad(k) { var I = $$('.h2-hf', root)[k]; if (I && I.getAttribute('data-src')) { I.src = I.getAttribute('data-src'); I.removeAttribute('data-src'); I.loading = 'eager'; } return I; }
+  function heroStep() {
+    if (!root || hPaused || reduced() || document.hidden || !tucked) return;   /* tucked = the hero is in view */
+    var I = $$('.h2-hf', root); if (I.length < 2) return; var nx = (hi + 1) % I.length, N = heroLoad(nx);
+    if (!N || !N.complete || !N.naturalWidth) return;   /* not loaded yet: try again next tick */
+    I[hi].classList.remove('is-on'); I[hi].setAttribute('aria-hidden', 'true'); N.classList.add('is-on'); N.removeAttribute('aria-hidden'); hi = nx;
+    var c = $('[data-h2="hcap"]', root); if (c) c.textContent = heroCap(heroes(D)[hi]);
+    heroLoad((hi + 1) % I.length);   /* the next one loads during this one's 7 s */
+  }
+  function heroStart() { if (hTimer) clearInterval(hTimer); hi = 0; hTimer = setInterval(heroStep, HERO_MS); setTimeout(function () { if (root) heroLoad(1); }, 2500); }
+  function heroPause(b) {
+    hPaused = !hPaused; b.setAttribute('aria-pressed', hPaused ? 'true' : 'false'); b.setAttribute('aria-label', hPaused ? 'Play the photos' : 'Pause the photos');
+  }
   function vidOf(u) { var m = /[?&]v=([\w-]+)/.exec(u) || /youtu\.be\/([\w-]+)/.exec(u), v = null; if (m) { v = { yt: m[1] }; } else if ((m = /vimeo\.com\/(\d+)/.exec(u))) v = { vm: m[1] }; return v; }
   function vidRec(v) { if (!v) return null; var L = (D && D.videos) || []; if (!vidRec._m || vidRec._d !== L) { var M = {}; L.forEach(function (x) { if (x.vm) M['vm' + x.vm] = x; else if (x.id) M['yt' + x.id] = x; }); vidRec._m = M; vidRec._d = L; } return vidRec._m[v.yt ? 'yt' + v.yt : 'vm' + v.vm] || null; }
   function nk(s) { return String(s || '').toUpperCase().replace(/[^A-Z0-9]/g, ''); }
-  function pickWatch(y) {
-    var deep = ((D && D.past) || {}).deep || [], C = ((window.pkClimb || (D && D.climb) || {})[y]) || {}, top = nk(C.clim);
-    var ok = deep.filter(function (c) {
-      if (!c.m || !c.m.u || (c.y || []).indexOf(+y) < 0 || String(c.m.t || '').indexOf(String(y)) < 0) return false;
-      var r = vidRec(vidOf(c.m.u)); return !(r && r.f);   // single songs only on Home
-    });
-    ok.sort(function (a, b) { var s = function (c) { return (nk(c.n) === top ? 0 : 4) + (c.top ? 0 : 2) + (c.t === 'h' ? 0 : 1); }; return s(a) - s(b); });
-    return ok[0] || null;
-  }
-  function thumb(c) { var v = vidOf(c.m.u), r = vidRec(v); if (v && v.yt) return 'https://i.ytimg.com/vi/' + v.yt + '/mqdefault.jpg'; if (r && r.th) return r.th; return c.pi || ''; }
-  function drawStrip() {
-    if (!root) return; var m = $('.pk-cl-mount', root), y = m && m.getAttribute('data-y'); if (!y || y === stripY) return; stripY = y;
-    var s = $('[data-h2="strip"]', root), c = pickWatch(y);
-    if (!c) { s.setAttribute('data-none', ''); s._c = null; return; }
-    s.removeAttribute('data-none'); s._c = c; s._y = y;
-    var im = $('img', s); im.src = thumb(c); im.alt = '';   /* the button beside it names the act */
-    $('[data-h2="wbtn"] span', s).textContent = 'Watch from Pickathon ' + y;
-    $('[data-h2="wbtn"]', s).setAttribute('aria-label', 'Watch ' + c.n + ' at Pickathon ' + y);
-    $('[data-h2="wa"]', s).textContent = c.n; $('[data-h2="wc"]', s).textContent = c.l || '';
-  }
-  function play(s) { var c = s && s._c; if (!c) return; try { if (window.__pkPlayVid && window.__pkPlayVid(c.m.u, c.n + ' · Pickathon ' + s._y)) return; } catch (e) {} }
-
   /* one screen per section: the visible screen under the header (and the ticket line) and above the tabs. On load and resize only. */
   function vars() {
     if (!root) return;
     var desk = window.innerWidth >= 1200, scr, tl = 0;
     if (desk) { var hd = $('#root header'), hb = hd ? hd.getBoundingClientRect().bottom : 0; scr = window.innerHeight - Math.max(0, Math.min(hb, 200)); }
     else { var mn = document.getElementById('pk-scroll-phone'); scr = mn ? mn.clientHeight : window.innerHeight - 125; var t = document.getElementById('pk-tl2'); tl = t && !t.hasAttribute('data-off') ? 44 : 0; }
-    var st = $('[data-h2="strip"]', root), sh = st && window.innerWidth >= 600 ? Math.ceil(st.getBoundingClientRect().height) + 12 : 0;   /* phone: the pill sits in the Another year row */
-    var v = Math.round(scr) + 'px|' + tl + 'px|' + sh + 'px';
-    if (root._v !== v || !root.style.getPropertyValue('--scr')) {   /* the renderer resets the island's own attributes on every render */ root._v = v; root.style.setProperty('--scr', Math.round(scr) + 'px'); root.style.setProperty('--tl', tl + 'px'); root.style.setProperty('--strip', sh + 'px'); }
-    var wideTab = !desk && window.innerWidth >= 1000 && window.innerWidth > window.innerHeight;   /* Round 3 (A11): sideways tablet uses the desktop poster columns (home2.css) */
+    var ck = !desk && document.querySelector('[role=dialog][aria-label="Cookie choices"]'), ckh = 0;
+    if (ck && mn) { var cr = ck.getBoundingClientRect(), mr = mn.getBoundingClientRect(); if (cr.height > 0 && cr.height < 200) ckh = Math.max(0, Math.ceil(mr.bottom - cr.top)); }
+    if (ckh) scr -= ckh; root.classList.toggle('h2-ck', !!ckh);   /* the cookie strip (first visit): each screen ends above it */
+    var v = Math.round(scr) + 'px|' + tl + 'px';
+    if (root._v !== v || !root.style.getPropertyValue('--scr')) {   /* the renderer resets the island's own attributes on every render */ root._v = v; root.style.setProperty('--scr', Math.round(scr) + 'px'); root.style.setProperty('--tl', tl + 'px'); }
+    var wideTab = !desk && window.innerWidth >= 1000 && window.innerWidth > window.innerHeight;   /* Round 3 (A11): sideways tablet uses the desktop poster columns */
     if (desk) { root.style.removeProperty('--h2-hp'); poster(scr); } else { fitPh(scr); if (wideTab) poster(scr); }
+    if (cur) mapPick(cur);   /* the map box changed size: re-frame the pin */
+    if (WALL) try { drawWall(); } catch (e) {}   /* three photos or six follows the width */
   }
   /* phone and tablet (QA M2, Nov 11): screens 2 and 3 must fit one screen under the ticket line. Clear the fit, measure the natural height,
-     then shrink only the poster (a scale, centered) and the neighborhood photo by what spills over. Load, resize and redraw only; one layout pass. */
+     then shrink only the card photo and the neighborhood photo by what spills over. Load, resize and redraw only; one layout pass.
+     Screen 4 (the wall) needs no fit: its wall of names takes whatever height is left. */
   function fitPh(scr) {
-    var r = root.style; ['--h2-ps', '--h2-pmb', '--h2-pml', '--h2-st', '--h2-hp'].forEach(function (k) { r.removeProperty(k); }); root._ps = '';
+    var r = root.style; ['--h2-ps', '--h2-pmb', '--h2-pml', '--h2-hp'].forEach(function (k) { r.removeProperty(k); }); root._ps = '';
     var s2 = $('.h2-s2', root), pw = s2 && $('.pk-cl-pw', s2);
-    if (pw) { var PH = pw.offsetHeight, o = s2.scrollHeight - scr; if (PH && o > 0) { var k = Math.max(window.innerWidth >= 700 ? 0.5 : 0.7, (PH - o - 2) / PH);   /* Round 3 (A11): a wide tablet held sideways has room for a smaller poster; the floor only guards narrow phones */ r.setProperty('--h2-ps', k.toFixed(4)); r.setProperty('--h2-pmb', (-(PH * (1 - k))).toFixed(1) + 'px'); } }
+    if (pw) { var PH = pw.offsetHeight, o = s2.scrollHeight - scr; if (PH && o > 0) { var k = Math.max(window.innerWidth >= 700 ? 0.5 : (window.innerHeight < 700 ? 0.42 : 0.52), (PH - o - 2) / PH);   /* short phones (Safari bars showing) let the poster go smaller so the screen still fits */ r.setProperty('--h2-ps', k.toFixed(4)); r.setProperty('--h2-pmb', (-(PH * (1 - k))).toFixed(1) + 'px'); } }
     var s5 = $('.h2-s5', root), bp = s5 && $('.h2-bc-ph', s5);
     if (bp) { r.removeProperty('--h2-bp'); var BH = bp.offsetHeight, o5 = s5.scrollHeight - scr; if (BH && o5 > 0) r.setProperty('--h2-bp', Math.max(96, BH - o5 - 2) + 'px'); }
-    var s3 = $('.h2-s3', root), ph = s3 && $('.h2-hood-ph', s3);
+    var s3 = $('.h2-s3', root), ph = s3 && $('.h2-hmv', s3);
     if (ph) { var H = ph.offsetHeight, o3 = s3.scrollHeight - scr; if (H && o3 > 0) r.setProperty('--h2-hp', Math.max(72, H - o3 - 2) + 'px'); }
   }
-  /* desktop: scale pk-climb's poster to the right-hand column and the screen, and set the watch strip under the time bar (on draw and resize only) */
+  /* desktop and the sideways tablet: scale pk-climb's poster to the right-hand column and the screen (on draw and resize only) */
   function poster(scr) {
     var s2 = $('.h2-s2', root), m = s2 && $('.pk-cl-mount', s2), pw = m && $('.pk-cl-pw', m); if (!pw) return;
     var PW = parseFloat(pw.style.width) || 0, PH = parseFloat(pw.style.height) || 0; if (!PW || !PH) return;
-    var gapC = parseFloat(getComputedStyle(m).columnGap) || 48, colW = (m.clientWidth - gapC) * 6 / 10, cs = getComputedStyle(s2), availH = scr - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom);
-    var k = Math.min(1, colW / PW, availH / PH), mb = -(PH * (1 - k));
-    var last = null, st = $('[data-h2="strip"]', root); ['.pk-cl-hd', '.pk-cl-tb', '.pk-cl-tl', '.pk-cl-cmp'].forEach(function (q) { var e = m.querySelector(q); if (e && e.offsetParent && (!last || e.getBoundingClientRect().bottom > last.getBoundingClientRect().bottom)) last = e; });   /* Round 3 (A11): the watch strip goes under the lowest block, the reduced-motion lists included */
-    var wr = $('.h2-s2in', s2), top = last && wr ? Math.round(last.getBoundingClientRect().bottom - wr.getBoundingClientRect().top + 18) : 0, ml = Math.max(0, colW - PW * k);
-    var key = k.toFixed(4) + '|' + top + '|' + Math.round(ml); if (root._ps === key && root.style.getPropertyValue('--h2-ps')) return; root._ps = key;
-    root.style.setProperty('--h2-ps', k.toFixed(4)); root.style.setProperty('--h2-pmb', mb.toFixed(1) + 'px'); root.style.setProperty('--h2-pml', ml.toFixed(1) + 'px'); if (top) root.style.setProperty('--h2-st', top + 'px');
+    var gapC = parseFloat(getComputedStyle(m).columnGap) || 48, colW = (m.clientWidth - gapC) * 6 / 10, cs = getComputedStyle(s2), ba = $('.h2-ba', s2), availH = scr - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom) - (ba && ba.offsetHeight ? ba.offsetHeight + 14 : 0);
+    var k = Math.min(1, colW / PW, availH / PH), mb = -(PH * (1 - k)), ml = Math.max(0, colW - PW * k);
+    var key = k.toFixed(4) + '|' + Math.round(ml); if (root._ps === key && root.style.getPropertyValue('--h2-ps')) return; root._ps = key;
+    root.style.setProperty('--h2-ps', k.toFixed(4)); root.style.setProperty('--h2-pmb', mb.toFixed(1) + 'px'); root.style.setProperty('--h2-pml', ml.toFixed(1) + 'px');
+  }
+  /* BEFORE AND AFTER (Zale 23:38): two labeled states over the poster, in that year's paper and ink. The left one is lit while the bill is as printed,
+     the line between them fills as the names move (it follows pk-climb's own time bar), the right one is lit when the bill rests on today's order. */
+  var baT = null;
+  function drawBA() {
+    if (!root) return; var s2 = $('.h2-s2', root), ba = s2 && $('.h2-ba', s2), m = s2 && $('.pk-cl-mount', s2); if (!ba || !m) return;
+    var y = m.getAttribute('data-y') || window.pkClimbY0 || '', C = ((window.pkClimb || {})[y]) || {}, P = C.paper || '#F0EEEA', I = (C.inks || [])[0] || '#2B2628';
+    var tf = $('.pk-cl-tf', m), f = tf ? (parseFloat(tf.style.width) || 0) / 100 : 1, tl = $('.pk-cl-tl', m), txt = tl ? tl.textContent : '';
+    if (/as printed|as booked/i.test(txt)) f = 0; else if (/today/i.test(txt) && !tf) f = 1;
+    var key = y + '|' + f.toFixed(2); if (ba._k === key) return; ba._k = key;
+    ba.style.setProperty('--ba-p', P); ba.style.setProperty('--ba-i', I);
+    $('[data-h2="baa"]', ba).textContent = (C.src === 'real billing' ? 'As printed, ' : 'As booked, ') + y;
+    $('[data-h2="baf"]', ba).style.width = (f * 100).toFixed(1) + '%';
+    ba.classList.toggle('is-a', f < 0.02); ba.classList.toggle('is-b', f > 0.98);
   }
   function watchS1() {
     if (io) { io.disconnect(); io = null; }
@@ -309,12 +426,12 @@ window.pkClimbRank = function (C, dd) {
     if (!el) { if (root) { root = null; if (io) { io.disconnect(); io = null; } tucked = false; } return; }
     D = data(); if (!D) return;
     if (el !== root || !el.firstChild || built !== (D.year + '|' + hoodIds(D).length)) {
-      root = el; built = D.year + '|' + hoodIds(D).length; stripY = '';
+      root = el; built = D.year + '|' + hoodIds(D).length;
       el.classList.add('pkh2'); el.innerHTML = skeleton(D); guard(el); el._cta = '';
-      hood(cur && D.hoods[cur] ? cur : hoodOrder()[0]); BL = null; drawBand();
-      tucked = true; watchS1(); vars();
+      hood(cur && D.hoods[cur] ? cur : hoodOrder()[0]); BL = null; WL = null; drawBand(); if (WALL) drawWall();
+      tucked = true; watchS1(); vars(); heroStart();
     }
-    drawCTA(); drawStrip();
+    drawCTA();
   }
   function onClick(e) {
     var b = e.target.closest ? e.target.closest('button,[data-h2]') : null; if (!b) return;
@@ -326,23 +443,29 @@ window.pkClimbRank = function (C, dd) {
     if (a === 'alldisc') { toArchive(null); return; }
     if (a === 'barch') { var sa = $('.h2-s5', root); toArchive(sa && sa._a ? sa._a.n : null); return; }
     if (a === 'bph') { var sb = $('.h2-s5', root), ba = sb && sb._a; if (!ba) return; if (!ba.vu) { toArchive(ba.n); return; } try { if (/open\.spotify\.com/.test(ba.vu) && window.__pkOpenMusic) { window.__pkOpenMusic(ba.vu); return; } if (window.__pkPlayVid) window.__pkPlayVid(ba.vu, ba.n + ' · Pickathon ' + ba.y); } catch (x) {} return; }
-    if (a === 'hood') { if (window.__pkMapH) window.__pkMapH(cur)(); else go('hoods'); return; }
+    if (a === 'hood' || a === 'hmap') { if (window.__pkMapH) window.__pkMapH(cur)(); else go('hoods'); return; }
     if (a === 'allhoods') { if (window.__pkGoFarm) window.__pkGoFarm(); else go('hoods'); return; }
     if (a === 'plan') { go('info'); return; }
-    if (a === 'wbtn' || a === 'wph') { play($('[data-h2="strip"]', root)); return; }
+    if (a === 'face') { toArchive(b.getAttribute('data-n')); return; }
+    if (a === 'climb') { try { if (window.pkOpenYear) { window.pkOpenYear(2019); return; } } catch (x) {} return; }   /* Zale 23:34: the second beat, the 2019 poster climb on its year page */
+    if (a === 'hpause') { heroPause(b); return; }
+    if (a === 'tour') { var A = app(); try { if (A && A.ssOpen) { A.ssOpen(); return; } } catch (x) {} return; }   /* the full-screen photo tour (the screensaver), as the old Home's "Photo tour" */
   }
 
   /* ---------- keeping in step with the app ---------- */
-  function syncAll() { try { drawHome(); } catch (e) { if (window.console) console.error('pk-home2', e); } try { drawButtons(); } catch (e) { if (window.console) console.error('pk-home2 tix', e); } try { vars(); watchMain(); } catch (e) {} }
+  /* Listen (Round 3.5, Zale: "I had no idea that little button was for listening"): the labeled button sits in the phone and tablet header row.
+     It is a fixed float, so it follows the header's top (the test bar pushes the header down until the launch switch). Style: home2.css. */
+  function hdTop() { var h = document.querySelector('#root header'), t = h ? Math.max(0, Math.round(h.getBoundingClientRect().top)) : 0; if (t !== hdTop._t) { hdTop._t = t; document.documentElement.style.setProperty('--pk-hd-top', t + 'px'); } }
+  function syncAll() { try { hdTop(); } catch (e) {} try { drawHome(); } catch (e) { if (window.console) console.error('pk-home2', e); } try { drawButtons(); } catch (e) { if (window.console) console.error('pk-home2 tix', e); } try { vars(); watchMain(); } catch (e) {} }
   var render0 = window.__render;
   if (typeof render0 === 'function') window.__render = function () { var r = render0.apply(this, arguments); syncAll(); return r; };
   document.addEventListener('click', onClick);
-  window.addEventListener('resize', function () { try { vars(); } catch (e) {} });
+  window.addEventListener('resize', function () { try { hdTop(); vars(); } catch (e) {} });
   var ro = null, roOn = null;   /* the phone scroller changes height without a resize event (a bar above it opening or closing) */
   function watchMain() { var m = document.getElementById('pk-scroll-phone'); if (m === roOn || !('ResizeObserver' in window)) return; if (ro) ro.disconnect(); roOn = m; if (!m) return; ro = new ResizeObserver(function () { try { vars(); } catch (e) {} }); ro.observe(m); }
   document.addEventListener('visibilitychange', function () { if (!document.hidden) syncAll(); });
-  /* the poster changes year inside its own island (Another year): follow it with the watch strip */
-  try { new MutationObserver(function () { if (root) { drawStrip(); root._ps = ''; vars(); } }).observe(document.body, { attributes: true, attributeFilter: ['data-y'], subtree: true }); } catch (e) {}
+  try { new MutationObserver(function () { if (root && $('.h2-s2', root)) { root._ps = ''; vars(); drawBA(); } }).observe(document.body, { attributes: true, attributeFilter: ['data-y'], subtree: true }); } catch (e) {}
+  setInterval(function () { if (!root || document.hidden) return; var s2 = $('.h2-s2', root); if (!s2) return; var r = s2.getBoundingClientRect(); if (r.bottom > 0 && r.top < window.innerHeight) drawBA(); }, 120);   /* only while the poster is on screen */
   window.__pkHome2 = { refresh: function () { built = ''; if (root) root._cta = ''; syncAll(); }, tix: function () { return tix(); }, remind: remindSheet, hood: function (k) { hood(k); } };
   syncAll();
 })();

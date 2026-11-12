@@ -82,3 +82,7 @@ main:has(#pk-nh-climb)>section{content-visibility:visible!important;contain-intr
 #root#root#root .pk-cl-cmp ol{margin:4px 0 0!important;padding-left:1.4em!important;font:600 13px/1.35 'Bricolage Grotesque',sans-serif!important;letter-spacing:.02em!important}
 #root#root#root .pk-cl-cmp ol li{font-size:13px!important;line-height:1.35!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
 #root .pk-cl-cmp>div{min-width:0}
+
+/* Gate 1 fix 12 (D11): phone end state names the climber under the heading (one line, gold caps), and a key under the poster explains the ▲ */
+#root#root#root .pk-g1-sub{margin:6px 0 0!important;max-width:none!important;font:800 13px/1.25 'Bricolage Grotesque',sans-serif!important;letter-spacing:.06em!important;text-transform:uppercase;color:#F2CF62;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#root#root#root .pk-g1-key{margin:0 0 6px!important;max-width:none!important;font:700 11px/1.3 'Bricolage Grotesque',sans-serif!important;letter-spacing:.04em!important;color:#CFC9BC!important}
