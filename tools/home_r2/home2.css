@@ -112,15 +112,6 @@
 @media (max-width:379px){#pkh2 .h2-watch{font-size:.75rem;padding:0 .5rem}#pkh2#pkh2 .h2-hero{font-size:1.875rem!important}#pkh2#pkh2 .h2-sec{font-size:1.5rem!important}}
 
 /* 3 PLACE */
-.pkh2 .h2-hood{display:block;text-decoration:none;cursor:pointer;background:none;border:0;padding:0;width:100%;text-align:left;color:inherit}
-.pkh2 .h2-hood-ph{width:100%;aspect-ratio:2.1/1;object-fit:cover;background:#1c191a}
-.pkh2 .h2-hood-c{display:flex;align-items:center;gap:10px;margin-top:8px}
-.pkh2 .h2-hood-c>img{display:none;width:44px;height:44px;flex:none}
-.pkh2 .h2-hood-t{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;min-width:0}
-#pkh2#pkh2 .h2-hood-n{font-size:var(--d-card)!important;line-height:1.05!important}
-.pkh2 .h2-hood-k{display:none;font-size:var(--t-sm);color:var(--cream-dim);line-height:1.3}
-.pkh2 .h2-hood-tag{display:none;font-size:var(--t-sm);color:var(--cream-dim)}
-.pkh2 .h2-hood-go{margin-left:auto;font-weight:700;font-size:var(--t-sm);white-space:nowrap}
 .pkh2 .h2-city{display:grid;gap:4px}
 #pkh2#pkh2 .h2-city-k{font-size:.8125rem;font-weight:700;color:var(--mute);margin-top:2px}
 #pkh2#pkh2 .h2-city-k.is-on{color:var(--cream)}
@@ -156,8 +147,7 @@
 
 /* phone and tablet: the desktop wrappers flatten, children follow the mockup's order */
 @media (max-width:1199px){
-  .pkh2 .h2-s3l,.pkh2 .h2-s4in,.pkh2 .h2-s4side,.pkh2 .h2-s4solid{display:contents}
-  .pkh2 .h2-s3head{order:0}.pkh2 .h2-hood{order:1}.pkh2 .h2-city{order:2}.pkh2 .h2-s3 .h2-row{order:3}
+  .pkh2 .h2-s4in,.pkh2 .h2-s4side,.pkh2 .h2-s4solid{display:contents}
   .pkh2 .h2-s4ph{order:0}.pkh2 .h2-stub{order:1}.pkh2 .h2-quote{order:2}.pkh2 .h2-s4end{order:3}
 }
 /* tablet: phone-style, content held to a readable column */
@@ -170,7 +160,6 @@
   #pkh2#pkh2 .h2-s1 h1{font-size:3rem!important;top:32px}
   #pkh2#pkh2 .h2-sec{font-size:2.25rem!important}
   #pkh2 .h2-em{width:44px;height:44px}
-  .pkh2 .h2-hood-c>img{display:block}.pkh2 .h2-hood-t{display:grid;gap:0}.pkh2 .h2-hood-k{display:block}.pkh2 .h2-s3sub{font-size:var(--t-lg)}
   .pkh2 .h2-s4{justify-content:flex-start}.pkh2 .h2-s4ph{max-width:none;width:auto;align-self:stretch;margin:calc(-1 * var(--tl) - 24px) 0 0;padding-top:var(--tl)}
   .pkh2 .h2-stub{padding:24px}
 }
@@ -189,13 +178,7 @@
   #pkh2#pkh2 .h2-s1 h1{position:static!important;text-shadow:none;font-size:2.375rem!important;grid-column:1;grid-row:2;padding:0 48px 0 max(var(--gutter),calc((100vw - 1160px)/2))!important}
   #pkh2#pkh2 .h2-lead{font-size:1.375rem}
   .pkh2 .h2-band{max-width:460px}#pkh2#pkh2 .h2-band-d{font-size:1.75rem!important}
-  .pkh2 .h2-s3{grid-template-columns:7fr 5fr}
-  .pkh2 .h2-s3l{grid-column:2;display:grid;gap:22px;align-content:center}
-  .pkh2 .h2-hood{grid-column:1;grid-row:1}
-  .pkh2 .h2-hood-ph{aspect-ratio:4/3;max-height:calc(var(--scr) - 200px)}
-  .pkh2 .h2-hood-c>img{display:block;width:56px;height:56px}#pkh2#pkh2 .h2-hood-n{font-size:1.75rem!important}
   #pkh2 .h2-em{width:40px;height:40px}
-  .pkh2 .h2-hood-t{display:grid;gap:2px}.pkh2 .h2-hood-k,.pkh2 .h2-hood-tag{display:block}.pkh2 .h2-s3sub{font-size:var(--t-lg)}
   .pkh2 .h2-s4{padding:0;display:flex;align-items:center;justify-content:center;gap:0}
   .pkh2 .h2-s4ph{position:absolute;inset:0;margin:0;min-height:0}
   #pkh2#pkh2 .h2-s4ph h2{display:none}
@@ -224,11 +207,10 @@
   .pkh2 .h2-s4 .h2-s4ph{margin-left:calc(-1 * var(--gutter));margin-right:calc(-1 * var(--gutter));width:auto;align-self:stretch}
 }
 /* phone: a slightly wider neighborhood photo keeps screen 3 inside one screen with the test bar open */
-@media (max-width:599px){.pkh2 .h2-hood-ph{aspect-ratio:2.35/1}.pkh2 .h2-s3{gap:6px}#pkh2#pkh2 .h2-city-k{margin-top:0}}
+@media (max-width:599px){.pkh2 .h2-s3{gap:6px}#pkh2#pkh2 .h2-city-k{margin-top:0}}
 
 /* phone and tablet (QA M2): the fit set by fitPh() in home2.js; the neighborhood photo takes the height left. */
 @media (max-width:1199px){
-  #pkh2[style*="--h2-hp"] .h2-s3 .h2-hood-ph{height:var(--h2-hp);aspect-ratio:auto}
 }
 
 /* Round 3 E1-E3 (Nov 12): the Home blend. hero, Before they were big (.h2-s5), neighborhoods (.h2-s3), everyone who broke out (.h2-s6), tickets (.h2-s4).
@@ -281,13 +263,8 @@
 }
 /* a tablet held sideways (1000-1199 wide, landscape) is short: the neighborhoods and Before they were big take the desktop's two columns, so each fits its screen */
 @media (min-width:1000px) and (max-width:1199px) and (orientation:landscape){
-  .pkh2 .h2-s.h2-s3,.pkh2 .h2-s.h2-s5{display:grid;align-items:center;gap:0 40px;padding:calc(var(--tl) + 16px) 32px 16px}
-  .pkh2 .h2-s.h2-s3>*,.pkh2 .h2-s.h2-s5>*{max-width:none}
-  .pkh2 .h2-s3{grid-template-columns:7fr 5fr}
-  .pkh2 .h2-s3l{grid-column:2;display:grid;gap:16px;align-content:center}
-  .pkh2 .h2-hood{grid-column:1;grid-row:1;align-self:center}
-  #pkh2#pkh2 .h2-s3 .h2-hood-ph{height:auto;aspect-ratio:4/3;max-height:calc(var(--scr) - var(--tl) - 120px)}
-  .pkh2 .h2-s3head,.pkh2 .h2-city,.pkh2 .h2-s3 .h2-row{width:auto}
+  .pkh2 .h2-s.h2-s5{display:grid;align-items:center;gap:0 40px;padding:calc(var(--tl) + 16px) 32px 16px}
+  .pkh2 .h2-s.h2-s5>*{max-width:none}
   .pkh2 .h2-s5{grid-template-columns:5fr 7fr;grid-template-rows:1fr auto auto 1fr}
   .pkh2 .h2-s5head{grid-column:1;grid-row:2;display:grid;gap:12px;width:auto}
   .pkh2 .h2-s5row{grid-column:1;grid-row:3;margin-top:20px;width:auto}
@@ -365,3 +342,63 @@
 @media (min-width:600px){#pkh2 .h2-row>.h2-pill,#pkh2 .h2-s6cta>.h2-pill{flex:0 1 236px}}
 #pkh2 .h2-s3 .h2-row>.h2-pill{flex:0 1 auto;padding:0 1.25rem}
 @media (min-width:1200px){.pkh2 .h2-s.h2-s6{align-items:stretch}.pkh2 .h2-s6row{flex-wrap:nowrap}}
+
+/* 3 PLACE, Round 3.5 hybrid (neighborhood panel, Nov 11): photo that says what the place is + a still farm map that shows where it is + the emblem picker.
+   Phone and portrait tablet: heading, photo and map side by side, emblems, one button. Desktop and landscape tablet: photo, map, emblem column. */
+.pkh2 .h2-s.h2-s3{display:flex;flex-direction:column;gap:8px}
+.pkh2 .h2-hmv{display:flex;gap:6px;height:var(--h2-hp,clamp(150px,30svh,300px));min-height:0;flex:none}
+.pkh2 .h2-hood{position:relative;display:block;flex:1 1 auto;min-width:0;height:100%;padding:0;margin:0;border:0;background:#1c191a;overflow:hidden;cursor:pointer;text-align:left;color:var(--cream)}
+.pkh2 .h2-hood .h2-hp{position:absolute;inset:0;width:100%;height:100%;max-width:none;object-fit:cover;opacity:0;transition:opacity 1s ease-in-out}
+.pkh2 .h2-hood .h2-hp.is-on{opacity:1}
+.pkh2 .h2-hood::after{content:"";position:absolute;inset:auto 0 0 0;height:62%;background:linear-gradient(rgba(20,16,18,0),rgba(20,16,18,.86));pointer-events:none}
+.pkh2 .h2-hood-o{position:absolute;z-index:2;left:12px;right:12px;bottom:10px;display:grid;gap:2px}
+.pkh2 .h2-hood-k{font-size:.75rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--cream-dim);line-height:1.2}
+#pkh2#pkh2 .h2-hood-n{font-size:1.375rem!important;line-height:1.02!important;color:var(--cream)}
+.pkh2 .h2-hood-tag{font-size:.9375rem;font-weight:700;color:var(--gold);line-height:1.2}
+.pkh2 .h2-hood-go{position:absolute;z-index:2;top:8px;right:8px;width:36px;height:36px;display:grid;place-items:center;border-radius:6px;border:1.5px solid rgba(242,237,227,.6);background:rgba(20,16,18,.45);color:var(--cream)}
+.pkh2 .h2-hood-go span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.pkh2 .h2-hood-go svg{width:18px;height:18px;fill:currentColor}
+.pkh2 .h2-hmap{position:relative;flex:0 0 clamp(80px,27%,150px);height:100%;padding:0;margin:0;border:0;background:#1c191a;overflow:hidden;cursor:pointer}
+.pkh2 .h2-msvg{display:block;width:100%;height:100%}
+.pkh2 .h2-mt path{fill-opacity:.4;stroke:none}
+.pkh2 .h2-mt .k-stage{fill:#F2CF62}.pkh2 .h2-mt .k-around{fill:#F0896B}.pkh2 .h2-mt .k-camp{fill:#7FB6E6}
+.pkh2 .h2-msel{fill:rgba(242,207,98,.32);stroke:#F2CF62;stroke-linejoin:round}
+.pkh2 .h2-mhalo{fill:none;stroke:rgba(242,207,98,.38);stroke-linejoin:round}
+.pkh2 .h2-dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:7px;vertical-align:.08em;background:#F2CF62}
+.pkh2 .h2-city-k[data-g=around] .h2-dot{background:#F0896B}.pkh2 .h2-city-k[data-g=camp] .h2-dot{background:#7FB6E6}
+.pkh2 .h2-s3row{flex:none}
+@media (prefers-reduced-motion:reduce){.pkh2 .h2-hood .h2-hp{transition:none}}
+@media (max-width:599px) and (max-height:720px){.pkh2 .h2-s3sub{display:none}}   /* the panel's fit rule: short phones drop the intro line */
+@media (min-width:600px) and (max-width:1199px){.pkh2 .h2-s.h2-s3{justify-content:flex-start}.pkh2 .h2-hmv{height:var(--h2-hp,clamp(220px,32svh,380px))}#pkh2#pkh2 .h2-hood-n{font-size:1.75rem!important}}
+/* desktop and the tablet held sideways: photo | map | emblems, the button at the foot of the emblem column */
+@media (min-width:1200px),(min-width:1000px) and (orientation:landscape){
+  .pkh2 .h2-s.h2-s3{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,2.3fr) minmax(0,3.3fr);grid-template-rows:auto minmax(0,1fr) auto;gap:20px 24px;align-items:stretch;height:var(--scr);padding-top:calc(var(--tl) + 28px);padding-bottom:28px}
+  .pkh2 .h2-s.h2-s3>*{max-width:none;width:auto}
+  .pkh2 .h2-s3head{grid-column:1/-1;grid-row:1;display:flex;align-items:baseline;gap:8px 24px;flex-wrap:wrap}
+  .pkh2 .h2-hmv{display:contents}
+  .pkh2 .h2-hood{grid-column:1;grid-row:2/4;height:auto}
+  .pkh2 .h2-hmap{grid-column:2;grid-row:2/4;height:auto}
+  .pkh2 .h2-city{grid-column:3;grid-row:2;align-self:start;gap:6px}
+  .pkh2 .h2-s3row{grid-column:3;grid-row:3;align-self:end}
+  .pkh2 .h2-hood-o{left:22px;right:22px;bottom:20px;gap:4px}
+  #pkh2#pkh2 .h2-hood-n{font-size:2rem!important}.pkh2 .h2-hood-tag{font-size:1.125rem}.pkh2 .h2-hood-k{font-size:.8125rem}
+  .pkh2 .h2-hood-go{top:auto;bottom:20px;right:22px;width:auto;height:auto;border:0;background:none;display:inline-flex;align-items:center;gap:4px;font-weight:800;font-size:.9375rem}
+  .pkh2 .h2-hood-go span{position:static;width:auto;height:auto;clip:auto}
+  .pkh2 .h2-city-k[data-g=stage]+.h2-city-r{max-width:none}
+  #pkh2#pkh2 .h2-city-k{margin-top:8px}
+}
+@media (min-width:1000px) and (max-width:1199px) and (orientation:landscape){.pkh2 .h2-s.h2-s3{padding-left:32px;padding-right:32px;gap:14px 18px}#pkh2#pkh2 .h2-hood-n{font-size:1.625rem!important}}
+/* small phones (under 380 wide): the hero photo gives up height first, and the dates never break mid-range */
+#pkh2#pkh2 .h2-band-d{white-space:nowrap}
+@media (max-width:379px){.pkh2 .h2-s1ph{min-height:200px}#pkh2#pkh2 .h2-band-d{font-size:1.125rem!important}.pkh2 .h2-band-m{padding:8px 10px}.pkh2 .h2-band-p{padding:6px 8px}.pkh2 .h2-band-p small{font-size:.75rem}.pkh2 .h2-band-p b{font-size:1.375rem}}
+/* phone: the hybrid needs the room for its photo and map; the heading sets on two lines and the picker packs tighter */
+@media (max-width:599px){
+  #pkh2#pkh2 .h2-s3 .h2-sec{font-size:1.625rem!important}
+  .pkh2 .h2-s3 .h2-city{gap:2px}
+  .pkh2 .h2-s3 .h2-city-r{row-gap:4px}
+  .pkh2 .h2-s3 .h2-city-k[data-g=stage]+.h2-city-r{max-width:none}
+  .pkh2 .h2-s.h2-s3{gap:8px}
+}
+@media (max-width:599px) and (max-height:760px){.pkh2 .h2-s3sub{display:none}}
+@media (max-width:379px){#pkh2#pkh2 .h2-s3 .h2-sec{font-size:1.375rem!important}.pkh2 .h2-s3 .h2-city-r{column-gap:2px}#pkh2#pkh2 .h2-s3 .h2-city-k{font-size:.75rem}}
+@media (max-width:379px){.pkh2 .h2-s4ph{min-height:96px}.pkh2 .h2-s4{gap:10px}}

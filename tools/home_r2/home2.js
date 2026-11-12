@@ -162,16 +162,19 @@ window.pkClimbRank = function (C, dd) {
       '<div class="h2-faces" data-h2="faces"></div><div class="h2-wall" data-h2="wall" aria-hidden="true"></div>' +
       '<div class="h2-row h2-s6row"><button type="button" class="h2-pill" data-h2="alldisc" data-h2n="wall">See them all</button><span class="h2-s6cta" data-h2="cta6"></span></div></section>';
     var hPoster = h; h = '';
-    /* 3 PLACE (Round 3 E3): the emblems are the picker; one button, Explore all neighborhoods */
-    h += '<section class="h2-s h2-s3" aria-labelledby="h2-h3">' +
-      '<button type="button" class="h2-hood" data-h2="hood"><img class="h2-hood-ph" data-h2="hph" alt="" loading="lazy" decoding="async"><span class="h2-hood-c"><img data-h2="hem" alt="" width="44" height="44" loading="lazy"><span class="h2-hood-t"><span class="h2-d h2-hood-n pkp-head" data-h2="hn"></span><span class="h2-hood-k" data-h2="hk"></span><span class="h2-hood-tag" data-h2="htag"></span></span><span class="h2-hood-go">Explore →</span></span></button>' +
-      '<div class="h2-s3l"><div class="h2-s3head"><h2 class="h2-d h2-sec pkp-head" id="h2-h3">Live inside a temporary city of wonder</h2><p class="h2-sub h2-s3sub">' + (ids.length === 20 ? 'Twenty' : ids.length) + ' neighborhoods, built by hand for one weekend. Pick one and step inside.</p></div>' +
+    /* 3 PLACE (Round 3.5 hybrid, neighborhood panel Nov 11): the emblems are the picker; the photo says what the place is (kind, name, its title in gold)
+       and cycles its preview set; a still farm map shows where it is (tints by kind, the picked outline in gold with its emblem). Photo or map opens Places. */
+    h += '<section class="h2-s h2-s3" aria-labelledby="h2-h3"><div class="h2-s3head"><h2 class="h2-d h2-sec pkp-head" id="h2-h3">Live inside a temporary city of wonder</h2><p class="h2-sub h2-s3sub">' + (ids.length === 20 ? 'Twenty' : ids.length) + ' neighborhoods, built by hand for one weekend. Pick one and step inside.</p></div>' +
+      '<div class="h2-hmv"><button type="button" class="h2-hood" data-h2="hood"><img class="h2-hp is-on" alt="" decoding="async"><img class="h2-hp" alt="" decoding="async" aria-hidden="true">' +
+      '<span class="h2-hood-o"><span class="h2-hood-k" data-h2="hk"></span><span class="h2-d h2-hood-n pkp-head" data-h2="hn"></span><span class="h2-hood-tag" data-h2="htag"></span></span>' +
+      '<span class="h2-hood-go" aria-hidden="true"><span>Explore</span>' + CHEV + '</span></button>' +
+      '<button type="button" class="h2-hmap" data-h2="hmap">' + mapSVG(d) + '</button></div>' +
       '<div class="h2-city" role="group" aria-label="Pick a neighborhood">' + GROUPS.map(function (g) {
         var L = ids.filter(function (i) { return d.hoods[i].k === g[0]; });
-        return '<p class="h2-city-k" data-g="' + g[0] + '">' + cnt(g[0]) + ' ' + g[1] + ' neighborhoods</p><div class="h2-city-r">' + L.map(function (i) {
+        return '<p class="h2-city-k" data-g="' + g[0] + '"><i class="h2-dot" aria-hidden="true"></i>' + cnt(g[0]) + ' ' + g[1] + ' neighborhoods</p><div class="h2-city-r">' + L.map(function (i) {
           var H = d.hoods[i]; return '<button type="button" class="h2-em" data-h="' + i + '" aria-pressed="false" aria-label="' + esc(H.n) + '" title="' + esc(H.n) + '"><img src="' + esc(H.icw || ('ic2/' + i + '.png')) + '" alt="" width="44" height="44" loading="lazy"></button>'; }).join('') + '</div>';
       }).join('') + '</div>' +
-      '<div class="h2-row"><button type="button" class="h2-pill" data-h2="allhoods">Explore all neighborhoods</button></div></div></section>';
+      '<div class="h2-row h2-s3row"><button type="button" class="h2-pill" data-h2="allhoods">Explore all neighborhoods</button></div></section>';
     var hPlace = h; h = '';
     /* 4 ACT */
     h += '<section class="h2-s h2-s4" aria-labelledby="h2-h4"><div class="h2-s4ph" data-slot="home.act"><img src="' + ACT + '" alt="" width="1600" height="1067" loading="lazy" decoding="async"><h2 class="h2-d h2-sec pkp-head" id="h2-h4">Four days in the woods. Come.</h2></div>' +
@@ -201,16 +204,52 @@ window.pkClimbRank = function (C, dd) {
     if (c6) c6.innerHTML = ctaHTML(t, false);
     $$('[data-h2="from"]', root).forEach(function (e) { e.textContent = t ? t.from : ''; });
   }
+  /* the still farm map: farmmap/home-map.webp under the outlines from farmmap/index.html (make_hoods.py). One SVG; the picked outline and pin move. */
+  var HH = /*@HOODS_HOME*/null;
+  function mapSVG(d) {
+    if (!HH) return '';
+    var W = HH.size[0], H = HH.size[1];
+    return '<svg class="h2-msvg" viewBox="0 0 ' + W + ' ' + H + '" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><image href="farmmap/home-map.webp" x="0" y="0" width="' + W + '" height="' + H + '"/>' +
+      '<g class="h2-mt">' + Object.keys(HH.shapes).map(function (k) { var o = d.hoods[k]; return o ? '<path class="k-' + esc(o.k) + '" d="' + HH.shapes[k] + '"/>' : ''; }).join('') + '</g>' +
+      '<path class="h2-mhalo" d=""/><path class="h2-msel" d=""/><image class="h2-mpin" href="" width="1" height="1"/></svg>';
+  }
+  function mapPick(k) {
+    var sv = root && $('.h2-msvg', root); if (!sv || !HH) return;
+    var W = HH.size[0], H = HH.size[1], p = HH.pts[k] || [50, 50], px = p[0] / 100 * W, py = p[1] / 100 * H;
+    var bw = sv.clientWidth || 1, bh = sv.clientHeight || 1, vw = W, vh = H, x0 = 0, y0 = 0;
+    if (bw / bh < W / H) { vw = H * bw / bh; x0 = Math.max(0, Math.min(W - vw, px - vw / 2)); } else { vh = W * bh / bw; y0 = Math.max(0, Math.min(H - vh, py - vh / 2)); }
+    sv.setAttribute('viewBox', [x0, y0, vw, vh].map(function (n) { return Math.round(n); }).join(' '));
+    var sc = bw / vw, pin = Math.max(26, Math.min(40, bw * 0.24)) / sc;   /* about 30px on screen whatever the box */
+    var sel = $('.h2-msel', sv), hal = $('.h2-mhalo', sv); sel.setAttribute('d', HH.shapes[k] || ''); sel.style.strokeWidth = (2.5 / sc).toFixed(1); hal.setAttribute('d', HH.shapes[k] || ''); hal.style.strokeWidth = (10 / sc).toFixed(1);
+    var o = (D.hoods[k] || {}), im = $('.h2-mpin', sv); im.setAttribute('href', o.icw || ('ic2/' + k + '.png')); im.setAttribute('width', pin); im.setAttribute('height', pin); im.setAttribute('x', px - pin / 2); im.setAttribute('y', py - pin / 2);
+  }
+  /* the photo: the photo director's preview set for the place (lead first), cycling every 4 s while the section is on screen; still with reduced motion */
+  var hpI = 0, hpT = null;
+  function hoodSet(k) { var L = (HH && HH.prev && HH.prev[k]) || []; if (!L.length) { var im = hoodImg(D, k), o = D.hoods[k] || {}; if (im) L = [{ i: im, p: (im === o.i && o.p) ? o.p[0] + '% ' + o.p[1] + '%' : '' }]; } return L; }
+  function hoodShow(k, n, fade) {
+    var L = hoodSet(k); if (!L.length || !root) return; var x = L[n % L.length], I = $$('.h2-hp', root); if (I.length < 2) return;
+    var on = I[0].classList.contains('is-on') ? 0 : 1, nx = fade ? 1 - on : on, el = I[nx], phone = window.innerWidth < 600;
+    var go = function () { el.style.objectPosition = (phone || window.innerWidth < 1200) && x.p ? x.p : ''; if (fade) { I[on].classList.remove('is-on'); el.classList.add('is-on'); } };
+    el.alt = (D.hoods[k] || {}).n ? D.hoods[k].n + ' at Pickathon' : '';
+    if (el.getAttribute('src') === x.i) go(); else { el.onload = function () { el.onload = null; if (cur === k) go(); }; el.src = x.i; }
+    var nxt = L[(n + 1) % L.length]; if (nxt && L.length > 1) { var pre = new Image(); pre.src = nxt.i; }
+  }
+  function hoodTick() {
+    if (!root || !cur || reduced() || document.hidden) return; var s3 = $('.h2-s3', root); if (!s3) return;
+    var r = s3.getBoundingClientRect(), vh = window.innerHeight; if (r.bottom < vh * 0.4 || r.top > vh * 0.6) return;   /* only while the section is the one on screen */
+    if (hoodSet(cur).length < 2) return; hpI++; hoodShow(cur, hpI, true);
+  }
   function hood(k) {
-    var d = D, H = d && d.hoods[k]; if (!H) return; cur = k;
-    var im = hoodImg(d, k), ph = $('[data-h2="hph"]', root);
-    ph.src = im; ph.alt = H.n + ' at Pickathon'; ph.setAttribute('data-slot', 'home.place.' + k);
-    ph.style.objectPosition = (im === H.i && H.p) ? H.p[0] + '% ' + H.p[1] + '%' : '';
-    $('[data-h2="hem"]', root).src = H.icw || ('ic2/' + k + '.png');
+    var d = D, H = d && d.hoods[k]; if (!H) return; cur = k; hpI = 0;
+    hoodShow(k, 0, false);
+    $('[data-h2="hood"]', root).setAttribute('data-slot', 'home.place.' + k);
     $('[data-h2="hn"]', root).textContent = H.n; $('[data-h2="hk"]', root).textContent = KIND[H.k]; $('[data-h2="htag"]', root).textContent = H.t || '';
-    $('[data-h2="hood"]', root).setAttribute('aria-label', H.n + ', ' + KIND[H.k] + '. Explore it on the map');
+    $('[data-h2="hood"]', root).setAttribute('aria-label', H.n + ', ' + KIND[H.k] + (H.t ? ', ' + H.t : '') + '. Explore it on the map');
+    var mb = $('[data-h2="hmap"]', root); if (mb) mb.setAttribute('aria-label', 'Where ' + H.n + ' is on the farm. Open the map');
     $$('.h2-em', root).forEach(function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-h') === k ? 'true' : 'false'); });
     $$('.h2-city-k', root).forEach(function (p) { p.classList.toggle('is-on', p.getAttribute('data-g') === H.k); });
+    mapPick(k);
+    if (!hpT) hpT = setInterval(hoodTick, 4000);
   }
   /* ---------- 2. Before they were big: Discoveries only (archCT k = disc, one card per artist at that first year), ranked by pkRankCmp
      (magnitude_dec first). Cards need a photo and a fact line. The acts on the poster's opening year step aside, so the two band sections never show the same act. ---------- */
@@ -323,6 +362,7 @@ window.pkClimbRank = function (C, dd) {
     var v = Math.round(scr) + 'px|' + tl + 'px';
     if (root._v !== v || !root.style.getPropertyValue('--scr')) {   /* the renderer resets the island's own attributes on every render */ root._v = v; root.style.setProperty('--scr', Math.round(scr) + 'px'); root.style.setProperty('--tl', tl + 'px'); }
     if (desk) root.style.removeProperty('--h2-hp'); else fitPh(scr);
+    if (cur) mapPick(cur);   /* the map box changed size: re-frame the pin */
     try { drawWall(); } catch (e) {}   /* three photos or six follows the width */
   }
   /* phone and tablet (QA M2, Nov 11): screens 2 and 3 must fit one screen under the ticket line. Clear the fit, measure the natural height,
@@ -332,7 +372,7 @@ window.pkClimbRank = function (C, dd) {
     var r = root.style; r.removeProperty('--h2-hp');
     var s5 = $('.h2-s5', root), bp = s5 && $('.h2-bc-ph', s5);
     if (bp) { r.removeProperty('--h2-bp'); var BH = bp.offsetHeight, o5 = s5.scrollHeight - scr; if (BH && o5 > 0) r.setProperty('--h2-bp', Math.max(96, BH - o5 - 2) + 'px'); }
-    var s3 = $('.h2-s3', root), ph = s3 && $('.h2-hood-ph', s3);
+    var s3 = $('.h2-s3', root), ph = s3 && $('.h2-hmv', s3);
     if (ph) { var H = ph.offsetHeight, o3 = s3.scrollHeight - scr; if (H && o3 > 0) r.setProperty('--h2-hp', Math.max(72, H - o3 - 2) + 'px'); }
   }
   function watchS1() {
@@ -363,7 +403,7 @@ window.pkClimbRank = function (C, dd) {
     if (a === 'alldisc') { toArchive(null); return; }
     if (a === 'barch') { var sa = $('.h2-s5', root); toArchive(sa && sa._a ? sa._a.n : null); return; }
     if (a === 'bph') { var sb = $('.h2-s5', root), ba = sb && sb._a; if (!ba) return; if (!ba.vu) { toArchive(ba.n); return; } try { if (/open\.spotify\.com/.test(ba.vu) && window.__pkOpenMusic) { window.__pkOpenMusic(ba.vu); return; } if (window.__pkPlayVid) window.__pkPlayVid(ba.vu, ba.n + ' · Pickathon ' + ba.y); } catch (x) {} return; }
-    if (a === 'hood') { if (window.__pkMapH) window.__pkMapH(cur)(); else go('hoods'); return; }
+    if (a === 'hood' || a === 'hmap') { if (window.__pkMapH) window.__pkMapH(cur)(); else go('hoods'); return; }
     if (a === 'allhoods') { if (window.__pkGoFarm) window.__pkGoFarm(); else go('hoods'); return; }
     if (a === 'plan') { go('info'); return; }
     if (a === 'face') { toArchive(b.getAttribute('data-n')); return; }
