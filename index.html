@@ -6888,7 +6888,7 @@ window.__pkMapH = mapH; window.__pkGoFarm = goFarm;   // pk-home2: the Home neig
       })();
     }
     if (R === 'about') {
-      var AB = d.about || { chapters: [], press: [] }; var SH = { start: 'How it started', discovery: 'Discovery', legends: 'Legends', film: 'On film', arch: 'Architecture', green: 'Sustainability' };
+      var AB = d.about || { chapters: [], press: [] }; var SH = { before: '1999-2005', home: '2006-2019', again: '2020-2023', last: '2024-now', start: 'How it started', discovery: 'Discovery', legends: 'Legends', film: 'On film', arch: 'Architecture', green: 'Sustainability' };
       out.about = { chapters: AB.chapters.map(function (c) { return { id: c.id, short: SH[c.id] || c.id, h: c.h, paras: c.x.map(function (t) { return { t: t }; }), hasCta: !!c.cta, cta: c.cta ? c.cta[0] : '', go: c.cta ? secNav(c.cta[1]) : function () {} }; }), press: AB.press, h2size: phone ? '28px' : '40px' };
     }
 
