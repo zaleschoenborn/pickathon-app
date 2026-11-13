@@ -16,3 +16,35 @@ Supersedes "open on the printed poster, then collapse to the top 10" from the No
 ## Play again transition (Zale, Nov 12)
 - Nothing abrupt. Tapping "Play again" cross-fades the current top 10 into the opening "Then" top 10 (about 0.6 s), holds one second, then runs. No reverse glide.
 - Reduced motion: cross-fade only, ending on the final order; no run.
+
+## Update, Nov 12 evening (Zale's rulings, built on branch home-poster-frame, not deployed)
+
+Where this differs from the notes above, this section wins.
+
+### Motion, timeline and note
+- Only 2024 moves (the only year with real six-month scores). Other years show today's top 10, still, until all-years six-month data exists (design_studio-59). No interpolation, no invented rises.
+- Top 10 per six-month window. Ties are broken by today's order.
+- A timeline sits at the top of the paper: "As printed 2024" on the left, "Today" at the right, a fill and a dot that move. Still years show "Today's top 10".
+- Buttons under the poster: "Explore YYYY" and "Another year". No dates, location line or ribbon on the poster.
+- Play again lives at the right end of the timeline row. Its words follow the state: "Restart" while running, "Play again" at the end. Restart cross-fades (0.6 s) to the opening top 10.
+- The note ("Geese: 10th on the 2024 poster. #1 today.") shows once the run lands on today. On phone and tablet it sits at the bottom of the paper. On desktop it moves to the left column under the photo.
+
+### Type size follows the score
+- Each name's size is its own score at that moment (printed, each six-month window, today), blended smoothly across the run. A small band stays small until it climbs.
+- At every moment the name on top is the biggest type and no name is bigger than the one above it. The rest are scaled by (score / top score) squared, so the top is clearly the biggest. The stack is stretched to fill the card at the start and at the end.
+- Floors: 12 px phone, 14 px desktop (a leading "THE" is 9 px minimum). Each name is also capped to fit the column.
+- Printed order stays as printed at the start. Today's order is by magnitude (minus 1 for Deep cuts only).
+
+### Logo
+- The stag logo fills the left of the paper: 37% of the paper width on phone and tablet (44% was too wide: names wrapped and shrank), about 410 px wide on desktop, running the full height of the name list. Logo on top was rejected (it would take about 150 px from a fixed-height stack).
+
+### Desktop left column (1200 px and up, and sideways tablet draws the phone poster)
+- Title, then a same-year photo, then the buttons. The photo starts on the printed headliner (Courtney Barnett, caption "Headlining the 2024 poster: Courtney Barnett"), then cross-fades slowly to the climber's photo as the climber passes the headliner on the poster, with the caption swapping in two halves. Geese uses the Woods photo i/y24g1-geese.jpg (whole band, crowd in front).
+- Only shown for years where both photos exist (same year, no promo shots). Other years keep the old layout.
+- Both photos go through the subject-crop rule.
+
+### Open
+- Desktop poster is small (667x430 at 1440x900) with empty space below; enlarge.
+- Headliner/climber photo pairs for the other years.
+- Sideways tablet and 360 phone are tight: the smallest names render about 7 to 9 px after scaling.
+- Notes naming the climber for other years (Geese vs This Is Lorelei is settled for 2024: Geese).
