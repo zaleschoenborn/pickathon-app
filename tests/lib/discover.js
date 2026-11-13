@@ -44,7 +44,7 @@ exports.discover = async (browser, base, log) => {
     const ctx = await browser.newContext({ viewport: vp, isMobile: phone, hasTouch: phone, serviceWorkers: 'block' });
     await ctx.addInitScript({ content: '(' + IP.initScript + ')("tab")' });
     await FONTS.route(ctx);
-    const page = await ctx.newPage(); await page.goto(base, { waitUntil: 'load' }); await page.waitForTimeout(1500);
+    const page = await ctx.newPage(); await page.goto(base, { waitUntil: 'domcontentloaded', timeout: 60000 }); await page.waitForFunction(() => !!window.__app, null, { timeout: 60000 }).catch(() => {}); await page.waitForTimeout(1500);
     await page.evaluate(IP.hook); await page.evaluate(() => window.__app && window.__app.setState({}));
     for (const s of await clickRecord(page, phone)) {
       if (s.r === 'home' || s.r === 'map') add({ kind: 'view', r: s.r === 'map' ? 'home' : 'home', p: {} });
