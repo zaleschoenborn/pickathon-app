@@ -2600,7 +2600,7 @@ html.pk-cy-in div:has(> button[aria-label="Listen to Pickathon"]){opacity:0!impo
         var vs = cast.map(function (x, i) { return i; }).filter(function (i) { return POS[j][i] < LN; }).sort(function (a, b) { return POS[j][a] - POS[j][b]; });
         var hh = function (i, f) { var o = SH[i]; return f * (o.L.length === 1 ? LH : o.lead ? LH * 1.55 + 0.04 : LH * 2 + 0.04); }, gp = function (f) { return Math.max(Q.GAP, 0.3 * f); };
         var tk = cast[vs[0]][2][k];   /* Zale, Nov 12: at every moment the biggest name there is the biggest type and fills the card; the rest are sized by score relative to it */
-        var fzAt = function (sc) { var run = 1e9; return vs.map(function (i) { var f = Math.max(Q.ph ? 12 : 14, Math.min(sc * Math.min(1, cast[i][2][k] / tk), WF[i], run)); run = f; return f; }); };   /* Zale, Nov 12: the name on top is always the biggest type and sizes never grow going down the list; the rest are scaled by score relative to the top */
+        var fzAt = function (sc) { var run = 1e9; return vs.map(function (i) { var f = Math.max(Q.ph ? 12 : 14, Math.min(sc * Math.pow(Math.min(1, cast[i][2][k] / tk), 2), WF[i], run)); run = f; return f; }); };   /* Zale, Nov 12: the name on top is always the biggest type and sizes never grow going down the list; the rest are scaled by score relative to the top */
         var hAt = function (fa) { var t = 0; vs.forEach(function (i, q) { t += hh(i, fa[q]) + (q < vs.length - 1 ? gp(fa[q]) : 0); }); return t; };
         var lo = 8, hi = 400, avH = S[9].y + S[9].h - S[0].y; for (var it = 0; it < 24; it++) { var md = (lo + hi) / 2; if (hAt(fzAt(md)) > avH) hi = md; else lo = md; }
         var fz = fzAt(lo);
