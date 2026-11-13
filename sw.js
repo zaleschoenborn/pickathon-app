@@ -19,7 +19,8 @@ self.addEventListener('fetch',e=>{const r=e.request;if(r.method!=='GET')return;c
   return net.catch(()=>new Response('',{status:504}))})));return}
  /* Rule: anything that changes (pages, data, the map page) always comes from the network when online; the saved copy is only for offline. Big files that never change (map tiles, photos, fonts) come from the cache. */
  const fresh=r.mode==='navigate'||/(\.html|data\.json|manifest\.json)$/.test(u.pathname)||u.pathname.endsWith('/');
- if(fresh){const net=fetch(r,{cache:'reload'}).then(x=>{const c=x.clone();e.waitUntil(caches.open(V).then(h=>h.put(r,c)));return x});e.respondWith(caches.match(r).then(m=>{if(!m)return net.catch(()=>caches.match('index.html'));return net.then(x=>x.ok?x:m).catch(()=>m)}));return}
+ /* Nov 13 (Zale): show the saved copy at once and check for a newer one in the background; the next visit gets the new version. First load after the install is the saved copy. Offline still falls back to the saved copy. */
+ if(fresh){const net=fetch(r,{cache:'reload'}).then(x=>{if(x.ok&&x.status===200){const c=x.clone();return caches.open(V).then(h=>h.put(r,c)).catch(()=>{}).then(()=>x)}return x});e.waitUntil(net.catch(()=>{}));e.respondWith(caches.match(r).then(m=>m||net.catch(()=>caches.match('index.html'))));return}
  const media=/pack[\w-]*\.json$|ssindex|\/i\/|\/m\/|\/m\/|\/ss\/|\/fonts\//.test(u.pathname);
  /* QA M16 (Nov 11): emblems, photos and scripts were cache-first forever, so a phone kept a stale copy after the file was fixed.
     Each saved copy now carries the build it was saved under (x-pk-v). A copy from an older build is served at once (offline still works)
