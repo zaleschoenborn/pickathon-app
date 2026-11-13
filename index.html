@@ -12450,13 +12450,12 @@ html body:not(#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1) a.pk
   function pills() {
     document.querySelectorAll('.pk-hd-vid').forEach(function (v) {
       var a = v.querySelector('a.pk-hd-vi'), cs = v.querySelector('.pk-hd-cs'); if (!a) return;
-      pill(a, yr(cs && cs.textContent)); var p = a.querySelector('.pk-g1-pill'); if (p) p.classList.add('pk-g1-dk-hide');
+      /* Nov 13 (Zale, rulebook): the gold Watch pill is retired everywhere; no pill is added */
       if (getComputedStyle(a).position === 'static') a.style.position = 'relative';
     });
     document.querySelectorAll('.pk-yrp figure.pk-rs').forEach(function (f) {
       var c = f.querySelector('figcaption'), o = f.querySelector('.pk-rvo'); if (!c || !o) return;
       var y = yr(o.textContent); if (!y) return;
-      if (!c.querySelector(':scope > .pk-g1-pill')) { var p = document.createElement('span'); p.className = 'pk-g1-pill'; p.setAttribute('aria-hidden', 'true'); p.innerHTML = '<i>\u25B6\uFE0E</i>Watch from Pickathon ' + y; c.insertBefore(p, c.firstChild); }
       f.classList.toggle('pk-g1-capov', innerWidth <= 1024 && getComputedStyle(c).position === 'absolute');
     });
   }
