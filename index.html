@@ -2496,7 +2496,7 @@ html.pk-cy-in div:has(> button[aria-label="Listen to Pickathon"]){opacity:0!impo
       /* Six-month keyframes (Nov 10): the class table now dates each class step, so the bill is re-ranked at every point between the festival and today instead of jumping straight there. Movers glide when their class changed; the rest drift. */
       try { var YR = dd.yearRatings && dd.yearRatings[y]; if (clim && YR && YR.dates && YR.dates.length > 3) {
         /* Zale, Nov 12: every year runs the same motion, and the run always takes the same time: a long year is sampled to a few points. Each window's order is that window's own peak magnitude (minus 1 for Deep cuts); ties fall to today's order. The first frame is the printed bill, the last is today's peak-magnitude ranking. */
-        var DT = YR.dates, SMP = [0], MIDN = Math.min(5, DT.length - 2); for (var sq = 1; sq <= MIDN; sq++) SMP.push(Math.max(1, Math.min(DT.length - 2, Math.round(sq * (DT.length - 1) / (MIDN + 1)))));
+        var DT = YR.dates, SMP = [0], MIDN = Math.min(11, DT.length - 2); for (var sq = 1; sq <= MIDN; sq++) SMP.push(Math.max(1, Math.min(DT.length - 2, Math.round(sq * (DT.length - 1) / (MIDN + 1)))));
         SMP.push(DT.length - 1); SMP = SMP.filter(function (v, i) { return i === 0 || v !== SMP[i - 1]; });
         var ts = SMP.map(function (q) { return Date.parse(DT[q]); }), NN = ts.length - 1, ACT = {};
         (YR.acts || []).forEach(function (a) { ACT[nm(a.n)] = a; });
@@ -2570,8 +2570,9 @@ html.pk-cy-in div:has(> button[aria-label="Listen to Pickathon"]){opacity:0!impo
     var S = [], yy = Q.Y0; Q.LANES.forEach(function (L, r) { S.push({ x: Q.COLX, y: yy, w: Q.COLW, h: L[0], mx: L[1], ml: L[2], ink: r === 0 ? H : r % 2 ? A : B, head: r === 0 }); yy += L[0] + Q.GAP; });
     var ROW1 = S[9].y + S[9].h + Q.R1, ROWMAX = Math.round(IW * (Q.ph ? 0.88 : 0.8)), BOXH = ROW1 + Q.BOT;
     var opts = function (nm, s) { var wd = nm.split(' '), o = [{ L: [nm], lead: false }];
-      if (s.ml > 1) for (var i = 1; i < wd.length; i++) { var a = wd.slice(0, i).join(' '), b = wd.slice(i).join(' '); o.push({ L: [a, b], lead: false }); if (LEAD.indexOf(a) >= 0 && b.length > 3) o.push({ L: [a, b], lead: true }); } return o; };
-    var fitO = function (o, s) { var ws = o.L.map(function (t, i) { return tw(t) * (o.lead && i === 0 ? 0.55 : 1); }), hs = o.L.length === 1 ? LH : o.lead ? LH * 1.55 + 0.04 : LH * 2 + 0.04;
+      if (s.ml > 1) for (var i = 1; i < wd.length; i++) { var a = wd.slice(0, i).join(' '), b = wd.slice(i).join(' '); o.push({ L: [a, b], lead: false }); if (LEAD.indexOf(a) >= 0 && b.length > 3) o.push({ L: [a, b], lead: true }); }
+      if (s.ml > 2) for (var i3 = 1; i3 < wd.length - 1; i3++) for (var j3 = i3 + 1; j3 < wd.length; j3++) o.push({ L: [wd.slice(0, i3).join(' '), wd.slice(i3, j3).join(' '), wd.slice(j3).join(' ')], lead: false }); return o; };   /* Zale, Nov 12: a long name on top may wrap to three lines so it can still be the biggest type */
+    var fitO = function (o, s) { var ws = o.L.map(function (t, i) { return tw(t) * (o.lead && i === 0 ? 0.55 : 1); }), hs = o.L.length === 1 ? LH : o.lead ? LH * 1.55 + 0.04 : LH * o.L.length + 0.04;
       var fanR = s.head && !Q.ph ? Math.min(s.mx * 0.62, 90) * 0.81 + Math.max(8, s.mx * 0.12) + 4 : 0, mw0 = Math.max.apply(null, ws);
       return { f: Math.min(s.mx, (s.w - 2 * Math.max(fanR, s.head ? (Q.ph ? 6 : 46) : 0)) * (Q.ph ? 0.88 : 0.97) / mw0, s.h / hs), mw: mw0, L: o.L, lead: o.lead }; };
     var best = function (nm, s) { var b = null; opts(nm, s).forEach(function (o) { var r = fitO(o, s); if (!b || r.f > b.f + (o.lead ? -2 : 0.5) || (Math.abs(r.f - b.f) <= 0.5 && r.L.length === b.L.length && !r.lead && !b.lead && r.mw < b.mw)) b = r; }); return b; };
@@ -2583,7 +2584,7 @@ html.pk-cy-in div:has(> button[aria-label="Listen to Pickathon"]){opacity:0!impo
     var POS = KS.map(function (k, j) { var idx = cast.map(function (x, i) { return i; }).sort(function (a, b) { return V[a][j] - V[b][j] || cast[a][1][n - 1] - cast[b][1][n - 1] || cast[a][1][0] - cast[b][1][0]; }); var p = []; idx.forEach(function (i, r) { p[i] = r; }); return p; });
     // one shape per name for the whole run: its best fit at its biggest slot; a name that ever sits in the small print stays on one line
     var SCT = D.real ? Math.max.apply(null, cast.map(function (x) { return x[2][n - 1]; })) : 1;
-    var SH = cast.map(function (x, i) { if (D.real) { var b0 = best(x[0], { x: Q.COLX, w: Q.COLW, h: 1e5, mx: TOP * Math.max.apply(null, x[2]) / SCT, ml: 2, head: false }); return { L: b0.L, lead: b0.lead }; } var mn = Math.min.apply(null, POS.map(function (p) { return p[i]; })), small = POS.some(function (p) { return p[i] >= LN; });
+    var SH = cast.map(function (x, i) { if (D.real) { var b0 = best(x[0], { x: Q.COLX, w: Q.COLW, h: 1e5, mx: TOP * Math.max.apply(null, x[2]) / SCT, ml: 3, head: false }); return { L: b0.L, lead: b0.lead }; } var mn = Math.min.apply(null, POS.map(function (p) { return p[i]; })), small = POS.some(function (p) { return p[i] >= LN; });
       if (small || mn >= LN) return { L: [x[0]], lead: false }; var b = best(x[0], S[mn]); return { L: b.L, lead: b.lead }; });
     var WF = cast.map(function (x, i) { return D.real ? fitO(SH[i], { w: Q.COLW, h: 1e5, mx: 1e5, head: false }).f : 0; });
     // the small print: one size for the run, small enough that every step fits in two rows (the still posters keep their old cap)
@@ -2602,7 +2603,7 @@ html.pk-cy-in div:has(> button[aria-label="Listen to Pickathon"]){opacity:0!impo
     var LAY = KS.map(function (k, j) { var P = cast.map(function () { return null; }), R = rowsAt(j, sc);
       if (D.real) {   /* Zale, Nov 12: each name's type size is its own score at that moment (today's #1 = the biggest type); the stack is as tall as the sizes make it and sits centered in the frame */
         var vs = cast.map(function (x, i) { return i; }).filter(function (i) { return POS[j][i] < LN; }).sort(function (a, b) { return POS[j][a] - POS[j][b]; });
-        var hh = function (i, f) { var o = SH[i]; return f * (o.L.length === 1 ? LH : o.lead ? LH * 1.55 + 0.04 : LH * 2 + 0.04); }, gp = function (f) { return Math.max(Q.GAP, 0.3 * f); };
+        var hh = function (i, f) { var o = SH[i]; return f * (o.L.length === 1 ? LH : o.lead ? LH * 1.55 + 0.04 : LH * o.L.length + 0.04); }, gp = function (f) { return Math.max(Q.GAP, 0.3 * f); };
         var tk = cast[vs[0]][2][k];   /* Zale, Nov 12: at every moment the biggest name there is the biggest type and fills the card; the rest are sized by score relative to it */
         var fzAt = function (sc) { var run = 1e9; return vs.map(function (i) { var f = Math.max(Q.ph ? 12 : 14, Math.min(sc * Math.pow(Math.min(1, cast[i][2][k] / tk), 2), WF[i], run)); run = f; return f; }); };   /* Zale, Nov 12: the name on top is always the biggest type and sizes never grow going down the list; the rest are scaled by score relative to the top */
         var hAt = function (fa) { var t = 0; vs.forEach(function (i, q) { t += hh(i, fa[q]) + (q < vs.length - 1 ? gp(fa[q]) : 0); }); return t; };
@@ -2636,7 +2637,7 @@ html.pk-cy-in div:has(> button[aria-label="Listen to Pickathon"]){opacity:0!impo
     var lp = function (A0, A1, kk) { var lq = function (a, b) { var o = {}; for (var c in a) o[c] = a[c] + (b[c] - a[c]) * kk; return o; }; return { N: A0.N.map(function (a, i) { return lq(a, A1.N[i]); }), R: A0.R.map(function (a, i) { return lq(a, A1.R[i]); }) }; };
     var B0 = back && !PL.still ? PL.at(back.e0) : null, B1 = B0 ? PL.at(0) : null;
     var stAt = function (q) { return PL.still ? PL.END : B0 ? lp(B0, B1, q) : PL.at(q); }, par = B0 ? back.k : e, ST = stAt(par);
-    var dims = function (p, L, lead) { var w = Math.max.apply(null, L.map(function (t, i) { return tw(t) * (lead && i === 0 ? 0.55 : 1); })) * p.f, h = (L.length > 1 ? (lead ? 1.55 : 2) : 1) * LH * p.f; return { w: w, h: h, cx: p.x + (0.5 - p.k) * w, cy: p.y - h / 2 }; };
+    var dims = function (p, L, lead) { var w = Math.max.apply(null, L.map(function (t, i) { return tw(t) * (lead && i === 0 ? 0.55 : 1); })) * p.f, h = (L.length > 1 ? (lead ? 1.55 : L.length) : 1) * LH * p.f; return { w: w, h: h, cx: p.x + (0.5 - p.k) * w, cy: p.y - h / 2 }; };
     var items = PL.cast.map(function (x, i) { var p = ST.N[i]; return { x: x, p: p, sh: PL.SH[i], d: dims(p, PL.SH[i].L, PL.SH[i].lead), o: clamp01(p.vis), end: x[1][n - 1] }; });
     /* when two names pass, the one lower on today's bill steps back. Crossings can last two or three frames, so the step-back is spread over
        about half a second around each one (a tent-weighted look at nearby moments): it eases in and out instead of flashing. */
@@ -2688,11 +2689,11 @@ html.pk-cy-in div:has(> button[aria-label="Listen to Pickathon"]){opacity:0!impo
         post = nFits ? '<span aria-hidden="true" style="position:absolute;left:100%;top:' + (cyEm * p.f - nf * 0.5).toFixed(1) + 'px;margin-left:' + (gapN + reach).toFixed(1) + 'px;' + nst + '">' + noteT + '</span>'
           : '<span aria-hidden="true" style="position:absolute;right:100%;top:' + (cyEm * p.f + triPx * 0.42 + 3).toFixed(1) + 'px;margin-right:' + (0.5 * triPx + reach + (triPx * 0.8 - shortW) / 2).toFixed(1) + 'px;' + nst + '">' + shortT + '</span>'; }
       h += '<span style="position:absolute;left:' + p.x.toFixed(2) + 'px;top:' + p.y.toFixed(2) + 'px;transform:translate(' + (-p.k * 100).toFixed(2) + '%,-100%);white-space:pre;text-align:' + (p.k < 0.25 ? 'left' : 'center') + ';' + FONT + ';line-height:' + LH + ';letter-spacing:' + ls + ';font-size:' + p.f.toFixed(2) + 'px;opacity:' + o.toFixed(3) + '">' + pre
-        + '<span style="' + lineSt(lead, lead ? inkLead : c) + '">' + esc(L[0]) + '</span>' + (two ? '<span style="' + lineSt(false, c) + '">' + esc(L[1]) + '</span>' : '') + post + '</span>'; });
+        + '<span style="' + lineSt(lead, lead ? inkLead : c) + '">' + esc(L[0]) + '</span>' + L.slice(1).map(function (t3) { return '<span style="' + lineSt(false, c) + '">' + esc(t3) + '</span>'; }).join('') + post + '</span>'; });
     var rules = ST.R.map(function (r) { if (r.o <= 0.01) return ''; var op = ';opacity:' + clamp01(r.o).toFixed(3); return '<i style="position:absolute;left:0;width:' + Math.max(0, r.a).toFixed(1) + 'px;top:' + r.y.toFixed(1) + 'px;height:1.5px;background:' + B + op + '"></i><i style="position:absolute;left:' + r.b.toFixed(1) + 'px;right:0;top:' + r.y.toFixed(1) + 'px;height:1.5px;background:' + B + op + '"></i>'; }).join('');
     var burst = fans ? '<i aria-hidden="true" style="position:absolute;left:0;top:0;width:' + IW + 'px;height:' + BOXH + 'px;background:' + enc('<svg xmlns="http://www.w3.org/2000/svg" width="' + IW + '" height="' + BOXH + '">' + fans + '</svg>') + ' 0 0/100% 100% no-repeat;pointer-events:none;-webkit-mask-image:' + WORN + ';mask-image:' + WORN + ';-webkit-mask-size:200px;mask-size:200px"></i>' : '';
     var artH = Q.ART.h || (S[9].y + S[9].h - Q.ART.y);
-    var art = D.art ? '<img src="' + esc(D.art) + '" alt="" decoding="async" style="position:absolute;left:' + Q.ART.x + 'px;top:' + Q.ART.y + 'px;width:' + Q.ART.w + 'px;height:' + artH + 'px;object-fit:contain;object-position:center center">'
+    var art = D.art ? '<img src="' + esc(D.art) + '" alt="" decoding="sync" style="position:absolute;left:' + Q.ART.x + 'px;top:' + Q.ART.y + 'px;width:' + Q.ART.w + 'px;height:' + artH + 'px;object-fit:contain;object-position:center center">'
       : '<div aria-hidden="true" style="position:absolute;left:' + (Q.ART.x + (Q.ph ? 0 : 40)) + 'px;top:' + (Q.ph ? 0 : 60) + 'px;width:' + (Q.ART.w - (Q.ph ? 0 : 80)) + 'px;height:' + (Q.ph ? Math.min(artH, Q.ART.w * 1.6) : artH - 120) + 'px;display:flex;align-items:center;justify-content:center;text-align:center;' + FONT + ';line-height:.86;font-size:' + (Q.ph ? 22 : 80) + 'px;color:' + A + ';border:' + (Q.ph ? 3 : 6) + 'px solid ' + A + '">PICKATHON<br>' + y + '</div>';
     var dl = K.dates ? (K.dates.toUpperCase().replace(/ ?- ?/g, '–') + ' · PENDARVIS FARM' + (Q.ph ? '' : ' · HAPPY VALLEY, OREGON')) : 'PICKATHON ' + y;
     var dates = '<div style="position:absolute;left:0;right:0;top:' + PL.DATESY + 'px;text-align:center;white-space:nowrap;' + FONT + ';font-size:' + Q.DATES + 'px;letter-spacing:.08em;color:' + A + '">' + dl.split(' · ').map(function (t, i) { return (i ? '<span style="font-size:.6em;color:' + B + ';margin:0 ' + (Q.ph ? 6 : 12) + 'px;vertical-align:.2em">★</span>' : '') + esc(t); }).join('') + '</div>';
@@ -2777,7 +2778,8 @@ html.pk-cy-in div:has(> button[aria-label="Listen to Pickathon"]){opacity:0!impo
       var u = Math.min(1, t / RUN), done = u >= 1; S.tp = (n - 1) * ease(u); if (done) { S.playing = false; S.raf = null; } else S.raf = requestAnimationFrame(fr); draw(); };
     S.raf = requestAnimationFrame(function (now) { t0 = now; fr(now); });
   }
-  function go(y) { stop(); S.back = null; S.y = String(y); var n = C[y].labels.length; S.tp = (n > 1 && !RM && !STAT(y)) ? 0 : n - 1; S.seen[S.y] = 0; draw(); check(); }
+  function PRE() { if (PRE.d) return; PRE.d = 1; Object.keys(C).forEach(function (k) { var a = C[k] && C[k].art; if (a) { var im = new Image(); im.src = a; if (im.decode) im.decode().catch(function () {}); } }); }   /* the year's logo is ready before the first frame draws */
+  function go(y) { PRE(); stop(); S.back = null; S.y = String(y); var n = C[y].labels.length; S.tp = (n > 1 && !RM && !STAT(y)) ? 0 : n - 1; S.seen[S.y] = 0; draw(); check(); }
   function rand() { var O = (window.pkClimbOrder || []).map(String).filter(function (q) { return C[q] && C[q].clim && C[q].feat; }); if (O.length > 1) { var oi = O.indexOf(S.y); go(+O[(oi + 1) % O.length]); return; } var P = POOL().filter(function (q) { return String(q) !== S.y; }); if (!S.bag.length) { S.bag = P.slice(); for (var i = S.bag.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)), t = S.bag[i]; S.bag[i] = S.bag[j]; S.bag[j] = t; } } var y = S.bag.pop(); if (String(y) === S.y && S.bag.length) y = S.bag.pop(); go(y); }
 
   function draw() {
