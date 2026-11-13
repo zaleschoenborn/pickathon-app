@@ -60,3 +60,7 @@ Where this differs from the notes above, this section wins.
 - Poster path therefore shows each act's peak growing; a name cannot fall back. Long years are still sampled to at most 13 points so every run is 6.4 s.
 - Rotation rule unchanged: a year moves and joins "Another year" only if >= 5 acts have magnitude at every plotted point, and 2025/2026 stay out. Now in rotation: 2006-2019 (except none), 2022, 2023, 2024; 2000-2005 fall short.
 - Poster display name: NATHANIEL RATELIFF (Zale, Nov 12). Long top names can wrap to three lines.
+
+## Update, Nov 12 night (glide)
+- Zale approved: the Home poster glides from the printed bill straight to today (two states, D.glide), about 3.2 s (RUN = 3200). The dated windows are not played on Home. No scrubber on Home (his Nov 11 rule: the draggable version belongs on the year page).
+- The timeline dot still travels across the real window dates while the names glide. Names outside both top 10s never appear.
