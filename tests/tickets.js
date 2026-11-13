@@ -86,7 +86,7 @@ async function run() {
     const page = await ctx.newPage(); const errs = [];
     page.on('pageerror', (e) => errs.push(String(e.message).split('\n')[0].slice(0, 120)));
     try {
-      await page.goto(base, { waitUntil: 'load', timeout: 60000 }); await page.waitForTimeout(1000);
+      await page.goto(base, { waitUntil: 'domcontentloaded', timeout: 60000 }); await page.waitForFunction(() => !!window.__app, null, { timeout: 60000 }).catch(() => {}); await page.waitForTimeout(1000);
       await page.evaluate(() => { const c = document.querySelector('[aria-label="Cookie choices"]'); const d = c && [...c.querySelectorAll('button')].find((b) => /decline/i.test(b.textContent)); if (d) d.click(); });
       await page.evaluate(IP.hook);
       const st = S === 'sale' ? { pvS: 'sale', season: 'off', today: '2026-11-19' } : {};
@@ -116,13 +116,13 @@ async function run() {
       const scenarios = [];
       // a pass that opens its own counters (Day tickets: Thu, Fri, Sat, Sun, Sat + Sun) gets one scenario per counter
       for (const p0 of passes) {
-        await page.goto(base, { waitUntil: 'load', timeout: 60000 }); await page.waitForTimeout(500); await page.evaluate(IP.hook); await page.evaluate(OPEN, st); await page.waitForTimeout(600);
+        await page.goto(base, { waitUntil: 'domcontentloaded', timeout: 60000 }); await page.waitForFunction(() => !!window.__app, null, { timeout: 60000 }).catch(() => {}); await page.waitForTimeout(500); await page.evaluate(IP.hook); await page.evaluate(OPEN, st); await page.waitForTimeout(600);
         await page.evaluate((p) => { const b = document.querySelector('#root button[aria-label="One more ' + p + '"]'); if (b) b.click(); }, p0); await page.waitForTimeout(400);
         const subs = await page.evaluate((passes) => { const out = [], n = {}; for (const b of document.querySelectorAll('#root button[aria-label^="One more "]')) { if (!b.checkVisibility()) continue; const a = b.getAttribute('aria-label').replace(/^One more /, ''); if (passes.includes(a)) continue; n[a] = (n[a] || 0) + 1; let r = b.parentElement; while (r && r.parentElement && !/\$|Free/.test(r.innerText || '')) r = r.parentElement; out.push({ aria: a, idx: n[a] - 1, name: ((r && r.innerText) || a).split('\n')[0].trim().slice(0, 30) }); } return out; }, passes);
         const empty = !(await page.evaluate(ORDER)).lines.length;
         if (subs.length && empty) subs.forEach((x) => scenarios.push({ pass: p0, sub: x, opt: null })); else scenarios.push({ pass: p0, opt: null });
       }
-      await page.goto(base, { waitUntil: 'load', timeout: 60000 }); await page.waitForTimeout(500); await page.evaluate(IP.hook); await page.evaluate(OPEN, st); await page.waitForTimeout(600);
+      await page.goto(base, { waitUntil: 'domcontentloaded', timeout: 60000 }); await page.waitForFunction(() => !!window.__app, null, { timeout: 60000 }).catch(() => {}); await page.waitForTimeout(500); await page.evaluate(IP.hook); await page.evaluate(OPEN, st); await page.waitForTimeout(600);
       await page.evaluate((p) => { const b = document.querySelector('#root button[aria-label="One more ' + p + '"]'); if (b) b.click(); }, passes[0]); await page.waitForTimeout(500);
       const opts = (await page.evaluate(OPTIONS)).map((o) => o.label);
       // options that appear only after another choice (e.g. camping spots after "Car, van or RV")
@@ -131,7 +131,7 @@ async function run() {
       if (QUICK) scenarios.splice(4);
       for (const sc of scenarios) {
         const label = sc.pass + (sc.sub ? ' · ' + sc.sub.name : '') + (sc.opt ? ' + ' + sc.opt.slice(0, 40) : '');
-        await page.goto(base, { waitUntil: 'load', timeout: 60000 }); await page.waitForTimeout(600); await page.evaluate(IP.hook); await page.evaluate(OPEN, st); await page.waitForTimeout(700); // fresh cart each time
+        await page.goto(base, { waitUntil: 'domcontentloaded', timeout: 60000 }); await page.waitForFunction(() => !!window.__app, null, { timeout: 60000 }).catch(() => {}); await page.waitForTimeout(600); await page.evaluate(IP.hook); await page.evaluate(OPEN, st); await page.waitForTimeout(700); // fresh cart each time
         const e1 = errs.length;
         await page.evaluate((p) => { const b = document.querySelector('#root button[aria-label="One more ' + p + '"]'); if (b) b.click(); }, sc.pass); await page.waitForTimeout(400);
         if (sc.sub) { await page.evaluate((x) => { const b = [...document.querySelectorAll('#root button[aria-label="One more ' + x.aria + '"]')].filter((e) => e.checkVisibility())[x.idx]; if (b) b.click(); }, sc.sub); await page.waitForTimeout(400); }

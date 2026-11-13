@@ -65,7 +65,7 @@ async function runCombo(browser, base, targets, size, mode, sink) {
     page.on('console', (m) => { if (m.type() === 'error' && !/Failed to load resource|ERR_|net::/.test(m.text())) errs.push(m.text().split('\n')[0].slice(0, 140)); });
     page.on('response', (r) => { if (r.status() >= 400 && !/favicon|google-analytics|googletagmanager/.test(r.url())) bad.push(r.status() + ' ' + (r.url().startsWith(base) ? r.url().slice(base.length, base.length + 80) : r.url().slice(0, 90))); });
     page.on('requestfailed', (r) => { const er = (r.failure() || {}).errorText || ''; if (r.url().startsWith(base) && !/ABORTED|BLOCKED/.test(er)) bad.push('did not load (' + er + ') ' + r.url().slice(base.length, base.length + 80)); });
-    await page.goto(base, { waitUntil: 'load', timeout: 60000 }); await page.waitForTimeout(1200);
+    await page.goto(base, { waitUntil: 'domcontentloaded', timeout: 60000 }); await page.waitForFunction(() => !!window.__app, null, { timeout: 60000 }).catch(() => {}); await page.waitForTimeout(1200);
     await page.evaluate(() => { // test housekeeping: answer the cookie banner, hide the dev-only "Site state" bar
       const c = document.querySelector('[aria-label="Cookie choices"]'); const d = c && [...c.querySelectorAll('button')].find((b) => /decline/i.test(b.textContent)); if (d) d.click();
       const s = document.querySelector('select[aria-label="Site state"]'); if (s) { let p = s; while (p.parentElement && p.parentElement !== document.body && getComputedStyle(p).position !== 'fixed') p = p.parentElement; p.setAttribute('data-pkqa-ignore', '1'); p.style.display = 'none'; }

@@ -62,7 +62,7 @@ const SETTLE = async () => {
     const fresh = async () => {
       if (page) await page.close().catch(() => {}); page = await ctx.newPage(); cdp = await ctx.newCDPSession(page); errs = [];
       page.on('pageerror', (e) => errs.push(String(e.message).split('\n')[0].slice(0, 120)));
-      await page.goto(base, { waitUntil: 'load', timeout: 60000 }); await page.waitForTimeout(1000);
+      await page.goto(base, { waitUntil: 'domcontentloaded', timeout: 60000 }); await page.waitForFunction(() => !!window.__app, null, { timeout: 60000 }).catch(() => {}); await page.waitForTimeout(1000);
       await page.evaluate(() => { const c = document.querySelector('[aria-label="Cookie choices"]'); const d = c && [...c.querySelectorAll('button')].find((b) => /decline/i.test(b.textContent)); if (d) d.click(); });
       await page.evaluate(IP.hook);
     };
