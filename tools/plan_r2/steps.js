@@ -55,8 +55,7 @@
       '<p class="pl-src" id="pl-src"></p><p class="pl-why" id="pl-why" role="status" hidden></p>' +
       '<ul class="pl-basics"><li><b>Aug 5–8, 2027</b><span>Gates open Wed, Aug 4</span></li><li><b>Happy Valley, OR</b><span>12 miles from Portland</span></li><li><b>Camping included</b><span>Tents in the woods, with any 3- or 4-Day Pass</span></li></ul>' +
       '<ol class="pl-steps" id="pl-steps"></ol>' +
-      '<p class="pl-packln"><button type="button" class="pl-tlink" data-go="step:pack">Packing list and camp rules →</button></p>' +
-      '<section class="pl-paper pl-card pl-newc" id="pl-new" aria-labelledby="pl-h-new"><h2 class="pl-d pl-d-card" id="pl-h-new">What’s new for 2027</h2><hr class="pl-rule2"><ul class="pl-newl" id="pl-newl"></ul></section>' +
+      '<p class="pl-packln"><button type="button" class="pl-tlink pl-packrow" data-go="step:pack"><span>5 · Packing list and camp rules</span><span aria-hidden="true">→</span></button></p>' +
       '</div>' +
       '<div class="pl-nextwrap"><div class="pl-paper pl-next"><div><p class="pl-next-k" id="pl-nk"></p><p class="pl-next-t pl-d" id="pl-nt"></p><p class="pl-next-p"><b class="pl-num" id="pl-np"></b> <span id="pl-nn"></span></p></div><span id="pl-nb"></span></div></div>';
   }
@@ -208,7 +207,7 @@
     [].forEach.call(G.options, function (o) { o.disabled = e.veh && o.value !== 'drive'; });
     var wy = $('#pl-why', root); wy.hidden = !why.length; wy.innerHTML = why.join('<br>');
     $('#pl-steps', root).innerHTML = cardsHTML();
-    $('#pl-newl', root).innerHTML = newHTML();
+    var nl = $('#pl-newl', root); if (nl) nl.innerHTML = newHTML();
     var on = orderNow(), k = $('#pl-nk', root), t = $('#pl-nt', root), p = $('#pl-np', root), n = $('#pl-nn', root);
     if (on.real) {
       var tt = totals(on.o); k.textContent = 'Your order so far'; t.textContent = short(on.o); p.textContent = money(tt.total); n.textContent = 'fee included';
