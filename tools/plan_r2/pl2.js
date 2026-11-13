@@ -208,8 +208,7 @@
       '<p class="pl-src" id="pl-src"></p><p class="pl-why" id="pl-why" role="status" hidden></p>' +
       '<ul class="pl-basics"><li><b>Aug 5–8, 2027</b><span>Gates open Wed, Aug 4</span></li><li><b>Happy Valley, OR</b><span>12 miles from Portland</span></li><li><b>Camping included</b><span>Tents in the woods, with any 3- or 4-Day Pass</span></li></ul>' +
       '<ol class="pl-steps" id="pl-steps"></ol>' +
-      '<p class="pl-packln"><button type="button" class="pl-tlink" data-go="step:pack">Packing list and camp rules →</button></p>' +
-      '<section class="pl-paper pl-card pl-newc" id="pl-new" aria-labelledby="pl-h-new"><h2 class="pl-d pl-d-card" id="pl-h-new">What’s new for 2027</h2><hr class="pl-rule2"><ul class="pl-newl" id="pl-newl"></ul></section>' +
+      '<p class="pl-packln"><button type="button" class="pl-tlink pl-packrow" data-go="step:pack"><span>5 · Packing list and camp rules</span><span aria-hidden="true">→</span></button></p>' +
       '</div>' +
       '<div class="pl-nextwrap"><div class="pl-paper pl-next"><div><p class="pl-next-k" id="pl-nk"></p><p class="pl-next-t pl-d" id="pl-nt"></p><p class="pl-next-p"><b class="pl-num" id="pl-np"></b> <span id="pl-nn"></span></p></div><span id="pl-nb"></span></div></div>';
   }
@@ -361,7 +360,7 @@
     [].forEach.call(G.options, function (o) { o.disabled = e.veh && o.value !== 'drive'; });
     var wy = $('#pl-why', root); wy.hidden = !why.length; wy.innerHTML = why.join('<br>');
     $('#pl-steps', root).innerHTML = cardsHTML();
-    $('#pl-newl', root).innerHTML = newHTML();
+    var nl = $('#pl-newl', root); if (nl) nl.innerHTML = newHTML();
     var on = orderNow(), k = $('#pl-nk', root), t = $('#pl-nt', root), p = $('#pl-np', root), n = $('#pl-nn', root);
     if (on.real) {
       var tt = totals(on.o); k.textContent = 'Your order so far'; t.textContent = short(on.o); p.textContent = money(tt.total); n.textContent = 'fee included';
@@ -438,7 +437,7 @@
     var u = site().user;
     return '<div class="pl-sheet-top"><h2 class="pl-d pl-d-card" id="pl-more-h">More</h2><button type="button" class="pl-x" data-close aria-label="Close">' + ic('x') + '</button></div>' +
       '<form class="pl-search" role="search" id="pl-more-f"><label class="pl-search-l">' + ic('search', 'pl-ic-sm') + '<span class="pl-vh">Search Pickathon</span><input type="search" name="q" placeholder="Search: parking, kids, shuttle…" enterkeyhint="search" autocomplete="off"></label></form>' +
-      '<div class="pl-chips">' + [['Parking', 'go'], ['Camping', 'sleep'], ['Shuttle', 'go'], ['Kids', 'kids'], ['What’s new', 'new']].map(function (c) { return '<button type="button" class="pl-pill pl-pill-sm" data-go="plan:' + c[1] + '">' + c[0] + '</button>'; }).join('') + '</div>' +
+      '<div class="pl-chips">' + [['Parking', 'go'], ['Camping', 'sleep'], ['Shuttle', 'go'], ['Kids', 'kids']].map(function (c) { return '<button type="button" class="pl-pill pl-pill-sm" data-go="plan:' + c[1] + '">' + c[0] + '</button>'; }).join('') + '</div>' +
       '<nav class="pl-mmain" aria-label="Festival">' + [['Lineup', '2027 and every year', 'lineup'], ['Plan your trip', 'Getting there, rules', 'info'], ['Schedule', '2026 for now', 'schedule'], ['Stories', '', 'stories']].map(function (n) { var cur = topR() === n[2]; return '<button type="button" data-go="route:' + n[2] + '"' + (cur ? ' aria-current="page"' : '') + '><span class="pl-d">' + n[0] + '</span>' + (n[1] ? '<small>' + n[1] + '</small>' : '') + '</button>'; }).join('') + '</nav>' +
       '<p class="pl-mk" id="pl-mk">About</p><nav class="pl-mabout" aria-labelledby="pl-mk">' + [['Our story', 'route:about'], ['Build with Pickathon', 'route:build'], ['Partners', 'route:partners'], ['Neighbors', 'page:neighbors'], ['Press', 'route:press'], ['Pickathon Presents', 'route:presents']].map(function (n) { return '<button type="button" data-go="' + n[1] + '">' + n[0] + '</button>'; }).join('') + '</nav>' +
       '<div class="pl-mfoot"><button type="button" class="pl-pill pl-pill-sm" data-go="' + (u ? 'route:account' : 'signin') + '">' + (u ? 'Your account' : 'Sign in') + '</button><nav aria-label="Follow Pickathon">' + follow('pl-mf') + '</nav></div>';
