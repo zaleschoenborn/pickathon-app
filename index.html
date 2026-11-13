@@ -3838,6 +3838,7 @@ window.addEventListener('scroll',tick,{passive:true,capture:true});setInterval(t
 </sc-if>
 
 <sc-if value="{{r.hoods}}" hint-placeholder-val="{{false}}">
+<sc-if value="{{r.pl}}" hint-placeholder-val="{{false}}"><div id="pkpl" data-pk-own="1"></div></sc-if>
 <section style="{{wrapTop}}">
 <h1 style="{{h1Page}}">{{hoodsH1}}</h1>
 <sc-if value="{{hoodsIntro}}" hint-placeholder-val="{{true}}"><p style="margin: 6px 0 0; color: #E6E0D3; max-width: 820px; line-height: 1.55; font-size: 19px">Every stage has a neighborhood built around it, by hand, with its own shade, food and a place to sleep.</p><p style="margin: 12px 0 0; color: #CFC9BC; max-width: 820px; line-height: 1.6">Every August the Pendarvis farm turns into a temporary world: stages carved into the woods and the hillside, camps under the oaks, a market, a courtyard, and trails that tie them together. Each neighborhood has its own name, its own crew of architects, students and builders, and its own feel. They are built with <a href="https://creativeneighborhoods.com" target="_blank" rel="noopener" style="color: #D6B54A; font-weight: 700">Creative Neighborhoods</a> to outlast the weekend: when it ends, the structures go on to schools, parks and community spaces.</p>
@@ -4089,6 +4090,7 @@ div[aria-label="Preview controls"] { display: none !important }
 #root .pk-hd-creds{grid-template-columns:repeat(3,minmax(0,1fr))}
 }
 </style>
+<sc-if value="{{r.pl}}" hint-placeholder-val="{{false}}"><div id="pkpl" data-pk-own="1"></div><div id="pkpl-sp" data-pk-own="1"></div><div id="pkpl-top" data-pk-own="1"></div></sc-if>
 <section class="pk-hd-hero {{hood.pyCls}}" aria-label="{{hood.n}}" style="{{hood.pySt}}">
 <sc-if value="{{hood.pySlug}}" hint-placeholder-val="{{false}}"><div class="pk-hd-slugh" aria-hidden="true"><span class="pk-hd-slugs"><sc-for list="{{hood.pyStripe}}" as="s" hint-placeholder-count="4"><i style="{{s.st}}"></i></sc-for></span></div></sc-if><sc-if value="{{hood.hasHdImg}}" hint-placeholder-val="{{true}}"><img src="{{hood.hdImg}}" alt="" style="object-position: {{hood.hdPos}}"></sc-if>
 <div class="pk-hd-shade" aria-hidden="true"></div>
@@ -5325,7 +5327,7 @@ class Component extends DCLogic {
     if (d && !st.vip && Object.keys(d.hoods).some(function (k) { return d.hoods[k].vip; })) { if (!this._pubD || this._pubSrc !== d) { var hv = {}; Object.keys(d.hoods).forEach(function (k) { if (!d.hoods[k].vip) hv[k] = d.hoods[k]; }); this._pubD = Object.assign({}, d, { hoods: hv }); this._pubSrc = d; } d = this._pubD; }
     var cur = st.stack[st.stack.length - 1], R = cur.r;
     // design_studio-24 (Nov 8): the old Home, Why and Watch menu stay reachable at ?old=home, ?old=why, ?old=watch (restore point pre-merge-2026-11-08)
-    var OLDQ = (typeof location !== 'undefined' && (location.search.match(/[?&]old=([a-z0-9,]+)/) || [])[1]) || '', OLD = { tickets: /\btickets\b/.test(OLDQ), home: /\bhome\b/.test(OLDQ), home0: /\bhome0\b/.test(OLDQ), why: /\bwhy\b/.test(OLDQ), watch: /\bwatch\b/.test(OLDQ), plan: /\bplan\b/.test(OLDQ) };
+    var OLDQ = (typeof location !== 'undefined' && (location.search.match(/[?&]old=([a-z0-9,]+)/) || [])[1]) || '', OLD = { places: /\bplaces\b/.test(OLDQ), tickets: /\btickets\b/.test(OLDQ), home: /\bhome\b/.test(OLDQ), home0: /\bhome0\b/.test(OLDQ), why: /\bwhy\b/.test(OLDQ), watch: /\bwatch\b/.test(OLDQ), plan: /\bplan\b/.test(OLDQ) };
     if (R === 'why' && !OLD.why) { R = 'home'; if (self._nhJ !== cur) { self._nhJ = cur; setTimeout(function () { try { var el = document.getElementById('pk-nh-bands'); if (el) el.scrollIntoView({ block: 'start' }); } catch (x) {} }, 160); } }
     if (R !== this._lastR) { try { sessionStorage.setItem('pkmap.from', this._lastR === 'hood' ? 'hood' : 'other'); } catch (e) {} this._lastR = R; }   // the farm map shows its title screen unless the visitor is coming back from a neighborhood page
     var secNav = function (spec) { var p = String(spec).split('#'); return function () { self.go(p[0]); if (p[1]) setTimeout(function () { try { var el = document.getElementById(p[1]); if (el) el.scrollIntoView({ block: 'start' }); } catch (e) {} }, 260); }; };
@@ -5393,7 +5395,7 @@ window.pkNBHM = NBHM;   // pk-home2 (Home round 2) reads each neighborhood's cur
       goLineup: nav('lineup'), goLineupAll: function () { self.setState({ lineup: 'music', genre: '', luYear: '2026', luArch: true }); self.go('lineup', { keepArch: true }); }, goMap: function () { self.reset('home'); }, goHoods: nav('hoods'), goTickets: nav('tickets'), goMine: nav('mine'), goStories: nav('stories'), goPast: nav('past'), goDisc: function () { self.setState({ archLead: self._pickLead || self._featLead || null, luYear: 'disc', luArch: true, lineup: 'music', archT: null, archC: null, archY: '' }); self.go('lineup', { keepArch: true }); }, goEasy: function () { self.go('page', { p: 'easy-day' }); }, goWhy: nav('why'), bdEye: ((d && d.buildCopy) || {}).eye || '', bdNote: ((d && d.buildCopy) || {}).note || '', bdShort: ((d && d.buildCopy) || {}).short || '', ck: { show: !st.ckChoice && !TIX2, bottom: phone ? (R === 'tickets' ? 'calc(150px + env(safe-area-inset-bottom, 0px))' : 'calc(84px + env(safe-area-inset-bottom, 0px) - var(--pk-gap, 0px))') : '0px', yes: function () { self.setState({ ckChoice: 'yes' }); try { window.localStorage.setItem('pk-ck', 'yes'); } catch (e) {} }, no: function () { self.setState({ ckChoice: 'no' }); try { window.localStorage.setItem('pk-ck', 'no'); } catch (e) {} } }, pv: (function () { var on = !(typeof window !== 'undefined' && window.PK_LIVE); var sv = st.pvS || ((st.season || 'off') === 'off' ? ((function () { var M = { '2026-11-12': 'teaser', '2026-12-01': 'giving', '2027-01-13': 'reveal' }; M[RH.day] = 'sale'; M[RE.day] = 'early'; return M; })()[st.today || ''] || 'now') : st.season); var vv = st.pvV || (st.vip ? 'vip' : st.user ? 'signed' : (function () { var Y = (st.myYears || []).map(function (y) { return parseInt(String(y).slice(-4), 10); }).filter(function (n) { return n > 1990; }); if (!Y.length) return 'new'; return Math.max.apply(null, Y) < 2020 ? 'longago' : 'recent'; })()); var o = { saleL: RH.dayS + ' sale', earlyL: RE.dayS + ' early bird', show: on, bar: (phone && st.pvHide) ? 'display: none; ' : '', onState: function (e) { var v = e && e.target ? e.target.value : 'now'; var M = { now: ['off', undefined], teaser: ['off', '2026-11-12'], sale: ['off', RH.day], giving: ['off', '2026-12-01'], early: ['off', RE.day], reveal: ['off', '2027-01-13'], lineup: ['lineup', undefined], sched: ['sched', undefined], fest: ['fest', undefined] }[v] || ['off', undefined]; self.setState({ pvS: v, season: M[0], today: M[1] }); }, onView: function (e) { var v = e && e.target ? e.target.value : 'new'; var P = { new: { myYears: [], user: null }, recent: { myYears: ['2025', '2026'], user: null }, longago: { myYears: ['2010', '2012'], user: null }, signed: { myYears: ['2024', '2025', '2026'], user: { email: 'you@example.com', name: 'You' }, vip: false }, vip: { myYears: ['2024', '2025', '2026'], user: { email: 'crew@pickathon.com', name: 'Crew' }, vip: true } }[v] || { myYears: [], user: null }; if (P.vip === undefined) P.vip = false; P.pvV = v; self.setState(P); try { window.localStorage.setItem('pk-share-2027', JSON.stringify({ top3: self.state.top3 || [], myYears: P.myYears })); } catch (x) {} } }; ['now', 'teaser', 'sale', 'giving', 'early', 'reveal', 'lineup', 'sched', 'fest'].forEach(function (k) { o['s_' + k] = sv === k; }); ['new', 'recent', 'longago', 'signed', 'vip'].forEach(function (k) { o['v_' + k] = vv === k; }); return o; })(), ckReset: function () { self.setState({ ckChoice: '' }); try { window.localStorage.removeItem('pk-ck'); } catch (e) {} }, sv: (function () { var S = d && d.survey; var T = st.today || (function () { try { return new Date().toLocaleDateString('en-CA', { timeZone: 'America/Los_Angeles' }); } catch (e) { return new Date(Date.now() - 8 * 3600e3).toISOString().slice(0, 10); } })(); var on = !!(S && S.u && !/your-2026-survey/.test(S.u) && (st.stack[st.stack.length - 1] || {}).r === 'home' && (st.season || 'off') === 'off' && T >= S.start && T <= S.end); return { show: on, t: on ? S.t : '', x: on ? S.x : '', u: on ? S.u : '', closes: on ? S.closes : '' }; })(), ann: (function () { var L = (d && d.announce) || []; var T = st.today || (function () { try { return new Date().toLocaleDateString('en-CA', { timeZone: 'America/Los_Angeles' }); } catch (e) { return new Date(Date.now() - 8 * 3600e3).toISOString().slice(0, 10); } })(); var A = L.filter(function (x) { var inD = x.id === 'presale-soon' ? (T >= x.start && saleBefore) : x.id === 'presale' ? inHoliday : x.id === 'earlybird' ? !!(TIX.cur && TIX.cur.id === 'early' && T <= x.end) : (T >= x.start && T <= x.end); return (x.season || []).indexOf(st.season || 'off') >= 0 && inD; }).map(function (x) { if (x.id !== 'presale-soon' && x.id !== 'presale' && x.id !== 'earlybird') return x; var y = Object.assign({}, x), p3 = m27(pr27f('p3')), rg = m27(fe27(Math.ceil(PR27.p3[TIX.regularCol]))); if (x.id === 'presale-soon') y.t = RH.name + ' opens ' + RH.whenS; if (x.id === 'presale') y.t = 'The ' + RH.name + ' is on'; if (x.id === 'earlybird') { y.t = RE.name + ' pricing is on'; y.sub = TIX.plans ? 'Payment plans are open' : ''; } else y.sub = String(x.sub || '').replace(/\$[\d,.]+, regular \$[\d,.]+/, p3 + ', regular ' + rg).replace(/\$[\d,.]+/, p3); return y; }).sort(function (x, y) { return (x.pri || 9) - (y.pri || 9); })[0]; var on = !!(A && (st.stack[st.stack.length - 1] || {}).r === 'home'); return { show: on, feature: !!(A && A.feature), t: on ? A.t.replace('{left}', A.left || '') : '', cta: on ? A.cta : '', sub: on ? (A.sub || '') : '', line: on ? (A.short || A.t.replace('{left}', A.left || '')) : '', hasSub: !!(on && A.sub), isUrl: !!(on && A.url), isGo: !!(on && !A.url), url: on && A.url ? A.url : '', go: on && A.story ? function () { self.go('story', { s: A.story }); } : on && A.page ? function () { self.go('page', { p: A.page }); } : on && A.route ? (A.route === 'build' ? function () { self.go('build'); } : nav(A.route)) : nav('tickets') }; })(), schedEmptyText: (st.season || 'off') === 'off' ? (LUWHEN === 'January' ? 'The lineup drops early 2027' : 'The 2027 music lineup is coming soon') + ', and set times follow in early summer.' : 'Set times come out in early summer. Star artists in the lineup now and they’ll drop into My Pickathon with their times when the schedule lands.', nl: { ph: SMSON ? 'Email or mobile number' : 'Email address', ph2: SMSON ? 'you@email.com or 555 123 4567' : 'you@email.com', tixAsk: 'Get ' + askVia + ' the moment tickets are on.', luAsk: 'Hear the lineup first. We’ll ' + askVerb + ' you the moment it drops, plus the presale link.', calShow: pkCal.show, calHref: pkCal.href, calFile: pkCal.file, calLabel: pkCal.label, open: !st.nlDone, done: !!st.nlDone, doneMsg: 'You’re on the list. We’ll ' + (st.nlSms ? 'text' : 'email') + ' you ' + (SEA === 'off' && !saleOpen ? 'when tickets go on sale, and again when the lineup drops.' : 'the moment the lineup drops, with the presale link.'), genres: ((d && d.genres) || []).map(function (g) { var on = (st.nlG || (R === 'lineup' && st.genre ? [st.genre] : [])).indexOf(g.id) >= 0; return { label: g.n, on: on ? 'true' : 'false', style: 'min-height: 40px; padding: 0 12px; border-radius: 999px; font: inherit; font-size: 13px; font-weight: 700; cursor: pointer; ' + (on ? 'background: #12160F; color: #F2EDE3; border: 1px solid #12160F' : 'background: transparent; color: #12160F; border: 1px solid #8C947C'), pick: function () { var a = (self.state.nlG || (R === 'lineup' && self.state.genre ? [self.state.genre] : [])).slice(), i = a.indexOf(g.id); if (i >= 0) a.splice(i, 1); else if (a.length < 3) a.push(g.id); self.setState({ nlG: a }); } }; }), email: st.nlEmail || '', inv: st.nlErr ? 'true' : 'false', err: st.nlErr || '', hasErr: !!st.nlErr, onEmail: function (e) { self.setState({ nlEmail: e && e.target ? e.target.value : '' }); }, submit: function () { var v = (self.state.nlEmail || '').trim(); var isPh = /^[+()\d\s.-]{10,}$/.test(v) && v.replace(/\D/g, '').length >= 10; if (isPh && !SMSON) { self.setState({ nlErr: 'We can’t send texts yet. Enter an email address' + (pkCal.show ? ', or add the sale to your calendar.' : '.') }); return; } if (!isPh && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v)) { self.setState({ nlErr: SMSON ? 'Enter an email address or a mobile number.' : 'Enter an email address.' }); return; } if (isPh) { try { var fds = new URLSearchParams(); fds.append('PHONE', v); fetch(window.PK_SIGNUP.layloEndpoint, { method: 'POST', mode: 'no-cors', body: fds }).catch(function () {}); } catch (e) {} self.setState({ nlDone: true, nlErr: '', nlSms: true }); return; } var MC = (window.PK_SIGNUP || {}).mailchimpAction; if (MC) { try { var fdm = new URLSearchParams(); fdm.append('EMAIL', v); fdm.append('GENRES', (self.state.nlG || (R === 'lineup' && self.state.genre ? [self.state.genre] : [])).join(', ')); fdm.append('b_29c6a9fab7217f390ebe0a8f9_68c5bda2a2', ''); fetch(MC, { method: 'POST', mode: 'no-cors', body: fdm }).catch(function () {}); } catch (e) {} } self.setState({ nlDone: true, nlErr: '' }); } }, goBuild: function () { self.go('build'); }, goVolunteer: function () { self.go('page', { p: 'volunteer' }); }, goPress: nav('press'), goAbout: nav('about'), goAccount: nav('account'), acctLabel: st.user ? 'Your account' : 'Sign in', luH2: LUWHEN === 'January' ? 'The lineup drops early 2027!' : 'The 2027 music lineup is coming soon', luHead: LUWHEN === 'January' ? 'The lineup drops early 2027!' : 'The 2027 music lineup is coming soon.', lineupTixLink: saleOpen ? 'The ' + tierName.replace(/ sale$/i, '') + ' Sale is on now →' : saleBefore ? 'The ' + RH.name + ' opens ' + RH.whenL + ': remind me →' : RE.name + ' pricing opens ' + RE.whenS + ': remind me →', pr: (function () { if (!st.printing || !d) return { show: false }; var mine = d.sets.filter(function (x) { return stars[x.id]; }); return { show: true, year: d.year || '2026', sub: mine.length + ' sets · ' + 'Pendarvis Farm', days: d.days.map(function (dy) { return { t: (dy.f || dy.n), rows: mine.filter(function (x) { return x.d === dy.id; }).sort(function (a, b) { return a.s < b.s ? -1 : 1; }).map(function (x) { var stg = (d.stages || []).filter(function (q) { return q.id === x.st; })[0]; var h12 = function (t) { var H = +t.slice(11, 13), M = t.slice(14, 16); return ((H % 12) || 12) + (M !== '00' ? ':' + M : '') + (H < 12 ? ' AM' : ' PM'); }; return { t: h12(x.s) + '–' + h12(x.e), n: d.artists[x.a].n, w: stg ? stg.n : x.st }; }) }; }).filter(function (g) { return g.rows.length; }) }; })(), mapImg: MAPIMG, whenLine: 'Aug 5–8, 2027', whereLine: 'Happy Valley, Oregon', whereShort: 'Happy Valley', lineupBack: (st.season || 'off') === 'off', lineupBackNC: (st.season || 'off') === 'off' && !!st.luArch && ['food', 'beverages', 'craft'].indexOf(st.lineup) < 0, lineupH1: (st.luArch ? ((st.luYear === 'disc' || st.luYear === 'leg' || st.luYear === 'deep') ? 'Wait, they played here?' : (st.luYear ? 'Who played in ' + (st.luYear === '1999–2009' ? 'the early years, 1999–2009' : st.luYear) : 'The Pickathon Archive')) : ((st.season || 'off') === 'off' && ['food', 'beverages', 'craft'].indexOf(st.lineup) < 0 ? 'The 2027 lineup' : null)) || (st.luYear && st.luYear !== 'disc' && st.luYear !== 'leg' ? 'Who played in ' + (st.luYear === '1999–2009' ? 'the early years, 1999–2009' : st.luYear) : null) || ((({"food": {"h": "Meet Your Next Festival Craving", "x": "Come hungry. Pickathon’s food lineup is bringing smoky barbecue, fresh seafood, bold vegan dishes, and sweet treats to the farm. With returning favorites and newcomers joining the mix, your next great discovery might be between stages.", "imgs": ["food/4.jpg", "food/5.jpg", "food/2.jpg", "food/1.jpg", "food/3.jpg"]}, "beverages": {"h": "Great Music. Good Company. Better Drinks.", "x": "With more than 50 beverage partners, Pickathon’s drink lineup pours plenty of Pacific Northwest flavor into your festival weekend. Discover a new favorite and raise a glass to the farm.", "imgs": ["bev/1.jpg", "bev/5.jpg", "bev/3.jpg", "bev/6.jpg", "bev/2.jpg", "bev/4.jpg", "bev/7.jpg"]}, "craft": {"h": "Find Your Next Treasure Between Sets", "x": "Explore Pickathon’s Craft Marketplace for handmade jewelry, wearable art, vintage finds, and unexpected treasures. Stop by the new Craft Tent near Market Row for makers, artists, community organizations, and hands-on experiences under one roof.", "imgs": ["craft/2.jpg", "craft/1.jpg", "craft/3.jpg"]}})[st.lineup] || {}).h) || ((st.season || 'off') === 'off' ? ({ food: 'Who served in 2026', beverages: 'Who poured in 2026', craft: 'Who made things in 2026' }[st.lineup] || 'Who played in 2026') : '2027 Lineup'), lcat: (function () { var c = ({"food": {"h": "Meet Your Next Festival Craving", "x": "Come hungry. Pickathon’s food lineup is bringing smoky barbecue, fresh seafood, bold vegan dishes, and sweet treats to the farm. With returning favorites and newcomers joining the mix, your next great discovery might be between stages.", "imgs": ["food/4.jpg", "food/5.jpg", "food/2.jpg", "food/1.jpg", "food/3.jpg"]}, "beverages": {"h": "Great Music. Good Company. Better Drinks.", "x": "With more than 50 beverage partners, Pickathon’s drink lineup pours plenty of Pacific Northwest flavor into your festival weekend. Discover a new favorite and raise a glass to the farm.", "imgs": ["bev/1.jpg", "bev/5.jpg", "bev/3.jpg", "bev/6.jpg", "bev/2.jpg", "bev/4.jpg", "bev/7.jpg"]}, "craft": {"h": "Find Your Next Treasure Between Sets", "x": "Explore Pickathon’s Craft Marketplace for handmade jewelry, wearable art, vintage finds, and unexpected treasures. Stop by the new Craft Tent near Market Row for makers, artists, community organizations, and hands-on experiences under one roof.", "imgs": ["craft/2.jpg", "craft/1.jpg", "craft/3.jpg"]}})[st.lineup]; if (!c) return { show: false, isFood: false, cls: 'pk-lhero', x: '', first: '', imgs: [] }; if (st.luYear) return { show: false, isFood: false, cls: 'pk-lhero', x: '', first: '', imgs: [] }; var cim = shufS(c.imgs, 'lc' + st.lineup); return { show: true, isFood: st.lineup === 'food' || st.lineup === 'beverages', cls: 'pk-lhero n' + cim.length, x: c.x, first: cim[0], imgs: cim.slice(1).map(function (u, i) { return { u: u, st: 'animation-delay: ' + (i * 5 + 4) + 's' }; }) }; })(), goPartners: nav('partners'), social: ((d && d.social) || []).map(function (x) { var k = String(x[0]).toLowerCase(); var f = { isIg: k === 'instagram', isTt: k === 'tiktok', isFb: k === 'facebook', isYt: k === 'youtube', isSp: k === 'spotify', isAm: k === 'apple music', isYm: k === 'youtube music', isAz: k === 'amazon music', isTd: k === 'tidal', isX: k === 'x' || k === 'twitter' }; f.n = x[0]; f.u = x[1]; f.noIc = !(f.isIg || f.isTt || f.isFb || f.isYt || f.isSp || f.isAm || f.isYm || f.isAz || f.isTd || f.isX); return f; }), vidW: phone ? '72%' : '280px',
       searchId: phone ? 'pk-q-phone' : 'pk-q-desk',
       toggleMenu: function () { self.setState({ menu: !st.menu }); },
-      r: { tix2: TIX2, tix1: R === 'tickets' && !TIX2, home2: H2, homeNew: NH, homeOld: R === 'home' && !NH && !H2, home: R === 'home', lineup: R === 'lineup', artist: R === 'artist', schedule: R === 'schedule', map: R === 'map', hoods: R === 'hoods', hood: R === 'hood', info: R === 'info' && !PLAN2, plan2: PLAN2, tickets: R === 'tickets', mine: R === 'mine', stories: R === 'stories', story: R === 'story', page: R === 'page', search: R === 'search', past: R === 'past', watch: R === 'watch', partners: R === 'partners', account: R === 'account', build: R === 'build', press: R === 'press', about: R === 'about', why: R === 'why', presents: R === 'presents', act: R === 'act' }
+      r: { pl: (R === 'hoods' || R === 'hood') && !OLD.places && !/[?&]map=old/.test(location.search) && !(R === 'hood' && st.tmY && +st.tmY < 2026), tix2: TIX2, tix1: R === 'tickets' && !TIX2, home2: H2, homeNew: NH, homeOld: R === 'home' && !NH && !H2, home: R === 'home', lineup: R === 'lineup', artist: R === 'artist', schedule: R === 'schedule', map: R === 'map', hoods: R === 'hoods', hood: R === 'hood', info: R === 'info' && !PLAN2, plan2: PLAN2, tickets: R === 'tickets', mine: R === 'mine', stories: R === 'stories', story: R === 'story', page: R === 'page', search: R === 'search', past: R === 'past', watch: R === 'watch', partners: R === 'partners', account: R === 'account', build: R === 'build', press: R === 'press', about: R === 'about', why: R === 'why', presents: R === 'presents', act: R === 'act' }
     };
     out.clash = { list: [], has: false, more: '' };
     if ((R === 'schedule' || R === 'mine') && (SEA === 'sched' || SEA === 'fest') && stars) {
@@ -6442,7 +6444,7 @@ window.__pkMapH = mapH; window.__pkGoFarm = goFarm;   // pk-home2: the Home neig
         out.home.first = [['Where can I stay?', 'Camp in the forest, or sleep nearby.', openP('lodging')], ['How do I get there?', 'Park, get a ride, or take the shuttle.', openP('traveling-to-pickathon')], ['What do I bring?', 'Shoes, layers and a water bottle.', openP('what-to-bring-to-pickathon')]].map(function (q) { return { q: q[0], a: q[1], go: q[2], cta: 'Read more →', style: 'flex: 0 0 ' + (phone ? '78%' : 'auto') + '; scroll-snap-align: start; display: flex; flex-direction: column; gap: 6px; padding: 18px 18px 16px; border-radius: 16px; border: 1px solid #2A3125; background: #1A2017; color: #F2EDE3; font: inherit; text-align: left !important; align-items: flex-start; cursor: pointer; min-height: 44px' }; }); out.home.showSignup = SEA === 'off' && saleOpen; out.home.pfShow = SEA !== 'fest'; out.home.mineTop = !!out.home.mineTop || !!out.home.mineLow; out.home.mineLow = false;
         var BG = (d.info || []).filter(function (g) { return (g.feat || []).indexOf('sched') >= 0; })[0]; out.home.bygShow = SEA === 'sched' && !!BG; out.home.byg = BG ? BG.i.map(function (it) { return { t: it[0], go: infoGo(it) }; }) : []; out.home.bygX = BG ? BG.x : ''; }
       var NMold = /[?&]map=old/.test(location.search), NMh = R === 'home' && (SEA === 'sched' || SEA === 'fest') && !NMold, NMo = R === 'hoods' && !NMold;
-      out.newMap = { home: NMh, hoods: NMo, oldHoods: !NMo, src: 'farmmap/lab-phone.html?embed=1' + ((this.state.tmY && +this.state.tmY < 2026 && (this.state.stack || []).some(function (e9) { return e9 && (e9.r === 'past' || ((e9.r === 'act' || e9.r === 'hood') && e9.y && +e9.y < 2026)); })) ? '&y=' + this.state.tmY : ''),  /* the past-year map shows only when you came to the map from inside that year; the Places tab is always today's map (map test r2 #1) */ frame: 'display: block; width: 100%; border: 0; height: ' + (phone ? 'max(520px, calc(100svh - 170px))' : 'max(560px, calc(100vh - 110px))') + '; background: #12160F' };
+      var PLon = R === 'hoods' && !OLD.places && !NMold; out.newMap = { home: NMh, hoods: NMo && !PLon, oldHoods: !NMo && !PLon, src: 'farmmap/lab-phone.html?embed=1' + ((this.state.tmY && +this.state.tmY < 2026 && (this.state.stack || []).some(function (e9) { return e9 && (e9.r === 'past' || ((e9.r === 'act' || e9.r === 'hood') && e9.y && +e9.y < 2026)); })) ? '&y=' + this.state.tmY : ''),  /* the past-year map shows only when you came to the map from inside that year; the Places tab is always today's map (map test r2 #1) */ frame: 'display: block; width: 100%; border: 0; height: ' + (phone ? 'max(520px, calc(100svh - 170px))' : 'max(560px, calc(100vh - 110px))') + '; background: #12160F' };
       if (NMh || NMo) setTimeout(function () { try { var mm = document.getElementById('pk-scroll-phone'); if (mm) mm.scrollTop = 0; if (document.getElementById('pk-scroll-desk')) window.scrollTo(0, 0); } catch (e) {} }, 0);
       out.homeMapShow = !NMh && (R !== 'home' || SEA === 'sched' || SEA === 'fest');
       out.annTop = !!(out.ann && out.ann.show) && !phone; out.annLow = !!(out.ann && out.ann.show) && phone;
@@ -10146,6 +10148,581 @@ window.pkClimbRank = function (C, dd) {
   syncAll();
 })();
 </script>
+<style id="pk-places-css">
+/* pk-places (tools/places_r1): the Places map and the neighborhood page as its sheet (phone, portrait tablet) or left panel (sideways tablet, desktop). Design notes Nov 12 2026. */
+#pkpl,#pkpl *{box-sizing:border-box}
+#pkpl *{scrollbar-width:none}#pkpl *::-webkit-scrollbar{display:none}
+#pkpl{--pl-ground:#2B2628;--pl-cream:#F2EDE3;--pl-dim:#CFC9BC;--pl-mute:#A9A294;--pl-gold:#F2B33D;--pl-ink:#12160F;display:block;position:relative;z-index:0}
+.pkpl-map{position:absolute;left:0;top:0;width:100%;height:var(--pkpl-vh,100svh);overflow:hidden;background:#1B2416;touch-action:none;user-select:none;-webkit-user-select:none;-webkit-tap-highlight-color:transparent;outline:none}
+.pkpl-world{position:absolute;left:0;top:0;width:2041px;height:3810px;transform-origin:0 0;will-change:transform}
+.pkpl-base{position:absolute;left:0;top:0;width:2041px!important;max-width:none!important;height:3810px!important;display:block}
+.pkpl-tiles{position:absolute;inset:0}
+.pkpl-tiles img{position:absolute;display:block;max-width:none!important;opacity:0;transition:opacity .25s}
+.pkpl-tiles img.on{opacity:1}
+.pkpl-map:not(.pkpl-hi) .pkpl-tiles{display:none}
+.pkpl-svg{position:absolute;left:0;top:0;width:2041px;height:3810px;overflow:visible}
+.pkpl-sh{fill:transparent;stroke:none;cursor:default}
+.pkpl-veil{fill:rgba(12,14,10,.34);pointer-events:none}
+/* the picked place: a soft static glow on its own ground, nothing on top (addendum 2). No pulsing. */
+.pkpl-lit{fill:rgba(255,236,170,.08);stroke:#FFE7A3;stroke-width:5;stroke-linejoin:round;filter:url(#pkpl-glow);pointer-events:none;vector-effect:non-scaling-stroke}
+.pkpl-hov{fill:rgba(255,236,170,.14);stroke:rgba(255,231,163,.9);stroke-width:3;stroke-linejoin:round;filter:url(#pkpl-glow);pointer-events:none;vector-effect:non-scaling-stroke}
+.pkpl-pins,.pkpl-am{position:absolute;inset:0;pointer-events:none}
+.pkpl-em{position:absolute;left:0;top:0;width:44px;height:44px;margin:-22px 0 0 -22px;padding:4px;border:0;border-radius:50%;background:transparent;pointer-events:auto;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.pkpl-em img{display:block;width:100%;height:100%;object-fit:contain;pointer-events:none;border-radius:50%;background:rgba(18,22,15,.84);padding:2px;box-shadow:0 2px 6px rgba(0,0,0,.45)}
+.pkpl-em.hov img,.pkpl-em:focus-visible img{box-shadow:0 0 0 2px #FFE7A3,0 0 14px 3px rgba(255,231,163,.8)}
+.pkpl-em:focus-visible{outline:3px solid #FFE7A3;outline-offset:2px}
+.pkpl-em[hidden],.pkpl-nm[hidden]{display:none}
+.pkpl-nm{position:absolute;left:0;top:0;margin-top:25px;white-space:nowrap;translate:-50% 0;padding:2px 7px;border-radius:5px;background:rgba(18,22,15,.78);color:var(--pl-cream);font:800 11px/1.25 'Bricolage Grotesque',system-ui,sans-serif;font-stretch:75%;letter-spacing:.06em;text-transform:uppercase;pointer-events:none}
+.pkpl-amdot{position:absolute;left:0;top:0;width:30px;height:30px;margin:-15px 0 0 -15px;border-radius:50%;background:#FBF4E4;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 2px #FFE7A3,0 0 14px 4px rgba(255,231,163,.75)}
+.pkpl-amdot img{width:20px;height:20px;object-fit:contain}
+/* title screen: entering the map itself (Places tab, Explore all neighborhoods) */
+.pkpl-title{position:absolute;left:0;top:0;right:0;padding:18px 20px 64px;background:linear-gradient(180deg,rgba(18,22,15,.92) 0%,rgba(18,22,15,.78) 55%,rgba(18,22,15,0) 100%);color:var(--pl-cream);pointer-events:none;transition:opacity .3s}
+.pkpl-notitle .pkpl-title{opacity:0;visibility:hidden}
+#root #pkpl .pkpl-k{margin:0 0 6px;font:800 13px/1.2 'Bricolage Grotesque',system-ui,sans-serif;font-stretch:75%;letter-spacing:.14em;text-transform:uppercase;color:#D6B54A;max-width:none}
+#root #pkpl .pkpl-d{margin:0;font-family:'Pickathon 2014',sans-serif!important;font-weight:400!important;font-size:clamp(30px,9vw,46px)!important;line-height:1.02!important;letter-spacing:.02em;text-transform:uppercase;color:var(--pl-cream);max-width:none}
+#root #pkpl .pkpl-l{margin:10px 0 0;font:700 16px/1.3 'Bricolage Grotesque',system-ui,sans-serif;color:var(--pl-gold);max-width:none}
+/* tools: Find and Full map (one quiet style) */
+.pkpl-tools{position:absolute;right:12px;bottom:12px;display:flex;gap:8px;z-index:3}
+#root .pkpl-tb{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-width:50px;padding:0 16px;background:rgba(18,22,15,.86);cursor:pointer;white-space:nowrap}
+.pkpl-tb[hidden]{display:none}
+.pkpl-tb svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.pkpl-amtag{position:absolute;left:12px;top:12px;max-width:calc(100% - 190px);z-index:3;display:flex;align-items:center;gap:4px;min-height:44px;padding:0 4px 0 14px;border-radius:6px;background:#FBF4E4;color:#12160F;font:800 14px/1.2 'Bricolage Grotesque',system-ui,sans-serif;box-shadow:0 2px 10px rgba(0,0,0,.4)}
+.pkpl-amtag[hidden]{display:none}
+.pkpl-amtag button{width:44px;height:44px;border:0;background:transparent;color:#12160F;font-size:24px;line-height:1;cursor:pointer}
+.pkpl-hovtag{position:absolute;left:0;top:0;z-index:4;padding:6px 10px;border-radius:6px;background:rgba(18,22,15,.92);color:var(--pl-cream);pointer-events:none;white-space:nowrap;box-shadow:0 2px 10px rgba(0,0,0,.4)}
+.pkpl-hovtag[hidden]{display:none}
+.pkpl-hovtag b{display:block;font:400 18px/1.05 'Pickathon 2014',sans-serif;text-transform:uppercase;letter-spacing:.02em}
+.pkpl-hovtag small{display:block;margin-top:2px;font:800 10.5px/1.2 'Bricolage Grotesque',system-ui,sans-serif;font-stretch:75%;letter-spacing:.12em;text-transform:uppercase;color:#D6B54A}
+/* Find */
+.pkpl-find{position:absolute;inset:0;z-index:6;display:flex;flex-direction:column;background:rgba(18,22,15,.97);touch-action:pan-y}
+.pkpl-find[hidden]{display:none}
+.pkpl-fbar{display:flex;gap:8px;padding:12px}
+.pkpl-fbar input{flex:1;min-width:0;min-height:48px;padding:0 14px;border-radius:6px;border:1px solid rgba(242,237,227,.5);background:#1A2017;color:var(--pl-cream);font:600 16px/1.2 'Bricolage Grotesque',system-ui,sans-serif;outline:none}
+.pkpl-fbar input:focus{border-color:#F2B33D}
+.pkpl-fbar button{flex:none;width:48px;height:48px;border-radius:6px;border:1px solid rgba(242,237,227,.5);background:transparent;color:var(--pl-cream);font-size:26px;line-height:1;cursor:pointer}
+.pkpl-fres{flex:1;overflow-y:auto;padding:0 12px 20px}
+#root #pkpl .pkpl-fg{margin:14px 4px 6px;font:800 12px/1.2 'Bricolage Grotesque',system-ui,sans-serif;font-stretch:75%;letter-spacing:.14em;text-transform:uppercase;color:#D6B54A;max-width:none}
+.pkpl-fres button{display:flex;align-items:center;gap:12px;width:100%;min-height:52px;padding:6px 6px;border:0;border-bottom:1px solid #2F372A;background:transparent;color:var(--pl-cream);text-align:left;cursor:pointer;font:inherit}
+.pkpl-fres button img{flex:none;width:34px;height:34px;object-fit:contain}
+.pkpl-fres button span{min-width:0}
+.pkpl-fres b{display:block;font:800 16px/1.2 'Bricolage Grotesque',system-ui,sans-serif}
+.pkpl-fres small{display:block;margin-top:1px;font-size:13px;color:var(--pl-mute)}
+#root #pkpl .pkpl-fnone{margin:20px 6px;color:var(--pl-mute);max-width:none}
+
+/* ---------- the sheet top (#pkpl-top) ---------- */
+#pkpl-top,#pkpl-top *{box-sizing:border-box}
+#pkpl-top{display:block;position:relative;z-index:1}
+.pkpl-sheet{position:relative;background:#2B2628;color:#F2EDE3;border-radius:16px 16px 0 0;box-shadow:0 -6px 22px rgba(0,0,0,.45);overflow:hidden}
+.pkpl-grab{position:absolute;left:0;right:0;top:0;height:22px;z-index:4;display:flex;justify-content:center;align-items:center;pointer-events:none}
+.pkpl-grab i{display:block;width:40px;height:5px;border-radius:3px;background:rgba(242,237,227,.85);box-shadow:0 1px 4px rgba(0,0,0,.5)}
+.pkpl-hero{position:relative;height:clamp(250px,40svh,340px);overflow:hidden;background:#1E2A1B;touch-action:pan-y}
+.pkpl-hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;max-width:none;opacity:0;transition:opacity 1.1s ease}
+.pkpl-hero>img.on{opacity:1}
+.pkpl-shade{position:absolute;left:0;right:0;bottom:0;height:70%;background:linear-gradient(180deg,rgba(18,22,15,0) 0%,rgba(18,22,15,.6) 50%,rgba(18,22,15,.92) 100%);pointer-events:none}
+.pkpl-shade::before{content:"";position:absolute;left:0;right:0;bottom:100%;height:60px;background:linear-gradient(0deg,rgba(18,22,15,0),rgba(18,22,15,.28));transform:translateY(-100%)}
+.pkpl-hi{position:absolute;left:0;right:0;bottom:0;padding:0 16px 36px;z-index:2;pointer-events:none}
+#root #pkpl-top .pkpl-kind{margin:0 0 6px;font:800 12.5px/1.2 'Bricolage Grotesque',system-ui,sans-serif;font-stretch:75%;letter-spacing:.14em;text-transform:uppercase;color:#9FCB8A;max-width:none}
+.pkpl-nmrow{display:flex;align-items:center;gap:10px;min-width:0}
+.pkpl-nmrow img{flex:none;width:46px;height:46px;object-fit:contain;max-width:none}
+#root #pkpl-top .pkpl-nmrow h1{margin:0;min-width:0;font-family:'Pickathon 2014',sans-serif!important;font-weight:400!important;font-size:clamp(36px,10.5vw,52px)!important;line-height:.95!important;letter-spacing:.02em;text-transform:uppercase;color:#F2EDE3;overflow-wrap:anywhere;max-width:none}
+#root #pkpl-top .pkpl-tt{margin:6px 0 0;font:700 17px/1.25 'Bricolage Grotesque',system-ui,sans-serif;color:#F2CF62;max-width:none}
+.pkpl-arr{position:absolute;top:34%;z-index:3;width:44px;height:44px;margin-top:-22px;border:0;border-radius:50%;background:rgba(18,22,15,.42);color:#F2EDE3;display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0}
+.pkpl-arr svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+.pkpl-arr.l{left:6px}.pkpl-arr.r{right:6px}
+.pkpl-dots{position:absolute;left:0;right:0;bottom:-6px;z-index:3;display:flex;justify-content:center}
+.pkpl-dots button{width:44px;height:44px;padding:0;border:0;background:transparent;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.pkpl-dots i{display:block;width:6px;height:6px;border-radius:50%;background:rgba(242,237,227,.45)}
+.pkpl-dots [aria-current] i{background:#F2EDE3}
+#root #pkpl-top .pkpl-hook{margin:0;padding:14px 16px 4px;font:500 17px/1.45 'Bricolage Grotesque',system-ui,sans-serif;color:#DCD6C9;max-width:none}
+#root #pkpl-top .pkpl-from{margin:0;padding:12px 16px 0;font:700 15px/1.35 'Bricolage Grotesque',system-ui,sans-serif;color:#F2B33D;max-width:none}
+/* schedule posted: the next sets lead, shorter hero, no hook line */
+.pkpl-has .pkpl-hero{height:clamp(190px,24svh,220px)}
+.pkpl-sc{padding:12px 16px 4px}
+.pkpl-days{display:flex;gap:8px;overflow-x:auto;margin:0 -16px;padding:0 16px 2px}
+#root #pkpl-top .pkpl-chip{flex:none;min-height:44px;min-width:64px;padding:0 14px}
+#root #pkpl-top .pkpl-chip[aria-pressed="true"]{background:#F2EDE3;color:#12160F;border-color:#F2EDE3}
+.pkpl-sets{list-style:none;margin:10px 0 0;padding:0}
+.pkpl-sets li{display:flex;align-items:baseline;gap:12px;min-height:48px;padding:8px 0;border-bottom:1px solid #4A4245}
+.pkpl-st{flex:none;width:68px;font:800 15px/1.2 'Bricolage Grotesque',system-ui,sans-serif;color:#9FCB8A;font-variant-numeric:tabular-nums}
+.pkpl-sa{min-width:0}
+.pkpl-sa b{display:block;font:800 17px/1.2 'Bricolage Grotesque',system-ui,sans-serif;color:#F2EDE3}
+.pkpl-sa small{display:block;margin-top:2px;font-size:13px;color:#B9B3A6}
+#root #pkpl-top .pkpl-whole{width:100%;margin-top:12px}
+
+/* ---------- phone and portrait tablet ---------- */
+/* Places tab: the map fills the phone scroller */
+body.pkpl-on:not(.pkpl-hood):not(.pkpl-wide) #pk-scroll-phone{overflow:hidden!important;position:relative}
+body.pkpl-on:not(.pkpl-hood) #pk-scroll-phone>:not(#pkpl):not(style):not([aria-label="Cookie choices"]){display:none!important}
+body.pkpl-on:not(.pkpl-hood) #pk-scroll-phone>#pkpl{position:absolute;inset:0}
+body.pkpl-on:not(.pkpl-hood) #pkpl .pkpl-map{height:100%}
+/* a neighborhood: the map stays put behind; the page scrolls over it as a sheet */
+body.pkpl-hood:not(.pkpl-wide) #pk-scroll-phone{scroll-behavior:auto}
+body.pkpl-hood:not(.pkpl-wide) #pkpl{position:sticky;top:0;height:0;overflow:visible}
+body.pkpl-hood:not(.pkpl-wide) #pkpl-sp{display:block;height:calc(var(--pkpl-vh,600px) - 118px);pointer-events:none}
+body.pkpl-hood:not(.pkpl-wide) #pk-scroll-phone>:not(#pkpl):not(#pkpl-sp):not(#pkpl-top):not(style){position:relative;z-index:1;background:#2B2628}
+body.pkpl-hood .pk-hd-hero{display:none!important}
+body.pkpl-hood .pk-hd-w{display:flex;flex-direction:column;padding-top:4px}
+body.pkpl-hood #root .pk-hd-w>.pk-hd-cols{order:0}
+body.pkpl-hood #root .pk-hd-w>.pk-hd-desc0{order:1;margin-top:22px}   /* the hook is the short description; the long one follows the video */
+body.pkpl-hood .pk-hd-links>li:first-child{display:none}   /* no map link at the bottom (rulebook) */
+body.pkpl-hood .pk-hd-vid{margin-top:16px}
+body.pkpl-on [aria-label="Listen"]{display:none!important}
+#pkpl-sp{display:none}
+@media (min-width:700px) and (max-width:1199px){
+  .pkpl-hero{height:clamp(300px,34svh,380px)}
+  .pkpl-hi{padding:0 24px 32px}
+  .pkpl-em{width:48px;height:48px;margin:-24px 0 0 -24px}
+}
+
+/* ---------- sideways tablet and desktop: panel on the left, map on the right ---------- */
+body.pkpl-wide.pkpl-on:not(.pkpl-hood) #pk-scroll-desk>:not(#pkpl):not(style):not([aria-label="Cookie choices"]){display:none!important}
+body.pkpl-wide.pkpl-on:not(.pkpl-hood) #pk-scroll-desk>#pkpl{height:var(--pkpl-vh)}
+body.pkpl-wide.pkpl-on:not(.pkpl-hood) #pk-scroll-desk,body.pkpl-wide.pkpl-on:not(.pkpl-hood)~footer{min-height:0}
+body.pkpl-wide.pkpl-hood #pkpl{position:sticky;top:var(--pkpl-hd,0px);height:0;overflow:visible;z-index:2}
+body.pkpl-wide.pkpl-hood #pkpl .pkpl-map{left:auto;right:0;width:55%}
+body.pkpl-wide.pkpl-hood #pk-scroll-desk>:not(#pkpl):not(style),body.pkpl-wide.pkpl-hood #pk-scroll-phone>:not(#pkpl):not(style){width:45%;max-width:45%;margin-left:0!important;margin-right:0!important}
+body.pkpl-wide.pkpl-hood #pk-scroll-phone>:not(#pkpl):not(style){position:relative;z-index:1}
+body.pkpl-wide .pkpl-sheet{border-radius:0;box-shadow:none}
+body.pkpl-wide .pkpl-grab{display:none}
+body.pkpl-wide .pkpl-hero{height:clamp(300px,42vh,420px)}
+body.pkpl-wide .pkpl-hi{padding:0 32px 36px}
+body.pkpl-wide.pkpl-hood .pk-hd-w{padding-left:32px;padding-right:32px}
+body.pkpl-wide.pkpl-hood .pk-hd-cols{display:block}
+body.pkpl-wide.pkpl-hood .pk-hd-who{display:block!important}
+body.pkpl-wide.pkpl-hood .pk-hd-yc{flex:0 0 78%!important}
+body.pkpl-wide #root #pkpl-top .pkpl-hook,body.pkpl-wide #root #pkpl-top .pkpl-from{padding-left:32px;padding-right:32px}
+body.pkpl-wide .pkpl-sc{padding-left:32px;padding-right:32px}
+body.pkpl-wide .pkpl-days{margin:0 -32px;padding:0 32px 2px}
+body.pkpl-wide .pkpl-em{width:48px;height:48px;margin:-24px 0 0 -24px}
+body.pkpl-wide .pkpl-title{right:auto;bottom:0;width:min(46%,560px);padding:48px 40px;background:linear-gradient(90deg,rgba(18,22,15,.92) 0%,rgba(18,22,15,.8) 70%,rgba(18,22,15,0) 100%);display:flex;flex-direction:column;justify-content:center}
+body.pkpl-wide #root #pkpl .pkpl-d{font-size:clamp(44px,4.6vw,72px)!important}
+body.pkpl-wide #root #pkpl .pkpl-l{font-size:19px}
+body.pkpl-wide .pkpl-find{left:auto;width:420px;border-left:1px solid #2F372A}
+@media (hover:hover){.pkpl-arr:hover{background:rgba(18,22,15,.7)}}
+@media (prefers-reduced-motion:reduce){.pkpl-hero>img,.pkpl-title,.pkpl-tiles img{transition:none}}
+body.pkpl-hood .pkpl-tools{top:12px;bottom:auto}   /* on a neighborhood the sheet or the dev bar can cover the bottom */
+@media (max-width:699px){#root .pkpl-tbf{padding:0;width:50px}.pkpl-tbf span{display:none}}
+.pkpl-amtag span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+body.pkpl-on:not(.pkpl-hood) .pkpl-amtag{top:auto;bottom:66px;max-width:calc(100% - 24px)}
+.pkpl-has .pkpl-arr{top:26px;margin-top:0}
+body.pkpl-hood .pk-g1-pill{display:none!important}   /* rulebook: no gold Watch pills; the white play ring stays on the video */
+#root #pkpl-top .pkpl-chip,#root #pkpl-top .pkpl-whole{border-radius:6px!important}
+.pkpl-has .pkpl-arr{top:10px}
+@media (max-width:399px) and (max-height:780px){.pkpl-hero{height:228px}.pkpl-has .pkpl-hero{height:176px}#root #pkpl-top .pkpl-nmrow h1{font-size:34px!important}}   /* 360x740 is tight (addendum 3) */
+body.pkpl-wide.pkpl-hood #root .pk-hd-colL,body.pkpl-wide.pkpl-hood #root .pk-hd-colR{display:block!important;width:auto!important;grid-template-columns:none!important}
+body.pkpl-wide.pkpl-hood #root .pk-hd-colL>*{width:auto!important;max-width:none!important}
+body.pkpl-hood #root .pk-hd-desc0.pkpl-dup{display:none!important}   /* the long description says the same as the hook */
+.pkpl-hi.pkpl-tok .pkpl-base{visibility:hidden}
+#root#root#root#root#root#root#root#root .pkpl-tb{min-height:50px!important;height:50px}
+@media (min-width:1200px){#root#root#root#root#root#root#root#root .pkpl-tb{min-height:56px!important;height:56px}}
+</style>
+<script id="pk-places">
+/* pk-places: Places map and neighborhood pages, round 1 (Nov 13 2026). Source: tools/places_r1/places.js, spliced into index.html by tools/places_r1/build.py.
+   Design: Dropbox _catalogs/design_note_map_neighborhoods_direction_nov12_full.md + addendum, addendum2, addendum3 (Zale, Nov 12 2026).
+   Drawn into islands the app's renderer leaves alone (data-pk-own):
+     #pkpl      the map (Places tab and every neighborhood page). One map node lives for the whole visit and moves between islands, so zoom and place survive a page change.
+     #pkpl-sp   phone and portrait tablet: the see-through space above the sheet (the map shows through it; touches there go to the map)
+     #pkpl-top  the top of the sheet / panel: grab bar, hero photos, kind, name, title, hook, and the schedule when one is posted
+   The rest of the neighborhood page (video, This summer, Who built it, year by year, who played, a day here) is the app's own neighborhood page, restyled as the sheet by places.css.
+   The old map (farmmap/lab-phone.html) stays for the past-year Time Machine and at ?old=places. No timers: layout runs on load, resize and the app's render. */
+(function () {
+  'use strict';
+  var HH = {"size":[2041,3810],"shapes":{"woods":"M1730,1220 1726,1224 1725,1236 1721,1240 1702,1245 1687,1244 1679,1250 1664,1254 1652,1263 1636,1295 1633,1324 1636,1336 1636,1350 1644,1358 1647,1367 1665,1386 1666,1396 1670,1399 1682,1401 1707,1422 1707,1434 1709,1436 1743,1434 1749,1436 1757,1446 1778,1446 1790,1449 1845,1412 1861,1383 1883,1324 1868,1312 1861,1303 1850,1298 1829,1281 1825,1268 1824,1241 1817,1229 1813,1229 1813,1242 1808,1249 1778,1250 1768,1240 1749,1236 1745,1232 1745,1227 1741,1221Z","paddock":"M1284,2639 1280,2639 1275,2650 1274,2673 1270,2677 1264,2677 1223,2643 1189,2635 1180,2636 1176,2632 1174,2619 1166,2616 1158,2606 1145,2605 1113,2572 1027,2634 1002,2682 990,2697 989,2710 929,2743 893,2779 879,2816 860,2879 856,2909 842,2917 846,2989 849,2991 916,2993 954,2990 976,2983 982,2984 1001,2966 1015,2964 1018,2960 1018,2949 1034,2933 1054,2932 1060,2927 1060,2905 1064,2901 1070,2901 1088,2917 1096,2917 1125,2884 1124,2870 1121,2867 1125,2852 1136,2846 1153,2847 1158,2841 1158,2807 1173,2796 1173,2771 1182,2755 1188,2755 1192,2759 1189,2771 1213,2772 1215,2771 1213,2762 1220,2757 1236,2763 1262,2766 1278,2763 1296,2752 1305,2723 1295,2704 1295,2696 1292,2691 1294,2681 1290,2673 1291,2664 1288,2658 1289,2651Z","cherryhill":"M1358,2184 1344,2192 1294,2239 1314,2264 1321,2317 1321,2329 1308,2352 1308,2360 1312,2365 1312,2410 1318,2421 1331,2430 1414,2433 1436,2429 1450,2415 1446,2400 1445,2382 1450,2360 1458,2342 1458,2318 1463,2312 1472,2309 1480,2285 1494,2272 1497,2266 1496,2245 1485,2233 1486,2204 1471,2202 1467,2198 1467,2190 1464,2188 1391,2182Z","grove":"M1305,2358 1295,2362 1292,2380 1282,2394 1221,2425 1190,2427 1188,2439 1175,2448 1175,2469 1171,2473 1158,2473 1154,2469 1154,2461 1148,2462 1115,2547 1112,2569 1139,2596 1154,2584 1163,2582 1169,2583 1173,2587 1173,2595 1176,2598 1189,2598 1199,2591 1206,2595 1237,2595 1241,2592 1241,2583 1245,2579 1251,2579 1269,2589 1350,2666 1355,2668 1368,2649 1389,2629 1395,2629 1400,2633 1408,2632 1430,2609 1430,2602 1441,2596 1445,2583 1444,2571 1452,2564 1459,2472 1456,2436 1452,2421 1449,2419 1438,2429 1414,2434 1336,2432 1329,2430 1317,2421 1311,2410 1311,2365Z","windmill":"M909,2446 900,2446 887,2454 838,2465 804,2487 763,2471 734,2465 729,2466 723,2473 723,2478 743,2508 769,2617 770,2630 760,2657 792,2728 771,2806 822,2856 843,2915 851,2913 855,2909 861,2872 883,2801 893,2777 929,2742 975,2715 987,2712 989,2697 1001,2682 1022,2639 1031,2630 1111,2572 1114,2547 1030,2514 1026,2510 1026,2501 1020,2494 1010,2495 1007,2500 1007,2508 1002,2513 985,2519 957,2507 953,2503 953,2493 948,2488 939,2488 934,2492 928,2492 914,2468 914,2452Z","galaxy":"M957,3071 957,3123 953,3127 944,3129 944,3159 971,3161 976,3168 976,3188 986,3191 1005,3192 1023,3177 1051,3176 1074,3193 1095,3193 1126,3189 1125,3128 1115,3126 1111,3122 1110,3070 1050,3067 1046,3069 960,3069Z","lucky":"M907,2994 847,2993 847,3091 840,3096 829,3096 824,3101 824,3125 820,3129 816,3255 812,3259 796,3262 717,3263 717,3360 943,3362 948,3315 940,3304 940,3284 952,3270 954,3247 952,3208 956,3204 968,3203 974,3199 975,3168 968,3161 950,3161 943,3156 943,3129 938,3127 894,3127 887,3122 887,3033 907,2999Z","farmhouse":"M1375,3294 1357,3281 1334,3281 1324,3286 1311,3302 1310,3315 1306,3319 1298,3320 1290,3328 1283,3323 1282,3275 1273,3272 1263,3273 1256,3268 1256,3225 1141,3225 1141,3235 1202,3237 1206,3241 1205,3266 1198,3271 1163,3271 1162,3274 1169,3286 1169,3293 1130,3331 1130,3339 1137,3358 1146,3366 1142,3381 1135,3390 1135,3409 1128,3414 917,3413 918,3549 924,3551 1192,3554 1194,3398 1201,3393 1282,3393 1289,3383 1311,3382 1320,3376 1399,3376 1399,3361 1370,3361 1363,3356 1363,3352 1373,3343 1382,3329 1382,3309Z","curation":"M440,3545 430,3560 427,3574 426,3691 429,3706 443,3727 463,3739 499,3742 539,3742 543,3740 623,3741 644,3732 651,3733 651,3727 662,3713 668,3695 668,3576 662,3557 650,3543 641,3536 623,3529 473,3528 454,3534Z","refuge":"M1913,1946 1858,1926 1820,1919 1775,1918 1739,1924 1739,1934 1735,1938 1727,1940 1723,1958 1722,2008 1727,2034 1728,2083 1716,2155 1732,2186 1791,2187 1789,2148 1794,2143 1912,2112 1916,2109 1921,2012 1917,1994 1918,1984Z","coyote":"M1166,2062 1174,2099 1238,2178 1292,2238 1296,2237 1344,2191 1359,2183 1391,2181 1457,2186 1468,2192 1469,2201 1487,2201 1487,2192 1494,2176 1494,2155 1505,2148 1529,2088 1533,2084 1542,2083 1545,2080 1545,2055 1540,2049 1531,2049 1523,2054 1492,2052 1451,2027 1395,2021 1389,2016 1388,2010 1384,2007 1375,2007 1364,2017 1255,2006 1201,2018 1179,2038 1178,2046Z","market":"M1678,2051 1546,2056 1546,2079 1542,2083 1531,2085 1507,2145 1495,2155 1495,2176 1488,2192 1486,2233 1497,2245 1498,2266 1495,2272 1482,2283 1474,2307 1470,2311 1462,2313 1459,2318 1459,2342 1447,2373 1447,2400 1457,2436 1460,2472 1453,2562 1445,2571 1445,2585 1442,2591 1442,2617 1445,2620 1468,2620 1519,2663 1520,2667 1536,2676 1550,2676 1572,2668 1642,2668 1634,2287 1643,2254 1647,2250 1659,2247 1662,2242 1662,2214 1656,2205 1665,2167 1669,2163 1681,2162 1685,2158 1685,2123 1675,2115 1682,2055Z","orchard":"M949,3319 944,3362 971,3365 983,3383 1129,3386 1135,3388 1139,3385 1146,3369 1136,3358 1130,3345 1129,3331 1148,3312 1083,3304 1071,3290 1054,3279 1026,3280 1019,3284 1004,3302 990,3304 988,3309 976,3319Z","welcomelot":"M1789,3524 1783,3532 1776,3550 1775,3655 1778,3683 1786,3698 1796,3708 1809,3716 1826,3720 1967,3720 1992,3712 2008,3697 2018,3672 2018,3555 2009,3531 1994,3516 1972,3507 1824,3506 1805,3512Z","quailtrail":"M1822,1429 1790,1450 1778,1447 1759,1447 1752,1442 1752,1439 1748,1439 1765,1511 1765,1529 1761,1537 1761,1563 1764,1566 1776,1567 1780,1571 1790,1622 1790,1668 1782,1730 1774,1764 1754,1801 1723,1832 1706,1830 1700,1837 1700,1854 1678,1883 1668,1904 1660,1931 1657,1953 1658,1997 1670,2049 1678,2051 1682,2055 1676,2117 1686,2123 1686,2144 1712,2152 1716,2148 1727,2083 1726,2034 1721,2008 1722,1958 1725,1944 1738,1935 1737,1917 1748,1899 1806,1846 1829,1815 1835,1815 1848,1823 1873,1823 1882,1818 1895,1802 1895,1773 1890,1763 1871,1749 1858,1749 1851,1744 1859,1712 1857,1645 1841,1568 1824,1430Z","southcamp":"M1439,3448 1431,3442 1429,3433 1425,3431 1395,3431 1391,3434 1390,3441 1383,3446 1330,3446 1323,3441 1323,3429 1317,3423 1287,3423 1279,3428 1271,3423 1239,3423 1235,3427 1235,3438 1231,3442 1195,3444 1193,3551 1186,3556 1057,3554 1050,3549 1054,3538 1054,3529 1049,3522 1023,3523 1020,3527 1020,3540 1023,3548 1016,3553 924,3552 917,3547 916,3443 900,3441 874,3442 868,3440 750,3440 739,3438 737,3439 732,3721 740,3724 860,3724 864,3726 884,3724 892,3726 922,3725 926,3727 943,3725 947,3727 982,3726 993,3728 1010,3726 1014,3728 1044,3727 1057,3729 1071,3727 1076,3729 1105,3728 1113,3730 1131,3728 1137,3730 1197,3729 1201,3731 1317,3731 1321,3733 1347,3731 1351,3733 1380,3732 1396,3734 1408,3732 1412,3734 1434,3733 1435,3717 1433,3700 1436,3657 1437,3489 1439,3486 1437,3457Z","willowcamp":"M1531,3524 1521,3540 1517,3558 1517,3667 1523,3690 1538,3708 1551,3716 1568,3720 1706,3720 1719,3718 1734,3712 1750,3697 1760,3671 1760,3555 1751,3531 1736,3516 1714,3507 1566,3506 1547,3512Z","courtyard":"M952,3206 955,3240 953,3270 941,3284 941,3304 944,3310 954,3318 973,3319 980,3316 992,3303 1005,3301 1020,3282 1029,3278 1056,3279 1070,3288 1081,3303 1140,3310 1151,3309 1169,3292 1159,3268 1146,3252 1135,3232 1134,3209 1128,3202 1127,3193 1075,3194 1051,3177 1025,3177 1016,3182 1007,3192 983,3192 978,3190 976,3191 976,3200 972,3204Z","wildcamp":"M1622,54 1612,55 1603,64 1574,36 1553,32 1532,37 1501,49 1440,81 1420,84 1399,77 1368,78 1351,83 1323,98 1288,92 1271,92 1246,97 1225,105 1213,103 1193,75 1189,65 1178,52 1170,48 1134,47 1089,31 1055,26 1017,32 997,40 974,43 944,39 935,35 925,41 910,39 906,42 908,48 924,49 928,47 937,56 969,197 969,255 961,276 941,307 898,352 879,368 830,399 780,422 647,475 609,484 550,486 392,457 387,452 387,439 384,437 380,438 378,446 368,453 366,482 373,500 388,514 400,520 406,527 406,532 396,552 396,581 401,596 414,619 432,639 459,658 479,667 527,675 550,687 554,691 554,697 542,707 526,708 522,716 521,728 469,780 443,819 423,867 416,874 397,885 368,911 364,912 348,907 334,909 314,929 314,963 328,996 345,1017 389,1044 410,1060 434,1085 455,1102 455,1108 447,1117 438,1118 411,1103 392,1085 368,1067 346,1061 330,1061 305,1070 289,1093 283,1111 284,1134 302,1175 302,1182 307,1194 310,1223 301,1317 302,1363 307,1406 319,1461 339,1518 344,1526 348,1547 390,1561 395,1566 399,1594 456,1659 502,1695 529,1727 554,1767 577,1810 587,1844 638,1918 640,1929 638,1966 632,1972 621,1973 602,1989 592,1988 585,1981 574,1977 555,1978 546,1982 535,1995 535,2004 538,2010 543,2012 554,2025 561,2028 569,2038 578,2043 597,2061 597,2068 602,2079 606,2080 612,2088 622,2127 632,2184 633,2198 629,2203 631,2216 635,2221 638,2240 653,2250 658,2245 671,2211 750,2116 787,2042 806,1979 809,1947 808,1850 803,1813 788,1743 783,1695 781,1545 769,1500 771,1424 778,1373 784,1351 796,1326 835,1288 880,1253 928,1205 975,1133 997,1091 1001,1034 1020,968 1095,852 1130,815 1168,791 1278,730 1317,701 1425,665 1462,643 1482,619 1527,541 1579,472 1586,459 1586,447 1597,437 1619,385 1638,348 1669,297 1664,272 1656,259 1661,235 1665,229 1664,153 1659,96 1650,86 1631,79 1626,74 1627,60Z","lushcamp":"M603,2247 603,2285 633,2285 636,2279 636,2252 634,2247 627,2245 607,2245ZM1668,302 1659,313 1620,385 1599,435 1587,447 1586,461 1580,472 1528,541 1483,619 1462,644 1425,666 1317,702 1278,731 1168,792 1133,814 1096,852 1024,962 1019,973 1002,1034 998,1091 976,1133 929,1205 880,1254 835,1289 797,1326 785,1351 779,1373 772,1424 770,1500 782,1545 784,1695 789,1743 804,1813 809,1850 810,1947 807,1979 788,2042 751,2116 672,2211 650,2270 654,2330 688,2416 721,2472 734,2464 763,2470 801,2485 806,2485 836,2465 891,2452 899,2446 907,2445 915,2452 915,2468 927,2492 931,2495 938,2488 949,2488 954,2493 955,2505 985,2518 1006,2510 1007,2498 1011,2494 1018,2493 1026,2499 1028,2512 1114,2545 1142,2474 1149,2469 1157,2473 1173,2472 1174,2449 1187,2440 1187,2430 1191,2426 1219,2425 1284,2392 1291,2380 1292,2366 1303,2359 1321,2327 1312,2262 1237,2178 1173,2099 1165,2062 1177,2046 1178,2038 1187,2032 1198,2018 1254,2005 1367,2017 1374,2007 1382,2006 1389,2011 1392,2020 1451,2026 1491,2051 1525,2053 1530,2049 1538,2048 1547,2054 1623,2053 1669,2048 1656,1989 1656,1953 1662,1917 1677,1883 1699,1854 1700,1835 1708,1829 1720,1833 1753,1801 1773,1764 1781,1730 1788,1679 1789,1622 1778,1568 1767,1567 1760,1562 1762,1549 1760,1537 1764,1529 1764,1511 1746,1437 1724,1435 1718,1438 1710,1437 1706,1433 1706,1421 1682,1402 1669,1399 1665,1395 1664,1386 1646,1367 1642,1356 1635,1350 1635,1336 1632,1329 1635,1295 1650,1265 1657,1258 1668,1251 1680,1249 1689,1243 1702,1244 1725,1238 1724,1227 1729,1220 1740,1220 1746,1227 1746,1234 1767,1239 1776,1249 1801,1249 1810,1245 1811,1216 1804,1182 1803,1157 1773,1101 1774,1093 1780,1085 1793,1055 1800,1025 1801,971 1793,932 1782,904 1746,852 1711,824 1694,816 1684,806 1685,793 1706,776 1720,751 1722,720 1717,705 1710,695 1710,679 1701,671 1686,669 1649,643 1643,635 1644,623 1640,616 1631,615 1623,624 1616,624 1585,607 1560,589 1558,554 1578,535 1612,515 1656,495 1688,460 1691,438 1696,429 1703,394 1696,383 1689,361 1678,341 1671,304Z"},"pts":{"woods":[82.999,33.675],"paddock":[50.661,74.619],"cherryhill":[65.36,62.021],"grove":[69.77,68.32],"windmill":[41.842,68.32],"galaxy":[53.601,80.919],"lucky":[41.842,86.168],"farmhouse":[56.541,87.218],"curation":[24.204,96.667],"refuge":[87.408,51.522],"coyote":[60.951,54.672],"courtyard":[59.481,81.969],"market":[75.649,66.22],"orchard":[38.902,83.018],"welcomelot":[88.878,96.667],"lushcamp":[54.483,37.454],"quailtrail":[75.649,38.924],"southcamp":[47.722,93.517],"wildcamp":[35.963,13.202],"willowcamp":[75.649,96.667]},"prev":{"cherryhill":[{"i":"i/r35-cherryhill-2.jpg","p":"50% 50%","by":"Brooke Hoyer","y":"2025"},{"i":"i/p615.jpg","p":"45% 50%","by":"Andy Meeks","y":"2026"},{"i":"i/r35-cherryhill-1.jpg","p":"55% 50%","by":"Mark Stein","y":"2023"},{"i":"i/pk-cherryhill-s5.jpg","p":"91% 50%","by":"","y":""},{"i":"i/pk-cherryhill-n5.jpg","p":"4% 50%","by":"Norman Eder","y":""}],"courtyard":[{"i":"i/r35-courtyard-2.jpg","p":"60% 50%","by":"Brooke Hoyer","y":"2026"},{"i":"i/r35-courtyard-1.jpg","p":"50% 50%","by":"Mark Stein","y":"2025"},{"i":"i/pk-courtyard-20.jpg","p":"91% 50%","by":"Graeme Harrison","y":"2025"},{"i":"i/p558.jpg","p":"49% 50%","by":"Dylan VanWeelden","y":"2026"},{"i":"i/p540.jpg","p":"53% 50%","by":"Andy Meeks","y":"2026"}],"coyote":[{"i":"i/pk-coyote-04.jpg","p":"60% 50%","by":"","y":""},{"i":"i/r35-coyote-2.jpg","p":"30% 50%","by":"Andy Meeks","y":"2026"},{"i":"i/r35-coyote-4.jpg","p":"85% 50%","by":"Andy Meeks","y":"2025"},{"i":"i/p442.jpg","p":"33% 50%","by":"Todd Stern","y":"2026"},{"i":"i/r35-coyote-1.jpg","p":"60% 50%","by":"Andy Meeks","y":"2026"}],"curation":[{"i":"i/p757.jpg","p":"12% 50%","by":"","y":""},{"i":"i/r35-curation-1.jpg","p":"33% 50%","by":"Tim LaBarge","y":"2017"},{"i":"i/p583.jpg","p":"28% 50%","by":"","y":"2022"},{"i":"i/r3b-hood-curation-1.jpg","p":"20% 50%","by":"Rob Kerr","y":""},{"i":"i/p487.jpg","p":"19% 50%","by":"Heather Binns","y":"2026"}],"farmhouse":[{"i":"i/pk-farmhouse-24.jpg","p":"60% 50%","by":"Andy Meeks","y":""},{"i":"i/pk-farmhouse-20.jpg","p":"43% 50%","by":"Norm Eder","y":"2026"},{"i":"i/pk-farmhouse-22.jpg","p":"10% 50%","by":"Norm Eder","y":"2026"},{"i":"i/pk-farmhouse-07.jpg","p":"50% 50%","by":"Rob Kerr","y":""},{"i":"i/pk-farmhouse-25.jpg","p":"33% 50%","by":"Norm Eder","y":""}],"galaxy":[{"i":"i/pk-gx-94.jpg","p":"50% 50%","by":"","y":"2026"},{"i":"i/pk-galaxy-09.jpg","p":"72% 50%","by":"Norm Eder","y":""},{"i":"i/pk-galaxy-gel1.jpg","p":"11% 50%","by":"Dylan VanWeelden","y":"2023"},{"i":"i/pk-go-53.jpg","p":"34% 50%","by":"Dylan VanWeelden","y":""},{"i":"i/pk-galaxy-m2.jpg","p":"0% 50%","by":"Melissa Dismuke","y":"2022"}],"grove":[{"i":"i/r35-grove-1.jpg","p":"30% 50%","by":"Andy Meeks","y":"2026"},{"i":"i/p715.jpg","p":"55% 50%","by":"Graeme Harrison","y":"2026"},{"i":"i/r35-grove-2.jpg","p":"50% 50%","by":"Andy Meeks","y":"2025"},{"i":"i/r3-home-grove.jpg","p":"51% 50%","by":"","y":""},{"i":"i/p9007.jpg","p":"50% 50%","by":"","y":""}],"lucky":[{"i":"i/pk-lucky-08.jpg","p":"34% 50%","by":"Jaime Delacruz","y":""},{"i":"i/pk-pb-lucky-2025-1.jpg","p":"50% 50%","by":"Andy Meeks","y":"2025"},{"i":"i/r3-home-lucky.jpg","p":"87% 50%","by":"","y":""},{"i":"i/p9644.jpg","p":"45% 50%","by":"Andy Meeks","y":"2026"},{"i":"i/pk-lucky-04.jpg","p":"85% 50%","by":"Todd Stern","y":""}],"lushcamp":[{"i":"i/r3-home-lushcamp.jpg","p":"64% 50%","by":"","y":""},{"i":"i/r3b-hood-lushcamp-1.jpg","p":"43% 50%","by":"Norm Eder","y":""},{"i":"i/pk-lushcamp-04.jpg","p":"50% 50%","by":"Mark Stein","y":""},{"i":"i/r3b-hood-lushcamp-2.jpg","p":"32% 50%","by":"Brooke Hoyer","y":""},{"i":"i/pk-lushcamp-01.jpg","p":"50% 50%","by":"Norm Eder","y":""}],"market":[{"i":"i/p656.jpg","p":"50% 50%","by":"","y":""},{"i":"i/r35-market-1.jpg","p":"82% 50%","by":"Erin Riddle","y":"2024"},{"i":"i/pk-market-01.jpg","p":"50% 50%","by":"Andy Meeks","y":""},{"i":"i/pk-market-09.jpg","p":"44% 50%","by":"","y":""},{"i":"i/p584.jpg","p":"20% 50%","by":"Andy Meeks","y":"2026"}],"orchard":[{"i":"i/p523.jpg","p":"35% 50%","by":"Andy Meeks","y":"2026"},{"i":"i/r3b-hood-orchard-1.jpg","p":"50% 50%","by":"Mark Stein","y":""},{"i":"i/r3b-hood-orchard-2.jpg","p":"80% 50%","by":"Erin Riddle","y":""},{"i":"i/p781.jpg","p":"62% 50%","by":"Andy Meeks","y":"2026"},{"i":"i/pk-orchard-21.jpg","p":"2% 50%","by":"Todd Stern","y":"2022"}],"paddock":[{"i":"i/pk-paddock-01.jpg","p":"85% 50%","by":"Justin Kent","y":""},{"i":"i/r35-paddock-1.jpg","p":"26% 50%","by":"Andy Meeks","y":"2026"},{"i":"i/pk-pb-paddock-2025-1.jpg","p":"51% 50%","by":"Dylan VanWeelden","y":"2025"},{"i":"i/pk-paddock-c11.jpg","p":"58% 50%","by":"Ken Pappanduros","y":"2026"},{"i":"i/r3-home-paddock.jpg","p":"55% 50%","by":"","y":""}],"quailtrail":[{"i":"i/pk-quailtrail-01.jpg","p":"50% 50%","by":"Brud Giles","y":""},{"i":"i/pk-quailtrail-02.jpg","p":"50% 50%","by":"","y":""},{"i":"i/p694.jpg","p":"50% 50%","by":"Mark Stein","y":"2023"},{"i":"i/pk-quailtrail-03.jpg","p":"50% 50%","by":"Joe Duquette","y":""},{"i":"i/pk-quailtrail-06.jpg","p":"50% 50%","by":"Mark Stein","y":""}],"refuge":[{"i":"i/r35-refuge-1.jpg","p":"50% 50%","by":"Andy Meeks","y":"2026"},{"i":"i/p665.jpg","p":"12% 50%","by":"Jaime Delacruz","y":"2026"},{"i":"i/r35-refuge-2.jpg","p":"50% 50%","by":"Andy Meeks","y":"2026"},{"i":"i/pk-refuge-15.jpg","p":"97% 50%","by":"Brooke Hoyer","y":""},{"i":"i/r35-refuge-3.jpg","p":"44% 50%","by":"Andy Meeks","y":"2026"}],"southcamp":[{"i":"i/r3b-hood-southcamp-2.jpg","p":"56% 50%","by":"Rob Kerr","y":""},{"i":"i/r3b-hood-southcamp-1.jpg","p":"66% 50%","by":"Brooke Hoyer","y":""}],"welcomelot":[{"i":"i/p708.jpg","p":"12% 50%","by":"Andy Meeks","y":"2026"},{"i":"i/p773.jpg","p":"11% 50%","by":"Rob Kerr","y":"2026"},{"i":"i/r3-hood-welcomelot.jpg","p":"82% 50%","by":"","y":""},{"i":"i/p494.jpg","p":"60% 50%","by":"Rob Kerr","y":"2024"},{"i":"i/pk-welcomelot-05.jpg","p":"40% 50%","by":"Rob Kerr","y":""}],"wildcamp":[{"i":"i/pk-wildcamp-09.jpg","p":"64% 50%","by":"Norm Eder","y":""},{"i":"i/r3-hood-wildcamp.jpg","p":"50% 50%","by":"","y":""},{"i":"i/p446.jpg","p":"65% 50%","by":"","y":"2025"},{"i":"i/r3b-hood-wildcamp-1.jpg","p":"9% 50%","by":"Miri Stebivka","y":""},{"i":"i/pk-wildcamp-08.jpg","p":"50% 50%","by":"Mark Stein","y":""}],"willowcamp":[{"i":"i/r3b-hood-willowcamp-1.jpg","p":"73% 50%","by":"Liz Devine","y":""},{"i":"i/68.jpg","p":"64% 50%","by":"Bill Purcell","y":""}],"windmill":[{"i":"i/pk-windmill-h1.jpg","p":"40% 50%","by":"","y":""},{"i":"i/r35-windmill-1.jpg","p":"50% 50%","by":"Mark Stein","y":"2023"},{"i":"i/r35-windmill-2.jpg","p":"47% 50%","by":"Andy Meeks","y":"2026"},{"i":"i/pk-windmill-n5.jpg","p":"66% 50%","by":"Norm Eder","y":"2023"},{"i":"i/r35-windmill-3.jpg","p":"53% 50%","by":"Andy Meeks","y":"2026"}],"woods":[{"i":"i/p467.jpg","p":"72% 50%","by":"","y":""},{"i":"i/r3-home-woods.jpg","p":"38% 50%","by":"","y":""},{"i":"i/r35-woods-1.jpg","p":"50% 50%","by":"Andy Meeks","y":"2025"},{"i":"i/pk-pb-woods-2024-3.jpg","p":"38% 50%","by":"Norm Eder","y":"2024"},{"i":"i/p500.jpg","p":"45% 50%","by":"Rob Kerr","y":"2026"}]}};   /* tools/home_r2/hoods_home.json: shapes, pin points and the photo director's preview photos with crops */
+  if (!HH) return;
+  var W = HH.size[0], H = HH.size[1], TF = 4898 / 2041, TS = 1024 / TF;   /* farmmap/t/<col>_<row>.webp: the full-detail map in 1024px tiles (4898 x 9144) */
+  var KIND = { stage: 'Stage neighborhood', around: 'Gathering neighborhood', camp: 'Camping neighborhood' };
+  var ORDER = ['woods', 'paddock', 'cherryhill', 'grove', 'windmill', 'galaxy', 'lucky', 'farmhouse', 'curation', 'refuge', 'coyote', 'courtyard', 'market', 'orchard', 'welcomelot', 'lushcamp', 'quailtrail', 'southcamp', 'wildcamp', 'willowcamp'];
+  var CORE = ['woods', 'refuge', 'coyote', 'cherryhill', 'market', 'grove', 'windmill', 'paddock', 'galaxy', 'courtyard'];   /* desktop start: Woods down to the Courtyard (addendum 3) */
+  var AMEN = { restroom: ['Restrooms', 'restroom.webp'], water: ['Water', 'water.webp'], bar: ['Bars', 'bar.webp'], food: ['Food', 'food.webp'], coffee: ['Coffee', 'coffee.webp'], craft: ['Craft', 'craft.webp'], shower: ['Showers', 'shower.webp'], atm: ['ATMs', 'atm.webp'], kids: ['Kids', 'kids.svg'], shuttle: ['Shuttle', 'shuttle.webp'], access: ['Accessible', 'access.webp'], medical: ['Medical', 'medical.webp'], info: ['Info', 'info.webp'], charge: ['Charging', 'charge.webp'], merch: ['Merch', 'merch.webp'], ice: ['Ice', 'ice.webp'], dishes: ['Dish return', 'dishes.webp'], bike: ['Bike parking', 'bike.webp'], massage: ['Massage', 'massage.webp'], smoke: ['Smoking', 'smoke.webp'] };
+  var HERO_MS = 5000;
+
+  /* ---------- helpers ---------- */
+  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+  function $(s, r) { return (r || document).querySelector(s); }
+  function $$(s, r) { return [].slice.call((r || document).querySelectorAll(s)); }
+  function app() { return window.comp || window.__pkApp || null; }
+  function site() { var a = app(); return (a && a.state) || window.__pkSt || {}; }
+  function data() { return site().data || null; }
+  function top() { var s = site().stack || []; return s[s.length - 1] || {}; }
+  function go(r, x) { var a = app(); if (a && a.go) a.go(r, x || {}); }
+  function wide() { return window.innerWidth >= 1200 || (window.innerWidth >= 900 && window.innerWidth > window.innerHeight); }   /* desktop and sideways tablet: panel on the left, map on the right */
+  function touch() { return !!(window.matchMedia && matchMedia('(hover: none)').matches); }
+  function calm() { return !!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches); }
+  function ids() { var D = data(); return ORDER.filter(function (k) { return D && D.hoods[k] && HH.shapes[k]; }); }
+  function pt(k) { var p = HH.pts[k] || (data().hoods[k] || {}).p || [50, 50]; return [p[0] / 100 * W, p[1] / 100 * H]; }
+  var BOX = {};
+  function box(k) {   /* the shape's bounds in map units */
+    if (BOX[k]) return BOX[k];
+    var n = String(HH.shapes[k] || '').match(/-?\d+(\.\d+)?/g) || [], x0 = 1e9, y0 = 1e9, x1 = -1e9, y1 = -1e9;
+    for (var i = 0; i + 1 < n.length; i += 2) { var x = +n[i], y = +n[i + 1]; if (x < x0) x0 = x; if (x > x1) x1 = x; if (y < y0) y0 = y; if (y > y1) y1 = y; }
+    if (x0 > x1) { var p = pt(k); x0 = p[0] - 60; x1 = p[0] + 60; y0 = p[1] - 60; y1 = p[1] + 60; }
+    return (BOX[k] = [x0, y0, x1, y1]);
+  }
+  function union(L) { var b = [1e9, 1e9, -1e9, -1e9]; L.forEach(function (k) { var x = box(k); b = [Math.min(b[0], x[0]), Math.min(b[1], x[1]), Math.max(b[2], x[2]), Math.max(b[3], x[3])]; }); return b; }
+  function emb(k) { var h = data().hoods[k] || {}; return h.icw || ('ic2/' + k + '.png'); }   /* the white emblems Home uses */
+  function stageHood() { var D = data(), m = {}; (D.stages || []).forEach(function (s) { m[s.id] = s.h; }); return m; }
+
+  /* ---------- the map ---------- */
+  var M = null;   /* one map for the whole visit */
+  function makeMap() {
+    var el = document.createElement('div'); el.className = 'pkpl-map'; el.setAttribute('role', 'region'); el.setAttribute('aria-label', 'Farm map');
+    var shapes = ids().map(function (k) { return '<path class="pkpl-sh" data-h="' + k + '" d="' + HH.shapes[k] + '"/>'; }).join('');
+    el.innerHTML =
+      '<div class="pkpl-world"><img class="pkpl-base" src="farmmap/map.webp?v=33" alt="" draggable="false" decoding="async"><div class="pkpl-tiles"></div>' +
+      '<svg class="pkpl-svg" viewBox="0 0 ' + W + ' ' + H + '" preserveAspectRatio="none" aria-hidden="true">' +
+      '<defs><filter id="pkpl-glow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="9" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>' +
+      '<path class="pkpl-veil" fill-rule="evenodd" d=""/><g class="pkpl-shs">' + shapes + '</g><path class="pkpl-lit" d=""/><path class="pkpl-hov" d=""/></svg></div>' +
+      '<div class="pkpl-pins"></div><div class="pkpl-am"></div>' +
+      '<div class="pkpl-title" aria-hidden="false"><p class="pkpl-k">Pickathon Neighborhoods</p><h1 class="pkpl-d">A Temporary City of Wonder</h1><p class="pkpl-l">Tap any neighborhood to explore</p></div>' +
+      '<div class="pkpl-tools"><button type="button" class="pk-cta sec pkpl-tb" data-pl="find" aria-label="Find a place, an act or water, food and more"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5 21 21"/></svg><span>Find</span></button>' +
+      '<button type="button" class="pk-cta sec pkpl-tb pkpl-tbf" data-pl="full" aria-label="Full map" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg><span aria-hidden="true">Full map</span></button></div>' +
+      '<div class="pkpl-amtag" hidden><span></span><button type="button" data-pl="amclear" aria-label="Clear">×</button></div>' +
+      '<div class="pkpl-hovtag" hidden><b></b><small></small></div>';
+    var pins = $('.pkpl-pins', el);
+    pins.innerHTML = ids().map(function (k) { var h = data().hoods[k]; return '<button type="button" class="pkpl-em" data-h="' + k + '" aria-label="' + esc(h.n + ', ' + (KIND[h.k] || '')) + '"><img src="' + esc(emb(k)) + '" alt="" draggable="false"></button><span class="pkpl-nm" data-n="' + k + '">' + esc(h.n) + '</span>'; }).join('');
+    M = { el: el, world: $('.pkpl-world', el), tiles: $('.pkpl-tiles', el), svg: $('.pkpl-svg', el), pins: pins, s: 0, tx: 0, ty: 0, vw: 0, vh: 0, loaded: {}, done: {}, need: [], cur: '', hov: '', title: true, amen: '', anim: 0 };
+    gestures(el);
+    return M;
+  }
+  function minS() { return Math.min(M.vw / W, M.vh / H); }
+  function maxS() { return 2.6 * TF / (window.devicePixelRatio || 1); }
+  function clampView(s, tx, ty) {   /* keep some map on screen */
+    s = Math.max(minS() * 0.9, Math.min(maxS(), s));
+    var mw = W * s, mh = H * s, pad = 60;
+    tx = mw <= M.vw ? Math.min(Math.max(tx, -mw * 0.25), M.vw - mw * 0.75) : Math.min(pad, Math.max(M.vw - mw - pad, tx));
+    ty = mh <= M.vh ? Math.min(Math.max(ty, -mh * 0.25), M.vh - mh * 0.75) : Math.min(pad, Math.max(M.vh - mh - pad, ty));
+    return [s, tx, ty];
+  }
+  function apply(s, tx, ty) {
+    var c = clampView(s, tx, ty); M.s = c[0]; M.tx = c[1]; M.ty = c[2];
+    M.world.style.transform = 'translate(' + M.tx + 'px,' + M.ty + 'px) scale(' + M.s + ')';
+    placePins(); tiles();
+  }
+  function fitBox(b, reg, pad, keepS) {   /* region in map-box px {x,y,w,h} */
+    pad = pad == null ? 24 : pad;
+    var s = keepS || Math.min((reg.w - pad * 2) / (b[2] - b[0]), (reg.h - pad * 2) / (b[3] - b[1]));
+    s = Math.max(minS() * 0.9, Math.min(maxS(), s));
+    var cx = (b[0] + b[2]) / 2, cy = (b[1] + b[3]) / 2;
+    return [s, reg.x + reg.w / 2 - cx * s, reg.y + reg.h / 2 - cy * s];
+  }
+  function animTo(v, ms) {
+    cancelAnimationFrame(M.anim);
+    if (!M.s || calm() || ms === 0) { apply(v[0], v[1], v[2]); return; }
+    var a = [M.s, M.tx, M.ty], t0 = 0, dur = ms || 520;
+    var ease = function (u) { return 1 - Math.pow(1 - u, 3); };
+    (function f(t) { if (!t0) t0 = t; var u = Math.min(1, (t - t0) / dur), e = ease(u);
+      var s = Math.exp(Math.log(a[0]) + (Math.log(v[0]) - Math.log(a[0])) * e);
+      /* interpolate the map point at the region's centre so the zoom feels anchored */
+      var cx0 = (M.vw / 2 - a[1]) / a[0], cy0 = (M.vh / 2 - a[2]) / a[0], cx1 = (M.vw / 2 - v[1]) / v[0], cy1 = (M.vh / 2 - v[2]) / v[0];
+      var cx = cx0 + (cx1 - cx0) * e, cy = cy0 + (cy1 - cy0) * e;
+      apply(s, M.vw / 2 - cx * s, M.vh / 2 - cy * s);
+      if (u < 1) M.anim = requestAnimationFrame(f); })(performance.now());
+  }
+  function tiles() {
+    var dpr = window.devicePixelRatio || 1, on = M.s * dpr > 1.0;
+    M.el.classList.toggle('pkpl-hi', on); if (!on) return;
+    var x0 = -M.tx / M.s, y0 = -M.ty / M.s, x1 = x0 + M.vw / M.s, y1 = y0 + M.vh / M.s, need = [];
+    for (var c = Math.max(0, Math.floor(x0 / TS)); c <= Math.min(4, Math.floor(x1 / TS)); c++) for (var r = Math.max(0, Math.floor(y0 / TS)); r <= Math.min(8, Math.floor(y1 / TS)); r++) {
+      var k = c + '_' + r; need.push(k); if (M.loaded[k]) continue; M.loaded[k] = 1;
+      var im = document.createElement('img'); im.alt = ''; im.draggable = false; im.decoding = 'async';
+      im.style.cssText = 'left:' + (c * TS) + 'px;top:' + (r * TS) + 'px;width:' + ((c === 4 ? 802 : 1024) / TF) + 'px;height:' + ((r === 8 ? 952 : 1024) / TF) + 'px';
+      im.onload = function () { this.classList.add('on'); M.done[this._k] = 1; tok(); }; im._k = k;
+      im.src = 'farmmap/t/' + k + '.webp?v=33'; M.tiles.appendChild(im);
+    }
+    M.need = need; tok();
+  }
+  function tok() { M.el.classList.toggle('pkpl-tok', !!(M.need && M.need.length && M.need.every(function (k) { return M.done[k]; }))); }   /* full detail is in: the coarse base steps aside */
+  /* emblems: the tap targets while zoomed out; the picked place shows its own ground (no emblem on it). Names show past the first zoom (phone, tablet) or on hover (desktop). */
+  function placePins() {
+    var named = !wide() && M.s > minS() * 1.9, amen = !!M.amen;
+    var L = $$('.pkpl-em', M.pins), N = $$('.pkpl-nm', M.pins);
+    for (var i = 0; i < L.length; i++) {
+      var k = L[i].getAttribute('data-h'), p = pt(k), x = M.tx + p[0] * M.s, y = M.ty + p[1] * M.s;
+      var off = x < -40 || y < -40 || x > M.vw + 40 || y > M.vh + 40, hide = k === M.cur || amen || off;
+      L[i].style.transform = 'translate(' + Math.round(x) + 'px,' + Math.round(y) + 'px)';
+      L[i].hidden = hide; L[i].tabIndex = hide ? -1 : 0;
+      var n = N[i]; n.style.transform = 'translate(' + Math.round(x) + 'px,' + Math.round(y) + 'px)'; n.hidden = hide || !named || x < 60 || x > M.vw - 60 || y > M.vh - 30;   /* no clipped names at the edges */
+    }
+  }
+  function layout() {   /* on load, resize and every render: size the map to its box */
+    if (!M || !M.el.isConnected) return;
+    var r = M.el.getBoundingClientRect(), w = Math.round(r.width), h = Math.round(r.height);
+    if (!w || !h) return;
+    if (w === M.vw && h === M.vh && M.s) return;
+    var had = !!M.s; M.vw = w; M.vh = h;
+    if (!had) { home(true); return; }
+    if (M.cur) frame(M.cur, true); else apply(M.s, M.tx, M.ty);
+  }
+  function startView() {   /* desktop and sideways tablet: the festival core fills the width (the full farm is a narrow strip); phone: the whole farm */
+    if (!wide()) return fitBox([0, 0, W, H], { x: 0, y: 0, w: M.vw, h: M.vh }, 8);
+    var b = union(CORE), s = M.vw / 1700;   /* the farm's own width (map units 280-1980) fills the screen */
+    return [s, M.vw / 2 - 1130 * s, M.vh / 2 - (b[1] + b[3]) / 2 * s];
+  }
+  function home(now) { M.cur = ''; lit(); animTo(startView(), now ? 0 : 520); }
+  /* the visible part of the map (phone: above the sheet) */
+  function region() {
+    if (wide() || top().r !== 'hood') return { x: 0, y: 0, w: M.vw, h: M.vh };
+    return { x: 0, y: 0, w: M.vw, h: Math.max(160, Math.round(M.vh * 0.4)) };
+  }
+  function frame(k, now) {   /* first pick zooms in; another pick while zoomed keeps the zoom and centres */
+    var zoomed = M.s > minS() * 1.9 && M.cur && M.cur !== k;
+    var v = fitBox(box(k), region(), wide() ? 70 : 22, zoomed ? M.s : 0);
+    if (!zoomed) v[0] = Math.min(v[0], wide() ? 1.15 : 1.7), v = fitBox(box(k), region(), 0, v[0]);   /* close enough to see the place, with its neighbors around it */
+    M.cur = k; lit(); animTo(v, now ? 0 : 560);
+  }
+  function lit() {
+    var k = M.cur, d = k ? HH.shapes[k] : '';
+    $('.pkpl-veil', M.svg).setAttribute('d', k ? 'M-4000,-4000H' + (W + 4000) + 'V' + (H + 4000) + 'H-4000Z ' + d : '');
+    $('.pkpl-lit', M.svg).setAttribute('d', d);
+    $$('.pkpl-sh', M.svg).forEach(function (p) { p.classList.toggle('on', p.getAttribute('data-h') === k); });
+    M.el.classList.toggle('pkpl-picked', !!k);
+    var full = $('[data-pl="full"]', M.el); if (full) full.hidden = !k && !M.amen && !(M.s > startView()[0] * 1.15);
+    placePins();
+  }
+  function hover(k, x, y) {
+    if (k === M.hov) { if (k) moveTag(x, y); return; }
+    M.hov = k; var p = $('.pkpl-hov', M.svg); p.setAttribute('d', k && k !== M.cur ? HH.shapes[k] : '');
+    $$('.pkpl-em', M.pins).forEach(function (b) { b.classList.toggle('hov', b.getAttribute('data-h') === k); });
+    var t = $('.pkpl-hovtag', M.el); if (!k || k === M.cur) { t.hidden = true; return; }
+    var h = data().hoods[k]; $('b', t).textContent = h.n; $('small', t).textContent = KIND[h.k] || ''; t.hidden = false; moveTag(x, y);
+  }
+  function moveTag(x, y) { var t = $('.pkpl-hovtag', M.el); t.style.transform = 'translate(' + Math.round(Math.min(x + 16, M.vw - t.offsetWidth - 8)) + 'px,' + Math.round(Math.max(8, y - 44)) + 'px)'; }
+
+  /* taps, drags, pinches and the wheel */
+  function gestures(el) {
+    var P = {}, start = null, moved = false, lastTap = 0;
+    function pts() { return Object.keys(P).map(function (k) { return P[k]; }); }
+    function rel(e) { var r = el.getBoundingClientRect(); return [e.clientX - r.left, e.clientY - r.top]; }
+    el.addEventListener('pointerdown', function (e) {
+      if (e.target.closest('.pkpl-tools,.pkpl-amtag,.pkpl-find')) return;
+      if (e.pointerType === 'mouse' && e.button !== 0) return;
+      P[e.pointerId] = rel(e); cancelAnimationFrame(M.anim);
+      var q = pts(); start = { s: M.s, tx: M.tx, ty: M.ty, p: q.map(function (a) { return a.slice(); }), t: Date.now() }; if (q.length === 1) moved = false;
+      document.body.classList.add('pkpl-drag');
+    });
+    el.addEventListener('pointermove', function (e) {
+      if (!P[e.pointerId]) { if (e.pointerType === 'mouse' && !touch()) { var hp = e.target.closest && e.target.closest('[data-h]'); var r = rel(e); hover(hp ? hp.getAttribute('data-h') : '', r[0], r[1]); } return; }
+      P[e.pointerId] = rel(e); var q = pts(); if (!start) return;
+      if (q.length === 1 && start.p.length === 1) {
+        var dx = q[0][0] - start.p[0][0], dy = q[0][1] - start.p[0][1];
+        if (!moved && Math.abs(dx) + Math.abs(dy) < 8) return; moved = true;
+        apply(start.s, start.tx + dx, start.ty + dy);
+      } else if (q.length >= 2 && start.p.length >= 2) {
+        moved = true;
+        var d0 = Math.hypot(start.p[0][0] - start.p[1][0], start.p[0][1] - start.p[1][1]) || 1, d1 = Math.hypot(q[0][0] - q[1][0], q[0][1] - q[1][1]);
+        var c0 = [(start.p[0][0] + start.p[1][0]) / 2, (start.p[0][1] + start.p[1][1]) / 2], c1 = [(q[0][0] + q[1][0]) / 2, (q[0][1] + q[1][1]) / 2];
+        var s = start.s * d1 / d0, mx = (c0[0] - start.tx) / start.s, my = (c0[1] - start.ty) / start.s;
+        apply(s, c1[0] - mx * s, c1[1] - my * s);
+      }
+    });
+    function up(e) {
+      if (!P[e.pointerId]) return; delete P[e.pointerId];
+      var q = pts(); if (q.length) { start = { s: M.s, tx: M.tx, ty: M.ty, p: q.map(function (a) { return a.slice(); }), t: Date.now() }; return; }
+      document.body.classList.remove('pkpl-drag');
+      if (moved) { el._drag = Date.now(); lit(); return; }
+      if (e.type === 'pointercancel') return;
+      var r = rel(e), now = Date.now();
+      if (now - lastTap < 320 && !e.target.closest('[data-h]')) { lastTap = 0; zoomAt(r, 2); return; }   /* double tap on open ground zooms in */
+      lastTap = now;
+    }
+    el.addEventListener('pointerup', up); el.addEventListener('pointercancel', up);
+    el.addEventListener('pointerleave', function (e) { if (e.pointerType === 'mouse') hover(''); });
+    el.addEventListener('click', function (e) {
+      if (el._drag && Date.now() - el._drag < 300) { e.stopPropagation(); e.preventDefault(); return; }
+      var b = e.target.closest('[data-pl]'); if (b) { tool(b.getAttribute('data-pl'), b); return; }
+      var a = e.target.closest('.pkpl-amdot'); if (a) return;
+      var h = e.target.closest('[data-h]');
+      if (M.title) { M.title = false; M.el.classList.add('pkpl-notitle'); if (!h) return; }   /* the title screen holds until a click on the map or an icon */
+      if (!h) return;
+      tap(h.getAttribute('data-h'), e.target.closest('.pkpl-em'));
+    }, true);
+    el.addEventListener('wheel', function (e) { e.preventDefault(); var r = rel(e); zoomAt(r, Math.exp(-e.deltaY * (e.deltaMode ? 0.05 : 0.0022))); }, { passive: false });
+    el.addEventListener('keydown', function (e) { if (e.target.closest('.pkpl-em,[data-pl],.pkpl-find')) return; var k = e.key, st = 80;
+      if (k === '+' || k === '=') zoomAt([M.vw / 2, M.vh / 2], 1.4); else if (k === '-') zoomAt([M.vw / 2, M.vh / 2], 1 / 1.4);
+      else if (/^Arrow/.test(k)) apply(M.s, M.tx + (k === 'ArrowLeft' ? st : k === 'ArrowRight' ? -st : 0), M.ty + (k === 'ArrowUp' ? st : k === 'ArrowDown' ? -st : 0)); else return; e.preventDefault(); });
+  }
+  function zoomAt(c, f) { var s = Math.max(minS() * 0.9, Math.min(maxS(), M.s * f)), mx = (c[0] - M.tx) / M.s, my = (c[1] - M.ty) / M.s; apply(s, c[0] - mx * s, c[1] - my * s); lit(); }
+  /* a tap on a crowded cluster zooms into the cluster first (fingers can't hit small shapes) */
+  function tap(k, isEm) {
+    if (isEm && !wide()) {
+      var p = pt(k), near = ids().filter(function (j) { if (j === M.cur) return false; var q = pt(j); return Math.hypot((q[0] - p[0]) * M.s, (q[1] - p[1]) * M.s) < 46; });
+      if (near.length > 1) { var b = union(near), m = 30 / M.s; animTo(fitBox([b[0] - m, b[1] - m, b[2] + m, b[3] + m], region(), 40), 520); return; }
+    }
+    open(k);
+  }
+  function open(k) { if (top().r === 'hood' && top().h === k) { frame(k); return; } go('hood', { h: k }); }
+  function tool(a) {
+    if (a === 'full') { M.amen = ''; amenDraw(); if (top().r === 'hood') { go('hoods'); return; } M.title = true; M.el.classList.remove('pkpl-notitle'); home(); return; }   /* Full map: the whole start view with the title back */
+    if (a === 'find') { findOpen(); return; }
+    if (a === 'amclear') { M.amen = ''; amenDraw(); lit(); return; }
+  }
+
+  /* ---------- amenities (from Find) ---------- */
+  function amenDraw() {
+    var box = $('.pkpl-am', M.el), tag = $('.pkpl-amtag', M.el), D = data(), L = (M.amen && D.amen && D.amen[M.amen]) || [];
+    box.innerHTML = L.map(function (p) { return '<span class="pkpl-amdot" data-x="' + p[0] + '" data-y="' + p[1] + '"><img src="amen/' + AMEN[M.amen][1] + '" alt=""></span>'; }).join('');
+    tag.hidden = !M.amen; if (M.amen) $('span', tag).textContent = AMEN[M.amen][0] + ' · ' + L.length + ' on the farm';
+    amenPlace();
+  }
+  function amenPlace() { $$('.pkpl-amdot', M.el).forEach(function (d) { var x = M.tx + (+d.getAttribute('data-x')) / 100 * W * M.s, y = M.ty + (+d.getAttribute('data-y')) / 100 * H * M.s; d.style.transform = 'translate(' + Math.round(x) + 'px,' + Math.round(y) + 'px)'; }); }
+  var placePins0 = placePins; placePins = function () { placePins0(); amenPlace(); };
+
+  /* ---------- Find: neighborhoods, acts and amenities in one box ---------- */
+  var ACTS = null;
+  function actIndex() {
+    if (ACTS) return ACTS; var D = data(), m = {}, HP = D.hoodProg || {}, SH = stageHood();
+    Object.keys(HP).forEach(function (k) { (HP[k].kinds || []).forEach(function (g) { (g[1] || []).forEach(function (a) { var n = a[0], y = (a[1] || [])[0]; if (!n) return; var o = m[n] || (m[n] = { n: n, h: {}, y: 0 }); o.h[k] = Math.max(o.h[k] || 0, y || 0); o.y = Math.max(o.y, y || 0); }); }); });
+    (D.sets || []).forEach(function (s) { var A = (D.artists || {})[s.a], k = SH[s.st]; if (!A || !k) return; var o = m[A.n] || (m[A.n] = { n: A.n, h: {}, y: 0 }); var y = +String(s.d || s.s).slice(0, 4); o.h[k] = Math.max(o.h[k] || 0, y); o.y = Math.max(o.y, y); });
+    ACTS = Object.keys(m).map(function (n) { var o = m[n], best = Object.keys(o.h).sort(function (a, b) { return o.h[b] - o.h[a]; })[0]; return { n: n, h: best, y: o.h[best], f: fold(n) }; });
+    return ACTS;
+  }
+  function fold(s) { return String(s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/^the /, ''); }
+  function findOpen() {
+    var f = $('.pkpl-find', M.el);
+    if (!f) { f = document.createElement('div'); f.className = 'pkpl-find'; f.setAttribute('role', 'dialog'); f.setAttribute('aria-label', 'Find');
+      f.innerHTML = '<div class="pkpl-fbar"><input type="text" inputmode="search" placeholder="A place, an act, water…" aria-label="Find a place, an act or an amenity" autocomplete="off" enterkeyhint="search"><button type="button" data-pl="fclose" aria-label="Close Find">×</button></div><div class="pkpl-fres"></div>';
+      M.el.appendChild(f);
+      var inp = $('input', f); inp.addEventListener('input', function () { findDraw(inp.value); });
+      f.addEventListener('click', function (e) { e.stopPropagation(); var b = e.target.closest('button'); if (!b) return; var a = b.getAttribute('data-pl');
+        if (a === 'fclose') { f.hidden = true; return; }
+        var t = b.getAttribute('data-ft'), v = b.getAttribute('data-fv'); f.hidden = true;
+        if (M.title) { M.title = false; M.el.classList.add('pkpl-notitle'); }
+        if (t === 'h') open(v); else if (t === 'a') { var o = actIndex().filter(function (x) { return x.n === v; })[0]; if (o) { FROM = o; open(o.h); } } else if (t === 'm') { M.amen = v; amenDraw(); lit(); var L = (data().amen || {})[v] || []; if (L.length) { var bx = [1e9, 1e9, -1e9, -1e9]; L.forEach(function (p) { var x = p[0] / 100 * W, y = p[1] / 100 * H; bx = [Math.min(bx[0], x), Math.min(bx[1], y), Math.max(bx[2], x), Math.max(bx[3], y)]; }); animTo(fitBox([bx[0] - 60, bx[1] - 60, bx[2] + 60, bx[3] + 60], region(), 30), 520); } } });
+      f.addEventListener('keydown', function (e) { if (e.key === 'Escape') { f.hidden = true; } });
+    }
+    f.hidden = false; var i = $('input', f); i.value = ''; findDraw(''); setTimeout(function () { try { i.focus({ preventScroll: true }); } catch (x) {} }, 30);
+  }
+  function findDraw(q) {
+    var f = $('.pkpl-find', M.el), out = $('.pkpl-fres', f), D = data(), Q = fold(q).trim();
+    var hs = ids().filter(function (k) { return !Q || fold(D.hoods[k].n).indexOf(Q) >= 0 || fold(D.hoods[k].t).indexOf(Q) >= 0; });
+    var am = Object.keys(AMEN).filter(function (k) { return (D.amen || {})[k] && (D.amen[k] || []).length && (!Q || fold(AMEN[k][0]).indexOf(Q) >= 0 || fold(k).indexOf(Q) >= 0); });
+    var ac = Q.length >= 2 ? actIndex().filter(function (a) { return a.f.indexOf(Q) >= 0; }).sort(function (a, b) { return (a.f.indexOf(Q) - b.f.indexOf(Q)) || (b.y - a.y) || (a.n < b.n ? -1 : 1); }).slice(0, 8) : [];
+    var g = function (h, L) { return L.length ? '<p class="pkpl-fg">' + h + '</p>' + L.join('') : ''; };
+    out.innerHTML =
+      g('Neighborhoods', hs.slice(0, Q ? 6 : 20).map(function (k) { var h = D.hoods[k]; return '<button type="button" data-ft="h" data-fv="' + k + '"><img src="' + esc(emb(k)) + '" alt=""><span><b>' + esc(h.n) + '</b><small>' + esc(KIND[h.k] || '') + '</small></span></button>'; })) +
+      g('On the farm', am.map(function (k) { return '<button type="button" data-ft="m" data-fv="' + k + '"><img src="amen/' + AMEN[k][1] + '" alt=""><span><b>' + AMEN[k][0] + '</b><small>' + (D.amen[k] || []).length + ' on the farm</small></span></button>'; })) +
+      g('Acts', ac.map(function (a) { return '<button type="button" data-ft="a" data-fv="' + esc(a.n) + '"><img src="' + esc(emb(a.h)) + '" alt=""><span><b>' + esc(a.n) + '</b><small>' + esc(D.hoods[a.h].n + ' · Pickathon ' + a.y) + '</small></span></button>'; }));
+    if (!out.innerHTML) out.innerHTML = '<p class="pkpl-fnone">Nothing by that name yet.</p>';
+  }
+  var FROM = null;   /* the act a Find pick came from (shown on the sheet) */
+
+  /* ---------- the sheet / panel top ---------- */
+  function photos(k) {
+    var D = data(), h = D.hoods[k] || {}, L = (HH.prev[k] || []).map(function (e) { return { i: e.i, p: e.p }; });
+    (h.hr || []).forEach(function (e) { if (L.length < 5 && !L.some(function (x) { return x.i === e.i; })) L.push({ i: e.i, p: k === 'woods' || !h.hip ? '50% 50%' : h.hip }); });
+    if (!L.length && h.hi) L.push({ i: h.hi, p: h.hip || '50% 50%' });
+    return L.slice(0, 5);
+  }
+  function sched(k) {   /* the posted schedule for this place (current festival year), by day */
+    var D = data(), SH = stageHood(), Y = String(D.year || ''), out = {};
+    (D.sets || []).forEach(function (s) { if (SH[s.st] !== k || String(s.d || s.s).slice(0, 4) !== Y) return; (out[s.d] = out[s.d] || []).push(s); });
+    Object.keys(out).forEach(function (d) { out[d].sort(function (a, b) { return a.s < b.s ? -1 : 1; }); });
+    return out;
+  }
+  function tm(s) { var m = String(s || '').match(/(\d\d):(\d\d)/); if (!m) return ''; var h = +m[1], ap = h >= 12 ? 'pm' : 'am'; h = h % 12 || 12; return h + (m[2] !== '00' ? ':' + m[2] : '') + ' ' + ap; }
+  var LBL = { music: 'Music', djs: 'DJ', family: 'Family', wellness: 'Wellness', comedy: 'Comedy', literary: 'Literary', curation: 'Curation', food: 'Food', craft: 'Craft' };
+  var TOP = { k: '', day: '', all: false, i: 0, timer: 0 };
+  function drawTop() {
+    var el = document.getElementById('pkpl-top'); if (!el) return;
+    var t = top(), k = t.h, D = data(); if (!k || !D.hoods[k]) { el.innerHTML = ''; return; }
+    var h = D.hoods[k], season = site().season || 'off', S = (season === 'sched' || season === 'fest') ? sched(k) : {}, days = Object.keys(S).sort(), has = days.length > 0;
+    if (TOP.k !== k) { TOP.k = k; TOP.all = false; TOP.i = 0; TOP.day = days[0] || ''; if (FROM && FROM.h !== k) FROM = null; }
+    if (days.indexOf(TOP.day) < 0) TOP.day = days[0] || '';
+    var ph = photos(k), L = ids(), j = L.indexOf(k), prev = L[(j - 1 + L.length) % L.length], next = L[(j + 1) % L.length];
+    var key = k + '|' + has + '|' + TOP.day + '|' + TOP.all + '|' + (FROM ? FROM.n : '') + '|' + wide();
+    if (el._key === key) return; el._key = key;
+    var dayN = {}; (D.days || []).forEach(function (d) { dayN[d.id] = d.n; });
+    var rows = has ? S[TOP.day] : [], showN = TOP.all ? rows.length : 3;
+    var html = '<div class="pkpl-sheet' + (has ? ' pkpl-has' : '') + '">' +
+      '<div class="pkpl-grab" aria-hidden="true"><i></i></div>' +
+      '<div class="pkpl-hero" aria-roledescription="carousel" aria-label="' + esc(h.n) + ' photos">' +
+      ph.map(function (p, i) { return '<img src="' + esc(p.i) + '" alt="" style="object-position:' + esc(p.p) + '"' + (i === 0 ? ' class="on"' : ' loading="lazy"') + ' draggable="false">'; }).join('') +
+      '<div class="pkpl-shade" aria-hidden="true"></div>' +
+      '<button type="button" class="pkpl-arr l" data-pk="step" data-to="' + prev + '" aria-label="Previous place: ' + esc(D.hoods[prev].n) + '"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5 8 12l7 7"/></svg></button>' +
+      '<button type="button" class="pkpl-arr r" data-pk="step" data-to="' + next + '" aria-label="Next place: ' + esc(D.hoods[next].n) + '"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>' +
+      (ph.length > 1 ? '<div class="pkpl-dots" role="group" aria-label="Photos">' + ph.map(function (p, i) { return '<button type="button" data-pk="dot" data-i="' + i + '" aria-label="Photo ' + (i + 1) + ' of ' + ph.length + '"' + (i === 0 ? ' aria-current="true"' : '') + '><i></i></button>'; }).join('') + '</div>' : '') +
+      '<div class="pkpl-hi"><p class="pkpl-kind">' + esc(KIND[h.k] || '') + '</p><div class="pkpl-nmrow"><img src="' + esc(emb(k)) + '" alt=""><h1>' + esc(h.n) + '</h1></div><p class="pkpl-tt">' + esc(h.t || '') + '</p></div>' +
+      '</div>' +
+      (FROM ? '<p class="pkpl-from">' + esc(FROM.n) + ' played ' + esc(h.n) + ' at Pickathon ' + FROM.y + '</p>' : '') +
+      (has ? '' : '<p class="pkpl-hook">' + esc(h.hook || '') + '</p>') +
+      (has ? '<section class="pkpl-sc" aria-label="Schedule at ' + esc(h.n) + '"><div class="pkpl-days" role="group" aria-label="Day">' + days.map(function (d) { return '<button type="button" class="pk-cta sec pkpl-chip" data-pk="day" data-d="' + d + '"' + (d === TOP.day ? ' aria-pressed="true"' : ' aria-pressed="false"') + '>' + esc(dayN[d] || d.slice(5)) + '</button>'; }).join('') + '</div>' +
+        '<ol class="pkpl-sets">' + rows.slice(0, showN).map(function (s) { var A = (D.artists || {})[s.a] || {}; return '<li><span class="pkpl-st">' + tm(s.s) + '</span><span class="pkpl-sa"><b>' + esc(A.n || s.a) + '</b><small>' + esc(LBL[s.l] || '') + '</small></span></li>'; }).join('') + '</ol>' +
+        (rows.length > 3 ? '<button type="button" class="pk-cta sec pkpl-whole" data-pk="whole" aria-expanded="' + TOP.all + '">' + (TOP.all ? 'Show less' : 'Whole day at ' + esc(h.n)) + '</button>' : '') + '</section>' : '') +
+      '</div>';
+    el.innerHTML = html; TOP.i = 0; heroArm(el);
+  }
+  function heroArm(el) {
+    clearTimeout(TOP.timer); var hero = $('.pkpl-hero', el); if (!hero) return;
+    var imgs = $$('img:not(.pkpl-nmrow img)', hero).filter(function (x) { return x.parentNode === hero; }); if (imgs.length < 2 || calm()) return;
+    (function step() { TOP.timer = setTimeout(function () { if (!hero.isConnected) return; if (document.hidden) { step(); return; } heroShow(hero, (TOP.i + 1) % imgs.length); step(); }, HERO_MS); })();   /* the photo rotation itself, not layout */
+  }
+  function heroShow(hero, i) {
+    var imgs = $$('img', hero).filter(function (x) { return x.parentNode === hero; }); TOP.i = i;
+    imgs.forEach(function (x, j) { x.classList.toggle('on', j === i); if (j === i) x.loading = 'eager'; });
+    $$('.pkpl-dots button', hero).forEach(function (b, j) { if (j === i) b.setAttribute('aria-current', 'true'); else b.removeAttribute('aria-current'); });
+  }
+  /* phone and portrait tablet: the sheet. Its scroll is the phone scroller: the space above it is see-through, so dragging the sheet down shows the map and dragging it up opens the page */
+  function scroller() { return document.getElementById('pk-scroll-phone'); }
+  function sheetVars() {   /* the map's height: the phone scroller, or the window under the sticky desktop header */
+    var sc = scroller(), vh, hd = 0;
+    if (sc) vh = sc.clientHeight; else { var h = document.querySelector('#root header'); hd = h && getComputedStyle(h).position === 'sticky' ? h.offsetHeight : 0; vh = window.innerHeight - (top().r === 'hoods' && h ? Math.max(hd, Math.round(h.getBoundingClientRect().bottom)) : hd); }
+    var k = vh + '|' + hd; if (k === sheetVars._k) return; sheetVars._k = k;
+    document.documentElement.style.setProperty('--pkpl-vh', vh + 'px'); document.documentElement.style.setProperty('--pkpl-hd', hd + 'px');
+  }
+  var lastHood = '';
+  function settleSheet() {   /* a new place opens with the sheet at about 60% (55% on portrait tablet) */
+    var t = top(); if (t.r !== 'hood' || wide()) { lastHood = t.r === 'hood' ? t.h : ''; return; }
+    if (lastHood === t.h) return; lastHood = t.h;
+    var sc = scroller(), sp = document.getElementById('pkpl-sp'); if (!sc || !sp) return;
+    var set = function () { if (!sp.isConnected) return; var vh = sc.clientHeight, f = window.innerWidth >= 700 ? 0.55 : 0.6; sc.scrollTop = Math.max(0, sp.offsetTop + sp.offsetHeight - Math.round(vh * (1 - f))); };
+    var touched = false, mv = function () { touched = true; };
+    ['touchstart', 'wheel', 'keydown', 'pointerdown'].forEach(function (k) { window.addEventListener(k, mv, { once: true, passive: true, capture: true }); });
+    set(); requestAnimationFrame(set); setTimeout(function () { if (!touched) set(); }, 120);   /* once, after the app's own scroll-to-top for a new page */
+  }
+
+  /* ---------- keeping in step with the app ---------- */
+  function mount() {
+    var isle = document.getElementById('pkpl'), t = top();
+    document.body.classList.toggle('pkpl-on', !!isle);
+    document.body.classList.toggle('pkpl-hood', !!isle && t.r === 'hood');
+    document.body.classList.toggle('pkpl-wide', !!isle && wide());
+    if (!isle) { lastHood = ''; return; }
+    if (!data()) return;
+    if (!M) makeMap();
+    if (M.el.parentNode !== isle) { isle.appendChild(M.el); }
+    sheetVars(); layout();
+    drawTop();
+    if (t.r === 'hood' && t.h && t.h !== M.cur && HH.shapes[t.h]) { if (M.title) { M.title = false; M.el.classList.add('pkpl-notitle'); } frame(t.h, !M.s); }   /* arriving at a place shows it, never the title screen */
+    if (t.r === 'hoods' && M.cur) { M.cur = ''; lit(); }
+    settleSheet(); dedupe();
+    var full = $('[data-pl="full"]', M.el); if (full) full.hidden = !M.cur && !M.amen && !(M.s > startView()[0] * 1.15);
+  }
+  function dedupe() { var d = document.querySelector('.pk-hd-desc0'), h = data().hoods[top().h || ''] || {}; if (d) d.classList.toggle('pkpl-dup', !!h.hook && fold(d.textContent).trim() === fold(h.hook).trim()); }
+  function onClick(e) {
+    var b = e.target.closest ? e.target.closest('[data-pk]') : null; if (!b || !b.closest('#pkpl-top')) return;
+    var a = b.getAttribute('data-pk');
+    if (a === 'step') { FROM = null; go('hood', { h: b.getAttribute('data-to') }); return; }
+    if (a === 'dot') { var hero = b.closest('.pkpl-hero'); clearTimeout(TOP.timer); heroShow(hero, +b.getAttribute('data-i')); return; }
+    if (a === 'day') { TOP.day = b.getAttribute('data-d'); TOP.all = false; drawTop(); return; }
+    if (a === 'whole') { TOP.all = !TOP.all; drawTop(); return; }
+  }
+  /* sideways swipe on the sheet steps to the next place (phone, tablet; a mouse drag on desktop) */
+  (function swipe() {
+    var s = null;
+    document.addEventListener('pointerdown', function (e) { var t = e.target.closest && e.target.closest('#pkpl-top .pkpl-hero'); s = t ? { x: e.clientX, y: e.clientY, t: Date.now() } : null; }, true);
+    document.addEventListener('pointerup', function (e) { if (!s) return; var dx = e.clientX - s.x, dy = e.clientY - s.y, dt = Date.now() - s.t; s = null;
+      if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy) * 1.6 && dt < 700) { var k = top().h, L = ids(), j = L.indexOf(k); if (j < 0) return; FROM = null; go('hood', { h: L[(j + (dx < 0 ? 1 : -1) + L.length) % L.length] }); } }, true);
+  })();
+  function sync() { try { mount(); } catch (e) { if (window.console) console.error('pk-places', e); } }
+  var render0 = window.__render;
+  if (typeof render0 === 'function') window.__render = function () { var r = render0.apply(this, arguments); sync(); return r; };
+  document.addEventListener('click', onClick);
+  window.addEventListener('resize', function () { sheetVars(); if (M) { layout(); } sync(); });
+  if ('ResizeObserver' in window) { var ro = new ResizeObserver(function () { sheetVars(); layout(); }); var watch = function () { var sc = scroller(); if (sc && sc !== watch._on) { if (watch._on) ro.unobserve(watch._on); ro.observe(sc); watch._on = sc; } if (M && !M._ro) { M._ro = 1; ro.observe(M.el); } }; var mount0 = mount; mount = function () { mount0(); watch(); }; }
+  window.__pkPlaces = { map: function () { return M; }, open: open, home: function () { if (M) home(); } };
+  sync();
+})();
+</script>
 <style id="pk-onsale-a11y">/* on-sale fix 6: 44px steppers on the Tickets page; a stepper that cannot go lower says so */
 html:root #root#root#root main button[aria-label^="One fewer"],html:root #root#root#root main button[aria-label^="One more"]{width:44px!important;height:44px!important;min-width:44px!important;min-height:44px!important}
 #root main button[aria-disabled="true"]{cursor:default!important}</style>
@@ -10175,7 +10752,7 @@ Home (#pkh2), Tickets and Checkout are left alone: they were built to this kit a
 Specificity: the shared pill uses seven #root ids, which outrank every older override in this file (the deepest older rule has six); the kind rules (fills, cream, gold, pressed) use twelve so they always beat the shared pill. No html:root chains.*/
 
 /* ---------- 1. the shared pill: every kind starts here ---------- */
-#root#root#root#root#root#root#root :is(.pk-cta,.pk-bkb,.pk-backb,.pk-act-back,.pk-tn-go,.pk-tn-chip,.pk-sha,.pk-sxy-more,.pk-sqb,.pk-tly,.pk-sxy-db,.pk-sxy-kb,.pk-cl-an,.pk-seg3>button):not(#pkh2 *):not(#pk-co *):not(.tk2 *):not(main[aria-label$=" tickets"] *),
+#root#root#root#root#root#root#root :is(.pk-cta,.pk-bkb,.pk-backb,.pk-act-back,.pk-tn-go,.pk-tn-chip,.pk-sha,.pk-sxy-more,.pk-sqb,.pk-tly,.pk-sxy-db,.pk-sxy-kb,.pk-cl-an,.pk-seg3>button):not(#pkh2 *):not(#pkpl *):not(#pkpl-top *):not(#pk-co *):not(.tk2 *):not(main[aria-label$=" tickets"] *),
 #root#root#root#root#root#root#root main:not([aria-label$=" tickets"]) :is(button[style*="background: #F2B33D"],button[style*="border: 1px solid #727D6B"][style*="999px"],button[style*="border: 1px solid #4A5544"][style*="999px"],button[style*="border: 1px solid #F2B33D"],a[style*="border: 1px solid #F2B33D"],button[style^="display: inline-flex; align-items: center; min-height: 40px; padding: 0 14px"],a[style^="display: inline-flex; align-items: center; min-height: 40px; padding: 0 14px"],button[style^="min-height: 40px; padding: 0 14px; border-radius: 999px"],button[aria-pressed][style*="border-radius: 999px"]):not(#pkh2 *),
 #root#root#root#root#root#root#root [role="region"][aria-label="Listen"] button[aria-label="Listen to Pickathon"]{
   display:inline-flex!important;align-items:center!important;justify-content:center!important;gap:8px!important;
@@ -10186,7 +10763,7 @@ Specificity: the shared pill uses seven #root ids, which outrank every older ove
   letter-spacing:.01em!important;text-transform:none!important;text-decoration:none!important;text-shadow:none!important;box-shadow:none!important;
   white-space:nowrap!important;text-align:center!important;filter:none!important;
   transition:background-color .2s linear,border-color .2s linear,color .2s linear!important}
-#root#root#root#root#root#root#root :is(.pk-cta,.pk-bkb,.pk-backb,.pk-act-back,.pk-tn-go,.pk-tn-chip,.pk-sha,.pk-sxy-more,.pk-sqb,.pk-tly,.pk-sxy-db,.pk-sxy-kb,.pk-cl-an,.pk-seg3>button):not(#pkh2 *):not(#pk-co *):not(.tk2 *):not(main[aria-label$=" tickets"] *) *{
+#root#root#root#root#root#root#root :is(.pk-cta,.pk-bkb,.pk-backb,.pk-act-back,.pk-tn-go,.pk-tn-chip,.pk-sha,.pk-sxy-more,.pk-sqb,.pk-tly,.pk-sxy-db,.pk-sxy-kb,.pk-cl-an,.pk-seg3>button):not(#pkh2 *):not(#pkpl *):not(#pkpl-top *):not(#pk-co *):not(.tk2 *):not(main[aria-label$=" tickets"] *) *{
   font-size:inherit!important;font-weight:inherit!important;letter-spacing:inherit!important;text-transform:none!important;color:inherit!important;text-shadow:none!important}
 /* the old square kit stretched single buttons to full width; a pill sizes to its words */
 #root#root#root#root#root#root#root :is(.pk-cta,.pk-bkb,.pk-backb,.pk-act-back,.pk-sqb):not(#pkh2 *):not(.pk-nbbs>*):not(main[aria-label$=" tickets"] *){width:fit-content!important;flex:0 0 auto!important}
@@ -10257,7 +10834,7 @@ html body .pk-tm button.pk-tm-bk{text-transform:none!important;font-family:"Bric
 
 /* ---------- 7. desktop: 38px pills, 14px words ---------- */
 @media (min-width:1200px){
-#root#root#root#root#root#root#root :is(.pk-cta,.pk-bkb,.pk-backb,.pk-act-back,.pk-tn-go,.pk-tn-chip,.pk-sha,.pk-sxy-more,.pk-sqb,.pk-tly,.pk-sxy-db,.pk-sxy-kb,.pk-cl-an,.pk-seg3>button):not(#pkh2 *):not(#pk-co *):not(.tk2 *):not(main[aria-label$=" tickets"] *),
+#root#root#root#root#root#root#root :is(.pk-cta,.pk-bkb,.pk-backb,.pk-act-back,.pk-tn-go,.pk-tn-chip,.pk-sha,.pk-sxy-more,.pk-sqb,.pk-tly,.pk-sxy-db,.pk-sxy-kb,.pk-cl-an,.pk-seg3>button):not(#pkh2 *):not(#pkpl *):not(#pkpl-top *):not(#pk-co *):not(.tk2 *):not(main[aria-label$=" tickets"] *),
 #root#root#root#root#root#root#root main:not([aria-label$=" tickets"]) :is(button[style*="background: #F2B33D"],button[style*="border: 1px solid #727D6B"][style*="999px"],button[style*="border: 1px solid #4A5544"][style*="999px"],button[style*="border: 1px solid #F2B33D"],a[style*="border: 1px solid #F2B33D"],button[style^="display: inline-flex; align-items: center; min-height: 40px; padding: 0 14px"],a[style^="display: inline-flex; align-items: center; min-height: 40px; padding: 0 14px"],button[style^="min-height: 40px; padding: 0 14px; border-radius: 999px"],button[aria-pressed][style*="border-radius: 999px"]):not(#pkh2 *),
 #root#root#root#root#root#root#root [role="region"][aria-label="Listen"] button[aria-label="Listen to Pickathon"]{min-height:38px!important;font-size:14px!important;padding:0 16px!important}
 #root#root#root#root#root#root#root :is(.pk-yhb,.pk-hd-arr,.pk-ypd button[aria-label="Close"],nav[aria-label="More"] button[aria-label="Close menu"],button[aria-label="Listen to Pickathon"]:not([role="region"] *)){width:38px!important;min-width:38px!important;height:38px!important;min-height:38px!important;font-size:16px!important}
