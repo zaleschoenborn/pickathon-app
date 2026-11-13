@@ -2599,8 +2599,8 @@ html.pk-cy-in div:has(> button[aria-label="Listen to Pickathon"]){opacity:0!impo
       if (D.real) {   /* Zale, Nov 12: each name's type size is its own score at that moment (today's #1 = the biggest type); the stack is as tall as the sizes make it and sits centered in the frame */
         var vs = cast.map(function (x, i) { return i; }).filter(function (i) { return POS[j][i] < LN; }).sort(function (a, b) { return POS[j][a] - POS[j][b]; });
         var hh = function (i, f) { var o = SH[i]; return f * (o.L.length === 1 ? LH : o.lead ? LH * 1.55 + 0.04 : LH * 2 + 0.04); }, gp = function (f) { return Math.max(Q.GAP, 0.3 * f); };
-        var tk = Math.max.apply(null, vs.map(function (i) { return cast[i][2][k]; }));   /* Zale, Nov 12: at every moment the biggest name there is the biggest type and fills the card; the rest are sized by score relative to it */
-        var fzAt = function (sc) { return vs.map(function (i) { return Math.max(Q.ph ? 12 : 14, Math.min(sc * cast[i][2][k] / tk, WF[i])); }); };
+        var tk = cast[vs[0]][2][k];   /* Zale, Nov 12: at every moment the biggest name there is the biggest type and fills the card; the rest are sized by score relative to it */
+        var fzAt = function (sc) { var run = 1e9; return vs.map(function (i) { var f = Math.max(Q.ph ? 12 : 14, Math.min(sc * Math.min(1, cast[i][2][k] / tk), WF[i], run)); run = f; return f; }); };   /* Zale, Nov 12: the name on top is always the biggest type and sizes never grow going down the list; the rest are scaled by score relative to the top */
         var hAt = function (fa) { var t = 0; vs.forEach(function (i, q) { t += hh(i, fa[q]) + (q < vs.length - 1 ? gp(fa[q]) : 0); }); return t; };
         var lo = 8, hi = 400, avH = S[9].y + S[9].h - S[0].y; for (var it = 0; it < 24; it++) { var md = (lo + hi) / 2; if (hAt(fzAt(md)) > avH) hi = md; else lo = md; }
         var fz = fzAt(lo);
@@ -2748,7 +2748,7 @@ html.pk-cy-in div:has(> button[aria-label="Listen to Pickathon"]){opacity:0!impo
     try { var YP = (window.__pkYP || {})[y] || {}, k = function (s) { return String(s || '').toLowerCase().replace(/&/g, 'and').replace(/[^a-z0-9]/g, ''); }, ph = function (n) { var h = YP[n]; if (!h) Object.keys(YP).forEach(function (q) { if (k(q) === k(n)) h = YP[q]; }); return h && h.i && !h.promo ? h.i : ''; };
       if (!D.real || !D.clim || D.labels.length < 3) return null;
       var hd = D.names.filter(function (x) { return x[1][0] === 0; })[0], cn = D.names.filter(function (x) { return k(x[0]) === k(D.clim); })[0]; if (!hd || !cn || hd === cn) return null;
-      var a = ph(hd[0]), b = ph(D.clim); if (!a || !b) return null;
+      var PICK = { '2024|geese': 'i/y24g1-geese.jpg' }, a = ph(hd[0]), b = PICK[y + '|' + k(D.clim)] || ph(D.clim);   /* Zale, Nov 12: a different Geese photo (whole band, crowd in front) */ if (!a || !b) return null;
       var n = D.labels.length, j = 1; for (; j < n; j++) if (cn[1][j] < hd[1][j]) break;
       D._pic = { a: a, b: b, an: hd[0], cross: Math.max(0.2, Math.min(0.85, (j - 0.5) / (n - 1))) }; } catch (e) {}
     return D._pic; }
