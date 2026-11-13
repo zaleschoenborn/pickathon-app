@@ -2530,9 +2530,9 @@ html.pk-cy-in div:has(> button[aria-label="Listen to Pickathon"]){opacity:0!impo
 
   // Sizes. Desktop: the paper is 960 wide (inner 880): art 330 at left, list column 524. Phone and tablet (phone-style): art small on top, list full width.
   function cfg(ph, wAvail) {
-    if (!ph) return { ph: false, IW: 880, PADX: 40, PADY: 22, TOPH: 62, ART: { x: 0, y: 180, w: 330 }, COLX: 356, COLW: 524, Y0: 62, LANES: [[80, 74, 2], [44, 41, 2], [44, 41, 2], [44, 41, 2], [33, 29, 1], [33, 29, 1], [33, 29, 1], [33, 29, 1], [33, 29, 1], [33, 29, 1]], GAP: 5, R1: 10, ROWH: 21, FS: 13, CFS: 15, DATES: 15, DGAP: 14, BOT: 48, RIB: [40, 14], STAMP: 0.92 };
+    if (!ph) return { ph: false, IW: 880, PADX: 40, PADY: 22, TOPH: 62, ART: { x: 0, y: 62, w: 410 }, COLX: 436, COLW: 444, Y0: 62, LANES: [[80, 74, 2], [44, 41, 2], [44, 41, 2], [44, 41, 2], [33, 29, 1], [33, 29, 1], [33, 29, 1], [33, 29, 1], [33, 29, 1], [33, 29, 1]], GAP: 5, R1: 10, ROWH: 21, FS: 13, CFS: 15, DATES: 15, DGAP: 14, BOT: 48, RIB: [40, 14], STAMP: 0.92 };
     var PW = Math.max(300, Math.min(wAvail, 720)), IW = PW - 32, k = Math.min(1.7, IW / 326), L = function (h, m, ml) { return [Math.round(h * k), Math.round(m * k), ml]; };
-    var AW = Math.round(100 * k), CG = Math.round(12 * k);   /* Zale, Nov 11: phone keeps the horizontal poster, art static on the left, names move in the column on the right (spec home_climb_phone_nov9b section 1) */
+    var AW = Math.round(IW * 0.44), CG = Math.round(8 * k);   /* Zale, Nov 12: the logo fills the left side of the paper (44% on phone and tablet, about 47% on desktop) */   /* Zale, Nov 11: phone keeps the horizontal poster, art static on the left, names move in the column on the right (spec home_climb_phone_nov9b section 1) */
     return { ph: true, IW: IW, PADX: 16, PADY: 14, TOPH: 62, ART: { x: 0, y: 62, w: AW }, COLX: AW + CG, COLW: IW - AW - CG, Y0: 62,
       LANES: [L(40, 28, 2), L(27, 20, 2), L(27, 20, 2), L(27, 20, 2), L(20, 15, 1), L(20, 15, 1), L(20, 15, 1), L(20, 15, 1), L(20, 15, 1), L(20, 15, 1)], GAP: Math.round(3 * k), R1: Math.round(10 * k), ROWH: Math.round(16 * k), FS: Math.max(11, 11 * k), CFS: Math.max(12, 12 * k), DATES: Math.max(11, 11 * k), DGAP: Math.round(10 * k), BOT: Math.round(48 * k), RIB: [Math.max(34, Math.round(32 * k)), Math.max(12, 12 * k)], STAMP: 0.7 * k };
   }
