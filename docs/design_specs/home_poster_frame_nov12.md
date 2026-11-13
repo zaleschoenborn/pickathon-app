@@ -53,3 +53,10 @@ Where this differs from the notes above, this section wins.
 - Top 10 and sizes use the PEAK magnitude (magnitude_dec) from class_table_nov11; build_ratings.py now reads at_festival_magnitude_dec / magnitude_dec (one decimal). 2024's measured six-month windows are kept (do not run build_ratings.py unmodified: it overwrites 2024 with straight lines).
 - Every year with data runs the same motion; long years are sampled to at most 7 points so every run takes 6.4 s. Middle points for years other than 2024 are straight lines between the festival and today values (provisional); only the class steps are dated facts.
 - Zale: a year moves and joins the Home rotation only if at least 5 acts have magnitude at every plotted point (D.nM >= 5, D.feat). Other years are still. 2025 and 2026 are kept out of the rotation (not enough Discovery growth yet). Code: D.feat in pkClimbLive, used by STAT(), POOL(), rand(), pkClimbRank.
+
+## Update, Nov 12 evening (approved rating files)
+- yearRatings now comes from the approved rating_history_<year>.csv files (Artist Classification, Nov 12, in Dropbox All Pickathon Photos/_catalogs/site_handoff/, copied to tools/year_pages/src_nov12/). Loader: tools/year_pages/build_ratings_nov12.py. Real dated snapshots every Feb 1 / Aug 1 from the festival's Aug 1 to 2026-11-12; mag is the peak since booking (one decimal, only rises); blank stays null, never 0. This replaces the old straight-line windows for every year, 2024 included.
+- Do NOT run tools/year_pages/build_ratings.py (old, straight lines) or class_import/run.py unmodified; they overwrite yearRatings.
+- Poster path therefore shows each act's peak growing; a name cannot fall back. Long years are still sampled to at most 13 points so every run is 6.4 s.
+- Rotation rule unchanged: a year moves and joins "Another year" only if >= 5 acts have magnitude at every plotted point, and 2025/2026 stay out. Now in rotation: 2006-2019 (except none), 2022, 2023, 2024; 2000-2005 fall short.
+- Poster display name: NATHANIEL RATELIFF (Zale, Nov 12). Long top names can wrap to three lines.

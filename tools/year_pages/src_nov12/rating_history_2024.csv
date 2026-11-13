@@ -1,0 +1,645 @@
+date,act,cat,class,conf,mag,current,second,newest,change,status,approved_on
+2024-02-01,Adi Oasis,Music,Deep cut,medium,4.0,,,,start,approved,2026-11-12
+2024-08-01,Adi Oasis,Music,Deep cut,medium,4.0,,,,no change,approved,2026-11-12
+2025-02-01,Adi Oasis,Music,Deep cut,medium,4.0,,,,no change,approved,2026-11-12
+2025-08-01,Adi Oasis,Music,Deep cut,medium,4.0,,,,no change,approved,2026-11-12
+2026-02-01,Adi Oasis,Music,Deep cut,medium,4.0,,,,no change,approved,2026-11-12
+2026-08-01,Adi Oasis,Music,Deep cut,medium,4.0,,,,no change,approved,2026-11-12
+2026-11-12,Adi Oasis,Music,Deep cut,medium,4.0,,,,no change,approved,2026-11-12
+2024-02-01,Anna Tivel,Music,Deep cut,medium,2.7,,,,start,approved,2026-11-12
+2024-08-01,Anna Tivel,Music,Deep cut,medium,2.9,,,,mag 2.7 to 2.9,approved,2026-11-12
+2025-02-01,Anna Tivel,Music,Deep cut,high,3.0,,,,mag 2.9 to 3.0,approved,2026-11-12
+2025-08-01,Anna Tivel,Music,Deep cut,high,3.7,,,,mag 3.0 to 3.7,approved,2026-11-12
+2026-02-01,Anna Tivel,Music,Deep cut,high,3.7,,,,no change,approved,2026-11-12
+2026-08-01,Anna Tivel,Music,Deep cut,high,3.7,,,,no change,approved,2026-11-12
+2026-11-12,Anna Tivel,Music,Deep cut,high,3.7,2.7,,,no change,approved,2026-11-12
+2024-02-01,Bella White,Music,Deep cut,low,3.8,,,,start,approved,2026-11-12
+2024-08-01,Bella White,Music,Deep cut,low,3.8,,,,no change,approved,2026-11-12
+2025-02-01,Bella White,Music,Deep cut,low,3.8,,,,no change,approved,2026-11-12
+2025-08-01,Bella White,Music,Deep cut,low,3.8,,,,no change,approved,2026-11-12
+2026-02-01,Bella White,Music,Deep cut,low,3.8,,,,no change,approved,2026-11-12
+2026-08-01,Bella White,Music,Deep cut,low,3.8,,,,no change,approved,2026-11-12
+2026-11-12,Bella White,Music,Discovery,low,3.8,3.6,,,Deep cut to Discovery,approved,2026-11-12
+2024-02-01,Billie Marten,Music,Deep cut,medium,2.6,,,,start,approved,2026-11-12
+2024-08-01,Billie Marten,Music,Deep cut,medium,3.0,,,,mag 2.6 to 3.0,approved,2026-11-12
+2025-02-01,Billie Marten,Music,Deep cut,medium,3.4,,,,mag 3.0 to 3.4,approved,2026-11-12
+2025-08-01,Billie Marten,Music,Deep cut,medium,3.6,,,,mag 3.4 to 3.6,approved,2026-11-12
+2026-02-01,Billie Marten,Music,Deep cut,medium,3.7,,,,mag 3.6 to 3.7,approved,2026-11-12
+2026-08-01,Billie Marten,Music,Deep cut,medium,3.8,,,,mag 3.7 to 3.8,approved,2026-11-12
+2026-11-12,Billie Marten,Music,Deep cut,medium,3.8,3.7,,,no change,approved,2026-11-12
+2024-02-01,"Bonnie ""Prince"" Billy",Music,Legend,high,2.7,,,,start,approved,2026-11-12
+2024-08-01,"Bonnie ""Prince"" Billy",Music,Legend,high,5.0,,,,mag 2.7 to 5.0,approved,2026-11-12
+2025-02-01,"Bonnie ""Prince"" Billy",Music,Legend,high,5.0,,,,no change,approved,2026-11-12
+2025-08-01,"Bonnie ""Prince"" Billy",Music,Legend,high,5.0,,,,no change,approved,2026-11-12
+2026-02-01,"Bonnie ""Prince"" Billy",Music,Legend,high,5.0,,,,no change,approved,2026-11-12
+2026-08-01,"Bonnie ""Prince"" Billy",Music,Legend,high,5.0,,,,no change,approved,2026-11-12
+2026-11-12,"Bonnie ""Prince"" Billy",Music,Legend,high,5.0,3.4,,,no change,approved,2026-11-12
+2024-02-01,Color Green,Music,Neither,low,3.0,,,,start,approved,2026-11-12
+2024-08-01,Color Green,Music,Neither,low,3.0,,,,no change,approved,2026-11-12
+2025-02-01,Color Green,Music,Neither,low,3.0,,,,no change,approved,2026-11-12
+2025-08-01,Color Green,Music,Neither,low,3.0,,,,no change,approved,2026-11-12
+2026-02-01,Color Green,Music,Neither,low,3.0,,,,no change,approved,2026-11-12
+2026-08-01,Color Green,Music,Neither,low,3.0,,,,no change,approved,2026-11-12
+2026-11-12,Color Green,Music,Neither,low,3.0,,,,no change,approved,2026-11-12
+2024-02-01,Courtney Barnett,Music,Legend,medium,3.7,,,,start,approved,2026-11-12
+2024-08-01,Courtney Barnett,Music,Legend,high,5.7,,,,mag 3.7 to 5.7,approved,2026-11-12
+2025-02-01,Courtney Barnett,Music,Legend,high,5.7,,,,no change,approved,2026-11-12
+2025-08-01,Courtney Barnett,Music,Legend,high,5.7,,,,no change,approved,2026-11-12
+2026-02-01,Courtney Barnett,Music,Legend,high,5.7,,,,no change,approved,2026-11-12
+2026-08-01,Courtney Barnett,Music,Legend,high,5.7,,,,no change,approved,2026-11-12
+2026-11-12,Courtney Barnett,Music,Legend,high,5.7,5.4,,,no change,approved,2026-11-12
+2024-02-01,Daniel Villarreal,Music,Deep cut,low,2.6,,,,start,approved,2026-11-12
+2024-08-01,Daniel Villarreal,Music,Deep cut,low,2.7,,,,mag 2.6 to 2.7,approved,2026-11-12
+2025-02-01,Daniel Villarreal,Music,Deep cut,low,2.7,,,,no change,approved,2026-11-12
+2025-08-01,Daniel Villarreal,Music,Deep cut,low,2.7,,,,no change,approved,2026-11-12
+2026-02-01,Daniel Villarreal,Music,Deep cut,low,2.7,,,,no change,approved,2026-11-12
+2026-08-01,Daniel Villarreal,Music,Deep cut,low,2.7,,,,no change,approved,2026-11-12
+2026-11-12,Daniel Villarreal,Music,Deep cut,low,2.7,2.2,,,no change,approved,2026-11-12
+2024-02-01,Dean Johnson,Music,Neither,low,2.7,,,,start,approved,2026-11-12
+2024-08-01,Dean Johnson,Music,Neither,low,2.9,,,,mag 2.7 to 2.9,approved,2026-11-12
+2025-02-01,Dean Johnson,Music,Neither,low,2.9,,,,no change,approved,2026-11-12
+2025-08-01,Dean Johnson,Music,Neither,low,3.2,,,,mag 2.9 to 3.2,approved,2026-11-12
+2026-02-01,Dean Johnson,Music,Discovery,medium,3.2,,,,Neither to Discovery,approved,2026-11-12
+2026-08-01,Dean Johnson,Music,Discovery,medium,3.2,,,,no change,approved,2026-11-12
+2026-11-12,Dean Johnson,Music,Discovery,medium,3.2,3.0,,,no change,approved,2026-11-12
+2024-02-01,Durand Jones,Music,Deep cut,low,3.9,,,,start,approved,2026-11-12
+2024-08-01,Durand Jones,Music,Deep cut,low,3.9,,,,no change,approved,2026-11-12
+2025-02-01,Durand Jones,Music,Deep cut,low,3.9,,,,no change,approved,2026-11-12
+2025-08-01,Durand Jones,Music,Deep cut,low,4.4,,,,mag 3.9 to 4.4,approved,2026-11-12
+2026-02-01,Durand Jones,Music,Deep cut,low,4.4,,,,no change,approved,2026-11-12
+2026-08-01,Durand Jones,Music,Deep cut,low,4.4,,,,no change,approved,2026-11-12
+2026-11-12,Durand Jones,Music,Deep cut,low,4.4,3.3,,,no change,approved,2026-11-12
+2024-02-01,Elephant Revival,Music,Legend,medium,3.8,,,,start,approved,2026-11-12
+2024-08-01,Elephant Revival,Music,Legend,medium,3.8,,,,no change,approved,2026-11-12
+2025-02-01,Elephant Revival,Music,Legend,medium,3.9,,,,mag 3.8 to 3.9,approved,2026-11-12
+2025-08-01,Elephant Revival,Music,Legend,medium,5.4,,,,mag 3.9 to 5.4,approved,2026-11-12
+2026-02-01,Elephant Revival,Music,Legend,medium,5.4,,,,no change,approved,2026-11-12
+2026-08-01,Elephant Revival,Music,Legend,medium,5.4,,,,no change,approved,2026-11-12
+2026-11-12,Elephant Revival,Music,Legend,medium,5.4,5.2,,,no change,approved,2026-11-12
+2024-02-01,Ellis Bullard,Music,Deep cut,low,3.1,,,,start,approved,2026-11-12
+2024-08-01,Ellis Bullard,Music,Deep cut,medium,3.1,,,,no change,approved,2026-11-12
+2025-02-01,Ellis Bullard,Music,Deep cut,medium,3.1,,,,no change,approved,2026-11-12
+2025-08-01,Ellis Bullard,Music,Deep cut,medium,3.1,,,,no change,approved,2026-11-12
+2026-02-01,Ellis Bullard,Music,Deep cut,medium,3.1,,,,no change,approved,2026-11-12
+2026-08-01,Ellis Bullard,Music,Deep cut,medium,3.1,,,,no change,approved,2026-11-12
+2026-11-12,Ellis Bullard,Music,Deep cut,medium,3.1,3.1,,,no change,approved,2026-11-12
+2024-02-01,Erin Rae,Music,Deep cut,medium,2.7,,,,start,approved,2026-11-12
+2024-08-01,Erin Rae,Music,Deep cut,medium,2.7,,,,no change,approved,2026-11-12
+2025-02-01,Erin Rae,Music,Deep cut,medium,2.7,,,,no change,approved,2026-11-12
+2025-08-01,Erin Rae,Music,Deep cut,medium,3.0,,,,mag 2.7 to 3.0,approved,2026-11-12
+2026-02-01,Erin Rae,Music,Deep cut,medium,3.0,,,,no change,approved,2026-11-12
+2026-08-01,Erin Rae,Music,Deep cut,medium,3.0,,,,no change,approved,2026-11-12
+2026-11-12,Erin Rae,Music,Deep cut,medium,3.0,2.6,,,no change,approved,2026-11-12
+2024-02-01,Florry,Music,Deep cut,low,2.4,,,,start,approved,2026-11-12
+2024-08-01,Florry,Music,Deep cut,low,2.5,,,,mag 2.4 to 2.5,approved,2026-11-12
+2025-02-01,Florry,Music,Deep cut,low,2.8,,,,mag 2.5 to 2.8,approved,2026-11-12
+2025-08-01,Florry,Music,Deep cut,low,2.8,,,,no change,approved,2026-11-12
+2026-02-01,Florry,Music,Deep cut,low,2.9,,,,mag 2.8 to 2.9,approved,2026-11-12
+2026-08-01,Florry,Music,Deep cut,low,3.0,,,,mag 2.9 to 3.0,approved,2026-11-12
+2026-11-12,Florry,Music,Deep cut,low,3.2,3.2,,,mag 3.0 to 3.2,approved,2026-11-12
+2024-02-01,Foamboy,Music,Neither,medium,2.4,,,,start,approved,2026-11-12
+2024-08-01,Foamboy,Music,Neither,medium,2.4,,,,no change,approved,2026-11-12
+2025-02-01,Foamboy,Music,Neither,medium,2.4,,,,no change,approved,2026-11-12
+2025-08-01,Foamboy,Music,Neither,medium,2.4,,,,no change,approved,2026-11-12
+2026-02-01,Foamboy,Music,Neither,medium,2.4,,,,no change,approved,2026-11-12
+2026-08-01,Foamboy,Music,Neither,medium,2.4,,,,no change,approved,2026-11-12
+2026-11-12,Foamboy,Music,Neither,medium,2.4,,,,no change,approved,2026-11-12
+2024-02-01,Fust,Music,Deep cut,low,2.5,,,,start,approved,2026-11-12
+2024-08-01,Fust,Music,Deep cut,low,2.6,,,,mag 2.5 to 2.6,approved,2026-11-12
+2025-02-01,Fust,Music,Deep cut,low,2.6,,,,no change,approved,2026-11-12
+2025-08-01,Fust,Music,Deep cut,low,2.6,,,,no change,approved,2026-11-12
+2026-02-01,Fust,Music,Deep cut,medium,2.6,,,,no change,approved,2026-11-12
+2026-08-01,Fust,Music,Deep cut,medium,2.9,,,,mag 2.6 to 2.9,approved,2026-11-12
+2026-11-12,Fust,Music,Deep cut,medium,2.9,,,,no change,approved,2026-11-12
+2024-02-01,Geese,Music,Deep cut,low,3.1,,,,start,approved,2026-11-12
+2024-08-01,Geese,Music,Deep cut,medium,3.5,,,,mag 3.1 to 3.5,approved,2026-11-12
+2025-02-01,Geese,Music,Deep cut,medium,3.5,,,,no change,approved,2026-11-12
+2025-08-01,Geese,Music,Discovery,low,4.1,,,,Deep cut to Discovery; mag 3.5 to 4.1,approved,2026-11-12
+2026-02-01,Geese,Music,Discovery,high,4.5,,,,mag 4.1 to 4.5,approved,2026-11-12
+2026-08-01,Geese,Music,Discovery,high,5.9,,,,mag 4.5 to 5.9,approved,2026-11-12
+2026-11-12,Geese,Music,Discovery,high,6.1,6.1,,,mag 5.9 to 6.1,approved,2026-11-12
+2024-02-01,Greg Freeman,Music,Neither,low,2.5,,,,start,approved,2026-11-12
+2024-08-01,Greg Freeman,Music,Neither,low,2.5,,,,no change,approved,2026-11-12
+2025-02-01,Greg Freeman,Music,Neither,low,2.5,,,,no change,approved,2026-11-12
+2025-08-01,Greg Freeman,Music,Neither,low,2.8,,,,mag 2.5 to 2.8,approved,2026-11-12
+2026-02-01,Greg Freeman,Music,Deep cut,low,2.8,,,,Neither to Deep cut,approved,2026-11-12
+2026-08-01,Greg Freeman,Music,Deep cut,medium,3.3,,,,mag 2.8 to 3.3,approved,2026-11-12
+2026-11-12,Greg Freeman,Music,Discovery,medium,3.3,3.3,,,Deep cut to Discovery,approved,2026-11-12
+2024-02-01,Irreversible Entanglements,Music,Deep cut,medium,3.2,,,,start,approved,2026-11-12
+2024-08-01,Irreversible Entanglements,Music,Deep cut,medium,3.4,,,,mag 3.2 to 3.4,approved,2026-11-12
+2025-02-01,Irreversible Entanglements,Music,Deep cut,medium,3.4,,,,no change,approved,2026-11-12
+2025-08-01,Irreversible Entanglements,Music,Deep cut,medium,3.7,,,,mag 3.4 to 3.7,approved,2026-11-12
+2026-02-01,Irreversible Entanglements,Music,Deep cut,medium,3.7,,,,no change,approved,2026-11-12
+2026-08-01,Irreversible Entanglements,Music,Deep cut,medium,3.7,,,,no change,approved,2026-11-12
+2026-11-12,Irreversible Entanglements,Music,Deep cut,medium,3.7,,,,no change,approved,2026-11-12
+2024-02-01,J.D. Simo,Music,Deep cut,low,3.8,,,,start,approved,2026-11-12
+2024-08-01,J.D. Simo,Music,Deep cut,low,3.8,,,,no change,approved,2026-11-12
+2025-02-01,J.D. Simo,Music,Deep cut,low,3.8,,,,no change,approved,2026-11-12
+2025-08-01,J.D. Simo,Music,Deep cut,low,3.8,,,,no change,approved,2026-11-12
+2026-02-01,J.D. Simo,Music,Deep cut,low,3.8,,,,no change,approved,2026-11-12
+2026-08-01,J.D. Simo,Music,Deep cut,low,3.8,,,,no change,approved,2026-11-12
+2026-11-12,J.D. Simo,Music,Deep cut,low,3.8,3.3,,,no change,approved,2026-11-12
+2024-02-01,Jake Kohn,Music,Neither,low,3.7,,,,start,approved,2026-11-12
+2024-08-01,Jake Kohn,Music,Deep cut,low,3.7,,,,Neither to Deep cut,approved,2026-11-12
+2025-02-01,Jake Kohn,Music,Deep cut,low,3.7,,,,no change,approved,2026-11-12
+2025-08-01,Jake Kohn,Music,Deep cut,low,3.7,,,,no change,approved,2026-11-12
+2026-02-01,Jake Kohn,Music,Deep cut,low,3.7,,,,no change,approved,2026-11-12
+2026-08-01,Jake Kohn,Music,Deep cut,low,3.7,,,,no change,approved,2026-11-12
+2026-11-12,Jake Kohn,Music,Deep cut,low,3.7,,,,no change,approved,2026-11-12
+2024-02-01,Jeffrey Martin,Music,Deep cut,medium,2.8,,,,start,approved,2026-11-12
+2024-08-01,Jeffrey Martin,Music,Deep cut,medium,2.8,,,,no change,approved,2026-11-12
+2025-02-01,Jeffrey Martin,Music,Deep cut,medium,2.8,,,,no change,approved,2026-11-12
+2025-08-01,Jeffrey Martin,Music,Deep cut,medium,2.8,,,,no change,approved,2026-11-12
+2026-02-01,Jeffrey Martin,Music,Deep cut,medium,2.8,,,,no change,approved,2026-11-12
+2026-08-01,Jeffrey Martin,Music,Deep cut,medium,2.8,,,,no change,approved,2026-11-12
+2026-11-12,Jeffrey Martin,Music,Deep cut,medium,2.9,2.9,,,mag 2.8 to 2.9,approved,2026-11-12
+2024-02-01,Jess Williamson,Music,Deep cut,high,3.3,,,,start,approved,2026-11-12
+2024-08-01,Jess Williamson,Music,Deep cut,high,3.3,,,,no change,approved,2026-11-12
+2025-02-01,Jess Williamson,Music,Deep cut,high,3.3,,,,no change,approved,2026-11-12
+2025-08-01,Jess Williamson,Music,Deep cut,high,3.3,,,,no change,approved,2026-11-12
+2026-02-01,Jess Williamson,Music,Deep cut,high,3.3,,,,no change,approved,2026-11-12
+2026-08-01,Jess Williamson,Music,Deep cut,high,3.8,,,,mag 3.3 to 3.8,approved,2026-11-12
+2026-11-12,Jess Williamson,Music,Deep cut,high,3.8,3.6,,,no change,approved,2026-11-12
+2024-02-01,JJUUJJUU,Music,Deep cut,medium,3.3,,,,start,approved,2026-11-12
+2024-08-01,JJUUJJUU,Music,Deep cut,medium,3.3,,,,no change,approved,2026-11-12
+2025-02-01,JJUUJJUU,Music,Deep cut,medium,3.3,,,,no change,approved,2026-11-12
+2025-08-01,JJUUJJUU,Music,Deep cut,medium,3.3,,,,no change,approved,2026-11-12
+2026-02-01,JJUUJJUU,Music,Deep cut,medium,3.3,,,,no change,approved,2026-11-12
+2026-08-01,JJUUJJUU,Music,Deep cut,medium,3.3,,,,no change,approved,2026-11-12
+2026-11-12,JJUUJJUU,Music,Deep cut,medium,3.3,,,,no change,approved,2026-11-12
+2024-02-01,Joanna Sternberg,Music,Deep cut,high,3.2,,,,start,approved,2026-11-12
+2024-08-01,Joanna Sternberg,Music,Deep cut,high,3.2,,,,no change,approved,2026-11-12
+2025-02-01,Joanna Sternberg,Music,Deep cut,high,3.2,,,,no change,approved,2026-11-12
+2025-08-01,Joanna Sternberg,Music,Deep cut,high,3.2,,,,no change,approved,2026-11-12
+2026-02-01,Joanna Sternberg,Music,Deep cut,high,3.2,,,,no change,approved,2026-11-12
+2026-08-01,Joanna Sternberg,Music,Deep cut,high,3.2,,,,no change,approved,2026-11-12
+2026-11-12,Joanna Sternberg,Music,Deep cut,high,3.2,,,,no change,approved,2026-11-12
+2024-02-01,John Haywood,Music,Deep cut,low,,,,,start,approved,2026-11-12
+2024-08-01,John Haywood,Music,Deep cut,low,,,,,no change,approved,2026-11-12
+2025-02-01,John Haywood,Music,Deep cut,low,,,,,no change,approved,2026-11-12
+2025-08-01,John Haywood,Music,Deep cut,low,,,,,no change,approved,2026-11-12
+2026-02-01,John Haywood,Music,Deep cut,low,,,,,no change,approved,2026-11-12
+2026-08-01,John Haywood,Music,Deep cut,low,,,,,no change,approved,2026-11-12
+2026-11-12,John Haywood,Music,Deep cut,low,,,,,no change,approved,2026-11-12
+2024-02-01,Johnny Franco,Music,Neither,medium,,,,,start,approved,2026-11-12
+2024-08-01,Johnny Franco,Music,Neither,medium,,,,,no change,approved,2026-11-12
+2025-02-01,Johnny Franco,Music,Neither,medium,,,,,no change,approved,2026-11-12
+2025-08-01,Johnny Franco,Music,Neither,medium,,,,,no change,approved,2026-11-12
+2026-02-01,Johnny Franco,Music,Neither,medium,,,,,no change,approved,2026-11-12
+2026-08-01,Johnny Franco,Music,Neither,medium,,,,,no change,approved,2026-11-12
+2026-11-12,Johnny Franco,Music,Neither,medium,,,,,no change,approved,2026-11-12
+2024-02-01,Kara Jackson,Music,Deep cut,high,3.1,,,,start,approved,2026-11-12
+2024-08-01,Kara Jackson,Music,Deep cut,high,3.2,,,,mag 3.1 to 3.2,approved,2026-11-12
+2025-02-01,Kara Jackson,Music,Deep cut,high,3.9,,,,mag 3.2 to 3.9,approved,2026-11-12
+2025-08-01,Kara Jackson,Music,Deep cut,high,3.9,,,,no change,approved,2026-11-12
+2026-02-01,Kara Jackson,Music,Deep cut,high,3.9,,,,no change,approved,2026-11-12
+2026-08-01,Kara Jackson,Music,Deep cut,high,3.9,,,,no change,approved,2026-11-12
+2026-11-12,Kara Jackson,Music,Deep cut,high,3.9,,,,no change,approved,2026-11-12
+2024-02-01,Kassa Overall,Music,Deep cut,medium,3.3,,,,start,approved,2026-11-12
+2024-08-01,Kassa Overall,Music,Deep cut,medium,3.3,,,,no change,approved,2026-11-12
+2025-02-01,Kassa Overall,Music,Deep cut,medium,3.3,,,,no change,approved,2026-11-12
+2025-08-01,Kassa Overall,Music,Deep cut,medium,3.3,,,,no change,approved,2026-11-12
+2026-02-01,Kassa Overall,Music,Deep cut,medium,3.3,,,,no change,approved,2026-11-12
+2026-08-01,Kassa Overall,Music,Deep cut,medium,3.3,,,,no change,approved,2026-11-12
+2026-11-12,Kassa Overall,Music,Deep cut,medium,3.3,2.5,,,no change,approved,2026-11-12
+2024-02-01,LA LOM,Music,Neither,low,3.5,,,,start,approved,2026-11-12
+2024-08-01,LA LOM,Music,Neither,low,3.6,,,,mag 3.5 to 3.6,approved,2026-11-12
+2025-02-01,LA LOM,Music,Neither,low,3.7,,,,mag 3.6 to 3.7,approved,2026-11-12
+2025-08-01,LA LOM,Music,Discovery,medium,4.1,,,,Neither to Discovery; mag 3.7 to 4.1,approved,2026-11-12
+2026-02-01,LA LOM,Music,Discovery,medium,4.1,,,,no change,approved,2026-11-12
+2026-08-01,LA LOM,Music,Discovery,medium,4.1,,,,no change,approved,2026-11-12
+2026-11-12,LA LOM,Music,Discovery,medium,4.1,3.3,,,no change,approved,2026-11-12
+2024-02-01,Lo Steele,Music,Deep cut,low,,,,,start,approved,2026-11-12
+2024-08-01,Lo Steele,Music,Deep cut,low,,,,,no change,approved,2026-11-12
+2025-02-01,Lo Steele,Music,Deep cut,low,,,,,no change,approved,2026-11-12
+2025-08-01,Lo Steele,Music,Deep cut,low,,,,,no change,approved,2026-11-12
+2026-02-01,Lo Steele,Music,Deep cut,low,,,,,no change,approved,2026-11-12
+2026-08-01,Lo Steele,Music,Deep cut,low,,,,,no change,approved,2026-11-12
+2026-11-12,Lo Steele,Music,Deep cut,low,,,,,no change,approved,2026-11-12
+2024-02-01,Logan Halstead,Music,Neither,medium,2.8,,,,start,approved,2026-11-12
+2024-08-01,Logan Halstead,Music,Neither,medium,2.8,,,,no change,approved,2026-11-12
+2025-02-01,Logan Halstead,Music,Neither,medium,2.8,,,,no change,approved,2026-11-12
+2025-08-01,Logan Halstead,Music,Neither,medium,2.8,,,,no change,approved,2026-11-12
+2026-02-01,Logan Halstead,Music,Neither,medium,2.8,,,,no change,approved,2026-11-12
+2026-08-01,Logan Halstead,Music,Neither,medium,2.8,,,,no change,approved,2026-11-12
+2026-11-12,Logan Halstead,Music,Neither,medium,2.8,,,,no change,approved,2026-11-12
+2024-02-01,McKinley Dixon,Music,Deep cut,medium,2.2,,,,start,approved,2026-11-12
+2024-08-01,McKinley Dixon,Music,Deep cut,medium,2.3,,,,mag 2.2 to 2.3,approved,2026-11-12
+2025-02-01,McKinley Dixon,Music,Deep cut,medium,2.3,,,,no change,approved,2026-11-12
+2025-08-01,McKinley Dixon,Music,Deep cut,medium,2.8,,,,mag 2.3 to 2.8,approved,2026-11-12
+2026-02-01,McKinley Dixon,Music,Deep cut,medium,2.8,,,,no change,approved,2026-11-12
+2026-08-01,McKinley Dixon,Music,Deep cut,medium,2.8,,,,no change,approved,2026-11-12
+2026-11-12,McKinley Dixon,Music,Deep cut,medium,2.8,,,,no change,approved,2026-11-12
+2024-02-01,Melissa Carper,Music,Deep cut,low,2.9,,,,start,approved,2026-11-12
+2024-08-01,Melissa Carper,Music,Deep cut,low,2.9,,,,no change,approved,2026-11-12
+2025-02-01,Melissa Carper,Music,Deep cut,medium,2.9,,,,no change,approved,2026-11-12
+2025-08-01,Melissa Carper,Music,Deep cut,medium,3.3,,,,mag 2.9 to 3.3,approved,2026-11-12
+2026-02-01,Melissa Carper,Music,Deep cut,medium,3.3,,,,no change,approved,2026-11-12
+2026-08-01,Melissa Carper,Music,Deep cut,medium,3.3,,,,no change,approved,2026-11-12
+2026-11-12,Melissa Carper,Music,Deep cut,medium,3.3,3.0,,,no change,approved,2026-11-12
+2024-02-01,Mitchum Yacoub,Music,Deep cut,low,,,,,start,approved,2026-11-12
+2024-08-01,Mitchum Yacoub,Music,Deep cut,low,,,,,no change,approved,2026-11-12
+2025-02-01,Mitchum Yacoub,Music,Deep cut,low,3.5,,,,no change,approved,2026-11-12
+2025-08-01,Mitchum Yacoub,Music,Deep cut,low,3.5,,,,no change,approved,2026-11-12
+2026-02-01,Mitchum Yacoub,Music,Deep cut,low,3.5,,,,no change,approved,2026-11-12
+2026-08-01,Mitchum Yacoub,Music,Deep cut,low,3.5,,,,no change,approved,2026-11-12
+2026-11-12,Mitchum Yacoub,Music,Deep cut,low,3.5,,,,no change,approved,2026-11-12
+2024-02-01,New Constellations,Music,Neither,low,,,,,start,approved,2026-11-12
+2024-08-01,New Constellations,Music,Neither,low,,,,,no change,approved,2026-11-12
+2025-02-01,New Constellations,Music,Neither,low,3.0,,,,no change,approved,2026-11-12
+2025-08-01,New Constellations,Music,Discovery,low,3.2,,,,Neither to Discovery; mag 3.0 to 3.2,approved,2026-11-12
+2026-02-01,New Constellations,Music,Discovery,low,4.3,,,,mag 3.2 to 4.3,approved,2026-11-12
+2026-08-01,New Constellations,Music,Discovery,low,4.3,,,,no change,approved,2026-11-12
+2026-11-12,New Constellations,Music,Discovery,medium,4.3,3.9,,,no change,approved,2026-11-12
+2024-02-01,PACKS,Music,Deep cut,medium,2.5,,,,start,approved,2026-11-12
+2024-08-01,PACKS,Music,Deep cut,medium,2.7,,,,mag 2.5 to 2.7,approved,2026-11-12
+2025-02-01,PACKS,Music,Deep cut,medium,3.1,,,,mag 2.7 to 3.1,approved,2026-11-12
+2025-08-01,PACKS,Music,Deep cut,medium,3.1,,,,no change,approved,2026-11-12
+2026-02-01,PACKS,Music,Deep cut,medium,3.1,,,,no change,approved,2026-11-12
+2026-08-01,PACKS,Music,Deep cut,medium,3.1,,,,no change,approved,2026-11-12
+2026-11-12,PACKS,Music,Deep cut,medium,3.1,,,,no change,approved,2026-11-12
+2024-02-01,Pahua,Music,Deep cut,low,,,,,start,approved,2026-11-12
+2024-08-01,Pahua,Music,Deep cut,low,3.0,,,,no change,approved,2026-11-12
+2025-02-01,Pahua,Music,Deep cut,low,3.0,,,,no change,approved,2026-11-12
+2025-08-01,Pahua,Music,Deep cut,low,3.0,,,,no change,approved,2026-11-12
+2026-02-01,Pahua,Music,Deep cut,low,3.0,,,,no change,approved,2026-11-12
+2026-08-01,Pahua,Music,Deep cut,low,3.0,,,,no change,approved,2026-11-12
+2026-11-12,Pahua,Music,Deep cut,low,3.0,,,,no change,approved,2026-11-12
+2024-02-01,Ratboys,Music,Deep cut,high,2.8,,,,start,approved,2026-11-12
+2024-08-01,Ratboys,Music,Deep cut,high,3.0,,,,mag 2.8 to 3.0,approved,2026-11-12
+2025-02-01,Ratboys,Music,Deep cut,high,3.1,,,,mag 3.0 to 3.1,approved,2026-11-12
+2025-08-01,Ratboys,Music,Deep cut,high,3.1,,,,no change,approved,2026-11-12
+2026-02-01,Ratboys,Music,Deep cut,high,3.4,,,,mag 3.1 to 3.4,approved,2026-11-12
+2026-08-01,Ratboys,Music,Discovery,medium,3.5,,,,Deep cut to Discovery; mag 3.4 to 3.5,approved,2026-11-12
+2026-11-12,Ratboys,Music,Discovery,medium,3.5,3.5,,,no change,approved,2026-11-12
+2024-02-01,Rhododendron,Music,Neither,low,3.4,,,,start,approved,2026-11-12
+2024-08-01,Rhododendron,Music,Neither,low,3.4,,,,no change,approved,2026-11-12
+2025-02-01,Rhododendron,Music,Neither,low,3.4,,,,no change,approved,2026-11-12
+2025-08-01,Rhododendron,Music,Neither,low,3.4,,,,no change,approved,2026-11-12
+2026-02-01,Rhododendron,Music,Neither,low,3.4,,,,no change,approved,2026-11-12
+2026-08-01,Rhododendron,Music,Discovery,low,3.4,,,,Neither to Discovery,approved,2026-11-12
+2026-11-12,Rhododendron,Music,Discovery,low,3.4,,,,no change,approved,2026-11-12
+2024-02-01,RogÃª,Music,Legend,medium,,,,,start,approved,2026-11-12
+2024-08-01,RogÃª,Music,Legend,medium,3.0,,,,no change,approved,2026-11-12
+2025-02-01,RogÃª,Music,Legend,medium,3.1,,,,mag 3.0 to 3.1,approved,2026-11-12
+2025-08-01,RogÃª,Music,Legend,medium,3.3,,,,mag 3.1 to 3.3,approved,2026-11-12
+2026-02-01,RogÃª,Music,Legend,medium,3.3,,,,no change,approved,2026-11-12
+2026-08-01,RogÃª,Music,Legend,medium,3.3,,,,no change,approved,2026-11-12
+2026-11-12,RogÃª,Music,Legend,medium,3.3,,,,no change,approved,2026-11-12
+2024-02-01,Sami Braman,Music,Deep cut,low,,,,,start,approved,2026-11-12
+2024-08-01,Sami Braman,Music,Deep cut,low,,,,,no change,approved,2026-11-12
+2025-02-01,Sami Braman,Music,Deep cut,low,,,,,no change,approved,2026-11-12
+2025-08-01,Sami Braman,Music,Deep cut,low,,,,,no change,approved,2026-11-12
+2026-02-01,Sami Braman,Music,Deep cut,low,,,,,no change,approved,2026-11-12
+2026-08-01,Sami Braman,Music,Deep cut,low,,,,,no change,approved,2026-11-12
+2026-11-12,Sami Braman,Music,Deep cut,low,,,,,no change,approved,2026-11-12
+2024-02-01,Searows,Music,Neither,low,3.4,,,,start,approved,2026-11-12
+2024-08-01,Searows,Music,Deep cut,low,3.6,,,,Neither to Deep cut; mag 3.4 to 3.6,approved,2026-11-12
+2025-02-01,Searows,Music,Discovery,low,3.7,,,,Deep cut to Discovery; mag 3.6 to 3.7,approved,2026-11-12
+2025-08-01,Searows,Music,Discovery,low,3.7,,,,no change,approved,2026-11-12
+2026-02-01,Searows,Music,Discovery,medium,4.1,,,,mag 3.7 to 4.1,approved,2026-11-12
+2026-08-01,Searows,Music,Discovery,medium,4.1,,,,no change,approved,2026-11-12
+2026-11-12,Searows,Music,Discovery,medium,4.1,4.1,,,no change,approved,2026-11-12
+2024-02-01,Sluice,Music,Deep cut,low,2.5,,,,start,approved,2026-11-12
+2024-08-01,Sluice,Music,Deep cut,low,3.2,,,,mag 2.5 to 3.2,approved,2026-11-12
+2025-02-01,Sluice,Music,Deep cut,low,3.2,,,,no change,approved,2026-11-12
+2025-08-01,Sluice,Music,Deep cut,low,3.2,,,,no change,approved,2026-11-12
+2026-02-01,Sluice,Music,Deep cut,low,3.2,,,,no change,approved,2026-11-12
+2026-08-01,Sluice,Music,Deep cut,low,3.2,,,,no change,approved,2026-11-12
+2026-11-12,Sluice,Music,Deep cut,low,3.2,2.4,,,no change,approved,2026-11-12
+2024-02-01,The Barbaras,Music,Neither,medium,,,,,start,approved,2026-11-12
+2024-08-01,The Barbaras,Music,Neither,medium,,,,,no change,approved,2026-11-12
+2025-02-01,The Barbaras,Music,Neither,medium,,,,,no change,approved,2026-11-12
+2025-08-01,The Barbaras,Music,Neither,medium,,,,,no change,approved,2026-11-12
+2026-02-01,The Barbaras,Music,Neither,medium,,,,,no change,approved,2026-11-12
+2026-08-01,The Barbaras,Music,Neither,medium,,,,,no change,approved,2026-11-12
+2026-11-12,The Barbaras,Music,Neither,medium,,,,,no change,approved,2026-11-12
+2024-02-01,The Macks,Music,Neither,low,2.7,,,,start,approved,2026-11-12
+2024-08-01,The Macks,Music,Neither,low,2.7,,,,no change,approved,2026-11-12
+2025-02-01,The Macks,Music,Neither,low,2.8,,,,mag 2.7 to 2.8,approved,2026-11-12
+2025-08-01,The Macks,Music,Neither,low,2.9,,,,mag 2.8 to 2.9,approved,2026-11-12
+2026-02-01,The Macks,Music,Deep cut,low,2.9,,,,Neither to Deep cut,approved,2026-11-12
+2026-08-01,The Macks,Music,Deep cut,low,2.9,,,,no change,approved,2026-11-12
+2026-11-12,The Macks,Music,Deep cut,low,2.9,,,,no change,approved,2026-11-12
+2024-02-01,The Soul Rebels,Music,Legend,medium,3.1,,,,start,approved,2026-11-12
+2024-08-01,The Soul Rebels,Music,Legend,medium,3.1,,,,no change,approved,2026-11-12
+2025-02-01,The Soul Rebels,Music,Legend,medium,3.1,,,,no change,approved,2026-11-12
+2025-08-01,The Soul Rebels,Music,Legend,medium,3.1,,,,no change,approved,2026-11-12
+2026-02-01,The Soul Rebels,Music,Legend,medium,3.1,,,,no change,approved,2026-11-12
+2026-08-01,The Soul Rebels,Music,Legend,medium,3.3,,,,mag 3.1 to 3.3,approved,2026-11-12
+2026-11-12,The Soul Rebels,Music,Legend,medium,3.3,3.3,,,no change,approved,2026-11-12
+2024-02-01,Theo Lawrence,Music,Deep cut,low,2.9,,,,start,approved,2026-11-12
+2024-08-01,Theo Lawrence,Music,Deep cut,low,3.3,,,,mag 2.9 to 3.3,approved,2026-11-12
+2025-02-01,Theo Lawrence,Music,Deep cut,low,3.3,,,,no change,approved,2026-11-12
+2025-08-01,Theo Lawrence,Music,Deep cut,low,3.3,,,,no change,approved,2026-11-12
+2026-02-01,Theo Lawrence,Music,Deep cut,low,3.3,,,,no change,approved,2026-11-12
+2026-08-01,Theo Lawrence,Music,Deep cut,low,3.3,,,,no change,approved,2026-11-12
+2026-11-12,Theo Lawrence,Music,Deep cut,low,3.3,,,,no change,approved,2026-11-12
+2024-02-01,This Is Lorelei,Music,Neither,low,,,,,start,approved,2026-11-12
+2024-08-01,This Is Lorelei,Music,Neither,low,2.4,,,,no change,approved,2026-11-12
+2025-02-01,This Is Lorelei,Music,Neither,low,2.6,,,,mag 2.4 to 2.6,approved,2026-11-12
+2025-08-01,This Is Lorelei,Music,Deep cut,low,2.9,,,,Neither to Deep cut; mag 2.6 to 2.9,approved,2026-11-12
+2026-02-01,This Is Lorelei,Music,Discovery,low,3.6,,,,Deep cut to Discovery; mag 2.9 to 3.6,approved,2026-11-12
+2026-08-01,This Is Lorelei,Music,Discovery,medium,3.6,,,,no change,approved,2026-11-12
+2026-11-12,This Is Lorelei,Music,Discovery,medium,3.6,3.5,,,no change,approved,2026-11-12
+2024-02-01,True Loves,Music,Deep cut,low,3.1,,,,start,approved,2026-11-12
+2024-08-01,True Loves,Music,Deep cut,low,3.1,,,,no change,approved,2026-11-12
+2025-02-01,True Loves,Music,Deep cut,low,3.1,,,,no change,approved,2026-11-12
+2025-08-01,True Loves,Music,Deep cut,low,3.4,,,,mag 3.1 to 3.4,approved,2026-11-12
+2026-02-01,True Loves,Music,Deep cut,low,3.4,,,,no change,approved,2026-11-12
+2026-08-01,True Loves,Music,Deep cut,low,3.4,,,,no change,approved,2026-11-12
+2026-11-12,True Loves,Music,Deep cut,low,3.5,3.5,,,mag 3.4 to 3.5,approved,2026-11-12
+2024-02-01,Two Runner,Music,Deep cut,low,3.3,,,,start,approved,2026-11-12
+2024-08-01,Two Runner,Music,Deep cut,low,3.4,,,,mag 3.3 to 3.4,approved,2026-11-12
+2025-02-01,Two Runner,Music,Deep cut,low,3.6,,,,mag 3.4 to 3.6,approved,2026-11-12
+2025-08-01,Two Runner,Music,Deep cut,low,3.6,,,,no change,approved,2026-11-12
+2026-02-01,Two Runner,Music,Deep cut,low,3.6,,,,no change,approved,2026-11-12
+2026-08-01,Two Runner,Music,Deep cut,low,3.6,,,,no change,approved,2026-11-12
+2026-11-12,Two Runner,Music,Deep cut,low,3.6,3.0,,,no change,approved,2026-11-12
+2024-02-01,Vincent Neil Emerson,Music,Neither,low,3.3,,,,start,approved,2026-11-12
+2024-08-01,Vincent Neil Emerson,Music,Neither,low,3.3,,,,no change,approved,2026-11-12
+2025-02-01,Vincent Neil Emerson,Music,Neither,low,3.3,,,,no change,approved,2026-11-12
+2025-08-01,Vincent Neil Emerson,Music,Neither,low,3.4,,,,mag 3.3 to 3.4,approved,2026-11-12
+2026-02-01,Vincent Neil Emerson,Music,Discovery,low,3.5,,,,Neither to Discovery; mag 3.4 to 3.5,approved,2026-11-12
+2026-08-01,Vincent Neil Emerson,Music,Discovery,low,3.5,,,,no change,approved,2026-11-12
+2026-11-12,Vincent Neil Emerson,Music,Discovery,low,3.5,3.3,,,no change,approved,2026-11-12
+2024-02-01,Water From Your Eyes,Music,Deep cut,low,3.3,,,,start,approved,2026-11-12
+2024-08-01,Water From Your Eyes,Music,Deep cut,low,3.3,,,,no change,approved,2026-11-12
+2025-02-01,Water From Your Eyes,Music,Deep cut,low,3.3,,,,no change,approved,2026-11-12
+2025-08-01,Water From Your Eyes,Music,Deep cut,low,3.3,,,,no change,approved,2026-11-12
+2026-02-01,Water From Your Eyes,Music,Discovery,low,3.3,,,,Deep cut to Discovery,approved,2026-11-12
+2026-08-01,Water From Your Eyes,Music,Discovery,low,3.4,,,,mag 3.3 to 3.4,approved,2026-11-12
+2026-11-12,Water From Your Eyes,Music,Discovery,low,3.4,,,,no change,approved,2026-11-12
+2024-02-01,Will Paquin,Music,Neither,low,2.5,,,,start,approved,2026-11-12
+2024-08-01,Will Paquin,Music,Neither,low,2.5,,,,no change,approved,2026-11-12
+2025-02-01,Will Paquin,Music,Neither,low,2.5,,,,no change,approved,2026-11-12
+2025-08-01,Will Paquin,Music,Neither,low,2.8,,,,mag 2.5 to 2.8,approved,2026-11-12
+2026-02-01,Will Paquin,Music,Deep cut,low,2.8,,,,Neither to Deep cut,approved,2026-11-12
+2026-08-01,Will Paquin,Music,Deep cut,low,2.8,,,,no change,approved,2026-11-12
+2026-11-12,Will Paquin,Music,Deep cut,low,2.8,,,,no change,approved,2026-11-12
+2024-02-01,Adam Pasi,Comedy,Deep cut,low,,,,,start,approved,2026-11-12
+2024-08-01,Adam Pasi,Comedy,Deep cut,low,,,,,no change,approved,2026-11-12
+2025-02-01,Adam Pasi,Comedy,Deep cut,low,,,,,no change,approved,2026-11-12
+2025-08-01,Adam Pasi,Comedy,Deep cut,low,,,,,no change,approved,2026-11-12
+2026-02-01,Adam Pasi,Comedy,Deep cut,low,,,,,no change,approved,2026-11-12
+2026-08-01,Adam Pasi,Comedy,Deep cut,low,,,,,no change,approved,2026-11-12
+2026-11-12,Adam Pasi,Comedy,Deep cut,low,,,,,no change,approved,2026-11-12
+2024-02-01,Imani,Comedy,Deep cut,low,,,,,start,approved,2026-11-12
+2024-08-01,Imani,Comedy,Deep cut,low,,,,,no change,approved,2026-11-12
+2025-02-01,Imani,Comedy,Deep cut,low,,,,,no change,approved,2026-11-12
+2025-08-01,Imani,Comedy,Deep cut,low,,,,,no change,approved,2026-11-12
+2026-02-01,Imani,Comedy,Deep cut,low,,,,,no change,approved,2026-11-12
+2026-08-01,Imani,Comedy,Deep cut,low,,,,,no change,approved,2026-11-12
+2026-11-12,Imani,Comedy,Deep cut,low,,,,,no change,approved,2026-11-12
+2024-02-01,Lisa Chanoux,Comedy,Neither,medium,,,,,start,approved,2026-11-12
+2024-08-01,Lisa Chanoux,Comedy,Neither,medium,,,,,no change,approved,2026-11-12
+2025-02-01,Lisa Chanoux,Comedy,Neither,medium,,,,,no change,approved,2026-11-12
+2025-08-01,Lisa Chanoux,Comedy,Neither,medium,,,,,no change,approved,2026-11-12
+2026-02-01,Lisa Chanoux,Comedy,Neither,medium,,,,,no change,approved,2026-11-12
+2026-08-01,Lisa Chanoux,Comedy,Neither,medium,,,,,no change,approved,2026-11-12
+2026-11-12,Lisa Chanoux,Comedy,Neither,medium,,,,,no change,approved,2026-11-12
+2024-02-01,Tom Thakkar,Comedy,Deep cut,medium,,,,,start,approved,2026-11-12
+2024-08-01,Tom Thakkar,Comedy,Deep cut,medium,,,,,no change,approved,2026-11-12
+2025-02-01,Tom Thakkar,Comedy,Deep cut,medium,,,,,no change,approved,2026-11-12
+2025-08-01,Tom Thakkar,Comedy,Deep cut,medium,,,,,no change,approved,2026-11-12
+2026-02-01,Tom Thakkar,Comedy,Deep cut,medium,,,,,no change,approved,2026-11-12
+2026-08-01,Tom Thakkar,Comedy,Deep cut,medium,,,,,no change,approved,2026-11-12
+2026-11-12,Tom Thakkar,Comedy,Deep cut,medium,,,,,no change,approved,2026-11-12
+2024-02-01,Captain James,Family,Neither,medium,,,,,start,approved,2026-11-12
+2024-08-01,Captain James,Family,Neither,medium,,,,,no change,approved,2026-11-12
+2025-02-01,Captain James,Family,Neither,medium,,,,,no change,approved,2026-11-12
+2025-08-01,Captain James,Family,Neither,medium,,,,,no change,approved,2026-11-12
+2026-02-01,Captain James,Family,Neither,medium,,,,,no change,approved,2026-11-12
+2026-08-01,Captain James,Family,Neither,medium,,,,,no change,approved,2026-11-12
+2026-11-12,Captain James,Family,Neither,medium,,,,,no change,approved,2026-11-12
+2024-02-01,Jousting,Family,Neither,high,,,,,start,approved,2026-11-12
+2024-08-01,Jousting,Family,Neither,high,,,,,no change,approved,2026-11-12
+2025-02-01,Jousting,Family,Neither,high,,,,,no change,approved,2026-11-12
+2025-08-01,Jousting,Family,Neither,high,,,,,no change,approved,2026-11-12
+2026-02-01,Jousting,Family,Neither,high,,,,,no change,approved,2026-11-12
+2026-08-01,Jousting,Family,Neither,high,,,,,no change,approved,2026-11-12
+2026-11-12,Jousting,Family,Neither,high,,,,,no change,approved,2026-11-12
+2024-02-01,Kelli Welli,Family,Neither,medium,,,,,start,approved,2026-11-12
+2024-08-01,Kelli Welli,Family,Neither,medium,,,,,no change,approved,2026-11-12
+2025-02-01,Kelli Welli,Family,Neither,medium,,,,,no change,approved,2026-11-12
+2025-08-01,Kelli Welli,Family,Neither,medium,,,,,no change,approved,2026-11-12
+2026-02-01,Kelli Welli,Family,Neither,medium,,,,,no change,approved,2026-11-12
+2026-08-01,Kelli Welli,Family,Neither,medium,,,,,no change,approved,2026-11-12
+2026-11-12,Kelli Welli,Family,Neither,medium,,,,,no change,approved,2026-11-12
+2024-02-01,"Little Miss Ann and special guest, Suzi Shelton",Family,Deep cut,low,,,,,start,approved,2026-11-12
+2024-08-01,"Little Miss Ann and special guest, Suzi Shelton",Family,Deep cut,low,,,,,no change,approved,2026-11-12
+2025-02-01,"Little Miss Ann and special guest, Suzi Shelton",Family,Deep cut,low,,,,,no change,approved,2026-11-12
+2025-08-01,"Little Miss Ann and special guest, Suzi Shelton",Family,Deep cut,low,,,,,no change,approved,2026-11-12
+2026-02-01,"Little Miss Ann and special guest, Suzi Shelton",Family,Deep cut,low,,,,,no change,approved,2026-11-12
+2026-08-01,"Little Miss Ann and special guest, Suzi Shelton",Family,Deep cut,low,,,,,no change,approved,2026-11-12
+2026-11-12,"Little Miss Ann and special guest, Suzi Shelton",Family,Deep cut,low,,,,,no change,approved,2026-11-12
+2024-02-01,Lucy Kalantari and the Jazz Cats,Family,Legend,high,,,,,start,approved,2026-11-12
+2024-08-01,Lucy Kalantari and the Jazz Cats,Family,Legend,high,,,,,no change,approved,2026-11-12
+2025-02-01,Lucy Kalantari and the Jazz Cats,Family,Legend,high,,,,,no change,approved,2026-11-12
+2025-08-01,Lucy Kalantari and the Jazz Cats,Family,Legend,high,,,,,no change,approved,2026-11-12
+2026-02-01,Lucy Kalantari and the Jazz Cats,Family,Legend,high,,,,,no change,approved,2026-11-12
+2026-08-01,Lucy Kalantari and the Jazz Cats,Family,Legend,high,,,,,no change,approved,2026-11-12
+2026-11-12,Lucy Kalantari and the Jazz Cats,Family,Legend,high,,,,,no change,approved,2026-11-12
+2024-02-01,Mamma Coal Plays Kidsâ Country,Family,Neither,low,,,,,start,approved,2026-11-12
+2024-08-01,Mamma Coal Plays Kidsâ Country,Family,Neither,low,,,,,no change,approved,2026-11-12
+2025-02-01,Mamma Coal Plays Kidsâ Country,Family,Neither,low,,,,,no change,approved,2026-11-12
+2025-08-01,Mamma Coal Plays Kidsâ Country,Family,Neither,low,,,,,no change,approved,2026-11-12
+2026-02-01,Mamma Coal Plays Kidsâ Country,Family,Neither,low,,,,,no change,approved,2026-11-12
+2026-08-01,Mamma Coal Plays Kidsâ Country,Family,Neither,low,,,,,no change,approved,2026-11-12
+2026-11-12,Mamma Coal Plays Kidsâ Country,Family,Neither,low,,,,,no change,approved,2026-11-12
+2024-02-01,Mo Phillips,Family,Neither,medium,,,,,start,approved,2026-11-12
+2024-08-01,Mo Phillips,Family,Neither,medium,,,,,no change,approved,2026-11-12
+2025-02-01,Mo Phillips,Family,Neither,medium,,,,,no change,approved,2026-11-12
+2025-08-01,Mo Phillips,Family,Neither,medium,,,,,no change,approved,2026-11-12
+2026-02-01,Mo Phillips,Family,Neither,medium,,,,,no change,approved,2026-11-12
+2026-08-01,Mo Phillips,Family,Neither,medium,,,,,no change,approved,2026-11-12
+2026-11-12,Mo Phillips,Family,Neither,medium,,,,,no change,approved,2026-11-12
+2024-02-01,Mr. Ben,Family,Neither,medium,,,,,start,approved,2026-11-12
+2024-08-01,Mr. Ben,Family,Neither,medium,,,,,no change,approved,2026-11-12
+2025-02-01,Mr. Ben,Family,Neither,medium,,,,,no change,approved,2026-11-12
+2025-08-01,Mr. Ben,Family,Neither,medium,,,,,no change,approved,2026-11-12
+2026-02-01,Mr. Ben,Family,Neither,medium,,,,,no change,approved,2026-11-12
+2026-08-01,Mr. Ben,Family,Neither,medium,,,,,no change,approved,2026-11-12
+2026-11-12,Mr. Ben,Family,Neither,medium,,,,,no change,approved,2026-11-12
+2024-02-01,Mr. Sam & The People People (Special Family Set),Family,Neither,medium,,,,,start,approved,2026-11-12
+2024-08-01,Mr. Sam & The People People (Special Family Set),Family,Neither,medium,,,,,no change,approved,2026-11-12
+2025-02-01,Mr. Sam & The People People (Special Family Set),Family,Neither,medium,,,,,no change,approved,2026-11-12
+2025-08-01,Mr. Sam & The People People (Special Family Set),Family,Neither,medium,,,,,no change,approved,2026-11-12
+2026-02-01,Mr. Sam & The People People (Special Family Set),Family,Neither,medium,,,,,no change,approved,2026-11-12
+2026-08-01,Mr. Sam & The People People (Special Family Set),Family,Neither,medium,,,,,no change,approved,2026-11-12
+2026-11-12,Mr. Sam & The People People (Special Family Set),Family,Neither,medium,,,,,no change,approved,2026-11-12
+2024-02-01,Nikki Brown Clown & Ladybug PDX,Family,Neither,medium,,,,,start,approved,2026-11-12
+2024-08-01,Nikki Brown Clown & Ladybug PDX,Family,Neither,medium,,,,,no change,approved,2026-11-12
+2025-02-01,Nikki Brown Clown & Ladybug PDX,Family,Neither,medium,,,,,no change,approved,2026-11-12
+2025-08-01,Nikki Brown Clown & Ladybug PDX,Family,Neither,medium,,,,,no change,approved,2026-11-12
+2026-02-01,Nikki Brown Clown & Ladybug PDX,Family,Neither,medium,,,,,no change,approved,2026-11-12
+2026-08-01,Nikki Brown Clown & Ladybug PDX,Family,Neither,medium,,,,,no change,approved,2026-11-12
+2026-11-12,Nikki Brown Clown & Ladybug PDX,Family,Neither,medium,,,,,no change,approved,2026-11-12
+2024-02-01,Pablo Navarro,Family,Neither,medium,,,,,start,approved,2026-11-12
+2024-08-01,Pablo Navarro,Family,Neither,medium,,,,,no change,approved,2026-11-12
+2025-02-01,Pablo Navarro,Family,Neither,medium,,,,,no change,approved,2026-11-12
+2025-08-01,Pablo Navarro,Family,Neither,medium,,,,,no change,approved,2026-11-12
+2026-02-01,Pablo Navarro,Family,Neither,medium,,,,,no change,approved,2026-11-12
+2026-08-01,Pablo Navarro,Family,Neither,medium,,,,,no change,approved,2026-11-12
+2026-11-12,Pablo Navarro,Family,Neither,medium,,,,,no change,approved,2026-11-12
+2024-02-01,Petrichor,Family,Neither,high,,,,,start,approved,2026-11-12
+2024-08-01,Petrichor,Family,Neither,high,,,,,no change,approved,2026-11-12
+2025-02-01,Petrichor,Family,Neither,high,,,,,no change,approved,2026-11-12
+2025-08-01,Petrichor,Family,Neither,high,,,,,no change,approved,2026-11-12
+2026-02-01,Petrichor,Family,Neither,high,,,,,no change,approved,2026-11-12
+2026-08-01,Petrichor,Family,Neither,high,,,,,no change,approved,2026-11-12
+2026-11-12,Petrichor,Family,Neither,high,,,,,no change,approved,2026-11-12
+2024-02-01,Red Yarn,Family,Neither,medium,,,,,start,approved,2026-11-12
+2024-08-01,Red Yarn,Family,Neither,medium,,,,,no change,approved,2026-11-12
+2025-02-01,Red Yarn,Family,Neither,medium,,,,,no change,approved,2026-11-12
+2025-08-01,Red Yarn,Family,Neither,medium,,,,,no change,approved,2026-11-12
+2026-02-01,Red Yarn,Family,Neither,medium,,,,,no change,approved,2026-11-12
+2026-08-01,Red Yarn,Family,Neither,medium,,,,,no change,approved,2026-11-12
+2026-11-12,Red Yarn,Family,Neither,medium,,,,,no change,approved,2026-11-12
+2024-02-01,Tallulahâs Daddy,Family,Neither,medium,,,,,start,approved,2026-11-12
+2024-08-01,Tallulahâs Daddy,Family,Neither,medium,,,,,no change,approved,2026-11-12
+2025-02-01,Tallulahâs Daddy,Family,Neither,medium,,,,,no change,approved,2026-11-12
+2025-08-01,Tallulahâs Daddy,Family,Neither,medium,,,,,no change,approved,2026-11-12
+2026-02-01,Tallulahâs Daddy,Family,Neither,medium,,,,,no change,approved,2026-11-12
+2026-08-01,Tallulahâs Daddy,Family,Neither,medium,,,,,no change,approved,2026-11-12
+2026-11-12,Tallulahâs Daddy,Family,Neither,medium,,,,,no change,approved,2026-11-12
+2024-02-01,The Norman Sylvester Band feat: Lenanne Miller,Family,Legend,medium,,,,,start,approved,2026-11-12
+2024-08-01,The Norman Sylvester Band feat: Lenanne Miller,Family,Legend,medium,,,,,no change,approved,2026-11-12
+2025-02-01,The Norman Sylvester Band feat: Lenanne Miller,Family,Legend,medium,,,,,no change,approved,2026-11-12
+2025-08-01,The Norman Sylvester Band feat: Lenanne Miller,Family,Legend,medium,,,,,no change,approved,2026-11-12
+2026-02-01,The Norman Sylvester Band feat: Lenanne Miller,Family,Legend,medium,,,,,no change,approved,2026-11-12
+2026-08-01,The Norman Sylvester Band feat: Lenanne Miller,Family,Legend,medium,,,,,no change,approved,2026-11-12
+2026-11-12,The Norman Sylvester Band feat: Lenanne Miller,Family,Legend,medium,,,,,no change,approved,2026-11-12
+2024-02-01,The Red Strings,Family,Neither,high,,,,,start,approved,2026-11-12
+2024-08-01,The Red Strings,Family,Neither,high,,,,,no change,approved,2026-11-12
+2025-02-01,The Red Strings,Family,Neither,high,,,,,no change,approved,2026-11-12
+2025-08-01,The Red Strings,Family,Neither,high,,,,,no change,approved,2026-11-12
+2026-02-01,The Red Strings,Family,Neither,high,,,,,no change,approved,2026-11-12
+2026-08-01,The Red Strings,Family,Neither,high,,,,,no change,approved,2026-11-12
+2026-11-12,The Red Strings,Family,Neither,high,,,,,no change,approved,2026-11-12
+2024-02-01,Triple Rainbow,Family,Neither,medium,,,,,start,approved,2026-11-12
+2024-08-01,Triple Rainbow,Family,Neither,medium,,,,,no change,approved,2026-11-12
+2025-02-01,Triple Rainbow,Family,Neither,medium,,,,,no change,approved,2026-11-12
+2025-08-01,Triple Rainbow,Family,Neither,medium,,,,,no change,approved,2026-11-12
+2026-02-01,Triple Rainbow,Family,Neither,medium,,,,,no change,approved,2026-11-12
+2026-08-01,Triple Rainbow,Family,Neither,medium,,,,,no change,approved,2026-11-12
+2026-11-12,Triple Rainbow,Family,Neither,medium,,,,,no change,approved,2026-11-12
+2024-02-01,charliehorse,Family,Neither,high,,,,,start,approved,2026-11-12
+2024-08-01,charliehorse,Family,Neither,high,,,,,no change,approved,2026-11-12
+2025-02-01,charliehorse,Family,Neither,high,,,,,no change,approved,2026-11-12
+2025-08-01,charliehorse,Family,Neither,high,,,,,no change,approved,2026-11-12
+2026-02-01,charliehorse,Family,Neither,high,,,,,no change,approved,2026-11-12
+2026-08-01,charliehorse,Family,Neither,high,,,,,no change,approved,2026-11-12
+2026-11-12,charliehorse,Family,Neither,high,,,,,no change,approved,2026-11-12
+2024-02-01,Alisha Joy,Literary,Neither,medium,,,,,start,approved,2026-11-12
+2024-08-01,Alisha Joy,Literary,Neither,medium,,,,,no change,approved,2026-11-12
+2025-02-01,Alisha Joy,Literary,Neither,medium,,,,,no change,approved,2026-11-12
+2025-08-01,Alisha Joy,Literary,Neither,medium,,,,,no change,approved,2026-11-12
+2026-02-01,Alisha Joy,Literary,Neither,medium,,,,,no change,approved,2026-11-12
+2026-08-01,Alisha Joy,Literary,Neither,medium,,,,,no change,approved,2026-11-12
+2026-11-12,Alisha Joy,Literary,Neither,medium,,,,,no change,approved,2026-11-12
+2024-02-01,Andrew Dickson,Literary,Deep cut,medium,,,,,start,approved,2026-11-12
+2024-08-01,Andrew Dickson,Literary,Deep cut,medium,,,,,no change,approved,2026-11-12
+2025-02-01,Andrew Dickson,Literary,Deep cut,medium,,,,,no change,approved,2026-11-12
+2025-08-01,Andrew Dickson,Literary,Deep cut,medium,,,,,no change,approved,2026-11-12
+2026-02-01,Andrew Dickson,Literary,Deep cut,medium,,,,,no change,approved,2026-11-12
+2026-08-01,Andrew Dickson,Literary,Deep cut,medium,,,,,no change,approved,2026-11-12
+2026-11-12,Andrew Dickson,Literary,Deep cut,medium,,,,,no change,approved,2026-11-12
+2024-02-01,Blacque Butterfly,Literary,Deep cut,low,,,,,start,approved,2026-11-12
+2024-08-01,Blacque Butterfly,Literary,Deep cut,low,,,,,no change,approved,2026-11-12
+2025-02-01,Blacque Butterfly,Literary,Deep cut,low,,,,,no change,approved,2026-11-12
+2025-08-01,Blacque Butterfly,Literary,Deep cut,low,,,,,no change,approved,2026-11-12
+2026-02-01,Blacque Butterfly,Literary,Deep cut,low,,,,,no change,approved,2026-11-12
+2026-08-01,Blacque Butterfly,Literary,Deep cut,low,,,,,no change,approved,2026-11-12
+2026-11-12,Blacque Butterfly,Literary,Deep cut,low,,,,,no change,approved,2026-11-12
+2024-02-01,Charity E. Yoro,Literary,Neither,low,,,,,start,approved,2026-11-12
+2024-08-01,Charity E. Yoro,Literary,Neither,low,,,,,no change,approved,2026-11-12
+2025-02-01,Charity E. Yoro,Literary,Neither,low,,,,,no change,approved,2026-11-12
+2025-08-01,Charity E. Yoro,Literary,Deep cut,low,,,,,Neither to Deep cut,approved,2026-11-12
+2026-02-01,Charity E. Yoro,Literary,Deep cut,low,,,,,no change,approved,2026-11-12
+2026-08-01,Charity E. Yoro,Literary,Deep cut,low,,,,,no change,approved,2026-11-12
+2026-11-12,Charity E. Yoro,Literary,Deep cut,low,,,,,no change,approved,2026-11-12
+2024-02-01,David Scott Smith,Literary,Neither,medium,,,,,start,approved,2026-11-12
+2024-08-01,David Scott Smith,Literary,Neither,medium,,,,,no change,approved,2026-11-12
+2025-02-01,David Scott Smith,Literary,Neither,medium,,,,,no change,approved,2026-11-12
+2025-08-01,David Scott Smith,Literary,Neither,medium,,,,,no change,approved,2026-11-12
+2026-02-01,David Scott Smith,Literary,Neither,medium,,,,,no change,approved,2026-11-12
+2026-08-01,David Scott Smith,Literary,Neither,medium,,,,,no change,approved,2026-11-12
+2026-11-12,David Scott Smith,Literary,Neither,medium,,,,,no change,approved,2026-11-12
+2024-02-01,Ferris Jabr,Literary,Deep cut,low,,,,,start,approved,2026-11-12
+2024-08-01,Ferris Jabr,Literary,Deep cut,medium,,,,,no change,approved,2026-11-12
+2025-02-01,Ferris Jabr,Literary,Deep cut,medium,,,,,no change,approved,2026-11-12
+2025-08-01,Ferris Jabr,Literary,Deep cut,medium,,,,,no change,approved,2026-11-12
+2026-02-01,Ferris Jabr,Literary,Deep cut,medium,,,,,no change,approved,2026-11-12
+2026-08-01,Ferris Jabr,Literary,Deep cut,high,,,,,no change,approved,2026-11-12
+2026-11-12,Ferris Jabr,Literary,Deep cut,high,,,,,no change,approved,2026-11-12
+2024-02-01,Jae Nichelle,Literary,Deep cut,medium,,,,,start,approved,2026-11-12
+2024-08-01,Jae Nichelle,Literary,Deep cut,medium,,,,,no change,approved,2026-11-12
+2025-02-01,Jae Nichelle,Literary,Deep cut,medium,,,,,no change,approved,2026-11-12
+2025-08-01,Jae Nichelle,Literary,Deep cut,medium,,,,,no change,approved,2026-11-12
+2026-02-01,Jae Nichelle,Literary,Deep cut,medium,,,,,no change,approved,2026-11-12
+2026-08-01,Jae Nichelle,Literary,Deep cut,medium,,,,,no change,approved,2026-11-12
+2026-11-12,Jae Nichelle,Literary,Deep cut,medium,,,,,no change,approved,2026-11-12
+2024-02-01,Justin Taylor,Literary,Deep cut,low,,,,,start,approved,2026-11-12
+2024-08-01,Justin Taylor,Literary,Deep cut,medium,,,,,no change,approved,2026-11-12
+2025-02-01,Justin Taylor,Literary,Deep cut,medium,,,,,no change,approved,2026-11-12
+2025-08-01,Justin Taylor,Literary,Deep cut,medium,,,,,no change,approved,2026-11-12
+2026-02-01,Justin Taylor,Literary,Deep cut,medium,,,,,no change,approved,2026-11-12
+2026-08-01,Justin Taylor,Literary,Deep cut,medium,,,,,no change,approved,2026-11-12
+2026-11-12,Justin Taylor,Literary,Deep cut,medium,,,,,no change,approved,2026-11-12
+2024-02-01,Lola Milholland,Literary,Neither,low,,,,,start,approved,2026-11-12
+2024-08-01,Lola Milholland,Literary,Neither,low,,,,,no change,approved,2026-11-12
+2025-02-01,Lola Milholland,Literary,Deep cut,low,,,,,Neither to Deep cut,approved,2026-11-12
+2025-08-01,Lola Milholland,Literary,Deep cut,low,,,,,no change,approved,2026-11-12
+2026-02-01,Lola Milholland,Literary,Deep cut,low,,,,,no change,approved,2026-11-12
+2026-08-01,Lola Milholland,Literary,Deep cut,low,,,,,no change,approved,2026-11-12
+2026-11-12,Lola Milholland,Literary,Deep cut,low,,,,,no change,approved,2026-11-12
+2024-02-01,Malcolm Hoover,Literary,Neither,low,,,,,start,approved,2026-11-12
+2024-08-01,Malcolm Hoover,Literary,Neither,low,,,,,no change,approved,2026-11-12
+2025-02-01,Malcolm Hoover,Literary,Neither,low,,,,,no change,approved,2026-11-12
+2025-08-01,Malcolm Hoover,Literary,Neither,low,,,,,no change,approved,2026-11-12
+2026-02-01,Malcolm Hoover,Literary,Neither,low,,,,,no change,approved,2026-11-12
+2026-08-01,Malcolm Hoover,Literary,Neither,low,,,,,no change,approved,2026-11-12
+2026-11-12,Malcolm Hoover,Literary,Neither,low,,,,,no change,approved,2026-11-12
+2024-02-01,Mic Crenshaw,Literary,Legend,medium,,,,,start,approved,2026-11-12
+2024-08-01,Mic Crenshaw,Literary,Legend,medium,,,,,no change,approved,2026-11-12
+2025-02-01,Mic Crenshaw,Literary,Legend,medium,,,,,no change,approved,2026-11-12
+2025-08-01,Mic Crenshaw,Literary,Legend,medium,,,,,no change,approved,2026-11-12
+2026-02-01,Mic Crenshaw,Literary,Legend,medium,,,,,no change,approved,2026-11-12
+2026-08-01,Mic Crenshaw,Literary,Legend,medium,,,,,no change,approved,2026-11-12
+2026-11-12,Mic Crenshaw,Literary,Legend,medium,,,,,no change,approved,2026-11-12
+2024-02-01,Patricia Wheeler (Host & Curator),Literary,Neither,low,,,,,start,approved,2026-11-12
+2024-08-01,Patricia Wheeler (Host & Curator),Literary,Neither,low,,,,,no change,approved,2026-11-12
+2025-02-01,Patricia Wheeler (Host & Curator),Literary,Neither,low,,,,,no change,approved,2026-11-12
+2025-08-01,Patricia Wheeler (Host & Curator),Literary,Neither,low,,,,,no change,approved,2026-11-12
+2026-02-01,Patricia Wheeler (Host & Curator),Literary,Neither,low,,,,,no change,approved,2026-11-12
+2026-08-01,Patricia Wheeler (Host & Curator),Literary,Neither,low,,,,,no change,approved,2026-11-12
+2026-11-12,Patricia Wheeler (Host & Curator),Literary,Neither,low,,,,,no change,approved,2026-11-12
+2024-02-01,Renae Roemmich,Literary,Neither,medium,,,,,start,approved,2026-11-12
+2024-08-01,Renae Roemmich,Literary,Neither,medium,,,,,no change,approved,2026-11-12
+2025-02-01,Renae Roemmich,Literary,Neither,medium,,,,,no change,approved,2026-11-12
+2025-08-01,Renae Roemmich,Literary,Neither,medium,,,,,no change,approved,2026-11-12
+2026-02-01,Renae Roemmich,Literary,Neither,medium,,,,,no change,approved,2026-11-12
+2026-08-01,Renae Roemmich,Literary,Neither,medium,,,,,no change,approved,2026-11-12
+2026-11-12,Renae Roemmich,Literary,Neither,medium,,,,,no change,approved,2026-11-12
+2024-02-01,Sarah Bunger,Literary,Neither,medium,,,,,start,approved,2026-11-12
+2024-08-01,Sarah Bunger,Literary,Neither,medium,,,,,no change,approved,2026-11-12
+2025-02-01,Sarah Bunger,Literary,Neither,medium,,,,,no change,approved,2026-11-12
+2025-08-01,Sarah Bunger,Literary,Neither,medium,,,,,no change,approved,2026-11-12
+2026-02-01,Sarah Bunger,Literary,Neither,medium,,,,,no change,approved,2026-11-12
+2026-08-01,Sarah Bunger,Literary,Neither,medium,,,,,no change,approved,2026-11-12
+2026-11-12,Sarah Bunger,Literary,Neither,medium,,,,,no change,approved,2026-11-12
+2024-02-01,Toni Hill,Literary,Deep cut,low,,,,,start,approved,2026-11-12
+2024-08-01,Toni Hill,Literary,Deep cut,low,,,,,no change,approved,2026-11-12
+2025-02-01,Toni Hill,Literary,Deep cut,low,,,,,no change,approved,2026-11-12
+2025-08-01,Toni Hill,Literary,Deep cut,low,,,,,no change,approved,2026-11-12
+2026-02-01,Toni Hill,Literary,Deep cut,low,,,,,no change,approved,2026-11-12
+2026-08-01,Toni Hill,Literary,Deep cut,low,,,,,no change,approved,2026-11-12
+2026-11-12,Toni Hill,Literary,Deep cut,low,,,,,no change,approved,2026-11-12
+2024-02-01,Willy Vlautin,Literary,Legend,high,,,,,start,approved,2026-11-12
+2024-08-01,Willy Vlautin,Literary,Legend,high,,,,,no change,approved,2026-11-12
+2025-02-01,Willy Vlautin,Literary,Legend,high,,,,,no change,approved,2026-11-12
+2025-08-01,Willy Vlautin,Literary,Legend,high,,,,,no change,approved,2026-11-12
+2026-02-01,Willy Vlautin,Literary,Legend,high,,,,,no change,approved,2026-11-12
+2026-08-01,Willy Vlautin,Literary,Legend,high,,,,,no change,approved,2026-11-12
+2026-11-12,Willy Vlautin,Literary,Legend,high,,,,,no change,approved,2026-11-12
