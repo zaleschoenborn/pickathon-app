@@ -29,22 +29,20 @@ const STATES = arg('states') ? String(arg('states')).split(',') : QUICK ? ['sale
 
 // --- in-page helpers ---------------------------------------------------------
 const OPEN = (st) => { const A = window.__app; A.setState(st); A.reset('home'); A.go('tickets', {}); window.scrollTo(0, 0); };
-const STEP1 = () => [...document.querySelectorAll('#root button[aria-label^="One more "]')].filter((b) => b.checkVisibility()).map((b) => b.getAttribute('aria-label').replace(/^One more /, ''));
+const STEP1 = () => [...document.querySelectorAll('#root input[name="tk-pass"]')].filter((i) => i.closest('label') && i.closest('label').checkVisibility()).map((i) => i.value);
 // every pass card: name, the price text on the card, whether it says sold out
 const CARDS = () => {
   const out = [];
-  for (const b of document.querySelectorAll('#root button[aria-label^="One more "]')) {
-    if (!b.checkVisibility()) continue; const name = b.getAttribute('aria-label').replace(/^One more /, '');
-    let c = b; for (let i = 0; i < 6 && c.parentElement; i++) { c = c.parentElement; if ((c.innerText || '').includes(name) && /\$|Free/.test(c.innerText || '')) break; }
-    const t = (c.innerText || '').replace(/\s+/g, ' ');
-    out.push({ name, text: t.slice(0, 160), price: (t.match(/\$[\d,]+(\.\d\d)?/) || [''])[0], free: /\bFree\b/.test(t), sold: /sold out/i.test(t), bad: /NaN|undefined|null|\$\s*$/.test(t), disabled: b.disabled || b.getAttribute('aria-disabled') === 'true' });
+  for (const r of [...document.querySelectorAll('#root input[name="tk-pass"]')].filter((i) => i.closest('label') && i.closest('label').checkVisibility())) {
+    const name = r.value; const card = r.closest('label'); const t = (card.innerText || '').replace(/\s+/g, ' ');
+    out.push({ name, text: t.slice(0, 160), price: (t.match(/\$[\d,]+(\.\d\d)?/) || [''])[0], free: /\bFree\b/.test(t), sold: /sold out/i.test(t), bad: /NaN|undefined|null|\$\s*$/.test(t), disabled: r.disabled || card.getAttribute('aria-disabled') === 'true' });
   }
   return out;
 };
 // options in later steps: on/off buttons (aria-pressed) and choice buttons inside step sections
 const OPTIONS = () => {
   // every choice button in the order builder (between the pass picker and the order summary): on/off toggles and plain choice buttons
-  const first = document.querySelector('#root button[aria-label^="One more "]'); if (!first) return [];
+  const first = document.querySelector('#root input[name="tk-pass"]'); if (!first) return [];
   const sum = [...document.querySelectorAll('#root *')].find((e) => /^Your order/.test((e.innerText || '').trim()) && /Total/.test(e.innerText || '') && (e.innerText || '').length < 3000);
   let box = first; while (box.parentElement && !(box.innerText || '').includes('Your order')) box = box.parentElement;
   const skip = /^(one (more|fewer)|sign in|new to pickathon|here’s your|already have|checkout|secure checkout|add a pass|pick your days|choose an option|tell us how|pick a camping|finish above|🎁|this is a gift)/i;
@@ -117,13 +115,13 @@ async function run() {
       // a pass that opens its own counters (Day tickets: Thu, Fri, Sat, Sun, Sat + Sun) gets one scenario per counter
       for (const p0 of passes) {
         await page.goto(base, { waitUntil: 'load', timeout: 60000 }); await page.waitForTimeout(500); await page.evaluate(IP.hook); await page.evaluate(OPEN, st); await page.waitForTimeout(600);
-        await page.evaluate((p) => { const b = document.querySelector('#root button[aria-label="One more ' + p + '"]'); if (b) b.click(); }, p0); await page.waitForTimeout(400);
+        await page.evaluate((p) => { const b = document.querySelector('#root input[name="tk-pass"][value="' + p + '"]'); if (b) b.click(); }, p0); await page.waitForTimeout(400);
         const subs = await page.evaluate((passes) => { const out = [], n = {}; for (const b of document.querySelectorAll('#root button[aria-label^="One more "]')) { if (!b.checkVisibility()) continue; const a = b.getAttribute('aria-label').replace(/^One more /, ''); if (passes.includes(a)) continue; n[a] = (n[a] || 0) + 1; let r = b.parentElement; while (r && r.parentElement && !/\$|Free/.test(r.innerText || '')) r = r.parentElement; out.push({ aria: a, idx: n[a] - 1, name: ((r && r.innerText) || a).split('\n')[0].trim().slice(0, 30) }); } return out; }, passes);
         const empty = !(await page.evaluate(ORDER)).lines.length;
         if (subs.length && empty) subs.forEach((x) => scenarios.push({ pass: p0, sub: x, opt: null })); else scenarios.push({ pass: p0, opt: null });
       }
       await page.goto(base, { waitUntil: 'load', timeout: 60000 }); await page.waitForTimeout(500); await page.evaluate(IP.hook); await page.evaluate(OPEN, st); await page.waitForTimeout(600);
-      await page.evaluate((p) => { const b = document.querySelector('#root button[aria-label="One more ' + p + '"]'); if (b) b.click(); }, passes[0]); await page.waitForTimeout(500);
+      await page.evaluate((p) => { const b = document.querySelector('#root input[name="tk-pass"][value="' + p + '"]'); if (b) b.click(); }, passes[0]); await page.waitForTimeout(500);
       const opts = (await page.evaluate(OPTIONS)).map((o) => o.label);
       // options that appear only after another choice (e.g. camping spots after "Car, van or RV")
       for (const o of opts.slice()) { await page.evaluate(CLICK, o); await page.waitForTimeout(300); for (const x of await page.evaluate(OPTIONS)) if (!opts.includes(x.label)) opts.push(x.label); await page.evaluate(CLICK, o); await page.waitForTimeout(200); }
@@ -133,7 +131,7 @@ async function run() {
         const label = sc.pass + (sc.sub ? ' · ' + sc.sub.name : '') + (sc.opt ? ' + ' + sc.opt.slice(0, 40) : '');
         await page.goto(base, { waitUntil: 'load', timeout: 60000 }); await page.waitForTimeout(600); await page.evaluate(IP.hook); await page.evaluate(OPEN, st); await page.waitForTimeout(700); // fresh cart each time
         const e1 = errs.length;
-        await page.evaluate((p) => { const b = document.querySelector('#root button[aria-label="One more ' + p + '"]'); if (b) b.click(); }, sc.pass); await page.waitForTimeout(400);
+        await page.evaluate((p) => { const b = document.querySelector('#root input[name="tk-pass"][value="' + p + '"]'); if (b) b.click(); }, sc.pass); await page.waitForTimeout(400);
         if (sc.sub) { await page.evaluate((x) => { const b = [...document.querySelectorAll('#root button[aria-label="One more ' + x.aria + '"]')].filter((e) => e.checkVisibility())[x.idx]; if (b) b.click(); }, sc.sub); await page.waitForTimeout(400); }
         if (sc.opt) { const o = (await page.evaluate(OPTIONS)).find((x) => x.label === sc.opt); if (o && o.sold) { if (!o.disabled) fail('sold-out', where, sc.opt + ' is marked sold out but can still be picked', await shot('soldpick')); continue; } if (!(await page.evaluate(CLICK, sc.opt))) { const parent = opts.find((x) => /car, van or rv|driving/i.test(x)); if (parent) { await page.evaluate(CLICK, parent); await page.waitForTimeout(300); } await page.evaluate(CLICK, sc.opt); } await page.waitForTimeout(400); }
         // finish any step still asking for a choice: pick the first open option it points at
