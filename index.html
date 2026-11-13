@@ -9785,6 +9785,15 @@ html:root:root #root#root#root#root#root#root#root#root#root#root#root#root#root
   #pkh2 .h2-s5row>.h2-pill{flex:0 1 auto;padding:0 1.5rem}
 }
 @media (prefers-reduced-motion:reduce){.pkh2 .h2-cc-r{scroll-behavior:auto}}
+
+/* Nov 13 (Zale, picked): Listen is icon only in the header, a round 44px button like Search; the word stays in the label for screen readers */
+html:root:root #root#root#root#root#root#root#root#root#root#root#root#root#root [role="region"][aria-label="Listen"] > button[aria-label="Listen to Pickathon"]{width:44px!important;min-width:44px!important;height:44px!important;min-height:44px!important;padding:0!important;gap:0!important;border-radius:50%!important;justify-content:center!important;letter-spacing:0!important}
+html:root:root #root#root#root#root#root#root#root#root#root#root#root#root#root [role="region"][aria-label="Listen"] > button[aria-label="Listen to Pickathon"] > span{display:none!important}
+html:root:root #root#root#root#root#root#root#root#root#root#root#root#root#root [role="region"][aria-label="Listen"] > button[aria-label="Listen to Pickathon"] svg{width:22px!important;height:22px!important}
+html:root:root #root#root#root#root#root#root#root#root#root#root#root#root#root [role="region"][aria-label="Listen"] > button[aria-label="Listen to Pickathon"] svg path{fill:none!important;stroke:#F2CF62!important;stroke-width:2.6!important}
+html:root:root #root#root#root#root#root#root#root#root#root#root#root#root#root [role="region"][aria-label="Listen"] > button[aria-label="Listen to Pickathon"] svg circle{fill:#F2CF62!important}
+@media(min-width:768px){html:root:root:root #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root [role="region"][aria-label="Listen"]{height:50px!important}html:root:root:root #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root [role="region"][aria-label="Listen"] > button[aria-label="Listen to Pickathon"]{width:auto!important;min-width:0!important;height:50px!important;min-height:50px!important;padding:0 18px 0 14px!important;gap:8px!important;border-radius:999px!important}html:root:root:root #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root [role="region"][aria-label="Listen"] > button[aria-label="Listen to Pickathon"] > span{display:inline!important;color:#F2EDE3!important}}
+@media(min-width:1200px){html:root:root:root #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root [role="region"][aria-label="Listen"]{height:56px!important}html:root:root:root #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root [role="region"][aria-label="Listen"] > button[aria-label="Listen to Pickathon"]{height:56px!important;min-height:56px!important;padding:0 20px 0 16px!important}}
 </style>
 <script id="pk-home2">
 /* QA M1 (Nov 11): Home's poster opens on 2019 (founder spec, home_flow.md screen 2) and "Another year" walks the years by discovery strength, not at random:
