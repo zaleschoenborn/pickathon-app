@@ -31,12 +31,19 @@
   var PARK = { dthu: 'pthu', dfri: 'pfri', dsat: 'psat', dsun: 'psun' };
   var N = { p4: '4-Day Pass', p3: '3-Day Pass', d2: 'Sat + Sun Ticket', dthu: 'Thursday Ticket', dfri: 'Friday Ticket', dsat: 'Saturday Ticket', dsun: 'Sunday Ticket', pat: 'Patron Pass' };
   var NS = { p4: '4-Day', p3: '3-Day', d2: 'Sat + Sun', dthu: 'Thursday', dfri: 'Friday', dsat: 'Saturday', dsun: 'Sunday', pat: 'Patron' };
-  var SLEEPN = { wcar: 'Car camping, Willow Camp', scar: 'Car camping, South Camp', wrv: 'RV, Willow Camp' };
-  var BLANK = { pass: null, day: null, adult: 1, teen: 0, kid: 0, wed: false, sleep: 'tent', go: 'later', car: 1, big: false, dp: false };
-  var OK = { pass: ['p4', 'p3', 'd2', 'd1', 'pat'], day: ['dthu', 'dfri', 'dsat', 'dsun'], sleep: ['tent', 'wcar', 'scar', 'wrv', 'none'], go: ['later', 'drive', 'shuttle', 'bike', 'drop'] };
+  var SLEEPN = { wcar: 'Car camping, Willow Camp', scar: 'Car camping, South Camp', wvan: 'Camper van, Willow Camp', svan: 'Camper van, South Camp', wrv: 'RV, Willow Camp', srv: 'RV, South Camp' };
+  var BLANK = { pass: null, day: null, adult: 1, teen: 0, kid: 0, wed: false, sleep: 'tent', go: 'later', car: 1, big: false, dp: false, sites: 1, pwr: false, pday: '' };
+  var OK = { pass: ['p4', 'p3', 'd2', 'd1', 'pat', 'none'], day: ['dthu', 'dfri', 'dsat', 'dsun'], sleep: ['tent', 'wcar', 'scar', 'wvan', 'svan', 'wrv', 'srv', 'none'], go: ['later', 'drive', 'shuttle', 'bike', 'drop'] };
+  /* Zale, Nov 13: everything on sale is buyable here, and one order can hold several pass types. S.more holds the pass groups already
+     added ("Add a different pass"); S is the group being built. Pass 'none' = "I already have my pass": add-ons on their own.
+     S.x holds the extras by price id: the five Curation seatings, dishware and Give back. */
+  var VEH = /^(wcar|scar|wvan|svan|wrv|srv)$/, PWR = { wvan: 'wvanp', wrv: 'wrvp' };   // South Camp van and RV sites include power; Willow power is an add-on
+  var XID = ['cfri', 'csatb', 'csath', 'csatd', 'csunb', 'plate', 'cup', 'coozie', 'tools', 'student'], MEALS = XID.slice(0, 5), DISH = ['cup', 'plate', 'coozie'], GIVE = ['tools', 'student'];
+  var XN = { cfri: 'Curation · Friday dinner', csatb: 'Curation · Saturday brunch', csath: 'Curation · Saturday happy hour', csatd: 'Curation · Saturday dinner', csunb: 'Curation · Sunday brunch', plate: 'Souvenir plate', cup: 'Souvenir cup', coozie: 'Cup coozie', tools: 'Fund the Tools', student: 'Sponsor a Student' };
+  var MEAL = { cfri: 2, csatb: 3, csath: 3, csatd: 3, csunb: 4 };   // the festival day (index into DAYS) a seat needs a ticket for
   /* Ticket kinds (Zale, Nov 11 22:50). Weekend passes: camping, teens 13-17 pay the Teen 4-Day (half the 4-Day). Day tickets: one price for everyone 13 and up,
      no teen price, no camping. Patron: its own ticket, any age, backstage, Wednesday to Sunday. Kids 12 and under are free with a weekend pass or a day ticket. */
-  function kind(p) { return p === 'p4' || p === 'p3' ? 'wk' : p === 'd2' || p === 'd1' ? 'day' : p === 'pat' ? 'pat' : ''; }
+  function kind(p) { return p === 'p4' || p === 'p3' ? 'wk' : p === 'd2' || p === 'd1' ? 'day' : p === 'pat' ? 'pat' : p === 'none' ? 'none' : ''; }
 
   /* ---------- small helpers ---------- */
   function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
@@ -127,57 +134,90 @@
 
   /* ---------- the one order record ---------- */
   var S = load();
-  function clean(s) {
-    var o = {}, k; s = s || {};
-    for (k in BLANK) o[k] = BLANK[k];
-    ['pass', 'day', 'sleep', 'go'].forEach(function (f) { if (OK[f].indexOf(s[f]) >= 0) o[f] = s[f]; });
-    ['adult', 'teen', 'kid', 'car'].forEach(function (f) { var n = parseInt(s[f], 10); if (n >= 0 && n <= 12) o[f] = n; });
-    if (o.car < 1) o.car = 1;
-    o.wed = !!s.wed && o.pass === 'p4'; o.big = !!s.big; o.dp = !!s.dp && o.pass === 'd2';
-    if (o.pass !== 'd1') o.day = null;
+  function int(v, lo, hi, d) { var n = parseInt(v, 10); return n >= lo && n <= hi ? n : d; }
+  /* one pass group: a pass, its day (one-day tickets), the people on it, and Wednesday (4-day) */
+  function cleanG(s) {
+    s = s || {}; var o = { pass: null, day: null, adult: int(s.adult, 0, 12, 1), teen: int(s.teen, 0, 12, 0), kid: int(s.kid, 0, 12, 0), wed: false };
+    if (OK.pass.indexOf(s.pass) >= 0) o.pass = s.pass;
+    if (o.pass === 'd1' && OK.day.indexOf(s.day) >= 0) o.day = s.day;
+    o.wed = !!s.wed && o.pass === 'p4';
     var kd = kind(o.pass);   // a day ticket has one price for 13 and up; a Patron Pass is for any age: the counts fold together, so no teen claim is left over
     if (kd === 'day' && o.teen) { o.adult = Math.min(12, o.adult + o.teen); o.teen = 0; }
     if (kd === 'pat' && (o.teen || o.kid)) { o.adult = Math.min(12, o.adult + o.teen + o.kid); o.teen = 0; o.kid = 0; }
     if (kd === 'pat' && !o.adult) o.adult = 1;
+    if (kd === 'none') { o.teen = 0; o.kid = 0; }   // add-ons only: "adult" is just how many people (shuttle riders)
     return o;
   }
+  function gkey(g) { return g.pass === 'd1' ? g.day : g.pass === 'none' ? null : g.pass; }
+  function gok(g) { return !!gkey(g) && g.adult > 0; }
+  function clean(s) {
+    var o = {}, k; s = s || {};
+    for (k in BLANK) o[k] = BLANK[k];
+    var g = cleanG(s); ['pass', 'day', 'adult', 'teen', 'kid', 'wed'].forEach(function (f) { o[f] = g[f]; });
+    ['sleep', 'go'].forEach(function (f) { if (OK[f].indexOf(s[f]) >= 0) o[f] = s[f]; });
+    o.car = int(s.car, 1, 12, 1); o.sites = int(s.sites, 1, 6, 1); o.big = !!s.big;
+    o.more = []; (Array.isArray(s.more) ? s.more : []).forEach(function (x) { var c = cleanG(x); if (gok(c) && o.more.length < 6) o.more.push(c); });
+    o.x = {}; var X = s.x || {}; XID.forEach(function (id) { var n = int(X[id], 1, 12, 0); if (n) o.x[id] = n; });
+    o.pwr = !!s.pwr && !!PWR[o.sleep];
+    o.pday = o.pass === 'none' && OK.day.indexOf(s.pday) >= 0 ? s.pday : '';
+    o.dp = !!s.dp && (pbase(o) || {}).pass === 'd2' && o.pass !== 'none';
+    return o;
+  }
+  function groups(s) { var g = (s.more || []).slice(); if (gok(s)) g.push(s); return g; }   // every pass group with someone on it
+  function pbase(s) { return s.pass && s.pass !== 'none' && gkey(s) ? s : (s.more || [])[0] || null; }   // the pass that decides which parking fits
   function load() { var s = null; try { s = JSON.parse(window.localStorage.getItem(LS) || 'null'); } catch (e) {} return clean(s); }
   function save() { try { var o = clean(S); o.at = Date.now(); window.localStorage.setItem(LS, JSON.stringify(o)); } catch (e) {} }
-  function key(s) { return s.pass === 'd1' ? s.day : s.pass; }
-  function camping(s) { return kind(s.pass) === 'wk' || s.pass === 'pat'; }
-  function vehicle(s) { return camping(s) && /^(wcar|scar|wrv)$/.test(s.sleep); }
+  function key(s) { return gkey(s); }
+  function camping(s) { return s.pass === 'none' || groups(s).concat(gkey(s) ? [s] : []).some(function (g) { return kind(g.pass) === 'wk' || g.pass === 'pat'; }); }
+  function vehicle(s) { return camping(s) && VEH.test(s.sleep); }
+  function off(id) { return sold(id) || !(P(id) > 0); }   // a paid item with no price (the backup table's $0) is not offered
+  function cover(s) { if (s.pass === 'none') return [1, 1, 1, 1, 1]; var c = [0, 0, 0, 0, 0]; groups(s).forEach(function (g) { strip(g).forEach(function (x, i) { if (x) c[i] = 1; }); }); return c; }   // the days this order lets someone in
+  function xok(id, s) { s = s || S; return !off(id) && (MEAL[id] === undefined || !!cover(s)[MEAL[id]]); }
   function strip(s) { var p = s.pass, on = p === 'p4' ? [s.wed, 1, 1, 1, 1] : p === 'p3' ? [0, 0, 1, 1, 1] : p === 'd2' ? [0, 0, 0, 1, 1] : p === 'd1' ? DAYS.map(function (d) { return d[0] === s.day; }) : p === 'pat' ? [1, 1, 1, 1, 1] : [0, 0, 0, 0, 0]; return on.map(function (x) { return !!x; }); }
   /* parking says what it covers: Weekend Parking (in and out all weekend) with a weekend pass, Patron or Sat + Sun; a one-day ticket gets that named day's parking */
-  function parkId(s) { if (s.pass === 'd1') return s.day ? PARK[s.day] : ''; return s.big ? 'opark' : 'wpark'; }
+  function parkId(s) { if (s.pass === 'none') return s.pday ? PARK[s.pday] : s.big ? 'opark' : 'wpark'; var b = pbase(s); if (!b) return ''; if (b.pass === 'd1') return b.day ? PARK[b.day] : ''; return s.big ? 'opark' : 'wpark'; }
   function parkName(id) { if (id === 'wpark') return 'Weekend parking, in and out all weekend'; if (id === 'opark') return 'Oversized weekend parking, 16′ to 24′'; var d = DAYS.filter(function (x) { return PARK[x[0]] === id; })[0]; return d ? d[3] + ' parking, ' + d[2] + ' ' + d[4] + ' only' : ''; }
   function parkShort(id) { if (id === 'wpark' || id === 'opark') return 'Weekend parking'; var d = DAYS.filter(function (x) { return PARK[x[0]] === id; })[0]; return d ? d[3] + ' parking' : 'Parking'; }
-  function dates(s) { var on = strip(s), a = on.indexOf(true), b = on.lastIndexOf(true); if (a < 0) return ''; var m = DAYS[a][4].split(' '); return a === b ? DAYS[a][2] + ', ' + DAYS[a][4] + ', ' + YEAR : m[0] + ' ' + m[1] + '–' + DAYS[b][4].split(' ')[1] + ', ' + YEAR; }
+  function dates(s) { var on = cover(s).map(function (x) { return !!x; }), a = on.indexOf(true), b = on.lastIndexOf(true); if (a < 0) return ''; var m = DAYS[a][4].split(' '); return a === b ? DAYS[a][2] + ', ' + DAYS[a][4] + ', ' + YEAR : m[0] + ' ' + m[1] + '–' + DAYS[b][4].split(' ')[1] + ', ' + YEAR; }
   function lines(s) {
-    var L = [], k = key(s), kd = kind(s.pass), cam = camping(s), veh = vehicle(s); if (!k) return L;
-    var nA = s.adult;
-    if (kd === 'pat') { if (nA > 0) L.push({ id: 'patron', q: nA, n: 'Patron Pass, any age, Wed to Sun', amt: nA * P('patron') }); }
-    else if (nA > 0) L.push({ id: k, q: nA, n: kd === 'day' ? N[k] + ', 13 and up' : N[k] + ', adult', amt: nA * P(k) });
-    if (kd === 'wk' && s.teen) L.push({ id: 'teen', q: s.teen, n: 'Teen 4-Day, half price', amt: s.teen * P('teen') });   // Zale, Nov 12: the teen ticket is half the 4-Day (T4D), Thu–Sun on any weekend order; Wednesday is an add-on
-    if (kd !== 'pat' && s.kid) L.push({ id: 'child', q: s.kid, n: 'Kid, 12 and under, free', amt: 0 });
-    if (s.pass === 'p4' && s.wed && nA + s.teen > 0) L.push({ id: 'early', q: nA + s.teen, n: 'Wednesday early arrival, Aug 4', amt: (nA + s.teen) * P('early') });
-    if (cam) { if (s.sleep === 'tent') L.push({ id: 'tent', q: 0, n: 'Tent in the woods', amt: 0 }); else if (veh) L.push({ id: s.sleep, q: 0, n: s.sleep === 'wrv' ? 'RV site, Willow Camp' : SLEEPN[s.sleep] + ' site', amt: P(s.sleep) }); }
-    if (s.go === 'drive' && !veh) { (s.pass === 'd2' && s.dp ? ['psat', 'psun'] : [parkId(s)]).forEach(function (pk) { if (pk) L.push({ id: pk, q: s.car, n: parkName(pk), amt: s.car * P(pk) }); }); }
-    if (s.go === 'shuttle' && !veh) L.push({ id: 'shuttle', q: s.adult + s.teen, n: 'Shuttle Pass', amt: (s.adult + s.teen) * P('shuttle') });
-    if (s.go === 'bike' && !veh) L.push({ id: 'bike', q: 0, n: 'Bike parking', amt: 0 });
+    var L = [];
+    function add(id, q, n, amt) { for (var i = 0; i < L.length; i++) if (L[i].id === id && L[i].n === n) { L[i].q += q; L[i].amt += amt; return; } L.push({ id: id, q: q, n: n, amt: amt }); }
+    var G = groups(s);
+    G.forEach(function (g) {
+      var k = gkey(g), kd = kind(g.pass), nA = g.adult;
+      if (kd === 'pat') add('patron', nA, 'Patron Pass, any age, Wed to Sun', nA * P('patron'));
+      else add(k, nA, kd === 'day' ? N[k] + ', 13 and up' : N[k] + ', adult', nA * P(k));
+      if (kd === 'wk' && g.teen) add('teen', g.teen, 'Teen 4-Day, half price', g.teen * P('teen'));   // Zale, Nov 12: the teen ticket is half the 4-Day (T4D), Thu–Sun on any weekend order; Wednesday is an add-on
+      if (kd !== 'pat' && g.kid) add('child', g.kid, 'Kid, 12 and under, free', 0);
+      if (g.pass === 'p4' && g.wed && nA + g.teen > 0) add('early', nA + g.teen, 'Wednesday early arrival, Aug 4', (nA + g.teen) * P('early'));
+    });
+    var none = s.pass === 'none', some = G.length > 0 || none, cam = none || G.some(function (g) { return kind(g.pass) === 'wk' || g.pass === 'pat'; }), veh = cam && VEH.test(s.sleep);   // camping lines only with a finished weekend or Patron pass (or Add-ons only)
+    if (some && cam) {
+      if (s.sleep === 'tent' && G.length) add('tent', 0, 'Tent in the woods', 0);
+      else if (veh) { add(s.sleep, s.sites, SLEEPN[s.sleep] + ' site', s.sites * P(s.sleep)); if (s.pwr && PWR[s.sleep]) add(PWR[s.sleep], s.sites, 'Power at your Willow ' + (s.sleep === 'wvan' ? 'van' : 'RV') + ' site', s.sites * P(PWR[s.sleep])); }
+    }
+    if (some && s.go === 'drive' && !veh) { var b = pbase(s); (!none && b && b.pass === 'd2' && s.dp ? ['psat', 'psun'] : [parkId(s)]).forEach(function (pk) { if (pk) add(pk, s.car, parkName(pk), s.car * P(pk)); }); }
+    var riders = none ? s.adult : G.reduce(function (a, g) { return a + g.adult + g.teen; }, 0);
+    if (some && s.go === 'shuttle' && !veh && riders > 0) add('shuttle', riders, 'Shuttle Pass', riders * P('shuttle'));
+    if (G.length && s.go === 'bike' && !veh) add('bike', 0, 'Bike parking', 0);
+    XID.forEach(function (id) { var q = (s.x || {})[id] || 0; if (q && xok(id, s)) add(id, q, XN[id], q * P(id)); });
     return L;
   }
   function totals(s) {
     /* A12: the total is the shown (fee-in) unit prices x quantity, so it always equals what the pass cards said; the fee line is the difference */
     var L = lines(s), sub = L.reduce(function (a, b) { return a + b.amt; }, 0), total = Math.round(L.reduce(function (a, b) { var u = b.q ? b.amt / b.q : b.amt; return a + (b.q || 1) * WF(u); }, 0) * 100) / 100, fee = Math.round((total - sub) * 100) / 100;
-    return { lines: L, sub: sub, fee: fee, total: total, ready: L.length > 0 && s.adult > 0, unadded: s.go === 'later' && !vehicle(s) };
+    var cur = !!s.pass && s.pass !== 'none', curOk = !cur || gok(s), G = groups(s);   // a pass being built must be finished (a day picked, someone on it) before checkout
+    var ready = L.length > 0 && curOk && (G.length > 0 || (s.pass === 'none' && L.some(function (l) { return l.amt > 0; })));
+    return { lines: L, sub: sub, fee: fee, total: total, ready: ready, unadded: s.go === 'later' && !vehicle(s) && G.length > 0 };
   }
+  function gshort(g) { var k = gkey(g), wk = kind(g.pass) === 'wk', n = g.adult + (wk ? 0 : g.teen);   /* Gate 1 fix 13 (Q7): teens are their own pass, 'Teen 4-Day' */
+    return [n ? n + ' × ' + NS[k] : '', wk && g.teen ? g.teen + ' × Teen 4-Day' : ''].filter(Boolean).join(', ') + (g.kid ? ' + ' + plural(g.kid, 'kid') : '') + (g.pass === 'p4' && g.wed ? ', Wed arrival' : ''); }
   function short(s) {
-    var k = key(s); if (!k) return '';
-    var wk = kind(s.pass) === 'wk', n = s.adult + (wk ? 0 : s.teen), a = [];   /* Gate 1 fix 13 (Q7): teens are their own pass, 'Teen 4-Day' */
-    a.push([n ? n + ' × ' + NS[k] : '', wk && s.teen ? s.teen + ' × Teen 4-Day' : ''].filter(Boolean).join(', ') + (s.kid ? ' + ' + plural(s.kid, 'kid') : ''));
-    if (s.pass === 'p4' && s.wed) a.push('Wed arrival');
-    if (camping(s)) a.push({ tent: 'tent', wcar: 'car camping', scar: 'car camping', wrv: 'RV', none: 'no camping' }[s.sleep]);
-    if (!vehicle(s)) { if (s.go === 'drive') a.push((s.pass === 'd2' && s.dp ? 'Sat + Sun parking' : parkShort(parkId(s))) + ' × ' + s.car); if (s.go === 'shuttle') a.push('shuttle'); if (s.go === 'bike') a.push('bike'); }
+    var a = groups(s).map(gshort); if (s.pass === 'none') a.push('Add-ons'); if (!a.length) return '';
+    if (camping(s)) { var c = { tent: s.pass === 'none' ? '' : 'tent', wcar: 'car camping', scar: 'car camping', wvan: 'camper van', svan: 'camper van', wrv: 'RV', srv: 'RV', none: 'no camping' }[s.sleep]; if (c) a.push((vehicle(s) && s.sites > 1 ? s.sites + ' × ' : '') + c); }
+    if (!vehicle(s)) { var b = pbase(s); if (s.go === 'drive') a.push((s.pass !== 'none' && b && b.pass === 'd2' && s.dp ? 'Sat + Sun parking' : parkShort(parkId(s))) + ' × ' + s.car); if (s.go === 'shuttle') a.push('shuttle'); if (s.go === 'bike') a.push('bike'); }
+    var m = 0, x = 0; XID.forEach(function (id) { var q = (s.x || {})[id] || 0; if (!q || !xok(id, s)) return; if (MEAL[id] !== undefined) m += q; else x += q; });
+    if (m) a.push(plural(m, 'meal seat')); if (x) a.push(plural(x, 'extra'));
     return a.join(', ');
   }
   function lineLabel(l) { return (l.q ? l.q + ' × ' : '') + esc(l.n); }
@@ -244,7 +284,7 @@
     return 'Not on sale right now';
   }
   function fineLine() {
-    return '<b>All sales final.</b> Send a pass to a friend any time from My Pickathon. ' + (T.show.plans ? 'Orders over ' + money(T.planMin) + ' can be paid monthly. ' : '') + 'One order is one pass type. For a different pass for someone else, check out, then start a new order. Every price includes the ' + (FEE * 100) + '% fee.';
+    return '<b>All sales final.</b> Send a pass to a friend any time from My Pickathon. ' + (T.show.plans ? 'Orders over ' + money(T.planMin) + ' can be paid monthly. ' : '') + 'Every price includes the ' + (FEE * 100) + '% fee.';
   }
   function passCard(v, title, sub, on, price, extra) {
     return '<label class="tk-pass tk-paper tk-pass-' + v + '"><input type="radio" name="tk-pass" value="' + v + '" class="tk-vh"><span class="tk-days" aria-hidden="true"' + (extra && extra.stripId ? ' id="' + extra.stripId + '"' : '') + '>' +
@@ -255,22 +295,25 @@
   function group(c, title, sub) { return '<p class="tk-gl tk-gl-' + c + '"><b>' + title + '</b><span>' + sub + '</span></p>'; }
   function span(a, b) { return '<span class="tk-nw">' + DAY[a][2] + '–' + DAY[b][2] + '</span> · <span class="tk-nw">' + DAY[a][4] + '–' + DAY[b][4].split(' ')[1] + '</span>'; }   /* Gate 1 (panel P4): a date range never breaks before its last digit */   // 'Thu–Sun · Aug 5–8'
   function stepper(k, label, sub, one) {
-    return '<div class="tk-step' + (k === 'car' ? ' tk-step-row' : '') + '" data-k="' + k + '"' + (k === 'car' ? ' id="tk-carstep" hidden' : '') + '><p id="tk-l-' + k + '"><b id="tk-ln-' + k + '">' + label + '</b>' + (sub !== null ? '<span id="tk-ls-' + k + '">' + sub + '</span>' : '') + '</p>' + (k !== 'car' ? '<span class="tk-step-pr tk-num" id="tk-lp-' + k + '"></span>' : '') + '<div><button type="button" data-step="-1" aria-label="One fewer ' + one + '">' + ic('minus', 'tk-ic-sm') + '</button><output aria-labelledby="tk-ln-' + k + '">0</output><button type="button" data-step="1" aria-label="One more ' + one + '">' + ic('plus', 'tk-ic-sm') + '</button></div></div>';
+    var row = k === 'car' || k === 'sites' || k.indexOf('x-') === 0;
+    return '<div class="tk-step' + (row ? ' tk-step-row' : '') + '" data-k="' + k + '"' + (k === 'car' ? ' id="tk-carstep" hidden' : k === 'sites' ? ' id="tk-sitestep" hidden' : '') + '><p id="tk-l-' + k + '"><b id="tk-ln-' + k + '">' + label + '</b>' + (sub !== null ? '<span id="tk-ls-' + k + '">' + sub + '</span>' : '') + '</p>' + (k !== 'car' && k !== 'sites' ? '<span class="tk-step-pr tk-num" id="tk-lp-' + k + '"></span>' : '') + '<div><button type="button" data-step="-1" aria-label="One fewer ' + one + '">' + ic('minus', 'tk-ic-sm') + '</button><output aria-labelledby="tk-ln-' + k + '">0</output><button type="button" data-step="1" aria-label="One more ' + one + '">' + ic('plus', 'tk-ic-sm') + '</button></div></div>';
   }
   function opt(name, v, media, title, why, price) { return '<label class="tk-opt"><input type="radio" name="' + name + '" value="' + v + '" class="tk-vh">' + media + '<span class="tk-opt-t"><b data-t="' + v + '">' + title + '</b><span data-w="' + v + '">' + why + '</span></span><span class="tk-opt-p tk-num" data-p="' + v + '">' + price + '</span></label>'; }
   function hoodImg(h, slot) { var d = site().data, H = d && d.hoods && d.hoods[h]; return H && H.i ? '<img class="tk-opt-m" data-slot="' + slot + '" src="' + esc(H.i) + '" alt="" loading="lazy" width="84" height="56">' : '<span class="tk-opt-e"></span>'; }
   function emblem(h) { return '<span class="tk-opt-e"><img src="ic2/' + h + '.png" alt="" width="40" height="40" loading="lazy"></span>'; }
   function pprice(id) { return sold(id) ? '<b class="tk-sold">Sold out</b>' : '<b class="tk-num">' + money(PS(id)) + '</b>'; }
-  function per(id, unit) { return sold(id) ? 'Sold out' : money(PS(id)) + '<small>' + unit + '</small>'; }
+  function per(id, unit) { return off(id) ? 'Sold out' : money(PS(id)) + '<small>' + unit + '</small>'; }
+  function xrow(id, label, sub) { return stepper('x-' + id, label, sub, label.toLowerCase()).replace('<span id="tk-ls-x-' + id + '">', '<span id="tk-ls-x-' + id + '" data-s="' + esc(sub) + '">'); }
   function chip(name, v, label) { return '<label class="tk-chip"><input type="radio" name="' + name + '" value="' + v + '" class="tk-vh"><span>' + label + '</span></label>'; }
   function skeleton() {
     var w = when(), minDay = minPS(OK.day), h = '';
     h += '<div class="tk-in"><div class="tk-paper tk-head">' + logo() + '<div class="tk-head-t"><h1 class="tk-d">Tickets</h1><p>' + headline() + '</p></div></div>';
-    h += '<div class="tk-main" id="tk-main"><p class="tk-when"><b>' + DAY.dthu[4] + '–' + DAY.dsun[4].split(' ')[1] + ', ' + YEAR + '</b><span>Gates open ' + DAY.w[2] + ', ' + DAY.w[4] + '</span></p>';
+    h += '<div class="tk-main" id="tk-main"><p class="tk-when"><b>' + DAY.dthu[4] + '–' + DAY.dsun[4].split(' ')[1] + ', ' + YEAR + '</b><span>Gates open ' + DAY.w[2] + ', ' + DAY.w[4] + '</span></p>' +
+      '<div class="tk-jump"><button type="button" class="tk-new" data-act="why" aria-haspopup="dialog">New to Pickathon?</button><nav aria-label="Jump to"><button type="button" data-jump="camping">Camping</button><button type="button" data-jump="parking">Parking</button><button type="button" data-jump="meals">Meals</button></nav></div>';   /* Zale, Nov 13: experts go straight to what they came for; new visitors get the festival in one sheet */
     if (w === 'pre') h += '<section class="tk-pre" id="tk-pre" aria-label="Reminder"></section>';
     h += '<div id="tk-top"></div>';
     h += '<div class="tk-cols"><div class="tk-build">';
-    h += '<fieldset><div class="tk-leg"><legend class="tk-d tk-d-label">Pick a ticket</legend><button type="button" class="tk-pill tk-pill-sm" data-act="help" aria-haspopup="dialog">Help me choose</button></div><p class="tk-feenote">Prices include the ' + (FEE * 100) + '% fee.</p><div class="tk-passes" id="tk-passes">' +
+    h += '<fieldset><div class="tk-leg"><legend class="tk-d tk-d-label">Pick a ticket</legend><button type="button" class="tk-pill tk-pill-sm" data-act="help" aria-haspopup="dialog">Help me choose</button></div><p class="tk-feenote">Prices include the ' + (FEE * 100) + '% fee.</p><div class="tk-grps" id="tk-grps" hidden></div><div class="tk-passes" id="tk-passes">' +
       group('wk', 'Weekend passes', 'Camping included · teens 13–17 half price') +
       passCard('p4', '4 days', span('dthu', 'dsun'), [0, 1, 1, 1, 1], pprice('p4')) +
       '<label class="tk-wed" id="tk-wed" hidden><input type="checkbox" id="tk-wedc"><span><b>Arrive ' + DAY.w[3] + ', ' + DAY.w[4] + '</b>, from 5 pm. Adults and teens.</span><em class="tk-num">+' + money(PS('early')) + ' each</em></label>' +
@@ -281,29 +324,39 @@
       '<div class="tk-daypick" id="tk-daypick" hidden role="radiogroup" aria-label="Which day?">' + OK.day.map(function (d) { return '<label><input type="radio" name="tk-day" value="' + d + '" class="tk-vh"><span>' + DAY[d][2] + ', ' + DAY[d][4] + '<b class="tk-num">' + (sold(d) ? 'Sold out' : money(PS(d))) + '</b></span></label>'; }).join('') + '</div>' +
       group('pat', 'Patron', 'Its own ticket · everyone needs one, kids too · backstage hospitality, concierge, early entry') +
       passCard('pat', 'Patron Pass', '<span class="tk-nw">Wed Aug 4</span> – <span class="tk-nw">Sun Aug 8</span>', [1, 1, 1, 1, 1], sold('patron') ? '<b>Sold out</b>' : '<b class="tk-num">' + money(PS('patron')) + '</b>', { note: 'Tent camping in the woods is included, the same as every weekend pass. Car camping and RV sites are extra.' }) +
+      group('none', 'Already have your pass?', 'Camping, parking, meals and extras on their own') +
+      '<label class="tk-pass tk-paper tk-pass-none"><input type="radio" name="tk-pass" value="none" class="tk-vh"><span class="tk-pass-t"><b>Add-ons only</b><span>Bring the pass you already have</span></span><span class="tk-pass-p"><b>Add-ons</b></span></label>' +
       '</div></fieldset>';
-    h += '<fieldset class="tk-who"><div class="tk-leg"><legend class="tk-d tk-d-label">Who’s coming?</legend></div><div class="tk-who-g">' + stepper('adult', 'Adults', '18 and up', 'adult') + stepper('teen', 'Teens', '13 to 17', 'teen') + stepper('kid', 'Kids', '12 and under', 'kid') + '</div><p class="tk-note" id="tk-teennote" hidden></p></fieldset>';
+    h += '<fieldset class="tk-who"><div class="tk-leg"><legend class="tk-d tk-d-label">Who’s coming?</legend></div><div class="tk-who-g">' + stepper('adult', 'Adults', '18 and up', 'adult') + stepper('teen', 'Teens', '13 to 17', 'teen') + stepper('kid', 'Kids', '12 and under', 'kid') + '</div><p class="tk-note" id="tk-teennote" hidden></p><p class="tk-more" id="tk-morep" hidden><span>Someone needs a different pass?</span><button type="button" class="tk-pill tk-pill-sm" data-act="addpass">Add a different pass</button></p></fieldset>';
     h += '<section class="tk-sec" id="tk-s-sleep" aria-labelledby="tk-h-sleep"><div class="tk-leg"><h2 class="tk-d tk-d-label" id="tk-h-sleep">Camping</h2><button type="button" class="tk-pill tk-pill-sm" data-act="camps">See the camps</button></div>' +
       '<div class="tk-opts" role="radiogroup" aria-labelledby="tk-h-sleep">' +
       opt('tk-sleep', 'tent', hoodImg('lushcamp', 'tickets.sleep.tent'), 'Tent in the woods', 'Lush Camp or Wild Camp. Walk in, pick your spot.', 'Included') +
       opt('tk-sleep', 'wcar', hoodImg('willowcamp', 'tickets.sleep.willow'), 'Car camping · Willow Camp', 'One car and a tent on a 16′ × 18′ site. Half a mile to the gate, free shuttle.', per('wcar', 'a site')) +
       opt('tk-sleep', 'scar', hoodImg('southcamp', 'tickets.sleep.south'), 'Car camping · South Camp', 'The same size site, right across from the main entrance. Sells out first.', per('scar', 'a site')) +
-      opt('tk-sleep', 'wrv', emblem('willowcamp'), 'RV · Willow Camp', '26′ to 36′. No generators. Parked until Monday.', per('wrv', 'a site')) +
+      opt('tk-sleep', 'wvan', emblem('willowcamp'), 'Camper van · Willow Camp', '16′ to 26′. Power is an add-on. No generators.', per('wvan', 'a site')) +
+      opt('tk-sleep', 'svan', emblem('southcamp'), 'Camper van · South Camp', '16′ to 26′, one household outlet included.', per('svan', 'a site')) +
+      opt('tk-sleep', 'wrv', emblem('willowcamp'), 'RV · Willow Camp', '26′ to 36′. Power is an add-on. No generators.', per('wrv', 'a site')) +
+      opt('tk-sleep', 'srv', emblem('southcamp'), 'RV · South Camp', '26′ to 36′, one 125V 30A outlet included.', per('srv', 'a site')) +
       opt('tk-sleep', 'none', '<span class="tk-opt-e"></span>', 'Not camping', 'Sleep at home or nearby. Come and go as you like.', money(0)) +
+      '<div class="tk-park" id="tk-vsite" hidden>' + stepper('sites', 'Sites', null, 'site') +
+      '<label class="tk-wed tk-pwr" id="tk-pwr" hidden><input type="checkbox" id="tk-pwrc"><span><b>Add power</b>, one outlet a site</span><em class="tk-num" id="tk-pwrp"></em></label></div>' +
       '</div></section>';
     h += '<section class="tk-sec" id="tk-s-go" aria-labelledby="tk-h-go"><div class="tk-leg"><h2 class="tk-d tk-d-label" id="tk-h-go">Getting there</h2></div>' +
       '<div class="tk-opts" role="radiogroup" aria-labelledby="tk-h-go">' +
       opt('tk-go', 'drive', emblem('welcomelot'), 'Drive and park', '', '') +
-      '<div class="tk-park" id="tk-park" hidden><div class="tk-chips" id="tk-d2p" role="radiogroup" aria-label="Parking for Sat + Sun">' + chip('tk-dp', '0', 'Weekend parking<b class="tk-num" id="tk-dpw"></b>') + chip('tk-dp', '1', 'Sat + Sun day passes<b class="tk-num" id="tk-dpd"></b>') + '</div><p class="tk-pnote" id="tk-dpnote"></p><div class="tk-chips" id="tk-size" role="radiogroup" aria-label="Vehicle size">' + chip('tk-big', '0', 'Car or motorcycle, up to 16′<b class="tk-num" data-c="wpark"></b>') + chip('tk-big', '1', 'Oversized, 16′ to 24′<b class="tk-num" data-c="opark"></b>') + '</div>' + stepper('car', 'Cars', null, 'car') + '</div>' +
+      '<div class="tk-park" id="tk-park" hidden><div class="tk-chips" id="tk-pday" role="radiogroup" aria-label="Which parking?">' + chip('tk-pday', '', 'Weekend') + OK.day.map(function (d) { return chip('tk-pday', d, DAY[d][2] + ' only'); }).join('') + '</div><div class="tk-chips" id="tk-d2p" role="radiogroup" aria-label="Parking for Sat + Sun">' + chip('tk-dp', '0', 'Weekend parking<b class="tk-num" id="tk-dpw"></b>') + chip('tk-dp', '1', 'Sat + Sun day passes<b class="tk-num" id="tk-dpd"></b>') + '</div><p class="tk-pnote" id="tk-dpnote"></p><div class="tk-chips" id="tk-size" role="radiogroup" aria-label="Vehicle size">' + chip('tk-big', '0', 'Car or motorcycle, up to 16′<b class="tk-num" data-c="wpark"></b>') + chip('tk-big', '1', 'Oversized, 16′ to 24′<b class="tk-num" data-c="opark"></b>') + '</div>' + stepper('car', 'Cars', null, 'car') + '</div>' +
       opt('tk-go', 'shuttle', '<span class="tk-opt-e"></span>', 'MAX + shuttle', 'From Lents Town Center MAX, about hourly, all weekend. One pass per rider over 12.', per('shuttle', 'a rider')) +
       opt('tk-go', 'bike', '<span class="tk-opt-e"></span>', 'Bike', 'Staffed bike parking at the farm.', 'Free') +
       opt('tk-go', 'drop', emblem('southcamp'), 'Dropped off', 'Rideshare or a friend, at the South Lot.', 'Free') +
       opt('tk-go', 'later', '<span class="tk-opt-e"></span>', 'Decide later', 'Parking and shuttle passes can be added any time.', money(0)) +
       '</div></section>';
-    h += '<section class="tk-extra" aria-labelledby="tk-h-extra"><div class="tk-leg"><h2 class="tk-d tk-d-label" id="tk-h-extra">Anything else?</h2></div>' +
-      '<details><summary><span>Curation meals</span><span class="tk-num tk-dim">' + money(PS('cfri')) + ' a seat</span></summary><p>One chef, one artist, 100 seats. Five meals: Friday dinner, Saturday brunch, Saturday happy hour, Saturday dinner and Sunday brunch. Add them after you check out, from My Pickathon.</p></details>' +
-      '<details><summary><span>Cup, plate and coozie</span><span class="tk-num tk-dim">from ' + money(minPS(['cup', 'plate', 'coozie'])) + '</span></summary><p>Souvenir cup ' + money(PS('cup')) + ', souvenir plate ' + money(PS('plate')) + ', cup coozie ' + money(PS('coozie')) + '. Reusable, and waiting for you at the festival.</p></details>' +
-      '<details><summary><span>Give back</span><span class="tk-num tk-dim">from ' + money(minPS(['tools', 'student'])) + '</span></summary><p>Fund the Tools ' + money(PS('tools')) + ' or Sponsor a Student ' + money(PS('student')) + ', for the Creative Neighborhoods student build program.</p></details>' +
+    h += '<section class="tk-extra" id="tk-s-extra" aria-labelledby="tk-h-extra"><div class="tk-leg"><h2 class="tk-d tk-d-label" id="tk-h-extra">Anything else?</h2></div>' +
+      '<details id="tk-x-meals"><summary><span>Curation: Feast in the Forest</span><span class="tk-num tk-dim" id="tk-xs-meals"></span></summary><p>A chef and a festival artist at one shared table in the woods, about an hour and a half. 100 seats a seating, so they go fast. Each seat needs a ticket for that day.</p>' +
+      MEALS.map(function (id) { return xrow(id, XN[id].replace('Curation · ', '').replace(/^./, function (c) { return c.toUpperCase(); }), ''); }).join('') + '</details>' +
+      '<details id="tk-x-dish"><summary><span>Cup, plate and coozie</span><span class="tk-num tk-dim" id="tk-xs-dish"></span></summary><p>Reusable, for the zero waste festival. Waiting for you at the farm.</p>' +
+      DISH.map(function (id) { return xrow(id, XN[id], ''); }).join('') + '</details>' +
+      '<details id="tk-x-give"><summary><span>Give back</span><span class="tk-num tk-dim" id="tk-xs-give"></span></summary><p>For the Creative Neighborhoods student build program.</p>' +
+      GIVE.map(function (id) { return xrow(id, XN[id], id === 'tools' ? 'Stage and build equipment' : 'A pre-apprenticeship student, through the program'); }).join('') + '</details>' +
       '<div class="tk-hand"><button type="button" class="tk-pill" data-go="info">How the weekend works</button><button type="button" class="tk-tlink" data-go="list">Every pass and price</button></div>' +
       '<p class="tk-fine">' + fineLine() + '</p></section>';
     h += '</div><aside class="tk-order" aria-label="Your order"><div class="tk-paper tk-osheet"><p class="tk-d tk-d-card">Your order</p><hr class="tk-rule2" style="margin:8px 0 4px"><ul class="tk-olines" id="tk-lines"></ul>' +
@@ -374,22 +427,32 @@
     var g = gate(); if (g) { root = el; el.innerHTML = gateHTML(g); return; }
     root = el; el.innerHTML = skeleton(); $('#tk-top', el).innerHTML = topHTML(); preDraw(); update();
   }
+  function gv(f) { return f.indexOf('x-') === 0 ? (S.x[f.slice(2)] || 0) : S[f]; }
+  function sv(f, v) { if (f.indexOf('x-') === 0) { if (v) S.x[f.slice(2)] = v; else delete S.x[f.slice(2)]; } else S[f] = v; }
+  function vmin(f) { return f === 'car' || f === 'sites' ? 1 : 0; }
+  function vmax(f) { return f === 'sites' ? 6 : 12; }
   function setRadio(name, v) { $$('input[name="' + name + '"]', root).forEach(function (i) { i.checked = i.value === v; }); }
   function update() {
     if (!root || !root.firstChild || !document.getElementById('tk-main')) return;
     S = clean(S);
-    if (S.pass && S.pass !== 'd1' && sold(S.pass === 'pat' ? 'patron' : S.pass)) S.pass = null;
+    if (S.pass && S.pass !== 'd1' && S.pass !== 'none' && sold(S.pass === 'pat' ? 'patron' : S.pass)) S.pass = null;
     if (S.day && sold(S.day)) S.day = null;
-    if (/^(wcar|scar|wrv)$/.test(S.sleep) && sold(S.sleep)) S.sleep = 'tent';
+    if (VEH.test(S.sleep) && off(S.sleep)) S.sleep = 'tent';
+    if (S.pwr && (!PWR[S.sleep] || off(PWR[S.sleep]))) S.pwr = false;
+    XID.forEach(function (id) { if (S.x[id] && off(id)) delete S.x[id]; });
     if (S.teen && sold('teen')) S.teen = 0;   // audit Nov 13: a sold-out Teen 4-Day could still be added
     if (S.wed && sold('early')) S.wed = false;
     if (S.go === 'shuttle' && sold('shuttle')) S.go = 'later';
     save();
     var w = when(), cam = camping(S), veh = vehicle(S), k = key(S), kd = kind(S.pass);
     setRadio('tk-pass', S.pass); setRadio('tk-day', S.day); setRadio('tk-sleep', S.sleep); setRadio('tk-go', veh ? 'drive' : S.go); setRadio('tk-big', S.big ? '1' : '0');
-    $$('input[name="tk-pass"]', root).forEach(function (i) { i.disabled = i.value !== 'd1' && sold(i.value === 'pat' ? 'patron' : i.value); });
+    $$('input[name="tk-pass"]', root).forEach(function (i) { i.disabled = i.value !== 'd1' && i.value !== 'none' && sold(i.value === 'pat' ? 'patron' : i.value); });
     $$('input[name="tk-day"]', root).forEach(function (i) { i.disabled = sold(i.value); });
-    $$('input[name="tk-sleep"]', root).forEach(function (i) { i.disabled = /^(wcar|scar|wrv)$/.test(i.value) && sold(i.value); });
+    $$('input[name="tk-sleep"]', root).forEach(function (i) { i.disabled = VEH.test(i.value) && off(i.value); });
+    $('[data-p="tent"]', root).textContent = S.pass === 'none' ? 'With your pass' : 'Included';
+    var vs = $('#tk-vsite', root); vs.hidden = !veh; var pw = $('#tk-pwr', root), pid = PWR[S.sleep]; pw.hidden = !veh || !pid;
+    if (pid) { $('#tk-pwrc', root).checked = S.pwr; $('#tk-pwrc', root).disabled = off(pid); $('#tk-pwrp', root).textContent = off(pid) ? 'Sold out' : '+' + money(PS(pid)) + ' a site'; }
+    $('#tk-sitestep', root).hidden = !veh;
     $$('input[name="tk-go"]', root).forEach(function (i) { i.disabled = (veh && i.value !== 'drive') || (i.value === 'shuttle' && sold('shuttle')); });
     $('#tk-wedc', root).disabled = sold('early'); var we = $('#tk-wed em', root); if (we) we.textContent = sold('early') ? 'Sold out' : '+' + money(PS('early')) + ' each';
     $('#tk-wed', root).hidden = S.pass !== 'p4'; $('#tk-wedc', root).checked = S.wed; $('#tk-w-p4', root).classList.toggle('on', S.pass === 'p4' && S.wed);
@@ -400,22 +463,35 @@
     /* Gate 1 fix 13 (D12/Q7, panel P5): three full-width rows, label and one-line sublabel on the left, the price, then the stepper */
     var who = kd === 'day' ? { adult: ['Ages 13 and up', 'One price', 'person 13 and up', k ? money(PS(k)) : ''], kid: ['Kids', '12 and under', 'kid', 'Free'] }
       : kd === 'pat' ? { adult: ['Patron Passes', 'One each, any age, kids too', 'Patron Pass', money(PS('patron'))] }
+      : kd === 'none' ? { adult: ['How many of you?', 'For shuttle passes', 'person', ''] }
       : kd === 'wk' ? { adult: ['Adults', '18 and up', 'adult', money(PS(k))], teen: ['Teens', sold('teen') ? '13–17 · Teen 4-Day sold out' : '13–17 · 4-Day at half price', 'teen', sold('teen') ? '' : money(PS('teen'))], kid: ['Kids', '12 and under', 'kid', 'Free'] }
       : { adult: ['Adults', '18 and up', 'adult', ''], teen: ['Teens', '13–17', 'teen', ''], kid: ['Kids', '12 and under', 'kid', ''] };
-    $$('.tk-step', root).forEach(function (st) { var f = st.getAttribute('data-k'), v = S[f], b = $$('button', st); $('output', st).textContent = v; b[0].disabled = v <= (f === 'car' || (f === 'adult' && kd === 'pat') ? 1 : 0); b[1].disabled = v >= 12 || (f === 'teen' && sold('teen'));
-      if (f === 'car') return; var r = who[f]; st.hidden = !r; if (!r) return; $('#tk-ln-' + f, root).textContent = r[0]; $('#tk-ls-' + f, root).textContent = r[1]; var lp = $('#tk-lp-' + f, root); if (lp) lp.textContent = r[3] || ''; b[0].setAttribute('aria-label', 'One fewer ' + r[2]); b[1].setAttribute('aria-label', 'One more ' + r[2]); });
+    var cov = cover(S);
+    $$('.tk-step', root).forEach(function (st) { var f = st.getAttribute('data-k'), v = gv(f), b = $$('button', st), xid = f.indexOf('x-') === 0 ? f.slice(2) : ''; $('output', st).textContent = v;
+      b[0].disabled = v <= (vmin(f) || (f === 'adult' && kd === 'pat' ? 1 : 0)); b[1].disabled = v >= vmax(f) || (f === 'teen' && sold('teen')) || (!!xid && !xok(xid));
+      if (xid) { var md = MEAL[xid], need = md !== undefined && !cov[md]; var base0 = md !== undefined ? DAYS[md][2] + ', ' + DAYS[md][4] : ($('#tk-ls-' + f, root).getAttribute('data-s') || '');
+        $('#tk-ls-' + f, root).textContent = off(xid) ? 'Sold out' : need ? (S.pass ? 'Needs a ' + DAYS[md][3] + ' ticket' : 'Pick a ticket for ' + DAYS[md][3] + ' first') + ' · ' + money(PS(xid)) : (base0 ? base0 + ' · ' : '') + money(PS(xid)); $('#tk-lp-' + f, root).textContent = ''; st.classList.toggle('is-off', off(xid) || need); return; }
+      if (f === 'car' || f === 'sites') return; var r = who[f]; st.hidden = !r; if (!r) return; $('#tk-ln-' + f, root).textContent = r[0]; $('#tk-ls-' + f, root).textContent = r[1]; var lp = $('#tk-lp-' + f, root); if (lp) lp.textContent = r[3] || ''; b[0].setAttribute('aria-label', 'One fewer ' + r[2]); b[1].setAttribute('aria-label', 'One more ' + r[2]); });
     $('.tk-who-g', root).setAttribute('data-n', String(Object.keys(who).length));
     var tn = $('#tk-teennote', root), note = '';
     if (!S.adult && (S.teen || S.kid)) note = kd === 'day' ? '<b>Add a ticket for someone 13 or older.</b> Kids come in with them.' : '<b>Add an adult.</b> Teens and kids come in with a ticketed adult.';
-    tn.hidden = !note; tn.innerHTML = note;
+    if (kd === 'none') note = ''; tn.hidden = !note; tn.innerHTML = note;
+    $('#tk-morep', root).hidden = !(gok(S) && S.pass !== 'none' && (S.more || []).length < 5);
+    var gr = $('#tk-grps', root), M = S.more || []; gr.hidden = !M.length;
+    gr.innerHTML = M.length ? '<p class="tk-grps-h">Already in this order</p><ul>' + M.map(function (g, i) { return '<li><span>' + esc(gshort(g)) + '</span><button type="button" class="tk-tlink" data-act="rmgrp" data-i="' + i + '" aria-label="Remove ' + esc(gshort(g)) + '">Remove</button></li>'; }).join('') + '</ul><p class="tk-grps-n">' + (S.pass && S.pass !== 'none' ? 'Now: the next pass below.' : 'Pick the next pass below, or check out.') + '</p>' : '';
+    /* extras: what each group adds, at a glance */
+    [['meals', MEALS, 'a seat'], ['dish', DISH, ''], ['give', GIVE, '']].forEach(function (x) { var n = x[1].reduce(function (a, id) { return a + (xok(id) ? (S.x[id] || 0) : 0); }, 0), lo = x[1].filter(function (id) { return !off(id); });
+      $('#tk-xs-' + x[0], root).textContent = n ? (x[0] === 'meals' ? plural(n, 'seat') : n + ' added') : lo.length ? (x[0] === 'meals' ? money(PS(lo[0])) + ' a seat' : 'from ' + money(minPS(lo))) : 'Sold out';
+      if (n) $('#tk-x-' + x[0], root).open = true; });
     $('#tk-s-sleep', root).hidden = !!S.pass && !cam;   // day tickets have no camping, and their heading already says so
     /* getting there: the drive row names exactly what parking it adds */
-    var pk = parkId(S), dayOnly = S.pass === 'd1';
+    var pk = parkId(S), PB = pbase(S) || {}, none = S.pass === 'none', dayOnly = none ? !!S.pday : PB.pass === 'd1';
     $('[data-t="drive"]', root).textContent = veh ? 'Drive in with your camp' : 'Drive and park';
-    $('[data-w="drive"]', root).textContent = veh ? 'Your camp site is your parking. No parking pass needed.' : dayOnly ? (S.day ? parkName(pk) + '. Welcome Lot, a mile from the gate, free shuttle.' : 'Parking for the day you pick, in the Welcome Lot. Free shuttle to the gate.') : S.pass === 'd2' ? 'Welcome Lot, a mile from the gate, free shuttle. Weekend parking or two day passes: your pick below.' : 'Weekend parking in the Welcome Lot, in and out all weekend. A mile from the gate, free shuttle.';
-    $('[data-p="drive"]', root).innerHTML = veh ? '' : S.pass === 'd2' && S.dp ? money(PS('psat') + PS('psun')) + '<small>a car</small>' : pk ? (sold(pk) ? 'Sold out' : money(PS(pk)) + '<small>' + (dayOnly ? DAY[S.day][2] + ' only' : 'a car') + '</small>') : 'from ' + money(minPS(['pthu', 'pfri', 'psat', 'psun'])) + '<small>a day</small>';
+    $('[data-w="drive"]', root).textContent = veh ? 'Your camp site is your parking. No parking pass needed.' : none ? 'Weekend parking, or one day only. Welcome Lot, a mile from the gate, free shuttle.' : dayOnly ? (PB.day ? parkName(pk) + '. Welcome Lot, a mile from the gate, free shuttle.' : 'Parking for the day you pick, in the Welcome Lot. Free shuttle to the gate.') : S.pass === 'd2' ? 'Welcome Lot, a mile from the gate, free shuttle. Weekend parking or two day passes: your pick below.' : 'Weekend parking in the Welcome Lot, in and out all weekend. A mile from the gate, free shuttle.';
+    $('[data-p="drive"]', root).innerHTML = veh ? '' : PB.pass === 'd2' && S.dp && !none ? money(PS('psat') + PS('psun')) + '<small>a car</small>' : pk ? (sold(pk) ? 'Sold out' : money(PS(pk)) + '<small>' + (dayOnly ? DAY[none ? S.pday : PB.day][2] + ' only' : 'a car') + '</small>') : 'from ' + money(minPS(['pthu', 'pfri', 'psat', 'psun'])) + '<small>a day</small>';
     $('#tk-park', root).hidden = S.go !== 'drive' || veh;
-    var d2 = S.pass === 'd2', wkP = PS(S.big ? 'opark' : 'wpark'), ddP = PS('psat') + PS('psun');   // Sat + Sun: the buyer's choice, and the page says which is cheaper
+    $('#tk-pday', root).hidden = !none; setRadio('tk-pday', S.pday);
+    var d2 = PB.pass === 'd2' && !none, wkP = PS(S.big ? 'opark' : 'wpark'), ddP = PS('psat') + PS('psun');   // Sat + Sun: the buyer's choice, and the page says which is cheaper
     $('#tk-d2p', root).hidden = !d2; setRadio('tk-dp', S.dp ? '1' : '0'); $('#tk-dpw', root).textContent = money(wkP); $('#tk-dpd', root).textContent = money(ddP);
     var dn = $('#tk-dpnote', root); dn.hidden = !d2 || wkP === ddP; dn.textContent = wkP < ddP ? 'Weekend parking is cheaper: ' + money(wkP) + ' against ' + money(ddP) + ' for the two day passes. Both get you in and out on Saturday and Sunday.' : 'The two day passes are cheaper: ' + money(ddP) + ' against ' + money(wkP) + ' for Weekend parking.';
     $('#tk-size', root).hidden = dayOnly || (d2 && S.dp);
@@ -431,11 +507,71 @@
       if (w === 'closed') bar.hidden = true;
       $('#tk-live', root).textContent = short(S) + '. Total ' + money(t.total) + ', fee included.';
     } else $('#tk-live', root).textContent = '';
-    $('#tk-lines', root).innerHTML = ready ? olines(t) : '<li class="tk-order-empty">' + (k && !S.adult ? (kind(S.pass) === 'day' ? 'Add someone 13 or older to see your total.' : 'Add an adult to see your total.') : S.pass === 'd1' && !S.day ? 'Pick your day. Your total builds here, fee included.' : 'Pick a ticket. Your total builds here, fee included.') + '</li>';
+    $('#tk-lines', root).innerHTML = ready ? olines(t) : '<li class="tk-order-empty">' + (k && !S.adult ? (kind(S.pass) === 'day' ? 'Add someone 13 or older to see your total.' : 'Add an adult to see your total.') : S.pass === 'd1' && !S.day ? 'Pick your day. Your total builds here, fee included.' : S.pass === 'none' ? 'Add camping, parking, meals or extras. Your total builds here, fee included.' : 'Pick a ticket, or Add-ons only. Your total builds here, fee included.') + '</li>';
     $('#tk-otot', root).hidden = $('#tk-ofine', root).hidden = !ready; $('#tk-ototv', root).textContent = money(t.total);
     var op = $('#tk-oplan', root); op.hidden = !(ready && hasPlan(t)); op.textContent = hasPlan(t) ? 'Or pay over time: ' + planLine(t.total) + '.' : '';
     var og = $('#tk-ogo', root); og.hidden = !ready; og.textContent = go.t; og.className = 'tk-pill ' + go.c; if (go.off) og.setAttribute('aria-disabled', 'true'); else og.removeAttribute('aria-disabled');
     guard(root);
+  }
+  function live(m) { var l = root && $('#tk-live', root); if (l) l.textContent = m; }
+  /* "Add a different pass": the pass being built joins the order and the cards are free for the next one (Zale, Nov 13: one checkout) */
+  function addPass() {
+    if (!gok(S) || S.pass === 'none') return;
+    var g = cleanG(S), M = S.more || [], same = M.filter(function (x) { return gkey(x) === gkey(g) && x.wed === g.wed; })[0];
+    if (same) { same.adult = Math.min(12, same.adult + g.adult); same.teen = Math.min(12, same.teen + g.teen); same.kid = Math.min(12, same.kid + g.kid); } else M.push(g);
+    S.more = M; S.pass = null; S.day = null; S.adult = 1; S.teen = 0; S.kid = 0; S.wed = false;
+    update(); live('Added to your order. Pick the next pass.');
+    var el = $('#tk-grps', root); if (el) { try { el.scrollIntoView({ block: 'start', behavior: 'smooth' }); } catch (x) { el.scrollIntoView(); } }
+  }
+  /* jump row and deep links (#tickets/camping, /parking, /meals, /extras, /addons): straight to what an expert came for */
+  var JMP = { camping: 'tk-s-sleep', parking: 'tk-s-go', meals: 'tk-x-meals', extras: 'tk-s-extra', passes: 'tk-passes' };
+  function jump(sec) {
+    if (!root) return;
+    if (sec === 'addons') { if (!S.pass) { S.pass = 'none'; update(); } sec = 'camping'; }
+    var el = $('#' + (JMP[sec] || 'tk-passes'), root); if (!el) return;
+    if (el.tagName === 'DETAILS') el.open = true;
+    if (el.hidden) el = $('#tk-passes', root);
+    try { el.scrollIntoView({ block: 'start', behavior: 'smooth' }); } catch (x) { el.scrollIntoView(); }
+    var h = $('h2, summary, legend', el) || el; if (h && h.focus) { if (!h.hasAttribute('tabindex') && h.tagName !== 'SUMMARY') h.setAttribute('tabindex', '-1'); try { h.focus({ preventScroll: true }); } catch (x) {} }
+  }
+  var DLRX = /^#\/?tickets\/(camping|parking|meals|extras|addons|passes)\b/, hash0 = window.location.hash || '';   // the site's router rewrites the address to #/tickets, so the section is read as the page loads
+  function deepLink(h) { var m = DLRX.exec(h || window.location.hash || ''), n = 0; if (!m) return;
+    (function wait() { if (root && root.firstChild && document.getElementById('tk-main')) { setTimeout(function () { jump(m[1]); }, 150); return; } if (++n < 60) setTimeout(wait, 150); })(); }   // the page may still be drawing on a slow phone
+  /* "New to Pickathon?" (Zale, Nov 13): many buyers search straight to Tickets and see nothing else, so the page carries Home's idea in one
+     sheet: the ranked Discoveries (the same pool and order as Home's Who's up next), three facts a first-timer buys on, and back to the passes. */
+  function shortLine(t) { t = String(t || '').trim(); if (t.length <= 118) return t; var S1 = t.match(/[^.!?]+[.!?]+(?=\s|$)/g) || []; for (var i = 0; i < S1.length; i++) if (S1[i].trim().length <= 118) return S1[i].trim(); return ''; }
+  function discoveries() {
+    var pool = []; try { pool = window.__pkArchPool ? window.__pkArchPool() : []; } catch (e) { pool = []; }
+    var d = site().data || {}, PV = d.preview || {}, V = {}; (d.videos || []).forEach(function (x) { if (!x) return; if (x.vm) V['vm' + x.vm] = x; else if (x.id) V['yt' + x.id] = x; });
+    return pool.filter(function (a) { return a.cat === 'music' && a.ctk === 'disc' && !a.dc && !a.leg && a.line; }).map(function (a) {
+      var pv = PV[a.n], img = (pv && String(pv.y) === String(a.yr) && pv.i) || a.img || (pv && pv.i) || '', u = a.vu || '';
+      var m = /[?&]v=([\w-]+)/.exec(u) || /youtu\.be\/([\w-]+)/.exec(u), m2 = /vimeo\.com\/(\d+)/.exec(u), r = m ? V['yt' + m[1]] : m2 ? V['vm' + m2[1]] : null;
+      var ok = !!u && !(r && r.f) && /^Watch/.test(a.vt || '') && !/spotify/.test(u);   // single songs only, never a full set (as on Home)
+      return { n: a.n, y: String(a.yr || ''), line: shortLine(a.line), img: img, vu: ok ? u : '', m: a.m, k: 'disc', c: a.cf };
+    }).filter(function (a) { return a.img && a.line; }).sort(window.pkRankCmp || function () { return 0; });
+  }
+  var RING = '<span class="tk-ring" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path d="M8.5 5.5 L19 12 L8.5 18.5 Z"/></svg></span>';
+  function why() {
+    var L = discoveries().slice(0, 8), H = (site().data || {}).hoods || {}, y0 = +((L[0] || {}).y || 0), pyr = (y0 >= 2000 && y0 <= 2019) || (y0 >= 2022 && y0 <= 2026) ? String(y0).slice(2) : '13', hood = ['woods', 'galaxybarn', 'galaxy', 'paddock', 'treeline'].map(function (k) { return H[k]; }).filter(function (o) { return o && (o.hi || o.i); })[0];
+    var cards = L.map(function (a, i) { return '<li class="tk-dc"><button type="button" class="tk-dc-ph" data-dc="' + i + '"' + (a.vu ? ' aria-label="Watch ' + esc(a.n) + ', Pickathon ' + esc(a.y) + '"' : ' tabindex="-1" aria-hidden="true" disabled') + '><img src="' + esc(a.img) + '" alt="" loading="lazy" decoding="async">' + (a.vu ? RING : '') + '</button>' +
+      '<p class="tk-dc-k"><span>Discovery</span><span>Pickathon ' + esc(a.y) + '</span></p><p class="tk-dc-n">' + esc(a.n) + '</p><p class="tk-dc-l">' + esc(a.line) + '</p></li>'; }).join('');
+    /* the four beats of Home's funnel, in its order (Zale, Nov 13): the promise, Who's up next (artist proof), the posters re-ordered (past proof), the city */
+    var sh = sheet(sheetTop('New to Pickathon?') +
+      '<p class="tk-why-l"><b>Your new favorite band is playing. You just haven’t met them yet.</b></p>' +
+      (cards ? '<p class="tk-why-h">Who’s up next?</p><p class="tk-why-s">Nobody knew these names when they first played here.</p><ul class="tk-dcs" aria-label="Discoveries, biggest today first">' + cards + '</ul>' : '') +
+      '<div class="tk-why-2">' +
+      '<button type="button" class="tk-why-t" data-why="poster"><img src="i/y' + pyr + '-poster.webp" alt="" loading="lazy"><span class="tk-why-tx"><b>The posters, re-ordered</b><span>The small print then is the headliners now.</span><em>See it on Home</em></span></button>' +
+      '<button type="button" class="tk-why-t" data-why="hoods">' + (hood ? '<img src="' + esc(hood.hi || hood.i) + '" alt="" loading="lazy">' : '') + '<span class="tk-why-tx"><b>Live inside a temporary city of wonder</b><span>Hand-built stages and camps on a forest farm.</span><em>Explore the neighborhoods</em></span></button>' +
+      '</div>' +
+      '<div class="tk-help-f"><p><b class="tk-d">Two sets</b>every act, on two stages</p><p><b class="tk-d">Camping</b>with weekend passes</p><p><b class="tk-d">Kids free</b>12 and under</p></div>' +
+      '<button type="button" class="tk-pill tk-pill-gold tk-sheet-go" data-close>Pick a ticket</button>', 'New to Pickathon?');
+    sh.addEventListener('click', function (e) {
+      var t = e.target.closest ? e.target.closest('[data-why]') : null;
+      if (t) { var w = t.getAttribute('data-why'), A = app(); closeSheet(true); if (!A) return;   // the order is kept on this device, so leaving loses nothing
+        if (w === 'hoods') { if (window.__pkGoFarm) window.__pkGoFarm(); else A.go('hoods'); return; }
+        A.go('home'); setTimeout(function () { var m = document.querySelector('.pk-cl-mount'); if (m) { try { m.scrollIntoView({ block: 'start' }); } catch (x) {} } }, 500); return; }
+      var b = e.target.closest ? e.target.closest('[data-dc]') : null; if (!b) return; var a = L[+b.getAttribute('data-dc')]; if (!a || !a.vu) return;
+      try { if (window.__pkPlayVid) window.__pkPlayVid(a.vu, a.n + ' · Pickathon ' + a.y); } catch (x) {} });
   }
   function goLabel(t) { var w = when(); if (w === 'sale') return { t: 'Checkout · ' + money(t.total), c: 'tk-pill-gold' }; if (w === 'pre') return saved() ? { t: 'Saved for ' + T.show.dayS, c: 'tk-pill-cream', off: true } : { t: 'Save for ' + T.show.dayS, c: 'tk-pill-cream' }; return { t: 'Not on sale right now', c: '', off: true }; }
   function orderSheet() {
@@ -473,7 +609,9 @@
   }
   function onChange(e) {
     var t = e.target, n = t.name;
-    if (n === 'tk-pass') { S.pass = t.value; if (t.value !== 'p4') S.wed = false; if (t.value !== 'd1') S.day = null; }
+    if (n === 'tk-pass') { S.pass = t.value; if (t.value !== 'p4') S.wed = false; if (t.value !== 'd1') S.day = null; if (t.value === 'none') { S.teen = 0; S.kid = 0; } }
+    else if (n === 'tk-pday') S.pday = t.value;
+    else if (t.id === 'tk-pwrc') S.pwr = t.checked;
     else if (n === 'tk-day') S.day = t.value;
     else if (n === 'tk-sleep') S.sleep = t.value;
     else if (n === 'tk-go') S.go = t.value;
@@ -486,7 +624,8 @@
   function onClick(e) {
     var b = e.target.closest ? e.target.closest('button,[data-go],[data-act]') : null; if (!b || !root.contains(b)) return;
     var stp = b.getAttribute('data-step');
-    if (stp) { var f = b.closest('.tk-step').getAttribute('data-k'); S[f] = Math.max(f === 'car' ? 1 : 0, Math.min(12, S[f] + (+stp))); update(); return; }
+    if (stp) { var f = b.closest('.tk-step').getAttribute('data-k'); sv(f, Math.max(vmin(f), Math.min(vmax(f), gv(f) + (+stp)))); update(); return; }
+    var jp = b.getAttribute('data-jump'); if (jp) { jump(jp); return; }
     var act = b.getAttribute('data-act'), go = b.getAttribute('data-go');
     if (act === 'feedretry') { noIds = false; tries = 0; window.pkFeed = { url: (window.pkFeed || {}).url, state: 'loading', byCode: null, at: Date.now() }; lastKey = ''; sync(); try { window.pkFeedLoad(function () { lastKey = ''; sync(); }); } catch (x) {} return; }
     if (go) { nav(go); return; }
@@ -494,6 +633,9 @@
     if (act === 'sheet') { orderSheet(); return; }
     if (act === 'help') { help(); return; }
     if (act === 'camps') { camps(); return; }
+    if (act === 'why') { why(); return; }
+    if (act === 'addpass') { addPass(); return; }
+    if (act === 'rmgrp') { S.more.splice(+b.getAttribute('data-i'), 1); update(); live('Removed.'); var pc = $('#tk-passes', root); if (pc) { try { pc.scrollIntoView({ block: 'nearest' }); } catch (x) {} } return; }
     if (act === 'signin') { if (window.__pkAcct && window.__pkAcct.signIn) window.__pkAcct.signIn(); else nav('account'); return; }
     if (act === 'again') { var lo = null; try { lo = window.pkLastOrder(); } catch (x) {} if (lo) { S = clean(lo); b.textContent = 'Filled in'; b.disabled = true; update(); var bg = $('#tk-ogo', root); if (bg && bg.offsetParent) bg.focus(); else { bg = $('#tk-bargo', root); if (bg) bg.focus(); } } return; }
   }
@@ -534,7 +676,7 @@
 
   window.__pkTk2 = {
     refresh: function () { lastKey = ''; sync(); },
-    order: order, record: function () { return clean(S); }, set: function (o) { S = clean(Object.assign({}, S, o || {})); save(); update(); }, clear: function () { S = clean(null); save(); update(); },
+    order: order, record: function () { return clean(S); }, jump: jump, addPass: addPass, discoveries: discoveries, set: function (o) { S = clean(Object.assign({}, S, o || {})); save(); update(); }, clear: function () { S = clean(null); save(); update(); },
     gate: gate, lastBy: lastBy, sheet: sheet, closeSheet: closeSheet, guard: guard, sheetTop: sheetTop, ic: ic, esc: esc, money: money, where: where, days: DAYS
   };
   document.addEventListener('change', function (e) { if (root && root.contains(e.target)) onChange(e); });
@@ -542,18 +684,18 @@
 
   /* A reload or a tab the phone put to sleep comes back to where the buyer was: Tickets, or Checkout. A link ending #tickets opens Tickets too. */
   var back = ''; try { back = window.sessionStorage.getItem(SSW) || ''; } catch (e) {}
-  var viaHash = /^#tickets\b/.test(window.location.hash || '');
+  var viaHash = /^#\/?tickets\b/.test(window.location.hash || '');
   function boot(n) {
     var a = app();
     if (!a || !a.state || !a.state.data) { if (n < 200) setTimeout(function () { boot(n + 1); }, 50); else booting = false; return; }
     try {
       var top = a.state.stack[a.state.stack.length - 1];
       if ((back || viaHash) && (!top || top.r === 'home')) a.go('tickets');
-      booting = false; sync();
+      booting = false; sync(); deepLink(hash0); hash0 = '';
       if (back === 'checkout' && (window.PK_TICKETS || {}).checkoutPreview && window.__pkCheckout && window.__pkCheckout.resume) window.__pkCheckout.resume();   // the preview sheet only comes back for staff
     } catch (e) { booting = false; }
   }
-  window.addEventListener('hashchange', function () { if (/^#tickets\b/.test(window.location.hash || '')) { var a = app(); try { var top = a.state.stack[a.state.stack.length - 1]; if (top.r !== 'tickets') a.go('tickets'); } catch (e) {} } });
+  window.addEventListener('hashchange', function () { if (/^#\/?tickets\//.test(window.location.hash || '') || /^#tickets\b/.test(window.location.hash || '')) { var a = app(); try { var top = a.state.stack[a.state.stack.length - 1]; if (top.r !== 'tickets') a.go('tickets'); } catch (e) {} deepLink(); } });
   try { sync(); } catch (e) {}
   boot(0);
 })();
