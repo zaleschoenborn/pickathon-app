@@ -164,3 +164,4 @@ body.pkpl-hood #root .pk-hd-desc0.pkpl-dup{display:none!important}   /* the long
 .pkpl-hi.pkpl-tok .pkpl-base{visibility:hidden}
 #root#root#root#root#root#root#root#root .pkpl-tb{min-height:50px!important;height:50px}
 @media (min-width:1200px){#root#root#root#root#root#root#root#root .pkpl-tb{min-height:56px!important;height:56px}}
+#root#root#root#root#root#root#root#root .pkpl-tb{background:rgba(18,22,15,.9)!important;border:1px solid rgba(242,237,227,.6)!important;color:#F2EDE3!important}
