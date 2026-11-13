@@ -1363,13 +1363,15 @@ main:has(#pk-nh-climb)>section{content-visibility:visible!important;contain-intr
 #root .pk3-tr{position:absolute;left:136px;right:204px;top:82px;height:2px}
 #root .pk3-tr u{position:absolute;left:0;top:0;height:2px}
 #root .pk3-tr b{position:absolute;top:-5px;width:12px;height:12px;margin-left:-6px;border-radius:50%}
-#root#root .pk3-rep{position:absolute;right:28px;top:28px;height:66px;width:158px;border:1.5px solid;border-radius:8px;background:transparent;display:flex;align-items:center;justify-content:center;gap:10px;font:800 14px Inter,system-ui,sans-serif;letter-spacing:.1em;cursor:pointer;padding:0}
+#root#root .pk3-rep{position:absolute;right:28px;top:28px;height:56px;width:158px;border:1.5px solid;border-radius:8px;background:transparent;display:flex;align-items:center;justify-content:center;gap:10px;font:800 14px Inter,system-ui,sans-serif;letter-spacing:.1em;cursor:pointer;padding:0}
 #root .pk3-cl,#root .pk3-cr{position:absolute;top:30px;font:400 34px/36px "Pickathon 2014",sans-serif;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap}
 #root .pk3-cl{left:140px}#root .pk3-cr{right:210px}
 #root .pk3-dv{position:absolute;left:540px;top:128px;height:340px;width:1px;opacity:.18}
 #root .pk3-art{position:absolute;transform:translateY(-50%);pointer-events:none}
 #root#root .pk3-eb{position:absolute;height:50px;border:0;border-radius:6px;display:flex;align-items:center;justify-content:center;gap:8px;font:800 13px Inter,system-ui,sans-serif;letter-spacing:.08em;cursor:pointer;padding:0;text-transform:uppercase}
 #root .pk3-eb span{font-size:16px}
+#root#root#root .pk3-card .pk3-rep.pk-cta{background:transparent!important;color:var(--pk3-a)!important;border-color:var(--pk3-a)!important;box-shadow:none!important;text-shadow:none!important;min-height:0!important;padding:0!important}
+#root#root#root .pk3-card .pk3-eb.pk-cta{background:var(--pk3-a)!important;color:var(--pk3-p)!important;box-shadow:none!important;text-shadow:none!important;min-height:0!important;padding:0!important}
 #root .pk3-nm{position:absolute;left:550px;right:35px;top:112px;height:372px;display:flex;flex-direction:column;justify-content:center;text-align:center;text-transform:uppercase;pointer-events:none}
 #root .pk3-layer{position:absolute;left:0;top:0;pointer-events:none}
 #root .pk3-hh{position:absolute;left:24px;width:136px;text-align:center;text-wrap:balance;font:400 15px/1.12 "Pickathon 2014",sans-serif;letter-spacing:.04em;text-transform:uppercase}
@@ -1380,8 +1382,8 @@ main:has(#pk-nh-climb)>section{content-visibility:visible!important;contain-intr
 #root .pk3-card.ph .pk3-cal .pk-cl-mo{font-size:10px;line-height:17px}
 #root .pk3-card.ph .pk3-cal .pk-cl-yr{font-size:19px;line-height:22px}
 #root .pk3-card.ph .pk3-tr{left:86px;right:128px;top:40px}
-#root#root .pk3-card.ph .pk3-rep{right:18px;top:19px;height:44px;width:96px;border-radius:6px;font-size:11px;gap:7px}
-#root#root .pk3-card.ph .pk3-eb{height:44px;font-size:11px;gap:6px}
+#root#root .pk3-card.ph .pk3-rep{right:18px;top:19px;height:50px;width:104px;border-radius:6px;font-size:11px;gap:7px}
+#root#root .pk3-card.ph .pk3-eb{height:50px;font-size:11px;gap:6px}
 #root .pk3-card.ph .pk3-eb span{font-size:14px}
 #root .pk3-card.ph .pk3-nm{left:172px;right:14px;top:84px;height:316px}
 #root .pk3m .pk-cl-below{max-width:none;margin:12px 0 0}
@@ -3031,11 +3033,11 @@ html.pk-cyon #root #pk-nh-city #pk-nh-cr,html.pk-cyon #root #pk-nh-city .pk-nh-a
     h += '<i class="pk3-frm" aria-hidden="true" style="border-color:' + A + '"></i><i class="pk3-foot" aria-hidden="true" style="color:' + A + ';background:' + PAPER + ';font-style:normal">' + esc(foot) + '</i>';
     h += '<div class="pk3-cal" aria-hidden="true" style="background:' + A + ';color:' + PAPER + '">' + cal + '</div>';
     if (!still) { h += '<div class="pk3-tr" aria-hidden="true" style="background:' + A + '33"><u style="width:' + (frac * 100).toFixed(1) + '%;background:' + A + '"></u><b style="left:' + (frac * 100).toFixed(1) + '%;background:' + A + '"></b></div>';
-      h += '<button type="button" class="pk3-rep" data-cl="play" aria-label="' + esc(timebar(D, y, tp, { frac: frac }).aria) + '" style="color:' + A + ';border-color:' + A + '"><svg width="' + (ph ? 10 : 13) + '" height="' + (ph ? 11 : 14) + '" viewBox="0 0 10 11" aria-hidden="true"><path d="M1 .8 9 5.5 1 10.2Z" fill="' + A + '"/></svg>REPLAY</button>'; }
+      h += '<button type="button" class="pk-cta sec pk3-rep" data-cl="play" aria-label="' + esc(timebar(D, y, tp, { frac: frac }).aria) + '" style="--pk3-a:' + A + '"><svg width="' + (ph ? 10 : 13) + '" height="' + (ph ? 11 : 14) + '" viewBox="0 0 10 11" aria-hidden="true"><path d="M1 .8 9 5.5 1 10.2Z" fill="' + A + '"/></svg>REPLAY</button>'; }
     if (ph) { var hhs = function (txt, cls, op) { return '<div class="pk3-hh ' + cls + '" aria-hidden="true" style="font-family:\'Pickathon 2014\',sans-serif!important;top:' + t0.toFixed(0) + 'px;color:' + A + (cls ? ';opacity:' + op : '') + '">' + esc(txt) + '<i style="background:' + B + '"></i></div>'; };
       h += still ? hhs(cs1, '', 1) : hhs(c1, 'pk3-c1', op1) + hhs(c2, 'pk3-c2', op2); }
     else { h += '<div class="pk3-cl' + (still ? '' : ' pk3-c1') + '" aria-hidden="true" style="font-family:\'Pickathon 2014\',sans-serif!important;color:' + A + (still ? '' : ';opacity:' + op1) + '">' + esc(cs1) + '</div>' + (still ? '' : '<div class="pk3-cr pk3-c2" aria-hidden="true" style="font-family:\'Pickathon 2014\',sans-serif!important;color:' + A + ';opacity:' + op2 + '">' + c2 + '</div>'); h += '<i class="pk3-dv" aria-hidden="true" style="background:' + A + '"></i>'; }
-    h += art + '<button type="button" class="pk3-eb" data-cl="year" style="left:' + ebLeft.toFixed(0) + 'px;top:' + ebTop.toFixed(0) + 'px;width:' + ebw.toFixed(0) + 'px;background:' + A + ';color:' + PAPER + '">Explore ' + y + ' <span aria-hidden="true">→</span></button>';
+    h += art + '<button type="button" class="pk-cta pri pk3-eb" data-cl="year" style="--pk3-a:' + A + ';--pk3-p:' + PAPER + ';left:' + ebLeft.toFixed(0) + 'px;top:' + ebTop.toFixed(0) + 'px;width:' + ebw.toFixed(0) + 'px">Explore ' + y + ' <span aria-hidden="true">→</span></button>';
     if (Y3s) h += '<div class="pk3-nm" aria-hidden="true">' + names3(Y3, D.names.filter(function (x) { return x[1][n - 1] < Math.min(10, D.ranked || 10); }).sort(function (a, b) { return a[1][n - 1] - b[1][n - 1]; }).map(function (x) { return x[0]; }), ph) + '</div>';
     else h += '<div class="pk3-layer" aria-hidden="true" style="width:' + CW + 'px;height:' + F.H + 'px">' + F.html + '</div>';
     h += '</div>';
