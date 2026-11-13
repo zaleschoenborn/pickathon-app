@@ -46,6 +46,16 @@ s = hook(s, 'id="pl2-foot"',
 s = hook(s, "!TIX2 && !PLAN2,",
          "R !== 'home' && R !== 'past' && R !== 'artist' && R !== 'act' && !TIX2,",
          "R !== 'home' && R !== 'past' && R !== 'artist' && R !== 'act' && !TIX2 && !PLAN2,", 'deskBack')   # no "Back to home" box on the new page (the design has none)
+# Plan your trip in time order (Nov 13): step addresses #/plan/arrive etc., and old info pages redirect to their step
+s = hook(s, "if (r === 'info' && e.step)",
+         "    if (r === 'page') return '#/page/' + encodeURIComponent(e.p || '');",
+         "    if (r === 'info' && e.step) return '#/plan/' + encodeURIComponent(e.step) + (e.c ? '/' + encodeURIComponent(e.c) : '');\n    if (r === 'page') return '#/page/' + encodeURIComponent(e.p || '');", 'step address')
+s = hook(s, "if (k === 'plan' && v)",
+         "    if (k === 'page' && v) return { r: 'page', x: { p: v } };",
+         "    if (k === 'plan' && v) { var pv = v.split('/'); return { r: 'info', x: pv[1] ? { step: pv[0], c: pv[1] } : { step: pv[0] } }; }\n    if (k === 'page' && v && window.pkTripRedirect && v in window.pkTripRedirect) { var rd = window.pkTripRedirect[v].split(':'); return rd[0] === 'tickets' ? { r: 'tickets', x: {} } : { r: 'info', x: rd[0] ? (rd[1] ? { step: rd[0], c: rd[1] } : { step: rd[0] }) : {} }; }\n    if (k === 'page' && v) return { r: 'page', x: { p: v } };", 'step route + old addresses')
+s = hook(s, "pkTripRedirect[extra.p]",
+         "    this._navT = Date.now();\n    if (r === 'lineup' && extra && extra.arch)",
+         "    this._navT = Date.now();\n    if (r === 'page' && extra && window.pkTripRedirect && extra.p in window.pkTripRedirect) { var rdP = window.pkTripRedirect[extra.p].split(':'); if (rdP[0] === 'tickets') { r = 'tickets'; extra = undefined; } else { r = 'info'; extra = rdP[0] ? (rdP[1] ? { step: rdP[0], c: rdP[1] } : { step: rdP[0] }) : undefined; } }   // Plan your trip in time order: old info pages open their step\n    if (r === 'lineup' && extra && extra.arch)", 'old pages redirect')
 s = put(s, 'style', 'pk-plan2-css', rd('pl2.css'))
 s = put(s, 'script', 'pk-plan2', rd('pl2.js'))
 open(IDX, 'w', encoding='utf-8').write(s)
