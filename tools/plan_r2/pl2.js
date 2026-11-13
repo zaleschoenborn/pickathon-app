@@ -208,8 +208,7 @@
       '<p class="pl-src" id="pl-src"></p><p class="pl-why" id="pl-why" role="status" hidden></p>' +
       '<ul class="pl-basics"><li><b>Aug 5–8, 2027</b><span>Gates open Wed, Aug 4</span></li><li><b>Happy Valley, OR</b><span>12 miles from Portland</span></li><li><b>Camping included</b><span>Tents in the woods, with any 3- or 4-Day Pass</span></li></ul>' +
       '<ol class="pl-steps" id="pl-steps"></ol>' +
-      '<p class="pl-packln"><button type="button" class="pl-tlink" data-go="step:pack">Packing list and camp rules →</button></p>' +
-      '<section class="pl-paper pl-card pl-newc" id="pl-new" aria-labelledby="pl-h-new"><h2 class="pl-d pl-d-card" id="pl-h-new">What’s new for 2027</h2><hr class="pl-rule2"><ul class="pl-newl" id="pl-newl"></ul></section>' +
+      '<p class="pl-packln"><button type="button" class="pl-tlink pl-packrow" data-go="step:pack"><span>5 · Packing list and camp rules</span><span aria-hidden="true">→</span></button></p>' +
       '</div>' +
       '<div class="pl-nextwrap"><div class="pl-paper pl-next"><div><p class="pl-next-k" id="pl-nk"></p><p class="pl-next-t pl-d" id="pl-nt"></p><p class="pl-next-p"><b class="pl-num" id="pl-np"></b> <span id="pl-nn"></span></p></div><span id="pl-nb"></span></div></div>';
   }
@@ -229,22 +228,22 @@
           camp ? S('Load your gear on the trucks', 'At the Camphost Station in the lot, Wednesday to Saturday. Meet your bags at the Gear Drop nearest your camp.') : S('Walk or ride in', 'A one-mile trail to the gate, or the free parking shuttle, running until 2 am.'),
           camp ? S('Walk the trail in', 'About a mile to the gate, or ride the free parking shuttle.') : null].filter(Boolean);
         if (c === 'shuttle') return [S('Ride MAX to Lents Town Center', 'The Green Line. From Union Station, ride toward Clackamas Town Center.'),
-          S('Walk to the shuttle sign', 'Turn right on SE Foster Rd, then right on SE 92nd Ave. The stop is in front of The ZED / Zoiglhaus (5716 SE 92nd Ave), not on the platform.'),
+          S('Walk to the shuttle sign', 'Turn right on SE Foster Rd, then right on SE 92nd Ave. The stop is in front of The ZED / Zoiglhaus (5716 SE 92nd Ave), not on the platform. Don’t park there: cars get towed.'),
           S('Show your Shuttle Pass', 'One for each rider over 12. The shuttle drops you at the gate. There is no parking at the stop.')];
-        if (c === 'bike') return [S('Add a free Bicycle Pass', 'It saves room for one bike inside the grounds all weekend.'),
-          S('Ride the Springwater Corridor', 'About 11 miles from Reed College, mostly flat paths with some busier two-lane roads. Guided group rides with a gear truck post with the 2027 schedule.'),
+        if (c === 'bike') return [S('Add a free Bicycle Pass', 'It saves room for one bike inside the grounds all weekend. It also works for the half-mile from the Welcome Lot to the gate.'),
+          S('Ride the Springwater Corridor', 'About 11 miles from Reed College, mostly flat paths with some busier two-lane roads. Guided group rides with a gear truck post with the 2027 schedule. Questions: bike.pickathon@gmail.com.'),
           S('Lock up at the bike corral', 'A secure, monitored corral on site. Bikes have their own gear drop in the South Lot.')];
         if (c === 'drop') return [S('Can you carry everything?', 'Get dropped at the South Lot, 16581 SE Hagen Rd, at the Farmhouse entrance. Tell your driver to follow the “Pickathon Drop-Off” signs.'),
           S('Need the gear trucks?', 'Get dropped at the Welcome Lot instead and load your bags at the Camphost Station.'),
           S('Never get out on Hagen Rd', 'The main road isn’t safe for drop-offs.')];
         return [S('Land at PDX', 'The farm is about 20 minutes from the airport.'),
           S('Rideshare to the South Lot', 'About 25 minutes to 16581 SE Hagen Rd. Pick Dropped off above for the rest.'),
-          S('Or ride MAX and the shuttle', 'Pick Shuttle above for the steps.')];
+          S('Or ride MAX and the shuttle', 'Red Line to Gateway Transit Center, then the Green Line to Lents Town Center. Pick Shuttle above for the rest.')];
       },
       buy: { drive: 'Get a parking pass', shuttle: 'Get shuttle passes', bike: 'Add a Bicycle Pass' },
       shared: ['Gate hours', 'Last year’s hours. 2027 hours post in early summer.', [
         ['Wed', 'Early Arrival add-on: gates 5 pm to 10 pm'], ['Thu–Sun', 'Gates 9 am to 11 pm. You can leave any time, but you can’t drive in after the gates close.'],
-        ['Mon', 'Everyone off the farm by noon'], ['Gear trucks out', 'Sun 8 am to 7 pm, Mon 8 am to noon. Drop gear 30 minutes before the end.'],
+        ['Mon', 'Everyone off the farm by noon'], ['Gear trucks out', 'Sun 8 am to 7 pm, Mon 8 am to noon. Drop gear 30 minutes before the end, in the pile marked TO WELCOME LOT. Bikes and ADA guests have their own pile.'],
         ['Shuttle', 'Thu–Sun 8 am to 2 am, Mon 8 am to 1 pm, about every 45 to 60 minutes'], ['ADA', 'ADA parking and drop-off are set up ahead: write info@pickathon.com two weeks out and show your placard.']]],
       next: 'sleep'
     },
@@ -257,22 +256,22 @@
       steps: function (c) {
         if (c === 'woods') return [S('Pick Lush or Wild Camp', 'Lush Camp, east of the logging road: shaded, full of ferns, closest to the music. Wild Camp, west of it: the biggest trees on the farm, up on the ridge, more secluded.'),
           S('Come early for the best sites', 'Arrive Thursday, or add Wednesday Early Arrival to a 4-Day Pass.'),
-          S('Let the trucks carry your gear', 'Meet it at the Gear Drop nearest your site. Pack in containers you can carry from there.')];
+          S('Let the trucks carry your gear', 'Label it and tie it down, then meet it at the Gear Drop nearest your site. Camp hosts can help you pick a site. Pack in containers you can carry from there.')];
         if (c === 'quiet') return [S('Inside Lush Camp', 'Quiet Camp is for families and anyone who wants a full night’s sleep.'),
           S('Quiet hours until 9 am', 'They run overnight, every night of the festival.'),
           S('Same pass, same trucks', 'Included with any 3-Day or 4-Day Pass. Gear rides in like everywhere else.')];
         if (c === 'vehicle') return [S('Get a vehicle camping spot', 'The Welcome Lot is for parking only. No sleeping in the lot.'),
-          S('Willow Camp', 'An open field under a big willow, a half-mile walk or free shuttle from the gate. Car (16′ × 18′), camper van and RV spots.'),
+          S('Willow Camp', 'An open field under a big willow, a half-mile walk or free shuttle from the gate. Car (16′ × 18′), camper van and RV spots. Power is an add-on for vans and RVs.'),
           S('South Camp', 'Right across from the main entrance. Van and RV spots include power. These sell out first.'),
           S('Park once', 'No generators, and once you’re parked you stay until Monday. Your pass sends you to the right gate.')];
-        return [S('Book a room nearby', 'The Monarch Hotel, Clackamas (800-492-8700). Courtyard by Marriott Portland Southeast (503-652-2900). Sunnyside Inn & Suites (503-652-1500).'),
+        return [S('Book a room nearby', 'The Monarch Hotel, Clackamas (800-492-8700). Courtyard by Marriott Portland Southeast (503-652-2900). Sunnyside Inn & Suites (503-652-1500). Mt. Hood Territory and Travel Portland list more.'),
           S('Drive in each day', 'Park at the Welcome Lot. The free parking shuttle runs to the gate until 2 am, so you can stay for the late sets.'),
           S('Or leave the car', 'Rideshare to the South Lot, or ride MAX and the Pickathon Shuttle. See Arrive.')];
       },
       buy: { vehicle: 'Vehicle camping passes' },
       shared: ['In the camps', 'What’s there when you wake up.', [
         ['Water', 'Free filtered water stations through the campgrounds. Bring a bottle.'], ['Showers', 'Hot showers are a paid service at the Refuge. Bring a towel or rent one.'],
-        ['Charging', 'A paid phone charging service on site.'], ['Morning', 'Yoga and wellness in the Refuge; treatments book on site.']]],
+        ['Charging', 'A paid phone charging service on site. There are no public phones.'], ['Ice', 'Ice and collectible Pickathon cups are sold on site.'], ['Leaving', 'Break down camp and leave your gear at your Gear Drop on the logging road. Camp hosts haul it out; pick it up at the Welcome Lot or South Lot.'], ['Morning', 'Yoga and wellness in the Refuge; treatments book on site.']]],
       next: 'farm'
     },
     farm: {
@@ -286,9 +285,10 @@
           S('Pick a meeting spot', 'Choose one when you arrive, like a water station on the map.')];
         if (c === 'food') return [S('Leave the cooler at home', 'Food and drink vendors serve all weekend. Bring a card or cash, and your ID for a drink.'),
           S('Water is free', 'Refill your bottle at stations all over the farm.'),
-          S('Real cups and plates', 'Pickathon dropped plastic in 2010 and single-use dishes in 2011. Steel cups are yours all weekend; dishes are washed on site.')];
+          S('Real cups and plates', 'Pickathon dropped plastic in 2010 and single-use dishes in 2011. Steel cups are yours all weekend; dishes are washed on site.'),
+          S('Solar and compost', 'A solar array on the Galaxy Barn roof offsets all the barn’s festival power. Volunteers sort recycling and compost all weekend. Bike and transit riders get incentives.')];
         return [S('Write us two weeks ahead', 'info@pickathon.com, to arrange accommodations.'),
-          S('What we provide', 'ADA parking and campsites and accessible restrooms. Service animals are welcome.'),
+          S('What we provide', 'ADA parking and campsites and accessible restrooms. Service animals, wheelchairs and electric scooters are welcome.'),
           S('What we don’t', 'Wheelchairs, hearing aids, personal assistance or interpreters.'),
           S('Plan for the ground', 'Natural, uneven ground with hills and long walks between neighborhoods. The trail down to the Woods is steep.')];
       },
@@ -331,7 +331,7 @@
   /* packing: its own page (Zale, Nov 13) */
   function packHTML() {
     var e = effective();
-    var every = ['Walking shoes: the farm is dusty and hilly', 'Layers for hot days and cool nights', 'Sunscreen, a hat and sunglasses', 'A water bottle to refill free', 'ID and a card or cash', 'A battery pack: cell service is thin', 'A low chair or a blanket'];
+    var every = ['Walking shoes: the farm is dusty and hilly', 'Layers for hot days and cool nights', 'Sunscreen, a hat and sunglasses', 'A water bottle to refill free', 'A steel cup (sold on site, or bring yours)', 'ID and a card or cash', 'A battery pack: service is fine, but there are no public phones', 'A low chair or a blanket'];
     var camp = ['Pack light: most of what you need is on site', 'Pack in containers you can carry from the Gear Drop to your site, anywhere from 10 yards to a third of a mile', 'A camp stove only with extreme care', 'A yoga mat for the morning classes'];
     return '<div class="pl-in pl-page">' + backChip() +
       '<h1 class="pl-d pl-h1">What to pack</h1><p class="pl-lede">Everything else is on the farm. Skip the cooler: food and drink are on site all weekend.</p>' +
@@ -360,7 +360,7 @@
     [].forEach.call(G.options, function (o) { o.disabled = e.veh && o.value !== 'drive'; });
     var wy = $('#pl-why', root); wy.hidden = !why.length; wy.innerHTML = why.join('<br>');
     $('#pl-steps', root).innerHTML = cardsHTML();
-    $('#pl-newl', root).innerHTML = newHTML();
+    var nl = $('#pl-newl', root); if (nl) nl.innerHTML = newHTML();
     var on = orderNow(), k = $('#pl-nk', root), t = $('#pl-nt', root), p = $('#pl-np', root), n = $('#pl-nn', root);
     if (on.real) {
       var tt = totals(on.o); k.textContent = 'Your order so far'; t.textContent = short(on.o); p.textContent = money(tt.total); n.textContent = 'fee included';
@@ -437,7 +437,7 @@
     var u = site().user;
     return '<div class="pl-sheet-top"><h2 class="pl-d pl-d-card" id="pl-more-h">More</h2><button type="button" class="pl-x" data-close aria-label="Close">' + ic('x') + '</button></div>' +
       '<form class="pl-search" role="search" id="pl-more-f"><label class="pl-search-l">' + ic('search', 'pl-ic-sm') + '<span class="pl-vh">Search Pickathon</span><input type="search" name="q" placeholder="Search: parking, kids, shuttle…" enterkeyhint="search" autocomplete="off"></label></form>' +
-      '<div class="pl-chips">' + [['Parking', 'go'], ['Camping', 'sleep'], ['Shuttle', 'go'], ['Kids', 'kids'], ['What’s new', 'new']].map(function (c) { return '<button type="button" class="pl-pill pl-pill-sm" data-go="plan:' + c[1] + '">' + c[0] + '</button>'; }).join('') + '</div>' +
+      '<div class="pl-chips">' + [['Parking', 'go'], ['Camping', 'sleep'], ['Shuttle', 'go'], ['Kids', 'kids']].map(function (c) { return '<button type="button" class="pl-pill pl-pill-sm" data-go="plan:' + c[1] + '">' + c[0] + '</button>'; }).join('') + '</div>' +
       '<nav class="pl-mmain" aria-label="Festival">' + [['Lineup', '2027 and every year', 'lineup'], ['Plan your trip', 'Getting there, rules', 'info'], ['Schedule', '2026 for now', 'schedule'], ['Stories', '', 'stories']].map(function (n) { var cur = topR() === n[2]; return '<button type="button" data-go="route:' + n[2] + '"' + (cur ? ' aria-current="page"' : '') + '><span class="pl-d">' + n[0] + '</span>' + (n[1] ? '<small>' + n[1] + '</small>' : '') + '</button>'; }).join('') + '</nav>' +
       '<p class="pl-mk" id="pl-mk">About</p><nav class="pl-mabout" aria-labelledby="pl-mk">' + [['Our story', 'route:about'], ['Build with Pickathon', 'route:build'], ['Partners', 'route:partners'], ['Neighbors', 'page:neighbors'], ['Press', 'route:press'], ['Pickathon Presents', 'route:presents']].map(function (n) { return '<button type="button" data-go="' + n[1] + '">' + n[0] + '</button>'; }).join('') + '</nav>' +
       '<div class="pl-mfoot"><button type="button" class="pl-pill pl-pill-sm" data-go="' + (u ? 'route:account' : 'signin') + '">' + (u ? 'Your account' : 'Sign in') + '</button><nav aria-label="Follow Pickathon">' + follow('pl-mf') + '</nav></div>';

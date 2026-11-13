@@ -211,7 +211,8 @@ exports.checks = async (o) => {
     const cs = getComputedStyle(b); const cls = String(b.className);
     if (/\bpk-sqb\b/.test(cls)) continue; // small square buttons: the approved secondary family
     if (/\b(pk-cta|pk-bkb)\b/.test(cls) && /\b(pri|sec)\b/.test(cls)) {
-      const want = phone ? 50 : 56; if (Math.abs(r.height - want) > 1.5 && bs++ < 4) add('btn-style', 'shared button is ' + Math.round(r.height) + 'px tall (should be ' + want + ')', b);
+      // rulebook: 50px phone and tablet, 56px desktop
+      const want = vw < 1200 ? 50 : 56; if (Math.abs(r.height - want) > 1.5 && bs++ < 4) add('btn-style', 'shared button is ' + Math.round(r.height) + 'px tall (should be ' + want + ')', b);
       continue;
     }
     if (r.height < 38 || r.width < 90 || t.length < 3) continue;

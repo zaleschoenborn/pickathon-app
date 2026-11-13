@@ -254,3 +254,5 @@ html.pl2-zoom{-webkit-text-size-adjust:auto!important;text-size-adjust:auto!impo
 .pl2 .pl-list li{padding-left:18px!important;position:relative!important;line-height:1.4!important}
 .pl2 .pl-list li::before{content:""!important;position:absolute!important;left:0!important;top:.55em!important;width:8px!important;height:8px!important;background:var(--gold)!important;clip-path:polygon(29% 0,71% 0,100% 29%,100% 71%,71% 100%,29% 100%,0 71%,0 29%)!important}
 #root .pl2 .pl-rule-x{font-size:var(--t-sm)!important;color:var(--ink-dim)!important;margin-top:10px!important;line-height:1.35!important}
+.pl2 .pl-packln{margin-top:14px!important}
+.pl2 .pl-packrow{display:flex!important;width:100%;justify-content:space-between;align-items:center;min-height:56px;padding:0 16px;border:1px solid rgba(245,238,224,.45);border-radius:6px;font-weight:800;text-decoration:none!important}
