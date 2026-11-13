@@ -2475,7 +2475,7 @@ html.pk-cy-in div:has(> button[aria-label="Listen to Pickathon"]){opacity:0!impo
   var LEAD = ['THE', 'A', '&', '& THE', 'AND', 'AND THE', 'THEE', 'DR.', 'MR.', 'MS.', 'LA', 'LOS', 'LAS', 'EL'];
   var LH = 0.86;
   /* TODAY ranks from the class data at page load (Zale, Nov 9 09:54: live data for the posters, not when we build). climbSrc: tools/climb_ladder/build_src.py */
-  window.pkClimbLive = function (dd) { try { var B = dd.climb || {}, SRC = dd.climbSrc; if (!SRC) return B; var out = {};
+  window.pkClimbLive = function (dd) { try { var B = dd.climb || {}, SRC = dd.climbSrc; window.__pkYP = dd.yearPhotos || {}; if (!window.__pkFH && window.fetch) { window.__pkFH = {}; fetch('focus-hero.json').then(function (r) { return r.json(); }).then(function (j) { window.__pkFH = j || {}; }).catch(function () {}); } if (!SRC) return B; var out = {};
     var G = { 'Discovery': 0, 'Legend': 0, 'Deep cut': 1, 'Neither': 2 }, CL = { 'Legend': 0, 'Discovery': 1, 'Deep cut': 2, 'Neither': 3 }, CF = { 'high': 5, 'medium-high': 4, 'medium': 3, 'low-medium': 2, 'low': 1 };
     var nm = function (s) { return String(s).toLowerCase().replace(/&/g, ' and ').replace(/[“”"]/g, '').replace(/[^a-z0-9 ]/g, '').split(/\s+/).filter(Boolean).join(' '); };
     Object.keys(B).forEach(function (y) { var D0 = B[y], S0 = SRC[y]; if (!S0 || !S0.r || !S0.r.length) { out[y] = D0; return; }
@@ -2701,7 +2701,7 @@ html.pk-cy-in div:has(> button[aria-label="Listen to Pickathon"]){opacity:0!impo
     if (PL.still) strip = '<div style="position:absolute;left:0;right:0;top:0;height:' + (Q.TOPH - 10) + 'px"><span style="position:absolute;left:0;top:8px;' + SF + '">Today\u2019s top 10</span></div>';
     else { var fr = clamp01(frac), TR = 54; strip = '<div style="position:absolute;left:0;right:0;top:0;height:' + (Q.TOPH - 10) + 'px"><span style="position:absolute;left:0;top:8px;' + SF + ';opacity:' + (1 - 0.45 * clamp01(fr * 6)).toFixed(2) + '">' + (D.src === 'real billing' ? 'As printed ' : 'At the festival ') + y + '</span><span style="position:absolute;right:0;top:33px;' + SF + ';opacity:' + (0.55 + 0.45 * clamp01((fr - 0.85) / 0.15)).toFixed(2) + '">Today</span>'
       + '<i style="position:absolute;left:0;right:' + TR + 'px;top:40px;height:3px;border-radius:2px;background:' + A + ';opacity:.22"></i><i style="position:absolute;left:0;top:40px;height:3px;border-radius:2px;width:calc((100% - ' + TR + 'px) * ' + fr.toFixed(4) + ');background:' + A + '"></i><i style="position:absolute;top:36px;left:calc((100% - ' + TR + 'px) * ' + fr.toFixed(4) + ' - 5px);width:10px;height:10px;border-radius:50%;background:' + A + '"></i></div>'; }
-    var hasNote = !!(D.clim && D.src === 'real billing' && D.climFrom != null && D.climTo != null), np = hasNote ? (PL.still ? 1 : clamp01((frac - 0.92) / 0.08)) : 0, NH = Q.BOT - 8;
+    var hasNote = !!(D.clim && D.src === 'real billing' && D.climFrom != null && D.climTo != null) && (Q.ph || !picFor(D, y)), np = hasNote ? (PL.still ? 1 : clamp01((frac - 0.92) / 0.08)) : 0, NH = Q.BOT - 8;
     var note = hasNote ? '<i style="position:absolute;left:0;right:0;bottom:' + NH + 'px;height:1.5px;background:' + B + ';opacity:' + np.toFixed(2) + '"></i><div style="position:absolute;left:0;bottom:0;height:' + (NH - 6) + 'px;width:' + IW + 'px;display:flex;align-items:center;text-wrap:balance;font:600 ' + (Q.ph ? 13 : 15) + 'px/1.25 Inter,system-ui,sans-serif;color:' + A + ';opacity:' + np.toFixed(2) + '">' + esc(tc(D.clim) + ': ' + ORD(D.climFrom).toLowerCase() + ' on the ' + y + ' poster. #' + (D.climTo + 1) + ' today.') + '</div>' : '';
     return { fineRise: fineRise, art: art, html: h + burst + rules + strip + note, IW: IW, H: BOXH, A: A, B: B, PAPER: PAPER, ACC: ACC, LIGHT: GLOWINK, frac: frac };
   }
@@ -2742,6 +2742,17 @@ html.pk-cy-in div:has(> button[aria-label="Listen to Pickathon"]){opacity:0!impo
     return age < 3 ? since + ', SO FAR: ' + D.clim + place + ' IT TAKES A FEW SUMMERS TO KNOW.' : since + ': ' + D.clim + place;
   }
 
+  /* Zale, Nov 12: desktop left column. A same-year photo of the printed headliner, then a slow cross-fade to the climber's photo as the climber passes the headliner on the poster. */
+  function tc2(t) { return String(t).toLowerCase().replace(/(^|[\s“"(])([a-z])/g, function (m, a, b) { return a + b.toUpperCase(); }); }
+  function picFor(D, y) { if (D._pic !== undefined) return D._pic; D._pic = null;
+    try { var YP = (window.__pkYP || {})[y] || {}, k = function (s) { return String(s || '').toLowerCase().replace(/&/g, 'and').replace(/[^a-z0-9]/g, ''); }, ph = function (n) { var h = YP[n]; if (!h) Object.keys(YP).forEach(function (q) { if (k(q) === k(n)) h = YP[q]; }); return h && h.i && !h.promo ? h.i : ''; };
+      if (!D.real || !D.clim || D.labels.length < 3) return null;
+      var hd = D.names.filter(function (x) { return x[1][0] === 0; })[0], cn = D.names.filter(function (x) { return k(x[0]) === k(D.clim); })[0]; if (!hd || !cn || hd === cn) return null;
+      var a = ph(hd[0]), b = ph(D.clim); if (!a || !b) return null;
+      var n = D.labels.length, j = 1; for (; j < n; j++) if (cn[1][j] < hd[1][j]) break;
+      D._pic = { a: a, b: b, an: hd[0], cross: Math.max(0.2, Math.min(0.85, (j - 0.5) / (n - 1))) }; } catch (e) {}
+    return D._pic; }
+  function picK(P, e) { var t = Math.max(0, Math.min(1, (e - (P.cross - 0.12)) / 0.24)); return t * t * (3 - 2 * t); }
   function STAT(y) { var D0 = C && C[y]; return !(D0 && D0.real && D0.labels.length > 2); }   /* Zale, Nov 12: only 2024 has six-month scores, so only 2024 moves; every other year is today's top 10, still, until the all-years data exists (design_studio-59) */
   /* Zale, Nov 11: on phone the time reads as a calendar page that ticks from the festival month to today while the poster runs */
   var MON = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
@@ -2774,6 +2785,7 @@ html.pk-cy-in div:has(> button[aria-label="Listen to Pickathon"]){opacity:0!impo
     if (mountEl._key === key && mountEl.querySelector('.pk-cl-layer')) {
       mountEl.querySelector('.pk-cl-layer').innerHTML = F.html;
       var tb = mountEl.querySelector('.pk-cl-tb'); if (tb && tb.querySelector('.pk-cl-tf')) { tb.querySelector('.pk-cl-tf').style.width = (TB.frac * 100).toFixed(1) + '%'; var mk = tb.querySelector('.pk-cl-tm'); mk.style.left = (TB.frac * 100).toFixed(1) + '%'; var cal = tb.querySelector('.pk-cl-cal'); if (cal) { var ch = calH(y, TB.frac); if (cal._h !== ch) { cal.innerHTML = ch; cal._h = ch; } } else { mk.textContent = TB.yNow; mk.style.opacity = TB.frac > 0.04 && TB.frac < 0.96 ? '1' : '0'; } var rb = tb.querySelector('.pk-cl-rpl'); if (rb) { rb.textContent = TB.btn; rb.setAttribute('aria-label', TB.aria); } var tl = mountEl.querySelector('.pk-cl-tl'); if (tl && tl.textContent !== TB.line) tl.textContent = TB.line; }
+      var pic = mountEl.querySelector('.pk-cl-pic'), PP2 = pic && picFor(D, y); if (PP2) { var k2 = S.back ? picK(PP2, S.back.e0 * (1 - S.back.k)) : picK(PP2, tp / (n - 1)); pic.querySelector('.pk-cl-pi2').style.opacity = k2.toFixed(3); pic.querySelector('.pk-cl-pc1').style.opacity = Math.max(0, 1 - 2 * k2).toFixed(3); pic.querySelector('.pk-cl-pc2').style.opacity = Math.max(0, 2 * k2 - 1).toFixed(3); }
       var cp = mountEl.querySelector('.pk-cl-cap'); if (cp.textContent !== cap) cp.textContent = cap; cp.style.color = atEnd ? '#F2CF62' : '#CFC9BC';
       var sb = mountEl.querySelector('.pk-g1-sub'); if (sb) sb.style.visibility = atEnd ? 'visible' : 'hidden'; var pa = mountEl.querySelector('.pk-cl-pa'); if (pa) { var pt = atEnd ? 'Play again' : S.playing || tp > 0 ? 'Restart' : 'Play'; if (pa.textContent !== pt) pa.textContent = pt; }
       return;
@@ -2787,6 +2799,9 @@ html.pk-cy-in div:has(> button[aria-label="Listen to Pickathon"]){opacity:0!impo
       + '' + '</div>'
       + '</div>';
     if (TB.show) tbH += '<div class="pk-cl-tb"><span class="pk-cl-ty">' + y + '</span><span class="pk-cl-tr" aria-hidden="true"><i class="pk-cl-tf" style="width:' + (TB.frac * 100).toFixed(1) + '%"></i><b class="pk-cl-tm" style="left:' + (TB.frac * 100).toFixed(1) + '%;opacity:' + (TB.frac > 0.04 && TB.frac < 0.96 ? 1 : 0) + '">' + TB.yNow + '</b></span><span class="pk-cl-ty">' + TODAY + '</span><button type="button" class="pk-cta sec pk-cl-rpl" data-cl="play" aria-label="' + TB.aria + '">' + TB.btn + '</button></div><p class="pk-cl-tl" aria-hidden="true">' + esc(TB.line) + '</p>';
+    var PP = !Q.ph && !STAT(y) ? picFor(D, y) : null;
+    if (PP) { var FH = window.__pkFH || {}, fp = function (u) { var f = FH[u]; return f ? f[0] + '% ' + f[1] + '%' : '50% 40%'; }, kk = S.back ? picK(PP, S.back.e0 * (1 - S.back.k)) : picK(PP, tp / (n - 1));
+      h += '<div class="pk-cl-pic"><div class="pk-cl-pi"><img alt="" src="' + PP.a + '" style="object-position:' + fp(PP.a) + '"><img class="pk-cl-pi2" alt="" src="' + PP.b + '" style="object-position:' + fp(PP.b) + ';opacity:' + kk.toFixed(3) + '"></div><p class="pk-cl-pc"><span class="pk-cl-pc1" style="opacity:' + Math.max(0, 1 - 2 * kk).toFixed(3) + '">' + esc('Headlining the ' + y + ' poster: ' + tc2(PP.an)) + '</span><span class="pk-cl-pc2" style="opacity:' + Math.max(0, 2 * kk - 1).toFixed(3) + '">' + esc(tc2(D.clim) + ': ' + ORD(D.climFrom).toLowerCase() + ' on the ' + y + ' poster. #' + (D.climTo + 1) + ' today.') + '</span></p></div>'; }
     if (!Q.ph) h += tbH;
     h += '<div class="pk-cl-pw" style="width:' + PW + 'px;height:' + PH + 'px">';
     h += '<div class="pk-cl-p" data-cl="year" role="link" tabindex="0" aria-label="Pickathon ' + y + ': open the ' + y + ' page" style="width:' + PW + 'px;height:' + PH + 'px;background:' + F.PAPER + '">';
@@ -9459,7 +9474,12 @@ html:root:root #root#root#root#root#root#root#root#root#root#root#root#root#root
   #pkh2#pkh2 .h2-s2 .pk-cl-hd{grid-row:1;padding-top:32px}
   #pkh2#pkh2 .h2-s2 .pk-cl-tb{grid-row:2}
   #pkh2#pkh2 .h2-s2 .pk-cl-cmp{grid-row:2/4}
-  #pkh2#pkh2 .h2-s2 .pk-cl-below{grid-column:1;grid-row:2;max-width:none;margin:18px 0 0}
+  #pkh2#pkh2 .h2-s2 .pk-cl-pic{grid-column:1;grid-row:2;margin:20px 0 0}
+  #pkh2 .h2-s2 .pk-cl-pi{position:relative;width:100%;height:clamp(180px,26vh,260px);border-radius:6px;overflow:hidden;background:#1c191a}
+  #pkh2 .h2-s2 .pk-cl-pi img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  #pkh2 .h2-s2 .pk-cl-pc{position:relative;margin:10px 0 0;min-height:2.6em;font:600 15px/1.3 Inter,system-ui,sans-serif;color:#EFE9DA;text-wrap:balance}
+  #pkh2 .h2-s2 .pk-cl-pc span{position:absolute;left:0;right:0;top:0}
+  #pkh2#pkh2 .h2-s2 .pk-cl-below{grid-column:1;grid-row:3;max-width:none;margin:14px 0 0}
   #pkh2#pkh2 .h2-s2 .pk-cl-below .pk-cl-an{width:auto!important;max-width:none;margin:14px 0 0}
 }
 
