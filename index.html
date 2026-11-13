@@ -2712,8 +2712,8 @@ html.pk-cy-in div:has(> button[aria-label="Listen to Pickathon"]){opacity:0!impo
     if (PL.still) strip = '<div style="position:absolute;left:0;right:0;top:0;height:' + (Q.TOPH - 10) + 'px"><span style="position:absolute;left:0;top:8px;' + SF + '">Today\u2019s top 10</span></div>';
     else { var fr = clamp01(frac), TR = 54; strip = '<div style="position:absolute;left:0;right:0;top:0;height:' + (Q.TOPH - 10) + 'px"><span style="position:absolute;left:0;top:8px;' + SF + ';opacity:' + (1 - 0.45 * clamp01(fr * 6)).toFixed(2) + '">' + (D.src === 'real billing' ? 'As printed ' : 'At the festival ') + y + '</span><span style="position:absolute;right:0;top:33px;' + SF + ';opacity:' + (0.55 + 0.45 * clamp01((fr - 0.85) / 0.15)).toFixed(2) + '">Today</span>'
       + '<i style="position:absolute;left:0;right:' + TR + 'px;top:40px;height:3px;border-radius:2px;background:' + A + ';opacity:.22"></i><i style="position:absolute;left:0;top:40px;height:3px;border-radius:2px;width:calc((100% - ' + TR + 'px) * ' + fr.toFixed(4) + ');background:' + A + '"></i><i style="position:absolute;top:36px;left:calc((100% - ' + TR + 'px) * ' + fr.toFixed(4) + ' - 5px);width:10px;height:10px;border-radius:50%;background:' + A + '"></i></div>'; }
-    var hasNote = false && !!(D.clim && D.src === 'real billing' && D.climFrom != null && D.climTo != null) && (Q.ph || !picFor(D, y)), np = hasNote ? (PL.still ? 1 : clamp01((frac - 0.92) / 0.08)) : 0, NH = Q.BOT - 8;
-    var note = hasNote ? '<i style="position:absolute;left:0;right:0;bottom:' + NH + 'px;height:1.5px;background:' + B + ';opacity:' + np.toFixed(2) + '"></i><div style="position:absolute;left:0;bottom:0;height:' + (NH - 6) + 'px;width:' + IW + 'px;display:flex;align-items:center;text-wrap:balance;font:600 ' + (Q.ph ? 13 : 15) + 'px/1.25 Inter,system-ui,sans-serif;color:' + A + ';opacity:' + np.toFixed(2) + '">' + esc(tc(D.clim) + ': ' + ORD(D.climFrom).toLowerCase() + ' on the ' + y + ' poster. #' + (D.climTo + 1) + ' today.') + '</div>' : '';
+    var hasNote = !!(D.clim && D.src === 'real billing') && (Q.ph || !picFor(D, y)), npA = hasNote ? (PL.still ? 0 : 1 - clamp01(frac / 0.08)) : 0, npB = hasNote ? (PL.still ? 1 : clamp01((frac - 0.92) / 0.08)) : 0, NH = Q.BOT - 8;
+    var note = hasNote ? '<i style="position:absolute;left:0;right:0;bottom:' + NH + 'px;height:1.5px;background:' + B + ';opacity:1"></i>' + [['This is the lineup in ' + y + '.', npA], ['This is the same lineup today.', npB]].map(function (t) { return '<div style="position:absolute;left:0;bottom:0;height:' + (NH - 6) + 'px;width:' + IW + 'px;display:flex;align-items:center;font:600 ' + (Q.ph ? 13 : 15) + 'px/1.25 Inter,system-ui,sans-serif;color:' + A + ';opacity:' + t[1].toFixed(2) + '">' + esc(t[0]) + '</div>'; }).join('') : '';
     return { fineRise: fineRise, art: art, html: h + burst + rules + strip + note, IW: IW, H: BOXH, A: A, B: B, PAPER: PAPER, ACC: ACC, LIGHT: GLOWINK, frac: frac };
   }
 
@@ -2742,15 +2742,15 @@ html.pk-cy-in div:has(> button[aria-label="Listen to Pickathon"]){opacity:0!impo
     var btn = 'Play again';   /* Zale, Nov 12: text only, no glyph; shows only when the motion is live */
     return { n: n, show: false, frac: frac, yNow: Math.min(yNow, TODAY), line: line, btn: btn, aria: 'Play pickathon ' + y + ' again, from the opening top 10 to today' };
   }
-  function endSub(D, y) { if (!D.clim || STAT(y) || D.labels.length < 2) return ''; return String(D.clim).toUpperCase() + ' PLAYED PICKATHON ' + y; }
+  function endSub(D, y) { if (!D.clim || STAT(y) || D.labels.length < 2) return ''; return ''; }
   function caption(D, y, tp) {
     var n = D.labels.length, atEnd = tp >= n - 1 - 1e-3, derived = D.src !== 'real billing', age = TODAY - y;
     var since = age <= 0 ? 'THIS SUMMER' : (NW[age] || String(age)) + (age === 1 ? ' SUMMER ON' : ' SUMMERS ON');
     var place = D.clim ? (D.climTo === 0 ? ' TOPS THAT BILL.' : ' IS ' + ORD(D.climTo) + ' ON THAT BILL.') : '';
     if (n < 2 || !D.clim || STAT(y)) return 'TODAY’S ' + y + ' BILL, BY HOW FAR EACH ACT HAS GONE.';
-    if (tp < 0.04) return 'THE ' + y + ' BILL, AS PRINTED.';
+    if (tp < 0.04) return 'THIS IS THE LINEUP IN ' + y + '.';
     if (!atEnd) return 'WATCH THE BILL GROW UP';
-    return D.clim + ' PLAYED PICKATHON ' + y + '.';
+    return 'THIS IS THE SAME LINEUP TODAY.';
   }
 
   /* Zale, Nov 12: desktop left column. A same-year photo of the printed headliner, then a slow cross-fade to the climber's photo as the climber passes the headliner on the poster. */
@@ -2813,7 +2813,7 @@ html.pk-cy-in div:has(> button[aria-label="Listen to Pickathon"]){opacity:0!impo
     if (TB.show) tbH += '<div class="pk-cl-tb"><span class="pk-cl-ty">' + y + '</span><span class="pk-cl-tr" aria-hidden="true"><i class="pk-cl-tf" style="width:' + (TB.frac * 100).toFixed(1) + '%"></i><b class="pk-cl-tm" style="left:' + (TB.frac * 100).toFixed(1) + '%;opacity:' + (TB.frac > 0.04 && TB.frac < 0.96 ? 1 : 0) + '">' + TB.yNow + '</b></span><span class="pk-cl-ty">' + TODAY + '</span><button type="button" class="pk-cta sec pk-cl-rpl" data-cl="play" aria-label="' + TB.aria + '">' + TB.btn + '</button></div><p class="pk-cl-tl" aria-hidden="true">' + esc(TB.line) + '</p>';
     var PP = !Q.ph && !STAT(y) ? picFor(DF, y) : null;
     if (PP) { var FH = window.__pkFH || {}, fp = function (u) { var f = FH[u]; return f ? f[0] + '% ' + f[1] + '%' : '50% 40%'; }, kk = S.back ? picK(PP, S.back.e0 * (1 - S.back.k)) : picK(PP, tp / (n - 1));
-      h += '<div class="pk-cl-pic"><div class="pk-cl-pi"><img alt="" src="' + PP.a + '" style="object-position:' + fp(PP.a) + '"><img class="pk-cl-pi2" alt="" src="' + PP.b + '" style="object-position:' + fp(PP.b) + ';opacity:' + kk.toFixed(3) + '"></div><p class="pk-cl-pc"><span class="pk-cl-pc1" style="opacity:' + Math.max(0, 1 - 2 * kk).toFixed(3) + '">' + esc('Headlining the ' + y + ' poster: ' + tc2(PP.an)) + '</span><span class="pk-cl-pc2" style="opacity:' + Math.max(0, 2 * kk - 1).toFixed(3) + '">' + esc(tc2(D.clim) + ' played Pickathon ' + y + '.') + '</span></p></div>'; }
+      h += '<div class="pk-cl-pic"><div class="pk-cl-pi"><img alt="" src="' + PP.a + '" style="object-position:' + fp(PP.a) + '"><img class="pk-cl-pi2" alt="" src="' + PP.b + '" style="object-position:' + fp(PP.b) + ';opacity:' + kk.toFixed(3) + '"></div><p class="pk-cl-pc"><span class="pk-cl-pc1" style="opacity:' + Math.max(0, 1 - 2 * kk).toFixed(3) + '">' + esc('This is the lineup in ' + y + '.') + '</span><span class="pk-cl-pc2" style="opacity:' + Math.max(0, 2 * kk - 1).toFixed(3) + '">' + esc('This is the same lineup today.') + '</span></p></div>'; }
     if (!Q.ph) h += tbH;
     h += '<div class="pk-cl-pw" style="width:' + PW + 'px;height:' + PH + 'px">';
     h += '<div class="pk-cl-p" data-cl="year" role="link" tabindex="0" aria-label="Pickathon ' + y + ': open the ' + y + ' page" style="width:' + PW + 'px;height:' + PH + 'px;background:' + F.PAPER + '">';
@@ -9823,12 +9823,12 @@ window.pkClimbRank = function (C, dd) {
     /* 2 CONCEPT (Zale Nov 12 ~08:20): a carousel again, as build 5174, in today's ranking (magnitude_dec). Card: the photo full-bleed with the
        transparent play ring centered when there is a clip (no gold pill); kind left and first year right; name; the fact; the clip and
        "Pickathon YYYY" in the caption. Photo plays, words open the archive at that artist. See all Discoveries under it. Filled by drawBand(). */
-    var hBand = '<section class="h2-s h2-s5" aria-labelledby="h2-h5"><div class="h2-s5head"><div><h2 class="h2-d h2-sec pkp-head" id="h2-h5">Be there before they’re big</h2>' +
-      '<p class="h2-sub h2-s5sub">You don’t know this year’s lineup yet. Neither did anyone who saw these bands here first.</p></div>' +
+    var hBand = '<section class="h2-s h2-s5" aria-labelledby="h2-h5"><div class="h2-s5head"><div><h2 class="h2-d h2-sec pkp-head" id="h2-h5">Who’s up next?</h2>' +
+      '<p class="h2-sub h2-s5sub">Nobody knew these names when they first played here. You don’t know the 2027 lineup yet either.</p></div>' +
       '<div class="h2-cc-nav"><button type="button" class="h2-ib" data-h2="cprev" aria-label="Previous discoveries">' + CHEV + '</button><button type="button" class="h2-ib" data-h2="cnext" aria-label="More discoveries">' + CHEV + '</button></div></div>' +
       '<div class="h2-cc-r" data-h2="cards" role="list" aria-label="Discoveries, ranked by how big they are today"></div>' +
       '<div class="h2-row h2-s5row"><button type="button" class="h2-pill" data-h2="alldisc">See all Discoveries</button></div></section>';
-    return hP + hBand + hPlace + hPoster + h;
+    return hP + hBand + hPoster + hPlace + h;   /* Zale, Nov 12 night: the poster is the proof and follows the stories; neighborhoods lead into the ticket line. Current architecture, not a hard rule (see home_poster_frame_nov12.md) */
   }
   /* the hero's sale line and its one button (5174 wording). Before the round: "Holiday Sale opens Nov 19, 10 am PT" + Alert me when it opens (the
      remind sheet; quiet gold primary). On sale: "Tickets are running out" + Get tickets (solid strong gold). Passes bought: Your passes. */
