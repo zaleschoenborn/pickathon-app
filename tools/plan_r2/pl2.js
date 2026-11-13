@@ -231,8 +231,8 @@
         if (c === 'shuttle') return [S('Ride MAX to Lents Town Center', 'The Green Line. From Union Station, ride toward Clackamas Town Center.'),
           S('Walk to the shuttle sign', 'Turn right on SE Foster Rd, then right on SE 92nd Ave. The stop is in front of The ZED / Zoiglhaus (5716 SE 92nd Ave), not on the platform. Don’t park there: cars get towed.'),
           S('Show your Shuttle Pass', 'One for each rider over 12. The shuttle drops you at the gate. There is no parking at the stop.')];
-        if (c === 'bike') return [S('Add a free Bicycle Pass', 'It saves room for one bike inside the grounds all weekend.'),
-          S('Ride the Springwater Corridor', 'About 11 miles from Reed College, mostly flat paths with some busier two-lane roads. Guided group rides with a gear truck post with the 2027 schedule.'),
+        if (c === 'bike') return [S('Add a free Bicycle Pass', 'It saves room for one bike inside the grounds all weekend. It also works for the half-mile from the Welcome Lot to the gate.'),
+          S('Ride the Springwater Corridor', 'About 11 miles from Reed College, mostly flat paths with some busier two-lane roads. Guided group rides with a gear truck post with the 2027 schedule. Questions: bike.pickathon@gmail.com.'),
           S('Lock up at the bike corral', 'A secure, monitored corral on site. Bikes have their own gear drop in the South Lot.')];
         if (c === 'drop') return [S('Can you carry everything?', 'Get dropped at the South Lot, 16581 SE Hagen Rd, at the Farmhouse entrance. Tell your driver to follow the “Pickathon Drop-Off” signs.'),
           S('Need the gear trucks?', 'Get dropped at the Welcome Lot instead and load your bags at the Camphost Station.'),
@@ -265,7 +265,7 @@
           S('Willow Camp', 'An open field under a big willow, a half-mile walk or free shuttle from the gate. Car (16′ × 18′), camper van and RV spots.'),
           S('South Camp', 'Right across from the main entrance. Van and RV spots include power. These sell out first.'),
           S('Park once', 'No generators, and once you’re parked you stay until Monday. Your pass sends you to the right gate.')];
-        return [S('Book a room nearby', 'The Monarch Hotel, Clackamas (800-492-8700). Courtyard by Marriott Portland Southeast (503-652-2900). Sunnyside Inn & Suites (503-652-1500).'),
+        return [S('Book a room nearby', 'The Monarch Hotel, Clackamas (800-492-8700). Courtyard by Marriott Portland Southeast (503-652-2900). Sunnyside Inn & Suites (503-652-1500). Mt. Hood Territory and Travel Portland list more.'),
           S('Drive in each day', 'Park at the Welcome Lot. The free parking shuttle runs to the gate until 2 am, so you can stay for the late sets.'),
           S('Or leave the car', 'Rideshare to the South Lot, or ride MAX and the Pickathon Shuttle. See Arrive.')];
       },
@@ -286,9 +286,10 @@
           S('Pick a meeting spot', 'Choose one when you arrive, like a water station on the map.')];
         if (c === 'food') return [S('Leave the cooler at home', 'Food and drink vendors serve all weekend. Bring a card or cash, and your ID for a drink.'),
           S('Water is free', 'Refill your bottle at stations all over the farm.'),
-          S('Real cups and plates', 'Pickathon dropped plastic in 2010 and single-use dishes in 2011. Steel cups are yours all weekend; dishes are washed on site.')];
+          S('Real cups and plates', 'Pickathon dropped plastic in 2010 and single-use dishes in 2011. Steel cups are yours all weekend; dishes are washed on site.'),
+          S('Solar and compost', 'A solar array on the Galaxy Barn roof offsets all the barn’s festival power. Volunteers sort recycling and compost all weekend. Bike and transit riders get incentives.')];
         return [S('Write us two weeks ahead', 'info@pickathon.com, to arrange accommodations.'),
-          S('What we provide', 'ADA parking and campsites and accessible restrooms. Service animals are welcome.'),
+          S('What we provide', 'ADA parking and campsites and accessible restrooms. Service animals, wheelchairs and electric scooters are welcome.'),
           S('What we don’t', 'Wheelchairs, hearing aids, personal assistance or interpreters.'),
           S('Plan for the ground', 'Natural, uneven ground with hills and long walks between neighborhoods. The trail down to the Woods is steep.')];
       },
