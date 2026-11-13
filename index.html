@@ -2511,7 +2511,7 @@ html.pk-cy-in div:has(> button[aria-label="Listen to Pickathon"]){opacity:0!impo
         D.when = ts.map(function (t) { return (t - ts[0]) / (ts[NN] - ts[0]); });
         D.labels = ts.map(function (t, i) { return i === 0 ? S0.l0 : i === NN ? 'TODAY' : String(new Date(t).getUTCFullYear()); }); D.real = 1;
         /* Zale, Nov 12: a year only moves, and only joins the Home rotation, when at least 5 of its top 10 have magnitude data plotted at every point. 2025 and 2026 stay out of the rotation (Discovery has not grown enough yet). */
-        D.nM = D.names.filter(function (x) { var a = ACT[nm(x[0])]; return a && SMP.every(function (j) { return a.m[j] != null && a.m[j] > 0; }); }).length; D.feat = D.nM >= 5 && +y < 2025;
+        D.nM = D.names.filter(function (x) { var a = ACT[nm(x[0])]; return a && SMP.every(function (j) { return a.m[j] != null && a.m[j] > 0; }); }).length; D.feat = D.nM >= 5 && +y >= 2012 && +y <= 2024;   /* Zale, Nov 12 night: the Home rotation is 2012 to 2024, any random pick; other years live on their year pages */
         /* Zale, Nov 12: the Home poster glides straight from the printed bill to today (no middle windows); the dated windows belong on the year page */
         var LL = D.labels.length - 1; D.glide = Object.assign({}, D, { names: D.names.map(function (x) { return [x[0], [x[1][0], x[1][LL]], [x[2][0], x[2][LL]]].concat(x.slice(3)); }), labels: [D.labels[0], D.labels[LL]], when: D.when && D.when.length > LL ? [D.when[0], D.when[LL]] : D.when });
       } else if (false) {
