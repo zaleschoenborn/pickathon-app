@@ -2477,7 +2477,7 @@ html.pk-cy-in div:has(> button[aria-label="Listen to Pickathon"]){opacity:0!impo
   /* TODAY ranks from the class data at page load (Zale, Nov 9 09:54: live data for the posters, not when we build). climbSrc: tools/climb_ladder/build_src.py */
   window.pkClimbLive = function (dd) { try { var B = dd.climb || {}, SRC = dd.climbSrc; window.__pkYP = dd.yearPhotos || {}; if (!window.__pkFH && window.fetch) { window.__pkFH = {}; fetch('focus-hero.json').then(function (r) { return r.json(); }).then(function (j) { window.__pkFH = j || {}; }).catch(function () {}); } if (!SRC) return B; var out = {};
     var G = { 'Discovery': 0, 'Legend': 0, 'Deep cut': 1, 'Neither': 2 }, CL = { 'Legend': 0, 'Discovery': 1, 'Deep cut': 2, 'Neither': 3 }, CF = { 'high': 5, 'medium-high': 4, 'medium': 3, 'low-medium': 2, 'low': 1 };
-    var nm = function (s) { return String(s).toLowerCase().replace(/&/g, ' and ').replace(/[“”"]/g, '').replace(/[^a-z0-9 ]/g, '').split(/\s+/).filter(Boolean).join(' '); };
+    var nm = function (s) { return String(s).toLowerCase().replace(/ı/g, 'i').normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/&/g, ' and ').replace(/[“”"]/g, '').replace(/[^a-z0-9 ]/g, '').split(/\s+/).filter(Boolean).join(' '); };
     Object.keys(B).forEach(function (y) { var D0 = B[y], S0 = SRC[y]; if (!S0 || !S0.r || !S0.r.length) { out[y] = D0; return; }
       var R = S0.r.filter(function (r) { return r[1] !== 'Neither'; }), pin = S0.pin || [], N = function (r) { return false; };  /* Zale, Nov 10: the poster shows Legends, Discoveries and Deep cuts only */
       R.sort(function (a, b) { var pa = pin.indexOf(nm(a[0])), pb = pin.indexOf(nm(b[0])); pa = pa < 0 ? 99 : pa; pb = pb < 0 ? 99 : pb; if (pa !== pb) return pa - pb;
@@ -2501,11 +2501,14 @@ html.pk-cy-in div:has(> button[aria-label="Listen to Pickathon"]){opacity:0!impo
         var ts = SMP.map(function (q) { return Date.parse(DT[q]); }), NN = ts.length - 1, ACT = {};
         (YR.acts || []).forEach(function (a) { ACT[nm(a.n)] = a; });
         var prt = D.names.map(function (x) { return x[1][0]; }), tdy = D.names.map(function (x) { return x[1][1]; }), kfs = [prt];
+        /* Zale, Nov 12 night: today's top 10 is Artist Classification's approved top10_by_year file (peak magnitude, Deep cuts one lower); the printed bill stays as printed */
+        var TF = dd.top10Final && dd.top10Final[y], TFm = null, TFlo = 0, TFr = {}; if (TF) { TFm = {}; TF.forEach(function (w, wi) { var k8 = nm(w[0]); if (!(k8 in TFr)) TFr[k8] = wi; }); TF.forEach(function (w) { var k9 = nm(w[0]); if (!(k9 in TFm)) TFm[k9] = w[1] - (w[2] === 'Deep cut' ? 1 : 0); }); TFlo = Math.min.apply(null, Object.keys(TFm).map(function (q) { return TFm[q]; })); }
         for (var k = 1; k < NN; k++) { var sc = D.names.map(function (x) { var a = ACT[nm(x[0])], j0 = SMP[k]; return a && a.m[j0] != null ? a.m[j0] - (a.c[j0] === 'deep' ? 1 : 0) : -9; });
           var ord = D.names.map(function (x, i) { return i; }).sort(function (p, q) { return sc[q] - sc[p] || tdy[p] - tdy[q]; }), rk = []; ord.forEach(function (i, r) { rk[i] = r; }); kfs.push(rk); }
         kfs.push(tdy);
         var RR = {}; R.forEach(function (r) { RR[nm(r[0])] = r; });
-        var fin = function (n0) { var r = RR[nm(n0)]; if (!r) return 1; var v = r.length > 6 && r[6] !== null && r[6] !== '' ? +r[6] : (+r[2] || 0); return Math.max(1, v - (r[1] === 'Deep cut' ? 1 : 0)); };
+        var fin = function (n0) { var k9 = nm(n0); if (TFm) { if (k9 in TFm) return TFm[k9]; } var r = RR[k9]; if (!r) return 1; var v = r.length > 6 && r[6] !== null && r[6] !== '' ? +r[6] : (+r[2] || 0); v = Math.max(1, v - (r[1] === 'Deep cut' ? 1 : 0)); return TFm ? Math.min(v, TFlo - 0.05) : v; };
+        if (TFm) { var fo = D.names.map(function (x, i) { return i; }).sort(function (p, q) { return fin(D.names[q][0]) - fin(D.names[p][0]) || ((TFr[nm(D.names[p][0])] == null ? 99 : TFr[nm(D.names[p][0])]) - (TFr[nm(D.names[q][0])] == null ? 99 : TFr[nm(D.names[q][0])])) || tdy[p] - tdy[q]; }); fo.forEach(function (i, r) { tdy[i] = r; }); }
         D.names = D.names.map(function (x, i) { var a = ACT[nm(x[0])], scs = []; for (var q = 0; q < NN; q++) { var j1 = SMP[q]; scs.push(a && a.m[j1] != null ? Math.max(1, a.m[j1] - (a.c[j1] === 'deep' ? 1 : 0)) : fin(x[0])); } scs.push(fin(x[0]));
           return [x[0], kfs.map(function (rk) { return rk[i]; }), scs]; });   /* Zale, Nov 12: type size follows the score at each moment, on the scale where today's #1 is the biggest type */
         D.when = ts.map(function (t) { return (t - ts[0]) / (ts[NN] - ts[0]); });
@@ -2703,13 +2706,13 @@ html.pk-cy-in div:has(> button[aria-label="Listen to Pickathon"]){opacity:0!impo
     var rib = '<div style="position:absolute;left:0;right:0;bottom:0;display:flex;align-items:center"><span class="pk-cl-fl" style="--ink:' + A + '"></span><span style="flex:none;height:' + Q.RIB[0] + 'px;padding:0 ' + (Q.ph ? 16 : 36) + 'px;background:' + A + ' linear-gradient(' + PAPER + '80,' + PAPER + '80) 0 4px/100% 1.5px no-repeat;color:' + PAPER + ';' + FONT + ';font-size:' + Q.RIB[1] + 'px;letter-spacing:.1em;display:flex;align-items:center;white-space:nowrap;clip-path:polygon(0 0,100% 0,calc(100% - 14px) 50%,100% 100%,0 100%,14px 50%)">EXPLORE PICKATHON ' + y + ' →</span><span class="pk-cl-fr" style="--ink:' + A + '"></span></div>';
     var frac = PL.still ? 1 : back ? PL.frac(back.e0) * (1 - back.k) : PL.frac(e);
     var LNf = Math.min(10, D.ranked || 10), fineRise = PL.cast.some(function (x) { return PL.RISERS.indexOf(x[0]) >= 0 && x[1][0] >= LNf; });
-    var tc = function (t) { return String(t).toLowerCase().replace(/(^|[\s“"(])([a-z])/g, function (m, a, b) { return a + b.toUpperCase(); }); };
+    var tc = function (t) { return String(t).toLowerCase().replace(/(^|[\s“"(])([a-z])/g, function (m, a, b) { return a + b.toUpperCase(); }).replace(/(^|\s)(mj|dj|mc|tv)(?=\s|$)/gi, function (m, a, b) { return a + b.toUpperCase(); }); };
     var fz = Q.ph ? 11 : 12, SF = 'font-family:\'Bricolage Grotesque\',sans-serif;font-weight:800;letter-spacing:.1em;text-transform:uppercase;font-size:' + fz + 'px;line-height:14px;white-space:nowrap;color:' + A;
     var strip;   /* Zale, Nov 12: "As printed 2024 to Today" is the time slider; no dates, no place line, no ribbon on the poster */
     if (PL.still) strip = '<div style="position:absolute;left:0;right:0;top:0;height:' + (Q.TOPH - 10) + 'px"><span style="position:absolute;left:0;top:8px;' + SF + '">Today\u2019s top 10</span></div>';
     else { var fr = clamp01(frac), TR = 54; strip = '<div style="position:absolute;left:0;right:0;top:0;height:' + (Q.TOPH - 10) + 'px"><span style="position:absolute;left:0;top:8px;' + SF + ';opacity:' + (1 - 0.45 * clamp01(fr * 6)).toFixed(2) + '">' + (D.src === 'real billing' ? 'As printed ' : 'At the festival ') + y + '</span><span style="position:absolute;right:0;top:33px;' + SF + ';opacity:' + (0.55 + 0.45 * clamp01((fr - 0.85) / 0.15)).toFixed(2) + '">Today</span>'
       + '<i style="position:absolute;left:0;right:' + TR + 'px;top:40px;height:3px;border-radius:2px;background:' + A + ';opacity:.22"></i><i style="position:absolute;left:0;top:40px;height:3px;border-radius:2px;width:calc((100% - ' + TR + 'px) * ' + fr.toFixed(4) + ');background:' + A + '"></i><i style="position:absolute;top:36px;left:calc((100% - ' + TR + 'px) * ' + fr.toFixed(4) + ' - 5px);width:10px;height:10px;border-radius:50%;background:' + A + '"></i></div>'; }
-    var hasNote = !!(D.clim && D.src === 'real billing' && D.climFrom != null && D.climTo != null) && (Q.ph || !picFor(D, y)), np = hasNote ? (PL.still ? 1 : clamp01((frac - 0.92) / 0.08)) : 0, NH = Q.BOT - 8;
+    var hasNote = false && !!(D.clim && D.src === 'real billing' && D.climFrom != null && D.climTo != null) && (Q.ph || !picFor(D, y)), np = hasNote ? (PL.still ? 1 : clamp01((frac - 0.92) / 0.08)) : 0, NH = Q.BOT - 8;
     var note = hasNote ? '<i style="position:absolute;left:0;right:0;bottom:' + NH + 'px;height:1.5px;background:' + B + ';opacity:' + np.toFixed(2) + '"></i><div style="position:absolute;left:0;bottom:0;height:' + (NH - 6) + 'px;width:' + IW + 'px;display:flex;align-items:center;text-wrap:balance;font:600 ' + (Q.ph ? 13 : 15) + 'px/1.25 Inter,system-ui,sans-serif;color:' + A + ';opacity:' + np.toFixed(2) + '">' + esc(tc(D.clim) + ': ' + ORD(D.climFrom).toLowerCase() + ' on the ' + y + ' poster. #' + (D.climTo + 1) + ' today.') + '</div>' : '';
     return { fineRise: fineRise, art: art, html: h + burst + rules + strip + note, IW: IW, H: BOXH, A: A, B: B, PAPER: PAPER, ACC: ACC, LIGHT: GLOWINK, frac: frac };
   }
@@ -2739,19 +2742,19 @@ html.pk-cy-in div:has(> button[aria-label="Listen to Pickathon"]){opacity:0!impo
     var btn = 'Play again';   /* Zale, Nov 12: text only, no glyph; shows only when the motion is live */
     return { n: n, show: false, frac: frac, yNow: Math.min(yNow, TODAY), line: line, btn: btn, aria: 'Play pickathon ' + y + ' again, from the opening top 10 to today' };
   }
-  function endSub(D, y) { if (!D.clim || STAT(y) || D.labels.length < 2) return ''; return String(D.clim).toUpperCase() + (D.climTo === 0 ? ' NOW TOPS THE BILL' : ' IS NOW ' + ORD(D.climTo) + ' ON THE BILL'); }
+  function endSub(D, y) { if (!D.clim || STAT(y) || D.labels.length < 2) return ''; return String(D.clim).toUpperCase() + ' PLAYED PICKATHON ' + y; }
   function caption(D, y, tp) {
     var n = D.labels.length, atEnd = tp >= n - 1 - 1e-3, derived = D.src !== 'real billing', age = TODAY - y;
     var since = age <= 0 ? 'THIS SUMMER' : (NW[age] || String(age)) + (age === 1 ? ' SUMMER ON' : ' SUMMERS ON');
     var place = D.clim ? (D.climTo === 0 ? ' TOPS THAT BILL.' : ' IS ' + ORD(D.climTo) + ' ON THAT BILL.') : '';
     if (n < 2 || !D.clim || STAT(y)) return 'TODAY’S ' + y + ' BILL, BY HOW FAR EACH ACT HAS GONE.';
-    if (tp < 0.04) return D.clim + ': ' + (derived ? 'A SMALL NAME AT THE ' + y + ' FESTIVAL.' : (D.climFrom >= 10 ? 'A SMALL NAME' : ORD(D.climFrom)) + ' ON THE ' + y + ' POSTER.');
+    if (tp < 0.04) return 'THE ' + y + ' BILL, AS PRINTED.';
     if (!atEnd) return 'WATCH THE BILL GROW UP';
-    return age < 3 ? since + ', SO FAR: ' + D.clim + place + ' IT TAKES A FEW SUMMERS TO KNOW.' : since + ': ' + D.clim + place;
+    return D.clim + ' PLAYED PICKATHON ' + y + '.';
   }
 
   /* Zale, Nov 12: desktop left column. A same-year photo of the printed headliner, then a slow cross-fade to the climber's photo as the climber passes the headliner on the poster. */
-  function tc2(t) { return String(t).toLowerCase().replace(/(^|[\s“"(])([a-z])/g, function (m, a, b) { return a + b.toUpperCase(); }); }
+  function tc2(t) { return String(t).toLowerCase().replace(/(^|[\s“"(])([a-z])/g, function (m, a, b) { return a + b.toUpperCase(); }).replace(/(^|\s)(mj|dj|mc|tv)(?=\s|$)/gi, function (m, a, b) { return a + b.toUpperCase(); }); }
   function picFor(D, y) { if (D._pic !== undefined) return D._pic; D._pic = null;
     try { var YP = (window.__pkYP || {})[y] || {}, k = function (s) { return String(s || '').toLowerCase().replace(/&/g, 'and').replace(/[^a-z0-9]/g, ''); }, ph = function (n) { var h = YP[n]; if (!h) Object.keys(YP).forEach(function (q) { if (k(q) === k(n)) h = YP[q]; }); return h && h.i && !h.promo ? h.i : ''; };
       if (!D.real || !D.clim || D.labels.length < 3) return null;
@@ -2810,7 +2813,7 @@ html.pk-cy-in div:has(> button[aria-label="Listen to Pickathon"]){opacity:0!impo
     if (TB.show) tbH += '<div class="pk-cl-tb"><span class="pk-cl-ty">' + y + '</span><span class="pk-cl-tr" aria-hidden="true"><i class="pk-cl-tf" style="width:' + (TB.frac * 100).toFixed(1) + '%"></i><b class="pk-cl-tm" style="left:' + (TB.frac * 100).toFixed(1) + '%;opacity:' + (TB.frac > 0.04 && TB.frac < 0.96 ? 1 : 0) + '">' + TB.yNow + '</b></span><span class="pk-cl-ty">' + TODAY + '</span><button type="button" class="pk-cta sec pk-cl-rpl" data-cl="play" aria-label="' + TB.aria + '">' + TB.btn + '</button></div><p class="pk-cl-tl" aria-hidden="true">' + esc(TB.line) + '</p>';
     var PP = !Q.ph && !STAT(y) ? picFor(DF, y) : null;
     if (PP) { var FH = window.__pkFH || {}, fp = function (u) { var f = FH[u]; return f ? f[0] + '% ' + f[1] + '%' : '50% 40%'; }, kk = S.back ? picK(PP, S.back.e0 * (1 - S.back.k)) : picK(PP, tp / (n - 1));
-      h += '<div class="pk-cl-pic"><div class="pk-cl-pi"><img alt="" src="' + PP.a + '" style="object-position:' + fp(PP.a) + '"><img class="pk-cl-pi2" alt="" src="' + PP.b + '" style="object-position:' + fp(PP.b) + ';opacity:' + kk.toFixed(3) + '"></div><p class="pk-cl-pc"><span class="pk-cl-pc1" style="opacity:' + Math.max(0, 1 - 2 * kk).toFixed(3) + '">' + esc('Headlining the ' + y + ' poster: ' + tc2(PP.an)) + '</span><span class="pk-cl-pc2" style="opacity:' + Math.max(0, 2 * kk - 1).toFixed(3) + '">' + esc(tc2(D.clim) + ': ' + ORD(D.climFrom).toLowerCase() + ' on the ' + y + ' poster. #' + (D.climTo + 1) + ' today.') + '</span></p></div>'; }
+      h += '<div class="pk-cl-pic"><div class="pk-cl-pi"><img alt="" src="' + PP.a + '" style="object-position:' + fp(PP.a) + '"><img class="pk-cl-pi2" alt="" src="' + PP.b + '" style="object-position:' + fp(PP.b) + ';opacity:' + kk.toFixed(3) + '"></div><p class="pk-cl-pc"><span class="pk-cl-pc1" style="opacity:' + Math.max(0, 1 - 2 * kk).toFixed(3) + '">' + esc('Headlining the ' + y + ' poster: ' + tc2(PP.an)) + '</span><span class="pk-cl-pc2" style="opacity:' + Math.max(0, 2 * kk - 1).toFixed(3) + '">' + esc(tc2(D.clim) + ' played Pickathon ' + y + '.') + '</span></p></div>'; }
     if (!Q.ph) h += tbH;
     h += '<div class="pk-cl-pw" style="width:' + PW + 'px;height:' + PH + 'px">';
     h += '<div class="pk-cl-p" data-cl="year" role="link" tabindex="0" aria-label="Pickathon ' + y + ': open the ' + y + ' page" style="width:' + PW + 'px;height:' + PH + 'px;background:' + F.PAPER + '">';

@@ -64,3 +64,8 @@ Where this differs from the notes above, this section wins.
 ## Update, Nov 12 night (glide)
 - Zale approved: the Home poster glides from the printed bill straight to today (two states, D.glide), about 3.2 s (RUN = 3200). The dated windows are not played on Home. No scrubber on Home (his Nov 11 rule: the draggable version belongs on the year page).
 - The timeline dot still travels across the real window dates while the names glide. Names outside both top 10s never appear.
+
+## Update, Nov 12 late night (end state and quiet captions)
+- Today's order and sizes come from the approved top10_by_year file (data.json `top10Final`, 2012-2024): peak magnitude, Deep cuts one lower, ties in the file's order. All 13 rotation years match it. climbSrc classes/sizes synced for Tune-Yards 2015, Altin Gun 2019, Imarhan 2023, Kara Jackson 2024. Names match ignoring accents and the dotless i.
+- Open: rating_history last rows differ from the top10 file by about 0.1 on some acts; top10 file used. Ask Artist Classification which is final.
+- Wording (Zale: "less is more"): no ranks, no "34th", no "#1 today". Poster card shows no sentence. Phone sub and desktop caption read "<Name> played Pickathon <year>."; start reads "The <year> bill, as printed."

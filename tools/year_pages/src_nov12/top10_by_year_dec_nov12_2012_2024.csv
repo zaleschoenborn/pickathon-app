@@ -1,0 +1,111 @@
+year,act,lineup,class,magnitude,first_pickathon,confidence,rank
+2012,The War on Drugs,Music,Discovery,9.7,2012.0,high,1
+2012,Neko Case,Music,Legend,7.1,2012.0,medium,2
+2012,Lake Street Dive,Music,Discovery,6.7,2012.0,medium,3
+2012,The Wood Brothers,Music,Discovery,5.2,2006.0,medium,4
+2012,Whitey Morgan and the 78's,Music,Discovery,5.2,2011.0,low,5
+2012,Whitey Morgan & the 78’s,Music,Discovery,5.1,2011.0,medium,6
+2012,Dr. Dog,Music,Legend,5.0,2009.0,low,7
+2012,Shovels & Rope,Music,Discovery,4.9,2012.0,high,8
+2012,Typhoon,Music,Discovery,4.9,2010.0,medium,9
+2012,Hot 8 Brass Band,Music,Legend,4.7,2012.0,low,10
+2013,Sturgill Simpson,Music,Discovery,10.0,2013.0,high,1
+2013,Feist,Music,Legend,7.0,2013.0,medium,2
+2013,Lake Street Dive,Music,Discovery,6.7,2012.0,medium,3
+2013,Sharon Van Etten,Music,Legend,6.6,2013.0,medium,4
+2013,Andrew Bird,Music,Legend,5.7,2013.0,medium,5
+2013,Shakey Graves,Music,Discovery,5.4,2013.0,high,6
+2013,Kurt Vile,Music,Legend,5.1,2013.0,medium,7
+2013,Parquet Courts,Music,Discovery,5.0,2013.0,medium,8
+2013,The Devil Makes Three,Music,Legend,4.8,2013.0,low,9
+2013,Foxygen,Music,Discovery,4.5,2013.0,medium,10
+2014,The War on Drugs,Music,Discovery,9.7,2012.0,high,1
+2014,Gregory Alan Isakov,Music,Discovery,7.4,2014.0,medium,2
+2014,Mac DeMarco,Music,Discovery,6.0,2014.0,medium,3
+2014,Nickel Creek,Music,Legend,6.0,2014.0,high,4
+2014,Unknown Mortal Orchestra,Music,Discovery,5.8,2014.0,high,5
+2014,Courtney Barnett,Music,Discovery,5.7,2014.0,high,6
+2014,Lonnie Holley,Music,Discovery,5.6,2014.0,medium,7
+2014,Shakey Graves,Music,Discovery,5.4,2013.0,medium,8
+2014,X,Music,Legend,5.3,2014.0,high,9
+2014,Angel Olsen,Music,Discovery,5.2,2014.0,high,10
+2015,Billy Strings,Music,Discovery,8.4,2015.0,high,1
+2015,Leon Bridges,Music,Discovery,7.6,2015.0,high,2
+2015,Turnpike Troubadours,Music,Legend,7.5,2015.0,medium,3
+2015,Kamasi Washington,Music,Discovery,7.4,2015.0,medium,4
+2015,Thundercat,Music,Discovery,6.6,2015.0,medium,5
+2015,Rodrigo Amarante,Music,Legend,6.1,2015.0,low,6
+2015,Whitey Morgan & the 78’s,Music,Discovery,5.1,2011.0,medium,7
+2015,Tinariwen,Music,Legend,5.1,2015.0,high,8
+2015,Mandolin Orange,Music,Discovery,5.0,2014.0,medium,9
+2015,Tune-Yards,Music,Discovery,5.0,2015.0,high,10
+2016,Beach House,Music,Legend,6.4,2016.0,high,1
+2016,Patrick Watson,Music,Discovery,6.2,2016.0,medium,2
+2016,Alvvays,Music,Discovery,6.1,2016.0,high,3
+2016,Mac DeMarco,Music,Discovery,6.0,2014.0,medium,4
+2016,Jeff Tweedy,Music,Legend,5.8,2016.0,high,5
+2016,The James Hunter Six,Music,Legend,5.6,2016.0,medium,6
+2016,The Oh Hellos,Music,Discovery,5.0,2016.0,medium,7
+2016,Yo La Tengo,Music,Legend,5.0,2016.0,medium,8
+2016,Kevin Morby,Music,Discovery,4.7,2015.0,high,9
+2016,Margo Price,Music,Discovery,4.7,2016.0,medium,10
+2017,Billy Strings,Music,Discovery,8.4,2015.0,medium,1
+2017,Big Thief,Music,Discovery,7.0,2017.0,high,2
+2017,Jalen Ngonda,Music,Discovery,6.1,2017.0,high,3
+2017,Lucy Dacus,Music,Discovery,6.0,2017.0,high,4
+2017,Dinosaur Jr.,Music,Legend,5.3,2017.0,high,5
+2017,Aldous Harding,Music,Discovery,5.1,2017.0,high,6
+2017,Alex Cameron,Music,Discovery,5.0,2017.0,medium,7
+2017,Mandolin Orange,Music,Discovery,5.0,2014.0,medium,8
+2017,Drive-By Truckers,Music,Legend,5.0,2017.0,high,9
+2017,Kelsey Waldon,Music,Discovery,4.9,2017.0,medium,10
+2018,Black Pumas,Music,Discovery,7.0,2018.0,high,1
+2018,Colter Wall,Music,Discovery,6.5,2018.0,high,2
+2018,Charley Crockett,Music,Discovery,6.3,2018.0,high,3
+2018,I'm With Her,Music,Legend,6.2,2018.0,high,4
+2018,Lonnie Holley,Music,Legend,5.6,2014.0,medium,5
+2018,DakhaBrakha,Music,Legend,5.1,2018.0,high,6
+2018,Tinariwen,Music,Legend,5.1,2015.0,high,7
+2018,Broken Social Scene,Music,Legend,5.0,2018.0,high,8
+2018,Sierra Hull,Music,Discovery,4.8,2018.0,high,9
+2018,Overcoats,Music,Discovery,4.7,2018.0,medium,10
+2019,Tyler Childers,Music,Discovery,10.0,2019.0,high,1
+2019,Nathaniel Rateliff & The Night Sweats,Music,Legend,8.5,2019.0,medium,2
+2019,Caamp,Music,Discovery,7.9,2019.0,high,3
+2019,The Marías,Music,Discovery,7.6,2019.0,medium,4
+2019,Khruangbin,Music,Discovery,7.2,2019.0,medium,5
+2019,Viagra Boys,Music,Discovery,6.0,2019.0,high,6
+2019,Preservation Hall Jazz Band,Music,Legend,5.5,2019.0,high,7
+2019,Lucius,Music,Discovery,5.1,2019.0,medium,8
+2019,Altın Gün,Music,Discovery,5.0,2019.0,high,9
+2019,Mandolin Orange,Music,Discovery,5.0,2014.0,medium,10
+2022,Thee Sacred Souls,Music,Discovery,7.2,2022.0,high,1
+2022,Faye Webster,Music,Discovery,6.1,2022.0,high,2
+2022,Goth Babe,Music,Discovery,6.0,2022.0,low,3
+2022,Wet Leg,Music,Discovery,5.6,2022.0,high,4
+2022,Nubya Garcia,Music,Discovery,4.6,2022.0,high,5
+2022,Sampa The Great,Music,Discovery,4.5,2022.0,high,6
+2022,Built to Spill,Music,Legend,4.5,2018.0,high,7
+2022,Valerie June,Music,Discovery,4.4,2014.0,high,8
+2022,Automatic,Music,Discovery,4.2,2022.0,low,9
+2022,Emma Jean Thackray,Music,Discovery,4.1,2022.0,medium,10
+2023,MJ Lenderman,Music,Discovery,5.5,2023.0,high,1
+2023,Watchhouse,Music,Legend,5.2,2023.0,medium,2
+2023,Ocie Elliott,Music,Discovery,4.7,2023.0,high,3
+2023,Madison Cunningham,Music,Discovery,4.6,2023.0,high,4
+2023,Wednesday,Music,Discovery,4.6,2023.0,high,5
+2023,Lee Fields,Music,Legend,4.4,2023.0,high,6
+2023,Vieux Farka Touré,Music,Legend,4.3,2013.0,medium,7
+2023,Imarhan,Music,Discovery,4.2,2023.0,low,8
+2023,Novalima,Music,Legend,4.1,2023.0,medium,9
+2023,Butcher Brown,Music,Discovery,4.0,2023.0,high,10
+2024,Geese,Music,Discovery,6.1,2024.0,high,1
+2024,Courtney Barnett,Music,Legend,5.7,2014.0,high,2
+2024,Elephant Revival,Music,Legend,5.4,2024.0,medium,3
+2024,"Bonnie ""Prince"" Billy",Music,Legend,5.0,2010.0,high,4
+2024,New Constellations,Music,Discovery,4.2,2024.0,medium,5
+2024,Searows,Music,Discovery,4.2,2024.0,medium,6
+2024,LA LOM,Music,Discovery,4.1,2024.0,medium,7
+2024,Kara Jackson,Music,Discovery,3.9,2024.0,high,8
+2024,Jess Williamson,Music,Discovery,3.8,2024.0,high,9
+2024,Anna Tivel,Music,Discovery,3.7,2024.0,medium,10
