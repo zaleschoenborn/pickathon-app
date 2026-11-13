@@ -1337,6 +1337,59 @@ main:has(#pk-nh-climb)>section{content-visibility:visible!important;contain-intr
 #root#root#root .pk-g1-sub{margin:6px 0 0!important;max-width:none!important;font:800 13px/1.25 'Bricolage Grotesque',sans-serif!important;letter-spacing:.06em!important;text-transform:uppercase;color:#F2CF62;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 #root#root#root .pk-g1-key{margin:0 0 6px!important;max-width:none!important;font:700 11px/1.3 'Bricolage Grotesque',sans-serif!important;letter-spacing:.04em!important;color:#CFC9BC!important}
 </style>
+<style id="pk3-css">
+/* Home poster v3 (Zale, Nov 13): the locked card. Desktop 1160x500, phone 358x416, both scaled to fit. */
+@font-face{font-family:PkBebas;src:url(fonts/bebas-neue-latin-400.woff2) format('woff2');font-display:swap}
+@font-face{font-family:PkOswald;font-weight:600;src:url(fonts/oswald-latin-600.woff2) format('woff2');font-display:swap}
+@font-face{font-family:PkAlfa;src:url(fonts/alfa-slab-one-latin-400.woff2) format('woff2');font-display:swap}
+@font-face{font-family:PkRubik;font-weight:800;src:url(fonts/rubik-latin-800.woff2) format('woff2');font-display:swap}
+@font-face{font-family:PkBowlby;src:url(fonts/bowlby-one-latin-400.woff2) format('woff2');font-display:swap}
+#root .pk3m{display:block!important;max-width:1160px;margin:0 auto}
+#pkh2#pkh2#pkh2#pkh2 .h2-s2 .pk-cl-mount.pk3m{display:block!important;grid-template-rows:none!important;min-height:0!important;max-width:1160px}
+@media (min-width:1000px){#root#root#root#root#root .pk3-hd .pk-nh-h2{font-size:40px!important;line-height:1.05!important;white-space:nowrap}}
+#root .pk3-hd{display:flex;align-items:center;justify-content:space-between;gap:16px;margin:0 0 6px}
+#root .pk3-hd .pk-nh-h2{margin:0!important;flex:1;min-width:0}
+#root .pk3-subrow{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin:0 0 14px}
+#root .pk3-sub{margin:0;padding-bottom:4px;color:#cfc8ba;font:500 17px/1.35 Inter,system-ui,sans-serif}
+#root .pk3-pw{position:relative;margin:0 auto}
+#root .pk3-card{position:absolute;left:0;top:0;transform-origin:top left;overflow:hidden;box-sizing:border-box;cursor:pointer;font-family:Inter,system-ui,sans-serif}
+#root .pk3-card:focus-visible{outline:3px solid #F2CF62;outline-offset:3px}
+#root .pk3-card *{box-sizing:border-box}
+#root .pk3-frm{position:absolute;inset:10px;border:1.5px solid;pointer-events:none}
+#root .pk3-foot{position:absolute;left:50%;bottom:2px;transform:translateX(-50%);padding:0 14px;white-space:nowrap;font:800 11px/16px Inter,system-ui,sans-serif;letter-spacing:.24em}
+#root .pk3-cal{position:absolute;left:28px;top:28px;width:88px;height:66px;border-radius:8px;text-align:center}
+#root .pk3-cal .pk-cl-mo{display:block;font:800 12px/25px Inter,system-ui,sans-serif;letter-spacing:.16em;opacity:.8;text-transform:uppercase}
+#root .pk3-cal .pk-cl-yr{display:block;font:800 29px/32px Inter,system-ui,sans-serif}
+#root .pk3-tr{position:absolute;left:136px;right:204px;top:82px;height:2px}
+#root .pk3-tr u{position:absolute;left:0;top:0;height:2px}
+#root .pk3-tr b{position:absolute;top:-5px;width:12px;height:12px;margin-left:-6px;border-radius:50%}
+#root#root .pk3-rep{position:absolute;right:28px;top:28px;height:66px;width:158px;border:1.5px solid;border-radius:8px;background:transparent;display:flex;align-items:center;justify-content:center;gap:10px;font:800 14px Inter,system-ui,sans-serif;letter-spacing:.1em;cursor:pointer;padding:0}
+#root .pk3-cl,#root .pk3-cr{position:absolute;top:30px;font:400 34px/36px "Pickathon 2014",sans-serif;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap}
+#root .pk3-cl{left:140px}#root .pk3-cr{right:210px}
+#root .pk3-dv{position:absolute;left:540px;top:128px;height:340px;width:1px;opacity:.18}
+#root .pk3-art{position:absolute;transform:translateY(-50%);pointer-events:none}
+#root#root .pk3-eb{position:absolute;height:50px;border:0;border-radius:6px;display:flex;align-items:center;justify-content:center;gap:8px;font:800 13px Inter,system-ui,sans-serif;letter-spacing:.08em;cursor:pointer;padding:0;text-transform:uppercase}
+#root .pk3-eb span{font-size:16px}
+#root .pk3-nm{position:absolute;left:550px;right:35px;top:112px;height:372px;display:flex;flex-direction:column;justify-content:center;text-align:center;text-transform:uppercase;pointer-events:none}
+#root .pk3-layer{position:absolute;left:0;top:0;pointer-events:none}
+#root .pk3-hh{position:absolute;left:24px;width:136px;text-align:center;text-wrap:balance;font:400 15px/1.12 "Pickathon 2014",sans-serif;letter-spacing:.04em;text-transform:uppercase}
+#root .pk3-hh i{display:block;height:2px;width:40px;margin:9px auto 0}
+#root .pk3-card.ph .pk3-frm{inset:8px}
+#root .pk3-card.ph .pk3-foot{padding:0 9px;font:800 8.5px/14px Inter,system-ui,sans-serif;letter-spacing:.2em}
+#root .pk3-card.ph .pk3-cal{left:18px;top:18px;width:56px;height:46px;border-radius:6px}
+#root .pk3-card.ph .pk3-cal .pk-cl-mo{font-size:10px;line-height:17px}
+#root .pk3-card.ph .pk3-cal .pk-cl-yr{font-size:19px;line-height:22px}
+#root .pk3-card.ph .pk3-tr{left:86px;right:128px;top:40px}
+#root#root .pk3-card.ph .pk3-rep{right:18px;top:19px;height:44px;width:96px;border-radius:6px;font-size:11px;gap:7px}
+#root#root .pk3-card.ph .pk3-eb{height:44px;font-size:11px;gap:6px}
+#root .pk3-card.ph .pk3-eb span{font-size:14px}
+#root .pk3-card.ph .pk3-nm{left:172px;right:14px;top:84px;height:316px}
+#root .pk3m .pk-cl-below{max-width:none;margin:12px 0 0}
+#root .pk3m .pk-cl-below .pk-cl-an.pk-cl-anb{margin:0}
+@media (min-width:1000px){#root#root#root#root #pkh2 .h2-s2 .pk3-an{width:230px;min-height:56px;flex:none}}
+@media (max-width:999px){#root .pk3-hd{margin-bottom:10px}}
+</style>
+
 <style id="pk-hm-css">
 /* Neighborhood page: "Where it is" map (Zale, Nov 9 08:30: a way to move between neighborhoods from the map on each neighborhood page). Design Studio */
 #root .pk-hm{margin:18px 0 6px;max-width:760px}
@@ -2572,7 +2625,9 @@ html.pk-cyon #root #pk-nh-city #pk-nh-cr,html.pk-cyon #root #pk-nh-city .pk-nh-a
   var esc = function (s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;'); };
   var sm = function (t) { return t <= 0 ? 0 : t >= 1 ? 1 : t * t * (3 - 2 * t); };
   var cw = function (c) { return ' .,\'’“”"!:'.indexOf(c) >= 0 ? 0.24 : 'IJ1'.indexOf(c) >= 0 ? 0.25 : 'MW'.indexOf(c) >= 0 ? 0.62 : 0.47; };
-  var tw = function (t) { var m = mw(t, 24); if (m) return m / 24; var s = 0; for (var i = 0; i < t.length; i++) s += cw(t[i]); return s + t.length * 0.012; };   /* measured with the real font when it can be */
+  var CAPREF = 0.66;   /* Bricolage Grotesque cap height / font size; other faces are scaled to the same cap height */
+  var tw = function (t, fam) { if (fam && FAM3[fam]) { var mf = mwf(t, 24, fam); if (mf) return mf / 24 * CAPREF / FAM3[fam].cap; } var m = mw(t, 24); if (m) return m / 24; var s = 0; for (var i = 0; i < t.length; i++) s += cw(t[i]); return s + t.length * 0.012; };   /* measured with the real font when it can be */
+  var MCF = {}, MCFK = {}; var mwf = function (t, fs, fam) { try { var f = FAM3[fam], k = fam + '|' + t + '|' + fs; if (MCFK[k]) return MCFK[k]; if (document.fonts && !document.fonts.check(f.w + ' 20px ' + f.css.split(',')[0])) return 0; var el = MCF[fam]; if (!el) { el = MCF[fam] = document.createElement('span'); el.setAttribute('aria-hidden', 'true'); el.style.cssText = 'position:absolute;left:-9999px;top:0;visibility:hidden;white-space:nowrap;pointer-events:none;letter-spacing:' + (fam === 'Bebas' ? .012 : .005) + 'em;font-family:' + f.css + ';font-weight:' + f.w; } if (!el.parentNode) document.body.appendChild(el); el.style.fontSize = fs + 'px'; el.textContent = t; var w = el.getBoundingClientRect().width; if (document.fonts && !document.fonts.check(f.w + ' 20px ' + f.css.split(',')[0])) return w * 1.04; return (MCFK[k] = w); } catch (e) { return 0; } };
   var MC = null, MCK = {}; var mw = function (t, fs) { try { var k = t + '|' + fs; if (MCK[k]) return MCK[k]; if (!MC) { MC = document.createElement('span'); MC.setAttribute('aria-hidden', 'true'); MC.style.cssText = "position:absolute;left:-9999px;top:0;visibility:hidden;white-space:nowrap;pointer-events:none;font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-stretch:75%;font-variation-settings:'wdth' 75;letter-spacing:0;text-transform:none"; } if (!MC.parentNode) document.body.appendChild(MC); MC.style.fontSize = fs + 'px'; MC.textContent = t; var w = MC.getBoundingClientRect().width; var ok = !document.fonts || document.fonts.check("700 " + Math.max(8, Math.round(fs)) + "px 'Bricolage Grotesque'"); if (!ok) return w * 1.04; return (MCK[k] = w); } catch (e) { return 0; } };   /* measured in the page at the drawn size, weight and width: the font is wider at small sizes, and the old canvas measure ran about 17% narrow (review r3 A2) */
   var hash = function (s) { var h = 7; for (var i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) >>> 0; return h; };
   var mix = function (c1, c2, t) { var p = function (c) { return [1, 3, 5].map(function (i) { return parseInt(c.slice(i, i + 2), 16); }); }; var a1 = p(c1), a2 = p(c2); return '#' + a1.map(function (v, i) { return ('0' + Math.round(v + (a2[i] - v) * t).toString(16)).slice(-2); }).join(''); };
@@ -2677,16 +2732,16 @@ html.pk-cyon #root #pk-nh-city #pk-nh-cr,html.pk-cyon #root #pk-nh-city .pk-nh-a
 
   function plan(D, y, Q) {
     var still = D.labels.length < 2 || STAT(y), key = y + '|' + Q.IW + '|' + Q.ph + '|' + still + '|' + D.names.length; if (PLANS[key]) return PLANS[key];
-    var K = KIT[y] || {}, n = D.labels.length, A = D.inks[0], B = D.inks[1] || D.inks[0], H = K.head && K.hc >= 3 ? K.head : A;
+    var K = KIT[y] || {}, n = D.labels.length, Y3 = YT3[y] || null, A = Y3 ? Y3.ink : D.inks[0], B = Y3 ? Y3.acc : D.inks[1] || D.inks[0], H = Y3 ? Y3.col(0) : K.head && K.hc >= 3 ? K.head : A;
     var IW = Q.IW, LN = Math.min(10, D.ranked || 10), TOP = Q.LANES[0][1];
     var S = [], yy = Q.Y0; Q.LANES.forEach(function (L, r) { S.push({ x: Q.COLX, y: yy, w: Q.COLW, h: L[0], mx: L[1], ml: L[2], ink: r === 0 ? H : r % 2 ? A : B, head: r === 0 }); yy += L[0] + Q.GAP; });
     var ROW1 = S[9].y + S[9].h + Q.R1, ROWMAX = Math.round(IW * (Q.ph ? 0.88 : 0.8)), BOXH = ROW1 + Q.BOT;
-    var opts = function (nm, s) { var wd = nm.split(' '), o = [{ L: [nm], lead: false }];
-      if (s.ml > 1) for (var i = 1; i < wd.length; i++) { var a = wd.slice(0, i).join(' '), b = wd.slice(i).join(' '); o.push({ L: [a, b], lead: false }); if (LEAD.indexOf(a) >= 0 && b.length > 3) o.push({ L: [a, b], lead: true }); }
-      if (s.ml > 2) for (var i3 = 1; i3 < wd.length - 1; i3++) for (var j3 = i3 + 1; j3 < wd.length; j3++) o.push({ L: [wd.slice(0, i3).join(' '), wd.slice(i3, j3).join(' '), wd.slice(j3).join(' ')], lead: false }); return o; };   /* Zale, Nov 12: a long name on top may wrap to three lines so it can still be the biggest type */
-    var fitO = function (o, s) { var ws = o.L.map(function (t, i) { return tw(t) * (o.lead && i === 0 ? 0.55 : 1); }), hs = o.L.length === 1 ? LH : o.lead ? LH * 1.55 + 0.04 : LH * o.L.length + 0.04;
+    var curFam = null, opts = function (nm, s) { var wd = nm.split(' '), o = [{ L: [nm], lead: false, fam: curFam }];
+      if (s.ml > 1) for (var i = 1; i < wd.length; i++) { var a = wd.slice(0, i).join(' '), b = wd.slice(i).join(' '); o.push({ L: [a, b], lead: false, fam: curFam }); if (LEAD.indexOf(a) >= 0 && b.length > 3) o.push({ L: [a, b], lead: true, fam: curFam }); }
+      if (s.ml > 2) for (var i3 = 1; i3 < wd.length - 1; i3++) for (var j3 = i3 + 1; j3 < wd.length; j3++) o.push({ L: [wd.slice(0, i3).join(' '), wd.slice(i3, j3).join(' '), wd.slice(j3).join(' ')], lead: false, fam: curFam }); return o; };   /* Zale, Nov 12: a long name on top may wrap to three lines so it can still be the biggest type */
+    var fitO = function (o, s) { var ws = o.L.map(function (t, i) { return tw(t, o.fam) * (o.lead && i === 0 ? 0.55 : 1); }), hs = o.L.length === 1 ? LH : o.lead ? LH * 1.55 + 0.04 : LH * o.L.length + 0.04;
       var fanR = s.head && !Q.ph ? Math.min(s.mx * 0.62, 90) * 0.81 + Math.max(8, s.mx * 0.12) + 4 : 0, mw0 = Math.max.apply(null, ws);
-      return { f: Math.min(s.mx, (s.w - 2 * Math.max(fanR, s.head ? (Q.ph ? 6 : 46) : 0)) * (Q.ph ? 0.88 : 0.97) / mw0, s.h / hs), mw: mw0, L: o.L, lead: o.lead }; };
+      return { f: Math.min(s.mx, (s.w - 2 * Math.max(fanR, s.head ? (Q.ph ? 6 : 46) : 0)) * (Q.ph ? 0.88 : 0.97) / mw0, s.h / hs), mw: mw0, L: o.L, lead: o.lead, fam: o.fam }; };
     var best = function (nm, s) { var b = null; opts(nm, s).forEach(function (o) { var r = fitO(o, s); if (!b || r.f > b.f + (o.lead ? -2 : 0.5) || (Math.abs(r.f - b.f) <= 0.5 && r.L.length === b.L.length && !r.lead && !b.lead && r.mw < b.mw)) b = r; }); return b; };
     // the cast and the steps
     var cast = still ? D.names.slice() : D.names.filter(function (x) { return D.real ? x[1].some(function (r) { return r < LN; }) : (x[1][0] < LN || x[1][n - 1] < LN); });
@@ -2697,8 +2752,9 @@ html.pk-cyon #root #pk-nh-city #pk-nh-cr,html.pk-cyon #root #pk-nh-city .pk-nh-a
     // one shape per name for the whole run: its best fit at its biggest slot; a name that ever sits in the small print stays on one line
     var SCT = D.real ? Math.max.apply(null, cast.map(function (x) { return x[2][n - 1]; })) : 1;
     var DISP = { 'NATHANIEL RATELIFF & THE NIGHT SWEATS': 'NATHANIEL RATELIFF' };   /* poster display names (Zale, Nov 12): the printed name stays in the data, the poster shows the short form */
-    var SH = cast.map(function (x, i) { if (D.real) { var b0 = best(DISP[x[0]] || x[0], { x: Q.COLX, w: Q.COLW, h: 1e5, mx: TOP * Math.max.apply(null, x[2]) / SCT, ml: 3, head: false }); return { L: b0.L, lead: b0.lead }; } var mn = Math.min.apply(null, POS.map(function (p) { return p[i]; })), small = POS.some(function (p) { return p[i] >= LN; });
-      if (small || mn >= LN) return { L: [x[0]], lead: false }; var b = best(x[0], S[mn]); return { L: b.L, lead: b.lead }; });
+    var FAMI = function (i) { if (!Y3) return null; var rt = cast[i][1][n - 1]; return Y3.fam(rt < 10 ? rt : 9); }, COLI = function (i) { if (!Y3) return null; var rt = cast[i][1][n - 1]; return rgb(Y3.col(rt < 10 ? rt : 9)); };
+    var SH = cast.map(function (x, i) { curFam = FAMI(i); if (D.real) { var b0 = best(DISP[x[0]] || x[0], { x: Q.COLX, w: Q.COLW, h: 1e5, mx: Q.v3 ? Q.TOPF * LAD3[Math.min(9, Math.max(0, Math.min.apply(null, x[1])))] : TOP * Math.max.apply(null, x[2]) / SCT, ml: 3, head: false }); return { L: b0.L, lead: b0.lead, fam: curFam }; } var mn = Math.min.apply(null, POS.map(function (p) { return p[i]; })), small = POS.some(function (p) { return p[i] >= LN; });
+      if (small || mn >= LN) return { L: [x[0]], lead: false, fam: curFam }; var b = best(x[0], S[mn]); return { L: b.L, lead: b.lead, fam: curFam }; });
     var WF = cast.map(function (x, i) { return D.real ? fitO(SH[i], { w: Q.COLW, h: 1e5, mx: 1e5, head: false }).f : 0; });
     // the small print: one size for the run, small enough that every step fits in two rows (the still posters keep their old cap)
     var FS = Q.FS, CFS = Q.CFS, sw = function (t, fs) { var m = mw(t, fs); return (m ? m : tw(t) * fs * 1.14) + t.length * 0.04 * fs + 2; };
@@ -2722,10 +2778,12 @@ html.pk-cyon #root #pk-nh-city #pk-nh-cr,html.pk-cyon #root #pk-nh-city .pk-nh-a
         var hAt = function (fa) { var t = 0; vs.forEach(function (i, q) { t += hh(i, fa[q]) + (q < vs.length - 1 ? gp(fa[q]) : 0); }); return t; };
         var lo = 8, hi = 400, avH = S[9].y + S[9].h - S[0].y; for (var it = 0; it < 24; it++) { var md = (lo + hi) / 2; if (hAt(fzAt(md)) > avH) hi = md; else lo = md; }
         var fz = fzAt(lo);
+        if (Q.v3) fz = vs.map(function (i, q) { return Math.min(Q.TOPF * LAD3[Math.min(q, 9)], WF[i]); });
+        if (Q.v3) { var avv = S[9].y + S[9].h - S[0].y - (Q.ph ? 14 : 0); for (var rr = 1; rr > 0.5 && hAt(fz) > avv; rr -= 0.05) fz = vs.map(function (i, q) { return Math.min(Q.TOPF * LAD3[Math.min(q, 9)], WF[i]) * (q >= 5 ? rr : 1); }); }   /* a crowded bill shrinks the small print first, never the top name */   /* Zale, Nov 13: every poster's top name is the same cap height, the rest follow the ladder */
         var tot = 0; vs.forEach(function (i, q) { tot += hh(i, fz[q]) + (q < vs.length - 1 ? gp(fz[q]) : 0); });
-        var av = S[9].y + S[9].h - S[0].y, k2 = tot > av ? av / tot : 1, y2 = S[0].y + (av - tot * k2) / 2;
-        vs.forEach(function (i, q) { var f = fz[q] * k2, c = rgb(q === 0 ? H : q % 2 ? A : B); y2 += hh(i, f); P[i] = { x: Q.COLX + 0.5 * Q.COLW, y: y2, k: 0.5, f: f, r: c[0], g: c[1], b: c[2], sep: 0, col: 1, vis: 1, v: V[i][j] }; y2 += gp(f); });
-      } else cast.forEach(function (x, i) { var r = POS[j][i]; if (r < LN) { var s = S[r], f = fitO(SH[i], s).f, c = rgb(s.ink); P[i] = { x: s.x + 0.5 * s.w, y: s.y + s.h, k: 0.5, f: f, r: c[0], g: c[1], b: c[2], sep: 0, col: 1, vis: 1, v: V[i][j] }; } });
+        var av = S[9].y + S[9].h - S[0].y - (Q.v3 && Q.ph ? 14 : 0), k2 = tot > av ? av / tot : 1, y2 = S[0].y + (av - tot * k2) / 2;
+        vs.forEach(function (i, q) { var f = fz[q] * k2, c = COLI(i) || rgb(q === 0 ? H : q % 2 ? A : B); y2 += hh(i, f); P[i] = { x: Q.COLX + 0.5 * Q.COLW, y: y2, k: 0.5, f: f, r: c[0], g: c[1], b: c[2], sep: 0, col: 1, vis: 1, v: V[i][j] }; y2 += gp(f); });
+      } else cast.forEach(function (x, i) { var r = POS[j][i]; if (r < LN) { var s = S[r], f = fitO(SH[i], s).f, c = COLI(i) || rgb(s.ink); P[i] = { x: s.x + 0.5 * s.w, y: s.y + s.h, k: 0.5, f: f, r: c[0], g: c[1], b: c[2], sep: 0, col: 1, vis: 1, v: V[i][j] }; } });
       var rules = [];
       R.rows.forEach(function (row, ri) { var x = (IW - R.rw[ri]) / 2, yb = ROW1 + ri * Q.ROWH, c = rgb(A); rules.push({ y: yb - 8, a: x - 20, b: x + R.rw[ri] + 20, o: row.length ? 1 : 0 });
         row.forEach(function (q, qi) { if (qi) x += q.sep; P[q.i] = { x: x, y: yb, k: 0, f: q.fs, r: c[0], g: c[1], b: c[2], sep: qi ? 1 : 0, col: 0, vis: 1, v: V[q.i][j] }; x += q.w; }); });
@@ -2746,15 +2804,15 @@ html.pk-cyon #root #pk-nh-city #pk-nh-cr,html.pk-cyon #root #pk-nh-city .pk-nh-a
 
   // One frame at eased progress e (0 = the printed bill, 1 = today). back = { e0, k }: Replay's straight glide from e0 back to the printed bill.
   function frame(D, y, e, Q, back) {
-    var K = KIT[y] || {}, PL = plan(D, y, Q), PAPER = D.paper, A = PL.A, B = PL.B, IW = PL.IW, BOXH = PL.BOXH, TOP = PL.TOP, S = PL.S, n = PL.n;
+    var K = KIT[y] || {}, Y3 = YT3[y] || null, PL = plan(D, y, Q), PAPER = D.paper, A = PL.A, B = PL.B, IW = PL.IW, BOXH = PL.BOXH, TOP = PL.TOP, S = PL.S, n = PL.n;
     var lp = function (A0, A1, kk) { var lq = function (a, b) { var o = {}; for (var c in a) o[c] = a[c] + (b[c] - a[c]) * kk; return o; }; return { N: A0.N.map(function (a, i) { return lq(a, A1.N[i]); }), R: A0.R.map(function (a, i) { return lq(a, A1.R[i]); }) }; };
     var B0 = back && !PL.still ? PL.at(back.e0) : null, B1 = B0 ? PL.at(0) : null;
     var stAt = function (q) { return PL.still ? PL.END : B0 ? lp(B0, B1, q) : PL.at(q); }, par = B0 ? back.k : e, ST = stAt(par);
-    var dims = function (p, L, lead) { var w = Math.max.apply(null, L.map(function (t, i) { return tw(t) * (lead && i === 0 ? 0.55 : 1); })) * p.f, h = (L.length > 1 ? (lead ? 1.55 : L.length) : 1) * LH * p.f; return { w: w, h: h, cx: p.x + (0.5 - p.k) * w, cy: p.y - h / 2 }; };
-    var items = PL.cast.map(function (x, i) { var p = ST.N[i]; return { x: x, p: p, sh: PL.SH[i], d: dims(p, PL.SH[i].L, PL.SH[i].lead), o: clamp01(p.vis), end: x[1][n - 1] }; });
+    var dims = function (p, L, lead, fam) { var w = Math.max.apply(null, L.map(function (t, i) { return tw(t, fam) * (lead && i === 0 ? 0.55 : 1); })) * p.f, h = (L.length > 1 ? (lead ? 1.55 : L.length) : 1) * LH * p.f; return { w: w, h: h, cx: p.x + (0.5 - p.k) * w, cy: p.y - h / 2 }; };
+    var items = PL.cast.map(function (x, i) { var p = ST.N[i]; return { x: x, p: p, sh: PL.SH[i], d: dims(p, PL.SH[i].L, PL.SH[i].lead, PL.SH[i].fam), o: clamp01(p.vis), end: x[1][n - 1] }; });
     /* when two names pass, the one lower on today's bill steps back. Crossings can last two or three frames, so the step-back is spread over
        about half a second around each one (a tent-weighted look at nearby moments): it eases in and out instead of flashing. */
-    var over = function (N) { var D2 = N.map(function (p, i) { var q = dims(p, PL.SH[i].L, PL.SH[i].lead), ch = Math.max.apply(null, PL.SH[i].L.map(function (t) { return t.length; })); q.w += ch * 0.06 * p.f; return q; });   /* + letter spacing and the heavier cut, which the width model leaves out */ return N.map(function (pa, i) { if (pa.vis <= 0) return 0; var dm = 0, a = D2[i];
+    var over = function (N) { var D2 = N.map(function (p, i) { var q = dims(p, PL.SH[i].L, PL.SH[i].lead, PL.SH[i].fam), ch = Math.max.apply(null, PL.SH[i].L.map(function (t) { return t.length; })); q.w += ch * 0.06 * p.f; return q; });   /* + letter spacing and the heavier cut, which the width model leaves out */ return N.map(function (pa, i) { if (pa.vis <= 0) return 0; var dm = 0, a = D2[i];
       N.forEach(function (pb, j) { if (j === i || pb.vis <= 0 || items[j].end >= items[i].end) return; var b = D2[j], mh = Math.min(a.h, b.h), mw2 = Math.min(a.w, b.w), ox = (a.w + b.w) / 2 + mh * 1.0 - Math.abs(a.cx - b.cx), oy = (a.h + b.h) / 2 + mh * 0.35 - Math.abs(a.cy - b.cy); if (ox <= 0 || oy <= 0) return;
         var sq = function (t) { t = clamp01(t); return t * t * (3 - 2 * t); }; dm = Math.max(dm, sq(oy / (mh * 0.35)) * sq(ox / (mh * 1.0))); }); return dm; }); };   /* Round 3 B5: each box carries a margin (a third of a line above and below, one line-height at the sides); the name lower on today's bill fades as the margins meet and is fully out by the time two names would touch, so no ghosted pairs mid-flight */
     if (!PL.still) { var ck = B0 ? 'b' + back.e0.toFixed(4) : 'run', CV = PL.dimC && PL.dimC[ck];
@@ -2771,23 +2829,23 @@ html.pk-cyon #root #pk-nh-city #pk-nh-cr,html.pk-cyon #root #pk-nh-city .pk-nh-a
     var GLOWINK = (K.light && K.light.toUpperCase() !== PAPER.toUpperCase() && K.light.toUpperCase() !== '#FFFFFF') ? K.light : B, ACC = K.head && K.hc >= 3 ? K.head : A;
     var h = '';
     // faint halftone glow behind the biggest names (Zale: subtle, never tacky)
-    PL.order.forEach(function (i) { var q = items[i], p = q.p, o = q.o; if (o <= 0.005) return; var t = Math.max(0, Math.min(1, (p.f / TOP - 0.62) / 0.85)); if (t <= 0.02) return; var d = q.d, W = d.w + p.f * 1.3, Hh = d.h + p.f * 0.8, dot = Q.ph ? 0.8 : 1.1;
+    PL.order.forEach(function (i) { var q = items[i], p = q.p, o = q.o; if (o <= 0.005 || Q.v3) return; var t = Math.max(0, Math.min(1, (p.f / TOP - 0.62) / 0.85)); if (t <= 0.02) return; var d = q.d, W = d.w + p.f * 1.3, Hh = d.h + p.f * 0.8, dot = Q.ph ? 0.8 : 1.1;
       h += '<i aria-hidden="true" style="position:absolute;left:' + (d.cx - W / 2).toFixed(1) + 'px;top:' + (d.cy - Hh / 2).toFixed(1) + 'px;width:' + W.toFixed(1) + 'px;height:' + Hh.toFixed(1) + 'px;pointer-events:none;background-image:radial-gradient(' + GLOWINK + ' ' + dot + 'px,transparent ' + (dot + 0.5) + 'px);background-size:' + (Q.ph ? 4 : 5) + 'px ' + (Q.ph ? 4 : 5) + 'px;opacity:' + (o * (0.12 + 0.26 * t) * Math.min(1, t * 4)).toFixed(3) + ';-webkit-mask-image:radial-gradient(closest-side,#000 ' + (30 + 30 * t).toFixed(0) + '%,transparent 100%);mask-image:radial-gradient(closest-side,#000 ' + (30 + 30 * t).toFixed(0) + '%,transparent 100%)"></i>'; });
     // the crown: the printed ray fans belong to the top line and pass to the new #1, weighted by how close each name is to that line
     var s0 = S[0], crownW = function (p) { return clamp01(p.col) * clamp01(1 - Math.abs(p.y - (s0.y + s0.h)) / (S[1].y + S[1].h - s0.y - s0.h)); };   /* full on the top line, none by the second */
     var FONT = "font-family:'Bricolage Grotesque',sans-serif;font-stretch:75%;font-variation-settings:'wdth' 75;font-weight:800";
     var reachOf = function (p, d, crw) { if (crw < 0.01) return 0; var gap = Math.max(8, p.f * 0.12), sp = Math.min(Math.min(p.f * 0.62, 90), d.cx - d.w / 2 - s0.x - gap); return sp < 20 ? 0 : (gap + sp * Math.cos(36 * Math.PI / 180) + 6) * crw; };   /* same threshold as the fans themselves: no room kept for rays that are not drawn */
     // risers: where the FROM #n note goes is decided once, from today's bill, so it never switches sides mid-flight
-    if (!PL.noteAt) { PL.noteAt = {}; PL.cast.forEach(function (x, i) { if (PL.RISERS.indexOf(x[0]) < 0) return; var p = PL.END.N[i], d = dims(p, PL.SH[i].L, PL.SH[i].lead), crw = crownW(p), reach = reachOf(p, d, crw), fsM = Math.max(Q.ph ? 9 : 11, p.f * 0.42) / p.f, nf = Math.min(16, Math.max(Q.ph ? 11 : 12, p.f * 0.2));
+    if (!PL.noteAt) { PL.noteAt = {}; PL.cast.forEach(function (x, i) { if (PL.RISERS.indexOf(x[0]) < 0) return; var p = PL.END.N[i], d = dims(p, PL.SH[i].L, PL.SH[i].lead, PL.SH[i].fam), crw = crownW(p), reach = reachOf(p, d, crw), fsM = Math.max(Q.ph ? 9 : 11, p.f * 0.42) / p.f, nf = Math.min(16, Math.max(Q.ph ? 11 : 12, p.f * 0.2));
       var noteT = 'FROM THE FINE PRINT', noteW = tw(noteT) * nf + noteT.length * 0.08 * nf, gapN = Math.max(8, p.f * 0.2), fits = d.cx + d.w / 2 + reach + gapN + noteW <= s0.x + s0.w + (Q.ph ? 4 : 30), roomy = reach === 0 || d.cx - d.w / 2 - reach - p.f * fsM * 1.6 >= s0.x, fine = x[1][0] >= Math.min(10, D.ranked || 10);
       PL.noteAt[x[0]] = { fits: fits, roomy: roomy, show: roomy && fine && fits && D.src === 'real billing' }; }); }   /* Gate 1 fix 12 (D11): 'FROM #58' read like a chart rank; only a riser from the small print gets a note, 'FROM THE FINE PRINT', and only where it fits */
     var fans = '';
-    PL.order.forEach(function (i) { var q = items[i], x = q.x, p = q.p, o = q.o, d = q.d; if (o <= 0.005) return; var L = q.sh.L, lead = q.sh.lead, two = L.length > 1, hh = hash(x[0]);
+    PL.order.forEach(function (i) { var q = items[i], x = q.x, p = q.p, o = q.o, d = q.d; if (o <= 0.005) return; var L = q.sh.L, lead = q.sh.lead, two = L.length > 1, hh = hash(x[0]), FM3 = q.sh.fam ? FAM3[q.sh.fam] : null, sk3 = FM3 ? CAPREF / FM3.cap : 1;
       var c = hex([p.r, p.g, p.b]), inkLead = c.toUpperCase() === A.toUpperCase() ? B : A, crw = crownW(p), reach = reachOf(p, d, crw);
       var bigT = clamp01((p.f / TOP - 0.3) / 0.3), ls = (0.04 - 0.05 * bigT).toFixed(3) + 'em';   /* letter spacing follows the size, no switch */
-      var mask = ';-webkit-mask-image:' + WORN + ';mask-image:' + WORN + ';-webkit-mask-size:200px;mask-size:200px;-webkit-mask-position:' + (hh % 200) + 'px ' + ((hh >> 8) % 200) + 'px;mask-position:' + (hh % 200) + 'px ' + ((hh >> 8) % 200) + 'px';
-      var lineSt = function (isLead, ink) { return 'display:block;width:fit-content;margin:0 ' + (p.k < 0.25 ? 'auto 0 0' : 'auto') + ';color:' + ink + (isLead ? ';font-size:max(.55em,9px);line-height:1;margin-bottom:.06em' : '') + mask; };
-      if (crw > 0.01) { var gapF = Math.max(8, p.f * 0.12), len = Math.min(p.f * 0.62, 90), L0 = d.cx - d.w / 2, R0 = d.cx + d.w / 2, room = { l: L0 - s0.x - gapF, r: s0.x + s0.w - R0 - gapF }, swd = Math.max(2, p.f * 0.035);
+      var mask = Q.v3 ? '' : ';-webkit-mask-image:' + WORN + ';mask-image:' + WORN + ';-webkit-mask-size:200px;mask-size:200px;-webkit-mask-position:' + (hh % 200) + 'px ' + ((hh >> 8) % 200) + 'px;mask-position:' + (hh % 200) + 'px ' + ((hh >> 8) % 200) + 'px';
+      var lineSt = function (isLead, ink) { return 'font-family:inherit!important;display:block;width:fit-content;margin:0 ' + (p.k < 0.25 ? 'auto 0 0' : 'auto') + ';color:' + ink + (isLead ? ';font-size:max(.55em,9px);line-height:1;margin-bottom:.06em' : '') + mask; };
+      if (crw > 0.01 && !Q.v3) { var gapF = Math.max(8, p.f * 0.12), len = Math.min(p.f * 0.62, 90), L0 = d.cx - d.w / 2, R0 = d.cx + d.w / 2, room = { l: L0 - s0.x - gapF, r: s0.x + s0.w - R0 - gapF }, swd = Math.max(2, p.f * 0.035);
         var fan = function (side) { var sp = Math.min(len, room[side]); if (sp < 20) return ''; var x0 = side === 'l' ? L0 - gapF : R0 + gapF, dir = side === 'l' ? -1 : 1;
           return [-36, -18, 0, 18, 36].map(function (deg, j) { var r = deg * Math.PI / 180, l = sp * (j % 2 ? 0.7 : 1); return '<line x1="' + x0.toFixed(1) + '" y1="' + (d.cy + Math.sin(r) * d.h * 0.18).toFixed(1) + '" x2="' + (x0 + dir * Math.cos(r) * l).toFixed(1) + '" y2="' + (d.cy + Math.sin(r) * (d.h * 0.18 + l)).toFixed(1) + '"/>'; }).join(''); };
         fans += '<g stroke="' + inkLead + '" stroke-width="' + swd.toFixed(1) + '" stroke-linecap="square" opacity="' + (crw * o).toFixed(3) + '">' + fan('l') + fan('r') + '</g>'; }
@@ -2801,7 +2859,7 @@ html.pk-cyon #root #pk-nh-city #pk-nh-cr,html.pk-cyon #root #pk-nh-city .pk-nh-a
       if (showNote) { var nst = 'font-size:' + nf.toFixed(1) + 'px;line-height:1;letter-spacing:.08em;white-space:nowrap;color:' + ACC + ';opacity:' + noteO.toFixed(3);
         post = nFits ? '<span aria-hidden="true" style="position:absolute;left:100%;top:' + (cyEm * p.f - nf * 0.5).toFixed(1) + 'px;margin-left:' + (gapN + reach).toFixed(1) + 'px;' + nst + '">' + noteT + '</span>'
           : '<span aria-hidden="true" style="position:absolute;right:100%;top:' + (cyEm * p.f + triPx * 0.42 + 3).toFixed(1) + 'px;margin-right:' + (0.5 * triPx + reach + (triPx * 0.8 - shortW) / 2).toFixed(1) + 'px;' + nst + '">' + shortT + '</span>'; }
-      h += '<span style="position:absolute;left:' + p.x.toFixed(2) + 'px;top:' + p.y.toFixed(2) + 'px;transform:translate(' + (-p.k * 100).toFixed(2) + '%,-100%);white-space:pre;text-align:' + (p.k < 0.25 ? 'left' : 'center') + ';' + FONT + ';line-height:' + LH + ';letter-spacing:' + ls + ';font-size:' + p.f.toFixed(2) + 'px;opacity:' + o.toFixed(3) + '">' + pre
+      h += '<span style="position:absolute;left:' + p.x.toFixed(2) + 'px;top:' + p.y.toFixed(2) + 'px;transform:translate(' + (-p.k * 100).toFixed(2) + '%,-100%);white-space:pre;text-align:' + (p.k < 0.25 ? 'left' : 'center') + ';' + (FM3 ? 'font-family:' + FM3.css + ' !important;font-weight:' + FM3.w : FONT) + ';line-height:' + (FM3 ? (LH / sk3).toFixed(3) : LH) + ';letter-spacing:' + (FM3 ? Y3.ls + 'em' : ls) + ';font-size:' + (p.f * sk3).toFixed(2) + 'px;opacity:' + o.toFixed(3) + '">' + pre
         + '<span style="' + lineSt(lead, lead ? inkLead : c) + '">' + esc(L[0]) + '</span>' + L.slice(1).map(function (t3) { return '<span style="' + lineSt(false, c) + '">' + esc(t3) + '</span>'; }).join('') + post + '</span>'; });
     var rules = ST.R.map(function (r) { if (r.o <= 0.01) return ''; var op = ';opacity:' + clamp01(r.o).toFixed(3); return '<i style="position:absolute;left:0;width:' + Math.max(0, r.a).toFixed(1) + 'px;top:' + r.y.toFixed(1) + 'px;height:1.5px;background:' + B + op + '"></i><i style="position:absolute;left:' + r.b.toFixed(1) + 'px;right:0;top:' + r.y.toFixed(1) + 'px;height:1.5px;background:' + B + op + '"></i>'; }).join('');
     var burst = fans ? '<i aria-hidden="true" style="position:absolute;left:0;top:0;width:' + IW + 'px;height:' + BOXH + 'px;background:' + enc('<svg xmlns="http://www.w3.org/2000/svg" width="' + IW + '" height="' + BOXH + '">' + fans + '</svg>') + ' 0 0/100% 100% no-repeat;pointer-events:none;-webkit-mask-image:' + WORN + ';mask-image:' + WORN + ';-webkit-mask-size:200px;mask-size:200px"></i>' : '';
@@ -2821,7 +2879,7 @@ html.pk-cyon #root #pk-nh-city #pk-nh-cr,html.pk-cyon #root #pk-nh-city .pk-nh-a
       + '<i style="position:absolute;left:0;right:' + TR + 'px;top:40px;height:3px;border-radius:2px;background:' + A + ';opacity:.22"></i><i style="position:absolute;left:0;top:40px;height:3px;border-radius:2px;width:calc((100% - ' + TR + 'px) * ' + fr.toFixed(4) + ');background:' + A + '"></i><i style="position:absolute;top:36px;left:calc((100% - ' + TR + 'px) * ' + fr.toFixed(4) + ' - 5px);width:10px;height:10px;border-radius:50%;background:' + A + '"></i></div>'; }
     var hasNote = !!(D.clim && D.src === 'real billing') && (Q.ph || !picFor(D, y)), npA = hasNote ? (PL.still ? 0 : 1 - clamp01(frac / 0.08)) : 0, npB = hasNote ? (PL.still ? 1 : clamp01((frac - 0.92) / 0.08)) : 0, NH = Q.BOT - 8;
     var note = hasNote ? '<i style="position:absolute;left:0;right:0;bottom:' + NH + 'px;height:1.5px;background:' + B + ';opacity:1"></i>' + [['This is the lineup in ' + y + '.', npA], ['This is the same lineup today.', npB]].map(function (t) { return '<div style="position:absolute;left:0;bottom:0;height:' + (NH - 6) + 'px;width:' + IW + 'px;display:flex;align-items:center;font:600 ' + (Q.ph ? 13 : 15) + 'px/1.25 Inter,system-ui,sans-serif;color:' + A + ';opacity:' + t[1].toFixed(2) + '">' + esc(t[0]) + '</div>'; }).join('') : '';
-    return { fineRise: fineRise, art: art, html: h + burst + rules + strip + note, IW: IW, H: BOXH, A: A, B: B, PAPER: PAPER, ACC: ACC, LIGHT: GLOWINK, frac: frac };
+    return { fineRise: fineRise, art: art, html: h + burst + rules + (Q.v3 ? '' : strip + note), IW: IW, H: BOXH, A: A, B: B, PAPER: PAPER, ACC: ACC, LIGHT: GLOWINK, frac: frac };
   }
 
   // the clock on the poster: a date stamp that counts the summers from the festival to today; tapping it plays again
@@ -2864,12 +2922,16 @@ html.pk-cyon #root #pk-nh-city #pk-nh-cr,html.pk-cyon #root #pk-nh-city .pk-nh-a
   function tc2(t) { return String(t).toLowerCase().replace(/(^|[\s“"(])([a-z])/g, function (m, a, b) { return a + b.toUpperCase(); }).replace(/(^|\s)(mj|dj|mc|tv)(?=\s|$)/gi, function (m, a, b) { return a + b.toUpperCase(); }); }
   function picFor(D, y) { if (D._pic !== undefined) return D._pic; D._pic = null;
     try { var YP = (window.__pkYP || {})[y] || {}, k = function (s) { return String(s || '').toLowerCase().replace(/&/g, 'and').replace(/[^a-z0-9]/g, ''); }, ph = function (n) { var h = YP[n]; if (!h) Object.keys(YP).forEach(function (q) { if (k(q) === k(n)) h = YP[q]; }); return h && h.i && !h.promo ? h.i : ''; };
-      if (!D.real || !D.clim || D.labels.length < 3) return null;
-      var hd = D.names.filter(function (x) { return x[1][0] === 0; })[0], cn = D.names.filter(function (x) { return k(x[0]) === k(D.clim); })[0]; if (!hd || !cn || hd === cn) return null;
-      var PICK = { '2024|geese': 'i/y24g1-geese.jpg' }, a = ph(hd[0]), b = PICK[y + '|' + k(D.clim)] || ph(D.clim);   /* Zale, Nov 12: a different Geese photo (whole band, crowd in front) */ if (!a || !b) return null;
-      var n = D.labels.length, j = 1; for (; j < n; j++) if (cn[1][j] < hd[1][j]) break;
-      D._pic = { a: a, b: b, an: hd[0], cross: Math.max(0.2, Math.min(0.85, (j - 0.5) / (n - 1))) }; } catch (e) {}
+      if (!D.real || D.labels.length < 2) return null;
+      /* Zale, Nov 13: the photo runs from the printed #1 to today's #1 (every year), not the climber; if they are the same act the climber stands in */
+      var nl = D.labels.length, hd = D.names.filter(function (x) { return x[1][0] === 0; })[0], cn = D.names.filter(function (x) { return x[1][nl - 1] === 0; })[0];
+      if (hd && cn && hd === cn && D.clim) cn = D.names.filter(function (x) { return k(x[0]) === k(D.clim); })[0]; if (!hd || !cn || hd === cn) return null;
+      var PICK = { '2024|geese': 'i/y24g1-geese.jpg', '2015|billystrings': 'i/y15b-billystringsdonjulin.jpg' }, a = ph(hd[0]), b = PICK[y + '|' + k(cn[0])] || ph(cn[0]);   /* Zale, Nov 12: a different Geese photo (whole band, crowd in front) */ if (!a || !b) return null;
+      var n = D.labels.length, j = 1; for (; j < n; j++) if (cn[1][j] <= hd[1][j]) break;
+      var cr = Math.max(0.2, Math.min(0.85, (j - 0.5) / (n - 1))); if (n === 2) { var c0 = cn[1][0], hE = hd[1][1]; if (c0 + hE > 0) cr = Math.max(0.15, Math.min(0.9, c0 / (c0 + hE))); }   /* where the two names actually trade places on the glide */
+      D._pic = { a: a, b: b, an: hd[0], cross: cr }; } catch (e) {}
     return D._pic; }
+  function pkNow(P, tp, n) { if (S.back) return picK(P, S.back.e0 * (1 - S.back.k)); if (S.playing && S.pk != null) return S.pk; return tp >= n - 1 - 1e-3 ? 1 : picK(P, tp / (n - 1)); }
   function picK(P, e) { var t = Math.max(0, Math.min(1, (e - (P.cross - 0.12)) / 0.24)); return t * t * (3 - 2 * t); }
   function STAT(y) { var D0 = C && C[y]; return !(D0 && D0.real && D0.feat && D0.labels.length > 2); }   /* Zale, Nov 12: only 2024 has six-month scores, so only 2024 moves; every other year is today's top 10, still, until the all-years data exists (design_studio-59) */
   /* Zale, Nov 11: on phone the time reads as a calendar page that ticks from the festival month to today while the poster runs */
@@ -2882,20 +2944,116 @@ html.pk-cyon #root #pk-nh-city #pk-nh-cr,html.pk-cyon #root #pk-nh-city .pk-nh-a
      holds there a second so the start is clear, then runs. No jumps. */
   var RUN = 3200, REW = 600, HOLD = 1000, ease = function (u) { return u <= 0 ? 0 : u >= 1 ? 1 : 0.5 - 0.5 * Math.cos(Math.PI * u); };
   function run() {
-    var D = C[S.y], n = D.labels.length; if (n < 2 || STAT(S.y)) return; S.seen[S.y] = 1;   /* whatever started it, this year has now played */ stop();
+    var D = C[S.y], n = D.labels.length; if (n < 2 || STAT(S.y)) return; S.seen[S.y] = 1; var PK = picFor(D.glide || D, S.y), TAIL = PK ? 1600 : 0, TC = PK ? Math.acos(1 - 2 * PK.cross) / Math.PI * RUN : RUN, TOT = RUN + TAIL; S.pk = 0;   /* Zale, Nov 13: the photo changes only once today's #1 passes the printed #1 on the poster, then dissolves slowly and finishes after the poster has landed */   /* whatever started it, this year has now played */ stop();
     var t0 = 0, e0 = S.back ? 0 : S.tp / (n - 1), rew = e0 > 0.002 && !RM; S.playing = true; S.back = null; if (!rew) S.tp = 0;
     var fr = function (now) { var el = now - t0;
       if (rew && el < REW) { var q = el / REW; S.back = { e0: e0, k: q * q * (3 - 2 * q) }; S.tp = 0; S.raf = requestAnimationFrame(fr); draw(); return; }
       S.back = null; var t = el - (rew ? REW + HOLD : 1000);
       if (t < 0) { S.tp = 0; S.raf = requestAnimationFrame(fr); draw(); return; }
-      var u = Math.min(1, t / RUN), done = u >= 1; S.tp = (n - 1) * ease(u); if (done) { S.playing = false; S.raf = null; } else S.raf = requestAnimationFrame(fr); draw(); };
+      var u = Math.min(1, t / RUN), done = t >= TOT; S.tp = (n - 1) * ease(u); { var q2 = Math.max(0, Math.min(1, (t - TC) / Math.max(1, TOT - TC))); S.pk = q2 * q2 * (3 - 2 * q2); } if (done) { S.pk = 1; S.playing = false; S.raf = null; } else S.raf = requestAnimationFrame(fr); draw(); };
     S.raf = requestAnimationFrame(function (now) { t0 = now; fr(now); });
   }
   function PRE() { if (PRE.d) return; PRE.d = 1; Object.keys(C).forEach(function (k) { var a = C[k] && C[k].art; if (a) { var im = new Image(); im.src = a; if (im.decode) im.decode().catch(function () {}); } }); }   /* the year's logo is ready before the first frame draws */
   function go(y) { PRE(); stop(); S.back = null; S.y = String(y); var n = C[y].labels.length; S.tp = (n > 1 && !RM && !STAT(y)) ? 0 : n - 1; S.seen[S.y] = 0; draw(); check(); }
   function rand() { var O = (window.pkClimbOrder || []).map(String).filter(function (q) { return C[q] && C[q].clim && C[q].feat; }); if (O.length > 1) { var oi = O.indexOf(S.y); go(+O[(oi + 1) % O.length]); return; } var P = POOL().filter(function (q) { return String(q) !== S.y; }); if (!S.bag.length) { S.bag = P.slice(); for (var i = S.bag.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)), t = S.bag[i]; S.bag[i] = S.bag[j]; S.bag[j] = t; } } var y = S.bag.pop(); if (String(y) === S.y && S.bag.length) y = S.bag.pop(); go(y); }
 
-  function draw() {
+  /* ===== Home poster v3 (Zale, Nov 13): the locked card. Replaces the old paper; the animated names (2024) still come from frame(). =====
+     Desktop: 1160x500 card. Row: date chip, progress line, REPLAY; the two captions sit on that row and cross-fade with the dot. Below: logo and
+     EXPLORE (button as wide as the logo) on the left, a divider, the top 10 centered on the right. Phone: 358x416, lockup left, names right.
+     Another year sits outside the card. Years with a plate and type spec from Artwork (2022, 2023) draw their names in that type, sized by
+     cap height so every poster's top name is the same height; every other year keeps the existing names and art in the same layout. */
+  var FAM3 = { Bebas: { css: "PkBebas,'Bebas Neue',Oswald,sans-serif", w: 400, cap: .703, k: .4 }, Oswald: { css: 'PkOswald,Oswald,sans-serif', w: 600, cap: .813, k: .46 }, Alfa: { css: "PkAlfa,'Alfa Slab One',serif", w: 400, cap: .781, k: .8 }, Rubik: { css: 'PkRubik,Rubik,sans-serif', w: 800, cap: .703, k: .74 }, Bowlby: { css: "PkBowlby,'Bowlby One',sans-serif", w: 400, cap: .75, k: .82 } };
+  var LAD3 = [1, .722, .624, .578, .518, .367, .367, .367, .367, .367];
+  var SPK3 = 'url("data:image/svg+xml;utf8,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="360" height="360"><g fill="#9B9352" fill-opacity=".7"><circle cx="40" cy="60" r="1.6"/><circle cx="130" cy="30" r="1.3"/><circle cx="250" cy="90" r="2"/><circle cx="320" cy="210" r="1.5"/><circle cx="90" cy="250" r="2"/><circle cx="200" cy="320" r="1.3"/><circle cx="20" cy="330" r="1.6"/></g></svg>') + '")';
+  var YT3 = {   /* from poster_art_plates/<year>/type_spec.md (Artwork). Printed teal fails contrast on cream, so the darker teal below stands in until Artwork approves one. */
+    '2022': { paper: '#FFFEF6', ink: '#6B3131', acc: '#2F6F66', plate: 'i/y22-plate.webp', ar: 515 / 700, foot: 'PENDARVIS FARM · HAPPY VALLEY, OR', fam: function () { return 'Bebas'; }, ls: .012, lh: .9, col: function () { return '#2F6F66'; } },
+    '2023': { paper: '#FFFEF6', ink: '#564826', acc: '#DE8746', plate: 'i/y23-plate.webp', ar: 700 / 594, foot: 'PENDARVIS FARM · HAPPY VALLEY · OREGON', speck: true, fam: function (i) { return ['Alfa', 'Rubik', 'Oswald', 'Bowlby', 'Alfa', 'Rubik', 'Oswald', 'Bowlby', 'Alfa', 'Rubik'][i]; }, ls: .005, lh: .95, col: function (i) { return i === 0 ? '#8A8346' : '#564826'; } }
+  };
+  var SW3 = '2022'.length;   /* (unused marker) */
+  function names3(Y3, L, ph) {
+    var TOPCAP = ph ? 25 : 42, colw = ph ? 172 : 575, o = '';
+    L.slice(0, 10).forEach(function (nm, i) {
+      var f = FAM3[Y3.fam(i)], s = TOPCAP * LAD3[i] / f.cap, mw = Math.max.apply(null, nm.replace(/&/g, ' ').split(/\s+/).map(function (x) { return x.length; }));
+      s = Math.min(s, (colw - 6) / (mw * f.k));
+      var m = [0, 6, 5, 5, 4][i]; if (m === undefined) m = ph ? 3 : 4;
+      o += '<span style="display:block;font-family:' + f.css + ' !important;font-weight:' + f.w + ';font-size:' + s.toFixed(1) + 'px;color:' + Y3.col(i) + ';letter-spacing:' + Y3.ls + 'em;line-height:' + Y3.lh + ';margin-top:' + m + 'px">' + esc(nm) + '</span>';
+    });
+    return o;
+  }
+  function q3(ph) {   /* the engine's geometry for the names column of the locked card */
+    var Q = Object.assign({}, cfg(ph, 390)), mx = LAD3.map(function (v) { return (ph ? 25 : 42) / CAPREF * v; }),
+      GAP = ph ? 3 : 4, target = ph ? 316 : 372, sum = 0; mx.forEach(function (v) { sum += v * 1.02; });
+    var kk = (target - 9 * GAP) / sum, tot = 0;
+    Q.LANES = mx.map(function (v, i) { var h = Math.round(v * 1.02 * kk); tot += h; return [h, v, i < 5 ? 2 : 1]; }); tot += 9 * GAP;
+    Q.GAP = GAP; Q.IW = ph ? 358 : 1160; Q.PADX = 0; Q.PADY = 0; Q.TOPH = 0; Q.ART = { x: 0, y: 0, w: 0 }; Q.COLX = ph ? 172 : 550; Q.COLW = ph ? 172 : 575; Q.Y0 = (ph ? 242 : 298) - tot / 2; Q.v3 = true; Q.TOPF = (ph ? 25 : 42) / CAPREF; return Q;
+  }
+  function draw() { if (window.__pkOldPoster) return drawOld(); return draw3(); }
+  var FL3 = {};
+  function loadFonts3(Y3, y) { if (FL3[y] || !document.fonts || !document.fonts.load) return; FL3[y] = 1; var fs = {}; for (var i = 0; i < 10; i++) fs[Y3.fam(i)] = 1; Promise.all(Object.keys(fs).map(function (k) { return document.fonts.load(FAM3[k].w + ' 40px ' + FAM3[k].css.split(',')[0]); })).then(function () { PLANS = {}; if (mountEl) { mountEl._key = null; draw(); } }).catch(function () {}); }
+  function fit3(CW, CH, ph) {
+    var pw = mountEl.querySelector('.pk3-pw'), card = pw && pw.firstChild, hd = mountEl.querySelector('.pk3-hd'); if (!pw || !card) return;
+    var vh = window.innerHeight || 800, top = 0, bot = 0, wA = mountEl.clientWidth || CW;
+    try { [].forEach.call(document.querySelectorAll('header'), function (hb) { var r = hb.getBoundingClientRect(), cs = getComputedStyle(hb); if (r.height > 0 && (cs.position === 'sticky' || cs.position === 'fixed' || (r.top <= 1 && r.bottom > 0))) top = Math.max(top, Math.min(140, r.bottom)); }); var tb = document.querySelector('nav[aria-label="App"]'); if (tb) { var tr = tb.getBoundingClientRect(); if (tr.height > 0 && tr.top > vh / 2) bot = vh - tr.top; } } catch (e) {}
+    if (!bot && window.innerWidth < 1000) bot = 64;
+    var sec = mountEl.closest('section'), pad = 0; if (sec) { var cs2 = getComputedStyle(sec); pad = parseFloat(cs2.paddingTop) + parseFloat(cs2.paddingBottom); }
+    var sub = mountEl.querySelector('.pk3-subrow'), bl = mountEl.querySelector('.pk-cl-below'), cmp = mountEl.querySelector('.pk-cl-cmp');
+    var avail = vh - top - bot - pad - (hd ? hd.offsetHeight + 10 : 0) - (sub ? sub.offsetHeight + 14 : 0) - (bl ? bl.offsetHeight + 12 : 0) - (cmp ? cmp.offsetHeight + 12 : 0) - 8;
+    var s = Math.min(wA / CW, avail / CH, ph ? 1.6 : 1); s = Math.max(s, ph ? (vh < 700 ? .8 : .9) * Math.min(1, wA / CW) : .66 * Math.min(1, wA / CW));
+    card.style.transform = 'scale(' + s.toFixed(4) + ')'; pw.style.width = (CW * s).toFixed(1) + 'px'; pw.style.height = (CH * s).toFixed(1) + 'px';
+  }
+  function draw3() {
+    if (!mountEl || !C || !S.y) return;
+    var y = S.y, D = C[y], n = D.labels.length, tp = Math.max(0, Math.min(n - 1, S.tp)), wAll = mountEl.clientWidth || 360, ph = wAll < 1000, still = STAT(y) || n < 2, atEnd = tp >= n - 1 - 1e-3;
+    var DF = D.glide || D, Y3 = YT3[y] || null, Y3s = Y3 && still, Q = q3(ph), CW = ph ? 358 : 1160, CH = ph ? 416 : 500, F = null, frac = 1;
+    if (Y3) loadFonts3(Y3, y);
+    if (!Y3s) { F = frame(DF, y, n > 1 ? tp / (n - 1) : 1, Q, null); frac = F.frac;
+      if (S.back) { var F0 = frame(DF, y, 0, Q, null), e0b = S.back.e0, qb = S.back.k, Fb = frame(DF, y, e0b, Q, null); frac = Fb.frac * (1 - qb); F = F0; F.html = '<div style="position:absolute;left:0;top:0;width:' + F.IW + 'px;height:' + F.H + 'px;opacity:' + (1 - qb).toFixed(3) + '">' + Fb.html + '</div><div style="position:absolute;left:0;top:0;width:' + F.IW + 'px;height:' + F.H + 'px;opacity:' + qb.toFixed(3) + '">' + F0.html + '</div>'; } }
+    var PAPER = Y3 ? Y3.paper : D.paper, A = Y3 ? Y3.ink : D.inks[0], B = Y3 ? Y3.acc : (D.inks[1] || A);
+    var t = still ? 1 : clamp01((frac * 100 - 30) / 40), cap = caption(D, +y, tp), key = y + '|' + ph + '|' + CW + '|' + (Y3s ? 1 : 0) + '|' + still;
+    var op1 = (1 - t).toFixed(3), op2 = t.toFixed(3), cal = calH(y, frac);
+    if (mountEl._key === key && mountEl.querySelector('.pk3-card')) {
+      var lay = mountEl.querySelector('.pk3-layer'); if (lay && F) lay.innerHTML = F.html;
+      var cl = mountEl.querySelector('.pk3-cal'); if (cl && cl._h !== cal) { cl.innerHTML = cal; cl._h = cal; }
+      var tf = mountEl.querySelector('.pk3-tr u'), tm = mountEl.querySelector('.pk3-tr b'); if (tf) { tf.style.width = (frac * 100).toFixed(1) + '%'; tm.style.left = (frac * 100).toFixed(1) + '%'; }
+      if (!still) { [].forEach.call(mountEl.querySelectorAll('.pk3-c1'), function (e) { e.style.opacity = op1; }); [].forEach.call(mountEl.querySelectorAll('.pk3-c2'), function (e) { e.style.opacity = op2; }); }
+      var cp = mountEl.querySelector('.pk-cl-cap'); if (cp && cp.textContent !== cap) cp.textContent = cap;
+      return;
+    }
+    var fa = document.activeElement, fk = fa && mountEl.contains(fa) ? fa.getAttribute('data-cl') : null;
+    var ratio = Y3 ? Y3.ar : (D.ar || 1), artSrc = Y3 ? Y3.plate : D.art, c1 = 'The lineup in ' + y, c2 = 'The same lineup, today', cs1 = still ? 'The ' + y + ' lineup, today' : c1;
+    var aw, ah, t0, axc, ebw, ebTop, artTop;
+    if (ph) { aw = Math.min(ratio < 0.9 ? 156 : 136, 175 / ratio); ah = aw * ratio; var SL = 175, T = 46 + 14 + SL + 16 + 44; t0 = 242 - T / 2; axc = 24 + 68; ebTop = t0 + 46 + 14 + SL + 16; artTop = ebTop - 20 - ah / 2; ebw = 136;   /* the caption and the button sit in the same place on every poster; the logo centers between them */ }
+    else { aw = Math.min(330, 262 / ratio); ah = aw * ratio; var SL2 = 262, T2 = SL2 + 24 + 50; t0 = 298 - T2 / 2; axc = 275; ebTop = t0 + SL2 + 24; artTop = ebTop - 24 - ah / 2; ebw = Math.max(aw, 176); }
+    var ebLeft = ph ? 24 : axc - ebw / 2;
+    var art = artSrc ? '<img class="pk3-art" alt="" decoding="sync" src="' + esc(artSrc) + '" style="left:' + (axc - aw / 2).toFixed(0) + 'px;top:' + artTop.toFixed(0) + 'px;width:' + aw.toFixed(0) + 'px">' : '<div class="pk3-art" aria-hidden="true" style="left:' + (axc - aw / 2).toFixed(0) + 'px;top:' + artTop.toFixed(0) + 'px;width:' + aw.toFixed(0) + 'px;font:800 ' + (ph ? 22 : 56) + 'px/.9 \'Bricolage Grotesque\',sans-serif;text-align:center;color:' + A + '">PICKATHON<br>' + y + '</div>';
+    var foot = Y3 ? Y3.foot : String(D.dates || ('PICKATHON ' + y)).toUpperCase().replace(/(\d) ?- ?(\d)/, '$1–$2') + (ph ? '' : ' · HAPPY VALLEY, OREGON');
+    var h = '<div class="pk3-card' + (ph ? ' ph' : '') + ' pk-cl-p" data-cl="year" role="link" tabindex="0" aria-label="Pickathon ' + y + ': open the ' + y + ' page" style="width:' + CW + 'px;height:' + CH + 'px;background-color:' + PAPER + (Y3 && Y3.speck ? ';background-image:' + SPK3 : '') + '">';
+    h += '<i class="pk3-frm" aria-hidden="true" style="border-color:' + A + '"></i><i class="pk3-foot" aria-hidden="true" style="color:' + A + ';background:' + PAPER + ';font-style:normal">' + esc(foot) + '</i>';
+    h += '<div class="pk3-cal" aria-hidden="true" style="background:' + A + ';color:' + PAPER + '">' + cal + '</div>';
+    if (!still) { h += '<div class="pk3-tr" aria-hidden="true" style="background:' + A + '33"><u style="width:' + (frac * 100).toFixed(1) + '%;background:' + A + '"></u><b style="left:' + (frac * 100).toFixed(1) + '%;background:' + A + '"></b></div>';
+      h += '<button type="button" class="pk3-rep" data-cl="play" aria-label="' + esc(timebar(D, y, tp, { frac: frac }).aria) + '" style="color:' + A + ';border-color:' + A + '"><svg width="' + (ph ? 10 : 13) + '" height="' + (ph ? 11 : 14) + '" viewBox="0 0 10 11" aria-hidden="true"><path d="M1 .8 9 5.5 1 10.2Z" fill="' + A + '"/></svg>REPLAY</button>'; }
+    if (ph) { var hhs = function (txt, cls, op) { return '<div class="pk3-hh ' + cls + '" aria-hidden="true" style="font-family:\'Pickathon 2014\',sans-serif!important;top:' + t0.toFixed(0) + 'px;color:' + A + (cls ? ';opacity:' + op : '') + '">' + esc(txt) + '<i style="background:' + B + '"></i></div>'; };
+      h += still ? hhs(cs1, '', 1) : hhs(c1, 'pk3-c1', op1) + hhs(c2, 'pk3-c2', op2); }
+    else { h += '<div class="pk3-cl' + (still ? '' : ' pk3-c1') + '" aria-hidden="true" style="font-family:\'Pickathon 2014\',sans-serif!important;color:' + A + (still ? '' : ';opacity:' + op1) + '">' + esc(cs1) + '</div>' + (still ? '' : '<div class="pk3-cr pk3-c2" aria-hidden="true" style="font-family:\'Pickathon 2014\',sans-serif!important;color:' + A + ';opacity:' + op2 + '">' + c2 + '</div>'); h += '<i class="pk3-dv" aria-hidden="true" style="background:' + A + '"></i>'; }
+    h += art + '<button type="button" class="pk3-eb" data-cl="year" style="left:' + ebLeft.toFixed(0) + 'px;top:' + ebTop.toFixed(0) + 'px;width:' + ebw.toFixed(0) + 'px;background:' + A + ';color:' + PAPER + '">Explore ' + y + ' <span aria-hidden="true">→</span></button>';
+    if (Y3s) h += '<div class="pk3-nm" aria-hidden="true">' + names3(Y3, D.names.filter(function (x) { return x[1][n - 1] < Math.min(10, D.ranked || 10); }).sort(function (a, b) { return a[1][n - 1] - b[1][n - 1]; }).map(function (x) { return x[0]; }), ph) + '</div>';
+    else h += '<div class="pk3-layer" aria-hidden="true" style="width:' + CW + 'px;height:' + F.H + 'px">' + F.html + '</div>';
+    h += '</div>';
+    var hd = '<div class="pk3-hd"><h2 class="pk-nh-h2" id="pk-cl-h">Wait, they all played <span style="color:' + (YC[y] || '#F2CF62') + '">Pickathon ' + y + '?</span></h2></div>';
+    var sub = ph ? '' : '<div class="pk3-subrow"><p class="pk3-sub">The ' + y + ' poster as printed.' + (still ? ' Here is how those acts rank today.' : ' Press Replay to see the same acts ranked as they stand today.') + '</p><button type="button" class="pk-cl-an pk3-an" data-cl="rand">↻ Another year</button></div>';
+    var cmp = '';
+    if (RM && n > 1 && !still) { var top8 = function (k) { return D.names.filter(function (x) { return x[1][k] < Math.min(10, D.ranked || 10); }).sort(function (a, b) { return a[1][k] - b[1][k]; }).slice(0, ph ? 4 : 8).map(function (x) { return '<li>' + esc(x[0]) + '</li>'; }).join(''); };
+      cmp = '<div class="pk-cl-cmp"><div><p class="pk-cl-cmpk">' + (D.src === 'real billing' ? 'On the ' + y + ' poster' : 'As booked in ' + y) + '</p><ol>' + top8(0) + '</ol></div><div><p class="pk-cl-cmpk pk-cl-cmpn">Ranked today</p><ol>' + top8(n - 1) + '</ol></div></div>'; }
+    var fin = D.names.filter(function (x) { return x[1][n - 1] < Math.min(10, D.ranked || 10); }).sort(function (a, b) { return a[1][n - 1] - b[1][n - 1]; }).map(function (x) { return x[0]; });
+    var out = hd + sub + cmp + '<div class="pk3-pw" style="width:' + CW + 'px;height:' + CH + 'px">' + h + '</div>'
+      + '<div class="pk-cl-below"><p class="pk-cl-cap pk-sr" aria-live="polite">' + esc(cap) + '</p>' + (ph ? '<button type="button" class="pk-cl-an pk-cl-anb" data-cl="rand">↻ Another year</button>' : '') + '</div>'
+      + '<p class="pk-sr">Pickathon ' + y + ', ranked today by how far each act has gone: ' + esc(fin.join(', ')) + '.</p>';
+    mountEl.classList.add('pk3m'); mountEl.innerHTML = out; mountEl.setAttribute('data-y', y); mountEl._key = key;
+    fit3(CW, CH, ph); mountEl._cw = CW; mountEl._ch = CH; mountEl._ph = ph;
+    var me = mountEl; requestAnimationFrame(function () { try { fit3(CW, CH, ph); document.documentElement.style.setProperty('--pkclh', me.offsetHeight + 'px'); } catch (e) {} });
+    if (fk) { var nf = mountEl.querySelector('[data-cl="' + fk + '"]'); if (nf) try { nf.focus({ preventScroll: true }); } catch (e) {} }
+  }
+  function drawOld() {
     if (!mountEl || !C || !S.y) return;
     var y = S.y, D = C[y], n = D.labels.length, tp = Math.max(0, Math.min(n - 1, S.tp)), wAll = mountEl.clientWidth || 360, ph = wAll < 1000;
     var DF = D.glide || D, Q = cfg(ph, wAll), F = frame(DF, y, n > 1 ? tp / (n - 1) : 1, Q, null), PW = F.IW + 2 * Q.PADX, PH = F.H + 2 * Q.PADY, TB = timebar(D, y, tp, F), cap = caption(D, +y, tp), atEnd = tp >= n - 1 - 1e-3;
@@ -2904,7 +3062,7 @@ html.pk-cyon #root #pk-nh-city #pk-nh-cr,html.pk-cyon #root #pk-nh-city .pk-nh-a
     if (mountEl._key === key && mountEl.querySelector('.pk-cl-layer')) {
       mountEl.querySelector('.pk-cl-layer').innerHTML = F.html;
       var tb = mountEl.querySelector('.pk-cl-tb'); if (tb && tb.querySelector('.pk-cl-tf')) { tb.querySelector('.pk-cl-tf').style.width = (TB.frac * 100).toFixed(1) + '%'; var mk = tb.querySelector('.pk-cl-tm'); mk.style.left = (TB.frac * 100).toFixed(1) + '%'; var cal = tb.querySelector('.pk-cl-cal'); if (cal) { var ch = calH(y, TB.frac); if (cal._h !== ch) { cal.innerHTML = ch; cal._h = ch; } } else { mk.textContent = TB.yNow; mk.style.opacity = TB.frac > 0.04 && TB.frac < 0.96 ? '1' : '0'; } var rb = tb.querySelector('.pk-cl-rpl'); if (rb) { rb.textContent = TB.btn; rb.setAttribute('aria-label', TB.aria); } var tl = mountEl.querySelector('.pk-cl-tl'); if (tl && tl.textContent !== TB.line) tl.textContent = TB.line; }
-      var pic = mountEl.querySelector('.pk-cl-pic'), PP2 = pic && picFor(DF, y); if (PP2) { var k2 = S.back ? picK(PP2, S.back.e0 * (1 - S.back.k)) : picK(PP2, tp / (n - 1)); pic.querySelector('.pk-cl-pi2').style.opacity = k2.toFixed(3); pic.querySelector('.pk-cl-pc1').style.opacity = Math.max(0, 1 - 2 * k2).toFixed(3); pic.querySelector('.pk-cl-pc2').style.opacity = Math.max(0, 2 * k2 - 1).toFixed(3); }
+      var pic = mountEl.querySelector('.pk-cl-pic'), PP2 = pic && picFor(DF, y); if (PP2) { var k2 = pkNow(PP2, tp, n); pic.querySelector('.pk-cl-pi2').style.opacity = k2.toFixed(3); pic.querySelector('.pk-cl-pc1').style.opacity = Math.max(0, 1 - 2 * k2).toFixed(3); pic.querySelector('.pk-cl-pc2').style.opacity = Math.max(0, 2 * k2 - 1).toFixed(3); }
       var cp = mountEl.querySelector('.pk-cl-cap'); if (cp.textContent !== cap) cp.textContent = cap; cp.style.color = atEnd ? '#F2CF62' : '#CFC9BC';
       var sb = mountEl.querySelector('.pk-g1-sub'); if (sb) sb.style.visibility = atEnd ? 'visible' : 'hidden'; var pa = mountEl.querySelector('.pk-cl-pa'); if (pa) { var pt = atEnd ? 'Play again' : S.playing || tp > 0 ? 'Restart' : 'Play'; if (pa.textContent !== pt) pa.textContent = pt; }
       return;
@@ -2919,7 +3077,7 @@ html.pk-cyon #root #pk-nh-city #pk-nh-cr,html.pk-cyon #root #pk-nh-city .pk-nh-a
       + '</div>';
     if (TB.show) tbH += '<div class="pk-cl-tb"><span class="pk-cl-ty">' + y + '</span><span class="pk-cl-tr" aria-hidden="true"><i class="pk-cl-tf" style="width:' + (TB.frac * 100).toFixed(1) + '%"></i><b class="pk-cl-tm" style="left:' + (TB.frac * 100).toFixed(1) + '%;opacity:' + (TB.frac > 0.04 && TB.frac < 0.96 ? 1 : 0) + '">' + TB.yNow + '</b></span><span class="pk-cl-ty">' + TODAY + '</span><button type="button" class="pk-cta sec pk-cl-rpl" data-cl="play" aria-label="' + TB.aria + '">' + TB.btn + '</button></div><p class="pk-cl-tl" aria-hidden="true">' + esc(TB.line) + '</p>';
     var PP = !Q.ph && !STAT(y) ? picFor(DF, y) : null;
-    if (PP) { var FH = window.__pkFH || {}, fp = function (u) { var f = FH[u]; return f ? f[0] + '% ' + f[1] + '%' : '50% 40%'; }, kk = S.back ? picK(PP, S.back.e0 * (1 - S.back.k)) : picK(PP, tp / (n - 1));
+    if (PP) { var FH = window.__pkFH || {}, fp = function (u) { var f = FH[u]; return f ? f[0] + '% ' + f[1] + '%' : '50% 40%'; }, kk = pkNow(PP, tp, n);
       h += '<div class="pk-cl-pic"><div class="pk-cl-pi"><img alt="" src="' + PP.a + '" style="object-position:' + fp(PP.a) + '"><img class="pk-cl-pi2" alt="" src="' + PP.b + '" style="object-position:' + fp(PP.b) + ';opacity:' + kk.toFixed(3) + '"></div><p class="pk-cl-pc"><span class="pk-cl-pc1" style="opacity:' + Math.max(0, 1 - 2 * kk).toFixed(3) + '">' + esc('This is the lineup in ' + y + '.') + '</span><span class="pk-cl-pc2" style="opacity:' + Math.max(0, 2 * kk - 1).toFixed(3) + '">' + esc('This is the same lineup today.') + '</span></p></div>'; }
     if (!Q.ph) h += tbH;
     h += '<div class="pk-cl-pw" style="width:' + PW + 'px;height:' + PH + 'px">';
@@ -2978,7 +3136,7 @@ html.pk-cyon #root #pk-nh-city #pk-nh-cr,html.pk-cyon #root #pk-nh-city .pk-nh-a
   }
   setInterval(tick, 400); try { new MutationObserver(function () { var m = document.querySelector('.pk-cl-mount'); if (m && (m !== mountEl || !m.firstChild)) tick(); }).observe(document.body, { childList: true, subtree: true }); } catch (e) {} window.addEventListener('scroll', function () { if (mountEl) check(); }, { passive: true, capture: true });
   var lh = 0; window.addEventListener('resize', function () { var h = window.innerHeight; if (mountEl && h !== lh) { lh = h; mountEl._key = null; draw(); } });
-  var lw = 0; window.addEventListener('resize', function () { var w = mountEl ? mountEl.clientWidth : 0; if (w && w !== lw) { lw = w; draw(); } });
+  var lw = 0; window.addEventListener('resize', function () { var w = mountEl ? mountEl.clientWidth : 0; if (w && w !== lw) { lw = w; mountEl._key = null; draw(); } else if (mountEl && mountEl._cw) fit3(mountEl._cw, mountEl._ch, mountEl._ph); });
   window.__pkClimbGo = function (y) { go(y); };  // test hook
   window.__pkClimbAt = function (u) { stop(); S.back = null; var n = C[S.y].labels.length; S.tp = (n - 1) * Math.max(0, Math.min(1, u)); draw(); };  // test hook: draw the run at eased progress u (0 = printed bill, 1 = today)
   window.pkClimbDraw = function () { draw(); };
@@ -10160,9 +10318,10 @@ html:root:root #root#root#root#root#root#root#root#root#root#root#root#root#root
   scroll-snap-type:x mandatory;scroll-padding:0 var(--gutter);overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch;scrollbar-width:none}
 .pkh2 .h2-cc-r::-webkit-scrollbar{display:none}
 .pkh2 .h2-cc-r::after{content:"";flex:0 0 1px}
-.pkh2 .h2-cc{position:relative;flex:0 0 min(84%,340px);height:100%;scroll-snap-align:start;border-radius:6px;overflow:hidden;background:#1c191a;isolation:isolate}
+.pkh2 .h2-cc{position:relative;flex:0 0 min(78%,330px);height:100%;scroll-snap-align:center;border-radius:6px;overflow:hidden;background:#1c191a;isolation:isolate}
 .pkh2 .h2-cc-ph{position:absolute;inset:0;display:block;width:100%;height:100%;padding:0;margin:0;border:0;background:none;cursor:pointer;z-index:0}
 .pkh2 .h2-cc-ph img{position:absolute;inset:0;width:100%;height:100%;max-width:none;object-fit:cover;object-position:50% 30%}
+.pkh2 .h2-cc-ph img.h2-cc-up{object-position:50% 50%!important}
 .pkh2 .h2-cc-ph::after{content:"";position:absolute;inset:38% 0 0 0;background:linear-gradient(rgba(20,16,18,0),rgba(20,16,18,.62) 34%,rgba(20,16,18,.94));pointer-events:none}
 .pkh2 .h2-ring{position:absolute;left:50%;top:38%;transform:translate(-50%,-50%);display:grid;place-items:center;width:64px;height:64px;border-radius:50%;
   border:2px solid rgba(255,255,255,.92);background:rgba(18,22,15,.35);transition:background-color .2s linear}
@@ -10171,13 +10330,13 @@ html:root:root #root#root#root#root#root#root#root#root#root#root#root#root#root
 .pkh2 .h2-cc-t{position:absolute;z-index:1;left:0;right:0;bottom:0;display:grid;gap:4px;padding:14px 16px 16px;margin:0;border:0;background:none;color:var(--cream);text-align:left;cursor:pointer}
 .pkh2 .h2-cc-k{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-size:.75rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#9FCB8A;line-height:1.2}
 .pkh2 .h2-cc-y{color:var(--cream);font-size:1rem;letter-spacing:.02em;font-variant-numeric:tabular-nums}
-#pkh2#pkh2 .h2-cc-n{font-size:1.375rem!important;line-height:1.02!important;color:var(--cream)}
+#pkh2#pkh2 .h2-cc-n{font-size:1.75rem!important;line-height:1.02!important;color:var(--cream)}
 .pkh2 .h2-cc-l{font-size:.9375rem;line-height:1.35;color:var(--cream);font-weight:500}
 .pkh2 .h2-cc-c{font-size:.8125rem;line-height:1.3;color:var(--cream-dim);font-weight:600}
 .pkh2 .h2-cc-t:focus-visible,.pkh2 .h2-cc-ph:focus-visible{outline:3px solid var(--gold);outline-offset:-3px}
 .pkh2 .h2-s5row{flex:none}
 #pkh2 .h2-s5row>.h2-pill{flex:1 1 auto}
-@media (max-height:760px) and (max-width:599px){.pkh2 .h2-s5sub{display:none}.pkh2 .h2-cc-l{font-size:.875rem}}
+/* Zale, Nov 13: the subline stays on short phones (it carries the 'they were small' idea now that the cards have no blurb) */
 @media (min-width:600px) and (max-width:1199px){.pkh2 .h2-cc-r{max-width:none}.pkh2 .h2-cc{flex-basis:min(46%,380px)}#pkh2 .h2-s5row>.h2-pill{flex:0 1 320px}}
 @media (min-width:1200px){
   .pkh2 .h2-s.h2-s5{height:var(--scr);padding-top:28px;padding-bottom:28px}
@@ -10185,7 +10344,7 @@ html:root:root #root#root#root#root#root#root#root#root#root#root#root#root#root
   .pkh2 .h2-cc-nav{display:flex}
   .pkh2 .h2-cc-r{padding:0;scroll-padding:0;gap:16px}
   .pkh2 .h2-cc{flex-basis:calc((100% - 32px) / 3)}
-  #pkh2#pkh2 .h2-cc-n{font-size:1.625rem!important}.pkh2 .h2-cc-t{padding:18px 20px 20px}
+  #pkh2#pkh2 .h2-cc-n{font-size:2rem!important}.pkh2 .h2-cc-t{padding:18px 20px 20px}
   .pkh2 .h2-ring{width:72px;height:72px}.pkh2 .h2-ring svg{width:28px;height:28px}
   #pkh2 .h2-s5row>.h2-pill{flex:0 1 auto;padding:0 1.5rem}
 }
@@ -10233,6 +10392,8 @@ window.pkClimbRank = function (C, dd) {
   function $$(s, r) { return [].slice.call((r || document).querySelectorAll(s)); }
   function app() { return window.comp || window.__pkApp || null; }
   function site() { var a = app(); return (a && a.state) || window.__pkSt || {}; }
+  /* Zale, Nov 13: no 2027 bat/logo anywhere until the scheduled drop (design_specs/home_logo_drop.md: before Jan 13 the header shows the gold wordmark and no bat); same test as the header's logoSrc */
+  function preDrop() { var s = site(); return (s.season || 'off') === 'off' && String(s.today || '') < '2027-01-12'; }
   function route() { var s = site().stack || []; return (s[s.length - 1] || {}).r || ''; }
   function go(r, x) { var a = app(); if (a && a.go) a.go(r, x || {}); }
   function ls(k, v) { try { if (v === undefined) return window.localStorage.getItem(k); window.localStorage.setItem(k, v); } catch (e) {} return null; }
@@ -10379,7 +10540,7 @@ window.pkClimbRank = function (C, dd) {
     h += '<section class="h2-s h2-s4" aria-labelledby="h2-h4"><div class="h2-s4ph" data-slot="home.act"><img src="' + ACT + '" alt="" width="1600" height="1067" loading="lazy" decoding="async"><h2 class="h2-d h2-sec pkp-head" id="h2-h4">Four days in the woods. Come.</h2></div>' +
       '<div class="h2-s4in"><div class="h2-s4side"><p class="h2-d h2-s4h pkp-head" aria-hidden="true">Four days in the woods. Come.</p>' +
       '<div class="h2-s4solid"><blockquote class="h2-quote">“' + esc(QUOTE[0]) + '”</blockquote><div class="h2-s4end"><cite>' + esc(QUOTE[1]) + '</cite><button type="button" class="h2-pill" data-h2="plan">Plan your trip</button></div></div></div>' +
-      '<div class="h2-paper h2-stub"><div class="h2-stub-top"><img class="h2-stub-logo" src="logo27-bat.png" alt="Pickathon ' + YEAR + '" width="700" height="260" loading="lazy">' +
+      '<div class="h2-paper h2-stub"><div class="h2-stub-top">' + (preDrop() ? '' : '<img class="h2-stub-logo" src="logo27-bat.png" alt="Pickathon ' + YEAR + '" width="700" height="260" loading="lazy">') +
       '<span class="h2-days" role="img" aria-label="Thursday to Sunday. Wednesday is an add-on."><i class="w">W</i><i class="on">Th</i><i class="on">Fr</i><i class="on">Sa</i><i class="on">Su</i></span></div>' +
       '<p class="h2-d h2-stub-d pkp-head">' + DATES + '</p><p class="h2-stub-w">' + DAYSS + '</p>' +
       '<ul class="h2-stub-inc"><li>Camping included</li><li>Kids 12 &amp; under free</li><li>Free water</li></ul>' +
@@ -10390,7 +10551,7 @@ window.pkClimbRank = function (C, dd) {
        transparent play ring centered when there is a clip (no gold pill); kind left and first year right; name; the fact; the clip and
        "Pickathon YYYY" in the caption. Photo plays, words open the archive at that artist. See all Discoveries under it. Filled by drawBand(). */
     var hBand = '<section class="h2-s h2-s5" aria-labelledby="h2-h5"><div class="h2-s5head"><div><h2 class="h2-d h2-sec pkp-head" id="h2-h5">Who’s up next?</h2>' +
-      '<p class="h2-sub h2-s5sub">Nobody knew these names when they first played here. You don’t know the 2027 lineup yet either.</p></div>' +
+      '<p class="h2-sub h2-s5sub">Nobody knew these names when they first played here. Now everyone does. You don’t know the 2027 lineup yet either.</p></div>' +
       '<div class="h2-cc-nav"><button type="button" class="h2-ib" data-h2="cprev" aria-label="Previous discoveries">' + CHEV + '</button><button type="button" class="h2-ib" data-h2="cnext" aria-label="More discoveries">' + CHEV + '</button></div></div>' +
       '<div class="h2-cc-r" data-h2="cards" role="list" aria-label="Discoveries, ranked by how big they are today"></div>' +
       '<div class="h2-row h2-s5row"><button type="button" class="h2-pill" data-h2="alldisc">See all Discoveries</button></div></section>';
@@ -10485,10 +10646,13 @@ window.pkClimbRank = function (C, dd) {
     BL = pool.filter(function (a) { return a.cat === 'music' && a.ctk === 'disc' && !a.dc && !a.leg && a.line; }).map(function (a) {
       var pv = PV[a.n], img = (pv && String(pv.y) === String(a.yr) && pv.i) || a.img || (pv && pv.i) || '';
       var v = vidOf(a.vu), r = vidRec(v), full = !!(r && r.f), watch = !!a.vu && !full && /^(Watch|Listen)/.test(a.vt || '');
-      return { n: a.n, kind: a.kind || 'Discovery', y: String(a.yr || ''), line: shortLine(a.line), img: img, vu: watch ? a.vu : '', vt: watch ? a.vt : '', m: a.m, k: 'disc', c: a.cf };
+      var up = UPT[a.n]; return { n: a.n, kind: a.kind || 'Discovery', y: String(a.yr || ''), line: shortLine(a.line), img: up ? 'i/' + up + '.jpg' : img, ss: up ? 'i/' + up + '-s.jpg 720w, i/' + up + '.jpg 1080w' : '', vu: watch ? a.vu : '', vt: watch ? a.vt : '', m: a.m, k: 'disc', c: a.cf };
     }).filter(function (a) { return a.img; });
     BL.sort(window.pkRankCmp || function () { return 0; }); BLd = D; return BL;
   }
+  /* Who's up next, Nov 13: tall card photos re-exported from the Dropbox originals (2:3, subject-cropped, 1080 and 720 wide; source list in
+     Dropbox _claude_work/upnext_nov13/map.json). Acts not listed keep their old photo until a better frame is picked. */
+  var UPT = {"Ty Segall": "up-tysegall", "Courtney Barnett": "up-courtneybarnett", "Future Islands": "up-futureislands", "Tyler Childers": "up-tylerchilders", "Billy Strings": "up-billystrings", "Caamp": "up-caamp", "Leon Bridges": "up-leonbridges", "Gregory Alan Isakov": "up-gregoryalanisakov", "Thee Sacred Souls": "up-theesacredsouls", "Khruangbin": "up-khruangbin", "Big Thief": "up-bigthief", "Black Pumas": "up-blackpumas", "Thundercat": "up-thundercat", "Colter Wall": "up-colterwall", "Charley Crockett": "up-charleycrockett", "Patrick Watson": "up-patrickwatson", "Faye Webster": "up-fayewebster", "Geese": "up-geese", "Jalen Ngonda": "up-jalenngonda", "Lucy Dacus": "up-lucydacus", "Viagra Boys": "up-viagraboys", "Goth Babe": "up-gothbabe", "Sturgill Simpson": "up-sturgillsimpson", "The Marías": "up-themarias", "Alvvays": "up-alvvays", "Unknown Mortal Orchestra": "up-unknownmortalorchestra", "Typhoon": "up-typhoon", "Kamasi Washington": "up-kamasiwashington", "Lake Street Dive": "up-lakestreetdive", "Mac DeMarco": "up-macdemarco", "The War on Drugs": "up-thewarondrugs"};
   var NCARD = 30;   /* the top 30 by today's rank; See all opens the whole archive */
   var RING = '<span class="h2-ring" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path d="M8.5 5.5 L19 12 L8.5 18.5 Z"/></svg></span>';
   /* a song name from a raw video title: drop the act's name, "Pickathon YYYY", @pickathon tags and series names; nothing left = no song */
@@ -10506,27 +10670,68 @@ window.pkClimbRank = function (C, dd) {
     if (!a.vu) return '';
     var r = vidRec(vidOf(a.vu));
     var t = r && r.s ? cleanSong(r.s, a.n) : '';
-    if (t) return '“' + t + '” · Pickathon ' + (r.y || a.y);
-    if (r && /full set/i.test(r.s || '')) return 'Full set · Pickathon ' + (r.y || a.y);
-    return (/^Listen/.test(a.vt || '') ? 'Listen · ' : '') + 'Pickathon ' + a.y;
+    /* Zale, Nov 13: the song name only (the kicker already carries the year); "Listen" for audio; nothing otherwise */
+    if (t) return '“' + t + '”';
+    return /^Listen/.test(a.vt || '') ? 'Listen' : '';
   }
   function drawBand() {
     if (!root) return; var L = bandList(), s = $('.h2-s5', root); if (!s) return;
     if (!L.length) { s.hidden = true; return; } s.hidden = false;
     var box = $('[data-h2="cards"]', s), key = L.length + '|' + (L[0] || {}).n; if (box._k === key) return; box._k = key;
-    box.innerHTML = L.slice(0, NCARD).map(function (a, i) {
+    /* Zale, Nov 13: on Home, Future Islands takes Typhoon's spot (Home only; the archive keeps the ranking) */
+    /* Zale, Nov 13: Avett Brothers and Trampled by Turtles (Spotify-only, dark old photos) leave Home; Ty Segall (Woods) and Courtney Barnett (Galaxy Barn) take their slots. The archive keeps the full ranking. */
+    L = L.slice(); (function () { var out = { 'The Avett Brothers': 1, 'Trampled by Turtles': 1 }, inn = ['Ty Segall', 'Courtney Barnett'], at = []; L.forEach(function (x, k) { if (out[x.n]) at.push(k); }); var add = []; inn.forEach(function (nm) { var j = -1; L.forEach(function (x, k) { if (x.n === nm) j = k; }); if (j >= 0) add.push(L[j]); }); add.forEach(function (x) { var j = L.indexOf(x); if (j >= 0) L.splice(j, 1); }); L = L.filter(function (x) { return !out[x.n]; }); add.forEach(function (x, n) { L.splice(Math.min((at[n] != null ? at[n] : 1) - n, L.length), 0, x); }); })();
+    (function () { var t = -1, f = -1; L.forEach(function (x, k) { if (x.n === 'Typhoon') t = k; if (x.n === 'Future Islands') f = k; }); if (t >= 0 && f >= 0) { var F = L.splice(f, 1)[0]; if (f < t) t--; L.splice(t, 1, F); } })();
+    /* Zale, Nov 13: the card sits centered with the neighbors peeking on both sides and the row loops (card 30 peeks left of card 1).
+       Two clones at each end; when a swipe settles on a clone, the row jumps silently to the real card. */
+    var A = sudoku(L.slice(0, NCARD)), K = Math.min(2, A.length), seq = [];
+    L = A;   /* data-i indexes this order */
+    for (var q = A.length - K; q < A.length; q++) seq.push([q, 1]);
+    A.forEach(function (x, q) { seq.push([q, 0]); });
+    for (q = 0; q < K; q++) seq.push([q, 1]);
+    box.innerHTML = seq.map(function (e) {
+      var i = e[0], a = A[i], cl = e[1], ti = cl ? ' tabindex="-1"' : '';
       var cap = clipCap(a);
-      return '<article class="h2-cc" role="listitem"><button type="button" class="h2-cc-ph" data-h2="bph" data-i="' + i + '" aria-label="' + esc(a.vu ? (/^Listen/.test(a.vt || '') ? 'Listen to ' : 'Watch ') + a.n + ', Pickathon ' + a.y : a.n + ': see the archive') + '">' +
-        '<img src="' + esc(a.img) + '" alt="" loading="' + (i < 3 ? 'eager' : 'lazy') + '" decoding="async">' + (a.vu ? RING : '') + '</button>' +
-        '<button type="button" class="h2-cc-t" data-h2="barch" data-i="' + i + '" aria-label="' + esc(a.n + ', ' + a.kind + ', Pickathon ' + a.y + '. See ' + a.n + ' in the archive') + '">' +
+      return '<article class="h2-cc' + (cl ? ' h2-cc-cl' : '') + '"' + (cl ? ' aria-hidden="true"' : ' role="listitem"') + '><button type="button"' + ti + ' class="h2-cc-ph" data-h2="bph" data-i="' + i + '" aria-label="' + esc(a.vu ? (/^Listen/.test(a.vt || '') ? 'Listen to ' : 'Watch ') + a.n + ', Pickathon ' + a.y : a.n + ': see the archive') + '">' +
+        '<img src="' + esc(a.img) + '"' + (a.ss ? ' srcset="' + esc(a.ss) + '" sizes="(min-width:1200px) 380px, (min-width:600px) 46vw, 84vw" class="h2-cc-up"' : '') + ' alt="" loading="' + (i < 3 ? 'eager' : 'lazy') + '" decoding="async">' + (a.vu ? RING : '') + '</button>' +
+        '<button type="button"' + ti + ' class="h2-cc-t" data-h2="barch" data-i="' + i + '" aria-label="' + esc(a.n + ', ' + a.kind + ', Pickathon ' + a.y + '. See ' + a.n + ' in the archive') + '">' +
         '<span class="h2-cc-k"><span>' + esc(a.kind) + '</span><span class="h2-cc-y">' + esc(a.y) + '</span></span><span class="h2-d h2-cc-n pkp-head">' + esc(a.n) + '</span>' +
-        '<span class="h2-cc-l">' + esc(a.line) + '</span>' + (cap ? '<span class="h2-cc-c">' + esc(cap) + '</span>' : '') + '</button></article>';
+        (cap ? '<span class="h2-cc-c">' + esc(cap) + '</span>' : '') + '</button></article>';
     }).join('');
-    guard(box); s._L = L;
+    guard(box); s._L = L; box._K = K; box._N = A.length;
+    loopHome(box);
+    if (!box._lp) { box._lp = 1; var tmo = 0; box.addEventListener('scroll', function () { clearTimeout(tmo); tmo = setTimeout(function () { loopFix(box); }, 140); }, { passive: true });
+      window.addEventListener('resize', function () { loopHome(box, true); }); }
   }
+  /* Zale, Nov 13 "sudoku": no location twice within any three cards in a row (the card in front and both peeks are three different places),
+     the loop's wrap included. Greedy in rank order: each slot takes the best-ranked card whose place differs from the two before it. */
+  function ccLoc(a) { if (/open\.spotify\.com/.test(a.vu || '')) return 'cd'; var r = vidRec(vidOf(a.vu)); var v = String((r && r.vn) || a.n).toLowerCase().replace(/\b(stage|sessions?)\b/g, '').replace(/[^a-z]/g, ''); return v || a.n; }
+  function sudoku(A) { var left = A.slice(), out = [];
+    while (left.length) { var k = 0, n = out.length, nf = 0;
+      for (var j = 0; j < left.length; j++) { var l = ccLoc(left[j]), bad = (n > 0 && ccLoc(out[n - 1]) === l) || (n > 1 && ccLoc(out[n - 2]) === l);
+        if (left.length <= 2 && !bad) { bad = (ccLoc(out[0]) === l) || (left.length === 1 && out[1] && ccLoc(out[1]) === l); }
+        if (!bad) { k = j; nf = 1; break; } }
+      out.push(left.splice(nf ? k : 0, 1)[0]); }
+    return out; }
+  /* the card nearest the row's center, its index among the rendered cards, and the width of one card step */
+  function ccMid(r) { var C = r.children, c = r.getBoundingClientRect(), mid = c.left + c.width / 2, bi = 0, bd = 1e9;
+    for (var k = 0; k < C.length; k++) { var q = C[k].getBoundingClientRect(), d = Math.abs(q.left + q.width / 2 - mid); if (d < bd) { bd = d; bi = k; } }
+    var st = C.length > 1 ? C[1].offsetLeft - C[0].offsetLeft : 0; return { i: bi, step: st }; }
+  function ccCenter(r, k) { var C = r.children[k]; if (!C) return; r.scrollLeft = C.offsetLeft - (r.clientWidth - C.offsetWidth) / 2; }
+  function jumpTo(r, k) { var sb = r.style.scrollBehavior, ss = r.style.scrollSnapType; r.style.scrollBehavior = 'auto'; r.style.scrollSnapType = 'none'; ccCenter(r, k);
+    void r.offsetWidth; r.style.scrollSnapType = ss; r.style.scrollBehavior = sb; }
+  /* open on the real first card (rank 1), centered */
+  /* Zale, Nov 13: each visit opens on a random one of the top 10 Discoveries (by rank), so Home stays fresh */
+  function loopHome(r, keep) { var go = function () { if (!r.clientWidth) return; var k = r._K || 0;
+      if (r._start == null) { var L = ($('.h2-s5', root) || {})._L || [], top = L.slice().sort(window.pkRankCmp || function () { return 0; }).slice(0, 10), pick = top[Math.floor(Math.random() * top.length)];
+        r._start = Math.max(0, L.indexOf(pick)); }
+      k += r._start; if (keep) { var m = ccMid(r); k = m.i; } jumpTo(r, k); };
+    if (window.requestAnimationFrame) requestAnimationFrame(function () { requestAnimationFrame(go); }); else setTimeout(go, 30); }
+  function loopFix(r) { var K = r._K || 0, N = r._N || 0; if (!K || !N) return; var m = ccMid(r);
+    if (m.i < K) jumpTo(r, m.i + N); else if (m.i >= K + N) jumpTo(r, m.i - N); }
   function cardStep(dir) {
     var r = root && $('[data-h2="cards"]', root), c = r && $('.h2-cc', r); if (!r || !c) return;
-    var step = (c.offsetWidth + (parseFloat(getComputedStyle(r).columnGap) || 16)) * Math.max(1, Math.floor(r.clientWidth / (c.offsetWidth + 16)));
+    var step = c.offsetWidth + (parseFloat(getComputedStyle(r).columnGap) || 16);   /* one card per tap, so the loop stays centered */
     try { r.scrollBy({ left: dir * step, behavior: reduced() ? 'auto' : 'smooth' }); } catch (e) { r.scrollLeft += dir * step; }
   }
   /* the card's fact, about 100 characters (funnel panel, Nov 11: the section must fit 360x740). The long story stays in the archive.
@@ -10683,7 +10888,7 @@ window.pkClimbRank = function (C, dd) {
     if (a === 'alldisc') { toArchive(null); return; }
     if (a === 'barch' || a === 'bph') { var sl = $('.h2-s5', root), ba = sl && sl._L && sl._L[+b.getAttribute('data-i')]; if (!ba) return;
       if (a === 'barch' || !ba.vu) { toArchive(ba.n); return; }
-      try { if (/open\.spotify\.com/.test(ba.vu) && window.__pkOpenMusic) { window.__pkOpenMusic(ba.vu); return; } if (window.__pkPlayVid) window.__pkPlayVid(ba.vu, clipCap(ba) || (ba.n + ' · Pickathon ' + ba.y)); } catch (x) {} return; }
+      try { if (/open\.spotify\.com/.test(ba.vu) && window.__pkOpenMusic) { window.__pkOpenMusic(ba.vu); return; } if (window.__pkPlayVid) { var cc = clipCap(ba); window.__pkPlayVid(ba.vu, ba.n + (cc && cc !== 'Listen' ? ' · ' + cc : '') + ' · Pickathon ' + ba.y); } } catch (x) {} return; }
     if (a === 'hood') { if (cur) go('hood', { h: cur }); return; }   /* Zale Nov 12: the photo opens that neighborhood's own page (#/hood/<key>) */
     if (a === 'hmap') { if (window.__pkMapH) window.__pkMapH(cur)(); else go('hoods'); return; }   /* the map beside it opens Places on it */
     if (a === 'allhoods') { if (window.__pkGoFarm) window.__pkGoFarm(); else go('hoods'); return; }
