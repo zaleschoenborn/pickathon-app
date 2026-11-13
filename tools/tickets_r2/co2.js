@@ -92,7 +92,7 @@ if (!window.pkOrders) window.pkOrders = (function () {
   }
   function doneHTML() {
     var days = K.days, on = O.strip || [], h = header(true);
-    h += '<div class="co-done" role="main"><div class="tk-paper co-done-p"><img src="logo27-bat.png" alt="Pickathon 2027" width="700" height="260"><h1 class="tk-d tk-d-hero" id="co-h1" tabindex="-1">You’re in.</h1>';
+    h += '<div class="co-done" role="main"><div class="tk-paper co-done-p">' + (window.pkTkLogo ? window.pkTkLogo() : '<img src="logo27-gold.png" alt="Pickathon 2027" width="600" height="314">') + '<h1 class="tk-d tk-d-hero" id="co-h1" tabindex="-1">You’re in.</h1>';
     if (O.dates) h += '<p class="tk-d tk-d-card co-done-d">' + esc(O.dates) + '</p>';
     h += '<p class="co-done-k" style="margin-top:2px">Pendarvis Farm, Happy Valley, Oregon</p>';
     if (on.length) h += '<span class="tk-days" aria-hidden="true">' + days.map(function (d, i) { return '<i class="' + (i ? '' : 'w ') + (on[i] ? 'on' : '') + '">' + d[1] + '</i>'; }).join('') + '</span>';

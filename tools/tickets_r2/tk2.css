@@ -349,3 +349,24 @@ body:has(#tk2 #tk-bar:not([hidden])) #pk-toast,body:has(#pk-co) #pk-toast{displa
 /* Gate 1 loop 2 F: a sheet opens with focus on its heading (no ring for touch and mouse); the close shows a ring only for the keyboard */
 .tk2 .tk-sheet-top h2[tabindex]:focus{outline:none}
 .tk2 .tk-sheet-x:focus:not(:focus-visible){outline:none}
+
+/* Audit Nov 13 (rulebook + buttons.md): one button look on Tickets. Primary = gold tint, 2px gold border, bright gold caps; secondary = 2px cream
+   border on a dark see-through fill, cream caps. 50px phone/tablet (touch included), 56px desktop, 6px corners, 800 weight, 13px caps, .08em.
+   On the cream paper (the order card, sheets on paper) gold fails contrast, so the primary sits on the dark ground there. Chips keep 44px. */
+#tk2#tk2#tk2 .tk-pill,.tk2.tk2.tk2 .tk-pill{min-height:50px!important;border-radius:6px;border-width:2px;font:800 13px/1.1 'Bricolage Grotesque',system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase}
+@media (min-width:1025px) and (pointer:fine){#tk2#tk2#tk2 .tk-pill,.tk2.tk2.tk2 .tk-pill{min-height:56px!important}}
+#tk2#tk2#tk2 .tk-pill:not(.tk-pill-gold):not(.tk-pill-ink),.tk2.tk2.tk2 .tk-pill:not(.tk-pill-gold):not(.tk-pill-ink){border-color:rgba(242,237,227,.88);background:rgba(18,22,15,.26);color:#F2EDE3}
+#tk2#tk2#tk2 .tk-pill-gold,.tk2.tk2.tk2 .tk-pill-gold,#tk2#tk2#tk2 .tk-paper .tk-pill-gold,#tk2#tk2#tk2 .tk-paper .tk-pill-cream{border-color:#D6B54A;background:linear-gradient(rgba(214,181,74,.18),rgba(214,181,74,.18)),#2B2628;color:#F2CF62}
+#tk2#tk2#tk2 .tk-pill-gold:hover,.tk2.tk2.tk2 .tk-pill-gold:hover{border-color:#F2CF62}
+#tk2#tk2#tk2 .tk-pill[aria-disabled=true],.tk2.tk2.tk2 .tk-pill[aria-disabled=true],#tk2#tk2#tk2 .tk-pill[disabled]{border-color:rgba(242,237,227,.3);background:transparent;color:rgba(242,237,227,.55);cursor:default}
+#tk2#tk2#tk2 .tk-paper .tk-pill[aria-disabled=true]{background:#2B2628;color:rgba(242,237,227,.6)}
+.tk2 .tk-paper .tk-pill-ink{border-color:#2B2628}
+#tk2#tk2#tk2#tk2#tk2 .tk-pill[aria-pressed]{min-height:44px!important}
+/* Tickets header: the sale line under the round name; the gold wordmark (before the Jan 13 logo drop) sits at the bat's height */
+#tk2 .tk-head-t p .tk-runout{display:block;font-weight:800;color:inherit;margin-top:2px}
+#tk2 .tk-head img.tk-logo-gold{height:50px}
+@media (min-width:600px){#tk2 .tk-head img.tk-logo-gold{height:60px}}
+/* sold out on a pass card reads as words, not a greyed price */
+#tk2 .tk-pass-p .tk-sold{font-size:1rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;white-space:nowrap}
+/* phone order bar: the summary is one line (the whole order is one tap away), so the bar keeps one height and never covers the step in hand */
+#tk2 #tk-bart{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}

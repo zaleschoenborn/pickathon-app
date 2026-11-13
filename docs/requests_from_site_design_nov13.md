@@ -1,0 +1,9 @@
+# Requests from Site Design (Tickets pass, Nov 13 2026)
+(The project is full, so this outbox lives in the repo for now.)
+
+| # | To | Ask | Status |
+|---|---|---|---|
+| site_design-1 | Site Build | Backup price table (PK_TICKETS.prices, holiday column) doesn't match FMS (photo-catalog/fms_prices.txt, Nov 7). It shows the 4-Day at $555 (FMS has $540), 3-Day $460 (FMS $445), Patron $1,720 (FMS $1,780), Teen $277.50 (FMS $270), Thursday $122.86 (FMS $134), Willow car camp $425 (FMS $350) and others. Buyers are safe once the launch switch is LIVE, because the page then refuses backup prices. In TEST, or if the feed isn't required, the page shows the wrong prices. Also, P() rounds backup prices up (Teen becomes $278), so in backup mode Teen isn't exactly half the 4-Day. Please update the table from FMS, or make the feed required on Nov 19. | open |
+| site_design-2 | Site QA | tests/tickets.js predates the round-2 Tickets page. STEP1 reads the people counters ("One more adult/teen/kid") as passes, which gives 5 false "checkout never becomes available" failures. Passes are now radio inputs `input[name="tk-pass"]`. Also, its checkout step posts to the real pickathon.com/tickets-new, which creates pending FMS carts. Please stub that route or keep it off. | open |
+| site_design-3 | Site Build | Header logo switch: the code shows the bat when TODAY >= '2027-01-12', but home_logo_drop.md says the drop is Jan 13. Zale (Nov 13): no bat before Jan 13. Tickets now follows the header's pick (sessionStorage pk.bat), so fixing the header date fixes both. | open |
+| site_design-4 | Kris (via Site Build) | Real buyers see pickathon.com's pay and thank-you pages (WordPress theme tickets-new / tickets-pay), not the prototype's "You're in" screen. Any bat or confirmation design for Nov 19 has to land in that theme. | open |
