@@ -2234,7 +2234,7 @@ html.pkw-on .pkw-scrim{top:0}
       if (Object.keys(c.marks).length) c.legend.push(['on', c.n + ' played']);
     } else if (top.r === 'hood') {
       var H = (d.hoods || {})[top.h] || {}; c.h = top.h; c.hn = H.n || ''; c.cur = /^\d{4}$/.test(tm) && +tm < NOW ? +tm : NOW; c.kick = c.hn; c.title = 'In another year';
-      c.foot = 'A year without a dot opens that summer’s map of where it happened.'; c.names = {};
+      c.foot = 'A year without a dot opens that year’s page.'; c.names = {};
       var older = {};
       ROWS.forEach(function (R) { R[2].forEach(function (y) { if (!y || y === NOW) return; try { var P = (W ? W.places(d, y) : []).filter(function (p) { return p.h === top.h; })[0]; if (!P) return; if (P.n && P.n !== c.hn) { var ok = P.n.toLowerCase().replace(/[^a-z]/g, ''); older[ok] = older[ok] || P.n; c.marks[y] = 'old'; c.names[y] = older[ok]; }   /* Tree Line Stage and Treeline Stage are one name */ else c.marks[y] = 'on'; } catch (e) {} }); });
       c.marks[NOW] = 'on';
