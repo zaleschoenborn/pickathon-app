@@ -2584,7 +2584,8 @@ html.pk-cy-in div:has(> button[aria-label="Listen to Pickathon"]){opacity:0!impo
     var POS = KS.map(function (k, j) { var idx = cast.map(function (x, i) { return i; }).sort(function (a, b) { return V[a][j] - V[b][j] || cast[a][1][n - 1] - cast[b][1][n - 1] || cast[a][1][0] - cast[b][1][0]; }); var p = []; idx.forEach(function (i, r) { p[i] = r; }); return p; });
     // one shape per name for the whole run: its best fit at its biggest slot; a name that ever sits in the small print stays on one line
     var SCT = D.real ? Math.max.apply(null, cast.map(function (x) { return x[2][n - 1]; })) : 1;
-    var SH = cast.map(function (x, i) { if (D.real) { var b0 = best(x[0], { x: Q.COLX, w: Q.COLW, h: 1e5, mx: TOP * Math.max.apply(null, x[2]) / SCT, ml: 3, head: false }); return { L: b0.L, lead: b0.lead }; } var mn = Math.min.apply(null, POS.map(function (p) { return p[i]; })), small = POS.some(function (p) { return p[i] >= LN; });
+    var DISP = { 'NATHANIEL RATELIFF & THE NIGHT SWEATS': 'NATHANIEL RATELIFF' };   /* poster display names (Zale, Nov 12): the printed name stays in the data, the poster shows the short form */
+    var SH = cast.map(function (x, i) { if (D.real) { var b0 = best(DISP[x[0]] || x[0], { x: Q.COLX, w: Q.COLW, h: 1e5, mx: TOP * Math.max.apply(null, x[2]) / SCT, ml: 3, head: false }); return { L: b0.L, lead: b0.lead }; } var mn = Math.min.apply(null, POS.map(function (p) { return p[i]; })), small = POS.some(function (p) { return p[i] >= LN; });
       if (small || mn >= LN) return { L: [x[0]], lead: false }; var b = best(x[0], S[mn]); return { L: b.L, lead: b.lead }; });
     var WF = cast.map(function (x, i) { return D.real ? fitO(SH[i], { w: Q.COLW, h: 1e5, mx: 1e5, head: false }).f : 0; });
     // the small print: one size for the run, small enough that every step fits in two rows (the still posters keep their old cap)
