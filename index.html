@@ -6448,9 +6448,9 @@ window.__pkMapH = mapH; window.__pkGoFarm = goFarm;   // pk-home2: the Home neig
           var findA = function (k) { if (byK[k]) return byK[k]; var hit = null; Object.keys(byK).some(function (k2) { if (Math.min(k.length, k2.length) >= 6 && (k.indexOf(k2) === 0 || k2.indexOf(k) === 0)) { hit = byK[k2]; return true; } return false; }); return hit; };
           var GLc = function (g) { var GN = { hiphop: 'Hip-hop', global: 'Global', electronic: 'Electronic', experimental: 'Experimental' }; return g ? ' · ' + (GN[g] || String(g).replace(/^./, function (c) { return c.toUpperCase(); })) : ''; };
           CT.forEach(function (c) { var k = nkA(c.n), a = findA(k); var kind = c.k === 'leg' ? 'Music legend' : c.k === 'deep' ? 'Deep cut' : 'Discovery' + GLc(c.g);
-            if (a && a.__ct) return; if (a) { a.__ct = 1; a.m = c.m; a.cf = c.c || ''; a.ctk = c.k; if (c.k === 'disc') a.yr = String(c.y); var cur = a.dc ? 'deep' : a.leg ? 'leg' : 'disc'; if (cur !== c.k) { a.leg = c.k === 'leg'; a.dc = c.k === 'deep'; a.kind = c.k === 'disc' ? 'Discovery' + GLc(a.g || c.g) : kind; a.rank = c.k === 'deep' ? 5 : (c.m >= 8 ? 1 : 3); a.yr = String(c.y); } if (!a.g && c.g) a.g = c.g; return; }
+            if (a && a.__ct) return; if (a) { a.__ct = 1; a.m = c.m; a.cf = c.c || ''; a.ctk = c.k; a.ks = c.ks || null; if (c.k === 'disc') a.yr = String(c.y); var cur = a.dc ? 'deep' : a.leg ? 'leg' : 'disc'; if (cur !== c.k) { a.leg = c.k === 'leg'; a.dc = c.k === 'deep'; a.kind = c.k === 'disc' ? 'Discovery' + GLc(a.g || c.g) : kind; a.rank = c.k === 'deep' ? 5 : (c.m >= 8 ? 1 : 3); a.yr = String(c.y); } if (!a.g && c.g) a.g = c.g; return; }
             var ys = (c.ys || [c.y]).filter(function (y) { return y < 2025 || c.y >= 2025; }); var PH = ((d.yearPhotos || {})[String(c.y)] || {})[c.n];
-            var na = { n: c.n, kind: kind, leg: c.k === 'leg', dc: c.k === 'deep', cat: 'music', g: c.g || '', rank: c.k === 'deep' ? 5 : (c.m >= 8 ? 1 : 3), years: ys, yr: String(c.y), line: c.l || '', sp: '', img: (PH && PH.i) || (d.photoOf || {})[c.n] || ALI[c.n] || '', vu: '', vt: '', ct: 1, m: c.m, cf: c.c || '', ctk: c.k };
+            var na = { n: c.n, kind: kind, leg: c.k === 'leg', dc: c.k === 'deep', cat: 'music', g: c.g || '', rank: c.k === 'deep' ? 5 : (c.m >= 8 ? 1 : 3), years: ys, yr: String(c.y), line: c.l || '', sp: '', img: (PH && PH.i) || (d.photoOf || {})[c.n] || ALI[c.n] || '', vu: '', vt: '', ct: 1, m: c.m, cf: c.c || '', ctk: c.k, ks: c.ks || null };
             all.push(na); byK[k] = na; });
           var MRG = { sundayvalley: 'sturgillsimpson', leefields: 'leefieldstheexpressions' };   /* Lee Fields 2023 = Lee Fields & The Expressions 2011 (Artist Classification, Nov 9): one card, first year 2011 */ Object.keys(MRG).forEach(function (fk) { var A1 = all.filter(function (a) { return nkA(a.n) === fk; })[0], B1 = all.filter(function (a) { return nkA(a.n) === MRG[fk]; })[0]; if (!A1 || !B1) return; B1.years = (B1.years || []).concat(A1.years || []).map(Number).filter(function (y, i, Z) { return y && Z.indexOf(y) === i; }).sort(); all.splice(all.indexOf(A1), 1); });   /* a band name an act played under first (Sunday Valley = Sturgill Simpson, 2011) */
         } catch (e) {}
@@ -6466,16 +6466,19 @@ window.__pkMapH = mapH; window.__pkGoFarm = goFarm;   // pk-home2: the Home neig
         var all = archAll().filter(function (a) { return a.cat === 'music'; });
         var T = v === 'leg' ? { leg: 1 } : v === 'deep' ? { deep: 1 } : { disc: 1 };
         var GLB = { hiphop: 'Hip-hop', dj: 'DJ' }, gLab = function (k) { return GLB[k] || (k ? String(k).charAt(0).toUpperCase() + String(k).slice(1) : ''); };
-        var inCls = function (a) { return a.dc ? !!T.deep : a.leg ? !!T.leg : (!!T.disc && isDiscA(a)); };
+        /* Zale, Nov 13: an act shows under every class it holds in any year (archCT ks: ['disc','leg',...]); without ks, the one class it has today */
+        var has = function (a, k) { if (a.ks && a.ks.length) return a.ks.indexOf(k) >= 0; return k === 'deep' ? !!a.dc : k === 'leg' ? (!a.dc && !!a.leg) : isDiscA(a); };
+        var CK = v === 'leg' ? 'leg' : v === 'deep' ? 'deep' : 'disc';
+        var inCls = function (a) { return has(a, CK); };
         var G = st.archG || ''; var LEADN = st.archLead; if (G && LEADN) { var la = all.filter(function (a) { return a.n === LEADN; })[0]; if (la && la.g !== G) G = ''; }
-        var NCf = function (arr) { return { disc: arr.filter(isDiscA).length, leg: arr.filter(function (a) { return !a.dc && a.leg; }).length, deep: arr.filter(function (a) { return a.dc; }).length }; };
+        var NCf = function (arr) { return { disc: arr.filter(function (a) { return has(a, 'disc'); }).length, leg: arr.filter(function (a) { return has(a, 'leg'); }).length, deep: arr.filter(function (a) { return has(a, 'deep'); }).length }; };
         var NC = NCf(G ? all.filter(function (a) { return a.g === G; }) : all);
         var types = [['disc', 'Discoveries'], ['leg', 'Legends'], ['deep', 'Deep cuts']].map(function (t) { var on = !!T[t[0]]; return { label: t[1], n: String(NC[t[0]]), on: on ? 'true' : 'false', pick: function () { self.setState({ luYear: t[0] }); } }; });
         var items = all.filter(function (a) { return inCls(a) && (!G || a.g === G); });
         var FULLV = self._fullV || (self._fullV = (function () { var F = {}; ((d && d.videos) || []).forEach(function (v) { if (!v) return; var full = v.f === 1 || (v.t && v.t >= 25) || /full set/i.test(v.s || '') || /^[^@|()]+-[A-Za-z .&']+-(19|20)\d\d$/.test(String(v.s || '').trim()); if (full) { if (v.id) F[String(v.id).replace(/^vm/, '')] = 1; if (v.vm) F[String(v.vm)] = 1; } }); return F; })());
         var isFullU = function (u) { if (!u) return false; var m = String(u).match(/(?:youtu\.be\/|[?&]v=|\/embed\/)([\w-]{11})/) || String(u).match(/vimeo\.com\/(?:video\/)?(\d+)/); return !!(m && FULLV[m[1]]); };
         var SH = {}; shufS(items.slice(), 'arch').forEach(function (a, i) { SH[a.n] = i; });
-        var RKO = function (a) { return { m: a.m, k: a.dc ? 'deep' : a.leg ? 'leg' : 'disc', c: a.cf, n: a.n }; };
+        var RKO = function (a) { return { m: a.m, k: CK, c: a.cf, n: a.n }; };
         items.sort(function (a, b) { return (window.pkRankCmp ? window.pkRankCmp(RKO(a), RKO(b)) : 0) || (b.vu || b.img ? 1 : 0) - (a.vu || a.img ? 1 : 0) || a.rank - b.rank || (SH[a.n] - SH[b.n]); });
         if (LEADN) { var li = items.map(function (a) { return a.n; }).indexOf(LEADN); if (li < 0) { var nk = function (x) { return String(x || '').toLowerCase().replace(/^the\s+/, '').replace(/[^a-z0-9]/g, ''); }; li = items.map(function (a) { return nk(a.n); }).indexOf(nk(LEADN)); } if (li > 0) items.unshift(items.splice(li, 1)[0]); }
         var kindL = T.deep ? 'Deep cut' : T.leg ? 'Legend' : 'Discovery';
