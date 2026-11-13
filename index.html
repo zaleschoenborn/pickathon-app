@@ -2494,20 +2494,24 @@ html.pk-cy-in div:has(> button[aria-label="Listen to Pickathon"]){opacity:0!impo
       var D = Object.assign({}, D0); D.names = R.map(function (r) { return [r[0], clim ? [r[4], now[r[0]]] : [now[r[0]]]]; }); D.labels = clim ? [S0.l0, 'TODAY'] : ['TODAY']; D.clim = clim; D.climFrom = clim ? cands[0][4] : 0; D.climTo = clim ? now[clim] : 0;
       D.ranked = R.filter(function (r) { return !N(r); }).length; D.more = Math.max(0, R.length - Math.min(10, D.ranked)); D.live = 1;
       /* Six-month keyframes (Nov 10): the class table now dates each class step, so the bill is re-ranked at every point between the festival and today instead of jumping straight there. Movers glide when their class changed; the rest drift. */
-      try { var YR = dd.yearRatings && dd.yearRatings[y]; if (y === '2024' && clim && YR && YR.dates && YR.dates.length > 3) {
-        /* Zale, Nov 12: 2024 is the only year with real six-month scores. Each window's order is that window's own magnitude (minus 1 for Deep cuts); ties fall to today's order. The first frame is the printed bill, the last is today's magnitude ranking. No interpolation. */
-        var ts = YR.dates.map(function (q) { return Date.parse(q); }), NN = ts.length - 1, ACT = {};
+      try { var YR = dd.yearRatings && dd.yearRatings[y]; if (clim && YR && YR.dates && YR.dates.length > 3) {
+        /* Zale, Nov 12: every year runs the same motion, and the run always takes the same time: a long year is sampled to a few points. Each window's order is that window's own peak magnitude (minus 1 for Deep cuts); ties fall to today's order. The first frame is the printed bill, the last is today's peak-magnitude ranking. */
+        var DT = YR.dates, SMP = [0], MIDN = Math.min(5, DT.length - 2); for (var sq = 1; sq <= MIDN; sq++) SMP.push(Math.max(1, Math.min(DT.length - 2, Math.round(sq * (DT.length - 1) / (MIDN + 1)))));
+        SMP.push(DT.length - 1); SMP = SMP.filter(function (v, i) { return i === 0 || v !== SMP[i - 1]; });
+        var ts = SMP.map(function (q) { return Date.parse(DT[q]); }), NN = ts.length - 1, ACT = {};
         (YR.acts || []).forEach(function (a) { ACT[nm(a.n)] = a; });
         var prt = D.names.map(function (x) { return x[1][0]; }), tdy = D.names.map(function (x) { return x[1][1]; }), kfs = [prt];
-        for (var k = 1; k < NN; k++) { var sc = D.names.map(function (x) { var a = ACT[nm(x[0])]; return a && a.m[k] != null ? a.m[k] - (a.c[k] === 'deep' ? 1 : 0) : -9; });
+        for (var k = 1; k < NN; k++) { var sc = D.names.map(function (x) { var a = ACT[nm(x[0])], j0 = SMP[k]; return a && a.m[j0] != null ? a.m[j0] - (a.c[j0] === 'deep' ? 1 : 0) : -9; });
           var ord = D.names.map(function (x, i) { return i; }).sort(function (p, q) { return sc[q] - sc[p] || tdy[p] - tdy[q]; }), rk = []; ord.forEach(function (i, r) { rk[i] = r; }); kfs.push(rk); }
         kfs.push(tdy);
         var RR = {}; R.forEach(function (r) { RR[nm(r[0])] = r; });
         var fin = function (n0) { var r = RR[nm(n0)]; if (!r) return 1; var v = r.length > 6 && r[6] !== null && r[6] !== '' ? +r[6] : (+r[2] || 0); return Math.max(1, v - (r[1] === 'Deep cut' ? 1 : 0)); };
-        D.names = D.names.map(function (x, i) { var a = ACT[nm(x[0])], scs = []; for (var q = 0; q < NN; q++) scs.push(a && a.m[q] != null ? Math.max(1, a.m[q] - (a.c[q] === 'deep' ? 1 : 0)) : fin(x[0])); scs.push(fin(x[0]));
+        D.names = D.names.map(function (x, i) { var a = ACT[nm(x[0])], scs = []; for (var q = 0; q < NN; q++) { var j1 = SMP[q]; scs.push(a && a.m[j1] != null ? Math.max(1, a.m[j1] - (a.c[j1] === 'deep' ? 1 : 0)) : fin(x[0])); } scs.push(fin(x[0]));
           return [x[0], kfs.map(function (rk) { return rk[i]; }), scs]; });   /* Zale, Nov 12: type size follows the score at each moment, on the scale where today's #1 is the biggest type */
         D.when = ts.map(function (t) { return (t - ts[0]) / (ts[NN] - ts[0]); });
         D.labels = ts.map(function (t, i) { return i === 0 ? S0.l0 : i === NN ? 'TODAY' : String(new Date(t).getUTCFullYear()); }); D.real = 1;
+        /* Zale, Nov 12: a year only moves, and only joins the Home rotation, when at least 5 of its top 10 have magnitude data plotted at every point. 2025 and 2026 stay out of the rotation (Discovery has not grown enough yet). */
+        D.nM = D.names.filter(function (x) { var a = ACT[nm(x[0])]; return a && SMP.every(function (j) { return a.m[j] != null && a.m[j] > 0; }); }).length; D.feat = D.nM >= 5 && +y < 2025;
       } else if (false) {
         var ts = YR.dates.map(function (q) { return Date.parse(q); }), T0 = ts[0], T1 = ts[ts.length - 1], YM = 365.25 * 864e5, NN = ts.length - 1, ACT = {};
         (YR.acts || []).forEach(function (a) { ACT[nm(a.n)] = a; });
@@ -2526,7 +2530,7 @@ html.pk-cy-in div:has(> button[aria-label="Listen to Pickathon"]){opacity:0!impo
     return out; } catch (e) { return dd.climb || {}; } };
   var ALLY = function () { return Object.keys(C).filter(function (k) { return C[k] && C[k].names && C[k].names.length; }).map(Number).sort(function (a, b) { return b - a; }); };
   // ANOTHER YEAR draws from every summer that has a climber, shuffled so nothing repeats until all have shown.
-  var POOL = function () { return ALLY().filter(function (y) { var D = C[y]; return D.clim && D.labels && D.labels.length > 1; }); }; // every year with a climber, 2025 and 2026 included (no year holdback, Zale Nov 8-9)
+  var POOL = function () { return ALLY().filter(function (y) { var D = C[y]; return D.clim && D.feat && D.labels && D.labels.length > 1; }); }; // every year with a climber, 2025 and 2026 included (no year holdback, Zale Nov 8-9)
 
   // Sizes. Desktop: the paper is 960 wide (inner 880): art 330 at left, list column 524. Phone and tablet (phone-style): art small on top, list full width.
   function cfg(ph, wAvail) {
@@ -2753,7 +2757,7 @@ html.pk-cy-in div:has(> button[aria-label="Listen to Pickathon"]){opacity:0!impo
       D._pic = { a: a, b: b, an: hd[0], cross: Math.max(0.2, Math.min(0.85, (j - 0.5) / (n - 1))) }; } catch (e) {}
     return D._pic; }
   function picK(P, e) { var t = Math.max(0, Math.min(1, (e - (P.cross - 0.12)) / 0.24)); return t * t * (3 - 2 * t); }
-  function STAT(y) { var D0 = C && C[y]; return !(D0 && D0.real && D0.labels.length > 2); }   /* Zale, Nov 12: only 2024 has six-month scores, so only 2024 moves; every other year is today's top 10, still, until the all-years data exists (design_studio-59) */
+  function STAT(y) { var D0 = C && C[y]; return !(D0 && D0.real && D0.feat && D0.labels.length > 2); }   /* Zale, Nov 12: only 2024 has six-month scores, so only 2024 moves; every other year is today's top 10, still, until the all-years data exists (design_studio-59) */
   /* Zale, Nov 11: on phone the time reads as a calendar page that ticks from the festival month to today while the poster runs */
   var MON = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
   function calH(y, frac) { var m0 = 7, tot = (TODAY - (+y)) * 12 + (10 - m0), m = m0 + Math.round(Math.max(0, Math.min(1, frac)) * tot); return '<b class="pk-cl-mo">' + MON[m % 12] + '</b><b class="pk-cl-yr">' + ((+y) + Math.floor(m / 12)) + '</b>'; }
@@ -2774,7 +2778,7 @@ html.pk-cy-in div:has(> button[aria-label="Listen to Pickathon"]){opacity:0!impo
     S.raf = requestAnimationFrame(function (now) { t0 = now; fr(now); });
   }
   function go(y) { stop(); S.back = null; S.y = String(y); var n = C[y].labels.length; S.tp = (n > 1 && !RM && !STAT(y)) ? 0 : n - 1; S.seen[S.y] = 0; draw(); check(); }
-  function rand() { var O = (window.pkClimbOrder || []).map(String).filter(function (q) { return C[q] && C[q].clim; }); if (O.length > 1) { var oi = O.indexOf(S.y); go(+O[(oi + 1) % O.length]); return; } var P = POOL().filter(function (q) { return String(q) !== S.y; }); if (!S.bag.length) { S.bag = P.slice(); for (var i = S.bag.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)), t = S.bag[i]; S.bag[i] = S.bag[j]; S.bag[j] = t; } } var y = S.bag.pop(); if (String(y) === S.y && S.bag.length) y = S.bag.pop(); go(y); }
+  function rand() { var O = (window.pkClimbOrder || []).map(String).filter(function (q) { return C[q] && C[q].clim && C[q].feat; }); if (O.length > 1) { var oi = O.indexOf(S.y); go(+O[(oi + 1) % O.length]); return; } var P = POOL().filter(function (q) { return String(q) !== S.y; }); if (!S.bag.length) { S.bag = P.slice(); for (var i = S.bag.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)), t = S.bag[i]; S.bag[i] = S.bag[j]; S.bag[j] = t; } } var y = S.bag.pop(); if (String(y) === S.y && S.bag.length) y = S.bag.pop(); go(y); }
 
   function draw() {
     if (!mountEl || !C || !S.y) return;
@@ -9620,7 +9624,7 @@ html:root:root #root#root#root#root#root#root#root#root#root#root#root#root#root
 window.pkClimbRank = function (C, dd) {
   var nk = function (x) { return String(x || '').normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/^the\s+/, '').replace(/[^a-z0-9]/g, ''); };
   var YB = (dd && dd.yearBill) || {}, R = [];
-  Object.keys(C || {}).forEach(function (y) { var D = C[y]; if (!D || !D.clim || !D.labels || D.labels.length < 2) return;
+  Object.keys(C || {}).forEach(function (y) { var D = C[y]; if (!D || !D.clim || !D.feat || !D.labels || D.labels.length < 2) return;
     var bill = YB[y] || [], hit = bill.filter(function (b) { return nk(b.n) === nk(D.clim); })[0], top = 0;
     bill.forEach(function (b) { if (b.k === 'disc' && (b.m || 0) > top) top = b.m || 0; });
     R.push({ y: +y, d: hit ? (hit.k === 'disc' ? 1 : 0) : (top > 0 ? 1 : 0), m: hit && hit.m != null ? +hit.m : top, c: (+D.climFrom || 0) - (+D.climTo || 0) }); });

@@ -25,7 +25,9 @@ for r in csv.DictReader(open(sys.argv[1], encoding='utf-8-sig')):
     if r.get('lineup') != 'Music' or (r.get('merged_into') or '').strip() or not KC(r.get('class')): continue
     k = KC(r['class']); af = KC(r['at_festival_class']) or k; td = KC(r['today_class']) or KC(r['stature_now_class']) or k
     if RK[td] < RK[af]: td = af
-    T[(r['year'], key(r['act']))] = dict(af=af, td=td, afm=num(r['at_festival_magnitude']) or num(r['magnitude']) or 0, tdm=num(r['today_magnitude']) or num(r['magnitude']) or 0, st=steps(r['class_path']))
+    T[(r['year'], key(r['act']))] = dict(af=af, td=td, afm=num(r.get('at_festival_magnitude_dec')) or num(r['at_festival_magnitude']) or num(r['magnitude']) or 0, tdm=max(num(r.get('magnitude_dec')) or num(r['today_magnitude']) or num(r['magnitude']) or 0, num(r.get('at_festival_magnitude_dec')) or num(r['at_festival_magnitude']) or 0))
+    # Zale, Nov 12: the size is the PEAK magnitude (magnitude_dec), one decimal, never below the festival value
+    T[(r['year'], key(r['act']))]['st'] = steps(r['class_path'])
 n_up = 0
 for y, R in d['yearRatings'].items():
     yr = int(y); fm = '%d-08' % yr
@@ -53,7 +55,7 @@ for y, R in d['yearRatings'].items():
             c.append(cur)
         c[0] = t['af']
         # a class change that is not dated sits at Today only
-        a['c'] = c; a['m'] = [int(round(t['afm'] + (t['tdm'] - t['afm']) * (i / span if span else 1))) for i in range(nn)]
+        a['c'] = c; a['m'] = [round(t['afm'] + (t['tdm'] - t['afm']) * (i / span if span else 1), 1) for i in range(nn)]
         if c[0] != c[-1]: n_up += 1
 json.dump(d, open(os.path.join(SITE, 'data.json'), 'w'), ensure_ascii=False, separators=(',', ':'))
 print('rebuilt yearRatings; acts that changed class:', n_up, 'points per year:', {y: len(R['dates']) for y, R in list(d['yearRatings'].items())[:30]})

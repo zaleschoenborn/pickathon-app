@@ -48,3 +48,8 @@ Where this differs from the notes above, this section wins.
 - Headliner/climber photo pairs for the other years.
 - Sideways tablet and 360 phone are tight: the smallest names render about 7 to 9 px after scaling.
 - Notes naming the climber for other years (Geese vs This Is Lorelei is settled for 2024: Geese).
+
+## Update, Nov 12 late (all years)
+- Top 10 and sizes use the PEAK magnitude (magnitude_dec) from class_table_nov11; build_ratings.py now reads at_festival_magnitude_dec / magnitude_dec (one decimal). 2024's measured six-month windows are kept (do not run build_ratings.py unmodified: it overwrites 2024 with straight lines).
+- Every year with data runs the same motion; long years are sampled to at most 7 points so every run takes 6.4 s. Middle points for years other than 2024 are straight lines between the festival and today values (provisional); only the class steps are dated facts.
+- Zale: a year moves and joins the Home rotation only if at least 5 acts have magnitude at every plotted point (D.nM >= 5, D.feat). Other years are still. 2025 and 2026 are kept out of the rotation (not enough Discovery growth yet). Code: D.feat in pkClimbLive, used by STAT(), POOL(), rand(), pkClimbRank.
