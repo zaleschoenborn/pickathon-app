@@ -2031,7 +2031,8 @@ function revealMap(){ if(_rvd) return; const i=document.getElementById('mapimg')
 setTimeout(_rvGo,20000);   /* never stay hidden */
 (function(){ const _b2=boot; boot=function(){ try{ _b2(); }finally{ requestAnimationFrame(function(){ requestAnimationFrame(function(){ setTimeout(revealMap,60); }); }); } }; })();
 /* ---- Time Machine: ?y=YYYY shows the farm as it was. Zones come from tm.json (history thread); no icons, clean base. ---- */
-const YR=(location.search.match(/[?&]y=(\d{4})/)||[])[1]||'';
+/* Past-year map switched off (Zale, Nov 13): only today's map shows. Add &tm=1 to the address to test it. */
+const YR=/[?&]tm=1/.test(location.search)?((location.search.match(/[?&]y=(\d{4})/)||[])[1]||''):'';
 function yearMode(tm){
   const b=document.body; b.classList.add('yr');
   Object.keys(ICON_OWN).forEach(k=>delete ICON_OWN[k]);
@@ -2405,7 +2406,7 @@ body.dooron #door{display:block}
   const short=h=>String(h.n||'').replace(/^The /,'');
   let H=null, L=[], vi=0, fold=false, pickAt=0;
   /* for 2 s after a pick, a tap that lands where the icon strip was is a second tap on the strip, not a press on the sheet (map test r2 #2) */
-  const ghost=e=>{ const r=window.__stripR; return !!(r&&NOW()-pickAt<2000&&e.clientX>=r.left&&e.clientX<=r.right&&e.clientY>=r.top-4&&e.clientY<=r.bottom+4); };
+  /* Nov 13: window cut 2000ms -> 700ms; the old window blocked the Explore button on phones for 2s after a pick */ const ghost=e=>{ const r=window.__stripR; return !!(r&&NOW()-pickAt<700&&e.clientX>=r.left&&e.clientX<=r.right&&e.clientY>=r.top-4&&e.clientY<=r.bottom+4); };
   function photo(h){ const x=XD&&XD.h&&XD.h[h.id], q=x&&(x.hi||x.i); if(q) return !/^(https?:|\.\.\/|\/)/.test(q)?'../'+q:q; return ((HERO[h.id]||[])[0])||''; }  // site photos are root paths; the map's own h/ heroes sit next to this page
   function putMedia(){
     const a=$('.dv'), im=a.querySelector('img'), v=L.length?L[vi%L.length]:null;
