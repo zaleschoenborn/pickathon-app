@@ -3221,8 +3221,9 @@ html.pk-yp-on #root .pk-yb{display:none}
 })();
 </script>
 <style id="pk-qafix-css">
-/* QA fix Nov 13: shared pk-cta buttons are 50px tall on phone and tablet (below 1200px), 56px on desktop. */
-@media (max-width:1199px){#root#root main .pk-cta:not(.pk-cta-keep){min-height:50px!important}}
+/* QA fix Nov 13: shared pk-cta buttons are 50px tall on phone and tablet (below 1200px). Desktop stays 56px.
+   The #root chain outranks the older 56px and 44px rules; inline min-height:48px on the artist page loses to !important. */
+@media (max-width:1199px){#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .pk-cta{min-height:50px!important}}
 </style>
 <script id="pk-qafix-js">/*pk-qafix (site_qa-2): keep every city-map spot label inside the map card (labels at the edges could poke out a few px at 1024 and 1180 landscape)*/
 (function () {
