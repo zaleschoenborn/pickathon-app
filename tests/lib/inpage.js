@@ -99,7 +99,7 @@ exports.checks = async (o) => {
   const vis = (el) => el.checkVisibility({ checkOpacity: true, checkVisibilityCSS: true });
   const clipAnc = (el, scrollOk) => { for (let p = el.parentElement; p && p !== document.body; p = p.parentElement) { const cs = getComputedStyle(p); const ox = cs.overflowX, oy = cs.overflowY; if (ox !== 'visible' || oy !== 'visible') { if (!scrollOk && /auto|scroll/.test(ox + oy)) return { p, scroll: true }; return { p, scroll: /auto|scroll/.test(ox + oy) }; } if (cs.position === 'fixed') return { p, fixed: true }; } return null; };
   // When a full-screen sheet or menu is open, judge only what's in it (the page behind is covered).
-  const cover = [...document.querySelectorAll('[aria-modal=true],[role=dialog],nav[aria-label=More]')].find((e) => { if (!vis(e) || e.closest('[aria-label="Cookie choices"]')) return false; const r = e.getBoundingClientRect(); return r.width * Math.min(r.height, vh) > vw * vh * 0.6; });
+  const cover = [...document.querySelectorAll('[aria-modal=true],[role=dialog],nav[aria-label=More],[role=region][aria-label=Listen] *')].find((e) => { if (!vis(e) || e.closest('[aria-label="Cookie choices"]')) return false; const r = e.getBoundingClientRect(); if (e.closest('[role=region][aria-label=Listen]')) return getComputedStyle(e).position === 'fixed' && r.width * Math.min(r.height, vh) > vw * vh * 0.3; return r.width * Math.min(r.height, vh) > vw * vh * 0.6; });   /* an open Listen sheet covers the page too (QA Nov 14) */
   const moving = (e) => { try { for (let p = e; p && p !== document.body; p = p.parentElement) if (p.getAnimations().some((a) => a.playState === 'running' && /transform|translate|left|margin/i.test(JSON.stringify(a.effect && a.effect.getKeyframes ? a.effect.getKeyframes() : '')))) return true; } catch (x) {} return false; };
   const skip = (e) => !!e.closest('[data-pkqa-ignore],[aria-label="Cookie choices"],:has(> label > select[aria-label="Site state"])') || (cover && !cover.contains(e));
   const all = [...document.body.querySelectorAll('*')].filter((e) => !skip(e) && !/^(SCRIPT|STYLE|NOSCRIPT|BR|svg|path|g|use|defs|circle|rect|line|polygon|polyline|ellipse|text|tspan|clipPath|linearGradient|radialGradient|stop|mask|symbol)$/.test(e.tagName));
@@ -133,12 +133,12 @@ exports.checks = async (o) => {
     else if (clamp && head && el.scrollHeight > el.clientHeight + 2) add('clip', 'heading/name cut to ' + cs.webkitLineClamp + ' lines', el);
     else {
       const a = clipAnc(el, false);
-      if (a && !a.scroll && !a.fixed) { const pr = a.p.getBoundingClientRect(); const rg = document.createRange(); rg.selectNodeContents(el); const tr = rg.getBoundingClientRect();
+      if (a && !a.scroll && !a.fixed && !clamp) { const pr = a.p.getBoundingClientRect(); const rg = document.createRange(); rg.selectNodeContents(el); const tr = rg.getBoundingClientRect();
         const inter = tr.right > pr.left && tr.left < pr.right && tr.bottom > pr.top && tr.top < pr.bottom;
         if (inter && !moving(el) && (tr.right > pr.right + 2 || tr.left < pr.left - 2 || tr.bottom > pr.bottom + 3 || tr.top < pr.top - 3)) add('clip', 'text runs past its box edge', el); }
     }
     const rg = document.createRange(); rg.selectNodeContents(el); const tr = rg.getBoundingClientRect();
-    if (tr.width > 2 && leaves.length < 1500) leaves.push({ el, r: tr });
+    if (tr.width > 2 && leaves.length < 1500) { let rr = tr; if (clamp || cs.overflowY !== 'visible') { const t = Math.max(tr.top, r.top), b = Math.min(tr.bottom, r.bottom); rr = { left: tr.left, right: tr.right, width: tr.width, top: t, bottom: Math.max(t, b), height: Math.max(0, b - t) }; } leaves.push({ el, r: rr }); }   // a line-clamped paragraph hides its extra lines; don't count them as overlapping (QA Nov 14)
   }
   const layerC = new Map(); const layer = (el) => { if (layerC.has(el)) return layerC.get(el); let L = document.body; for (let p = el; p && p !== document.body; p = p.parentElement) { const cs = getComputedStyle(p); if (cs.position === 'fixed' || cs.position === 'sticky' || (cs.position === 'absolute' && cs.zIndex !== 'auto') || p.getAttribute('role') === 'dialog' || p.getAttribute('aria-modal') === 'true') { L = p; break; } } layerC.set(el, L); return L; };
   leaves.sort((a, b) => a.r.top - b.r.top); let ov = 0;
@@ -229,6 +229,7 @@ exports.checks = async (o) => {
     const small = {};
     for (const b of tapEls) {
       const r = b.getBoundingClientRect(); if (r.width < 1) continue; if (r.width >= 44 && r.height >= 44) continue;
+      if (['::after', '::before'].some((ps) => { const c = getComputedStyle(b, ps); return c.content !== 'none' && c.position === 'absolute' && parseFloat(c.width) >= 44 && parseFloat(c.height) >= 44; })) continue; // invisible 44px hit area around a small dot
       if (b.tagName === 'A' && getComputedStyle(b).display === 'inline' && b.parentElement && (b.parentElement.textContent || '').trim().length > (b.textContent || '').trim().length + 20) continue; // link inside a sentence
       if (/^(INPUT)$/.test(b.tagName) && /hidden|checkbox|radio/.test(b.type) && b.closest('label')) continue;
       const key = lab(b).replace(/ ".*$/, ''); small[key] = small[key] || [0, b, r]; small[key][0]++;

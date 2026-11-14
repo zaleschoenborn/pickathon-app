@@ -80,40 +80,45 @@ async function runCombo(browser, base, targets, size, mode, sink) {
   sink.zoom[combo] = { meta: zc.z.meta, noScale: zc.z.noScale, touchAction: zc.z.touchAction, gesture: zc.z.gesture, pinch: zc.pinch };
   await fresh();
   let n = 0, tmplRef = {}; const shotSeen = new Set();
+  let gen = 0; const TMO = +arg('page-timeout', 60000);
+  const one = async (t, my) => {
+      const e0 = errs.length, b0 = bad.length;
+      let st = 'err';
+      try { st = await page.evaluate(IP.goto, t); if (st === 'no-app') { await page.evaluate(IP.hook); st = await page.evaluate(IP.goto, t); } if (st === 'no-app') { if (my === gen) await fresh(); st = await page.evaluate(IP.goto, t); } } catch (e) { st = 'err ' + String(e.message).slice(0, 80); if (my === gen) await fresh(); }
+      if (st === 'no-control') { sink.skip(t, size, mode, 'control not shown at this size'); return; }
+      if (st !== 'ok') { (my === gen) && sink.issue({ t, size, mode, c: 'script', m: 'could not open page: ' + st, s: '', shot: '' }); return; }
+      try {
+        await page.waitForTimeout(t.kind === 'panel' ? 700 : 900);
+        const ls0 = await page.evaluate(() => (window.__pkLS || []).length);
+        const A = await page.evaluate(IP.boxes); const pa = await page.screenshot({ type: 'png' });
+        await page.waitForTimeout(1800);
+        const B = await page.evaluate(IP.boxes); const pb = await page.screenshot({ type: 'png' });
+        const found = await page.evaluate(IP.checks, { touch });
+        for (const R of RULES) { if (R.when && !R.when({ size, mode, target: t, touch })) return; try { (await page.evaluate(R.run)).forEach((x) => found.push({ c: R.id, m: x.m, s: x.s || '' })); } catch (e) {} }
+        // layout shift / flicker between the two screenshots
+        let moved = 0, first = ''; for (const k in A.b) { const a = A.b[k], b = B.b[k]; if (!b || a[4] !== b[4]) return; if (Math.abs(a[0] - b[0]) > 3 || Math.abs(a[1] - b[1]) > 3 || Math.abs(a[3] - b[3]) > 3) { if (!moved) first = a[4]; moved++; } }
+        const cls = (await page.evaluate((n) => (window.__pkLS || []).slice(n).reduce((s, e) => s + e.v, 0), ls0));
+        const dp = diffPct(pa, pb), animating = await page.evaluate(() => { try { return document.getAnimations().filter((a) => a.playState === 'running').length + [...document.querySelectorAll('video,iframe')].filter((v) => v.checkVisibility()).length; } catch (e) { return 1; } });
+        if (moved >= 3 || (cls > 0.02 && dp > 1)) found.push({ c: 'shift', m: 'layout moves after load: ' + moved + ' items shifted' + (cls ? ', shift score ' + cls.toFixed(3) : '') + (dp >= 0 ? ', ' + dp + '% of pixels changed' : ''), s: first });
+        else if (dp > 20 && moved >= 1 && !animating) found.push({ c: 'flicker', m: dp + '% of the screen changed a few seconds after load with nothing animating', s: '' });
+        errs.slice(e0).forEach((m) => found.push({ c: 'script', m: 'script error: ' + m, s: '' }));
+        bad.slice(b0).filter((x) => !/favicon/.test(x)).slice(0, 4).forEach((m) => found.push({ c: 'broken-file', m: 'file missing: ' + m, s: '' }));
+        // screenshots
+        const name = (t.id.replace(/[^a-zA-Z0-9@:._-]+/g, '-').replace(/:/g, '_')).slice(0, 80) + '.jpg';
+        let shot = '';
+        const wantRef = SHOTS === 'ref' && mode === 'tab' && (!TEMPLATE.has(t.kind) || (tmplRef[t.kind] = (tmplRef[t.kind] || 0) + 1) <= 6 || t.id === 'past:2024' || /geese/.test(t.id));
+        // one screenshot per distinct problem per size/mode (the same problem on 264 artist pages needs one picture, not 264)
+        const fresh1 = found.filter((f) => { const k = f.c + '|' + String(f.m).replace(/\d+(\.\d+)?/g, '#') + '|' + String(f.s).replace(/ ".*/, ''); if (shotSeen.has(k)) return false; shotSeen.add(k); return true; });
+        if (fresh1.length && SHOTS !== 'none') { shot = 'fail/' + combo + '/' + name; await page.screenshot({ type: 'jpeg', quality: 55, path: path.join(OUT, 'shots', shot) }); }
+        if (wantRef) { const ref = 'ref/' + combo + '/' + name; if (shot) { fs.mkdirSync(path.dirname(path.join(OUT, 'shots', ref)), { recursive: true }); fs.copyFileSync(path.join(OUT, 'shots', shot), path.join(OUT, 'shots', ref)); } else { await page.screenshot({ type: 'jpeg', quality: 55, path: path.join(OUT, 'shots', ref) }); } }
+        found.forEach((f) => (my === gen) && sink.issue({ t, size, mode, c: f.c, m: f.m, s: f.s, shot }));
+        sink.pass(t, size, mode, found.length);
+      } catch (e) { (my === gen) && sink.issue({ t, size, mode, c: 'script', m: 'test crashed on this page: ' + String(e.message).split('\n')[0].slice(0, 100), s: '', shot: '' }); if (my === gen) await fresh(); }
+  };
   for (const t of targets) {
     if (++n % 40 === 0) await fresh();
-    const e0 = errs.length, b0 = bad.length;
-    let st = 'err';
-    try { st = await page.evaluate(IP.goto, t); if (st === 'no-app') { await page.evaluate(IP.hook); st = await page.evaluate(IP.goto, t); } if (st === 'no-app') { await fresh(); st = await page.evaluate(IP.goto, t); } } catch (e) { st = 'err ' + String(e.message).slice(0, 80); await fresh(); }
-    if (st === 'no-control') { sink.skip(t, size, mode, 'control not shown at this size'); continue; }
-    if (st !== 'ok') { sink.issue({ t, size, mode, c: 'script', m: 'could not open page: ' + st, s: '', shot: '' }); continue; }
-    try {
-      await page.waitForTimeout(t.kind === 'panel' ? 700 : 900);
-      const ls0 = await page.evaluate(() => (window.__pkLS || []).length);
-      const A = await page.evaluate(IP.boxes); const pa = await page.screenshot({ type: 'png' });
-      await page.waitForTimeout(1800);
-      const B = await page.evaluate(IP.boxes); const pb = await page.screenshot({ type: 'png' });
-      const found = await page.evaluate(IP.checks, { touch });
-      for (const R of RULES) { if (R.when && !R.when({ size, mode, target: t, touch })) continue; try { (await page.evaluate(R.run)).forEach((x) => found.push({ c: R.id, m: x.m, s: x.s || '' })); } catch (e) {} }
-      // layout shift / flicker between the two screenshots
-      let moved = 0, first = ''; for (const k in A.b) { const a = A.b[k], b = B.b[k]; if (!b || a[4] !== b[4]) continue; if (Math.abs(a[0] - b[0]) > 3 || Math.abs(a[1] - b[1]) > 3 || Math.abs(a[3] - b[3]) > 3) { if (!moved) first = a[4]; moved++; } }
-      const cls = (await page.evaluate((n) => (window.__pkLS || []).slice(n).reduce((s, e) => s + e.v, 0), ls0));
-      const dp = diffPct(pa, pb), animating = await page.evaluate(() => { try { return document.getAnimations().filter((a) => a.playState === 'running').length + [...document.querySelectorAll('video,iframe')].filter((v) => v.checkVisibility()).length; } catch (e) { return 1; } });
-      if (moved >= 3 || (cls > 0.02 && dp > 1)) found.push({ c: 'shift', m: 'layout moves after load: ' + moved + ' items shifted' + (cls ? ', shift score ' + cls.toFixed(3) : '') + (dp >= 0 ? ', ' + dp + '% of pixels changed' : ''), s: first });
-      else if (dp > 20 && moved >= 1 && !animating) found.push({ c: 'flicker', m: dp + '% of the screen changed a few seconds after load with nothing animating', s: '' });
-      errs.slice(e0).forEach((m) => found.push({ c: 'script', m: 'script error: ' + m, s: '' }));
-      bad.slice(b0).filter((x) => !/favicon/.test(x)).slice(0, 4).forEach((m) => found.push({ c: 'broken-file', m: 'file missing: ' + m, s: '' }));
-      // screenshots
-      const name = (t.id.replace(/[^a-zA-Z0-9@:._-]+/g, '-').replace(/:/g, '_')).slice(0, 80) + '.jpg';
-      let shot = '';
-      const wantRef = SHOTS === 'ref' && mode === 'tab' && (!TEMPLATE.has(t.kind) || (tmplRef[t.kind] = (tmplRef[t.kind] || 0) + 1) <= 6 || t.id === 'past:2024' || /geese/.test(t.id));
-      // one screenshot per distinct problem per size/mode (the same problem on 264 artist pages needs one picture, not 264)
-      const fresh1 = found.filter((f) => { const k = f.c + '|' + String(f.m).replace(/\d+(\.\d+)?/g, '#') + '|' + String(f.s).replace(/ ".*/, ''); if (shotSeen.has(k)) return false; shotSeen.add(k); return true; });
-      if (fresh1.length && SHOTS !== 'none') { shot = 'fail/' + combo + '/' + name; await page.screenshot({ type: 'jpeg', quality: 55, path: path.join(OUT, 'shots', shot) }); }
-      if (wantRef) { const ref = 'ref/' + combo + '/' + name; if (shot) { fs.mkdirSync(path.dirname(path.join(OUT, 'shots', ref)), { recursive: true }); fs.copyFileSync(path.join(OUT, 'shots', shot), path.join(OUT, 'shots', ref)); } else { await page.screenshot({ type: 'jpeg', quality: 55, path: path.join(OUT, 'shots', ref) }); } }
-      found.forEach((f) => sink.issue({ t, size, mode, c: f.c, m: f.m, s: f.s, shot }));
-      sink.pass(t, size, mode, found.length);
-    } catch (e) { sink.issue({ t, size, mode, c: 'script', m: 'test crashed on this page: ' + String(e.message).split('\n')[0].slice(0, 100), s: '', shot: '' }); await fresh(); }
+    const my = gen; let tm; const r = await Promise.race([one(t, my).then(() => 'ok', () => 'ok'), new Promise((res) => { tm = setTimeout(() => res('timeout'), TMO); })]); clearTimeout(tm);
+    if (r === 'timeout') { gen++; sink.issue({ t, size, mode, c: 'script', m: 'page did not finish within ' + Math.round(TMO / 1000) + ' s; the test skipped it', s: '', shot: '' }); log && log('  timeout, skipped ' + (t.id || '')); await fresh().catch(() => {}); }
   }
   await ctx.close();
 }
