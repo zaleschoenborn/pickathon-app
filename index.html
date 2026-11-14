@@ -1716,8 +1716,8 @@ html body:not(#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1
       el.style.setProperty('--tmb', B.band || '#2B2628'); var LG = (window.__pkYL || {})[y] || '', here = T.r === 'past';
       var seal = '<i class="pk-tm-seal" aria-hidden="true">' + (LG ? '<img src="' + LG + '" alt="">' : '') + '</i>';
       /* Round 3.5 opener spec: one opener on every page inside a past year: seal + "2019 ▾" (no "LINEUP"), arrow cursor, 44 px target */
-      el.innerHTML = '<button type="button" class="pk-tm-yr pk-tm-pick" aria-haspopup="dialog" aria-expanded="false" aria-label="Pickathon ' + y + '. ' + (here ? 'Jump to another year' : 'Another year') + '">' + seal + '<b class="pk-tm-y pkp-head">' + y + '</b><svg class="pk-tm-dn" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button><button type="button" class="pk-tm-bk">Back to 2027</button>';
-      el.querySelector('.pk-tm-bk').onclick = back; var yb = el.querySelector('.pk-tm-yr');
+      el.innerHTML = '<button type="button" class="pk-tm-yr pk-tm-pick" aria-haspopup="dialog" aria-expanded="false" aria-label="Pickathon ' + y + '. ' + (here ? 'Jump to another year' : 'Another year') + '">' + seal + '<b class="pk-tm-y pkp-head">' + y + '</b><svg class="pk-tm-dn" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>';
+      var yb = el.querySelector('.pk-tm-yr');
       yb.onclick = function () { try { if (window.pkYearWall) { window.pkYearWall.open(yb); return; } var pk = here && document.querySelector('.pk-yhp'); if (pk) pk.click(); else if (window.pkOpenYear) window.pkOpenYear(y); } catch (e) {} }; }   /* B8: the year opens the year wall on year, artist and place pages */
   }, 250);
 })();
