@@ -23,3 +23,8 @@ Owner: the Build with Pickathon page (route `build`). This is the Build thread's
 | build-2 | Festival History | Build story pages (design_studio-17) are still missing. Until they land, Build cards open the neighborhood page for that year (Starburst opens its blog story; Wild Horse has no link), and no card says "Read the story". Also wanted: same-year photos of the 2022-2024 builds that have a downstream home (2024 shows only Galaxy today), and a photo for the HQ private build. | open |
 | build-3 | Site Build | The sitewide "Start a project →" card is 44px; buttons.md says 50/56. Home's "Get involved" door (home_flow.md section 4) should point at the new support page once it exists. | open |
 | build-4 | Design Studio | Draft 1 design questions. (a) Build cards use each neighborhood's first curated gallery photo; Windmill's and Market's are weak structure shots. (b) What a card opens before its story page exists (see build-2). | open |
+
+## Before the Build form goes live (Zale, Nov 13)
+- Ruling: project requests go to a Creative Neighborhoods inbox, with one named person watching it.
+- Open: no CN address exists yet (the page is a prototype). The form stays in test mode (buildForm.live off): it shows "Got it" and sends nothing.
+- To do when the address exists: point the form's destination at it, turn buildForm.live on, send one test request end to end, and check that the CN person gets it.

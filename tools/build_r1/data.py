@@ -18,7 +18,7 @@ d['buildPage'] = {
   "who": {"k": "Who hires us", "t": "Who we build for", "items": [
     ["Businesses and private owners", "A patio, a stage, a gathering place you already need. You bring the budget."],
     ["Nonprofits and community groups with a budget", "It works the same way: a place your people will use for years."],
-    ["Still raising the money", "Tell us anyway. We help find partners to fund the build."]]},
+    ["Not sure who pays yet", "Tell us anyway. We can help line up a sponsor or community partner."]]},
   "due": {"t": "Proposals for {year} are due Dec 15", "cta": "Start a project", "link": "How Creative Neighborhoods works", "page": "community"},
   "form": {
     "steps": [
@@ -26,7 +26,7 @@ d['buildPage'] = {
       {"id": "builds", "q": "What do you need built?", "o": [["stage", "A stage or performance space"], ["gather", "A gathering place: patio, pavilion, shade"], ["class", "A classroom or learning space"], ["play", "A play or kids’ space"], ["art", "An art piece"], ["other", "Something else"]]},
       {"id": "when", "q": "When do you need it?", "o": [["{year}", "After the {year} festival"], ["{year2}", "After the {year2} festival"]]},
       {"id": "cost", "q": "What’s the budget?", "h": "Your best guess at what it would cost to design and build on the open market.", "o": [["u25", "Under $25k"], ["25-75", "$25k–75k"], ["75-150", "$75k–150k"], ["150p", "$150k+"], ["unsure", "Not sure yet"]]},
-      {"id": "fund", "q": "Is the money ready?", "o": [["ready", "Yes, the money is ready"], ["partly", "Partly, still raising some"], ["help", "Not yet: we want help finding partners"]]},
+      {"id": "fund", "q": "Who is paying for the build?", "o": [["own", "Our organization"], ["sponsor", "A business sponsor"], ["partner", "A community partner or grant"], ["help", "Not sure yet, we'd like help"]]},
       {"id": "about", "q": "Tell us about it"}],
     "f": {"name": "Your name", "org": "Organization", "email": "Email", "what": "What do you picture?", "whatH": "What it is, who will use it, and where it will live after the festival.", "phone": "Phone (optional)", "heard": "How did you hear about this? (optional)"},
     "heard": [["email", "Pickathon email"], ["ig", "Instagram"], ["web", "The website"], ["friend", "A friend"], ["other", "Other"]],
