@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="robots" content="noindex">
+<title>Story look (TEST)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@700&family=Work+Sans:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+@font-face{font-family:"Pickathon 2014";src:url(../fonts/pickathon-2014.ttf) format("truetype");font-weight:400;font-display:swap}
+:root{--bg:#2B2628;--card:#383234;--line:#4F4749;--cream:#F2EDE3;--mut:#CFC9BC;--gold:#D6B54A;--ink:#12160F;--plum:#86526B}
+*{box-sizing:border-box;scrollbar-width:none}*::-webkit-scrollbar{display:none}
+html,body{margin:0;background:var(--bg);color:var(--cream);font-family:"Work Sans",system-ui,sans-serif;-webkit-text-size-adjust:100%}
+a{color:inherit}
+.test{position:fixed;top:10px;right:10px;z-index:9;font:800 11px/1 "Courier Prime",monospace;letter-spacing:.14em;background:var(--gold);color:var(--ink);padding:5px 8px;border-radius:3px}
+.hero{position:relative;min-height:min(78vh,640px);display:flex;align-items:flex-end;background:#221E20 center/cover no-repeat}
+.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,14,16,.25) 0%,rgba(18,14,16,.35) 40%,rgba(43,38,40,1) 100%)}
+.hero.small{min-height:260px}.body h3{margin:34px 0 8px;font:700 13px/1.3 "Courier Prime",monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--gold)}.body ul{margin:0 0 12px;padding-left:20px;font-size:18px;line-height:1.6;color:#E6E0D3}.body blockquote{margin:18px 0;padding:6px 0 6px 16px;border-left:3px solid var(--gold);font-size:20px;line-height:1.5}.body a{text-decoration:underline}.meta{margin:10px 0 0;font-size:14px;color:var(--mut)}.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}.hero-in{position:relative;z-index:1;width:100%;max-width:1100px;margin:0 auto;padding:96px 16px 28px}
+.back{display:inline-flex;align-items:center;min-height:44px;padding:0 14px;border:1.5px solid var(--cream);border-radius:6px;background:rgba(18,14,16,.4);font-weight:800;font-size:14px;letter-spacing:.04em;text-decoration:none;position:absolute;top:18px;left:16px}
+.kick{margin:0 0 10px;font:700 13px/1.3 "Courier Prime",monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--gold)}
+h1{margin:0;font:400 clamp(40px,8vw,84px)/.9 "Pickathon 2014","Work Sans",sans-serif;text-wrap:balance;max-width:900px}
+main{max-width:1100px;margin:0 auto;padding:0 16px 56px}
+.creds{display:flex;flex-wrap:wrap;column-gap:28px;row-gap:6px;border-top:2px solid var(--gold);border-bottom:1px solid var(--line);padding:12px 0;margin:8px 0 8px}
+.cred{flex:1 1 220px;min-width:0;padding:6px 0}
+.cred b{display:block;font:700 12px/1.3 "Courier Prime",monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--gold)}
+.cred span{display:block;margin-top:4px;font-size:17px;font-weight:700;line-height:1.3}
+.part{padding:34px 0 0;max-width:680px}
+.part h2{margin:0 0 10px;font:700 13px/1.3 "Courier Prime",monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--gold)}
+.part p{margin:0 0 12px;font-size:18px;line-height:1.6;color:#E6E0D3}
+.next{margin-top:14px;padding:12px 14px;border-left:3px solid var(--plum);background:rgba(134,82,107,.18);font-size:16px;line-height:1.5}
+.next i{display:block;font:700 11px/1.3 "Courier Prime",monospace;font-style:normal;letter-spacing:.12em;text-transform:uppercase;color:#D7B3C6;margin-bottom:4px}
+.row-h{margin:46px 0 12px;font:700 13px/1.3 "Courier Prime",monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--gold)}
+.row{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:6px;-webkit-overflow-scrolling:touch}
+.card{flex:0 0 min(78%,300px);scroll-snap-align:start;border-radius:12px;overflow:hidden;background:var(--card);text-decoration:none;display:block}
+.card img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover}
+.card div{padding:12px 14px 16px}
+.card em{display:block;font:700 12px/1.3 "Courier Prime",monospace;font-style:normal;letter-spacing:.08em;text-transform:uppercase;color:var(--gold)}
+.card strong{display:block;margin-top:4px;font-size:18px}
+.card small{display:block;margin-top:8px;font-size:14px;line-height:1.45;color:var(--mut)}
+.cta{display:inline-flex;align-items:center;min-height:50px;padding:0 24px;margin-top:40px;border-radius:6px;background:var(--gold);color:var(--ink);font-weight:800;font-size:15px;letter-spacing:.05em;text-transform:uppercase;text-decoration:none}
+details{margin-top:48px;border:1px dashed var(--line);border-radius:10px;padding:12px 14px;color:var(--mut);font-size:14px;line-height:1.5}
+summary{cursor:pointer;font-weight:700;color:var(--cream)}
+table{border-collapse:collapse;width:100%;margin-top:10px;font-size:13px}td,th{text-align:left;padding:6px 8px 6px 0;border-top:1px solid var(--line);vertical-align:top}th{color:var(--gold);font-weight:700}
+@media(min-width:800px){.hero-in{padding:120px 32px 40px}main{padding:0 32px 72px}.back{left:32px}.card{flex-basis:300px}.part{padding-top:44px}.part p{font-size:19px}}
+.body h3{margin:34px 0 8px;font:700 13px/1.3 "Courier Prime",monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--gold)}.body ul{margin:0 0 12px;padding-left:20px;font-size:18px;line-height:1.6;color:#E6E0D3}.body blockquote{margin:18px 0;padding:6px 0 6px 16px;border-left:3px solid var(--gold);font-size:20px;line-height:1.5}.meta{margin:10px 0 0;font-size:14px;color:var(--mut)}.hero.small{min-height:260px}.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}</style></head><body>
+<div class="test">TEST</div>
+<div id="app"></div>
+<script>
+(function () {
+  var app = document.getElementById('app');
+  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  var PICK = [44236, 44711, 45475];
+  var MON = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  function date(s) { var p = String(s).split('-'); return MON[+p[1] - 1] + ' ' + (+p[2]) + ', ' + p[0]; }
+  fetch('../data.json').then(function (r) { return r.json(); }).then(function (d) {
+    function card(s) { return '<a class="card" href="#' + s.id + '"><img loading="lazy" alt="" src="../' + esc(s.i) + '"><div><em>' + esc(s.ty) + '</em><strong>' + esc(s.t) + '</strong><small>' + esc(date(s.d)) + '</small></div></a>'; }
+    function render() {
+      var id = +location.hash.slice(1), s = (d.stories || []).filter(function (x) { return x.id === id; })[0];
+      window.scrollTo(0, 0);
+      if (!s) {
+        document.title = 'Story look (TEST)';
+        app.innerHTML = '<header class="hero small"><div class="hero-in"><p class="kick">Blog stories · prototype</p><h1>Same posts, new look</h1></div></header><main><p class="part" style="padding-top:20px"><span style="font-size:18px;line-height:1.6">Three real posts through one new layout. Nothing in the text is changed.</span></p><div class="grid" style="margin-top:20px">' +
+          PICK.map(function (i) { return card((d.stories || []).filter(function (x) { return x.id === i; })[0]); }).join('') + '</div></main>';
+        return;
+      }
+      document.title = s.t + ' (TEST)';
+      var creds = [];
+      if ((s.h || []).length) creds.push(['Neighborhood' + (s.h.length > 1 ? 's' : ''), s.h.map(function (k) { return d.hoods[k] && d.hoods[k].n; }).filter(Boolean).join(' · ')]);
+      if ((s.a || []).length) creds.push(['Artist' + (s.a.length > 1 ? 's' : ''), s.a.slice(0, 3).map(function (k) { return d.artists[k] && d.artists[k].n; }).filter(Boolean).join(' · ') + (s.a.length > 3 ? ' + ' + (s.a.length - 3) + ' more' : '')]);
+      creds.push(['Posted', date(s.d)]);
+      var body = (s.f || []).map(function (b) {
+        if (b[0] === 'h') return '<h3>' + esc(b[1]) + '</h3>';
+        if (b[0] === 'p') return '<p>' + esc(b[1]) + '</p>';
+        if (b[0] === 'q') return '<blockquote>' + esc(b[1]) + '</blockquote>';
+        if (b[0] === 'l') return '<ul>' + b[1].map(function (t) { return '<li>' + esc(t) + '</li>'; }).join('') + '</ul>';
+        return '';
+      }).join('');
+      var more = (d.stories || []).filter(function (x) { return x.id !== s.id && x.ty === s.ty && x.i; }).slice(0, 8);
+      app.innerHTML =
+        '<header class="hero" style="background-image:url(../' + esc(s.i) + ')"><div class="hero-in"><a class="back" href="#">← All stories</a>' +
+        '<p class="kick">' + esc(s.ty) + (s.cn ? ' · Creative Neighborhoods' : '') + '</p><h1>' + esc(s.t) + '</h1>' +
+        '<p class="meta">' + Math.max(1, Math.round((s.w || 200) / 230)) + ' min read</p></div></header><main>' +
+        '<div class="creds">' + creds.map(function (c) { return '<div class="cred"><b>' + c[0] + '</b><span>' + esc(c[1]) + '</span></div>'; }).join('') + '</div>' +
+        '<section class="part body">' + body + '</section>' +
+        '<h3 class="row-h">More ' + esc(s.ty.toLowerCase()) + '</h3><div class="row">' + more.map(card).join('') + '</div>' +
+        (s.ty === 'Neighborhoods & builds' ? '<a class="cta" href="../#/build">Start a project like this</a>' : '') +
+        '</main>';
+    }
+    window.addEventListener('hashchange', render); render();
+  }).catch(function (e) { app.innerHTML = '<p style="padding:24px">Could not load data.json: ' + esc(e) + '</p>'; });
+})();
+</script></body></html>
