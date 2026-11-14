@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="robots" content="noindex">
+<title>A build's story (TEST)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@700&family=Work+Sans:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+@font-face{font-family:"Pickathon 2014";src:url(../fonts/pickathon-2014.ttf) format("truetype");font-weight:400;font-display:swap}
+:root{--bg:#2B2628;--card:#383234;--line:#4F4749;--cream:#F2EDE3;--mut:#CFC9BC;--gold:#D6B54A;--ink:#12160F;--plum:#86526B}
+*{box-sizing:border-box;scrollbar-width:none}*::-webkit-scrollbar{display:none}
+html,body{margin:0;background:var(--bg);color:var(--cream);font-family:"Work Sans",system-ui,sans-serif;-webkit-text-size-adjust:100%}
+a{color:inherit}
+.test{position:fixed;top:10px;right:10px;z-index:9;font:800 11px/1 "Courier Prime",monospace;letter-spacing:.14em;background:var(--gold);color:var(--ink);padding:5px 8px;border-radius:3px}
+.hero{position:relative;min-height:min(78vh,640px);display:flex;align-items:flex-end;background:#221E20 center/cover no-repeat}
+.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,14,16,.25) 0%,rgba(18,14,16,.35) 40%,rgba(43,38,40,1) 100%)}
+.hero.small{min-height:260px}.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}.hero-in{position:relative;z-index:1;width:100%;max-width:1100px;margin:0 auto;padding:96px 16px 28px}
+.back{display:inline-flex;align-items:center;min-height:44px;padding:0 14px;border:1.5px solid var(--cream);border-radius:6px;background:rgba(18,14,16,.4);font-weight:800;font-size:14px;letter-spacing:.04em;text-decoration:none;position:absolute;top:18px;left:16px}
+.kick{margin:0 0 10px;font:700 13px/1.3 "Courier Prime",monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--gold)}
+h1{margin:0;font:400 clamp(40px,8vw,84px)/.9 "Pickathon 2014","Work Sans",sans-serif;text-wrap:balance;max-width:900px}
+main{max-width:1100px;margin:0 auto;padding:0 16px 56px}
+.creds{display:flex;flex-wrap:wrap;column-gap:28px;row-gap:6px;border-top:2px solid var(--gold);border-bottom:1px solid var(--line);padding:12px 0;margin:8px 0 8px}
+.cred{flex:1 1 220px;min-width:0;padding:6px 0}
+.cred b{display:block;font:700 12px/1.3 "Courier Prime",monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--gold)}
+.cred span{display:block;margin-top:4px;font-size:17px;font-weight:700;line-height:1.3}
+.part{padding:34px 0 0;max-width:680px}
+.part h2{margin:0 0 10px;font:700 13px/1.3 "Courier Prime",monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--gold)}
+.part p{margin:0 0 12px;font-size:18px;line-height:1.6;color:#E6E0D3}
+.next{margin-top:14px;padding:12px 14px;border-left:3px solid var(--plum);background:rgba(134,82,107,.18);font-size:16px;line-height:1.5}
+.next i{display:block;font:700 11px/1.3 "Courier Prime",monospace;font-style:normal;letter-spacing:.12em;text-transform:uppercase;color:#D7B3C6;margin-bottom:4px}
+.row-h{margin:46px 0 12px;font:700 13px/1.3 "Courier Prime",monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--gold)}
+.row{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:6px;-webkit-overflow-scrolling:touch}
+.card{flex:0 0 min(78%,300px);scroll-snap-align:start;border-radius:12px;overflow:hidden;background:var(--card);text-decoration:none;display:block}
+.card img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover}
+.card div{padding:12px 14px 16px}
+.card em{display:block;font:700 12px/1.3 "Courier Prime",monospace;font-style:normal;letter-spacing:.08em;text-transform:uppercase;color:var(--gold)}
+.card strong{display:block;margin-top:4px;font-size:18px}
+.card small{display:block;margin-top:8px;font-size:14px;line-height:1.45;color:var(--mut)}
+.cta{display:inline-flex;align-items:center;min-height:50px;padding:0 24px;margin-top:40px;border-radius:6px;background:var(--gold);color:var(--ink);font-weight:800;font-size:15px;letter-spacing:.05em;text-transform:uppercase;text-decoration:none}
+details{margin-top:48px;border:1px dashed var(--line);border-radius:10px;padding:12px 14px;color:var(--mut);font-size:14px;line-height:1.5}
+summary{cursor:pointer;font-weight:700;color:var(--cream)}
+table{border-collapse:collapse;width:100%;margin-top:10px;font-size:13px}td,th{text-align:left;padding:6px 8px 6px 0;border-top:1px solid var(--line);vertical-align:top}th{color:var(--gold);font-weight:700}
+@media(min-width:800px){.hero-in{padding:120px 32px 40px}main{padding:0 32px 72px}.back{left:32px}.card{flex-basis:300px}.part{padding-top:44px}.part p{font-size:19px}}
+</style></head><body>
+<div class="test">TEST</div>
+<div id="app"></div>
+<script>
+(function () {
+  var app = document.getElementById('app');
+  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function sent(t, n) { var a = t.split(/(?<=[.!?])\s+/).slice(0, n).join(' '); return /[.!?]$/.test(a) ? a : a + '.'; }
+  var KIND = { stage: 'Stage', gathering: 'Gathering', camping: 'Camping' };
+  function nothing(t) { return !t || /no physical build|stays on the farm|no downstream/i.test(t); }
+  fetch('../data.json').then(function (r) { return r.json(); }).then(function (d) {
+    var builds = [];
+    /* 2025: every neighborhood build record. 2026: the two private builds, then neighborhoods that name a designer or builder. */
+    Object.keys(d.hoods).forEach(function (k) {
+      var h = d.hoods[k];
+      (h.pb || []).filter(function (p) { return p.y === '2025' && p.b; }).forEach(function (p, j) {
+        builds.push({ id: k + '-2025' + (j ? '-' + j : ''), y: '2025', hood: h.n, kind: h.k, name: p.b, de: p.de, bu: p.bu, next: p.pt, d: p.d, img: h.i });
+      });
+    });
+    (d.privateBuilds || []).filter(function (p) { return p.i; }).forEach(function (p, j) {
+      var st = p.story && (d.stories || []).filter(function (s) { return s.id === p.story; })[0];
+      var paras = st ? (st.f || []).filter(function (x) { return x[0] === 'p'; }).map(function (x) { return x[1]; }) : [];
+      var partners = st ? ((st.f || []).filter(function (x) { return x[0] === 'l'; })[0] || [0, []])[1] : [];
+      var starburst = !!st;
+      builds.push({ id: 'pb-' + j, y: p.y, hood: starburst ? 'The Bluff' : 'Backstage', kind: 'gathering', name: p.n.replace(/ \(on The Bluff\)/, ''),
+        de: starburst ? 'FFA Architecture and Interiors' : '', with: partners.slice(1).join(' and '), bu: '',
+        next: starburst ? 'A permanent patio cover at The Showdown' : '',
+        d: p.d, parts: starburst ? [['The build', sent(paras[0], 2) + ' ' + sent(paras[2], 2)], ['At Pickathon', sent(paras[1].replace(/^For those who haven’t explored it before: /, ''), 3)], ['Where it’s going', sent(paras[3], 2)]] : null,
+        img: p.i, title: starburst ? 'A backstage pavilion on the bluff, built to become a patio' : '' });
+    });
+    Object.keys(d.hoods).forEach(function (k) {
+      var h = d.hoods[k];
+      if ((h.de || h.bu) && h.i) builds.push({ id: k + '-2026', y: '2026', hood: h.n, kind: h.k, name: h.n, de: h.de, bu: h.bu, next: nothing(h.nx) ? '' : h.nx, d: '', img: h.i });
+    });
+    var seen = {}; builds = builds.filter(function (b) { var key = b.y + '|' + b.name; if (seen[key]) return false; seen[key] = 1; return true; });
+
+    function card(b) {
+      return '<a class="card" href="#' + esc(b.id) + '"><img loading="lazy" alt="" src="../' + esc(b.img) + '"><div><em>' + esc(b.y) + ' · ' + esc(b.hood) + '</em><strong>' + esc(b.name) + '</strong>' +
+        (b.next ? '<small>Next: ' + esc(b.next) + '</small>' : '') + '</div></a>';
+    }
+    function render() {
+      var id = location.hash.slice(1), b = builds.filter(function (x) { return x.id === id; })[0];
+      window.scrollTo(0, 0);
+      if (!b) {
+        document.title = 'Builds (TEST)';
+        app.innerHTML = '<header class="hero small"><div class="hero-in"><p class="kick">Pickathon builds · prototype</p><h1>Built to be given away</h1></div></header><main>' +
+          ['2026', '2025'].map(function (y) { return '<h3 class="row-h">' + y + '</h3><div class="grid">' + builds.filter(function (x) { return x.y === y; }).map(card).join('') + '</div>'; }).join('') + '</main>';
+        return;
+      }
+      document.title = b.name + ' (TEST)';
+      var creds = [['Designed by', b.de], ['With', b.with], ['Built by', b.bu], ['Next', b.next]].filter(function (c) { return c[1]; });
+      var parts = b.parts || (b.d ? [['The build', b.d]] : []);
+      var more = builds.filter(function (x) { return x.id !== b.id && x.y === b.y; }).slice(0, 8);
+      app.innerHTML =
+        '<header class="hero" style="background-image:url(../' + esc(b.img) + ')"><div class="hero-in"><a class="back" href="#">← All builds</a>' +
+        '<p class="kick">' + esc(b.y) + ' · ' + esc(b.hood) + (KIND[b.kind] ? ' · ' + KIND[b.kind] + ' neighborhood' : '') + '</p><h1>' + esc(b.title || b.name) + '</h1></div></header><main>' +
+        (creds.length ? '<div class="creds">' + creds.map(function (c) { return '<div class="cred"><b>' + c[0] + '</b><span>' + esc(c[1]) + '</span></div>'; }).join('') + '</div>' : '') +
+        parts.map(function (p) { return '<section class="part"><h2>' + p[0] + '</h2><p>' + esc(p[1]) + '</p></section>'; }).join('') +
+        (b.next || parts.length < 2 ? '<section class="part"><div class="next"><i>Still to come</i>' + (b.parts ? 'A photo of it in its new home and a line from the people who use it, once it has moved.' : 'The story of this build is still being written: what it looked like, who built it, and where it went next.') + '</div></section>' : '') +
+        '<h3 class="row-h">More ' + esc(b.y) + ' builds</h3><div class="row">' + more.map(card).join('') + '</div>' +
+        '<a class="cta" href="../">Start a project like this</a>' +
+        '<details><summary>Prototype notes: where each line comes from</summary><table>' +
+        '<tr><th>On the page</th><th>Source today</th></tr>' +
+        '<tr><td>Name, year, designer, builder, next</td><td>Neighborhood build records (hoods.pb, hoods.de/bu/nx) and privateBuilds</td></tr>' +
+        '<tr><td>The build</td><td>The one-line build description; for Starburst, the linked news post, shortened</td></tr>' +
+        '<tr><td>Hero photo</td><td>The neighborhood photo, not necessarily that year’s build. A same-year build photo needs a new field.</td></tr>' +
+        '<tr><td>Not shown</td><td>Anything the data lacks: builder, new-home photo, recipient quote. Each would be a new field.</td></tr>' +
+        '</table></details></main>';
+    }
+    window.addEventListener('hashchange', render); render();
+  }).catch(function (e) { app.innerHTML = '<p style="padding:24px">Could not load data.json: ' + esc(e) + '</p>'; });
+})();
+</script></body></html>
