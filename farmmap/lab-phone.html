@@ -1266,7 +1266,10 @@ function place(){
 let faults=0;
 let decQ=false, blurT=0, mvQ=false, mvT=0;
 function paint(){ const t='translate3d('+tx+'px,'+ty+'px,0) scale('+k+')';
-  art.style.transform=t; shp.style.transform=t; }
+  art.style.transform=t; shp.style.transform=t;
+  // The trail and small icon overlay fades in as you zoom: simpler when far out, more detail as you zoom in.
+  // Only the opacity value is written, and only when it changes (writing it every move restyles the map).
+  const nicEl=document.getElementById('nic'); if(nicEl){ const op=Math.max(0,Math.min(1,(k/kFit-1.25)/0.6)).toFixed(2); if(paint._o!==op){ paint._o=op; nicEl.style.opacity=op; } } }
 // While the farm is being moved only the picture moves - once per frame. The
 // labels and leader lines step aside and come back, re-laid-out, when it stops;
 // laying out twenty labels on every touch event is what made panning stutter.
