@@ -1,3 +1,7 @@
 /* QA fix Nov 13: shared pk-cta buttons are 50px tall on phone and tablet (below 1200px). Desktop stays 56px.
    The #root chain outranks the older 56px and 44px rules; inline min-height:48px on the artist page loses to !important. */
 @media (max-width:1199px){#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .pk-cta{min-height:50px!important}}
+/* QA fix Nov 13: the artist name in the sticky header wraps to two lines instead of cutting off with an ellipsis. */
+@media (max-width:1199px){#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root header>div>span>span[style*="font-size: 16px"]{white-space:normal!important;overflow:visible!important;text-overflow:clip!important}}
+/* QA fix Nov 13: small in-text link chips are 44px tall, the tap-target minimum (buttons.md, gotchas). */
+#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root button.pk-ilink{min-height:44px!important;height:auto!important;display:inline-flex!important;align-items:center!important}
