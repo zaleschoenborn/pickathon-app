@@ -4371,68 +4371,7 @@ div[aria-label="Preview controls"] { display: none !important }
 </section>
 </sc-if>
 
-<sc-if value="{{r.build}}" hint-placeholder-val="{{false}}">
-<section style="{{bp.heroStyle}}">
-<img src="{{bp.heroImg}}" alt="" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover">
-<sc-for list="{{bp.reel}}" as="rl" hint-placeholder-count="3"><img src="{{rl.i}}" alt="" class="pk-reel" style="animation: pkbreel {{bp.reelDur}} linear infinite; animation-delay: {{rl.delay}}"></sc-for>
-<div aria-hidden="true" style="position: absolute; inset: 0; background: linear-gradient(180deg, rgba(18,22,15,0.45) 0%, rgba(18,22,15,0.6) 40%, rgba(18,22,15,0.94) 100%)"></div>
-<div style="{{bp.heroInner}}">
-<p style="margin: 0 0 10px; font-size: 13px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #F2EDE3">{{bdEye}}</p>
-<h1 style="{{bp.h1}}">What do you want Pickathon to build for you?</h1>
-<p style="margin: 12px 0 0; max-width: 640px; font-size: 18px; color: #E6E0D3">For businesses, schools and community groups. Leading architects and builders design it for your site. It stands at Pickathon first, then it’s yours, and it keeps the festival’s work going.</p>
-<p style="margin: 12px 0 0; max-width: 680px; padding: 10px 14px; border-radius: 12px; background: rgba(18,22,15,0.62); color: #F2EDE3; font-weight: 700">Every build helps sustain Pickathon and powers the Creative Neighborhoods mission: hand-built places, students learning the trades, and a festival that keeps going for the next generation. We aim to come in at least 10% under the open-market price.</p>
-<div style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px"><button type="button" class="pk-cta sec pk-cta-play" onClick="{{bp.watch}}" style="display: inline-flex; align-items: center; gap: 10px; min-height: 50px; padding: 0 20px 0 8px; border-radius: 999px; border: 1.5px solid #F2EDE3; background: rgba(18,22,15,0.5); color: #F2EDE3; font: inherit; font-weight: 800; cursor: pointer"><span class="pk-ico" aria-hidden="true" style="display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px; border-radius: 999px; background: #F2EDE3; color: #12160F; font-size: 12px">▶︎</span>Watch the builds</button><button type="button" class="pk-cta pri" onClick="{{bp.toForm}}">Build with us</button></div>
-</div>
-</section>
-<section style="{{wrap}}">
-<h2 style="{{h2}}; margin-top: 40px">What your build carries forward</h2>
-<p style="margin: 6px 0 0; max-width: 760px; color: #CFC9BC">Your budget pays for a structure you need. It also puts you inside the work that keeps Pickathon and its community here for decades.</p>
-<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; margin-top: 16px">
-<sc-for list="{{bp.steps}}" as="s" hint-placeholder-count="3"><div style="padding: 18px; border-radius: 16px; background: #1A2017; border: 1px solid #2A3125"><div style="font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 34px; color: #9FCB8A">{{s.n}}</div><div style="font-weight: 800; font-size: 18px; margin-top: 4px">{{s.t}}</div><p style="margin: 6px 0 0; color: #CFC9BC; line-height: 1.5">{{s.x}}</p></div></sc-for>
-</div>
-<div id="pk-build-form" style="scroll-margin-top: 90px; margin: 36px 0 8px; max-width: 900px; padding: 22px; border-radius: 20px; background: #F2EDE3; color: #12160F">
-<sc-if value="{{bp.open}}" hint-placeholder-val="{{true}}">
-<h2 style="margin: 0; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 28px">Build with us</h2>
-<p style="margin: 6px 0 16px; color: #3A4035">Need something built, or want to help build it? Let us hear from you.</p>
-<div style="{{bp.doorGrid}}"><sc-for list="{{bp.doors}}" as="dr" hint-placeholder-count="4"><button type="button" onClick="{{dr.pick}}" aria-pressed="{{dr.on}}" style="{{dr.style}}"><span style="display: block; font-size: {{bp.doorFs}}; font-weight: 800; line-height: 1.2">{{dr.t}}</span><span style="{{dr.subS}}">{{dr.x}}</span></button></sc-for></div>
-<p style="margin: 10px 0 0; font-size: 14px; color: #3A4035">{{bp.doorX}}</p>
-<sc-if value="{{bp.hasDoor}}" hint-placeholder-val="{{true}}">
-<div style="display: grid; gap: 12px; margin-top: 22px; padding-top: 20px; border-top: 1px solid #C9C2B0">
-<p style="margin: 0; font-weight: 800; font-size: 18px">{{bp.dHead}}</p>
-<sc-if value="{{bp.hasDeadline}}" hint-placeholder-val="{{true}}"><p style="margin: -6px 0 0; font-size: 14px; color: #3A4035">We take on a few projects a year and choose them with our design and build partners. {{bdNote}}</p></sc-if>
-<div style="{{bp.twoField}}">
-<label style="font-weight: 700">Full name (required)<input type="text" autocomplete="name" value="{{bp.f.name}}" onChange="{{bp.set.name}}" style="{{bp.inp}}"></label>
-<label style="font-weight: 700">Email (required)<input type="email" autocomplete="email" value="{{bp.f.email}}" onChange="{{bp.set.email}}" style="{{bp.inp}}"></label>
-<label style="font-weight: 700">{{bp.orgL}}<input type="text" autocomplete="organization" value="{{bp.f.org}}" onChange="{{bp.set.org}}" style="{{bp.inp}}"></label>
-<label style="font-weight: 700">Phone (optional)<input type="tel" autocomplete="tel" value="{{bp.f.phone}}" onChange="{{bp.set.phone}}" style="{{bp.inp}}"></label>
-</div>
-<sc-if value="{{bp.hasWeb}}" hint-placeholder-val="{{true}}"><label style="font-weight: 700">{{bp.webL}}<input type="url" autocomplete="url" value="{{bp.f.web}}" onChange="{{bp.set.web}}" style="{{bp.inp}}"></label></sc-if>
-<sc-for list="{{bp.qs}}" as="q" hint-placeholder-count="3"><fieldset style="border: 0; padding: 0; margin: 0"><legend style="font-weight: 700; margin-bottom: 6px">{{q.l}}</legend><div style="display: flex; flex-wrap: wrap; gap: 8px"><sc-for list="{{q.o}}" as="k" hint-placeholder-count="3"><button type="button" onClick="{{k.pick}}" aria-pressed="{{k.on}}" style="{{k.style}}">{{k.t}}</button></sc-for></div><sc-if value="{{q.hasN}}" hint-placeholder-val="{{false}}"><p style="margin: 6px 0 0; font-size: 13px; color: #3A4035">{{q.n}}</p></sc-if></fieldset></sc-for>
-<label style="font-weight: 700">{{bp.whatL}}<span style="display: block; font-weight: 400; font-size: 14px; color: #3A4035; margin-top: 2px">{{bp.whatH}}</span><textarea onChange="{{bp.set.what}}" rows="4" style="{{bp.ta}}">{{bp.f.what}}</textarea></label>
-<fieldset style="border: 0; padding: 0; margin: 0"><legend style="font-weight: 700; margin-bottom: 6px">How did you hear about this?</legend><div style="display: flex; flex-wrap: wrap; gap: 8px"><sc-for list="{{bp.heards}}" as="k" hint-placeholder-count="3"><button type="button" onClick="{{k.pick}}" aria-pressed="{{k.on}}" style="{{k.style}}">{{k.t}}</button></sc-for></div></fieldset>
-<sc-if value="{{bp.hasErr}}" hint-placeholder-val="{{false}}"><p role="alert" style="margin: 0; color: #8A2A12; font-weight: 700">{{bp.err}}</p></sc-if>
-<button type="button" class="pk-cta pri" onClick="{{bp.submit}}" style="justify-self: start; min-height: 52px; padding: 0 26px; border-radius: 999px; border: 0; background: #12160F; color: #F2EDE3; font: inherit; font-weight: 800; cursor: pointer">{{bp.sendL}}</button>
-</div>
-</sc-if>
-</sc-if>
-<sc-if value="{{bp.done}}" hint-placeholder-val="{{false}}"><h2 style="margin: 0; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 28px">Got it. Thank you.</h2><p style="margin: 8px 0 0; color: #3A4035">{{bp.doneX}} we’ll reach out to {{bp.f.email}}.</p><sc-if value="{{bp.hasTest}}" hint-placeholder-val="{{false}}"><p style="margin: 8px 0 0; color: #8A2A12; font-weight: 700">{{bp.testNote}}</p></sc-if></sc-if>
-</div>
-<h2 style="{{h2}}; margin-top: 44px">Who we build for</h2>
-<div style="{{bp.twoGrid}}; margin-top: 16px">
-<sc-for list="{{bp.ways}}" as="w" hint-placeholder-count="2"><div style="border-radius: 18px; overflow: hidden; background: #1A2017; border: 1px solid #2A3125"><img src="{{w.img}}" alt="" loading="lazy" style="display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover"><div style="padding: 16px 18px 20px"><h3 style="margin: 0; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 24px">{{w.t}}</h3><p style="margin: 6px 0 0; color: #DCD6C9; line-height: 1.5">{{w.x}}</p><p style="margin: 10px 0 0; font-size: 14px; color: #B9B3A6">{{w.ex}}</p><button type="button" class="pk-cta sec" onClick="{{w.go}}" style="margin-top: 14px; min-height: 44px; padding: 0 18px; border-radius: 999px; border: 1px solid #F2EDE3; background: transparent; color: #F2EDE3; font: inherit; font-weight: 800; cursor: pointer">Tell us what you need ↑</button></div></div></sc-for>
-</div>
-<h2 id="pk-sec-went" style="{{h2}}; margin-top: 44px; scroll-margin-top: 80px">Where the 2026 neighborhoods went</h2>
-<p style="margin: 6px 0 14px; color: #CFC9BC; max-width: 680px">Most neighborhoods live at Pickathon first, then go on to a permanent home.</p>
-<button type="button" class="pk-tour" onClick="{{bp.watch}}" style="margin: 0 0 16px"><span aria-hidden="true">▶︎</span>Tour the builds</button>
-<div style="{{bp.wentGrid}}">
-<sc-for list="{{bp.went}}" as="g" hint-placeholder-count="4"><button type="button" onClick="{{g.open}}" style="display: flex; flex-direction: column; justify-content: flex-start; align-items: stretch; height: 100%; padding: 0; border-radius: 16px; overflow: hidden; border: 1px solid #2A3125; background: #1A2017; color: #F2EDE3; font: inherit; text-align: left; cursor: pointer"><img src="{{g.img}}" alt="" loading="lazy" style="display: block; width: 100%; aspect-ratio: 16 / 10; object-fit: cover"><span style="display: flex; flex-direction: column; flex: 1; padding: 12px 14px 14px"><span style="display: block; font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #9FCB8A">{{g.n}}</span><span style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; margin-top: 2px; min-height: 2.4em; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 19px; line-height: 1.2">{{g.b}}</span><span style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; min-height: 2.6em; line-height: 1.3; margin-top: 6px; font-size: 13px; color: #B9B3A6">{{g.team}}</span><span style="margin-top: auto; padding-top: 10px; border-top: 1px solid #2A3125; font-size: 14px; color: #DCE8D2"><span style="display: block; font-size: 12px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: #D6B54A; margin: 8px 0 2px">Where it went</span><span style="display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.35; min-height: 4.05em">{{g.to}}</span></span></span></button></sc-for>
-</div>
-<sc-if value="{{bp.hasPriv}}" hint-placeholder-val="{{true}}"><h2 style="{{h2}}; margin-top: 44px">Private builds</h2>
-<p style="margin: 6px 0 14px; color: #CFC9BC; max-width: 680px">Some neighborhoods are built for one group of people. They show the range: a pavilion, a backstage, a place to gather.</p>
-<div style="{{bp.wentGrid}}"><sc-for list="{{bp.priv}}" as="g" hint-placeholder-count="2"><div style="border-radius: 16px; overflow: hidden; border: 1px solid #2A3125; background: #1A2017"><sc-if value="{{g.hasI}}" hint-placeholder-val="{{true}}"><img src="{{g.i}}" alt="" loading="lazy" style="display: block; width: 100%; aspect-ratio: 16 / 10; object-fit: cover"></sc-if><div style="padding: 12px 14px 14px"><div class="pkp-mono" style="font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #9FCB8A">Private · {{g.y}}</div><div style="margin-top: 2px; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 19px">{{g.n}}</div><p style="margin: 6px 0 0; font-size: 14px; color: #DCD6C9">{{g.d}}</p><sc-if value="{{g.hasU}}" hint-placeholder-val="{{false}}"><a href="{{g.u}}" target="_blank" rel="noopener" style="display: inline-block; margin-top: 8px; color: #9FCB8A; font-size: 14px; font-weight: 700; text-decoration: none">Read the story →</a></sc-if></div></div></sc-for></div></sc-if>
-<p style="margin: 40px 0 56px; max-width: 760px; font-size: 14px; color: #B9B3A6">Every build is designed and built by the same team. Depending on where it ends up, a project runs through Pickathon or through Creative Neighborhoods, our nonprofit design-build partner. We sort that out with you. <a href="https://build.creativeneighborhoods.com/" target="_blank" rel="noopener" style="color: #9FCB8A; font-weight: 700">Partner with Creative Neighborhoods ↗</a> · <button type="button" onClick="{{bp.goCN}}" style="padding: 0; border: 0; background: transparent; color: #9FCB8A; font: inherit; font-weight: 700; cursor: pointer">How Creative Neighborhoods works →</button></p>
-</section>
-</sc-if>
+<sc-if value="{{r.build}}" hint-placeholder-val="{{false}}"><div id="bd1" class="pl2 bd1" data-pk-own="1"></div></sc-if>
 
 <sc-if value="{{r.account}}" hint-placeholder-val="{{false}}">
 <section style="{{wrapTop}}">
@@ -12720,5 +12659,330 @@ html body:not(#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1) a
   function boot(n) { var a = app(); if (!a || !a.state || !a.state.data) { if (n < 200) setTimeout(function () { boot(n + 1); }, 50); return; } try { sync(); } catch (e) {} }
   boot(0);
   window.__pkAbout1 = { refresh: function () { lastKey = ''; sync(); } };
+})();
+</script>
+<style id="pk-build1-css">
+/* pk-build1-css: Build with Pickathon, round 1 (Nov 13 2026). Scoped under .bd1 (page) and .bd1s (project sheet).
+   Uses Plan's .pl2 tokens, the shared pk-cta primary and the Tour oval; chips and icon buttons per buttons.md. */
+.bd1{--bd-pad:var(--gutter,16px);color:#F2EDE3}
+.bd1 .bd-in{max-width:1160px;margin:0 auto;padding:0 var(--bd-pad)}
+#root .bd1 .bd-k{margin:0 0 6px;font-size:.8125rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--gold,#F2CF62);line-height:1.2}
+#root .bd1 .bd-h2{font-size:var(--d-sec)!important}
+.bd1 .bd-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+/* hero */
+.bd1 .bd-hero{position:relative;display:flex;align-items:flex-end;min-height:min(560px,calc(100svh - 230px));overflow:hidden;background:#1E2A1B}
+.bd1 .bd-him{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.bd1 .bd-hsh{position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,22,15,.15) 0%,rgba(18,22,15,.35) 45%,rgba(18,22,15,.92) 100%)}
+.bd1 .bd-hin{position:relative;width:100%;max-width:1160px;margin:0 auto;padding:96px var(--bd-pad) 22px;box-sizing:border-box}
+#root .bd1 .bd-hk{color:#F2EDE3;text-shadow:0 1px 6px rgba(0,0,0,.6)}
+#root .bd1 .bd-h1{font-size:2.25rem!important;line-height:1.02!important;max-width:820px;text-shadow:0 2px 12px rgba(0,0,0,.5)}
+#root .bd1 .bd-hx{margin:10px 0 0;max-width:560px;font-size:1.0625rem;line-height:1.4;color:#EDE7DA;text-shadow:0 1px 6px rgba(0,0,0,.6)}
+.bd1 .bd-hb{display:flex;flex-direction:column;align-items:flex-start;gap:14px;margin-top:18px}
+#root#root#root#root#root#root#root#root#root#root#root#root#root#root .bd1 .pk-cta.bd-cta{margin:0!important;width:100%!important;min-height:50px!important;height:50px!important;padding:0 28px!important;border-radius:6px!important;box-shadow:none!important;background:rgba(214,181,74,.18)!important;border:2px solid #D6B54A!important;color:#F2CF62!important;font-family:"Bricolage Grotesque",system-ui,sans-serif!important;font-size:14px!important;font-weight:800!important;letter-spacing:1px!important;text-transform:uppercase!important;white-space:nowrap!important}
+#root#root#root#root#root#root#root#root#root#root#root#root#root#root .bd1 .bd-hero .pk-cta.bd-cta{background:rgba(18,22,15,.55)!important;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+/* Tour control: same pill, same corner of the hero as Home's Photo tour (.h2-oh-tour) */
+.bd1 .bd-tour{position:absolute;z-index:3;top:16px;right:16px;display:inline-flex;align-items:center;gap:10px;min-height:44px;padding:0 16px 0 6px;border-radius:999px;border:1px solid rgba(242,237,227,.8);background:rgba(18,22,15,.5);color:#F2EDE3;font:800 13px/1.15 var(--text,"Bricolage Grotesque",system-ui,sans-serif);letter-spacing:.08em;text-transform:uppercase;cursor:pointer;white-space:nowrap}
+.bd1 .bd-tour span{display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:#F2EDE3;color:#12160F}
+.bd1 .bd-tour svg{width:13px;height:13px;fill:currentColor;margin-left:2px}
+.bd1 .bd-tour:hover{background:rgba(18,22,15,.7);border-color:#F2EDE3}
+#root#root#root .bd1 .bd-tour{min-height:44px!important;border-radius:999px!important}
+/* sections */
+.bd1 .bd-sec{padding:40px 0 0}
+.bd1 .bd-last{padding-bottom:48px}
+.bd1 .bd-wh{display:flex;align-items:flex-end;justify-content:space-between;gap:16px}
+.bd1 .bd-arr{display:none;gap:8px;flex:none}
+.bd1 .bd-ib{width:44px;height:44px;display:inline-flex;align-items:center;justify-content:center;border-radius:4px;border:2px solid #6A6163;background:transparent;color:#F2EDE3;font:inherit;font-size:22px;line-height:1;cursor:default;padding:0}
+.bd1 .bd-ib:disabled{opacity:.35}
+.bd1 .bd-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+#root#root#root .bd1 .bd-chip{min-height:44px;padding:0 16px;font:inherit;font-weight:700;font-size:.9375rem}
+.bd1 .bd-ysel select{min-height:44px;padding:0 34px 0 14px;border-radius:4px;border:2px solid #6A6163;background:transparent url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%23F2EDE3' stroke-width='2'/%3E%3C/svg%3E") no-repeat right 12px center;color:#F2EDE3;font:inherit;font-weight:700;font-size:.9375rem;-webkit-appearance:none;appearance:none;cursor:default}
+.bd1 .bd-ysel option{color:#12160F}
+/* builds row */
+.bd1 .bd-row{list-style:none;margin:16px 0 0;padding:0 var(--bd-pad);display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding:0 var(--bd-pad);scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.bd1 .bd-row::-webkit-scrollbar{display:none}
+.bd1 .bd-card{flex:0 0 78%;max-width:340px;scroll-snap-align:start}
+.bd1 .bd-cin{display:flex;flex-direction:column;width:100%;height:100%;padding:0;margin:0;text-align:left;border-radius:12px;overflow:hidden;border:1px solid #2A3125;background:#1A2017;color:#F2EDE3;font:inherit}
+.bd1 .bd-link{cursor:pointer}
+.bd1 .bd-cim{display:block;aspect-ratio:4/3;background:#221E20}
+.bd1 .bd-cim img{display:block;width:100%;height:100%;object-fit:cover}
+.bd1 .bd-ctx{display:flex;flex-direction:column;flex:1;padding:12px 14px 16px}
+.bd1 .bd-ck{font-size:.75rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--gold,#F2CF62)}
+.bd1 .bd-cnow{margin-top:10px;font-size:.6875rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#B9B3A6}
+.bd1 .bd-cto{margin-top:2px;font-size:1rem;line-height:1.35;font-weight:700;}
+/* what you get, who we build for */
+.bd1 .bd-two{display:grid;gap:40px}
+.bd1 .bd-gl{list-style:none;margin:14px 0 0;padding:0;display:grid;gap:16px}
+.bd1 .bd-gl li{display:grid;grid-template-columns:40px 1fr;gap:12px;align-items:start;font-size:1rem;line-height:1.4;color:var(--cream-dim,#CFC9BC)}
+.bd1 .bd-gn{font-family:var(--display);font-size:2rem;line-height:1;color:var(--gold,#F2CF62)}
+.bd1 .bd-gl strong,.bd1 .bd-wl strong{display:block;color:#F2EDE3;font-size:1.0625rem;margin-bottom:2px}
+.bd1 .bd-wl{list-style:none;margin:14px 0 0;padding:0;display:grid;gap:10px}
+.bd1 .bd-wl li{padding:14px 16px;border-radius:12px;background:#1A2017;border:1px solid #2A3125;font-size:.9375rem;line-height:1.4;color:var(--cream-dim,#CFC9BC)}
+/* deadline card */
+.bd1 .bd-due{padding:22px 18px;border:2px solid #D6B54A;border-radius:12px;background:#1A2017}
+#root#root#root#root#root#root #root .bd1 .bd-dx{margin:8px 0 18px;max-width:640px;font-size:1rem;line-height:1.45;color:var(--cream-dim,#CFC9BC)}
+.bd1 .bd-dl{margin:6px 0 0}
+.bd1 .bd-gl-link{display:inline-flex;align-items:center;min-height:44px;padding:0;border:0;background:none;color:var(--gold,#F2CF62);font:inherit;font-weight:800;cursor:pointer}
+#root#root#root#root .bd1 .bd-gl-link{min-height:44px!important;border:0!important;background:none!important;text-transform:none!important;letter-spacing:0!important;font-size:1rem!important;padding:0!important}
+@media (min-width:600px){
+  .bd1 .bd-tour{top:24px;right:32px}
+  #root .bd1 .bd-h1{font-size:3rem!important}
+  .bd1 .bd-hb{flex-direction:row;align-items:center}
+  #root#root#root#root#root#root#root#root#root#root#root#root#root#root .bd1 .pk-cta.bd-cta{width:auto!important;padding:0 32px!important}
+  .bd1 .bd-card{flex-basis:44%}
+}
+@media (min-width:1200px){
+  .bd1 .bd-tour{top:16px;right:max(24px,calc((100vw - 1440px)/2 + 104px))}
+  .bd1 .bd-hero{min-height:620px}
+  .bd1 .bd-hin{padding-bottom:56px}
+  #root .bd1 .bd-h1{font-size:4.25rem!important}
+  #root .bd1 .bd-hx{font-size:1.25rem}
+  #root#root#root#root#root#root#root#root#root#root#root#root#root#root .bd1 .pk-cta.bd-cta{min-height:56px!important;height:56px!important}
+  .bd1 .bd-sec{padding-top:64px}
+  .bd1 .bd-arr{display:flex}
+  .bd1 .bd-row{max-width:1160px;margin:16px auto 0;box-sizing:border-box}
+  .bd1 .bd-card{flex-basis:calc((100% - 48px)/4);max-width:none}
+  .bd1 .bd-two{grid-template-columns:1fr 1fr;gap:56px}
+  .bd1 .bd-due{display:grid;grid-template-columns:1fr auto;column-gap:40px;align-items:center;padding:32px 36px}
+  .bd1 .bd-due .bd-h2,.bd1 .bd-due .bd-dx{grid-column:1}
+  .bd1 .bd-due .bd-cta{grid-column:2;grid-row:1/3}
+  .bd1 .bd-due .bd-dl{grid-column:1}
+}
+@media (max-width:380px),(max-height:760px) and (max-width:599px){.bd1 .bd-hero{min-height:0}.bd1 .bd-hin{padding-top:76px;padding-bottom:16px}#root#root .bd1 .bd-h1{font-size:1.875rem!important}#root#root .bd1 .bd-hx{font-size:1rem}.bd1 .bd-hb{margin-top:14px;gap:10px}.bd1 .bd-hk{font-size:.75rem!important}}
+/* the project sheet (on body, outside #root) */
+html.bd1-lock,html.bd1-lock body{overflow:hidden}
+.bd1s[hidden]{display:none}
+.bd1s{position:fixed;inset:0;z-index:2147483000;font-family:"Work Sans",system-ui,sans-serif;color:#F2EDE3}
+.bd1s .bds-back{position:absolute;inset:0;background:rgba(10,12,9,.72)}
+.bd1s .bds-panel{position:absolute;inset:0;display:flex;flex-direction:column;background:#12160F;overflow:hidden}
+.bd1s .bds-top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:calc(10px + env(safe-area-inset-top,0px)) 14px 8px}
+.bd1s .bds-ct{font-size:.8125rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#B9B3A6}
+.bd1s .bds-sp{width:44px}
+.bd1s .bds-ib{width:44px;height:44px;display:inline-flex;align-items:center;justify-content:center;border-radius:4px;border:2px solid #6A6163;background:transparent;color:#F2EDE3;font:inherit;font-size:18px;cursor:pointer;padding:0}
+.bd1s .bds-bar{height:3px;margin:0 14px;background:#2A3125;border-radius:2px;overflow:hidden}
+.bd1s .bds-bar span{display:block;height:100%;background:#D6B54A}
+.bd1s .bds-body{flex:1;overflow-y:auto;scrollbar-width:none;padding:24px 16px calc(28px + env(safe-area-inset-bottom,0px))}
+.bd1s .bds-body::-webkit-scrollbar{display:none}
+.bd1s .bds-q{margin:0;font-family:"Pickathon 2014","Bricolage Grotesque",Impact,sans-serif;font-weight:400;font-size:2rem;line-height:1.05;letter-spacing:.02em;text-transform:uppercase;outline:none}
+.bd1s .bds-h{margin:10px 0 0;font-size:1rem;line-height:1.4;color:#CFC9BC}
+.bd1s .bds-opts{display:grid;gap:10px;margin-top:20px}
+.bd1s .bds-opt{display:flex;align-items:center;min-height:56px;padding:10px 16px;border-radius:4px;border:2px solid #6A6163;background:transparent;color:#F2EDE3;font:inherit;font-size:1.0625rem;font-weight:700;text-align:left;cursor:default}
+.bd1s .bds-opt[aria-pressed="true"]{background:#D6B54A;border-color:#D6B54A;color:#2B2628}
+.bd1s .bds-opt:focus-visible,.bd1s .bds-ib:focus-visible,.bd1s .bds-btn:focus-visible{outline:3px solid #F2CF62;outline-offset:2px}
+.bd1s .bds-sum{margin:8px 0 0;font-size:.9375rem;line-height:1.4;color:#D6B54A;font-weight:700}
+.bd1s .bds-fs{display:grid;gap:14px;margin-top:18px}
+.bd1s .bds-l{display:block;font-weight:700;font-size:.9375rem}
+.bd1s .bds-lh{display:block;margin-top:2px;font-weight:400;font-size:.875rem;color:#B9B3A6}
+.bd1s input,.bd1s select,.bd1s textarea{display:block;width:100%;box-sizing:border-box;margin-top:6px;min-height:50px;padding:0 14px;border-radius:6px;border:2px solid #6A6163;background:#1A2017;color:#F2EDE3;font:inherit;font-size:1rem;font-weight:400}
+.bd1s textarea{padding:12px 14px;resize:vertical;min-height:110px}
+.bd1s select{-webkit-appearance:none;appearance:none}
+.bd1s input:focus,.bd1s select:focus,.bd1s textarea:focus{outline:none;border-color:#D6B54A}
+.bd1s .bds-err{margin:14px 0 0;color:#F0B66A;font-weight:700}
+.bd1s .bds-btn{display:flex;align-items:center;justify-content:center;width:100%;min-height:50px;margin-top:20px;padding:0 28px;border-radius:6px;font:inherit;font-size:.875rem;font-weight:800;letter-spacing:1px;text-transform:uppercase;cursor:pointer}
+.bd1s .bds-btn.pri{background:rgba(214,181,74,.18);border:2px solid #D6B54A;color:#F2CF62}
+.bd1s .bds-btn.sec{background:rgba(18,22,15,.26);border:2px solid rgba(242,237,227,.88);color:#F2EDE3}
+.bd1s .bds-test{margin:12px 0 0;font-size:.875rem;color:#F0B66A}
+@media (min-width:600px){
+  .bd1s .bds-fs{grid-template-columns:1fr 1fr}
+  .bd1s .bds-wide{grid-column:1/-1}
+  .bd1s .bds-btn{width:auto}
+}
+@media (min-width:1200px){
+  .bd1s .bds-panel{inset:auto;top:50%;left:50%;transform:translate(-50%,-50%);width:640px;max-height:min(760px,calc(100vh - 80px));border-radius:12px;border:1px solid #2A3125;box-shadow:0 20px 60px rgba(0,0,0,.6)}
+  .bd1s .bds-top{padding:14px 18px 8px}
+  .bd1s .bds-bar{margin:0 18px}
+  .bd1s .bds-body{padding:28px 32px 32px}
+  .bd1s .bds-q{font-size:2.5rem}
+  .bd1s .bds-btn{min-height:56px}
+}
+</style>
+<script id="pk-build1">
+/* pk-build1: Build with Pickathon, round 1 (Nov 13 2026). Route 'build'. Spec: photo-catalog/design_specs/build_page.md (Zale, Nov 8).
+   Source: tools/build_r1/bd.js, spliced into index.html by tools/build_r1/build.py (<script id="pk-build1">, <style id="pk-build1-css">).
+   Draws into <div id="bd1" data-pk-own> (the app's renderer leaves it alone). Every word comes from data.json buildPage and buildCopy;
+   the builds row from hoods (2026: nx, by, hy; earlier years: pb + same-year pk-pb photos in hr) and privateBuilds.
+   The one-question project sheet lives on <body> (#bd1-sheet) and posts the same Google Form fields as before (buildForm). */
+(function () {
+  'use strict';
+  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+  function app() { return window.comp || null; }
+  function data() { var a = app(); return (a && a.state && a.state.data) || null; }
+  var FOC = null;
+  function focusOf(src) {
+    if (!FOC) { FOC = {}; try { var x = new XMLHttpRequest(); x.open('GET', 'focus.json', false); x.send(); if (x.status === 200) FOC = JSON.parse(x.responseText) || {}; } catch (e) {} }
+    var f = FOC[src]; return f ? f[0] + '% ' + f[1] + '%' : '50% 50%';
+  }
+  function yr(d) { return +((d.buildCopy || {}).year) || 2027; }
+  function fill(s, d) { var y = yr(d); return String(s || '').replace(/\{year\}/g, y).replace(/\{year2\}/g, y + 1); }
+
+  /* ---------- the builds: every build with a downstream home and a photo of that build ---------- */
+  function builds(d, P) {
+    var skip = new RegExp(P.went.skip, 'i'), out = [];
+    Object.keys(d.hoods || {}).forEach(function (k) {
+      var h = d.hoods[k]; if (!h || h.k === 'camp') return;
+      var nx = String(h.nx || '').trim();
+      if (!skip.test(nx)) {
+        var im = (h.g && h.g[0] && h.g[0].i) || h.i; /* the curated gallery's first shot: the structure, not the crowd */
+        if (im) out.push({ kind: 'hood', y: '2026', h: k, nm: h.n, now: nx, im: im });
+      }
+      (h.pb || []).forEach(function (b) {
+        var pt = String(b.pt || '').trim(); if (skip.test(pt)) return;
+        var ph = (h.hr || []).filter(function (r) { return r.y === b.y && /pk-pb-/.test(r.i); })[0];
+        if (ph) out.push({ kind: 'hood', y: b.y, h: k, nm: h.n, now: pt, im: ph.i });
+      });
+    });
+    (d.privateBuilds || []).forEach(function (p) { if (p.i && p.nx) out.push({ kind: 'priv', y: String(p.y), nm: String(p.n).replace(/\s*\(.*\)$/, ''), now: p.nx, im: p.i, story: p.story || 0 }); });
+    return out;
+  }
+  function firms(d) {
+    var seen = {}, L = [];
+    Object.keys(d.hoods || {}).forEach(function (k) { (d.hoods[k].crl || []).forEach(function (c) {
+      if (!/^(Design|Architecture|Design team)$/i.test(c[0]) || !/Architect/i.test(c[1]) || /University|School/i.test(c[1])) return;
+      var n = c[1].replace(/\s*&\s*Interiors$/, '').replace(/\s+Architecture$/, '').trim(); if (!seen[n]) { seen[n] = 1; L.push(n); } }); });
+    L = L.slice(0, 4); if (L.length < 2) return L.join('');
+    return L.slice(0, -1).join(', ') + ' and ' + L[L.length - 1];
+  }
+
+  var V = { kind: 'hood', y: '' };
+  function page(d) {
+    var P = d.buildPage, C = d.buildCopy || {}, all = builds(d, P);
+    var years = []; all.forEach(function (b) { if (b.kind === V.kind && years.indexOf(b.y) < 0) years.push(b.y); }); years.sort().reverse();
+    if (years.indexOf(V.y) < 0) V.y = years[0] || '';
+    var row = all.filter(function (b) { return b.kind === V.kind && b.y === V.y; });
+    var H = P.hero, W = P.went, G = P.get, U = P.who, Q = P.due;
+    var chips = W.chips.filter(function (c) { return all.some(function (b) { return b.kind === c[0]; }); }).map(function (c) {
+      return '<button type="button" class="bd-chip" aria-pressed="' + (V.kind === c[0]) + '" data-bd-kind="' + c[0] + '">' + esc(c[1]) + '</button>'; }).join('');
+    var ysel = years.length > 1 ? '<label class="bd-ysel"><span class="bd-sr">Year</span><select data-bd-year>' + years.map(function (y) { return '<option' + (y === V.y ? ' selected' : '') + '>' + y + '</option>'; }).join('') + '</select></label>' : '';
+    var cards = row.map(function (b) {
+      var go = b.kind === 'hood' ? 'hood:' + b.h + ':' + b.y : b.story ? 'story:' + b.story : '';
+      var tag = go ? 'button type="button" data-bd-go="' + esc(go) + '"' : 'div';
+      return '<li class="bd-card"><' + tag + ' class="bd-cin' + (go ? ' bd-link' : '') + '"><span class="bd-cim"><img src="' + esc(b.im) + '" alt="" loading="lazy" decoding="async" style="object-position:' + focusOf(b.im) + '"></span>' +
+        '<span class="bd-ctx"><span class="bd-ck">' + esc(b.y + ' · ' + b.nm) + '</span><span class="bd-cnow">' + esc(W.now) + '</span><span class="bd-cto">' + esc(b.now) + '</span></span></' + tag.split(' ')[0] + '></li>'; }).join('');
+    var fs = firms(d);
+    return '<section class="bd-hero"><img class="bd-him" src="' + esc(H.im) + '" alt="" style="object-position:' + focusOf(H.im) + '"><div class="bd-hsh" aria-hidden="true"></div>' +
+      '<button type="button" class="bd-tour" data-bd-tour="1" aria-label="' + esc(H.tour) + '"><span aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 4 L20 12 L7 20 Z"/></svg></span>' + esc(H.tour) + '</button>' +
+      '<div class="bd-hin"><p class="bd-k bd-hk">' + esc(C.eye || '') + '</p><h1 class="pl-d bd-h1">' + esc(H.t) + '</h1><p class="bd-hx">' + esc(H.x) + '</p>' +
+      '<div class="bd-hb"><button type="button" class="pk-cta pri bd-cta" data-bd-start="1">' + esc(H.cta) + '</button></div></div></section>' +
+      '<section class="bd-sec bd-went" id="bd-went"><div class="bd-in"><div class="bd-wh"><div><p class="bd-k">' + esc(W.k) + '</p><h2 class="pl-d bd-h2">' + esc(W.t) + '</h2></div>' +
+      '<div class="bd-arr"><button type="button" class="bd-ib" data-bd-arr="-1" aria-label="Previous builds">‹</button><button type="button" class="bd-ib" data-bd-arr="1" aria-label="Next builds">›</button></div></div>' +
+      '<div class="bd-chips">' + chips + ysel + '</div></div>' +
+      '<ul class="bd-row" data-bd-row="1">' + cards + '</ul></section>' +
+      '<section class="bd-sec"><div class="bd-in bd-two"><div class="bd-get"><p class="bd-k">' + esc(G.k) + '</p><h2 class="pl-d bd-h2">' + esc(G.t) + '</h2><ol class="bd-gl">' +
+      G.items.map(function (g, i) { var x = g[1].replace('{firms}', fs); if (!fs) x = x.replace(/^Firms like\s+design it/, 'Leading firms design it'); return '<li><span class="bd-gn" aria-hidden="true">' + (i + 1) + '</span><span><strong>' + esc(g[0]) + '</strong>' + esc(x) + '</span></li>'; }).join('') + '</ol></div>' +
+      '<div class="bd-who"><p class="bd-k">' + esc(U.k) + '</p><h2 class="pl-d bd-h2">' + esc(U.t) + '</h2><ul class="bd-wl">' +
+      U.items.map(function (w) { return '<li><strong>' + esc(w[0]) + '</strong><span>' + esc(w[1]) + '</span></li>'; }).join('') + '</ul></div></div></section>' +
+      '<section class="bd-sec bd-last"><div class="bd-in"><div class="bd-due"><h2 class="pl-d bd-h2">' + esc(fill(Q.t, d)) + '</h2><p class="bd-dx">' + esc(C.note || '') + '</p>' +
+      '<button type="button" class="pk-cta pri bd-cta" data-bd-start="1">' + esc(Q.cta) + '</button>' +
+      '<p class="bd-dl"><button type="button" class="bd-gl-link" data-bd-go="page:' + esc(Q.page) + '">' + esc(Q.link) + ' →</button></p></div></div></section>';
+  }
+
+  var root = null, lastKey = '';
+  function sync() {
+    var el = document.getElementById('bd1'); if (!el) { root = null; return; }
+    var d = data(); if (!d || !d.buildPage) return;
+    var k = V.kind + '|' + V.y;
+    if (el !== root || !el.firstChild || k !== lastKey) {
+      root = el; lastKey = k; el.innerHTML = page(d);
+      [].forEach.call(el.querySelectorAll('.pl-d'), function (e) { e.classList.add('pkp-head'); });
+      arrows();
+    }
+  }
+  function arrows() {
+    if (!root) return; var r = root.querySelector('[data-bd-row]'); if (!r) return;
+    var a = root.querySelectorAll('[data-bd-arr]'), over = r.scrollWidth > r.clientWidth + 4;
+    if (a[0]) a[0].disabled = !over || r.scrollLeft < 4; if (a[1]) a[1].disabled = !over || r.scrollLeft > r.scrollWidth - r.clientWidth - 4;
+    root.querySelector('.bd-arr').style.visibility = over ? '' : 'hidden';
+  }
+  document.addEventListener('scroll', function (e) { if (root && e.target && e.target.hasAttribute && e.target.hasAttribute('data-bd-row')) arrows(); }, true);
+  window.addEventListener('resize', function () { arrows(); });
+
+  function go(to) {
+    var a = app(); if (!a) return; var p = to.split(':');
+    if (p[0] === 'hood') { a.go('hood', p[2] && p[2] !== '2026' ? { h: p[1], y: p[2] } : { h: p[1] }); return; }
+    if (p[0] === 'story') { a.go('story', { s: +p[1] }); return; }
+    if (p[0] === 'page') { a.go('page', { p: p[1] }); return; }
+  }
+  document.addEventListener('click', function (e) {
+    var t = e.target.closest ? e.target : null; if (!t) return;
+    var s = t.closest('#bd1-sheet'); if (s) { sheetClick(e, t); return; }
+    if (!root || !root.contains(t)) return;
+    var b;
+    if ((b = t.closest('[data-bd-start]'))) { e.preventDefault(); open(); return; }
+    if ((b = t.closest('[data-bd-tour]'))) { e.preventDefault(); var A = app(); if (A && A.ssOpen) A.ssOpen('builds'); return; }
+    if ((b = t.closest('[data-bd-kind]'))) { V.kind = b.getAttribute('data-bd-kind'); V.y = ''; sync(); return; }
+    if ((b = t.closest('[data-bd-arr]'))) { var r = root.querySelector('[data-bd-row]'), c = r && r.querySelector('.bd-card'); if (r && c) r.scrollBy({ left: (+b.getAttribute('data-bd-arr')) * (c.offsetWidth + 16) * (window.innerWidth >= 1200 ? 2 : 1), behavior: 'smooth' }); return; }
+    if ((b = t.closest('[data-bd-go]'))) { e.preventDefault(); go(b.getAttribute('data-bd-go')); }
+  });
+  document.addEventListener('change', function (e) { var t = e.target; if (root && t && t.hasAttribute && t.hasAttribute('data-bd-year') && root.contains(t)) { V.y = t.value; sync(); } });
+
+  /* ---------- Start a project: one question per screen ---------- */
+  var S = { step: 0, a: {}, sent: false, err: '', last: null };
+  function sheetEl() { var s = document.getElementById('bd1-sheet'); if (!s) { s = document.createElement('div'); s.id = 'bd1-sheet'; s.className = 'bd1s'; s.hidden = true; document.body.appendChild(s); } return s; }
+  function open(kind) {
+    var d = data(); if (!d) return; S.last = document.activeElement; S.err = '';
+    if (S.sent) { S.sent = false; S.step = 0; S.a = {}; }
+    if (kind) { S.a.kind = kind; if (!S.step) S.step = 1; }
+    var s = sheetEl(); s.hidden = false; document.documentElement.classList.add('bd1-lock'); draw(true);
+  }
+  window.pkBuildStart = open;
+  function close() { var s = sheetEl(); s.hidden = true; document.documentElement.classList.remove('bd1-lock'); try { if (S.last && S.last.focus) S.last.focus(); } catch (e) {} }
+  function draw(focusHead) {
+    var d = data(), F = d.buildPage.form, s = sheetEl(), N = F.steps.length, st = F.steps[S.step], h = '';
+    var top = '<div class="bds-top">' + (S.step > 0 && !S.sent ? '<button type="button" class="bds-ib" data-bds="back" aria-label="Back">←</button>' : '<span class="bds-sp"></span>') +
+      (S.sent ? '<span></span>' : '<span class="bds-ct">' + (S.step + 1) + ' ' + esc(F.of) + ' ' + N + '</span>') + '<button type="button" class="bds-ib" data-bds="close" aria-label="Close">✕</button></div>' +
+      (S.sent ? '' : '<div class="bds-bar" aria-hidden="true"><span style="width:' + Math.round((S.step + 1) / N * 100) + '%"></span></div>');
+    if (S.sent) {
+      h = '<h2 class="bds-q" tabindex="-1">' + esc(F.done) + '</h2><p class="bds-h">' + esc(F.doneX.replace('{email}', S.a.email || '')) + '</p>' +
+        (((d.buildForm || {}).live) ? '' : '<p class="bds-test">' + esc(F.test) + '</p>') + '<button type="button" class="bds-btn sec" data-bds="builds">' + esc(F.doneB) + '</button>';
+    } else if (st.o) {
+      h = '<h2 class="bds-q" tabindex="-1" id="bds-q">' + esc(st.q) + '</h2>' + (st.h ? '<p class="bds-h">' + esc(st.h) + '</p>' : '') +
+        '<div class="bds-opts" role="group" aria-labelledby="bds-q">' + st.o.map(function (o) { var v = fill(o[0], d); return '<button type="button" class="bds-opt" aria-pressed="' + (S.a[st.id] === v) + '" data-bds-pick="' + esc(v) + '">' + esc(fill(o[1], d)) + '</button>'; }).join('') + '</div>';
+    } else {
+      var sum = F.steps.filter(function (q) { return q.o; }).map(function (q) { var o = q.o.filter(function (x) { return fill(x[0], d) === S.a[q.id]; })[0]; return o ? fill(o[1], d) : ''; }).filter(Boolean).join(' · ');
+      var L = F.f, fld = function (k, type, ac, req) { return '<label class="bds-l">' + esc(L[k]) + '<input type="' + type + '" autocomplete="' + ac + '" data-bds-f="' + k + '" value="' + esc(S.a[k] || '') + '"' + (req ? ' required' : '') + '></label>'; };
+      h = '<h2 class="bds-q" tabindex="-1">' + esc(st.q) + '</h2><p class="bds-sum">' + esc(sum) + '</p>' +
+        '<div class="bds-fs">' + fld('name', 'text', 'name', 1) + fld('org', 'text', 'organization', 1) + fld('email', 'email', 'email', 1) +
+        '<label class="bds-l bds-wide">' + esc(L.what) + '<span class="bds-lh">' + esc(L.whatH) + '</span><textarea rows="4" data-bds-f="what" required>' + esc(S.a.what || '') + '</textarea></label>' +
+        fld('phone', 'tel', 'tel', 0) + '<label class="bds-l">' + esc(L.heard) + '<select data-bds-f="heard"><option value=""></option>' + F.heard.map(function (o) { return '<option value="' + o[0] + '"' + (S.a.heard === o[0] ? ' selected' : '') + '>' + esc(o[1]) + '</option>'; }).join('') + '</select></label></div>' +
+        (S.err ? '<p class="bds-err" role="alert">' + esc(S.err) + '</p>' : '') + '<button type="button" class="bds-btn pri" data-bds="send">' + esc(F.send) + '</button>' +
+        (((d.buildForm || {}).live) ? '' : '<p class="bds-test">' + esc(F.test) + '</p>');
+    }
+    s.innerHTML = '<div class="bds-back" data-bds="close"></div><div class="bds-panel" role="dialog" aria-modal="true" aria-label="Start a project">' + top + '<div class="bds-body">' + h + '</div></div>';
+    if (focusHead) { var q = s.querySelector('.bds-q'); if (q) try { q.focus({ preventScroll: true }); } catch (e) {} }
+  }
+  function send() {
+    var d = data(), F = d.buildPage.form, b = S.a, G = d.buildForm || {}, miss = [];
+    ['name', 'org', 'email', 'what'].forEach(function (k) { if (!String(b[k] || '').trim()) miss.push(F.f[k].toLowerCase()); });
+    if (miss.length) { S.err = F.need + miss.join(', ') + '.'; draw(); return; }
+    b.email = String(b.email).trim(); if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(b.email)) { S.err = F.badEmail; draw(); return; }
+    var lab = function (id) { var q = F.steps.filter(function (x) { return x.id === id; })[0], o = q && q.o.filter(function (x) { return fill(x[0], d) === b[id]; })[0]; return o ? fill(o[1], d) : 'not answered'; };
+    var heard = (F.heard.filter(function (o) { return o[0] === b.heard; })[0] || [0, 'not answered'])[1];
+    var extra = ['Door: Wants something built', 'Who: ' + lab('kind'), 'Wants built: ' + lab('builds'), 'When: ' + lab('when'), 'Budget: ' + lab('cost'), 'Money ready: ' + lab('fund'), 'Heard via: ' + heard, 'Source: pickathon.com Build page'].join('\n');
+    var E = G.entries || {}, fd = new URLSearchParams();
+    fd.append(E.name, b.name); fd.append(E.org, b.org); fd.append(E.web, ''); fd.append(E.email, b.email); fd.append(E.phone, b.phone || ''); fd.append(E.vision, b.what); fd.append(E.extra, extra);
+    if (G.live && G.action) { try { fetch(G.action, { method: 'POST', mode: 'no-cors', body: fd }).catch(function () {}); } catch (e) {} }
+    window.__pkBuildLast = extra; S.sent = true; S.err = ''; draw(true);
+  }
+  function sheetClick(e, t) {
+    var b;
+    if ((b = t.closest('[data-bds-pick]'))) { var d = data(), st = d.buildPage.form.steps[S.step]; S.a[st.id] = b.getAttribute('data-bds-pick'); S.step = Math.min(S.step + 1, d.buildPage.form.steps.length - 1); draw(true); return; }
+    if (!(b = t.closest('[data-bds]'))) return; var k = b.getAttribute('data-bds');
+    if (k === 'close') close();
+    else if (k === 'back') { S.step = Math.max(0, S.step - 1); S.err = ''; draw(true); }
+    else if (k === 'send') send();
+    else if (k === 'builds') { close(); var w = document.getElementById('bd-went'); if (w) w.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+  }
+  document.addEventListener('input', function (e) { var t = e.target; if (t && t.getAttribute && t.getAttribute('data-bds-f')) S.a[t.getAttribute('data-bds-f')] = t.value; });
+  document.addEventListener('change', function (e) { var t = e.target; if (t && t.getAttribute && t.getAttribute('data-bds-f')) S.a[t.getAttribute('data-bds-f')] = t.value; });
+  document.addEventListener('keydown', function (e) {
+    var s = document.getElementById('bd1-sheet'); if (!s || s.hidden) return;
+    if (e.key === 'Escape') { e.preventDefault(); close(); return; }
+    if (e.key === 'Tab') { var f = [].filter.call(s.querySelectorAll('button,input,select,textarea'), function (x) { return !x.disabled && x.offsetParent !== null; }); if (!f.length) return;
+      if (e.shiftKey && document.activeElement === f[0]) { e.preventDefault(); f[f.length - 1].focus(); } else if (!e.shiftKey && document.activeElement === f[f.length - 1]) { e.preventDefault(); f[0].focus(); } }
+  });
+  /* leaving the Build page closes the sheet */
+  var render0 = window.__render;
+  if (typeof render0 === 'function') window.__render = function () { var r = render0.apply(this, arguments); try { sync(); var s = document.getElementById('bd1-sheet'); if (s && !s.hidden && !document.getElementById('bd1')) close(); } catch (e) { if (window.console) console.error('pk-build1', e); } return r; };
+  function boot(n) { var a = app(); if (!a || !a.state || !a.state.data) { if (n < 200) setTimeout(function () { boot(n + 1); }, 50); return; } try { sync(); } catch (e) {} }
+  boot(0);
 })();
 </script>
