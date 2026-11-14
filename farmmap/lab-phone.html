@@ -47,7 +47,7 @@ body{margin:0;background:var(--ink);color:var(--cream);font-family:var(--f);
 #art,#shapes{position:absolute;top:0;left:0;transform-origin:0 0;will-change:transform}
 #art img{display:block;width:100%;height:auto;user-select:none;-webkit-user-drag:none}
 #nic{position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none}#nic img{position:absolute;max-width:none;height:auto;pointer-events:none}
-#art{opacity:0}body.mapready #art{opacity:1;transition:opacity .45s ease}
+#art{opacity:0}body.mapready #art{opacity:1;transition:opacity .45s ease}#art #calmimg{position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none}#calmic{position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none}#calmic img{position:absolute;pointer-events:none}body.yr #calmimg,body.yr #calmic{display:none}
 #tiles{position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none}
 #tiles img{position:absolute;max-width:none;opacity:0;transition:opacity .6s ease-out}
 #tiles img.on{opacity:1}
@@ -618,7 +618,7 @@ body.batout #dbat{margin:0 0 16px calc((100% - 129px)/6)!important}
 <script>/* Decide the entry state before the first paint, so nothing shows and then switches off (the title that blinked, labels that all showed and then collapsed). */
 (function(){try{var c=document.body.classList,emb=window.parent!==window,nv=performance.getEntriesByType('navigation')[0],rl=nv&&nv.type==='reload',fh=emb&&!rl&&sessionStorage.getItem('pkmap.from')==='hood',foc=!!sessionStorage.getItem('pkmap.focus');
 if(innerWidth>=1200){c.add('lm');if(fh){c.add('dpdone');c.add('nodt');}}else{if(fh)c.add('lpback');else if(!foc)c.add('lpfresh');}}catch(e){}})();</script>
-  <div id="art"><img id="mapimg" src="map.webp?v=34" alt="Map of Pendarvis Farm" draggable="false"><div id="tiles"></div><div id="veil"></div><div id="lits"></div><div id="nic"></div></div>
+  <div id="art"><img id="mapimg" src="map.webp?v=34" alt="Map of Pendarvis Farm" draggable="false"><div id="tiles"></div><img id="calmimg" src="map_calm.webp?v=1" alt="" draggable="false"><div id="veil"></div><div id="lits"></div><div id="nic"></div><div id="calmic"></div></div>
   <svg id="shapes"></svg>
   <svg id="leads"></svg>
   <div id="labs"></div>
@@ -1267,9 +1267,14 @@ let faults=0;
 let decQ=false, blurT=0, mvQ=false, mvT=0;
 function paint(){ const t='translate3d('+tx+'px,'+ty+'px,0) scale('+k+')';
   art.style.transform=t; shp.style.transform=t;
-  // The trail and small icon overlay fades in as you zoom: simpler when far out, more detail as you zoom in.
-  // Only the opacity value is written, and only when it changes (writing it every move restyles the map).
-  const nicEl=document.getElementById('nic'); if(nicEl){ const op=Math.max(0,Math.min(1,(k/kFit-1.25)/0.6)).toFixed(2); if(paint._o!==op){ paint._o=op; nicEl.style.opacity=op; } } }
+  // Start view (Zale, Nov 14): the simplified farm with the white neighborhood icons. Zooming in crossfades to the
+  // detailed map and its trail/icon layer. The fade is measured from the start view, so phone and desktop start simplified.
+  // Only opacity is written, and only when the step changes (writing it every move restyles the map).
+  let kH=kFit; try{ if(homeV&&homeV.k) kH=homeV.k; }catch(e){}
+  const f=Math.max(0,Math.min(1,(k/kH-1.12)/0.5)), fo=f.toFixed(2);
+  if(paint._o!==fo){ paint._o=fo; const co=(1-f).toFixed(2), off=f>=1?'hidden':'';
+    const nicEl=document.getElementById('nic'), ci=document.getElementById('calmimg'), cc=document.getElementById('calmic');
+    if(nicEl) nicEl.style.opacity=fo; if(ci){ ci.style.opacity=co; ci.style.visibility=off; } if(cc){ cc.style.opacity=co; cc.style.visibility=off; } } }
 // While the farm is being moved only the picture moves - once per frame. The
 // labels and leader lines step aside and come back, re-laid-out, when it stops;
 // laying out twenty labels on every touch event is what made panning stutter.
@@ -1726,8 +1731,8 @@ function tapAt(e){
   // mouse: hover peeks, a click pins, a click on the pinned one opens. Touch: the first tap
   // shows the card, a tap on the one already showing opens it.
   if(e.pointerType==='mouse'||(!LP()&&innerWidth>=1200)){ if(pinned===h&&cur===h&&window.__pinAt&&NOW()-window.__pinAt>450){ goPage(h); return; } if(pinned!==h){ window.__pinAt=NOW(); const kept=!atHomeD()&&k>kFit*1.08; if(kept){ keepK=k; keepAt=NOW(); } const first=!kept; /* hover can already mark the hood as current, so judge by the view, not by cur */ pinned=h; peek(null); setCur(h); show(h); if(first){ flyTo(h); } else if(kept){ const to=viewFor(h,keepK); if(to) flyView(to,h); } } return; }   // desktop: a click on the map only selects (no zoom); the logo list and next/prev do the flying; the Open button is the way through
-  else if(h!==cur){ keepZoomIf(h); setCur(h); return; }
-  goPage(h);
+  else if(h!==cur&&!LP()){ keepZoomIf(h); setCur(h); return; }
+  goPage(h);   /* phone and tablet: a tap goes straight to the full page with the X (Zale, Nov 14) */
 }
 const lift=e=>{
   if(e.type==='pointerup' && live.size===1 && live.has(e.pointerId) && !moved && downAt
@@ -1808,7 +1813,7 @@ document.getElementById('fx').onclick=e=>{ e.stopPropagation(); clearCur(); };
 document.getElementById('fback').onclick=e=>{ e.stopPropagation(); clearCur(); };
 setInterval(()=>{ if(LP()){ const cl=!cur&&k<=lpHome().k*1.25; if(document.body.classList.contains('lpclean')!==cl) document.body.classList.toggle('lpclean',cl); } else if(document.body.classList.contains('lpclean')) document.body.classList.remove('lpclean'); }, 120);
 setInterval(()=>{ const f=document.getElementById('fullmap'), on=LP()?lpFmOn():(k>kFit*1.3); if(f.classList.contains('on')!==on){ f.classList.toggle('on',on); if(LP()) apply(); } },250);
-document.getElementById('pgback').onclick=()=>{document.getElementById('page').hidden=true;};
+document.getElementById('pgback').onclick=()=>{document.getElementById('page').hidden=true; if(LP()) clearCur();};   /* phone: back to the map, no card */
 const PT=document.getElementById('ptog'), PK=document.getElementById('picker');
 // how many of this amenity are on the map (icons drawn), or how many neighborhoods list it when it has no icon
 function amCount(a){ const n=(ICON_AT[a]||[]).length; return n||HOODS.filter(h=>(h.amk||[]).includes(a)).length; }
@@ -1844,7 +1849,7 @@ addEventListener('keydown',e=>{
 // Responsive rule: crossing a layout breakpoint (desktop / tablet / phone) rebuilds the page cleanly, keeping the picked neighborhood; inside one layout the map refits, and a map still sitting at its start view goes to the new start view.
 const BOOTMODE=(function(){ return innerWidth>=1200?'d':(innerWidth>=700?'t':'p'); })();
 let rsW=stage.clientWidth, rsH=stage.clientHeight, homeV=null, modeT=0;
-(function(){ const _hv=homeView; homeView=function(){ _hv.apply(this,arguments); homeV={k:k,tx:tx,ty:ty}; }; })();
+(function(){ const _hv=homeView; homeView=function(){ _hv.apply(this,arguments); homeV={k:k,tx:tx,ty:ty}; paint._o=null; paint(); }; })();   /* re-run the start-view fade once the start zoom is known */
 function atHomeD(){ return !!homeV&&Math.abs(k-homeV.k)/homeV.k<0.03&&Math.abs(tx-homeV.tx)<8&&Math.abs(ty-homeV.ty)<8; }   // desktop still on the start view: the first pick zooms in like an icon tap; once zoomed, picks keep the zoom
 if(!LP()&&!cur) homeV={k:k,tx:tx,ty:ty};
 function modeNow(){ return innerWidth>=1200?'d':(innerWidth>=700?'t':'p'); }
@@ -2012,7 +2017,7 @@ function lpBuildMenu(){
   });
   box.innerHTML=html;
   box.addEventListener('click',e=>{ const b=e.target.closest('.lpi'); if(!b) return;
-    const h=HOODS.find(x=>x.id===b.dataset.h); if(!h) return; setCur(h); });
+    const h=HOODS.find(x=>x.id===b.dataset.h); if(!h) return; goPage(h); });   /* straight to the full page (Zale, Nov 14) */
 }
 let lpSwT=0; function lpSwiped(){ return NOW()-lpSwT<400; }
 function lpWire(){
@@ -2115,10 +2120,14 @@ function lpWirePanel(){
 /* Top layer: the dotted white trail and the icons added after the glow layers were baked. Never dimmed by the veil, never covered by a neighborhood's glow. */
 (function(){ const host=document.getElementById('nic'); if(!host) return;
   [["ic/n_trail.webp", 646.3, 290.4, 1218.4], ["ic/n_rec_cur.webp", 594.6, 3661.1, 60.0], ["ic/n_rec_wood.webp", 1672.6, 1261.0, 60.0], ["ic/n_rec_mkt.webp", 1443.0, 2227.3, 60.0], ["ic/n_food_cur.webp", 438.0, 3665.0, 60.0], ["ic/n_plate_cur.webp", 434.6, 3539.7, 80], ["ic/n_plate_farm.webp", 1177.6, 3263.1, 60]].forEach(function(n){ const i=new Image(); i.alt=''; i.draggable=false; i.src=n[0]+'?v=33'; i.style.cssText='left:'+n[1]+'px;top:'+n[2]+'px;width:'+n[3]+'px'; host.appendChild(i); }); })();
+/* Start-view icons: the white artwork icon of each neighborhood on its color, placed on the detailed map's own emblem so the zoom crossfade lands on it (shape center where none was found). Taps go through to the shape below. */
+(function(){ const host=document.getElementById('calmic'); if(!host) return; const P={"woods": [1757.0, 1318.0, 94], "paddock": [1005.0, 2804.0, 103], "cherryhill": [1387.0, 2285.0, 81], "grove": [1332.0, 2509.0, 99], "windmill": [876.0, 2576.0, 125], "galaxy": [1013.0, 3123.6, 54], "lucky": [814.0, 3297.0, 68], "farmhouse": [1116.6, 3483.6, 70], "curation": [548.0, 3624.0, 106], "refuge": [1785.0, 1986.0, 97], "coyote": [1324.0, 2081.0, 94], "market": [1532.0, 2418.0, 94], "orchard": [1041.0, 3315.0, 50], "welcomelot": [1897.0, 3590.0, 107], "quailtrail": [1817.0, 1772.1, 44], "southcamp": [862.0, 3565.0, 127], "willowcamp": [1640.0, 3590.0, 107], "courtyard": [1039.0, 3213.0, 49], "wildcamp": [737.0, 521.0, 303], "lushcamp": [1112.0, 1469.0, 451]};
+  Object.keys(P).forEach(function(id){ const p=P[id], d=p[2]<60?88:100, i=new Image(); i.alt=''; i.draggable=false; i.decoding='async'; i.src='ic/c_'+id+'.webp?v=1';
+    i.style.cssText='left:'+(p[0]-d/2)+'px;top:'+(p[1]-d/2)+'px;width:'+d+'px;height:'+d+'px'; host.appendChild(i); }); })();
 let _rvd=0;
 function _rvGo(){ if(_rvd) return; _rvd=1; document.body.classList.add('mapready'); }
 /* The art fades in from black only once the final base image is decoded: no placeholder, no blurry swap. */
-function revealMap(){ if(_rvd) return; const i=document.getElementById('mapimg');
+function revealMap(){ if(_rvd) return; const i=document.getElementById('calmimg')||document.getElementById('mapimg');
   if(!i||(i.complete&&i.naturalWidth)){ (i&&i.decode?i.decode():Promise.resolve()).then(_rvGo,_rvGo); }
   else { i.addEventListener('load',()=>{ (i.decode?i.decode():Promise.resolve()).then(_rvGo,_rvGo); },{once:true}); i.addEventListener('error',_rvGo,{once:true}); } }
 setTimeout(_rvGo,20000);   /* never stay hidden */
