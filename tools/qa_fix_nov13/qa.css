@@ -1,0 +1,2 @@
+/* QA fix Nov 13: shared pk-cta buttons are 50px tall on phone and tablet (below 1200px), 56px on desktop. */
+@media (max-width:1199px){#root#root main .pk-cta:not(.pk-cta-keep){min-height:50px!important}}

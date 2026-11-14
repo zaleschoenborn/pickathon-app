@@ -3221,27 +3221,8 @@ html.pk-yp-on #root .pk-yb{display:none}
 })();
 </script>
 <style id="pk-qafix-css">
-/* pk-qafix (site_qa-1, site_qa-2, Nov 9): six button kinds (buttons.md) and the 360 year header */
-/* Secondary: the climb's Another year */
-#root#root#root .pk-cl-an{background:rgba(18,22,15,.26);border:2px solid rgba(242,237,227,.88);color:#F2EDE3;min-height:50px;font-size:13px;cursor:pointer}
-/* Primary: Build it with us, All 20 on the map */
-#root#root#root .pk-cn-b,#root#root#root .pk-cy-all{background:rgba(214,181,74,.18);border:2px solid #D6B54A;color:#F2CF62;min-height:50px;border-radius:6px}
-@media (min-width:1200px){#root#root#root .pk-cl-an,#root#root#root .pk-cn-b,#root#root#root .pk-cy-all{min-height:56px}}
-/* Gold text link: a 44px tap target without moving the line */
-#root#root#root .pk-cn-a:not(.pk-cn-a2){display:inline-block;padding:10px 0;margin:-10px 0}
-/* Year page story card (cream paper): the two buttons get a solid dark backing so they read as primary and secondary */
-#root#root#root .pk-story .pk-sttog{background:#2B2628!important;border:2px solid rgba(242,237,227,.88)!important;color:#F2EDE3!important;min-height:50px;margin-top:14px!important;opacity:1!important}
-#root#root#root .pk-story .pk-st-w{background:linear-gradient(rgba(214,181,74,.18),rgba(214,181,74,.18)),#1F1C1D!important;border:2px solid #D6B54A!important;color:#F2CF62!important;min-height:50px;border-radius:6px!important}
-#root#root#root .pk-story .pk-st-w *{color:#F2CF62!important}
-@media (min-width:1200px){#root#root#root .pk-story .pk-sttog,#root#root#root .pk-story .pk-st-w{min-height:56px}}
-#root .pk-story .pk-st-p.pk-sc{display:block!important;max-height:6em;max-height:4lh;overflow:hidden;-webkit-mask-image:linear-gradient(#000 70%,transparent);mask-image:linear-gradient(#000 70%,transparent)}
-/* 360: the year title no longer runs under "Pick another year" */
-@media (max-width:599px){
-html:root:root:root:root:root:root .pk-yhd{display:flex;align-items:center;gap:10px}
-html:root:root:root:root:root:root .pk-yhd .pk-yhl{display:none}
-html:root:root:root:root:root:root .pk-yhd h2.pk-pyl{flex:1 1 auto;min-width:0;overflow-wrap:anywhere}
-html:root:root:root:root:root:root .pk-yhd .pk-bkb.sec{flex:none;margin-left:0!important;padding:0 12px!important}
-}
+/* QA fix Nov 13: shared pk-cta buttons are 50px tall on phone and tablet (below 1200px), 56px on desktop. */
+@media (max-width:1199px){#root#root main .pk-cta:not(.pk-cta-keep){min-height:50px!important}}
 </style>
 <script id="pk-qafix-js">/*pk-qafix (site_qa-2): keep every city-map spot label inside the map card (labels at the edges could poke out a few px at 1024 and 1180 landscape)*/
 (function () {
@@ -12868,7 +12849,8 @@ html.bd1-lock,html.bd1-lock body{overflow:hidden}
   .bd1s .bds-q{font-size:2.5rem}
   .bd1s .bds-btn{min-height:56px}
 }
-/* QA 2026-11-13: timeline dots get a 44px touch area without changing their look */#root .pk-tn button.pk-tn-dot{position:relative!important}#root .pk-tn button.pk-tn-dot::after{content:"";position:absolute;left:50%;top:50%;width:44px;height:44px;transform:translate(-50%,-50%);background:transparent;box-shadow:none;border:0;padding:0;min-height:0}</style>
+/* QA 2026-11-13: timeline dots get a 44px touch area without changing their look */#root .pk-tn button.pk-tn-dot{position:relative!important}#root .pk-tn button.pk-tn-dot::after{content:"";position:absolute;left:50%;top:50%;width:44px;height:44px;transform:translate(-50%,-50%);background:transparent;box-shadow:none;border:0;padding:0;min-height:0}
+</style>
 <script id="pk-build1">
 /* pk-build1: Build with Pickathon, round 1 (Nov 13 2026). Route 'build'. Spec: photo-catalog/design_specs/build_page.md (Zale, Nov 8).
    Source: tools/build_r1/bd.js, spliced into index.html by tools/build_r1/build.py (<script id="pk-build1">, <style id="pk-build1-css">).
