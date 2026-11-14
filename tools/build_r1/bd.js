@@ -61,9 +61,9 @@
         '<span class="bd-ctx"><span class="bd-ck">' + esc(b.y + ' · ' + b.nm) + '</span><span class="bd-cnow">' + esc(W.now) + '</span><span class="bd-cto">' + esc(b.now) + '</span></span></' + tag.split(' ')[0] + '></li>'; }).join('');
     var fs = firms(d);
     return '<section class="bd-hero"><img class="bd-him" src="' + esc(H.im) + '" alt="" style="object-position:' + focusOf(H.im) + '"><div class="bd-hsh" aria-hidden="true"></div>' +
+      '<button type="button" class="bd-tour" data-bd-tour="1" aria-label="' + esc(H.tour) + '"><span aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 4 L20 12 L7 20 Z"/></svg></span>' + esc(H.tour) + '</button>' +
       '<div class="bd-hin"><p class="bd-k bd-hk">' + esc(C.eye || '') + '</p><h1 class="pl-d bd-h1">' + esc(H.t) + '</h1><p class="bd-hx">' + esc(H.x) + '</p>' +
-      '<div class="bd-hb"><button type="button" class="pk-tour bd-tour" data-bd-tour="1"><span aria-hidden="true">▶︎</span>' + esc(H.tour) + '</button>' +
-      '<button type="button" class="pk-cta pri bd-cta" data-bd-start="1">' + esc(H.cta) + '</button></div></div></section>' +
+      '<div class="bd-hb"><button type="button" class="pk-cta pri bd-cta" data-bd-start="1">' + esc(H.cta) + '</button></div></div></section>' +
       '<section class="bd-sec bd-went" id="bd-went"><div class="bd-in"><div class="bd-wh"><div><p class="bd-k">' + esc(W.k) + '</p><h2 class="pl-d bd-h2">' + esc(W.t) + '</h2></div>' +
       '<div class="bd-arr"><button type="button" class="bd-ib" data-bd-arr="-1" aria-label="Previous builds">‹</button><button type="button" class="bd-ib" data-bd-arr="1" aria-label="Next builds">›</button></div></div>' +
       '<div class="bd-chips">' + chips + ysel + '</div></div>' +
