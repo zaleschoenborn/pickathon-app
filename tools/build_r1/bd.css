@@ -44,7 +44,7 @@
 .bd1 .bd-ctx{display:flex;flex-direction:column;flex:1;padding:12px 14px 16px}
 .bd1 .bd-ck{font-size:.75rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--gold,#F2CF62)}
 .bd1 .bd-cnow{margin-top:10px;font-size:.6875rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#B9B3A6}
-.bd1 .bd-cto{margin-top:2px;font-size:1rem;line-height:1.35;font-weight:700;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
+.bd1 .bd-cto{margin-top:2px;font-size:1rem;line-height:1.35;font-weight:700;}
 /* what you get, who we build for */
 .bd1 .bd-two{display:grid;gap:40px}
 .bd1 .bd-gl{list-style:none;margin:14px 0 0;padding:0;display:grid;gap:16px}
