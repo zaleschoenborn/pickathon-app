@@ -32,7 +32,7 @@
         if (ph) out.push({ kind: 'hood', y: b.y, h: k, nm: h.n, now: pt, im: ph.i });
       });
     });
-    (d.privateBuilds || []).forEach(function (p) { if (p.i && p.nx) out.push({ kind: 'priv', y: String(p.y), nm: String(p.n).replace(/\s*\(.*\)$/, ''), now: p.nx, im: p.i, story: p.story || 0 }); });
+    var pbi = 0; (d.privateBuilds || []).filter(function (p) { return p.i; }).forEach(function (p, j) { if (p.nx) out.push({ kind: 'priv', y: String(p.y), nm: String(p.n).replace(/\s*\(.*\)$/, ''), now: p.nx, im: p.i, story: p.story || 0, bs: 'pb-' + j }); });  /* each private build opens its build story page (#/built/pb-N) */
     return out;
   }
   function firms(d) {
@@ -55,7 +55,7 @@
       return '<button type="button" class="bd-chip" aria-pressed="' + (V.kind === c[0]) + '" data-bd-kind="' + c[0] + '">' + esc(c[1]) + '</button>'; }).join('');
     var ysel = years.length > 1 ? '<label class="bd-ysel"><span class="bd-sr">Year</span><select data-bd-year>' + years.map(function (y) { return '<option' + (y === V.y ? ' selected' : '') + '>' + y + '</option>'; }).join('') + '</select></label>' : '';
     var cards = row.map(function (b) {
-      var go = b.kind === 'hood' ? 'hood:' + b.h + ':' + b.y : b.story ? 'story:' + b.story : '';
+      var go = b.kind === 'hood' ? 'hood:' + b.h + ':' + b.y : b.bs ? 'built:' + b.bs : b.story ? 'story:' + b.story : '';
       var tag = go ? 'button type="button" data-bd-go="' + esc(go) + '"' : 'div';
       return '<li class="bd-card"><' + tag + ' class="bd-cin' + (go ? ' bd-link' : '') + '"><span class="bd-cim"><img src="' + esc(b.im) + '" alt="" loading="lazy" decoding="async" style="object-position:' + focusOf(b.im) + '"></span>' +
         '<span class="bd-ctx"><span class="bd-ck">' + esc(b.y + ' · ' + b.nm) + '</span><span class="bd-cnow">' + esc(W.now) + '</span><span class="bd-cto">' + esc(b.now) + '</span></span></' + tag.split(' ')[0] + '></li>'; }).join('');
@@ -101,6 +101,7 @@
     var a = app(); if (!a) return; var p = to.split(':');
     if (p[0] === 'hood') { a.go('hood', p[2] && p[2] !== '2026' ? { h: p[1], y: p[2] } : { h: p[1] }); return; }
     if (p[0] === 'story') { a.go('story', { s: +p[1] }); return; }
+    if (p[0] === 'built') { a.go('buildstory', { b: p[1] }); return; }
     if (p[0] === 'page') { a.go('page', { p: p[1] }); return; }
   }
   document.addEventListener('click', function (e) {
