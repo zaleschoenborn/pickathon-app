@@ -113,7 +113,7 @@ window.pkTix = function (testDay, season) {
 .pkbs-back{position:absolute;top:18px;left:16px;display:inline-flex;align-items:center;min-height:44px;padding:0 14px;border:1.5px solid #F2EDE3;border-radius:6px;background:rgba(18,14,16,.4);color:#F2EDE3;font:inherit;font-weight:800;font-size:14px;letter-spacing:.04em;cursor:pointer}
 .pkbs-kick{margin:0 0 10px;font:700 13px/1.3 "Courier Prime","Courier New",monospace;letter-spacing:.14em;text-transform:uppercase;color:#D6B54A}
 .pkbs-h1{margin:0;font:400 clamp(40px,8vw,84px)/.9 "Pickathon 2014","Work Sans",sans-serif;text-wrap:balance;max-width:900px}
-.pkbs-small{min-height:260px}.pkbs-main{max-width:1100px;margin:0 auto;padding:0 16px 56px}
+.pkbs-small{min-height:260px}.pkst-read{margin:10px 0 0;font-size:14px;color:#CFC9BC}.pkst-body{max-width:680px;padding-top:30px}.pkst-h{margin:34px 0 8px;font:700 13px/1.3 "Courier Prime","Courier New",monospace;letter-spacing:.14em;text-transform:uppercase;color:#D6B54A}.pkst .pkst-body p{font-size:18px}.pkbs-main{max-width:1100px;margin:0 auto;padding:0 16px 56px}
 .pkbs-creds{display:flex;flex-wrap:wrap;column-gap:28px;row-gap:6px;border-top:2px solid #D6B54A;border-bottom:1px solid #4F4749;padding:12px 0;margin:8px 0}
 .pkbs-cred{flex:1 1 220px;min-width:0;padding:6px 0}.pkbs-cred b{display:block;font:700 12px/1.3 "Courier Prime",monospace;letter-spacing:.08em;text-transform:uppercase;color:#D6B54A}.pkbs-cred span{display:block;margin-top:4px;font-size:17px;font-weight:700;line-height:1.3}
 .pkbs-part{padding:34px 0 0;max-width:680px}.pkbs-part h2{margin:0 0 10px;font:700 13px/1.3 "Courier Prime","Courier New",monospace;letter-spacing:.14em;text-transform:uppercase;color:#D6B54A}.pkbs-part p{margin:0 0 12px;font-size:18px;line-height:1.6;color:#E6E0D3}
@@ -4642,14 +4642,13 @@ html{-webkit-text-size-adjust:100%!important;text-size-adjust:100%!important}.pk
 </sc-if>
 
 <sc-if value="{{r.story}}" hint-placeholder-val="{{false}}">
-<section style="{{wrapTop}}">
-<div style="max-width: 820px; margin: 0 auto 56px">
-<p class="pkp-mono" style="margin: 0 0 8px; font-size: 13px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #9FCB8A">{{story.meta}}</p>
-<h1 style="{{h1Page}}">{{story.t}}</h1>
-<p style="margin: 10px 0 0; font-size: 14px; color: #B9B3A6">{{story.read}}</p>
-<img src="{{story.i}}" alt="" style="display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 16px; margin: 20px 0; background: #24301F">
+<div class="pkbs pkst">
+<header class="pkbs-hero" style="{{story.heroStyle}}"><div class="pkbs-hin"><button type="button" class="pkbs-back" onClick="{{story.back}}">← All stories</button><p class="pkbs-kick">{{story.meta}}</p><h1 class="pkbs-h1">{{story.t}}</h1><p class="pkst-read">{{story.read}}</p></div></header>
+<main class="pkbs-main">
+<div class="pkbs-creds"><sc-for list="{{story.creds}}" as="c" hint-placeholder-count="2"><div class="pkbs-cred"><b>{{c.l}}</b><span>{{c.v}}</span></div></sc-for></div>
+<div class="pkst-body">
 <sc-for list="{{story.blocks}}" as="b" hint-placeholder-count="4">
-<sc-if value="{{b.isH}}" hint-placeholder-val="{{false}}"><h2 style="margin: 28px 0 4px; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 26px; line-height: 1.15">{{b.text}}</h2></sc-if>
+<sc-if value="{{b.isH}}" hint-placeholder-val="{{false}}"><h2 class="pkst-h">{{b.text}}</h2></sc-if>
 <sc-if value="{{b.isP}}" hint-placeholder-val="{{true}}"><p style="margin: 14px 0 0; font-size: 18px; color: #DCD6C9; line-height: 1.65"><sc-for list="{{b.segs}}" as="g" hint-placeholder-count="1"><sc-if value="{{g.isT}}" hint-placeholder-val="{{true}}">{{g.t}}</sc-if><sc-if value="{{g.isA}}" hint-placeholder-val="{{false}}"><a href="{{g.u}}" target="{{g.tg}}" rel="noopener" style="color: #F2B33D; font-weight: 700; text-decoration: underline; text-underline-offset: 3px">{{g.t}}</a></sc-if><sc-if value="{{g.isB}}" hint-placeholder-val="{{false}}"><button type="button" onClick="{{g.go}}" style="padding: 0; border: 0; background: transparent; color: #F2B33D; font: inherit; font-weight: 700; text-decoration: underline; text-underline-offset: 3px; cursor: pointer">{{g.t}}</button></sc-if></sc-for></p></sc-if>
 <sc-if value="{{b.isQ}}" hint-placeholder-val="{{false}}"><blockquote style="margin: 18px 0 0; padding: 4px 0 4px 18px; border-left: 3px solid #9FCB8A; font-size: 20px; color: #F2EDE3">{{b.text}}</blockquote></sc-if>
 <sc-if value="{{b.isC}}" hint-placeholder-val="{{false}}"><p style="margin: 8px 0 0; font-size: 13px; color: #B9B3A6">{{b.text}}</p></sc-if>
@@ -4679,7 +4678,8 @@ html{-webkit-text-size-adjust:100%!important;text-size-adjust:100%!important}.pk
 <sc-if value="{{story.hasNext}}" hint-placeholder-val="{{true}}"><button type="button" onClick="{{story.next}}" style="margin-left: auto; min-height: 44px; padding: 0 16px; border-radius: 999px; border: 1px solid #4A5544; background: transparent; color: #F2EDE3; font: inherit; font-weight: 600; cursor: pointer">Older →</button></sc-if>
 </div>
 </div>
-</section>
+</main>
+</div>
 </sc-if>
 
 <sc-if value="{{r.page}}" hint-placeholder-val="{{false}}">
@@ -7048,7 +7048,8 @@ window.__pkMapH = mapH; window.__pkGoFarm = goFarm;   // pk-home2: the Home neig
       var links = S1.h.map(function (h) { return { label: '◎ ' + d.hoods[h].n, go: openH(h) }; }).concat(S1.a.map(function (a) { return { label: '♪ ' + d.artists[a].n, go: openA(a) }; }));
       var idx = stories.indexOf(S1);
       var rel = stories.filter(function (o) { return o !== S1; }).map(function (o) { var sc = 0; o.h.forEach(function (h) { if (S1.h.indexOf(h) >= 0) sc += 3; }); o.a.forEach(function (a) { if (S1.a.indexOf(a) >= 0) sc += 2; }); if (o.ty === S1.ty) sc += 1; if (o.cn && S1.cn) sc += 1; return [sc, o]; }).filter(function (x) { return x[0] > 1; }).sort(function (a, b) { return b[0] - a[0]; }).slice(0, 4).map(function (x) { return sCard(x[1]); });
-      out.story = { cn: !!S1.cn, isTix: S1.ty === 'Tickets & merch' && /ticket|presale|pass/i.test(S1.t), t: S1.t, i: S1.i, u: S1.u, meta: S1.ty + (S1.cn ? ' · Creative Neighborhoods' : '') + ' · ' + sDate(S1.d), read: Math.max(1, Math.round((S1.w || 200) / 230)) + ' min read · ' + (S1.w || 0) + ' words', blocks: blockRows(S1.f && S1.f.length ? S1.f : [['p', S1.x]], S1.lk), links: links, hasLinks: links.length > 0,
+      var scr = []; if ((S1.h || []).length) scr.push({ l: S1.h.length > 1 ? 'Neighborhoods' : 'Neighborhood', v: S1.h.map(function (k) { return d.hoods[k] && d.hoods[k].n; }).filter(Boolean).join(' · ') }); if ((S1.a || []).length) scr.push({ l: S1.a.length > 1 ? 'Artists' : 'Artist', v: S1.a.slice(0, 3).map(function (k) { return d.artists[k] && d.artists[k].n; }).filter(Boolean).join(' · ') + (S1.a.length > 3 ? ' + ' + (S1.a.length - 3) + ' more' : '') }); scr.push({ l: 'Posted', v: sDate(S1.d) });
+      out.story = { creds: scr, heroStyle: S1.i ? 'background-image: url(' + S1.i + ')' : '', back: function () { self.go('stories'); }, cn: !!S1.cn, isTix: S1.ty === 'Tickets & merch' && /ticket|presale|pass/i.test(S1.t), t: S1.t, i: S1.i, u: S1.u, meta: S1.ty + (S1.cn ? ' · Creative Neighborhoods' : '') + ' · ' + sDate(S1.d), read: Math.max(1, Math.round((S1.w || 200) / 230)) + ' min read · ' + (S1.w || 0) + ' words', blocks: blockRows(S1.f && S1.f.length ? S1.f : [['p', S1.x]], S1.lk), links: links, hasLinks: links.length > 0,
         related: rel, hasRelated: rel.length > 0, hasPrev: idx > 0, hasNext: idx < stories.length - 1,
         prev: function () { if (idx > 0) self.go('story', { s: stories[idx - 1].id }, true); }, next: function () { if (idx < stories.length - 1) self.go('story', { s: stories[idx + 1].id }, true); } };
     }
