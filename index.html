@@ -3228,6 +3228,8 @@ html.pk-yp-on #root .pk-yb{display:none}
 @media (max-width:1199px){#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root header>div>span>span[style*="font-size: 16px"]{white-space:normal!important;overflow:visible!important;text-overflow:clip!important}}
 /* QA fix Nov 13: small in-text link chips are 44px tall, the tap-target minimum (buttons.md, gotchas). */
 #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root button.pk-ilink{min-height:44px!important;height:auto!important;display:inline-flex!important;align-items:center!important}
+/* QA fix Nov 13: the Prev / Next lineup label wraps instead of cutting off with an ellipsis. */
+@media (max-width:1199px){#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root nav[aria-label="Browse the lineup"] button>span{white-space:normal!important;overflow:visible!important;text-overflow:clip!important}}
 </style>
 <script id="pk-qafix-js">/*pk-qafix (site_qa-2): keep every city-map spot label inside the map card (labels at the edges could poke out a few px at 1024 and 1180 landscape)*/
 (function () {
