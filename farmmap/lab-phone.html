@@ -627,15 +627,55 @@ if(innerWidth>=1200){c.add('lm');if(fh){c.add('dpdone');c.add('nodt');}}else{if(
 
 
 <div id="page" hidden>
-  <button id="pgback" aria-label="Close and return to the map">✕</button>
-  <img id="pghero" alt="">
-  <div class="chip" id="pgkind">Stage</div>
-  <h1 id="pgname">—</h1>
-  <p id="pgtag"></p>
-  <div class="ams" id="pgams"></div>
-  <p class="stub">Where the real neighborhood page goes — schedule, who built it,
-     who played here.</p>
+  <div id="pgscroll">
+    <div id="pgtop">
+      <button id="pgback" type="button" aria-label="Close and return to the map">&#10005;</button>
+      <img id="pghero" alt="">
+      <button id="pgcut" type="button" aria-label="Back to the map"></button>
+    </div>
+    <div id="pgtx"><div class="chip" id="pgkind">Stage</div><h1 id="pgname">&mdash;</h1><p id="pgtag"></p></div>
+    <section class="pgsec" id="pgshelf" hidden><h2>Watch at <span id="pgshn"></span></h2><div id="pgbench"></div></section>
+    <section class="pgsec" id="pgamsw"><h2>What&rsquo;s here</h2><div class="ams" id="pgams"></div></section>
+    <section class="pgsec" id="pgstory" hidden><p class="pgk2" id="pgstoryl"></p><h2 id="pgstoryh"></h2><p id="pgstoryp"></p><div id="pgbeats"></div></section>
+  </div>
 </div>
+<style id="pgv2">
+#page{overflow:hidden;background:#141B12}
+#page[hidden]{display:none}
+#pgscroll{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;scrollbar-width:none;-ms-overflow-style:none;padding-bottom:56px;-webkit-overflow-scrolling:touch}
+#pgscroll::-webkit-scrollbar{display:none}
+#pgtop{position:relative;height:400px;overflow:hidden}
+#pghero{position:absolute;inset:0;width:100%;height:100%;aspect-ratio:auto;margin:0;border-radius:0;object-fit:cover}
+#pgback{position:absolute;left:16px;top:16px;z-index:3;width:44px;height:44px;padding:0;border-radius:50%;border:2px solid #F2EDE3;background:rgba(20,27,18,.6);color:#F2EDE3;font-size:18px;line-height:1;cursor:pointer}
+#pgcut{position:absolute;right:16px;top:16px;z-index:3;width:92px;height:92px;padding:0;border-radius:10px;border:2px solid #F2EDE3;overflow:hidden;background:#0f1a10 no-repeat;cursor:pointer}
+#pgcut::after{content:"";position:absolute;left:50%;top:50%;width:34px;height:34px;margin:-17px 0 0 -17px;border-radius:50%;border:3px solid #F2CF62;box-shadow:0 0 8px rgba(242,207,98,.95)}
+#pgtx{padding:18px 20px 0}
+#pgtx h1{font-size:34px}
+.pgsec{padding:0 20px;margin-top:28px}
+.pgsec h2{margin:0;font-family:"Pickathon 2014",var(--f);font-weight:400;text-transform:uppercase;font-size:24px;line-height:1.05;letter-spacing:.02em;color:#F2EDE3}
+#pgbench{display:flex;gap:12px;margin:12px -20px 0;padding:0 20px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;overscroll-behavior-x:contain}
+#pgbench::-webkit-scrollbar{display:none}
+.pgc{flex:0 0 min(260px,72vw);scroll-snap-align:start;display:block;background:none;border:0;padding:0;text-align:left;color:#F2EDE3;cursor:pointer;min-width:0}
+.pgth{position:relative;display:block;height:146px;border-radius:12px;overflow:hidden;background:#1E2A1B}
+.pgth img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.pgring{position:absolute;left:50%;top:50%;width:52px;height:52px;margin:-26px 0 0 -26px;border-radius:50%;background:rgba(20,27,18,.6);border:2px solid #F2EDE3}
+.pgring b{position:absolute;left:17px;top:13px;width:0;height:0;border-style:solid;border-width:13px 0 13px 20px;border-color:transparent transparent transparent #F2EDE3}
+.pgc .pgk{display:flex;justify-content:space-between;gap:8px;margin-top:8px;font:800 11px/1.2 var(--f);letter-spacing:.12em;text-transform:uppercase;color:#D6B54A}
+.pgc .pgk em{font-style:normal;color:#F2EDE3;white-space:nowrap}
+.pgc .pga{display:block;margin-top:4px;font:700 16px/1.25 var(--f);color:#F2EDE3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pgc .pgs{display:block;font:500 13px/1.3 var(--f);color:#B9B3A6;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#pgstory .pgk2{margin:0;font:800 11px/1.2 var(--f);letter-spacing:.14em;text-transform:uppercase;color:#D6B54A}
+#pgstory p{max-width:none}
+#pgbeats{display:grid;grid-template-columns:1fr 1fr;gap:12px 16px;margin-top:16px}
+.pgbeat{border-top:1px solid #3A4331;padding-top:8px;min-width:0}
+.pgbeat b{display:block;font:800 11px/1.2 var(--f);letter-spacing:.14em;text-transform:uppercase;color:#D6B54A;margin-bottom:4px}
+.pgbeat span{display:block;font-size:15px;line-height:1.35;color:#F2EDE3;overflow-wrap:anywhere}
+#pgplay{position:fixed;inset:0;z-index:70;background:#000}
+#pgplay[hidden]{display:none}
+#pgplay iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+#pgplayx{position:absolute;right:12px;top:12px;z-index:2;width:44px;height:44px;padding:0;border-radius:50%;border:2px solid #F2EDE3;background:rgba(0,0,0,.6);color:#F2EDE3;font-size:18px}
+@media (min-width:1200px){#page{inset:0 auto 0 0;width:460px;border-right:1px solid #3A4331;z-index:45}#pgtop{height:320px}}
+</style>
 
 <style>
 /* ===== Nov 2 pass. Phone: a graphic overview heading (no box) and quiet prev/next arrows on the strip.
@@ -1515,19 +1555,69 @@ function fullMap(){ pinned=null; peek(null); cur=null; show(null);
 function clearCur(){ pinned=null; peek(null); cur=null; show(null); if(LP()){ light(null); lpSync(); apply(); } else apply(); }   /* Zale, Nov 11 08:14: tapping empty map or the X closes the card and keeps the zoom; only Full map zooms all the way out */
 function goPage(h){
   setCur(h); show(h);
-  // Embedded in the site: hand off to the site's own neighborhood page.
-  if(window.parent!==window && /[?&]embed=1/.test(location.search)){ try{ saveView(); if(YR&&h.l!==undefined&&!h.l) return; parent.postMessage({pkMap:'open',id:h.l||h.id},'*'); return; }catch(e){} }
-  document.getElementById('pgname').textContent=h.n;
-  document.getElementById('pgtag').textContent=h.t||'';
-  const pk=document.getElementById('pgkind');
-  pk.textContent=KLBL(h.k); pk.className='chip k-'+h.k;
-  const hv=(HERO[h.id]||[])[0], el=document.getElementById('pghero');
-  if(hv){el.src=hv; el.hidden=false;} else el.hidden=true;
-  document.getElementById('pgams').innerHTML=(h.amk||[]).map((a,i)=>
-    '<span class="am">'+(h.am[i]||AMLBL[a]||a)+'</span>').join('');
+  renderPage(h);
   document.getElementById('page').hidden=false;
 }
 
+// ---------------------------------------------------------------- neighborhood page (template)
+// Filled from the same site data as the neighborhood pages. A section without
+// data is hidden; nothing is stand-in text.
+const pgEsc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function pgHeroSrc(h){ const x=XD&&XD.h&&XD.h[h.id], q=x&&(x.hi||x.i); if(q) return !/^(https?:|\.\.\/|\/)/.test(q)?'../'+q:q; return ((HERO[h.id]||[])[0])||''; }
+let pgTry=0, pgCur=null;
+function renderPage(h){
+  pgCur=h;
+  if(!XD||!XD.h){ if(pgTry++<50){ loadXD(); setTimeout(()=>{ if(pgCur===h) renderPage(h); },200); } return; }
+  pgTry=0;
+  const x=XD.h[h.id]||{};
+  document.getElementById('pgname').textContent=h.n;
+  const pk=document.getElementById('pgkind'); pk.textContent=KLBL(h.k); pk.className='chip k-'+h.k;
+  document.getElementById('pgtag').textContent=x.t||h.t||'';
+  const hv=pgHeroSrc(h), el=document.getElementById('pghero');
+  if(hv){ el.src=hv; el.hidden=false; } else { el.hidden=true; }
+  const am=(x.am||[]).filter(Boolean);
+  document.getElementById('pgams').innerHTML=am.map(a=>'<span class="am">'+pgEsc(a)+'</span>').join('');
+  document.getElementById('pgamsw').hidden=!am.length;
+  const y0=(x.pb||[])[0]||null, st=document.getElementById('pgstory');
+  if(y0 && (y0.b||y0.d)){
+    st.hidden=false;
+    document.getElementById('pgstoryl').textContent='The story of '+h.n+(y0.y?' '+y0.y:'');
+    document.getElementById('pgstoryh').textContent=y0.b||'';
+    document.getElementById('pgstoryp').textContent=y0.d||'';
+    const beats=[['Design',y0.de],['Build',y0.bu],['Engineering',y0.eng],['Downstream',y0.pt]].filter(b=>b[1]);
+    document.getElementById('pgbeats').innerHTML=beats.map(b=>'<div class="pgbeat"><b>'+b[0]+'</b><span>'+pgEsc(b[1])+'</span></div>').join('');
+  } else { st.hidden=true; }
+  // Watch shelf: singles recorded at this venue, one per artist, no 2026
+  const seen={}, list=[];
+  (XD.v||[]).forEach(v=>{ if(v.vn!==h.n||v.s==='Full set'||v.y===2026) return; const k=String(v.a||'').toLowerCase(); if(!k||seen[k]) return; seen[k]=1; list.push(v); });
+  const pick=list.slice(0,5);
+  document.getElementById('pgshn').textContent=h.n;
+  document.getElementById('pgshelf').hidden=!pick.length;
+  document.getElementById('pgbench').innerHTML=pick.map((v,i)=>{ const th=v.vm?(v.th||''):'https://i.ytimg.com/vi/'+v.id+'/hqdefault.jpg'; return '<button type="button" class="pgc" data-i="'+i+'"><span class="pgth"><img src="'+pgEsc(th)+'" alt="" loading="lazy"><span class="pgring" aria-hidden="true"><b></b></span></span><span class="pgk"><span>Watch</span><em>Pickathon '+pgEsc(v.y)+'</em></span><span class="pga">'+pgEsc(v.a)+'</span><span class="pgs">'+pgEsc(v.s)+'</span></button>'; }).join('');
+  document.querySelectorAll('#pgbench .pgc').forEach(b=>b.onclick=()=>openPlayer(pick[+b.dataset.i]));
+  positionCut(h);
+}
+// Cutout: a square crop of the farm map centered on the neighborhood point.
+function positionCut(h){
+  const c=document.getElementById('pgcut'); if(!c||!h.p) return;
+  const S=92, W=S*100/26, H=W*3810/2041;   // crop = 26% of the map width
+  const x=S/2-h.p[0]/100*W, y=S/2-h.p[1]/100*H;
+  c.style.backgroundImage='url(map.webp)'; c.style.backgroundSize=W+'px '+H+'px'; c.style.backgroundPosition=x+'px '+y+'px';
+}
+document.getElementById('pgcut').onclick=()=>document.getElementById('pgback').click();
+// Embedded player over the page. Vimeo by id (and hash when unlisted), YouTube by id; captions off.
+function openPlayer(v){
+  if(!v) return;
+  let pl=document.getElementById('pgplay');
+  if(!pl){ pl=document.createElement('div'); pl.id='pgplay'; pl.hidden=true;
+    pl.innerHTML='<button type="button" id="pgplayx" aria-label="Close video">&#10005;</button><iframe allow="autoplay; fullscreen; picture-in-picture" allowfullscreen title="Video"></iframe>';
+    document.body.appendChild(pl);
+    pl.querySelector('#pgplayx').onclick=()=>{ pl.hidden=true; pl.querySelector('iframe').src='about:blank'; }; }
+  pl.querySelector('iframe').src = v.vm
+    ? 'https://player.vimeo.com/video/'+v.vm+'?autoplay=1&title=0&byline=0&portrait=0'+(v.vh?'&h='+v.vh:'')
+    : 'https://www.youtube-nocookie.com/embed/'+v.id+'?autoplay=1&cc_load_policy=0&rel=0';
+  pl.hidden=false;
+}
 // ---------------------------------------------------------------- gestures
 // Rewritten to remove the whole class of bug: there is no remembered "am I
 // dragging" state to go stale. Every pointermove asks the EVENT whether a
