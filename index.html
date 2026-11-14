@@ -12794,7 +12794,7 @@ html.bd1-lock,html.bd1-lock body{overflow:hidden}
   .bd1s .bds-q{font-size:2.5rem}
   .bd1s .bds-btn{min-height:56px}
 }
-</style>
+/* QA 2026-11-13: timeline dots get a 44px touch area without changing their look */#root .pk-tn button.pk-tn-dot{position:relative!important}#root .pk-tn button.pk-tn-dot::after{content:"";position:absolute;left:50%;top:50%;width:44px;height:44px;transform:translate(-50%,-50%);background:transparent;box-shadow:none;border:0;padding:0;min-height:0}</style>
 <script id="pk-build1">
 /* pk-build1: Build with Pickathon, round 1 (Nov 13 2026). Route 'build'. Spec: photo-catalog/design_specs/build_page.md (Zale, Nov 8).
    Source: tools/build_r1/bd.js, spliced into index.html by tools/build_r1/build.py (<script id="pk-build1">, <style id="pk-build1-css">).
