@@ -67,7 +67,7 @@
       '<section class="bd-sec bd-went" id="bd-went"><div class="bd-in"><div class="bd-wh"><div><p class="bd-k">' + esc(W.k) + '</p><h2 class="pl-d bd-h2">' + esc(W.t) + '</h2></div>' +
       '<div class="bd-arr"><button type="button" class="bd-ib" data-bd-arr="-1" aria-label="Previous builds">‹</button><button type="button" class="bd-ib" data-bd-arr="1" aria-label="Next builds">›</button></div></div>' +
       '<div class="bd-chips">' + chips + ysel + '</div></div>' +
-      '<ul class="bd-row" data-bd-row="1">' + cards + '</ul></section>' +
+      '<ul class="bd-row" data-bd-row="1">' + cards + '</ul><div class="bd-in" style="margin-top:20px"><button type="button" class="pk-cta sec" data-bd-go="built:">Read the build stories</button></div></section>' +
       '<section class="bd-sec"><div class="bd-in bd-two"><div class="bd-get"><p class="bd-k">' + esc(G.k) + '</p><h2 class="pl-d bd-h2">' + esc(G.t) + '</h2><ol class="bd-gl">' +
       G.items.map(function (g, i) { var x = g[1].replace('{firms}', fs); if (!fs) x = x.replace(/^Firms like\s+design it/, 'Leading firms design it'); return '<li><span class="bd-gn" aria-hidden="true">' + (i + 1) + '</span><span><strong>' + esc(g[0]) + '</strong>' + esc(x) + '</span></li>'; }).join('') + '</ol></div>' +
       '<div class="bd-who"><p class="bd-k">' + esc(U.k) + '</p><h2 class="pl-d bd-h2">' + esc(U.t) + '</h2><ul class="bd-wl">' +

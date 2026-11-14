@@ -113,7 +113,7 @@ window.pkTix = function (testDay, season) {
 .pkbs-back{position:absolute;top:18px;left:16px;display:inline-flex;align-items:center;min-height:44px;padding:0 14px;border:1.5px solid #F2EDE3;border-radius:6px;background:rgba(18,14,16,.4);color:#F2EDE3;font:inherit;font-weight:800;font-size:14px;letter-spacing:.04em;cursor:pointer}
 .pkbs-kick{margin:0 0 10px;font:700 13px/1.3 "Courier Prime","Courier New",monospace;letter-spacing:.14em;text-transform:uppercase;color:#D6B54A}
 .pkbs-h1{margin:0;font:400 clamp(40px,8vw,84px)/.9 "Pickathon 2014","Work Sans",sans-serif;text-wrap:balance;max-width:900px}
-.pkbs-main{max-width:1100px;margin:0 auto;padding:0 16px 56px}
+.pkbs-small{min-height:260px}.pkbs-main{max-width:1100px;margin:0 auto;padding:0 16px 56px}
 .pkbs-creds{display:flex;flex-wrap:wrap;column-gap:28px;row-gap:6px;border-top:2px solid #D6B54A;border-bottom:1px solid #4F4749;padding:12px 0;margin:8px 0}
 .pkbs-cred{flex:1 1 220px;min-width:0;padding:6px 0}.pkbs-cred b{display:block;font:700 12px/1.3 "Courier Prime",monospace;letter-spacing:.08em;text-transform:uppercase;color:#D6B54A}.pkbs-cred span{display:block;margin-top:4px;font-size:17px;font-weight:700;line-height:1.3}
 .pkbs-part{padding:34px 0 0;max-width:680px}.pkbs-part h2{margin:0 0 10px;font:700 13px/1.3 "Courier Prime","Courier New",monospace;letter-spacing:.14em;text-transform:uppercase;color:#D6B54A}.pkbs-part p{margin:0 0 12px;font-size:18px;line-height:1.6;color:#E6E0D3}
@@ -1571,7 +1571,7 @@ html.pk-tmon #root header + *{margin-top:44px}
     if ((k === 'hood' || k === 'neighborhood') && v) { var id = hoodId(d, v); if (!id) return { r: 'hoods', x: {} }; return { r: 'hood', x: y && +y < 2027 ? { h: id, y: y } : { h: id, tm0: 1 } }; }
     if (k === 'archive') { var a = ARCH2[v] || 'disc'; return { r: 'lineup', x: { keepArch: true, arch: a } }; }
     if (k === 'mine') return { r: 'mine', x: y && /^\d{4}$/.test(y) ? { y: y } : {} };
-    if (k === 'built' && v) return { r: 'buildstory', x: { b: v } };
+    if (k === 'built') return { r: 'buildstory', x: { b: v || '' } };
     if (k === 'story' && v) return { r: 'story', x: { s: /^\d+$/.test(v) ? +v : v } };
     if (k === 'plan' && v) { var pv = v.split('/'); return { r: 'info', x: pv[1] ? { step: pv[0], c: pv[1] } : { step: pv[0] } }; }
     if (k === 'page' && v && window.pkTripRedirect && v in window.pkTripRedirect) { var rd = window.pkTripRedirect[v].split(':'); return rd[0] === 'tickets' ? { r: 'tickets', x: {} } : { r: 'info', x: rd[0] ? (rd[1] ? { step: rd[0], c: rd[1] } : { step: rd[0] }) : {} }; }
@@ -4628,7 +4628,8 @@ html{-webkit-text-size-adjust:100%!important;text-size-adjust:100%!important}.pk
 
 <sc-if value="{{r.buildstory}}" hint-placeholder-val="{{false}}">
 <div class="pkbs">
-<header class="pkbs-hero" style="{{bs.heroStyle}}"><div class="pkbs-hin"><button type="button" class="pkbs-back" onClick="{{bs.back}}">← All builds</button><p class="pkbs-kick">{{bs.kick}}</p><h1 class="pkbs-h1">{{bs.t}}</h1></div></header>
+<sc-if value="{{bs.isList}}" hint-placeholder-val="{{false}}"><header class="pkbs-hero pkbs-small"><div class="pkbs-hin"><button type="button" class="pkbs-back" onClick="{{bs.back}}">← Build with Pickathon</button><p class="pkbs-kick">Pickathon builds</p><h1 class="pkbs-h1">Built to be given away</h1></div></header><main class="pkbs-main"><h3 class="pkbs-rowh">2026</h3><div class="pkbs-grid"><sc-for list="{{bs.list26}}" as="m" hint-placeholder-count="4"><button type="button" class="pkbs-card" onClick="{{m.open}}"><img src="{{m.img}}" alt="" loading="lazy"><span><em>{{m.kick}}</em><strong>{{m.name}}</strong><sc-if value="{{m.hasNext}}" hint-placeholder-val="{{true}}"><small>{{m.next}}</small></sc-if></span></button></sc-for></div><h3 class="pkbs-rowh">2025</h3><div class="pkbs-grid"><sc-for list="{{bs.list25}}" as="m" hint-placeholder-count="4"><button type="button" class="pkbs-card" onClick="{{m.open}}"><img src="{{m.img}}" alt="" loading="lazy"><span><em>{{m.kick}}</em><strong>{{m.name}}</strong><sc-if value="{{m.hasNext}}" hint-placeholder-val="{{true}}"><small>{{m.next}}</small></sc-if></span></button></sc-for></div></main></sc-if>
+<sc-if value="{{bs.isOne}}" hint-placeholder-val="{{true}}"><header class="pkbs-hero" style="{{bs.heroStyle}}"><div class="pkbs-hin"><button type="button" class="pkbs-back" onClick="{{bs.back}}">← All builds</button><p class="pkbs-kick">{{bs.kick}}</p><h1 class="pkbs-h1">{{bs.t}}</h1></div></header>
 <main class="pkbs-main">
 <sc-if value="{{bs.hasCreds}}" hint-placeholder-val="{{true}}"><div class="pkbs-creds"><sc-for list="{{bs.creds}}" as="c" hint-placeholder-count="3"><div class="pkbs-cred"><b>{{c.l}}</b><span>{{c.v}}</span></div></sc-for></div></sc-if>
 <sc-for list="{{bs.parts}}" as="p" hint-placeholder-count="1"><section class="pkbs-part"><h2>{{p.h}}</h2><p>{{p.p}}</p></section></sc-for>
@@ -4636,7 +4637,7 @@ html{-webkit-text-size-adjust:100%!important;text-size-adjust:100%!important}.pk
 <h3 class="pkbs-rowh">{{bs.moreH}}</h3>
 <div class="pkbs-row"><sc-for list="{{bs.more}}" as="m" hint-placeholder-count="3"><button type="button" class="pkbs-card" onClick="{{m.open}}"><img src="{{m.img}}" alt="" loading="lazy"><span><em>{{m.kick}}</em><strong>{{m.name}}</strong><sc-if value="{{m.hasNext}}" hint-placeholder-val="{{true}}"><small>{{m.next}}</small></sc-if></span></button></sc-for></div>
 <button type="button" class="pkbs-cta" onClick="{{bs.cta}}">Start a project like this</button>
-</main>
+</main></sc-if>
 </div>
 </sc-if>
 
@@ -7031,15 +7032,15 @@ window.__pkMapH = mapH; window.__pkGoFarm = goFarm;   // pk-home2: the Home neig
       var bsCard = function (b) { return { id: b.id, img: b.img, kick: b.y + ' · ' + b.hood, name: b.name, hasNext: !!b.next, next: 'Next: ' + b.next, open: openBS(b.id) }; };
       if (R === 'build') { out.bstories = { items: BS.filter(function (b) { return b.y === '2026'; }).concat(BS.filter(function (b) { return b.y === '2025'; })).map(bsCard), has: BS.length > 0 }; }
       if (R === 'buildstory') {
-        var B0 = BS.filter(function (b) { return b.id === cur.b; })[0] || BS[0] || { id: '', y: '', hood: '', name: '', img: '', parts: null, d: '' };
+        var B0 = BS.filter(function (b) { return b.id === cur.b; })[0] || (cur.b ? BS[0] : null) || BS[0] || { id: '', y: '', hood: '', name: '', img: '', parts: null, d: '' };
         var KINDS = { stage: 'Stage', gathering: 'Gathering', camping: 'Camping' };
         var crd = [['Designed by', B0.de], ['With', B0.w], ['Built by', B0.bu], ['Next', B0.next]].filter(function (c) { return c[1]; }).map(function (c) { return { l: c[0], v: c[1] }; });
         var prts = B0.parts || (B0.d ? [['The build', B0.d]] : []);
-        out.bs = { img: B0.img, heroStyle: 'background-image: url(' + B0.img + ')', kick: B0.y + ' · ' + B0.hood + (KINDS[B0.kind] ? ' · ' + KINDS[B0.kind] + ' neighborhood' : ''), t: B0.title || B0.name,
+        out.bs = { isList: !cur.b, isOne: !!cur.b, list26: BS.filter(function (b) { return b.y === '2026'; }).map(bsCard), list25: BS.filter(function (b) { return b.y === '2025'; }).map(bsCard), img: B0.img, heroStyle: 'background-image: url(' + B0.img + ')', kick: B0.y + ' · ' + B0.hood + (KINDS[B0.kind] ? ' · ' + KINDS[B0.kind] + ' neighborhood' : ''), t: B0.title || B0.name,
           hasCreds: crd.length > 0, creds: crd, parts: prts.map(function (x) { return { h: x[0], p: x[1] }; }), hasParts: prts.length > 0,
           note: B0.parts ? 'A photo of it in its new home and a line from the people who use it, once it has moved.' : 'The story of this build is still being written: what it looked like, who built it, and where it went next.',
           moreH: 'More ' + B0.y + ' builds', more: BS.filter(function (x) { return x.id !== B0.id && x.y === B0.y; }).slice(0, 8).map(bsCard),
-          back: function () { self.go('build'); }, cta: function () { self.go('build'); setTimeout(function () { try { var el = document.getElementById('pk-build-form'); if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch (e) {} }, 350); } };
+          back: function () { if (cur.b) self.go('buildstory', { b: '' }); else self.go('build'); }, cta: function () { self.go('build'); setTimeout(function () { try { var el = document.getElementById('pk-build-form'); if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch (e) {} }, 350); } };
       }
     }
     if (R === 'story') {
@@ -12937,7 +12938,7 @@ html.bd1-lock,html.bd1-lock body{overflow:hidden}
       '<section class="bd-sec bd-went" id="bd-went"><div class="bd-in"><div class="bd-wh"><div><p class="bd-k">' + esc(W.k) + '</p><h2 class="pl-d bd-h2">' + esc(W.t) + '</h2></div>' +
       '<div class="bd-arr"><button type="button" class="bd-ib" data-bd-arr="-1" aria-label="Previous builds">‹</button><button type="button" class="bd-ib" data-bd-arr="1" aria-label="Next builds">›</button></div></div>' +
       '<div class="bd-chips">' + chips + ysel + '</div></div>' +
-      '<ul class="bd-row" data-bd-row="1">' + cards + '</ul></section>' +
+      '<ul class="bd-row" data-bd-row="1">' + cards + '</ul><div class="bd-in" style="margin-top:20px"><button type="button" class="pk-cta sec" data-bd-go="built:">Read the build stories</button></div></section>' +
       '<section class="bd-sec"><div class="bd-in bd-two"><div class="bd-get"><p class="bd-k">' + esc(G.k) + '</p><h2 class="pl-d bd-h2">' + esc(G.t) + '</h2><ol class="bd-gl">' +
       G.items.map(function (g, i) { var x = g[1].replace('{firms}', fs); if (!fs) x = x.replace(/^Firms like\s+design it/, 'Leading firms design it'); return '<li><span class="bd-gn" aria-hidden="true">' + (i + 1) + '</span><span><strong>' + esc(g[0]) + '</strong>' + esc(x) + '</span></li>'; }).join('') + '</ol></div>' +
       '<div class="bd-who"><p class="bd-k">' + esc(U.k) + '</p><h2 class="pl-d bd-h2">' + esc(U.t) + '</h2><ul class="bd-wl">' +
