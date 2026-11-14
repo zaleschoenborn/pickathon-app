@@ -496,6 +496,7 @@ html:root:root #root#root#root#root#root#root#root#root#root#root#root#root#root
 .pkh2 .h2-ba-t i{position:absolute;left:0;top:-1px;height:4px;width:0;background:var(--gold);border-radius:2px}
 .pkh2 .h2-ba-t::after{content:"";position:absolute;right:-1px;top:-4px;border:5px solid transparent;border-left:7px solid rgba(242,237,227,.5);border-right:0}
 @media (prefers-reduced-motion:reduce){.pkh2 .h2-ba{display:none}}   /* pk-climb shows the two orders side by side instead */
+#pkh2#pkh2 .h2-ba{display:none!important}   /* Zale, Nov 12: the poster is a still top 10 while its motion is on hold, so there is no then/now strip. Remove this line when the motion goes live. */
 @media (max-width:379px){.pkh2 .h2-ba{font-size:.6875rem;letter-spacing:.05em}.pkh2 .h2-ba-a,.pkh2 .h2-ba-b{padding:6px 7px}}
 @media (min-width:600px) and (max-width:1199px){.pkh2 .h2-s.h2-s2{padding-top:calc(var(--tl) + 20px);justify-content:flex-start}.pkh2 .h2-s2>.h2-s2in{max-width:none}.pkh2 .h2-ba{max-width:640px;margin:0 auto 12px;font-size:.8125rem}}
 @media (max-width:1199px){#pkh2 .h2-s2 .pk-cl-pw{transform-origin:top center!important;transform:scale(var(--h2-ps,1))!important;margin-bottom:var(--h2-pmb,0px)!important}}
@@ -539,7 +540,12 @@ html:root:root #root#root#root#root#root#root#root#root#root#root#root#root#root
   #pkh2#pkh2 .h2-s2 .pk-cl-hd{grid-row:1;padding-top:32px}
   #pkh2#pkh2 .h2-s2 .pk-cl-tb{grid-row:2}
   #pkh2#pkh2 .h2-s2 .pk-cl-cmp{grid-row:2/4}
-  #pkh2#pkh2 .h2-s2 .pk-cl-below{grid-column:1;grid-row:2;max-width:none;margin:18px 0 0}
+  #pkh2#pkh2 .h2-s2 .pk-cl-pic{grid-column:1;grid-row:2;margin:20px 0 0}
+  #pkh2 .h2-s2 .pk-cl-pi{position:relative;width:100%;height:clamp(180px,26vh,260px);border-radius:6px;overflow:hidden;background:#1c191a}
+  #pkh2 .h2-s2 .pk-cl-pi img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  #pkh2 .h2-s2 .pk-cl-pc{position:relative;margin:10px 0 0;min-height:2.6em;font:600 15px/1.3 Inter,system-ui,sans-serif;color:#EFE9DA;text-wrap:balance}
+  #pkh2 .h2-s2 .pk-cl-pc span{position:absolute;left:0;right:0;top:0}
+  #pkh2#pkh2 .h2-s2 .pk-cl-below{grid-column:1;grid-row:3;max-width:none;margin:14px 0 0}
   #pkh2#pkh2 .h2-s2 .pk-cl-below .pk-cl-an{width:auto!important;max-width:none;margin:14px 0 0}
 }
 

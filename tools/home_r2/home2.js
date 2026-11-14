@@ -4,7 +4,7 @@
 window.pkClimbRank = function (C, dd) {
   var nk = function (x) { return String(x || '').normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/^the\s+/, '').replace(/[^a-z0-9]/g, ''); };
   var YB = (dd && dd.yearBill) || {}, R = [];
-  Object.keys(C || {}).forEach(function (y) { var D = C[y]; if (!D || !D.clim || !D.labels || D.labels.length < 2) return;
+  Object.keys(C || {}).forEach(function (y) { var D = C[y]; if (!D || !D.clim || !D.feat || !D.labels || D.labels.length < 2) return;
     var bill = YB[y] || [], hit = bill.filter(function (b) { return nk(b.n) === nk(D.clim); })[0], top = 0;
     bill.forEach(function (b) { if (b.k === 'disc' && (b.m || 0) > top) top = b.m || 0; });
     R.push({ y: +y, d: hit ? (hit.k === 'disc' ? 1 : 0) : (top > 0 ? 1 : 0), m: hit && hit.m != null ? +hit.m : top, c: (+D.climFrom || 0) - (+D.climTo || 0) }); });
@@ -195,12 +195,12 @@ window.pkClimbRank = function (C, dd) {
     /* 2 CONCEPT (Zale Nov 12 ~08:20): a carousel again, as build 5174, in today's ranking (magnitude_dec). Card: the photo full-bleed with the
        transparent play ring centered when there is a clip (no gold pill); kind left and first year right; name; the fact; the clip and
        "Pickathon YYYY" in the caption. Photo plays, words open the archive at that artist. See all Discoveries under it. Filled by drawBand(). */
-    var hBand = '<section class="h2-s h2-s5" aria-labelledby="h2-h5"><div class="h2-s5head"><div><h2 class="h2-d h2-sec pkp-head" id="h2-h5">Be there before they’re big</h2>' +
-      '<p class="h2-sub h2-s5sub">You don’t know this year’s lineup yet. Neither did anyone who saw these bands here first.</p></div>' +
+    var hBand = '<section class="h2-s h2-s5" aria-labelledby="h2-h5"><div class="h2-s5head"><div><h2 class="h2-d h2-sec pkp-head" id="h2-h5">Who’s up next?</h2>' +
+      '<p class="h2-sub h2-s5sub">Nobody knew these names when they first played here. You don’t know the 2027 lineup yet either.</p></div>' +
       '<div class="h2-cc-nav"><button type="button" class="h2-ib" data-h2="cprev" aria-label="Previous discoveries">' + CHEV + '</button><button type="button" class="h2-ib" data-h2="cnext" aria-label="More discoveries">' + CHEV + '</button></div></div>' +
       '<div class="h2-cc-r" data-h2="cards" role="list" aria-label="Discoveries, ranked by how big they are today"></div>' +
       '<div class="h2-row h2-s5row"><button type="button" class="h2-pill" data-h2="alldisc">See all Discoveries</button></div></section>';
-    return hP + hBand + hPlace + hPoster + h;
+    return hP + hBand + hPoster + hPlace + h;   /* Zale, Nov 12 night: the poster is the proof and follows the stories; neighborhoods lead into the ticket line. Current architecture, not a hard rule (see home_poster_frame_nov12.md) */
   }
   /* the hero's sale line and its one button (5174 wording). Before the round: "Holiday Sale opens Nov 19, 10 am PT" + Alert me when it opens (the
      remind sheet; quiet gold primary). On sale: "Tickets are running out" + Get tickets (solid strong gold). Passes bought: Your passes. */
