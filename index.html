@@ -12956,7 +12956,7 @@ html.bd1-lock,html.bd1-lock body{overflow:hidden}
     b.email = String(b.email).trim(); if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(b.email)) { S.err = F.badEmail; draw(); return; }
     var lab = function (id) { var q = F.steps.filter(function (x) { return x.id === id; })[0], o = q && q.o.filter(function (x) { return fill(x[0], d) === b[id]; })[0]; return o ? fill(o[1], d) : 'not answered'; };
     var heard = (F.heard.filter(function (o) { return o[0] === b.heard; })[0] || [0, 'not answered'])[1];
-    var extra = ['Door: Wants something built', 'Who: ' + lab('kind'), 'Wants built: ' + lab('builds'), 'When: ' + lab('when'), 'Budget: ' + lab('cost'), 'Money ready: ' + lab('fund'), 'Heard via: ' + heard, 'Source: pickathon.com Build page'].join('\n');
+    var extra = ['Door: Wants something built', 'Who: ' + lab('kind'), 'Wants built: ' + lab('builds'), 'When: ' + lab('when'), 'Budget: ' + lab('cost'), 'Who pays: ' + lab('fund'), 'Heard via: ' + heard, 'Source: pickathon.com Build page'].join('\n');
     var E = G.entries || {}, fd = new URLSearchParams();
     fd.append(E.name, b.name); fd.append(E.org, b.org); fd.append(E.web, ''); fd.append(E.email, b.email); fd.append(E.phone, b.phone || ''); fd.append(E.vision, b.what); fd.append(E.extra, extra);
     if (G.live && G.action) { try { fetch(G.action, { method: 'POST', mode: 'no-cors', body: fd }).catch(function () {}); } catch (e) {} }
