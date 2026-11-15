@@ -175,6 +175,15 @@ for k in ('disc','leg','deep'):
     R(B+f'.pk-sl.pk-slf-{k} .pk-sl-b button:not(.k-{k}),'+B+f'.pk-sl.pk-slf-{k} .pk-sl-4 button:not(.k-{k})','opacity:.16!important')
     R((B+f'.pk-sl.pk-slf-{k} .pk-sl-b button.k-{k},'+B+f'.pk-sl.pk-slf-{k} .pk-sl-4 button.k-{k}').replace('#root'*8,'#root'*12),'color:var(--sl-ink)!important;-webkit-text-fill-color:var(--sl-ink)!important;opacity:1!important')
 R(B+'.pk-sl-b button,'+B+'.pk-sl-4 button','transition:opacity .15s')
+# ---------- set times inside the liner notes (all years) ----------
+R(B+'.pk-as ul.pk-as-sets','list-style:none;margin:2px 0 8px;padding:0;width:100%;max-width:none;align-self:stretch;justify-self:stretch;text-align:left')
+R(B+'.pk-as .pk-as-b:has(> ul.pk-as-sets)','text-align:left!important;align-items:stretch!important')
+R(B+'.pk-as .pk-as-b:has(> ul.pk-as-sets) h2.pk-as-h','text-align:left!important;align-self:flex-start')
+R(B+'.pk-act .pk-as ~ .pk-sx','display:none!important')
+R(B+'.pk-as ul.pk-as-sets li','display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:11px 0;border-top:1.5px solid var(--yi);font:700 15.5px/1.3 '+FB+';color:var(--yi)')
+R(B+'.pk-as ul.pk-as-sets li:last-child','border-bottom:1.5px solid var(--yi)')
+R(B+'.pk-as ul.pk-as-sets .pk-as-sp','min-height:0!important;height:auto!important;padding:0!important;margin:0!important;border:0!important;background:none!important;box-shadow:none!important;color:var(--yi)!important;-webkit-text-fill-color:var(--yi)!important;font:inherit!important;text-decoration:underline;text-underline-offset:3px;cursor:pointer;text-align:right')
+R(B+'.pk-as ul.pk-as-sets .pk-as-sp0','text-align:right')
 # ---------- artist record sleeve (art years) ----------
 AM=A+'.pk-ya-mount'+IS+' ~ '
 R(A+'section.pk-act:has(> .pk-ya-mount'+IS+')','position:relative')
@@ -192,7 +201,7 @@ R((AM+'.pk-ah .pk-ah-btns .pk-share1 span').replace('#root'*8,'#root'*22),'displ
 R(AM+'.pk-act-acts','margin-top:44px!important')
 R(AM+'.pk-as','margin:22px calc(50% - 50vw) 0!important;width:100vw!important;max-width:none!important;box-shadow:none!important;padding:8px 0 14px!important')
 R(AM+'.pk-as:before','background:transparent!important;color:var(--yi2)!important;font-family:'+FP+'!important;font-weight:400!important;font-size:26px!important;letter-spacing:.05em!important;padding:20px 20px 4px!important')
-R(AM+'.pk-as .pk-as-b','border-top:0!important;padding:12px 20px 6px!important;max-width:760px;margin:0 auto')
+R(AM+'.pk-as .pk-as-b','border-top:0!important;padding:12px 20px 6px!important;max-width:760px;width:100%;box-sizing:border-box;margin:0 auto;justify-self:center')
 for y in YS:
     b=d['yearBrand'][y]; P,I,I2,W,Lt,Bd=b['paper'],b['ink'],b['ink2'],b['warm'],b['light'],b['band']
     eh,sv=edge(y,b); M2=A+f'.pk-ya-mount[data-y="{y}"] ~ '
