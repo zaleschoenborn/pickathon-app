@@ -316,6 +316,7 @@ R(B+'.pk-as ul.pk-as-sets li','display:flex;justify-content:space-between;align-
 R(B+'.pk-as ul.pk-as-sets li:last-child','border-bottom:1.5px solid var(--yi)')
 R(B+'.pk-as ul.pk-as-sets .pk-as-sp','min-height:0!important;height:auto!important;padding:0!important;margin:0!important;border:0!important;background:none!important;box-shadow:none!important;color:var(--yi)!important;-webkit-text-fill-color:var(--yi)!important;font:inherit!important;text-decoration:underline;text-underline-offset:3px;cursor:pointer;text-align:right')
 R(B+'.pk-as ul.pk-as-sets .pk-as-sp0','text-align:right')
+R(B.replace('#root'*8,'#root'*14)+'.pk-as p.pk-as-at','margin:12px 0 0!important;font-size:17px!important;line-height:1.5!important')
 # ---------- artist record sleeve (art years) ----------
 AM=A+'.pk-ya-mount'+IS+' ~ '
 R(A+'section.pk-act:has(> .pk-ya-mount'+IS+')','position:relative')
