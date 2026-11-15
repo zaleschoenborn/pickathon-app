@@ -6584,7 +6584,7 @@ window.__pkMapH = mapH; window.__pkGoFarm = goFarm;   // pk-home2: the Home neig
       out.fnlShow = !st.nlDone && R !== 'tickets';
       out.spons = { grid: 'display: grid; gap: 10px; margin-top: 16px; grid-template-columns: ' + (phone ? '1fr' : 'repeat(3, minmax(0, 1fr))'), facts: [['10,000', 'people on the farm on the peak day, with most of them camping all weekend'], ['NYT · Paste', 'One of eight festivals to see in summer 2026 (The New York Times). Best independent music festival (Paste).'], ['2 AIA awards', 'for the Treeline Stage and the Cherry Hill neighborhood. Architecture awards, for a music festival.']].map(function (f) { return { n: f[0], t: f[1] }; }) };
       out.close = (function () {
-        var skip = { tickets: 1, account: 1, build: 1, search: 1, why: 1, hood: 1, hoods: 1, past: 1, partners: 1, press: 1, about: 1, aboutus: 1 }; if (skip[R]) return { show: false };
+        var skip = { tickets: 1, account: 1, build: 1, search: 1, why: 1, hood: 1, hoods: 1, past: 1, partners: 1, press: 1, about: 1 }; if (skip[R]) return { show: false };
         var nSv = Object.keys(stars).filter(function (k) { return k.indexOf('a:') === 0 && d.artists[k.slice(2)]; }).length, c = null;
         if (SEA === 'off' && saleOpen && R === 'home') return { show: false };
         if (SEA === 'off' && saleOpen) c = { eye: tierName + ' · on now', head: '3-day pass with camping ' + m27(pr27f('p3')) + ' (regular ' + m27(fe27(Math.ceil(PR27.p3[TIX.regularCol]))) + ') · 4-day ' + m27(pr27f('p4')) + '.', sub: 'Camping included.' + (TIX.planNote ? ' ' + TIX.planNote : ''),   /* Round 3 A13 */ cta: 'Get passes', go: nav('tickets') };   /* Round 3 A4: no 'next tier without notice' (the sale says when it ends); A3: when plans open */
@@ -13632,6 +13632,12 @@ html body:not(#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1) a
 #root .ab1 .ab-t{font-size:var(--d-card)!important;margin-top:6px!important}
 #root .ab1 .ab-x{margin-top:6px;font-size:.9375rem;line-height:1.4;color:var(--cream-dim);flex:1}
 #root#root#root#root#root#root#root#root#root#root#root#root#root#root .ab1 .pk-cta.ab-btn{margin-top:14px!important;width:100%!important}
+.ab1 .ab-eras{display:flex;gap:10px;margin:12px -16px 0;padding:0 16px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;list-style:none}
+.ab1 .ab-eras::-webkit-scrollbar{display:none}
+.ab1 .ab-eras li{flex:0 0 46%;scroll-snap-align:start;display:flex;flex-direction:column;gap:4px;padding:10px 12px;border:1px solid #3A4331;border-radius:10px;background:#141A12}
+#root .ab1 .ab-ey{font-size:.8125rem;font-weight:800;letter-spacing:.06em;color:var(--gold);line-height:1.2}
+#root .ab1 .ab-en{font-size:.9375rem;font-weight:700;line-height:1.25;color:var(--cream)}
+@media (min-width:600px){.ab1 .ab-eras{overflow:visible;margin:12px 0 0;padding:0}.ab1 .ab-eras li{flex:1 1 0}}
 @media (min-width:600px) and (max-width:1199px){.ab1 .ab-in{max-width:768px}.ab1 .ab-im{height:240px}}
 @media (min-width:1200px){
   .ab1 .ab-list{grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
@@ -13640,13 +13646,14 @@ html body:not(#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1) a
   .ab1 .ab-c:first-child .ab-tx{justify-content:center;padding:28px 32px}
   #root .ab1 .ab-c:first-child .ab-t{font-size:var(--d-sec)!important}
   .ab1 .ab-c:first-child .ab-x{flex:0}
+  .ab1 .ab-c:first-child .ab-eras{margin-top:18px;display:grid;grid-template-columns:1fr 1fr;gap:10px}
   #root#root#root#root#root#root#root#root#root#root#root#root#root#root .ab1 .ab-c:first-child .pk-cta.ab-btn{width:auto!important;align-self:flex-start;padding:0 32px!important}
   .ab1 .ab-im{height:200px}
   #root#root#root#root#root#root#root#root#root#root#root#root#root#root .ab1 .pk-cta.ab-btn{min-height:56px!important;height:56px!important}
 }
 </style>
 <script id="pk-about1">
-/* pk-about1: the About hub, draft 1 (Nov 13 2026). Route 'aboutus', address #/about-us.
+/* pk-about1: the About hub, draft 2 (Nov 15 2026). Route 'aboutus', address #/about-us.
    Source: tools/about_r1/ab.js, spliced into index.html by tools/about_r1/build.py (<script id="pk-about1">, <style id="pk-about1-css">).
    Draws into <div id="ab1" class="pl2 ab1" data-pk-own> (the app's renderer leaves it alone). Every word and photo comes from
    data.json aboutHub; nothing is typed here. It borrows Plan's .pl2 tokens and the shared pk-cta button, and never changes Plan's files. */
@@ -13660,11 +13667,19 @@ html body:not(#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1) a
     if (!FOC) { FOC = {}; try { var x = new XMLHttpRequest(); x.open('GET', 'focus.json', false); x.send(); if (x.status === 200) FOC = JSON.parse(x.responseText) || {}; } catch (e) {} }
     var f = FOC[src]; return f ? f[0] + '% ' + f[1] + '%' : '50% 50%';
   }
+  /* The four eras of Our story, read from data.json about.chapters ("Name, years"). A swipe row on phone and tablet; not buttons. */
+  function eras() {
+    var ch = ((site().data || {}).about || {}).chapters || []; if (!ch.length) return '';
+    return '<ul class="ab-eras" aria-label="The four eras">' + ch.map(function (c) {
+      var h = String(c.h || ''), i = h.lastIndexOf(',');
+      return '<li><span class="ab-ey">' + esc(i > 0 ? h.slice(i + 1).trim() : '') + '</span><span class="ab-en">' + esc(i > 0 ? h.slice(0, i) : h) + '</span></li>';
+    }).join('') + '</ul>';
+  }
   function html(H) {
     return '<div class="ab-in"><h1 class="pl-d ab-h1">' + esc(H.t) + '</h1><p class="ab-lede">' + esc(H.x) + '</p>' +
       '<ul class="ab-list">' + (H.s || []).map(function (c, i) {
         return '<li class="ab-c" id="ab-' + esc(c.id) + '"><div class="ab-im"><img src="' + esc(c.im) + '" alt="" style="object-position:' + focusOf(c.im) + '"' + (i > 1 ? ' loading="lazy"' : '') + ' decoding="async"></div>' +
-          '<div class="ab-tx"><p class="ab-k">' + esc(c.k) + '</p><h2 class="pl-d ab-t">' + esc(c.t) + '</h2><p class="ab-x">' + esc(c.x) + '</p>' +
+          '<div class="ab-tx"><p class="ab-k">' + esc(c.k) + '</p><h2 class="pl-d ab-t">' + esc(c.t) + '</h2><p class="ab-x">' + esc(c.x) + '</p>' + (c.eras ? eras() : '') +
           '<button type="button" class="pk-cta sec pl-btn ab-btn" data-ab-go="' + esc(c.b[1]) + '">' + esc(c.b[0]) + '</button></div></li>';
       }).join('') + '</ul></div>';
   }
@@ -13672,13 +13687,14 @@ html body:not(#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1) a
     var a = app(); if (!a) return; var c = to.indexOf(':'), k = to.slice(0, c), v = to.slice(c + 1);
     if (k === 'route') { a.go(v); return; }
     if (k === 'page') { a.go('page', { p: v }); return; }
+    if (k === 'url') { window.open(v, '_blank', 'noopener'); return; }
     if (k === 'plan') { var p = v.split(':'); a.go('info', p[1] ? { step: p[0], c: p[1] } : { step: p[0] }); return; }
   }
   var root = null, lastKey = '';
   function sync() {
     var el = document.getElementById('ab1'); if (!el) { root = null; return; }
     var H = (site().data || {}).aboutHub; if (!H) return;
-    var k = (H.s || []).length + '|' + H.t;
+    var k = (H.s || []).map(function (c) { return c.id; }).join(',') + '|' + H.t + '|' + (((site().data || {}).about || {}).chapters || []).length;
     if (el !== root || !el.firstChild || k !== lastKey) {
       root = el; lastKey = k; el.innerHTML = html(H);
       [].forEach.call(el.querySelectorAll('p,li'), function (e) { e.classList.add('pk-krtk'); });
