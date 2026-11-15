@@ -256,3 +256,23 @@ html.pl2-zoom{-webkit-text-size-adjust:auto!important;text-size-adjust:auto!impo
 #root .pl2 .pl-rule-x{font-size:var(--t-sm)!important;color:var(--ink-dim)!important;margin-top:10px!important;line-height:1.35!important}
 .pl2 .pl-packln{margin-top:14px!important}
 .pl2 .pl-packrow{display:flex!important;width:100%;justify-content:space-between;align-items:center;min-height:56px;padding:0 16px;border:1px solid rgba(245,238,224,.45);border-radius:6px;font-weight:800;text-decoration:none!important}
+/* personal plan: one question, then a card with the next step (Zale, Nov 15) */
+.pl2 .pl-ask[hidden],.pl2 .pl-plan[hidden],.pl2 .pl-shared[hidden],.pl2 #pl-shared[hidden]{display:none!important}
+.pl2 .pl-ask,.pl2 .pl-plan{margin:18px auto 0;max-width:calc(1160px - 2 * var(--gutter));padding:18px 16px;border:2px solid var(--ink);outline:1px solid var(--paper);outline-offset:-5px}
+#root .pl2 .pl-ask-x{margin-top:6px;font-size:var(--t-sm);color:var(--ink-dim)}
+.pl2 .pl-ask-b{display:grid;gap:10px;margin-top:14px}
+#root .pl2 .pl-plan-sum{font-size:var(--d-card)!important;line-height:1.1!important;margin-top:2px!important}
+.pl2 .pl-plan .pl-picks{margin-top:12px}
+.pl2 .pl-plan .pl-src{margin-top:10px}
+.pl2 .pl-plan-next{margin-top:16px;padding-top:14px;border-top:1px solid rgba(43,38,40,.35)}
+.pl2 .pl-plan-b{display:grid;gap:10px;margin-top:12px}
+.pl2 .pl-plan-b #pl-nb{display:block}
+.pl2 .pl-plan-b .pl-btn,.pl2 .pl-ask-b .pl-btn{width:100%}
+#root .pl2 .pl-plan .pl-next-p{margin-top:6px}
+@media (min-width:600px){.pl2 .pl-ask-b,.pl2 .pl-plan-b{grid-template-columns:1fr 1fr}}
+@media (min-width:1200px){.pl2 .pl-top{display:block}.pl2 .pl-ask,.pl2 .pl-plan{max-width:760px;margin-left:0}}
+#root#root#root .pl2 .pl-ask-b .pl-btn,#root#root#root .pl2 .pl-plan-b .pl-btn,#root#root#root .pl2 .pl-plan-b #pl-nb .pl-btn{width:100%!important;max-width:none!important;margin:0!important;display:flex!important;justify-content:center!important;justify-self:stretch!important;flex:1 1 100%!important;box-sizing:border-box!important}
+#root#root .pl2 .pl-plan .pl-src,#root#root .pl2 .pl-ask .pl-ask-x{color:var(--ink-dim)!important;opacity:1!important}
+
+#root#root#root#root#root#root#root#root#root#root#root#root#root#root .pl2 .pl-ask-b .pl-btn,#root#root#root#root#root#root#root#root#root#root#root#root#root#root .pl2 .pl-plan-b .pl-btn{width:100%!important;max-width:none!important;min-width:0!important}
+#root#root#root#root#root#root#root#root#root#root#root#root#root#root .pl2 .pl-plan-b #pl-nb{display:block!important;width:100%!important;margin:0!important}
