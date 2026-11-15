@@ -1,4 +1,4 @@
-// Pickathon service worker. Build 20261115-5269
+// Pickathon service worker. Build 20261115-5270
 const V='pk-20261115-5270',M='pkmedia-3',KEEP=["ssindex-b6158b1d.json"],SHELL=['./','index.html','data.json','focus.json','focus-tall.json','focus-hero.json','focus.js?v=5270','manifest.json','icon-192.png','apple-touch-icon.png','fonts/pickathon-2014.ttf','farmmap/index.html?embed=1','farmmap/lab-phone.html?embed=1'];
 const MP='pkmap-1';
 const fl=new Map();/* one network request per URL at a time (icons are asked for twice by the page) */
