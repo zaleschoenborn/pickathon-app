@@ -164,6 +164,51 @@ for y in YS:
         dash=f'content:"";flex:1;height:14px;background:repeating-linear-gradient(90deg,{I2} 0 2px,transparent 2px 8px)'; R(sl+'.pk-sl-in > h2.pk-sl-h:before',dash); R(sl+'.pk-sl-in > h2.pk-sl-h:after',dash)
         R(sl+'.pk-sl-in > .pk-sl-k',f'color:{I2}!important'); col(t1,I); col(t2,I2); col(t3,I)
 out.append('@media (min-width:600px) and (max-width:1199px){'+ALL+'#pk-yh-reel figure.pk-rs .pk-rim{position:absolute!important;inset:0!important;height:100%!important}'+ALL+'#pk-yh-reel figure.pk-rs .pk-rim img{width:100%!important;height:100%!important;object-fit:cover!important}'+ALL+'#pk-yh-reel figure.pk-rs figcaption{position:absolute!important;left:0!important;right:0!important;bottom:0!important;padding-top:80px!important;background:linear-gradient(transparent,rgba(12,12,10,.88) 55%)!important}}')
+
+# ---------- class chips in Names view (dim, don't hide) ----------
+R(B+'.pk-sl-f','display:flex;gap:8px;margin:10px -20px 2px;padding:0 20px;overflow-x:auto;scrollbar-width:none;white-space:nowrap')
+R(B+'.pk-sl-f::-webkit-scrollbar','display:none')
+R(B+'.pk-sl-f button','flex:none;min-height:0!important;height:40px!important;margin:0!important;padding:0 12px!important;border:1.5px solid var(--sl-ink)!important;border-radius:6px!important;background:transparent!important;box-shadow:none!important;color:var(--sl-ink)!important;-webkit-text-fill-color:var(--sl-ink)!important;font:800 11.5px/1 '+FB+'!important;letter-spacing:.08em!important;text-transform:uppercase;cursor:pointer')
+R(B+'.pk-sl-f button.on','background:var(--sl-ink)!important;color:var(--sl-bg)!important;-webkit-text-fill-color:var(--sl-bg)!important')
+R(B+'.pk-sl.pk-sl-ph .pk-sl-f','display:none!important')
+for k in ('disc','leg','deep'):
+    R(B+f'.pk-sl.pk-slf-{k} .pk-sl-b button:not(.k-{k}),'+B+f'.pk-sl.pk-slf-{k} .pk-sl-4 button:not(.k-{k})','opacity:.26')
+R(B+'.pk-sl-b button,'+B+'.pk-sl-4 button','transition:opacity .15s')
+# ---------- artist record sleeve (art years) ----------
+AM=A+'.pk-ya-mount'+IS+' ~ '
+R(A+'section.pk-act:has(> .pk-ya-mount'+IS+')','position:relative')
+R(AM+'.pk-ah','margin:0 calc(50% - 50vw)!important;width:100vw!important;max-width:none!important;height:min(560px,calc(100svh - 230px))!important;min-height:420px!important;border-radius:0!important;overflow:visible!important;position:relative')
+R(AM+'.pk-ah img.pk-ah-i','width:100%!important;height:100%!important;object-fit:cover!important;border-radius:0!important')
+R(AM+'.pk-ah:after','content:""!important;display:block!important;position:absolute!important;inset:auto 0 -1px 0!important;top:auto!important;width:auto!important;border:0!important;border-radius:0!important;opacity:1!important;transform:none!important;height:var(--eh);background:var(--edge) center bottom/100% 100% no-repeat;z-index:4;pointer-events:none')
+R(AM+'.pk-ah .pk-ah-t','position:absolute!important;left:0!important;right:0!important;top:auto!important;bottom:0!important;padding:90px 18px calc(var(--eh) + 22px)!important;border-radius:0!important;background:linear-gradient(transparent,rgba(12,12,10,.9) 62%)!important;z-index:3')
+R(AM+'.pk-ah .pk-ah-t .pk-act-k','margin:0 0 6px!important;position:static!important')
+R(AM+'.pk-ah .pk-ah-t h1.pk-act-n','margin:0 0 8px!important;line-height:1!important')
+R(AM+'.pk-ah .pk-ah-y','position:absolute!important;left:auto!important;top:auto!important;right:14px!important;bottom:-30px!important;z-index:6;padding:0!important;margin:0!important;background:none!important;border:0!important;box-shadow:none!important;font-size:0!important;line-height:0!important;transform:none!important;width:auto!important;height:auto!important')
+R(AM+'.pk-ah .pk-ah-y img','width:108px!important;height:auto!important;max-width:none!important;display:block!important;margin:0!important')
+R(AM+'.pk-ah .pk-ah-btns','position:absolute!important;left:auto!important;right:14px!important;top:70px!important;bottom:auto!important;width:auto!important;padding:0!important;margin:0!important;background:none!important;z-index:5')
+R((AM+'.pk-ah .pk-ah-btns .pk-share1').replace('#root'*8,'#root'*22),'position:static!important;width:44px!important;height:44px!important;border:1.5px solid #fff!important;border-radius:50%!important;background:rgba(18,22,15,.45)!important;color:#fff!important;display:flex!important;align-items:center;justify-content:center;margin:0!important')
+R((AM+'.pk-ah .pk-ah-btns .pk-share1 span').replace('#root'*8,'#root'*22),'display:none!important')
+R(AM+'.pk-act-acts','margin-top:44px!important')
+R(AM+'.pk-as','margin:22px calc(50% - 50vw) 0!important;width:100vw!important;max-width:none!important;box-shadow:none!important;padding:8px 0 14px!important')
+R(AM+'.pk-as:before','background:transparent!important;color:var(--yi2)!important;font-family:'+FP+'!important;font-weight:400!important;font-size:26px!important;letter-spacing:.05em!important;padding:20px 20px 4px!important')
+R(AM+'.pk-as .pk-as-b','border-top:0!important;padding:12px 20px 6px!important;max-width:760px;margin:0 auto')
+for y in YS:
+    b=d['yearBrand'][y]; P,I,I2,W,Lt,Bd=b['paper'],b['ink'],b['ink2'],b['warm'],b['light'],b['band']
+    eh,sv=edge(y,b); M2=A+f'.pk-ya-mount[data-y="{y}"] ~ '
+    R(M2+'.pk-ah',f'--eh:{eh}px;--edge:{uri(sv)}')
+    R(M2+'.pk-ah .pk-ah-y img',f'content:url({d["yearLogo"][y]})')
+    cfg={'2013':(Bd,P,Lt),'2023':(Lt,'#fff',Bd),'2025':(I,'#fff',Lt),'2010':(I,P,W),'2014':(P,I,I2),'2019':(I,P,W),'2024':(I,P,'#C5AC38')}[y]
+    R(M2+'.pk-as',f'--yp:{cfg[0]};--yi:{cfg[1]};--yi2:{cfg[2]}')
+    if y=='2013':
+        R(M2+'.pk-as:before',f'display:inline-block!important;background:{P}!important;color:{Bd}!important;-webkit-text-fill-color:{Bd}!important;border-radius:12px;font-size:22px!important;padding:10px 14px 7px!important;margin:16px 20px 6px')
+    if y=='2023':
+        R(M2+'.pk-as','position:relative;margin-top:36px!important'); R(M2+'.pk-as:before','text-align:center;color:#fff!important;-webkit-text-fill-color:#fff!important')
+        R(M2+'.pk-as:after',f'content:"";position:absolute;left:0;right:0;top:-13px;height:14px;background:{Lt};clip-path:polygon(0 100%,3% 20%,7% 80%,12% 10%,18% 70%,24% 25%,30% 85%,37% 15%,44% 75%,50% 20%,57% 80%,63% 10%,70% 70%,77% 25%,84% 85%,90% 15%,96% 75%,100% 30%,100% 100%)')
+    if y=='2014':
+        R(M2+'.pk-as',f'border-top:2.5px solid {I}!important;border-bottom:2.5px solid {I}!important')
+        R(M2+'.pk-as:before',f'display:inline-block!important;background:{Lt}!important;color:{I}!important;-webkit-text-fill-color:{I}!important;border-top:2.5px solid {I};border-bottom:2.5px solid {I};padding:9px 18px 6px!important;margin:18px 20px 8px;transform:rotate(-2deg);font-size:22px!important')
+    if y=='2019': R(M2+'.pk-as',f'border-top:6px solid {Lt}!important')
+    if y=='2025': R(M2+'.pk-as:before',f'display:inline-block!important;transform:skew(-9deg);background:linear-gradient(transparent 55%,{W} 55%)!important;color:#fff!important;-webkit-text-fill-color:#fff!important;padding:0 8px!important;margin:20px 20px 6px')
 # desktop
 out.append('@media (min-width:900px){'+ALL+'#pk-yh-reel .pk-yreel-f{height:min(640px,calc(100svh - 240px))!important}'+ALL+'section.pk-yb .pk-yb-in{max-width:520px;margin-left:auto!important;margin-right:auto!important}'+ALL+'section.pk-yb .pk-share1{right:24px!important}}')
 css='<style id="pk-yart-css">/* year pages built from each year\'s own artwork (Zale, Nov 15): photo is the cover, the year\'s art frames it; generated by tools, 7 years */\n'+'\n'.join(out)+'\n</style>'
