@@ -17,6 +17,9 @@ def put(s, tag, id_, body, before=None):
     sys.exit('no place for ' + id_)
 s = put(s, 'style', 'pk-tk2-css', rd('tk2.css'), before='<style id="pk-co-css">')
 s = put(s, 'script', 'pk-tk2', rd('tk2.js'), before='<style id="pk-co-css">')
+if os.path.exists(os.path.join(D, 'gx.js')):   # gifts and transfers (Nov 15)
+    s = put(s, 'style', 'pk-gx-css', rd('gx.css'), before='<style id="pk-co-css">')
+    s = put(s, 'script', 'pk-gx', rd('gx.js'), before='<style id="pk-co-css">')
 if os.path.exists(os.path.join(D, 'co2.js')):
     s = put(s, 'style', 'pk-co-css', rd('co2.css'))
     s = put(s, 'script', 'pk-checkout', rd('co2.js'))

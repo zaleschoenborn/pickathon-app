@@ -609,3 +609,50 @@ body:has(#tk2 #tk-bar:not([hidden])) #pk-toast,body:has(#pk-co) #pk-toast{displa
 .tk2 .tk-e-hero .tk-g-low{margin:auto max(var(--gutter,40px),calc((100% - 1200px)/2)) 0 auto;width:440px;padding:0 0 34px}
 #tk2 .tk-e-hero h1.tk-d{font-size:36px!important}
 }
+/* ---------- coming soon (Nov 15): the page any time tickets aren't on sale ---------- */
+.tk2 .tk-soon .tk-s-k{font-size:12px!important;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin:0 0 8px!important}
+.tk2 .tk-soon .tk-e-s{margin:0 0 14px!important}
+.tk2 .tk-soon .tk-pre-f{gap:8px}
+.tk2 .tk-soon .tk-field{min-height:50px;border-radius:6px;background:rgba(18,14,16,.72)}
+.tk2 .tk-soon .tk-pre-f .tk-pill{min-height:50px;border-radius:6px;padding:0 20px;flex:none;font-family:var(--display);font-weight:800;font-size:13px;letter-spacing:.08em;text-transform:uppercase}
+.tk2 .tk-soon .tk-s-cal{margin:10px 0 0;font-size:15px}
+.tk2 .tk-soon .tk-s-cal a{min-height:44px;display:inline-flex;align-items:center}
+.tk2 .tk-soon .tk-pre-ok{color:var(--cream)}
+.tk2 .tk-s-sec{padding:30px var(--gutter,16px) 0;max-width:1200px;margin:0 auto}
+.tk2 .tk-s-fs{list-style:none;margin:10px 0 0;padding:0;display:grid;gap:12px}
+.tk2 .tk-s-f{position:relative;border-radius:6px;overflow:hidden;aspect-ratio:16/10;background:#1b1719}
+.tk2 .tk-s-f>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.tk2 .tk-s-fx{position:absolute;left:0;right:0;bottom:0;padding:60px 14px 14px;background:linear-gradient(180deg,rgba(18,14,16,0),rgba(18,14,16,.85) 45%,rgba(18,14,16,.96));display:flex;flex-direction:column;gap:4px}
+#tk2 .tk-s-fx b.tk-d{font-size:24px!important;line-height:1.05;color:var(--cream)}
+.tk2 .tk-s-fx>span{font-size:15px;line-height:1.38;color:#E6E0D3}
+.tk2 .tk-s-fx .tk-tlink{align-self:flex-start;min-height:44px;display:inline-flex;align-items:center;color:var(--gold);font-weight:700}
+.tk2 .tk-s-pl{list-style:none;margin:12px 0 0;padding:0;border-top:1px solid var(--line)}
+.tk2 .tk-s-pl li{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--line)}
+.tk2 .tk-s-pl li b{display:block;font-size:17px;color:var(--cream)}
+.tk2 .tk-s-pl li small{display:block;font-size:14px;color:var(--cream-dim);margin-top:2px}
+.tk2 .tk-s-pl li em{font-style:normal;font-size:20px;font-weight:800;color:var(--cream);white-space:nowrap}
+.tk2 .tk-s-pl li em small{display:inline;font-size:12px;font-weight:600;margin-right:4px;color:var(--cream-dim)}
+.tk2 .tk-s-pn{font-size:15px;line-height:1.4;color:var(--cream-dim);margin:12px 0 0}
+.tk2 .tk-s-q{border-bottom:1px solid var(--line)}
+.tk2 .tk-s-q:first-of-type{border-top:1px solid var(--line);margin-top:6px}
+.tk2 .tk-s-q summary{min-height:52px;display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:17px;font-weight:700;color:var(--cream);cursor:pointer;list-style:none}
+.tk2 .tk-s-q summary::-webkit-details-marker{display:none}
+.tk2 .tk-s-q summary::after{content:"+";font-size:22px;color:var(--gold);flex:none}
+.tk2 .tk-s-q[open] summary::after{content:"\2212"}
+.tk2 .tk-s-q p{margin:0 0 14px;font-size:15px;line-height:1.45;color:var(--cream-dim)}
+.tk2 .tk-s-qs .tk-hand{margin-top:16px}
+.tk2 .tk-s-end{margin:34px auto 0;padding:30px var(--gutter,16px) 40px;max-width:1200px;border-top:1px solid var(--line)}
+#tk2 .tk-s-end h2.tk-d{font-size:30px!important;margin:0 0 14px;color:var(--cream)}
+.tk2 .tk-s-end .tk-s-ask{max-width:520px}
+@media (max-width:379px){.tk2 .tk-soon .tk-pre-f{flex-direction:row}.tk2 .tk-soon .tk-pre-f .tk-pill{padding:0 14px}}
+@media (min-width:700px){.tk2 .tk-s-fs{grid-template-columns:repeat(3,1fr)}.tk2 .tk-s-f{aspect-ratio:4/5}.tk2 .tk-s-pr,.tk2 .tk-s-qs{max-width:760px;margin-left:max(0px,calc((100% - 1200px)/2))}}
+@media (min-width:1025px) and (hover:hover) and (pointer:fine){.tk2 .tk-s-sec,.tk2 .tk-s-end{padding-left:0;padding-right:0}.tk2 .tk-s-pr,.tk2 .tk-s-qs{margin-left:auto;margin-right:auto;max-width:1200px}.tk2 .tk-s-pl,.tk2 .tk-s-pn,.tk2 .tk-s-q,.tk2 .tk-s-qs .tk-hand{max-width:720px}#tk2 .tk-s-end h2.tk-d{font-size:40px!important}}
+#tk2 .tk-soon .tk-pre-f .tk-pill{background:var(--gold)!important;color:#1b1719!important;border-color:var(--gold)!important}
+@media (min-width:1025px) and (hover:hover) and (pointer:fine){.tk2 .tk-s-two{display:grid;grid-template-columns:1fr 1fr;gap:56px;max-width:1200px;margin:0 auto}.tk2 .tk-s-two>.tk-s-sec{margin:0;max-width:none}.tk2 .tk-s-two .tk-s-pl,.tk2 .tk-s-two .tk-s-pn,.tk2 .tk-s-two .tk-s-q{max-width:none}}
+/* gifts (Nov 15) */
+.tk2 .tk-olines li.tk-gl{align-items:center;gap:10px}
+.tk2 .tk-olines li.tk-gl span{font-size:14px;line-height:1.35}
+.tk2 .tk-olines li.tk-gl .tk-tlink{min-height:44px;flex:none}
+.tk2 .tk-g-gift{margin:14px 0 4px;padding:12px 0 0;border-top:1px solid var(--line)}
+.tk2 .tk-g-gift p{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 0 6px;font-size:14px;line-height:1.35}
+.tk2 .tk-g-gift .tk-tlink{min-height:44px;flex:none}

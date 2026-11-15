@@ -104,6 +104,11 @@
     var f = document.createElement('form'); f.method = 'POST'; f.action = url; f.style.display = 'none'; f.setAttribute('data-pk-handoff', '1');
     var sum = {}; lines.forEach(function (i) { var k = fmsId(i.id); sum[k] = (sum[k] || 0) + (i.qty || 1); });
     Object.keys(sum).forEach(function (k) { var inp = document.createElement('input'); inp.type = 'hidden'; inp.name = 'tickets[' + k + ']'; inp.value = String(sum[k]); f.appendChild(inp); });
+    giftsOk(S).forEach(function (g, i) {   /* Nov 15: gifts ride along for the ticket system (outbox site_design-10). FMS moves tickets with first name, last name, email and the picked tickets. */
+      var add = function (k, v) { var inp = document.createElement('input'); inp.type = 'hidden'; inp.name = 'gifts[' + i + '][' + k + ']'; inp.value = String(v); f.appendChild(inp); };
+      add('firstName', g.to.first); add('lastName', g.to.last); add('emailAddress', g.to.email); add('fromName', g.from.name); add('note', g.note); add('sendOn', g.on);
+      g.passes.forEach(function (p) { if (fmsId(p.id)) add('tickets][' + fmsId(p.id), p.q); });
+    });
     if (sending) return true; sending = true;   // audit Nov 13: a double tap (or a tap while the page is still leaving) sends one order, not two
     $$('[data-act="go"],[data-sheetgo]').forEach(function (b) { b.setAttribute('aria-disabled', 'true'); b.textContent = 'Opening checkout…'; });
     document.body.appendChild(f); save(); f.submit(); return true;
@@ -150,6 +155,32 @@
   }
   function gkey(g) { return g.pass === 'd1' ? g.day : g.pass === 'none' ? null : g.pass; }
   function gok(g) { return !!gkey(g) && g.adult > 0; }
+  /* ---------- gifts (Zale, Nov 15): any pass in the order can go to someone else, with a photo postcard (gx.js) ---------- */
+  var GIFTN = { teen: 'Teen 4-Day Pass', patron: 'Patron Pass' }, GSUB = { p4: 'Thu–Sun, Aug 5–8, 2027 · camping in the forest included', p3: 'Fri–Sun, Aug 6–8, 2027 · camping in the forest included', d2: 'Sat + Sun, Aug 7–8, 2027', dthu: 'Thursday, Aug 5, 2027', dfri: 'Friday, Aug 6, 2027', dsat: 'Saturday, Aug 7, 2027', dsun: 'Sunday, Aug 8, 2027', teen: 'Thu–Sun, Aug 5–8, 2027 · ages 13 to 17', patron: 'Wed–Sun, Aug 4–8, 2027 · backstage, any age' };
+  function str(v, n) { return String(v == null ? '' : v).replace(/[\u0000-\u001f]/g, ' ').trim().slice(0, n); }
+  function cleanGifts(a) {
+    return (Array.isArray(a) ? a : []).slice(0, 8).map(function (g) {
+      g = g || {}; var to = g.to || {}, fr = g.from || {};
+      return { from: { name: str(fr.name, 60), email: str(fr.email, 120) }, to: { first: str(to.first, 40), last: str(to.last, 40), email: str(to.email, 120) }, note: str(g.note, 240), on: /^\d{4}-\d{2}-\d{2}$/.test(g.on || '') ? g.on : '',
+        passes: (Array.isArray(g.passes) ? g.passes : []).slice(0, 8).map(function (p) { return { id: str(p.id, 12), n: str(p.n, 60), sub: str(p.sub, 90), q: Math.max(1, Math.min(12, parseInt(p.q, 10) || 1)) }; }) };
+    }).filter(function (g) { return g.to.first && g.to.email && g.passes.length; });
+  }
+  function giftable(s, skip) {   /* the passes in this order that can be given, less what other gifts already hold */
+    var L = lines(s).filter(function (l) { return l.q > 0 && (N[l.id] || GIFTN[l.id]); }), used = {};
+    (s.gifts || []).forEach(function (g, i) { if (i !== skip) g.passes.forEach(function (p) { used[p.id] = (used[p.id] || 0) + p.q; }); });
+    return L.map(function (l) { return { id: l.id, n: GIFTN[l.id] || N[l.id], sub: GSUB[l.id] || '', max: l.q - (used[l.id] || 0) }; }).filter(function (p) { return p.max > 0; });
+  }
+  function giftsOk(s) {   /* gifts shrink with the order: never more given than bought */
+    var have = {}; lines(s).forEach(function (l) { have[l.id] = (have[l.id] || 0) + (l.q || 0); });
+    return (s.gifts || []).map(function (g) { return Object.assign({}, g, { passes: g.passes.map(function (p) { var q = Math.min(p.q, have[p.id] || 0); have[p.id] = (have[p.id] || 0) - q; return Object.assign({}, p, { q: q }); }).filter(function (p) { return p.q > 0; }) }); }).filter(function (g) { return g.passes.length; });
+  }
+  function giftLabel(g) { var M = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'], d = g.on ? g.on.split('-') : null; return 'Gift to ' + esc(g.to.first) + ': ' + g.passes.map(function (p) { return p.q + ' × ' + esc(p.n); }).join(', ') + (d ? ', arrives ' + M[+d[1] - 1] + ' ' + (+d[2]) : ', sent at checkout'); }
+  function giftForm(i, after) {
+    if (!window.pkGift) return; S.gifts = giftsOk(S); var cur = i >= 0 ? S.gifts[i] : null, P0 = giftable(S, i);
+    if (cur) cur.passes.forEach(function (p) { var m = P0.filter(function (x) { return x.id === p.id; })[0]; if (m) m.max = Math.max(m.max, p.q); });
+    if (!P0.length) return;
+    window.pkGift.form(P0, cur, function (g) { if (g) { if (cur) S.gifts[i] = g; else S.gifts.push(g); } else if (cur) S.gifts.splice(i, 1); S = clean(S); save(); update(); if (after) after(); live(g ? 'Gift added: ' + giftLabel(g).replace(/<[^>]+>/g, '') + '.' : 'Gift removed.'); });
+  }
   function clean(s) {
     var o = {}, k; s = s || {};
     for (k in BLANK) o[k] = BLANK[k];
@@ -161,6 +192,7 @@
     o.pwr = !!s.pwr && !!PWR[o.sleep];
     o.pday = o.pass === 'none' && OK.day.indexOf(s.pday) >= 0 ? s.pday : '';
     o.dp = !!s.dp && (pbase(o) || {}).pass === 'd2' && o.pass !== 'none';
+    o.gifts = cleanGifts(s.gifts);
     return o;
   }
   function groups(s) { var g = (s.more || []).slice(); if (gok(s)) g.push(s); return g; }   // every pass group with someone on it
@@ -231,6 +263,7 @@
     /* team call (Nov 12): each line at its fee-included amount, the same unit price the cards show, x quantity; the lines add up to the total */
     return t.lines.map(function (l) { var u = l.q ? l.amt / l.q : l.amt; return '<li><span>' + lineLabel(l) + '</span><span class="tk-num">' + money(Math.round((l.q || 1) * WF(u) * 100) / 100) + '</span></li>'; }).join('') +
       (t.unadded ? '<li class="fee"><span>Parking or shuttle: not added</span><span></span></li>' : '') +
+      giftsOk(S).map(function (g, i) { return '<li class="tk-gl"><span>' + giftLabel(g) + '</span><button type="button" class="tk-tlink" data-act="gift-edit" data-i="' + i + '">Edit</button></li>'; }).join('') +
       '<li class="fee tk-feeq"><span>Prices include the ' + (FEE * 100) + '% fee.</span><span></span></li>';
   }
   function hasPlan(t) { return !!(T.plans && t.sub > T.planMin && window.PK_PAY_LATER !== false); }
@@ -499,11 +532,59 @@
     if (g && gDayTap(EN, g, b.getAttribute('data-d'))) { entryDraw(); return true; }
     if (act === 'e-days') { to = $('#tk-e-days', root); if (to) { try { to.scrollIntoView({ block: 'start', behavior: 'smooth' }); } catch (x) { to.scrollIntoView(); } var hh = $('h2', to); if (hh) { try { hh.focus({ preventScroll: true }); } catch (x) {} } } return true; }
     if (act === 'e-next') { var p = gPlan(EN); if (p && p.k) guide('who', EN); return true; }
+    if (act === 's-hoods') { var AH = app(); if (window.__pkGoFarm) window.__pkGoFarm(); else if (AH) AH.go('hoods'); return true; }
     if (act === 'e-all') { var A = app(); if (A) { A.setState({ archLead: null, archT: null, archC: null, archY: '', luYear: 'disc', luArch: true, lineup: 'music' }); A.go('lineup', { keepArch: true }); } return true; }
     return false;
   }
+  /* ---------- not on sale: a coming-soon page (Zale, Nov 15: compelling any time tickets aren't on sale; checkout hidden until the WordPress switch is on) ---------- */
+  function soonCal() { return ''; /* Zale, Nov 15: we don't say when, so no calendar date */ if (!root) return ''; var cal = root.getAttribute('data-cal') || '', calL = root.getAttribute('data-callabel') || '', calF = root.getAttribute('data-calfile') || 'pickathon-tickets.ics'; return cal && when() === 'pre' ? '<a class="tk-tlink" href="' + esc(cal) + '" download="' + esc(calF) + '">' + esc(calL) + '</a>' : ''; }
+  function soonAsk(id) {
+    if (reminded()) return '<p class="tk-pre-ok" role="status">' + ic('check') + '<span>You’re on the list. ' + (when() === 'pre' ? 'One email the moment tickets open.' : 'One email when the next sale opens.') + '</span></p>' + (soonCal() ? '<p class="tk-s-cal">' + soonCal() + '</p>' : '');
+    return remindForm(id, 'Remind me') + (soonCal() ? '<p class="tk-s-cal">' + soonCal() + '</p>' : '');
+  }
+  function soonFact(img, k, t, s, go) { return '<li class="tk-s-f"><img src="' + esc(img) + '" alt="" loading="lazy" decoding="async"><span class="tk-s-fx"><b class="tk-d">' + t + '</b><span>' + s + '</span>' + (go ? '<button type="button" class="tk-tlink" data-act="' + go[0] + '">' + go[1] + '</button>' : '') + '</span></li>'; }
+  function soonHTML() {
+    var w = when(), pre = w === 'pre', r = T.show || {}, H = (site().data || {}).hoods || {};
+    var hi = function (k, f) { var o = H[k]; return (o && (o.hi || o.i)) || f; };
+    var kick = pre ? 'A limited ' + esc(r.name || 'sale') + ' opens soon' : 'Tickets aren’t on sale right now';   /* Zale, Nov 15: we don't say when */
+    var row = function (t, sub) { return '<li><span><b>' + t + '</b><small>' + sub + '</small></span></li>'; };   /* Zale, Nov 15: no prices before the sale, just what goes on sale */
+    var q = function (t, a) { return '<details class="tk-s-q"><summary>' + t + '</summary><p>' + a + '</p></details>'; };
+    return '<section class="tk-e tk-soon" id="tk-entry" aria-label="Pickathon ' + YEAR + ' tickets">' +
+      '<div class="tk-e-hero"><img src="' + GHERO + '" alt="A singer stands on a speaker above a packed crowd at Cherry Hill, with fir trees behind" fetchpriority="high"><span class="tk-g-sh"></span><div class="tk-g-low">' +
+      '<p class="tk-s-k">' + kick + '</p>' +
+      '<h1 class="tk-d">Four days of music in the woods. <span>Find your next favorite band.</span></h1>' +
+      '<p class="tk-e-s"><span>' + (pre ? 'For you, or as a gift. One email the moment it opens.' : 'One email when the next sale opens.') + '</span></p>' +
+      '<div class="tk-s-ask" id="tk-s-ask1"></div></div></div>' +
+      '<div class="tk-e-proof" id="tk-e-proof" hidden><p class="tk-g-k">They played here first</p><p class="tk-g-sub">Small names when we booked them.</p><ul class="tk-e-reel" id="tk-e-reel" aria-label="Acts that played Pickathon before they were big, biggest today first"></ul></div>' +
+      '<div class="tk-s-sec"><p class="tk-g-k">What a ticket gets you</p><ul class="tk-s-fs">' +
+      soonFact(hi('woods', 'i/r3-hood-woods.jpg'), '', 'Every act plays twice', 'Two sets on two different stages, so you get two chances to catch each one.') +
+      soonFact(hi('lushcamp', 'i/r3-hood-lushcamp.jpg'), '', 'Camping is included', 'Weekend passes come with a tent spot in the forest. Kids 12 and under are free.') +
+      soonFact(hi('grove', 'i/r35-grove-1.jpg'), '', 'A city built by hand', 'Stages and camps designed and built for one summer on a forest farm.', ['s-hoods', 'See the neighborhoods →']) +
+      '</ul></div>' +
+      '<div class="tk-s-two">' +
+      '<div class="tk-s-sec tk-s-pr"><p class="tk-g-k">What goes on sale</p><p class="tk-g-sub">Prices come out when tickets do.</p><ul class="tk-s-pl">' +
+        row('4 days · Thu–Sun', 'Camping in the forest included. Add a Wednesday early arrival.') + row('3 days · Fri–Sun', 'Camping in the forest included.') + row('Day tickets', 'Saturday + Sunday, or any one day. Ages 13 and up, no camping.') + row('Patron Pass · Wed–Sun', 'Backstage hospitality, concierge and early entry. Any age, one each.') + row('Add-ons', 'Car camping, camper van and RV sites, parking, the MAX shuttle and Curation meals.') +
+        '</ul><p class="tk-s-pn">Kids 12 and under are free. Teens 13 to 17 are half price on weekend passes.</p></div>' +
+      '<div class="tk-s-sec tk-s-qs"><p class="tk-g-k">Good to know</p>' +
+      q('When do tickets go on sale?', pre ? 'Soon. Sign up and we send one email the moment they do.' : 'Sign up and we send one email when the next sale opens.') +
+      q('Can I bring my kids?', 'Yes. Kids 12 and under are free with a weekend pass or a day ticket. Teens 13 to 17 are half price on weekend passes.') +
+      q('Can I come for just one day?', 'Yes. Day tickets are one price for ages 13 and up. They don’t include camping.') +
+      q('Can I car camp or bring an RV?', 'Yes. Car camping, camper van and RV sites at Willow Camp and South Camp are added to your order. South Camp sells out first.') +
+      q('How do I get there?', 'Drive and park, take the MAX to Lents Town Center and ride the shuttle, bike in, or get dropped off.') +
+      '<div class="tk-hand"><button type="button" class="tk-pill" data-go="info">How the weekend works</button></div></div></div>' +
+      '<div class="tk-s-end"><h2 class="tk-d">' + 'Be first in line.' + '</h2><div class="tk-s-ask" id="tk-s-ask2"></div></div>' +
+      '</section>';
+  }
+  function soonDraw(tries) {
+    if (!root || !$('.tk-soon', root)) return;
+    ['tk-s-ask1', 'tk-s-ask2'].forEach(function (id, i) { var el = $('#' + id, root); if (!el) return; el.innerHTML = soonAsk('tk-sa' + i); if (!reminded()) wireForm(el, 'tk-sa' + i, function () { soonDraw(); var p = $('#' + id + ' .tk-pre-ok', root); if (p) { p.setAttribute('tabindex', '-1'); p.focus(); } }); });
+    var reel = $('#tk-e-reel', root);
+    if (reel && !reel.firstChild) { var h = reelHTML(); if (h) { reel.innerHTML = h; $('#tk-e-proof', root).hidden = false; } else if ((tries || 0) < 8) setTimeout(function () { soonDraw((tries || 0) + 1); }, 400); }
+    guard($('.tk-soon', root));
+  }
   function skeleton() {
     var w = when(), minDay = minPS(OK.day), h = '';
+    if (w !== 'sale') return soonHTML();
     if (entryOn()) h += entryHTML();
     h += '<div class="tk-in"><div class="tk-paper tk-head">' + logo() + '<div class="tk-head-t"><h1 class="tk-d">Tickets</h1><p>' + headline() + '</p></div></div>';
     h += '<div class="tk-main" id="tk-main"><p class="tk-when"><b>' + DAY.dthu[4] + '–' + DAY.dsun[4].split(' ')[1] + ', ' + YEAR + '</b><span>Gates open ' + DAY.w[2] + ', ' + DAY.w[4] + '</span></p>' +
@@ -525,7 +606,7 @@
       group('none', 'Already have your pass?', 'Camping, parking, meals and extras on their own') +
       '<label class="tk-pass tk-paper tk-pass-none"><input type="radio" name="tk-pass" value="none" class="tk-vh"><span class="tk-pass-t"><b>Add-ons only</b><span>Bring the pass you already have</span></span><span class="tk-pass-p"><b>Add-ons</b></span></label>' +
       '</div></fieldset>';
-    h += '<fieldset class="tk-who"><div class="tk-leg"><legend class="tk-d tk-d-label">Who’s coming?</legend></div><div class="tk-who-g">' + stepper('adult', 'Adults', '18 and up', 'adult') + stepper('teen', 'Teens', '13 to 17', 'teen') + stepper('kid', 'Kids', '12 and under', 'kid') + '</div><p class="tk-note" id="tk-teennote" hidden></p><p class="tk-more" id="tk-morep" hidden><span>Someone needs a different pass?</span><button type="button" class="tk-pill tk-pill-sm" data-act="addpass">Add a different pass</button></p></fieldset>';
+    h += '<fieldset class="tk-who"><div class="tk-leg"><legend class="tk-d tk-d-label">Who’s coming?</legend></div><div class="tk-who-g">' + stepper('adult', 'Adults', '18 and up', 'adult') + stepper('teen', 'Teens', '13 to 17', 'teen') + stepper('kid', 'Kids', '12 and under', 'kid') + '</div><p class="tk-note" id="tk-teennote" hidden></p><p class="tk-more" id="tk-morep" hidden><span>Someone needs a different pass?</span><button type="button" class="tk-pill tk-pill-sm" data-act="addpass">Add a different pass</button></p><p class="tk-more tk-giftp" id="tk-giftp" hidden><span>Buying for someone else?</span><button type="button" class="tk-pill tk-pill-sm" data-act="gift">Give it as a gift</button></p></fieldset>';
     h += '<section class="tk-sec" id="tk-s-sleep" aria-labelledby="tk-h-sleep"><div class="tk-leg"><h2 class="tk-d tk-d-label" id="tk-h-sleep">Camping</h2><button type="button" class="tk-pill tk-pill-sm" data-act="camps">See the camps</button></div>' +
       '<div class="tk-opts" role="radiogroup" aria-labelledby="tk-h-sleep">' +
       opt('tk-sleep', 'tent', hoodImg('lushcamp', 'tickets.sleep.tent'), 'Tent in the woods', 'Lush Camp or Wild Camp. Walk in, pick your spot.', 'Included') +
@@ -623,7 +704,7 @@
   }
   function draw(el) {
     var g = gate(); if (g) { root = el; el.innerHTML = gateHTML(g); return; }
-    root = el; el.innerHTML = skeleton(); $('#tk-top', el).innerHTML = topHTML(); preDraw(); update(); entryDraw();
+    root = el; el.innerHTML = skeleton(); if ($('.tk-soon', el)) { soonDraw(); return; } $('#tk-top', el).innerHTML = topHTML(); preDraw(); update(); entryDraw();
   }
   function gv(f) { return f.indexOf('x-') === 0 ? (S.x[f.slice(2)] || 0) : S[f]; }
   function sv(f, v) { if (f.indexOf('x-') === 0) { if (v) S.x[f.slice(2)] = v; else delete S.x[f.slice(2)]; } else S[f] = v; }
@@ -675,6 +756,7 @@
     if (!S.adult && (S.teen || S.kid)) note = kd === 'day' ? '<b>Add a ticket for someone 13 or older.</b> Kids come in with them.' : '<b>Add an adult.</b> Teens and kids come in with a ticketed adult.';
     if (kd === 'none') note = ''; tn.hidden = !note; tn.innerHTML = note;
     $('#tk-morep', root).hidden = !(gok(S) && S.pass !== 'none' && (S.more || []).length < 5);
+    var gp = $('#tk-giftp', root); if (gp) gp.hidden = !(window.pkGift && when() === 'sale' && giftable(S).length);
     var gr = $('#tk-grps', root), M = S.more || []; gr.hidden = !M.length;
     gr.innerHTML = M.length ? '<p class="tk-grps-h">Already in this order</p><ul>' + M.map(function (g, i) { return '<li><span>' + esc(gshort(g)) + '</span><button type="button" class="tk-tlink" data-act="rmgrp" data-i="' + i + '" aria-label="Remove ' + esc(gshort(g)) + '">Remove</button></li>'; }).join('') + '</ul><p class="tk-grps-n">' + (S.pass && S.pass !== 'none' ? 'Now: the next pass below.' : 'Pick the next pass below, or check out.') + '</p>' : '';
     /* extras: what each group adds, at a glance */
@@ -778,6 +860,7 @@
       (hasPlan(t) ? '<p class="tk-oplan">Or pay over time: ' + planLine(t.total) + '.</p>' : '') + '<p class="tk-fine"><b>All sales final.</b> Send a pass to a friend any time from My Pickathon.</p></div>' +
       '<button type="button" class="tk-pill ' + go.c + ' tk-sheet-go" data-sheetgo>' + go.t + '</button>', 'Your order');
     $('[data-sheetgo]', scrim).addEventListener('click', function () { closeSheet(true); proceed(); });
+    scrim.addEventListener('click', function (e) { var b = e.target.closest ? e.target.closest('[data-act="gift-edit"]') : null; if (b) { closeSheet(true); giftForm(+b.getAttribute('data-i')); } });
   }
   /* help me choose: Pick sets the pass and nothing else */
   function checkout() {
@@ -822,6 +905,8 @@
     if (act === 'camps') { camps(); return; }
     if (act === 'why') { why(); return; }
     if (act === 'addpass') { addPass(); return; }
+    if (act === 'gift') { giftForm(-1); return; }
+    if (act === 'gift-edit') { closeSheet(true); giftForm(+b.getAttribute('data-i')); return; }
     if (act === 'rmgrp') { S.more.splice(+b.getAttribute('data-i'), 1); update(); live('Removed.'); var pc = $('#tk-passes', root); if (pc) { try { pc.scrollIntoView({ block: 'nearest' }); } catch (x) {} } return; }
     if (act === 'signin') { if (window.__pkAcct && window.__pkAcct.signIn) window.__pkAcct.signIn(); else nav('account'); return; }
     if (act === 'again') { var lo = null; try { lo = window.pkLastOrder(); } catch (x) {} if (lo) { S = clean(lo); b.textContent = 'Filled in'; b.disabled = true; update(); var bg = $('#tk-ogo', root); if (bg && bg.offsetParent) bg.focus(); else { bg = $('#tk-bargo', root); if (bg) bg.focus(); } } return; }
@@ -985,6 +1070,7 @@
     if (meals.length) h += '<div class="tk-g-card tk-g-cur">' + (cim ? '<img src="' + esc(cim.hi || cim.i) + '" alt="" loading="lazy">' : '') + '<span class="tk-g-sh"></span><div class="tk-g-pick"><span><b>Curation</b><span>A chef and a band at one long table</span></span></div></div><div class="tk-g-who tk-g-x">' + meals.map(xr).join('') + '</div>';
     if (more.length) h += '<details class="tk-g-more"><summary>Souvenir dishware and giving back</summary><div class="tk-g-who tk-g-x">' + more.map(xr).join('') + '</div></details>';
     h += gStub(t, 'Total, fee included') + (w === 'pre' ? '<p class="tk-g-note">Checkout opens ' + esc(T.show.isToday ? 'today' : T.show.dayS) + '. Save your order now and pay in one tap then.</p>' : '') +
+      (window.pkGift && w === 'sale' && (giftable(S).length || (S.gifts || []).length) ? '<div class="tk-g-gift">' + giftsOk(S).map(function (g, i) { return '<p><span>' + giftLabel(g) + '</span><button type="button" class="tk-tlink" data-g="gift" data-i="' + i + '">Edit</button></p>'; }).join('') + (giftable(S).length ? '<button type="button" class="tk-pill tk-pill-sm" data-g="gift" data-i="-1">' + ((S.gifts || []).length ? 'Give another as a gift' : 'Give any of it as a gift') + '</button>' : '') + '</div>' : '') +
       '<p class="tk-g-links"><span></span><button type="button" class="tk-tlink" data-g="fast">Change anything on the full page →</button></p></div>';
     return h + gFoot(esc(go.t), 'pay', 'sleep', !!go.off || !t.ready);
   }
@@ -1003,6 +1089,7 @@
       var a = b.getAttribute('data-g'), d = b.getAttribute('data-d'), v = b.getAttribute('data-v'), k = b.getAttribute('data-k');
       if (a === 'fast') { GS = null; closeSheet(true); lastKey = ''; sync(); try { var hd = $('#tk-passes', root); if (hd) hd.scrollIntoView({ block: 'start' }); } catch (x) {} return; }
       if (a === 'go') { GS.step = b.getAttribute('data-to'); gDraw(true); return; }
+      if (a === 'gift') { giftForm(+b.getAttribute('data-i'), function () { gDraw(); }); return; }
       if (gDayTap(GS, a, d)) { gDraw(); return; }
       if (a === 'next') {
         var to = b.getAttribute('data-to');
