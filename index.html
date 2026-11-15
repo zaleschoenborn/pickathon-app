@@ -4624,32 +4624,20 @@ div[aria-label="Preview controls"] { display: none !important }
 <p class="pp-eyebrow">Pickathon Presents</p>
 <h1 id="pp-h1" class="pp-h1">Pickathon isn’t once a year. It’s all year.</h1>
 <p class="pp-lede">The discovery doesn’t stop when the weekend does.</p>
-<div class="pp-ctas"><button type="button" onClick="{{pp.toCal}}" class="pp-btn pp-btn-gold">See upcoming shows</button><a href="https://www.instagram.com/pickathonpresents/" target="_blank" rel="noopener" class="pp-btn pp-btn-ghost">Follow @pickathonpresents ↗</a></div>
+<div class="pp-ctas"><button type="button" onClick="{{pp.toCal}}" class="pp-btn pp-btn-gold">See upcoming shows</button></div>
 </div>
 </section>
 
-<section class="pp-in pp-split">
-<div class="pp-split-img pp-tall"><img src="{{pp.img.solo}}" alt="A singer playing acoustic guitar in cowboy boots on the Showdown stage, surrounded by red flowers and a lantern"></div>
-<div class="pp-split-t">
-<p class="pp-kicker">Year-round</p>
-<h2 class="pp-h2">We saw them when</h2>
-<p>Pickathon Presents brings the community together around artists who have been part of Pickathon’s story, and artists we think you should know next.</p>
-<p>Now you don’t have to wait until August to discover new music, hang out with your campsite clan or dance the night away.</p>
-<p class="pp-strong">Shows all year. All over Portland.</p>
-</div>
-</section>
-
-<section class="pp-dark">
-<div class="pp-in pp-split pp-rev">
-<div class="pp-split-img"><img src="{{pp.img.trio}}" alt="A trio singing on the Showdown Saloon stage under red and purple light"></div>
-<div class="pp-split-t">
-<p class="pp-kicker">Our home base</p>
-<h2 class="pp-h2 pp-sd-h"><img class="pp-sd-logo" src="{{pp.img.sdword}}" alt="The Showdown Saloon"></h2>
-<p>Our year-round honky tonk and cultural incubator in Southeast Portland. A big dance floor, a stage made for country, Americana and bluegrass, and a room full of people who came to dance (and maybe drink a little whiskey).</p>
-<p class="pp-addr">1195 SE Powell Blvd, Portland, OR 97202 · 21+</p>
-<div class="pp-links"><a href="https://www.showdownpdx.com/" target="_blank" rel="noopener">Showdown calendar ↗</a><a href="https://www.google.com/maps/search/?api=1&amp;query=Showdown+Saloon+1195+SE+Powell+Blvd+Portland+OR" target="_blank" rel="noopener">Directions ↗</a></div>
-</div>
-</div>
+<section id="pp-cal" class="pp-in pp-cal" aria-labelledby="pp-cal-h">
+<div class="pp-cal-head"><div><p class="pp-kicker">On the calendar</p><h2 id="pp-cal-h" class="pp-h2">Upcoming shows</h2></div>
+<div role="group" aria-label="Show filter" class="pp-chips"><sc-for list="{{pp.chips}}" as="c" hint-placeholder-count="2"><button type="button" onClick="{{c.pick}}" aria-pressed="{{c.on}}" class="pp-chip">{{c.label}}</button></sc-for></div></div>
+<sc-if value="{{pp.has}}" hint-placeholder-val="{{true}}"><ol class="pp-list"><sc-for list="{{pp.events}}" as="e" hint-placeholder-count="5"><li class="pp-ev">
+<div class="pp-date pkp-mono" aria-hidden="true"><span class="pp-date-m">{{e.mon}}</span><span class="pp-date-d">{{e.day}}</span><span class="pp-date-w">{{e.dow}}</span></div>
+<div class="pp-ev-t"><sc-if value="{{e.pp}}" hint-placeholder-val="{{true}}"><span class="pp-badge">Pickathon Presents</span></sc-if><span class="pp-ev-n">{{e.t}}</span><span class="pp-ev-m">{{e.when}} · {{e.v}}</span></div>
+<a class="pp-tix" href="{{e.u}}" target="_blank" rel="noopener" aria-label="Tickets for {{e.t}} (opens TicketWeb)">Tickets ↗</a>
+</li></sc-for></ol></sc-if>
+<sc-if value="{{pp.none}}" hint-placeholder-val="{{false}}"><p class="pp-empty">New shows are on the way. Check the full Showdown calendar for the latest.</p></sc-if>
+<p class="pp-cal-foot"><a href="https://www.showdownpdx.com/" target="_blank" rel="noopener">See the full Showdown calendar ↗</a><span>{{pp.updated}}</span></p>
 </section>
 
 <section class="pp-band pp-par" style="background-image: url({{pp.img.hat}})">
@@ -4669,16 +4657,28 @@ div[aria-label="Preview controls"] { display: none !important }
 </div>
 </section>
 
-<section id="pp-cal" class="pp-in pp-cal" aria-labelledby="pp-cal-h">
-<div class="pp-cal-head"><div><p class="pp-kicker">On the calendar</p><h2 id="pp-cal-h" class="pp-h2">Upcoming shows</h2></div>
-<div role="group" aria-label="Show filter" class="pp-chips"><sc-for list="{{pp.chips}}" as="c" hint-placeholder-count="2"><button type="button" onClick="{{c.pick}}" aria-pressed="{{c.on}}" class="pp-chip">{{c.label}}</button></sc-for></div></div>
-<sc-if value="{{pp.has}}" hint-placeholder-val="{{true}}"><ol class="pp-list"><sc-for list="{{pp.events}}" as="e" hint-placeholder-count="5"><li class="pp-ev">
-<div class="pp-date pkp-mono" aria-hidden="true"><span class="pp-date-m">{{e.mon}}</span><span class="pp-date-d">{{e.day}}</span><span class="pp-date-w">{{e.dow}}</span></div>
-<div class="pp-ev-t"><sc-if value="{{e.pp}}" hint-placeholder-val="{{true}}"><span class="pp-badge">Pickathon Presents</span></sc-if><span class="pp-ev-n">{{e.t}}</span><span class="pp-ev-m">{{e.when}} · {{e.v}}</span></div>
-<a class="pp-tix" href="{{e.u}}" target="_blank" rel="noopener" aria-label="Tickets for {{e.t}} (opens TicketWeb)">Tickets ↗</a>
-</li></sc-for></ol></sc-if>
-<sc-if value="{{pp.none}}" hint-placeholder-val="{{false}}"><p class="pp-empty">New shows are on the way. Check the full Showdown calendar for the latest.</p></sc-if>
-<p class="pp-cal-foot"><a href="https://www.showdownpdx.com/" target="_blank" rel="noopener">See the full Showdown calendar ↗</a><span>{{pp.updated}}</span></p>
+<section class="pp-dark">
+<div class="pp-in pp-split pp-rev">
+<div class="pp-split-img"><img src="{{pp.img.trio}}" alt="A trio singing on the Showdown Saloon stage under red and purple light"></div>
+<div class="pp-split-t">
+<p class="pp-kicker">Our home base</p>
+<h2 class="pp-h2 pp-sd-h"><img class="pp-sd-logo" src="{{pp.img.sdword}}" alt="The Showdown Saloon"></h2>
+<p>Our year-round honky tonk and cultural incubator in Southeast Portland. A big dance floor, a stage made for country, Americana and bluegrass, and a room full of people who came to dance (and maybe drink a little whiskey).</p>
+<p class="pp-addr">1195 SE Powell Blvd, Portland, OR 97202 · 21+</p>
+<div class="pp-links"><a href="https://www.showdownpdx.com/" target="_blank" rel="noopener">Showdown calendar ↗</a><a href="https://www.google.com/maps/search/?api=1&amp;query=Showdown+Saloon+1195+SE+Powell+Blvd+Portland+OR" target="_blank" rel="noopener">Directions ↗</a></div>
+</div>
+</div>
+</section>
+
+<section class="pp-in pp-split">
+<div class="pp-split-img pp-tall"><img src="{{pp.img.solo}}" alt="A singer playing acoustic guitar in cowboy boots on the Showdown stage, surrounded by red flowers and a lantern"></div>
+<div class="pp-split-t">
+<p class="pp-kicker">Year-round</p>
+<h2 class="pp-h2">We saw them when</h2>
+<p>Pickathon Presents brings the community together around artists who have been part of Pickathon’s story, and artists we think you should know next.</p>
+<p>Now you don’t have to wait until August to discover new music, hang out with your campsite clan or dance the night away.</p>
+<p class="pp-strong">Shows all year. All over Portland.</p>
+</div>
 </section>
 
 <section class="pp-blur pp-par" style="background-image: url({{pp.img.crowd}})">
@@ -4701,7 +4701,7 @@ div[aria-label="Preview controls"] { display: none !important }
 <section class="pp-in pp-final">
 <h2 class="pp-h2">Indie, punk or world more your thing?</h2>
 <p>Keep an eye out. Pickathon Presents is bringing all kinds of music to the Northwest, all year long.</p>
-<div class="pp-ctas pp-center"><a href="https://www.instagram.com/pickathonpresents/" target="_blank" rel="noopener" class="pp-btn pp-btn-gold">Follow @pickathonpresents ↗</a><button type="button" onClick="{{pp.toCal}}" class="pp-btn pp-btn-ghost">Upcoming shows</button></div>
+<div class="pp-ctas pp-center"><a href="https://www.instagram.com/pickathonpresents/" target="_blank" rel="noopener" class="pp-btn pp-btn-gold">Follow @pickathonpresents ↗</a></div>
 </section>
 </div>
 </sc-if>
@@ -13450,8 +13450,8 @@ html.pl2-zoom{-webkit-text-size-adjust:auto!important;text-size-adjust:auto!impo
     return '<div class="pl-sheet-top"><h2 class="pl-d pl-d-card" id="pl-more-h">More</h2><button type="button" class="pl-x" data-close aria-label="Close">' + ic('x') + '</button></div>' +
       '<form class="pl-search" role="search" id="pl-more-f"><label class="pl-search-l">' + ic('search', 'pl-ic-sm') + '<span class="pl-vh">Search Pickathon</span><input type="search" name="q" placeholder="Search: parking, kids, shuttle…" enterkeyhint="search" autocomplete="off"></label></form>' +
       '<div class="pl-chips">' + [['Parking', 'go'], ['Camping', 'sleep'], ['Shuttle', 'go'], ['Kids', 'kids']].map(function (c) { return '<button type="button" class="pl-pill pl-pill-sm" data-go="plan:' + c[1] + '">' + c[0] + '</button>'; }).join('') + '</div>' +
-      '<nav class="pl-mmain" aria-label="Festival">' + [['Lineup', '2027 and every year', 'lineup'], ['Plan your trip', 'Getting there, rules', 'info'], ['Schedule', '2026 for now', 'schedule'], ['Stories', '', 'stories']].map(function (n) { var cur = topR() === n[2]; return '<button type="button" data-go="route:' + n[2] + '"' + (cur ? ' aria-current="page"' : '') + '><span class="pl-d">' + n[0] + '</span>' + (n[1] ? '<small>' + n[1] + '</small>' : '') + '</button>'; }).join('') + '</nav>' +
-      '<p class="pl-mk" id="pl-mk">About</p><nav class="pl-mabout" aria-labelledby="pl-mk">' + [['Our story', 'route:about'], ['Build with Pickathon', 'route:build'], ['Partners', 'route:partners'], ['Neighbors', 'page:neighbors'], ['Press', 'route:press'], ['Pickathon Presents', 'route:presents']].map(function (n) { return '<button type="button" data-go="' + n[1] + '">' + n[0] + '</button>'; }).join('') + '</nav>' +
+      '<nav class="pl-mmain" aria-label="Festival">' + [['Lineup', '2027 and every year', 'lineup'], ['Plan your trip', 'Getting there, rules', 'info'], ['Schedule', '2026 for now', 'schedule'], ['Shows', 'Pickathon Presents, all year', 'presents'], ['Stories', '', 'stories']].map(function (n) { var cur = topR() === n[2]; return '<button type="button" data-go="route:' + n[2] + '"' + (cur ? ' aria-current="page"' : '') + '><span class="pl-d">' + n[0] + '</span>' + (n[1] ? '<small>' + n[1] + '</small>' : '') + '</button>'; }).join('') + '</nav>' +
+      '<p class="pl-mk" id="pl-mk">About</p><nav class="pl-mabout" aria-labelledby="pl-mk">' + [['About', 'route:aboutus'], ['Build with Pickathon', 'route:build']].map(function (n) { return '<button type="button" data-go="' + n[1] + '">' + n[0] + '</button>'; }).join('') + '</nav>' +
       '<div class="pl-mfoot"><button type="button" class="pl-pill pl-pill-sm" data-go="' + (u ? 'route:account' : 'signin') + '">' + (u ? 'Your account' : 'Sign in') + '</button><nav aria-label="Follow Pickathon">' + follow('pl-mf') + '</nav></div>';
   }
   function tabBtns() { return $$('#root nav[aria-label="App"] button').filter(function (b) { return /^\s*More\s*$/.test(b.textContent); }); }
@@ -13503,7 +13503,7 @@ html.pl2-zoom{-webkit-text-size-adjust:auto!important;text-size-adjust:auto!impo
     return '<footer class="pl-foot"><div class="pl-foot-in">' +
       '<div class="pl-foot-id"><button type="button" class="pl-foot-logo" data-go="route:home" aria-label="Pickathon home"><img src="footer-logo.png" alt="" width="97" height="40" loading="lazy" decoding="async"></button>' +
       '<p class="pl-faddr">' + FEST.place + '<br>' + FEST.long + ' · <a href="mailto:' + FEST.mail + '">' + FEST.mail + '</a></p></div>' +
-      '<nav class="pl-flinks" aria-label="About Pickathon">' + [['Our story', 'route:about'], ['Build with Pickathon', 'route:build'], ['Partners', 'route:partners'], ['Neighbors', 'page:neighbors'], ['Press', 'route:press'], ['Contact', 'page:contact-pickathon']].map(function (n) { return '<button type="button" data-go="' + n[1] + '">' + n[0] + '</button>'; }).join('') + '</nav>' +
+      '<nav class="pl-flinks" aria-label="About Pickathon">' + [['About', 'route:aboutus'], ['Build with Pickathon', 'route:build']].map(function (n) { return '<button type="button" data-go="' + n[1] + '">' + n[0] + '</button>'; }).join('') + '</nav>' +
       '<nav class="pl-fsoc" aria-label="Follow Pickathon">' + follow('') + '</nav>' +
       /* legal line kept from the old footer (not in the design): privacy, terms and the cookie / do-not-sell choice must stay reachable */
       '<p class="pl-flegal"><span>' + FEST.copy + '</span><a href="https://pickathon.com/privacy/" target="_blank" rel="noopener">Privacy</a><a href="https://pickathon.com/terms/" target="_blank" rel="noopener">Terms</a><button type="button" data-go="cookies">Cookie choices · Do not sell or share my info</button></p>' +
