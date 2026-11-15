@@ -76,7 +76,7 @@
   /* ---------- the sale: rounds, dates and prices, all from pkTix ---------- */
   var T = null;
   function readTix() { var s = site(); T = window.pkTix(s.today, s.season || 'off'); return T; }
-  function when() { var s = site(); if ((s.season || 'off') !== 'off' || T.open) return 'sale'; return T.next ? 'pre' : 'closed'; }
+  function when() { var s = site(); if ((s.season || 'off') !== 'off' || (T.open && window.pkSaleOn === true)) return 'sale'; return T.next ? 'pre' : 'closed'; }
   function P(id) { var f = window.pkFeedItem && window.pkFeedItem(id); if (f && f.price && typeof f.price.amount === 'number') return f.price.amount / 100; var r = T.prices[id]; return r ? Math.ceil(r[T.col]) : 0; }   // the site's one price rule: the live feed if it answered, else the settings block, whole dollars
   function WF(n) { return window.pkWithFee ? window.pkWithFee(n) : Math.round(n * (1 + FEE) * 100) / 100; }   // A12: every price shown includes the fee (the head block's one rule)
   function PS(id) { return WF(P(id)); }
@@ -176,6 +176,12 @@
   function strip(s) { var p = s.pass, on = p === 'p4' ? [s.wed, 1, 1, 1, 1] : p === 'p3' ? [0, 0, 1, 1, 1] : p === 'd2' ? [0, 0, 0, 1, 1] : p === 'd1' ? DAYS.map(function (d) { return d[0] === s.day; }) : p === 'pat' ? [1, 1, 1, 1, 1] : [0, 0, 0, 0, 0]; return on.map(function (x) { return !!x; }); }
   /* parking says what it covers: Weekend Parking (in and out all weekend) with a weekend pass, Patron or Sat + Sun; a one-day ticket gets that named day's parking */
   function parkId(s) { if (s.pass === 'none') return s.pday ? PARK[s.pday] : s.big ? 'opark' : 'wpark'; var b = pbase(s); if (!b) return ''; if (b.pass === 'd1') return b.day ? PARK[b.day] : ''; return s.big ? 'opark' : 'wpark'; }
+  /* every parking pass the order needs. Nov 15: an order of day tickets on different days parks on each of those days (it used to price the first day only). */
+  function parkIds(s) {
+    var none = s.pass === 'none', G = groups(s), b = pbase(s);
+    if (!none && G.length > 1 && G.every(function (g) { return g.pass === 'd1' && g.day; })) { var seen = {}, out = []; OK.day.forEach(function (d) { if (!seen[d] && G.some(function (g) { return g.day === d; })) { seen[d] = 1; out.push(PARK[d]); } }); return out; }
+    return !none && b && b.pass === 'd2' && s.dp ? ['psat', 'psun'] : [parkId(s)];
+  }
   function parkName(id) { if (id === 'wpark') return 'Weekend parking, in and out all weekend'; if (id === 'opark') return 'Oversized weekend parking, 16′ to 24′'; var d = DAYS.filter(function (x) { return PARK[x[0]] === id; })[0]; return d ? d[3] + ' parking, ' + d[2] + ' ' + d[4] + ' only' : ''; }
   function parkShort(id) { if (id === 'wpark' || id === 'opark') return 'Weekend parking'; var d = DAYS.filter(function (x) { return PARK[x[0]] === id; })[0]; return d ? d[3] + ' parking' : 'Parking'; }
   function dates(s) { var on = cover(s).map(function (x) { return !!x; }), a = on.indexOf(true), b = on.lastIndexOf(true); if (a < 0) return ''; var m = DAYS[a][4].split(' '); return a === b ? DAYS[a][2] + ', ' + DAYS[a][4] + ', ' + YEAR : m[0] + ' ' + m[1] + '–' + DAYS[b][4].split(' ')[1] + ', ' + YEAR; }
@@ -196,7 +202,7 @@
       if (s.sleep === 'tent' && G.length) add('tent', 0, 'Tent in the woods', 0);
       else if (veh) { add(s.sleep, s.sites, SLEEPN[s.sleep] + ' site', s.sites * P(s.sleep)); if (s.pwr && PWR[s.sleep]) add(PWR[s.sleep], s.sites, 'Power at your Willow ' + (s.sleep === 'wvan' ? 'van' : 'RV') + ' site', s.sites * P(PWR[s.sleep])); }
     }
-    if (some && s.go === 'drive' && !veh) { var b = pbase(s); (!none && b && b.pass === 'd2' && s.dp ? ['psat', 'psun'] : [parkId(s)]).forEach(function (pk) { if (pk) add(pk, s.car, parkName(pk), s.car * P(pk)); }); }
+    if (some && s.go === 'drive' && !veh) parkIds(s).forEach(function (pk) { if (pk) add(pk, s.car, parkName(pk), s.car * P(pk)); });
     var riders = none ? s.adult : G.reduce(function (a, g) { return a + g.adult + g.teen; }, 0);
     if (some && s.go === 'shuttle' && !veh && riders > 0) add('shuttle', riders, 'Shuttle Pass', riders * P('shuttle'));
     if (G.length && s.go === 'bike' && !veh) add('bike', 0, 'Bike parking', 0);
@@ -305,15 +311,207 @@
   function per(id, unit) { return off(id) ? 'Sold out' : money(PS(id)) + '<small>' + unit + '</small>'; }
   function xrow(id, label, sub) { return stepper('x-' + id, label, sub, label.toLowerCase()).replace('<span id="tk-ls-x-' + id + '">', '<span id="tk-ls-x-' + id + '" data-s="' + esc(sub) + '">'); }
   function chip(name, v, label) { return '<label class="tk-chip"><input type="radio" name="' + name + '" value="' + v + '" class="tk-vh"><span>' + label + '</span></label>'; }
+  /* Round 6 (Zale, Nov 15): Tickets is where many people land from a search. With an empty order and no deep link, the page opens on
+     what this is (one photo, one button), then who played here first (photos only, the same ranked list as Home), then the day picker.
+     Anyone with an order or a deep link gets the page as before. */
+  var EN = { on: {}, pat: false };
+  function entryOn() { return when() !== 'closed' && !S.pass && !(S.more || []).length && !deep0 && qp('guide') !== '0'; }
+  /* Tickets reel: two-line story lines (about 55 characters) for the photo cards. Each is a CUT of Artist Classification's line for that act, with no
+     new fact added; the full lines are untouched everywhere else. Sent to Artist Classification to check (outbox, Nov 15). An act with no line here
+     falls back to the first sentence of its full line. This table should move into the master data once the wording is approved. */
+  var REEL = {
+    'Sturgill Simpson|2013': 'Small clubs then. Best Country Album Grammy, 2017.',
+    'The Avett Brothers|2006': 'No major label then. Now three nights at Red Rocks.',
+    'Tyler Childers|2019': 'Mid-size rooms then. Arenas and Bridgestone runs since.',
+    'Billy Strings|2015': 'Half of a duo, no label. Now three nights in an arena.',
+    'Caamp|2019': 'A club trio then. Red Rocks and a hometown arena since.',
+    'Leon Bridges|2015': 'Booked before his debut. A Grammy came in 2019.',
+    'The Marías|2019': 'Two EPs, no label. Now Coachella and arena headlines.',
+    'Gregory Alan Isakov|2014': 'On his own small label. Now Red Rocks headlines.',
+    'Kamasi Washington|2015': 'Small jazz rooms, then Coachella and Glastonbury.',
+    'Thee Sacred Souls|2022': 'Small clubs before their debut. Then Berkeley’s Greek.',
+    'Khruangbin|2019': 'Word of mouth then. Two nights at Red Rocks since.',
+    'Big Thief|2017': 'One album, small clubs. The Greek by 2022.',
+    'Black Pumas|2018': 'A new duo with no record. Red Rocks by 2021.',
+    'Trampled by Turtles|2007': 'Duluth bars then. First Avenue and Red Rocks since.',
+    'Lake Street Dive|2012': 'A Boston bar band then. A Red Rocks headline by 2019.',
+    'Thundercat|2015': 'Small clubs as a bassist. Then a 2016 Grammy.',
+    'Colter Wall|2018': 'Twenty-three, one album. Red Rocks headline by 2022.',
+    'Charley Crockett|2018': 'Bar shows then. The Ryman and Red Rocks since.',
+    'Patrick Watson|2016': 'A Polaris Prize winner and Montreal headliner.',
+    'Alvvays|2016': 'Small clubs then. A Juno and a Grammy nomination since.',
+    'Jalen Ngonda|2017': 'No label, small UK rooms. Then Daptone and Glastonbury.',
+    'Lucy Dacus|2017': 'One album, small clubs. Three Grammys with boygenius.',
+    'Viagra Boys|2019': 'One album, small clubs. Stockholm’s arena by 2025.',
+    'Mac DeMarco|2014': 'Salad Days was new. The Hollywood Bowl followed.',
+    'Goth Babe|2022': 'EPs from a van then. The Hollywood Bowl in 2025.',
+    'Unknown Mortal Orchestra|2014': 'Small clubs, then Coachella and Webster Hall.',
+    'Future Islands|2011': 'DIY rooms then. Letterman and big halls from 2014.',
+    'Wet Leg|2022': 'Small clubs, no album yet. Two Grammys by 2023.',
+    'Lonnie Holley|2014': 'An Alabama sculptor who began recording in his sixties.',
+    'Punch Brothers|2010': 'Two albums in then. A folk album Grammy in 2019.',
+    'Shakey Graves|2013': 'A one-man band in small clubs. Red Rocks by 2018.',
+    'Angel Olsen|2014': 'One small-label record then. Brooklyn Steel by 2017.',
+    'Aldous Harding|2017': 'Designer won over nearly every critic in 2019.',
+    'Lucius|2019': 'Sang with Roger Waters, then Joni Mitchell at Newport.',
+    'Warpaint|2014': 'Their second album reached the UK top 20.',
+    'Altın Gün|2019': 'Small US clubs then. A Grammy nomination for Gece.',
+    'Alex Cameron|2017': 'Forced Witness drew strong reviews and never charted.',
+    'Dr. Dog|2009': 'A small club act then. The Crystal Ballroom after 2010.',
+    'Parquet Courts|2013': 'Brooklyn basements, then Webster Hall 22 months later.',
+    'The Oh Hellos|2016': 'Texas siblings who have kept filling theaters since.',
+    'Shovels & Rope|2012': 'Bars and small clubs then. The Ryman by 2015.',
+    'Kelsey Waldon|2017': 'Bars then. John Prine signed her to Oh Boy.',
+    'Marlon Williams|2017': 'Small clubs abroad, then Live at Auckland Town Hall.',
+    'Brownout|2011': 'Austin clubs and SXSW, then Bonnaroo in 2012.',
+    'Sierra Hull|2018': 'A mandolin prodigy. A No. 1 bluegrass album in 2020.',
+    'The Beths|2019': 'Small clubs then. Brooklyn Steel four years later.',
+    'Ocie Elliott|2023': 'Small rooms to Sydney’s City Recital Hall in a year.',
+    'Kevin Morby|2015': 'Small clubs then. Town Hall and Brooklyn Steel since.',
+    'Margo Price|2016': 'Pawned her ring to make the record. The Ryman by 2018.',
+    'Overcoats|2018': 'NPR named YOUNG one of the best albums of 2017.',
+    'Dan Mangan|2019': 'Polaris Prize shortlists in 2010 and 2023.',
+    'Lido Pimienta|2019': 'Won the 2017 Polaris Music Prize for La Papessa.',
+    'Madison Cunningham|2023': 'Booked weeks before her Best Folk Album Grammy.',
+    'Nubya Garcia|2022': 'Source made the shortlist for Britain’s top album prize.',
+    'Sudan Archives|2019': 'Two EPs, small rooms. Then a Webster Hall headline.',
+    'Wednesday|2023': 'Small clubs then. Brooklyn Steel and theaters since.',
+    'Frazey Ford|2010': 'Indian Ocean made the 2015 Polaris long list.',
+    'Paul Cauthen|2018': 'Small rooms then. He later headlined the Ryman.',
+    'Pinegrove|2017': 'A critics’ band in small clubs. Brooklyn Steel by 2019.',
+    'Makaya McCraven|2019': 'Universal Beings topped jazz critics’ lists for 2018.',
+    'Sampa The Great|2022': 'Small clubs here. Then the Sydney Opera House.',
+    'Anaïs Mitchell|2010': 'Touring Hadestown in 2010. It won eight Tonys.',
+    'Bombino|2012': 'A Tuareg guitar hero in small clubs. Then Bonnaroo.',
+    'C.W. Stoneking|2009': 'A country-blues revivalist with two ARIA wins.',
+    'Foxygen|2013': 'Top critics singled out their album that year.',
+    'Joseph|2015': 'Living rooms then. An arena tour 15 months later.',
+    'Tank and the Bangas|2017': 'New Orleans clubs, then a Best New Artist nomination.',
+    'Julia Holter|2016': 'Uncut called her album the best of 2015.',
+    'Julia Jacklin|2017': 'Crushing drew wide praise and six ARIA nominations.',
+    'Andy Shauf|2017': 'Small clubs then. A Polaris shortlist for The Party.',
+    'Fruit Bats|2010': 'Seven years on Sub Pop and a turn in The Shins.',
+    'The Barr Brothers|2012': 'Montreal clubs, then headlining the Metropolis.',
+    'Ty Segall|2013': 'Small clubs, then two nights at Webster Hall.',
+    'Valerie June|2014': 'Clubs then. A 2022 Grammy nomination since.',
+    'Vieux Farka Touré|2013': 'A Malian guitarist, twice a Songlines nominee.',
+    'Chatham County Line|2007': 'A Raleigh four-piece with No. 1 bluegrass albums.',
+    'Cory Henry|2016': 'Live at the Piano earned a 2024 Grammy nomination.',
+    'MonoNeon|2023': 'The last bassist Prince hired before his death.',
+    'Phosphorescent|2012': 'Tiny rooms then. “Song for Zula” took him to big ones.',
+    'Shabazz Palaces|2013': 'Black Up was the rap record indie critics kept naming.',
+    'The Lone Bellow|2013': 'Boston’s Paradise to the House of Blues in a year.',
+    'Jamila Woods|2018': 'Critics singled out Legacy! Legacy! in 2019.',
+    'Jessica Pratt|2013': 'Small rooms to theaters and churches in three albums.',
+    'King Tuff|2013': 'One Sub Pop album, after years in Witch with J Mascis.',
+    'Blitzen Trapper|2009': 'Self-released in Portland. Then Sub Pop and Coachella.',
+    'Bonny Light Horseman|2019': 'Unannounced then. Two Grammy nominations in 2021.',
+    'The War and Treaty|2018': 'Listening rooms then. Grammy nominations and the Opry.',
+    'Hurray for the Riff Raff|2016': 'Three records running among critics’ best of the year.',
+    'New Constellations|2024': 'Day jobs then. An album, a label and a tour since.',
+    'Protomartyr|2016': 'A Detroit band almost every critic praised.',
+    'Thao & The Get Down Stay Down|2009': 'On Kill Rock Stars then. The Fillmore since.',
+    'Automatic|2022': 'An LA trio that opened for Bauhaus at the Greek.',
+    'Kacy & Clayton|2016': 'A Polaris longlist and a Juno finalist.',
+    'The Womack Sisters|2026': 'Sam Cooke’s granddaughters, signed to Daptone.',
+    'Alela Diane|2007': 'Spin and NME praised her. Rough Trade came next.',
+    'Emma Jean Thackray|2022': 'Yellow was Jazz FM’s Album of the Year in 2022.',
+    'LA LOM|2024': 'A weekly bar residency, then a Verve deal.',
+    'Low Cut Connie|2018': 'A Rolling Stone favorite on Obama’s playlist.',
+    'Mike and the Moonpies|2019': 'Saving Country Music’s Album of the Year, 2019.',
+    'Heartless Bastards|2010': 'Small clubs into halls. Arrow charted in 2012.',
+    'Israel Nash|2015': 'Uncut, Mojo and Q praised Silver Season.',
+    'Lost Bayou Ramblers|2009': 'A Cajun band that won a Grammy in 2018.',
+    'Haley Heynderickx|2018': 'Her debut made Paste’s best-of-2018 list.',
+    'Hayes Carll|2010': 'Americana Song of the Year, then a charting album.',
+    'BRONCHO|2015': '“Class Historian” reached Reservation Dogs.',
+    'Cass McCombs|2012': 'Spin ranked two of his albums in 2011’s fifty best.',
+    'Charlie Parr|2011': 'Nine albums of Duluth country blues on tiny labels.',
+    'Ibibio Sound Machine|2019': 'A London afro-funk band fronted by Eno Williams.',
+    'La Luz|2016': 'Shana Cleveland’s surf-noir quartet on Hardly Art.',
+    'Mereba|2019': 'Small rooms then. Headline dates at The Showbox since.',
+    'Bella White|2022': 'Her song “Burn Me Once” made a Hunger Games soundtrack.',
+    'Steve Gunn|2014': 'A guitarist’s guitarist. Matador signed him next.',
+    'Mountain Grass Unit|2023': 'Barely touring then. Now headlining the 9:30 Club.',
+    'Yasmin Williams|2022': 'Urban Driftwood made NPR’s 50 Best Albums of 2021.',
+    'Brent Cobb|2017': 'A Grammy nomination, then arenas with Chris Stapleton.',
+    'Cedric Watson & Bijou Creole|2013': 'A Creole fiddler with three straight Grammy nominations.',
+    'Ezra Furman|2016': 'Small rooms to Shepherd’s Bush Empire in Britain.',
+    'Hiss Golden Messenger|2014': 'The year he signed to Merge. A Grammy nomination since.',
+    'I Draw Slow|2013': 'A Dublin string band with a Nashville label deal.',
+    'Nikki Nair|2023': 'Crack named him an artist who defined 2023.',
+    'Dale Watson|2007': 'Honky-tonk holdout. Founded the Ameripolitan Awards.',
+    'Bedouine|2018': 'Her debut drew raves from NPR and the Guardian.',
+    'Circuit des Yeux|2018': 'One of Time Out’s two best Chicago albums of 2017.',
+    'Joshua Hedley|2018': 'Robert’s Western World’s house fiddler, on Third Man.',
+    'Megafaun|2010': 'Three of DeYarmond Edison. The fourth made Bon Iver.',
+    'SML|2025': 'Five LA improvisers with two acclaimed albums.',
+    'Woods|2014': 'Jeremy Earl’s Brooklyn band, eight albums in by 2014.',
+    'Yot Club|2023': 'A bedroom project then. Chicago’s Thalia Hall since.',
+    'A Giant Dog|2015': 'Eight years of club work, then a Merge deal.',
+    'Malcolm Holcombe|2013': 'Steve Earle called him the best songwriter he threw out.',
+    'Son Little|2014': 'One EP, then a Grammy for work with Mavis Staples.',
+    'Sweet Spirit|2017': 'St. Mojo made three Austin Chronicle critics’ lists.',
+    'Tennyson|2016': 'A teenage brother-and-sister act out of Edmonton.',
+    'Vetiver|2009': 'A folk band with a new Sub Pop album, Tight Knit.',
+    'Anna Tivel|2024': 'Outsiders was NPR’s Best Roots Music of 2022.',
+    'Irreversible Entanglements|2024': 'Free jazz and poetry that topped a 2020 jazz list.',
+    'Jupiter & Okwess|2019': 'A Kinshasa band with Damon Albarn on their album.',
+    'This Is Lorelei|2024': 'Double Double Whammy then. Matador signed him next.',
+    'Willie Watson|2014': 'Old Crow Medicine Show’s founding member, gone solo.',
+    'David Nance|2022': 'An Omaha lo-fi lifer championed by Pitchfork.',
+    'Moon Duo|2016': 'NPR called it “the best Moon Duo record to date.”',
+    'Rich Ruth|2023': 'A Nashville experimentalist on Third Man Records.',
+    'Town Mountain|2009': 'Won the 2013 IBMA Momentum Award for Band of the Year.',
+    'Billy Woods|2022': 'Bars and back rooms then. Three continents since.',
+    'Courtney Marie Andrews|2017': 'Old Flowers earned a 2021 Grammy nomination.',
+    'Bodega|2019': 'Rough Trade named Endless Scroll a best album of 2018.',
+    'Ex Hex|2015': 'Rips landed in critics’ year-end top thirty in 2014.',
+    'Jay Som|2017': 'Paste named Everybody Works its album of the year.',
+    'Young Jesus|2019': 'An indie rock band with two albums on Saddle Creek.',
+    'Liz Vice|2015': 'There’s a Light reached No. 6 on the Gospel chart.',
+    'Y La Bamba|2012': 'Ojos del Sol made NPR’s 50 best albums of 2016.'
+  };
+  function reelHTML() {
+    var L = discoveries(); if (!L.length) return '';
+    return L.map(function (a) { return '<li class="tk-e-c"><span class="tk-e-ph"><img src="' + esc(a.img) + '" alt="" loading="lazy" decoding="async"><span class="tk-e-cap"><span class="tk-e-nm"><b>' + esc(a.n) + '</b><i class="tk-d">' + esc(a.y) + '</i></span><span class="tk-e-bl">' + esc(REEL[a.n + '|' + a.y] || a.line) + '</span></span></span></li>'; }).join('') +
+      '<li class="tk-e-c tk-e-all"><button type="button" data-act="e-all"><b class="tk-d">See them all</b><span>Every act that played here first →</span></button></li>';
+  }
+  function entryHTML() {
+    return '<section class="tk-e" id="tk-entry" aria-label="Pickathon ' + YEAR + ' tickets">' +
+      '<div class="tk-e-hero"><img src="' + GHERO + '" alt="A singer stands on a speaker above a packed crowd at Cherry Hill, with fir trees behind" fetchpriority="high"><span class="tk-g-sh"></span><div class="tk-g-low">' +
+      '<h1 class="tk-d">Four days of music in the woods. <span>Find your next favorite band.</span></h1>' +
+      '<p class="tk-e-s"><b>' + headline() + '</b><span>From ' + money(minPS(OK.day)) + ' a day · ' + money(PS('p3')) + ' for the weekend with camping</span></p>' +
+      '<button type="button" class="tk-g-btn" data-act="e-days">Pick your days</button><button type="button" class="tk-tlink tk-g-alt" data-act="e-fast">I know what I want →</button></div></div>' +
+      '<div class="tk-e-proof" id="tk-e-proof" hidden><p class="tk-g-k">They played here first</p><p class="tk-g-sub">Small names when we booked them.</p><ul class="tk-e-reel" id="tk-e-reel" aria-label="Acts that played Pickathon before they were big, biggest today first"></ul></div>' +
+      '<div class="tk-e-days" id="tk-e-days"><h2 class="tk-d" tabindex="-1">Which days?</h2><p class="tk-g-sub">Tap the days you want. We’ll find the ticket that fits.</p><div id="tk-e-pick"></div><button type="button" class="tk-g-btn tk-e-next" data-act="e-next" id="tk-e-next">Next: who’s coming</button></div></section>';
+  }
+  function entryDraw(tries) {
+    if (!root) return; var pk = $('#tk-e-pick', root); if (!pk) return;
+    pk.innerHTML = gDaysHTML(EN); var p = gPlan(EN), nx = $('#tk-e-next', root); if (nx) nx.disabled = !p || !p.k;
+    var reel = $('#tk-e-reel', root);
+    if (reel && !reel.firstChild) { var h = reelHTML(); if (h) { reel.innerHTML = h; $('#tk-e-proof', root).hidden = false; } else if ((tries || 0) < 8) setTimeout(function () { entryDraw((tries || 0) + 1); }, 400); }   // the artist list arrives a moment after the page
+    guard($('#tk-entry', root));
+  }
+  function entryClick(b) {
+    var g = b.getAttribute('data-g'), act = b.getAttribute('data-act'), to;
+    if (g === 'fast' || act === 'e-fast') { to = $('#tk-main', root); if (to) { try { to.scrollIntoView({ block: 'start', behavior: 'smooth' }); } catch (x) { to.scrollIntoView(); } } return true; }
+    if (g && gDayTap(EN, g, b.getAttribute('data-d'))) { entryDraw(); return true; }
+    if (act === 'e-days') { to = $('#tk-e-days', root); if (to) { try { to.scrollIntoView({ block: 'start', behavior: 'smooth' }); } catch (x) { to.scrollIntoView(); } var hh = $('h2', to); if (hh) { try { hh.focus({ preventScroll: true }); } catch (x) {} } } return true; }
+    if (act === 'e-next') { var p = gPlan(EN); if (p && p.k) guide('who', EN); return true; }
+    if (act === 'e-all') { var A = app(); if (A) { A.setState({ archLead: null, archT: null, archC: null, archY: '', luYear: 'disc', luArch: true, lineup: 'music' }); A.go('lineup', { keepArch: true }); } return true; }
+    return false;
+  }
   function skeleton() {
     var w = when(), minDay = minPS(OK.day), h = '';
+    if (entryOn()) h += entryHTML();
     h += '<div class="tk-in"><div class="tk-paper tk-head">' + logo() + '<div class="tk-head-t"><h1 class="tk-d">Tickets</h1><p>' + headline() + '</p></div></div>';
     h += '<div class="tk-main" id="tk-main"><p class="tk-when"><b>' + DAY.dthu[4] + '–' + DAY.dsun[4].split(' ')[1] + ', ' + YEAR + '</b><span>Gates open ' + DAY.w[2] + ', ' + DAY.w[4] + '</span></p>' +
       '<div class="tk-jump"><button type="button" class="tk-new" data-act="why" aria-haspopup="dialog">New to Pickathon?</button><nav aria-label="Jump to"><button type="button" data-jump="camping">Camping</button><button type="button" data-jump="parking">Parking</button><button type="button" data-jump="meals">Meals</button></nav></div>';   /* Zale, Nov 13: experts go straight to what they came for; new visitors get the festival in one sheet */
     if (w === 'pre') h += '<section class="tk-pre" id="tk-pre" aria-label="Reminder"></section>';
     h += '<div id="tk-top"></div>';
     h += '<div class="tk-cols"><div class="tk-build">';
-    h += '<fieldset><div class="tk-leg"><legend class="tk-d tk-d-label">Pick a ticket</legend><button type="button" class="tk-pill tk-pill-sm" data-act="help" aria-haspopup="dialog">Help me choose</button></div><p class="tk-feenote">Prices include the ' + (FEE * 100) + '% fee.</p><div class="tk-grps" id="tk-grps" hidden></div><div class="tk-passes" id="tk-passes">' +
+    h += '<fieldset><div class="tk-leg"><legend class="tk-d tk-d-label">Pick a ticket</legend><button type="button" class="tk-pill tk-pill-sm" data-act="help" aria-haspopup="dialog">Pick by days</button></div><p class="tk-feenote">Prices include the ' + (FEE * 100) + '% fee.</p><div class="tk-grps" id="tk-grps" hidden></div><div class="tk-passes" id="tk-passes">' +
       group('wk', 'Weekend passes', 'Camping included · teens 13–17 half price') +
       passCard('p4', '4 days', span('dthu', 'dsun'), [0, 1, 1, 1, 1], pprice('p4')) +
       '<label class="tk-wed" id="tk-wed" hidden><input type="checkbox" id="tk-wedc"><span><b>Arrive ' + DAY.w[3] + ', ' + DAY.w[4] + '</b>, from 5 pm. Adults and teens.</span><em class="tk-num">+' + money(PS('early')) + ' each</em></label>' +
@@ -425,7 +623,7 @@
   }
   function draw(el) {
     var g = gate(); if (g) { root = el; el.innerHTML = gateHTML(g); return; }
-    root = el; el.innerHTML = skeleton(); $('#tk-top', el).innerHTML = topHTML(); preDraw(); update();
+    root = el; el.innerHTML = skeleton(); $('#tk-top', el).innerHTML = topHTML(); preDraw(); update(); entryDraw();
   }
   function gv(f) { return f.indexOf('x-') === 0 ? (S.x[f.slice(2)] || 0) : S[f]; }
   function sv(f, v) { if (f.indexOf('x-') === 0) { if (v) S.x[f.slice(2)] = v; else delete S.x[f.slice(2)]; } else S[f] = v; }
@@ -534,7 +732,7 @@
     try { el.scrollIntoView({ block: 'start', behavior: 'smooth' }); } catch (x) { el.scrollIntoView(); }
     var h = $('h2, summary, legend', el) || el; if (h && h.focus) { if (!h.hasAttribute('tabindex') && h.tagName !== 'SUMMARY') h.setAttribute('tabindex', '-1'); try { h.focus({ preventScroll: true }); } catch (x) {} }
   }
-  var DLRX = /^#\/?tickets\/(camping|parking|meals|extras|addons|passes)\b/, hash0 = window.location.hash || '';   // the site's router rewrites the address to #/tickets, so the section is read as the page loads
+  var DLRX = /^#\/?tickets\/(camping|parking|meals|extras|addons|passes)\b/, hash0 = window.location.hash || '', deep0 = DLRX.test(hash0);   // the site's router rewrites the address to #/tickets, so the section is read as the page loads
   function deepLink(h) { var m = DLRX.exec(h || window.location.hash || ''), n = 0; if (!m) return;
     (function wait() { if (root && root.firstChild && document.getElementById('tk-main')) { setTimeout(function () { jump(m[1]); }, 150); return; } if (++n < 60) setTimeout(wait, 150); })(); }   // the page may still be drawing on a slow phone
   /* "New to Pickathon?" (Zale, Nov 13): many buyers search straight to Tickets and see nothing else, so the page carries Home's idea in one
@@ -582,20 +780,8 @@
     $('[data-sheetgo]', scrim).addEventListener('click', function () { closeSheet(true); proceed(); });
   }
   /* help me choose: Pick sets the pass and nothing else */
-  function help() {
-    var rows = [['p4', 'Everything, and camp', '4 days, ' + money(PS('p4')), [0, 1, 1, 1, 1]], ['p3', 'The weekend, and camp', '3 days, ' + money(PS('p3')), [0, 0, 1, 1, 1]], ['d2', 'Two big days, home at night', 'Sat + Sun, ' + money(PS('d2')), [0, 0, 0, 1, 1]], ['d1', 'A first taste', 'One day, from ' + money(minPS(OK.day)), [0, 0, 0, 1, 0]], ['pat', 'Backstage, Wednesday to Sunday', 'Patron, ' + money(PS('patron')), [1, 1, 1, 1, 1]]];
-    var sh = sheet(sheetTop('Which pass fits?') + '<div class="tk-help">' + rows.map(function (r) {
-      var so = r[0] !== 'd1' && sold(r[0] === 'pat' ? 'patron' : r[0]);
-      return '<div class="tk-pass tk-paper"><span class="tk-days" aria-hidden="true">' + DAYS.map(function (d, i) { return '<i' + (r[3][i] ? ' class="on"' : '') + '>' + d[1] + '</i>'; }).join('') + '</span><span class="tk-pass-t"><b>' + r[1] + '</b><span>' + r[2] + '</span></span><span class="tk-pass-p"><button type="button" class="tk-pill tk-pill-ink" data-pick="' + r[0] + '" aria-label="Pick ' + r[2].split(',')[0] + '"' + (so ? ' disabled' : '') + '>' + (so ? 'Sold out' : 'Pick') + '</button></span></div>';
-    }).join('') + '</div><div class="tk-help-f"><p><b class="tk-d">Every stage</b>all day, every ticket</p><p><b class="tk-d">Kids free</b>12 and under</p><p><b class="tk-d">Teens half</b>on weekend passes, ' + money(PS('teen')) + '</p></div>', 'Which pass fits?');
-    sh.addEventListener('click', function (e) {
-      var b = e.target.closest ? e.target.closest('[data-pick]') : null; if (!b) return;
-      S.pass = b.getAttribute('data-pick'); if (S.pass !== 'p4') S.wed = false; if (S.pass !== 'd1') S.day = null;
-      closeSheet(true); update();
-      var i = $('input[name="tk-pass"][value="' + S.pass + '"]', root); if (i) { try { i.focus(); i.closest('label').scrollIntoView({ block: 'nearest' }); } catch (x) {} }
-    });
-  }
   function checkout() {
+    if (when() !== 'sale') return;   /* Round 4: nothing is sent to checkout until the WordPress sale switch is on */
     var o = order(); if (!o.ready) return;
     if ((window.PK_TICKETS || {}).checkoutPreview && window.__pkCheckout) { window.__pkCheckout.open(o); return; }
     handoff(o);
@@ -623,6 +809,7 @@
   }
   function onClick(e) {
     var b = e.target.closest ? e.target.closest('button,[data-go],[data-act]') : null; if (!b || !root.contains(b)) return;
+    if (b.closest('#tk-entry') && entryClick(b)) return;
     var stp = b.getAttribute('data-step');
     if (stp) { var f = b.closest('.tk-step').getAttribute('data-k'); sv(f, Math.max(vmin(f), Math.min(vmax(f), gv(f) + (+stp)))); update(); return; }
     var jp = b.getAttribute('data-jump'); if (jp) { jump(jp); return; }
@@ -631,7 +818,7 @@
     if (go) { nav(go); return; }
     if (act === 'go') { proceed(); return; }
     if (act === 'sheet') { orderSheet(); return; }
-    if (act === 'help') { help(); return; }
+    if (act === 'help') { guide('days'); return; }
     if (act === 'camps') { camps(); return; }
     if (act === 'why') { why(); return; }
     if (act === 'addpass') { addPass(); return; }
@@ -674,9 +861,171 @@
   window.addEventListener('storage', function (e) { if (e.key === LS) { S = load(); try { update(); } catch (x) {} } });   // the same order open in two tabs stays one order
   document.addEventListener('visibilitychange', function () { if (!document.hidden) { try { sync(); } catch (e) {} } });
 
+  /* ---------- Round 5 (Zale, Nov 14–15): "Pick your days". New buyers tap the days they can come and the page names the ticket that fits;
+     veterans take "I know what I want" to the full page (the fast lane). The guide only fills in the same order record S; prices, sold-out
+     rules, totals and checkout are the page's own. ---------- */
+  var GD = ['w', 'dthu', 'dfri', 'dsat', 'dsun'], GS = null, LSG = 'pk27g', GHERO = 'i/r3b-hood-cherryhill-3.jpg';
+  function gCover(k) { return k === 'p4' || k === 'pat' ? OK.day.slice() : k === 'p3' ? ['dfri', 'dsat', 'dsun'] : k === 'd2' ? ['dsat', 'dsun'] : []; }
+  function gPlan(q) {
+    q = q || GS;
+    if (q.pat) return sold('patron') ? { k: '', sold: true } : { k: 'pat', each: PS('patron'), name: N.pat, meta: 'Wed–Sun · ' + DAY.w[4] + '–' + DAY.dsun[4].split(' ')[1], why: 'Backstage, camping included. Any age, one per person.' };
+    var sel = OK.day.filter(function (d) { return q.on[d]; }), wed = !!q.on.w;
+    if (!sel.length && !wed) return null;
+    var inside = function (ids) { return sel.every(function (d) { return ids.indexOf(d) >= 0; }); }, opts = [];
+    if (!sold('p4')) opts.push({ k: 'p4', each: PS('p4') });
+    if (!wed && inside(gCover('p3')) && !sold('p3')) opts.push({ k: 'p3', each: PS('p3') });
+    if (!wed && inside(gCover('d2')) && !sold('d2')) opts.push({ k: 'd2', each: PS('d2') });
+    if (!wed && sel.length && sel.every(function (d) { return !sold(d); })) opts.push({ k: 'days', days: sel.slice(), each: Math.round(sel.reduce(function (a, d) { return a + PS(d); }, 0) * 100) / 100 });
+    if (!opts.length) return { k: '', sold: true };
+    var p = opts[0]; opts.forEach(function (o) { if (o.each < p.each - 0.004) p = o; });   // the cheapest way to cover the days tapped; a pass wins a tie
+    if (p.k === 'days') {
+      p.name = sel.length === 1 ? N[sel[0]] : sel.length + ' day tickets';
+      p.meta = sel.map(function (d) { return DAY[d][2] + ', ' + DAY[d][4]; }).join(' · ');
+      p.why = 'Every stage, all day. No camping with day tickets.';
+    } else {
+      var cov = gCover(p.k), extra = cov.filter(function (d) { return sel.indexOf(d) < 0; }), a = cov[0], b = cov[cov.length - 1];
+      p.name = N[p.k]; p.meta = DAY[a][2] + '–' + DAY[b][2] + ' · ' + DAY[a][4] + '–' + DAY[b][4].split(' ')[1];
+      p.why = p.k === 'd2' ? 'Every stage, both days. No camping with day tickets.' : 'Camping included · every stage';
+      if (wed) p.why = 'Wednesday arrival goes with the 4-Day Pass. Camping included.';
+      else if (extra.length && sel.length) p.why = 'Costs less than ' + (sel.length === 1 ? 'that day ticket' : sel.length + ' day tickets') + ', and adds ' + extra.map(function (d) { return DAY[d][3]; }).join(' and ') + (p.k === 'd2' ? '.' : ' and camping.');
+    }
+    return p;
+  }
+  function gApply() {
+    var p = gPlan(); if (!p || !p.k) return false;
+    var a = GS.adult, keep = { sleep: S.sleep, go: S.go, x: S.x, car: S.car, sites: S.sites, pwr: S.pwr, big: S.big, dp: S.dp };
+    S.more = [];
+    if (p.k === 'days') { var ds = p.days.slice(), last = ds.pop(); ds.forEach(function (d) { S.more.push(cleanG({ pass: 'd1', day: d, adult: a, teen: 0, kid: 0, wed: false })); }); S.pass = 'd1'; S.day = last; S.adult = a; S.teen = 0; S.kid = GS.kid; S.wed = false; }
+    else { S.pass = p.k; S.day = null; S.adult = a; S.teen = kind(p.k) === 'wk' ? GS.teen : 0; S.kid = p.k === 'pat' ? 0 : GS.kid; S.wed = p.k === 'p4' && !!GS.on.w; }
+    Object.keys(keep).forEach(function (k) { S[k] = keep[k]; });
+    if (!gCamps() && VEH.test(S.sleep)) S.sleep = 'tent';
+    S = clean(S); save(); update(); return true;
+  }
+  function gCamps() { return kind(S.pass) === 'wk' || S.pass === 'pat'; }
+  function gFromOrder() {
+    var on = {}, k = S.pass;
+    if (k === 'd1') { groups(S).forEach(function (g) { if (g.pass === 'd1' && g.day) on[g.day] = true; }); }
+    else gCover(k).forEach(function (d) { on[d] = true; });
+    if (k === 'p4' && S.wed) on.w = true;
+    return { step: 'days', on: on, pat: k === 'pat', adult: S.pass && S.pass !== 'none' ? Math.max(1, S.adult) : 1, teen: kind(k) === 'wk' ? S.teen : 0, kid: k === 'pat' ? 0 : S.kid };
+  }
+  function gStepper(k, label, sub, n, min) {
+    return '<div class="tk-g-r"><p><b>' + label + '</b><span>' + sub + '</span></p><div class="tk-g-stp"><button type="button" data-g="step" data-k="' + k + '" data-d="-1" aria-label="One fewer, ' + esc(label) + '"' + (n <= min ? ' disabled' : '') + '>−</button><b aria-live="polite">' + n + '</b><button type="button" data-g="step" data-k="' + k + '" data-d="1" aria-label="One more, ' + esc(label) + '">+</button></div></div>';
+  }
+  function gStub(t, totalLabel) {
+    return '<div class="tk-g-stub"><span class="tk-g-strip" aria-hidden="true">' + DAYS.map(function (d, i) { return '<i class="' + (cover(S)[i] ? 'on' : '') + '">' + d[1] + '</i>'; }).join('') + '</span><ul class="tk-olines">' + olines(t) + '</ul><div class="tk-g-cut"></div><p class="tk-g-tot"><span>' + totalLabel + '</span><b class="tk-num">' + money(t.total) + '</b></p></div>';
+  }
+  function gTop(n) { return '<div class="tk-g-top">' + logo() + (n ? '<span class="tk-g-steps" aria-label="Step ' + n + ' of 4">' + [1, 2, 3, 4].map(function (i) { return '<i' + (i <= n ? ' class="on"' : '') + '></i>'; }).join('') + '</span>' : '') + '<button type="button" class="tk-sheet-x" data-g="fast" aria-label="Close and see every ticket">' + ic('x') + '</button></div>'; }
+  function gFoot(label, act, back, off) { return '<div class="tk-g-foot">' + (back ? '<button type="button" class="tk-g-back" data-g="go" data-to="' + back + '" aria-label="Back">←</button>' : '') + '<button type="button" class="tk-g-btn" data-g="next" data-to="' + act + '"' + (off ? ' disabled' : '') + '>' + label + '</button></div>'; }
+  function gDaysHTML(q) {
+    var p = gPlan(q), h = '<div class="tk-g-days" role="group" aria-label="Festival days">' +
+      GD.map(function (d) { var so = d === 'w' ? off('early') || sold('p4') : sold(d) && sold('p4'); return '<button type="button" class="tk-g-day" data-g="day" data-d="' + d + '" aria-pressed="' + (!q.pat && q.on[d] ? 'true' : 'false') + '"' + (so ? ' disabled' : '') + '><b class="tk-d">' + DAY[d][2] + '</b><span>' + DAY[d][4] + '</span>' + (d === 'w' ? '<em>Early arrival</em>' : '') + '</button>'; }).join('') + '</div>';
+    if (!p) h += '<p class="tk-g-hint">Not sure? Most people come Friday to Sunday.</p>';
+    else if (!p.k) h += '<p class="tk-g-hint">Those days are sold out. Try other days.</p>';
+    else {
+      h += '<p class="tk-g-k">Your ticket</p><div class="tk-g-stub tk-g-one" aria-live="polite"><div><p class="tk-d tk-g-name">' + esc(p.name) + '</p><p class="tk-g-meta">' + esc(p.meta) + '<br>' + esc(p.why) + '</p></div><p class="tk-g-price tk-num">' + money(p.each) + '<small>' + (p.k === 'pat' ? 'per person' : p.k === 'days' || p.k === 'd2' ? 'ages 13 and up' : 'per adult') + ', fee included</small></p></div>';
+      if (p.k === 'p3' && !sold('p4')) h += '<button type="button" class="tk-g-nudge" data-g="add" data-d="dthu"><span>Add Thursday</span><b>+ ' + money(PS('p4') - PS('p3')) + ' · 4-Day Pass</b></button>';
+      else if (p.k === 'd2' && !sold('p3')) h += '<button type="button" class="tk-g-nudge" data-g="add" data-d="dfri"><span>Add Friday and camping</span><b>+ ' + money(PS('p3') - PS('d2')) + ' · 3-Day Pass</b></button>';
+      else if (p.k === 'p4' && !q.on.w && !off('early')) h += '<button type="button" class="tk-g-nudge" data-g="add" data-d="w"><span>Arrive Wednesday</span><b>+ ' + money(PS('early')) + ' each</b></button>';
+    }
+    return h + '<p class="tk-g-links">' + (sold('patron') ? '<span></span>' : '<button type="button" class="tk-tlink" data-g="pat">' + (q.pat ? 'Not Patron: pick days' : 'Patron Pass, backstage →') + '</button>') + '<button type="button" class="tk-tlink" data-g="fast">I know what I want →</button></p>';
+  }
+  function gDayTap(q, a, d) {   /* the same day rules on the page and in the sheet */
+    if (a === 'day') { q.pat = false; q.on[d] = !q.on[d]; if (d === 'w' && q.on.w) OK.day.forEach(function (x) { q.on[x] = true; }); if (d !== 'w' && !q.on[d]) q.on.w = false; return true; }
+    if (a === 'add') { q.on[d] = true; if (d === 'w') OK.day.forEach(function (x) { q.on[x] = true; }); return true; }
+    if (a === 'pat') { q.pat = !q.pat; return true; }
+    return false;
+  }
+  function gHTML() {
+    var st = GS.step, h = '', p, t, w = when();
+    if (st === 'days') {
+      p = gPlan();
+      h += gTop(1) + '<div class="tk-g-pad"><h2 class="tk-d" tabindex="-1">Which days?</h2><p class="tk-g-sub">Tap the days you want. We’ll find the ticket that fits.</p>' + gDaysHTML(GS) + '</div>';
+      return h + gFoot('Next: who’s coming', 'who', '', !p || !p.k);
+    }
+    t = totals(S);
+    if (st === 'who') {
+      var kd = kind(S.pass);
+      h += gTop(2) + '<div class="tk-g-pad"><h2 class="tk-d" tabindex="-1">Who’s coming?</h2><p class="tk-g-sub">' + (kd === 'pat' ? 'A Patron Pass is for any age, one per person.' : kd === 'wk' ? 'Kids are free. Teens are half price on weekend passes.' : 'Day tickets are one price for ages 13 and up. Kids are free.') + '</p><div class="tk-g-who">' +
+        gStepper('adult', kd === 'pat' ? 'People' : kd === 'wk' ? 'Adults' : 'Ages 13 and up', kd === 'pat' ? 'Any age · ' + money(PS('patron')) : kd === 'wk' ? '18 and up · ' + money(PS(S.pass)) : 'One price for everyone', GS.adult, 1) +
+        (kd === 'wk' && !sold('teen') ? gStepper('teen', 'Teens', '13–17 · ' + money(PS('teen')) + ', half the 4-Day', GS.teen, 0) : '') +
+        (kd !== 'pat' ? gStepper('kid', 'Kids', '12 and under · free', GS.kid, 0) : '') + '</div>' + gStub(t, 'So far') + '</div>';
+      return h + gFoot(gCamps() ? 'Next: where you’ll sleep' : 'Next: getting there', 'sleep', 'days');
+    }
+    if (st === 'sleep') {
+      var H = (site().data && site().data.hoods) || {}, im = function (id) { var o = H[id]; return o ? (o.hi || o.i) : ''; }, camp = gCamps(), veh = VEH.test(S.sleep);
+      h += gTop(3) + '<div class="tk-g-pad"><h2 class="tk-d" tabindex="-1">' + (camp ? 'Where you’ll sleep' : 'Getting there') + '</h2>';
+      if (camp) {
+        h += '<p class="tk-g-sub">Your pass comes with a tent spot in the woods.</p>';
+        var types = [['tent', 'Tent in the woods', 'Walk in and pick your spot', ['tent'], 'lushcamp'], ['car', 'Car camping', 'Sleep next to your car', ['wcar', 'scar'], 'willowcamp'], ['van', 'Camper van', 'A site for your van', ['wvan', 'svan'], 'southcamp'], ['rv', 'RV', 'A site for your RV', ['wrv', 'srv'], 'southcamp']];
+        types.forEach(function (ty) {
+          var ids = ty[3].filter(function (id) { return id === 'tent' || !off(id); }); if (!ids.length) return;
+          var on = ids.indexOf(S.sleep) >= 0, pr = ty[0] === 'tent' ? '' : (ids.length > 1 ? 'from ' : '') + money(Math.min.apply(null, ids.map(PS)));
+          h += '<div class="tk-g-card' + (on ? ' on' : '') + '">' + (im(ty[4]) ? '<img src="' + esc(im(ty[4])) + '" alt="" loading="lazy">' : '') + '<span class="tk-g-sh"></span>' + (ty[0] === 'tent' ? '<span class="tk-g-tag">Included</span>' : '') +
+            '<button type="button" class="tk-g-pick" data-g="sleep" data-v="' + ids[0] + '" aria-pressed="' + (on ? 'true' : 'false') + '"><span><b>' + ty[1] + '</b><span>' + ty[2] + '</span></span>' + (pr ? '<em class="tk-num">' + pr + '</em>' : '') + '</button></div>';
+          if (on && ty[0] !== 'tent') {
+            if (ids.length > 1) h += '<div class="tk-g-chips" role="group" aria-label="Which camp">' + ids.map(function (id) { return '<button type="button" class="tk-g-chip" data-g="sleep" data-v="' + id + '" aria-pressed="' + (S.sleep === id ? 'true' : 'false') + '">' + (id.charAt(0) === 'w' ? 'Willow Camp' : 'South Camp') + ' · ' + money(PS(id)) + '</button>'; }).join('') + '</div>';
+            if (PWR[S.sleep] && !off(PWR[S.sleep])) h += '<div class="tk-g-chips"><button type="button" class="tk-g-chip" data-g="pwr" aria-pressed="' + (S.pwr ? 'true' : 'false') + '">Add power · ' + money(PS(PWR[S.sleep])) + '</button></div>';
+            else if (/^s(van|rv)$/.test(S.sleep)) h += '<p class="tk-g-note">South Camp sites include power.</p>';
+          }
+        });
+      }
+      if (!veh) {
+        h += '<p class="tk-g-k tk-g-k2">' + (camp ? 'And getting there' : 'How will you get there?') + '</p><div class="tk-g-chips tk-g-go" role="group" aria-label="Getting there">';
+        var pks = parkIds(Object.assign({}, S, { go: 'drive' })).filter(Boolean), pk = pks.length && pks.every(function (x) { return !off(x); }), gos = [['drive', 'Drive and park', pk ? money(Math.round(pks.reduce(function (t0, x) { return t0 + PS(x); }, 0) * 100) / 100) + ' a car' + (pks.length > 1 ? ', ' + pks.length + ' days' : '') : ''], ['shuttle', 'Shuttle', !off('shuttle') ? money(PS('shuttle')) + ' each' : ''], ['bike', 'Bike', 'Free'], ['drop', 'Drop-off', 'Free'], ['later', 'Decide later', '']];
+        gos.forEach(function (g) { if ((g[0] === 'drive' && !g[2]) || (g[0] === 'shuttle' && !g[2])) return; h += '<button type="button" class="tk-g-chip" data-g="goway" data-v="' + g[0] + '" aria-pressed="' + (S.go === g[0] ? 'true' : 'false') + '">' + g[1] + (g[2] ? ' · ' + g[2] : '') + '</button>'; });
+        h += '</div>';
+      } else h += '<p class="tk-g-note">Your site is where you park. No parking pass needed.</p>';
+      return h + '</div>' + gFoot('Next: your order', 'order', 'who');
+    }
+    /* order */
+    var meals = MEALS.filter(function (id) { return xok(id, S); }), more = DISH.concat(GIVE).filter(function (id) { return !off(id); }), X = S.x || {}, go = goLabel(t), cim = ((site().data && site().data.hoods) || {}).curation;
+    var xr = function (id) { return gStepper('x-' + id, esc(XN[id].replace('Curation · ', '')), money(PS(id)) + (MEAL[id] !== undefined ? ' a seat' : ''), X[id] || 0, 0); };
+    h += gTop(4) + '<div class="tk-g-pad"><h2 class="tk-d" tabindex="-1">Your order</h2>';
+    if (meals.length) h += '<div class="tk-g-card tk-g-cur">' + (cim ? '<img src="' + esc(cim.hi || cim.i) + '" alt="" loading="lazy">' : '') + '<span class="tk-g-sh"></span><div class="tk-g-pick"><span><b>Curation</b><span>A chef and a band at one long table</span></span></div></div><div class="tk-g-who tk-g-x">' + meals.map(xr).join('') + '</div>';
+    if (more.length) h += '<details class="tk-g-more"><summary>Souvenir dishware and giving back</summary><div class="tk-g-who tk-g-x">' + more.map(xr).join('') + '</div></details>';
+    h += gStub(t, 'Total, fee included') + (w === 'pre' ? '<p class="tk-g-note">Checkout opens ' + esc(T.show.isToday ? 'today' : T.show.dayS) + '. Save your order now and pay in one tap then.</p>' : '') +
+      '<p class="tk-g-links"><span></span><button type="button" class="tk-tlink" data-g="fast">Change anything on the full page →</button></p></div>';
+    return h + gFoot(esc(go.t), 'pay', 'sleep', !!go.off || !t.ready);
+  }
+  function gDraw(focus) {
+    if (!scrim || !GS) return; var box = $('.tk-sheet', scrim); if (!box) return;
+    var sc = box.scrollTop; box.innerHTML = gHTML(); guard(scrim); box.setAttribute('data-step', GS.step);
+    if (focus) { box.scrollTop = 0; var f = $('h2[tabindex]', box); if (f) { try { f.focus({ preventScroll: true }); } catch (e) {} } } else box.scrollTop = sc;
+  }
+  function gSeen() { try { window.sessionStorage.setItem(LSG, '1'); } catch (e) {} }
+  function guide(step, pre) {
+    readTix(); GS = gFromOrder(); if (pre) { GS.on = Object.assign({}, pre.on); GS.pat = !!pre.pat; } GS.step = step || 'days'; gSeen();
+    if (pre && !gApply()) { GS = null; return; }
+    var sh = sheet('', 'Pick your days', { modal: true }); sh.classList.add('tk-gscrim'); gDraw(true);
+    sh.addEventListener('click', function (e) {
+      var b = e.target.closest ? e.target.closest('[data-g]') : null; if (!b || b.disabled) return;
+      var a = b.getAttribute('data-g'), d = b.getAttribute('data-d'), v = b.getAttribute('data-v'), k = b.getAttribute('data-k');
+      if (a === 'fast') { GS = null; closeSheet(true); lastKey = ''; sync(); try { var hd = $('#tk-passes', root); if (hd) hd.scrollIntoView({ block: 'start' }); } catch (x) {} return; }
+      if (a === 'go') { GS.step = b.getAttribute('data-to'); gDraw(true); return; }
+      if (gDayTap(GS, a, d)) { gDraw(); return; }
+      if (a === 'next') {
+        var to = b.getAttribute('data-to');
+        if (to === 'pay') { var wn = when(); GS = null; closeSheet(true); lastKey = ''; sync(); proceed(); if (wn === 'pre') live('Order saved. Checkout opens ' + (T.show.isToday ? 'today' : T.show.dayS) + '.'); return; }
+        if (to === 'who' && !gApply()) return;
+        GS.step = to; gDraw(true); return;
+      }
+      if (a === 'step') {
+        var n = +d;
+        if (k.indexOf('x-') === 0) { if (!S.x) S.x = {}; sv(k, Math.max(0, Math.min(12, gv(k) + n))); S = clean(S); save(); update(); }
+        else { GS[k] = Math.max(k === 'adult' ? 1 : 0, Math.min(k === 'adult' ? 20 : 10, GS[k] + n)); gApply(); }
+        gDraw(); return;
+      }
+      if (a === 'sleep') { if (!v) return; S.sleep = v; if (!PWR[v]) S.pwr = false; S = clean(S); save(); update(); gDraw(); return; }
+      if (a === 'pwr') { S.pwr = !S.pwr; S = clean(S); save(); update(); gDraw(); return; }
+      if (a === 'goway') { S.go = v; S = clean(S); save(); update(); gDraw(); return; }
+    });
+  }
+  window.addEventListener('pk-sale-switch', function () { try { readTix(); lastKey = ''; sync(); } catch (e) {} });   /* the WordPress sale switch answered: redraw */
   window.__pkTk2 = {
     refresh: function () { lastKey = ''; sync(); },
     order: order, record: function () { return clean(S); }, jump: jump, addPass: addPass, discoveries: discoveries, set: function (o) { S = clean(Object.assign({}, S, o || {})); save(); update(); }, clear: function () { S = clean(null); save(); update(); },
+    guide: guide, guidePlan: function (on, pat) { var o = GS; GS = { on: on || {}, pat: !!pat }; var p = gPlan(); GS = o; return p; },
     gate: gate, lastBy: lastBy, sheet: sheet, closeSheet: closeSheet, guard: guard, sheetTop: sheetTop, ic: ic, esc: esc, money: money, where: where, days: DAYS
   };
   document.addEventListener('change', function (e) { if (root && root.contains(e.target)) onChange(e); });
