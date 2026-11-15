@@ -200,17 +200,22 @@
   }
   function hubHTML() {
     return '<div class="pl-in">' +
-      '<div class="pl-top"><h1 class="pl-d pl-h1">Plan your trip</h1><div class="pl-picks">' +
-        sel('pl-len', 'How long', [['p4', '4 days'], ['p3', '3 days'], ['d2', 'Sat + Sun'], ['d1', 'One day']]) +
-        sel('pl-sleep', 'Sleeping', [['tent', 'Tent'], ['car', 'Car camp'], ['rv', 'RV'], ['none', 'Off site']]) +
-        sel('pl-go', 'Getting there', [['drive', 'Driving'], ['shuttle', 'Shuttle'], ['bike', 'Bike'], ['drop', 'Drop-off']]) +
-      '</div></div>' +
-      '<p class="pl-src" id="pl-src"></p><p class="pl-why" id="pl-why" role="status" hidden></p>' +
+      '<div class="pl-top"><h1 class="pl-d pl-h1">Plan your trip</h1></div>' +
+      '<section class="pl-paper pl-ask" id="pl-ask" aria-labelledby="pl-ask-q"><p class="pl-next-k">Start here</p><h2 class="pl-d pl-d-card" id="pl-ask-q">Are you camping?</h2>' +
+        '<p class="pl-ask-x">Tents in the woods are included with a 3-Day or 4-Day Pass.</p>' +
+        '<div class="pl-ask-b"><button type="button" class="pk-cta pri pl-btn" data-ask="camp">Yes, camping</button><button type="button" class="pk-cta sec pl-btn" data-ask="day">Just for the day</button></div></section>' +
+      '<section class="pl-paper pl-plan" id="pl-plan" aria-labelledby="pl-plan-k" hidden><p class="pl-next-k" id="pl-plan-k">Your plan</p>' +
+        '<div class="pl-picks">' +
+          sel('pl-len', 'How long', [['p4', '4 days'], ['p3', '3 days'], ['d2', 'Sat + Sun'], ['d1', 'One day']]) +
+          sel('pl-sleep', 'Sleeping', [['tent', 'Tent'], ['car', 'Car camp'], ['rv', 'RV'], ['none', 'Off site']]) +
+          sel('pl-go', 'Getting there', [['drive', 'Driving'], ['shuttle', 'Shuttle'], ['bike', 'Bike'], ['drop', 'Drop-off']]) +
+        '</div><p class="pl-src" id="pl-src"></p><p class="pl-why" id="pl-why" role="status" hidden></p>' +
+        '<div class="pl-plan-next"><p class="pl-next-k" id="pl-nk">Next</p><p class="pl-next-t pl-d" id="pl-nt"></p><p class="pl-next-p" id="pl-nn"></p><div class="pl-plan-b"><span id="pl-nb"></span>' +
+        '<button type="button" class="pk-cta sec pl-btn" id="pl-share">Send this plan to your group</button></div><p class="pl-next-p" id="pl-cd"></p><p class="pl-next-p" id="pl-shared" role="status" hidden></p></div></section>' +
       '<ul class="pl-basics"><li><b>Aug 5–8, 2027</b><span>Gates open Wed, Aug 4</span></li><li><b>Happy Valley, OR</b><span>12 miles from Portland</span></li><li><b>Camping included</b><span>Tents in the woods, with any 3- or 4-Day Pass</span></li></ul>' +
       '<ol class="pl-steps" id="pl-steps"></ol>' +
       '<p class="pl-packln"><button type="button" class="pl-tlink pl-packrow" data-go="step:pack"><span>5 · Packing list and camp rules</span><span aria-hidden="true">→</span></button></p>' +
-      '</div>' +
-      '<div class="pl-nextwrap"><div class="pl-paper pl-next"><div><p class="pl-next-k" id="pl-nk"></p><p class="pl-next-t pl-d" id="pl-nt"></p><p class="pl-next-p"><b class="pl-num" id="pl-np"></b> <span id="pl-nn"></span></p></div><span id="pl-nb"></span></div></div>';
+      '</div>';
   }
 
   /* ---------- step pages: chip back, marker, title, the fact people get wrong, one case at a time, shared facts, photos, next ---------- */
@@ -345,6 +350,37 @@
       '<div class="pl-nextln"><button type="button" class="pl-tlink pl-nx" data-go="route:tickets">Ready? Passes and prices →</button></div></div>';
   }
 
+  var LSQ = 'pk27planq', LSS = 'pk27planseen', sharedIn = false;
+  var STEP_T = { arrive: ['Arrive', 'How you get to the farm and through the gate.'], sleep: ['Sleep', 'Where you sleep, and what is there when you wake up.'], farm: ['At the farm', 'Water, shade, food, kids and access.'] };
+  function seenSet() { var a = lsGet(LSS); return a && a.push ? a : []; }
+  function markSeen(st) { var a = seenSet(); if (a.indexOf(st) < 0) { a.push(st); lsSet(LSS, a); } }
+  function nextStep(real, w) {   // the one thing to do now: a pass first, then each step you have not opened, then packing
+    if (!real) {
+      if (w === 'pre') return { t: 'Get a reminder for the sale', x: 'We will tell you the day passes go on sale.', b: btn('Remind me', 'remind') };
+      return { t: 'Choose your pass', x: 'Prices include the 5% fee.', b: btn(w === 'sale' ? 'Get tickets' : 'Passes and prices', 'route:tickets') };
+    }
+    var sn = seenSet(), i, st;
+    for (i = 0; i < STEPS.length; i++) { st = STEPS[i]; if (sn.indexOf(st) < 0) return { t: STEP_T[st][0], x: STEP_T[st][1], b: btn(STEP_T[st][0], 'step:' + st) }; }
+    return { t: 'Your packing list', x: 'What to bring, set for how you are sleeping.', b: btn('Packing list', 'step:pack') };
+  }
+  function planURL() {
+    var e = effective(), base = ''; try { base = window.location.href.split('#')[0].split('?')[0]; } catch (x) {}
+    return base + '#/plan?len=' + e.len + '&sleep=' + e.sleep + '&go=' + e.go;
+  }
+  function takeShared() {   // a link from a friend carries the three picks; apply them once, then drop them from the address
+    var h = ''; try { h = window.location.hash || ''; } catch (x) {} var m = h.match(/^#\/plan\?(.*)$/); if (!m) return;
+    var q = {}; m[1].split('&').forEach(function (p) { var kv = p.split('='); q[kv[0]] = kv[1]; });
+    var p = lsGet(LSP) || {}, got = false; ['len', 'sleep', 'go'].forEach(function (k) { if (OK[k].indexOf(q[k]) >= 0) { p[k] = q[k]; got = true; } });
+    if (got) { lsSet(LSP, p); lsSet(LSQ, 1); sharedIn = true; }
+    try { window.history.replaceState(window.history.state, '', window.location.href.split('#')[0] + '#/plan'); } catch (x) {}
+  }
+  function sharePlan() {
+    var e = effective(), url = planURL(), txt = 'My Pickathon plan: ' + LEN_T[e.len] + ', ' + { tent: 'tent', car: 'car camp', rv: 'RV', none: 'no camping' }[e.sleep] + ', ' + { drive: 'driving', shuttle: 'shuttle', bike: 'bike', drop: 'drop-off' }[e.go] + '. Aug 5–8, 2027.';
+    var say = function (m) { var s = $('#pl-shared', root); if (s) { s.hidden = !m; s.textContent = m; } };
+    if (window.navigator && navigator.share) { navigator.share({ title: 'My Pickathon plan', text: txt, url: url }).catch(function () {}); return; }
+    if (window.navigator && navigator.clipboard && navigator.clipboard.writeText) { navigator.clipboard.writeText(txt + ' ' + url).then(function () { say('Link copied. Paste it into a message.'); }, function () { say(url); }); return; }
+    say(url);
+  }
   var stepNow = '', stepCase = '';
   function topEntry() { try { var s = site().stack; return s[s.length - 1] || {}; } catch (e) { return {}; } }
   function update() {
@@ -360,25 +396,19 @@
     [].forEach.call(G.options, function (o) { o.disabled = e.veh && o.value !== 'drive'; });
     var wy = $('#pl-why', root); wy.hidden = !why.length; wy.innerHTML = why.join('<br>');
     $('#pl-steps', root).innerHTML = cardsHTML();
-    var nl = $('#pl-newl', root); if (nl) nl.innerHTML = newHTML();
-    var on = orderNow(), k = $('#pl-nk', root), t = $('#pl-nt', root), p = $('#pl-np', root), n = $('#pl-nn', root);
-    if (on.real) {
-      var tt = totals(on.o); k.textContent = 'Your order so far'; t.textContent = short(on.o); p.textContent = money(tt.total); n.textContent = 'fee included';
-      $('#pl-src', root).innerHTML = 'Filled in from <b>your ticket order</b>. Change anything; your order stays as it is.';
-    } else {
-      var ex = { pass: e.len, day: 'dsat', adult: 2, teen: 0, kid: 0, wed: false, sleep: e.camp ? SLEEP_OUT[e.sleep] : 'none', go: e.go, car: 1, patron: false }, te = totals(ex);
-      k.textContent = 'Example for two adults';
-      t.textContent = LEN_T[e.len] + ', ' + { tent: 'tent', car: 'car camp', rv: 'RV', none: 'no camping' }[e.sleep] + ', ' + { drive: e.veh ? 'driving' : '1 car', shuttle: 'shuttle', bike: 'bike', drop: 'drop-off' }[e.go];
-      p.textContent = money(te.total); n.textContent = 'fee included' + (e.len === 'd1' ? ', Saturday' : '');
-      $('#pl-src', root).textContent = 'Pick your three. Saved on this device, used on every step and on Tickets.';
-    }
-    $('#pl-nb', root).innerHTML = closeBtn();
+    var asked = !!lsGet(LSQ) || orderNow().real; $('#pl-ask', root).hidden = asked; $('#pl-plan', root).hidden = !asked;
+    var on = orderNow(), k = $('#pl-nk', root), t = $('#pl-nt', root), n = $('#pl-nn', root), w = when();
+    $('#pl-src', root).textContent = on.real ? 'Filled in from your ticket order. Change anything; your order stays as it is.' : (sharedIn ? 'A friend sent you this plan. Change anything to make it yours.' : 'Change any of the three. Saved on this device, used on every step and on Tickets.');
+    var nb = $('#pl-nb', root), nx = nextStep(on.real, w);
+    k.textContent = 'Next'; t.textContent = nx.t; n.textContent = nx.x; nb.innerHTML = nx.b;
+    var dd = Math.ceil((Date.UTC(2027, 7, 4) - Date.now()) / 864e5); $('#pl-cd', root).textContent = dd > 0 ? 'Gates open Wed, Aug 4: ' + dd + (dd === 1 ? ' day' : ' days') + ' to go.' : '';
     guard(root);
   }
   function draw(el) {
-    root = el; readTix(); want = startWant();
+    root = el; readTix(); sharedIn = false; takeShared(); want = startWant();
     var t = topEntry(), s = String(t.step || ''); stepNow = (STEPS.indexOf(s) >= 0 || s === 'pack') ? s : ''; stepCase = String(t.c || '');
     if (stepCase && stepNow) setView(stepNow, stepCase);
+    if (stepNow && stepNow !== 'pack') markSeen(stepNow);
     el.classList.toggle('pl-onstep', !!stepNow);
     if (stepNow) { update(); return; }
     el.innerHTML = hubHTML();
@@ -520,6 +550,13 @@
     persist(effective()); update();
   });
   document.addEventListener('click', function (e) {
+    var ak = e.target.closest ? e.target.closest('[data-ask],#pl-share') : null;
+    if (ak && root && root.contains(ak)) {
+      e.preventDefault();
+      if (ak.id === 'pl-share') { sharePlan(); return; }
+      if (ak.getAttribute('data-ask') === 'camp') { want.len = 'p3'; want.sleep = 'tent'; } else { want.len = 'd1'; }
+      lsSet(LSQ, 1); persist(effective()); update(); return;
+    }
     var b = e.target.closest ? e.target.closest('[data-go],[data-map],[data-case]') : null; if (!b) return;
     var own = (root && root.contains(b)) || b.closest('#pl2-foot'); if (!own) return;
     if (b.hasAttribute('data-case')) { e.preventDefault(); if (!b.disabled) chooseCase(b.getAttribute('data-case')); return; }
