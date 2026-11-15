@@ -1378,11 +1378,19 @@ main:has(#pk-nh-climb)>section{content-visibility:visible!important;contain-intr
 #root .pk3-hh i{display:block;height:2px;width:40px;margin:9px auto 0}
 #root .pk3-card.ph .pk3-frm{inset:8px}
 #root .pk3-card.ph .pk3-foot{padding:0 9px;font:800 8.5px/14px Inter,system-ui,sans-serif;letter-spacing:.2em}
-#root .pk3-card.ph .pk3-cal{left:18px;top:18px;width:56px;height:46px;border-radius:6px}
-#root .pk3-card.ph .pk3-cal .pk-cl-mo{font-size:10px;line-height:17px}
-#root .pk3-card.ph .pk3-cal .pk-cl-yr{font-size:19px;line-height:22px}
-#root .pk3-card.ph .pk3-tr{left:86px;right:128px;top:40px}
-#root#root .pk3-card.ph .pk3-rep{right:18px;top:19px;height:50px;width:104px;border-radius:6px;font-size:11px;gap:7px}
+#root .pk3-card.ph .pk3-cal{left:18px;top:18px;width:56px;height:50px;border-radius:6px}
+#root .pk3-card.ph .pk3-cal .pk-cl-mo{font-size:10px;line-height:19px}
+#root .pk3-card.ph .pk3-cal .pk-cl-yr{font-size:19px;line-height:23px}
+#root .pk3-card.ph .pk3-tr{left:86px;right:146px;top:42px}
+#root#root .pk3-card.ph .pk3-rep{right:18px;top:18px;height:46px;width:104px;border-radius:6px;font-size:11px;gap:7px}
+#root#root#root .pk3-card.ph .pk3-rep.pk-cta{margin:0!important;height:50px!important;top:18px!important}
+#root .pk3-card.ph .pk3-hh{left:20px;width:144px;font-size:21px;line-height:1.1}
+#root .pk3-card.ph .pk3-hh i{height:3px;margin-top:10px}
+@keyframes pk3pop{0%{transform:scale(.94)}55%{transform:scale(1.07)}100%{transform:scale(1)}}
+@keyframes pk3rule{0%{width:0}100%{width:64px}}
+#root .pk3-hh.pk3-on{animation:pk3pop .7s ease-out both}
+#root .pk3-hh.pk3-on i{animation:pk3rule .8s ease-out both}
+@media (prefers-reduced-motion:reduce){#root .pk3-hh.pk3-on,#root .pk3-hh.pk3-on i{animation:none}#root .pk3-hh.pk3-on i{width:64px}}
 #root#root .pk3-card.ph .pk3-eb{height:50px;font-size:11px;gap:6px}
 #root .pk3-card.ph .pk3-eb span{font-size:14px}
 #root .pk3-card.ph .pk3-nm{left:172px;right:14px;top:84px;height:316px}
@@ -3017,6 +3025,8 @@ html.pk-cyon #root #pk-nh-city #pk-nh-cr,html.pk-cyon #root #pk-nh-city .pk-nh-a
       var lay = mountEl.querySelector('.pk3-layer'); if (lay && F) lay.innerHTML = F.html;
       var cl = mountEl.querySelector('.pk3-cal'); if (cl && cl._h !== cal) { cl.innerHTML = cal; cl._h = cal; }
       var tf = mountEl.querySelector('.pk3-tr u'), tm = mountEl.querySelector('.pk3-tr b'); if (tf) { tf.style.width = (frac * 100).toFixed(1) + '%'; tm.style.left = (frac * 100).toFixed(1) + '%'; }
+      var rb = mountEl.querySelector('.pk3-rep'); if (rb) { rb.style.visibility = S.playing ? 'hidden' : ''; var rl = rb.querySelector('.pk3-rl'), rt = atEnd ? 'REPLAY' : 'PLAY'; if (rl && rl.textContent !== rt) rl.textContent = rt; }
+      var h1 = mountEl.querySelector('.pk3-hh.pk3-c1'), h2 = mountEl.querySelector('.pk3-hh.pk3-c2'); if (h1) h1.classList.toggle('pk3-on', t < .5); if (h2) h2.classList.toggle('pk3-on', t >= .5);
       if (!still) { [].forEach.call(mountEl.querySelectorAll('.pk3-c1'), function (e) { e.style.opacity = op1; }); [].forEach.call(mountEl.querySelectorAll('.pk3-c2'), function (e) { e.style.opacity = op2; }); }
       var cp = mountEl.querySelector('.pk-cl-cap'); if (cp && cp.textContent !== cap) cp.textContent = cap;
       return;
@@ -3024,7 +3034,7 @@ html.pk-cyon #root #pk-nh-city #pk-nh-cr,html.pk-cyon #root #pk-nh-city .pk-nh-a
     var fa = document.activeElement, fk = fa && mountEl.contains(fa) ? fa.getAttribute('data-cl') : null;
     var ratio = Y3 ? Y3.ar : (D.ar || 1), artSrc = Y3 ? Y3.plate : D.art, c1 = 'The lineup in ' + y, c2 = 'The same lineup, today', cs1 = still ? 'The ' + y + ' lineup, today' : c1;
     var aw, ah, t0, axc, ebw, ebTop, artTop;
-    if (ph) { aw = Math.min(ratio < 0.9 ? 156 : 136, 175 / ratio); ah = aw * ratio; var SL = 175, T = 46 + 14 + SL + 16 + 44; t0 = 242 - T / 2; axc = 24 + 68; ebTop = t0 + 46 + 14 + SL + 16; artTop = ebTop - 20 - ah / 2; ebw = 136;   /* the caption and the button sit in the same place on every poster; the logo centers between them */ }
+    if (ph) { aw = Math.min(ratio < 0.9 ? 156 : 136, 175 / ratio); ah = aw * ratio; var SL = 175, HH = 84, T = HH + 14 + SL; t0 = 242 - T / 2; axc = 20 + 72; ebTop = 0; artTop = t0 + HH + 14 + SL / 2; ebw = 136;   /* the caption and the button sit in the same place on every poster; the logo centers between them */ }
     else { aw = Math.min(330, 262 / ratio); ah = aw * ratio; var SL2 = 262, T2 = SL2 + 24 + 50; t0 = 298 - T2 / 2; axc = 275; ebTop = t0 + SL2 + 24; artTop = ebTop - 24 - ah / 2; ebw = Math.max(aw, 176); }
     var ebLeft = ph ? 24 : axc - ebw / 2;
     var art = artSrc ? '<img class="pk3-art" alt="" decoding="sync" src="' + esc(artSrc) + '" style="left:' + (axc - aw / 2).toFixed(0) + 'px;top:' + artTop.toFixed(0) + 'px;width:' + aw.toFixed(0) + 'px">' : '<div class="pk3-art" aria-hidden="true" style="left:' + (axc - aw / 2).toFixed(0) + 'px;top:' + artTop.toFixed(0) + 'px;width:' + aw.toFixed(0) + 'px;font:800 ' + (ph ? 22 : 56) + 'px/.9 \'Bricolage Grotesque\',sans-serif;text-align:center;color:' + A + '">PICKATHON<br>' + y + '</div>';
@@ -3033,11 +3043,11 @@ html.pk-cyon #root #pk-nh-city #pk-nh-cr,html.pk-cyon #root #pk-nh-city .pk-nh-a
     h += '<i class="pk3-frm" aria-hidden="true" style="border-color:' + A + '"></i><i class="pk3-foot" aria-hidden="true" style="color:' + A + ';background:' + PAPER + ';font-style:normal">' + esc(foot) + '</i>';
     h += '<div class="pk3-cal" aria-hidden="true" style="background:' + A + ';color:' + PAPER + '">' + cal + '</div>';
     if (!still) { h += '<div class="pk3-tr" aria-hidden="true" style="background:' + A + '33"><u style="width:' + (frac * 100).toFixed(1) + '%;background:' + A + '"></u><b style="left:' + (frac * 100).toFixed(1) + '%;background:' + A + '"></b></div>';
-      h += '<button type="button" class="pk-cta sec pk3-rep" data-cl="play" aria-label="' + esc(timebar(D, y, tp, { frac: frac }).aria) + '" style="--pk3-a:' + A + '"><svg width="' + (ph ? 10 : 13) + '" height="' + (ph ? 11 : 14) + '" viewBox="0 0 10 11" aria-hidden="true"><path d="M1 .8 9 5.5 1 10.2Z" fill="' + A + '"/></svg>REPLAY</button>'; }
-    if (ph) { var hhs = function (txt, cls, op) { return '<div class="pk3-hh ' + cls + '" aria-hidden="true" style="font-family:\'Pickathon 2014\',sans-serif!important;top:' + t0.toFixed(0) + 'px;color:' + A + (cls ? ';opacity:' + op : '') + '">' + esc(txt) + '<i style="background:' + B + '"></i></div>'; };
+      h += '<button type="button" class="pk-cta sec pk3-rep" data-cl="play" aria-label="' + esc(timebar(D, y, tp, { frac: frac }).aria) + '" style="--pk3-a:' + A + (S.playing ? ';visibility:hidden' : '') + '"><svg width="' + (ph ? 10 : 13) + '" height="' + (ph ? 11 : 14) + '" viewBox="0 0 10 11" aria-hidden="true"><path d="M1 .8 9 5.5 1 10.2Z" fill="' + A + '"/></svg><span class="pk3-rl">' + (atEnd ? 'REPLAY' : 'PLAY') + '</span></button>'; }
+    if (ph) { var hhs = function (txt, cls, op) { return '<div class="pk3-hh ' + cls + (cls ? (cls === 'pk3-c1' ? (op >= .5 ? ' pk3-on' : '') : (op >= .5 ? ' pk3-on' : '')) : ' pk3-on') + '" aria-hidden="true" style="font-family:\'Pickathon 2014\',sans-serif!important;top:' + t0.toFixed(0) + 'px;color:' + A + (cls ? ';opacity:' + op : '') + '">' + esc(txt) + '<i style="background:' + B + '"></i></div>'; };
       h += still ? hhs(cs1, '', 1) : hhs(c1, 'pk3-c1', op1) + hhs(c2, 'pk3-c2', op2); }
     else { h += '<div class="pk3-cl' + (still ? '' : ' pk3-c1') + '" aria-hidden="true" style="font-family:\'Pickathon 2014\',sans-serif!important;color:' + A + (still ? '' : ';opacity:' + op1) + '">' + esc(cs1) + '</div>' + (still ? '' : '<div class="pk3-cr pk3-c2" aria-hidden="true" style="font-family:\'Pickathon 2014\',sans-serif!important;color:' + A + ';opacity:' + op2 + '">' + c2 + '</div>'); h += '<i class="pk3-dv" aria-hidden="true" style="background:' + A + '"></i>'; }
-    h += art + '<button type="button" class="pk-cta pri pk3-eb" data-cl="year" style="--pk3-a:' + A + ';--pk3-p:' + PAPER + ';left:' + ebLeft.toFixed(0) + 'px;top:' + ebTop.toFixed(0) + 'px;width:' + ebw.toFixed(0) + 'px">Explore ' + y + ' <span aria-hidden="true">→</span></button>';
+    h += art + (ph ? '' : '<button type="button" class="pk-cta pri pk3-eb" data-cl="year" style="--pk3-a:' + A + ';--pk3-p:' + PAPER + ';left:' + ebLeft.toFixed(0) + 'px;top:' + ebTop.toFixed(0) + 'px;width:' + ebw.toFixed(0) + 'px">Explore ' + y + ' <span aria-hidden="true">→</span></button>');
     if (Y3s) h += '<div class="pk3-nm" aria-hidden="true">' + names3(Y3, D.names.filter(function (x) { return x[1][n - 1] < Math.min(10, D.ranked || 10); }).sort(function (a, b) { return a[1][n - 1] - b[1][n - 1]; }).map(function (x) { return x[0]; }), ph) + '</div>';
     else h += '<div class="pk3-layer" aria-hidden="true" style="width:' + CW + 'px;height:' + F.H + 'px">' + F.html + '</div>';
     h += '</div>';
@@ -3048,7 +3058,7 @@ html.pk-cyon #root #pk-nh-city #pk-nh-cr,html.pk-cyon #root #pk-nh-city .pk-nh-a
       cmp = '<div class="pk-cl-cmp"><div><p class="pk-cl-cmpk">' + (D.src === 'real billing' ? 'On the ' + y + ' poster' : 'As booked in ' + y) + '</p><ol>' + top8(0) + '</ol></div><div><p class="pk-cl-cmpk pk-cl-cmpn">Ranked today</p><ol>' + top8(n - 1) + '</ol></div></div>'; }
     var fin = D.names.filter(function (x) { return x[1][n - 1] < Math.min(10, D.ranked || 10); }).sort(function (a, b) { return a[1][n - 1] - b[1][n - 1]; }).map(function (x) { return x[0]; });
     var out = hd + sub + cmp + '<div class="pk3-pw" style="width:' + CW + 'px;height:' + CH + 'px">' + h + '</div>'
-      + '<div class="pk-cl-below"><p class="pk-cl-cap pk-sr" aria-live="polite">' + esc(cap) + '</p>' + (ph ? '<button type="button" class="pk-cl-an pk-cl-anb" data-cl="rand">↻ Another year</button>' : '') + '</div>'
+      + '<div class="pk-cl-below"><p class="pk-cl-cap pk-sr" aria-live="polite">' + esc(cap) + '</p>' + (ph ? '<div class="pk-cl-btns"><button type="button" class="pk-bkb pri pk-cl-ex" data-cl="year">Explore ' + y + ' <span aria-hidden="true">→</span></button><button type="button" class="pk-cl-an pk-cl-anb" data-cl="rand">↻ Another year</button></div>' : '') + '</div>'
       + '<p class="pk-sr">Pickathon ' + y + ', ranked today by how far each act has gone: ' + esc(fin.join(', ')) + '.</p>';
     mountEl.classList.add('pk3m'); mountEl.innerHTML = out; mountEl.setAttribute('data-y', y); mountEl._key = key;
     fit3(CW, CH, ph); mountEl._cw = CW; mountEl._ch = CH; mountEl._ph = ph;
