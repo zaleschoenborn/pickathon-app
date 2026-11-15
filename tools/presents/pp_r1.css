@@ -1,0 +1,42 @@
+/* Presents page, round 1 (Nov 15 2026): picks as photo cards, compact weekly list, dark card family, shared buttons */
+#root#root .pp .pk-cta{min-height:50px!important;margin:0!important;border-radius:6px!important;box-shadow:none!important;text-decoration:none;width:auto}
+@media(min-width:1200px){#root#root .pp .pk-cta{min-height:56px!important}}
+#root#root#root#root#root#root#root#root#root#root#root#root .pp .pk-cta.pri{background:rgba(214,181,74,.18)!important;color:#F2CF62!important;border:2px solid #D6B54A!important}#root#root#root#root#root#root#root#root#root#root#root#root .pp .pk-cta.sec{background:rgba(18,22,15,.26)!important;color:#F2EDE3!important;border:2px solid rgba(242,237,227,.88)!important}
+
+@media(max-width:599px){#root#root .pp .pp-hero .pk-cta,#root#root .pp .pp-ctas .pk-cta{width:100%!important}}
+.pp-card,.pp-wk,.pp-glass .pp-split-t{background:#1A2017!important;border:1px solid #3A4331;border-left:4px solid #D6B54A;border-radius:16px;-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+.pp-picks{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin:4px 0 40px}
+.pp-card{display:flex;flex-direction:column;overflow:hidden;min-width:0}
+.pp-card-img{aspect-ratio:4/5;background:#12160F;overflow:hidden}
+.pp-card-img img{color:transparent;display:block;width:100%;height:100%;object-fit:cover;object-position:50% 30%}
+.pp-card-b{display:flex;flex-direction:column;gap:6px;padding:16px 16px 18px;flex:1}
+.pp-card-k,.pp-sub{margin:0;font-family:"Courier Prime",ui-monospace,monospace;font-weight:700;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:#D6B54A}
+.pp-card-n{margin:0;font-family:"Work Sans",sans-serif;font-size:19px;font-weight:800;line-height:1.25;color:#F2EDE3;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.pp-card-m{margin:0 0 10px;font-size:14px;color:#CFC9BC}
+#root#root .pp .pp-card .pk-cta{margin-top:auto!important;width:100%!important}
+.pp-sub{margin:0 0 10px}
+.pp-badge.pp-badge{padding:0;border-radius:0;background:none;color:#D6B54A;font-family:"Courier Prime",ui-monospace,monospace;font-size:12px;letter-spacing:.12em}
+.pp-date.pp-date{background:#1A2017;border:1px solid #3A4331;border-radius:6px}
+.pp-tix.pp-tix{min-height:44px;padding:0 16px;border-radius:6px;background:rgba(18,22,15,.26);color:#F2EDE3;border:2px solid rgba(242,237,227,.88);font-size:13px;letter-spacing:.08em}
+.pp-list+.pp-ctas{margin-top:20px}
+.pp-band-in.pp-band-in{padding-top:64px;padding-bottom:64px}
+.pp-wk{list-style:none;margin:10px 0 0;padding:4px 20px;max-width:880px}
+.pp-wk-r{display:grid;grid-template-columns:120px minmax(0,1fr) auto;gap:16px;align-items:center;padding:14px 0;border-bottom:1px solid #3A4331}
+.pp-wk-r:last-child{border-bottom:0}
+.pp-wk-d{font-family:"Courier Prime",ui-monospace,monospace;font-weight:700;font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:#D6B54A}
+.pp-wk-b{display:flex;flex-direction:column;gap:2px;min-width:0}
+.pp-wk-n{font-size:18px;font-weight:800;color:#F2EDE3;line-height:1.25}
+.pp-wk-t{font-size:14px;line-height:1.45;color:#CFC9BC}
+.pp-wk-x{display:inline-flex;align-items:center;min-height:44px;padding:0 12px;border-radius:6px;border:2px solid rgba(242,237,227,.88);color:#F2EDE3;font-size:13px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;text-decoration:none;white-space:nowrap}
+.pp-band-note.pp-band-note{margin-top:18px;font-size:16px}
+@media(max-width:1199px){
+.pp-picks{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;margin-left:calc(-1*clamp(16px,4.5vw,64px));margin-right:calc(-1*clamp(16px,4.5vw,64px));padding:0 clamp(16px,4.5vw,64px);scroll-padding:0 clamp(16px,4.5vw,64px);scrollbar-width:none}
+.pp-picks::-webkit-scrollbar{display:none}
+.pp-card{flex:0 0 min(72vw,300px);scroll-snap-align:start}
+}
+@media(max-width:599px){
+.pp-wk{padding:2px 16px}
+.pp-wk-r{grid-template-columns:minmax(0,1fr) auto;gap:4px 12px}
+.pp-wk-d{grid-column:1/-1}
+.pp-wk-t{display:none}
+}
