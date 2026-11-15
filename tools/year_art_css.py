@@ -49,6 +49,7 @@ def R(sel,body): out.append(sel+'{'+body+'}')
 # ---------- shared: Names / Photos switch (all brand years) ----------
 B=A
 R(B+'.pk-sl','--sl-ink:var(--yi);--sl-bg:var(--yp)')
+R(B+'.pk-sl-b button:hover,'+B+'.pk-sl-4 button:hover','text-decoration:underline;text-underline-offset:4px')
 R(B+'.pk-sl-sw','display:flex;height:44px;margin:16px 0 4px;border:1.5px solid var(--sl-ink);border-radius:6px;overflow:hidden')
 R(B+'.pk-sl-sw button','flex:1 1 0;min-height:0;height:auto;margin:0;padding:0;border:0;border-radius:0;background:transparent!important;color:var(--sl-ink)!important;-webkit-text-fill-color:var(--sl-ink)!important;box-shadow:none!important;font:800 12.5px/1 '+FB+';letter-spacing:.12em;text-transform:uppercase;cursor:pointer')
 R(B+'.pk-sl-sw button.on','background:var(--sl-ink)!important;color:var(--sl-bg)!important;-webkit-text-fill-color:var(--sl-bg)!important')
@@ -104,7 +105,7 @@ for y in YS:
         R(yb+'p.pk-yb-d',f'grid-column:1/-1;grid-row:2;display:flex!important;align-items:center;gap:10px;margin-top:12px!important;color:{I2}!important'); R(yb+'p.pk-yb-d:after',f'content:"";flex:1;height:2px;background:{I2}')
         R(sl+'.pk-sl-in > h2.pk-sl-h',f'grid-column:1;justify-self:start;background:{Bd};color:{Lt}!important;-webkit-text-fill-color:{Lt}!important;font-size:26px!important;letter-spacing:.04em;padding:11px 16px 8px;border-radius:12px')
         R(sl+'.pk-sl-in > .pk-sl-r',f'display:block;grid-column:2;grid-row:1;align-self:center;height:26px;margin:0 0 0 12px;background:{hatch(Lt)}')
-        hid(sl+'.pk-sl-in > .pk-sl-k'); col(t1,I); col(t2,I2); col(t3,I)
+        R(sl+'.pk-sl-in > .pk-sl-k',f'color:{I2}!important'); col(t1,I); col(t2,I2); col(t3,I)
     elif y=='2023':
         R(yb+'.pk-yb-in','display:flex!important;flex-direction:column!important;align-items:center!important;margin-top:-96px!important')
         R(yb+'img.pk-yb-badge','order:1;width:176px!important'); hid(yb+'h1.pk-yb-h')
@@ -144,7 +145,7 @@ for y in YS:
         R(yb+'.pk-yb-k,'+yb+'.pk-yb-y',f'display:inline!important;font-family:{FP}!important;font-weight:400!important;font-size:27px!important;line-height:1!important;letter-spacing:.05em!important;text-transform:uppercase;color:{I}!important;-webkit-text-fill-color:{I}!important;margin:0!important'); R(yb+'.pk-yb-k:after','content:" "')
         R(yb+'p.pk-yb-d',f'order:3;text-align:center;margin-top:24px!important;color:{I2}!important;letter-spacing:.14em!important;font-size:12px!important')
         R(sl+'.pk-sl-in > h2.pk-sl-h',f'color:{I}!important;-webkit-text-fill-color:{I}!important;letter-spacing:.05em;margin:6px auto 22px!important;'+rb(26,170).replace('rotate(-3deg)','rotate(-2deg)')); R(sl+'.pk-sl-in > h2.pk-sl-h:before',tail('left')); R(sl+'.pk-sl-in > h2.pk-sl-h:after',tail('right'))
-        hid(sl+'.pk-sl-in > .pk-sl-k'); col(t1,I2); col(t2,I); col(t3,I)
+        R(sl+'.pk-sl-in > .pk-sl-k',f'color:{I2}!important;text-align:center;margin:26px 0 4px!important'); col(t1,I2); col(t2,I); col(t3,I)
     elif y=='2019':
         R(yb+'.pk-yb-in','display:flex!important;flex-direction:column!important;align-items:center!important;margin-top:-112px!important')
         R(yb+'img.pk-yb-badge','order:1;width:186px!important')
@@ -161,7 +162,7 @@ for y in YS:
         R(yb+'p.pk-yb-d','order:3;margin-top:8px!important;font-size:12px!important;letter-spacing:.14em!important;'+RIB(I,P))
         R(sl+'.pk-sl-in > h2.pk-sl-h',f'display:flex;align-items:center;gap:12px;font-size:36px!important;letter-spacing:.05em;color:{I}!important;-webkit-text-fill-color:{I}!important;margin-bottom:6px!important')
         dash=f'content:"";flex:1;height:14px;background:repeating-linear-gradient(90deg,{I2} 0 2px,transparent 2px 8px)'; R(sl+'.pk-sl-in > h2.pk-sl-h:before',dash); R(sl+'.pk-sl-in > h2.pk-sl-h:after',dash)
-        hid(sl+'.pk-sl-in > .pk-sl-k'); col(t1,I); col(t2,I2); col(t3,I)
+        R(sl+'.pk-sl-in > .pk-sl-k',f'color:{I2}!important'); col(t1,I); col(t2,I2); col(t3,I)
 out.append('@media (min-width:600px) and (max-width:1199px){'+ALL+'#pk-yh-reel figure.pk-rs .pk-rim{position:absolute!important;inset:0!important;height:100%!important}'+ALL+'#pk-yh-reel figure.pk-rs .pk-rim img{width:100%!important;height:100%!important;object-fit:cover!important}'+ALL+'#pk-yh-reel figure.pk-rs figcaption{position:absolute!important;left:0!important;right:0!important;bottom:0!important;padding-top:80px!important;background:linear-gradient(transparent,rgba(12,12,10,.88) 55%)!important}}')
 # desktop
 out.append('@media (min-width:900px){'+ALL+'#pk-yh-reel .pk-yreel-f{height:min(640px,calc(100svh - 240px))!important}'+ALL+'section.pk-yb .pk-yb-in{max-width:520px;margin-left:auto!important;margin-right:auto!important}'+ALL+'section.pk-yb .pk-share1{right:24px!important}}')
