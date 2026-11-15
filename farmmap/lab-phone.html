@@ -1305,9 +1305,10 @@ function paint(){ const t='translate3d('+tx+'px,'+ty+'px,0) scale('+k+')';
   if(paint._o!==vis){ paint._o=vis; const nicEl=document.getElementById('nic'); if(nicEl){ nicEl.style.opacity=''; nicEl.style.visibility=vis; } }
   /* Nov 15 (close-in view): past this zoom the highlight picture (drawn at map size) would be stretched soft and neon over the sharp map.
      It and the dimming step aside; the picked neighborhood keeps a crisp outline drawn from its shape. One class flip, no fading. */
-  const cl=k>=CLOSEK; if(paint._c!==cl){ paint._c=cl; document.body.classList.toggle('closein',cl); }
+  const cl=k>=CLOSEK&&innerWidth<700;   /* phones only: a pick there lands at 0.62 or less, so the lit look always shows on a pick. Desktop and tablet picks land deeper and keep the lit look as before. */
+  if(paint._c!==cl){ paint._c=cl; document.body.classList.toggle('closein',cl); }
   if(icoTagAt&&(icoTagAt[0]!==tx||icoTagAt[1]!==ty||icoTagAt[2]!==k)) icoTag(null); }
-const CLOSEK=0.62; let icoTagAt=null;
+const CLOSEK=0.7; let icoTagAt=null;
 /* Nov 15 (close-in view): tap an icon and a small name tag says what it is. One at a time; it goes when the map moves or you tap elsewhere. */
 function icoTag(en){ let t=document.getElementById('icotag');
   if(!en){ if(t) t.hidden=true; icoTagAt=null; return; }
@@ -1604,6 +1605,9 @@ function fullMap(){ pinned=null; peek(null); cur=null; show(null);
   flyView(deskHomeV(),null); }
 function clearCur(){ pinned=null; peek(null); cur=null; show(null); if(LP()){ light(null); lpSync(); apply(); } else apply(); }   /* Zale, Nov 11 08:14: tapping empty map or the X closes the card and keeps the zoom; only Full map zooms all the way out */
 function goPage(h){
+  /* Nov 15 (Zale): one neighborhood page everywhere. Inside the site, the map hands off to the site's full neighborhood page
+     (the same one Home opens); the short built-in page below only shows when the map is opened on its own. */
+  if(h&&h.id&&lpPost({pkMap:'open',id:h.id})) return;
   setCur(h); show(h);
   renderPage(h);
   document.getElementById('page').hidden=false;
