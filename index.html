@@ -10966,7 +10966,9 @@ if (!window.pkOrders) window.pkOrders = (function () {
 .pkh2 .h2-stub-buy b{font-size:1.625rem;font-weight:800;line-height:1.1}
 #pkh2#pkh2 .h2-quote{font-size:var(--t-lg);line-height:1.3;font-weight:600;margin:0}
 .pkh2 .h2-s4end cite{font-style:normal;font-size:var(--t-sm);color:var(--cream-dim);font-weight:500}
-.pkh2 .h2-s4end{display:flex;align-items:center;justify-content:space-between;gap:14px}
+.pkh2 .h2-s4end{display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:12px 10px}
+.pkh2 .h2-s4end cite{grid-column:1/-1}
+.pkh2 .h2-s4end .h2-pill{min-width:0;width:100%;padding-left:8px;padding-right:8px;white-space:nowrap}
 .pkh2 .h2-s4h{display:none}
 
 /* phone and tablet: the desktop wrappers flatten, children follow the mockup's order */
