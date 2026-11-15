@@ -172,7 +172,8 @@ R(B+'.pk-sl-f button','flex:none;min-height:0!important;height:40px!important;ma
 R(B+'.pk-sl-f button.on','background:var(--sl-ink)!important;color:var(--sl-bg)!important;-webkit-text-fill-color:var(--sl-bg)!important')
 R(B+'.pk-sl.pk-sl-ph .pk-sl-f','display:none!important')
 for k in ('disc','leg','deep'):
-    R(B+f'.pk-sl.pk-slf-{k} .pk-sl-b button:not(.k-{k}),'+B+f'.pk-sl.pk-slf-{k} .pk-sl-4 button:not(.k-{k})','opacity:.26')
+    R(B+f'.pk-sl.pk-slf-{k} .pk-sl-b button:not(.k-{k}),'+B+f'.pk-sl.pk-slf-{k} .pk-sl-4 button:not(.k-{k})','opacity:.16!important')
+    R((B+f'.pk-sl.pk-slf-{k} .pk-sl-b button.k-{k},'+B+f'.pk-sl.pk-slf-{k} .pk-sl-4 button.k-{k}').replace('#root'*8,'#root'*12),'color:var(--sl-ink)!important;-webkit-text-fill-color:var(--sl-ink)!important;opacity:1!important')
 R(B+'.pk-sl-b button,'+B+'.pk-sl-4 button','transition:opacity .15s')
 # ---------- artist record sleeve (art years) ----------
 AM=A+'.pk-ya-mount'+IS+' ~ '
