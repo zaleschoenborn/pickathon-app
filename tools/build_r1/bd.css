@@ -15,6 +15,9 @@
 #root .bd1 .bd-hx{margin:10px 0 0;max-width:560px;font-size:1.0625rem;line-height:1.4;color:#EDE7DA;text-shadow:0 1px 6px rgba(0,0,0,.6)}
 .bd1 .bd-hb{display:flex;flex-direction:column;align-items:flex-start;gap:14px;margin-top:18px}
 #root#root#root#root#root#root#root#root#root#root#root#root#root#root .bd1 .pk-cta.bd-cta{margin:0!important;width:100%!important;min-height:50px!important;height:50px!important;padding:0 28px!important;border-radius:6px!important;box-shadow:none!important;background:rgba(214,181,74,.18)!important;border:2px solid #D6B54A!important;color:#F2CF62!important;font-family:"Bricolage Grotesque",system-ui,sans-serif!important;font-size:14px!important;font-weight:800!important;letter-spacing:1px!important;text-transform:uppercase!important;white-space:nowrap!important}
+/* "Read the build stories": the shared secondary rectangle, same size as the primary */
+#root#root#root#root#root#root#root#root#root#root#root#root#root#root .bd1 .pk-cta.bd-more{margin:0!important;width:100%!important;min-height:50px!important;height:50px!important;padding:0 28px!important;border-radius:6px!important;box-shadow:none!important;background:rgba(18,22,15,.26)!important;border:2px solid rgba(242,237,227,.88)!important;color:#F2EDE3!important;font-family:"Bricolage Grotesque",system-ui,sans-serif!important;font-size:14px!important;font-weight:800!important;letter-spacing:1px!important;text-transform:uppercase!important;white-space:nowrap!important}
+.bd1 .bd-mo{margin-top:16px}
 #root#root#root#root#root#root#root#root#root#root#root#root#root#root .bd1 .bd-hero .pk-cta.bd-cta{background:rgba(18,22,15,.55)!important;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
 /* Tour control: same pill, same corner of the hero as Home's Photo tour (.h2-oh-tour) */
 .bd1 .bd-tour{position:absolute;z-index:3;top:16px;right:16px;display:inline-flex;align-items:center;gap:10px;min-height:44px;padding:0 16px 0 6px;border-radius:999px;border:1px solid rgba(242,237,227,.8);background:rgba(18,22,15,.5);color:#F2EDE3;font:800 13px/1.15 var(--text,"Bricolage Grotesque",system-ui,sans-serif);letter-spacing:.08em;text-transform:uppercase;cursor:pointer;white-space:nowrap}
@@ -33,18 +36,22 @@
 #root#root#root .bd1 .bd-chip{min-height:44px;padding:0 16px;font:inherit;font-weight:700;font-size:.9375rem}
 .bd1 .bd-ysel select{min-height:44px;padding:0 34px 0 14px;border-radius:4px;border:2px solid #6A6163;background:transparent url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%23F2EDE3' stroke-width='2'/%3E%3C/svg%3E") no-repeat right 12px center;color:#F2EDE3;font:inherit;font-weight:700;font-size:.9375rem;-webkit-appearance:none;appearance:none;cursor:default}
 .bd1 .bd-ysel option{color:#12160F}
+@media (max-width:599px){.bd1 .bd-chips{flex-wrap:nowrap;gap:6px}#root#root#root#root .bd1 .bd-chip{padding:0 11px;font-size:.875rem;white-space:nowrap}.bd1 .bd-ysel{flex:none}#root .bd1 .bd-ysel select{padding:0 28px 0 11px;font-size:.875rem;background-position:right 10px center}}
+@media (max-width:380px){.bd1 .bd-chips{gap:4px}#root#root#root#root#root .bd1 .bd-chip{padding:0 7px}#root#root .bd1 .bd-ysel select{padding:0 24px 0 8px;background-position:right 7px center}.bd1 .bd-sec{padding-top:28px}}
 /* builds row */
 .bd1 .bd-row{list-style:none;margin:16px 0 0;padding:0 var(--bd-pad);display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding:0 var(--bd-pad);scrollbar-width:none;-webkit-overflow-scrolling:touch}
 .bd1 .bd-row::-webkit-scrollbar{display:none}
-.bd1 .bd-card{flex:0 0 78%;max-width:340px;scroll-snap-align:start}
+.bd1 .bd-card{flex:0 0 86%;max-width:340px;scroll-snap-align:start}
 .bd1 .bd-cin{display:flex;flex-direction:column;width:100%;height:100%;padding:0;margin:0;text-align:left;border-radius:12px;overflow:hidden;border:1px solid #2A3125;background:#1A2017;color:#F2EDE3;font:inherit}
 .bd1 .bd-link{cursor:pointer}
-.bd1 .bd-cim{display:block;aspect-ratio:4/3;background:#221E20}
+.bd1 .bd-cim{display:block;flex:none;aspect-ratio:4/3;height:var(--bd-ph,auto);background:#221E20}
 .bd1 .bd-cim img{display:block;width:100%;height:100%;object-fit:cover}
 .bd1 .bd-ctx{display:flex;flex-direction:column;flex:1;padding:12px 14px 16px}
 .bd1 .bd-ck{font-size:.75rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--gold,#F2CF62)}
 .bd1 .bd-cnow{margin-top:10px;font-size:.6875rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#B9B3A6}
-.bd1 .bd-cto{margin-top:2px;font-size:1rem;line-height:1.35;font-weight:700;}
+.bd1 .bd-cto{margin-top:2px;font-size:.9375rem;line-height:1.35;font-weight:600}
+@media (max-width:599px){.bd1 .bd-cim{position:relative;flex:1 1 0%;aspect-ratio:auto;height:auto;min-height:var(--bd-ph,160px)}.bd1 .bd-cim img{position:absolute;inset:0}.bd1 .bd-ctx{flex:none}}
+@media (max-width:380px){#root#root .bd1 .bd-went .bd-h2{font-size:1.5rem!important}.bd1 .bd-cto{font-size:.875rem}.bd1 .bd-ctx{padding:10px 12px 12px}.bd1 .bd-mo{margin-top:12px}}
 /* what you get, who we build for */
 .bd1 .bd-two{display:grid;gap:40px}
 .bd1 .bd-gl{list-style:none;margin:14px 0 0;padding:0;display:grid;gap:16px}
@@ -55,7 +62,7 @@
 .bd1 .bd-wl li{padding:14px 16px;border-radius:12px;background:#1A2017;border:1px solid #2A3125;font-size:.9375rem;line-height:1.4;color:var(--cream-dim,#CFC9BC)}
 /* deadline card */
 .bd1 .bd-due{padding:22px 18px;border:2px solid #D6B54A;border-radius:12px;background:#1A2017}
-#root#root#root#root#root#root #root .bd1 .bd-dx{margin:8px 0 18px;max-width:640px;font-size:1rem;line-height:1.45;color:var(--cream-dim,#CFC9BC)}
+#root#root#root#root#root#root#root .bd1 .bd-dx{margin:8px 0 18px!important;max-width:640px;font-size:1rem!important;line-height:1.45!important;color:var(--cream-dim,#CFC9BC)}
 .bd1 .bd-dl{margin:6px 0 0}
 .bd1 .bd-gl-link{display:inline-flex;align-items:center;min-height:44px;padding:0;border:0;background:none;color:var(--gold,#F2CF62);font:inherit;font-weight:800;cursor:pointer}
 #root#root#root#root .bd1 .bd-gl-link{min-height:44px!important;border:0!important;background:none!important;text-transform:none!important;letter-spacing:0!important;font-size:1rem!important;padding:0!important}
@@ -63,7 +70,7 @@
   .bd1 .bd-tour{top:24px;right:32px}
   #root .bd1 .bd-h1{font-size:3rem!important}
   .bd1 .bd-hb{flex-direction:row;align-items:center}
-  #root#root#root#root#root#root#root#root#root#root#root#root#root#root .bd1 .pk-cta.bd-cta{width:auto!important;padding:0 32px!important}
+  #root#root#root#root#root#root#root#root#root#root#root#root#root#root .bd1 .pk-cta.bd-cta,#root#root#root#root#root#root#root#root#root#root#root#root#root#root .bd1 .pk-cta.bd-more{width:auto!important;padding:0 32px!important}
   .bd1 .bd-card{flex-basis:44%}
 }
 @media (min-width:1200px){
@@ -72,7 +79,7 @@
   .bd1 .bd-hin{padding-bottom:56px}
   #root .bd1 .bd-h1{font-size:4.25rem!important}
   #root .bd1 .bd-hx{font-size:1.25rem}
-  #root#root#root#root#root#root#root#root#root#root#root#root#root#root .bd1 .pk-cta.bd-cta{min-height:56px!important;height:56px!important}
+  #root#root#root#root#root#root#root#root#root#root#root#root#root#root .bd1 .pk-cta.bd-cta,#root#root#root#root#root#root#root#root#root#root#root#root#root#root .bd1 .pk-cta.bd-more{min-height:56px!important;height:56px!important}
   .bd1 .bd-sec{padding-top:64px}
   .bd1 .bd-arr{display:flex}
   .bd1 .bd-row{max-width:1160px;margin:16px auto 0;box-sizing:border-box}
@@ -130,4 +137,4 @@ html.bd1-lock,html.bd1-lock body{overflow:hidden}
   .bd1s .bds-q{font-size:2.5rem}
   .bd1s .bds-btn{min-height:56px}
 }
-/* QA 2026-11-13: timeline dots get a 44px touch area without changing their look */#root .pk-tn button.pk-tn-dot{position:relative!important}#root .pk-tn button.pk-tn-dot::after{content:"";position:absolute;left:50%;top:50%;width:44px;height:44px;transform:translate(-50%,-50%);background:transparent;box-shadow:none;border:0;padding:0;min-height:0}
+/* QA 2026-11-13: timeline dots get a 44px touch area without changing their look */#root .pk-tn button.pk-tn-dot::after{content:"";position:absolute;left:50%;top:50%;width:44px;height:44px;transform:translate(-50%,-50%);background:transparent;box-shadow:none;border:0;padding:0;min-height:0}

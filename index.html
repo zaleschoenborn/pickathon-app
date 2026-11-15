@@ -13714,6 +13714,9 @@ html body:not(#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1) a
 #root .bd1 .bd-hx{margin:10px 0 0;max-width:560px;font-size:1.0625rem;line-height:1.4;color:#EDE7DA;text-shadow:0 1px 6px rgba(0,0,0,.6)}
 .bd1 .bd-hb{display:flex;flex-direction:column;align-items:flex-start;gap:14px;margin-top:18px}
 #root#root#root#root#root#root#root#root#root#root#root#root#root#root .bd1 .pk-cta.bd-cta{margin:0!important;width:100%!important;min-height:50px!important;height:50px!important;padding:0 28px!important;border-radius:6px!important;box-shadow:none!important;background:rgba(214,181,74,.18)!important;border:2px solid #D6B54A!important;color:#F2CF62!important;font-family:"Bricolage Grotesque",system-ui,sans-serif!important;font-size:14px!important;font-weight:800!important;letter-spacing:1px!important;text-transform:uppercase!important;white-space:nowrap!important}
+/* "Read the build stories": the shared secondary rectangle, same size as the primary */
+#root#root#root#root#root#root#root#root#root#root#root#root#root#root .bd1 .pk-cta.bd-more{margin:0!important;width:100%!important;min-height:50px!important;height:50px!important;padding:0 28px!important;border-radius:6px!important;box-shadow:none!important;background:rgba(18,22,15,.26)!important;border:2px solid rgba(242,237,227,.88)!important;color:#F2EDE3!important;font-family:"Bricolage Grotesque",system-ui,sans-serif!important;font-size:14px!important;font-weight:800!important;letter-spacing:1px!important;text-transform:uppercase!important;white-space:nowrap!important}
+.bd1 .bd-mo{margin-top:16px}
 #root#root#root#root#root#root#root#root#root#root#root#root#root#root .bd1 .bd-hero .pk-cta.bd-cta{background:rgba(18,22,15,.55)!important;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
 /* Tour control: same pill, same corner of the hero as Home's Photo tour (.h2-oh-tour) */
 .bd1 .bd-tour{position:absolute;z-index:3;top:16px;right:16px;display:inline-flex;align-items:center;gap:10px;min-height:44px;padding:0 16px 0 6px;border-radius:999px;border:1px solid rgba(242,237,227,.8);background:rgba(18,22,15,.5);color:#F2EDE3;font:800 13px/1.15 var(--text,"Bricolage Grotesque",system-ui,sans-serif);letter-spacing:.08em;text-transform:uppercase;cursor:pointer;white-space:nowrap}
@@ -13732,18 +13735,22 @@ html body:not(#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1) a
 #root#root#root .bd1 .bd-chip{min-height:44px;padding:0 16px;font:inherit;font-weight:700;font-size:.9375rem}
 .bd1 .bd-ysel select{min-height:44px;padding:0 34px 0 14px;border-radius:4px;border:2px solid #6A6163;background:transparent url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%23F2EDE3' stroke-width='2'/%3E%3C/svg%3E") no-repeat right 12px center;color:#F2EDE3;font:inherit;font-weight:700;font-size:.9375rem;-webkit-appearance:none;appearance:none;cursor:default}
 .bd1 .bd-ysel option{color:#12160F}
+@media (max-width:599px){.bd1 .bd-chips{flex-wrap:nowrap;gap:6px}#root#root#root#root .bd1 .bd-chip{padding:0 11px;font-size:.875rem;white-space:nowrap}.bd1 .bd-ysel{flex:none}#root .bd1 .bd-ysel select{padding:0 28px 0 11px;font-size:.875rem;background-position:right 10px center}}
+@media (max-width:380px){.bd1 .bd-chips{gap:4px}#root#root#root#root#root .bd1 .bd-chip{padding:0 7px}#root#root .bd1 .bd-ysel select{padding:0 24px 0 8px;background-position:right 7px center}.bd1 .bd-sec{padding-top:28px}}
 /* builds row */
 .bd1 .bd-row{list-style:none;margin:16px 0 0;padding:0 var(--bd-pad);display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding:0 var(--bd-pad);scrollbar-width:none;-webkit-overflow-scrolling:touch}
 .bd1 .bd-row::-webkit-scrollbar{display:none}
-.bd1 .bd-card{flex:0 0 78%;max-width:340px;scroll-snap-align:start}
+.bd1 .bd-card{flex:0 0 86%;max-width:340px;scroll-snap-align:start}
 .bd1 .bd-cin{display:flex;flex-direction:column;width:100%;height:100%;padding:0;margin:0;text-align:left;border-radius:12px;overflow:hidden;border:1px solid #2A3125;background:#1A2017;color:#F2EDE3;font:inherit}
 .bd1 .bd-link{cursor:pointer}
-.bd1 .bd-cim{display:block;aspect-ratio:4/3;background:#221E20}
+.bd1 .bd-cim{display:block;flex:none;aspect-ratio:4/3;height:var(--bd-ph,auto);background:#221E20}
 .bd1 .bd-cim img{display:block;width:100%;height:100%;object-fit:cover}
 .bd1 .bd-ctx{display:flex;flex-direction:column;flex:1;padding:12px 14px 16px}
 .bd1 .bd-ck{font-size:.75rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--gold,#F2CF62)}
 .bd1 .bd-cnow{margin-top:10px;font-size:.6875rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#B9B3A6}
-.bd1 .bd-cto{margin-top:2px;font-size:1rem;line-height:1.35;font-weight:700;}
+.bd1 .bd-cto{margin-top:2px;font-size:.9375rem;line-height:1.35;font-weight:600}
+@media (max-width:599px){.bd1 .bd-cim{position:relative;flex:1 1 0%;aspect-ratio:auto;height:auto;min-height:var(--bd-ph,160px)}.bd1 .bd-cim img{position:absolute;inset:0}.bd1 .bd-ctx{flex:none}}
+@media (max-width:380px){#root#root .bd1 .bd-went .bd-h2{font-size:1.5rem!important}.bd1 .bd-cto{font-size:.875rem}.bd1 .bd-ctx{padding:10px 12px 12px}.bd1 .bd-mo{margin-top:12px}}
 /* what you get, who we build for */
 .bd1 .bd-two{display:grid;gap:40px}
 .bd1 .bd-gl{list-style:none;margin:14px 0 0;padding:0;display:grid;gap:16px}
@@ -13754,7 +13761,7 @@ html body:not(#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1) a
 .bd1 .bd-wl li{padding:14px 16px;border-radius:12px;background:#1A2017;border:1px solid #2A3125;font-size:.9375rem;line-height:1.4;color:var(--cream-dim,#CFC9BC)}
 /* deadline card */
 .bd1 .bd-due{padding:22px 18px;border:2px solid #D6B54A;border-radius:12px;background:#1A2017}
-#root#root#root#root#root#root #root .bd1 .bd-dx{margin:8px 0 18px;max-width:640px;font-size:1rem;line-height:1.45;color:var(--cream-dim,#CFC9BC)}
+#root#root#root#root#root#root#root .bd1 .bd-dx{margin:8px 0 18px!important;max-width:640px;font-size:1rem!important;line-height:1.45!important;color:var(--cream-dim,#CFC9BC)}
 .bd1 .bd-dl{margin:6px 0 0}
 .bd1 .bd-gl-link{display:inline-flex;align-items:center;min-height:44px;padding:0;border:0;background:none;color:var(--gold,#F2CF62);font:inherit;font-weight:800;cursor:pointer}
 #root#root#root#root .bd1 .bd-gl-link{min-height:44px!important;border:0!important;background:none!important;text-transform:none!important;letter-spacing:0!important;font-size:1rem!important;padding:0!important}
@@ -13762,7 +13769,7 @@ html body:not(#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1) a
   .bd1 .bd-tour{top:24px;right:32px}
   #root .bd1 .bd-h1{font-size:3rem!important}
   .bd1 .bd-hb{flex-direction:row;align-items:center}
-  #root#root#root#root#root#root#root#root#root#root#root#root#root#root .bd1 .pk-cta.bd-cta{width:auto!important;padding:0 32px!important}
+  #root#root#root#root#root#root#root#root#root#root#root#root#root#root .bd1 .pk-cta.bd-cta,#root#root#root#root#root#root#root#root#root#root#root#root#root#root .bd1 .pk-cta.bd-more{width:auto!important;padding:0 32px!important}
   .bd1 .bd-card{flex-basis:44%}
 }
 @media (min-width:1200px){
@@ -13771,7 +13778,7 @@ html body:not(#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1) a
   .bd1 .bd-hin{padding-bottom:56px}
   #root .bd1 .bd-h1{font-size:4.25rem!important}
   #root .bd1 .bd-hx{font-size:1.25rem}
-  #root#root#root#root#root#root#root#root#root#root#root#root#root#root .bd1 .pk-cta.bd-cta{min-height:56px!important;height:56px!important}
+  #root#root#root#root#root#root#root#root#root#root#root#root#root#root .bd1 .pk-cta.bd-cta,#root#root#root#root#root#root#root#root#root#root#root#root#root#root .bd1 .pk-cta.bd-more{min-height:56px!important;height:56px!important}
   .bd1 .bd-sec{padding-top:64px}
   .bd1 .bd-arr{display:flex}
   .bd1 .bd-row{max-width:1160px;margin:16px auto 0;box-sizing:border-box}
@@ -13878,6 +13885,14 @@ html.bd1-lock,html.bd1-lock body{overflow:hidden}
     return L.slice(0, -1).join(', ') + ' and ' + L[L.length - 1];
   }
 
+  /* the deadline card's heading already says the due date, so the line under it carries only what is new:
+     the late window (the part of buildCopy.note after its semicolon) and the reply promise (buildCopy.short, after its first sentence) */
+  function dueLine(C) {
+    var n = String(C.note || ''), i = n.indexOf(';'), late = i < 0 ? n : n.slice(i + 1).trim();
+    late = late.charAt(0).toUpperCase() + late.slice(1);
+    var rest = String(C.short || '').split('. ').slice(1).join('. ').trim();
+    return (late + (rest ? ' ' + rest : '')).trim();
+  }
   var V = { kind: 'hood', y: '' };
   function page(d) {
     var P = d.buildPage, C = d.buildCopy || {}, all = builds(d, P);
@@ -13901,12 +13916,12 @@ html.bd1-lock,html.bd1-lock body{overflow:hidden}
       '<section class="bd-sec bd-went" id="bd-went"><div class="bd-in"><div class="bd-wh"><div><p class="bd-k">' + esc(W.k) + '</p><h2 class="pl-d bd-h2">' + esc(W.t) + '</h2></div>' +
       '<div class="bd-arr"><button type="button" class="bd-ib" data-bd-arr="-1" aria-label="Previous builds">‹</button><button type="button" class="bd-ib" data-bd-arr="1" aria-label="Next builds">›</button></div></div>' +
       '<div class="bd-chips">' + chips + ysel + '</div></div>' +
-      '<ul class="bd-row" data-bd-row="1">' + cards + '</ul><div class="bd-in" style="margin-top:20px"><button type="button" class="pk-cta sec" data-bd-go="built:">Read the build stories</button></div></section>' +
+      '<ul class="bd-row" data-bd-row="1">' + cards + '</ul>' + (W.more ? '<div class="bd-in bd-mo"><button type="button" class="pk-cta sec bd-more" data-bd-go="built:">' + esc(W.more) + '</button></div>' : '') + '</section>' +
       '<section class="bd-sec"><div class="bd-in bd-two"><div class="bd-get"><p class="bd-k">' + esc(G.k) + '</p><h2 class="pl-d bd-h2">' + esc(G.t) + '</h2><ol class="bd-gl">' +
       G.items.map(function (g, i) { var x = g[1].replace('{firms}', fs); if (!fs) x = x.replace(/^Firms like\s+design it/, 'Leading firms design it'); return '<li><span class="bd-gn" aria-hidden="true">' + (i + 1) + '</span><span><strong>' + esc(g[0]) + '</strong>' + esc(x) + '</span></li>'; }).join('') + '</ol></div>' +
       '<div class="bd-who"><p class="bd-k">' + esc(U.k) + '</p><h2 class="pl-d bd-h2">' + esc(U.t) + '</h2><ul class="bd-wl">' +
       U.items.map(function (w) { return '<li><strong>' + esc(w[0]) + '</strong><span>' + esc(w[1]) + '</span></li>'; }).join('') + '</ul></div></div></section>' +
-      '<section class="bd-sec bd-last"><div class="bd-in"><div class="bd-due"><h2 class="pl-d bd-h2">' + esc(fill(Q.t, d)) + '</h2><p class="bd-dx">' + esc(C.note || '') + '</p>' +
+      '<section class="bd-sec bd-last"><div class="bd-in"><div class="bd-due"><h2 class="pl-d bd-h2">' + esc(fill(Q.t, d)) + '</h2><p class="bd-dx">' + esc(dueLine(C)) + '</p>' +
       '<button type="button" class="pk-cta pri bd-cta" data-bd-start="1">' + esc(Q.cta) + '</button>' +
       '<p class="bd-dl"><button type="button" class="bd-gl-link" data-bd-go="page:' + esc(Q.page) + '">' + esc(Q.link) + ' →</button></p></div></div></section>';
   }
@@ -13919,8 +13934,33 @@ html.bd1-lock,html.bd1-lock body{overflow:hidden}
     if (el !== root || !el.firstChild || k !== lastKey) {
       root = el; lastKey = k; el.innerHTML = page(d);
       [].forEach.call(el.querySelectorAll('.pl-d'), function (e) { e.classList.add('pkp-head'); });
-      arrows();
+      arrows(); fit();
     }
+  }
+  /* One screen per section. The hero fills the first screen on phone and tablet, and the builds photos take
+     whatever height is left so the whole builds section (heading, chips, cards, stories button) fits the next one. */
+  function headH() { /* height of the sticky header stack on layouts where the window scrolls (desktop) */
+    var x = Math.round(window.innerWidth / 2), top = null, bot = null;
+    for (var y = 1; y < 300; y += 6) {
+      var e = document.elementFromPoint(x, y), hit = null;
+      for (; e && e !== document.body && !hit; e = e.parentElement) { var ps = getComputedStyle(e).position; if ((ps === 'fixed' || ps === 'sticky') && e.getBoundingClientRect().height <= 220 && !(root && root.contains(e))) hit = e; }
+      if (!hit) { if (top !== null) break; continue; }
+      var r = hit.getBoundingClientRect(); top = top === null ? r.top : Math.min(top, r.top); bot = bot === null ? r.bottom : Math.max(bot, r.bottom);
+    }
+    return top === null ? 0 : bot - top;
+  }
+  function fit() {
+    if (!root || !root.firstChild) return;
+    var hero = root.querySelector('.bd-hero'), went = root.querySelector('.bd-went'); if (!hero || !went) return;
+    var W = window.innerWidth, sc = document.getElementById('pk-scroll-phone'), band, first;
+    if (sc && sc.contains(root) && getComputedStyle(sc).overflowY !== 'visible') { /* phone and tablet: the page scrolls inside this box, between the header and the tab bar */
+      band = sc.clientHeight; first = band - (hero.getBoundingClientRect().top - sc.getBoundingClientRect().top + sc.scrollTop);
+    } else { band = window.innerHeight - headH(); first = window.innerHeight - (hero.getBoundingClientRect().top + (window.pageYOffset || 0)); }
+    if (W < 1200) hero.style.minHeight = Math.round(Math.max(360, Math.min(first, W < 600 ? 760 : 720))) + 'px'; else hero.style.minHeight = '';
+    var card = went.querySelector('.bd-card'); if (!card) return;
+    went.style.setProperty('--bd-ph', '120px');
+    var room = band - went.offsetHeight, max = Math.round(card.offsetWidth * 0.75);
+    went.style.setProperty('--bd-ph', Math.max(120, Math.min(max, 120 + room)) + 'px');
   }
   function arrows() {
     if (!root) return; var r = root.querySelector('[data-bd-row]'); if (!r) return;
@@ -13929,7 +13969,9 @@ html.bd1-lock,html.bd1-lock body{overflow:hidden}
     root.querySelector('.bd-arr').style.visibility = over ? '' : 'hidden';
   }
   document.addEventListener('scroll', function (e) { if (root && e.target && e.target.hasAttribute && e.target.hasAttribute('data-bd-row')) arrows(); }, true);
-  window.addEventListener('resize', function () { arrows(); });
+  window.addEventListener('resize', function () { arrows(); fit(); });
+  window.addEventListener('load', fit);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
 
   function go(to) {
     var a = app(); if (!a) return; var p = to.split(':');
