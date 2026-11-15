@@ -350,8 +350,16 @@ html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root
 html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .pk-sch-cell[data-st=mine]{background:rgba(214,181,74,.2)}
 html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .pk-sch-cell[data-st=auto]{background:rgba(214,181,74,.09)}
 html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .pk-sch-cn{display:block;width:100%;padding:2px 0 0;border:0;background:transparent;color:inherit;font:inherit;font-size:13px;font-weight:700;line-height:1.25;text-align:left;cursor:pointer;overflow-wrap:normal;word-break:normal}
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .pk-sch-fr{flex:none;display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;margin-left:auto;border-radius:50%;border:1.5px solid #CFC9BC;color:#F2EDE3;font-size:12px;font-weight:800;line-height:1;opacity:1}
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .pk-sch-fr[data-both="true"]{background:#9FCB8A;border-color:#9FCB8A;color:#12160F}
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .pk-sch-frbar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 16px;margin:0 0 14px;padding:14px 16px;border:1.5px solid #9FCB8A;border-radius:6px;max-width:760px}
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .pk-sch-frbar>div:first-child{flex:1 1 220px;min-width:0}
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .pk-sch-frbar p{margin:0}
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .pk-sch-share{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;margin:0 0 14px}
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .pk-sch-lg{flex:none;display:block;width:48px;height:48px;object-fit:contain}
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .pk-sch-col .pk-sch-lg{width:52px;height:52px;margin:0 0 8px}
 html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .pk-sch-ct{display:flex;align-items:center;justify-content:space-between;gap:4px;min-width:0}
-html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .pk-sch-ct>span{min-width:0;font-size:12px;line-height:1.2;opacity:.75}
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .pk-sch-ct>span.pkp-mono{min-width:0;font-size:12px;line-height:1.2;opacity:.75}
 html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .pk-sch-clash{margin:0 0 16px;padding:14px 16px 6px;max-width:760px;border:2px solid #D6B54A;border-radius:6px;background:rgba(214,181,74,.08)}
 html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .pk-sch-clash .pk-sch-k{margin:0 0 4px!important}
 html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .pk-sch-cl{padding:10px 0;border-top:1px solid rgba(242,237,227,.14)}
@@ -4160,6 +4168,8 @@ document.addEventListener('keydown',function(e){if(e.key==='Escape'){var x=docum
 <button class="pk-sqb" type="button" onClick="{{c.pick}}" aria-pressed="{{c.on}}" style="{{c.style}}">{{c.label}}</button>
 </sc-for>
 </div></div>
+<sc-if value="{{sched.frShow}}" hint-placeholder-val="{{false}}"><section class="pk-sch-frbar" aria-label="A friend's plan"><div><p class="pkp-mono pk-sch-k">{{sched.frK}}</p><p class="pk-sch-clt">{{sched.frLine}}</p></div><div class="pk-sch-clf"><sc-if value="{{sched.frCanKeep}}" hint-placeholder-val="{{true}}"><button type="button" class="pk-sch-fix pk-sqb" onClick="{{sched.frKeep}}">{{sched.frKeepLabel}}</button></sc-if><sc-if value="{{sched.frSaved}}" hint-placeholder-val="{{false}}"><span class="pk-sch-nofix" role="status">Saved in My Pickathon</span></sc-if><button type="button" class="pk-sch-fix pk-sqb" onClick="{{sched.frClose}}">Close</button></div></section></sc-if>
+<sc-if value="{{sched.shShow}}" hint-placeholder-val="{{false}}"><div class="pk-sch-share"><button type="button" class="pk-sch-fix pk-sqb" onClick="{{sched.shGo}}">{{sched.shLabel}}</button><sc-if value="{{sched.shToastOn}}" hint-placeholder-val="{{false}}"><span class="pk-sch-nofix" role="status">{{sched.shToast}}</span></sc-if></div></sc-if>
 <sc-if value="{{clash.has}}" hint-placeholder-val="{{false}}"><sc-if value="{{bmw.show}}" hint-placeholder-val="{{false}}"><div style="margin: 0 0 14px; padding: 12px 14px; border-radius: 14px; border: 1px solid #6B5A2A; background: #2A2418; max-width: 760px"><button type="button" onClick="{{bmw.go}}" style="min-height: 44px; padding: 0 18px; border-radius: 999px; border: 0; background: #F2B33D; color: #12160F; font: inherit; font-weight: 800; cursor: pointer">{{bmw.label}}</button><p style="margin: 8px 0 0; font-size: 14px; color: #E6E0D3">{{bmw.sub}}</p><sc-if value="{{bmw.hasMsg}}" hint-placeholder-val="{{false}}"><p role="status" style="margin: 8px 0 0; font-weight: 800; color: #F2B33D">{{bmw.msg}}</p></sc-if></div></sc-if></sc-if>
 <sc-if value="{{clash.has}}" hint-placeholder-val="{{false}}"><section aria-label="Overlaps in your plan" class="pk-sch-clash"><p class="pkp-mono pk-sch-k">Your plan</p><sc-for list="{{clash.list}}" as="cl" hint-placeholder-count="1"><div class="pk-sch-cl"><p class="pk-sch-clt">{{cl.text}}</p><div class="pk-sch-clf"><sc-for list="{{cl.fixes}}" as="fx" hint-placeholder-count="1"><button type="button" class="pk-sch-fix pk-sqb" onClick="{{fx.go}}">{{fx.label}}</button></sc-for><sc-if value="{{cl.noFix}}" hint-placeholder-val="{{false}}"><span class="pk-sch-nofix">Neither has another set that fits. Keep both, or unstar one.</span></sc-if></div></div></sc-for><sc-if value="{{clash.more}}" hint-placeholder-val="{{false}}"><p class="pk-sch-nofix">{{clash.more}}</p></sc-if></section></sc-if>
 
@@ -4171,7 +4181,7 @@ document.addEventListener('keydown',function(e){if(e.key==='Escape'){var x=docum
 <div style="{{bk.gridCols}}; background: rgba(242,237,227,.04); border-bottom: 1px solid rgba(242,237,227,.14)">
 <div></div>
 <sc-for list="{{bk.cols}}" as="c" hint-placeholder-count="8">
-<button type="button" class="pk-sch-col" onClick="{{c.go}}" aria-label="{{c.aria}}"><b>{{c.n}}</b><sc-if value="{{c.hasH}}" hint-placeholder-val="{{false}}"><span>{{c.h}}</span></sc-if></button>
+<button type="button" class="pk-sch-col" onClick="{{c.go}}" aria-label="{{c.aria}}"><img class="pk-sch-lg" src="{{c.lg}}" alt="" aria-hidden="true" width="52" height="52" loading="lazy" decoding="async"><b>{{c.n}}</b><sc-if value="{{c.hasH}}" hint-placeholder-val="{{false}}"><span>{{c.h}}</span></sc-if></button>
 </sc-for>
 </div>
 <sc-for list="{{bk.rows}}" as="row" hint-placeholder-count="8">
@@ -4182,7 +4192,7 @@ document.addEventListener('keydown',function(e){if(e.key==='Escape'){var x=docum
 <sc-for list="{{cell.items}}" as="it" hint-placeholder-count="1">
 <div class="pk-sch-cell" data-st="{{it.st}}" style="{{it.box}}">
 <button type="button" class="pk-sch-cn" onClick="{{it.open}}">{{it.name}}</button>
-<div class="pk-sch-ct"><span class="pkp-mono">{{it.time}}</span><button type="button" class="pk-sch-star" data-st="{{it.st}}" onClick="{{it.toggle}}" aria-pressed="{{it.on}}" aria-label="{{it.label}}">{{it.icon}}</button></div>
+<div class="pk-sch-ct"><span class="pkp-mono">{{it.time}}</span><sc-if value="{{it.fr}}" hint-placeholder-val="{{false}}"><span class="pk-sch-fr" data-both="{{it.frB}}" role="img" aria-label="{{it.frL}}">{{it.frI}}</span></sc-if><button type="button" class="pk-sch-star" data-st="{{it.st}}" onClick="{{it.toggle}}" aria-pressed="{{it.on}}" aria-label="{{it.label}}">{{it.icon}}</button></div>
 </div>
 </sc-for>
 </div>
@@ -4200,11 +4210,11 @@ document.addEventListener('keydown',function(e){if(e.key==='Escape'){var x=docum
 <div style="display: flex; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; margin: 0 -12px 32px; padding: 0 12px 4px">
 <sc-for list="{{sched.stages}}" as="sg" hint-placeholder-count="3">
 <div style="flex: none; width: 86%; scroll-snap-align: start; border: 1px solid rgba(242,237,227,.14); border-radius: 16px; background: rgba(242,237,227,.04); padding: 12px 14px 6px; box-sizing: border-box">
-<button type="button" onClick="{{sg.go}}" style="display: flex; width: 100%; min-height: 44px; align-items: baseline; justify-content: space-between; gap: 8px; padding: 0 0 8px; border: 0; border-bottom: 1px solid rgba(242,237,227,.14); background: transparent; color: #F2EDE3; font: inherit; text-align: left; cursor: pointer"><span style="font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 20px">{{sg.n}}</span><span style="font-size: 12px; color: #B9B3A6; white-space: nowrap">{{sg.pos}}</span></button>
+<button type="button" class="pk-sch-sgh" onClick="{{sg.go}}" style="display: flex; width: 100%; min-height: 44px; align-items: center; justify-content: space-between; gap: 12px; padding: 0 0 10px; border: 0; border-bottom: 1px solid rgba(242,237,227,.14); background: transparent; color: #F2EDE3; font: inherit; text-align: left; cursor: pointer"><span style="display: flex; align-items: center; gap: 12px; min-width: 0"><sc-if value="{{sg.hasLg}}" hint-placeholder-val="{{true}}"><img class="pk-sch-lg" src="{{sg.lg}}" alt="" aria-hidden="true" width="48" height="48" loading="lazy" decoding="async"></sc-if><span style="min-width: 0"><span style="display: block; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 20px; line-height: 1.15">{{sg.n}}</span><sc-if value="{{sg.hn}}" hint-placeholder-val="{{false}}"><span style="display: block; font-size: 12.5px; color: #B9B3A6">{{sg.hn}}</span></sc-if></span></span><span style="font-size: 12px; color: #B9B3A6; white-space: nowrap">{{sg.pos}}</span></button>
 <sc-for list="{{sg.sets}}" as="sr" hint-placeholder-count="5">
 <div style="display: flex; align-items: center; gap: 10px; padding: 4px 0; border-bottom: 1px solid rgba(242,237,227,.08)">
 <button type="button" onClick="{{sr.open}}" style="flex: 1; min-width: 0; min-height: 44px; padding: 4px 0; border: 0; background: transparent; color: #F2EDE3; font: inherit; text-align: left; cursor: pointer"><span class="pkp-mono" style="display: block; font-size: 13px; font-weight: 700; color: #9FCB8A">{{sr.time}}</span><span style="display: block; font-weight: 800">{{sr.name}}</span></button>
-<button type="button" class="pk-sch-star" data-st="{{sr.st}}" onClick="{{sr.toggle}}" aria-pressed="{{sr.on}}" aria-label="{{sr.label}}">{{sr.icon}}</button>
+<sc-if value="{{sr.fr}}" hint-placeholder-val="{{false}}"><span class="pk-sch-fr" data-both="{{sr.frB}}" role="img" aria-label="{{sr.frL}}">{{sr.frI}}</span></sc-if><button type="button" class="pk-sch-star" data-st="{{sr.st}}" onClick="{{sr.toggle}}" aria-pressed="{{sr.on}}" aria-label="{{sr.label}}">{{sr.icon}}</button>
 </div>
 </sc-for>
 </div>
@@ -4219,7 +4229,7 @@ document.addEventListener('keydown',function(e){if(e.key==='Escape'){var x=docum
 <sc-if value="{{sr.isSet}}" hint-placeholder-val="{{true}}">
 <div style="display: flex; align-items: center; gap: 10px; padding: 6px 0; border-bottom: 1px solid rgba(242,237,227,.08)">
 <button type="button" onClick="{{sr.open}}" style="flex: 1; min-width: 0; min-height: 44px; padding: 4px 0; border: 0; background: transparent; color: #F2EDE3; font: inherit; text-align: left; cursor: pointer"><span style="display: block; font-weight: 700">{{sr.name}}</span><span style="display: block; font-size: 13px; color: #B9B3A6">{{sr.where}} · {{sr.time}}</span></button>
-<button type="button" class="pk-sch-star" data-st="{{sr.st}}" onClick="{{sr.toggle}}" aria-pressed="{{sr.on}}" aria-label="{{sr.label}}">{{sr.icon}}</button>
+<sc-if value="{{sr.fr}}" hint-placeholder-val="{{false}}"><span class="pk-sch-fr" data-both="{{sr.frB}}" role="img" aria-label="{{sr.frL}}">{{sr.frI}}</span></sc-if><button type="button" class="pk-sch-star" data-st="{{sr.st}}" onClick="{{sr.toggle}}" aria-pressed="{{sr.on}}" aria-label="{{sr.label}}">{{sr.icon}}</button>
 </div>
 </sc-if>
 </sc-for>
@@ -5293,14 +5303,14 @@ html{-webkit-text-size-adjust:100%!important;text-size-adjust:100%!important}.pk
 <h1 style="{{h1Page}}">{{mineH1}}</h1>
 <p style="margin: 6px 0 14px; color: #CFC9BC">{{mine.sub}}</p>
 <div id="pk-acct"></div>
-<sc-if value="{{mine.hasFriend}}" hint-placeholder-val="{{false}}"><section aria-label="A friend's plan" style="margin: 0 0 18px; padding: 16px 18px; border-radius: 16px; background: #24301F; border: 1px solid #9FCB8A; max-width: 760px"><p style="margin: 0 0 10px; font-weight: 800; font-size: 17px">{{mine.friendLine}}</p><div style="display: grid; gap: 6px; margin-bottom: 12px"><sc-for list="{{mine.friendRows}}" as="fw" hint-placeholder-count="3"><div style="display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 12px; background: #1A2017"><span style="flex: 1 1 auto; min-width: 0"><span style="display: block; font-weight: 700">{{fw.name}}</span><span class="pkp-mono" style="display: block; font-size: 13px; color: #B9B3A6">{{fw.when}}</span></span><span style="{{fw.tagStyle}}">{{fw.tag}}</span><sc-if value="{{fw.canAdd}}" hint-placeholder-val="{{true}}"><button type="button" onClick="{{fw.add}}" aria-label="Add {{fw.name}} to mine" style="flex: none; min-height: 36px; padding: 0 12px; border-radius: 999px; border: 0; background: #F2EDE3; color: #12160F; font: inherit; font-size: 13px; font-weight: 800; cursor: pointer">+ Add</button></sc-if></div></sc-for></div><div style="display: flex; flex-wrap: wrap; gap: 8px"><button type="button" onClick="{{mine.friendAdd}}" style="min-height: 44px; padding: 0 16px; border-radius: 999px; border: 0; background: #F2EDE3; color: #12160F; font: inherit; font-weight: 800; cursor: pointer">Add all to mine</button><button type="button" onClick="{{mine.friendKeep}}" style="min-height: 44px; padding: 0 16px; border-radius: 999px; border: 1px solid #F2EDE3; background: transparent; color: #F2EDE3; font: inherit; font-weight: 700; cursor: pointer">{{mine.friendKeepLabel}}</button><button type="button" class="pk-money" onClick="{{mine.friendTix}}" style="min-height: 44px; padding: 0 16px; border-radius: 999px; border: 0; background: #F2B33D; color: #12160F; font: inherit; font-weight: 800; cursor: pointer">{{mine.friendTixLabel}}</button><button type="button" onClick="{{mine.friendDismiss}}" style="min-height: 44px; padding: 0 12px; border: 0; background: transparent; color: #CFC9BC; font: inherit; cursor: pointer">Close</button></div></section></sc-if>
-<sc-if value="{{mine.early}}" hint-placeholder-val="{{false}}"><section class="pk-wp" aria-label="Your weekend plan"><p class="pk-mk">Your weekend plan</p><h2>{{mine.earlyT}}</h2><p class="pk-mx">{{mine.earlyX}}</p><button type="button" class="pk-cta pri pk-mb" onClick="{{mine.earlyGo}}">{{mine.earlyBtn}}</button></section></sc-if>
+<sc-if value="{{mine.hasFriend}}" hint-placeholder-val="{{false}}"><section aria-label="A friend's plan" style="margin: 0 0 18px; padding: 16px 18px; border-radius: 16px; background: #24301F; border: 1px solid #9FCB8A; max-width: 760px"><p style="margin: 0 0 10px; font-weight: 800; font-size: 17px">{{mine.friendLine}}</p><div style="display: grid; gap: 6px; margin-bottom: 12px"><sc-for list="{{mine.friendRows}}" as="fw" hint-placeholder-count="3"><div style="display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 12px; background: #1A2017"><span style="flex: 1 1 auto; min-width: 0"><span style="display: block; font-weight: 700">{{fw.name}}</span><span class="pkp-mono" style="display: block; font-size: 13px; color: #B9B3A6">{{fw.when}}</span></span><span style="{{fw.tagStyle}}">{{fw.tag}}</span><sc-if value="{{fw.canAdd}}" hint-placeholder-val="{{true}}"><button type="button" onClick="{{fw.add}}" aria-label="Add {{fw.name}} to mine" style="flex: none; min-height: 44px; padding: 0 12px; border-radius: 4px; border: 0; background: #F2EDE3; color: #12160F; font: inherit; font-size: 13px; font-weight: 800; cursor: pointer">+ Add</button></sc-if></div></sc-for></div><div style="display: flex; flex-wrap: wrap; gap: 8px"><button type="button" class="pk-sch-fix pk-sqb" onClick="{{mine.friendAdd}}">Add all to mine</button><sc-if value="{{mine.friendGrid}}" hint-placeholder-val="{{false}}"><button type="button" class="pk-sch-fix pk-sqb" onClick="{{mine.friendToGrid}}">See it on the schedule</button></sc-if><button type="button" class="pk-sch-fix pk-sqb" onClick="{{mine.friendKeep}}">{{mine.friendKeepLabel}}</button><button type="button" class="pk-money" onClick="{{mine.friendTix}}" style="min-height: 44px; padding: 0 16px; border-radius: 999px; border: 0; background: #F2B33D; color: #12160F; font: inherit; font-weight: 800; cursor: pointer">{{mine.friendTixLabel}}</button><button type="button" class="pk-sch-fix pk-sqb" onClick="{{mine.friendDismiss}}">Close</button></div></section></sc-if>
+<sc-if value="{{mine.early}}" hint-placeholder-val="{{false}}"><section class="pk-wp pk-wq" aria-label="Your weekend plan"><p class="pk-mx"><b>{{mine.earlyT}}.</b></p><button type="button" class="pk-wl" onClick="{{mine.earlyGo}}">{{mine.earlyBtn}} →</button></section></sc-if>
 <sc-if value="{{mine.hasSaved}}" hint-placeholder-val="{{false}}"><h2 style="{{h2}}; margin-top: 8px">{{mine.savedHead}}</h2><p style="margin: 4px 0 12px; color: #B9B3A6">{{mine.savedSub}}</p><div style="{{gridArtists}}; margin-bottom: 32px"><sc-for list="{{mine.saved}}" as="a" hint-placeholder-count="4"><button type="button" onClick="{{a.open}}" style="padding: 0; border: 0; background: #1A2017; border-radius: 14px; overflow: hidden; color: #F2EDE3; font: inherit; text-align: left; cursor: pointer"><sc-if value="{{a.hasImg}}" hint-placeholder-val="{{true}}"><img src="{{a.img}}" alt="" style="display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: cover"></sc-if><div style="padding: 10px 12px 12px"><div style="font-weight: 700">{{a.name}}</div><div style="font-size: 13px; color: #9FCB8A">{{a.cta}}</div></div></button></sc-for></div></sc-if>
 <sc-if value="{{mine.canShareA}}" hint-placeholder-val="{{false}}"><div style="margin: -16px 0 24px"><button type="button" onClick="{{mine.shareA}}" style="min-height: 44px; padding: 0 18px; border-radius: 999px; border: 0; background: #F2B33D; color: #12160F; font: inherit; font-weight: 800; cursor: pointer">Share my picks with friends</button><span style="margin-left: 10px; font-size: 14px; color: #CFC9BC">Plan who’s going before you buy. No accounts.</span><sc-if value="{{mine.hasShareAToast}}" hint-placeholder-val="{{false}}"><p role="status" style="margin: 8px 0 0; font-weight: 800; color: #F2B33D">{{mine.shareAToast}}</p></sc-if></div></sc-if>
 <sc-if value="{{mine.hasIncoming}}" hint-placeholder-val="{{false}}"><div style="margin: 0 0 14px; padding: 14px 16px; border-radius: 16px; background: #F2EDE3; color: #12160F; max-width: 760px"><strong style="display: block; font-size: 17px">{{mine.incomingT}}</strong><button type="button" onClick="{{mine.incomingGo}}" style="margin-top: 10px; min-height: 44px; padding: 0 18px; border-radius: 999px; border: 0; background: #12160F; color: #F2EDE3; font: inherit; font-weight: 800; cursor: pointer">Answer it: make yours ↓</button></div></sc-if>
 
 <sc-if value="{{meets.has}}" hint-placeholder-val="{{false}}"><section aria-label="Meet-ups" style="margin: 0 0 18px; max-width: 760px"><h2 style="margin: 0 0 8px; font-size: 14px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #B9B3A6">Meet-ups</h2><div style="display: grid; gap: 6px"><sc-for list="{{meets.list}}" as="mt" hint-placeholder-count="1"><div style="display: flex; align-items: center; gap: 8px; padding: 6px 6px 6px 12px; border-radius: 12px; background: #1A2017"><button type="button" onClick="{{mt.show}}" style="flex: 1; padding: 0; border: 0; background: transparent; color: #F2EDE3; font: inherit; font-weight: 700; text-align: left; cursor: pointer">📍 {{mt.text}}</button><button type="button" onClick="{{mt.remove}}" aria-label="Remove" style="width: 36px; height: 36px; border: 0; background: transparent; color: #B9B3A6; cursor: pointer">✕</button></div></sc-for></div></section></sc-if>
-<sc-if value="{{mine.hasFriends}}" hint-placeholder-val="{{false}}"><section aria-label="Friends' plans" style="margin: 0 0 18px; max-width: 760px"><h2 style="margin: 0 0 8px; font-size: 14px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #B9B3A6">Friends’ plans</h2><div style="display: flex; flex-wrap: wrap; gap: 8px"><sc-for list="{{mine.friendList}}" as="fl" hint-placeholder-count="2"><div style="display: inline-flex; align-items: center; gap: 6px; padding: 4px 4px 4px 12px; border-radius: 999px; border: 1px solid #4A5544"><button type="button" onClick="{{fl.view}}" style="padding: 0; border: 0; background: transparent; color: #F2EDE3; font: inherit; text-align: left; cursor: pointer"><strong>{{fl.name}}</strong> <span style="font-size: 13px; color: #B9B3A6">{{fl.line}}</span></button><button type="button" onClick="{{fl.remove}}" aria-label="Remove {{fl.name}}" style="width: 32px; height: 32px; border: 0; border-radius: 999px; background: transparent; color: #B9B3A6; cursor: pointer">✕</button></div></sc-for></div></section></sc-if>
+<sc-if value="{{mine.hasFriends}}" hint-placeholder-val="{{false}}"><section aria-label="Friends' plans" style="margin: 0 0 18px; max-width: 760px"><h2 style="margin: 0 0 8px; font-size: 14px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #B9B3A6">Friends’ plans</h2><div style="display: flex; flex-wrap: wrap; gap: 8px"><sc-for list="{{mine.friendList}}" as="fl" hint-placeholder-count="2"><div style="display: inline-flex; align-items: center; gap: 6px; padding: 4px 4px 4px 12px; border-radius: 999px; border: 1px solid #4A5544"><button type="button" onClick="{{fl.view}}" style="min-height: 44px; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; padding: 0; border: 0; background: transparent; color: #F2EDE3; font: inherit; text-align: left; cursor: pointer"><strong>{{fl.name}}</strong> <span style="font-size: 13px; color: #B9B3A6">{{fl.line}}</span></button><button type="button" onClick="{{fl.remove}}" aria-label="Remove {{fl.name}}" style="flex: none; width: 44px; height: 44px; border: 0; border-radius: 4px; background: transparent; color: #B9B3A6; cursor: pointer">✕</button></div></sc-for></div></section></sc-if>
 <sc-if value="{{mine.live}}" hint-placeholder-val="{{true}}">
 <sc-if value="{{bmw.show}}" hint-placeholder-val="{{false}}"><div style="margin: 0 0 14px; padding: 12px 14px; border-radius: 14px; border: 1px solid #6B5A2A; background: #2A2418; max-width: 760px"><button type="button" onClick="{{bmw.go}}" style="min-height: 44px; padding: 0 18px; border-radius: 999px; border: 0; background: #F2B33D; color: #12160F; font: inherit; font-weight: 800; cursor: pointer">{{bmw.label}}</button><p style="margin: 8px 0 0; font-size: 14px; color: #E6E0D3">{{bmw.sub}}</p><sc-if value="{{bmw.hasMsg}}" hint-placeholder-val="{{false}}"><p role="status" style="margin: 8px 0 0; font-weight: 800; color: #F2B33D">{{bmw.msg}}</p></sc-if></div></sc-if>
 <sc-if value="{{mine.hasAny}}" hint-placeholder-val="{{true}}"><div style="display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 14px"><button type="button" onClick="{{mine.share}}" style="min-height: 44px; padding: 0 18px; border-radius: 999px; border: 0; background: #F2B33D; color: #12160F; font: inherit; font-weight: 800; cursor: pointer">Share my picks</button><button type="button" onClick="{{mine.print}}" style="min-height: 44px; padding: 0 18px; border-radius: 999px; border: 1px solid #727D6B; background: transparent; color: #F2EDE3; font: inherit; font-weight: 700; cursor: pointer">Print or save as PDF</button></div></sc-if>
@@ -5444,7 +5454,7 @@ class Component extends DCLogic {
     try { var ps = JSON.parse(localStorage.getItem('pk-pstars-2027') || 'null'); if (ps && ps.length) self.setState({ pstars: ps }); } catch (e) {}
     try { var qy = (new URLSearchParams(window.location.search || '')).get('y'); if (qy && /^(19|20)\d\d/.test(qy)) self.setState({ pastY: qy.slice(0, 9), stack: [{ r: 'past' }] }); } catch (e) {}
     try { var hs = decodeURIComponent(window.location.hash || ''); var m3 = hs.match(/top3=([^&]+)/), my = hs.match(/yrs=([\d,]+)/), mw = hs.match(/who=([^&]+)/); if (m3 || my) self.setState({ incoming: { top3: m3 ? m3[1].split(';').map(function (x) { return x.split('|'); }).filter(function (x) { return x[0]; }).slice(0, 5) : null, yrs: my ? my[1].split(',').filter(Boolean) : null, who: mw ? mw[1].slice(0, 30) : '' }, shType: m3 ? 'top3' : 'years', stack: [{ r: 'mine' }] }); } catch (e) {}
-    try { var hm = (window.location.hash || '').match(/picks=([\w,-]+)/), hw = decodeURIComponent(window.location.hash || '').match(/[&#]who=([^&]+)/); if (hm) { self.setState({ friendPicks: hm[1].split(',').filter(Boolean), friendWho: hw ? hw[1].slice(0, 30) : '', stack: [{ r: 'mine' }] }); } } catch (e) {}
+    try { var hm = (window.location.hash || '').match(/picks=([\w,-]+)/), hw = decodeURIComponent(window.location.hash || '').match(/[&#]who=([^&]+)/); if (hm) { self.setState({ friendPicks: hm[1].split(',').filter(Boolean), friendWho: hw ? hw[1].slice(0, 30) : '', stack: [{ r: /[&#]on=grid/.test(window.location.hash || '') ? 'schedule' : 'mine' }] }); } } catch (e) {}
     try { var hh = decodeURIComponent(window.location.hash || ''), ma = hh.match(/[#&](at|meet)=([a-z0-9-]+)/), mt = hh.match(/[&]t=(\d{4})/), mwh = hh.match(/[&]who=([^&]+)/); if (ma && mt) self.setState({ meetIn: { kind: ma[1], h: ma[2], t: mt[1], who: mwh ? mwh[1].slice(0, 30) : '' }, mapHood: ma[2], stack: [{ r: 'home' }] }); var msv = JSON.parse(window.localStorage.getItem('pk-meets') || 'null'); if (msv) self.setState({ meets: msv }); } catch (e) {}
     try { var fsv = JSON.parse(window.localStorage.getItem('pk-friends') || 'null'); if (fsv) self.setState({ friends: fsv }); var mn = window.localStorage.getItem('pk-myname'); if (mn) self.setState({ myName: mn }); } catch (e) {}
     try {
@@ -5573,7 +5583,7 @@ class Component extends DCLogic {
     var lines2 = function (t, w, px, min, wt) { g.font = F(wt || 800, px); if (g.measureText(t).width <= w) return [px, [t]]; while (px > min) { px -= 2; g.font = F(wt || 800, px); if (g.measureText(t).width <= w) return [px, [t]]; } var words = t.split(' '), a = '', out = []; words.forEach(function (wd) { var tr = a ? a + ' ' + wd : wd; if (g.measureText(tr).width > w && a) { out.push(a); a = wd; } else a = tr; }); out.push(a); if (out.length > 2) { var rest = out.slice(1).join(' '); while (g.measureText(rest + '…').width > w && rest.length > 1) rest = rest.slice(0, -1); out = [out[0], rest + '…']; } return [px, out]; };
     var yl = function (y) { return /–/.test(String(y)) ? 'the early years' : y; };
     var imgs = (spec.imgs || []).slice(0, (spec.kind === 'years' || spec.look === 'alltime') ? 12 : 3), logo = spec.logo || '', loaded = [], logoIm = null;
-    var SAFE = 260, CTAY = H - 330;
+    var SAFE = 260, CTAY = H - 330; var PINK = { '2017': '#716849', '2019': '#47475F', '2024': '#405C70' }, pKey = spec.look === 'alltime' ? 'alltime' : (spec.look === 'yeartop' && PINK[String(spec.yearLabel)]) ? String(spec.yearLabel) : '', plateIm = null, ornIm = null, postIm = null;
     var draw = function () {
       var HF = function (px) { return '400 ' + px + 'px "Pickathon 2014", "Bricolage Grotesque", sans-serif'; };
       var rgba = function (h, al) { var n = parseInt(String(h).replace('#', ''), 16); return 'rgba(' + (n >> 16 & 255) + ',' + (n >> 8 & 255) + ',' + (n & 255) + ',' + al + ')'; };
@@ -5582,6 +5592,20 @@ class Component extends DCLogic {
       var rows = function (L, x0, y, ink, numCol, rule, first, step, nmW) { L.forEach(function (nm, i) { var sz = i === 0 ? first : first - 16, r = lines2(String(nm), nmW, sz, 40), ln = r[1][0]; if (r[1].length > 1) { g.font = F(800, r[0]); while (g.measureText(ln + '…').width > nmW && ln.length > 2) ln = ln.slice(0, -1); ln = ln + '…'; } var rh = i === 0 ? step + 18 : step; g.fillStyle = numCol; g.font = F(800, i === 0 ? 52 : 44); g.fillText(String(i + 1), x0, y + rh * 0.62); g.fillStyle = ink; g.font = F(800, r[0]); g.fillText(ln, x0 + 84, y + rh * 0.62); if (i < L.length - 1) { g.fillStyle = rule; g.fillRect(x0, y + rh - 4, W - 2 * x0, 2); } y += rh; }); return y; };
       var lookYear = function () {
         var B = spec.brand, ink = B.ink, ink2 = B.ink2, band = B.band || B.ink;
+        if (plateIm && plateIm.naturalWidth) {
+          /* Artwork's share-card plate (artwork-27): poster thumbnail at x390-690 y290-754, text inside x200-880 y800-1590, ornament layer on top */
+          ink = PINK[pKey]; g.fillStyle = B.paper || '#FFFEF2'; g.fillRect(0, 0, W, H); g.drawImage(plateIm, 0, 0, W, H);
+          var pim = postIm && postIm.naturalWidth ? postIm : loaded[0]; if (pim && pim.naturalWidth) fitIm(pim, 390, 290, 300, 464);
+          g.fillStyle = ink; g.font = F(800, 34); g.fillText('MY TOP FIVE', 212, 850);
+          g.font = HF(132); g.fillText(String(spec.yearLabel), 206, 975);
+          if (B.dates) { g.font = F(600, 30); g.fillText(B.dates, 212, 1026); }
+          rows((spec.list || []).slice(0, 5), 212, 1060, ink, ink, rgba(ink, 0.25), 72, 84, 560);
+          if (ornIm && ornIm.naturalWidth) g.drawImage(ornIm, 0, 0, W, H);
+          g.fillStyle = ink; g.font = F(800, 58); g.fillText(spec.hook || 'Were you there?', 90, CTAY + 70);
+          g.font = F(700, 40); g.fillText('Make yours at pickathon.com/my', 90, CTAY + 128);
+          g.font = F(600, 34); g.fillText((spec.footer || 'Aug 5–8, 2027') + ' · Pendarvis Farm, Oregon', 90, CTAY + 178);
+          return;
+        }
         g.fillStyle = B.paper || '#FFFEF2'; g.fillRect(0, 0, W, H);
         var st = (B.stripe || []).filter(function (c) { return String(c).toLowerCase() !== String(B.paper).toLowerCase(); }), sw = W / Math.max(1, st.length); st.forEach(function (c, i) { g.fillStyle = c; g.fillRect(i * sw, 0, sw + 1, 40); });
         var nL = (spec.list || []).length, hh = Math.min(720, 470 + Math.max(0, 5 - nL) * 90), im = loaded[0], dh = 0; if (im && im.naturalWidth) dh = im.naturalHeight * Math.min((W - 320) / im.naturalWidth, hh / im.naturalHeight); var rowsH = nL ? 110 + (nL - 1) * 92 : 0, y0 = SAFE - 40; y0 += Math.max(0, Math.min(150, ((CTAY - 60) - y0 - (dh + 70 + 250 + rowsH)) / 2)); if (dh) { g.globalCompositeOperation = 'multiply'; fitIm(im, 160, y0, W - 320, dh); g.globalCompositeOperation = 'source-over'; }
@@ -5597,7 +5621,7 @@ class Component extends DCLogic {
       var lookAll = function () {
         var bg2 = g.createLinearGradient(0, 0, 0, H); bg2.addColorStop(0, '#24301F'); bg2.addColorStop(0.55, '#12160F'); bg2.addColorStop(1, '#0B0E09'); g.fillStyle = bg2; g.fillRect(0, 0, W, H);
         g.fillStyle = 'rgba(242,179,61,0.10)'; for (var i2 = 0; i2 < 70; i2++) { g.beginPath(); g.arc((i2 * 397) % W, (i2 * 613) % 900, (i2 % 3) + 1.5, 0, 6.3); g.fill(); }
-        zig('#1A2017');
+        if (plateIm && plateIm.naturalWidth) { g.drawImage(plateIm, 0, 0, W, H); if (ornIm && ornIm.naturalWidth) g.drawImage(ornIm, 0, 0, W, H); } else zig('#1A2017');
         var y = SAFE - 10; if (logoIm && logoIm.naturalWidth) { var lw = 300, lh = lw * logoIm.naturalHeight / logoIm.naturalWidth; g.drawImage(logoIm, 90, y, lw, lh); y += lh + 40; } else y += 40;
         g.fillStyle = '#F2EDE3'; g.font = HF(112); g.fillText('My all-time', 86, y + 100); g.fillStyle = '#F2B33D'; g.fillText('top five', 86, y + 214); y += 280;
         var keys = (spec.lgKeys || []), n = Math.min(6, keys.length);
@@ -5648,7 +5672,7 @@ class Component extends DCLogic {
     };
     var pend = 1, done = function () { if (--pend === 0) { try { draw(); } catch (e) {} } };
     imgs.forEach(function (u) { pend++; var im = new Image(); im.onload = done; im.onerror = done; im.src = u; loaded.push(im); });
-    if (logo) { pend++; logoIm = new Image(); logoIm.onload = done; logoIm.onerror = done; logoIm.src = logo; }
+    if (pKey) { pend += 2; plateIm = new Image(); plateIm.onload = done; plateIm.onerror = done; plateIm.src = 'i/sc-' + pKey + '-plate.png'; ornIm = new Image(); ornIm.onload = done; ornIm.onerror = done; ornIm.src = 'i/sc-' + pKey + '-ornament.png'; if (pKey !== 'alltime') { pend++; postIm = new Image(); postIm.onload = done; postIm.onerror = done; postIm.src = 'i/y' + pKey.slice(2) + '-poster.webp'; } }     if (logo) { pend++; logoIm = new Image(); logoIm.onload = done; logoIm.onerror = done; logoIm.src = logo; }
     try { if (document.fonts && document.fonts.load) { Promise.all([document.fonts.load('800 80px "Bricolage Grotesque"'), document.fonts.load('600 40px "Bricolage Grotesque"'), document.fonts.load('400 80px "Pickathon 2014"')]).then(done, done); return; } } catch (e) {}
     done();
   }
@@ -6323,8 +6347,12 @@ window.__pkMapH = mapH; window.__pkGoFarm = goFarm;   // pk-home2: the Home neig
       var whenS = function (x) { return (dayN2[x.d] || '') + ' ' + t12(x.s); }, stN2 = function (x) { return (stage[x.st] || {}).n || ''; }, aN = function (k) { return (d.artists[k] || {}).n || k; };
       var saveS = function (fn) { var s2 = {}; try { s2 = JSON.parse(window.localStorage.getItem(window.__pkSK()) || 'null') || Object.assign({}, self.state.stars || {}); } catch (e) { s2 = Object.assign({}, self.state.stars || {}); } fn(s2); try { window.localStorage.setItem(window.__pkSK(), JSON.stringify(s2)); } catch (e) {} self.setState({ stars: s2 }); };
       var keepSet = function (x) { return function () { saveS(function (s2) { d.sets.forEach(function (y) { if (y.a === x.a) delete s2[y.id]; }); s2[x.id] = true; s2['a:' + x.a] = true; }); }; };
+      /* Nov 15 (Zale): a friend's shared plan shows on the grid next to mine. Only once the real schedule is out (sched/fest); the stand-in grid never shows anyone's picks as a 2027 plan. */
+      var frOn = (SEA === 'sched' || SEA === 'fest') && (st.friendPicks || []).length > 0, frWho = st.friendWho || '', frSet = {}, frN = 0, frBoth = 0;
+      if (frOn) { (st.friendPicks || []).forEach(function (id) { var ak = /^A_/.test(id) ? id.slice(2) : null; d.sets.forEach(function (y) { if (ak ? y.a === ak : String(y.id) === String(id)) frSet[y.id] = 1; }); }); Object.keys(frSet).forEach(function (id) { frN++; if (PL.pick[id]) frBoth++; }); if (!frN) frOn = false; }
+      var frI = (frWho.trim().charAt(0) || '\u2022').toUpperCase(), frNm = frWho || 'A friend', frPos = frWho ? frWho + '\u2019s' : 'Your friend\u2019s';
       var schRow = function (x) { var w = PL.pick[x.id] || 'off', nm = aN(x.a), at = whenS(x) + ' at ' + stN2(x);
-        return { st: w, on: w === 'mine' ? 'true' : w === 'auto' ? 'mixed' : 'false', icon: w === 'off' ? '☆' : '★', btn: '',
+        return { fr: !!frSet[x.id], frI: frI, frB: frSet[x.id] && w !== 'off' ? 'true' : 'false', frL: frSet[x.id] ? (w !== 'off' ? 'You and ' + (frWho || 'your friend') + ' both picked this' : frNm + ' picked this') : '', st: w, on: w === 'mine' ? 'true' : w === 'auto' ? 'mixed' : 'false', icon: w === 'off' ? '☆' : '★', btn: '',
           label: w === 'mine' ? 'Remove ' + nm + ', ' + at + ', from your plan' : w === 'auto' ? nm + ', ' + at + ', is in your plan, picked for you. Keep this set' : 'Star ' + nm + ', ' + at,
           toggle: function () { saveS(function (s2) { if (w === 'mine') { delete s2[x.id]; if (!d.sets.some(function (y) { return y.a === x.a && y.id !== x.id && s2[y.id]; })) delete s2['a:' + x.a]; } else { s2[x.id] = true; s2['a:' + x.a] = true; } }); } }; };
       out.bmw = { show: false };
@@ -6335,9 +6363,28 @@ window.__pkMapH = mapH; window.__pkGoFarm = goFarm;   // pk-home2: the Home neig
         PL.pairs.forEach(function (pq) { var fixes = []; pq.forEach(function (x) { var alt = d.sets.filter(function (y) { return y.a === x.a && y.id !== x.id && y.s && y.e && !PL.chosen.some(function (z) { return z.id !== x.id && PL.ov(y, z); }); })[0]; if (alt) fixes.push({ label: 'Catch ' + aN(x.a) + ' ' + whenS(alt) + ' at ' + stN2(alt) + ' instead', go: keepSet(alt) }); });
           L.push({ text: aN(pq[0].a) + ' (' + whenS(pq[0]) + ', ' + stN2(pq[0]) + ') overlaps ' + aN(pq[1].a) + ' (' + whenS(pq[1]) + ', ' + stN2(pq[1]) + ').', fixes: fixes }); });
         return { has: L.length > 0, list: L.slice(0, 3).map(function (c) { return Object.assign(c, { hasFix: c.fixes.length > 0, noFix: !c.fixes.length }); }), more: L.length > 3 ? '+ ' + (L.length - 3) + ' more overlaps in your plan' : '' }; })();
-      var F = [['music', 'Music'], ['djs', 'DJs'], ['family', 'Family'], ['wellness', 'Wellness'], ['comedy', 'Comedy'], ['literary', 'Literary'], ['curation', 'Curation'], ['all', 'Everything'], ['starred', '★ Your plan']];
+      var F = [['music', 'Music'], ['djs', 'DJs'], ['family', 'Family'], ['wellness', 'Wellness'], ['comedy', 'Comedy'], ['literary', 'Literary'], ['curation', 'Curation'], ['all', 'Everything'], ['starred', '★ Your plan']]; if (frOn) F.push(['friend', frPos + ' plan']); else if (st.schedF === 'friend') st.schedF = 'all';
       out.sched = { chips: F.map(function (f) { return { label: f[1], on: f[0] === st.schedF ? 'true' : 'false', style: chip(f[0] === st.schedF), pick: function () { self.setState({ schedF: f[0] }); } }; }), grid: !phone, list: phone, items: [], cols: [], rows: [], gridCols: '', minW: '', empty: false };
-      var pass = function (s) { return s.d === st.day && (st.schedF === 'all' || (st.schedF === 'starred' ? !!PL.pick[s.id] : s.l === st.schedF)); };
+      var pass = function (s) { return s.d === st.day && (st.schedF === 'all' || (st.schedF === 'starred' ? !!PL.pick[s.id] : st.schedF === 'friend' ? !!frSet[s.id] : s.l === st.schedF)); };
+      (function () {
+        var S = out.sched, planIds = Object.keys(PL.pick), live = SEA === 'sched' || SEA === 'fest';
+        var raw = (st.friendPicks || []).slice(), saved = st.friends || {}, key = frWho || '', same = function (a, b) { return a && b && a.length === b.length && a.slice().sort().join(',') === b.slice().sort().join(','); };
+        var isSaved = frOn && Object.keys(saved).some(function (nm) { return same(saved[nm], raw); });
+        S.frShow = frOn; S.frK = frPos + ' plan'; S.frLine = frN + (frN === 1 ? ' set' : ' sets') + ' \u00b7 ' + (frBoth ? frBoth + ' in common with yours' : 'none in common with yours yet') + '. Star any set to add it to your plan.';
+        S.frCanKeep = frOn && !isSaved; S.frSaved = isSaved; S.frKeepLabel = 'Save ' + (frWho ? frWho + '\u2019s' : 'this') + ' plan';
+        S.frKeep = function () { var nm = key || ('Friend ' + (Object.keys(self.state.friends || {}).length + 1)); var f = Object.assign({}, self.state.friends || {}); f[nm] = raw; try { window.localStorage.setItem('pk-friends', JSON.stringify(f)); } catch (e) {} self.setState({ friends: f, friendWho: nm }); };
+        S.frClose = function () { self.setState({ friendPicks: null, schedF: self.state.schedF === 'friend' ? 'all' : self.state.schedF }); };
+        var shBase = (typeof window !== 'undefined' && /github\.io|localhost|127\.0\.0\.1/.test(window.location.host)) ? window.location.origin + window.location.pathname : 'https://pickathon.com/my/';
+        var url = shBase + '#picks=' + planIds.join(',') + (st.myName ? '&who=' + encodeURIComponent(st.myName) : '') + '&on=grid';
+        var names = planIds.map(function (id) { var x = d.sets.filter(function (y) { return String(y.id) === String(id); })[0]; return x ? aN(x.a) : ''; }).filter(function (v, i, a) { return v && a.indexOf(v) === i; });
+        var txt = 'My Pickathon plan (' + planIds.length + (planIds.length === 1 ? ' set' : ' sets') + '): ' + names.slice(0, 6).join(', ') + (names.length > 6 ? ' and more' : '');
+        S.shShow = live && planIds.length > 0 && !frOn; S.shLabel = 'Share my plan'; S.shToastOn = !!st.schShT; S.shToast = st.schShT || '';
+        S.shGo = function () {
+          try { if (navigator.share) { navigator.share({ title: 'My Pickathon plan', text: txt, url: url }).catch(function () {}); return; } } catch (e) {}
+          var done = function (m) { self.setState({ schShT: m }); setTimeout(function () { self.setState({ schShT: '' }); }, 6000); };
+          try { navigator.clipboard.writeText(url).then(function () { done(st.myName ? 'Link copied. Paste it into a message.' : 'Link copied. Add your first name in My Pickathon so friends know whose plan it is.'); }, function () { self.setState({ shareOpen: true, copied: false }); self.go('mine'); }); } catch (e) { self.setState({ shareOpen: true, copied: false }); self.go('mine'); }
+        };
+      })();
       var daySets = d.sets.filter(pass);
       if (!phone) {
         var pref = ['woods', 'paddock', 'galaxy-barn', 'cherry-hill', 'windmill', 'grove', 'lucky-barn', 'farmhouse', 'refuge', 'curation', 'coyote-stage', 'coyote-crafts', 'coyote-workshop', 'cedarwood', 'trackers', 'feeding-nest'];
@@ -6346,7 +6393,7 @@ window.__pkMapH = mapH; window.__pkGoFarm = goFarm;   // pk-home2: the Home neig
         out.sched.gridCols = 'display: grid; grid-template-columns: 72px repeat(' + Math.max(1, cols.length) + ', minmax(110px, 1fr))';
         out.sched.minW = 'min-width: ' + Math.max(600, 72 + cols.length * 118) + 'px';
         out.sched.empty = cols.length === 0;
-        out.sched.cols = cols.map(function (c) { var h = stage[c] ? stage[c].h : 'coyote'; var sn = stage[c] ? stage[c].n : c, hn = d.hoods[h].n; return { n: sn, h: sameNm(sn, hn) ? '' : hn, hasH: !sameNm(sn, hn), aria: sn + (sameNm(sn, hn) ? '' : ', ' + hn) + ': open the neighborhood', go: openH(h) }; });
+        var nbLg = function (h) { return h ? 'ic2/' + h + '.png' : ''; }; out.sched.cols = cols.map(function (c) { var h = stage[c] ? stage[c].h : 'coyote'; var sn = stage[c] ? stage[c].n : c, hn = d.hoods[h].n; return { lg: nbLg(h), n: sn, h: sameNm(sn, hn) ? '' : hn, hasH: !sameNm(sn, hn), aria: sn + (sameNm(sn, hn) ? '' : ', ' + hn) + ': open the neighborhood', go: openH(h) }; });
         var hours = {}; daySets.forEach(function (s) { if (cols.indexOf(s.st) >= 0) hours[s.s.slice(0, 13)] = true; });
         var mkRows = function (cols) { var hours = {}; daySets.forEach(function (s) { if (cols.indexOf(s.st) >= 0) hours[s.s.slice(0, 13)] = true; }); return Object.keys(hours).sort().map(function (hk) {
           return { label: t12(hk + ':00'), cells: cols.map(function (c) { return { items: daySets.filter(function (s) { return s.st === c && s.s.slice(0, 13) === hk; }).map(function (s) { var sb = schRow(s), on = sb.st === 'mine'; var base = s.l === 'music' ? '#D7C57D' : s.l === 'djs' ? '#B3BAD2' : s.l === 'family' ? '#BDC0A8' : '#9EC2E2'; return Object.assign(sb, { name: d.artists[s.a].n, time: (t12(s.s) + '–\u200b' + t12(s.e)).replace(/ /g, '\u00a0'), open: openA(s.a), box: 'border-left-color: ' + base }); }) }; }) };
@@ -6366,7 +6413,7 @@ window.__pkMapH = mapH; window.__pkGoFarm = goFarm;   // pk-home2: the Home neig
         stOrder.sort(function (a, b) { var ia = prefP.indexOf(a), ib = prefP.indexOf(b); return (ia < 0 ? 99 : ia) - (ib < 0 ? 99 : ib); });
         out.sched.byTime = byT; out.sched.byStage = !byT;
         out.sched.modeBtns = [['stage', 'By stage'], ['time', 'By time']].map(function (m) { var on = (m[0] === 'time') === byT; return { label: m[1], on: on ? 'true' : 'false', pick: function () { self.setState({ schedBy: m[0] }); }, style: '' }; });
-        out.sched.stages = stOrder.map(function (c, i) { var hk = stage[c] ? stage[c].h : null; return { n: stage[c] ? stage[c].n : c, pos: (i + 1) + ' of ' + stOrder.length, go: hk ? openH(hk) : function () {}, sets: daySets.filter(function (s) { return s.st === c; }).map(function (s) { return Object.assign(schRow(s), { name: d.artists[s.a].n, time: t12(s.s) + '–' + t12(s.e), open: openA(s.a) }); }) }; });
+        out.sched.stages = stOrder.map(function (c, i) { var hk = stage[c] ? stage[c].h : null; return { lg: hk ? 'ic2/' + hk + '.png' : '', hasLg: !!hk, hn: hk && d.hoods[hk] && d.hoods[hk].n !== (stage[c] || {}).n ? d.hoods[hk].n : '', n: stage[c] ? stage[c].n : c, pos: (i + 1) + ' of ' + stOrder.length, go: hk ? openH(hk) : function () {}, sets: daySets.filter(function (s) { return s.st === c; }).map(function (s) { return Object.assign(schRow(s), { name: d.artists[s.a].n, time: t12(s.s) + '–' + t12(s.e), open: openA(s.a) }); }) }; });
         out.sched.hasStages = stOrder.length > 0;
       }
     }
@@ -7809,7 +7856,7 @@ var LTABS = [['Passes', ['p4', 'p3', 'teen', 'child', 'early', 'patron']], ['Day
         myName: st.myName || '', onName: function (e) { var v = e && e.target ? e.target.value.slice(0, 30) : ''; try { window.localStorage.setItem('pk-myname', v); } catch (x) {} self.setState({ myName: v }); },
         canNative: typeof navigator !== 'undefined' && !!navigator.share, nativeShare: function () { try { navigator.share({ title: 'My Pickathon weekend', text: shareTxt, url: shareUrl }).catch(function () {}); } catch (e) {} },
         friendAdd: function () { var n = Object.assign({}, self.state.stars || {}); fr.forEach(function (id) { d.sets.forEach(function (s) { if (String(s.id) === String(id)) n[s.id] = true; }); }); frA.forEach(function (k) { n['a:' + k] = true; }); self.setState({ stars: n, friendPicks: null }); try { window.localStorage.setItem((window.__pkSK ? window.__pkSK() : 'pk-site-mine-2026'), JSON.stringify(n)); } catch (e) {} },
-        friendDismiss: function () { self.setState({ friendPicks: null }); },
+        friendDismiss: function () { self.setState({ friendPicks: null }); }, friendGrid: fr.length > 0 && (SEA === 'sched' || SEA === 'fest'), friendToGrid: function () { self.go('schedule'); },
         askSign: !st.user, hasSaved: needPick.length > 0 && SEA !== 'off', saved: needPick.map(function (k) { var a = d.artists[k], n = setsOf(k).length; return { name: a.n, img: a.i || '', hasImg: !!a.i, open: openA(k), cta: mEarly ? 'Times come out in early summer' : n > 1 ? 'Plays ' + n + ' times · pick a set →' : 'Add their set →' }; }),
         savedHead: mEarly ? 'Your saved artists (' + needPick.length + ')' : 'Pick a set for ' + needPick.length + ' saved artist' + (needPick.length > 1 ? 's' : ''),
         savedSub: mEarly ? 'When set times come out, each one turns into their sets so you can pick when to see them.' : 'Set times are out. Choose when you’ll see each one.',
@@ -8098,7 +8145,7 @@ html:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root:
 </style>
 <script>/*pk-acct: My Pickathon account (sample data only until the FMS account service is live) and Past Pickathons (stars and years saved in this browser). Hooks: __pkAcct.sample('ready'|'pending'|'late'|'paid'|'none'|'out'), __pkAcct.signIn(), __pkAcct.signOut()*/
 (function () {
-  var ME = null, sheet = null, S = { step: 'email', email: '', err: '', cool: 0, ban: '', y: '', sel: [] }, T = null, QI = 0, prevF = null, RAF = 0;
+  var ME = null, sheet = null, S = { step: 'email', email: '', err: '', cool: 0, ban: '', y: '', sel: [] }, T = null, QI = 0, prevF = null, RAF = 0, OPEN = false;
   var css = document.createElement('style');
   var B = 'display:flex;align-items:center;justify-content:center;width:100%;box-sizing:border-box;min-height:50px;margin-top:12px;padding:0 16px;border-radius:6px;font:inherit;font-size:14px;font-weight:800;letter-spacing:1px;text-transform:uppercase;text-decoration:none;cursor:pointer;';
   var PRI = 'border:2px solid #D6B54A;background:rgba(214,181,74,.18);color:#F2CF62;', SEC = 'border:2px solid rgba(242,237,227,.88);background:rgba(18,22,15,.26);color:#F2EDE3;';
@@ -8128,6 +8175,26 @@ html:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root:
     '@media(min-width:601px) and (max-width:1199px){.pk-mine #pk-acct,.pk-mine>.pk-wp,.pk-mine #pk-past,.pk-mine>h1,.pk-mine>p{max-width:660px;margin-left:auto!important;margin-right:auto!important}#pk-acct .ac-plan{display:grid;grid-template-columns:1fr 1fr;gap:0 20px;align-items:start}#pk-acct .ac-plan .ac-sch{margin-top:10px}}' +
     '@media(min-width:1200px){.pk-mine{position:relative;display:grid;grid-template-columns:7fr 5fr;column-gap:32px;align-items:start;max-width:1200px;box-sizing:border-box}.pk-mine>*{grid-column:2}.pk-mine>h1,.pk-mine>p{grid-column:1/-1}.pk-mine>#pk-acct{grid-column:1;grid-row:3/span 30}.pk-mine #pk-acct .ac-card{max-width:none}.pk-mine #pk-acct .ac-line{position:absolute;top:0;right:0;margin:0;min-height:72px;align-items:flex-end}' +
     '.pk-mine:not(:has(#pk-acct .ac-card))>.pk-wp{grid-column:1}.pk-mine:not(:has(#pk-acct .ac-card))>#pk-past{grid-column:2;grid-row:3/span 30}.pk-wp,#pk-past .pp{max-width:none}}';
+  css.textContent +=
+    '#pk-acct .ac-hero{position:relative;overflow:hidden;border-radius:6px;padding:20px 18px 18px;margin-bottom:0}#pk-acct .ac-bat{position:absolute;right:-18px;top:-10px;width:150px;height:auto;opacity:.16;pointer-events:none}' +
+    '#pk-acct p.ac-big{position:relative;margin:8px 0 6px!important;font:400 64px/.92 "Pickathon 2014","Bricolage Grotesque",sans-serif!important;letter-spacing:.02em;text-transform:uppercase;color:#F2EDE3}#pk-acct .ac-hx{position:relative;margin:0;font-size:17px;line-height:1.4;color:#E4DED2}#pk-acct .ac-hx b{color:#F2EDE3}' +
+    '#root#root#root#root#root#root#root#root #pk-acct .ac-hero .pk-cta{display:flex!important;align-items:center;justify-content:center;width:100%!important;margin:16px 0 0!important;box-sizing:border-box;border-radius:6px!important;border:2px solid #F2EDE3!important;background:#F2EDE3!important;color:#1A1618!important;font-size:14px!important;font-weight:800!important;letter-spacing:.06em!important;text-transform:uppercase;cursor:default}#pk-acct .ac-hero a.pk-cta{cursor:pointer;text-decoration:none}' +
+    '#pk-acct .ac-q,.pk-mine>.pk-wq{display:flex;justify-content:space-between;align-items:center;gap:14px;margin:0;padding:6px 2px;min-height:50px;border:0;border-bottom:1px solid #4F4749;border-radius:0;background:transparent;font-size:14px;line-height:1.4;color:#CFC9BC;max-width:660px;box-sizing:border-box}' +
+    '#pk-acct .ac-q b.g{color:#9FCB8A}#pk-acct .ac-q b.r{color:#F0A487}#pk-acct .ac-link,.pk-wl{flex:none;padding:0;border:0;background:transparent;color:#F2CF62;font:inherit;font-size:14px;font-weight:700;white-space:nowrap;min-height:44px;cursor:default}.pk-wl{cursor:pointer}.pk-wq .pk-mx{margin:0}.pk-wq .pk-mx b{color:#F2EDE3}' +
+    '#pk-acct .ac-d{margin:12px 0 0}#pk-acct .ac-line{margin:10px 0 0}' +
+    '#pk-past .pp{background:transparent;border:0;padding:0;margin-top:22px}#pk-past .pw-h{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin:0 0 4px}#pk-past h2.pw-t{margin:0;font:400 31px/.95 "Pickathon 2014","Bricolage Grotesque",sans-serif;letter-spacing:.02em;white-space:nowrap}' +
+    '#pk-past .pw{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:12px 0 0}@media(min-width:601px){#pk-past .pw{grid-template-columns:repeat(6,minmax(0,1fr))}}@media(min-width:1200px){#pk-past .pw{grid-template-columns:repeat(5,minmax(0,1fr))}}' +
+    '#pk-past .pw button{border:0!important;position:relative;display:flex;align-items:center;justify-content:center;aspect-ratio:3/4;min-width:0;padding:0;border:0;border-radius:4px;overflow:hidden;background:#3A3436;color:#2B2628;font:400 26px "Pickathon 2014","Bricolage Grotesque",sans-serif;cursor:default}' +
+    '#pk-past .pw img{display:block;width:100%;height:100%;object-fit:contain;padding:5px 5px 23px;box-sizing:border-box}#pk-past .pw .f img{object-fit:cover;padding:0}' +
+    '#pk-past .pw .yy{color:#2B2628!important;padding-bottom:18px}#pk-past .pw s{position:absolute;left:0;right:0;bottom:0;padding:3px 0;font:800 11px/1.3 "Bricolage Grotesque",sans-serif;letter-spacing:.08em;text-decoration:none;text-align:center;background:#221E20;color:#F2EDE3}' +
+    '#pk-past .pw button[aria-pressed=false] img{filter:grayscale(1) brightness(.85);opacity:.7}#pk-past .pw button[aria-pressed=false]{background:#4A4446!important}#pk-past .pw button.ty[aria-pressed=false]{background:#A39E93!important}' +
+    '#pk-past .pw button[aria-pressed=true]{box-shadow:0 0 0 2px #D6B54A,0 0 14px rgba(214,181,74,.35)}#pk-past .pw button[aria-pressed=true] s{background:#D6B54A;color:#1A1618!important}#pk-past .pw button[aria-pressed=false] s{color:#F2EDE3!important}' +
+    '#pk-sheet .sh.yr{background:var(--p);color:var(--k);border-color:var(--k);padding-top:30px}#pk-sheet .sh.yr .st{position:absolute;left:0;right:0;top:0;height:10px;display:flex}#pk-sheet .sh.yr .st i{flex:1}' +
+    '#pk-sheet .sh.yr h2{margin:0;padding:0;font:400 36px/.95 "Pickathon 2014","Bricolage Grotesque",sans-serif;letter-spacing:.02em;color:var(--k)}#pk-sheet .sh.yr p{color:var(--k)}#pk-sheet .sh.yr .x{border-color:var(--k);color:var(--k)}' +
+    '#pk-sheet .yr .yh{display:flex;gap:14px;align-items:center;padding-right:36px}#pk-sheet .yr .yh img{width:104px;height:132px;object-fit:contain;flex:none}#pk-sheet .yr .yk{margin:0 0 4px;font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--b)}#pk-sheet .yr .yd{margin:6px 0 0;font-size:14px}' +
+    '#pk-sheet .yr ol{list-style:none;margin:12px 0 16px;padding:0}#pk-sheet .yr li{display:flex;gap:12px;align-items:baseline;padding:8px 0;border-bottom:1px solid var(--r);font-size:20px;font-weight:700}#pk-sheet .yr li b{flex:none;width:20px;font:400 22px "Pickathon 2014","Bricolage Grotesque",sans-serif;color:var(--b)}' +
+    '#pk-sheet .yr .two{display:flex;gap:10px}#pk-sheet .yr .two button{flex:1;margin-top:0;padding:0 8px}#pk-sheet .sh.yr .pri{border:2px solid var(--b);background:var(--b);color:var(--p)}#pk-sheet .sh.yr .pri.sec{background:transparent;color:var(--b)}' +
+    '#pk-sheet .yr .ylk{display:flex;justify-content:space-between;gap:12px;margin-top:6px}#pk-sheet .sh.yr .lk{color:var(--b);text-decoration:none}';
   document.head.appendChild(css);
   function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
   function usd(n) { return '$' + (n / 100).toFixed(2).replace(/\.00$/, ''); }
@@ -8135,14 +8202,11 @@ html:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root:
   function ST() { var a = A(); return (a && a.state) || {}; }
 
   /* ---------- tickets ---------- */
-  function acctHtml() {
-    var h = '';
-    if (!ME) return '<p class="ac-line"><button type="button" class="ac-link" data-ac="in">Sign in to see your tickets →</button></p>';
-    h += '<p class="ac-line">Signed in as ' + esc(ME.email) + ' <button type="button" class="ac-sm" data-ac="out">Sign out</button></p>';
-    if (!ME.order) return h + '<section class="ac-card"><p class="ac-k">Pickathon 2027 · Aug 5–8</p><h2>No 2027 tickets yet</h2><button type="button" class="ac-pri" data-ac="buy">Get tickets</button><p class="ac-note">Bought with a different email? Sign out and use that one.</p></section>';
-    var o = ME.order, pp = o.plan, late = pp && pp.status === 'late', rel = o.tickets.some(function (t) { return t.qr; });
-    h += '<section class="ac-card' + (late ? ' late' : '') + '" aria-label="Your tickets"><p class="ac-k">Pickathon 2027 · Aug 5–8</p><h2>Your tickets</h2><p class="ac-o">' + esc(o.num) + ' · bought ' + esc(o.date) + '</p>';
-    if (late) h += '<p class="ac-note" style="margin:0 0 4px">Your ' + esc(pp.lateDate) + ' payment of ' + usd(pp.lateAmt) + ' didn’t go through. We’ll try your card again automatically. To pay now or use a different card, open your order.</p><a class="ac-pri" href="#" data-ac="manage">Pay or update card ↗</a><p class="ac-note" style="margin:8px 0 12px">Your tickets stay yours.</p>';
+  function days() { return Math.ceil((new Date(2027, 7, 5) - new Date()) / 864e5); }
+  function andList(l) { return l.length < 2 ? l.join('') : l.slice(0, -1).join(', ') + ' and ' + l[l.length - 1]; }
+  function detailHtml(o) {
+    var pp = o.plan, late = pp && pp.status === 'late', rel = o.tickets.some(function (t) { return t.qr; });
+    var h = '<section class="ac-card ac-d' + (late ? ' late' : '') + '" aria-label="Ticket details"><p class="ac-o">' + esc(o.num) + ' · bought ' + esc(o.date) + '</p>';
     o.tickets.forEach(function (t) {
       var cx = t.status === 'cancelled' || t.status === 'transferred', cls = t.status === 'ready' ? 'g' : '';
       h += '<div class="ac-t' + (cx ? ' x' : '') + '"><span><b>' + esc(t.type) + '</b><br><span style="font-size:13px;color:#B9B3A6">' + esc(t.holder) + '</span></span><span class="ac-tag ' + cls + '">' + esc(t.status) + '</span></div>';
@@ -8163,6 +8227,23 @@ html:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root:
     }
     return h + '</section>';
   }
+  function acctHtml() {
+    var K = '<p class="ac-k">Pickathon 2027 · Aug 5–8</p>', BAT = '<img class="ac-bat" src="logo27-bat-only.png" alt="" width="150" height="150">', d = days(), h;
+    var line = ME ? '<p class="ac-line">Signed in as ' + esc(ME.email) + ' <button type="button" class="ac-sm" data-ac="out">Sign out</button></p>' : '';
+    if (!ME || !ME.order) {
+      h = '<section class="ac-card ac-hero" aria-label="Your tickets">' + BAT + K + '<p class="ac-big">Not in yet.</p><p class="ac-hx">' + (d > 0 ? '<b>' + d + ' days</b> to the farm. ' : '') + 'Your years and stars are saved here either way.</p><button type="button" class="pk-cta pri" data-ac="buy">Get tickets</button></section>';
+      return h + (ME ? '<p class="ac-q"><span>Bought with a different email? Sign out and use that one.</span></p>' + line : '<p class="ac-q"><span>Already bought tickets?</span><button type="button" class="ac-link" data-ac="in">Sign in</button></p>');
+    }
+    var o = ME.order, pp = o.plan, late = pp && pp.status === 'late', open = OPEN || late;
+    var live = o.tickets.filter(function (t) { return t.status !== 'cancelled' && t.status !== 'transferred'; }), nm = live.map(function (t) { return String(t.holder).split(' ')[0]; });
+    h = '<section class="ac-card ac-hero' + (late ? ' late' : '') + '" aria-label="Your tickets">' + BAT + K + '<p class="ac-big">You’re in.</p><p class="ac-hx">' + (d > 0 ? '<b>' + d + ' days</b> to the farm. ' : '') + live.length + (live.length === 1 ? ' ticket: ' : ' tickets: ') + esc(andList(nm)) + '.</p>';
+    if (late) h += '<p class="ac-note">Your ' + esc(pp.lateDate) + ' payment of ' + usd(pp.lateAmt) + ' didn’t go through. We’ll try your card again automatically. To pay now or use a different card, open your order. Your tickets stay yours.</p><a class="pk-cta pri" href="#" data-ac="manage">Pay or update card ↗</a>';
+    else h += '<button type="button" class="pk-cta pri" data-ac="show" aria-expanded="' + open + '">' + (open ? 'Hide my tickets' : 'Show my tickets') + '</button>';
+    h += '</section>';
+    if (pp) h += '<p class="ac-q"><span>Payment plan <b class="' + (late ? 'r' : 'g') + '">' + (late ? 'late' : pp.status === 'paid' ? 'paid in full' : 'on track') + '</b>' + (pp.status !== 'paid' && !late ? ' · next ' + usd(pp.nextAmt) + ' on ' + esc(pp.next) : '') + '</span>' + (late ? '' : '<button type="button" class="ac-link" data-ac="show">' + (open ? 'Hide' : 'Details') + '</button>') + '</p>';
+    if (open) h += detailHtml(o);
+    return h + line;
+  }
 
   /* ---------- past Pickathons (browser-only until the account store lands) ---------- */
   function myYears() { return (ST().myYears || []).map(String).filter(function (y) { return /^\d{4}$/.test(y); }).sort(); }
@@ -8171,22 +8252,22 @@ html:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root:
   function nIn(y) { return stars().filter(function (z) { return z.y === y; }).length; }
   function allNames() { var o = []; stars().forEach(function (z) { if (o.indexOf(z.n) < 0) o.push(z.n); }); return o; }
   function pastKey(y) { var a = A(), P = a && a.state.data && a.state.data.past ? a.state.data.past.years || [] : [], n = +y, hit = null; P.forEach(function (q) { var m = String(q.y).match(/^(\d{4})(?:–(\d{4}))?$/); if (m && n >= +m[1] && n <= +(m[2] || m[1])) hit = q.y; }); return hit; }
+  function YRS() { var all = []; for (var y = 2026; y >= 1999; y--) if (y !== 2020 && y !== 2021) all.push(String(y)); return all; }
+  function brand(y) { var D = (A() && A().state.data) || {}, b = (D.yearBrand || {})[y] || {}; return { p: b.paper || '#F2EDE3', k: b.ink || '#2B2628', b: b.btnInk || b.ink || '#2B2628', st: (b.stripe || []).filter(function (c) { return String(c).toLowerCase() !== String(b.paper || '').toLowerCase(); }), dates: b.dates || '' }; }
+  function poster(y, small) { return +y >= 2000 ? 'i/y' + String(y).slice(2) + '-poster' + (small ? '-s' : '') + '.webp' : ''; }
+  function hexA(h, al) { var m = /^#?([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$/i.exec(h || ''); return m ? 'rgba(' + parseInt(m[1], 16) + ',' + parseInt(m[2], 16) + ',' + parseInt(m[3], 16) + ',' + al + ')' : 'rgba(0,0,0,' + al + ')'; }
   function pastHtml() {
     var a = A(); if (!a || !a.pPicks) return '';
-    var my = myYears(), ys = starYears(), h = '<section class="pp" aria-label="Past Pickathons"><p class="pk-mk">Past Pickathons</p>';
-    h += '<h2>' + (my.length ? 'Your ' + my.length + (my.length === 1 ? ' year' : ' years') : 'Were you there?') + '</h2>';
-    if (!my.length) h += '<p class="pp-x">Mark the years you came. They go on your story image.</p>';
-    h += '<div class="pp-ch">' + my.map(function (y) { return '<button type="button" data-pp="go" data-y="' + y + '" aria-label="Open Pickathon ' + y + '">' + y + '</button>'; }).join('') + '<button type="button" class="ac-sm pk-cta sec pp-e" data-pp="years">' + (my.length ? 'Edit years' : 'Add years') + '</button></div>';
-    if (ys.length) {
+    var my = myYears(), ys = starYears(), h = '<section class="pp" aria-label="Your Pickathons"><div class="pw-h"><h2 class="pw-t">Your Pickathons</h2>' + (my.length ? '<span class="pk-mk">' + my.length + (my.length === 1 ? ' year' : ' years') + '</span>' : '') + '</div>';
+    h += '<p class="pp-x" style="margin:0">' + (my.length ? 'Tap every year you were there. Tap a lit poster for your top five.' : 'Were you there? Tap every year you came.') + '</p>';
+    h += '<div class="pw" role="group" aria-label="Pickathon years">' + YRS().map(function (y) {
+      var on = my.indexOf(y) >= 0, src = poster(y, 1), lab = 'Pickathon ' + y + (on ? ', you were there. Open your top five' : ', tap if you were there');
+      return '<button type="button" data-pp="tile" data-y="' + y + '" aria-pressed="' + on + '" aria-label="' + lab + '" class="' + (src ? (+y < 2007 ? 'f' : '') : 'ty') + '"' + (on ? ' style="background:' + brand(y).p + '!important"' : '') + '>' + (src ? '<img src="' + src + '" alt="" loading="lazy" decoding="async">' : '<span class="yy">' + y + '</span>') + '<s>' + y + '</s></button>';
+    }).join('') + '</div>';
+    if (ys.length > 1) {
       var all = a.pAllPicks();
-      if (ys.length > 1) h += '<div class="pp-row"><b>All-time top five</b>' + (allNames().length > 5 ? '<button type="button" class="pp-l" data-pp="pick" data-y="all">Choose five</button>' : '') + '</div><ol>' + all.map(function (n) { return '<li>' + esc(n) + '</li>'; }).join('') + '</ol>';
-      ys.forEach(function (y) {
-        var n = nIn(y), five = a.pPicks(y);
-        h += '<div class="pp-row"><b>' + esc(y) + ' top five</b>' + (n > 5 ? '<button type="button" class="pp-l" data-pp="pick" data-y="' + esc(y) + '">Choose five</button>' : '') + '</div><ol>' + five.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ol>';
-        if (n < 5) h += '<p class="pp-n">' + n + ' of 5. <button type="button" class="pp-l" style="min-height:0" data-pp="go" data-y="' + esc(y) + '">Star more on the ' + esc(y) + ' page →</button></p>';
-        else if (n > 5) h += '<p class="pp-n">' + n + ' starred · these five go on the card</p>';
-      });
-    } else h += '<p class="pp-x">Star your favorite acts on any past year page to make a top five.</p>';
+      h += '<div class="pp-row"><b>All-time top five</b>' + (allNames().length > 5 ? '<button type="button" class="pp-l" data-pp="pick" data-y="all">Choose five</button>' : '') + '</div><ol>' + all.map(function (n) { return '<li>' + esc(n) + '</li>'; }).join('') + '</ol>';
+    }
     h += '<p class="pp-x" style="font-size:13px;color:#B9B3A6">Saved on this device.</p>';
     h += '<button type="button" class="pk-cta pri pp-b" data-pp="story"' + (my.length || ys.length ? '' : ' disabled aria-disabled="true" style="opacity:.45;cursor:default"') + '>Make my story image</button>';
     return h + '</section>';
@@ -8202,7 +8283,7 @@ html:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root:
     a.shareCard({ kind: 'years', imgs: ks.map(function (q) { return LG[q]; }), lgKeys: ks, badgeYears: ks.map(function (q) { return BY[q] ? q : ''; }), title: ['My Pickathon', 'years'], count: n2, tier: tier, mine: my, all: all, first: my[0], hook: 'How many have you been to?', text: 'I’ve been to ' + n2 + ' Pickathon' + (n2 === 1 ? '' : 's') + ', since ' + my[0] + '.', link: 'https://pickathon.com/my#yrs=' + my.join(',') });
   }
 
-  function sizeBtns() { var big = window.matchMedia && window.matchMedia('(min-width:1200px)').matches, hh = big ? '56px' : '50px'; document.querySelectorAll('.pk-mine button.pk-cta, #pk-past button.pk-cta, #pk-acct button.pk-cta').forEach(function (b) { b.style.setProperty('min-height', hh, 'important'); b.style.setProperty('height', 'auto', 'important'); }); }
+  function sizeBtns() { var big = window.matchMedia && window.matchMedia('(min-width:1200px)').matches, hh = big ? '56px' : '50px'; document.querySelectorAll('.pk-mine button.pk-cta, #pk-past button.pk-cta, #pk-acct button.pk-cta').forEach(function (b) { b.style.setProperty('min-height', hh, 'important'); b.style.setProperty('height', 'auto', 'important'); }); document.querySelectorAll('#pk-acct .ac-hero .pk-cta').forEach(function (b) { b.style.setProperty('background', '#F2EDE3', 'important'); b.style.setProperty('color', '#1A1618', 'important'); b.style.setProperty('border-color', '#F2EDE3', 'important'); }); }
   function paint() {
     var el = document.getElementById('pk-acct'); if (el) { var h = acctHtml(); if (el.__h !== h || el.innerHTML === '') { el.__h = h; el.innerHTML = h; } }
     var pe = document.getElementById('pk-past'); if (pe) { var h2 = pastHtml(); if (pe.__h !== h2 || (h2 && pe.innerHTML === '')) { pe.__h = h2; pe.innerHTML = h2; } }
@@ -8227,6 +8308,18 @@ html:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root:
     } else if (S.step === 'pick') {
       var isAll = S.y === 'all', opts = isAll ? stars().reduce(function (o, z) { if (!o.some(function (q) { return q.n === z.n; })) o.push(z); return o; }, []) : stars().filter(function (z) { return z.y === S.y; });
       h += '<h2>' + (isAll ? 'Your all-time five' : 'Your ' + esc(S.y) + ' five') + '</h2><p>' + S.sel.length + ' of 5 chosen. ' + (S.sel.length >= 5 ? 'Untick one to swap.' : 'Tick the ones that go on your card.') + '</p><div class="pk" role="group" aria-label="Your stars">' + opts.map(function (z) { var on = S.sel.indexOf(z.n) >= 0, off = !on && S.sel.length >= 5; return '<button type="button" data-sh="tp" data-n="' + esc(z.n) + '" aria-pressed="' + on + '"' + (off ? ' aria-disabled="true"' : '') + '><i>' + (on ? '✓' : '') + '</i><span>' + esc(z.n) + '</span>' + (isAll ? '<small>' + esc(z.y) + '</small>' : '') + '</button>'; }).join('') + '</div><button class="pri" type="button" data-sh="pdone">Done</button>';
+    } else if (S.step === 'year') {
+      var B = brand(S.y), five = a && a.pPicks ? a.pPicks(S.y) : [], n = nIn(S.y), pk = pastKey(S.y), src = poster(S.y, 0);
+      h = '<div class="sh yr" role="document" style="--p:' + B.p + ';--k:' + B.k + ';--b:' + B.b + ';--r:' + hexA(B.k, .25) + '"><div class="st" aria-hidden="true">' + (B.st.length ? B.st : [B.k]).map(function (c) { return '<i style="background:' + c + '"></i>'; }).join('') + '</div><button type="button" class="x" data-sh="close" aria-label="Close">×</button>';
+      h += '<div class="yh">' + (src ? '<img src="' + src + '" alt="">' : '') + '<div><p class="yk">I was there</p><h2>Pickathon ' + esc(S.y) + '</h2>' + (B.dates ? '<p class="yd">' + esc(B.dates) + '</p>' : '') + '</div></div>';
+      if (n) {
+        h += '<ol aria-label="My top five">' + five.map(function (x, i) { return '<li><b>' + (i + 1) + '</b>' + esc(x) + '</li>'; }).join('') + '</ol>';
+        if (n < 5 && pk) h += '<p style="margin:-6px 0 14px;font-size:14px">' + n + ' of 5 so far. Star more on the ' + esc(S.y) + ' page.</p>';
+        h += '<div class="two">' + (n > 5 ? '<button class="pri sec" type="button" data-sh="ypick">Change picks</button>' : pk ? '<button class="pri sec" type="button" data-sh="ygo">Star more</button>' : '') + '<button class="pri" type="button" data-sh="yshare">Share this year</button></div>';
+      } else {
+        h += '<p style="margin:16px 0">Star your favorites on the ' + esc(S.y) + ' page and your top five shows up here.</p>' + (pk ? '<button class="pri" type="button" data-sh="ygo">Open the ' + esc(S.y) + ' page</button>' : '');
+      }
+      h += '<div class="ylk">' + (n > 5 && pk ? '<button class="lk" type="button" data-sh="ygo">Relive ' + esc(S.y) + ' →</button>' : '<span></span>') + '<button class="lk" type="button" data-sh="ynot">I wasn’t there</button></div>';
     } else if (S.step === 'story') {
       var my = myYears(), ys = starYears();
       h += '<h2>Make my story image</h2><p>A story-size image for Instagram, texts or anywhere. Pick one.</p>';
@@ -8243,7 +8336,7 @@ html:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root:
     if (!sheet) { sheet = document.createElement('div'); sheet.id = 'pk-sheet'; sheet.setAttribute('role', 'dialog'); sheet.setAttribute('aria-modal', 'true'); document.body.appendChild(sheet); sheet.addEventListener('click', shClick); sheet.addEventListener('submit', shSub); document.addEventListener('keydown', onKey, true); var r = document.getElementById('root'); if (r) { r.setAttribute('inert', ''); r.setAttribute('aria-hidden', 'true'); } }
     drawSheet(true);
   }
-  var LBL = { out: 'Sign out', years: 'Years you came', pick: 'Choose five', story: 'Make my story image' };
+  var LBL = { year: 'Your Pickathon year', out: 'Sign out', years: 'Years you came', pick: 'Choose five', story: 'Make my story image' };
   function drawSheet(focus) { if (!sheet) return; var sc = sheet.querySelector('.sh'), top = sc ? sc.scrollTop : 0; sheet.setAttribute('aria-label', LBL[S.step] || 'Sign in'); sheet.innerHTML = sheetHtml(); sc = sheet.querySelector('.sh'); if (sc) sc.scrollTop = top; if (focus) { var f = sheet.querySelector('input,button.pri,.x'); if (f) try { f.focus({ preventScroll: true }); } catch (e) {} } }
   function closeSheet() { if (!sheet) return; clearInterval(T); T = null; sheet.remove(); sheet = null; document.removeEventListener('keydown', onKey, true); var r = document.getElementById('root'); if (r) { r.removeAttribute('inert'); r.removeAttribute('aria-hidden'); } if (prevF && prevF.focus && document.contains(prevF)) try { prevF.focus({ preventScroll: true }); } catch (e) {} }
   function onKey(e) { if (e.key === 'Escape') { e.preventDefault(); closeSheet(); } }
@@ -8263,6 +8356,10 @@ html:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root:
       else { var o = Object.assign({}, a.state.pick || (function () { try { return JSON.parse(localStorage.getItem('pk-pick-2027') || 'null') || {}; } catch (er) { return {}; } })()); o[S.y] = S.sel.slice(0, 5); try { localStorage.setItem('pk-pick-2027', JSON.stringify(o)); } catch (er) {} a.setState({ pick: o }); }
       closeSheet(); later();
     }
+    if (k === 'ynot') { setYears(myYears().filter(function (q) { return q !== S.y; })); closeSheet(); later(); }
+    if (k === 'ygo' && a) { var pk2 = pastKey(S.y); closeSheet(); if (pk2) a.go('past', { y: pk2 }); }
+    if (k === 'ypick' && a) { S.sel = a.pPicks(S.y).slice(); S.step = 'pick'; drawSheet(true); }
+    if (k === 'yshare' && a) { var sy = S.y; closeSheet(); a.pTop(sy, false); }
     if (k === 'mk' && a) { var w = b.dataset.k; closeSheet(); if (w === 'years') yearsCard(); else if (w === 'all') a.pTop(null, true); else a.pTop(w, false); }
   }
   function shSub(e) {
@@ -8277,6 +8374,8 @@ html:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root:
     var k = b.dataset.ac || b.dataset.pp, a = A(); e.preventDefault();
     if (k === 'in') openSheet('email'); else if (k === 'out') openSheet('out');
     else if (k === 'qr') { QI = +b.dataset.i; paint(); }
+    else if (k === 'show') { OPEN = !OPEN; paint(); }
+    else if (k === 'tile') { var ty = b.dataset.y, mine = myYears(); if (mine.indexOf(ty) >= 0) openSheet('year', { y: ty }); else { setYears(mine.concat(ty)); later(); } }
     else if (k === 'buy') { if (a) a.go('tickets'); }
     else if (k === 'manage') { /* sample mode: opens the fan's FMS order page in a new tab once the account service is live */ }
     else if (k === 'years') openSheet('years', { sel: myYears() });
@@ -8293,8 +8392,8 @@ html:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root:
   };
   window.__pkAcct = {
     sample: function (k) {
-      if (k === 'out') { ME = null; QI = 0; paint(); return; }
-      var s = SAMPLE[k]; ME = { email: 'fern@example.com', order: s ? { num: 'PKT-1001', date: 'Nov 19', plan: s.plan, tickets: s.tickets.map(function (t) { return { type: t[0], holder: t[1], status: t[2], qr: t[3] ? 'sample' : null }; }) } : null };
+      if (k === 'out') { ME = null; QI = 0; OPEN = false; paint(); return; }
+      OPEN = false; var s = SAMPLE[k]; ME = { email: 'fern@example.com', order: s ? { num: 'PKT-1001', date: 'Nov 19', plan: s.plan, tickets: s.tickets.map(function (t) { return { type: t[0], holder: t[1], status: t[2], qr: t[3] ? 'sample' : null }; }) } : null };
       QI = 0; paint();
     },
     signIn: function () { openSheet('email'); }, signOut: function () { openSheet('out'); }, repaint: paint
