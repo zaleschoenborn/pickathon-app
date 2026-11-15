@@ -1,4 +1,4 @@
-/* pk-about1-css: the About hub, draft 1 (Nov 13 2026). Scoped under .ab1; uses Plan's .pl2 tokens and the shared pk-cta button. */
+/* pk-about1-css: the About hub, draft 3 (Nov 15 2026). Scoped under .ab1; uses Plan's .pl2 tokens and the shared pk-cta button. */
 .ab1 .ab-in{max-width:1160px;margin:0 auto;padding:14px var(--gutter) 8px}
 #root .ab1 .ab-h1{font-size:var(--d-sec)!important}
 #root .ab1 .ab-lede{margin-top:6px;color:var(--cream-dim);font-size:1rem;line-height:1.4}
@@ -19,7 +19,7 @@
 @media (min-width:600px){.ab1 .ab-eras{overflow:visible;margin:12px 0 0;padding:0}.ab1 .ab-eras li{flex:1 1 0}}
 @media (min-width:600px) and (max-width:1199px){.ab1 .ab-in{max-width:768px}.ab1 .ab-im{height:240px}}
 @media (min-width:1200px){
-  .ab1 .ab-list{grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+  .ab1 .ab-list{grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
   .ab1 .ab-c:first-child{grid-column:1/-1;flex-direction:row;min-height:340px}
   .ab1 .ab-c:first-child .ab-im{height:auto;width:58%}
   .ab1 .ab-c:first-child .ab-tx{justify-content:center;padding:28px 32px}
@@ -27,6 +27,21 @@
   .ab1 .ab-c:first-child .ab-x{flex:0}
   .ab1 .ab-c:first-child .ab-eras{margin-top:18px;display:grid;grid-template-columns:1fr 1fr;gap:10px}
   #root#root#root#root#root#root#root#root#root#root#root#root#root#root .ab1 .ab-c:first-child .pk-cta.ab-btn{width:auto!important;align-self:flex-start;padding:0 32px!important}
-  .ab1 .ab-im{height:200px}
+  .ab1 .ab-im{height:260px}
+  .ab1 .ab-fg{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:28px}
+  .ab1 .ab-g{margin-top:0}
   #root#root#root#root#root#root#root#root#root#root#root#root#root#root .ab1 .pk-cta.ab-btn{min-height:56px!important;height:56px!important}
 }
+
+.ab1 .ab-find{margin-top:28px}
+#root .ab1 .ab-fh{font-size:var(--d-card)!important}
+.ab1 .ab-fg{margin-top:4px}
+.ab1 .ab-g{margin-top:16px}
+.ab1 .ab-rows{list-style:none;margin:6px 0 0;padding:0;background:#1A2017;border:1px solid #3A4331;border-radius:16px;overflow:hidden}
+.ab1 .ab-rows li+li{border-top:1px solid #3A4331}
+#root .ab1 .ab-row{display:grid;grid-template-columns:1fr 20px;grid-template-areas:"t c" "x c";align-items:center;column-gap:12px;row-gap:2px;width:100%;min-height:64px;padding:10px 14px 10px 16px;background:none;border:0;text-align:left;color:var(--cream);font:inherit;cursor:pointer}
+#root .ab1 .ab-rt{grid-area:t;font-size:1rem;font-weight:800;line-height:1.25;color:var(--cream)}
+#root .ab1 .ab-rx{grid-area:x;font-size:.875rem;line-height:1.3;color:var(--cream-dim)}
+.ab1 .ab-rc{grid-area:c;color:var(--gold)}
+#root .ab1 .ab-row:focus-visible{outline:2px solid var(--gold);outline-offset:-2px}
+@media (hover:hover){#root .ab1 .ab-row:hover{background:#222A1D}}

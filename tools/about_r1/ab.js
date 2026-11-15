@@ -1,4 +1,4 @@
-/* pk-about1: the About hub, draft 2 (Nov 15 2026). Route 'aboutus', address #/about-us.
+/* pk-about1: the About hub, draft 3 (Nov 15 2026). Route 'aboutus', address #/about-us.
    Source: tools/about_r1/ab.js, spliced into index.html by tools/about_r1/build.py (<script id="pk-about1">, <style id="pk-about1-css">).
    Draws into <div id="ab1" class="pl2 ab1" data-pk-own> (the app's renderer leaves it alone). Every word and photo comes from
    data.json aboutHub; nothing is typed here. It borrows Plan's .pl2 tokens and the shared pk-cta button, and never changes Plan's files. */
@@ -26,7 +26,17 @@
         return '<li class="ab-c" id="ab-' + esc(c.id) + '"><div class="ab-im"><img src="' + esc(c.im) + '" alt="" style="object-position:' + focusOf(c.im) + '"' + (i > 1 ? ' loading="lazy"' : '') + ' decoding="async"></div>' +
           '<div class="ab-tx"><p class="ab-k">' + esc(c.k) + '</p><h2 class="pl-d ab-t">' + esc(c.t) + '</h2><p class="ab-x">' + esc(c.x) + '</p>' + (c.eras ? eras() : '') +
           '<button type="button" class="pk-cta sec pl-btn ab-btn" data-ab-go="' + esc(c.b[1]) + '">' + esc(c.b[0]) + '</button></div></li>';
+      }).join('') + '</ul>' + find(H.find) + '</div>';
+  }
+  /* The compact list under the photo cards: one tappable row per page, in small groups. No photos, so the whole list fits one phone screen. */
+  function find(F) {
+    if (!F || !(F.g || []).length) return '';
+    return '<section class="ab-find" aria-labelledby="ab-find-h"><h2 class="pl-d ab-fh" id="ab-find-h">' + esc(F.h) + '</h2><div class="ab-fg">' + F.g.map(function (g) {
+      return '<div class="ab-g"><p class="ab-k">' + esc(g.k) + '</p><ul class="ab-rows">' + (g.r || []).map(function (r) {
+        return '<li><button type="button" class="ab-row" data-ab-go="' + esc(r[2]) + '"><span class="ab-rt">' + esc(r[0]) + '</span><span class="ab-rx">' + esc(r[1]) + '</span>' +
+          '<svg class="ab-rc" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button></li>';
       }).join('') + '</ul></div>';
+    }).join('') + '</div></section>';
   }
   function go(to) {
     var a = app(); if (!a) return; var c = to.indexOf(':'), k = to.slice(0, c), v = to.slice(c + 1);
@@ -39,7 +49,7 @@
   function sync() {
     var el = document.getElementById('ab1'); if (!el) { root = null; return; }
     var H = (site().data || {}).aboutHub; if (!H) return;
-    var k = (H.s || []).map(function (c) { return c.id; }).join(',') + '|' + H.t + '|' + (((site().data || {}).about || {}).chapters || []).length;
+    var k = (H.s || []).map(function (c) { return c.id; }).join(',') + '|' + H.t + '|' + JSON.stringify(H.find || 0).length + '|' + (((site().data || {}).about || {}).chapters || []).length;
     if (el !== root || !el.firstChild || k !== lastKey) {
       root = el; lastKey = k; el.innerHTML = html(H);
       [].forEach.call(el.querySelectorAll('p,li'), function (e) { e.classList.add('pk-krtk'); });
