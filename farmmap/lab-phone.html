@@ -2001,7 +2001,8 @@ function lpTopR(){ const f=document.getElementById('finder'); return f?Math.roun
 function lpView(h,fk){
   const sh=D.shapes[h.id], b=sh&&sh.b, W=stage.clientWidth, Hv=stage.clientHeight-LPVB, T=Math.min(lpTopR(),Hv*.2);
   const cx=b?(b[0]+b[2])/2:h._mx*MW, cy=b?(b[1]+b[3])/2:h._my*MH;
-  let nk=fk||k; if(b&&!fk){ nk=Math.min(W*.66/Math.max(1,b[2]-b[0]),(Hv-T)*.7/Math.max(1,b[3]-b[1])); nk=Math.max(kMin||kFit,Math.min(maxK(),nk)); }
+  /* Zale, Nov 14: frame the pick with room around it (about 45% of the view) and never past 2.6x the start view, so its neighbors stay in sight */
+  let nk=fk||k; if(b&&!fk){ nk=Math.min(W*.46/Math.max(1,b[2]-b[0]),(Hv-T)*.48/Math.max(1,b[3]-b[1])); nk=Math.max(kMin||kFit,Math.min(maxK(),(kMin||kFit)*2.6,nk)); }
   const lbl=Math.min(18,W*.045);   // the label stack on the left edge is heavier than the right, so sit a touch right of centre
   const c=clampV(nk, W/2+lbl-cx*nk, T+(Hv-T)/2-cy*nk, Hv, true); return {k:nk,tx:c.tx,ty:c.ty};
 }
