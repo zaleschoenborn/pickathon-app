@@ -357,7 +357,7 @@ html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root
 html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .pk-sch-frbar p{margin:0}
 html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .pk-sch-share{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;margin:0 0 14px}
 html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .pk-sch-lg{flex:none;display:block;width:48px;height:48px;object-fit:contain}
-html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .pk-sch-col .pk-sch-lg{width:60px;height:60px;margin:0 0 8px}
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .pk-sch-col .pk-sch-lg{width:52px;height:52px;margin:0 0 8px}
 html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .pk-sch-ct{display:flex;align-items:center;justify-content:space-between;gap:4px;min-width:0}
 html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .pk-sch-ct>span.pkp-mono{min-width:0;font-size:12px;line-height:1.2;opacity:.75}
 html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .pk-sch-clash{margin:0 0 16px;padding:14px 16px 6px;max-width:760px;border:2px solid #D6B54A;border-radius:6px;background:rgba(214,181,74,.08)}
@@ -4147,7 +4147,7 @@ document.addEventListener('keydown',function(e){if(e.key==='Escape'){var x=docum
 <div style="{{bk.gridCols}}; background: rgba(242,237,227,.04); border-bottom: 1px solid rgba(242,237,227,.14)">
 <div></div>
 <sc-for list="{{bk.cols}}" as="c" hint-placeholder-count="8">
-<button type="button" class="pk-sch-col" onClick="{{c.go}}" aria-label="{{c.aria}}"><img class="pk-sch-lg" src="{{c.lg}}" alt="" aria-hidden="true" width="60" height="60" loading="lazy" decoding="async"><b>{{c.n}}</b><sc-if value="{{c.hasH}}" hint-placeholder-val="{{false}}"><span>{{c.h}}</span></sc-if></button>
+<button type="button" class="pk-sch-col" onClick="{{c.go}}" aria-label="{{c.aria}}"><img class="pk-sch-lg" src="{{c.lg}}" alt="" aria-hidden="true" width="52" height="52" loading="lazy" decoding="async"><b>{{c.n}}</b><sc-if value="{{c.hasH}}" hint-placeholder-val="{{false}}"><span>{{c.h}}</span></sc-if></button>
 </sc-for>
 </div>
 <sc-for list="{{bk.rows}}" as="row" hint-placeholder-count="8">
@@ -6345,7 +6345,7 @@ window.__pkMapH = mapH; window.__pkGoFarm = goFarm;   // pk-home2: the Home neig
         out.sched.gridCols = 'display: grid; grid-template-columns: 72px repeat(' + Math.max(1, cols.length) + ', minmax(110px, 1fr))';
         out.sched.minW = 'min-width: ' + Math.max(600, 72 + cols.length * 118) + 'px';
         out.sched.empty = cols.length === 0;
-        var nbLg = function (h) { var m = { cherryhill: 'cherry_hill' }; return h ? 'nb-logos/pt-icon-' + (m[h] || String(h).replace(/-/g, '_')) + '.png' : ''; }; out.sched.cols = cols.map(function (c) { var h = stage[c] ? stage[c].h : 'coyote'; var sn = stage[c] ? stage[c].n : c, hn = d.hoods[h].n; return { lg: nbLg(h), n: sn, h: sameNm(sn, hn) ? '' : hn, hasH: !sameNm(sn, hn), aria: sn + (sameNm(sn, hn) ? '' : ', ' + hn) + ': open the neighborhood', go: openH(h) }; });
+        var nbLg = function (h) { return h ? 'ic2/' + h + '.png' : ''; }; out.sched.cols = cols.map(function (c) { var h = stage[c] ? stage[c].h : 'coyote'; var sn = stage[c] ? stage[c].n : c, hn = d.hoods[h].n; return { lg: nbLg(h), n: sn, h: sameNm(sn, hn) ? '' : hn, hasH: !sameNm(sn, hn), aria: sn + (sameNm(sn, hn) ? '' : ', ' + hn) + ': open the neighborhood', go: openH(h) }; });
         var hours = {}; daySets.forEach(function (s) { if (cols.indexOf(s.st) >= 0) hours[s.s.slice(0, 13)] = true; });
         var mkRows = function (cols) { var hours = {}; daySets.forEach(function (s) { if (cols.indexOf(s.st) >= 0) hours[s.s.slice(0, 13)] = true; }); return Object.keys(hours).sort().map(function (hk) {
           return { label: t12(hk + ':00'), cells: cols.map(function (c) { return { items: daySets.filter(function (s) { return s.st === c && s.s.slice(0, 13) === hk; }).map(function (s) { var sb = schRow(s), on = sb.st === 'mine'; var base = s.l === 'music' ? '#D7C57D' : s.l === 'djs' ? '#B3BAD2' : s.l === 'family' ? '#BDC0A8' : '#9EC2E2'; return Object.assign(sb, { name: d.artists[s.a].n, time: (t12(s.s) + '–\u200b' + t12(s.e)).replace(/ /g, '\u00a0'), open: openA(s.a), box: 'border-left-color: ' + base }); }) }; }) };
@@ -6365,7 +6365,7 @@ window.__pkMapH = mapH; window.__pkGoFarm = goFarm;   // pk-home2: the Home neig
         stOrder.sort(function (a, b) { var ia = prefP.indexOf(a), ib = prefP.indexOf(b); return (ia < 0 ? 99 : ia) - (ib < 0 ? 99 : ib); });
         out.sched.byTime = byT; out.sched.byStage = !byT;
         out.sched.modeBtns = [['stage', 'By stage'], ['time', 'By time']].map(function (m) { var on = (m[0] === 'time') === byT; return { label: m[1], on: on ? 'true' : 'false', pick: function () { self.setState({ schedBy: m[0] }); }, style: '' }; });
-        out.sched.stages = stOrder.map(function (c, i) { var hk = stage[c] ? stage[c].h : null; return { lg: hk ? 'nb-logos/pt-icon-' + ({ cherryhill: 'cherry_hill' }[hk] || String(hk).replace(/-/g, '_')) + '.png' : '', hasLg: !!hk, hn: hk && d.hoods[hk] && d.hoods[hk].n !== (stage[c] || {}).n ? d.hoods[hk].n : '', n: stage[c] ? stage[c].n : c, pos: (i + 1) + ' of ' + stOrder.length, go: hk ? openH(hk) : function () {}, sets: daySets.filter(function (s) { return s.st === c; }).map(function (s) { return Object.assign(schRow(s), { name: d.artists[s.a].n, time: t12(s.s) + '–' + t12(s.e), open: openA(s.a) }); }) }; });
+        out.sched.stages = stOrder.map(function (c, i) { var hk = stage[c] ? stage[c].h : null; return { lg: hk ? 'ic2/' + hk + '.png' : '', hasLg: !!hk, hn: hk && d.hoods[hk] && d.hoods[hk].n !== (stage[c] || {}).n ? d.hoods[hk].n : '', n: stage[c] ? stage[c].n : c, pos: (i + 1) + ' of ' + stOrder.length, go: hk ? openH(hk) : function () {}, sets: daySets.filter(function (s) { return s.st === c; }).map(function (s) { return Object.assign(schRow(s), { name: d.artists[s.a].n, time: t12(s.s) + '–' + t12(s.e), open: openA(s.a) }); }) }; });
         out.sched.hasStages = stOrder.length > 0;
       }
     }
