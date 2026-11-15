@@ -465,7 +465,7 @@ body{margin:0;background:var(--ink);color:var(--cream);font-family:var(--f);
 
 .amn{font-style:normal;font-weight:700;opacity:.8}
 </style>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,400..800&display=swap">
+<!-- Nov 15 (speed): the web font no longer holds up the map; it swaps in when it arrives --><link rel="stylesheet" media="print" onload="this.media='all'" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,400..800&display=swap">
 
 <style>/* intro kicker is the screen's title: sized by script to span the full text width, bat centered above it */
 #dover .dk,#lptitle small{white-space:nowrap!important;display:block}
@@ -643,7 +643,7 @@ body.batout #dbat{margin:0 0 16px calc((100% - 129px)/6)!important}
 <script>/* Decide the entry state before the first paint, so nothing shows and then switches off (the title that blinked, labels that all showed and then collapsed). */
 (function(){try{var c=document.body.classList,emb=window.parent!==window,nv=performance.getEntriesByType('navigation')[0],rl=nv&&nv.type==='reload',fh=emb&&!rl&&sessionStorage.getItem('pkmap.from')==='hood',foc=!!sessionStorage.getItem('pkmap.focus');
 if(innerWidth>=1200){c.add('lm');if(fh){c.add('dpdone');c.add('nodt');}}else{if(fh)c.add('lpback');else if(!foc)c.add('lpfresh');}}catch(e){}})();</script>
-  <div id="art"><img id="mapimg" src="map.webp?v=36" alt="Map of Pendarvis Farm" draggable="false"><div id="tiles"></div><div id="veil"></div><div id="lits"></div><img id="pkb" alt="" draggable="false" hidden><div id="nic"></div><svg id="shapes"></svg></div><button id="cuebar" type="button" hidden aria-label="Open this neighborhood"><img alt=""><span class="t"><span class="k"></span><span class="n"></span><span class="l"></span></span><span class="go">Explore &rarr;</span></button>
+  <div id="art"><img id="mapimg" src="map.webp?v=36" alt="Map of Pendarvis Farm" draggable="false" fetchpriority="high"><div id="tiles"></div><div id="veil"></div><div id="lits"></div><img id="pkb" alt="" draggable="false" hidden><div id="nic"></div><svg id="shapes"></svg></div><button id="cuebar" type="button" hidden aria-label="Open this neighborhood"><img alt=""><span class="t"><span class="k"></span><span class="n"></span><span class="l"></span></span><span class="go">Explore &rarr;</span></button>
   <svg id="leads"></svg>
   <div id="labs"></div>
 </div>
@@ -2193,7 +2193,9 @@ function pkbSync(h){ const e=document.getElementById('pkb'); if(!e) return; cons
   ['pointerdown','pointerup','touchstart','touchend'].forEach(t=>cb.addEventListener(t,e=>e.stopPropagation()));
   cb.addEventListener('click',e=>{ e.stopPropagation(); if(cur) goPage(cur); }); }
 let _rvd=0;
-function _rvGo(){ if(_rvd) return; _rvd=1; document.body.classList.add('mapready'); }
+function _rvGo(){ if(_rvd) return; _rvd=1; document.body.classList.add('mapready');
+  /* Nov 15 (speed): tell the site the map is drawn, so it shows the frame now instead of waiting for every icon to finish loading */
+  try{ if(parent!==window) parent.postMessage({pkMap:'ready'},'*'); }catch(e){} }
 /* The art fades in from black only once the final base image is decoded: no placeholder, no blurry swap. */
 function revealMap(){ if(_rvd) return; const i=document.getElementById('mapimg');
   if(!i||(i.complete&&i.naturalWidth)){ (i&&i.decode?i.decode():Promise.resolve()).then(_rvGo,_rvGo); }
