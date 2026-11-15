@@ -10050,7 +10050,8 @@ if (!window.pkOrders) window.pkOrders = (function () {
 .pkh2 .h2-hood-go svg{width:18px;height:18px;fill:currentColor}
 .pkh2 .h2-hmap{position:relative;flex:0 0 clamp(80px,27%,150px);height:100%;padding:0;margin:0;border:0;background:#1c191a;overflow:hidden;cursor:pointer}
 .pkh2 .h2-msvg{display:block;width:100%;height:100%}
-#pkh2#pkh2 .h2-mt path{fill:none!important;stroke:none!important}   /* the simplified map shows each zone's own color; the old kind tints are off (Zale, Nov 14) */
+#pkh2#pkh2 .h2-mt path{fill:none!important;stroke:none!important}
+@media (max-width:599px){#pkh2#pkh2 .h2-s3 .h2-hmap{flex:0 0 44%!important;min-width:0}}   /* Zale Nov 14: a wider map on phones so the pick reads (was 27%, max 150 px) */   /* the simplified map shows each zone's own color; the old kind tints are off (Zale, Nov 14) */
 .pkh2 .h2-mic.on{filter:drop-shadow(0 0 14px rgba(242,207,98,.95)) drop-shadow(0 0 4px #fff)}
 .pkh2 .h2-mt path{fill-opacity:.4;stroke:none}
 .pkh2 .h2-mt .k-stage{fill:#F2CF62}.pkh2 .h2-mt .k-around{fill:#F0896B}.pkh2 .h2-mt .k-camp{fill:#7FB6E6}
