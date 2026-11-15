@@ -44,6 +44,14 @@
     return L.slice(0, -1).join(', ') + ' and ' + L[L.length - 1];
   }
 
+  /* the deadline card's heading already says the due date, so the line under it carries only what is new:
+     the late window (the part of buildCopy.note after its semicolon) and the reply promise (buildCopy.short, after its first sentence) */
+  function dueLine(C) {
+    var n = String(C.note || ''), i = n.indexOf(';'), late = i < 0 ? n : n.slice(i + 1).trim();
+    late = late.charAt(0).toUpperCase() + late.slice(1);
+    var rest = String(C.short || '').split('. ').slice(1).join('. ').trim();
+    return (late + (rest ? ' ' + rest : '')).trim();
+  }
   var V = { kind: 'hood', y: '' };
   function page(d) {
     var P = d.buildPage, C = d.buildCopy || {}, all = builds(d, P);
@@ -67,12 +75,12 @@
       '<section class="bd-sec bd-went" id="bd-went"><div class="bd-in"><div class="bd-wh"><div><p class="bd-k">' + esc(W.k) + '</p><h2 class="pl-d bd-h2">' + esc(W.t) + '</h2></div>' +
       '<div class="bd-arr"><button type="button" class="bd-ib" data-bd-arr="-1" aria-label="Previous builds">‹</button><button type="button" class="bd-ib" data-bd-arr="1" aria-label="Next builds">›</button></div></div>' +
       '<div class="bd-chips">' + chips + ysel + '</div></div>' +
-      '<ul class="bd-row" data-bd-row="1">' + cards + '</ul><div class="bd-in" style="margin-top:20px"><button type="button" class="pk-cta sec" data-bd-go="built:">Read the build stories</button></div></section>' +
+      '<ul class="bd-row" data-bd-row="1">' + cards + '</ul>' + (W.more ? '<div class="bd-in bd-mo"><button type="button" class="pk-cta sec bd-more" data-bd-go="built:">' + esc(W.more) + '</button></div>' : '') + '</section>' +
       '<section class="bd-sec"><div class="bd-in bd-two"><div class="bd-get"><p class="bd-k">' + esc(G.k) + '</p><h2 class="pl-d bd-h2">' + esc(G.t) + '</h2><ol class="bd-gl">' +
       G.items.map(function (g, i) { var x = g[1].replace('{firms}', fs); if (!fs) x = x.replace(/^Firms like\s+design it/, 'Leading firms design it'); return '<li><span class="bd-gn" aria-hidden="true">' + (i + 1) + '</span><span><strong>' + esc(g[0]) + '</strong>' + esc(x) + '</span></li>'; }).join('') + '</ol></div>' +
       '<div class="bd-who"><p class="bd-k">' + esc(U.k) + '</p><h2 class="pl-d bd-h2">' + esc(U.t) + '</h2><ul class="bd-wl">' +
       U.items.map(function (w) { return '<li><strong>' + esc(w[0]) + '</strong><span>' + esc(w[1]) + '</span></li>'; }).join('') + '</ul></div></div></section>' +
-      '<section class="bd-sec bd-last"><div class="bd-in"><div class="bd-due"><h2 class="pl-d bd-h2">' + esc(fill(Q.t, d)) + '</h2><p class="bd-dx">' + esc(C.note || '') + '</p>' +
+      '<section class="bd-sec bd-last"><div class="bd-in"><div class="bd-due"><h2 class="pl-d bd-h2">' + esc(fill(Q.t, d)) + '</h2><p class="bd-dx">' + esc(dueLine(C)) + '</p>' +
       '<button type="button" class="pk-cta pri bd-cta" data-bd-start="1">' + esc(Q.cta) + '</button>' +
       '<p class="bd-dl"><button type="button" class="bd-gl-link" data-bd-go="page:' + esc(Q.page) + '">' + esc(Q.link) + ' →</button></p></div></div></section>';
   }
@@ -85,8 +93,33 @@
     if (el !== root || !el.firstChild || k !== lastKey) {
       root = el; lastKey = k; el.innerHTML = page(d);
       [].forEach.call(el.querySelectorAll('.pl-d'), function (e) { e.classList.add('pkp-head'); });
-      arrows();
+      arrows(); fit();
     }
+  }
+  /* One screen per section. The hero fills the first screen on phone and tablet, and the builds photos take
+     whatever height is left so the whole builds section (heading, chips, cards, stories button) fits the next one. */
+  function headH() { /* height of the sticky header stack on layouts where the window scrolls (desktop) */
+    var x = Math.round(window.innerWidth / 2), top = null, bot = null;
+    for (var y = 1; y < 300; y += 6) {
+      var e = document.elementFromPoint(x, y), hit = null;
+      for (; e && e !== document.body && !hit; e = e.parentElement) { var ps = getComputedStyle(e).position; if ((ps === 'fixed' || ps === 'sticky') && e.getBoundingClientRect().height <= 220 && !(root && root.contains(e))) hit = e; }
+      if (!hit) { if (top !== null) break; continue; }
+      var r = hit.getBoundingClientRect(); top = top === null ? r.top : Math.min(top, r.top); bot = bot === null ? r.bottom : Math.max(bot, r.bottom);
+    }
+    return top === null ? 0 : bot - top;
+  }
+  function fit() {
+    if (!root || !root.firstChild) return;
+    var hero = root.querySelector('.bd-hero'), went = root.querySelector('.bd-went'); if (!hero || !went) return;
+    var W = window.innerWidth, sc = document.getElementById('pk-scroll-phone'), band, first;
+    if (sc && sc.contains(root) && getComputedStyle(sc).overflowY !== 'visible') { /* phone and tablet: the page scrolls inside this box, between the header and the tab bar */
+      band = sc.clientHeight; first = band - (hero.getBoundingClientRect().top - sc.getBoundingClientRect().top + sc.scrollTop);
+    } else { band = window.innerHeight - headH(); first = window.innerHeight - (hero.getBoundingClientRect().top + (window.pageYOffset || 0)); }
+    if (W < 1200) hero.style.minHeight = Math.round(Math.max(360, Math.min(first, W < 600 ? 760 : 720))) + 'px'; else hero.style.minHeight = '';
+    var card = went.querySelector('.bd-card'); if (!card) return;
+    went.style.setProperty('--bd-ph', '120px');
+    var room = band - went.offsetHeight, max = Math.round(card.offsetWidth * 0.75);
+    went.style.setProperty('--bd-ph', Math.max(120, Math.min(max, 120 + room)) + 'px');
   }
   function arrows() {
     if (!root) return; var r = root.querySelector('[data-bd-row]'); if (!r) return;
@@ -95,7 +128,9 @@
     root.querySelector('.bd-arr').style.visibility = over ? '' : 'hidden';
   }
   document.addEventListener('scroll', function (e) { if (root && e.target && e.target.hasAttribute && e.target.hasAttribute('data-bd-row')) arrows(); }, true);
-  window.addEventListener('resize', function () { arrows(); });
+  window.addEventListener('resize', function () { arrows(); fit(); });
+  window.addEventListener('load', fit);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
 
   function go(to) {
     var a = app(); if (!a) return; var p = to.split(':');

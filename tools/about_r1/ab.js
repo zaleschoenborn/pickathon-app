@@ -1,4 +1,4 @@
-/* pk-about1: the About hub, draft 1 (Nov 13 2026). Route 'aboutus', address #/about-us.
+/* pk-about1: the About hub, draft 2 (Nov 15 2026). Route 'aboutus', address #/about-us.
    Source: tools/about_r1/ab.js, spliced into index.html by tools/about_r1/build.py (<script id="pk-about1">, <style id="pk-about1-css">).
    Draws into <div id="ab1" class="pl2 ab1" data-pk-own> (the app's renderer leaves it alone). Every word and photo comes from
    data.json aboutHub; nothing is typed here. It borrows Plan's .pl2 tokens and the shared pk-cta button, and never changes Plan's files. */
@@ -12,11 +12,19 @@
     if (!FOC) { FOC = {}; try { var x = new XMLHttpRequest(); x.open('GET', 'focus.json', false); x.send(); if (x.status === 200) FOC = JSON.parse(x.responseText) || {}; } catch (e) {} }
     var f = FOC[src]; return f ? f[0] + '% ' + f[1] + '%' : '50% 50%';
   }
+  /* The four eras of Our story, read from data.json about.chapters ("Name, years"). A swipe row on phone and tablet; not buttons. */
+  function eras() {
+    var ch = ((site().data || {}).about || {}).chapters || []; if (!ch.length) return '';
+    return '<ul class="ab-eras" aria-label="The four eras">' + ch.map(function (c) {
+      var h = String(c.h || ''), i = h.lastIndexOf(',');
+      return '<li><span class="ab-ey">' + esc(i > 0 ? h.slice(i + 1).trim() : '') + '</span><span class="ab-en">' + esc(i > 0 ? h.slice(0, i) : h) + '</span></li>';
+    }).join('') + '</ul>';
+  }
   function html(H) {
     return '<div class="ab-in"><h1 class="pl-d ab-h1">' + esc(H.t) + '</h1><p class="ab-lede">' + esc(H.x) + '</p>' +
       '<ul class="ab-list">' + (H.s || []).map(function (c, i) {
         return '<li class="ab-c" id="ab-' + esc(c.id) + '"><div class="ab-im"><img src="' + esc(c.im) + '" alt="" style="object-position:' + focusOf(c.im) + '"' + (i > 1 ? ' loading="lazy"' : '') + ' decoding="async"></div>' +
-          '<div class="ab-tx"><p class="ab-k">' + esc(c.k) + '</p><h2 class="pl-d ab-t">' + esc(c.t) + '</h2><p class="ab-x">' + esc(c.x) + '</p>' +
+          '<div class="ab-tx"><p class="ab-k">' + esc(c.k) + '</p><h2 class="pl-d ab-t">' + esc(c.t) + '</h2><p class="ab-x">' + esc(c.x) + '</p>' + (c.eras ? eras() : '') +
           '<button type="button" class="pk-cta sec pl-btn ab-btn" data-ab-go="' + esc(c.b[1]) + '">' + esc(c.b[0]) + '</button></div></li>';
       }).join('') + '</ul></div>';
   }
@@ -24,13 +32,14 @@
     var a = app(); if (!a) return; var c = to.indexOf(':'), k = to.slice(0, c), v = to.slice(c + 1);
     if (k === 'route') { a.go(v); return; }
     if (k === 'page') { a.go('page', { p: v }); return; }
+    if (k === 'url') { window.open(v, '_blank', 'noopener'); return; }
     if (k === 'plan') { var p = v.split(':'); a.go('info', p[1] ? { step: p[0], c: p[1] } : { step: p[0] }); return; }
   }
   var root = null, lastKey = '';
   function sync() {
     var el = document.getElementById('ab1'); if (!el) { root = null; return; }
     var H = (site().data || {}).aboutHub; if (!H) return;
-    var k = (H.s || []).length + '|' + H.t;
+    var k = (H.s || []).map(function (c) { return c.id; }).join(',') + '|' + H.t + '|' + (((site().data || {}).about || {}).chapters || []).length;
     if (el !== root || !el.firstChild || k !== lastKey) {
       root = el; lastKey = k; el.innerHTML = html(H);
       [].forEach.call(el.querySelectorAll('p,li'), function (e) { e.classList.add('pk-krtk'); });

@@ -32,9 +32,8 @@ s = hook(s, 'id="ab1"',
 s = hook(s, "aboutus: 'About Pickathon'",
          "about: 'Our story', why: 'Why Pickathon',",
          "about: 'Our story', aboutus: 'About Pickathon', why: 'Why Pickathon',", 'header title')
-s = hook(s, "press: 1, about: 1, aboutus: 1 }",
-         "var skip = { tickets: 1, account: 1, build: 1, search: 1, why: 1, hood: 1, hoods: 1, past: 1, partners: 1, press: 1, about: 1 };",
-         "var skip = { tickets: 1, account: 1, build: 1, search: 1, why: 1, hood: 1, hoods: 1, past: 1, partners: 1, press: 1, about: 1, aboutus: 1 };", 'no closing card')
+# draft 2: the hub no longer pitches Build itself, so the sitewide closing card shows again
+s = s.replace('press: 1, about: 1, aboutus: 1 }', 'press: 1, about: 1 }')
 s = put(s, 'style', 'pk-about1-css', rd('ab.css'))
 s = put(s, 'script', 'pk-about1', rd('ab.js'))
 open(IDX, 'w', encoding='utf-8').write(s)
