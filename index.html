@@ -4305,8 +4305,8 @@ div[aria-label="Preview controls"] { display: none !important }
 <div style="{{grid3}}">
 <sc-for list="{{g.items}}" as="h" hint-placeholder-count="6">
 <button type="button" onClick="{{h.go}}" class="pk-hcard" style="position: relative; display: flex; flex-direction: column; height: 100%; padding: 0; border: 1px solid #2A3125; background: #1A2017; border-radius: 16px; overflow: hidden; color: #F2EDE3; font: inherit; text-align: left; cursor: pointer">
-<sc-if value="{{h.hasImg}}" hint-placeholder-val="{{true}}"><img src="{{h.img}}" alt="" style="display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover"></sc-if>
-<sc-if value="{{h.hasIc}}" hint-placeholder-val="{{true}}"><img class="pk-hcard-ic" src="{{h.ic}}" alt="" aria-hidden="true"></sc-if>
+<sc-if value="{{h.hasImg}}" hint-placeholder-val="{{true}}"><img loading="lazy" src="{{h.img}}" alt="" style="display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover"></sc-if>
+<sc-if value="{{h.hasIc}}" hint-placeholder-val="{{true}}"><img loading="lazy" class="pk-hcard-ic" src="{{h.ic}}" alt="" aria-hidden="true"></sc-if>
 <div style="display: flex; flex-direction: column; flex: 1; padding: 14px 16px 16px"><div style="font-size: 19px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{h.n}}</div><div style="font-size: 14px; color: #B9B3A6; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{h.t}}</div><div style="font-size: 13px; color: #9FCB8A; margin-top: 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{h.meta}}</div><sc-if value="{{h.hasNx}}" hint-placeholder-val="{{false}}"><p class="pk-next" style="margin: 8px 0 0"><span class="pk-next-l">↻ Next life</span><span style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden">{{h.nx}}</span></p></sc-if></div>
 </button>
 </sc-for>
@@ -7932,7 +7932,13 @@ document.addEventListener('mouseleave',stop,true);window.addEventListener('blur'
       wait on that low-priority request: on a slow connection the map stayed blank for 20 s. */
 (function(){var d=0,g=0;
 function page(){if(d)return;d=1;setTimeout(function(){try{fetch('farmmap/lab-phone.html?embed=1').catch(function(){})}catch(e){}},1500)}
-function pics(){if(g)return;g=1;(window.requestIdleCallback||function(f){setTimeout(f,1500)})(function(){try{var a=new Image();a.decoding='async';a.src='farmmap/map.webp?v=36';var b=new Image();b.src='farmmap/ic/atlas.webp?v=33'}catch(e){}},{timeout:4000})}
+/* The pictures are warmed with fetch, never with an off-page Image: when the map opened while such an Image was still loading, the map's own
+   picture waited on it and could stay blank until the 20 s safety timer (seen in the Safari engine). Skipped when the map is already open. */
+function home(){return !location.hash.replace(/^#\/?/,'')}
+var ac=null;
+function pics(){if(g)return;g=1;(window.requestIdleCallback||function(f){setTimeout(f,1500)})(function(){try{if(!home())return;ac=window.AbortController?new AbortController():null;['farmmap/map.webp?v=36','farmmap/ic/atlas.webp?v=33'].forEach(function(u){fetch(u,ac?{signal:ac.signal}:undefined).then(function(r){return r.blob()}).catch(function(){})})}catch(e){}},{timeout:4000})}
+/* leaving Home stops a warm-up that is still running, so the page being opened asks for its own files at full priority */
+addEventListener('hashchange',function(){if(ac&&!home()){try{ac.abort()}catch(e){}ac=null}});
 if(document.readyState!=='loading')page();else document.addEventListener('DOMContentLoaded',page);
 if(document.readyState==='complete')pics();else addEventListener('load',pics)})();</script>
 <script>/* Map first-load softening: keep the iframe invisible (dark+thumb placeholder shows) until it has loaded */
@@ -10964,6 +10970,16 @@ window.pkClimbRank = function (C, dd) {
   document.addEventListener('visibilitychange', function () { if (!document.hidden) syncAll(); });
   try { new MutationObserver(function () { if (root && $('.h2-s2', root)) { root._ps = ''; vars(); drawBA(); } }).observe(document.body, { attributes: true, attributeFilter: ['data-y'], subtree: true }); } catch (e) {}
   setInterval(function () { if (!root || document.hidden) return; var s2 = $('.h2-s2', root); if (!s2) return; var r = s2.getBoundingClientRect(); if (r.bottom > 0 && r.top < window.innerHeight) drawBA(); }, 120);   /* only while the poster is on screen */
+  /* Nov 15 (speed): leaving Home pauses its photos that are still downloading, so the page you opened (the map, Tickets) is not queued
+     behind them. Each paused photo keeps its address on itself and gets it back the moment you return to Home. */
+  function holdPics() {
+    try { var home = !location.hash.replace(/^#\/?/, '');
+      if (home) { [].forEach.call(document.querySelectorAll('img[data-pkh-src]'), function (im) { var ss = im.getAttribute('data-pkh-ss'), s = im.getAttribute('data-pkh-src'); im.removeAttribute('data-pkh-ss'); im.removeAttribute('data-pkh-src'); if (ss) im.setAttribute('srcset', ss); if (s) im.setAttribute('src', s); }); return; }
+      if (!root) return;
+      [].forEach.call(root.querySelectorAll('img[src]'), function (im) { if (im.complete || im.hasAttribute('data-pkh-src')) return; im.setAttribute('data-pkh-src', im.getAttribute('src') || ''); if (im.hasAttribute('srcset')) { im.setAttribute('data-pkh-ss', im.getAttribute('srcset')); im.removeAttribute('srcset'); } im.removeAttribute('src'); });
+    } catch (e) {}
+  }
+  window.addEventListener('hashchange', holdPics);
   window.__pkHome2 = { refresh: function () { built = ''; if (root) root._cta = ''; syncAll(); }, tix: function () { return tix(); }, remind: remindSheet, hood: function (k) { hood(k); } };
   syncAll();
 })();
