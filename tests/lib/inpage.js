@@ -5,6 +5,9 @@
 // when window.__PK_MODE === 'app', and records gesture/zoom listeners.
 exports.initScript = (mode) => {
   window.__PK_MODE = mode;
+  // Tickets round 5 (Site Design, Nov 15): a first visit to Tickets now opens the "Pick your days" guide over the page.
+  // The kit checks the page itself, so it marks the guide as already seen. tests for the guide live with Site Design until Site QA adopts them.
+  try { window.sessionStorage.setItem('pk27g', '1'); } catch (e) {}
   window.__pkErr = [];
   window.__pkLS = [];
   window.__pkListen = {};

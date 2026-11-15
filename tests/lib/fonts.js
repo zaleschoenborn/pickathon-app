@@ -22,6 +22,8 @@ function build(log) {
 }
 
 exports.route = async (ctx, log) => {
+  // Sale switch (Site Design, Nov 15): the sale opens only when the WordPress feed says on. The kit answers "on" so sale-state checks still run.
+  await ctx.route(/wp-json\/pickathon\/v1\/sale/, (r) => r.fulfill({ status: 200, contentType: 'application/json', body: '{"on":true}', headers: { 'access-control-allow-origin': '*' } }));
   const c = build(log); if (!c) return;
   await ctx.route(/^https:\/\/fonts\.googleapis\.com\//, (r) => r.fulfill({ status: 200, contentType: 'text/css', body: c }));
   await ctx.route(/^https:\/\/fonts\.gstatic\.com\/pkqa\//, (r) => { const rel = decodeURIComponent(new URL(r.request().url()).pathname.replace(/^\/pkqa\//, '')); const fp = path.join(DIR, 'node_modules', rel); if (!fp.startsWith(DIR) || !fs.existsSync(fp)) return r.fulfill({ status: 404, body: '' }); r.fulfill({ status: 200, contentType: 'font/woff2', body: fs.readFileSync(fp) }); });
