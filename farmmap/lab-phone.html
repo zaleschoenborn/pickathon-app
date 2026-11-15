@@ -32,6 +32,8 @@ body.cue.lpsel #lpmenu{visibility:visible!important}
 body.cue .lpi.on{filter:drop-shadow(0 0 7px rgba(242,237,227,.9)) drop-shadow(0 0 2px rgba(255,255,255,.9))}
 body.cue .lpi.on b{color:#F2EDE3}
 body.cue .lab.painted,body.cue #leads .painted{display:none!important}
+/* Farmhouse's baked highlight is pushed to flat neon; calm it on screen until it is re-baked (Zale, Nov 14) */
+html body #lits img[src*="l/farmhouse"]{filter:drop-shadow(rgb(255,244,194) 0 0 2px) drop-shadow(rgba(255,205,90,.85) 0 0 12px) brightness(.97) saturate(.58)!important}
 #calmic img.on{filter:drop-shadow(0 0 10px rgba(255,255,255,.95)) drop-shadow(0 0 3px #fff);transform:scale(1.25)}
 #cuebar{position:fixed;left:10px;right:10px;bottom:var(--cueb,190px);z-index:30;display:flex;align-items:center;gap:11px;padding:9px 10px 9px 9px;border-radius:16px;border:1px solid #3A4331;border-left:4px solid #D6B54A;background:#1A2017;color:#F2EDE3;font:inherit;text-align:left;cursor:pointer;box-shadow:0 8px 24px rgba(0,0,0,.55)}
 #cuebar[hidden]{display:none}
