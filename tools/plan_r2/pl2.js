@@ -106,7 +106,7 @@
     if (!vehicle(s)) { if (s.go === 'drive') a.push(s.car + (s.car === 1 ? ' car' : ' cars')); if (s.go === 'shuttle') a.push('shuttle'); if (s.go === 'bike') a.push('bike'); if (s.go === 'drop') a.push('drop-off'); }
     return a.join(', ');
   }
-  function orderNow() { var raw = lsGet(LS) || {}, o = cleanO(raw); return { o: o, real: !!key(o) && !raw.planOnly, raw: raw }; }
+  function orderNow() { var raw = lsGet(LS) || {}, o = cleanO(raw); return { o: o, real: !!key(o) && ['p4', 'p3', 'd2', 'd1'].indexOf(o.pass) >= 0 && !raw.planOnly, raw: raw }; }   // only a pass this page can show counts as a real order (an add-on or patron order is not)
 
   /* ---------- the three answers ---------- */
   var SLEEP_IN = { tent: 'tent', wcar: 'car', scar: 'car', wrv: 'rv', none: 'none' }, SLEEP_OUT = { tent: 'tent', car: 'wcar', rv: 'wrv', none: 'none' };
@@ -115,10 +115,11 @@
   function startWant() {   // from the ticket order if there is one, else what was picked here last, else 3 days, tent, driving
     var on = orderNow(), p = lsGet(LSP) || {}, w = { len: 'p3', sleep: 'tent', go: 'drive' };
     ['len', 'sleep', 'go'].forEach(function (k) { if (OK[k].indexOf(p[k]) >= 0) w[k] = p[k]; });
-    if (on.real) { w.len = on.o.pass; if (SLEEP_IN[on.o.sleep]) w.sleep = SLEEP_IN[on.o.sleep]; if (OK.go.indexOf(on.o.go) >= 0) w.go = on.o.go; }
+    if (on.real && OK.len.indexOf(on.o.pass) >= 0) { w.len = on.o.pass; if (SLEEP_IN[on.o.sleep]) w.sleep = SLEEP_IN[on.o.sleep]; if (OK.go.indexOf(on.o.go) >= 0) w.go = on.o.go; }
     return w;
   }
-  function effective() {   // what the rules allow; "want" keeps what the person asked for, so going back restores it
+  function effective() {
+    if (OK.len.indexOf(want.len) < 0) want.len = 'p3';   // what the rules allow; "want" keeps what the person asked for, so going back restores it
     var camp = want.len === 'p4' || want.len === 'p3', sl = camp ? want.sleep : 'none', veh = sl === 'car' || sl === 'rv';
     return { len: want.len, camp: camp, sleep: sl, veh: veh, go: veh ? 'drive' : want.go };
   }
