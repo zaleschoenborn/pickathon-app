@@ -139,6 +139,10 @@ body{margin:0;background:var(--ink);color:var(--cream);font-family:var(--f);
 .lab span{color:#F2EDE3}
 .lab.sel{cursor:pointer;background:#fff;box-shadow:0 2px 10px rgba(0,0,0,.55)}
 .lab.sel span{color:var(--ink)}
+/* Zale, Nov 15: each name tag wears its own area's color (the same colors as the emblem buttons), so a tag and its patch of map read as a pair; the selected tag fills with that color instead of white and keeps the gold ring. */
+.lab[style*="--hc"]{border-left-color:var(--hc);border-left-width:6px;background:color-mix(in srgb,var(--hc) 52%,var(--ink));box-shadow:0 1px 6px rgba(0,0,0,.5)}
+.lab.sel[style*="--hc"]{background:color-mix(in srgb,var(--hc) 76%,#fff);outline:3px solid #D6B54A;outline-offset:1px;box-shadow:0 2px 10px rgba(0,0,0,.55)}
+.lab.sel[style*="--hc"] span{color:var(--ink)}
 
 
 #card{position:fixed;left:0;right:0;bottom:0;height:var(--cardh);z-index:30;
@@ -1041,6 +1045,7 @@ function build(){
     leads.append(u,o,pt);
     const b=document.createElement('button');
     b.className='lab c-'+h.k;
+    { const HC={woods:'#9f6d40',paddock:'#a0a944',cherryhill:'#79abac',grove:'#9f6f47',windmill:'#868a9b',galaxy:'#7c8e78',lucky:'#6c9a4f',farmhouse:'#a4ae54',curation:'#85889c',refuge:'#75abab',coyote:'#868a9b',courtyard:'#a07345',market:'#727e86',orchard:'#76acac',quailtrail:'#9baa41',lushcamp:'#6a994e',southcamp:'#679646',wildcamp:'#649643',willowcamp:'#9c7b59',welcomelot:'#7eb0af'}; if(HC[h.id]) b.style.setProperty('--hc',HC[h.id]); }
     const sp=document.createElement('span'); sp.textContent=h.n.replace(/^The /,'');
     b.appendChild(sp); b.__hood=h;
     labs.appendChild(b);
