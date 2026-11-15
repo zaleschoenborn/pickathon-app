@@ -2084,6 +2084,7 @@ html.pk-yg #root#root#root .pk-yb-on .pk-st-k{color:var(--yb-paper)!important;op
 html.pk-yg #root#root#root .pk-yb-on .pk-story p.pk-st-p,html.pk-yg #root#root#root .pk-yb-on .pk-story .pk-st-p:first-letter{color:var(--yb-paper)!important}
 html.pk-yg #root#root#root .pk-yb-on .pk-sttog{border-color:var(--yb-paper)!important;color:var(--yb-paper)!important}
 @media (min-width:900px){html.pk-yg #root#root#root .pk-yb .pk-yb-in{max-width:1100px;margin:0 auto;min-height:300px;padding:40px 24px 24px!important}html.pk-yg #root#root#root .pk-yb .pk-yb-badge{right:0!important;width:320px!important}html.pk-yg #root#root#root .pk-yb .pk-yb-y{font-size:140px}html.pk-yg #root#root#root .pk-sl-in{max-width:900px;margin:0 auto}html.pk-yg #root#root#root .pk-sl-1 button{font-size:40px}html.pk-yg #root#root#root .pk-sl-2 button{font-size:28px}html.pk-yg #root#root#root .pk-sl-3 button{font-size:15px!important}html.pk-yg #root#root#root #pk-yh-reel{max-width:720px;margin-left:auto;margin-right:auto}}
+@media (min-width:900px){html.pk-yg #root#root#root#root#root#root .pk-yb .pk-yb-t .pk-share1{position:static!important;inset:auto!important;transform:none!important;margin:10px 0 0!important}html.pk-yg #root#root#root#root#root#root .pk-yb p.pk-yb-d{padding-right:0!important}}
 /* liner notes (Zale, Nov 15): the artist story is a printed insert in the year's paper and ink, three panels split by rules */
 html.pk-yg #root#root#root .pk-as{background:var(--yp)!important;color:var(--yi)!important;border-radius:0!important;margin:22px 0 0!important;padding:0!important;border:0!important;position:relative;box-shadow:6px 6px 0 var(--yi2)}
 html.pk-yg #root#root#root .pk-as:before{content:"Liner notes";display:block;padding:12px 20px 10px;font:800 11px/1 'Bricolage Grotesque',system-ui,sans-serif;letter-spacing:.18em;text-transform:uppercase;color:var(--yp);background:var(--yi)}
@@ -2095,6 +2096,18 @@ html.pk-yg #root#root#root .pk-as-b p{margin:0 0 10px;color:var(--yi)!important;
 html.pk-yg #root#root#root .pk-as-b:first-of-type p:first-of-type:first-letter{font-family:"Pickathon 2014","Work Sans",sans-serif;float:left;font-size:2.7em;line-height:.85;padding:3px 8px 0 0;color:var(--yi2)}
 html.pk-yg #root#root#root .pk-as-more{display:block;width:calc(100% - 40px);margin:0 20px 18px;height:50px;border:1.5px solid var(--yi)!important;border-radius:6px;background:transparent!important;color:var(--yi)!important;font:800 13px/1 'Bricolage Grotesque',system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase}
 @media (min-width:900px){html.pk-yg #root#root#root .pk-as{max-width:760px}html.pk-yg #root#root#root .pk-as-b p{font-size:18px}}
+/* sleeve cover, review pass (Zale, Nov 15): whole badge visible, share on the date row, no dead space so the reel sits in the first screen */
+html.pk-yg #root#root#root .pk-yb .pk-yb-in{min-height:0!important;padding:20px 20px 14px!important}
+html.pk-yg #root#root#root .pk-yb .pk-yb-badge{right:14px!important;top:14px!important;width:clamp(104px,31vw,128px)!important;height:128px!important;object-fit:contain;object-position:right top}
+html.pk-yg #root#root#root .pk-yb .pk-yb-y{font-size:clamp(64px,20.5vw,84px)!important}
+html.pk-yg #root#root#root .pk-yb .pk-yb-t{display:block!important}
+html.pk-yg #root#root#root .pk-yb p.pk-yb-d{margin:54px 0 0!important;white-space:normal!important;max-width:none!important;padding-right:58px;min-height:44px;display:flex;align-items:center;font-size:11px!important;letter-spacing:.06em!important;line-height:1.35!important;text-wrap:balance}
+html.pk-yg #root#root#root .pk-yb .pk-share1{right:0!important;bottom:0!important;top:auto!important;width:44px;height:44px;display:flex;align-items:center;justify-content:center;border:1.5px solid var(--yi)!important;border-radius:6px;background:var(--yp)!important;color:var(--yi)!important}
+html.pk-yg #root#root#root .pk-yb .pk-share1 span{display:none}
+html.pk-yg #root#root#root #pk-yh-reel{margin:26px 12px 14px 0!important}
+html.pk-yg #root#root#root #pk-yh-reel:before{left:14px!important;top:-12px!important;right:-12px!important;bottom:12px!important}
+html.pk-yg #root#root#root #pk-yh-reel .pk-yreel-f{border-radius:0!important;outline:2.5px solid var(--yi)!important;box-shadow:none}
+@media (min-width:900px){html.pk-yg #root#root#root .pk-yb .pk-yb-in{padding:36px 24px 22px!important}html.pk-yg #root#root#root .pk-yb .pk-yb-badge{width:210px!important;height:210px!important;right:24px!important;top:20px!important}html.pk-yg #root#root#root .pk-yb .pk-yb-y{font-size:150px!important}html.pk-yg #root#root#root .pk-yb p.pk-yb-d{margin-top:40px!important}html.pk-yg #root#root#root .pk-yb p.pk-yb-d{font-size:14px!important}html.pk-yg #root#root#root #pk-yh-reel{margin:30px auto 16px!important}}
 </style>
 <script id="pk-yg-js">
 (function () {
