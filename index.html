@@ -10507,7 +10507,7 @@ window.pkClimbRank = function (C, dd) {
   }
 
   /* ---------- Home ---------- */
-  var root = null, built = '', cur = null, io = null, D = null;
+  var root = null, built = '', cur = null, io = null, D = null, cardsBox = null, cardsRz = 0;
   function data() { return site().data || null; }
   function hoodIds(d) { return Object.keys(d.hoods || {}).filter(function (k) { return !d.hoods[k].vip && KIND[d.hoods[k].k]; }); }
   function hoodImg(d, k) { var L = (window.pkNBHM || {})[k] || []; return L[0] || d.hoods[k].i || ''; }   /* the curated Home photo for that neighborhood (NBHM in the app), else its lead photo */
@@ -10731,7 +10731,7 @@ window.pkClimbRank = function (C, dd) {
     guard(box); s._L = L; box._K = K; box._N = A.length;
     loopHome(box);
     if (!box._lp) { box._lp = 1; var tmo = 0; box.addEventListener('scroll', function () { clearTimeout(tmo); tmo = setTimeout(function () { loopFix(box); }, 140); }, { passive: true });
-      window.addEventListener('resize', function () { loopHome(box, true); }); }
+      cardsBox = box; if (!cardsRz) { cardsRz = 1; window.addEventListener('resize', function () { if (cardsBox && cardsBox.isConnected) loopHome(cardsBox, true); }); } }   /* Nov 14 leak fix: one resize listener for the current card row; a new one per Home draw kept every old Home alive (about 1,100 page elements per visit, the iPhone blank and reload) */
   }
   /* Zale, Nov 13 "sudoku": no location twice within any three cards in a row (the card in front and both peeks are three different places),
      the loop's wrap included. Greedy in rank order: each slot takes the best-ranked card whose place differs from the two before it. */
