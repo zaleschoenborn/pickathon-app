@@ -20,6 +20,27 @@ body.before #lpchips,body.before #lpmenu{display:none!important}
 #yrbefore{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:32px;background:#E3ECD9;color:#2a2418;z-index:20;font-family:system-ui,sans-serif}
 #yrbefore b{font-size:22px;margin-bottom:8px}#yrbefore p{max-width:360px;font-size:15px;line-height:1.4;margin:0}
 </style>
+<style id="pgclose">/* Zale, Nov 14: the full page's Close stays in its corner while the page scrolls, and says what it does */
+html body #page #pgback{position:absolute;left:12px;top:12px;z-index:20;width:auto;height:44px;min-height:44px;display:inline-flex;align-items:center;gap:8px;padding:0 16px 0 13px;border-radius:999px;border:1.5px solid rgba(242,237,227,.75);background:rgba(18,22,15,.62);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);color:#F2EDE3;font:700 15px/1 var(--f);cursor:pointer}
+html body #page #pgback span{font-size:14px}
+</style>
+<style id="cue">/* Phone pick (Zale, Nov 14): the first tap zooms to the neighborhood, lights it and centers its button; a slim bar names it.
+ The neighborhood, its button or the bar opens the full page on the next tap. No preview card on phone. */
+body.cue #card,body.cue #door{display:none!important}
+body.cue.lpsel #lpbar{opacity:1!important;pointer-events:auto!important}
+body.cue.lpsel #lpmenu{visibility:visible!important}
+body.cue .lpi.on{filter:drop-shadow(0 0 7px rgba(242,237,227,.9)) drop-shadow(0 0 2px rgba(255,255,255,.9))}
+body.cue .lpi.on b{color:#F2EDE3}
+#cuebar{position:fixed;left:10px;right:10px;bottom:var(--cueb,190px);z-index:30;display:flex;align-items:center;gap:11px;padding:9px 10px 9px 9px;border-radius:16px;border:1px solid #3A4331;border-left:4px solid #D6B54A;background:#1A2017;color:#F2EDE3;font:inherit;text-align:left;cursor:pointer;box-shadow:0 8px 24px rgba(0,0,0,.55)}
+#cuebar[hidden]{display:none}
+#cuebar img{width:44px;height:44px;flex:none}
+#cuebar .t{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}
+#cuebar .k{font:800 10.5px/1.1 var(--f);letter-spacing:.1em;text-transform:uppercase;color:#D6B54A}
+#cuebar .n{font:400 20px/1 "Pickathon 2014",var(--f);text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#cuebar .l{font:500 13px/1.2 var(--f);color:rgba(242,237,227,.78);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#cuebar .l b{color:#F2EDE3;font-weight:700}
+#cuebar .go{flex:none;display:inline-flex;align-items:center;height:44px;padding:0 15px;border-radius:999px;border:1.5px solid rgba(242,237,227,.55);color:#F2EDE3;font:700 15px/1 var(--f);white-space:nowrap}
+</style>
 </head><title>Farm Map Phone Test</title>
 <style>
 /* The farm floats on its own paper colour. Shapes are real footprints traced
@@ -618,7 +639,7 @@ body.batout #dbat{margin:0 0 16px calc((100% - 129px)/6)!important}
 <script>/* Decide the entry state before the first paint, so nothing shows and then switches off (the title that blinked, labels that all showed and then collapsed). */
 (function(){try{var c=document.body.classList,emb=window.parent!==window,nv=performance.getEntriesByType('navigation')[0],rl=nv&&nv.type==='reload',fh=emb&&!rl&&sessionStorage.getItem('pkmap.from')==='hood',foc=!!sessionStorage.getItem('pkmap.focus');
 if(innerWidth>=1200){c.add('lm');if(fh){c.add('dpdone');c.add('nodt');}}else{if(fh)c.add('lpback');else if(!foc)c.add('lpfresh');}}catch(e){}})();</script>
-  <div id="art"><img id="mapimg" src="map.webp?v=34" alt="Map of Pendarvis Farm" draggable="false"><div id="tiles"></div><img id="calmimg" src="map_calm.webp?v=1" alt="" draggable="false"><div id="veil"></div><div id="lits"></div><div id="nic"></div><div id="calmic"></div></div>
+  <div id="art"><img id="mapimg" src="map.webp?v=34" alt="Map of Pendarvis Farm" draggable="false"><div id="tiles"></div><img id="calmimg" src="map_calm.webp?v=1" alt="" draggable="false"><div id="veil"></div><div id="lits"></div><div id="nic"></div><div id="calmic"></div></div><button id="cuebar" type="button" hidden aria-label="Open this neighborhood"><img alt=""><span class="t"><span class="k"></span><span class="n"></span><span class="l"></span></span><span class="go">Explore &rarr;</span></button>
   <svg id="shapes"></svg>
   <svg id="leads"></svg>
   <div id="labs"></div>
@@ -627,9 +648,9 @@ if(innerWidth>=1200){c.add('lm');if(fh){c.add('dpdone');c.add('nodt');}}else{if(
 
 
 <div id="page" hidden>
+  <button id="pgback" type="button" aria-label="Close and return to the map"><span aria-hidden="true">&#10005;</span>Close</button>
   <div id="pgscroll">
     <div id="pgtop">
-      <button id="pgback" type="button" aria-label="Close and return to the map">&#10005;</button>
       <img id="pghero" alt="">
       <button id="pgcut" type="button" aria-label="Back to the map"></button>
     </div>
@@ -1274,7 +1295,10 @@ function paint(){ const t='translate3d('+tx+'px,'+ty+'px,0) scale('+k+')';
   const f=Math.max(0,Math.min(1,(k/kH-1.12)/0.5)), fo=f.toFixed(2);
   if(paint._o!==fo){ paint._o=fo; const co=(1-f).toFixed(2), off=f>=1?'hidden':'';
     const nicEl=document.getElementById('nic'), ci=document.getElementById('calmimg'), cc=document.getElementById('calmic');
-    if(nicEl) nicEl.style.opacity=fo; if(ci){ ci.style.opacity=co; ci.style.visibility=off; } if(cc){ cc.style.opacity=co; cc.style.visibility=off; } } }
+    if(nicEl) nicEl.style.opacity=fo; if(ci){ ci.style.opacity=co; ci.style.visibility=off; } if(cc){ cc.style.opacity=co; cc.style.visibility=off; } }
+  /* phone: a pick that was zoomed into and is then pinched all the way back out is dropped, like Full map */
+  if(cur&&f>0.5) paint._z=cur;
+  if(f===0&&cur&&LP()&&paint._z===cur&&!paint._clr&&document.getElementById('page').hidden){ paint._clr=1; setTimeout(()=>{ paint._clr=0; try{ if(cur&&paint._z===cur&&paint._o==='0.00'){ paint._z=null; clearCur(); } }catch(e){} },150); } }
 // While the farm is being moved only the picture moves - once per frame. The
 // labels and leader lines step aside and come back, re-laid-out, when it stops;
 // laying out twenty labels on every touch event is what made panning stutter.
@@ -1731,8 +1755,9 @@ function tapAt(e){
   // mouse: hover peeks, a click pins, a click on the pinned one opens. Touch: the first tap
   // shows the card, a tap on the one already showing opens it.
   if(e.pointerType==='mouse'||(!LP()&&innerWidth>=1200)){ if(pinned===h&&cur===h&&window.__pinAt&&NOW()-window.__pinAt>450){ goPage(h); return; } if(pinned!==h){ window.__pinAt=NOW(); const kept=!atHomeD()&&k>kFit*1.08; if(kept){ keepK=k; keepAt=NOW(); } const first=!kept; /* hover can already mark the hood as current, so judge by the view, not by cur */ pinned=h; peek(null); setCur(h); show(h); if(first){ flyTo(h); } else if(kept){ const to=viewFor(h,keepK); if(to) flyView(to,h); } } return; }   // desktop: a click on the map only selects (no zoom); the logo list and next/prev do the flying; the Open button is the way through
-  else if(h!==cur&&!LP()){ keepZoomIf(h); setCur(h); return; }
-  goPage(h);   /* phone and tablet: a tap goes straight to the full page with the X (Zale, Nov 14) */
+  else if(h!==cur){ keepZoomIf(h); setCur(h); cueAt=NOW(); return; }
+  if(NOW()-cueAt<400) return;   /* a quick double tap is not an open: the first tap's zoom has to land first */
+  goPage(h);
 }
 const lift=e=>{
   if(e.type==='pointerup' && live.size===1 && live.has(e.pointerId) && !moved && downAt
@@ -2017,7 +2042,7 @@ function lpBuildMenu(){
   });
   box.innerHTML=html;
   box.addEventListener('click',e=>{ const b=e.target.closest('.lpi'); if(!b) return;
-    const h=HOODS.find(x=>x.id===b.dataset.h); if(!h) return; goPage(h); });   /* straight to the full page (Zale, Nov 14) */
+    const h=HOODS.find(x=>x.id===b.dataset.h); if(!h) return; if(cur===h){ if(NOW()-cueAt>=400) goPage(h); return; } setCur(h); cueAt=NOW(); });   /* first tap zooms and lights it, a second tap opens it (Zale, Nov 14) */
 }
 let lpSwT=0; function lpSwiped(){ return NOW()-lpSwT<400; }
 function lpWire(){
@@ -2124,6 +2149,29 @@ function lpWirePanel(){
 (function(){ const host=document.getElementById('calmic'); if(!host) return; const P={"woods": [1757.0, 1318.0, 94], "paddock": [1005.0, 2804.0, 103], "cherryhill": [1387.0, 2285.0, 81], "grove": [1332.0, 2509.0, 99], "windmill": [876.0, 2576.0, 125], "galaxy": [1013.0, 3123.6, 54], "lucky": [814.0, 3297.0, 68], "farmhouse": [1116.6, 3483.6, 70], "curation": [548.0, 3624.0, 106], "refuge": [1785.0, 1986.0, 97], "coyote": [1324.0, 2081.0, 94], "market": [1532.0, 2418.0, 94], "orchard": [1041.0, 3315.0, 50], "welcomelot": [1897.0, 3590.0, 107], "quailtrail": [1817.0, 1772.1, 44], "southcamp": [862.0, 3565.0, 127], "willowcamp": [1640.0, 3590.0, 107], "courtyard": [1039.0, 3213.0, 49], "wildcamp": [737.0, 521.0, 303], "lushcamp": [1112.0, 1469.0, 451]};
   Object.keys(P).forEach(function(id){ const p=P[id], d=p[2]<60?88:100, i=new Image(); i.alt=''; i.draggable=false; i.decoding='async'; i.src='ic/c_'+id+'.webp?v=1';
     i.style.cssText='left:'+(p[0]-d/2)+'px;top:'+(p[1]-d/2)+'px;width:'+d+'px;height:'+d+'px'; host.appendChild(i); }); })();
+let cueAt=0;
+function cueLine(h){ const tag=lpEsc(h.t||'');
+  if(!lpFest()) return tag;
+  if(!XD||!XD.s){ try{ loadXD(); }catch(e){} clearTimeout(cueLine._t); cueLine._t=setTimeout(()=>{ if(cur===h&&cueSync._h===h) document.querySelector('#cuebar .l').innerHTML=cueLine(h); },400); return tag; }
+  const q=lpNowNext(h); if(!q||!q.any) return tag;
+  if(q.on) return '<b>Now:</b> '+lpEsc(q.on.n)+(q.nx&&(q.on.n.length+q.nx.n.length)<26?' &middot; Next '+lpEsc(q.nx.s)+' '+lpEsc(q.nx.n):'');
+  if(q.nx) return '<b>Next'+(q.nx.d?' '+lpEsc(q.nx.d):'')+' '+lpEsc(q.nx.s)+':</b> '+lpEsc(q.nx.n);
+  return tag; }
+function cueCenter(h){ const btn=document.querySelector('.lpi[data-h="'+h.id+'"]'); if(!btn) return; const g=btn.closest('.lpgrp');
+  if(g&&!g.classList.contains('on')&&g.dataset.k){ const c=document.querySelector('#lpchips button[data-k="'+g.dataset.k+'"]'); if(c) c.click(); }
+  requestAnimationFrame(()=>{ const row=btn.closest('.lpits'); if(row) row.scrollTo({left:Math.max(0,btn.offsetLeft-(row.clientWidth-btn.offsetWidth)/2),behavior:'smooth'}); }); }
+function cueSync(h){ const b=document.body, on=LP(); b.classList.toggle('cue',on);
+  document.querySelectorAll('.lpi').forEach(x=>x.classList.toggle('on',on&&!!h&&x.dataset.h===h.id));
+  const bar=document.getElementById('cuebar'); if(!bar) return; const show=on&&!!h;
+  if(show){ bar.querySelector('img').src='ic/c_'+h.id+'.webp?v=1'; bar.querySelector('.n').textContent=h.n;
+    bar.querySelector('.k').textContent=({stage:'Stage',camp:'Camping'}[h.k]||'Gathering')+' neighborhood';
+    bar.querySelector('.l').innerHTML=cueLine(h); bar.setAttribute('aria-label','Explore '+h.n);
+    b.style.setProperty('--cueb',(lpBarH()+10)+'px'); if(bar.hidden||cueSync._h!==h) cueCenter(h); }
+  cueSync._h=show?h:null; bar.hidden=!show; }
+(function(){ const _s=show; show=function(h){ _s.apply(this,arguments); try{ cueSync(h); }catch(e){} }; })();
+{ const cb=document.getElementById('cuebar'); document.body.appendChild(cb);   /* outside the map, so a tap on it is never read as a tap on empty ground */
+  ['pointerdown','pointerup','touchstart','touchend'].forEach(t=>cb.addEventListener(t,e=>e.stopPropagation()));
+  cb.addEventListener('click',e=>{ e.stopPropagation(); if(cur) goPage(cur); }); }
 let _rvd=0;
 function _rvGo(){ if(_rvd) return; _rvd=1; document.body.classList.add('mapready'); }
 /* The art fades in from black only once the final base image is decoded: no placeholder, no blurry swap. */
