@@ -207,7 +207,7 @@ window.pkClimbRank = function (C, dd) {
   function heroCTA(t) {
     if (!t) return '';
     var line = '', btn = t.cta, sale = t.w === 'sale';
-    if (t.w === 'pre') { var n = (T && T.next) || {}; line = n.name + ' opens ' + (n.isToday ? 'today' + (n.time ? ', ' + n.time : '') : (window.innerWidth >= 1200 ? n.whenL : n.whenC)); btn = 'Alert me when it opens'; }
+    if (t.w === 'pre') { var n = (T && T.next) || {}; line = n.name + ' opens ' + (n.isToday ? 'today' + (n.time ? ', ' + n.time : '') : (window.innerWidth >= 1200 ? n.whenL : n.whenC)); btn = 'Remind me'; }
     else if (sale) { line = 'Tickets are running out'; btn = 'Get tickets'; }
     else line = t.side[0] || '';
     return (line ? '<p class="h2-oh-sea pk-krtk">' + esc(line) + '</p>' : '') + '<button type="button" class="h2-oh-btn' + (sale ? ' is-sale' : '') + '" data-h2tix="1">' + esc(btn) + '</button>';
