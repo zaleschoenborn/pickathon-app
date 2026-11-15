@@ -10413,7 +10413,7 @@ window.pkClimbRank = function (C, dd) {
   var HERO = 'i/r3-home-hero.jpg', ACT = 'i/pk-paddock-c11.jpg';   /* HERO is only the fallback: the hero cycles data.homeHero (Round 3.5, Zale Nov 11 23:30) */
   var HERO_MS = 5000;   /* each hero photo holds 5 s (the 5174 pace), with a slow settle from 104% (home2.css). No motion with reduced motion: the first frame stays. */
   var WALL = /[?&]wall=1\b/.test(location.search);   /* the name wall, for review only */
-  var QUOTE = ['You need to know about Pickathon.', 'USA Today'];
+  var QUOTE = ['One of eight festivals to see this summer.', 'The New York Times, 2026'];   /* Zale, Nov 15: the current, stronger press line closes Home */
 
   /* ---------- helpers ---------- */
   function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
@@ -10533,7 +10533,7 @@ window.pkClimbRank = function (C, dd) {
     h += '<section class="h2-s h2-s0" aria-labelledby="h2-h1"><div class="h2-oh-ph" data-slot="home.hero" aria-hidden="true">' + HL.map(function (x, k) {
         return '<img class="h2-hf' + (k ? '' : ' is-on') + '" ' + (k ? 'data-src' : 'src') + '="' + esc(x.i) + '" alt=""' + (k ? ' loading="lazy"' : ' fetchpriority="high" loading="eager"') + ' decoding="async">'; }).join('') +
       '</div><div class="h2-oh-g" aria-hidden="true"></div>' +
-      '<button type="button" class="h2-oh-tour" data-h2="tour" aria-label="Photo tour"><span aria-hidden="true">' + PLAY + '</span>Photo tour</button>' +
+      /* Zale, Nov 15: one button on the hero; Photo tour removed from Home */
       '<div class="h2-oh-in"><h1 class="h2-d h2-oh-h1 pkp-head" id="h2-h1">Your new favorite band is playing. You just haven’t met them yet.</h1>' +
       '<p class="h2-oh-what">A four-day music festival on a forest farm in Happy Valley, Oregon<span> · </span><b>' + DATES + '</b></p>' +
       '<div class="h2-oh-cta" data-h2="cta1"></div></div></section>';
@@ -10722,6 +10722,8 @@ window.pkClimbRank = function (C, dd) {
     /* Zale, Nov 13: the card sits centered with the neighbors peeking on both sides and the row loops (card 30 peeks left of card 1).
        Two clones at each end; when a swipe settles on a clone, the row jumps silently to the real card. */
     var A = sudoku(L.slice(0, NCARD)), K = Math.min(2, A.length), seq = [];
+    /* Zale, Nov 15: the row opens on names a stranger already knows (Home only; the archive keeps the ranking) */
+    ['Sturgill Simpson', 'Khruangbin', 'Tyler Childers'].forEach(function (nm) { var j = -1; A.forEach(function (x, k) { if (x.n === nm) j = k; }); if (j >= 0) A.unshift(A.splice(j, 1)[0]); });
     L = A;   /* data-i indexes this order */
     for (var q = A.length - K; q < A.length; q++) seq.push([q, 1]);
     A.forEach(function (x, q) { seq.push([q, 0]); });
@@ -10758,9 +10760,11 @@ window.pkClimbRank = function (C, dd) {
   function jumpTo(r, k) { var sb = r.style.scrollBehavior, ss = r.style.scrollSnapType; r.style.scrollBehavior = 'auto'; r.style.scrollSnapType = 'none'; ccCenter(r, k);
     void r.offsetWidth; r.style.scrollSnapType = ss; r.style.scrollBehavior = sb; }
   /* open on the real first card (rank 1), centered */
-  /* Zale, Nov 13: each visit opens on a random one of the top 10 Discoveries (by rank), so Home stays fresh */
+  /* Zale, Nov 13: each visit opens on a random one of the top 10 Discoveries (by rank), so Home stays fresh. Nov 15: random among the best-known names first. */
   function loopHome(r, keep) { var go = function () { if (!r.clientWidth) return; var k = r._K || 0;
-      if (r._start == null) { var L = ($('.h2-s5', root) || {})._L || [], top = L.slice().sort(window.pkRankCmp || function () { return 0; }).slice(0, 10), pick = top[Math.floor(Math.random() * top.length)];
+      if (r._start == null) { var L = ($('.h2-s5', root) || {})._L || [], top = L.slice().sort(window.pkRankCmp || function () { return 0; }).slice(0, 10), FAM = { 'Tyler Childers': 1, 'Khruangbin': 1, 'Sturgill Simpson': 1 }, fam = L.filter(function (x) { return FAM[x.n]; });
+        /* Zale, Nov 15: open on one of the names a stranger already knows (random among them, so Home stays fresh); falls back to the top 10 */
+        if (fam.length) top = fam; var pick = top[Math.floor(Math.random() * top.length)];
         r._start = Math.max(0, L.indexOf(pick)); }
       k += r._start; if (keep) { var m = ccMid(r); k = m.i; } jumpTo(r, k); };
     if (window.requestAnimationFrame) requestAnimationFrame(function () { requestAnimationFrame(go); }); else setTimeout(go, 30); }
