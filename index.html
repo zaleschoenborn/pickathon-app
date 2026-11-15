@@ -11258,7 +11258,7 @@ window.pkClimbRank = function (C, dd) {
        the sale line, one button, Photo tour top right. No credit on the photo (credits stay in the data). Nothing else on this screen. */
     var HL = heroes(d);
     h += '<section class="h2-s h2-s0" aria-labelledby="h2-h1"><div class="h2-oh-ph" data-slot="home.hero" aria-hidden="true">' + HL.map(function (x, k) {
-        return '<img class="h2-hf' + (k ? '' : ' is-on') + '" ' + (k ? 'data-src' : 'src') + '="' + esc(x.i) + '" alt=""' + (k ? ' loading="lazy"' : ' fetchpriority="high" loading="eager"') + ' decoding="async">'; }).join('') +
+        return '<img class="h2-hf' + (k ? '' : ' is-on') + '" ' + (k ? 'data-src' : 'src') + '="' + esc(x.i) + '" alt=""' + (x.p ? ' style="object-position:' + x.p + '"' : '') + (k ? ' loading="lazy"' : ' fetchpriority="high" loading="eager"') + ' decoding="async">'; }).join('') +
       '</div><div class="h2-oh-g" aria-hidden="true"></div>' +
       /* Zale, Nov 15: one button on the hero; Photo tour removed from Home */
       '<div class="h2-oh-in"><h1 class="h2-d h2-oh-h1 pkp-head" id="h2-h1">Your new favorite band is playing. You just haven’t met them yet.</h1>' +
@@ -11556,10 +11556,22 @@ window.pkClimbRank = function (C, dd) {
   }
   /* ---------- 1. the hero: a slow crossfade through data.homeHero (architecture, crowd, performance; best first) ---------- */
   /* the build 5174 gallery (982fdcb, home reel), shuffled once per visit; data.homeHero is no longer used on Home */
-  var REEL = ['i/318.jpg', 'i/p573.jpg', 'court-lily-night-2026-a.jpg', 'court-fish-night-2025-a.jpg', 'i/p9002.jpg', 'i/p574.jpg', 'i/p656.jpg', 'i/p563.jpg', 'i/p775.jpg', 'i/p632.jpg', 'i/p750.jpg', 'i/p729.jpg', 'i/p536.jpg',
-    'i/p592.jpg', 'i/p479.jpg', 'i/p640.jpg', 'i/p629.jpg', 'i/p652.jpg', 'i/p766.jpg', 'i/p439.jpg', 'i/p659.jpg', 'i/p476.jpg', 'i/p746.jpg', 'i/p747.jpg', 'i/p595.jpg'];
+  /* Zale, Nov 15: the best 11 hero shots (crowd, performers, place), each with its own phone crop focus */
+  var REEL = [
+    { i: 'i/r3-hood-windmill.jpg', p: '60% 50%' },
+    { i: 'ss/ss172-dc5d584e.jpg', p: '45% 50%' },
+    { i: 'i/r3-home-hero.jpg', p: '78% 50%' },
+    { i: 'ss/ss304-01b3f087.jpg', p: '45% 50%' },
+    { i: 'ss/ss254-3461ba26.jpg', p: '65% 50%' },
+    { i: 'ss/ss193-2744e4f3.jpg', p: '38% 50%' },
+    { i: 'i/p746.jpg', p: '50% 50%' },
+    { i: 'i/318.jpg', p: '50% 50%' },
+    { i: 'court-fish-night-2025-a.jpg', p: '60% 50%' },
+    { i: 'i/p563.jpg', p: '42% 50%' },
+    { i: 'i/p775.jpg', p: '50% 50%' },
+    { i: 'i/p573.jpg', p: '32% 50%' }];
   var HSH = null;
-  function heroes() { if (!HSH) { var A = REEL.slice(); for (var i = A.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)), x = A[i]; A[i] = A[j]; A[j] = x; } HSH = A.map(function (i) { return { i: i }; }); } return HSH; }
+  function heroes() { if (!HSH) { var A = REEL.slice(); for (var i = A.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)), x = A[i]; A[i] = A[j]; A[j] = x; } HSH = A; } return HSH; }
   var hi = 0, hPaused = false, hTimer = null;
   function reduced() { try { return window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { return false; } }
   function heroLoad(k) { var I = $$('.h2-hf', root)[k]; if (I && I.getAttribute('data-src')) { I.src = I.getAttribute('data-src'); I.removeAttribute('data-src'); I.loading = 'eager'; } return I; }
