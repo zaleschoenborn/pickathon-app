@@ -1010,8 +1010,14 @@ window.__pkBuild='20261114-5211';
  /* resolves true when a newer build is on the server, waiting in the service worker, or already active */
  function stale(fresh){if(!fresh&&lastR!==null&&Date.now()-last<30000)return Promise.resolve(lastR);
   var reg=window.__pkReg,sw=navigator.serviceWorker;
-  return Promise.all([server(),ask(reg&&reg.waiting),ask(sw&&sw.controller)]).then(function(a){var on=a[0],newer=(on&&on!==B)||num(a[1])>me||num(a[2])>me;last=Date.now();lastR=newer;return newer})}
- function reload(){if(going)return;var g=null;try{g=JSON.parse(sessionStorage.getItem('pk-rl')||'null')}catch(e){}
+  return Promise.all([server(),ask(reg&&reg.waiting),ask(sw&&sw.controller)]).then(function(a){var on=a[0];
+   /* Nov 14: builds 5212-5220 went out with sw.js and version.json at 5220 but this page still stamped 5211, so every open and every
+      return to the app (after the 2-minute guard) reloaded it: the "whole screen resets". If we already reloaded for exactly these
+      versions and came back on the same page build, reloading again can't fix it: stay put. */
+   var sig=[on,a[1],a[2]].join(',')+'|'+B;lastOn=sig;var seen='';try{seen=localStorage.getItem('pk-rl-seen')||''}catch(e){}
+   var newer=((on&&on!==B)||num(a[1])>me||num(a[2])>me)&&seen!==sig;last=Date.now();lastR=newer;return newer})}
+ var lastOn='';
+ function reload(){if(going)return;try{if(lastOn)localStorage.setItem('pk-rl-seen',lastOn)}catch(e){}var g=null;try{g=JSON.parse(sessionStorage.getItem('pk-rl')||'null')}catch(e){}
   if(!g||g.b!==B||Date.now()-g.t>120000)g={b:B,n:0};if(g.n>=3)return;g.n++;g.t=Date.now();try{sessionStorage.setItem('pk-rl',JSON.stringify(g))}catch(e){}
   going=true;var reg=window.__pkReg,sw=navigator.serviceWorker;
   /* if the new build's service worker is still installing or waiting, let it take over first (up to 3 s): a reload in the middle of its
