@@ -1,7 +1,7 @@
 import json,re,urllib.parse,random
 ROOT='/home/claude/pickathon-app/'
 d=json.load(open(ROOT+'data.json'))
-YS=['2010','2013','2014','2019','2023','2024','2025']
+YS=['2007','2008','2009','2010','2011','2012','2013','2014','2015','2016','2017','2018','2019','2022','2023','2024','2025','2026']
 A='html.pk-yg #root#root#root#root#root#root#root#root '
 IS=':is('+','.join(f'[data-y="{y}"]' for y in YS)+')'
 ALL=A+'.pk-yp-mount'+IS+' ~ '
@@ -39,6 +39,44 @@ def edge(y,b):
     if y=='2019':
         pine=lambda x,h: f'<g transform="translate({x},{112-h})"><polygon points="0,{h} {h*.32},{h} {h*.16},0" fill="{Lt}"/><polygon points="{h*.03},{h*.62} {h*.29},{h*.62} {h*.16},{h*.12}" fill="{Lt}"/></g>'
         return 112,svg(390,112,f'<ellipse cx="195" cy="150" rx="265" ry="148" fill="{I}"/><ellipse cx="195" cy="158" rx="262" ry="148" fill="{P}"/>'+''.join(pine(x,h) for x,h in ((22,46),(52,66),(84,40),(292,42),(318,68),(352,48))))
+    if y=='2007':
+        st=''.join(f'<rect x="{x}" y="0" width="4" height="70" fill="{Lt}"/>' for x in range(0,392,9))
+        return 70,svg(390,70,f'{st}<path d="M0 40 L20 26 L40 40 L60 26 L80 40 L100 26 L120 40 L140 26 L160 40 L180 26 L200 40 L220 26 L240 40 L260 26 L280 40 L300 26 L320 40 L340 26 L360 40 L380 26 L390 33 V70 H0Z" fill="{P}"/>')
+    if y=='2008':
+        cl=''.join(f'<circle cx="{x}" cy="{cy}" r="{r}" fill="{Lt}"/>' for x,cy,r in ((0,62,34),(46,50,30),(96,60,34),(150,48,28),(200,60,34),(250,50,30),(300,58,32),(350,48,30),(392,60,32)))
+        cw=''.join(f'<circle cx="{x}" cy="{cy}" r="{r}" fill="#fff"/>' for x,cy,r in ((30,74,24),(110,78,26),(190,74,22),(270,78,26),(350,76,24)))
+        return 96,svg(390,96,f'{cl}{cw}<rect y="80" width="390" height="16" fill="{P}"/><path d="M0 86 Q98 74 195 86 T390 84 V96 H0Z" fill="{P}"/>')
+    if y=='2009':
+        return 70,svg(390,70,f'<path d="M0 30 C40 8 70 44 110 26 S180 10 215 30 S290 50 330 24 S375 18 390 28 V70 H0Z" fill="{I}"/><path d="M0 46 C50 30 80 58 130 42 S210 30 250 48 S330 60 390 44 V70 H0Z" fill="{P}"/>')
+    if y=='2011':
+        pn=''.join(f'<polygon points="{x},8 {x+30},8 {x+15},40" fill="{(Lt,W,"#E8C547")[k%3]}"/>' for k,x in enumerate(range(-6,392,32)))
+        return 74,svg(390,74,f'<path d="M0 6 Q195 18 390 6" stroke="{I}" stroke-width="2.5" fill="none"/>{pn}<rect y="50" width="390" height="24" fill="{P}"/><path d="M0 52 Q195 40 390 52 V74 H0Z" fill="{P}"/>')
+    if y=='2012':
+        random.seed(3); gr=''
+        for x in range(-4,396,7):
+            h=random.randint(26,70); lean=random.randint(-9,9)
+            gr+=f'<polygon points="{x},96 {x+6},96 {x+3+lean},{96-h}" fill="{Lt if x%3 else W}"/>'
+        return 96,svg(390,96,f'{gr}<rect y="86" width="390" height="10" fill="{P}"/>')
+    if y=='2015':
+        return 100,svg(390,100,f'<ellipse cx="195" cy="148" rx="270" ry="138" fill="{Lt}"/><ellipse cx="195" cy="156" rx="262" ry="138" fill="{I}"/><ellipse cx="195" cy="162" rx="256" ry="138" fill="{P}"/>')
+    if y=='2016':
+        tri=''.join(f'<polygon points="{x},30 {x+13},4 {x+26},30" fill="{W}"/>' for x in range(-13,400,26))
+        zz=' '.join(f'{x},{40 if (x//13)%2 else 48}' for x in range(0,391,13))
+        return 56,svg(390,56,f'{tri}<rect y="29" width="390" height="27" fill="{W}"/><polygon points="0,56 {zz} 390,56" fill="{P}"/>')
+    if y=='2017':
+        return 104,svg(390,104,f'<ellipse cx="195" cy="168" rx="250" ry="146" fill="{I}"/><ellipse cx="195" cy="174" rx="236" ry="140" fill="{W}"/><ellipse cx="195" cy="180" rx="226" ry="138" fill="{P}"/>')
+    if y=='2018':
+        def rose(x,y0,r): return f'<circle cx="{x}" cy="{y0}" r="{r}" fill="{W}"/><circle cx="{x}" cy="{y0}" r="{r*.62}" fill="none" stroke="{I2}" stroke-width="2"/><circle cx="{x}" cy="{y0}" r="{r*.28}" fill="{I2}"/>'
+        rs=''.join(rose(x,y0,r) for x,y0,r in ((18,62,20),(64,52,16),(110,64,22),(280,64,22),(326,52,16),(372,62,20)))
+        lv=''.join(f'<ellipse cx="{x}" cy="70" rx="16" ry="6" fill="{Lt}" transform="rotate({a} {x} 70)"/>' for x,a in ((40,-25),(88,20),(140,-15),(250,15),(302,-20),(350,25)))
+        return 92,svg(390,92,f'{lv}{rs}<path d="M0 78 Q195 66 390 78 V92 H0Z" fill="{P}"/>')
+    if y=='2022':
+        def fl(x,y0,r,c2):
+            return ''.join(f'<ellipse cx="{x}" cy="{y0-r*.6}" rx="{r*.34}" ry="{r*.62}" fill="{c2}" transform="rotate({a} {x} {y0})"/>' for a in range(0,360,45))+f'<circle cx="{x}" cy="{y0}" r="{r*.3}" fill="{W}"/>'
+        fs=''.join(fl(x,y0,r,c2) for x,y0,r,c2 in ((22,58,24,"#C8423B"),(72,70,18,"#E8A0A0"),(120,56,22,"#C8423B"),(270,58,22,"#C8423B"),(318,70,18,"#E8A0A0"),(366,56,24,"#C8423B")))
+        return 92,svg(390,92,f'{fs}<path d="M0 78 Q195 64 390 78 V92 H0Z" fill="{P}"/>')
+    if y=='2026':
+        return 64,svg(390,64,f'<polygon points="0,16 390,0 390,22 0,38" fill="{Lt}"/><polygon points="0,32 390,16 390,30 0,46" fill="{I}"/><polygon points="0,44 390,28 390,64 0,64" fill="{P}"/>')
     if y=='2024':
         MU='#C5AC38'; cl=''.join(f'<circle cx="{x}" cy="{cy}" r="{r}" fill="{MU}"/>' for x,cy,r in ((10,70,30),(52,58,34),(98,72,28),(292,72,28),(338,58,34),(380,70,30),(140,84,22),(250,84,22)))
         return 96,svg(390,96,f'{cl}<path d="M0 76 Q195 60 390 76 V98 H0Z" fill="{P}"/>')
@@ -92,7 +130,7 @@ for y in YS:
     b=d['yearBrand'][y]; P,I,I2,W,Lt,Bd=b['paper'],b['ink'],b['ink2'],b['warm'],b['light'],b['band']
     eh,sv=edge(y,b); M=A+f'.pk-yp-mount[data-y="{y}"] ~ '; logo=d['yearLogo'][y]
     yb=M+'section.pk-yb '; sl=M+'section.pk-sl '
-    cb={'2013':118,'2023':118,'2025':96,'2010':104,'2014':104,'2019':132,'2024':134}[y]
+    cb={'2013':118,'2023':118,'2025':96,'2010':104,'2014':104,'2019':132,'2024':134}.get(y,eh+28)
     R(M+'#pk-yh-reel',f'--eh:{eh}px;--cb:{cb}px;--edge:{uri(sv)}')
     R(yb+'img.pk-yb-badge',f'content:url({logo})')
     t1,t2,t3=sl+'.pk-sl-1 button',sl+'.pk-sl-2 button',sl+'.pk-sl-3 button'
@@ -163,6 +201,97 @@ for y in YS:
         R(sl+'.pk-sl-in > h2.pk-sl-h',f'display:flex;align-items:center;gap:12px;font-size:36px!important;letter-spacing:.05em;color:{I}!important;-webkit-text-fill-color:{I}!important;margin-bottom:6px!important')
         dash=f'content:"";flex:1;height:14px;background:repeating-linear-gradient(90deg,{I2} 0 2px,transparent 2px 8px)'; R(sl+'.pk-sl-in > h2.pk-sl-h:before',dash); R(sl+'.pk-sl-in > h2.pk-sl-h:after',dash)
         R(sl+'.pk-sl-in > .pk-sl-k',f'color:{I2}!important'); col(t1,I); col(t2,I2); col(t3,I)
+    elif y in ('2007','2009','2012','2016'):
+        bw={'2007':140,'2009':170,'2012':170,'2016':150}[y]
+        R(yb+'.pk-yb-in',f'display:grid!important;grid-template-columns:1fr {bw}px;align-items:end!important;margin-top:-66px!important')
+        R(yb+'img.pk-yb-badge',f'grid-column:2;grid-row:1/3;width:{bw}px!important;margin-right:-4px')
+        R(yb+'h1.pk-yb-h','grid-column:1;grid-row:1;align-self:end;padding-top:72px!important')
+        R(yb+'.pk-yb-k',f'color:{I}!important;-webkit-text-fill-color:{I}!important;display:block!important;font-size:11px!important;letter-spacing:.2em!important')
+        yc={'2007':W,'2009':I,'2012':I,'2016':I}[y]
+        R(yb+'.pk-yb-y',f'font-size:84px!important;line-height:.9!important;color:{yc}!important;-webkit-text-fill-color:{yc}!important')
+        R(yb+'p.pk-yb-d',f'grid-column:1;grid-row:2;margin-top:8px!important;color:{I2}!important;font-size:12px!important')
+        if y=='2009':
+            R(yb+'p.pk-yb-d:after',f'content:"~ \\2766 ~";display:block;margin-top:8px;letter-spacing:.3em;color:{W}')
+            R(sl+'.pk-sl-in > h2.pk-sl-h',f'text-align:center;font-size:40px!important;color:{I}!important;-webkit-text-fill-color:{I}!important')
+            R(sl+'.pk-sl-in > .pk-sl-k',f'text-align:center;color:{W}!important')
+            R(sl,f'border-top:3px double {I};margin-top:30px!important')
+            col(t1,W); col(t2,I); col(t3,I)
+        elif y=='2007':
+            R(sl,f'--sl-ink:{I};background:repeating-linear-gradient(90deg,transparent 0 11px,rgba(213,204,48,.35) 11px 13px),{P}')
+            R(sl+'.pk-sl-in > h2.pk-sl-h',f'justify-self:start;background:{W};color:{P}!important;-webkit-text-fill-color:{P}!important;font-size:26px!important;letter-spacing:.05em;padding:10px 16px 7px')
+            R(sl+'.pk-sl-in > .pk-sl-k',f'color:{I2}!important;margin-top:12px!important')
+            col(t1,I); col(t2,W); col(t3,I)
+        elif y=='2012':
+            R(sl+'.pk-sl-in > h2.pk-sl-h',f'text-align:center;font-size:40px!important;letter-spacing:.06em;color:{I}!important;-webkit-text-fill-color:{I}!important;border-bottom:3px solid {W};padding-bottom:6px')
+            R(sl+'.pk-sl-in > .pk-sl-k',f'text-align:center;color:{I2}!important;margin-top:10px!important')
+            col(t1,I); col(t2,I2); col(t3,I)
+        else:
+            R(sl+'.pk-sl-in > h2.pk-sl-h',f'justify-self:center;background:{W};color:{I}!important;-webkit-text-fill-color:{I}!important;font-size:30px!important;letter-spacing:.05em;padding:12px 22px 8px;clip-path:polygon(6% 0,94% 0,100% 50%,94% 100%,6% 100%,0 50%)')
+            R(sl+'.pk-sl-in > .pk-sl-k',f'text-align:center;color:{I2}!important;margin-top:12px!important')
+            col(t1,I); col(t2,I2); col(t3,I)
+    elif y in ('2008','2011','2015','2017','2018','2022','2026'):
+        bw={'2008':176,'2011':200,'2015':180,'2017':176,'2018':170,'2022':196,'2026':178}[y]
+        mt={'2008':-96,'2011':-80,'2015':-100,'2017':-104,'2018':-92,'2022':-96,'2026':-74}[y]
+        R(yb+'.pk-yb-in',f'display:flex!important;flex-direction:column!important;align-items:center!important;margin-top:{mt}px!important')
+        R(yb+'img.pk-yb-badge',f'order:1;width:{bw}px!important')
+        R(yb+'h1.pk-yb-h','order:2;text-align:center!important;margin-top:4px!important'); hid(yb+'.pk-yb-k')
+        R(yb+'p.pk-yb-d','order:3;margin-top:10px!important;font-size:12px!important;letter-spacing:.14em!important;text-align:center')
+        if y=='2008':
+            R(yb+'h1.pk-yb-h',f'background:{Lt};border:3px solid {I};border-radius:6px;padding:8px 26px 2px!important;box-shadow:0 6px 0 -1px {I}')
+            R(yb+'.pk-yb-y',f'font-size:60px!important;line-height:.95!important;color:{I}!important;-webkit-text-fill-color:{I}!important')
+            R(yb+'p.pk-yb-d',f'color:{I2}!important')
+            R(sl,f'--sl-ink:{I};background:linear-gradient({Lt} 0 6px,{P} 6px)')
+            R(sl+'.pk-sl-in > h2.pk-sl-h',f'text-align:center;font-size:36px!important;color:{I}!important;-webkit-text-fill-color:{I}!important')
+            R(sl+'.pk-sl-in > .pk-sl-k',f'text-align:center;color:{I2}!important')
+            col(t1,I); col(t2,I2); col(t3,I)
+        elif y=='2011':
+            R(yb+'.pk-yb-y',f'font-size:80px!important;line-height:.9!important;color:{W}!important;-webkit-text-fill-color:{W}!important')
+            R(yb+'p.pk-yb-d','margin-top:8px!important;'+RIB(Lt,'#fff'))
+            R(sl,f'--sl-ink:#fff;--sl-bg:{Lt};background:{Lt};margin-top:30px!important')
+            R(sl+'.pk-sl-in > h2.pk-sl-h','text-align:center;font-size:36px!important;letter-spacing:.06em;color:#fff!important;-webkit-text-fill-color:#fff!important')
+            R(sl+'.pk-sl-in > .pk-sl-k',f'text-align:center;color:{I}!important')
+            col(t1,'#fff'); col(t2,I); col(t3,'#fff')
+        elif y=='2015':
+            R(yb+'h1.pk-yb-h',f'margin-top:-4px!important;background:{Lt};border-top:2.5px solid {I};border-bottom:2.5px solid {I};padding:10px 30px 6px!important;transform:rotate(-2deg);filter:drop-shadow(0 3px 0 {I})')
+            R(yb+'.pk-yb-y',f'font-size:42px!important;line-height:1!important;letter-spacing:.06em!important;color:{I}!important;-webkit-text-fill-color:{I}!important')
+            R(yb+'p.pk-yb-d',f'margin-top:18px!important;color:{I2}!important')
+            R(sl,f'--sl-ink:{P};--sl-bg:{I};background:{I};border-top:6px solid {Lt}')
+            R(sl+'.pk-sl-in > h2.pk-sl-h',f'text-align:center;font-size:36px!important;color:{Lt}!important;-webkit-text-fill-color:{Lt}!important')
+            R(sl+'.pk-sl-in > .pk-sl-k',f'text-align:center;color:{W}!important')
+            col(t1,'#fff'); col(t2,Lt); col(t3,P)
+        elif y=='2017':
+            R(yb+'h1.pk-yb-h',f'background:{Bd};border-radius:999px;padding:10px 34px 4px!important')
+            R(yb+'.pk-yb-y',f'font-size:58px!important;line-height:.95!important;color:{W}!important;-webkit-text-fill-color:{W}!important')
+            R(yb+'p.pk-yb-d',f'color:{I2}!important')
+            R(sl,f'--sl-ink:{Bd};background:{P};border-top:6px solid {W}')
+            R(sl+'.pk-sl-in > h2.pk-sl-h',f'justify-self:center;text-align:center;font-size:30px!important;letter-spacing:.06em;color:{W}!important;-webkit-text-fill-color:{W}!important;background:{Bd};border-radius:999px;padding:10px 26px 6px')
+            R(sl+'.pk-sl-in > .pk-sl-k',f'text-align:center;color:{I2}!important;margin-top:12px!important')
+            col(t1,Bd); col(t2,I2); col(t3,Bd)
+        elif y=='2018':
+            R(yb+'.pk-yb-y',f'font-size:76px!important;line-height:.9!important;color:{I2}!important;-webkit-text-fill-color:{I2}!important')
+            R(yb+'p.pk-yb-d:before',f'content:"Celebrating twenty years";display:block;font:400 18px/1 {FP};letter-spacing:.08em;color:{I};margin-bottom:8px;text-transform:uppercase')
+            R(yb+'p.pk-yb-d',f'color:{I}!important')
+            R(sl+'.pk-sl-in > h2.pk-sl-h',f'display:flex;align-items:center;gap:12px;font-size:36px!important;letter-spacing:.05em;color:{I2}!important;-webkit-text-fill-color:{I2}!important')
+            R(sl+'.pk-sl-in > h2.pk-sl-h:before,'+sl+'.pk-sl-in > h2.pk-sl-h:after',f'content:"\\273F";flex:1;font-size:16px;text-align:center;color:{W}')
+            R(sl+'.pk-sl-in > .pk-sl-k',f'text-align:center;color:{I}!important')
+            col(t1,I); col(t2,I2); col(t3,I)
+        elif y=='2022':
+            R(yb+'.pk-yb-y',f'font-size:80px!important;line-height:.9!important;color:{I}!important;-webkit-text-fill-color:{I}!important')
+            R(yb+'p.pk-yb-d','margin-top:6px!important;'+RIB(W,I))
+            R(sl,f'--sl-ink:{P};--sl-bg:{I};background:{I};margin-top:30px!important')
+            R(sl+'.pk-sl-in > h2.pk-sl-h',f'text-align:center;font-size:36px!important;color:{W}!important;-webkit-text-fill-color:{W}!important')
+            R(sl+'.pk-sl-in > .pk-sl-k',f'text-align:center;color:{Lt}!important')
+            col(t1,'#fff'); col(t2,W); col(t3,P)
+        else:
+            R(yb+'.pk-yb-in','align-items:flex-start!important;padding-left:14px!important')
+            R(yb+'h1.pk-yb-h','text-align:left!important')
+            R(yb+'.pk-yb-y',f'display:inline-block!important;font-size:80px!important;line-height:.9!important;color:{I}!important;-webkit-text-fill-color:{I}!important;transform:skew(-10deg)')
+            R(yb+'p.pk-yb-d',f'text-align:left;color:{I2}!important')
+            R(sl,f'--sl-ink:{I};background:{P};border-top:10px solid {Lt}')
+            R(sl+'.pk-sl-in > h2.pk-sl-h',f'justify-self:start;font-size:38px!important;color:{I}!important;-webkit-text-fill-color:{I}!important;transform:skew(-10deg);background:linear-gradient(transparent 58%,{Lt} 58%);padding:0 8px')
+            R(sl+'.pk-sl-in > .pk-sl-k',f'color:{I2}!important')
+            R(sl+'.pk-sl-b,'+sl+'.pk-sl-4','text-align:left!important'); R(t1,'margin:0 14px 0 0!important;transform:skew(-10deg);display:inline-block!important')
+            col(t1,I); col(t2,I2); col(t3,I)
 out.append('@media (min-width:600px) and (max-width:1199px){'+ALL+'#pk-yh-reel figure.pk-rs .pk-rim{position:absolute!important;inset:0!important;height:100%!important}'+ALL+'#pk-yh-reel figure.pk-rs .pk-rim img{width:100%!important;height:100%!important;object-fit:cover!important}'+ALL+'#pk-yh-reel figure.pk-rs figcaption{position:absolute!important;left:0!important;right:0!important;bottom:0!important;padding-top:80px!important;background:linear-gradient(transparent,rgba(12,12,10,.88) 55%)!important}}')
 
 # ---------- class chips in Names view (dim, don't hide) ----------
@@ -207,7 +336,7 @@ for y in YS:
     eh,sv=edge(y,b); M2=A+f'.pk-ya-mount[data-y="{y}"] ~ '
     R(M2+'.pk-ah',f'--eh:{eh}px;--edge:{uri(sv)}')
     R(M2+'.pk-ah .pk-ah-y img',f'content:url({d["yearLogo"][y]})')
-    cfg={'2013':(Bd,P,Lt),'2023':(Lt,'#fff',Bd),'2025':(I,'#fff',Lt),'2010':(I,P,W),'2014':(P,I,I2),'2019':(I,P,W),'2024':(I,P,'#C5AC38')}[y]
+    cfg={'2013':(Bd,P,Lt),'2023':(Lt,'#fff',Bd),'2025':(I,'#fff',Lt),'2010':(I,P,W),'2014':(P,I,I2),'2019':(I,P,W),'2024':(I,P,'#C5AC38'),'2011':(Lt,'#fff',I),'2012':(I,P,W),'2015':(I,P,Lt),'2022':(I,P,W),'2026':(I,P,Lt)}.get(y,(I,P,W))
     R(M2+'.pk-as',f'--yp:{cfg[0]};--yi:{cfg[1]};--yi2:{cfg[2]}')
     if y=='2013':
         R(M2+'.pk-as:before',f'display:inline-block!important;background:{P}!important;color:{Bd}!important;-webkit-text-fill-color:{Bd}!important;border-radius:12px;font-size:22px!important;padding:10px 14px 7px!important;margin:16px 20px 6px')
