@@ -76,7 +76,7 @@
   /* ---------- the sale: rounds, dates and prices, all from pkTix ---------- */
   var T = null;
   function readTix() { var s = site(); T = window.pkTix(s.today, s.season || 'off'); return T; }
-  function when() { var s = site(); if ((s.season || 'off') !== 'off' || (T.open && window.pkSaleOn === true)) return 'sale'; return T.next ? 'pre' : 'closed'; }
+  function when() { var s = site(); if ((s.season || 'off') !== 'off' || T.open) return 'sale'; return T.next ? 'pre' : 'closed'; }   /* Nov 15 evening: pkTix already applies the clock and the WordPress switch */
   function P(id) { var f = window.pkFeedItem && window.pkFeedItem(id); if (f && f.price && typeof f.price.amount === 'number') return f.price.amount / 100; var r = T.prices[id]; return r ? Math.ceil(r[T.col]) : 0; }   // the site's one price rule: the live feed if it answered, else the settings block, whole dollars
   function WF(n) { return window.pkWithFee ? window.pkWithFee(n) : Math.round(n * (1 + FEE) * 100) / 100; }   // A12: every price shown includes the fee (the head block's one rule)
   function PS(id) { return WF(P(id)); }
@@ -546,7 +546,7 @@
   function soonHTML() {
     var w = when(), pre = w === 'pre', r = T.show || {}, H = (site().data || {}).hoods || {};
     var hi = function (k, f) { var o = H[k]; return (o && (o.hi || o.i)) || f; };
-    var kick = pre ? 'A limited ' + esc(r.name || 'sale') + ' opens soon' : 'Tickets aren’t on sale right now';   /* Zale, Nov 15: we don't say when */
+    var kick = pre ? 'A limited ' + esc(r.name ? r.name + (/sale$/i.test(r.name) ? '' : ' sale') : 'sale') + ' opens soon' : 'Tickets aren’t on sale right now';   /* Zale, Nov 15: we don't say when */
     var row = function (t, sub) { return '<li><span><b>' + t + '</b><small>' + sub + '</small></span></li>'; };   /* Zale, Nov 15: no prices before the sale, just what goes on sale */
     var q = function (t, a) { return '<details class="tk-s-q"><summary>' + t + '</summary><p>' + a + '</p></details>'; };
     return '<section class="tk-e tk-soon" id="tk-entry" aria-label="Pickathon ' + YEAR + ' tickets">' +
