@@ -13839,8 +13839,9 @@ html.pl2-zoom{-webkit-text-size-adjust:auto!important;text-size-adjust:auto!impo
   function seenSet() { var a = lsGet(LSS); return a && a.push ? a : []; }
   function markSeen(st) { var a = seenSet(); if (a.indexOf(st) < 0) { a.push(st); lsSet(LSS, a); } }
   function nextStep(real, w) {   // the one thing to do now: a pass first, then each step you have not opened, then packing
-    if (!real) {
+    if (w !== 'has') {   // passes picked on Tickets are not passes bought: buying comes before packing
       if (w === 'pre') return { t: 'Get a reminder for the sale', x: 'We will tell you the day passes go on sale.', b: btn('Remind me', 'remind') };
+      if (real && w === 'sale') return { t: 'Finish your tickets', x: 'Your passes are picked. Buying them is the next step.', b: btn('Finish on Tickets', 'route:tickets') };
       return { t: 'Choose your pass', x: 'Prices include the 5% fee.', b: btn(w === 'sale' ? 'Get tickets' : 'Passes and prices', 'route:tickets') };
     }
     var sn = seenSet(), i, st;
@@ -13883,7 +13884,7 @@ html.pl2-zoom{-webkit-text-size-adjust:auto!important;text-size-adjust:auto!impo
     $('#pl-steps', root).innerHTML = cardsHTML();
     var asked = !!lsGet(LSQ) || orderNow().real; $('#pl-ask', root).hidden = asked; $('#pl-plan', root).hidden = !asked;
     var on = orderNow(), k = $('#pl-nk', root), t = $('#pl-nt', root), n = $('#pl-nn', root), w = when();
-    $('#pl-src', root).textContent = on.real ? 'Filled in from your ticket order. Change anything; your order stays as it is.' : (sharedIn ? 'A friend sent you this plan. Change anything to make it yours.' : 'Change any of the three. Saved on this device, used on every step and on Tickets.');
+    $('#pl-src', root).textContent = on.real ? (w === 'has' ? 'Filled in from your ticket order. Change anything; your order stays as it is.' : 'Filled in from the passes you picked on Tickets. Change anything; your picks there stay as they are.') : (sharedIn ? 'A friend sent you this plan. Change anything to make it yours.' : 'Change any of the three. Saved on this device, used on every step and on Tickets.');
     var nb = $('#pl-nb', root), nx = nextStep(on.real, w);
     k.textContent = 'Next'; t.textContent = nx.t; n.textContent = nx.x; nb.innerHTML = nx.b;
     var dd = Math.ceil((Date.UTC(2027, 7, 4) - Date.now()) / 864e5); $('#pl-cd', root).textContent = dd > 0 ? 'Gates open Wed, Aug 4: ' + dd + (dd === 1 ? ' day' : ' days') + ' to go.' : '';
