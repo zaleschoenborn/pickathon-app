@@ -992,7 +992,7 @@
   function stateKey() { var F = window.pkFeed || {}, lo = ''; try { lo = JSON.stringify(window.pkLastOrder() || '') + JSON.stringify(window.pkMyPasses() || ''); } catch (e) {} return [when(), T.show.id, T.col, T.show.isToday ? 1 : 0, T.plans ? 1 : 0, F.state, F.at, T.sameAgain ? 1 : 0, site().user ? 1 : 0, site().data ? 1 : 0, lo, textsOn() ? 1 : 0].join('|'); }
   function vars() {
     if (!root || !root.firstChild) return;
-    var n = $('#root nav[aria-label="App"]'), hd = $('#root header'), inn = root.firstChild;
+    var n = $('#root nav[aria-label="App"]'), hd = $('#root header'), inn = root;   /* Nov 16: was root.firstChild, which became the entry section, so the order bar lost the tab-bar offset and covered the tabs */
     inn.style.setProperty('--tk-tabs', (n ? n.offsetHeight : 0) + 'px');
     var hh = 96; try { if (hd && /sticky|fixed/.test(getComputedStyle(hd).position)) hh = hd.getBoundingClientRect().bottom; else hh = 0; } catch (e) {}
     inn.style.setProperty('--tk-hdr', Math.max(0, Math.round(hh)) + 'px');
