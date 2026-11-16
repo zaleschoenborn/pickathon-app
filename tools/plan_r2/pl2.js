@@ -186,24 +186,29 @@
   /* the four steps, each one answering one question */
   function dayPass() { return effective().len === 'd2' || effective().len === 'd1'; }
   var GO_T = { drive: 'Driving', shuttle: 'MAX and the shuttle', bike: 'Biking', drop: 'Dropped off', fly: 'Flying in' };
-  function cardsHTML() {
-    var e = effective(), sl = e.camp ? { tent: 'A tent in the woods, included.', car: 'Car camping in Willow or South Camp.', rv: 'An RV spot in Willow or South Camp.', none: 'Off site.' }[e.sleep] : 'Day tickets: home or a hotel nearby.';
-    var C = [
-      ['1', 'Before you buy', 'Which pass, and what will it cost?', LEN_T[e.len] + (e.camp ? ', camping included.' : ', no camping.'), 'buy', btn('Passes and prices', 'route:tickets')],
-      ['2', 'Get ready', 'What do I pack?', e.camp ? 'A short list, set for how you are sleeping.' : 'A short list for a day on the farm.', 'pack', btn('Packing list', 'step:pack', 'sec')],
-      ['3', 'Arrive', 'How do I get there and in?', 'You picked: ' + GO_T[e.go].toLowerCase() + '.', 'arrive', btn('Arrive', 'step:arrive', 'sec')],
-      ['4', 'Sleep', 'Where do I sleep?', sl, 'sleep', btn('Sleep', 'step:sleep', 'sec')],
-      ['5', 'At the farm', 'What is it like inside?', 'Twenty neighborhoods, food, water, kids and access.', 'farm', btn('At the farm', 'step:farm', 'sec')]
-    ];
-    return C.map(function (c) {
-      return '<li class="pl-sc"><div class="pl-sc-im">' + img(CARD_IM[c[4]], 'pl-sc-img') + '<span class="pl-sc-n pl-d">' + c[0] + '</span></div>' +
-        '<div class="pl-sc-tx"><p class="pl-sc-k">' + c[1] + '</p><h2 class="pl-d pl-d-card pl-sc-q">' + c[2] + '</h2><p class="pl-sc-x">' + esc(c[3]) + '</p>' + c[5] + '</div></li>';
+  function planFirst() { return when() === 'has' || orderNow().real || sharedVisit; }   // a pass, passes picked on Tickets, or a friend's plan: the plan leads. Anyone else is still looking, so the answers lead (Zale, Nov 15)
+  function cardsHTML(tail) {
+    var e = effective(), pf = planFirst(), asked = pf || !!lsGet(LSQ);
+    var sl = e.camp ? { tent: 'A tent in the woods, included.', car: 'Car camping in Willow or South Camp.', rv: 'An RV spot in Willow or South Camp.', none: 'Off site.' }[e.sleep] : 'Day tickets: home or a hotel nearby.';
+    var K = {
+      buy: ['Before you buy', 'Which pass, and what will it cost?', asked ? LEN_T[e.len] + (e.camp ? ', camping included.' : ', no camping.') : 'One day to four. Camping comes with 3 or 4 days.', btn('Passes and prices', 'route:tickets', pf ? '' : 'sec')],
+      pack: ['Get ready', 'What do I pack?', !asked ? 'A short list. Food and drink are on the farm.' : (e.camp ? 'A short list, set for how you are sleeping.' : 'A short list for a day on the farm.'), btn('Packing list', 'step:pack', 'sec')],
+      arrive: ['Arrive', 'How do I get there and in?', asked ? 'You picked: ' + GO_T[e.go].toLowerCase() + '.' : 'Drive, ride the shuttle, bike or get dropped off.', btn('Arrive', 'step:arrive', 'sec')],
+      sleep: ['Sleep', 'Where do I sleep?', asked ? sl : 'A tent in the woods, your car, an RV, or off site.', btn('Sleep', 'step:sleep', 'sec')],
+      farm: ['At the farm', 'What is it like inside?', 'Twenty neighborhoods, food, water, kids and access.', btn('At the farm', 'step:farm', 'sec')]
+    };
+    var ids = pf ? (tail ? [] : ['buy', 'pack', 'arrive', 'sleep', 'farm']) : (tail ? ['pack'] : ['sleep', 'arrive', 'farm', 'buy']);
+    return ids.map(function (id, n) {
+      var c = K[id];
+      return '<li class="pl-sc"><div class="pl-sc-im">' + img(CARD_IM[id], 'pl-sc-img') + (pf ? '<span class="pl-sc-n pl-d">' + (n + 1) + '</span>' : '') + '</div>' +
+        '<div class="pl-sc-tx"><p class="pl-sc-k">' + c[0] + '</p><h2 class="pl-d pl-d-card pl-sc-q">' + c[1] + '</h2><p class="pl-sc-x">' + esc(c[2]) + '</p>' + c[3] + '</div></li>';
     }).join('');
   }
+
   function hubHTML() {
     return '<div class="pl-in">' +
       '<div class="pl-top"><h1 class="pl-d pl-h1">Plan your trip</h1></div>' +
-      '<section class="pl-paper pl-ask" id="pl-ask" aria-labelledby="pl-ask-q"><p class="pl-next-k">Start here</p><h2 class="pl-d pl-d-card" id="pl-ask-q">Are you camping?</h2>' +
+      '<section class="pl-paper pl-ask" id="pl-ask" aria-labelledby="pl-ask-q"><p class="pl-next-k" id="pl-ask-k">Start here</p><h2 class="pl-d pl-d-card" id="pl-ask-q">Are you camping?</h2>' +
         '<p class="pl-ask-x">Tents in the woods are included with a 3-Day or 4-Day Pass.</p>' +
         '<div class="pl-ask-b"><button type="button" class="pk-cta pri pl-btn" data-ask="camp">Yes, camping</button><button type="button" class="pk-cta sec pl-btn" data-ask="day">Just for the day</button></div></section>' +
       '<section class="pl-paper pl-plan" id="pl-plan" aria-labelledby="pl-plan-k" hidden><p class="pl-next-k" id="pl-plan-k">Your plan</p>' +
@@ -215,7 +220,7 @@
         '<div class="pl-plan-next"><p class="pl-next-k" id="pl-nk">Next</p><p class="pl-next-t pl-d" id="pl-nt"></p><p class="pl-next-p" id="pl-nn"></p><div class="pl-plan-b"><span id="pl-nb"></span>' +
         '<button type="button" class="pk-cta sec pl-btn" id="pl-share">Send this plan to your group</button></div><p class="pl-next-p" id="pl-cd"></p><p class="pl-next-p" id="pl-shared" role="status" hidden></p></div></section>' +
       '<ul class="pl-basics"><li><b>Aug 5–8, 2027</b><span>Gates open Wed, Aug 4</span></li><li><b>Happy Valley, OR</b><span>12 miles from Portland</span></li><li><b>Camping included</b><span>Tents in the woods, with any 3- or 4-Day Pass</span></li></ul>' +
-      '<ol class="pl-steps" id="pl-steps"></ol>' +
+      '<ol class="pl-steps" id="pl-steps"></ol><ol class="pl-steps" id="pl-steps2" hidden></ol>' +
       '</div>';
   }
 
@@ -318,9 +323,9 @@
     var P = PAGES[step], e = effective(), c = pickCase(step), day = !e.camp;
     var F = (step === 'sleep' && day) ? P.factDay : P.fact;
     var steps = P.steps(c, e.camp), buy = P.buy[c];
-    var nx = P.next ? PAGES[P.next] : null;
+    var pf = planFirst(), nxId = pf ? P.next : ({ sleep: 'arrive', arrive: 'farm' }[step] || ''), nx = nxId ? PAGES[nxId] : null;
     return '<div class="pl-in pl-page">' + backChip() +
-      '<p class="pl-mark">' + P.n + ' of 5 · ' + P.t + '</p>' +
+      '<p class="pl-mark">' + (pf ? P.n + ' of 5 · ' : '') + P.t + '</p>' +
       '<h1 class="pl-d pl-h1">' + P.t + '</h1><p class="pl-lede">' + esc(P.line) + '</p>' +
       '<section class="pl-fact" aria-label="' + esc(F.k) + '"><p class="pl-fact-k">' + esc(F.k) + '</p><p class="pl-d pl-fact-t">' + esc(F.t) + '</p><p class="pl-fact-s">' + esc(F.s) + '</p><p class="pl-fact-x">' + esc(F.x) + '</p>' + (F.b ? '<div class="pl-fact-b">' + F.b + '</div>' : '') + '</section>' +
       '<div class="pl-cols2"><div>' +
@@ -331,7 +336,7 @@
       '</div><section class="pl-paper pl-card pl-shared" aria-labelledby="pl-h-sh"><h2 class="pl-d pl-d-card" id="pl-h-sh">' + esc(P.shared[0]) + '</h2><hr class="pl-rule2"><p class="pl-sh-s">' + esc(P.shared[1]) + '</p><ul class="pl-newl">' +
         P.shared[2].map(function (r) { return '<li><b>' + esc(r[0]) + '</b><span>' + esc(r[1]) + '</span></li>'; }).join('') + '</ul></section></div>' +
       stripHTML(step) +
-      '<div class="pl-nextln">' + (nx ? '<button type="button" class="pl-tlink pl-nx" data-go="step:' + P.next + '">Next: ' + esc(nx.t) + ' →</button>' : '<button type="button" class="pl-tlink pl-nx" data-go="step:">Back to your plan →</button>') + '</div>' +
+      '<div class="pl-nextln">' + (nx ? '<button type="button" class="pl-tlink pl-nx" data-go="step:' + nxId + '">Next: ' + esc(nx.t) + ' →</button>' : (!pf && step === 'farm' ? '<button type="button" class="pl-tlink pl-nx" data-go="route:tickets">Next: passes and prices →</button>' : '<button type="button" class="pl-tlink pl-nx" data-go="step:">Back to your plan →</button>')) + '</div>' +
       '</div>';
   }
   /* packing: its own page (Zale, Nov 13) */
@@ -340,7 +345,7 @@
     var every = ['Walking shoes: the farm is dusty and hilly', 'Layers for hot days and cool nights', 'Sunscreen, a hat and sunglasses', 'A water bottle to refill free', 'A steel cup (sold on site, or bring yours)', 'ID and a card or cash', 'A battery pack: service is fine, but there are no public phones', 'A low chair or a blanket'];
     var camp = ['Pack light: most of what you need is on site', 'Pack in containers you can carry from the Gear Drop to your site, anywhere from 10 yards to a third of a mile', 'A camp stove only with extreme care', 'A yoga mat for the morning classes'];
     return '<div class="pl-in pl-page">' + backChip() +
-      '<p class="pl-mark">2 of 5 · Get ready</p><h1 class="pl-d pl-h1">What to pack</h1><p class="pl-lede">Everything else is on the farm. Skip the cooler: food and drink are on site all weekend.</p>' +
+      '<p class="pl-mark">' + (planFirst() ? '2 of 5 · ' : '') + 'Get ready</p><h1 class="pl-d pl-h1">What to pack</h1><p class="pl-lede">Everything else is on the farm. Skip the cooler: food and drink are on site all weekend.</p>' +
       '<div class="pl-cols2"><div><h2 class="pl-kick">Everyone</h2><ul class="pl-list">' + every.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul>' +
       (e.camp ? '<h2 class="pl-kick">Tent campers</h2><ul class="pl-list">' + camp.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul>' : '') + '</div>' +
       '<section class="pl-paper pl-card" aria-labelledby="pl-h-rules"><h2 class="pl-d pl-d-card" id="pl-h-rules">The rules</h2><hr class="pl-rule2">' +
@@ -348,10 +353,10 @@
         '<div class="pl-rule pl-rule-no"><p>Leave home</p><ul><li><span>' + ic('dog') + '</span>Pets</li><li><span>' + ic('mug') + '</span>Outside alcohol</li><li><span>' + ic('flame') + '</span>Fires, fireworks</li><li><span>' + ic('shade') + '</span>Shade tents</li><li><span>' + ic('gen') + '</span>Generators</li></ul></div>' +
         '<p class="pl-rule-x">Security checks vehicles at entry. Chairs left alone become shared seating. Firearms are not allowed.</p>' +
       '</section></div>' +
-      '<div class="pl-nextln"><button type="button" class="pl-tlink pl-nx" data-go="step:arrive">Next: Arrive →</button></div></div>';
+      '<div class="pl-nextln">' + (planFirst() ? '<button type="button" class="pl-tlink pl-nx" data-go="step:arrive">Next: Arrive →</button>' : '<button type="button" class="pl-tlink pl-nx" data-go="step:">Back to Plan your trip →</button>') + '</div></div>';
   }
 
-  var LSQ = 'pk27planq', LSS = 'pk27planseen', sharedIn = false;
+  var LSQ = 'pk27planq', LSS = 'pk27planseen', sharedIn = false, sharedVisit = false;
   var STEP_T = { pack: ['Get ready', 'What to bring, set for how you are sleeping.'], arrive: ['Arrive', 'How you get to the farm and through the gate.'], sleep: ['Sleep', 'Where you sleep, and what is there when you wake up.'], farm: ['At the farm', 'Water, shade, food, kids and access.'] };
   function seenSet() { var a = lsGet(LSS); return a && a.push ? a : []; }
   function markSeen(st) { var a = seenSet(); if (a.indexOf(st) < 0) { a.push(st); lsSet(LSS, a); } }
@@ -399,6 +404,13 @@
     [].forEach.call(G.options, function (o) { o.disabled = e.veh && o.value !== 'drive'; });
     var wy = $('#pl-why', root); wy.hidden = !why.length; wy.innerHTML = why.join('<br>');
     $('#pl-steps', root).innerHTML = cardsHTML();
+    var s2 = $('#pl-steps2', root), t2 = cardsHTML(true); s2.innerHTML = t2; s2.hidden = !t2;
+    var inn = $('.pl-in', root), pf = planFirst(), ld = pf ? 'plan' : 'look';
+    if (inn && inn.getAttribute('data-lead') !== ld) {   // move the real nodes, so reading and tab order match what is on screen
+      inn.setAttribute('data-lead', ld);
+      (pf ? ['#pl-ask', '#pl-plan', '.pl-basics', '#pl-steps', '#pl-steps2'] : ['.pl-basics', '#pl-steps', '#pl-ask', '#pl-plan', '#pl-steps2']).forEach(function (q) { var n = $(q, root); if (n) inn.appendChild(n); });
+    }
+    $('#pl-ask-k', root).textContent = pf ? 'Start here' : 'Ready to plan?';
     var asked = !!lsGet(LSQ) || orderNow().real; $('#pl-ask', root).hidden = asked; $('#pl-plan', root).hidden = !asked;
     var on = orderNow(), k = $('#pl-nk', root), t = $('#pl-nt', root), n = $('#pl-nn', root), w = when();
     $('#pl-src', root).textContent = on.real ? (w === 'has' ? 'Filled in from your ticket order. Change anything; your order stays as it is.' : 'Filled in from the passes you picked on Tickets. Change anything; your picks there stay as they are.') : (sharedIn ? 'A friend sent you this plan. Change anything to make it yours.' : 'Change any of the three. Saved on this device, used on every step and on Tickets.');
