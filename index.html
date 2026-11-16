@@ -8808,7 +8808,7 @@ html:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root:
   function pastKey(y) { var a = A(), P = a && a.state.data && a.state.data.past ? a.state.data.past.years || [] : [], n = +y, hit = null; P.forEach(function (q) { var m = String(q.y).match(/^(\d{4})(?:–(\d{4}))?$/); if (m && n >= +m[1] && n <= +(m[2] || m[1])) hit = q.y; }); return hit; }
   function YRS() { var all = []; for (var y = 2026; y >= 1999; y--) if (y !== 2020 && y !== 2021) all.push(String(y)); return all; }
   function brand(y) { var D = (A() && A().state.data) || {}, b = (D.yearBrand || {})[y] || {}; return { p: b.paper || '#F2EDE3', k: b.ink || '#2B2628', b: b.btnInk || b.ink || '#2B2628', st: (b.stripe || []).filter(function (c) { return String(c).toLowerCase() !== String(b.paper || '').toLowerCase(); }), dates: b.dates || '' }; }
-  function poster(y, small) { return +y >= 2000 ? 'i/y' + String(y).slice(2) + '-poster' + (small ? '-s' : '') + '.webp' : ''; }
+  function poster(y, small) { return +y >= 1999 ? 'i/y' + String(y).slice(2) + '-poster' + (small ? '-s' : '') + '.webp' : ''; }
   function hexA(h, al) { var m = /^#?([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$/i.exec(h || ''); return m ? 'rgba(' + parseInt(m[1], 16) + ',' + parseInt(m[2], 16) + ',' + parseInt(m[3], 16) + ',' + al + ')' : 'rgba(0,0,0,' + al + ')'; }
   function pastHtml() {
     var a = A(); if (!a || !a.pPicks) return '';
