@@ -186,9 +186,9 @@
   /* the four steps, each one answering one question */
   function dayPass() { return effective().len === 'd2' || effective().len === 'd1'; }
   var GO_T = { drive: 'Driving', shuttle: 'MAX and the shuttle', bike: 'Biking', drop: 'Dropped off', fly: 'Flying in' };
-  function planFirst() { return when() === 'has' || orderNow().real || sharedVisit; }   // a pass, passes picked on Tickets, or a friend's plan: the plan leads. Anyone else is still looking, so the answers lead (Zale, Nov 15)
+  function planFirst() { return when() === 'has' || sharedVisit; }   // a pass in hand, or a friend's plan: the plan leads. Everyone else is still looking, passes picked on Tickets included, so the answers lead (Zale, Nov 15 and 16)
   function cardsHTML(tail) {
-    var e = effective(), pf = planFirst(), asked = pf || !!lsGet(LSQ);
+    var e = effective(), pf = planFirst(), asked = pf || !!lsGet(LSQ) || orderNow().real;
     var sl = e.camp ? { tent: 'A tent in the woods, included.', car: 'Car camping in Willow or South Camp.', rv: 'An RV spot in Willow or South Camp.', none: 'Off site.' }[e.sleep] : 'Day tickets: home or a hotel nearby.';
     var K = {
       buy: ['Before you buy', 'Which pass, and what will it cost?', asked ? LEN_T[e.len] + (e.camp ? ', camping included.' : ', no camping.') : 'One day to four. Camping comes with 3 or 4 days.', btn('Passes and prices', 'route:tickets', pf ? '' : 'sec')],

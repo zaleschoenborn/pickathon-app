@@ -1068,7 +1068,7 @@ setInterval(function(){if(bar)bar.style.display=document.querySelector('[aria-mo
  setInterval(function(){reg.update().catch(function(){})},5*60*1000); reg.update().catch(function(){}); try{navigator.storage&&navigator.storage.persist&&navigator.storage.persist()}catch(e){} navigator.serviceWorker.ready.then(function(r){r.active&&r.active.postMessage('pack')}).catch(function(){});
  window.__pkReg=reg;document.addEventListener('visibilitychange',function(){if(!document.hidden)reg.update().catch(function(){})});
 }).catch(function(){});
-window.__pkBuild='20261116-5295';
+window.__pkBuild='20261116-5297';
 /* New builds reach returning visitors (QC Round 3.5, Nov 11). tools/stamp_build.py writes the build into __pkBuild, sw.js and version.json.
    On load and on every return to the page, version.json (no-store) and the service worker say whether a newer build is waiting or active;
    if so the page reloads on that return. Touching the page never blocks it; only an order in progress does: the checkout open, a ticket
@@ -14194,9 +14194,9 @@ html.pl2-zoom{-webkit-text-size-adjust:auto!important;text-size-adjust:auto!impo
   /* the four steps, each one answering one question */
   function dayPass() { return effective().len === 'd2' || effective().len === 'd1'; }
   var GO_T = { drive: 'Driving', shuttle: 'MAX and the shuttle', bike: 'Biking', drop: 'Dropped off', fly: 'Flying in' };
-  function planFirst() { return when() === 'has' || orderNow().real || sharedVisit; }   // a pass, passes picked on Tickets, or a friend's plan: the plan leads. Anyone else is still looking, so the answers lead (Zale, Nov 15)
+  function planFirst() { return when() === 'has' || sharedVisit; }   // a pass in hand, or a friend's plan: the plan leads. Everyone else is still looking, passes picked on Tickets included, so the answers lead (Zale, Nov 15 and 16)
   function cardsHTML(tail) {
-    var e = effective(), pf = planFirst(), asked = pf || !!lsGet(LSQ);
+    var e = effective(), pf = planFirst(), asked = pf || !!lsGet(LSQ) || orderNow().real;
     var sl = e.camp ? { tent: 'A tent in the woods, included.', car: 'Car camping in Willow or South Camp.', rv: 'An RV spot in Willow or South Camp.', none: 'Off site.' }[e.sleep] : 'Day tickets: home or a hotel nearby.';
     var K = {
       buy: ['Before you buy', 'Which pass, and what will it cost?', asked ? LEN_T[e.len] + (e.camp ? ', camping included.' : ', no camping.') : 'One day to four. Camping comes with 3 or 4 days.', btn('Passes and prices', 'route:tickets', pf ? '' : 'sec')],
