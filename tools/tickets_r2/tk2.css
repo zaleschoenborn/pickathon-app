@@ -283,7 +283,7 @@
   #tk2 .tk-fold-row{min-height:56px;font-size:1rem}
   #tk2 .tk-fold-p{grid-template-columns:1fr 1fr;gap:10px}
   #tk2 .tk-patron{min-height:56px}
-  #tk2 .tk-bar{display:none!important}
+  #tk2 .tk-bar{display:flex}
   #tk2 .tk-main.has-bar{padding-bottom:64px}
   #tk2 .tk-order{display:block;position:sticky;top:calc(var(--tk-hdr,96px) + 24px)}
   #tk2 .tk-order .tk-pill-gold,#tk2 .tk-order .tk-pill-cream{width:100%;min-height:3rem;font-size:1.0625rem;margin-top:12px}
@@ -656,3 +656,87 @@ body:has(#tk2 #tk-bar:not([hidden])) #pk-toast,body:has(#pk-co) #pk-toast{displa
 .tk2 .tk-g-gift{margin:14px 0 4px;padding:12px 0 0;border-top:1px solid var(--line)}
 .tk2 .tk-g-gift p{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 0 6px;font-size:14px;line-height:1.35}
 .tk2 .tk-g-gift .tk-tlink{min-height:44px;flex:none}
+/* Nov 15: the old pass-card list is gone; the entry page and guided steps are the only way to buy */
+#tk2 .tk-head[hidden],#tk2 .tk-main[hidden]{display:none!important}
+#tk2 .tk-e{padding-bottom:120px}
+@media (min-width:1025px) and (hover:hover) and (pointer:fine){#tk2 .tk-bar{padding-right:max(150px,calc((100% - 640px)/2))}}
+/* Nov 15 night: the short Tickets entry (tk-e2): hero, day picker, veteran row, Why Pickathon closed, Plan your trip rows */
+#tk2 .tk-e2 .tk-e-hero{height:clamp(250px,40svh,340px);min-height:0}
+#tk2 .tk-e2 .tk-e-hero>img{object-position:62% 22%}
+#tk2 .tk-e2 .tk-e-hero>.tk-g-sh{background:linear-gradient(180deg,rgba(0,0,0,.3) 0,rgba(0,0,0,0) 18%,rgba(0,0,0,0) 30%,rgba(27,23,25,.88) 66%,rgba(27,23,25,.98) 88%)}
+#tk2 .tk-e2 .tk-e-hero .tk-g-low{margin-top:auto;padding-bottom:6px}
+#tk2 .tk-e2 .tk-e-hero h1.tk-d{margin:0 0 8px}
+#tk2 .tk-e2 .tk-e-s{margin:0 0 4px;font-size:14px}
+#tk2 .tk-e2 .tk-e-days{padding:14px var(--gutter,16px) 6px}
+#tk2 .tk-e2 .tk-e-days h2{font-size:30px!important;margin:0 0 4px}
+#tk2 .tk-e2 .tk-e-days .tk-g-sub{margin-bottom:12px}
+#tk2 .tk-e2 .tk-e-next{margin-top:14px}
+#tk2 .tk-e-vet{padding:18px var(--gutter,16px) 8px;max-width:640px}
+#tk2 .tk-e-vet-b{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+#tk2 .tk-e-vet-b .tk-pill{width:100%;min-height:50px;padding:6px 10px;white-space:normal;line-height:1.15;text-align:center}
+#tk2 .tk-e-vet-b .tk-pill-gold{grid-column:1/-1}
+#tk2 .tk-e-vet-b .tk-pill[aria-pressed="true"]{background:var(--gold);color:#1b1719;border-color:var(--gold)}
+#tk2 .tk-e2-b{padding:14px var(--gutter,16px) 0;max-width:640px}
+#tk2 .tk-e-why{border:1px solid var(--line);border-radius:6px;background:#241f21;overflow:hidden}
+#tk2 .tk-e-why>summary{list-style:none;display:flex;align-items:center;gap:12px;min-height:72px;padding:10px 12px;cursor:pointer}
+#tk2 .tk-e-why>summary::-webkit-details-marker,#tk2 .tk-e-pr>summary::-webkit-details-marker{display:none}
+#tk2 .tk-e-why-ph{display:flex;flex:none}
+#tk2 .tk-e-why-ph img{width:44px;height:52px;object-fit:cover;border-radius:4px;border:2px solid #241f21;margin-left:-14px}
+#tk2 .tk-e-why-ph img:first-child{margin-left:0}
+#tk2 .tk-e-why-t{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+#tk2 .tk-e-why-t b.tk-d{font-size:20px!important;color:var(--gold);line-height:1.05}
+#tk2 .tk-e-why-t>span{font-size:14px;line-height:1.3;color:#E6E0D3}
+#tk2 .tk-e-chev{flex:none;width:18px;height:18px;transform:rotate(90deg);transition:transform .15s;color:var(--cream)}
+#tk2 details[open]>summary .tk-e-chev{transform:rotate(-90deg)}
+#tk2 .tk-e-why-in{padding:4px 12px 16px}
+#tk2 .tk-e-why-l{font-size:18px;font-weight:800;line-height:1.3;margin:6px 0 14px;color:var(--cream)}
+#tk2 .tk-e-why .tk-e-proof{padding:0;margin:0 -12px 18px}
+#tk2 .tk-e-why .tk-e-proof>p{padding:0 12px}
+#tk2 .tk-e-why-k{margin-top:4px}
+#tk2 .tk-e-press{font-size:14px;line-height:1.45;color:#E6E0D3;margin:14px 0}
+#tk2 .tk-e-plan{padding:24px 0 0}
+#tk2 .tk-e-plan>.tk-g-sub{margin-bottom:10px}
+#tk2 .tk-e-pr{border-bottom:1px solid var(--line)}
+#tk2 .tk-e-pr:first-of-type{border-top:1px solid var(--line)}
+#tk2 .tk-e-pr>summary{list-style:none;display:flex;align-items:center;gap:12px;min-height:68px;padding:8px 0;cursor:pointer}
+#tk2 .tk-e-pr>summary>img{width:64px;height:52px;object-fit:cover;border-radius:4px;flex:none;background:#1b1719}
+#tk2 .tk-e-pr-t{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+#tk2 .tk-e-pr-t b{font-size:17px;font-weight:800;color:var(--cream)}
+#tk2 .tk-e-pr-t>span{font-size:14px;color:#E6E0D3;line-height:1.3}
+#tk2 .tk-e-pr-in{padding:0 0 16px}
+#tk2 .tk-e-pr-in ul{list-style:none;margin:0 0 12px;padding:0}
+#tk2 .tk-e-pr-in li{display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-top:1px dotted var(--line);font-size:15px;line-height:1.3}
+#tk2 .tk-e-pr-in li b{white-space:nowrap;color:var(--gold);font-weight:700}
+#tk2 .tk-e-pr-in .tk-pill{min-height:50px}
+@media (min-width:1025px) and (hover:hover) and (pointer:fine){
+#tk2 .tk-e2 .tk-e-hero{height:340px}
+#tk2 .tk-e2 .tk-e-hero>img{object-position:50% 30%}
+#tk2 .tk-e2 .tk-e-hero .tk-g-low{margin:auto 0 auto max(var(--gutter,40px),calc((100% - 1200px)/2));width:auto;max-width:520px;padding:0}
+#tk2 .tk-e2 .tk-e-hero>.tk-g-sh{background:linear-gradient(90deg,rgba(27,23,25,.94) 0,rgba(27,23,25,.6) 38%,rgba(0,0,0,0) 62%)}
+#tk2 .tk-e2-cols{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:56px;max-width:1200px;margin:0 auto;padding:28px var(--gutter,40px) 0;align-items:start}
+#tk2 .tk-e2 .tk-e-days,#tk2 .tk-e-vet,#tk2 .tk-e2-b{padding-left:0;padding-right:0;margin:0;max-width:none}
+#tk2 .tk-e2 .tk-e-days{padding-top:0}#tk2 .tk-e2-b{padding-top:0}
+#tk2 .tk-e-vet-b{grid-template-columns:1fr 1fr}
+#tk2 .tk-e-vet-b .tk-pill,#tk2 .tk-e-pr-in .tk-pill{min-height:56px}
+}
+#tk2 .tk-e-why .tk-s-fs{grid-template-columns:1fr!important}
+#tk2 .tk-e-why .tk-s-f{aspect-ratio:16/9}
+/* Nov 15 night: branded steps */
+#tk2 .tk-g-ban,.tk2 .tk-g-ban{position:relative;height:124px;align-items:flex-start;padding:12px 16px 0;overflow:hidden;flex:none}
+.tk2 .tk-g-ban>.tk-g-banimg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0}
+.tk2 .tk-g-ban>.tk-g-bansh{position:absolute;inset:0;margin:0;background:linear-gradient(180deg,rgba(27,23,25,.72) 0,rgba(27,23,25,.25) 45%,rgba(27,23,25,.96) 100%);z-index:0}
+.tk2 .tk-g-ban>img:not(.tk-g-banimg),.tk2 .tk-g-ban>.tk-g-steps,.tk2 .tk-g-ban>.tk-sheet-x,.tk2 .tk-g-ban>a,.tk2 .tk-g-ban>svg{position:relative;z-index:1}
+.tk2 .tk-g-ban>.tk-g-steps{margin-top:15px}
+.tk2 .tk-g-ban>.tk-g-steps i{background:rgba(245,239,226,.4)}
+.tk2 .tk-g-ban>.tk-g-steps i.on{background:var(--gold)}
+.tk2 .tk-g-stepk{position:absolute;left:16px;bottom:4px;margin:0;z-index:1;font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--gold)}
+.tk2 .tk-g-ban+.tk-g-pad h2{margin-top:4px}
+.tk2 .tk-g-stubh{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin:0 0 10px;padding-bottom:8px;border-bottom:1.5px solid var(--ink)}
+#tk2 .tk-g-stubh b.tk-d,.tk2 .tk-g-stubh b.tk-d{font-size:18px!important;color:var(--ink);line-height:1}
+.tk2 .tk-g-stubh span{font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-dim);text-align:right}
+.tk2 .tk-g-stubf{margin:10px 0 0;font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-dim);text-align:center}
+.tk2 .tk-g-stubh b.tk-d{white-space:nowrap}.tk2 .tk-g-stubh span{white-space:nowrap;font-size:11px}
+@media (max-width:400px){#tk2 .tk-g-stubh b.tk-d,.tk2 .tk-g-stubh b.tk-d{font-size:15px!important}}
+.tk2 .tk-g-vet{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.tk2 .tk-g-vet .tk-pill{width:100%;min-height:50px;padding:6px 10px;white-space:normal;line-height:1.15;text-align:center}
+.tk2 .tk-g-vet .tk-pill[aria-pressed="true"]{background:var(--gold);color:#1b1719;border-color:var(--gold)}

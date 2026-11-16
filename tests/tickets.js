@@ -76,6 +76,7 @@ async function run() {
     if (QUICK && (mode === 'app' && feedMode !== 'live')) continue;
     const D = DEVICES[dn], where = dn + ' ' + mode + ' · ' + S + ' · feed ' + feedMode;
     const ctx = await browser.newContext({ viewport: { width: D.width, height: D.height }, isMobile: D.touch, hasTouch: D.touch, serviceWorkers: 'block' });
+    await ctx.addInitScript(() => { document.addEventListener('DOMContentLoaded', () => { const st = document.createElement('style'); st.textContent = '#tk2 .tk-main[hidden],#tk2 .tk-head[hidden]{display:block!important}'; document.head.appendChild(st); }); });   // Nov 15: the old list is hidden on the real page; this test still drives its inputs for the pricing logic
     await ctx.addInitScript({ content: '(' + IP.initScript + ')(' + JSON.stringify(mode) + ')' }); await FONTS.route(ctx);
     // feed: live = pass through; blocked = no answer; down = HTTP 500
     await ctx.route(FEED, async (r) => { feedSeen = true; if (feedMode === 'blocked') return r.abort('failed'); if (feedMode === 'down') return r.fulfill({ status: 500, body: 'down' }); const resp = await r.fetch().catch((e) => { feedErr = 'no answer (' + String(e.message).split('\n')[0].slice(0, 60) + ')'; return null; }); if (!resp) return r.abort('failed'); if (resp.status() !== 200) feedErr = 'HTTP ' + resp.status(); try { feedBody = await resp.json(); } catch (e) { feedErr = feedErr || 'not JSON'; } return r.fulfill({ response: resp }); });

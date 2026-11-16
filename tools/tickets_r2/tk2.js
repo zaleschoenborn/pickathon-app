@@ -348,7 +348,7 @@
      what this is (one photo, one button), then who played here first (photos only, the same ranked list as Home), then the day picker.
      Anyone with an order or a deep link gets the page as before. */
   var EN = { on: {}, pat: false };
-  function entryOn() { return when() !== 'closed' && !S.pass && !(S.more || []).length && !deep0 && qp('guide') !== '0'; }
+  function entryOn() { return when() !== 'closed'; }   /* Zale, Nov 15 evening: always open on the entry page, even with a saved order (it stays in the bottom bar) */
   /* Tickets reel: two-line story lines (about 55 characters) for the photo cards. Each is a CUT of Artist Classification's line for that act, with no
      new fact added; the full lines are untouched everywhere else. Sent to Artist Classification to check (outbox, Nov 15). An act with no line here
      falls back to the first sentence of its full line. This table should move into the master data once the wording is approved. */
@@ -510,27 +510,65 @@
     return L.map(function (a) { return '<li class="tk-e-c"><span class="tk-e-ph"><img src="' + esc(a.img) + '" alt="" loading="lazy" decoding="async"><span class="tk-e-cap"><span class="tk-e-nm"><b>' + esc(a.n) + '</b><i class="tk-d">' + esc(a.y) + '</i></span><span class="tk-e-bl">' + esc(REEL[a.n + '|' + a.y] || a.line) + '</span></span></span></li>'; }).join('') +
       '<li class="tk-e-c tk-e-all"><button type="button" data-act="e-all"><b class="tk-d">See them all</b><span>Every act that played here first →</span></button></li>';
   }
+  /* Zale, Nov 15 night: one short first screen that sells and starts the purchase; a veteran row; "Why Pickathon?" closed by default; Plan your trip rows to browse */
   function entryHTML() {
-    return '<section class="tk-e" id="tk-entry" aria-label="Pickathon ' + YEAR + ' tickets">' +
+    var H = (site().data || {}).hoods || {}, hi = function (k, f) { var o = H[k]; return (o && (o.hi || o.i)) || f; };
+    return '<section class="tk-e tk-e2" id="tk-entry" aria-label="Pickathon ' + YEAR + ' tickets">' +
       '<div class="tk-e-hero"><img src="' + GHERO + '" alt="A singer stands on a speaker above a packed crowd at Cherry Hill, with fir trees behind" fetchpriority="high"><span class="tk-g-sh"></span><div class="tk-g-low">' +
       '<h1 class="tk-d">Four days of music in the woods. <span>Find your next favorite band.</span></h1>' +
-      '<p class="tk-e-s"><b>' + headline() + '</b><span>From ' + money(minPS(OK.day)) + ' a day · ' + money(PS('p3')) + ' for the weekend with camping</span></p>' +
-      '<button type="button" class="tk-g-btn" data-act="e-days">Pick your days</button><button type="button" class="tk-tlink tk-g-alt" data-act="e-fast">I know what I want →</button></div></div>' +
-      '<div class="tk-e-proof" id="tk-e-proof" hidden><p class="tk-g-k">They played here first</p><p class="tk-g-sub">Small names when we booked them.</p><ul class="tk-e-reel" id="tk-e-reel" aria-label="Acts that played Pickathon before they were big, biggest today first"></ul></div>' +
-      '<div class="tk-e-days" id="tk-e-days"><h2 class="tk-d" tabindex="-1">Which days?</h2><p class="tk-g-sub">Tap the days you want. We’ll find the ticket that fits.</p><div id="tk-e-pick"></div><button type="button" class="tk-g-btn tk-e-next" data-act="e-next" id="tk-e-next">Next: who’s coming</button></div></section>';
+      '<p class="tk-e-s"><b>' + headline() + '</b><span>Weekend passes include camping · Kids 12 and under free</span></p></div></div>' +
+      '<div class="tk-e2-cols"><div class="tk-e2-a">' +
+      '<div class="tk-e-days" id="tk-e-days"><h2 class="tk-d" tabindex="-1">Which days?</h2><p class="tk-g-sub">Tap the days you want. We’ll find the ticket that fits. From ' + money(minPS(OK.day)) + ' a day.</p><div id="tk-e-pick"></div><button type="button" class="tk-g-btn tk-e-next" data-act="e-next" id="tk-e-next">Next: who’s coming</button></div>' +
+      '<div class="tk-e-vet" id="tk-e-vet"></div></div><div class="tk-e2-b">' +
+      '<details class="tk-e-why" id="tk-e-why"><summary><span class="tk-e-why-ph"><img src="' + esc(hi('woods', 'i/r3-hood-woods.jpg')) + '" alt="" loading="lazy"><img src="' + esc(hi('lushcamp', 'i/r3-hood-lushcamp.jpg')) + '" alt="" loading="lazy"><img src="' + esc(hi('grove', 'i/r35-grove-1.jpg')) + '" alt="" loading="lazy"></span><span class="tk-e-why-t"><b class="tk-d">Why Pickathon?</b><span>New here? Two minutes on what you’re buying.</span></span>' + ic('chev', 'tk-e-chev') + '</summary><div class="tk-e-why-in">' +
+        '<p class="tk-e-why-l">Your new favorite band is playing. You just haven’t met them yet.</p>' +
+        '<div class="tk-e-proof" id="tk-e-proof" hidden><p class="tk-g-k">They played here first</p><p class="tk-g-sub">Small names when we booked them.</p><ul class="tk-e-reel" id="tk-e-reel" aria-label="Acts that played Pickathon before they were big, biggest today first"></ul></div>' +
+        '<p class="tk-g-k tk-e-why-k">What a ticket gets you</p><ul class="tk-s-fs">' +
+        soonFact(hi('woods', 'i/r3-hood-woods.jpg'), '', 'Every act plays twice', 'Two sets on two different stages, so you get two chances to catch each one.') +
+        soonFact(hi('lushcamp', 'i/r3-hood-lushcamp.jpg'), '', 'Camping is included', 'Weekend passes come with a tent spot in the forest. Kids 12 and under are free.') +
+        soonFact(hi('grove', 'i/r35-grove-1.jpg'), '', 'A city built by hand', 'Stages and camps designed and built for one summer on a forest farm.', ['s-hoods', 'See the neighborhoods →']) +
+        '</ul><p class="tk-e-press">Featured in The New York Times’ festivals to see in 2026. Named best independent music festival by Paste. Two AIA architecture awards.</p>' +
+        '<button type="button" class="tk-g-btn" data-act="e-days">Pick your days</button></div></details>' +
+      '<div class="tk-e-plan" id="tk-e-plan"></div></div></div></section>';
   }
+  function planHTML() {
+    var H = (site().data || {}).hoods || {}, hi = function (k, f) { var o = H[k]; return (o && (o.hi || o.i)) || f; }, has = gok(cleanG(S)) && S.pass !== 'none', none = S.pass === 'none';
+    var li = function (t, p) { return '<li><span>' + t + '</span><b class="tk-num">' + p + '</b></li>'; }, fromP = function (ids) { ids = ids.filter(function (id) { return !off(id); }); return ids.length ? (ids.length > 1 ? 'from ' : '') + money(Math.min.apply(null, ids.map(PS))) : ''; };
+    var row = function (id, img, t, sub, items, to, lab) { return '<details class="tk-e-pr" data-plan="' + id + '"><summary><img src="' + esc(img) + '" alt="" loading="lazy"><span class="tk-e-pr-t"><b>' + t + '</b><span>' + sub + '</span></span>' + ic('chev', 'tk-e-chev') + '</summary><div class="tk-e-pr-in"><ul>' + items.join('') + '</ul><button type="button" class="tk-pill tk-pill-sm" data-act="e-plan" data-to="' + to + '">' + (has || none ? lab : 'Pick your days first') + '</button></div></details>'; };
+    var camp = [li('Tent in the woods', 'Included')], c = fromP(['wcar', 'scar']), v = fromP(['wvan', 'svan']), r = fromP(['wrv', 'srv']);
+    if (c) camp.push(li('Car camping, next to your car', c)); if (v) camp.push(li('Camper van site', v)); if (r) camp.push(li('RV site', r));
+    var go = []; if (!off('wpark')) go.push(li('Weekend parking, in and out', money(PS('wpark')) + ' a car'));
+    var dp = fromP(OK.day.map(function (d) { return PARK[d]; })); if (dp) go.push(li('One-day parking', dp)); if (!off('shuttle')) go.push(li('Shuttle from the MAX', money(PS('shuttle')) + ' each')); go.push(li('Bike in or get dropped off', 'Free'));
+    var meals = MEALS.filter(function (id) { return !off(id); }).map(function (id) { return li(esc(XN[id].replace('Curation · ', '')), money(PS(id)) + ' a seat'); });
+    var kids = [li('Kids 12 and under', 'Free')]; if (!sold('teen')) kids.push(li('Teens 13–17, weekend passes', money(PS('teen')))); kids.push(li('Day tickets, ages 13 and up', 'One price'));
+    return '<p class="tk-g-k">Plan your trip</p><p class="tk-g-sub">Look around first. Everything here is added in the steps.</p>' +
+      row('camp', hi('lushcamp', 'i/r3-hood-lushcamp.jpg'), 'Camping', 'A tent spot comes with weekend passes', camp, 'sleep', 'Choose camping') +
+      row('go', hi('orchard', 'i/r3-hood-woods.jpg'), 'Getting there', 'Park, shuttle, bike or drop-off', go, 'sleep', 'Choose how you’ll get there') +
+      (meals.length ? row('meals', hi('curation', 'i/r35-grove-1.jpg'), 'Curation meals', 'A chef and a band at one long table', meals, 'order', 'Add a meal') : '') +
+      row('kids', hi('coyote', 'i/r35-grove-1.jpg'), 'Kids and teens', 'Kids are free. Teens are half price.', kids, 'who', 'Add kids or teens');
+  }
+  function vetHTML() {
+    var t = totals(S), h = '<p class="tk-g-k">Been before?</p><div class="tk-e-vet-b">';
+    if (t.ready) h += '<button type="button" class="tk-pill tk-pill-gold" data-act="sheet" aria-haspopup="dialog">Finish my order · ' + money(t.total) + '</button>';
+    h += '<button type="button" class="tk-pill" data-g="addons">Add-ons for a pass I have</button>';
+    if (!sold('patron')) h += '<button type="button" class="tk-pill" data-g="pat" aria-pressed="' + (EN.pat ? 'true' : 'false') + '">' + (EN.pat ? 'Not Patron: pick days' : 'Patron Pass · backstage') + '</button>';
+    return h + '</div>';
+  }
+  function entrySide() { if (!root) return; var vt = $('#tk-e-vet', root); if (vt) vt.innerHTML = vetHTML(); var pl = $('#tk-e-plan', root); if (pl) { var op = {}; $$('details[open]', pl).forEach(function (d) { op[d.getAttribute('data-plan')] = 1; }); pl.innerHTML = planHTML(); $$('details', pl).forEach(function (d) { if (op[d.getAttribute('data-plan')]) d.open = true; }); } guard($('#tk-entry', root)); }
   function entryDraw(tries) {
     if (!root) return; var pk = $('#tk-e-pick', root); if (!pk) return;
-    pk.innerHTML = gDaysHTML(EN); var p = gPlan(EN), nx = $('#tk-e-next', root); if (nx) nx.disabled = !p || !p.k;
+    pk.innerHTML = gDaysHTML(EN, true); entrySide(); var p = gPlan(EN), nx = $('#tk-e-next', root); if (nx) nx.disabled = !p || !p.k;
     var reel = $('#tk-e-reel', root);
     if (reel && !reel.firstChild) { var h = reelHTML(); if (h) { reel.innerHTML = h; $('#tk-e-proof', root).hidden = false; } else if ((tries || 0) < 8) setTimeout(function () { entryDraw((tries || 0) + 1); }, 400); }   // the artist list arrives a moment after the page
     guard($('#tk-entry', root));
   }
   function entryClick(b) {
     var g = b.getAttribute('data-g'), act = b.getAttribute('data-act'), to;
-    if (g === 'fast' || act === 'e-fast') { to = $('#tk-main', root); if (to) { try { to.scrollIntoView({ block: 'start', behavior: 'smooth' }); } catch (x) { to.scrollIntoView(); } } return true; }
+    if (g === 'addons') { addonsOnly(); return true; }
+    if (act === 'e-fast') { guide('days'); return true; }
     if (g && gDayTap(EN, g, b.getAttribute('data-d'))) { entryDraw(); return true; }
     if (act === 'e-days') { to = $('#tk-e-days', root); if (to) { try { to.scrollIntoView({ block: 'start', behavior: 'smooth' }); } catch (x) { to.scrollIntoView(); } var hh = $('h2', to); if (hh) { try { hh.focus({ preventScroll: true }); } catch (x) {} } } return true; }
+    if (act === 'e-plan') { var pt = b.getAttribute('data-to'); if (S.pass === 'none') guide(pt === 'who' ? 'days' : pt); else if (gok(cleanG(S))) guide(pt); else { to = $('#tk-e-days', root); if (to) { try { to.scrollIntoView({ block: 'start', behavior: 'smooth' }); } catch (x) { to.scrollIntoView(); } } live('Pick your days first.'); } return true; }
     if (act === 'e-next') { var p = gPlan(EN); if (p && p.k) guide('who', EN); return true; }
     if (act === 's-hoods') { var AH = app(); if (window.__pkGoFarm) window.__pkGoFarm(); else if (AH) AH.go('hoods'); return true; }
     if (act === 'e-all') { var A = app(); if (A) { A.setState({ archLead: null, archT: null, archC: null, archY: '', luYear: 'disc', luArch: true, lineup: 'music' }); A.go('lineup', { keepArch: true }); } return true; }
@@ -586,8 +624,8 @@
     var w = when(), minDay = minPS(OK.day), h = '';
     if (w !== 'sale') return soonHTML();
     if (entryOn()) h += entryHTML();
-    h += '<div class="tk-in"><div class="tk-paper tk-head">' + logo() + '<div class="tk-head-t"><h1 class="tk-d">Tickets</h1><p>' + headline() + '</p></div></div>';
-    h += '<div class="tk-main" id="tk-main"><p class="tk-when"><b>' + DAY.dthu[4] + '–' + DAY.dsun[4].split(' ')[1] + ', ' + YEAR + '</b><span>Gates open ' + DAY.w[2] + ', ' + DAY.w[4] + '</span></p>' +
+    h += '<div class="tk-in"><div class="tk-paper tk-head" hidden>' + logo() + '<div class="tk-head-t"><h1 class="tk-d">Tickets</h1><p>' + headline() + '</p></div></div>';
+    h += '<div class="tk-main" id="tk-main" hidden><p class="tk-when"><b>' + DAY.dthu[4] + '–' + DAY.dsun[4].split(' ')[1] + ', ' + YEAR + '</b><span>Gates open ' + DAY.w[2] + ', ' + DAY.w[4] + '</span></p>' +
       '<div class="tk-jump"><button type="button" class="tk-new" data-act="why" aria-haspopup="dialog">New to Pickathon?</button><nav aria-label="Jump to"><button type="button" data-jump="camping">Camping</button><button type="button" data-jump="parking">Parking</button><button type="button" data-jump="meals">Meals</button></nav></div>';   /* Zale, Nov 13: experts go straight to what they came for; new visitors get the festival in one sheet */
     if (w === 'pre') h += '<section class="tk-pre" id="tk-pre" aria-label="Reminder"></section>';
     h += '<div id="tk-top"></div>';
@@ -779,6 +817,7 @@
     $$('input[name="tk-big"]', root).forEach(function (i) { i.disabled = sold(i.value === '1' ? 'opark' : 'wpark'); });
     $('#tk-carstep', root).hidden = false;
     var t = totals(S), ready = t.ready, go = goLabel(t);
+    try { entrySide(); } catch (x) {}
     var bar = $('#tk-bar', root); bar.hidden = !ready; $('#tk-main', root).classList.toggle('has-bar', ready);
     if (ready) {
       $('#tk-bart', root).textContent = short(S); $('#tk-barfee', root).textContent = w === 'sale' ? 'See the order' : money(t.total) + ' · see the order';
@@ -805,14 +844,10 @@
   }
   /* jump row and deep links (#tickets/camping, /parking, /meals, /extras, /addons): straight to what an expert came for */
   var JMP = { camping: 'tk-s-sleep', parking: 'tk-s-go', meals: 'tk-x-meals', extras: 'tk-s-extra', passes: 'tk-passes' };
-  function jump(sec) {
-    if (!root) return;
-    if (sec === 'addons') { if (!S.pass) { S.pass = 'none'; update(); } sec = 'camping'; }
-    var el = $('#' + (JMP[sec] || 'tk-passes'), root); if (!el) return;
-    if (el.tagName === 'DETAILS') el.open = true;
-    if (el.hidden) el = $('#tk-passes', root);
-    try { el.scrollIntoView({ block: 'start', behavior: 'smooth' }); } catch (x) { el.scrollIntoView(); }
-    var h = $('h2, summary, legend', el) || el; if (h && h.focus) { if (!h.hasAttribute('tabindex') && h.tagName !== 'SUMMARY') h.setAttribute('tabindex', '-1'); try { h.focus({ preventScroll: true }); } catch (x) {} }
+  function jump(sec) {   /* Zale, Nov 15: the old order list is gone; every link opens the guided steps at the right step */
+    if (!root || !when || when() !== 'sale') return;
+    if (sec === 'addons') { addonsOnly(); return; }
+    guide(sec === 'camping' || sec === 'parking' ? 'sleep' : sec === 'meals' || sec === 'extras' ? 'order' : 'days');
   }
   var DLRX = /^#\/?tickets\/(camping|parking|meals|extras|addons|passes)\b/, hash0 = window.location.hash || '', deep0 = DLRX.test(hash0);   // the site's router rewrites the address to #/tickets, so the section is read as the page loads
   function deepLink(h) { var m = DLRX.exec(h || window.location.hash || ''), n = 0; if (!m) return;
@@ -858,7 +893,8 @@
     var t = totals(S), go = goLabel(t);
     sheet(sheetTop('Your order') + '<div class="tk-paper tk-osheet"><ul class="tk-olines">' + olines(t) + '</ul><p class="tk-otot"><span>Total</span><b class="tk-num">' + money(t.total) + '</b></p>' +
       (hasPlan(t) ? '<p class="tk-oplan">Or pay over time: ' + planLine(t.total) + '.</p>' : '') + '<p class="tk-fine"><b>All sales final.</b> Send a pass to a friend any time from My Pickathon.</p></div>' +
-      '<button type="button" class="tk-pill ' + go.c + ' tk-sheet-go" data-sheetgo>' + go.t + '</button>', 'Your order');
+      '<button type="button" class="tk-pill ' + go.c + ' tk-sheet-go" data-sheetgo>' + go.t + '</button><p class="tk-g-links"><span></span><button type="button" class="tk-tlink" data-sheetedit>Change my order →</button></p>', 'Your order');
+    $('[data-sheetedit]', scrim).addEventListener('click', function () { closeSheet(true); guide('days'); });
     $('[data-sheetgo]', scrim).addEventListener('click', function () { closeSheet(true); proceed(); });
     scrim.addEventListener('click', function (e) { var b = e.target.closest ? e.target.closest('[data-act="gift-edit"]') : null; if (b) { closeSheet(true); giftForm(+b.getAttribute('data-i')); } });
   }
@@ -979,14 +1015,19 @@
   function gApply() {
     var p = gPlan(); if (!p || !p.k) return false;
     var a = GS.adult, keep = { sleep: S.sleep, go: S.go, x: S.x, car: S.car, sites: S.sites, pwr: S.pwr, big: S.big, dp: S.dp };
-    S.more = [];
-    if (p.k === 'days') { var ds = p.days.slice(), last = ds.pop(); ds.forEach(function (d) { S.more.push(cleanG({ pass: 'd1', day: d, adult: a, teen: 0, kid: 0, wed: false })); }); S.pass = 'd1'; S.day = last; S.adult = a; S.teen = 0; S.kid = GS.kid; S.wed = false; }
+    S.more = (GS.keep || []).slice();
+    if (p.k === 'days') { var ds = p.days.slice(), last = ds.pop(); ds.forEach(function (d) { if (S.more.length < 6) S.more.push(cleanG({ pass: 'd1', day: d, adult: a, teen: 0, kid: 0, wed: false })); }); S.pass = 'd1'; S.day = last; S.adult = a; S.teen = 0; S.kid = GS.kid; S.wed = false; }
     else { S.pass = p.k; S.day = null; S.adult = a; S.teen = kind(p.k) === 'wk' ? GS.teen : 0; S.kid = p.k === 'pat' ? 0 : GS.kid; S.wed = p.k === 'p4' && !!GS.on.w; }
     Object.keys(keep).forEach(function (k) { S[k] = keep[k]; });
     if (!gCamps() && VEH.test(S.sleep)) S.sleep = 'tent';
     S = clean(S); save(); update(); return true;
   }
   function gCamps() { return kind(S.pass) === 'wk' || S.pass === 'pat'; }
+  function gNone() { return S.pass === 'none'; }
+  function addonsOnly() {   /* already has a pass: add camping, parking, meals only */
+    S.pass = 'none'; S.more = []; S.day = null; S.adult = 1; S.teen = 0; S.kid = 0; S.wed = false; S.sleep = S.sleep === 'tent' ? 'tent' : S.sleep; S = clean(S); save(); update();
+    if (GS) { GS.keep = []; GS.step = 'sleep'; gDraw(true); } else { guide('sleep'); }
+  }
   function gFromOrder() {
     var on = {}, k = S.pass;
     if (k === 'd1') { groups(S).forEach(function (g) { if (g.pass === 'd1' && g.day) on[g.day] = true; }); }
@@ -998,11 +1039,15 @@
     return '<div class="tk-g-r"><p><b>' + label + '</b><span>' + sub + '</span></p><div class="tk-g-stp"><button type="button" data-g="step" data-k="' + k + '" data-d="-1" aria-label="One fewer, ' + esc(label) + '"' + (n <= min ? ' disabled' : '') + '>−</button><b aria-live="polite">' + n + '</b><button type="button" data-g="step" data-k="' + k + '" data-d="1" aria-label="One more, ' + esc(label) + '">+</button></div></div>';
   }
   function gStub(t, totalLabel) {
-    return '<div class="tk-g-stub"><span class="tk-g-strip" aria-hidden="true">' + DAYS.map(function (d, i) { return '<i class="' + (cover(S)[i] ? 'on' : '') + '">' + d[1] + '</i>'; }).join('') + '</span><ul class="tk-olines">' + olines(t) + '</ul><div class="tk-g-cut"></div><p class="tk-g-tot"><span>' + totalLabel + '</span><b class="tk-num">' + money(t.total) + '</b></p></div>';
+    return '<div class="tk-g-stub"><p class="tk-g-stubh"><b class="tk-d">Pickathon ' + YEAR + '</b><span>' + DAY.dthu[4] + '–' + DAY.dsun[4].split(' ')[1] + ' · Pendarvis Farm</span></p><span class="tk-g-strip" aria-hidden="true">' + DAYS.map(function (d, i) { return '<i class="' + (cover(S)[i] ? 'on' : '') + '">' + d[1] + '</i>'; }).join('') + '</span><ul class="tk-olines">' + olines(t) + '</ul><div class="tk-g-cut"></div><p class="tk-g-tot"><span>' + totalLabel + '</span><b class="tk-num">' + money(t.total) + '</b></p><p class="tk-g-stubf">Every act plays two sets on two stages</p></div>';
   }
-  function gTop(n) { return '<div class="tk-g-top">' + logo() + (n ? '<span class="tk-g-steps" aria-label="Step ' + n + ' of 4">' + [1, 2, 3, 4].map(function (i) { return '<i' + (i <= n ? ' class="on"' : '') + '></i>'; }).join('') + '</span>' : '') + '<button type="button" class="tk-sheet-x" data-g="fast" aria-label="Close and see every ticket">' + ic('x') + '</button></div>'; }
+  /* Nov 15 night: the steps carry Pickathon: a photo banner per step, the step count in words, and the order as a real ticket stub */
+  var GBAN = { 1: ['', GHERO, '62% 22%'], 2: ['coyote', 'i/r35-grove-1.jpg', '50% 62%'], 3: ['wildcamp', 'i/r3-hood-lushcamp.jpg', '50% 70%'], 4: ['galaxy', 'i/r3-hood-woods.jpg', '50% 30%'] };
+  function gTop(n) {
+    var H = (site().data || {}).hoods || {}, b = GBAN[n] || GBAN[1], o = b[0] && H[b[0]], img = (o && (o.hi || o.i)) || b[1];
+    return '<div class="tk-g-top tk-g-ban"><img class="tk-g-banimg" src="' + esc(img) + '" alt="" style="object-position:' + b[2] + '"><span class="tk-g-bansh"></span>' + logo() + (n ? '<span class="tk-g-steps" aria-label="Step ' + n + ' of 4">' + [1, 2, 3, 4].map(function (i) { return '<i' + (i <= n ? ' class="on"' : '') + '></i>'; }).join('') + '</span>' : '') + '<button type="button" class="tk-sheet-x" data-g="fast" aria-label="Close">' + ic('x') + '</button>' + (n ? '<p class="tk-g-stepk">Step ' + n + ' of 4</p>' : '') + '</div>'; }
   function gFoot(label, act, back, off) { return '<div class="tk-g-foot">' + (back ? '<button type="button" class="tk-g-back" data-g="go" data-to="' + back + '" aria-label="Back">←</button>' : '') + '<button type="button" class="tk-g-btn" data-g="next" data-to="' + act + '"' + (off ? ' disabled' : '') + '>' + label + '</button></div>'; }
-  function gDaysHTML(q) {
+  function gDaysHTML(q, bare) {
     var p = gPlan(q), h = '<div class="tk-g-days" role="group" aria-label="Festival days">' +
       GD.map(function (d) { var so = d === 'w' ? off('early') || sold('p4') : sold(d) && sold('p4'); return '<button type="button" class="tk-g-day" data-g="day" data-d="' + d + '" aria-pressed="' + (!q.pat && q.on[d] ? 'true' : 'false') + '"' + (so ? ' disabled' : '') + '><b class="tk-d">' + DAY[d][2] + '</b><span>' + DAY[d][4] + '</span>' + (d === 'w' ? '<em>Early arrival</em>' : '') + '</button>'; }).join('') + '</div>';
     if (!p) h += '<p class="tk-g-hint">Not sure? Most people come Friday to Sunday.</p>';
@@ -1013,7 +1058,8 @@
       else if (p.k === 'd2' && !sold('p3')) h += '<button type="button" class="tk-g-nudge" data-g="add" data-d="dfri"><span>Add Friday and camping</span><b>+ ' + money(PS('p3') - PS('d2')) + ' · 3-Day Pass</b></button>';
       else if (p.k === 'p4' && !q.on.w && !off('early')) h += '<button type="button" class="tk-g-nudge" data-g="add" data-d="w"><span>Arrive Wednesday</span><b>+ ' + money(PS('early')) + ' each</b></button>';
     }
-    return h + '<p class="tk-g-links">' + (sold('patron') ? '<span></span>' : '<button type="button" class="tk-tlink" data-g="pat">' + (q.pat ? 'Not Patron: pick days' : 'Patron Pass, backstage →') + '</button>') + '<button type="button" class="tk-tlink" data-g="fast">I know what I want →</button></p>';
+    if (bare) return h;
+    return h + '<p class="tk-g-k tk-g-k2">Been before?</p><div class="tk-g-vet"><button type="button" class="tk-pill" data-g="addons">Add-ons for a pass I have</button>' + (sold('patron') ? '' : '<button type="button" class="tk-pill" data-g="pat" aria-pressed="' + (q.pat ? 'true' : 'false') + '">' + (q.pat ? 'Not Patron: pick days' : 'Patron Pass · backstage') + '</button>') + '</div>';
   }
   function gDayTap(q, a, d) {   /* the same day rules on the page and in the sheet */
     if (a === 'day') { q.pat = false; q.on[d] = !q.on[d]; if (d === 'w' && q.on.w) OK.day.forEach(function (x) { q.on[x] = true; }); if (d !== 'w' && !q.on[d]) q.on.w = false; return true; }
@@ -1038,13 +1084,13 @@
       return h + gFoot(gCamps() ? 'Next: where you’ll sleep' : 'Next: getting there', 'sleep', 'days');
     }
     if (st === 'sleep') {
-      var H = (site().data && site().data.hoods) || {}, im = function (id) { var o = H[id]; return o ? (o.hi || o.i) : ''; }, camp = gCamps(), veh = VEH.test(S.sleep);
+      var H = (site().data && site().data.hoods) || {}, im = function (id) { var o = H[id]; return o ? (o.hi || o.i) : ''; }, camp = gCamps() || gNone(), none = gNone(), veh = VEH.test(S.sleep);
       h += gTop(3) + '<div class="tk-g-pad"><h2 class="tk-d" tabindex="-1">' + (camp ? 'Where you’ll sleep' : 'Getting there') + '</h2>';
       if (camp) {
-        h += '<p class="tk-g-sub">Your pass comes with a tent spot in the woods.</p>';
+        h += '<p class="tk-g-sub">' + (none ? 'Add a camping spot to the pass you already have.' : 'Your pass comes with a tent spot in the woods.') + '</p>';
         var types = [['tent', 'Tent in the woods', 'Walk in and pick your spot', ['tent'], 'lushcamp'], ['car', 'Car camping', 'Sleep next to your car', ['wcar', 'scar'], 'willowcamp'], ['van', 'Camper van', 'A site for your van', ['wvan', 'svan'], 'southcamp'], ['rv', 'RV', 'A site for your RV', ['wrv', 'srv'], 'southcamp']];
         types.forEach(function (ty) {
-          var ids = ty[3].filter(function (id) { return id === 'tent' || !off(id); }); if (!ids.length) return;
+          var ids = ty[3].filter(function (id) { return id === 'tent' ? !none : !off(id); }); if (!ids.length) return;
           var on = ids.indexOf(S.sleep) >= 0, pr = ty[0] === 'tent' ? '' : (ids.length > 1 ? 'from ' : '') + money(Math.min.apply(null, ids.map(PS)));
           h += '<div class="tk-g-card' + (on ? ' on' : '') + '">' + (im(ty[4]) ? '<img src="' + esc(im(ty[4])) + '" alt="" loading="lazy">' : '') + '<span class="tk-g-sh"></span>' + (ty[0] === 'tent' ? '<span class="tk-g-tag">Included</span>' : '') +
             '<button type="button" class="tk-g-pick" data-g="sleep" data-v="' + ids[0] + '" aria-pressed="' + (on ? 'true' : 'false') + '"><span><b>' + ty[1] + '</b><span>' + ty[2] + '</span></span>' + (pr ? '<em class="tk-num">' + pr + '</em>' : '') + '</button></div>';
@@ -1060,18 +1106,19 @@
         var pks = parkIds(Object.assign({}, S, { go: 'drive' })).filter(Boolean), pk = pks.length && pks.every(function (x) { return !off(x); }), gos = [['drive', 'Drive and park', pk ? money(Math.round(pks.reduce(function (t0, x) { return t0 + PS(x); }, 0) * 100) / 100) + ' a car' + (pks.length > 1 ? ', ' + pks.length + ' days' : '') : ''], ['shuttle', 'Shuttle', !off('shuttle') ? money(PS('shuttle')) + ' each' : ''], ['bike', 'Bike', 'Free'], ['drop', 'Drop-off', 'Free'], ['later', 'Decide later', '']];
         gos.forEach(function (g) { if ((g[0] === 'drive' && !g[2]) || (g[0] === 'shuttle' && !g[2])) return; h += '<button type="button" class="tk-g-chip" data-g="goway" data-v="' + g[0] + '" aria-pressed="' + (S.go === g[0] ? 'true' : 'false') + '">' + g[1] + (g[2] ? ' · ' + g[2] : '') + '</button>'; });
         h += '</div>';
+        if (none && S.go === 'drive') h += '<p class="tk-g-k tk-g-k2">Which day are you driving?</p><div class="tk-g-chips" role="group" aria-label="Parking day"><button type="button" class="tk-g-chip" data-g="pday" data-v="" aria-pressed="' + (!S.pday ? 'true' : 'false') + '">All weekend</button>' + OK.day.map(function (d) { return '<button type="button" class="tk-g-chip" data-g="pday" data-v="' + d + '" aria-pressed="' + (S.pday === d ? 'true' : 'false') + '">' + DAY[d][2] + '</button>'; }).join('') + '</div>';
       } else h += '<p class="tk-g-note">Your site is where you park. No parking pass needed.</p>';
-      return h + '</div>' + gFoot('Next: your order', 'order', 'who');
+      return h + '</div>' + gFoot('Next: your order', 'order', none ? 'days' : 'who');
     }
     /* order */
     var meals = MEALS.filter(function (id) { return xok(id, S); }), more = DISH.concat(GIVE).filter(function (id) { return !off(id); }), X = S.x || {}, go = goLabel(t), cim = ((site().data && site().data.hoods) || {}).curation;
     var xr = function (id) { return gStepper('x-' + id, esc(XN[id].replace('Curation · ', '')), money(PS(id)) + (MEAL[id] !== undefined ? ' a seat' : ''), X[id] || 0, 0); };
-    h += gTop(4) + '<div class="tk-g-pad"><h2 class="tk-d" tabindex="-1">Your order</h2>';
+    h += gTop(4) + '<div class="tk-g-pad"><h2 class="tk-d" tabindex="-1">Your order</h2>' + gStub(t, 'Total, fee included') + (meals.length || more.length ? '<p class="tk-g-k tk-g-k2">Add to your weekend</p>' : '');
     if (meals.length) h += '<div class="tk-g-card tk-g-cur">' + (cim ? '<img src="' + esc(cim.hi || cim.i) + '" alt="" loading="lazy">' : '') + '<span class="tk-g-sh"></span><div class="tk-g-pick"><span><b>Curation</b><span>A chef and a band at one long table</span></span></div></div><div class="tk-g-who tk-g-x">' + meals.map(xr).join('') + '</div>';
     if (more.length) h += '<details class="tk-g-more"><summary>Souvenir dishware and giving back</summary><div class="tk-g-who tk-g-x">' + more.map(xr).join('') + '</div></details>';
-    h += gStub(t, 'Total, fee included') + (w === 'pre' ? '<p class="tk-g-note">Checkout opens ' + esc(T.show.isToday ? 'today' : T.show.dayS) + '. Save your order now and pay in one tap then.</p>' : '') +
+    h += (w === 'pre' ? '<p class="tk-g-note">Checkout opens ' + esc(T.show.isToday ? 'today' : T.show.dayS) + '. Save your order now and pay in one tap then.</p>' : '') +
       (window.pkGift && w === 'sale' && (giftable(S).length || (S.gifts || []).length) ? '<div class="tk-g-gift">' + giftsOk(S).map(function (g, i) { return '<p><span>' + giftLabel(g) + '</span><button type="button" class="tk-tlink" data-g="gift" data-i="' + i + '">Edit</button></p>'; }).join('') + (giftable(S).length ? '<button type="button" class="tk-pill tk-pill-sm" data-g="gift" data-i="-1">' + ((S.gifts || []).length ? 'Give another as a gift' : 'Give any of it as a gift') + '</button>' : '') + '</div>' : '') +
-      '<p class="tk-g-links"><span></span><button type="button" class="tk-tlink" data-g="fast">Change anything on the full page →</button></p></div>';
+      '<p class="tk-g-links"><span></span>' + (S.pass !== 'none' ? '<button type="button" class="tk-tlink" data-g="another">Add a different pass →</button>' : '<button type="button" class="tk-tlink" data-g="go" data-to="days">I need a pass too →</button>') + '</p></div>';
     return h + gFoot(esc(go.t), 'pay', 'sleep', !!go.off || !t.ready);
   }
   function gDraw(focus) {
@@ -1081,13 +1128,16 @@
   }
   function gSeen() { try { window.sessionStorage.setItem(LSG, '1'); } catch (e) {} }
   function guide(step, pre) {
-    readTix(); GS = gFromOrder(); if (pre) { GS.on = Object.assign({}, pre.on); GS.pat = !!pre.pat; } GS.step = step || 'days'; gSeen();
+    readTix(); GS = gFromOrder(); if (pre) { GS.on = Object.assign({}, pre.on); GS.pat = !!pre.pat; } GS.keep = (S.more || []).filter(function (g) { return !(S.pass === 'd1' && g.pass === 'd1'); }); GS.step = step || 'days'; gSeen();
     if (pre && !gApply()) { GS = null; return; }
     var sh = sheet('', 'Pick your days', { modal: true }); sh.classList.add('tk-gscrim'); gDraw(true);
     sh.addEventListener('click', function (e) {
       var b = e.target.closest ? e.target.closest('[data-g]') : null; if (!b || b.disabled) return;
       var a = b.getAttribute('data-g'), d = b.getAttribute('data-d'), v = b.getAttribute('data-v'), k = b.getAttribute('data-k');
-      if (a === 'fast') { GS = null; closeSheet(true); lastKey = ''; sync(); try { var hd = $('#tk-passes', root); if (hd) hd.scrollIntoView({ block: 'start' }); } catch (x) {} return; }
+      if (a === 'fast') { GS = null; closeSheet(true); lastKey = ''; sync(); return; }
+      if (a === 'addons') { addonsOnly(); return; }
+      if (a === 'another') { var cur = cleanG(S), ks = (S.more || []).slice(); if (gok(cur)) ks.push(cur); GS.keep = ks.slice(0, 5); GS.on = {}; GS.pat = false; GS.adult = 1; GS.teen = 0; GS.kid = 0; GS.step = 'days'; gDraw(true); return; }
+      if (a === 'pday') { S.pday = v; S = clean(S); save(); update(); gDraw(); return; }
       if (a === 'go') { GS.step = b.getAttribute('data-to'); gDraw(true); return; }
       if (a === 'gift') { giftForm(+b.getAttribute('data-i'), function () { gDraw(); }); return; }
       if (gDayTap(GS, a, d)) { gDraw(); return; }
