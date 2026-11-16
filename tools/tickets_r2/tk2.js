@@ -630,24 +630,26 @@
       '<h1 class="tk-d">Four days of music in the woods. <span>Find your next favorite band.</span></h1>' +
       '<p class="tk-e-s"><span>' + (pre ? 'For you, or as a gift. One email the moment it opens.' : 'One email when the next sale opens.') + '</span></p>' +
       '<div class="tk-s-ask" id="tk-s-ask1"></div></div></div>' +
-      '<div class="tk-e-proof" id="tk-e-proof" hidden><p class="tk-g-k">They played here first</p><p class="tk-g-sub">Small names when we booked them.</p><ul class="tk-e-reel" id="tk-e-reel" aria-label="Acts that played Pickathon before they were big, biggest today first"></ul></div>' +
-      '<div class="tk-s-sec"><p class="tk-g-k">What a ticket gets you</p><ul class="tk-s-fs">' +
-      soonFact(hi('woods', 'i/r3-hood-woods.jpg'), '', 'Every act plays twice', 'Two sets on two different stages, so you get two chances to catch each one.') +
-      soonFact(hi('lushcamp', 'i/r3-hood-lushcamp.jpg'), '', 'Camping is included', 'Weekend passes come with a tent spot in the forest. Kids 12 and under are free.') +
-      soonFact(hi('grove', 'i/r35-grove-1.jpg'), '', 'A city built by hand', 'Stages and camps designed and built for one summer on a forest farm.', ['s-hoods', 'See the neighborhoods →']) +
-      '</ul></div>' +
-      '<div class="tk-s-two">' +
-      '<div class="tk-s-sec tk-s-pr"><p class="tk-g-k">What goes on sale</p><p class="tk-g-sub">Prices come out when tickets do.</p><ul class="tk-s-pl">' +
+      '<div class="tk-s-stack">' +
+      '<details class="tk-e-why" id="tk-e-why"><summary><span class="tk-e-why-ph"><img src="' + esc(hi('woods', 'i/r3-hood-woods.jpg')) + '" alt="" loading="lazy"><img src="' + esc(hi('lushcamp', 'i/r3-hood-lushcamp.jpg')) + '" alt="" loading="lazy"><img src="' + esc(hi('grove', 'i/r35-grove-1.jpg')) + '" alt="" loading="lazy"></span><span class="tk-e-why-t"><b class="tk-d">Why Pickathon?</b><span>New here? Two minutes on what you’re signing up for.</span></span>' + ic('chev', 'tk-e-chev') + '</summary><div class="tk-e-why-in">' +
+        '<p class="tk-e-why-l">Your new favorite band is playing. You just haven’t met them yet.</p>' +
+        '<div class="tk-e-proof" id="tk-e-proof" hidden><p class="tk-g-k">They played here first</p><p class="tk-g-sub">Small names when we booked them.</p><ul class="tk-e-reel" id="tk-e-reel" aria-label="Acts that played Pickathon before they were big, biggest today first"></ul></div>' +
+        '<p class="tk-g-k tk-e-why-k">What a ticket gets you</p><ul class="tk-s-fs">' +
+        soonFact(hi('woods', 'i/r3-hood-woods.jpg'), '', 'Every act plays twice', 'Two sets on two different stages, so you get two chances to catch each one.') +
+        soonFact(hi('lushcamp', 'i/r3-hood-lushcamp.jpg'), '', 'Camping is included', 'Weekend passes come with a tent spot in the forest. Kids 12 and under are free.') +
+        soonFact(hi('grove', 'i/r35-grove-1.jpg'), '', 'A city built by hand', 'Stages and camps designed and built for one summer on a forest farm.', ['s-hoods', 'See the neighborhoods →']) +
+        '</ul><p class="tk-e-press">Featured in The New York Times’ festivals to see in 2026. Named best independent music festival by Paste. Two AIA architecture awards.</p></div></details>' +
+      '<details class="tk-e-pr" data-plan="types"><summary><img src="' + esc(hi('lushcamp', 'i/r3-hood-lushcamp.jpg')) + '" alt="" loading="lazy"><span class="tk-e-pr-t"><b>What goes on sale</b><span>Weekend passes, day tickets, Patron and add-ons</span></span>' + ic('chev', 'tk-e-chev') + '</summary><div class="tk-e-pr-in tk-s-pr"><ul class="tk-s-pl">' +
         row('4 days · Thu–Sun', 'Camping in the forest included. Add a Wednesday early arrival.') + row('3 days · Fri–Sun', 'Camping in the forest included.') + row('Day tickets', 'Saturday + Sunday, or any one day. Ages 13 and up, no camping.') + row('Patron Pass · Wed–Sun', 'Backstage hospitality, concierge and early entry. Any age, one each.') + row('Add-ons', 'Car camping, camper van and RV sites, parking, the MAX shuttle and Curation meals.') +
-        '</ul><p class="tk-s-pn">Kids 12 and under are free. Teens 13 to 17 are half price on weekend passes.</p></div>' +
-      '<div class="tk-s-sec tk-s-qs"><p class="tk-g-k">Good to know</p>' +
+        '</ul><p class="tk-s-pn">Kids 12 and under are free. Teens 13 to 17 are half price on weekend passes. Prices come out when tickets do.</p></div></details>' +
+      '<details class="tk-e-pr" data-plan="faq"><summary><img src="' + esc(hi('grove', 'i/r35-grove-1.jpg')) + '" alt="" loading="lazy"><span class="tk-e-pr-t"><b>Good to know</b><span>Kids, day tickets, RVs and getting there</span></span>' + ic('chev', 'tk-e-chev') + '</summary><div class="tk-e-pr-in tk-s-qs">' +
       q('When do tickets go on sale?', pre ? 'Soon. Sign up and we send one email the moment they do.' : 'Sign up and we send one email when the next sale opens.') +
       q('Can I bring my kids?', 'Yes. Kids 12 and under are free with a weekend pass or a day ticket. Teens 13 to 17 are half price on weekend passes.') +
       q('Can I come for just one day?', 'Yes. Day tickets are one price for ages 13 and up. They don’t include camping.') +
       q('Can I car camp or bring an RV?', 'Yes. Car camping, camper van and RV sites at Willow Camp and South Camp are added to your order. South Camp sells out first.') +
       q('How do I get there?', 'Drive and park, take the MAX to Lents Town Center and ride the shuttle, bike in, or get dropped off.') +
-      '<div class="tk-hand"><button type="button" class="tk-pill" data-go="info">How the weekend works</button></div></div></div>' +
-      '<div class="tk-s-end"><h2 class="tk-d">' + 'Be first in line.' + '</h2><div class="tk-s-ask" id="tk-s-ask2"></div></div>' +
+      '<div class="tk-hand"><button type="button" class="tk-pill" data-go="info">How the weekend works</button></div></div></details>' +
+      '<div class="tk-s-end"><h2 class="tk-d">Be first in line.</h2><div class="tk-s-ask" id="tk-s-ask2"></div></div></div>' +
       '</section>';
   }
   function soonDraw(tries) {
