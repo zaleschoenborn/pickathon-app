@@ -12,10 +12,12 @@ K = {'Discovery': 'disc', 'Legend': 'leg', 'Deep cut': 'deep'}
 T = {}
 for x in music_rows(sys.argv[1]):
     T[(x['year'], fold(x['act']))] = x
+# act-years whose timeline rows are stale until Classification posts a newer timeline (Nov 16 v40 note: Hillstomp, Surefire, Lee Fields); the class table drives their last point
+STALE = {('1999','surefire'), ('2004','hillstomp'), ('2009','hillstomp'), ('2011','leefieldstheexpressions')}
 rows = collections.defaultdict(list)
 for x in csv.DictReader(open(sys.argv[2], encoding='utf-8-sig')):
     x['act'] = disp(x['year'], x['act'])
-    if x['lineup'] != 'Music' or (x['year'], fold(x['act'])) not in T: continue
+    if x['lineup'] != 'Music' or (x['year'], fold(x['act'])) not in T or (x['year'], fold(x['act'])) in STALE: continue
     rows[x['year']].append(x)
 d = json.load(open(P)); YR = {}
 for y, R in sorted(rows.items()):
