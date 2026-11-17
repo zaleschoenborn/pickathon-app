@@ -33,7 +33,7 @@
            then name only break ties. Older data without r[6] falls back to the year's call. */
         /* Zale, Nov 11 13:32: a Deep cut counts one point smaller, so it never sits level with a big act; in a tie a Discovery comes before a Legend. */
         var TIE = { 'Discovery': 0, 'Legend': 1, 'Deep cut': 2, 'Neither': 3 };
-        var td = function (r) { var v = r.length > 6 ? (r[6] === null || r[6] === '' ? null : +r[6]) : (+r[2] || 0); return v === null ? null : v - (r[1] === 'Deep cut' ? 1 : 0); };
+        var td = function (r) { var v = r.length > 6 ? (r[6] === null || r[6] === '' ? null : +r[6]) : (+r[2] || 0); return v === null ? null : v - 0; };
         var ta = td(a), tb = td(b), ka = [ta === null ? 1 : 0, -(ta || 0), TIE[a[1]] || 0, -(CF[a[3]] || 0)], kb = [tb === null ? 1 : 0, -(tb || 0), TIE[b[1]] || 0, -(CF[b[3]] || 0)];
         for (var i = 0; i < 4; i++) if (ka[i] !== kb[i]) return ka[i] - kb[i]; return a[0] < b[0] ? -1 : a[0] > b[0] ? 1 : 0; });
       var now = {}; R.forEach(function (r, i) { now[r[0]] = i; });
