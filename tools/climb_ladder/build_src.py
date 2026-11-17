@@ -12,7 +12,7 @@ CF = {'h': 'high', 'm': 'medium', 'l': 'low'}
 # Usage: python3 build_src.py <class_table.csv>   (the newest class_table_*.csv from Artist Classification)
 rows = {}
 for r in csv.DictReader(open(sys.argv[1], encoding='utf-8-sig')):
-    if r.get('lineup') != 'Music' or (r.get('merged_into') or '').strip(): continue
+    if r.get('lineup') != 'Music' or (r.get('merged_into') or '').strip() or (r.get('duplicate_of') or '').strip(): continue
     c = r.get('class') or ''
     if c not in ('Legend', 'Discovery', 'Deep cut', 'Neither'): continue
     try: m = float(r.get('magnitude') or 0)

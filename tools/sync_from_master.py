@@ -9,7 +9,7 @@ fold = lambda s: re.sub(r'[^a-z0-9]', '', str(s).lower())
 K = {'Discovery': 'disc', 'Legend': 'leg', 'Deep cut': 'deep'}
 M = {}
 for x in csv.DictReader(open(csvp, encoding='utf-8-sig')):
-    if x['lineup'] == 'Music' and not (x.get('merged_into') or '').strip(): M[(x['year'], fold(x['act']))] = x
+    if x['lineup'] == 'Music' and not (x.get('merged_into') or '').strip() and not (x.get('duplicate_of') or '').strip(): M[(x['year'], fold(x['act']))] = x
 f = lambda v: float(v) if (v or '').strip() else None
 d = json.load(open(P)); drift = []
 want = {}
