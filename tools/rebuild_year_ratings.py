@@ -24,6 +24,8 @@ for y, R in sorted(rows.items()):
     for x in R:
         v = (x.get('peak_since_booking_dec') or '').strip()
         by[x['act']][x['point']] = float(v) if v else None
+    for (ty, tk), tx in T.items():   # every class-table act keeps a chart row, even with no timeline rows
+        if ty == y and not any(fold(a) == tk for a in by): by[tx['act']] = {}
     acts = []
     for a, S in sorted(by.items(), key=lambda kv: kv[0].lower()):
         t = T[(y, fold(a))]; m = []
@@ -33,7 +35,7 @@ for y, R in sorted(rows.items()):
             if v is not None: last = v
             m.append(v)
         ml = (t.get('magnitude_dec') or '').strip()
-        if ml and m[-1] is not None: m[-1] = float(ml)
+        if ml and (m[-1] is not None or not S): m[-1] = float(ml)
         c0 = K.get(t['at_festival_class'], 'none'); c1 = K.get(t['today_class']) or c0
         acts.append({'n': a, 'c': [c0] * (len(pts) - 1) + [c1], 'm': m})
     YR[y] = {'dates': pts, 'fest': 0, 'acts': acts}
