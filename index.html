@@ -14426,7 +14426,7 @@ html.pl2-zoom{-webkit-text-size-adjust:auto!important;text-size-adjust:auto!impo
     var h = ''; try { h = window.location.hash || ''; } catch (x) {} var m = h.match(/^#\/plan\?(.*)$/); if (!m) return;
     var q = {}; m[1].split('&').forEach(function (p) { var kv = p.split('='); q[kv[0]] = kv[1]; });
     var p = lsGet(LSP) || {}, got = false; ['len', 'sleep', 'go'].forEach(function (k) { if (OK[k].indexOf(q[k]) >= 0) { p[k] = q[k]; got = true; } });
-    if (got) { lsSet(LSP, p); lsSet(LSQ, 1); sharedIn = true; }
+    if (got) { lsSet(LSP, p); lsSet(LSQ, 1); sharedIn = true; sharedVisit = true; }
     try { window.history.replaceState(window.history.state, '', window.location.href.split('#')[0] + '#/plan'); } catch (x) {}
   }
   function sharePlan() {
