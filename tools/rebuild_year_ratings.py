@@ -3,15 +3,18 @@
 # Per year: dates = every point from Aug 1 of the festival year to the latest point; per act, m = peak since booking at that point
 # (the running peak, never goes down; blank before measured stays None), c = class series (at-festival class, today's class at the last point).
 import json, csv, sys, re, os, collections
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from rowrules import music_rows
+from name_aliases import disp
 SITE = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'); P = os.path.join(SITE, 'data.json')
 fold = lambda s: re.sub(r'[^a-z0-9]', '', str(s).lower())
 K = {'Discovery': 'disc', 'Legend': 'leg', 'Deep cut': 'deep'}
 T = {}
-for x in csv.DictReader(open(sys.argv[1], encoding='utf-8-sig')):
-    if x['lineup'] != 'Music' or (x.get('merged_into') or '').strip() or (x.get('duplicate_of') or '').strip(): continue
+for x in music_rows(sys.argv[1]):
     T[(x['year'], fold(x['act']))] = x
 rows = collections.defaultdict(list)
 for x in csv.DictReader(open(sys.argv[2], encoding='utf-8-sig')):
+    x['act'] = disp(x['year'], x['act'])
     if x['lineup'] != 'Music' or (x['year'], fold(x['act'])) not in T: continue
     rows[x['year']].append(x)
 d = json.load(open(P)); YR = {}

@@ -4,6 +4,8 @@
 # by pkClimbLive (pk-climb.js), so a class change reaches the poster with the next data.json, with no poster rebuild.
 # Usage: python3 build_src.py <class_table.csv>
 import json, csv, sys, re, os
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))
+from rowrules import music_rows
 SITE = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..')
 d = json.load(open(os.path.join(SITE, 'data.json')))
 norm = lambda s: ' '.join(re.sub(r'[^a-z0-9 ]', '', str(s).lower().replace('&', ' and ').replace('“', '').replace('”', '').replace('"', '')).split())
@@ -11,8 +13,7 @@ CF = {'h': 'high', 'm': 'medium', 'l': 'low'}
 # ONE source: the class table (Zale, Nov 9: builds come from master data, no side files, no hand placement).
 # Usage: python3 build_src.py <class_table.csv>   (the newest class_table_*.csv from Artist Classification)
 rows = {}
-for r in csv.DictReader(open(sys.argv[1], encoding='utf-8-sig')):
-    if r.get('lineup') != 'Music' or (r.get('merged_into') or '').strip() or (r.get('duplicate_of') or '').strip(): continue
+for r in music_rows(sys.argv[1]):
     c = r.get('class') or ''
     if c not in ('Legend', 'Discovery', 'Deep cut', 'Neither'): continue
     try: m = float(r.get('magnitude') or 0)

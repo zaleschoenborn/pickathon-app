@@ -3,13 +3,15 @@
 #   rebuilds climbSrc (poster) and billTN (year-page bill: at-festival size/class, today's peak, today's class) from the master,
 #   drops the retired top10Final copy, and verifies yearRatings' last window equals the master peak. --check changes nothing and exits 1 on drift.
 import json, csv, sys, re, os, subprocess
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from rowrules import music_rows
 HERE = os.path.dirname(os.path.abspath(__file__)); SITE = os.path.join(HERE, '..'); P = os.path.join(SITE, 'data.json')
 csvp = sys.argv[1]; check = '--check' in sys.argv
 fold = lambda s: re.sub(r'[^a-z0-9]', '', str(s).lower())
 K = {'Discovery': 'disc', 'Legend': 'leg', 'Deep cut': 'deep'}
 M = {}
-for x in csv.DictReader(open(csvp, encoding='utf-8-sig')):
-    if x['lineup'] == 'Music' and not (x.get('merged_into') or '').strip() and not (x.get('duplicate_of') or '').strip(): M[(x['year'], fold(x['act']))] = x
+for x in music_rows(csvp):
+    M[(x['year'], fold(x['act']))] = x
 f = lambda v: float(v) if (v or '').strip() else None
 d = json.load(open(P)); drift = []
 want = {}
