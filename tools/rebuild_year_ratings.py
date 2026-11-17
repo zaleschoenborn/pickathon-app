@@ -26,7 +26,8 @@ for y, R in sorted(rows.items()):
         by[x['act']][x['point']] = float(v) if v else None
     acts = []
     for a, S in sorted(by.items(), key=lambda kv: kv[0].lower()):
-        t = T[(y, fold(a))]; last = None; m = []
+        t = T[(y, fold(a))]; m = []
+        pre = [S[q] for q in sorted(S) if q < pts[0] and S[q] is not None]; last = pre[-1] if pre else None
         for p in pts:
             v = S.get(p, last if last is not None else None)
             if v is not None: last = v
