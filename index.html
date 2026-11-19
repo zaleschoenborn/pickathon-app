@@ -11871,6 +11871,11 @@ if (!window.pkOrders) window.pkOrders = (function () {
 }
 #root#root#root #pkh2 .h2-xp-c{display:inline-flex!important;align-items:center;gap:8px}
 #root#root#root #pkh2 .h2-xp-ic{width:22px;height:22px;flex:none}
+/* Nov 18 23:20: Where row = one-color place icons, the center card's place glows */
+#root#root#root #pkh2 .h2-xp-e img{opacity:.6;transition:opacity .2s,filter .2s}
+#root#root#root #pkh2 .h2-xp-e span{opacity:.75;transition:opacity .2s,color .2s}
+#root#root#root #pkh2 .h2-xp-e.on img{opacity:1;filter:drop-shadow(0 0 7px rgba(242,207,98,.55))}
+#root#root#root #pkh2 .h2-xp-e.on span{opacity:1;color:#F2CF62}
 #root#root#root #pkh2 .h2-hct-b{font-size:19px!important;line-height:1.35!important;color:var(--cream)!important;font-weight:500!important}
 @media (min-width:1200px){#root#root#root #pkh2 .h2-hct-b{font-size:20px!important}}
 html:root:root:root:root body #root#root#root #pkh2 .h2-xp .h2-xp-c span{font:inherit!important;letter-spacing:inherit!important;text-transform:inherit!important;color:inherit!important}
@@ -13026,18 +13031,21 @@ window.pkClimbRank = function (C, dd) {
   var XPL = { Wellness: ['lucky', 'courtyard', 'refuge', 'coyote', 'windmill', 'trails'], Camping: ['wildcamp', 'lushcamp', 'willowcamp', 'southcamp'] };
   function xpTrails() { if (D && D.hoods && !D.hoods.trails) D.hoods.trails = { n: 'The Trails', k: 'around', t: 'Almost four miles of forest trails', ic: 'i/xp-map.svg', icw: 'i/xp-map-w.svg', amk: [] }; }
   function xpList(t) { xpTrails(); if (XPL[t]) return XPL[t].filter(function (k) { return D.hoods[k] && (k === 'trails' || hoodSet(k).length); }); var src = t === 'Architecture' ? ROT0 : ALLH; return src.filter(function (k) { return D.hoods[k] && hoodSet(k).length && xpOf(k)[t]; }).sort(function (a, b) { var x = XPH[t] || {}; return (x[b] ? 1 : 0) - (x[a] ? 1 : 0); }); }
-  function xpWhere(a) { var K = xpList(XPF); $('.h2-xp-d', a).textContent = XPD[XPF] || ''; $('.h2-xp-w', a).innerHTML = XPF === 'Architecture' ? '' : '<span class="h2-xp-wl">Where</span>' + K.map(function (hk) { var H = D.hoods[hk]; return '<button type="button" class="h2-xp-e" data-xh="' + hk + '"><img src="' + esc(H.ic || '') + '" alt=""><span>' + esc(H.n) + '</span></button>'; }).join(''); }
+  function xpWhere(a) { var K = xpList(XPF); $('.h2-xp-d', a).textContent = XPD[XPF] || ''; $('.h2-xp-w', a).innerHTML = XPF === 'Architecture' ? '' : '<span class="h2-xp-wl">Where</span>' + K.map(function (hk) { var H = D.hoods[hk]; return '<button type="button" class="h2-xp-e" data-xh="' + hk + '"><img src="' + esc(XIC[hk] ? 'ic/' + hk + '.svg' : (H.icw || H.ic || '')) + '" alt=""><span>' + esc(H.n) + '</span></button>'; }).join(''); xpOn(); }
+  /* Zale Nov 18 23:16: one-color place icons; the place on the center card glows; tap another to swing the carousel there, tap the glowing one to open it */
+  var XIC = { cherryhill: 1, courtyard: 1, coyote: 1, curation: 1, farmhouse: 1, galaxy: 1, grove: 1, lucky: 1, lushcamp: 1, market: 1, orchard: 1, paddock: 1, quailtrail: 1, refuge: 1, southcamp: 1, welcomelot: 1, wildcamp: 1, willowcamp: 1, windmill: 1, woods: 1 };
+  function xpOn() { var a = root && $('[data-h2="xp"]', root), r = root && $('[data-h2="hcards"]', root); if (!a || !r || !r.children.length) return; var c = r.children[ccMid(r).i], k = c && c.getAttribute('data-h'); $$('.h2-xp-e', a).forEach(function (e) { var on = e.getAttribute('data-xh') === k; e.classList.toggle('on', on); if (on) e.setAttribute('aria-current', 'true'); else e.removeAttribute('aria-current'); }); }
   function xpGo(r, k) { var m = ccMid(r).i, best = -1, bd = 1e9; for (var n = 0; n < r.children.length; n++) { if (r.children[n].getAttribute('data-h') === k && Math.abs(n - m) < bd) { bd = Math.abs(n - m); best = n; } } if (best < 0) return; var C = r.children[best]; r.scrollTo({ left: C.offsetLeft - (r.clientWidth - C.offsetWidth) / 2, behavior: 'smooth' }); }
   function xpDraw() { var a = root && $('[data-h2="xp"]', root); if (!a || a._built || !D || !D.hoods || !ALLH.length) return; a._built = 1;
     var W = XPO.filter(function (t) { return xpList(t).length; });
     a.innerHTML = '<p class="h2-xp-h">What do you want to experience?</p><div class="h2-xp-ch" role="group" aria-label="Experiences">' + W.map(function (t) { return '<button type="button" class="h2-xp-c' + (t === XPF ? ' on' : '') + '" data-xp="' + t + '" aria-pressed="' + (t === XPF) + '">' + xpIc(t) + '<span>' + esc(t) + '</span></button>'; }).join('') + '</div><p class="h2-xp-d"></p><div class="h2-xp-w"></div>';
     xpWhere(a);
-    a.addEventListener('click', function (ev) { var rr = $('[data-h2="hcards"]', root), e = ev.target.closest('.h2-xp-e'); if (e) { if (rr) xpGo(rr, e.getAttribute('data-xh')); return; }
+    a.addEventListener('click', function (ev) { var rr = $('[data-h2="hcards"]', root), e = ev.target.closest('.h2-xp-e'); if (e) { if (!rr) return; if (e.classList.contains('on')) { var mc = rr.children[ccMid(rr).i], hb = mc && (mc.matches('[data-h2="hcard"]') ? mc : mc.querySelector('[data-h2="hcard"]')); if (hb) hb.click(); return; } xpGo(rr, e.getAttribute('data-xh')); return; }
       var b = ev.target.closest('button[data-xp]'); if (!b) return; var t = b.getAttribute('data-xp'); if (t === XPF) return; XPF = t;
       $$('.h2-xp-c', a).forEach(function (c) { var on = c.getAttribute('data-xp') === XPF; c.classList.toggle('on', on); c.setAttribute('aria-pressed', on ? 'true' : 'false'); });
       xpWhere(a); ROT = xpList(XPF); XPS = 1; drawHoods(); }); }
 
-  function markMid(r) { if (!r || !r.children.length) return; var m = ccMid(r); if (r.getAttribute('data-h2') === 'hcards') xpDraw(); for (var k = 0; k < r.children.length; k++) { var c = r.children[k]; c.classList.toggle('is-mid', k === m.i); c.classList.toggle('is-prev', k < m.i); c.classList.toggle('is-next', k > m.i); } }
+  function markMid(r) { if (!r || !r.children.length) return; var m = ccMid(r); if (r.getAttribute('data-h2') === 'hcards') { xpDraw(); xpOn(); } for (var k = 0; k < r.children.length; k++) { var c = r.children[k]; c.classList.toggle('is-mid', k === m.i); c.classList.toggle('is-prev', k < m.i); c.classList.toggle('is-next', k > m.i); } }
   function midWatch(r) { if (r._mw) return; r._mw = 1; var raf = 0; r.addEventListener('scroll', function () { if (raf) return; raf = requestAnimationFrame(function () { raf = 0; markMid(r); }); }, { passive: true }); }
   /* Zale Nov 16: Another crossfades to a new pick (a shuffled deck, no repeats until all are seen); no sliding, works the same in Safari */
   function anotherFade(r) {
