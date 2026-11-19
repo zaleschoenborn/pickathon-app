@@ -200,3 +200,12 @@ body.pkpl-hood:not(.pkpl-wide) .pkpl-xb{display:none}
 #root #pkpl-top .pkpl-axn svg{width:20px;height:20px}
 #root #pkpl-top .pkpl-axn b{font:800 14px/1 'Bricolage Grotesque',system-ui,sans-serif}
 @media (min-width:700px){#root #pkpl-top .pkpl-at{grid-template-columns:repeat(3,1fr)}}
+
+/* ---------- amenity icons (Nov 19): one-color plates drawn by the map itself, replacing the painted multicolor ones ---------- */
+.pkpl-ip{fill:#2B2628}
+.pkpl-ig{fill:none;stroke:#F2EDE3;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.pkpl-ics,.pkpl-icon{pointer-events:none}
+.pkpl-icon use{filter:drop-shadow(0 0 5px rgba(255,231,163,.95))}
+.pkpl-amon .pkpl-veil{fill:rgba(12,14,10,.55)}
+#root .pkpl-fres .pkpl-fi{flex:none;width:34px;height:34px;border-radius:8px;background:#2B2628;color:#F2EDE3;display:flex;align-items:center;justify-content:center;font-style:normal}
+#root .pkpl-fres .pkpl-fi svg{width:22px;height:22px}

@@ -10,12 +10,18 @@
   'use strict';
   var HH = /*@HOODS_HOME*/null;   /* tools/home_r2/hoods_home.json: shapes, pin points and the photo director's preview photos with crops */
   if (!HH) return;
+  var MI = /*@MAP_ICONS*/null, AMI = /*@AMEN_ICONS*/null;   /* the map's amenity icons, lifted from the 2026 layered map PDF: [kind, x, y, owner neighborhood] (tools/places_r1/map_icons.json) and their one-color glyphs (amen_icons.json) */
   var XH = /*@XP_HOME*/null, XM = /*@XP_MINE*/null;   /* experiences: Home's words, icons and photos (tools/places_r1/xp_home.json) and this chat's final Nov 19 picks (tools/places_r1/xp_manifest.json) */
   if (!XH || !XM) XH = XM = null;
   var W = HH.size[0], H = HH.size[1], TF = 4898 / 2041, TS = 1024 / TF;   /* farmmap/t/<col>_<row>.webp: the full-detail map in 1024px tiles (4898 x 9144) */
   var KIND = { stage: 'Stage neighborhood', around: 'Gathering neighborhood', camp: 'Camping neighborhood' };
   var ORDER = ['woods', 'paddock', 'cherryhill', 'grove', 'windmill', 'galaxy', 'lucky', 'farmhouse', 'curation', 'refuge', 'coyote', 'courtyard', 'market', 'orchard', 'welcomelot', 'lushcamp', 'quailtrail', 'southcamp', 'wildcamp', 'willowcamp'];
   var CORE = ['woods', 'refuge', 'coyote', 'cherryhill', 'market', 'grove', 'windmill', 'paddock', 'galaxy', 'courtyard'];   /* desktop start: Woods down to the Courtyard (addendum 3) */
+  var AMN = { restroom: 'Restrooms', water: 'Water', food: 'Food', bar: 'Bars', coffee: 'Coffee', craft: 'Craft and makers', atm: 'ATMs', dishes: 'Dish return', dishwash: 'Dish wash', wash: 'Hand wash', medical: 'Medical', shower: 'Showers', charge: 'Charging', info: 'Info', ice: 'Ice', dj: 'DJ booths', smoke: 'Smoking', shuttle: 'Shuttle', bike: 'Bike parking', moto: 'Motorcycle parking', parking: 'Parking', rv: 'RV camping', carcamp: 'Car camping', access: 'Accessible camping', gear: 'Gear drops', tent: 'Camp sites' };
+  var ISZ = { gear: 40 }, IS0 = 30;   /* plate size in map pixels (the art's plates were about 41) */
+  function amGlyph(k) { return '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">' + ((AMI || {})[k] || '') + '</svg>'; }
+  function amOf(k) { return (MI || []).filter(function (z) { return z[0] === k; }); }
+  function amUse(z) { var w = ISZ[z[0]] || IS0; return '<use href="#pkpl-i-' + z[0] + '" x="' + (z[1] - w / 2) + '" y="' + (z[2] - w / 2) + '" width="' + w + '" height="' + w + '"/>'; }
   var AMEN = { restroom: ['Restrooms', 'restroom.webp'], water: ['Water', 'water.webp'], bar: ['Bars', 'bar.webp'], food: ['Food', 'food.webp'], coffee: ['Coffee', 'coffee.webp'], craft: ['Craft', 'craft.webp'], shower: ['Showers', 'shower.webp'], atm: ['ATMs', 'atm.webp'], kids: ['Kids', 'kids.svg'], shuttle: ['Shuttle', 'shuttle.webp'], access: ['Accessible', 'access.webp'], medical: ['Medical', 'medical.webp'], info: ['Info', 'info.webp'], charge: ['Charging', 'charge.webp'], merch: ['Merch', 'merch.webp'], ice: ['Ice', 'ice.webp'], dishes: ['Dish return', 'dishes.webp'], bike: ['Bike parking', 'bike.webp'], massage: ['Massage', 'massage.webp'], smoke: ['Smoking', 'smoke.webp'] };
   var HERO_MS = 6500, HERO_FADE = 1500;   /* Zale, Nov 19: calmer: 6.5 s per photo, 1.5 s crossfade */
 
@@ -78,10 +84,11 @@
     var el = document.createElement('div'); el.className = 'pkpl-map'; el.setAttribute('role', 'region'); el.setAttribute('aria-label', 'Farm map');
     var shapes = ids().map(function (k) { return '<path class="pkpl-sh" data-h="' + k + '" d="' + HH.shapes[k] + '"/>'; }).join('');
     el.innerHTML =
-      '<div class="pkpl-world"><img class="pkpl-base" src="farmmap/map.webp?v=33" alt="" draggable="false" decoding="async"><div class="pkpl-tiles"></div>' +
+      '<div class="pkpl-world"><img class="pkpl-base" src="farmmap/map2.webp?v=3" alt="" draggable="false" decoding="async"><div class="pkpl-tiles"></div>' +
       '<svg class="pkpl-svg" viewBox="0 0 ' + W + ' ' + H + '" preserveAspectRatio="none" aria-hidden="true">' +
-      '<defs><filter id="pkpl-glow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="9" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>' +
-      '<path class="pkpl-veil" fill-rule="evenodd" d=""/><g class="pkpl-shs">' + shapes + '</g><path class="pkpl-lit" d=""/><path class="pkpl-hov" d=""/></svg></div>' +
+      '<defs><filter id="pkpl-glow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="9" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>' + Object.keys(AMI || {}).map(function (k) { return '<symbol id="pkpl-i-' + k + '" viewBox="0 0 24 24"><rect class="pkpl-ip" x=".75" y=".75" width="22.5" height="22.5" rx="5"/><g class="pkpl-ig" transform="translate(2.4 2.4) scale(.8)">' + AMI[k] + '</g></symbol>'; }).join('') + '</defs>' +
+      '<g class="pkpl-ics">' + (MI || []).map(amUse).join('') + '</g>' +
+      '<path class="pkpl-veil" fill-rule="evenodd" d=""/><g class="pkpl-icon"></g><g class="pkpl-shs">' + shapes + '</g><path class="pkpl-lit" d=""/><path class="pkpl-hov" d=""/></svg></div>' +
       '<div class="pkpl-pins"></div><div class="pkpl-am"></div>' +
       '<div class="pkpl-title" aria-hidden="false"><p class="pkpl-k">Pickathon</p><h1 class="pkpl-d">Summer camp for your soul</h1><p class="pkpl-l">Pick an experience below, then tap a place that lights up</p></div>' +
       '<div class="pkpl-xls"></div>' +
@@ -152,9 +159,9 @@
     for (var c = Math.max(0, Math.floor(x0 / TS)); c <= Math.min(4, Math.floor(x1 / TS)); c++) for (var r = Math.max(0, Math.floor(y0 / TS)); r <= Math.min(8, Math.floor(y1 / TS)); r++) {
       var k = c + '_' + r; need.push(k); if (M.loaded[k]) continue; M.loaded[k] = 1;
       var im = document.createElement('img'); im.alt = ''; im.draggable = false; im.decoding = 'async';
-      im.style.cssText = 'left:' + (c * TS) + 'px;top:' + (r * TS) + 'px;width:' + ((c === 4 ? 802 : 1024) / TF) + 'px;height:' + ((r === 8 ? 952 : 1024) / TF) + 'px';
+      im.style.cssText = 'left:' + (c * TS) + 'px;top:' + (r * TS) + 'px;width:' + ((c === 4 ? 802 : 1024) / TF + 0.4) + 'px;height:' + ((r === 8 ? 952 : 1024) / TF + 0.4) + 'px';   /* a hair of overlap so no seam shows between tiles */
       im.onload = function () { this.classList.add('on'); M.done[this._k] = 1; tok(); }; im._k = k;
-      im.src = 'farmmap/t/' + k + '.webp?v=33'; M.tiles.appendChild(im);
+      im.src = 'farmmap/t2/' + k + '.webp?v=3'; M.tiles.appendChild(im);
     }
     M.need = need; tok();
   }
@@ -187,6 +194,7 @@
   }
   function home(now) { M.cur = ''; lit(); animTo(startView(), now ? 0 : 520); }
   /* the visible part of the map (phone: above the sheet) */
+  function clear() { var r = region(); return { x: r.x, y: r.y, w: r.w, h: Math.max(160, r.h - (wide() ? 96 : 150)) }; }   /* above the experience bar and the amenity tag */
   function region() {
     if (wide() || top().r !== 'hood') return { x: 0, y: 0, w: M.vw, h: M.vh };
     return { x: 0, y: 0, w: M.vw, h: Math.max(160, Math.round(M.vh * 0.4)) };
@@ -198,11 +206,11 @@
     M.cur = k; lit(); animTo(v, now ? 0 : 560);
   }
   function lit() {
-    var k = M.cur, L = (!k && M.xp) ? litSet() : [], d = k ? HH.shapes[k] : L.map(function (h) { return HH.shapes[h]; }).join(' ');
+    var k = M.cur, L = (!k && M.amen) ? Object.keys(amenHoods()) : (!k && M.xp) ? litSet() : [], d = k ? HH.shapes[k] : L.map(function (h) { return HH.shapes[h]; }).join(' ');
     $('.pkpl-veil', M.svg).setAttribute('d', d ? 'M-4000,-4000H' + (W + 4000) + 'V' + (H + 4000) + 'H-4000Z ' + d : '');
     $('.pkpl-lit', M.svg).setAttribute('d', d);
     $$('.pkpl-sh', M.svg).forEach(function (p) { p.classList.toggle('on', p.getAttribute('data-h') === k); });
-    M.el.classList.toggle('pkpl-picked', !!k); M.el.classList.toggle('pkpl-xpon', !k && !!M.xp);
+    M.el.classList.toggle('pkpl-picked', !!k); M.el.classList.toggle('pkpl-xpon', !k && (!!M.xp || !!M.amen));
     var full = $('[data-pl="full"]', M.el); if (full) full.hidden = !k && !M.amen && !M.xp && !(M.s > startView()[0] * 1.15);
     placePins(); xpLabels(); xbDraw();
   }
@@ -218,8 +226,8 @@
     $('.pkpl-l', t).textContent = M.xp ? (XH.XPD[M.xp] || '') : 'Pick an experience below, then tap a place that lights up';
   }
   function xpLabels() {
-    var box = $('.pkpl-xls', M.el); if (!box) return; var L = (!M.cur && M.xp) ? litSet() : [];
-    box.innerHTML = L.map(function (k) { return '<span class="pkpl-xl" data-h="' + k + '">' + esc(data().hoods[k].n) + '</span>'; }).join(''); xlPlace();
+    var box = $('.pkpl-xls', M.el); if (!box) return; var C = (!M.cur && M.amen) ? amenHoods() : null, L = C ? Object.keys(C) : (!M.cur && M.xp) ? litSet() : [];
+    box.innerHTML = L.map(function (k) { return '<span class="pkpl-xl" data-h="' + k + '">' + esc(data().hoods[k].n) + (C ? ' · ' + C[k] : '') + '</span>'; }).join(''); xlPlace();
   }
   function xlPlace() {
     var els = $$('.pkpl-xl', M.el); if (!els.length) return;
@@ -228,7 +236,7 @@
   }
   function fitLit() {
     var L = litSet(); if (!L.length) { home(); return; }
-    animTo(fitBox(union(L), region(), wide() ? 90 : 34), 560);
+    animTo(fitBox(union(L), clear(), wide() ? 90 : 34), 560);
   }
   function xpPick(e) {
     var t0 = top(); if (t0.r === 'hood' && t0.h && xpAt(t0.h).indexOf(e) >= 0) { TOP.xp = e; M.xp = e; drawTop(); xbDraw(); return; }   /* the bar follows the open place */
@@ -330,14 +338,15 @@
   }
 
   /* ---------- amenities (from Find) ---------- */
-  function amenDraw() {
-    var box = $('.pkpl-am', M.el), tag = $('.pkpl-amtag', M.el), D = data(), L = (M.amen && D.amen && D.amen[M.amen]) || [];
-    box.innerHTML = L.map(function (p) { return '<span class="pkpl-amdot" data-x="' + p[0] + '" data-y="' + p[1] + '"><img src="amen/' + AMEN[M.amen][1] + '" alt=""></span>'; }).join('');
-    tag.hidden = !M.amen; if (M.amen) $('span', tag).textContent = AMEN[M.amen][0] + ' · ' + L.length + ' on the farm';
-    amenPlace();
+  function amenDraw() {   /* Find picked an amenity: its icons ride above the dimming, its neighborhoods light up */
+    var tag = $('.pkpl-amtag', M.el), L = M.amen ? amOf(M.amen) : [];
+    $('.pkpl-icon', M.svg).innerHTML = L.map(amUse).join('');
+    M.el.classList.toggle('pkpl-amon', !!M.amen);
+    tag.hidden = !M.amen; if (M.amen) $('span', tag).textContent = (AMN[M.amen] || M.amen) + ' · ' + L.length + ' on the farm';
   }
+  function amenHoods() { var o = {}; amOf(M.amen).forEach(function (z) { if (z[3]) o[z[3]] = (o[z[3]] || 0) + 1; }); return o; }
   function amenPlace() { $$('.pkpl-amdot', M.el).forEach(function (d) { var x = M.tx + (+d.getAttribute('data-x')) / 100 * W * M.s, y = M.ty + (+d.getAttribute('data-y')) / 100 * H * M.s; d.style.transform = 'translate(' + Math.round(x) + 'px,' + Math.round(y) + 'px)'; }); }
-  var placePins0 = placePins; placePins = function () { placePins0(); amenPlace(); if (M && M.xp) xlPlace(); };
+  var placePins0 = placePins; placePins = function () { placePins0(); amenPlace(); if (M && (M.xp || M.amen)) xlPlace(); };
 
   /* ---------- Find: neighborhoods, acts and amenities in one box ---------- */
   var ACTS = null;
@@ -359,7 +368,7 @@
         if (a === 'fclose') { f.hidden = true; return; }
         var t = b.getAttribute('data-ft'), v = b.getAttribute('data-fv'); f.hidden = true;
         if (M.title) { M.title = false; M.el.classList.add('pkpl-notitle'); }
-        if (t === 'h') open(v); else if (t === 'a') { var o = actIndex().filter(function (x) { return x.n === v; })[0]; if (o) { FROM = o; open(o.h); } } else if (t === 'm') { M.amen = v; amenDraw(); lit(); var L = (data().amen || {})[v] || []; if (L.length) { var bx = [1e9, 1e9, -1e9, -1e9]; L.forEach(function (p) { var x = p[0] / 100 * W, y = p[1] / 100 * H; bx = [Math.min(bx[0], x), Math.min(bx[1], y), Math.max(bx[2], x), Math.max(bx[3], y)]; }); animTo(fitBox([bx[0] - 60, bx[1] - 60, bx[2] + 60, bx[3] + 60], region(), 30), 520); } } });
+        if (t === 'h') open(v); else if (t === 'a') { var o = actIndex().filter(function (x) { return x.n === v; })[0]; if (o) { FROM = o; open(o.h); } } else if (t === 'm') { M.amen = v; M.xp = ''; M.cur = ''; titleDraw(); M.title = false; M.el.classList.add('pkpl-notitle'); if (top().r === 'hood') go('hoods'); amenDraw(); lit(); var L = amOf(v); if (L.length) { var bx = [1e9, 1e9, -1e9, -1e9]; L.forEach(function (p) { var x = p[1], y = p[2]; bx = [Math.min(bx[0], x), Math.min(bx[1], y), Math.max(bx[2], x), Math.max(bx[3], y)]; }); animTo(fitBox([bx[0] - 60, bx[1] - 60, bx[2] + 60, bx[3] + 60], clear(), 30), 520); } } });
       f.addEventListener('keydown', function (e) { if (e.key === 'Escape') { f.hidden = true; } });
     }
     f.hidden = false; var i = $('input', f); i.value = ''; findDraw(''); setTimeout(function () { try { i.focus({ preventScroll: true }); } catch (x) {} }, 30);
@@ -367,12 +376,12 @@
   function findDraw(q) {
     var f = $('.pkpl-find', M.el), out = $('.pkpl-fres', f), D = data(), Q = fold(q).trim();
     var hs = ids().filter(function (k) { return !Q || fold(D.hoods[k].n).indexOf(Q) >= 0 || fold(D.hoods[k].t).indexOf(Q) >= 0; });
-    var am = Object.keys(AMEN).filter(function (k) { return (D.amen || {})[k] && (D.amen[k] || []).length && (!Q || fold(AMEN[k][0]).indexOf(Q) >= 0 || fold(k).indexOf(Q) >= 0); });
+    var am = Object.keys(AMN).filter(function (k) { return amOf(k).length && (!Q || fold(AMN[k]).indexOf(Q) >= 0 || fold(k).indexOf(Q) >= 0); });
     var ac = Q.length >= 2 ? actIndex().filter(function (a) { return a.f.indexOf(Q) >= 0; }).sort(function (a, b) { return (a.f.indexOf(Q) - b.f.indexOf(Q)) || (b.y - a.y) || (a.n < b.n ? -1 : 1); }).slice(0, 8) : [];
     var g = function (h, L) { return L.length ? '<p class="pkpl-fg">' + h + '</p>' + L.join('') : ''; };
     out.innerHTML =
       g('Neighborhoods', hs.slice(0, Q ? 6 : 20).map(function (k) { var h = D.hoods[k]; return '<button type="button" data-ft="h" data-fv="' + k + '"><img src="' + esc(emb(k)) + '" alt=""><span><b>' + esc(h.n) + '</b><small>' + esc(KIND[h.k] || '') + '</small></span></button>'; })) +
-      g('On the farm', am.map(function (k) { return '<button type="button" data-ft="m" data-fv="' + k + '"><img src="amen/' + AMEN[k][1] + '" alt=""><span><b>' + AMEN[k][0] + '</b><small>' + (D.amen[k] || []).length + ' on the farm</small></span></button>'; })) +
+      g('On the farm', am.map(function (k) { return '<button type="button" data-ft="m" data-fv="' + k + '"><i class="pkpl-fi">' + amGlyph(k) + '</i><span><b>' + AMN[k] + '</b><small>' + amOf(k).length + ' on the farm</small></span></button>'; })) +
       g('Acts', ac.map(function (a) { return '<button type="button" data-ft="a" data-fv="' + esc(a.n) + '"><img src="' + esc(emb(a.h)) + '" alt=""><span><b>' + esc(a.n) + '</b><small>' + esc(D.hoods[a.h].n + ' · Pickathon ' + a.y) + '</small></span></button>'; }));
     if (!out.innerHTML) out.innerHTML = '<p class="pkpl-fnone">Nothing by that name yet.</p>';
   }

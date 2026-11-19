@@ -18,6 +18,6 @@ def put(s, tag, id_, body, after):
 HH = json.dumps(json.load(open(os.path.join(ROOT, 'tools/home_r2/hoods_home.json'), encoding='utf-8')), ensure_ascii=False, separators=(',', ':'))
 s = put(s, 'style', 'pk-places-css', rd('places.css'), r'<script id="pk-home2">.*?</script>')
 J = lambda f: json.dumps(json.load(open(os.path.join(D, f), encoding='utf-8')), ensure_ascii=False, separators=(',', ':'))
-s = put(s, 'script', 'pk-places', rd('places.js').replace('/*@HOODS_HOME*/null', HH).replace('/*@XP_HOME*/null', J('xp_home.json')).replace('/*@XP_MINE*/null', J('xp_manifest.json')), r'<style id="pk-places-css">.*?</style>')
+s = put(s, 'script', 'pk-places', rd('places.js').replace('/*@HOODS_HOME*/null', HH).replace('/*@XP_HOME*/null', J('xp_home.json')).replace('/*@XP_MINE*/null', J('xp_manifest.json')).replace('/*@MAP_ICONS*/null', J('map_icons.json')).replace('/*@AMEN_ICONS*/null', J('amen_icons.json')), r'<style id="pk-places-css">.*?</style>')
 open(IDX, 'w', encoding='utf-8').write(s)
 print('index.html', len(s))
