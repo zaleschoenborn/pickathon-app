@@ -426,3 +426,5 @@ html body.pkpl-hood #root#root#root#root#root#root#root#root#root#root#root#root
 #root .pkpl-credit .pkpl-bw{margin-top:12px;min-height:44px!important;font-size:13px!important}
 #pkpl-back .pkpl-walk{list-style:none;margin:10px 0 0;padding:0;display:flex;flex-direction:column;gap:4px}
 #root#root#root #pkpl-top .pkpl-soon p{font-size:16px!important;line-height:1.5!important}#root#root#root #pkpl-top .pkpl-soon h2{font-size:22px!important}
+#root #pkpl-top .pkpl-hook{padding:16px 16px 0!important;margin:0!important}
+#root #pkpl-top .pkpl-what{padding:10px 16px 0}

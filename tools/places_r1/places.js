@@ -462,11 +462,11 @@
       '<div class="pkpl-hi">' + (XE && XE !== 'Architecture' ? '' : '<p class="pkpl-kind">' + esc(KIND[h.k] || '') + '</p>') + '<div class="pkpl-nmrow"><img src="' + esc(emb(k)) + '" alt=""><h1>' + esc(XE && XE !== 'Architecture' ? XE + ' at ' + h.n : h.n) + '</h1></div><p class="pkpl-tt">' + esc(XE ? xpLine(XE, k) : (h.t || '')) + '</p></div>' +
       '</div>' +
       (FROM ? '<p class="pkpl-from">' + esc(FROM.n) + ' played ' + esc(h.n) + ' at Pickathon ' + FROM.y + '</p>' : '') +
-      (has ? '' : '<p class="pkpl-hook">' + esc(h.hook || '') + '</p>') +
       (has ? '<section class="pkpl-sc" aria-label="Schedule at ' + esc(h.n) + '"><div class="pkpl-days" role="group" aria-label="Day">' + days.map(function (d) { return '<button type="button" class="pk-cta sec pkpl-chip" data-pk="day" data-d="' + d + '"' + (d === TOP.day ? ' aria-pressed="true"' : ' aria-pressed="false"') + '>' + esc(dayN[d] || d.slice(5)) + '</button>'; }).join('') + '</div>' +
         '<ol class="pkpl-sets">' + rows.slice(0, showN).map(function (s) { var A = (D.artists || {})[s.a] || {}; return '<li><span class="pkpl-st">' + tm(s.s) + '</span><span class="pkpl-sa"><b>' + esc(A.n || s.a) + '</b><small>' + esc(LBL[s.l] || '') + '</small></span></li>'; }).join('') + '</ol>' +
         (rows.length > 3 ? '<button type="button" class="pk-cta sec pkpl-whole" data-pk="whole" aria-expanded="' + TOP.all + '">' + (TOP.all ? 'Show less' : 'Whole day at ' + esc(h.n)) + '</button>' : '') + '</section>' : '') +
-      '<div class="pkpl-what"></div>' +
+      (has ? '' : '<p class="pkpl-hook">' + esc(h.hook || '') + '</p>') +
+      whatIs(h) +
       (season === 'fest' ? soon(k, XE, h, has) + vids(k, XE) : vids(k, XE) + soon(k, XE, h, has)) +
       alsoAt(k, XE, h) +
       '</div>';
@@ -489,6 +489,7 @@
       return '<button type="button" class="pkpl-vt" data-pk="vid" data-u="' + esc(u) + '" data-c="' + esc(v.a + ' · Pickathon ' + v.y) + '"><img src="' + esc(th) + '" alt="" loading="lazy"><span class="pkpl-pr0" aria-hidden="true"><i></i></span><span class="pkpl-vc"><b>' + esc(v.a) + '</b><small>Pickathon ' + v.y + '</small></span></button>';
     }).join('') + '</div></section>';
   }
+  function whatIs(h) { var t = h.dd || (Array.isArray(h.d) ? h.d.join(' ') : (h.d || '')); return t ? '<div class="pkpl-what"><div class="pkpl-more"><p>' + esc(t) + '</p><button type="button" class="pkpl-rm" data-pk="rm" aria-expanded="false">Read more</button></div></div>' : ''; }
   function soon(k, XE, h, has) {
     if (has) return '';   /* the real schedule is showing: it is the 2027 card */   /* the 2027 schedule, summarized until it posts (Zale, Nov 19: more useful than every past year) */
     var HP = (data().hoodProg || {})[k], kinds = HP ? (HP.kinds || []).map(function (g) { return g[0]; }).filter(function (n) { return !/^(more|showcases)/i.test(n); }) : [];
@@ -568,10 +569,6 @@
   }
   function shape() {   /* one clean page (Zale, Nov 19): fold the page's long description into the card with Read more, drop the duplicate video and summer boxes, credits into the story, walk times into the map card */
     if (top().r !== 'hood') return; var w = document.querySelector('#root section.pk-hd-w'), card = document.getElementById('pkpl-top'); if (!w || !card) return;
-    var what = card.querySelector('.pkpl-what'), desc = w.querySelector('.pk-hd-desc');
-    if (what && desc && !what.firstChild) { var d = document.createElement('div'); d.className = 'pkpl-more'; d.innerHTML = '<p>' + desc.innerHTML + '</p><button type="button" class="pkpl-rm" aria-expanded="false">Read more</button>'; what.appendChild(d);
-      var hook = card.querySelector('.pkpl-hook'); if (hook) what.insertBefore(hook, d);
-      d.querySelector('.pkpl-rm').addEventListener('click', function () { var o = d.classList.toggle('open'); this.textContent = o ? 'Show less' : 'Read more'; this.setAttribute('aria-expanded', o); }); }
     var st = w.querySelector('.pk-hd-story'), who = w.querySelector('.pk-hd-who');
     if (st && who && !st.querySelector('.pkpl-credit')) { var cr = who.querySelector('.pk-hd-creds'), bt = who.querySelector('.pk-hd-pitch .pk-cta');
       var c = document.createElement('div'); c.className = 'pkpl-credit'; c.innerHTML = '<p class="pkpl-sk">Who built it</p>'; if (cr) c.appendChild(cr.cloneNode(true)); if (bt) { var b2 = bt.cloneNode(true); b2.className = 'pk-cta sec pkpl-bw'; b2.addEventListener('click', function () { bt.click(); }); c.appendChild(b2); } st.appendChild(c); }
@@ -601,6 +598,7 @@
     if (a === 'day') { TOP.day = b.getAttribute('data-d'); TOP.all = false; drawTop(); return; }
     if (a === 'whole') { TOP.all = !TOP.all; drawTop(); return; }
     if (a === 'up') { go('hoods'); return; }
+    if (a === 'rm') { var mo = b.closest('.pkpl-more'), o = mo.classList.toggle('open'); b.textContent = o ? 'Show less' : 'Read more'; b.setAttribute('aria-expanded', o); return; }
     if (a === 'vid') { if (window.__pkPlayVid) window.__pkPlayVid(b.getAttribute('data-u'), b.getAttribute('data-c')); return; }
     if (a === 'xp') { TOP.xp = b.getAttribute('data-e'); TOP.all = false; var sc = scroller(); drawTop(); xbDraw(); return; }
   }
