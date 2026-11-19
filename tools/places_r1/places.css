@@ -175,3 +175,28 @@ body.pkpl-hood #root .pk-hd-desc0.pkpl-dup{display:none!important}   /* the long
 .pkpl-pins{will-change:transform}
 .pkpl-pinch .pkpl-pins{visibility:hidden}
 .pkpl-em,.pkpl-nm{display:none!important}
+
+/* ---------- experiences (Nov 19): the bottom bar, names on lit places, dimmed places, the "Also at" tiles ---------- */
+.pkpl-xb{position:absolute;left:0;right:0;bottom:0;z-index:4;display:flex;gap:6px;overflow-x:auto;padding:10px 12px calc(10px + env(safe-area-inset-bottom,0px));background:linear-gradient(0deg,rgba(18,22,15,.92) 0%,rgba(18,22,15,.78) 70%,rgba(18,22,15,0) 100%);scrollbar-width:none;-webkit-overflow-scrolling:touch;touch-action:pan-x}
+.pkpl-xb::-webkit-scrollbar{display:none}
+.pkpl-xe{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;gap:4px;min-width:62px;min-height:54px;padding:6px 8px;border:1px solid rgba(242,237,227,.28);border-radius:8px;background:rgba(18,22,15,.55);color:#F2EDE3;font:700 11px/1.1 'Bricolage Grotesque',system-ui,sans-serif;letter-spacing:.02em;cursor:pointer}
+.pkpl-xe svg{width:22px;height:22px}
+.pkpl-xe[aria-pressed="true"]{background:rgba(214,181,74,.2);border-color:#D6B54A;color:#FFE7A3}
+.pkpl-xe.quiet{opacity:.5}
+.pkpl-xls{position:absolute;inset:0;pointer-events:none;z-index:2;overflow:hidden}
+.pkpl-xl{position:absolute;left:0;top:0;white-space:nowrap;font:800 13px/1 'Bricolage Grotesque',system-ui,sans-serif;letter-spacing:.04em;color:#fff;text-shadow:0 0 3px rgba(0,0,0,.85),0 0 9px rgba(0,0,0,.7),0 1px 2px rgba(0,0,0,.9)}
+.pkpl-xpon .pkpl-veil{fill:rgba(12,14,10,.55)}
+.pkpl-tools{bottom:92px}
+body.pkpl-wide .pkpl-xb{justify-content:center}
+body.pkpl-wide .pkpl-xe{min-width:74px}
+body.pkpl-hood:not(.pkpl-wide) .pkpl-xb{display:none}
+#root #pkpl-top .pkpl-also{padding:20px 16px 10px}
+#root #pkpl-top .pkpl-also h2{margin:0 0 12px;font-size:20px!important;line-height:1.1!important;font:800 13px/1.2 'Bricolage Grotesque',system-ui,sans-serif;font-stretch:75%;letter-spacing:.14em;text-transform:uppercase;color:#D6B54A}
+#root #pkpl-top .pkpl-at{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+#root #pkpl-top .pkpl-ax{position:relative;aspect-ratio:4/3;border:0;border-radius:10px;overflow:hidden;padding:0;background:#1E2A1B;cursor:pointer;color:#F2EDE3}
+#root #pkpl-top .pkpl-ax img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+#root #pkpl-top .pkpl-axs{position:absolute;inset:0;background:linear-gradient(0deg,rgba(18,22,15,.85) 0%,rgba(18,22,15,0) 65%)}
+#root #pkpl-top .pkpl-axn{position:absolute;left:10px;bottom:9px;display:flex;align-items:center;gap:7px}
+#root #pkpl-top .pkpl-axn svg{width:20px;height:20px}
+#root #pkpl-top .pkpl-axn b{font:800 14px/1 'Bricolage Grotesque',system-ui,sans-serif}
+@media (min-width:700px){#root #pkpl-top .pkpl-at{grid-template-columns:repeat(3,1fr)}}

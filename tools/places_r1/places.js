@@ -10,6 +10,8 @@
   'use strict';
   var HH = /*@HOODS_HOME*/null;   /* tools/home_r2/hoods_home.json: shapes, pin points and the photo director's preview photos with crops */
   if (!HH) return;
+  var XH = /*@XP_HOME*/null, XM = /*@XP_MINE*/null;   /* experiences: Home's words, icons and photos (tools/places_r1/xp_home.json) and this chat's final Nov 19 picks (tools/places_r1/xp_manifest.json) */
+  if (!XH || !XM) XH = XM = null;
   var W = HH.size[0], H = HH.size[1], TF = 4898 / 2041, TS = 1024 / TF;   /* farmmap/t/<col>_<row>.webp: the full-detail map in 1024px tiles (4898 x 9144) */
   var KIND = { stage: 'Stage neighborhood', around: 'Gathering neighborhood', camp: 'Camping neighborhood' };
   var ORDER = ['woods', 'paddock', 'cherryhill', 'grove', 'windmill', 'galaxy', 'lucky', 'farmhouse', 'curation', 'refuge', 'coyote', 'courtyard', 'market', 'orchard', 'welcomelot', 'lushcamp', 'quailtrail', 'southcamp', 'wildcamp', 'willowcamp'];
@@ -43,6 +45,33 @@
   function emb(k) { var h = data().hoods[k] || {}; return h.icw || ('ic2/' + k + '.png'); }   /* the white emblems Home uses */
   function stageHood() { var D = data(), m = {}; (D.stages || []).forEach(function (s) { m[s.id] = s.h; }); return m; }
 
+
+  /* ---------- experiences (Zale, Nov 19: it is all about the experience; Home's list, order, icons and words) ---------- */
+  var XO = XH ? Object.keys(XH.XPD) : [];
+  var XFIX = { DJs: ['market', 'courtyard', 'windmill', 'galaxy', 'cherryhill', 'grove', 'woods'], Literary: ['woods', 'windmill'], Wellness: ['lucky', 'courtyard', 'refuge', 'coyote', 'windmill'] };   /* Zale's Nov 19 rulings over Home's first lists: no Literary or DJs at Lucky; Literary at the Woods; Wellness at Coyote is movement and play */
+  var XPC = {}, XAC = {};
+  function xpPlaces(e) {
+    if (XPC[e]) return XPC[e]; var D = data(), L;
+    if (e === 'Architecture') L = ids().filter(function (k) { return D.hoods[k].k !== 'camp'; });
+    else if (e === 'Camping') L = ['wildcamp', 'lushcamp', 'willowcamp', 'southcamp'];
+    else L = XFIX[e] || Object.keys((XH.XPB || {})[e] || {});
+    return (XPC[e] = L.filter(function (k) { return HH.shapes[k] && D.hoods[k]; }));
+  }
+  function xpAt(k) { return XAC[k] || (XAC[k] = XO.filter(function (e) { return xpPlaces(e).indexOf(k) >= 0; })); }
+  function xpPhotos(e, k) {
+    var out = [], add = function (z) { if (z && z.i && !out.some(function (o) { return o.i === z.i; })) out.push({ i: z.i, p: z.p || '50% 50%' }); };
+    if (e === 'Architecture') (((XM.arch || {})[k]) || []).forEach(function (z) { add({ i: z.f, p: z.p }); });
+    else {
+      (((XM.xp || {})[e] || {})[k] || []).forEach(function (z) { add({ i: z.f, p: z.p }); });
+      var h = ((XH.XPH || {})[e] || {})[k]; (Array.isArray(h) ? h : h ? [h] : []).forEach(function (z) { add(typeof z === 'string' ? { i: z } : z); });
+    }
+    if (out.length < 3 && e !== 'Architecture') (((XM.arch || {})[k]) || []).slice(0, 3 - out.length).forEach(function (z) { add({ i: z.f, p: z.p }); });
+    return out.slice(0, e === 'Architecture' ? 8 : 5);
+  }
+  function xpLine(e, k) { var b = ((XH.XPB || {})[e] || {})[k]; return b || (e === 'Architecture' ? ((data().hoods[k] || {}).t || '') : XH.XPD[e] || ''); }
+  function xpIcon(e) { return '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">' + (XH.XPI[e] || '') + '</svg>'; }
+  function litSet() { return M && M.xp ? xpPlaces(M.xp) : []; }
+
   /* ---------- the map ---------- */
   var M = null;   /* one map for the whole visit */
   function makeMap() {
@@ -54,14 +83,16 @@
       '<defs><filter id="pkpl-glow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="9" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>' +
       '<path class="pkpl-veil" fill-rule="evenodd" d=""/><g class="pkpl-shs">' + shapes + '</g><path class="pkpl-lit" d=""/><path class="pkpl-hov" d=""/></svg></div>' +
       '<div class="pkpl-pins"></div><div class="pkpl-am"></div>' +
-      '<div class="pkpl-title" aria-hidden="false"><p class="pkpl-k">Pickathon Neighborhoods</p><h1 class="pkpl-d">A Temporary City of Wonder</h1><p class="pkpl-l">Tap any neighborhood to explore</p></div>' +
+      '<div class="pkpl-title" aria-hidden="false"><p class="pkpl-k">Pickathon</p><h1 class="pkpl-d">Summer camp for your soul</h1><p class="pkpl-l">Pick an experience below, then tap a place that lights up</p></div>' +
+      '<div class="pkpl-xls"></div>' +
+      '<div class="pkpl-xb" role="toolbar" aria-label="Experiences">' + XO.map(function (e) { return '<button type="button" class="pkpl-xe" data-xp="' + e + '" aria-pressed="false">' + xpIcon(e) + '<span>' + e + '</span></button>'; }).join('') + '</div>' +
       '<div class="pkpl-tools"><button type="button" class="pk-cta sec pkpl-tb" data-pl="find" aria-label="Find a place, an act or water, food and more"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5 21 21"/></svg><span>Find</span></button>' +
       '<button type="button" class="pk-cta sec pkpl-tb pkpl-tbf" data-pl="full" aria-label="Full map" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg><span aria-hidden="true">Full map</span></button></div>' +
       '<div class="pkpl-amtag" hidden><span></span><button type="button" data-pl="amclear" aria-label="Clear">×</button></div>' +
       '<div class="pkpl-hovtag" hidden><b></b><small></small></div>';
     var pins = $('.pkpl-pins', el);
     pins.innerHTML = ids().map(function (k) { var h = data().hoods[k]; return '<button type="button" class="pkpl-em" data-h="' + k + '" aria-label="' + esc(h.n + ', ' + (KIND[h.k] || '')) + '"><img src="' + esc(emb(k)) + '" alt="" draggable="false"></button><span class="pkpl-nm" data-n="' + k + '">' + esc(h.n) + '</span>'; }).join('');
-    M = { el: el, world: $('.pkpl-world', el), tiles: $('.pkpl-tiles', el), svg: $('.pkpl-svg', el), pins: pins, s: 0, tx: 0, ty: 0, vw: 0, vh: 0, loaded: {}, done: {}, need: [], cur: '', hov: '', title: true, amen: '', anim: 0 };
+    M = { xp: '', el: el, world: $('.pkpl-world', el), tiles: $('.pkpl-tiles', el), svg: $('.pkpl-svg', el), pins: pins, s: 0, tx: 0, ty: 0, vw: 0, vh: 0, loaded: {}, done: {}, need: [], cur: '', hov: '', title: true, amen: '', anim: 0 };
     gestures(el);
     return M;
   }
@@ -167,13 +198,44 @@
     M.cur = k; lit(); animTo(v, now ? 0 : 560);
   }
   function lit() {
-    var k = M.cur, d = k ? HH.shapes[k] : '';
-    $('.pkpl-veil', M.svg).setAttribute('d', k ? 'M-4000,-4000H' + (W + 4000) + 'V' + (H + 4000) + 'H-4000Z ' + d : '');
+    var k = M.cur, L = (!k && M.xp) ? litSet() : [], d = k ? HH.shapes[k] : L.map(function (h) { return HH.shapes[h]; }).join(' ');
+    $('.pkpl-veil', M.svg).setAttribute('d', d ? 'M-4000,-4000H' + (W + 4000) + 'V' + (H + 4000) + 'H-4000Z ' + d : '');
     $('.pkpl-lit', M.svg).setAttribute('d', d);
     $$('.pkpl-sh', M.svg).forEach(function (p) { p.classList.toggle('on', p.getAttribute('data-h') === k); });
-    M.el.classList.toggle('pkpl-picked', !!k);
-    var full = $('[data-pl="full"]', M.el); if (full) full.hidden = !k && !M.amen && !(M.s > startView()[0] * 1.15);
-    placePins();
+    M.el.classList.toggle('pkpl-picked', !!k); M.el.classList.toggle('pkpl-xpon', !k && !!M.xp);
+    var full = $('[data-pl="full"]', M.el); if (full) full.hidden = !k && !M.amen && !M.xp && !(M.s > startView()[0] * 1.15);
+    placePins(); xpLabels(); xbDraw();
+  }
+  /* the experience bar, its title screen and the names on the lit places */
+  function xbDraw() {
+    if (!M) return; var t = top(), at = (t.r === 'hood' && t.h) ? xpAt(t.h) : null;
+    $$('.pkpl-xe', M.el).forEach(function (b) { var e = b.getAttribute('data-xp'); var cur = at ? TOP.xp : M.xp; b.setAttribute('aria-pressed', e === cur ? 'true' : 'false'); b.classList.toggle('quiet', !!at && at.indexOf(e) < 0); });
+  }
+  function titleDraw() {
+    var t = $('.pkpl-title', M.el); if (!t) return;
+    $('.pkpl-k', t).textContent = 'Pickathon';
+    $('.pkpl-d', t).textContent = M.xp ? (M.xp + ' at Pickathon') : 'Summer camp for your soul';
+    $('.pkpl-l', t).textContent = M.xp ? (XH.XPD[M.xp] || '') : 'Pick an experience below, then tap a place that lights up';
+  }
+  function xpLabels() {
+    var box = $('.pkpl-xls', M.el); if (!box) return; var L = (!M.cur && M.xp) ? litSet() : [];
+    box.innerHTML = L.map(function (k) { return '<span class="pkpl-xl" data-h="' + k + '">' + esc(data().hoods[k].n) + '</span>'; }).join(''); xlPlace();
+  }
+  function xlPlace() {
+    var els = $$('.pkpl-xl', M.el); if (!els.length) return;
+    var P = els.map(function (el) { var k = el.getAttribute('data-h'), p = pt(k); return { el: el, x: M.tx + p[0] * M.s, y: M.ty + p[1] * M.s, w: el.offsetWidth || 90 }; }).sort(function (a, b) { return a.y - b.y; });
+    P.forEach(function (a, i) { for (var j = 0; j < i; j++) { var b = P[j]; if (Math.abs(a.x - b.x) < (a.w + b.w) / 2 + 6 && Math.abs(a.y - b.y) < 17) a.y = b.y + 17; } a.x = Math.max(a.w / 2 + 6, Math.min(M.vw - a.w / 2 - 6, a.x)); a.el.style.transform = 'translate(' + Math.round(a.x) + 'px,' + Math.round(a.y) + 'px) translate(-50%,-50%)'; a.el.hidden = a.y < 0 || a.y > M.vh; });
+  }
+  function fitLit() {
+    var L = litSet(); if (!L.length) { home(); return; }
+    animTo(fitBox(union(L), region(), wide() ? 90 : 34), 560);
+  }
+  function xpPick(e) {
+    var t0 = top(); if (t0.r === 'hood' && t0.h && xpAt(t0.h).indexOf(e) >= 0) { TOP.xp = e; M.xp = e; drawTop(); xbDraw(); return; }   /* the bar follows the open place */
+    if (M.xp === e && !M.cur && top().r !== 'hood') { M.xp = ''; M.title = true; M.el.classList.remove('pkpl-notitle'); titleDraw(); lit(); home(); return; }   /* tap the picked experience again: back to the whole farm */
+    M.xp = e; M.amen = ''; amenDraw(); M.cur = ''; M.title = true; M.el.classList.remove('pkpl-notitle'); titleDraw();
+    if (top().r === 'hood') go('hoods');
+    lit(); fitLit();
   }
   function hover(k, x, y) {
     if (k === M.hov) { if (k) moveTag(x, y); return; }
@@ -190,7 +252,7 @@
     function pts() { return Object.keys(P).map(function (k) { return P[k]; }); }
     function rel(e) { var r = el.getBoundingClientRect(); return [e.clientX - r.left, e.clientY - r.top]; }
     el.addEventListener('pointerdown', function (e) {
-      if (e.target.closest('.pkpl-tools,.pkpl-amtag,.pkpl-find')) return;
+      if (e.target.closest('.pkpl-tools,.pkpl-amtag,.pkpl-find,.pkpl-xb')) return;
       if (e.pointerType === 'mouse' && e.button !== 0) return;
       P[e.pointerId] = rel(e); cancelAnimationFrame(M.anim); cancelAnimationFrame(M.glide);
       var q = pts(); start = { s: M.s, tx: M.tx, ty: M.ty, p: q.map(function (a) { return a.slice(); }), t: Date.now() }; if (q.length === 1) moved = false;
@@ -237,6 +299,7 @@
     el.addEventListener('pointerleave', function (e) { if (e.pointerType === 'mouse') hover(''); });
     el.addEventListener('click', function (e) {
       if (el._drag && Date.now() - el._drag < 300) { e.stopPropagation(); e.preventDefault(); return; }
+      var xb = e.target.closest('[data-xp]'); if (xb) { xpPick(xb.getAttribute('data-xp')); return; }
       var b = e.target.closest('[data-pl]'); if (b) { tool(b.getAttribute('data-pl'), b); return; }
       var a = e.target.closest('.pkpl-amdot'); if (a) return;
       var h = e.target.closest('[data-h]');
@@ -261,7 +324,7 @@
   }
   function open(k) { if (top().r === 'hood' && top().h === k) { frame(k); return; } go('hood', { h: k }); }
   function tool(a) {
-    if (a === 'full') { M.amen = ''; amenDraw(); if (top().r === 'hood') { go('hoods'); return; } M.title = true; M.el.classList.remove('pkpl-notitle'); home(); return; }   /* Full map: the whole start view with the title back */
+    if (a === 'full') { M.amen = ''; amenDraw(); M.xp = ''; titleDraw(); if (top().r === 'hood') { go('hoods'); return; } M.title = true; M.el.classList.remove('pkpl-notitle'); home(); return; }   /* Full map: the whole start view with the title back */
     if (a === 'find') { findOpen(); return; }
     if (a === 'amclear') { M.amen = ''; amenDraw(); lit(); return; }
   }
@@ -274,7 +337,7 @@
     amenPlace();
   }
   function amenPlace() { $$('.pkpl-amdot', M.el).forEach(function (d) { var x = M.tx + (+d.getAttribute('data-x')) / 100 * W * M.s, y = M.ty + (+d.getAttribute('data-y')) / 100 * H * M.s; d.style.transform = 'translate(' + Math.round(x) + 'px,' + Math.round(y) + 'px)'; }); }
-  var placePins0 = placePins; placePins = function () { placePins0(); amenPlace(); };
+  var placePins0 = placePins; placePins = function () { placePins0(); amenPlace(); if (M && M.xp) xlPlace(); };
 
   /* ---------- Find: neighborhoods, acts and amenities in one box ---------- */
   var ACTS = null;
@@ -330,15 +393,19 @@
   }
   function tm(s) { var m = String(s || '').match(/(\d\d):(\d\d)/); if (!m) return ''; var h = +m[1], ap = h >= 12 ? 'pm' : 'am'; h = h % 12 || 12; return h + (m[2] !== '00' ? ':' + m[2] : '') + ' ' + ap; }
   var LBL = { music: 'Music', djs: 'DJ', family: 'Family', wellness: 'Wellness', comedy: 'Comedy', literary: 'Literary', curation: 'Curation', food: 'Food', craft: 'Craft' };
-  var TOP = { k: '', day: '', all: false, i: 0, timer: 0 };
+  var TOP = { k: '', xp: '', day: '', all: false, i: 0, timer: 0 };
   function drawTop() {
     var el = document.getElementById('pkpl-top'); if (!el) return;
     var t = top(), k = t.h, D = data(); if (!k || !D.hoods[k]) { el.innerHTML = ''; return; }
-    var h = D.hoods[k], season = site().season || 'off', S = (season === 'sched' || season === 'fest') ? sched(k) : {}, days = Object.keys(S).sort(), has = days.length > 0;
+    var h = D.hoods[k], season = site().season || 'off', S = (season === 'sched' || season === 'fest') ? sched(k) : {}, XA = XH ? xpAt(k) : [];
+    if (TOP.k !== k) TOP.xp = (M && M.xp && XA.indexOf(M.xp) >= 0) ? M.xp : (XA.indexOf('Architecture') >= 0 ? 'Architecture' : (XA[0] || ''));   /* a lit place opens as the picked experience; a dimmed one opens as Architecture */
+    var XE = XH ? TOP.xp : '';
+    if (XE) { if (XE === 'Architecture') S = {}; else Object.keys(S).forEach(function (d) { var r = S[d].filter(function (z) { return z.l === XE.toLowerCase(); }); if (r.length) S[d] = r; else delete S[d]; }); }
+    var days = Object.keys(S).sort(), has = days.length > 0;
     if (TOP.k !== k) { TOP.k = k; TOP.all = false; TOP.i = 0; TOP.day = days[0] || ''; if (FROM && FROM.h !== k) FROM = null; }
     if (days.indexOf(TOP.day) < 0) TOP.day = days[0] || '';
-    var ph = photos(k), L = ids(), j = L.indexOf(k), prev = L[(j - 1 + L.length) % L.length], next = L[(j + 1) % L.length];
-    var key = k + '|' + has + '|' + TOP.day + '|' + TOP.all + '|' + (FROM ? FROM.n : '') + '|' + wide();
+    var ph = XE ? xpPhotos(XE, k) : photos(k); if (!ph.length) ph = photos(k); var L = ids(), j = L.indexOf(k), prev = L[(j - 1 + L.length) % L.length], next = L[(j + 1) % L.length];
+    var key = k + '|' + XE + '|' + has + '|' + TOP.day + '|' + TOP.all + '|' + (FROM ? FROM.n : '') + '|' + wide();
     if (el._key === key) return; el._key = key;
     var dayN = {}; (D.days || []).forEach(function (d) { dayN[d.id] = d.n; });
     var rows = has ? S[TOP.day] : [], showN = TOP.all ? rows.length : 3;
@@ -350,15 +417,21 @@
       '<button type="button" class="pkpl-arr l" data-pk="step" data-to="' + prev + '" aria-label="Previous place: ' + esc(D.hoods[prev].n) + '"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5 8 12l7 7"/></svg></button>' +
       '<button type="button" class="pkpl-arr r" data-pk="step" data-to="' + next + '" aria-label="Next place: ' + esc(D.hoods[next].n) + '"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>' +
       (ph.length > 1 ? '<div class="pkpl-dots" role="group" aria-label="Photos">' + ph.map(function (p, i) { return '<button type="button" data-pk="dot" data-i="' + i + '" aria-label="Photo ' + (i + 1) + ' of ' + ph.length + '"' + (i === 0 ? ' aria-current="true"' : '') + '><i></i></button>'; }).join('') + '</div>' : '') +
-      '<div class="pkpl-hi"><p class="pkpl-kind">' + esc(KIND[h.k] || '') + '</p><div class="pkpl-nmrow"><img src="' + esc(emb(k)) + '" alt=""><h1>' + esc(h.n) + '</h1></div><p class="pkpl-tt">' + esc(h.t || '') + '</p></div>' +
+      '<div class="pkpl-hi"><p class="pkpl-kind">' + esc(KIND[h.k] || '') + '</p><div class="pkpl-nmrow"><img src="' + esc(emb(k)) + '" alt=""><h1>' + esc(XE && XE !== 'Architecture' ? XE + ' at ' + h.n : h.n) + '</h1></div><p class="pkpl-tt">' + esc(XE ? xpLine(XE, k) : (h.t || '')) + '</p></div>' +
       '</div>' +
       (FROM ? '<p class="pkpl-from">' + esc(FROM.n) + ' played ' + esc(h.n) + ' at Pickathon ' + FROM.y + '</p>' : '') +
       (has ? '' : '<p class="pkpl-hook">' + esc(h.hook || '') + '</p>') +
       (has ? '<section class="pkpl-sc" aria-label="Schedule at ' + esc(h.n) + '"><div class="pkpl-days" role="group" aria-label="Day">' + days.map(function (d) { return '<button type="button" class="pk-cta sec pkpl-chip" data-pk="day" data-d="' + d + '"' + (d === TOP.day ? ' aria-pressed="true"' : ' aria-pressed="false"') + '>' + esc(dayN[d] || d.slice(5)) + '</button>'; }).join('') + '</div>' +
         '<ol class="pkpl-sets">' + rows.slice(0, showN).map(function (s) { var A = (D.artists || {})[s.a] || {}; return '<li><span class="pkpl-st">' + tm(s.s) + '</span><span class="pkpl-sa"><b>' + esc(A.n || s.a) + '</b><small>' + esc(LBL[s.l] || '') + '</small></span></li>'; }).join('') + '</ol>' +
         (rows.length > 3 ? '<button type="button" class="pk-cta sec pkpl-whole" data-pk="whole" aria-expanded="' + TOP.all + '">' + (TOP.all ? 'Show less' : 'Whole day at ' + esc(h.n)) + '</button>' : '') + '</section>' : '') +
+      alsoAt(k, XE, h) +
       '</div>';
     el.innerHTML = html; TOP.i = 0; heroArm(el);
+  }
+  function alsoAt(k, XE, h) {   /* one tile per other experience at this place */
+    if (!XE) return ''; var O = xpAt(k).filter(function (e) { return e !== XE; }); if (!O.length) return '';
+    return '<section class="pkpl-also" aria-label="Also at ' + esc(h.n) + '"><h2>Also at ' + esc(h.n) + '</h2><div class="pkpl-at">' + O.map(function (e) {
+      var ph = xpPhotos(e, k)[0]; return '<button type="button" class="pkpl-ax" data-pk="xp" data-e="' + esc(e) + '">' + (ph ? '<img src="' + esc(ph.i) + '" alt="" loading="lazy" style="object-position:' + esc(ph.p) + '">' : '') + '<span class="pkpl-axs"></span><span class="pkpl-axn">' + xpIcon(e) + '<b>' + esc(e) + '</b></span></button>'; }).join('') + '</div></section>';
   }
   function heroArm(el) {
     clearTimeout(TOP.timer); var hero = $('.pkpl-hero', el); if (!hero) return;
@@ -426,6 +499,7 @@
     if (a === 'dot') { var hero = b.closest('.pkpl-hero'); clearTimeout(TOP.timer); heroShow(hero, +b.getAttribute('data-i')); return; }
     if (a === 'day') { TOP.day = b.getAttribute('data-d'); TOP.all = false; drawTop(); return; }
     if (a === 'whole') { TOP.all = !TOP.all; drawTop(); return; }
+    if (a === 'xp') { TOP.xp = b.getAttribute('data-e'); TOP.all = false; var sc = scroller(); drawTop(); xbDraw(); return; }
   }
   /* sideways swipe on the sheet steps to the next place (phone, tablet; a mouse drag on desktop) */
   (function swipe() {

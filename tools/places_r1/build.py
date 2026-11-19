@@ -17,6 +17,7 @@ def put(s, tag, id_, body, after):
     return s[:m.end()] + '\n' + new + s[m.end():]
 HH = json.dumps(json.load(open(os.path.join(ROOT, 'tools/home_r2/hoods_home.json'), encoding='utf-8')), ensure_ascii=False, separators=(',', ':'))
 s = put(s, 'style', 'pk-places-css', rd('places.css'), r'<script id="pk-home2">.*?</script>')
-s = put(s, 'script', 'pk-places', rd('places.js').replace('/*@HOODS_HOME*/null', HH), r'<style id="pk-places-css">.*?</style>')
+J = lambda f: json.dumps(json.load(open(os.path.join(D, f), encoding='utf-8')), ensure_ascii=False, separators=(',', ':'))
+s = put(s, 'script', 'pk-places', rd('places.js').replace('/*@HOODS_HOME*/null', HH).replace('/*@XP_HOME*/null', J('xp_home.json')).replace('/*@XP_MINE*/null', J('xp_manifest.json')), r'<style id="pk-places-css">.*?</style>')
 open(IDX, 'w', encoding='utf-8').write(s)
 print('index.html', len(s))
