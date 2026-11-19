@@ -12603,8 +12603,13 @@ html:root:root #root#root#root#root#root#root#root#root#root#root#root#root#root
 @media (hover:hover) and (min-width:1100px){
   #root#root#root#root #pkh2 .h2-arw{width:44px!important;height:44px!important;margin-top:-22px!important;opacity:0;transition:opacity .25s;border-color:rgba(242,237,227,.5)!important;background:rgba(20,16,18,.4)!important}
   #root#root#root#root #pkh2 .h2-ccw:hover .h2-arw,#root#root#root#root #pkh2 .h2-arw:focus-visible{opacity:1}
-  #root#root#root#root #pkh2 .h2-s5 .h2-arl{left:16px!important}#root#root#root#root #pkh2 .h2-s5 .h2-arr{right:16px!important}
-  #root#root#root#root #pkh2 .h2-s3c .h2-arl{left:16px!important}#root#root#root#root #pkh2 .h2-s3c .h2-arr{right:calc(440px + 56px)!important}
+  /* Zale Nov 19 10:26: arrows out on the barely-showing edge cards; every fully visible card is pickable */
+  #root#root#root#root #pkh2 .h2-s5 .h2-arl{left:calc((100% - 100vw) / 2 + 28px)!important}#root#root#root#root #pkh2 .h2-s5 .h2-arr{right:calc((100% - 100vw) / 2 + 28px)!important}
+  #root#root#root#root #pkh2 .h2-s3c .h2-arl{left:6px!important}#root#root#root#root #pkh2 .h2-s3c .h2-arr{right:calc(440px + 46px)!important}
+  #root#root#root#root #pkh2 .h2-s5 .h2-ccw .h2-cc:not(.is-mid){opacity:.85!important;transition:opacity .25s}
+  #root#root#root#root #pkh2 .h2-s5 .h2-ccw .h2-cc:not(.is-mid):hover{opacity:1!important}
+  #root#root#root#root #pkh2 .h2-s5 .h2-ccw .h2-cc:not(.is-mid) .h2-ring{opacity:0!important;transition:opacity .25s}
+  #root#root#root#root #pkh2 .h2-s5 .h2-ccw .h2-cc:not(.is-mid):hover .h2-ring{opacity:1!important}
   #root#root#root#root #pkh2 .h2-ccw .h2-cc:not(.is-mid),#root#root#root#root #pkh2 .h2-ccw .h2-hc:not(.is-mid){cursor:pointer}
 }
 @media (hover:none),(max-width:1099px){#root#root#root#root #pkh2 .h2-arw{display:none!important}}
