@@ -368,3 +368,22 @@ body.pkpl-wide .pkpl-xb{justify-content:center}
 body.pkpl-wide .pkpl-title>*{flex-shrink:0}
 body.pkpl-wide .pkpl-xb .pkpl-xe{flex:1 1 auto;max-width:none;padding:6px 5px}
 body.pkpl-wide .pkpl-xb .pkpl-xe span{overflow:visible;text-overflow:clip}
+
+/* Architecture intro + Build with Pickathon */
+.pkpl-ab:empty{display:none}
+.pkpl-ab{pointer-events:auto;margin-top:14px}
+#root #pkpl .pkpl-ab p{margin:0 0 14px;font:500 16px/1.5 'Bricolage Grotesque',system-ui,sans-serif;color:#E8E2D4;max-width:none}
+#root #pkpl .pkpl-abb{min-height:46px!important;padding:0 18px!important;font-size:14px!important}
+body:not(.pkpl-wide) .pkpl-ab{display:none}
+body.pkpl-wide .pkpl-tight3 .pkpl-ab p{font-size:14.5px;line-height:1.42;margin-bottom:10px}
+body.pkpl-wide .pkpl-tight3 .pkpl-pl.pkpl-many{grid-template-columns:1fr 1fr 1fr;gap:5px 6px}
+#root #pkpl .pkpl-tight3 .pkpl-pl.pkpl-many .pkpl-pr{min-height:38px;padding:4px 6px;gap:6px}
+#root #pkpl .pkpl-tight3 .pkpl-pl.pkpl-many .pkpl-pr img{width:22px;height:22px}
+#root #pkpl .pkpl-tight3 .pkpl-pl.pkpl-many .pkpl-pr b{font-size:12.5px}
+body.pkpl-wide #root #pkpl .pkpl-tight4 .pkpl-xi{display:none}
+body.pkpl-wide #root #pkpl .pkpl-tight4 .pkpl-d{font-size:28px!important}
+body.pkpl-wide .pkpl-tight4{padding-top:18px!important;padding-bottom:16px!important}
+body.pkpl-wide .pkpl-tight4 .pkpl-ab{margin-top:8px}
+body.pkpl-wide #root #pkpl .pkpl-tight4 .pkpl-abb{min-height:40px!important}
+body.pkpl-wide .pkpl-tight4 .pkpl-pl{margin-top:12px!important}
+body.pkpl-wide .pkpl-tight4{padding-top:12px!important;padding-bottom:6px!important}body.pkpl-wide #root #pkpl .pkpl-tight4 .pkpl-ab p{margin-bottom:8px}

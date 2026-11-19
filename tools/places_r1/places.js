@@ -91,7 +91,7 @@
       '<g class="pkpl-ics">' + (MI || []).map(amUse).join('') + '</g>' +
       '<path class="pkpl-veil" fill-rule="evenodd" d=""/><g class="pkpl-icon"></g><g class="pkpl-shs">' + shapes + '</g><path class="pkpl-lit" d=""/><path class="pkpl-was" d=""/><g class="pkpl-nms">' + Object.keys(NP || {}).map(function (k) { return '<path data-h="' + k + '" d="' + NP[k] + '"/>'; }).join('') + '</g><path class="pkpl-hov" d=""/></svg></div>' +
       '<div class="pkpl-pins"></div><div class="pkpl-am"></div>' +
-      '<div class="pkpl-title" aria-hidden="false"><p class="pkpl-k"><img class="pkpl-logo" src="logo27-gold.png" alt="Pickathon 2027"><span>Pickathon</span></p><h1 class="pkpl-d">Summer camp for your soul</h1><p class="pkpl-l">Pick an experience below, then tap a place that lights up</p><div class="pkpl-pl"></div></div>' +
+      '<div class="pkpl-title" aria-hidden="false"><p class="pkpl-k"><img class="pkpl-logo" src="logo27-gold.png" alt="Pickathon 2027"><span>Pickathon</span></p><h1 class="pkpl-d">Summer camp for your soul</h1><p class="pkpl-l">Pick an experience below, then tap a place that lights up</p><div class="pkpl-ab"></div><div class="pkpl-pl"></div></div>' +
       '<div class="pkpl-xls"></div>' +
       '<div class="pkpl-xb" role="toolbar" aria-label="Experiences">' + XO.map(function (e) { return '<button type="button" class="pkpl-xe" data-xp="' + e + '" aria-pressed="false">' + xpIcon(e) + '<span>' + e + '</span></button>'; }).join('') + '</div>' +
       '<div class="pkpl-tools"><button type="button" class="pk-cta sec pkpl-tb" data-pl="find" aria-label="Find a place, an act or water, food and more"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5 21 21"/></svg><span>Find</span></button>' +
@@ -232,11 +232,13 @@
     else d.textContent = 'Summer camp for your soul';
     t.classList.toggle('pkpl-tx', !!M.xp);
     $('.pkpl-l', t).textContent = M.xp ? (XH.XPD[M.xp] || '') : (wide() ? 'Pick an experience above, then a place' : 'Pick an experience below, then tap a place that lights up');
+    var ab = $('.pkpl-ab', t);   /* Architecture: what it is and how to build with us (Zale, Nov 19: it's how sponsors find us) */
+    if (ab) ab.innerHTML = M.xp === 'Architecture' ? '<p>Every summer we build a small city in the forest. Each neighborhood is designed and built new with architects, students, builders and makers, and when the festival ends the structures move on to permanent homes in the community. Two of our builds have won AIA awards.</p><button type="button" class="pk-cta sec pkpl-abb" data-go="build">Build with Pickathon</button>' : '';
     var pl = $('.pkpl-pl', t), L = M.xp ? litSet() : [];   /* desktop: where this experience happens; a row opens the place (Zale, Nov 19) */
     if (pl && !M.xp && !M.amen) { pl.innerHTML = '<div class="pkpl-pg">' + XO.map(function (e) { return '<button type="button" class="pkpl-xe" data-xp="' + e + '">' + xpIcon(e) + '<span>' + e + '</span></button>'; }).join('') + '</div>'; return; }   /* arrival: choose your adventure right under the title */
     if (pl) pl.innerHTML = L.length ? L.map(function (k) { var h = data().hoods[k]; return '<button type="button" class="pkpl-pr" data-hp="' + k + '"><img src="' + esc(emb(k)) + '" alt=""><span><b>' + esc(h.n) + '</b><small>' + esc(xpLine(M.xp, k)) + '</small></span></button>'; }).join('') : '';
-    if (pl && wide()) { pl.classList.remove('pkpl-many'); t.classList.remove('pkpl-tight', 'pkpl-tight2'); var over = function () { return t.scrollHeight > t.clientHeight + 2; };   /* fit without scrolling: full rows, then a compact grid, then a tighter title (Zale, Nov 19) */
-      if (L.length && over()) pl.classList.add('pkpl-many'); if (over()) t.classList.add('pkpl-tight'); if (over()) t.classList.add('pkpl-tight2'); }
+    if (pl && wide()) { pl.classList.remove('pkpl-many'); t.classList.remove('pkpl-tight', 'pkpl-tight2', 'pkpl-tight3', 'pkpl-tight4'); var over = function () { return t.scrollHeight > t.clientHeight + 2; };   /* fit without scrolling: full rows, then a compact grid, then a tighter title (Zale, Nov 19) */
+      if (L.length && over()) pl.classList.add('pkpl-many'); if (over()) t.classList.add('pkpl-tight'); if (over()) t.classList.add('pkpl-tight2'); if (over()) t.classList.add('pkpl-tight3'); if (over()) t.classList.add('pkpl-tight4'); }
   }
   function xpLabels() {
     nmDraw(); var box = $('.pkpl-xls', M.el); if (!box) return; var C = (!M.cur && M.amen) ? amenHoods() : null, L = C ? Object.keys(C) : (!M.cur && M.xp) ? litSet() : [];
@@ -278,7 +280,7 @@
     function pts() { return Object.keys(P).map(function (k) { return P[k]; }); }
     function rel(e) { var r = el.getBoundingClientRect(); return [e.clientX - r.left, e.clientY - r.top]; }
     el.addEventListener('pointerdown', function (e) {
-      if (e.target.closest('.pkpl-tools,.pkpl-amtag,.pkpl-find,.pkpl-xb,.pkpl-pl')) return;
+      if (e.target.closest('.pkpl-tools,.pkpl-amtag,.pkpl-find,.pkpl-xb,.pkpl-pl,.pkpl-ab')) return;
       if (e.pointerType === 'mouse' && e.button !== 0) return;
       P[e.pointerId] = rel(e); cancelAnimationFrame(M.anim); cancelAnimationFrame(M.glide);
       var q = pts(); start = { s: M.s, tx: M.tx, ty: M.ty, p: q.map(function (a) { return a.slice(); }), t: Date.now() }; if (q.length === 1) moved = false;
@@ -326,6 +328,7 @@
     el.addEventListener('click', function (e) {
       if (el._drag && Date.now() - el._drag < 300) { e.stopPropagation(); e.preventDefault(); return; }
       var xb = e.target.closest('[data-xp]'); if (xb) { xpPick(xb.getAttribute('data-xp')); return; }
+      var gb = e.target.closest('[data-go]'); if (gb) { go(gb.getAttribute('data-go')); return; }
       var hp = e.target.closest('[data-hp]'); if (hp) { if (M.title) { M.title = false; } open(hp.getAttribute('data-hp')); return; }
       var b = e.target.closest('[data-pl]'); if (b) { tool(b.getAttribute('data-pl'), b); return; }
       var a = e.target.closest('.pkpl-amdot'); if (a) return;
