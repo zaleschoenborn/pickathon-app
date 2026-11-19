@@ -12649,6 +12649,35 @@ html:root:root #root#root#root#root#root#root#root#root#root#root#root#root#root
   #pkh2 .h2-xs.on{opacity:1;color:var(--cream)}
   #pkh2 .h2-xstrip{transition:opacity .35s ease}
   #pkh2 .h2-xstrip.cov{opacity:0;pointer-events:none}
+  /* Zale Nov 19 15:33: desktop panel (like the Places map's left panel) */
+  #pkh2 .h2-xpan{display:none}
+  @media (min-width:1200px){
+  #root#root#root#root#root#root #pkh2 .h2-s3c .h2-ccw{display:grid!important;grid-template-columns:clamp(380px,30vw,440px) minmax(0,1fr);gap:24px;align-self:stretch!important;width:auto!important;max-width:none!important;margin:0 max(calc((100% - 1280px) / 2),40px)!important}
+  #pkh2 .h2-xpan{display:flex;flex-direction:column;justify-content:center;gap:14px;min-height:0;overflow:hidden;padding:32px 30px;border-radius:12px;background:linear-gradient(160deg,#211c19 0%,#191512 100%);border:1px solid rgba(242,237,227,.1)}
+  #pkh2 .h2-xpk{display:flex;align-items:center;gap:12px;margin:0;color:#F2CF62}
+  #pkh2 .h2-xpk svg{width:34px;height:34px;flex:none}
+  #root#root#root#root #pkh2 .h2-xpk .h2-d{font-size:46px!important;line-height:1!important;color:var(--cream)!important;text-transform:uppercase}
+  #pkh2 .h2-xpd{margin:0;font:500 18px/1.42 'Bricolage Grotesque',system-ui,sans-serif;color:var(--cream)}
+  #pkh2 .h2-xpw{display:flex;justify-content:space-between;margin:6px 0 0;padding-top:14px;border-top:1px solid rgba(242,207,98,.35);font:800 13px/1 'Bricolage Grotesque',system-ui,sans-serif;letter-spacing:.09em;text-transform:uppercase;color:#D6B54A}
+  #pkh2 .h2-xpw span{color:rgba(242,237,227,.6)}
+  #pkh2 .h2-xpt{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px 4px}
+  #pkh2 .h2-xpe{display:flex;flex-direction:column;align-items:center;gap:5px;min-height:44px;padding:0;border:0;background:none;color:var(--cream);font:600 13px/1.15 'Bricolage Grotesque',system-ui,sans-serif;text-align:center;cursor:pointer;opacity:.6;transition:opacity .2s}
+  #pkh2 .h2-xpe img{width:36px;height:36px}
+  #pkh2 .h2-xpe .h2-xsf{display:none}
+  #pkh2 .h2-xpe.on{opacity:1}
+  #pkh2 .h2-xpe.on .h2-xso{display:none}
+  #pkh2 .h2-xpe.on .h2-xsf{display:block}
+  #pkh2 .h2-xpe:hover{opacity:1}
+  #pkh2 .h2-xpt.c5{grid-template-columns:repeat(5,minmax(0,1fr));gap:10px 2px}
+  #pkh2 .h2-xpt.c5 .h2-xpe{font-size:12px}
+  #pkh2 .h2-xpt.c5 .h2-xpe img{width:30px;height:30px}
+  #root#root#root#root#root#root #pkh2 .h2-s3c .h2-ccw .h2-cc-r{grid-column:2;grid-row:1;height:100%;min-width:0;position:relative;padding:0 12%!important;scroll-padding:0 12%!important;gap:14px!important}
+  #root#root#root#root#root#root #pkh2 .h2-s3c .h2-ccw .h2-cc{flex:0 0 76%!important;flex-basis:76%!important}
+  #root#root#root#root#root#root #pkh2 .h2-s3c .h2-arl{left:calc(clamp(380px,30vw,440px) + 24px + 10px)!important}
+  #root#root#root#root#root#root #pkh2 .h2-s3c .h2-arr{right:10px!important}
+  #root#root#root#root #pkh2 .h2-s3c>.h2-xstrip{display:none!important}
+  }
+  @media (min-width:1200px) and (max-height:820px){#pkh2 .h2-xpan{padding:22px 24px;gap:10px}#root#root#root#root #pkh2 .h2-xpk .h2-d{font-size:36px!important}#pkh2 .h2-xpk svg{width:28px;height:28px}#pkh2 .h2-xpd{font-size:16px;line-height:1.38}#pkh2 .h2-xpw{margin-top:2px;padding-top:10px}#pkh2 .h2-xpt{gap:8px 2px}#pkh2 .h2-xpe img{width:30px;height:30px}}
   #pkh2 .h2-xs .h2-xsf{display:none}
   #pkh2 .h2-xs.on .h2-xso{display:none}
   #pkh2 .h2-xs.on .h2-xsf{display:block}
@@ -13038,7 +13067,7 @@ window.pkClimbRank = function (C, dd) {
         '<button type="button" class="h2-xovs" data-h2="xpgo" data-xp="Architecture">Or swipe to wander the farm<span aria-hidden="true"> →</span></button></div>' +
         '<button type="button" class="h2-xova" data-h2="xpgo" data-xp="Architecture" aria-label="Wander the farm">' + CHEV + '</button></div>' +
         '<div class="h2-xrow h2-xrow2" data-h2="xrow" role="group" aria-label="Experiences">' + XPO.map(function (t) { return '<button type="button" class="h2-xb" data-h2="xpsel" data-xp="' + t + '" aria-pressed="false">' + xpIc(t) + '<span>' + esc(t) + '</span></button>'; }).join('') + '</div>' +
-        '<div class="h2-ccw"><div class="h2-cc-r" data-h2="hcards" role="list" aria-label="Neighborhoods"></div>' +
+        '<div class="h2-ccw"><aside class="h2-xpan" data-h2="xpan" aria-live="polite"></aside><div class="h2-cc-r" data-h2="hcards" role="list" aria-label="Neighborhoods"></div>' +
         '<button type="button" class="h2-arw h2-arl" data-h2="hprev" aria-label="Previous">' + CHEV + '</button><button type="button" class="h2-arw h2-arr" data-h2="hnxt" aria-label="Next">' + CHEV + '</button></div>' +
         '<div class="h2-xstrip" data-h2="xstrip" role="group" aria-label="Neighborhoods"></div>' +
         '<div class="pk-cl-btns h2-two"><button type="button" class="pk-bkb pri pk-cl-ex" data-h2="allhoods">Explore the map</button></div></section>';
@@ -13167,15 +13196,15 @@ window.pkClimbRank = function (C, dd) {
     var box = root && $('[data-h2="hcards"]', root), PH = !!(window.matchMedia && matchMedia('(max-width:1199px)').matches); if (!box || !ROT.length || box._k === XPF + ROT.join() + PH) return; box._k = XPF + ROT.join() + PH; box._ph = PH;
     var A = ROT.filter(function (k) { return k === 'trails' ? XPF === 'Wellness' : hoodSet(k).length; }), K = 0, seq = [], q;
     for (q = A.length - K; q < A.length; q++) seq.push([q, 1]); A.forEach(function (x, j) { seq.push([j, 0]); }); for (q = 0; q < K; q++) seq.push([q, 1]);
-    box.innerHTML = xpCover(A) + seq.map(function (e) { var k = A[e[0]], H = D.hoods[k], L = xpSet(k), x = L[0], cl = e[1], ti = cl ? ' tabindex="-1"' : ''; if (!x) x = { i: '', p: '' }; var kick = XPF ? XPF + ' at ' + H.n : KIND[H.k];
+    box.innerHTML = (PH ? xpCover(A) : '') + seq.map(function (e) { var k = A[e[0]], H = D.hoods[k], L = xpSet(k), x = L[0], cl = e[1], ti = cl ? ' tabindex="-1"' : ''; if (!x) x = { i: '', p: '' }; var kick = XPF ? XPF + ' at ' + H.n : KIND[H.k];
       return '<article class="h2-cc h2-hc' + (cl ? ' h2-cc-cl' : '') + '" data-h="' + k + '"' + (cl ? ' aria-hidden="true"' : ' role="listitem"') + '><button type="button"' + ti + ' class="h2-cc-ph" data-h2="hcard" data-h="' + k + '" aria-label="' + esc(H.n + ', ' + KIND[H.k] + (H.t ? ', ' + H.t : '') + '. Open its page') + '">' +
         '<img class="h2-hci is-on" src="' + esc(x.i) + '" alt="" style="object-position:' + esc(x.p || '50% 50%') + '" loading="' + (e[0] < 3 ? 'eager' : 'lazy') + '" decoding="async"><img class="h2-hci" alt="" decoding="async">' +
         '<span class="h2-cc-t h2-hct"><span class="h2-cc-k"><span>' + esc(kick) + '</span></span><span class="h2-hct-nm"><img class="h2-hct-em" src="' + esc(H.icw || ('ic2/' + k + '.png')) + '" alt="" width="52" height="52" decoding="async"><span class="h2-d h2-cc-n pkp-head">' + esc(H.n) + '</span><span class="h2-hct-nx" aria-hidden="true">Explore ' + CHEV + '</span></span>' + ((XPB[XPF] && XPB[XPF][k]) ? '<span class="h2-hct-g h2-hct-b">' + esc(XPB[XPF][k]) + '</span>' : (H.t ? '<span class="h2-hct-g">' + esc(H.t) + '</span>' : '')) + ((XPB[XPF] && XPB[XPF][k]) ? '' : (function () { var pg = ''; try { pg = window.__pkNbpg ? window.__pkNbpg(k) : ''; } catch (e) {} return pg ? '<span class="h2-hct-pr">' + esc(pg) + '</span>' : ''; })()) + '</span>' +
         '<span class="h2-hct-go" aria-hidden="true"><span class="h2-hct-gl">Explore </span><span class="h2-hct-gn">' + esc((/^the /i.test(H.n) ? H.n : 'the ' + H.n) + ' neighborhood') + ' </span><span class="h2-hct-gs">' + esc(H.n) + ' </span>' + CHEV + '</span></button></article>'; }).join('');
-    guard(box); box._K = K; box._N = A.length + 1; box._A = A; xpStrip(box); xpRowOn(); xovWire();
+    guard(box); box._K = K; box._N = A.length + (PH ? 1 : 0); box._A = A; xpPanel(A, PH); xpStrip(box); xpRowOn(); xovWire();
     var last = '', back = false; try { last = localStorage.getItem('pk-h0') || ''; var rt = sessionStorage.getItem('pk-hcret'); if (rt) { sessionStorage.removeItem('pk-hcret'); last = rt; back = true; } } catch (e) {}
     var i0 = A.indexOf(last); if (!back || i0 < 0) i0 = (i0 + 1) % A.length; if (XPS) { i0 = 0; XPS = 0; } var introAt = PH && !back; if (!PH) try { localStorage.setItem('pk-h0', A[i0]); } catch (e) {}   /* a new neighborhood each visit; Back returns to the one they left */
-    var go = function () { if (!box.clientWidth) return; jumpTo(box, (back && i0 >= 0) ? i0 + 1 : 0); hcLabel(); };
+    var go = function () { if (!box.clientWidth) return; try { xovFit(); } catch (e) {} jumpTo(box, (back && i0 >= 0) ? i0 + (PH ? 1 : 0) : 0); hcLabel(); };
     if (window.requestAnimationFrame) requestAnimationFrame(function () { requestAnimationFrame(go); }); else setTimeout(go, 30);
     if (!box._lp) { box._lp = 1; var tmo = 0; box.addEventListener('scroll', function () { clearTimeout(tmo); tmo = setTimeout(function () { loopFix(box); hcLabel(); var m = ccMid(box), c = box.children[m.i]; if (c && !/^__/.test(c.getAttribute('data-h'))) { try { localStorage.setItem('pk-h0', c.getAttribute('data-h')); } catch (e) {} } }, 140); }, { passive: true }); }
   }
@@ -13341,6 +13370,12 @@ window.pkClimbRank = function (C, dd) {
       '<p class="h2-xhk">' + xpIc(XPF) + '<span class="h2-d pkp-head' + (XPF.length > 8 ? ' lg' : '') + '">' + esc(XPF) + '</span></p><p class="h2-xhd">' + esc(XPD[XPF] || '') +
       (XPF === 'Architecture' ? ' <button type="button" class="h2-xlb" data-h2="xpbuild">Build with us<span aria-hidden="true"> →</span></button>' : '') + '</p>' +
       xpCoverW(A) + '<p class="h2-xhs">' + (A.length > 1 ? 'Swipe to see where, ' + A.length + ' places' : 'Swipe to see where') + ' <b aria-hidden="true">→</b></p></div></article>'; }
+  /* Zale Nov 19 15:33: desktop, the experience's cover is a left panel like the Places map page: name, what it is, its neighborhoods; the lit one tracks the photo */
+  function xpPanel(A, PH) { var el = root && $('[data-h2="xpan"]', root); if (!el) return; if (PH) { el.innerHTML = ''; return; }
+    el.innerHTML = '<p class="h2-xpk">' + xpIc(XPF) + '<span class="h2-d pkp-head">' + esc(XPF) + '</span></p><p class="h2-xpd">' + esc(XPD[XPF] || '') +
+      (XPF === 'Architecture' ? ' <button type="button" class="h2-xlb" data-h2="xpbuild">Build with us<span aria-hidden="true"> →</span></button>' : '') + '</p>' +
+      '<p class="h2-xpw">Where to find it' + (A.length > 1 ? ' <span>' + A.length + ' places</span>' : '') + '</p><div class="h2-xpt' + (A.length > 8 ? ' c5' : '') + '">' + A.map(function (hk) { var H = D.hoods[hk] || {};
+        return '<button type="button" class="h2-xpe" data-h2="xpto" data-xh="' + hk + '"><img class="h2-xso" src="' + esc(XIC[hk] ? 'ic/' + hk + '.svg' : (H.icw || H.ic || '')) + '" alt="" width="36" height="36"><img class="h2-xsf" src="' + esc(H.icw || ('ic2/' + hk + '.png')) + '" alt="" width="36" height="36"><span>' + esc(H.n || hk) + '</span></button>'; }).join('') + '</div>'; }
   /* Zale Nov 19 14:32: the cover shows where to find it: every place as an equal icon tile; a tap jumps to that place's card */
   function xpCoverW(A) { var n = A.length, c = n <= 4 ? n : (n <= 6 ? 3 : (n <= 8 ? 4 : 5));
     return '<div class="h2-xhw" style="--c:' + c + '" role="group" aria-label="Where to find it">' + A.map(function (hk) { var H = D.hoods[hk] || {}; return '<button type="button" class="h2-xhe" data-h2="xpto" data-xh="' + hk + '"><img src="' + esc(XIC[hk] ? 'ic/' + hk + '.svg' : (H.icw || H.ic || '')) + '" alt="" width="36" height="36"><span>' + esc(H.n || hk) + '</span></button>'; }).join('') + '</div>'; }
@@ -13349,6 +13384,7 @@ window.pkClimbRank = function (C, dd) {
   function xovFit() { var ov = root && $('[data-h2="xov"]', root), sec = ov && ov.parentNode, hd = sec && $('.h2-s5head', sec); if (!ov || !hd) return;
     hd.style.alignSelf = 'stretch'; hd.style.setProperty('margin-left', '0px', 'important'); hd.style.setProperty('margin-right', '0px', 'important'); var o = ov.getBoundingClientRect(), r = hd.getBoundingClientRect();   /* title row lines up with the photo's edges */
     if (o.width && innerWidth >= 1200) { hd.style.setProperty('margin-left', (o.left - r.left) + 'px', 'important'); hd.style.setProperty('margin-right', (r.right - o.right) + 'px', 'important'); }
+    var cw = $('.h2-ccw', sec); if (cw) { cw.style.setProperty('margin-left', '0px', 'important'); cw.style.setProperty('margin-right', '0px', 'important'); if (o.width && innerWidth >= 1200) { var q = cw.getBoundingClientRect(); cw.style.setProperty('margin-left', (o.left - q.left) + 'px', 'important'); cw.style.setProperty('margin-right', (q.right - o.right) + 'px', 'important'); } }
     sec.style.setProperty('--xovt', (hd.offsetTop + hd.offsetHeight + 12) + 'px'); }
   function xovBack() { var ov = root && $('[data-h2="xov"]', root); if (!ov) return; ov.hidden = false; ov.parentNode.classList.remove('xin'); requestAnimationFrame(function () { ov.classList.remove('gone'); }); }
   function xovWire() { var ov = root && $('[data-h2="xov"]', root); if (!ov || ov._w) return; ov._w = 1; var t3 = $('#h2-h3', root); if (t3) { t3.classList.add('h2-xovt'); t3.setAttribute('role', 'button'); t3.setAttribute('tabindex', '0'); t3.setAttribute('title', 'Back to the start'); t3.addEventListener('click', xovBack); t3.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); xovBack(); } }); } xovFit(); window.addEventListener('resize', xovFit); setTimeout(xovFit, 400); var x0 = null, y0 = 0;
@@ -13371,7 +13407,7 @@ window.pkClimbRank = function (C, dd) {
   function xpStrip(box) { var el = root && $('[data-h2="xstrip"]', root); if (!el) return; var A = box._A || [];
     el.innerHTML = A.map(function (hk) { var H = D.hoods[hk] || {}; return '<button type="button" class="h2-xs" data-h2="xpto" data-xh="' + hk + '"><img class="h2-xso" src="' + esc(XIC[hk] ? 'ic/' + hk + '.svg' : (H.icw || H.ic || '')) + '" alt="" width="36" height="36"><img class="h2-xsf" src="' + esc(H.icw || ('ic2/' + hk + '.png')) + '" alt="" width="36" height="36"><span>' + esc(H.n || hk) + '</span></button>'; }).join('');
     xpStripOn(box); }
-  function xpStripOn(box) { var el = root && $('[data-h2="xstrip"]', root); if (!el || !box.children.length) return; var c = box.children[ccMid(box).i], k = c && c.getAttribute('data-h'), hit = null; el.classList.toggle('cov', k === '__hero');
+  function xpStripOn(box) { var el = root && $('[data-h2="xstrip"]', root); if (!el || !box.children.length) return; var c = box.children[ccMid(box).i], k = c && c.getAttribute('data-h'), hit = null; el.classList.toggle('cov', k === '__hero'); var pn = root && $('[data-h2="xpan"]', root); if (pn) $$('.h2-xpe', pn).forEach(function (b) { b.classList.toggle('on', b.getAttribute('data-xh') === k); });
     $$('.h2-xs', el).forEach(function (b) { var on = b.getAttribute('data-xh') === k; b.classList.toggle('on', on); if (on) { b.setAttribute('aria-current', 'true'); hit = b; } else b.removeAttribute('aria-current'); });
     if (hit && el.scrollWidth > el.clientWidth + 2) { var x = hit.offsetLeft - (el.clientWidth - hit.offsetWidth) / 2; try { el.scrollTo({ left: x, behavior: 'smooth' }); } catch (e) { el.scrollLeft = x; } } }
   var XPC = {};
