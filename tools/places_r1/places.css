@@ -224,9 +224,26 @@ body.pkpl-wide #root .pkpl-f2,body.pkpl-wide .pkpl-f2{grid-template-columns:1fr 
 .pkpl-was{fill:none;stroke:#F2EDE3;stroke-opacity:.6;stroke-width:2.5;stroke-linejoin:round;pointer-events:none;vector-effect:non-scaling-stroke}
 body.pkpl-wide .pkpl-notitle .pkpl-title{opacity:1;visibility:visible}
 body.pkpl-wide #root #pkpl .pkpl-d{font-size:clamp(36px,3.4vw,54px)!important}
-body.pkpl-wide .pkpl-title .pkpl-xb{position:static;display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:26px;padding:0;background:none;overflow:visible;pointer-events:auto;max-width:420px}
-body.pkpl-wide .pkpl-title .pkpl-xe{flex-direction:row;justify-content:flex-start;gap:10px;min-height:46px;min-width:0;padding:8px 12px;font-size:14px;text-align:left}
-body.pkpl-wide .pkpl-title .pkpl-xe svg{width:20px;height:20px;flex:none}
-body.pkpl-wide .pkpl-title .pkpl-xe.quiet{opacity:1}
-body.pkpl-hood.pkpl-wide .pkpl-xb{display:none}
+
 body.pkpl-hood.pkpl-wide .pkpl-title{display:none}
+
+/* desktop (Nov 19, drill-in): experiences across the top of the map, the places on the left, the card replaces the list */
+body.pkpl-wide .pkpl-xb{top:0;bottom:auto;justify-content:center;gap:6px;padding:12px 16px 26px;background:linear-gradient(180deg,rgba(18,22,15,.9) 0%,rgba(18,22,15,.7) 65%,rgba(18,22,15,0) 100%)}
+body.pkpl-wide .pkpl-xe{min-width:68px;min-height:52px;padding:6px 8px;font-size:12px}
+body.pkpl-wide .pkpl-tools{bottom:16px}
+body.pkpl-wide .pkpl-title{justify-content:flex-start;padding-top:110px;overflow-y:auto;scrollbar-width:none}
+body.pkpl-wide .pkpl-title::-webkit-scrollbar{display:none}
+.pkpl-pl{display:flex;flex-direction:column;gap:2px;margin-top:22px;pointer-events:auto}
+.pkpl-pl:empty{display:none}
+#root #pkpl .pkpl-pr{display:flex;align-items:center;gap:14px;width:100%;min-height:60px;padding:8px 6px;border:0;border-bottom:1px solid rgba(242,237,227,.14);background:transparent;color:#F2EDE3;text-align:left;cursor:pointer;font:inherit}
+#root #pkpl .pkpl-pr:hover{background:rgba(242,237,227,.06)}
+#root #pkpl .pkpl-pr img{flex:none;width:40px;height:40px}
+#root #pkpl .pkpl-pr b{display:block;font:800 17px/1.2 'Bricolage Grotesque',system-ui,sans-serif}
+#root #pkpl .pkpl-pr small{display:block;margin-top:2px;font:500 14px/1.35 'Bricolage Grotesque',system-ui,sans-serif;color:#C9C2B4}
+body:not(.pkpl-wide) .pkpl-pl{display:none}
+#root #pkpl-top .pkpl-up{display:flex;align-items:center;gap:8px;min-height:48px;margin:0 0 8px;padding:0 14px 0 6px;border:0;background:transparent;color:#FFE7A3;font:800 14px/1 'Bricolage Grotesque',system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;cursor:pointer}
+#root #pkpl-top .pkpl-up svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+
+body.pkpl-hood.pkpl-wide .pkpl-tools{top:auto;bottom:16px}
+body.pkpl-wide .pkpl-xb{justify-content:safe center}
+body.pkpl-xpup div:has(> .pk-backb){display:none}

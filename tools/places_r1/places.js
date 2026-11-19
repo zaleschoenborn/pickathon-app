@@ -90,7 +90,7 @@
       '<g class="pkpl-ics">' + (MI || []).map(amUse).join('') + '</g>' +
       '<path class="pkpl-veil" fill-rule="evenodd" d=""/><g class="pkpl-icon"></g><g class="pkpl-shs">' + shapes + '</g><path class="pkpl-lit" d=""/><path class="pkpl-was" d=""/><path class="pkpl-hov" d=""/></svg></div>' +
       '<div class="pkpl-pins"></div><div class="pkpl-am"></div>' +
-      '<div class="pkpl-title" aria-hidden="false"><p class="pkpl-k">Pickathon</p><h1 class="pkpl-d">Summer camp for your soul</h1><p class="pkpl-l">Pick an experience below, then tap a place that lights up</p></div>' +
+      '<div class="pkpl-title" aria-hidden="false"><p class="pkpl-k">Pickathon</p><h1 class="pkpl-d">Summer camp for your soul</h1><p class="pkpl-l">Pick an experience below, then tap a place that lights up</p><div class="pkpl-pl"></div></div>' +
       '<div class="pkpl-xls"></div>' +
       '<div class="pkpl-xb" role="toolbar" aria-label="Experiences">' + XO.map(function (e) { return '<button type="button" class="pkpl-xe" data-xp="' + e + '" aria-pressed="false">' + xpIcon(e) + '<span>' + e + '</span></button>'; }).join('') + '</div>' +
       '<div class="pkpl-tools"><button type="button" class="pk-cta sec pkpl-tb" data-pl="find" aria-label="Find a place, an act or water, food and more"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5 21 21"/></svg><span>Find</span></button>' +
@@ -178,7 +178,7 @@
       var n = N[i]; n.style.transform = 'translate(' + Math.round(x) + 'px,' + Math.round(y) + 'px)'; n.hidden = hide || !named || x < 60 || x > M.vw - 60 || y > M.vh - 30;   /* no clipped names at the edges */
     }
   }
-  function xbHome() { var xb = $('.pkpl-xb', M.el), t = $('.pkpl-title', M.el), want = wide() ? t : M.el; if (xb && t && xb.parentNode !== want) want.appendChild(xb); }   /* desktop: a menu under the title; phone: the bottom row */
+  function xbHome() { var xb = $('.pkpl-xb', M.el), t = $('.pkpl-title', M.el), want = M.el; if (xb && t && xb.parentNode !== want) want.appendChild(xb); }   /* desktop: a menu under the title; phone: the bottom row */
   function layout() {   /* on load, resize and every render: size the map to its box */
     if (!M || !M.el.isConnected) return; xbHome();
     var r = M.el.getBoundingClientRect(), w = Math.round(r.width), h = Math.round(r.height);
@@ -195,7 +195,7 @@
   }
   function home(now) { M.cur = ''; lit(); animTo(startView(), now ? 0 : 520); }
   /* the visible part of the map (phone: above the sheet) */
-  function clear() { var r = region(), t = wide() && top().r !== 'hood' ? Math.round(Math.min(M.vw * 0.46, 560)) : 0; return { x: r.x + t, y: r.y, w: r.w - t, h: Math.max(160, r.h - (wide() ? 96 : 150)) }; }   /* above the experience bar and the amenity tag */
+  function clear() { var r = region(), t = wide() && top().r !== 'hood' ? Math.round(Math.min(M.vw * 0.46, 560)) : 0, ti = $('.pkpl-title', M.el), up = wide() ? 84 : (M.title && ti ? 110 : 0), dn = wide() ? 16 : 150; return { x: r.x + t, y: r.y + up, w: r.w - t, h: Math.max(160, r.h - up - dn) }; }   /* the lit places fill what is left */   /* above the experience bar and the amenity tag */
   function region() {
     if (wide() || top().r !== 'hood') return { x: 0, y: 0, w: M.vw, h: M.vh };
     return { x: 0, y: 0, w: M.vw, h: Math.max(160, Math.round(M.vh * 0.4)) };
@@ -225,7 +225,9 @@
     var t = $('.pkpl-title', M.el); if (!t) return;
     $('.pkpl-k', t).textContent = 'Pickathon';
     $('.pkpl-d', t).textContent = M.xp ? (M.xp + ' at Pickathon') : 'Summer camp for your soul';
-    $('.pkpl-l', t).textContent = M.xp ? (XH.XPD[M.xp] || '') : 'Pick an experience below, then tap a place that lights up';
+    $('.pkpl-l', t).textContent = M.xp ? (XH.XPD[M.xp] || '') : (wide() ? 'Pick an experience above, then a place' : 'Pick an experience below, then tap a place that lights up');
+    var pl = $('.pkpl-pl', t), L = M.xp ? litSet() : [];   /* desktop: where this experience happens; a row opens the place (Zale, Nov 19) */
+    if (pl) pl.innerHTML = L.length ? L.map(function (k) { var h = data().hoods[k]; return '<button type="button" class="pkpl-pr" data-hp="' + k + '"><img src="' + esc(emb(k)) + '" alt=""><span><b>' + esc(h.n) + '</b><small>' + esc(xpLine(M.xp, k)) + '</small></span></button>'; }).join('') : '';
   }
   function xpLabels() {
     var box = $('.pkpl-xls', M.el); if (!box) return; var C = (!M.cur && M.amen) ? amenHoods() : null, L = C ? Object.keys(C) : (!M.cur && M.xp) ? litSet() : [];
@@ -238,7 +240,7 @@
   }
   function fitLit() {
     var L = M.amen ? Object.keys(amenHoods()) : litSet(); if (!L.length) { home(); return; }
-    animTo(fitBox(union(L), clear(), wide() ? 90 : 34), 560);
+    animTo(fitBox(union(L), clear(), wide() ? 40 : 16), 560);
   }
   function xpPick(e) {
     var t0 = top(); M.was = (t0.r === 'hood' && t0.h) ? t0.h : '';   /* Zale, Nov 19: an experience button always goes back to the map; the place you were in keeps a soft outline */
@@ -262,7 +264,7 @@
     function pts() { return Object.keys(P).map(function (k) { return P[k]; }); }
     function rel(e) { var r = el.getBoundingClientRect(); return [e.clientX - r.left, e.clientY - r.top]; }
     el.addEventListener('pointerdown', function (e) {
-      if (e.target.closest('.pkpl-tools,.pkpl-amtag,.pkpl-find,.pkpl-xb')) return;
+      if (e.target.closest('.pkpl-tools,.pkpl-amtag,.pkpl-find,.pkpl-xb,.pkpl-pl')) return;
       if (e.pointerType === 'mouse' && e.button !== 0) return;
       P[e.pointerId] = rel(e); cancelAnimationFrame(M.anim); cancelAnimationFrame(M.glide);
       var q = pts(); start = { s: M.s, tx: M.tx, ty: M.ty, p: q.map(function (a) { return a.slice(); }), t: Date.now() }; if (q.length === 1) moved = false;
@@ -310,6 +312,7 @@
     el.addEventListener('click', function (e) {
       if (el._drag && Date.now() - el._drag < 300) { e.stopPropagation(); e.preventDefault(); return; }
       var xb = e.target.closest('[data-xp]'); if (xb) { xpPick(xb.getAttribute('data-xp')); return; }
+      var hp = e.target.closest('[data-hp]'); if (hp) { if (M.title) { M.title = false; } open(hp.getAttribute('data-hp')); return; }
       var b = e.target.closest('[data-pl]'); if (b) { tool(b.getAttribute('data-pl'), b); return; }
       var a = e.target.closest('.pkpl-amdot'); if (a) return;
       var h = e.target.closest('[data-h]');
@@ -373,7 +376,7 @@
         if (a === 'ftab') { FT = b.getAttribute('data-t'); $$('[data-pl="ftab"]', f).forEach(function (x) { x.setAttribute('aria-selected', x === b ? 'true' : 'false'); }); findDraw($('input', f).value); return; }
         var t = b.getAttribute('data-ft'), v = b.getAttribute('data-fv'); f.hidden = true;
         if (M.title) { M.title = false; M.el.classList.add('pkpl-notitle'); }
-        if (t === 'h') open(v); else if (t === 'a') { var o = actIndex().filter(function (x) { return x.n === v; })[0]; if (o) { FROM = o; open(o.h); } } else if (t === 'm') { M.amen = v; M.xp = ''; M.cur = ''; titleDraw(); M.title = false; M.el.classList.add('pkpl-notitle'); if (top().r === 'hood') go('hoods'); amenDraw(); lit(); var HL = Object.keys(amenHoods()); if (HL.length) { animTo(fitBox(union(HL), clear(), wide() ? 90 : 34), 560); } var L = HL.length ? [] : amOf(v); if (L.length) {   /* frame the lit neighborhoods, the same way an experience does */
+        if (t === 'h') open(v); else if (t === 'a') { var o = actIndex().filter(function (x) { return x.n === v; })[0]; if (o) { FROM = o; open(o.h); } } else if (t === 'm') { M.amen = v; M.xp = ''; M.cur = ''; titleDraw(); M.title = false; M.el.classList.add('pkpl-notitle'); if (top().r === 'hood') go('hoods'); amenDraw(); lit(); var HL = Object.keys(amenHoods()); if (HL.length) { animTo(fitBox(union(HL), clear(), wide() ? 40 : 16), 560); } var L = HL.length ? [] : amOf(v); if (L.length) {   /* frame the lit neighborhoods, the same way an experience does */
  var bx = [1e9, 1e9, -1e9, -1e9]; L.forEach(function (p) { var x = p[1], y = p[2]; bx = [Math.min(bx[0], x), Math.min(bx[1], y), Math.max(bx[2], x), Math.max(bx[3], y)]; }); animTo(fitBox([bx[0] - 60, bx[1] - 60, bx[2] + 60, bx[3] + 60], clear(), 30), 520); } } });
       f.addEventListener('keydown', function (e) { if (e.key === 'Escape') { f.hidden = true; } });
     }
@@ -422,11 +425,11 @@
     if (TOP.k !== k) { TOP.k = k; TOP.all = false; TOP.i = 0; TOP.day = days[0] || ''; if (FROM && FROM.h !== k) FROM = null; }
     if (days.indexOf(TOP.day) < 0) TOP.day = days[0] || '';
     var ph = XE ? xpPhotos(XE, k) : photos(k); if (!ph.length) ph = photos(k); var L = ids(), j = L.indexOf(k), prev = L[(j - 1 + L.length) % L.length], next = L[(j + 1) % L.length];
-    var key = k + '|' + XE + '|' + has + '|' + TOP.day + '|' + TOP.all + '|' + (FROM ? FROM.n : '') + '|' + wide();
+    var key = k + '|' + XE + '|' + (M && M.xp) + '|' + has + '|' + TOP.day + '|' + TOP.all + '|' + (FROM ? FROM.n : '') + '|' + wide();
     if (el._key === key) return; el._key = key;
     var dayN = {}; (D.days || []).forEach(function (d) { dayN[d.id] = d.n; });
     var rows = has ? S[TOP.day] : [], showN = TOP.all ? rows.length : 3;
-    var html = '<div class="pkpl-sheet' + (has ? ' pkpl-has' : '') + '">' +
+    var html = (XH && M && M.xp && wide() ? '<button type="button" class="pkpl-up" data-pk="up"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5 8 12l7 7"/></svg>' + esc(M.xp) + ' at Pickathon</button>' : '') + '<div class="pkpl-sheet' + (has ? ' pkpl-has' : '') + '">' +
       '<div class="pkpl-grab" aria-hidden="true"><i></i></div>' +
       '<div class="pkpl-hero" aria-roledescription="carousel" aria-label="' + esc(h.n) + ' photos">' +
       ph.map(function (p, i) { return '<img src="' + esc(p.i) + '" alt="" style="object-position:' + esc(p.p) + '"' + (i === 0 ? ' class="on"' : ' loading="lazy"') + ' draggable="false">'; }).join('') +
@@ -443,7 +446,7 @@
         (rows.length > 3 ? '<button type="button" class="pk-cta sec pkpl-whole" data-pk="whole" aria-expanded="' + TOP.all + '">' + (TOP.all ? 'Show less' : 'Whole day at ' + esc(h.n)) + '</button>' : '') + '</section>' : '') +
       alsoAt(k, XE, h) +
       '</div>';
-    el.innerHTML = html; TOP.i = 0; heroArm(el);
+    el.innerHTML = html; TOP.i = 0; heroArm(el); document.body.classList.toggle('pkpl-xpup', !!$('.pkpl-up', el));   /* our link up replaces the app's Back to map */
   }
   function alsoAt(k, XE, h) {   /* one tile per other experience at this place */
     if (!XE) return ''; var O = xpAt(k).filter(function (e) { return e !== XE; }); if (!O.length) return '';
@@ -516,6 +519,7 @@
     if (a === 'dot') { var hero = b.closest('.pkpl-hero'); clearTimeout(TOP.timer); heroShow(hero, +b.getAttribute('data-i')); return; }
     if (a === 'day') { TOP.day = b.getAttribute('data-d'); TOP.all = false; drawTop(); return; }
     if (a === 'whole') { TOP.all = !TOP.all; drawTop(); return; }
+    if (a === 'up') { go('hoods'); return; }
     if (a === 'xp') { TOP.xp = b.getAttribute('data-e'); TOP.all = false; var sc = scroller(); drawTop(); xbDraw(); return; }
   }
   /* sideways swipe on the sheet steps to the next place (phone, tablet; a mouse drag on desktop) */
