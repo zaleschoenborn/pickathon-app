@@ -220,3 +220,13 @@ body.pkpl-wide #root .pkpl-f2,body.pkpl-wide .pkpl-f2{grid-template-columns:1fr 
 #root .pkpl-ftabs{display:flex;gap:8px;padding:0 12px 6px}
 #root .pkpl-ftabs button{flex:1;min-height:44px;border-radius:6px;border:1px solid rgba(242,237,227,.35);background:transparent;color:var(--pl-cream);font:800 13px/1 'Bricolage Grotesque',system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;cursor:pointer}
 #root .pkpl-ftabs button[aria-selected="true"]{background:rgba(214,181,74,.18);border-color:#D6B54A;color:#FFE7A3}
+/* Nov 19: where you came from, and the desktop experience menu */
+.pkpl-was{fill:none;stroke:#F2EDE3;stroke-opacity:.6;stroke-width:2.5;stroke-linejoin:round;pointer-events:none;vector-effect:non-scaling-stroke}
+body.pkpl-wide .pkpl-notitle .pkpl-title{opacity:1;visibility:visible}
+body.pkpl-wide #root #pkpl .pkpl-d{font-size:clamp(36px,3.4vw,54px)!important}
+body.pkpl-wide .pkpl-title .pkpl-xb{position:static;display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:26px;padding:0;background:none;overflow:visible;pointer-events:auto;max-width:420px}
+body.pkpl-wide .pkpl-title .pkpl-xe{flex-direction:row;justify-content:flex-start;gap:10px;min-height:46px;min-width:0;padding:8px 12px;font-size:14px;text-align:left}
+body.pkpl-wide .pkpl-title .pkpl-xe svg{width:20px;height:20px;flex:none}
+body.pkpl-wide .pkpl-title .pkpl-xe.quiet{opacity:1}
+body.pkpl-hood.pkpl-wide .pkpl-xb{display:none}
+body.pkpl-hood.pkpl-wide .pkpl-title{display:none}

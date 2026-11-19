@@ -88,7 +88,7 @@
       '<svg class="pkpl-svg" viewBox="0 0 ' + W + ' ' + H + '" preserveAspectRatio="none" aria-hidden="true">' +
       '<defs><filter id="pkpl-glow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="9" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>' + Object.keys(AMI || {}).map(function (k) { return '<symbol id="pkpl-i-' + k + '" viewBox="0 0 24 24"><rect class="pkpl-ip" x=".75" y=".75" width="22.5" height="22.5" rx="5"/><g class="pkpl-ig" transform="translate(2.4 2.4) scale(.8)">' + AMI[k] + '</g></symbol>'; }).join('') + '</defs>' +
       '<g class="pkpl-ics">' + (MI || []).map(amUse).join('') + '</g>' +
-      '<path class="pkpl-veil" fill-rule="evenodd" d=""/><g class="pkpl-icon"></g><g class="pkpl-shs">' + shapes + '</g><path class="pkpl-lit" d=""/><path class="pkpl-hov" d=""/></svg></div>' +
+      '<path class="pkpl-veil" fill-rule="evenodd" d=""/><g class="pkpl-icon"></g><g class="pkpl-shs">' + shapes + '</g><path class="pkpl-lit" d=""/><path class="pkpl-was" d=""/><path class="pkpl-hov" d=""/></svg></div>' +
       '<div class="pkpl-pins"></div><div class="pkpl-am"></div>' +
       '<div class="pkpl-title" aria-hidden="false"><p class="pkpl-k">Pickathon</p><h1 class="pkpl-d">Summer camp for your soul</h1><p class="pkpl-l">Pick an experience below, then tap a place that lights up</p></div>' +
       '<div class="pkpl-xls"></div>' +
@@ -178,8 +178,9 @@
       var n = N[i]; n.style.transform = 'translate(' + Math.round(x) + 'px,' + Math.round(y) + 'px)'; n.hidden = hide || !named || x < 60 || x > M.vw - 60 || y > M.vh - 30;   /* no clipped names at the edges */
     }
   }
+  function xbHome() { var xb = $('.pkpl-xb', M.el), t = $('.pkpl-title', M.el), want = wide() ? t : M.el; if (xb && t && xb.parentNode !== want) want.appendChild(xb); }   /* desktop: a menu under the title; phone: the bottom row */
   function layout() {   /* on load, resize and every render: size the map to its box */
-    if (!M || !M.el.isConnected) return;
+    if (!M || !M.el.isConnected) return; xbHome();
     var r = M.el.getBoundingClientRect(), w = Math.round(r.width), h = Math.round(r.height);
     if (!w || !h) return;
     if (w === M.vw && h === M.vh && M.s) return;
@@ -194,7 +195,7 @@
   }
   function home(now) { M.cur = ''; lit(); animTo(startView(), now ? 0 : 520); }
   /* the visible part of the map (phone: above the sheet) */
-  function clear() { var r = region(), t = wide() && M.title && top().r !== 'hood' ? Math.round(Math.min(M.vw * 0.46, 560)) : 0; return { x: r.x + t, y: r.y, w: r.w - t, h: Math.max(160, r.h - (wide() ? 96 : 150)) }; }   /* above the experience bar and the amenity tag */
+  function clear() { var r = region(), t = wide() && top().r !== 'hood' ? Math.round(Math.min(M.vw * 0.46, 560)) : 0; return { x: r.x + t, y: r.y, w: r.w - t, h: Math.max(160, r.h - (wide() ? 96 : 150)) }; }   /* above the experience bar and the amenity tag */
   function region() {
     if (wide() || top().r !== 'hood') return { x: 0, y: 0, w: M.vw, h: M.vh };
     return { x: 0, y: 0, w: M.vw, h: Math.max(160, Math.round(M.vh * 0.4)) };
@@ -209,6 +210,7 @@
     var k = M.cur, L = (!k && M.amen) ? Object.keys(amenHoods()) : (!k && M.xp) ? litSet() : [], d = k ? HH.shapes[k] : L.map(function (h) { return HH.shapes[h]; }).join(' ');
     $('.pkpl-veil', M.svg).setAttribute('d', d ? 'M-4000,-4000H' + (W + 4000) + 'V' + (H + 4000) + 'H-4000Z ' + d : '');
     $('.pkpl-lit', M.svg).setAttribute('d', d);
+    $('.pkpl-was', M.svg).setAttribute('d', (!k && M.was && (M.xp || M.amen) && HH.shapes[M.was]) || '');
     $$('.pkpl-sh', M.svg).forEach(function (p) { p.classList.toggle('on', p.getAttribute('data-h') === k); });
     M.el.classList.toggle('pkpl-picked', !!k); M.el.classList.toggle('pkpl-xpon', !k && (!!M.xp || !!M.amen));
     var full = $('[data-pl="full"]', M.el); if (full) full.hidden = !k && !M.amen && !M.xp && !(M.s > startView()[0] * 1.15);
@@ -235,11 +237,11 @@
     P.forEach(function (a, i) { for (var j = 0; j < i; j++) { var b = P[j]; if (Math.abs(a.x - b.x) < (a.w + b.w) / 2 + 6 && Math.abs(a.y - b.y) < 17) a.y = b.y + 17; } a.x = Math.max(a.w / 2 + 6, Math.min(M.vw - a.w / 2 - 6, a.x)); a.el.style.transform = 'translate(' + Math.round(a.x) + 'px,' + Math.round(a.y) + 'px) translate(-50%,-50%)'; a.el.hidden = a.y < 0 || a.y > M.vh; });
   }
   function fitLit() {
-    var L = litSet(); if (!L.length) { home(); return; }
+    var L = M.amen ? Object.keys(amenHoods()) : litSet(); if (!L.length) { home(); return; }
     animTo(fitBox(union(L), clear(), wide() ? 90 : 34), 560);
   }
   function xpPick(e) {
-    var t0 = top(); if (t0.r === 'hood' && t0.h && xpAt(t0.h).indexOf(e) >= 0) { TOP.xp = e; M.xp = e; drawTop(); xbDraw(); return; }   /* the bar follows the open place */
+    var t0 = top(); M.was = (t0.r === 'hood' && t0.h) ? t0.h : '';   /* Zale, Nov 19: an experience button always goes back to the map; the place you were in keeps a soft outline */
     if (M.xp === e && !M.cur && top().r !== 'hood') { M.xp = ''; M.title = true; M.el.classList.remove('pkpl-notitle'); titleDraw(); lit(); home(); return; }   /* tap the picked experience again: back to the whole farm */
     M.xp = e; M.amen = ''; amenDraw(); M.cur = ''; M.title = true; M.el.classList.remove('pkpl-notitle'); titleDraw();
     if (top().r === 'hood') go('hoods');
@@ -332,7 +334,7 @@
   }
   function open(k) { if (top().r === 'hood' && top().h === k) { frame(k); return; } go('hood', { h: k }); }
   function tool(a) {
-    if (a === 'full') { M.amen = ''; amenDraw(); M.xp = ''; titleDraw(); if (top().r === 'hood') { go('hoods'); return; } M.title = true; M.el.classList.remove('pkpl-notitle'); home(); return; }   /* Full map: the whole start view with the title back */
+    if (a === 'full') { M.amen = ''; amenDraw(); M.xp = ''; M.was = ''; titleDraw(); if (top().r === 'hood') { go('hoods'); return; } M.title = true; M.el.classList.remove('pkpl-notitle'); home(); return; }   /* Full map: the whole start view with the title back */
     if (a === 'find') { findOpen(); return; }
     if (a === 'amclear') { M.amen = ''; amenDraw(); lit(); return; }
   }
@@ -502,7 +504,7 @@
     sheetVars(); layout();
     drawTop();
     if (t.r === 'hood' && t.h && t.h !== M.cur && HH.shapes[t.h]) { if (M.title) { M.title = false; M.el.classList.add('pkpl-notitle'); } frame(t.h, !M.s); }   /* arriving at a place shows it, never the title screen */
-    if (t.r === 'hoods' && M.cur) { M.cur = ''; lit(); }
+    if (t.r === 'hoods' && M.cur) { M.was = M.cur; M.cur = ''; lit(); if (M.xp || M.amen) fitLit(); }   /* closing a card: back to the experience's places, lit */
     settleSheet(); dedupe();
     var full = $('[data-pl="full"]', M.el); if (full) full.hidden = !M.cur && !M.amen && !(M.s > startView()[0] * 1.15);
   }
