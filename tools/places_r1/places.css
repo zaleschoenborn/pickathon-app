@@ -290,3 +290,25 @@ body.pkpl-wide #root #pkpl .pkpl-xi{order:0;width:84px;height:84px;border-radius
 body.pkpl-wide #root #pkpl .pkpl-xi svg{width:50px;height:50px}
 /* phone: the title sits above the place names, and they keep clear of it */
 body:not(.pkpl-wide) .pkpl-title{z-index:3;background:linear-gradient(180deg,rgba(18,22,15,.96) 0%,rgba(18,22,15,.9) 70%,rgba(18,22,15,0) 100%)}
+
+/* neighborhood page refinements (Zale, Nov 19) */
+#root #pkpl-top .pkpl-soon{margin:18px 16px 4px;padding:18px 18px 16px;border-radius:12px;background:#1A2017;border:1px solid #3A4331;border-left:4px solid #D6B54A}
+#root #pkpl-top .pkpl-soon .pkpl-sk{margin:0 0 4px;font:800 12px/1.2 'Bricolage Grotesque',system-ui,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#D6B54A}
+#root #pkpl-top .pkpl-soon h2{margin:0 0 8px;font-size:22px!important;line-height:1.1!important}
+#root #pkpl-top .pkpl-soon p{margin:0;font:500 16px/1.5 'Bricolage Grotesque',system-ui,sans-serif;color:#DCD6C9;max-width:none}
+#root #pkpl-top .pkpl-sam{display:flex;flex-wrap:wrap;gap:8px 16px;margin-top:14px}
+#root #pkpl-top .pkpl-sam span{display:flex;align-items:center;gap:8px;font:600 14px/1.2 'Bricolage Grotesque',system-ui,sans-serif;color:#F2EDE3}
+#root #pkpl-top .pkpl-sam .pkpl-fi{width:28px;height:28px;border-radius:7px;background:#2B2628;color:#F2EDE3;display:flex;align-items:center;justify-content:center}
+#root #pkpl-top .pkpl-sam .pkpl-fi svg{width:18px;height:18px}
+html body.pkpl-hood #root#root#root#root#root#root#root#root#root#root#root#root :is(.pk-hd-nov,section.pk-nh,section.pk-hm,.pk-way-hd,.pk-hd-yw .pk-hd-arr){display:none!important}
+html body.pkpl-hood #root#root#root#root#root#root#root#root#root#root#root#root .pk-hd-row{overflow-x:auto!important;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;overscroll-behavior-x:contain;touch-action:pan-x pan-y}
+body.pkpl-hood #root .pk-hd-row::-webkit-scrollbar{display:none}
+body.pkpl-hood #root .pk-hd-row>.pk-hd-yc{scroll-snap-align:start}
+/* map backdrop = the art's own outside color, so zooming never shows a seam (Nov 19) */
+.pkpl-map{background:#0F1712!important}
+/* phone: a compact experience title so every lit place fits under it (Architecture lights 15) */
+body:not(.pkpl-wide) .pkpl-tx{padding:14px 18px 40px}
+body:not(.pkpl-wide) #root#root#root #pkpl .pkpl-tx .pkpl-d{font-size:26px!important;line-height:1.05!important}
+body:not(.pkpl-wide) #root#root#root #pkpl .pkpl-tx .pkpl-xi{width:48px;height:48px;border-radius:10px}
+body:not(.pkpl-wide) #root#root#root #pkpl .pkpl-tx .pkpl-xi svg{width:28px;height:28px}
+body:not(.pkpl-wide) #root#root#root #pkpl .pkpl-tx .pkpl-l{margin-top:6px;font-size:15px!important;line-height:1.4!important;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
