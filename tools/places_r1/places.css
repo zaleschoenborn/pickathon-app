@@ -406,3 +406,9 @@ body.pkpl-wide #root #pkpl .pkpl-tx .pkpl-d{justify-content:flex-start!important
 body.pkpl-wide .pkpl-hasbg .pkpl-tbg{display:block;position:absolute;inset:0;z-index:-1;background-size:cover;background-repeat:no-repeat}
 body.pkpl-wide .pkpl-hasbg .pkpl-tbg::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,22,15,.62) 0%,rgba(18,22,15,.78) 45%,rgba(18,22,15,.9) 100%)}
 body.pkpl-wide .pkpl-hasbg::before{opacity:0!important}
+
+/* card title on the photo: smaller so the photo shows (Zale, Nov 19) */
+#root #pkpl-top .pkpl-nmrow h1{font-size:clamp(28px,7.6vw,38px)!important;line-height:1!important}
+#root #pkpl-top .pkpl-nmrow img{width:44px!important;height:44px!important}
+#root #pkpl-top .pkpl-tt{font-size:15px;line-height:1.3;margin-top:4px}
+#root #pkpl-top .pkpl-hi:not(.pkpl-map){padding-bottom:28px}
