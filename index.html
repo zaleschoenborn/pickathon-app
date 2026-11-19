@@ -12660,6 +12660,12 @@ html:root:root #root#root#root#root#root#root#root#root#root#root#root#root#root
   #pkh2 .h2-xhl{margin:0;font:700 24px/1.25 'Bricolage Grotesque',system-ui,sans-serif;color:var(--cream)}
   #pkh2 .h2-xhs{margin:0;font:600 16px/1.3 'Bricolage Grotesque',system-ui,sans-serif;color:#F2CF62}
   #pkh2 .h2-xhs b{font-weight:800}
+  #pkh2 .h2-xhk{display:flex;align-items:center;gap:12px;margin:0;color:#F2CF62}
+  #pkh2 .h2-xhk svg{width:30px;height:30px;flex:none}
+  #root#root#root#root #pkh2 .h2-xhk .h2-d{font-size:40px!important;line-height:1!important;color:var(--cream)!important;text-transform:uppercase}
+  #pkh2 .h2-xhd{margin:0;font:500 17px/1.4 'Bricolage Grotesque',system-ui,sans-serif;color:var(--cream);max-width:34em}
+  #pkh2 .h2-xh .h2-xlb{font-size:inherit}
+  @media (min-width:1200px){#root#root#root#root #pkh2 .h2-xhk .h2-d{font-size:52px!important}#pkh2 .h2-xhk svg{width:38px;height:38px}#pkh2 .h2-xhd{font-size:19px}}
   @media (min-width:1200px){#pkh2 .h2-xho{padding:0 32px 28px}#pkh2 .h2-xhl{font-size:30px;max-width:22em}
   #pkh2 .h2-xstrip{justify-content:flex-start!important;overflow-x:auto!important;scrollbar-width:thin;scrollbar-color:rgba(214,181,74,.5) transparent;padding-bottom:6px!important}
   #pkh2 .h2-xstrip::-webkit-scrollbar{display:block;height:4px}#pkh2 .h2-xstrip::-webkit-scrollbar-thumb{background:rgba(214,181,74,.5);border-radius:2px}
@@ -12959,7 +12965,6 @@ window.pkClimbRank = function (C, dd) {
       h += '<section class="h2-s h2-s3 h2-s3c" aria-labelledby="h2-h3"><div class="h2-s5head"><div><h2 class="h2-d h2-sec pkp-head" id="h2-h3">Summer camp for your soul</h2><p class="h2-sub h2-s3sub">Choose your own adventure.</p></div>' +
         '<div class="h2-cc-nav"><button type="button" class="h2-pill h2-s5top h2-anb" data-h2="allhoods">Explore the map</button></div></div>' +
         '<div class="h2-xrow h2-xrow2" data-h2="xrow" role="group" aria-label="Experiences">' + XPO.map(function (t) { return '<button type="button" class="h2-xb" data-h2="xpsel" data-xp="' + t + '" aria-pressed="false">' + xpIc(t) + '<span>' + esc(t) + '</span></button>'; }).join('') + '</div>' +
-        '<p class="h2-xl" data-h2="xline" aria-live="polite"></p>' +
         '<div class="h2-ccw"><div class="h2-cc-r" data-h2="hcards" role="list" aria-label="Neighborhoods"></div>' +
         '<button type="button" class="h2-arw h2-arl" data-h2="hprev" aria-label="Previous">' + CHEV + '</button><button type="button" class="h2-arw h2-arr" data-h2="hnxt" aria-label="Next">' + CHEV + '</button></div>' +
         '<div class="h2-xstrip" data-h2="xstrip" role="group" aria-label="Neighborhoods"></div>' +
@@ -13089,15 +13094,15 @@ window.pkClimbRank = function (C, dd) {
     var box = root && $('[data-h2="hcards"]', root), PH = !!(window.matchMedia && matchMedia('(max-width:1199px)').matches); if (!box || !ROT.length || box._k === XPF + ROT.join() + PH) return; box._k = XPF + ROT.join() + PH; box._ph = PH;
     var A = ROT.filter(function (k) { return k === 'trails' ? XPF === 'Wellness' : hoodSet(k).length; }), K = 0, seq = [], q;
     for (q = A.length - K; q < A.length; q++) seq.push([q, 1]); A.forEach(function (x, j) { seq.push([j, 0]); }); for (q = 0; q < K; q++) seq.push([q, 1]);
-    box.innerHTML = (XPF === 'Architecture' ? xpHero() : '') + seq.map(function (e) { var k = A[e[0]], H = D.hoods[k], L = xpSet(k), x = L[0], cl = e[1], ti = cl ? ' tabindex="-1"' : ''; if (!x) x = { i: '', p: '' }; var kick = XPF ? XPF + ' at ' + H.n : KIND[H.k];
+    box.innerHTML = (XPF === 'Architecture' ? xpHero() : xpCover(A)) + seq.map(function (e) { var k = A[e[0]], H = D.hoods[k], L = xpSet(k), x = L[0], cl = e[1], ti = cl ? ' tabindex="-1"' : ''; if (!x) x = { i: '', p: '' }; var kick = XPF ? XPF + ' at ' + H.n : KIND[H.k];
       return '<article class="h2-cc h2-hc' + (cl ? ' h2-cc-cl' : '') + '" data-h="' + k + '"' + (cl ? ' aria-hidden="true"' : ' role="listitem"') + '><button type="button"' + ti + ' class="h2-cc-ph" data-h2="hcard" data-h="' + k + '" aria-label="' + esc(H.n + ', ' + KIND[H.k] + (H.t ? ', ' + H.t : '') + '. Open its page') + '">' +
         '<img class="h2-hci is-on" src="' + esc(x.i) + '" alt="" style="object-position:' + esc(x.p || '50% 50%') + '" loading="' + (e[0] < 3 ? 'eager' : 'lazy') + '" decoding="async"><img class="h2-hci" alt="" decoding="async">' +
         '<span class="h2-cc-t h2-hct"><span class="h2-cc-k"><span>' + esc(kick) + '</span></span><span class="h2-hct-nm"><img class="h2-hct-em" src="' + esc(H.icw || ('ic2/' + k + '.png')) + '" alt="" width="52" height="52" decoding="async"><span class="h2-d h2-cc-n pkp-head">' + esc(H.n) + '</span><span class="h2-hct-nx" aria-hidden="true">Explore ' + CHEV + '</span></span>' + ((XPB[XPF] && XPB[XPF][k]) ? '<span class="h2-hct-g h2-hct-b">' + esc(XPB[XPF][k]) + '</span>' : (H.t ? '<span class="h2-hct-g">' + esc(H.t) + '</span>' : '')) + ((XPB[XPF] && XPB[XPF][k]) ? '' : (function () { var pg = ''; try { pg = window.__pkNbpg ? window.__pkNbpg(k) : ''; } catch (e) {} return pg ? '<span class="h2-hct-pr">' + esc(pg) + '</span>' : ''; })()) + '</span>' +
         '<span class="h2-hct-go" aria-hidden="true"><span class="h2-hct-gl">Explore </span><span class="h2-hct-gn">' + esc((/^the /i.test(H.n) ? H.n : 'the ' + H.n) + ' neighborhood') + ' </span><span class="h2-hct-gs">' + esc(H.n) + ' </span>' + CHEV + '</span></button></article>'; }).join('');
-    guard(box); box._K = K; box._N = A.length + (XPF === 'Architecture' ? 1 : 0); box._A = A; xpStrip(box); xpRowOn();
+    guard(box); box._K = K; box._N = A.length + 1; box._A = A; xpStrip(box); xpRowOn();
     var last = '', back = false; try { last = localStorage.getItem('pk-h0') || ''; var rt = sessionStorage.getItem('pk-hcret'); if (rt) { sessionStorage.removeItem('pk-hcret'); last = rt; back = true; } } catch (e) {}
     var i0 = A.indexOf(last); if (!back || i0 < 0) i0 = (i0 + 1) % A.length; if (XPS) { i0 = 0; XPS = 0; } var introAt = PH && !back; if (!PH) try { localStorage.setItem('pk-h0', A[i0]); } catch (e) {}   /* a new neighborhood each visit; Back returns to the one they left */
-    var go = function () { if (!box.clientWidth) return; jumpTo(box, (back && i0 >= 0) ? i0 + (XPF === 'Architecture' ? 1 : 0) : 0); hcLabel(); };
+    var go = function () { if (!box.clientWidth) return; jumpTo(box, (back && i0 >= 0) ? i0 + 1 : 0); hcLabel(); };
     if (window.requestAnimationFrame) requestAnimationFrame(function () { requestAnimationFrame(go); }); else setTimeout(go, 30);
     if (!box._lp) { box._lp = 1; var tmo = 0; box.addEventListener('scroll', function () { clearTimeout(tmo); tmo = setTimeout(function () { loopFix(box); hcLabel(); var m = ccMid(box), c = box.children[m.i]; if (c && !/^__/.test(c.getAttribute('data-h'))) { try { localStorage.setItem('pk-h0', c.getAttribute('data-h')); } catch (e) {} } }, 140); }, { passive: true }); }
   }
@@ -13255,14 +13260,21 @@ window.pkClimbRank = function (C, dd) {
   function xpAll(ids) { var O = ['woods', 'paddock', 'cherryhill', 'grove', 'windmill', 'galaxy', 'lucky', 'courtyard', 'refuge', 'market', 'wildcamp', 'coyote', 'curation', 'lushcamp', 'quailtrail', 'farmhouse', 'willowcamp', 'orchard', 'southcamp', 'welcomelot'];
     var L = O.filter(function (k) { return ids.indexOf(k) >= 0; }); ids.forEach(function (k) { if (L.indexOf(k) < 0) L.push(k); }); return L; }
   function xpArch() { return xpAll(ALLH).filter(function (k) { return D && D.hoods[k] && D.hoods[k].k !== 'camp'; }); }
+  /* Zale Nov 19 12:46: each experience's words live on its own cover card (the first card), not on a line above the stage, so the photos get the room.
+     Architecture's cover is the Summer camp hero itself. */
   function xpHero() { return '<article class="h2-cc h2-hc h2-xh" data-h="__hero" role="listitem"><img class="h2-xhbg" src="i/r3-hood-paddock.jpg" alt="" decoding="async"><div class="h2-xho">' +
-    '<p class="h2-xhl">Four days, twenty neighborhoods and endless ways to spend them.</p><p class="h2-xhs">Pick an experience above, or swipe to wander the farm <b aria-hidden="true">→</b></p></div></article>'; }
+    '<p class="h2-xhl">Four days, twenty neighborhoods and endless ways to spend them.</p><p class="h2-xhd">' + esc(XPD.Architecture || '') + ' <button type="button" class="h2-xlb" data-h2="xpbuild">Build with us<span aria-hidden="true"> →</span></button></p>' +
+    '<p class="h2-xhs">Pick an experience above, or swipe to wander the farm <b aria-hidden="true">→</b></p></div></article>'; }
+  function xpCover(A) { var L = A.length ? xpSet(A[0]) : [], x = L[1] || L[0] || { i: '', p: '' };
+    return '<article class="h2-cc h2-hc h2-xh" data-h="__hero" role="listitem"><img class="h2-xhbg" src="' + esc(x.i) + '" alt="" style="object-position:' + esc(x.p || '50% 50%') + '" decoding="async"><div class="h2-xho">' +
+      '<p class="h2-xhk">' + xpIc(XPF) + '<span class="h2-d pkp-head">' + esc(XPF) + '</span></p><p class="h2-xhd">' + esc(XPD[XPF] || '') + '</p>' +
+      '<p class="h2-xhs">' + (A.length > 1 ? 'Swipe to see where, ' + A.length + ' places' : 'Swipe to see where') + ' <b aria-hidden="true">→</b></p></div></article>'; }
   /* Zale Nov 19 11:52: pick an experience (from the hero or the row), the row shows it filled and centered, the line says what it is, the strip lists its places */
   function xpPick(t) { if (!t) return; var bx = root && $('[data-h2="hcards"]', root);
     if (t === XPF) { if (t !== 'Architecture') t = 'Architecture'; else { if (bx && bx.children[0]) bx.scrollTo({ left: 0, behavior: 'smooth' }); return; } }
     XPF = t; if (D && D.hoods) { ROT = XPF === 'Architecture' ? xpArch() : xpList(XPF); XPS = 1; drawHoods(); } xpRowOn(true); }
   function xpRowOn(smooth) {
-    var bx0 = root && $('[data-h2="hcards"]', root), mc = bx0 && bx0.children.length ? bx0.children[ccMid(bx0).i] : null, hero = !!(mc && mc.getAttribute('data-h') === '__hero'), lit = hero ? '' : XPF;
+    var bx0 = root && $('[data-h2="hcards"]', root), mc = bx0 && bx0.children.length ? bx0.children[ccMid(bx0).i] : null, hero = !!(mc && mc.getAttribute('data-h') === '__hero' && XPF === 'Architecture'), lit = hero ? '' : XPF;
     if (root && root._lit === lit + '|' + XPF && !smooth) return; if (root) root._lit = lit + '|' + XPF;
     var row = root && $('[data-h2="xrow"]', root); if (row) { $$('.h2-xb', row).forEach(function (b) { var on = b.getAttribute('data-xp') === lit; b.classList.toggle('on', on); b.setAttribute('aria-pressed', on ? 'true' : 'false'); });
       var b = $('.h2-xb.on', row) || $('.h2-xb', row); if (b && row.scrollWidth > row.clientWidth + 2) { var x = b.offsetLeft - (row.clientWidth - b.offsetWidth) / 2; try { row.scrollTo({ left: x, behavior: smooth ? 'smooth' : 'auto' }); } catch (e) { row.scrollLeft = x; } } }
