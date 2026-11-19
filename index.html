@@ -12632,6 +12632,22 @@ html:root:root #root#root#root#root#root#root#root#root#root#root#root#root#root
   #pkh2 .h2-s3hbg{object-position:50% 35%}
   }
   @media (max-width:1199px){#pkh2 .h2-s3c>.h2-s5head{display:none!important}}
+  /* Zale Nov 19 11:44: the experience buttons look the same on the hero and after a pick; the picked one is a filled gold circle and is centered in the phone row */
+  html:root:root:root:root body #root#root#root #pkh2 .h2-xp .h2-xp-c{display:flex!important;flex-direction:column!important;align-items:center!important;gap:7px!important;flex:none;width:76px;min-height:44px!important;height:auto!important;padding:0!important;border:0!important;border-radius:0!important;background:none!important;box-shadow:none!important;opacity:1!important;text-shadow:none!important;color:var(--cream)!important;font:700 14px/1.1 'Bricolage Grotesque',system-ui,sans-serif!important;letter-spacing:0!important;text-transform:none!important;cursor:pointer}
+  #pkh2 .h2-xpi{display:grid;place-items:center;width:50px;height:50px;border:1.5px solid rgba(242,207,98,.65);border-radius:50%;background:rgba(21,17,15,.5);color:#F2CF62;transition:background .2s,border-color .2s,color .2s}
+  #root#root#root #pkh2 .h2-xpi svg{width:24px;height:24px}
+  html:root:root:root:root body #root#root#root #pkh2 .h2-xp .h2-xp-c:hover .h2-xpi{border-color:#F2CF62;background:rgba(214,181,74,.22)}
+  html:root:root:root:root body #root#root#root #pkh2 .h2-xp .h2-xp-c.on .h2-xpi{background:#D6B54A;border-color:#D6B54A;color:#1d1a16}
+  html:root:root:root:root body #root#root#root #pkh2 .h2-xp .h2-xp-c.on .h2-xpi svg{color:#1d1a16!important;stroke:#1d1a16!important}
+  html:root:root:root:root body #root#root#root #pkh2 .h2-xp .h2-xp-c.on{color:#F2CF62!important;background:none!important;border:0!important}
+  @media (max-width:1199px){
+  #root#root#root #pkh2 .h2-xp-ch{display:flex;gap:4px;padding:2px var(--gutter,16px) 4px;scroll-snap-type:x proximity}
+  #root#root#root #pkh2 .h2-xp-c{scroll-snap-align:center}
+  }
+  @media (min-width:1200px){
+  #root#root#root #pkh2 .h2-xp-ch{display:grid!important;grid-template-columns:repeat(4,1fr);gap:14px 4px!important;align-items:start}
+  html:root:root:root:root body #root#root#root #pkh2 .h2-xp .h2-xp-c{width:auto;font-size:15px!important}
+  }
   /* Zale Nov 19 10:56: the experience detail card (desktop panel) and the phone intro card + dots */
   #pkh2 .h2-xdots{display:none}
   @media (min-width:1200px){
@@ -12882,7 +12898,7 @@ window.pkClimbRank = function (C, dd) {
     if (SIMPLE) {   /* Zale Nov 15: neighborhoods browse like Who's up next: one big card with the neighbors peeking, arrows on desktop, swipe on phone; the card opens its page; Explore all opens the map */
       ROT = ids.filter(function (i) { return d.hoods[i].k !== 'camp'; }); ROT0 = ROT.slice(); ALLH = ids.slice();
       /* Zale Nov 19 11:34: Summer camp opens on a hero (an epic photo, the headline, the twelve experiences on it); a tap opens that experience's cards below */
-      h += '<section class="h2-s h2-s3h" aria-labelledby="h2-h3"><img class="h2-s3hbg" src="i/r35-grove-1.jpg" alt="" width="1600" height="1067" loading="lazy" decoding="async"><div class="h2-s3ho">' +
+      h += '<section class="h2-s h2-s3h" aria-labelledby="h2-h3"><img class="h2-s3hbg" src="i/r3-hood-paddock.jpg" alt="" width="1600" height="1280" loading="lazy" decoding="async"><div class="h2-s3ho">' +
         '<h2 class="h2-d h2-sec pkp-head" id="h2-h3">Summer camp for your soul</h2><p class="h2-s3hl">The music is half of it. Pick how you want to spend the day.</p>' +
         '<div class="h2-s3hg" role="group" aria-label="Experiences">' + XPO.map(function (t) { return '<button type="button" class="h2-s3ht" data-h2="xpgo" data-xp="' + t + '"><span class="h2-s3hi">' + xpIc(t) + '</span><span>' + esc(t) + '</span></button>'; }).join('') + '</div>' +
         '<button type="button" class="h2-s3hm" data-h2="allhoods">Explore the map<span aria-hidden="true"> →</span></button></div></section>';
@@ -13209,13 +13225,14 @@ window.pkClimbRank = function (C, dd) {
   var XIC = { cherryhill: 1, courtyard: 1, coyote: 1, curation: 1, farmhouse: 1, galaxy: 1, grove: 1, lucky: 1, lushcamp: 1, market: 1, orchard: 1, paddock: 1, quailtrail: 1, refuge: 1, southcamp: 1, welcomelot: 1, wildcamp: 1, willowcamp: 1, windmill: 1, woods: 1 };
   function xpOn() { var a = root && $('[data-h2="xp"]', root), r = root && $('[data-h2="hcards"]', root); if (!a || !r || !r.children.length) return; var c = r.children[ccMid(r).i], k = c && c.getAttribute('data-h'); $$('.h2-xp-e', a).forEach(function (e) { var on = e.getAttribute('data-xh') === k; e.classList.toggle('on', on); if (on) e.setAttribute('aria-current', 'true'); else e.removeAttribute('aria-current'); }); }
   function xpGo(r, k) { var m = ccMid(r).i, best = -1, bd = 1e9; for (var n = 0; n < r.children.length; n++) { if (r.children[n].getAttribute('data-h') === k && Math.abs(n - m) < bd) { bd = Math.abs(n - m); best = n; } } if (best < 0) return; var C = r.children[best]; r.scrollTo({ left: C.offsetLeft - (r.clientWidth - C.offsetWidth) / 2, behavior: 'smooth' }); }
+  function xpCenter(a, smooth) { var row = $('.h2-xp-ch', a), b = row && $('.h2-xp-c.on', row); if (!row || !b || row.scrollWidth <= row.clientWidth + 2) return; var x = b.offsetLeft - (row.clientWidth - b.offsetWidth) / 2; try { row.scrollTo({ left: x, behavior: smooth ? 'smooth' : 'auto' }); } catch (e) { row.scrollLeft = x; } }
   function xpDraw() { var a = root && $('[data-h2="xp"]', root); if (!a || a._built || !D || !D.hoods || !ALLH.length) return; a._built = 1;
     var W = XPO.filter(function (t) { return xpList(t).length; });
-    a.innerHTML = '<p class="h2-xp-h">What do you want to experience?</p><div class="h2-xp-ch" role="group" aria-label="Experiences">' + W.map(function (t) { return '<button type="button" class="h2-xp-c' + (t === XPF ? ' on' : '') + '" data-xp="' + t + '" aria-pressed="' + (t === XPF) + '">' + xpIc(t) + '<span>' + esc(t) + '</span></button>'; }).join('') + '</div><div class="h2-xp-card"><p class="h2-xp-t"></p><p class="h2-xp-d"></p><div class="h2-xp-w"></div></div>';
-    xpWhere(a);
+    a.innerHTML = '<p class="h2-xp-h">What do you want to experience?</p><div class="h2-xp-ch" role="group" aria-label="Experiences">' + W.map(function (t) { return '<button type="button" class="h2-xp-c' + (t === XPF ? ' on' : '') + '" data-xp="' + t + '" aria-pressed="' + (t === XPF) + '"><span class="h2-xpi">' + xpIc(t) + '</span><span class="h2-xpl">' + esc(t) + '</span></button>'; }).join('') + '</div><div class="h2-xp-card"><p class="h2-xp-t"></p><p class="h2-xp-d"></p><div class="h2-xp-w"></div></div>';
+    xpWhere(a); setTimeout(function () { xpCenter(a, false); }, 60);
     a.addEventListener('click', function (ev) { var rr = $('[data-h2="hcards"]', root), e = ev.target.closest('.h2-xp-e'); if (e) { if (!rr) return; if (e.classList.contains('on')) { var mc = rr.children[ccMid(rr).i], hb = mc && (mc.matches('[data-h2="hcard"]') ? mc : mc.querySelector('[data-h2="hcard"]')); if (hb) hb.click(); return; } xpGo(rr, e.getAttribute('data-xh')); return; }
       var b = ev.target.closest('button[data-xp]'); if (!b) return; var t = b.getAttribute('data-xp'); if (t === XPF) return; XPF = t;
-      $$('.h2-xp-c', a).forEach(function (c) { var on = c.getAttribute('data-xp') === XPF; c.classList.toggle('on', on); c.setAttribute('aria-pressed', on ? 'true' : 'false'); });
+      $$('.h2-xp-c', a).forEach(function (c) { var on = c.getAttribute('data-xp') === XPF; c.classList.toggle('on', on); c.setAttribute('aria-pressed', on ? 'true' : 'false'); }); xpCenter(a, true);
       xpWhere(a); ROT = xpList(XPF); XPS = 1; drawHoods(); }); }
 
   function markMid(r) { if (!r || !r.children.length) return; var m = ccMid(r); if (r.getAttribute('data-h2') === 'hcards') { xpDraw(); xpOn(); xpDotsOn(r); } for (var k = 0; k < r.children.length; k++) { var c = r.children[k]; c.classList.toggle('is-mid', k === m.i); c.classList.toggle('is-prev', k < m.i); c.classList.toggle('is-next', k > m.i); } }
