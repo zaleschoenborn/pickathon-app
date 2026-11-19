@@ -12606,6 +12606,14 @@ html:root:root #root#root#root#root#root#root#root#root#root#root#root#root#root
   /* Zale Nov 19 10:26: arrows out on the barely-showing edge cards; every fully visible card is pickable */
   #root#root#root#root #pkh2 .h2-s5 .h2-arl{left:calc((100% - 100vw) / 2 + 28px)!important}#root#root#root#root #pkh2 .h2-s5 .h2-arr{right:calc((100% - 100vw) / 2 + 28px)!important}
   #root#root#root#root #pkh2 .h2-s3c .h2-arl{left:6px!important}#root#root#root#root #pkh2 .h2-s3c .h2-arr{right:calc(440px + 46px)!important}
+  @media (min-width:1200px){
+  /* Zale Nov 19 10:44: Summer camp on desktop: the choose-your-own-adventure panel on the left, one big hero photo on the right with the neighbors peeking */
+  #root#root#root#root #pkh2 .h2-s3c .h2-ccw{flex-direction:row!important;gap:36px!important;height:min(600px,calc(var(--scr,100vh) - 220px))!important;align-self:center}
+  #root#root#root#root #pkh2 .h2-s3c .h2-xp{order:-1;flex:0 0 400px!important}
+  #root#root#root#root #pkh2 .h2-s3c .h2-ccw .h2-cc{flex-basis:640px!important}
+  #root#root#root#root #pkh2 .h2-s3c .h2-ccw .h2-cc-r{padding:0 calc(50% - 320px)!important;scroll-padding:0 calc(50% - 320px)!important;gap:16px!important}
+  #root#root#root#root #pkh2 .h2-s3c .h2-arl{left:calc(400px + 36px + 4px)!important}#root#root#root#root #pkh2 .h2-s3c .h2-arr{right:4px!important}
+  }
   #root#root#root#root #pkh2 .h2-s5 .h2-ccw .h2-cc:not(.is-mid){opacity:.85!important;transition:opacity .25s}
   #root#root#root#root #pkh2 .h2-s5 .h2-ccw .h2-cc:not(.is-mid):hover{opacity:1!important}
   #root#root#root#root #pkh2 
