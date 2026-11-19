@@ -398,3 +398,11 @@ body.pkpl-wide.pkpl-hood #pk-scroll-desk{pointer-events:none}
 body.pkpl-wide.pkpl-hood #pk-scroll-desk>*{pointer-events:auto}
 body.pkpl-wide.pkpl-hood #pk-scroll-desk>#pkpl{pointer-events:none}
 body.pkpl-wide.pkpl-hood #pkpl .pkpl-map{pointer-events:auto}
+
+/* desktop experience column: icon on the left of the title; the experience's photo behind, darkened so the words and buttons read (Nov 19) */
+body.pkpl-wide #root #pkpl .pkpl-xi{order:0!important}
+body.pkpl-wide #root #pkpl .pkpl-tx .pkpl-d{justify-content:flex-start!important;gap:18px!important}
+.pkpl-tbg{display:none}
+body.pkpl-wide .pkpl-hasbg .pkpl-tbg{display:block;position:absolute;inset:0;z-index:-1;background-size:cover;background-repeat:no-repeat}
+body.pkpl-wide .pkpl-hasbg .pkpl-tbg::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,22,15,.62) 0%,rgba(18,22,15,.78) 45%,rgba(18,22,15,.9) 100%)}
+body.pkpl-wide .pkpl-hasbg::before{opacity:0!important}

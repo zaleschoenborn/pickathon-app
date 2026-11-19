@@ -231,6 +231,9 @@
     if (M.xp) d.innerHTML = '<span class="pkpl-xi">' + xpIcon(M.xp) + '</span><span class="pkpl-xt">' + esc(M.xp) + ' at Pickathon</span>';   /* the experience's icon as a graphic, same plate as the picked button (Zale, Nov 19) */
     else d.textContent = 'Summer camp for your soul';
     t.classList.toggle('pkpl-tx', !!M.xp);
+    var bg = $('.pkpl-tbg', t); if (!bg) { bg = document.createElement('div'); bg.className = 'pkpl-tbg'; bg.setAttribute('aria-hidden', 'true'); t.insertBefore(bg, t.firstChild); }   /* desktop: the experience's hero photo behind the column, under a dark wash (Zale, Nov 19) */
+    var hp = null; if (M.xp) { var L0 = litSet(), pk = M.xp === 'Architecture' ? 'cherryhill' : L0[0]; for (var i = 0; !hp && i < L0.length + 1; i++) { var cand = i === 0 ? pk : L0[i - 1]; if (cand) hp = (M.xp === 'Architecture' ? xpPhotos('Architecture', cand) : (((XM.xp || {})[M.xp] || {})[cand] || []).map(function (z) { return { i: z.f, p: z.p }; }).concat(xpPhotos(M.xp, cand)))[0] || null; } }
+    bg.style.backgroundImage = hp ? 'url("' + hp.i + '")' : 'none'; bg.style.backgroundPosition = hp ? hp.p : ''; t.classList.toggle('pkpl-hasbg', !!hp);
     $('.pkpl-l', t).textContent = M.xp ? (XH.XPD[M.xp] || '') : (wide() ? 'Pick an experience above, then a place' : 'Pick an experience below, then tap a place that lights up');
     var ab = $('.pkpl-ab', t);   /* Architecture: what it is and how to build with us (Zale, Nov 19: it's how sponsors find us) */
     if (ab) ab.innerHTML = M.xp === 'Architecture' ? '<p>Every summer we build a small city in the forest. Each neighborhood is designed and built new with architects, students, builders and makers, and when the festival ends the structures move on to permanent homes in the community. Two of our builds have won AIA awards.</p><button type="button" class="pk-cta sec pkpl-abb" data-go="build">Build with Pickathon</button>' : '';
