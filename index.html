@@ -11853,31 +11853,37 @@ if (!window.pkOrders) window.pkOrders = (function () {
   #root#root#root #pkh2 .h2-s3c .h2-ccw{display:flex;gap:40px;align-items:stretch}
   #root#root#root #pkh2 .h2-s3c .h2-ccw .h2-cc-r{flex:1 1 auto!important;min-width:0;overflow-x:auto!important;touch-action:pan-x pan-y!important;scroll-snap-type:x mandatory!important;gap:20px!important;margin:0!important;padding:0 calc(50% - 190px)!important;scroll-padding:0 calc(50% - 190px)!important;scrollbar-width:none;-webkit-mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent)}
   #root#root#root #pkh2 .h2-s3c .h2-arl{left:calc((100% - 400px) / 2 - 250px)}#root#root#root #pkh2 .h2-s3c .h2-arr{right:calc(400px + (100% - 400px) / 2 - 250px)}
-  /* Nov 18 22:30: experiences first; the words filter the carousel (no emblem grid) */
-  #root#root#root #pkh2 .h2-xp{display:flex;flex:0 0 440px;flex-direction:column;justify-content:center;gap:22px}
+  /* Nov 18 22:45: Summer camp for the soul: words, then the experience's description, then Where (only the places that have it) */
+  #root#root#root #pkh2 .h2-xp{display:flex;flex:0 0 440px;flex-direction:column;justify-content:center;gap:18px}
   #root#root#root #pkh2 .h2-xp-h{margin:0;font:800 16px/1.2 'Bricolage Grotesque',system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#D6B54A}
-  #root#root#root #pkh2 .h2-xp-ch{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 22px}
-  html:root:root:root:root body #root#root#root #pkh2 .h2-xp .h2-xp-c{font-family:"Pickathon 2014","Work Sans",sans-serif!important;font-size:44px!important;font-weight:400!important;line-height:1!important;border:0!important;background:none!important;padding:0!important;border-radius:0!important;box-shadow:none!important;height:auto!important;min-height:48px;letter-spacing:.01em!important;text-transform:uppercase!important;cursor:pointer;transition:color .2s,opacity .2s}
-  html:root:root:root:root body #root#root#root #pkh2 .h2-xp .h2-xp-c:not(.on){color:rgba(242,237,227,.88)!important}
-  html:root:root:root:root body #root#root#root #pkh2 .h2-xp .h2-xp-c:not(.on):hover{color:#F2CF62!important}
-  html:root:root:root:root body #root#root#root #pkh2 .h2-xp .h2-xp-c.on{color:#D6B54A!important;text-shadow:0 0 22px rgba(214,181,74,.35)}
-  #root#root#root #pkh2 .h2-xp.has-f .h2-xp-c{opacity:.35}
-  #root#root#root #pkh2 .h2-xp .h2-xp-c.on{opacity:1}
-  #root#root#root #pkh2 .h2-xp-all{display:none;align-self:flex-start;min-height:44px;padding:0;border:0;background:none;color:#F2CF62;font:800 16px/1 'Bricolage Grotesque',system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;cursor:pointer}
-  #root#root#root #pkh2 .h2-xp.has-f .h2-xp-all{display:inline-flex;align-items:center}
+  #root#root#root #pkh2 .h2-xp-ch{display:flex;flex-wrap:wrap;align-items:baseline;gap:0 18px}
+  html:root:root:root:root body #root#root#root #pkh2 .h2-xp .h2-xp-c{font-family:"Pickathon 2014","Work Sans",sans-serif!important;font-size:30px!important;font-weight:400!important;line-height:1!important;border:0!important;background:none!important;padding:0!important;border-radius:0!important;box-shadow:none!important;height:auto!important;min-height:44px;letter-spacing:.01em!important;text-transform:uppercase!important;cursor:pointer;transition:color .2s,opacity .2s;opacity:.55}
+  html:root:root:root:root body #root#root#root #pkh2 .h2-xp .h2-xp-c:not(.on){color:var(--cream)!important}
+  html:root:root:root:root body #root#root#root #pkh2 .h2-xp .h2-xp-c:not(.on):hover{color:#F2CF62!important;opacity:1}
+  html:root:root:root:root body #root#root#root #pkh2 .h2-xp .h2-xp-c.on{color:#D6B54A!important;opacity:1;text-shadow:0 0 22px rgba(214,181,74,.35)}
+  #root#root#root #pkh2 .h2-xp-d{margin:4px 0 0;font:500 21px/1.4 'Bricolage Grotesque',system-ui,sans-serif;color:var(--cream);min-height:3.6em}
+  #root#root#root #pkh2 .h2-xp-w{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px}
+  #root#root#root #pkh2 .h2-xp-wl{width:100%;font:800 14px/1 'Bricolage Grotesque',system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#D6B54A}
+  #root#root#root #pkh2 .h2-xp-e{display:flex;align-items:center;gap:8px;min-height:44px;padding:0;border:0;background:none;color:var(--cream);cursor:pointer}
+  #root#root#root #pkh2 .h2-xp-e img{width:36px;height:36px}
+  #root#root#root #pkh2 .h2-xp-e span{font:600 16px/1.1 'Bricolage Grotesque',system-ui,sans-serif}
+  #root#root#root #pkh2 .h2-xp-e:hover span{color:#F2CF62}
 }
 @media (max-width:1199px){
   #root#root#root #pkh2 .h2-s3c .h2-ccw{display:flex;flex-direction:column}
   #root#root#root #pkh2 .h2-s3c .h2-ccw .h2-cc-r{flex:1 1 auto;min-height:0}
-  #root#root#root #pkh2 .h2-xp{order:-1;display:block;margin:0 calc(-1 * var(--gutter,16px)) 12px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
-  #root#root#root #pkh2 .h2-xp::-webkit-scrollbar{display:none}
-  #root#root#root #pkh2 .h2-xp-h,#root#root#root #pkh2 .h2-xp-all{display:none!important}
-  #root#root#root #pkh2 .h2-xp-ch{display:flex;flex-wrap:nowrap;gap:8px;padding:0 var(--gutter,16px);width:max-content}
+  #root#root#root #pkh2 .h2-xp{order:-1;display:block;margin:0 calc(-1 * var(--gutter,16px)) 12px}
+  #root#root#root #pkh2 .h2-xp-ch{overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+  #root#root#root #pkh2 .h2-xp-ch::-webkit-scrollbar{display:none}
+  #root#root#root #pkh2 .h2-xp-h,#root#root#root #pkh2 .h2-xp-w{display:none!important}
+  #root#root#root #pkh2 .h2-xp-d{margin:10px var(--gutter,16px) 0;font:500 16px/1.35 'Bricolage Grotesque',system-ui,sans-serif;color:var(--cream);white-space:normal}
+  #root#root#root #pkh2 .h2-xp-ch{display:flex;flex-wrap:nowrap;gap:8px;padding:0 var(--gutter,16px)}
   html:root:root:root:root body #root#root#root #pkh2 .h2-xp .h2-xp-c{flex:none;min-height:44px;padding:0 14px!important;border:1px solid rgba(242,237,227,.35)!important;border-radius:6px!important;background:transparent!important;color:var(--cream)!important;font:700 16px/1 'Bricolage Grotesque',system-ui,sans-serif!important;letter-spacing:0!important;text-transform:none!important}
   html:root:root:root:root body #root#root#root #pkh2 .h2-xp .h2-xp-c.on{background:#D6B54A!important;border-color:#D6B54A!important;color:#1d1a16!important}
 }
 @media (min-width:1200px) and (max-height:860px){
-  html:root:root:root:root body #root#root#root #pkh2 .h2-xp .h2-xp-c{font-size:36px!important;min-height:44px}
+  html:root:root:root:root body #root#root#root #pkh2 .h2-xp .h2-xp-c{font-size:26px!important;min-height:40px}
+  #root#root#root #pkh2 .h2-xp-d{font-size:18px;min-height:0}
   #root#root#root #pkh2 .h2-xp{gap:12px;justify-content:flex-start;padding-top:4px}
 }
 @media (min-width:1200px){
@@ -12725,13 +12731,13 @@ window.pkClimbRank = function (C, dd) {
        and cycles its preview set; a still farm map shows where it is (tints by kind, the picked outline in gold with its emblem). Photo or map opens Places. */
     if (SIMPLE) {   /* Zale Nov 15: neighborhoods browse like Who's up next: one big card with the neighbors peeking, arrows on desktop, swipe on phone; the card opens its page; Explore all opens the map */
       ROT = ids.filter(function (i) { return d.hoods[i].k !== 'camp'; }); ROT0 = ROT.slice(); ALLH = ids.slice();
-      h += '<section class="h2-s h2-s3 h2-s3c" aria-labelledby="h2-h3"><div class="h2-s5head"><div><h2 class="h2-d h2-sec pkp-head" id="h2-h3">Live inside a temporary city of wonder</h2><p class="h2-sub h2-s3sub">' + 'Forest stages, a barn, an orchard. Every turn leads somewhere new.</p></div>' +
+      h += '<section class="h2-s h2-s3 h2-s3c" aria-labelledby="h2-h3"><div class="h2-s5head"><div><h2 class="h2-d h2-sec pkp-head" id="h2-h3">Summer camp for the soul</h2><p class="h2-sub h2-s3sub">' + 'Forest stages, a barn, an orchard. Every turn leads somewhere new.</p></div>' +
         '<div class="h2-cc-nav"><button type="button" class="h2-pill h2-s5top h2-anb" data-h2="allhoods">See all neighborhoods</button></div></div>' +
         '<div class="h2-ccw"><div class="h2-cc-r" data-h2="hcards" role="list" aria-label="Neighborhoods"></div>' +
         '<button type="button" class="h2-arw h2-arl" data-h2="hprev" aria-label="Previous neighborhood">' + CHEV + '</button><button type="button" class="h2-arw h2-arr" data-h2="hnxt" aria-label="Next neighborhood">' + CHEV + '</button><aside class="h2-xp" data-h2="xp" aria-live="polite"></aside></div>' +
         '<div class="pk-cl-btns h2-two"><button type="button" class="pk-bkb pri pk-cl-ex" data-h2="allhoods">See all neighborhoods</button></div></section>';
     } else {
-    h += '<section class="h2-s h2-s3" aria-labelledby="h2-h3"><div class="h2-s3head"><h2 class="h2-d h2-sec pkp-head" id="h2-h3">Live inside a temporary city of wonder</h2><p class="h2-sub h2-s3sub">' + 'Forest stages, a barn, an orchard. Every turn leads somewhere new.' + (SIMPLE ? '' : ' Pick one and step inside.') + '</p></div>' +
+    h += '<section class="h2-s h2-s3" aria-labelledby="h2-h3"><div class="h2-s3head"><h2 class="h2-d h2-sec pkp-head" id="h2-h3">Summer camp for the soul</h2><p class="h2-sub h2-s3sub">' + 'Forest stages, a barn, an orchard. Every turn leads somewhere new.' + (SIMPLE ? '' : ' Pick one and step inside.') + '</p></div>' +
       '<div class="h2-hmv"><button type="button" class="h2-hood" data-h2="hood"><img class="h2-hp is-on" alt="" decoding="async"><img class="h2-hp" alt="" decoding="async" aria-hidden="true">' +
       '<span class="h2-hood-o"><span class="h2-hood-k" data-h2="hk"></span><span class="h2-d h2-hood-n pkp-head" data-h2="hn"></span><span class="h2-hood-tag" data-h2="htag"></span></span>' +
       '<span class="h2-hood-go" aria-hidden="true"><span>Explore</span>' + CHEV + '</span></button>' +
@@ -12847,17 +12853,17 @@ window.pkClimbRank = function (C, dd) {
   var ROT = [], ROT0 = [], ALLH = [];
   /* the neighborhood cards (simpler Home): same card anatomy as Who's up next, same centered loop (two clones at each end) */
   function drawHoods() {
-    var box = root && $('[data-h2="hcards"]', root); if (!box || !ROT.length || box._k === ROT.join()) return; box._k = ROT.join();
+    var box = root && $('[data-h2="hcards"]', root); if (!box || !ROT.length || box._k === XPF + ROT.join()) return; box._k = XPF + ROT.join();
     var A = ROT.filter(function (k) { return hoodSet(k).length; }), K = A.length < 3 ? 0 : Math.min(2, A.length), seq = [], q;
     for (q = A.length - K; q < A.length; q++) seq.push([q, 1]); A.forEach(function (x, j) { seq.push([j, 0]); }); for (q = 0; q < K; q++) seq.push([q, 1]);
-    box.innerHTML = seq.map(function (e) { var k = A[e[0]], H = D.hoods[k], L = hoodSet(k), x = L[0], cl = e[1], ti = cl ? ' tabindex="-1"' : '';
+    box.innerHTML = seq.map(function (e) { var k = A[e[0]], H = D.hoods[k], L = hoodSet(k), x = L[0], cl = e[1], ti = cl ? ' tabindex="-1"' : '', xh = XPH[XPF] && XPH[XPF][k]; if (xh) x = { i: xh, p: '50% 50%' }; var kick = (XPF && XPF !== 'Architecture') ? XPF + ' at ' + H.n : KIND[H.k];
       return '<article class="h2-cc h2-hc' + (cl ? ' h2-cc-cl' : '') + '" data-h="' + k + '"' + (cl ? ' aria-hidden="true"' : ' role="listitem"') + '><button type="button"' + ti + ' class="h2-cc-ph" data-h2="hcard" data-h="' + k + '" aria-label="' + esc(H.n + ', ' + KIND[H.k] + (H.t ? ', ' + H.t : '') + '. Open its page') + '">' +
         '<img class="h2-hci is-on" src="' + esc(x.i) + '" alt="" style="object-position:' + esc(x.p || '50% 50%') + '" loading="' + (e[0] < 3 ? 'eager' : 'lazy') + '" decoding="async"><img class="h2-hci" alt="" decoding="async">' +
-        '<span class="h2-cc-t h2-hct"><span class="h2-cc-k"><span>' + esc(KIND[H.k]) + '</span></span><span class="h2-hct-nm"><img class="h2-hct-em" src="' + esc(H.icw || ('ic2/' + k + '.png')) + '" alt="" width="52" height="52" decoding="async"><span class="h2-d h2-cc-n pkp-head">' + esc(H.n) + '</span><span class="h2-hct-nx" aria-hidden="true">Explore ' + CHEV + '</span></span>' + (H.t ? '<span class="h2-hct-g">' + esc(H.t) + '</span>' : '') + (function () { var pg = ''; try { pg = window.__pkNbpg ? window.__pkNbpg(k) : ''; } catch (e) {} return pg ? '<span class="h2-hct-pr">' + esc(pg) + '</span>' : ''; })() + '</span>' +
+        '<span class="h2-cc-t h2-hct"><span class="h2-cc-k"><span>' + esc(kick) + '</span></span><span class="h2-hct-nm"><img class="h2-hct-em" src="' + esc(H.icw || ('ic2/' + k + '.png')) + '" alt="" width="52" height="52" decoding="async"><span class="h2-d h2-cc-n pkp-head">' + esc(H.n) + '</span><span class="h2-hct-nx" aria-hidden="true">Explore ' + CHEV + '</span></span>' + (H.t ? '<span class="h2-hct-g">' + esc(H.t) + '</span>' : '') + (function () { var pg = ''; try { pg = window.__pkNbpg ? window.__pkNbpg(k) : ''; } catch (e) {} return pg ? '<span class="h2-hct-pr">' + esc(pg) + '</span>' : ''; })() + '</span>' +
         '<span class="h2-hct-go" aria-hidden="true"><span class="h2-hct-gl">Explore </span><span class="h2-hct-gn">' + esc((/^the /i.test(H.n) ? H.n : 'the ' + H.n) + ' neighborhood') + ' </span><span class="h2-hct-gs">' + esc(H.n) + ' </span>' + CHEV + '</span></button></article>'; }).join('');
     guard(box); box._K = K; box._N = A.length; box._A = A;
     var last = '', back = false; try { last = localStorage.getItem('pk-h0') || ''; var rt = sessionStorage.getItem('pk-hcret'); if (rt) { sessionStorage.removeItem('pk-hcret'); last = rt; back = true; } } catch (e) {}
-    var i0 = A.indexOf(last); if (!back || i0 < 0) i0 = (i0 + 1) % A.length; try { localStorage.setItem('pk-h0', A[i0]); } catch (e) {}   /* a new neighborhood each visit; Back returns to the one they left */
+    var i0 = A.indexOf(last); if (!back || i0 < 0) i0 = (i0 + 1) % A.length; if (XPS) { i0 = 0; XPS = 0; } try { localStorage.setItem('pk-h0', A[i0]); } catch (e) {}   /* a new neighborhood each visit; Back returns to the one they left */
     var go = function () { if (!box.clientWidth) return; jumpTo(box, K + i0); hcLabel(); };
     if (window.requestAnimationFrame) requestAnimationFrame(function () { requestAnimationFrame(go); }); else setTimeout(go, 30);
     if (!box._lp) { box._lp = 1; var tmo = 0; box.addEventListener('scroll', function () { clearTimeout(tmo); tmo = setTimeout(function () { loopFix(box); hcLabel(); var m = ccMid(box), c = box.children[m.i]; if (c) { try { localStorage.setItem('pk-h0', c.getAttribute('data-h')); } catch (e) {} } }, 140); }, { passive: true }); }
@@ -12865,7 +12871,7 @@ window.pkClimbRank = function (C, dd) {
   /* the card in front walks its own photo set every 4 s while the section is on screen (a short crossfade) */
   var hcI = 0;
   function hcTick() {
-    var box = root && $('[data-h2="hcards"]', root); if (!box || reduced() || document.hidden) return;
+    var box = root && $('[data-h2="hcards"]', root); if (!box || reduced() || document.hidden || XPF !== 'Architecture') return;
     var r = box.getBoundingClientRect(), vh = window.innerHeight; if (r.bottom < vh * 0.3 || r.top > vh * 0.7) return;
     var c = box.children[ccMid(box).i]; if (!c) return; var k = c.getAttribute('data-h'), L = hoodSet(k); if (L.length < 2) return;
     var I = c.querySelectorAll('.h2-hci'), on = I[0].classList.contains('is-on') ? 0 : 1, nx = I[1 - on];
@@ -12994,21 +13000,30 @@ window.pkClimbRank = function (C, dd) {
     var st = C.length > 1 ? C[1].offsetLeft - C[0].offsetLeft : 0; return { i: bi, step: st }; }
   function ccCenter(r, k) { var C = r.children[k]; if (!C) return; r.scrollLeft = C.offsetLeft - (r.clientWidth - C.offsetWidth) / 2; }
 
-  /* Zale Nov 18 (22:30): experiences first. "What do you love?" over the experiences (Music, DJs, Food, Drinks, Wellness, Family, Literary, Comedy,
-     Craft, Camping); picking one filters the neighborhood carousel to the places that offer it, one big photo at a time; pick it again or Show everything
-     to bring every place back. Desktop: big poster type on the right of the carousel. Phone and tablet: a swipe row of chips above the carousel.
-     Where it comes from: each place's latest-lineup programming (NBPG) plus bar (Drinks), food vendors (Food), yoga or massage (Wellness), kids area
-     (Family), craft vendors (Craft); Camping = the camping neighborhoods. Facts to confirm with the place owners (design_home row). */
-  var XPO = ['Music', 'DJs', 'Food', 'Drinks', 'Wellness', 'Family', 'Literary', 'Comedy', 'Craft', 'Camping'];
+  /* Zale Nov 18 (22:45): "Summer camp for the soul". The experiences lead: pick one and the carousel holds only the places that offer it, each shown
+     by a hero shot OF THAT EXPERIENCE there (Literary at Woods = a storyteller and a crowd under the branches), with a short description of the
+     experience and the emblems of where it happens. Architecture (the default) = every stage and gathering neighborhood in its hero shot.
+     Places come from the latest-lineup programming (NBPG) plus amenities (bar = Drinks, food = Food, yoga/massage = Wellness, kids = Family,
+     craft = Craft, art = Art; camp kind = Camping). Experience photos: XPH (picked from the photo catalog Nov 18, record in
+     _catalogs/work/design_home/web/xp_photos.json); a place without one shows its usual photo until one is tagged. Words: draft from our
+     blog's own lines, Copy Review owns them (design_home-9). */
+  var XPO = ['Architecture', 'Music', 'Food', 'Drinks', 'Wellness', 'Family', 'Literary', 'DJs', 'Art', 'Craft', 'Comedy', 'Camping'], XPF = 'Architecture', XPS = 0;
+  var XPD = { Architecture: 'Twenty neighborhoods, each designed and built by architects and makers for one weekend in the forest. Many live on long after.', Music: 'From first-timers to legends, on stages tucked into the forest, a barn and a meadow.', Food: 'Chefs and festival artists at long tables in the woods, and local kitchens all weekend.', Drinks: 'Local beer, wine and cocktails, poured under the trees and beside the stages.', Wellness: 'Morning yoga, Qi Gong, hikes and runs, and a refuge for massage, healing and quiet.', Family: 'A full summer camp for kids, from the littlest explorers to teenagers: nature play, workshops and music.', Literary: 'Readings, storytellers and poets beneath the trees. Language meant to be heard aloud.', DJs: 'Afternoon sets and late-night dance floors, where the party spills out under the sky.', Art: 'Installations that light up the woods, the dance floor and the paths in between.', Craft: 'Craft booths, gallery walls and makers’ tables, hidden between sets.', Comedy: 'Stand-up between the bands.', Camping: 'Wake up in the forest, a short walk from the stages.' };
+  var XPH = { Literary: { woods: 'i/xp-lit-woods.jpg' }, Food: { curation: 'i/xp-food-curation.jpg', market: 'i/xp-food-market.jpg' }, Drinks: { woods: 'i/xp-drinks-woods.jpg', curation: 'i/xp-drinks-curation.jpg', windmill: 'i/xp-drinks-windmill.jpg' }, Wellness: { refuge: 'i/xp-well-refuge.jpg', lucky: 'i/xp-well-lucky.jpg', courtyard: 'i/xp-well-courtyard.jpg' }, Family: { coyote: 'i/xp-family-coyote.jpg' } };
   function xpOf(k) { var H = D && D.hoods[k], am = (H && H.amk) || [], pg = ''; try { pg = window.__pkNbpg ? window.__pkNbpg(k) : ''; } catch (e) {} var S = {}; (pg ? pg.split(' · ') : []).forEach(function (t) { S[t] = 1; });
-    if (am.indexOf('bar') >= 0) S.Drinks = 1; if (am.indexOf('food') >= 0) S.Food = 1; if (am.indexOf('yoga') >= 0 || am.indexOf('massage') >= 0) S.Wellness = 1; if (am.indexOf('kids') >= 0) S.Family = 1; if (am.indexOf('craft') >= 0) S.Craft = 1; if (H && H.k === 'camp') S.Camping = 1; return S; }
-  function xpList(t) { var src = t ? ALLH : ROT0; return src.filter(function (k) { return D.hoods[k] && hoodSet(k).length && (!t || xpOf(k)[t]); }); }
-  function xpDraw() { var a = root && $('[data-h2="xp"]', root); if (!a || a._built || !D || !D.hoods || !ALLH.length) return; a._built = 1; a._f = '';
+    if (am.indexOf('bar') >= 0) S.Drinks = 1; if (am.indexOf('food') >= 0) S.Food = 1; if (am.indexOf('yoga') >= 0 || am.indexOf('massage') >= 0) S.Wellness = 1; if (am.indexOf('kids') >= 0) S.Family = 1; if (am.indexOf('craft') >= 0) S.Craft = 1; if (am.indexOf('art') >= 0) S.Art = 1;
+    if (H && H.k === 'camp') S.Camping = 1; else S.Architecture = 1; return S; }
+  function xpList(t) { var src = t === 'Architecture' ? ROT0 : ALLH; return src.filter(function (k) { return D.hoods[k] && hoodSet(k).length && xpOf(k)[t]; }).sort(function (a, b) { var x = XPH[t] || {}; return (x[b] ? 1 : 0) - (x[a] ? 1 : 0); }); }
+  function xpWhere(a) { var K = xpList(XPF); $('.h2-xp-d', a).textContent = XPD[XPF] || ''; $('.h2-xp-w', a).innerHTML = XPF === 'Architecture' ? '' : '<span class="h2-xp-wl">Where</span>' + K.map(function (hk) { var H = D.hoods[hk]; return '<button type="button" class="h2-xp-e" data-xh="' + hk + '"><img src="' + esc(H.ic || '') + '" alt=""><span>' + esc(H.n) + '</span></button>'; }).join(''); }
+  function xpGo(r, k) { var m = ccMid(r).i, best = -1, bd = 1e9; for (var n = 0; n < r.children.length; n++) { if (r.children[n].getAttribute('data-h') === k && Math.abs(n - m) < bd) { bd = Math.abs(n - m); best = n; } } if (best < 0) return; var C = r.children[best]; r.scrollTo({ left: C.offsetLeft - (r.clientWidth - C.offsetWidth) / 2, behavior: 'smooth' }); }
+  function xpDraw() { var a = root && $('[data-h2="xp"]', root); if (!a || a._built || !D || !D.hoods || !ALLH.length) return; a._built = 1;
     var W = XPO.filter(function (t) { return xpList(t).length; });
-    a.innerHTML = '<p class="h2-xp-h">What do you love?</p><div class="h2-xp-ch" role="group" aria-label="Experiences">' + W.map(function (t) { return '<button type="button" class="h2-xp-c" data-xp="' + t + '" aria-pressed="false">' + esc(t) + '</button>'; }).join('') + '</div><button type="button" class="h2-xp-all" data-xp="">Show everything</button>';
-    a.addEventListener('click', function (ev) { var b = ev.target.closest('button[data-xp]'); if (!b) return; var t = b.getAttribute('data-xp'); a._f = (t && a._f !== t) ? t : '';
-      $$('.h2-xp-c', a).forEach(function (c) { var on = c.getAttribute('data-xp') === a._f; c.classList.toggle('on', on); c.setAttribute('aria-pressed', on ? 'true' : 'false'); }); a.classList.toggle('has-f', !!a._f);
-      ROT = a._f ? xpList(a._f) : ROT0.slice(); drawHoods(); }); }
+    a.innerHTML = '<p class="h2-xp-h">What do you want to experience?</p><div class="h2-xp-ch" role="group" aria-label="Experiences">' + W.map(function (t) { return '<button type="button" class="h2-xp-c' + (t === XPF ? ' on' : '') + '" data-xp="' + t + '" aria-pressed="' + (t === XPF) + '">' + esc(t) + '</button>'; }).join('') + '</div><p class="h2-xp-d"></p><div class="h2-xp-w"></div>';
+    xpWhere(a);
+    a.addEventListener('click', function (ev) { var rr = $('[data-h2="hcards"]', root), e = ev.target.closest('.h2-xp-e'); if (e) { if (rr) xpGo(rr, e.getAttribute('data-xh')); return; }
+      var b = ev.target.closest('button[data-xp]'); if (!b) return; var t = b.getAttribute('data-xp'); if (t === XPF) return; XPF = t;
+      $$('.h2-xp-c', a).forEach(function (c) { var on = c.getAttribute('data-xp') === XPF; c.classList.toggle('on', on); c.setAttribute('aria-pressed', on ? 'true' : 'false'); });
+      xpWhere(a); ROT = xpList(XPF); XPS = 1; drawHoods(); }); }
 
   function markMid(r) { if (!r || !r.children.length) return; var m = ccMid(r); if (r.getAttribute('data-h2') === 'hcards') xpDraw(); for (var k = 0; k < r.children.length; k++) { var c = r.children[k]; c.classList.toggle('is-mid', k === m.i); c.classList.toggle('is-prev', k < m.i); c.classList.toggle('is-next', k > m.i); } }
   function midWatch(r) { if (r._mw) return; r._mw = 1; var raf = 0; r.addEventListener('scroll', function () { if (raf) return; raf = requestAnimationFrame(function () { raf = 0; markMid(r); }); }, { passive: true }); }
