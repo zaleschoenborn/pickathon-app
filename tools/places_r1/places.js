@@ -196,15 +196,16 @@
   function home(now) { M.cur = ''; lit(); animTo(startView(), now ? 0 : 520); }
   /* the visible part of the map (phone: above the sheet) */
   function lw() { return Math.round(Math.max(400, Math.min(480, window.innerWidth * 0.32))); }   /* desktop left column: phone-card width, the map is the hero (Zale, Nov 19) */
-  function clear() { var r = region(), t = wide() && top().r !== 'hood' ? lw() : 0, ti = $('.pkpl-title', M.el), up = wide() ? 84 : (M.title && ti ? 110 : 0), dn = wide() ? 16 : 150; return { x: r.x + t, y: r.y + up, w: r.w - t, h: Math.max(160, r.h - up - dn) }; }   /* the lit places fill what is left */   /* above the experience bar and the amenity tag */
+  function clear() { var r = region(), t = wide() && top().r !== 'hood' ? lw() : 0, ti = $('.pkpl-title', M.el), up = wide() ? 78 : (M.title && ti ? 110 : 0), dn = wide() ? 8 : 150; return { x: r.x + t, y: r.y + up, w: r.w - t, h: Math.max(160, r.h - up - dn) }; }   /* the lit places fill what is left */   /* above the experience bar and the amenity tag */
   function region() {
     if (wide() || top().r !== 'hood') return { x: 0, y: 0, w: M.vw, h: M.vh };
     return { x: 0, y: 0, w: M.vw, h: Math.max(160, Math.round(M.vh * 0.4)) };
   }
   function frame(k, now) {   /* first pick zooms in; another pick while zoomed keeps the zoom and centres */
     var zoomed = M.s > minS() * 1.9 && M.cur && M.cur !== k;
-    var v = fitBox(box(k), region(), wide() ? 70 : 22, zoomed ? M.s : 0);
-    if (!zoomed) v[0] = Math.min(v[0], wide() ? 1.15 : 1.7), v = fitBox(box(k), region(), 0, v[0]);   /* close enough to see the place, with its neighbors around it */
+    var rg = region(); if (wide()) rg = { x: rg.x, y: rg.y + 84, w: rg.w, h: rg.h - 84 };   /* desktop: below the experience row */
+    var v = fitBox(box(k), rg, wide() ? 40 : 22, zoomed ? M.s : 0);
+    if (!zoomed) v[0] = Math.min(v[0], wide() ? 1.5 : 1.7), v = fitBox(box(k), rg, 0, v[0]);   /* close enough to see the place, with its neighbors around it */
     M.cur = k; lit(); animTo(v, now ? 0 : 560);
   }
   function lit() {
@@ -228,6 +229,7 @@
     $('.pkpl-d', t).textContent = M.xp ? (M.xp + ' at Pickathon') : 'Summer camp for your soul';
     $('.pkpl-l', t).textContent = M.xp ? (XH.XPD[M.xp] || '') : (wide() ? 'Pick an experience above, then a place' : 'Pick an experience below, then tap a place that lights up');
     var pl = $('.pkpl-pl', t), L = M.xp ? litSet() : [];   /* desktop: where this experience happens; a row opens the place (Zale, Nov 19) */
+    if (pl && !M.xp && !M.amen) { pl.innerHTML = '<div class="pkpl-pg">' + XO.map(function (e) { return '<button type="button" class="pkpl-xe" data-xp="' + e + '">' + xpIcon(e) + '<span>' + e + '</span></button>'; }).join('') + '</div>'; return; }   /* arrival: choose your adventure right under the title */
     if (pl) pl.innerHTML = L.length ? L.map(function (k) { var h = data().hoods[k]; return '<button type="button" class="pkpl-pr" data-hp="' + k + '"><img src="' + esc(emb(k)) + '" alt=""><span><b>' + esc(h.n) + '</b><small>' + esc(xpLine(M.xp, k)) + '</small></span></button>'; }).join('') : '';
   }
   function xpLabels() {
@@ -241,7 +243,7 @@
   }
   function fitLit() {
     var L = M.amen ? Object.keys(amenHoods()) : litSet(); if (!L.length) { home(); return; }
-    animTo(fitBox(union(L), clear(), wide() ? 40 : 16), 560);
+    animTo(fitBox(union(L), clear(), wide() ? 18 : 16), 560);
   }
   function xpPick(e) {
     var t0 = top(); M.was = (t0.r === 'hood' && t0.h) ? t0.h : '';   /* Zale, Nov 19: an experience button always goes back to the map; the place you were in keeps a soft outline */
@@ -506,6 +508,7 @@
     if (!M) makeMap();
     if (M.el.parentNode !== isle) { isle.appendChild(M.el); }
     sheetVars(); layout();
+    if (M._tw !== wide()) { M._tw = wide(); titleDraw(); }   /* first paint and phone/desktop switch: the title's words and buttons */
     drawTop();
     if (t.r === 'hood' && t.h && t.h !== M.cur && HH.shapes[t.h]) { if (M.title) { M.title = false; M.el.classList.add('pkpl-notitle'); } frame(t.h, !M.s); }   /* arriving at a place shows it, never the title screen */
     if (t.r === 'hoods' && M.cur) { M.was = M.cur; M.cur = ''; lit(); if (M.xp || M.amen) fitLit(); }   /* closing a card: back to the experience's places, lit */

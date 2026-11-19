@@ -255,3 +255,8 @@ body.pkpl-wide .pkpl-xpon .pkpl-title::before,body.pkpl-wide .pkpl-amon .pkpl-ti
 body.pkpl-wide .pkpl-xb{left:var(--pkpl-lw)}
 body.pkpl-wide.pkpl-hood .pkpl-xb{left:0}
 body.pkpl-wide.pkpl-hood #root .pk-hd-creds{grid-template-columns:1fr 1fr!important}
+
+body.pkpl-wide .pkpl-pg{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+body.pkpl-wide .pkpl-pg .pkpl-xe{flex-direction:row;justify-content:flex-start;gap:10px;min-height:48px;padding:8px 12px;font-size:14px}
+body.pkpl-wide .pkpl-pg .pkpl-xe svg{width:20px;height:20px;flex:none}
+body.pkpl-wide .pkpl-pg .pkpl-xe:hover{border-color:#D6B54A;color:#FFE7A3}
