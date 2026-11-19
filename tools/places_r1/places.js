@@ -74,11 +74,25 @@
     ty = mh <= M.vh ? Math.min(Math.max(ty, -mh * 0.25), M.vh - mh * 0.75) : Math.min(pad, Math.max(M.vh - mh - pad, ty));
     return [s, tx, ty];
   }
+  /* Nov 18 (fluid map): one paint per frame. While a finger or glide is moving the map only the world moves
+     (pins ride along with one layer transform, or hide during a pinch); pins, tiles and the glow catch up when it settles. */
   function apply(s, tx, ty) {
     var c = clampView(s, tx, ty); M.s = c[0]; M.tx = c[1]; M.ty = c[2];
-    M.world.style.transform = 'translate(' + M.tx + 'px,' + M.ty + 'px) scale(' + M.s + ')';
-    placePins(); tiles();
+    if (!M.raf) M.raf = requestAnimationFrame(paint);
   }
+  function paint() {
+    M.raf = 0;
+    M.world.style.transform = 'translate3d(' + M.tx + 'px,' + M.ty + 'px,0) scale(' + M.s + ')';
+    if (M.moving) {
+      var L = M.laid;
+      if (L && Math.abs(L[0] - M.s) < 1e-6) { M.pins.style.transform = 'translate3d(' + (M.tx - L[1]) + 'px,' + (M.ty - L[2]) + 'px,0)'; M.el.classList.remove('pkpl-pinch'); }
+      else M.el.classList.add('pkpl-pinch');
+      return;
+    }
+    settle();
+  }
+  function settle() { M.pins.style.transform = ''; M.el.classList.remove('pkpl-pinch'); placePins(); M.laid = [M.s, M.tx, M.ty]; tiles(); }
+  function moving(on) { M.moving = on; M.el.classList.toggle('pkpl-moving', on); if (!on) { cancelAnimationFrame(M.raf); M.raf = 0; paint(); } }
   function fitBox(b, reg, pad, keepS) {   /* region in map-box px {x,y,w,h} */
     pad = pad == null ? 24 : pad;
     var s = keepS || Math.min((reg.w - pad * 2) / (b[2] - b[0]), (reg.h - pad * 2) / (b[3] - b[1]));
@@ -96,8 +110,9 @@
       /* interpolate the map point at the region's centre so the zoom feels anchored */
       var cx0 = (M.vw / 2 - a[1]) / a[0], cy0 = (M.vh / 2 - a[2]) / a[0], cx1 = (M.vw / 2 - v[1]) / v[0], cy1 = (M.vh / 2 - v[2]) / v[0];
       var cx = cx0 + (cx1 - cx0) * e, cy = cy0 + (cy1 - cy0) * e;
+      if (!M.moving) moving(true);
       apply(s, M.vw / 2 - cx * s, M.vh / 2 - cy * s);
-      if (u < 1) M.anim = requestAnimationFrame(f); })(performance.now());
+      if (u < 1) M.anim = requestAnimationFrame(f); else moving(false); })(performance.now());
   }
   function tiles() {
     var dpr = window.devicePixelRatio || 1, on = M.s * dpr > 1.0;
@@ -171,25 +186,27 @@
 
   /* taps, drags, pinches and the wheel */
   function gestures(el) {
-    var P = {}, start = null, moved = false, lastTap = 0;
+    var P = {}, start = null, moved = false, lastTap = 0, vel = [0, 0], last = null;
     function pts() { return Object.keys(P).map(function (k) { return P[k]; }); }
     function rel(e) { var r = el.getBoundingClientRect(); return [e.clientX - r.left, e.clientY - r.top]; }
     el.addEventListener('pointerdown', function (e) {
       if (e.target.closest('.pkpl-tools,.pkpl-amtag,.pkpl-find')) return;
       if (e.pointerType === 'mouse' && e.button !== 0) return;
-      P[e.pointerId] = rel(e); cancelAnimationFrame(M.anim);
+      P[e.pointerId] = rel(e); cancelAnimationFrame(M.anim); cancelAnimationFrame(M.glide);
       var q = pts(); start = { s: M.s, tx: M.tx, ty: M.ty, p: q.map(function (a) { return a.slice(); }), t: Date.now() }; if (q.length === 1) moved = false;
-      document.body.classList.add('pkpl-drag');
+      vel = [0, 0]; last = null;
+      el.classList.add('pkpl-drag');
     });
     el.addEventListener('pointermove', function (e) {
       if (!P[e.pointerId]) { if (e.pointerType === 'mouse' && !touch()) { var hp = e.target.closest && e.target.closest('[data-h]'); var r = rel(e); hover(hp ? hp.getAttribute('data-h') : '', r[0], r[1]); } return; }
       P[e.pointerId] = rel(e); var q = pts(); if (!start) return;
       if (q.length === 1 && start.p.length === 1) {
         var dx = q[0][0] - start.p[0][0], dy = q[0][1] - start.p[0][1];
-        if (!moved && Math.abs(dx) + Math.abs(dy) < 8) return; moved = true;
+        if (!moved && Math.abs(dx) + Math.abs(dy) < 8) return; if (!moved) moving(true); moved = true;
+        var now = performance.now(); if (last) { var dt = Math.max(1, now - last.t), k = 0.75; vel = [vel[0] * (1 - k) + (q[0][0] - last.x) / dt * k, vel[1] * (1 - k) + (q[0][1] - last.y) / dt * k]; } last = { x: q[0][0], y: q[0][1], t: now };
         apply(start.s, start.tx + dx, start.ty + dy);
       } else if (q.length >= 2 && start.p.length >= 2) {
-        moved = true;
+        if (!moved) moving(true); moved = true; vel = [0, 0]; last = null;
         var d0 = Math.hypot(start.p[0][0] - start.p[1][0], start.p[0][1] - start.p[1][1]) || 1, d1 = Math.hypot(q[0][0] - q[1][0], q[0][1] - q[1][1]);
         var c0 = [(start.p[0][0] + start.p[1][0]) / 2, (start.p[0][1] + start.p[1][1]) / 2], c1 = [(q[0][0] + q[1][0]) / 2, (q[0][1] + q[1][1]) / 2];
         var s = start.s * d1 / d0, mx = (c0[0] - start.tx) / start.s, my = (c0[1] - start.ty) / start.s;
@@ -198,9 +215,19 @@
     });
     function up(e) {
       if (!P[e.pointerId]) return; delete P[e.pointerId];
-      var q = pts(); if (q.length) { start = { s: M.s, tx: M.tx, ty: M.ty, p: q.map(function (a) { return a.slice(); }), t: Date.now() }; return; }
-      document.body.classList.remove('pkpl-drag');
-      if (moved) { el._drag = Date.now(); lit(); return; }
+      var q = pts(); if (q.length) { start = { s: M.s, tx: M.tx, ty: M.ty, p: q.map(function (a) { return a.slice(); }), t: Date.now() }; last = null; vel = [0, 0]; return; }
+      el.classList.remove('pkpl-drag');
+      if (moved) {
+        el._drag = Date.now();
+        var sp = Math.hypot(vel[0], vel[1]), idle = last ? performance.now() - last.t : 999;
+        if (sp > 0.25 && idle < 80 && !calm()) {   /* a flick glides and eases out */
+          var vx = vel[0], vy = vel[1], t0 = performance.now();
+          (function g(t) { var dt = Math.min(32, t - t0); t0 = t; var f = Math.pow(0.94, dt / 16.7); vx *= f; vy *= f;
+            apply(M.s, M.tx + vx * dt, M.ty + vy * dt);
+            if (Math.hypot(vx, vy) > 0.02) M.glide = requestAnimationFrame(g); else { moving(false); lit(); } })(t0);
+        } else { moving(false); lit(); }
+        return;
+      }
       if (e.type === 'pointercancel') return;
       var r = rel(e), now = Date.now();
       if (now - lastTap < 320 && !e.target.closest('[data-h]')) { lastTap = 0; zoomAt(r, 2); return; }   /* double tap on open ground zooms in */
@@ -217,12 +244,13 @@
       if (!h) return;
       tap(h.getAttribute('data-h'), e.target.closest('.pkpl-em'));
     }, true);
-    el.addEventListener('wheel', function (e) { e.preventDefault(); var r = rel(e); zoomAt(r, Math.exp(-e.deltaY * (e.deltaMode ? 0.05 : 0.0022))); }, { passive: false });
+    el.addEventListener('wheel', function (e) { e.preventDefault(); var r = rel(e); if (!M.moving) moving(true); clearTimeout(M.wt); M.wt = setTimeout(function () { moving(false); lit(); }, 140);
+      var f = Math.exp(-e.deltaY * (e.deltaMode ? 0.05 : 0.0022)), s = Math.max(minS() * 0.9, Math.min(maxS(), M.s * f)), mx = (r[0] - M.tx) / M.s, my = (r[1] - M.ty) / M.s; apply(s, r[0] - mx * s, r[1] - my * s); }, { passive: false });
     el.addEventListener('keydown', function (e) { if (e.target.closest('.pkpl-em,[data-pl],.pkpl-find')) return; var k = e.key, st = 80;
       if (k === '+' || k === '=') zoomAt([M.vw / 2, M.vh / 2], 1.4); else if (k === '-') zoomAt([M.vw / 2, M.vh / 2], 1 / 1.4);
       else if (/^Arrow/.test(k)) apply(M.s, M.tx + (k === 'ArrowLeft' ? st : k === 'ArrowRight' ? -st : 0), M.ty + (k === 'ArrowUp' ? st : k === 'ArrowDown' ? -st : 0)); else return; e.preventDefault(); });
   }
-  function zoomAt(c, f) { var s = Math.max(minS() * 0.9, Math.min(maxS(), M.s * f)), mx = (c[0] - M.tx) / M.s, my = (c[1] - M.ty) / M.s; apply(s, c[0] - mx * s, c[1] - my * s); lit(); }
+  function zoomAt(c, f) { var s = Math.max(minS() * 0.9, Math.min(maxS(), M.s * f)), mx = (c[0] - M.tx) / M.s, my = (c[1] - M.ty) / M.s; animTo([s, c[0] - mx * s, c[1] - my * s], 260); }
   /* a tap on a crowded cluster zooms into the cluster first (fingers can't hit small shapes) */
   function tap(k, isEm) {
     if (isEm && !wide()) {

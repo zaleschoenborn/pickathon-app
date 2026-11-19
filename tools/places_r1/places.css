@@ -165,3 +165,11 @@ body.pkpl-hood #root .pk-hd-desc0.pkpl-dup{display:none!important}   /* the long
 #root#root#root#root#root#root#root#root .pkpl-tb{min-height:50px!important;height:50px}
 @media (min-width:1200px){#root#root#root#root#root#root#root#root .pkpl-tb{min-height:56px!important;height:56px}}
 #root#root#root#root#root#root#root#root .pkpl-tb{background:rgba(18,22,15,.9)!important;border:1px solid rgba(242,237,227,.6)!important;color:#F2EDE3!important}
+
+/* Nov 18 fluid map (Design: Neighborhoods + Maps): while the map moves, no live glow, no tile fades; pins ride with the map or hide during a pinch.
+   The white emblem badges and name pills are off (Zale, Nov 18): the map's own art names the places; taps go to the shapes. */
+.pkpl-moving .pkpl-lit,.pkpl-moving .pkpl-hov{filter:none}
+.pkpl-moving .pkpl-tiles img{transition:none}
+.pkpl-pins{will-change:transform}
+.pkpl-pinch .pkpl-pins{visibility:hidden}
+.pkpl-em,.pkpl-nm{display:none!important}
