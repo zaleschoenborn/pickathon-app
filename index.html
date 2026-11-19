@@ -12598,6 +12598,16 @@ html:root:root #root#root#root#root#root#root#root#root#root#root#root#root#root
   #root#root#root #pkh2 .h2-s4l dd{font-size:19px}
   #root#root#root #pkh2 .h2-s4b{max-width:560px}
 }
+
+/* Zale Nov 19 10:18: peek cards are the buttons; arrows never sit on the center card. Desktop only: small arrows in the outer margins, shown on hover. */
+@media (hover:hover) and (min-width:1100px){
+  #root#root#root#root #pkh2 .h2-arw{width:44px!important;height:44px!important;margin-top:-22px!important;opacity:0;transition:opacity .25s;border-color:rgba(242,237,227,.5)!important;background:rgba(20,16,18,.4)!important}
+  #root#root#root#root #pkh2 .h2-ccw:hover .h2-arw,#root#root#root#root #pkh2 .h2-arw:focus-visible{opacity:1}
+  #root#root#root#root #pkh2 .h2-s5 .h2-arl{left:16px!important}#root#root#root#root #pkh2 .h2-s5 .h2-arr{right:16px!important}
+  #root#root#root#root #pkh2 .h2-s3c .h2-arl{left:16px!important}#root#root#root#root #pkh2 .h2-s3c .h2-arr{right:calc(440px + 56px)!important}
+  #root#root#root#root #pkh2 .h2-ccw .h2-cc:not(.is-mid),#root#root#root#root #pkh2 .h2-ccw .h2-hc:not(.is-mid){cursor:pointer}
+}
+@media (hover:none),(max-width:1099px){#root#root#root#root #pkh2 .h2-arw{display:none!important}}
 </style>
 <script id="pk-home2">
 /* QA M1 (Nov 11): Home's poster opens on 2019 (founder spec, home_flow.md screen 2) and "Another year" walks the years by discovery strength, not at random:
@@ -12926,7 +12936,7 @@ window.pkClimbRank = function (C, dd) {
   function pqShow(i, user) { var w = root && $('[data-h2="pq"]', root); if (!w) return; var F = w.children, n = F.length; if (!n) return; i = ((i % n) + n) % n; for (var k = 0; k < n; k++) { F[k].classList.toggle('is-on', k === i); if (k === i) F[k].removeAttribute('aria-hidden'); else F[k].setAttribute('aria-hidden', 'true'); } $$('.h2-pqb', root).forEach(function (b, k) { b.classList.toggle('on', k === i); }); w._i = i; if (user) w._hold = Date.now(); }
   function pqTick() { var w = root && $('[data-h2="pq"]', root); if (!w || reduced() || document.hidden) return; if (w._hold && Date.now() - w._hold < 12000) return; var r = w.getBoundingClientRect(), vh = window.innerHeight; if (r.bottom < 0 || r.top > vh) return; pqShow((w._i || 0) + 1); }
   function hcTick() {
-    var box = root && $('[data-h2="hcards"]', root); if (!box || reduced() || document.hidden) return;
+    var box = root && $('[data-h2="hcards"]', root); if (!box || reduced() || document.hidden) return; var mc0 = box.querySelector('.is-mid'); if (mc0 && mc0.matches(':hover')) return;
     var r = box.getBoundingClientRect(), vh = window.innerHeight; if (r.bottom < vh * 0.3 || r.top > vh * 0.7) return;
     var c = box.children[ccMid(box).i]; if (!c) return; var k = c.getAttribute('data-h'), L = xpSet(k); if (L.length < 2) return;
     var I = c.querySelectorAll('.h2-hci'), on = I[0].classList.contains('is-on') ? 0 : 1, nx = I[1 - on];
