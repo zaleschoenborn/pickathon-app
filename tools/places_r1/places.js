@@ -338,7 +338,9 @@
       tap(h.getAttribute('data-h'), e.target.closest('.pkpl-em'));
     }, true);
     el.addEventListener('wheel', function (e) { e.preventDefault(); var r = rel(e); if (!M.moving) moving(true); clearTimeout(M.wt); M.wt = setTimeout(function () { moving(false); lit(); }, 140);
-      var f = Math.exp(-e.deltaY * (e.deltaMode ? 0.05 : 0.0022)), s = Math.max(minS() * 0.9, Math.min(maxS(), M.s * f)), mx = (r[0] - M.tx) / M.s, my = (r[1] - M.ty) / M.s; apply(s, r[0] - mx * s, r[1] - my * s); }, { passive: false });
+      var pad = !e.ctrlKey && e.deltaMode === 0 && (e.deltaX !== 0 || Math.abs(e.deltaY) < 40 || e.deltaY % 1 !== 0);   /* trackpad: two fingers move the map, pinch (ctrl+wheel) zooms; a mouse wheel zooms */
+      if (pad) { apply(M.s, M.tx - e.deltaX, M.ty - e.deltaY); return; }
+      var f = Math.exp(-e.deltaY * (e.deltaMode ? 0.05 : e.ctrlKey ? 0.012 : 0.0022)), s = Math.max(minS() * 0.9, Math.min(maxS(), M.s * f)), mx = (r[0] - M.tx) / M.s, my = (r[1] - M.ty) / M.s; apply(s, r[0] - mx * s, r[1] - my * s); }, { passive: false });
     el.addEventListener('keydown', function (e) { if (e.target.closest('.pkpl-em,[data-pl],.pkpl-find')) return; var k = e.key, st = 80;
       if (k === '+' || k === '=') zoomAt([M.vw / 2, M.vh / 2], 1.4); else if (k === '-') zoomAt([M.vw / 2, M.vh / 2], 1 / 1.4);
       else if (/^Arrow/.test(k)) apply(M.s, M.tx + (k === 'ArrowLeft' ? st : k === 'ArrowRight' ? -st : 0), M.ty + (k === 'ArrowUp' ? st : k === 'ArrowDown' ? -st : 0)); else return; e.preventDefault(); });
