@@ -226,7 +226,10 @@
   function titleDraw() {
     var t = $('.pkpl-title', M.el); if (!t) return;
 
-    $('.pkpl-d', t).textContent = M.xp ? (M.xp + ' at Pickathon') : 'Summer camp for your soul';
+    var d = $('.pkpl-d', t);   /* desktop: the experience big, then "at" and the year's logo as the word Pickathon (Zale, Nov 19) */
+    if (M.xp && wide()) d.innerHTML = '<span class="pkpl-xn">' + esc(M.xp) + '</span><span class="pkpl-at"><i>at</i><img src="logo27-gold.png" alt="Pickathon"></span>';
+    else d.textContent = M.xp ? (M.xp + ' at Pickathon') : 'Summer camp for your soul';
+    t.classList.toggle('pkpl-tx', !!M.xp && wide());
     $('.pkpl-l', t).textContent = M.xp ? (XH.XPD[M.xp] || '') : (wide() ? 'Pick an experience above, then a place' : 'Pick an experience below, then tap a place that lights up');
     var pl = $('.pkpl-pl', t), L = M.xp ? litSet() : [];   /* desktop: where this experience happens; a row opens the place (Zale, Nov 19) */
     if (pl && !M.xp && !M.amen) { pl.innerHTML = '<div class="pkpl-pg">' + XO.map(function (e) { return '<button type="button" class="pkpl-xe" data-xp="' + e + '">' + xpIcon(e) + '<span>' + e + '</span></button>'; }).join('') + '</div>'; return; }   /* arrival: choose your adventure right under the title */
