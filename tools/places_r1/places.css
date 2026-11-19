@@ -387,3 +387,9 @@ body.pkpl-wide .pkpl-tight4 .pkpl-ab{margin-top:8px}
 body.pkpl-wide #root #pkpl .pkpl-tight4 .pkpl-abb{min-height:40px!important}
 body.pkpl-wide .pkpl-tight4 .pkpl-pl{margin-top:12px!important}
 body.pkpl-wide .pkpl-tight4{padding-top:12px!important;padding-bottom:6px!important}body.pkpl-wide #root #pkpl .pkpl-tight4 .pkpl-ab p{margin-bottom:8px}
+/* desktop: the experience icon sits to the right of the title, like the phone, so the column has more height (Zale, Nov 19) */
+body.pkpl-wide #root #pkpl .pkpl-tx .pkpl-d{flex-direction:row!important;align-items:center!important;justify-content:space-between!important;gap:16px!important}
+body.pkpl-wide #root #pkpl .pkpl-xi{order:2!important;width:68px;height:68px;border-radius:14px}
+body.pkpl-wide #root #pkpl .pkpl-xi svg{width:40px;height:40px}
+body.pkpl-wide #root #pkpl .pkpl-tight4 .pkpl-xi{display:flex!important;width:52px;height:52px}
+body.pkpl-wide #root #pkpl .pkpl-tight4 .pkpl-xi svg{width:30px;height:30px}
