@@ -15,7 +15,7 @@
   var ORDER = ['woods', 'paddock', 'cherryhill', 'grove', 'windmill', 'galaxy', 'lucky', 'farmhouse', 'curation', 'refuge', 'coyote', 'courtyard', 'market', 'orchard', 'welcomelot', 'lushcamp', 'quailtrail', 'southcamp', 'wildcamp', 'willowcamp'];
   var CORE = ['woods', 'refuge', 'coyote', 'cherryhill', 'market', 'grove', 'windmill', 'paddock', 'galaxy', 'courtyard'];   /* desktop start: Woods down to the Courtyard (addendum 3) */
   var AMEN = { restroom: ['Restrooms', 'restroom.webp'], water: ['Water', 'water.webp'], bar: ['Bars', 'bar.webp'], food: ['Food', 'food.webp'], coffee: ['Coffee', 'coffee.webp'], craft: ['Craft', 'craft.webp'], shower: ['Showers', 'shower.webp'], atm: ['ATMs', 'atm.webp'], kids: ['Kids', 'kids.svg'], shuttle: ['Shuttle', 'shuttle.webp'], access: ['Accessible', 'access.webp'], medical: ['Medical', 'medical.webp'], info: ['Info', 'info.webp'], charge: ['Charging', 'charge.webp'], merch: ['Merch', 'merch.webp'], ice: ['Ice', 'ice.webp'], dishes: ['Dish return', 'dishes.webp'], bike: ['Bike parking', 'bike.webp'], massage: ['Massage', 'massage.webp'], smoke: ['Smoking', 'smoke.webp'] };
-  var HERO_MS = 5000;
+  var HERO_MS = 6500, HERO_FADE = 1500;   /* Zale, Nov 19: calmer: 6.5 s per photo, 1.5 s crossfade */
 
   /* ---------- helpers ---------- */
   function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
@@ -362,13 +362,25 @@
   }
   function heroArm(el) {
     clearTimeout(TOP.timer); var hero = $('.pkpl-hero', el); if (!hero) return;
-    var imgs = $$('img:not(.pkpl-nmrow img)', hero).filter(function (x) { return x.parentNode === hero; }); if (imgs.length < 2 || calm()) return;
+    var imgs = $$('img:not(.pkpl-nmrow img)', hero).filter(function (x) { return x.parentNode === hero; }); if (imgs.length > 1) heroReady(imgs[1]); if (imgs.length < 2 || calm()) return;
     (function step() { TOP.timer = setTimeout(function () { if (!hero.isConnected) return; if (document.hidden) { step(); return; } heroShow(hero, (TOP.i + 1) % imgs.length); step(); }, HERO_MS); })();   /* the photo rotation itself, not layout */
   }
-  function heroShow(hero, i) {
-    var imgs = $$('img', hero).filter(function (x) { return x.parentNode === hero; }); TOP.i = i;
-    imgs.forEach(function (x, j) { x.classList.toggle('on', j === i); if (j === i) x.loading = 'eager'; });
+  function heroReady(im) {   /* the next photo is loaded and decoded before it fades in, so a fade never shows a blank */
+    try { im.loading = 'eager'; } catch (x) {}
+    var ld = (im.complete && im.naturalWidth) ? Promise.resolve(true) : new Promise(function (r) { var t = setTimeout(function () { r(false); }, 8000); im.addEventListener('load', function () { clearTimeout(t); r(true); }, { once: true }); im.addEventListener('error', function () { clearTimeout(t); r(false); }, { once: true }); });
+    return ld.then(function (ok) { return ok && im.decode ? im.decode().then(function () { return true; }, function () { return true; }) : ok; });
+  }
+  function heroShow(hero, i) {   /* Zale, Nov 19: a true crossfade. The new photo fades in on top; the one under it stays fully visible until the fade ends, then drops out unseen. No dark dip between photos */
+    var imgs = $$('img', hero).filter(function (x) { return x.parentNode === hero; }); var nx = imgs[i]; if (!nx) return;
+    var tok = (hero._tok = (hero._tok || 0) + 1); TOP.i = i;
     $$('.pkpl-dots button', hero).forEach(function (b, j) { if (j === i) b.setAttribute('aria-current', 'true'); else b.removeAttribute('aria-current'); });
+    heroReady(nx).then(function (ok) {
+      if (tok !== hero._tok || !hero.isConnected) return;
+      if (!ok) return;
+      imgs.forEach(function (x) { x.classList.remove('top'); });
+      nx.classList.add('top'); requestAnimationFrame(function () { nx.classList.add('on'); });
+      clearTimeout(hero._xt); hero._xt = setTimeout(function () { if (tok !== hero._tok) return; imgs.forEach(function (x) { if (x !== nx && x.classList.contains('on')) { x.classList.add('cut'); x.classList.remove('on'); void x.offsetWidth; x.classList.remove('cut'); } }); var nn = imgs[(i + 1) % imgs.length]; if (nn) heroReady(nn); }, HERO_FADE + 60);
+    });
   }
   /* phone and portrait tablet: the sheet. Its scroll is the phone scroller: the space above it is see-through, so dragging the sheet down shows the map and dragging it up opens the page */
   function scroller() { return document.getElementById('pk-scroll-phone'); }
