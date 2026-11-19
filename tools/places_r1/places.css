@@ -279,10 +279,14 @@ body.pkpl-wide #root #pkpl .pkpl-l{font-size:17px}
 body.pkpl-wide .pkpl-pg{margin-top:4px}
 body.pkpl-wide .pkpl-pg .pkpl-xe{min-height:46px;padding:8px 14px}
 
-/* desktop experience title: the name big, then "at" + the year logo (Nov 19) */
-body.pkpl-wide .pkpl-tx .pkpl-k{display:none}
-body.pkpl-wide #root #pkpl .pkpl-tx .pkpl-d{display:flex;flex-direction:column;align-items:flex-start;gap:6px;margin-bottom:18px}
-body.pkpl-wide #root #pkpl .pkpl-xn{display:block;font-size:clamp(52px,4.6vw,72px);line-height:.95;letter-spacing:.03em}
-body.pkpl-wide #root #pkpl .pkpl-at{display:flex;align-items:flex-end;gap:12px}
-body.pkpl-wide #root #pkpl .pkpl-at i{font:italic 600 26px/1 'Bricolage Grotesque',system-ui,sans-serif;text-transform:none;letter-spacing:0;color:#D6B54A;padding-bottom:10px}
-body.pkpl-wide #root #pkpl .pkpl-at img{height:58px;width:auto}
+/* experience title: icon plate + "<Experience> at Pickathon" (Nov 19). Desktop: icon above. Phone: icon to the right */
+.pkpl-tx .pkpl-k{display:none}
+#root #pkpl .pkpl-tx .pkpl-d{display:flex;align-items:center;justify-content:space-between;gap:14px}
+#root #pkpl .pkpl-xi{order:2;flex:none;display:flex;align-items:center;justify-content:center;width:64px;height:64px;border-radius:12px;background:#F2EDE3;color:#1A2017}
+#root #pkpl .pkpl-xi svg{width:38px;height:38px;stroke-width:1.6}
+#root #pkpl .pkpl-xt{order:1;min-width:0}
+body.pkpl-wide #root #pkpl .pkpl-tx .pkpl-d{flex-direction:column;align-items:flex-start;justify-content:flex-start;gap:20px}
+body.pkpl-wide #root #pkpl .pkpl-xi{order:0;width:84px;height:84px;border-radius:16px}
+body.pkpl-wide #root #pkpl .pkpl-xi svg{width:50px;height:50px}
+/* phone: the title sits above the place names, and they keep clear of it */
+body:not(.pkpl-wide) .pkpl-title{z-index:3;background:linear-gradient(180deg,rgba(18,22,15,.96) 0%,rgba(18,22,15,.9) 70%,rgba(18,22,15,0) 100%)}
