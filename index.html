@@ -12671,7 +12671,9 @@ html:root:root #root#root#root#root#root#root#root#root#root#root#root#root#root
   #pkh2 .h2-xovi.on{opacity:1}
   #pkh2 .h2-xovp::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(21,17,15,0) 0%,rgba(21,17,15,.05) 30%,rgba(21,17,15,.8) 60%,rgba(21,17,15,.95) 100%)}
   #pkh2 .h2-xovo{position:absolute;z-index:1;left:0;right:0;bottom:0;padding:0 18px 18px;display:flex;flex-direction:column;gap:14px}
-  #pkh2 .h2-xovl{margin:0;font:700 21px/1.3 'Bricolage Grotesque',system-ui,sans-serif;color:var(--cream);max-width:30em}
+  #pkh2 .h2-xovk{margin:0;font:800 13px/1.3 'Bricolage Grotesque',system-ui,sans-serif;letter-spacing:.09em;text-transform:uppercase;color:#F2CF62}
+  #root#root#root#root #pkh2 .h2-xovh{margin:-4px 0 4px;font-size:34px!important;line-height:1.02!important;color:var(--cream)!important;text-transform:uppercase}
+  #pkh2 .h2-xovt{cursor:pointer}
   #pkh2 .h2-xovb{display:grid;grid-template-columns:1fr 1fr;gap:8px}
   #pkh2 .h2-xovb .h2-xb{justify-content:flex-start}
   @media (min-width:600px){#pkh2 .h2-xovb{display:flex;flex-wrap:wrap}}
@@ -12679,7 +12681,8 @@ html:root:root #root#root#root#root#root#root#root#root#root#root#root#root#root
   @media (min-width:1200px){
   #pkh2 .h2-xov{left:max(calc((100% - 1280px) / 2),40px);right:max(calc((100% - 1280px) / 2),40px);bottom:18px}
   #pkh2 .h2-xovo{padding:0 32px 26px;gap:18px}
-  #pkh2 .h2-xovl{font-size:28px;max-width:26em}
+  #pkh2 .h2-xovk{font-size:15px}
+  #root#root#root#root #pkh2 .h2-xovh{font-size:56px!important;margin:-6px 0 6px}
   #pkh2 .h2-xovb{flex-wrap:nowrap!important;gap:6px!important}
   #pkh2 .h2-xovb .h2-xb{padding:0 10px;gap:6px;font-size:13px}
   #pkh2 .h2-xovb .h2-xb svg{width:16px;height:16px}
@@ -12988,10 +12991,10 @@ window.pkClimbRank = function (C, dd) {
          cards and the strip in place; nothing moves. Tap the lit button again to go back to the whole farm. */
       var XOVI = [{ i: 'i/r3-hood-paddock.jpg', p: '50% 35%' }, { i: 'i/r35-grove-1.jpg', p: '50% 40%' }, { i: 'i/p656.jpg', p: '50% 55%' }, { i: 'i/pk-paddock-01.jpg', p: '50% 45%' }];
       ALLH = ids.slice(); ROT0 = xpAll(ids).filter(function (k) { return d.hoods[k].k !== 'camp'; }); ROT = ROT0.slice(); XPF = 'Architecture';
-      h += '<section class="h2-s h2-s3 h2-s3c" aria-labelledby="h2-h3"><div class="h2-s5head"><div><h2 class="h2-d h2-sec pkp-head" id="h2-h3">Summer camp for your soul</h2><p class="h2-sub h2-s3sub">Choose your own adventure.</p></div>' +
+      h += '<section class="h2-s h2-s3 h2-s3c" aria-labelledby="h2-h3"><div class="h2-s5head"><div><h2 class="h2-d h2-sec pkp-head" id="h2-h3">Summer camp for your soul</h2></div>' +
         '<div class="h2-cc-nav"><button type="button" class="h2-pill h2-s5top h2-anb" data-h2="allhoods">Explore the map</button></div></div>' +
         '<div class="h2-xov" data-h2="xov"><div class="h2-xovp" aria-hidden="true">' + XOVI.map(function (x, n) { return '<img class="h2-xovi' + (n ? '' : ' on') + '" src="' + x.i + '" alt="" style="object-position:' + x.p + '" decoding="async"' + (n ? ' loading="lazy"' : '') + '>'; }).join('') + '</div>' +
-        '<div class="h2-xovo"><p class="h2-xovl">Four days, twenty neighborhoods and endless ways to spend them. Where do you want to start?</p>' +
+        '<div class="h2-xovo"><p class="h2-xovk">Four days · Twenty neighborhoods · Endless ways to spend them</p><p class="h2-d h2-xovh pkp-head">Choose your own adventure</p>' +
         '<div class="h2-xovb" role="group" aria-label="Choose an experience">' + XPO.map(function (t) { return '<button type="button" class="h2-xb" data-h2="xpgo" data-xp="' + t + '">' + xpIc(t) + '<span>' + esc(t) + '</span></button>'; }).join('') + '</div>' +
         '<button type="button" class="h2-xovs" data-h2="xpgo" data-xp="Architecture">Or swipe to wander the farm<span aria-hidden="true"> →</span></button></div></div>' +
         '<div class="h2-xrow h2-xrow2" data-h2="xrow" role="group" aria-label="Experiences">' + XPO.map(function (t) { return '<button type="button" class="h2-xb" data-h2="xpsel" data-xp="' + t + '" aria-pressed="false">' + xpIc(t) + '<span>' + esc(t) + '</span></button>'; }).join('') + '</div>' +
@@ -13301,7 +13304,8 @@ window.pkClimbRank = function (C, dd) {
   /* Zale Nov 19 11:52: pick an experience (from the hero or the row), the row shows it filled and centered, the line says what it is, the strip lists its places */
   function xpEnter(t) { var ov = root && $('[data-h2="xov"]', root); if (ov && !ov.classList.contains('gone')) { ov.classList.add('gone'); if (ov.parentNode) ov.parentNode.classList.add('xin'); setTimeout(function () { ov.hidden = true; }, 600); } if (t !== XPF) xpPick(t); else { var bx = $('[data-h2="hcards"]', root); if (bx) jumpTo(bx, 0); xpRowOn(true); } }
   function xovFit() { var ov = root && $('[data-h2="xov"]', root), sec = ov && ov.parentNode, hd = sec && $('.h2-s5head', sec); if (ov && hd) sec.style.setProperty('--xovt', (hd.offsetTop + hd.offsetHeight + 12) + 'px'); }
-  function xovWire() { var ov = root && $('[data-h2="xov"]', root); if (!ov || ov._w) return; ov._w = 1; xovFit(); window.addEventListener('resize', xovFit); setTimeout(xovFit, 400); var x0 = null, y0 = 0;
+  function xovBack() { var ov = root && $('[data-h2="xov"]', root); if (!ov) return; ov.hidden = false; ov.parentNode.classList.remove('xin'); requestAnimationFrame(function () { ov.classList.remove('gone'); }); }
+  function xovWire() { var ov = root && $('[data-h2="xov"]', root); if (!ov || ov._w) return; ov._w = 1; var t3 = $('#h2-h3', root); if (t3) { t3.classList.add('h2-xovt'); t3.setAttribute('role', 'button'); t3.setAttribute('tabindex', '0'); t3.setAttribute('title', 'Back to the start'); t3.addEventListener('click', xovBack); t3.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); xovBack(); } }); } xovFit(); window.addEventListener('resize', xovFit); setTimeout(xovFit, 400); var x0 = null, y0 = 0;
     ov.addEventListener('pointerdown', function (e) { x0 = e.clientX; y0 = e.clientY; }, { passive: true });
     ov.addEventListener('pointerup', function (e) { if (x0 === null) return; var dx = e.clientX - x0, dy = e.clientY - y0; x0 = null; if (dx < -50 && Math.abs(dx) > Math.abs(dy) * 1.4) xpEnter('Architecture'); }, { passive: true });
     ov.addEventListener('touchstart', function (e) { var t = e.touches[0]; x0 = t.clientX; y0 = t.clientY; }, { passive: true });
