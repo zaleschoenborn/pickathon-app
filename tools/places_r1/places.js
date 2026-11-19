@@ -462,12 +462,12 @@
       '<div class="pkpl-hi">' + (XE && XE !== 'Architecture' ? '' : '<p class="pkpl-kind">' + esc(KIND[h.k] || '') + '</p>') + '<div class="pkpl-nmrow"><img src="' + esc(emb(k)) + '" alt=""><h1>' + esc(XE && XE !== 'Architecture' ? XE + ' at ' + h.n : h.n) + '</h1></div><p class="pkpl-tt">' + esc(XE ? xpLine(XE, k) : (h.t || '')) + '</p></div>' +
       '</div>' +
       (FROM ? '<p class="pkpl-from">' + esc(FROM.n) + ' played ' + esc(h.n) + ' at Pickathon ' + FROM.y + '</p>' : '') +
-      vids(k, XE) +
       (has ? '' : '<p class="pkpl-hook">' + esc(h.hook || '') + '</p>') +
       (has ? '<section class="pkpl-sc" aria-label="Schedule at ' + esc(h.n) + '"><div class="pkpl-days" role="group" aria-label="Day">' + days.map(function (d) { return '<button type="button" class="pk-cta sec pkpl-chip" data-pk="day" data-d="' + d + '"' + (d === TOP.day ? ' aria-pressed="true"' : ' aria-pressed="false"') + '>' + esc(dayN[d] || d.slice(5)) + '</button>'; }).join('') + '</div>' +
         '<ol class="pkpl-sets">' + rows.slice(0, showN).map(function (s) { var A = (D.artists || {})[s.a] || {}; return '<li><span class="pkpl-st">' + tm(s.s) + '</span><span class="pkpl-sa"><b>' + esc(A.n || s.a) + '</b><small>' + esc(LBL[s.l] || '') + '</small></span></li>'; }).join('') + '</ol>' +
         (rows.length > 3 ? '<button type="button" class="pk-cta sec pkpl-whole" data-pk="whole" aria-expanded="' + TOP.all + '">' + (TOP.all ? 'Show less' : 'Whole day at ' + esc(h.n)) + '</button>' : '') + '</section>' : '') +
-      soon(k, XE, h) +
+      '<div class="pkpl-what"></div>' +
+      (season === 'fest' ? soon(k, XE, h, has) + vids(k, XE) : vids(k, XE) + soon(k, XE, h, has)) +
       alsoAt(k, XE, h) +
       '</div>';
     el.innerHTML = html; TOP.i = 0; heroArm(el); document.body.classList.toggle('pkpl-xpup', !!$('.pkpl-up', el));   /* our link up replaces the app's Back to map */
@@ -489,7 +489,8 @@
       return '<button type="button" class="pkpl-vt" data-pk="vid" data-u="' + esc(u) + '" data-c="' + esc(v.a + ' · Pickathon ' + v.y) + '"><img src="' + esc(th) + '" alt="" loading="lazy"><span class="pkpl-pr0" aria-hidden="true"><i></i></span><span class="pkpl-vc"><b>' + esc(v.a) + '</b><small>Pickathon ' + v.y + '</small></span></button>';
     }).join('') + '</div></section>';
   }
-  function soon(k, XE, h) {   /* the 2027 schedule, summarized until it posts (Zale, Nov 19: more useful than every past year) */
+  function soon(k, XE, h, has) {
+    if (has) return '';   /* the real schedule is showing: it is the 2027 card */   /* the 2027 schedule, summarized until it posts (Zale, Nov 19: more useful than every past year) */
     var HP = (data().hoodProg || {})[k], kinds = HP ? (HP.kinds || []).map(function (g) { return g[0]; }).filter(function (n) { return !/^(more|showcases)/i.test(n); }) : [];
     var lc = function (x) { return x.charAt(0).toLowerCase() + x.slice(1); }, what;
     var musicy = /legends|discoveries/i.test(kinds.join(' '));
@@ -498,7 +499,7 @@
     else if (musicy) what = 'music from legends, discoveries and deep cuts';
     else what = kinds.slice(0, 4).map(lc).join(', ').replace(/, ([^,]*)$/, ' and $1') || (XE ? lc(XE) : 'programming');
     var am = (MI || []).filter(function (z) { return z[3] === k; }).map(function (z) { return z[0]; }).filter(function (x, i, a) { return a.indexOf(x) === i && x !== 'tent' && x !== 'gear'; });
-    return '<section class="pkpl-soon" aria-label="Coming in 2027"><p class="pkpl-sk">Coming in 2027</p><h2>What to expect</h2><p>Four days of ' + esc(what) + ' at ' + esc(h.n) + ', Thursday to Sunday, August 5 to 8. The full schedule posts with the 2027 lineup.</p>' +
+    return '<section class="pkpl-soon" aria-label="2027 at ' + esc(h.n) + '"><p class="pkpl-sk">Schedule</p><h2>2027 at ' + esc(h.n) + '</h2><p>Four days of ' + esc(what) + ' at ' + esc(h.n) + ', Thursday to Sunday, August 5 to 8. The full schedule posts with the 2027 lineup.</p>' +
       (am.length ? '<div class="pkpl-sam">' + am.map(function (x) { return '<span><i class="pkpl-fi">' + amGlyph(x) + '</i>' + esc(AMN[x] || x) + '</span>'; }).join('') + '</div>' : '') + '</section>';
   }
   function alsoAt(k, XE, h) {   /* one tile per other experience at this place */
@@ -562,8 +563,18 @@
     drawTop();
     if (t.r === 'hood' && t.h && t.h !== M.cur && HH.shapes[t.h]) { if (M.title) { M.title = false; M.el.classList.add('pkpl-notitle'); } frame(t.h, !M.s); }   /* arriving at a place shows it, never the title screen */
     if (t.r === 'hoods' && M.cur) { M.was = M.cur; M.cur = ''; lit(); if (M.xp || M.amen) fitLit(); }   /* closing a card: back to the experience's places, lit */
-    settleSheet(); dedupe(); backMap();
+    settleSheet(); dedupe(); shape(); backMap();
     var full = $('[data-pl="full"]', M.el); if (full) full.hidden = !M.cur && !M.amen && !(M.s > startView()[0] * 1.15);
+  }
+  function shape() {   /* one clean page (Zale, Nov 19): fold the page's long description into the card with Read more, drop the duplicate video and summer boxes, credits into the story, walk times into the map card */
+    if (top().r !== 'hood') return; var w = document.querySelector('#root section.pk-hd-w'), card = document.getElementById('pkpl-top'); if (!w || !card) return;
+    var what = card.querySelector('.pkpl-what'), desc = w.querySelector('.pk-hd-desc');
+    if (what && desc && !what.firstChild) { var d = document.createElement('div'); d.className = 'pkpl-more'; d.innerHTML = '<p>' + desc.innerHTML + '</p><button type="button" class="pkpl-rm" aria-expanded="false">Read more</button>'; what.appendChild(d);
+      var hook = card.querySelector('.pkpl-hook'); if (hook) what.insertBefore(hook, d);
+      d.querySelector('.pkpl-rm').addEventListener('click', function () { var o = d.classList.toggle('open'); this.textContent = o ? 'Show less' : 'Read more'; this.setAttribute('aria-expanded', o); }); }
+    var st = w.querySelector('.pk-hd-story'), who = w.querySelector('.pk-hd-who');
+    if (st && who && !st.querySelector('.pkpl-credit')) { var cr = who.querySelector('.pk-hd-creds'), bt = who.querySelector('.pk-hd-pitch .pk-cta');
+      var c = document.createElement('div'); c.className = 'pkpl-credit'; c.innerHTML = '<p class="pkpl-sk">Who built it</p>'; if (cr) c.appendChild(cr.cloneNode(true)); if (bt) { var b2 = bt.cloneNode(true); b2.className = 'pk-cta sec pkpl-bw'; b2.addEventListener('click', function () { bt.click(); }); c.appendChild(b2); } st.appendChild(c); }
   }
   function backMap() {   /* end of a neighborhood page: the map again; tap it to go back to how you came in (Zale, Nov 19) */
     var old = document.getElementById('pkpl-back'), t = top(), k = t.h;
@@ -578,6 +589,7 @@
     d.innerHTML = '<button type="button" aria-label="Back to the map' + (xe ? ': ' + esc(xe) + ' at Pickathon' : '') + '"><svg viewBox="' + vb + '" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><image href="farmmap/map2.webp?v=3" x="0" y="0" width="' + W + '" height="' + H + '"/><path d="' + HH.shapes[k] + '" fill="rgba(255,236,170,.12)" stroke="#FFE7A3" stroke-width="' + (bw / 160) + '" stroke-linejoin="round"/></svg>' +
       '<span class="pkpl-bk"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5 8 12l7 7"/></svg>' + (xe ? 'Back to ' + esc(xe) + ' at Pickathon' : 'Back to the map') + '</span></button>';
     d.querySelector('button').addEventListener('click', function () { if (M && xe) M.xp = xe; go('hoods'); });
+    var lk = w.querySelector('.pk-hd-links'); if (lk) { var l2 = lk.cloneNode(true); l2.className = 'pk-hd-links pkpl-walk'; l2.querySelectorAll('button').forEach(function (x, i) { var src = lk.querySelectorAll('button')[i]; x.addEventListener('click', function () { src.click(); }); }); d.appendChild(l2); }
     anchor.parentNode.insertBefore(d, anchor.nextSibling);
   }
   function dedupe() { var d = document.querySelector('.pk-hd-desc0'), h = data().hoods[top().h || ''] || {}; if (d) d.classList.toggle('pkpl-dup', !!h.hook && fold(d.textContent).trim() === fold(h.hook).trim()); }
