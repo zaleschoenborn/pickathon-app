@@ -11836,7 +11836,38 @@ if (!window.pkOrders) window.pkOrders = (function () {
   #root#root#root #pkh2 .h2-hct-nx svg{width:13px;height:13px;fill:currentColor}
 }
 @media (min-width:1200px){
-  #root#root#root #pkh2 .h2-hct-nx{display:none!important}
+  /* Zale Nov 18, desktop: the same tall cards as the phone, the front one centered, neighbors peeking; arrows step one card; See all top right */
+  #root#root#root #pkh2 .h2-ccw{position:relative}
+  #root#root#root #pkh2 .h2-s5 .h2-ccw .h2-cc-r{overflow-x:auto!important;touch-action:pan-x pan-y!important;scroll-snap-type:x mandatory!important;gap:20px!important;margin:0 calc(50% - 50vw)!important;padding:0 calc(50vw - 190px)!important;scroll-padding:0 calc(50vw - 190px)!important;scrollbar-width:none;width:auto!important;max-width:none!important}
+  #root#root#root #pkh2 .h2-ccw .h2-cc{flex:0 0 380px!important;scroll-snap-align:center;scroll-snap-stop:always;transition:opacity .25s}
+  #root#root#root #pkh2 .h2-ccw .h2-cc:not(.is-mid){opacity:.5!important}
+  #root#root#root #pkh2 .h2-ccx,#root#root#root #pkh2 .h2-hc .h2-hct-go{display:none!important}
+  #root#root#root #pkh2 .h2-ccw .h2-cc-bl,#root#root#root #pkh2 .h2-ccw .h2-cc-c,#root#root#root #pkh2 .h2-ccw .h2-cc-n,#root#root#root #pkh2 .h2-ccw .h2-hct-nm,#root#root#root #pkh2 .h2-ccw .h2-hct-g{max-width:none!important}
+  #root#root#root #pkh2 .h2-ccw .h2-cc-t{padding-right:20px!important}
+  #root#root#root #pkh2 .h2-hct-nx{display:inline-flex!important;align-items:center;gap:4px;margin-left:auto;flex:none;font:800 14px/1 'Bricolage Grotesque',system-ui,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:#F2CF62}
+  #root#root#root #pkh2 .h2-hct-nx svg{width:13px;height:13px;fill:currentColor}
+  #root#root#root #pkh2 .h2-arw{display:grid!important;top:50%}
+  #root#root#root #pkh2 .h2-s5 .h2-arl{left:calc(50% - 250px)}#root#root#root #pkh2 .h2-s5 .h2-arr{right:calc(50% - 250px)}
+  #root#root#root #pkh2 .h2-arr svg{transform:none}#root#root#root #pkh2 .h2-arl svg{transform:scaleX(-1)}
+  /* neighborhoods: carousel on the left, What happens here tiles on the right */
+  #root#root#root #pkh2 .h2-s3c .h2-ccw{display:flex;gap:40px;align-items:stretch}
+  #root#root#root #pkh2 .h2-s3c .h2-ccw .h2-cc-r{flex:1 1 auto!important;min-width:0;overflow-x:auto!important;touch-action:pan-x pan-y!important;scroll-snap-type:x mandatory!important;gap:20px!important;margin:0!important;padding:0 calc(50% - 190px)!important;scroll-padding:0 calc(50% - 190px)!important;scrollbar-width:none;-webkit-mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent)}
+  #root#root#root #pkh2 .h2-s3c .h2-arl{left:calc((100% - 400px) / 2 - 250px)}#root#root#root #pkh2 .h2-s3c .h2-arr{right:calc(400px + (100% - 400px) / 2 - 250px)}
+  #root#root#root #pkh2 .h2-xp{display:flex;flex:0 0 360px;flex-direction:column;justify-content:center;gap:12px}
+  #root#root#root #pkh2 .h2-xp-h{margin:0 0 6px;font:800 16px/1.2 'Bricolage Grotesque',system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#D6B54A}
+  #root#root#root #pkh2 .h2-xp-t{display:grid;gap:4px;padding:16px 18px;border:1px solid rgba(242,237,227,.22);border-radius:6px;background:rgba(242,237,227,.05)}
+  #root#root#root #pkh2 .h2-xp-n{font:800 20px/1.1 'Bricolage Grotesque',system-ui,sans-serif;color:var(--cream)}
+  #root#root#root #pkh2 .h2-xp-l{font:500 18px/1.35 'Bricolage Grotesque',system-ui,sans-serif;color:rgba(242,237,227,.85)}
+}
+@media (max-width:1199px){#root#root#root #pkh2 .h2-xp{display:none}}
+@media (min-width:1200px){
+  #root#root#root#root #pkh2 .h2-ccw .h2-cc-n{font-size:36px!important;line-height:1.02!important}
+  #root#root#root#root #pkh2 .h2-s3c .h2-ccw .h2-cc{flex-basis:440px!important}
+  #root#root#root#root #pkh2 .h2-s3c .h2-ccw .h2-cc-r{padding:0 calc(50% - 220px)!important;scroll-padding:0 calc(50% - 220px)!important}
+  #root#root#root#root #pkh2 .h2-s3c .h2-arl{left:calc((100% - 400px) / 2 - 280px)}#root#root#root#root #pkh2 .h2-s3c .h2-arr{right:calc(400px + (100% - 400px) / 2 - 280px)}
+  #root#root#root#root #pkh2 .h2-ccw .h2-hct-nm{gap:12px!important}
+  #root#root#root#root #pkh2 .h2-ccw .h2-cc-ph img.h2-hct-em{width:56px!important;height:56px!important}
+  #root#root#root#root #pkh2 .h2-cc-nav .h2-s5top{border-color:#D6B54A!important;background:rgba(214,181,74,.18)!important;color:#F2CF62!important}
 }
 #pkh2 .h2-two{flex:none;margin:0}
 #root#root#root #pkh2 .h2-two .pk-cl-an{border:2px solid rgba(242,237,227,.6)!important;background:transparent!important;color:var(--cream)!important;border-radius:6px!important;min-height:50px!important;margin:0!important}
@@ -12677,7 +12708,7 @@ window.pkClimbRank = function (C, dd) {
       h += '<section class="h2-s h2-s3 h2-s3c" aria-labelledby="h2-h3"><div class="h2-s5head"><div><h2 class="h2-d h2-sec pkp-head" id="h2-h3">Live inside a temporary city of wonder</h2><p class="h2-sub h2-s3sub">' + 'Forest stages, a barn, an orchard. Every turn leads somewhere new.</p></div>' +
         '<div class="h2-cc-nav"><button type="button" class="h2-pill h2-s5top h2-anb" data-h2="allhoods">See all neighborhoods</button></div></div>' +
         '<div class="h2-ccw"><div class="h2-cc-r" data-h2="hcards" role="list" aria-label="Neighborhoods"></div>' +
-        '<button type="button" class="h2-arw h2-arl" data-h2="hprev" aria-label="Previous neighborhood">' + CHEV + '</button><button type="button" class="h2-arw h2-arr" data-h2="hnxt" aria-label="Next neighborhood">' + CHEV + '</button></div>' +
+        '<button type="button" class="h2-arw h2-arl" data-h2="hprev" aria-label="Previous neighborhood">' + CHEV + '</button><button type="button" class="h2-arw h2-arr" data-h2="hnxt" aria-label="Next neighborhood">' + CHEV + '</button><aside class="h2-xp" data-h2="xp" aria-live="polite"></aside></div>' +
         '<div class="pk-cl-btns h2-two"><button type="button" class="pk-bkb pri pk-cl-ex" data-h2="allhoods">See all neighborhoods</button></div></section>';
     } else {
     h += '<section class="h2-s h2-s3" aria-labelledby="h2-h3"><div class="h2-s3head"><h2 class="h2-d h2-sec pkp-head" id="h2-h3">Live inside a temporary city of wonder</h2><p class="h2-sub h2-s3sub">' + 'Forest stages, a barn, an orchard. Every turn leads somewhere new.' + (SIMPLE ? '' : ' Pick one and step inside.') + '</p></div>' +
@@ -12922,7 +12953,7 @@ window.pkClimbRank = function (C, dd) {
         '<button type="button"' + ti + ' class="h2-ccx" data-h2="alldisc">Explore all ' + (window.__pkNDisc ? window.__pkNDisc + ' ' : '') + 'Discoveries ' + CHEV + '</button></article>';   /* Zale Nov 15: the way to all of them sits on the card, lower right, like Explore <neighborhood> */
     }).join('');
     guard(box); s._L = L; box._K = K; box._N = A.length;
-    if (window.__pkNDisc) $$('.h2-two [data-h2="alldisc"]', root).forEach(function (b) { b.textContent = 'See all ' + window.__pkNDisc + ' Discoveries'; });
+    if (window.__pkNDisc) $$('.h2-two [data-h2="alldisc"], .h2-cc-nav [data-h2="alldisc"]', root).forEach(function (b) { b.textContent = 'See all ' + window.__pkNDisc + ' Discoveries'; });
     loopHome(box);
     if (!box._lp) { box._lp = 1; var tmo = 0; box.addEventListener('scroll', function () { clearTimeout(tmo); tmo = setTimeout(function () { loopFix(box); }, 140); }, { passive: true });
       cardsBox = box; if (!cardsRz) { cardsRz = 1; window.addEventListener('resize', function () { if (cardsBox && cardsBox.isConnected) loopHome(cardsBox, true); }); } }   /* Nov 14 leak fix: one resize listener for the current card row; a new one per Home draw kept every old Home alive (about 1,100 page elements per visit, the iPhone blank and reload) */
@@ -12942,7 +12973,14 @@ window.pkClimbRank = function (C, dd) {
     for (var k = 0; k < C.length; k++) { var q = C[k].getBoundingClientRect(), d = Math.abs(q.left + q.width / 2 - mid); if (d < bd) { bd = d; bi = k; } }
     var st = C.length > 1 ? C[1].offsetLeft - C[0].offsetLeft : 0; return { i: bi, step: st }; }
   function ccCenter(r, k) { var C = r.children[k]; if (!C) return; r.scrollLeft = C.offsetLeft - (r.clientWidth - C.offsetWidth) / 2; }
-  function markMid(r) { if (!r || !r.children.length) return; var m = ccMid(r); for (var k = 0; k < r.children.length; k++) { var c = r.children[k]; c.classList.toggle('is-mid', k === m.i); c.classList.toggle('is-prev', k < m.i); c.classList.toggle('is-next', k > m.i); } }
+
+  /* Zale Nov 18: desktop shows what the centered neighborhood is for: one tile per kind of programming it holds (from the latest lineup, NBPG), each
+     with one plain line. Words are a draft for Copy Review. Phone and tablet hide the tiles (the programming line is on the card). */
+  var XPL = { Music: 'Live sets, from first-timers to legends.', DJs: 'Dance sets that run into the night.', Family: 'Shows and workshops made for kids.', Wellness: 'Yoga, breathwork and slow mornings.', Comedy: 'Stand-up and live comedy.', Literary: 'Readings, storytellers and talks.', Curation: 'Dinners made by a chef and an artist together.', Food: 'Local kitchens and farm food.', Craft: 'Makers and handmade goods.' };
+  function xpDraw(r, i) { var a = root && $('[data-h2="xp"]', root); if (!a) return; var c = r.children[i], k = c && c.getAttribute('data-h'), H = k && D && D.hoods[k]; if (!H || a._k === k) return; a._k = k;
+    var pg = ''; try { pg = window.__pkNbpg ? window.__pkNbpg(k) : ''; } catch (e) {} var T = pg ? pg.split(' · ') : [];
+    a.innerHTML = '<p class="h2-xp-h">What happens at ' + esc(H.n) + '</p>' + (T.length ? T.map(function (t) { return '<div class="h2-xp-t"><span class="h2-xp-n">' + esc(t) + '</span><span class="h2-xp-l">' + esc(XPL[t] || '') + '</span></div>'; }).join('') : '<div class="h2-xp-t"><span class="h2-xp-l">A place to gather between sets.</span></div>'); }
+  function markMid(r) { if (!r || !r.children.length) return; var m = ccMid(r); if (r.getAttribute('data-h2') === 'hcards') xpDraw(r, m.i); for (var k = 0; k < r.children.length; k++) { var c = r.children[k]; c.classList.toggle('is-mid', k === m.i); c.classList.toggle('is-prev', k < m.i); c.classList.toggle('is-next', k > m.i); } }
   function midWatch(r) { if (r._mw) return; r._mw = 1; var raf = 0; r.addEventListener('scroll', function () { if (raf) return; raf = requestAnimationFrame(function () { raf = 0; markMid(r); }); }, { passive: true }); }
   /* Zale Nov 16: Another crossfades to a new pick (a shuffled deck, no repeats until all are seen); no sliding, works the same in Safari */
   function anotherFade(r) {
@@ -13134,7 +13172,7 @@ window.pkClimbRank = function (C, dd) {
     if (!root || !root.contains(b)) return;
     if (b.classList.contains('h2-em')) { var hk = b.getAttribute('data-h'); if (hk === cur && Date.now() - (root._pickAt || 0) > 400) { go('hood', { h: cur }); return; } hood(hk); root._pickAt = Date.now(); return; }   /* Zale Nov 14: the first tap picks (map glides in), a second tap on the same one opens it */
     var a = b.getAttribute('data-h2');
-    if (a === 'cnext') { anotherFade($('[data-h2="cards"]', root)); return; }
+    if (a === 'cnext') { cardStep(1); return; }
     if (a === 'cprev') { cardStep(-1); return; }
     if (a === 'alldisc') { toArchive(null); return; }
     if (a === 'barch' || a === 'bph') { var sl = $('.h2-s5', root), ba = sl && sl._L && sl._L[+b.getAttribute('data-i')]; if (!ba) return;
@@ -13143,7 +13181,7 @@ window.pkClimbRank = function (C, dd) {
     if (a === 'hood' || a === 'hgo') { if (cur) { try { var mnH = homeSc(); window.__pkHomeY = { y: mnH ? mnH.scrollTop : 0, t: Date.now() }; } catch (x) {} go('hood', { h: cur }); } return; }   /* Back from the neighborhood's page returns to this spot on Home, not the top */
     if (a === 'hnext') { hoodNext(); return; }
     if (a === 'hcard') { var hk2 = b.getAttribute('data-h'); if (hk2) { try { localStorage.setItem('pk-h0', hk2); sessionStorage.setItem('pk-hcret', hk2); var mnH2 = homeSc(); window.__pkHomeY = { y: mnH2 ? mnH2.scrollTop : 0, t: Date.now() }; } catch (x) {} go('hood', { h: hk2 }); } return; }
-    if (a === 'hnxt') { anotherFade($('[data-h2="hcards"]', root)); return; }
+    if (a === 'hnxt') { hcStep(1); return; }
     if (a === 'hprev') { hcStep(-1); setTimeout(hcLabel, 450); return; }
     if (a === 'hgo2') { hcLabel(); var hk3 = b.getAttribute('data-h'); if (hk3) { try { localStorage.setItem('pk-h0', hk3); sessionStorage.setItem('pk-hcret', hk3); var mn3 = homeSc(); window.__pkHomeY = { y: mn3 ? mn3.scrollTop : 0, t: Date.now() }; } catch (x) {} go('hood', { h: hk3 }); } return; }   /* Zale Nov 12: the photo opens that neighborhood's own page (#/hood/<key>) */
     if (a === 'hmap') {   /* Zale Nov 15: a tap on the map picks the neighborhood under the finger, like its emblem (photo and name change); the photo opens the page. A keyboard press opens the page. */
