@@ -359,14 +359,16 @@
     return ACTS;
   }
   function fold(s) { return String(s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/^the /, ''); }
+  var FT = 'farm';   /* Find's tab: On the farm or Neighborhoods; typing searches both */
   function findOpen() {
     var f = $('.pkpl-find', M.el);
     if (!f) { f = document.createElement('div'); f.className = 'pkpl-find'; f.setAttribute('role', 'dialog'); f.setAttribute('aria-label', 'Find');
-      f.innerHTML = '<div class="pkpl-fbar"><input type="text" inputmode="search" placeholder="A place, an act, water…" aria-label="Find a place, an act or an amenity" autocomplete="off" enterkeyhint="search"><button type="button" data-pl="fclose" aria-label="Close Find">×</button></div><div class="pkpl-fres"></div>';
+      f.innerHTML = '<div class="pkpl-fbar"><input type="text" inputmode="search" placeholder="A place, an act, water…" aria-label="Find a place, an act or an amenity" autocomplete="off" enterkeyhint="search"><button type="button" data-pl="fclose" aria-label="Close Find">×</button></div><div class="pkpl-ftabs" role="tablist"><button type="button" role="tab" data-pl="ftab" data-t="farm" aria-selected="true">On the farm</button><button type="button" role="tab" data-pl="ftab" data-t="hoods" aria-selected="false">Neighborhoods</button></div><div class="pkpl-fres"></div>';
       M.el.appendChild(f);
       var inp = $('input', f); inp.addEventListener('input', function () { findDraw(inp.value); });
       f.addEventListener('click', function (e) { e.stopPropagation(); var b = e.target.closest('button'); if (!b) return; var a = b.getAttribute('data-pl');
         if (a === 'fclose') { f.hidden = true; return; }
+        if (a === 'ftab') { FT = b.getAttribute('data-t'); $$('[data-pl="ftab"]', f).forEach(function (x) { x.setAttribute('aria-selected', x === b ? 'true' : 'false'); }); findDraw($('input', f).value); return; }
         var t = b.getAttribute('data-ft'), v = b.getAttribute('data-fv'); f.hidden = true;
         if (M.title) { M.title = false; M.el.classList.add('pkpl-notitle'); }
         if (t === 'h') open(v); else if (t === 'a') { var o = actIndex().filter(function (x) { return x.n === v; })[0]; if (o) { FROM = o; open(o.h); } } else if (t === 'm') { M.amen = v; M.xp = ''; M.cur = ''; titleDraw(); M.title = false; M.el.classList.add('pkpl-notitle'); if (top().r === 'hood') go('hoods'); amenDraw(); lit(); var HL = Object.keys(amenHoods()); if (HL.length) { animTo(fitBox(union(HL), clear(), wide() ? 90 : 34), 560); } var L = HL.length ? [] : amOf(v); if (L.length) {   /* frame the lit neighborhoods, the same way an experience does */
@@ -380,10 +382,12 @@
     var hs = ids().filter(function (k) { return !Q || fold(D.hoods[k].n).indexOf(Q) >= 0 || fold(D.hoods[k].t).indexOf(Q) >= 0; });
     var am = Object.keys(AMN).filter(function (k) { return (k === 'stage' || amOf(k).length) && (!Q || fold(AMN[k]).indexOf(Q) >= 0 || fold(k).indexOf(Q) >= 0); });
     var ac = Q.length >= 2 ? actIndex().filter(function (a) { return a.f.indexOf(Q) >= 0; }).sort(function (a, b) { return (a.f.indexOf(Q) - b.f.indexOf(Q)) || (b.y - a.y) || (a.n < b.n ? -1 : 1); }).slice(0, 8) : [];
-    var g = function (h, L, c) { return L.length ? '<p class="pkpl-fg">' + h + '</p>' + (c ? '<div class="pkpl-f2">' + L.join('') + '</div>' : L.join('')) : ''; };   /* c: two columns, so the lists fit on one phone screen */
+    var showF = !!Q || FT === 'farm', showH = !!Q || FT === 'hoods'; if (!showF) am = []; if (!showH) hs = [];
+    var tb = $('.pkpl-ftabs', f); if (tb) tb.hidden = !!Q;   /* typing searches both lists, so the tabs step aside */
+    var g = function (h, L, c) { return L.length ? (Q ? '<p class="pkpl-fg">' + h + '</p>' : '') + (c ? '<div class="pkpl-f2">' + L.join('') + '</div>' : L.join('')) : ''; };   /* c: two columns, so the lists fit on one phone screen */
     out.innerHTML =
       g('On the farm', am.map(function (k) { return '<button type="button" data-ft="m" data-fv="' + k + '"><i class="pkpl-fi">' + amGlyph(k) + '</i><span><b>' + AMN[k] + '</b><small>' + (k === 'stage' ? Object.keys(stageCount()).length : amOf(k).length) + ' on the farm</small></span></button>'; }), 1) +
-      g('Neighborhoods', hs.slice(0, Q ? 6 : 20).map(function (k) { var h = D.hoods[k]; return '<button type="button" data-ft="h" data-fv="' + k + '"><img src="' + esc(emb(k)) + '" alt=""><span><b>' + esc(h.n) + '</b><small>' + esc(({ stage: 'Stage', around: 'Gathering', camp: 'Camping' })[h.k] || '') + '</small></span></button>'; }), 1) +
+      g('Neighborhoods', hs.slice(0, Q ? 6 : 20).map(function (k) { var h = D.hoods[k]; return '<button type="button" data-ft="h" data-fv="' + k + '"><img src="' + esc(emb(k)) + '" alt=""><span><b>' + esc(h.n) + '</b></span></button>'; }), 1) +
       g('Acts', ac.map(function (a) { return '<button type="button" data-ft="a" data-fv="' + esc(a.n) + '"><img src="' + esc(emb(a.h)) + '" alt=""><span><b>' + esc(a.n) + '</b><small>' + esc(D.hoods[a.h].n + ' · Pickathon ' + a.y) + '</small></span></button>'; }));
     if (!out.innerHTML) out.innerHTML = '<p class="pkpl-fnone">Nothing by that name yet.</p>';
   }

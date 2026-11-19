@@ -217,3 +217,6 @@ body.pkpl-hood:not(.pkpl-wide) .pkpl-xb{display:none}
 #root .pkpl-f2 img,#root .pkpl-f2 .pkpl-fi{width:30px!important;height:30px!important}
 #root .pkpl-f2 .pkpl-fi svg{width:20px;height:20px}
 body.pkpl-wide #root .pkpl-f2,body.pkpl-wide .pkpl-f2{grid-template-columns:1fr 1fr 1fr}
+#root .pkpl-ftabs{display:flex;gap:8px;padding:0 12px 6px}
+#root .pkpl-ftabs button{flex:1;min-height:44px;border-radius:6px;border:1px solid rgba(242,237,227,.35);background:transparent;color:var(--pl-cream);font:800 13px/1 'Bricolage Grotesque',system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;cursor:pointer}
+#root .pkpl-ftabs button[aria-selected="true"]{background:rgba(214,181,74,.18);border-color:#D6B54A;color:#FFE7A3}
