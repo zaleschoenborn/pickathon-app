@@ -11822,6 +11822,22 @@ if (!window.pkOrders) window.pkOrders = (function () {
 #pkh2#pkh2 .h2-ccw .h2-cc-r{margin:0!important}   /* the card sits on the same margins as the heading and the buttons */
 @media (min-width:600px){#root#root#root #pkh2 .h2-two>*{font:800 14px/1.15 'Bricolage Grotesque',system-ui,sans-serif!important;letter-spacing:.06em!important;text-transform:uppercase}}
 #pkh2#pkh2 .h2-ccw .h2-cc:not(.is-mid) .h2-hct-go,#pkh2#pkh2 .h2-ccw .h2-cc:not(.is-mid) .h2-ring{opacity:1}
+
+/* Zale Nov 18: Before they were big and the neighborhoods are swipe carousels again. The card in front is centered, a sliver of each neighbor shows so
+   people know to swipe. No Another button: See all N Discoveries / See all neighborhoods sits under the row (phone, tablet) or top right (desktop). In a
+   neighborhood card Explore > sits on the name row, right side. Replaces the Nov 15 "no peeks, no swipe" block above. (design/home-carousel) */
+@media (max-width:1199px){
+  #root#root#root #pkh2 .h2-ccw .h2-cc-r{overflow-x:auto!important;touch-action:pan-x pan-y!important;scroll-snap-type:x mandatory!important;gap:10px!important;margin:0 calc(-1 * var(--gutter,16px))!important;padding:0 28px!important;scroll-padding:0 28px!important;scrollbar-width:none}
+  #root#root#root #pkh2 .h2-ccw .h2-cc{flex:0 0 100%!important;scroll-snap-align:center;scroll-snap-stop:always}
+  #root#root#root #pkh2 .h2-ccw .h2-cc:not(.is-mid){opacity:.55!important}
+  #root#root#root #pkh2 .h2-ccw .h2-cc{transition:opacity .25s}
+  #root#root#root #pkh2 .h2-two .pk-cl-an,#root#root#root #pkh2 .h2-cc-nav .h2-anb,#root#root#root #pkh2 .h2-cc-nav .h2-ib{display:none!important}
+  #root#root#root #pkh2 .h2-hct-nx{display:inline-flex;align-items:center;gap:4px;margin-left:auto;flex:none;font:800 14px/1 'Bricolage Grotesque',system-ui,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:#F2CF62}
+  #root#root#root #pkh2 .h2-hct-nx svg{width:13px;height:13px;fill:currentColor}
+}
+@media (min-width:1200px){
+  #root#root#root #pkh2 .h2-hct-nx{display:none!important}
+}
 #pkh2 .h2-two{flex:none;margin:0}
 #root#root#root #pkh2 .h2-two .pk-cl-an{border:2px solid rgba(242,237,227,.6)!important;background:transparent!important;color:var(--cream)!important;border-radius:6px!important;min-height:50px!important;margin:0!important}
 #root#root#root #pkh2 .h2-two .pk-cl-ex{min-height:50px!important}
@@ -12659,10 +12675,10 @@ window.pkClimbRank = function (C, dd) {
     if (SIMPLE) {   /* Zale Nov 15: neighborhoods browse like Who's up next: one big card with the neighbors peeking, arrows on desktop, swipe on phone; the card opens its page; Explore all opens the map */
       ROT = ids.filter(function (i) { return d.hoods[i].k !== 'camp'; });
       h += '<section class="h2-s h2-s3 h2-s3c" aria-labelledby="h2-h3"><div class="h2-s5head"><div><h2 class="h2-d h2-sec pkp-head" id="h2-h3">Live inside a temporary city of wonder</h2><p class="h2-sub h2-s3sub">' + 'Forest stages, a barn, an orchard. Every turn leads somewhere new.</p></div>' +
-        '<div class="h2-cc-nav"><button type="button" class="h2-pill h2-s5top h2-anb" data-h2="hnxt">↻ Another neighborhood</button></div></div>' +
+        '<div class="h2-cc-nav"><button type="button" class="h2-pill h2-s5top h2-anb" data-h2="allhoods">See all neighborhoods</button></div></div>' +
         '<div class="h2-ccw"><div class="h2-cc-r" data-h2="hcards" role="list" aria-label="Neighborhoods"></div>' +
         '<button type="button" class="h2-arw h2-arl" data-h2="hprev" aria-label="Previous neighborhood">' + CHEV + '</button><button type="button" class="h2-arw h2-arr" data-h2="hnxt" aria-label="Next neighborhood">' + CHEV + '</button></div>' +
-        '<div class="pk-cl-btns h2-two"><button type="button" class="pk-bkb pri pk-cl-ex" data-h2="hgo2">Explore</button><button type="button" class="pk-cl-an pk-cl-anb" data-h2="hnxt">↻ Another neighborhood</button></div></section>';
+        '<div class="pk-cl-btns h2-two"><button type="button" class="pk-bkb pri pk-cl-ex" data-h2="allhoods">See all neighborhoods</button></div></section>';
     } else {
     h += '<section class="h2-s h2-s3" aria-labelledby="h2-h3"><div class="h2-s3head"><h2 class="h2-d h2-sec pkp-head" id="h2-h3">Live inside a temporary city of wonder</h2><p class="h2-sub h2-s3sub">' + 'Forest stages, a barn, an orchard. Every turn leads somewhere new.' + (SIMPLE ? '' : ' Pick one and step inside.') + '</p></div>' +
       '<div class="h2-hmv"><button type="button" class="h2-hood" data-h2="hood"><img class="h2-hp is-on" alt="" decoding="async"><img class="h2-hp" alt="" decoding="async" aria-hidden="true">' +
@@ -12695,10 +12711,10 @@ window.pkClimbRank = function (C, dd) {
        "Pickathon YYYY" in the caption. Photo plays, words open the archive at that artist. See all Discoveries under it. Filled by drawBand(). */
     var hBand = '<section class="h2-s h2-s5" aria-labelledby="h2-h5"><div class="h2-s5head"><div><h2 class="h2-d h2-sec pkp-head" id="h2-h5">Before they were big</h2>' +
       '<p class="h2-sub h2-s5sub">Few knew these bands before Pickathon.</p></div>' +
-      '<div class="h2-cc-nav"><button type="button" class="h2-pill h2-s5top h2-anb" data-h2="cnext">↻ Another discovery</button><button type="button" class="h2-ib" data-h2="cprev" aria-label="Previous discoveries">' + CHEV + '</button><button type="button" class="h2-ib" data-h2="cnext" aria-label="More discoveries">' + CHEV + '</button></div></div>' +
+      '<div class="h2-cc-nav"><button type="button" class="h2-pill h2-s5top h2-anb" data-h2="alldisc">See all Discoveries</button><button type="button" class="h2-ib" data-h2="cprev" aria-label="Previous discoveries">' + CHEV + '</button><button type="button" class="h2-ib" data-h2="cnext" aria-label="More discoveries">' + CHEV + '</button></div></div>' +
       '<div class="h2-ccw"><div class="h2-cc-r" data-h2="cards" role="list" aria-label="Discoveries, ranked by how big they are today"></div>' +
       '<button type="button" class="h2-arw h2-arl" data-h2="cprev" aria-label="Previous discovery">' + CHEV + '</button><button type="button" class="h2-arw h2-arr" data-h2="cnext" aria-label="Next discovery">' + CHEV + '</button></div>' +
-      '<div class="pk-cl-btns h2-two"><button type="button" class="pk-bkb pri pk-cl-ex" data-h2="alldisc">Explore all Discoveries</button><button type="button" class="pk-cl-an pk-cl-anb" data-h2="cnext">↻ Another discovery</button></div></section>';
+      '<div class="pk-cl-btns h2-two"><button type="button" class="pk-bkb pri pk-cl-ex" data-h2="alldisc">See all Discoveries</button></div></section>';
     return hP + hBand + hPoster + hPlace + h;   /* Zale, Nov 12 night: the poster is the proof and follows the stories; neighborhoods lead into the ticket line. Current architecture, not a hard rule (see home_poster_frame_nov12.md) */
   }
   /* the hero's sale line and its one button (5174 wording). Before the round: "Holiday Sale opens Nov 19, 10 am PT" + Alert me when it opens (the
@@ -12786,7 +12802,7 @@ window.pkClimbRank = function (C, dd) {
     box.innerHTML = seq.map(function (e) { var k = A[e[0]], H = D.hoods[k], L = hoodSet(k), x = L[0], cl = e[1], ti = cl ? ' tabindex="-1"' : '';
       return '<article class="h2-cc h2-hc' + (cl ? ' h2-cc-cl' : '') + '" data-h="' + k + '"' + (cl ? ' aria-hidden="true"' : ' role="listitem"') + '><button type="button"' + ti + ' class="h2-cc-ph" data-h2="hcard" data-h="' + k + '" aria-label="' + esc(H.n + ', ' + KIND[H.k] + (H.t ? ', ' + H.t : '') + '. Open its page') + '">' +
         '<img class="h2-hci is-on" src="' + esc(x.i) + '" alt="" style="object-position:' + esc(x.p || '50% 50%') + '" loading="' + (e[0] < 3 ? 'eager' : 'lazy') + '" decoding="async"><img class="h2-hci" alt="" decoding="async">' +
-        '<span class="h2-cc-t h2-hct"><span class="h2-cc-k"><span>' + esc(KIND[H.k]) + '</span></span><span class="h2-hct-nm"><img class="h2-hct-em" src="' + esc(H.icw || ('ic2/' + k + '.png')) + '" alt="" width="52" height="52" decoding="async"><span class="h2-d h2-cc-n pkp-head">' + esc(H.n) + '</span></span>' + (H.t ? '<span class="h2-hct-g">' + esc(H.t) + '</span>' : '') + (function () { var pg = ''; try { pg = window.__pkNbpg ? window.__pkNbpg(k) : ''; } catch (e) {} return pg ? '<span class="h2-hct-pr">' + esc(pg) + '</span>' : ''; })() + '</span>' +
+        '<span class="h2-cc-t h2-hct"><span class="h2-cc-k"><span>' + esc(KIND[H.k]) + '</span></span><span class="h2-hct-nm"><img class="h2-hct-em" src="' + esc(H.icw || ('ic2/' + k + '.png')) + '" alt="" width="52" height="52" decoding="async"><span class="h2-d h2-cc-n pkp-head">' + esc(H.n) + '</span><span class="h2-hct-nx" aria-hidden="true">Explore ' + CHEV + '</span></span>' + (H.t ? '<span class="h2-hct-g">' + esc(H.t) + '</span>' : '') + (function () { var pg = ''; try { pg = window.__pkNbpg ? window.__pkNbpg(k) : ''; } catch (e) {} return pg ? '<span class="h2-hct-pr">' + esc(pg) + '</span>' : ''; })() + '</span>' +
         '<span class="h2-hct-go" aria-hidden="true"><span class="h2-hct-gl">Explore </span><span class="h2-hct-gn">' + esc((/^the /i.test(H.n) ? H.n : 'the ' + H.n) + ' neighborhood') + ' </span><span class="h2-hct-gs">' + esc(H.n) + ' </span>' + CHEV + '</span></button></article>'; }).join('');
     guard(box); box._K = K; box._N = A.length; box._A = A;
     var last = '', back = false; try { last = localStorage.getItem('pk-h0') || ''; var rt = sessionStorage.getItem('pk-hcret'); if (rt) { sessionStorage.removeItem('pk-hcret'); last = rt; back = true; } } catch (e) {}
@@ -12906,7 +12922,7 @@ window.pkClimbRank = function (C, dd) {
         '<button type="button"' + ti + ' class="h2-ccx" data-h2="alldisc">Explore all ' + (window.__pkNDisc ? window.__pkNDisc + ' ' : '') + 'Discoveries ' + CHEV + '</button></article>';   /* Zale Nov 15: the way to all of them sits on the card, lower right, like Explore <neighborhood> */
     }).join('');
     guard(box); s._L = L; box._K = K; box._N = A.length;
-    if (window.__pkNDisc) $$('.h2-two [data-h2="alldisc"]', root).forEach(function (b) { b.textContent = 'Explore all ' + window.__pkNDisc + ' Discoveries'; });
+    if (window.__pkNDisc) $$('.h2-two [data-h2="alldisc"]', root).forEach(function (b) { b.textContent = 'See all ' + window.__pkNDisc + ' Discoveries'; });
     loopHome(box);
     if (!box._lp) { box._lp = 1; var tmo = 0; box.addEventListener('scroll', function () { clearTimeout(tmo); tmo = setTimeout(function () { loopFix(box); }, 140); }, { passive: true });
       cardsBox = box; if (!cardsRz) { cardsRz = 1; window.addEventListener('resize', function () { if (cardsBox && cardsBox.isConnected) loopHome(cardsBox, true); }); } }   /* Nov 14 leak fix: one resize listener for the current card row; a new one per Home draw kept every old Home alive (about 1,100 page elements per visit, the iPhone blank and reload) */
@@ -13005,7 +13021,7 @@ window.pkClimbRank = function (C, dd) {
     $('[data-h2="wall"]', s).innerHTML = L.filter(function (a) { return !inF[a.n]; }).map(function (a) {
       var m = +a.m || 0, t = m >= 5.5 ? 'w1' : m >= 3.5 ? 'w2' : 'w3';
       return '<span class="h2-wn ' + t + '">' + esc(a.n) + '<i style="color:' + yearCol(a.y) + '">' + esc(a.y) + '</i></span>'; }).join(' ');
-    var b = $('[data-h2="alldisc"]', s); if (b) b.textContent = 'See all ' + L.length;
+    var b = $('[data-h2="alldisc"]', s); if (b) b.textContent = 'See all ' + L.length + ' Discoveries';
   }
   /* ---------- 1. the hero: a slow crossfade through data.homeHero (architecture, crowd, performance; best first) ---------- */
   /* the build 5174 gallery (982fdcb, home reel), shuffled once per visit; data.homeHero is no longer used on Home */
