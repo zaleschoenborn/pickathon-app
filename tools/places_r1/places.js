@@ -10,6 +10,7 @@
   'use strict';
   var HH = /*@HOODS_HOME*/null;   /* tools/home_r2/hoods_home.json: shapes, pin points and the photo director's preview photos with crops */
   if (!HH) return;
+  var NB = /*@NAME_BOXES*/null;   /* where each neighborhood's own painted name sits on the art (from the 2026 PDF): labels go right on it */
   var MI = /*@MAP_ICONS*/null, AMI = /*@AMEN_ICONS*/null;   /* the map's amenity icons, lifted from the 2026 layered map PDF: [kind, x, y, owner neighborhood] (tools/places_r1/map_icons.json) and their one-color glyphs (amen_icons.json) */
   var XH = /*@XP_HOME*/null, XM = /*@XP_MINE*/null;   /* experiences: Home's words, icons and photos (tools/places_r1/xp_home.json) and this chat's final Nov 19 picks (tools/places_r1/xp_manifest.json) */
   if (!XH || !XM) XH = XM = null;
@@ -241,7 +242,7 @@
   }
   function xlPlace() {
     var els = $$('.pkpl-xl', M.el); if (!els.length) return;
-    var P = els.map(function (el) { var k = el.getAttribute('data-h'), p = pt(k); return { el: el, x: M.tx + p[0] * M.s, y: M.ty + p[1] * M.s, w: el.offsetWidth || 90 }; }).sort(function (a, b) { return a.y - b.y; });
+    var P = els.map(function (el) { var k = el.getAttribute('data-h'), nb = (NB || {})[k], p = nb ? [(nb[0] + nb[2]) / 2, (nb[1] + nb[3]) / 2] : pt(k); if (nb) el.style.fontSize = Math.max(9, Math.min(14, (nb[3] - nb[1]) * M.s * 0.9)) + 'px'; return { el: el, x: M.tx + p[0] * M.s, y: M.ty + p[1] * M.s, w: el.offsetWidth || 90 }; }).sort(function (a, b) { return a.y - b.y; });
     P.forEach(function (a, i) { for (var j = 0; j < i; j++) { var b = P[j]; if (Math.abs(a.x - b.x) < (a.w + b.w) / 2 + 6 && Math.abs(a.y - b.y) < 17) a.y = b.y + 17; } a.x = Math.max(a.w / 2 + 6, Math.min(M.vw - a.w / 2 - 6, a.x)); a.el.style.transform = 'translate(' + Math.round(a.x) + 'px,' + Math.round(a.y) + 'px) translate(-50%,-50%)'; a.el.hidden = a.y < 0 || a.y > M.vh; });
   }
   function fitLit() {
@@ -446,6 +447,7 @@
       '<div class="pkpl-hi"><p class="pkpl-kind">' + esc(KIND[h.k] || '') + '</p><div class="pkpl-nmrow"><img src="' + esc(emb(k)) + '" alt=""><h1>' + esc(XE && XE !== 'Architecture' ? XE + ' at ' + h.n : h.n) + '</h1></div><p class="pkpl-tt">' + esc(XE ? xpLine(XE, k) : (h.t || '')) + '</p></div>' +
       '</div>' +
       (FROM ? '<p class="pkpl-from">' + esc(FROM.n) + ' played ' + esc(h.n) + ' at Pickathon ' + FROM.y + '</p>' : '') +
+      vids(k, XE) +
       (has ? '' : '<p class="pkpl-hook">' + esc(h.hook || '') + '</p>') +
       (has ? '<section class="pkpl-sc" aria-label="Schedule at ' + esc(h.n) + '"><div class="pkpl-days" role="group" aria-label="Day">' + days.map(function (d) { return '<button type="button" class="pk-cta sec pkpl-chip" data-pk="day" data-d="' + d + '"' + (d === TOP.day ? ' aria-pressed="true"' : ' aria-pressed="false"') + '>' + esc(dayN[d] || d.slice(5)) + '</button>'; }).join('') + '</div>' +
         '<ol class="pkpl-sets">' + rows.slice(0, showN).map(function (s) { var A = (D.artists || {})[s.a] || {}; return '<li><span class="pkpl-st">' + tm(s.s) + '</span><span class="pkpl-sa"><b>' + esc(A.n || s.a) + '</b><small>' + esc(LBL[s.l] || '') + '</small></span></li>'; }).join('') + '</ol>' +
@@ -455,11 +457,30 @@
       '</div>';
     el.innerHTML = html; TOP.i = 0; heroArm(el); document.body.classList.toggle('pkpl-xpup', !!$('.pkpl-up', el));   /* our link up replaces the app's Back to map */
   }
+  var VN = { woods: ['Woods', 'Woods Stage'], cherryhill: ['Cherry Hill'], grove: ['Grove'], windmill: ['Windmill'], paddock: ['Paddock'], galaxy: ['Galaxy Barn'], lucky: ['Lucky Barn'], curation: ['Curation'], farmhouse: ['Farmhouse'] };
+  function vidList(k, e) {   /* the video catalog by place and experience: songs, not full sets; best first (k), then newest */
+    var V = data().videos || [], f;
+    if (e === 'Comedy' && k === 'lucky') f = function (v) { return v.vn === 'Laugh'; };
+    else if (e === 'Literary' && k === 'woods') f = function (v) { return v.vn === 'Spoken'; };
+    else if ((e === 'Food' || e === 'Music') && k === 'curation') f = function (v) { return v.cur; };
+    else if (e === 'Music' && VN[k]) f = function (v) { return VN[k].indexOf(v.vn) >= 0 && !v.nonact && !v.cur && !v.f && !/full set/i.test(v.s || ''); };
+    if (!f) return [];
+    var seen = {}; return V.filter(f).sort(function (a, b) { return ((b.k || 0) - (a.k || 0)) || (b.y - a.y); }).filter(function (v) { if (seen[v.a]) return false; seen[v.a] = 1; return true; }).slice(0, 8);
+  }
+  function vids(k, XE) {   /* a square, thumb-swipe row of performances right under the hero (Zale, Nov 19) */
+    var L = XE ? vidList(k, XE) : []; if (!L.length) return '';
+    return '<section class="pkpl-vids" aria-label="Watch"><div class="pkpl-vr">' + L.map(function (v) {
+      var u = v.vm ? 'https://vimeo.com/' + v.vm + (v.vh ? '/' + v.vh : '') : 'https://www.youtube.com/watch?v=' + v.id, th = v.th || ('https://i.ytimg.com/vi/' + v.id + '/hqdefault.jpg');
+      return '<button type="button" class="pkpl-vt" data-pk="vid" data-u="' + esc(u) + '" data-c="' + esc(v.a + ' · Pickathon ' + v.y) + '"><img src="' + esc(th) + '" alt="" loading="lazy"><span class="pkpl-pr0" aria-hidden="true"><i></i></span><span class="pkpl-vc"><b>' + esc(v.a) + '</b><small>Pickathon ' + v.y + '</small></span></button>';
+    }).join('') + '</div></section>';
+  }
   function soon(k, XE, h) {   /* the 2027 schedule, summarized until it posts (Zale, Nov 19: more useful than every past year) */
     var HP = (data().hoodProg || {})[k], kinds = HP ? (HP.kinds || []).map(function (g) { return g[0]; }).filter(function (n) { return !/^(more|showcases)/i.test(n); }) : [];
     var lc = function (x) { return x.charAt(0).toLowerCase() + x.slice(1); }, what;
-    if (XE && XE !== 'Architecture' && XE !== 'Music' && !kinds.length) what = lc(XE);
-    else if (XE === 'Music' || /legends|discoveries/i.test(kinds.join(' '))) what = 'music from legends, discoveries and deep cuts';
+    var musicy = /legends|discoveries/i.test(kinds.join(' '));
+    if (XE === 'Music') what = 'music from legends, discoveries and deep cuts';
+    else if (XE && XE !== 'Architecture' && (musicy || !kinds.length)) what = ({ DJs: 'DJ sets', Comedy: 'comedy', Literary: 'readings and storytelling', Food: 'food and drink', Drinks: 'drinks' })[XE] || lc(XE);
+    else if (musicy) what = 'music from legends, discoveries and deep cuts';
     else what = kinds.slice(0, 4).map(lc).join(', ').replace(/, ([^,]*)$/, ' and $1') || (XE ? lc(XE) : 'programming');
     var am = (MI || []).filter(function (z) { return z[3] === k; }).map(function (z) { return z[0]; }).filter(function (x, i, a) { return a.indexOf(x) === i && x !== 'tent' && x !== 'gear'; });
     return '<section class="pkpl-soon" aria-label="Coming in 2027"><p class="pkpl-sk">Coming in 2027</p><h2>What to expect</h2><p>Four days of ' + esc(what) + ' at ' + esc(h.n) + ', Thursday to Sunday, August 5 to 8. The full schedule posts with the 2027 lineup.</p>' +
@@ -553,6 +574,7 @@
     if (a === 'day') { TOP.day = b.getAttribute('data-d'); TOP.all = false; drawTop(); return; }
     if (a === 'whole') { TOP.all = !TOP.all; drawTop(); return; }
     if (a === 'up') { go('hoods'); return; }
+    if (a === 'vid') { if (window.__pkPlayVid) window.__pkPlayVid(b.getAttribute('data-u'), b.getAttribute('data-c')); return; }
     if (a === 'xp') { TOP.xp = b.getAttribute('data-e'); TOP.all = false; var sc = scroller(); drawTop(); xbDraw(); return; }
   }
   /* sideways swipe on the sheet steps to the next place (phone, tablet; a mouse drag on desktop) */

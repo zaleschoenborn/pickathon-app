@@ -319,3 +319,20 @@ body.pkpl-wide.pkpl-hood #pkpl-back{margin-left:0}
 #pkpl-back button>svg{position:absolute;inset:0;width:100%;height:100%}
 #pkpl-back .pkpl-bk{position:absolute;left:12px;bottom:12px;display:flex;align-items:center;gap:8px;min-height:44px;padding:0 16px 0 10px;border-radius:6px;background:rgba(18,22,15,.88);color:#FFE7A3;font:800 14px/1 'Bricolage Grotesque',system-ui,sans-serif;letter-spacing:.06em;text-transform:uppercase}
 #pkpl-back .pkpl-bk svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+
+/* lit place names sit on the neighborhood's own painted name: a small cream tag, dark type (Zale, Nov 19) */
+.pkpl-xl{padding:1px 4px 0;border-radius:3px;background:#F2EDE3;color:#1A2017;text-shadow:none;font-weight:800;letter-spacing:.06em;text-transform:uppercase;line-height:1.15;box-shadow:0 1px 2px rgba(0,0,0,.4);font-weight:700}
+
+/* performances under the hero: square cards, swipe with a thumb, a play ring on each */
+#root #pkpl-top .pkpl-vids{padding:16px 0 4px}
+#root #pkpl-top .pkpl-vr{display:flex;gap:10px;overflow-x:auto;padding:0 16px;scroll-snap-type:x mandatory;scroll-padding:0 16px;scrollbar-width:none;-webkit-overflow-scrolling:touch;touch-action:pan-x pan-y;overscroll-behavior-x:contain}
+#root #pkpl-top .pkpl-vr::-webkit-scrollbar{display:none}
+#root #pkpl-top .pkpl-vt{position:relative;flex:0 0 min(62vw,240px);aspect-ratio:1/1;padding:0;border:0;border-radius:12px;overflow:hidden;background:#1E2A1B;cursor:pointer;scroll-snap-align:start;color:#F2EDE3}
+body.pkpl-wide #root #pkpl-top .pkpl-vt{flex-basis:200px}
+#root #pkpl-top .pkpl-vt img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+#root #pkpl-top .pkpl-vt::after{content:'';position:absolute;inset:0;background:linear-gradient(0deg,rgba(18,22,15,.85) 0%,rgba(18,22,15,0) 55%)}
+#root #pkpl-top .pkpl-pr0{position:absolute;left:50%;top:44%;z-index:1;width:56px;height:56px;margin:-28px 0 0 -28px;border-radius:50%;border:2px solid #fff;background:rgba(18,22,15,.55);display:flex;align-items:center;justify-content:center}
+#root #pkpl-top .pkpl-pr0 i{display:block;width:0;height:0;margin-left:4px;border-style:solid;border-width:10px 0 10px 16px;border-color:transparent transparent transparent #fff}
+#root #pkpl-top .pkpl-vc{position:absolute;left:12px;right:12px;bottom:10px;z-index:1;text-align:left}
+#root #pkpl-top .pkpl-vc b{display:block;font:800 15px/1.2 'Bricolage Grotesque',system-ui,sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#root #pkpl-top .pkpl-vc small{display:block;margin-top:2px;font:600 12px/1.2 'Bricolage Grotesque',system-ui,sans-serif;color:#D6B54A}
