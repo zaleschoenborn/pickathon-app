@@ -368,7 +368,8 @@
         if (a === 'fclose') { f.hidden = true; return; }
         var t = b.getAttribute('data-ft'), v = b.getAttribute('data-fv'); f.hidden = true;
         if (M.title) { M.title = false; M.el.classList.add('pkpl-notitle'); }
-        if (t === 'h') open(v); else if (t === 'a') { var o = actIndex().filter(function (x) { return x.n === v; })[0]; if (o) { FROM = o; open(o.h); } } else if (t === 'm') { M.amen = v; M.xp = ''; M.cur = ''; titleDraw(); M.title = false; M.el.classList.add('pkpl-notitle'); if (top().r === 'hood') go('hoods'); amenDraw(); lit(); var L = amOf(v); if (L.length) { var bx = [1e9, 1e9, -1e9, -1e9]; L.forEach(function (p) { var x = p[1], y = p[2]; bx = [Math.min(bx[0], x), Math.min(bx[1], y), Math.max(bx[2], x), Math.max(bx[3], y)]; }); animTo(fitBox([bx[0] - 60, bx[1] - 60, bx[2] + 60, bx[3] + 60], clear(), 30), 520); } } });
+        if (t === 'h') open(v); else if (t === 'a') { var o = actIndex().filter(function (x) { return x.n === v; })[0]; if (o) { FROM = o; open(o.h); } } else if (t === 'm') { M.amen = v; M.xp = ''; M.cur = ''; titleDraw(); M.title = false; M.el.classList.add('pkpl-notitle'); if (top().r === 'hood') go('hoods'); amenDraw(); lit(); var HL = Object.keys(amenHoods()); if (HL.length) { animTo(fitBox(union(HL), clear(), wide() ? 90 : 34), 560); } var L = HL.length ? [] : amOf(v); if (L.length) {   /* frame the lit neighborhoods, the same way an experience does */
+ var bx = [1e9, 1e9, -1e9, -1e9]; L.forEach(function (p) { var x = p[1], y = p[2]; bx = [Math.min(bx[0], x), Math.min(bx[1], y), Math.max(bx[2], x), Math.max(bx[3], y)]; }); animTo(fitBox([bx[0] - 60, bx[1] - 60, bx[2] + 60, bx[3] + 60], clear(), 30), 520); } } });
       f.addEventListener('keydown', function (e) { if (e.key === 'Escape') { f.hidden = true; } });
     }
     f.hidden = false; var i = $('input', f); i.value = ''; findDraw(''); setTimeout(function () { try { i.focus({ preventScroll: true }); } catch (x) {} }, 30);
