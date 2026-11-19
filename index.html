@@ -12584,6 +12584,12 @@ html:root:root #root#root#root#root#root#root#root#root#root#root#root#root#root
 #root#root#root #pkh2 .h2-s4x .h2-s4bg{position:absolute;inset:0;width:100%;height:100%;max-width:none;object-fit:cover;object-position:50% 72%;filter:brightness(.7)}
 #root#root#root #pkh2 .h2-s4x::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(14,12,11,.1) 0%,rgba(14,12,11,.3) 35%,rgba(14,12,11,.9) 100%);pointer-events:none}
 #root#root#root #pkh2 .h2-s4o{position:relative;z-index:1;display:flex;flex-direction:column;justify-content:flex-end;min-height:min(92svh,780px);padding:40px var(--gutter) 32px;max-width:720px}
+/* Zale Nov 19 14:42: the closing photo fits one screen above the tab bar; the people show; the words sit higher and tighter */
+#root#root#root#root #pkh2 .h2-s4x{min-height:0!important;height:calc(100svh - 150px)!important;max-height:760px}
+#root#root#root#root #pkh2 .h2-s4o{min-height:0!important;height:100%;justify-content:flex-end;padding:24px var(--gutter) 22px!important;gap:0}
+#root#root#root#root #pkh2 .h2-s4x .h2-s4bg{filter:brightness(.95)!important;object-position:50% 38%!important}
+#root#root#root#root #pkh2 .h2-s4x::after{background:linear-gradient(180deg,rgba(14,12,11,0) 0%,rgba(14,12,11,0) 38%,rgba(14,12,11,.78) 66%,rgba(14,12,11,.92) 100%)!important}
+@media (min-width:1200px){#root#root#root#root #pkh2 .h2-s4x{height:calc(100svh - 72px)!important;max-height:820px}#root#root#root#root #pkh2 .h2-s4o{padding:40px max(calc((100% - 1160px) / 2),40px) 40px!important;max-width:none!important}#root#root#root#root #pkh2 .h2-s4x .h2-s4bg{object-position:50% 45%!important}}
 #root#root#root #pkh2 .h2-s4k{margin:0 0 10px;font:800 14px/1.2 'Bricolage Grotesque',system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:#D6B54A}
 #root#root#root #pkh2 .h2-s4x h2{position:static!important;margin:0;color:var(--cream);max-width:14ch;text-shadow:0 1px 14px rgba(0,0,0,.5)}
 #root#root#root #pkh2 .h2-s4l{margin:20px 0 0;border-top:1px solid rgba(242,237,227,.28)}
