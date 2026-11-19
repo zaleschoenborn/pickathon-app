@@ -526,8 +526,23 @@
     drawTop();
     if (t.r === 'hood' && t.h && t.h !== M.cur && HH.shapes[t.h]) { if (M.title) { M.title = false; M.el.classList.add('pkpl-notitle'); } frame(t.h, !M.s); }   /* arriving at a place shows it, never the title screen */
     if (t.r === 'hoods' && M.cur) { M.was = M.cur; M.cur = ''; lit(); if (M.xp || M.amen) fitLit(); }   /* closing a card: back to the experience's places, lit */
-    settleSheet(); dedupe();
+    settleSheet(); dedupe(); backMap();
     var full = $('[data-pl="full"]', M.el); if (full) full.hidden = !M.cur && !M.amen && !(M.s > startView()[0] * 1.15);
+  }
+  function backMap() {   /* end of a neighborhood page: the map again; tap it to go back to how you came in (Zale, Nov 19) */
+    var old = document.getElementById('pkpl-back'), t = top(), k = t.h;
+    if (t.r !== 'hood' || !k || !HH.shapes[k]) { if (old) old.remove(); return; }
+    var w = document.querySelector('#root section.pk-hd-w'); if (!w) return;
+    var anchor = w.nextElementSibling && /partners/i.test(w.nextElementSibling.textContent || '') ? w.nextElementSibling : w;
+    var xe = (TOP.xp && TOP.xp !== 'Architecture') ? TOP.xp : (M && M.xp) || '', key = k + '|' + xe;
+    if (old && old._key === key && old.previousElementSibling === anchor) return; if (old) old.remove();
+    var b = box(k), cx = (b[0] + b[2]) / 2, cy = (b[1] + b[3]) / 2, bw = Math.max(b[2] - b[0], b[3] - b[1]) * 2.6, bh = bw * 0.55;
+    var vb = (cx - bw / 2) + ' ' + (cy - bh / 2) + ' ' + bw + ' ' + bh;
+    var d = document.createElement('section'); d.id = 'pkpl-back'; d._key = key; d.className = 'pkpl-back';
+    d.innerHTML = '<button type="button" aria-label="Back to the map' + (xe ? ': ' + esc(xe) + ' at Pickathon' : '') + '"><svg viewBox="' + vb + '" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><image href="farmmap/map2.webp?v=3" x="0" y="0" width="' + W + '" height="' + H + '"/><path d="' + HH.shapes[k] + '" fill="rgba(255,236,170,.12)" stroke="#FFE7A3" stroke-width="' + (bw / 160) + '" stroke-linejoin="round"/></svg>' +
+      '<span class="pkpl-bk"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5 8 12l7 7"/></svg>' + (xe ? 'Back to ' + esc(xe) + ' at Pickathon' : 'Back to the map') + '</span></button>';
+    d.querySelector('button').addEventListener('click', function () { if (M && xe) M.xp = xe; go('hoods'); });
+    anchor.parentNode.insertBefore(d, anchor.nextSibling);
   }
   function dedupe() { var d = document.querySelector('.pk-hd-desc0'), h = data().hoods[top().h || ''] || {}; if (d) d.classList.toggle('pkpl-dup', !!h.hook && fold(d.textContent).trim() === fold(h.hook).trim()); }
   function onClick(e) {

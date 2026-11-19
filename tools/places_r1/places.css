@@ -312,3 +312,10 @@ body:not(.pkpl-wide) #root#root#root #pkpl .pkpl-tx .pkpl-d{font-size:26px!impor
 body:not(.pkpl-wide) #root#root#root #pkpl .pkpl-tx .pkpl-xi{width:48px;height:48px;border-radius:10px}
 body:not(.pkpl-wide) #root#root#root #pkpl .pkpl-tx .pkpl-xi svg{width:28px;height:28px}
 body:not(.pkpl-wide) #root#root#root #pkpl .pkpl-tx .pkpl-l{margin-top:6px;font-size:15px!important;line-height:1.4!important;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+
+#pkpl-back{max-width:1248px;margin:8px auto 28px;padding:0 16px;box-sizing:border-box}
+body.pkpl-wide.pkpl-hood #pkpl-back{margin-left:0}
+#pkpl-back button{position:relative;display:block;width:100%;aspect-ratio:16/9;max-height:320px;padding:0;border:1px solid #3A4331;border-radius:14px;overflow:hidden;background:#0F1712;cursor:pointer}
+#pkpl-back button>svg{position:absolute;inset:0;width:100%;height:100%}
+#pkpl-back .pkpl-bk{position:absolute;left:12px;bottom:12px;display:flex;align-items:center;gap:8px;min-height:44px;padding:0 16px 0 10px;border-radius:6px;background:rgba(18,22,15,.88);color:#FFE7A3;font:800 14px/1 'Bricolage Grotesque',system-ui,sans-serif;letter-spacing:.06em;text-transform:uppercase}
+#pkpl-back .pkpl-bk svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
