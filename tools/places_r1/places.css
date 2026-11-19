@@ -341,3 +341,30 @@ body.pkpl-wide #root #pkpl-top .pkpl-vt{flex-basis:200px}
 .pkpl-xls{display:none!important}
 .pkpl-nms path{display:none;fill:#FFFFFF;stroke:#12160F;stroke-width:3px;stroke-linejoin:round;paint-order:stroke;vector-effect:non-scaling-stroke;pointer-events:none}
 .pkpl-nms path.on{display:inline}
+
+/* desktop place list: compact grid when there are many (Nov 19) */
+body.pkpl-wide .pkpl-pl.pkpl-many{display:grid;grid-template-columns:1fr 1fr;gap:6px 10px;margin-top:18px}
+#root #pkpl .pkpl-pl.pkpl-many .pkpl-pr{min-height:46px;padding:6px 8px;gap:10px;border:1px solid rgba(242,237,227,.16);border-radius:8px}
+#root #pkpl .pkpl-pl.pkpl-many .pkpl-pr img{width:30px;height:30px}
+#root #pkpl .pkpl-pl.pkpl-many .pkpl-pr b{font-size:15px}
+#root #pkpl .pkpl-pl.pkpl-many .pkpl-pr small{display:none}
+body.pkpl-wide .pkpl-tx .pkpl-l{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+@media (max-height:860px){body.pkpl-wide #root #pkpl .pkpl-xi{width:60px;height:60px;border-radius:12px}body.pkpl-wide #root #pkpl .pkpl-xi svg{width:36px;height:36px}body.pkpl-wide #root #pkpl .pkpl-tx .pkpl-d{gap:12px}body.pkpl-wide .pkpl-title{padding-top:90px}}
+
+body.pkpl-wide .pkpl-tight{padding-top:88px!important}
+body.pkpl-wide .pkpl-tight .pkpl-l{-webkit-line-clamp:2!important;font-size:16px!important}
+body.pkpl-wide #root #pkpl .pkpl-tight .pkpl-xi{width:48px;height:48px;border-radius:10px}
+body.pkpl-wide #root #pkpl .pkpl-tight .pkpl-xi svg{width:28px;height:28px}
+body.pkpl-wide #root #pkpl .pkpl-tight .pkpl-d{font-size:32px!important;gap:10px!important;margin-bottom:8px}
+body.pkpl-wide .pkpl-tight2 .pkpl-l{display:none!important}
+body.pkpl-wide .pkpl-tight2 .pkpl-pl{margin-top:10px}
+/* the left column no longer sits under the experience row: start it near the top; the row shares the map's width evenly */
+body.pkpl-wide .pkpl-title,body.pkpl-wide .pkpl-tight{padding-top:36px!important}
+body.pkpl-wide .pkpl-tight{padding-top:24px!important}
+body.pkpl-wide .pkpl-xb{right:0;gap:6px;justify-content:stretch;overflow:hidden}
+body.pkpl-wide .pkpl-xb .pkpl-xe{flex:1 1 0;min-width:0;max-width:96px;padding:6px 4px;font-size:clamp(10.5px,.85vw,12.5px)}
+body.pkpl-wide .pkpl-xb .pkpl-xe span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+body.pkpl-wide .pkpl-xb{justify-content:center}
+body.pkpl-wide .pkpl-title>*{flex-shrink:0}
+body.pkpl-wide .pkpl-xb .pkpl-xe{flex:1 1 auto;max-width:none;padding:6px 5px}
+body.pkpl-wide .pkpl-xb .pkpl-xe span{overflow:visible;text-overflow:clip}
