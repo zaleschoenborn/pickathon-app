@@ -11861,19 +11861,27 @@ if (!window.pkOrders) window.pkOrders = (function () {
   #root#root#root #pkh2 .h2-xp-c:hover,#root#root#root #pkh2 .h2-xp-c:focus-visible{color:#F2CF62;outline:none}
   #root#root#root #pkh2 .h2-xp.has-f .h2-xp-c{opacity:.35}
   #root#root#root #pkh2 .h2-xp-c.on{color:#D6B54A;opacity:1!important;text-shadow:0 0 22px rgba(214,181,74,.35)}
-  #root#root#root #pkh2 .h2-xp-g{display:grid;grid-template-columns:repeat(8,1fr);gap:10px 6px;padding-top:18px;border-top:1px solid rgba(242,237,227,.18)}
-  html:root:root:root:root body #root#root#root #pkh2 .h2-xp .h2-xp-c{font-family:"Pickathon 2014","Work Sans",sans-serif!important;font-size:42px!important;font-weight:400!important;line-height:1!important;border:0!important;background:none!important;padding:0!important;border-radius:0!important;box-shadow:none!important;height:auto!important;letter-spacing:.01em!important;text-transform:uppercase!important}
+  #root#root#root #pkh2 .h2-xp-g{display:grid;grid-template-columns:repeat(5,1fr);gap:12px 6px;padding-top:18px;border-top:1px solid rgba(242,237,227,.18)}
+  html:root:root:root:root body #root#root#root #pkh2 .h2-xp .h2-xp-c{font-family:"Pickathon 2014","Work Sans",sans-serif!important;font-size:36px!important;font-weight:400!important;line-height:1!important;border:0!important;background:none!important;padding:0!important;border-radius:0!important;box-shadow:none!important;height:auto!important;letter-spacing:.01em!important;text-transform:uppercase!important}
   html:root:root:root:root body #root#root#root #pkh2 .h2-xp .h2-xp-c:not(.on){color:rgba(242,237,227,.88)!important}
   html:root:root:root:root body #root#root#root #pkh2 .h2-xp .h2-xp-c:not(.on):hover{color:#F2CF62!important}
   html:root:root:root:root body #root#root#root #pkh2 .h2-xp .h2-xp-c.on{color:#D6B54A!important}
-  #root#root#root #pkh2 .h2-xp-e{display:flex;justify-content:center;padding:0;border:0;background:none;cursor:pointer;transition:opacity .25s}
+  #root#root#root #pkh2 .h2-xp-e{display:flex;flex-direction:column;align-items:center;gap:6px;justify-content:flex-start;padding:0;border:0;background:none;cursor:pointer;transition:opacity .25s}
   #root#root#root #pkh2 .h2-xp-e img{width:46px;height:46px;padding:4px;border-radius:50%;border:2px solid transparent;transition:border-color .25s,box-shadow .25s}
-  #root#root#root #pkh2 .h2-xp-e span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+  #root#root#root #pkh2 .h2-xp-e span{font:600 16px/1.15 'Bricolage Grotesque',system-ui,sans-serif;text-align:center;color:rgba(242,237,227,.9)}
+  #root#root#root #pkh2 .h2-xp-e.cur span{color:#F2CF62}
   #root#root#root #pkh2 .h2-xp-e:hover img{border-color:rgba(214,181,74,.6)}
   #root#root#root #pkh2 .h2-xp-e.cur img{border-color:#D6B54A;box-shadow:0 0 16px rgba(214,181,74,.45)}
   #root#root#root #pkh2 .h2-xp-e.dim{opacity:.2}
 }
 @media (max-width:1199px){#root#root#root #pkh2 .h2-xp{display:none}}
+@media (min-width:1200px) and (max-height:860px){
+  html:root:root:root:root body #root#root#root #pkh2 .h2-xp .h2-xp-c{font-size:28px!important;min-height:36px}
+  #root#root#root #pkh2 .h2-xp{gap:12px;justify-content:flex-start;padding-top:4px}
+  #root#root#root #pkh2 .h2-xp-g{gap:6px 4px;padding-top:12px}
+  #root#root#root #pkh2 .h2-xp-e img{width:38px;height:38px;padding:3px}
+  #root#root#root #pkh2 .h2-xp-e span{font-size:15px}
+}
 @media (min-width:1200px){
   #root#root#root#root #pkh2 .h2-ccw .h2-cc-n{font-size:36px!important;line-height:1.02!important}
   #root#root#root#root #pkh2 .h2-s3c .h2-ccw .h2-cc{flex-basis:440px!important}
