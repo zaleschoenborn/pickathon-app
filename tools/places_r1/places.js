@@ -17,7 +17,7 @@
   var KIND = { stage: 'Stage neighborhood', around: 'Gathering neighborhood', camp: 'Camping neighborhood' };
   var ORDER = ['woods', 'paddock', 'cherryhill', 'grove', 'windmill', 'galaxy', 'lucky', 'farmhouse', 'curation', 'refuge', 'coyote', 'courtyard', 'market', 'orchard', 'welcomelot', 'lushcamp', 'quailtrail', 'southcamp', 'wildcamp', 'willowcamp'];
   var CORE = ['woods', 'refuge', 'coyote', 'cherryhill', 'market', 'grove', 'windmill', 'paddock', 'galaxy', 'courtyard'];   /* desktop start: Woods down to the Courtyard (addendum 3) */
-  var AMN = { restroom: 'Restrooms', water: 'Water', food: 'Food', bar: 'Bars', coffee: 'Coffee', craft: 'Craft and makers', atm: 'ATMs', dishes: 'Dish return', dishwash: 'Dish wash', wash: 'Hand wash', medical: 'Medical', shower: 'Showers', charge: 'Charging', info: 'Info', ice: 'Ice', dj: 'DJ booths', smoke: 'Smoking', shuttle: 'Shuttle', bike: 'Bike parking', moto: 'Motorcycle parking', parking: 'Parking', rv: 'RV camping', carcamp: 'Car camping', access: 'Accessible camping', gear: 'Gear drops', tent: 'Camp sites' };
+  var AMN = { stage: 'Stages', restroom: 'Restrooms', water: 'Water', food: 'Food', bar: 'Bars', coffee: 'Coffee', craft: 'Craft and makers', atm: 'ATMs', dishes: 'Dish return', dishwash: 'Dish wash', wash: 'Hand wash', medical: 'Medical', shower: 'Showers', charge: 'Charging', info: 'Info', ice: 'Ice', dj: 'DJ booths', smoke: 'Smoking', shuttle: 'Shuttle', bike: 'Bike parking', moto: 'Motorcycle parking', parking: 'Parking', rv: 'RV camping', carcamp: 'Car camping', access: 'Accessible camping', gear: 'Gear drops', tent: 'Camp sites' };
   var ISZ = { gear: 40 }, IS0 = 30;   /* plate size in map pixels (the art's plates were about 41) */
   function amGlyph(k) { return '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">' + ((AMI || {})[k] || '') + '</svg>'; }
   function amOf(k) { return (MI || []).filter(function (z) { return z[0] === k; }); }
@@ -194,7 +194,7 @@
   }
   function home(now) { M.cur = ''; lit(); animTo(startView(), now ? 0 : 520); }
   /* the visible part of the map (phone: above the sheet) */
-  function clear() { var r = region(); return { x: r.x, y: r.y, w: r.w, h: Math.max(160, r.h - (wide() ? 96 : 150)) }; }   /* above the experience bar and the amenity tag */
+  function clear() { var r = region(), t = wide() && M.title && top().r !== 'hood' ? Math.round(Math.min(M.vw * 0.46, 560)) : 0; return { x: r.x + t, y: r.y, w: r.w - t, h: Math.max(160, r.h - (wide() ? 96 : 150)) }; }   /* above the experience bar and the amenity tag */
   function region() {
     if (wide() || top().r !== 'hood') return { x: 0, y: 0, w: M.vw, h: M.vh };
     return { x: 0, y: 0, w: M.vw, h: Math.max(160, Math.round(M.vh * 0.4)) };
@@ -227,7 +227,7 @@
   }
   function xpLabels() {
     var box = $('.pkpl-xls', M.el); if (!box) return; var C = (!M.cur && M.amen) ? amenHoods() : null, L = C ? Object.keys(C) : (!M.cur && M.xp) ? litSet() : [];
-    box.innerHTML = L.map(function (k) { return '<span class="pkpl-xl" data-h="' + k + '">' + esc(data().hoods[k].n) + (C ? ' · ' + C[k] : '') + '</span>'; }).join(''); xlPlace();
+    box.innerHTML = L.map(function (k) { return '<span class="pkpl-xl" data-h="' + k + '">' + esc(data().hoods[k].n) + (C && C[k] ? ' · ' + C[k] : '') + '</span>'; }).join(''); xlPlace();
   }
   function xlPlace() {
     var els = $$('.pkpl-xl', M.el); if (!els.length) return;
@@ -342,9 +342,10 @@
     var tag = $('.pkpl-amtag', M.el), L = M.amen ? amOf(M.amen) : [];
     $('.pkpl-icon', M.svg).innerHTML = L.map(amUse).join('');
     M.el.classList.toggle('pkpl-amon', !!M.amen);
-    tag.hidden = !M.amen; if (M.amen) $('span', tag).textContent = (AMN[M.amen] || M.amen) + ' · ' + L.length + ' on the farm';
+    tag.hidden = !M.amen; if (M.amen) $('span', tag).textContent = M.amen === 'stage' ? 'Stages · ' + Object.keys(amenHoods()).length + ' on the farm' : (AMN[M.amen] || M.amen) + ' · ' + L.length + ' on the farm';
   }
-  function amenHoods() { var o = {}; amOf(M.amen).forEach(function (z) { if (z[3]) o[z[3]] = (o[z[3]] || 0) + 1; }); return o; }
+  function stageCount() { var o = {}; ids().forEach(function (k) { if (data().hoods[k].k === 'stage') o[k] = 1; }); return o; }
+  function amenHoods() { var o = {}; if (M.amen === 'stage') { ids().forEach(function (k) { if (data().hoods[k].k === 'stage') o[k] = 0; }); return o; } amOf(M.amen).forEach(function (z) { if (z[3]) o[z[3]] = (o[z[3]] || 0) + 1; }); return o; }
   function amenPlace() { $$('.pkpl-amdot', M.el).forEach(function (d) { var x = M.tx + (+d.getAttribute('data-x')) / 100 * W * M.s, y = M.ty + (+d.getAttribute('data-y')) / 100 * H * M.s; d.style.transform = 'translate(' + Math.round(x) + 'px,' + Math.round(y) + 'px)'; }); }
   var placePins0 = placePins; placePins = function () { placePins0(); amenPlace(); if (M && (M.xp || M.amen)) xlPlace(); };
 
@@ -377,12 +378,12 @@
   function findDraw(q) {
     var f = $('.pkpl-find', M.el), out = $('.pkpl-fres', f), D = data(), Q = fold(q).trim();
     var hs = ids().filter(function (k) { return !Q || fold(D.hoods[k].n).indexOf(Q) >= 0 || fold(D.hoods[k].t).indexOf(Q) >= 0; });
-    var am = Object.keys(AMN).filter(function (k) { return amOf(k).length && (!Q || fold(AMN[k]).indexOf(Q) >= 0 || fold(k).indexOf(Q) >= 0); });
+    var am = Object.keys(AMN).filter(function (k) { return (k === 'stage' || amOf(k).length) && (!Q || fold(AMN[k]).indexOf(Q) >= 0 || fold(k).indexOf(Q) >= 0); });
     var ac = Q.length >= 2 ? actIndex().filter(function (a) { return a.f.indexOf(Q) >= 0; }).sort(function (a, b) { return (a.f.indexOf(Q) - b.f.indexOf(Q)) || (b.y - a.y) || (a.n < b.n ? -1 : 1); }).slice(0, 8) : [];
-    var g = function (h, L) { return L.length ? '<p class="pkpl-fg">' + h + '</p>' + L.join('') : ''; };
+    var g = function (h, L, c) { return L.length ? '<p class="pkpl-fg">' + h + '</p>' + (c ? '<div class="pkpl-f2">' + L.join('') + '</div>' : L.join('')) : ''; };   /* c: two columns, so the lists fit on one phone screen */
     out.innerHTML =
-      g('Neighborhoods', hs.slice(0, Q ? 6 : 20).map(function (k) { var h = D.hoods[k]; return '<button type="button" data-ft="h" data-fv="' + k + '"><img src="' + esc(emb(k)) + '" alt=""><span><b>' + esc(h.n) + '</b><small>' + esc(KIND[h.k] || '') + '</small></span></button>'; })) +
-      g('On the farm', am.map(function (k) { return '<button type="button" data-ft="m" data-fv="' + k + '"><i class="pkpl-fi">' + amGlyph(k) + '</i><span><b>' + AMN[k] + '</b><small>' + amOf(k).length + ' on the farm</small></span></button>'; })) +
+      g('On the farm', am.map(function (k) { return '<button type="button" data-ft="m" data-fv="' + k + '"><i class="pkpl-fi">' + amGlyph(k) + '</i><span><b>' + AMN[k] + '</b><small>' + (k === 'stage' ? Object.keys(stageCount()).length : amOf(k).length) + ' on the farm</small></span></button>'; }), 1) +
+      g('Neighborhoods', hs.slice(0, Q ? 6 : 20).map(function (k) { var h = D.hoods[k]; return '<button type="button" data-ft="h" data-fv="' + k + '"><img src="' + esc(emb(k)) + '" alt=""><span><b>' + esc(h.n) + '</b><small>' + esc(({ stage: 'Stage', around: 'Gathering', camp: 'Camping' })[h.k] || '') + '</small></span></button>'; }), 1) +
       g('Acts', ac.map(function (a) { return '<button type="button" data-ft="a" data-fv="' + esc(a.n) + '"><img src="' + esc(emb(a.h)) + '" alt=""><span><b>' + esc(a.n) + '</b><small>' + esc(D.hoods[a.h].n + ' · Pickathon ' + a.y) + '</small></span></button>'; }));
     if (!out.innerHTML) out.innerHTML = '<p class="pkpl-fnone">Nothing by that name yet.</p>';
   }
@@ -469,7 +470,7 @@
   function scroller() { return document.getElementById('pk-scroll-phone'); }
   function sheetVars() {   /* the map's height: the phone scroller, or the window under the sticky desktop header */
     var sc = scroller(), vh, hd = 0;
-    if (sc) vh = sc.clientHeight; else { var h = document.querySelector('#root header'); hd = h && getComputedStyle(h).position === 'sticky' ? h.offsetHeight : 0; vh = window.innerHeight - (top().r === 'hoods' && h ? Math.max(hd, Math.round(h.getBoundingClientRect().bottom)) : hd); }
+    if (sc) vh = sc.clientHeight; else { var h = document.querySelector('#root header'); hd = h && getComputedStyle(h).position === 'sticky' ? h.offsetHeight : 0; vh = window.innerHeight - ((top().r === 'hoods' || top().r === 'hood') && h ? Math.max(hd, Math.round(h.getBoundingClientRect().bottom)) : hd); }
     var k = vh + '|' + hd; if (k === sheetVars._k) return; sheetVars._k = k;
     document.documentElement.style.setProperty('--pkpl-vh', vh + 'px'); document.documentElement.style.setProperty('--pkpl-hd', hd + 'px');
   }

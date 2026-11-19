@@ -209,3 +209,11 @@ body.pkpl-hood:not(.pkpl-wide) .pkpl-xb{display:none}
 .pkpl-amon .pkpl-veil{fill:rgba(12,14,10,.55)}
 #root .pkpl-fres .pkpl-fi{flex:none;width:34px;height:34px;border-radius:8px;background:#2B2628;color:#F2EDE3;display:flex;align-items:center;justify-content:center;font-style:normal}
 #root .pkpl-fres .pkpl-fi svg{width:22px;height:22px}
+/* Find on a phone: neighborhoods and amenities in two columns (Zale, Nov 19) */
+#root .pkpl-f2{display:grid;grid-template-columns:1fr 1fr;column-gap:10px}
+#root .pkpl-f2 button{min-height:48px;gap:9px;padding:6px 2px}
+#root .pkpl-f2 b{font-size:15px}
+#root .pkpl-f2 small{font-size:12px}
+#root .pkpl-f2 img,#root .pkpl-f2 .pkpl-fi{width:30px!important;height:30px!important}
+#root .pkpl-f2 .pkpl-fi svg{width:20px;height:20px}
+body.pkpl-wide #root .pkpl-f2,body.pkpl-wide .pkpl-f2{grid-template-columns:1fr 1fr 1fr}
