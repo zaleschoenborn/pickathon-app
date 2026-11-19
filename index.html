@@ -11855,6 +11855,7 @@ if (!window.pkOrders) window.pkOrders = (function () {
   #root#root#root #pkh2 .h2-s3c .h2-arl{left:calc((100% - 400px) / 2 - 250px)}#root#root#root #pkh2 .h2-s3c .h2-arr{right:calc(400px + (100% - 400px) / 2 - 250px)}
   #root#root#root #pkh2 .h2-xp{display:flex;flex:0 0 360px;flex-direction:column;justify-content:center;gap:12px}
   #root#root#root #pkh2 .h2-xp-h{margin:0 0 6px;font:800 16px/1.2 'Bricolage Grotesque',system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#D6B54A}
+  #root#root#root #pkh2 .h2-xp-d{margin:0 0 8px;font:500 21px/1.4 'Bricolage Grotesque',system-ui,sans-serif;color:var(--cream)}
   #root#root#root #pkh2 .h2-xp-t{display:grid;gap:4px;padding:16px 18px;border:1px solid rgba(242,237,227,.22);border-radius:6px;background:rgba(242,237,227,.05)}
   #root#root#root #pkh2 .h2-xp-n{font:800 20px/1.1 'Bricolage Grotesque',system-ui,sans-serif;color:var(--cream)}
   #root#root#root #pkh2 .h2-xp-l{font:500 18px/1.35 'Bricolage Grotesque',system-ui,sans-serif;color:rgba(242,237,227,.85)}
@@ -12979,7 +12980,7 @@ window.pkClimbRank = function (C, dd) {
   var XPL = { Music: 'Live sets, from first-timers to legends.', DJs: 'Dance sets that run into the night.', Family: 'Shows and workshops made for kids.', Wellness: 'Yoga, breathwork and slow mornings.', Comedy: 'Stand-up and live comedy.', Literary: 'Readings, storytellers and talks.', Curation: 'Dinners made by a chef and an artist together.', Food: 'Local kitchens and farm food.', Craft: 'Makers and handmade goods.' };
   function xpDraw(r, i) { var a = root && $('[data-h2="xp"]', root); if (!a) return; var c = r.children[i], k = c && c.getAttribute('data-h'), H = k && D && D.hoods[k]; if (!H || a._k === k) return; a._k = k;
     var pg = ''; try { pg = window.__pkNbpg ? window.__pkNbpg(k) : ''; } catch (e) {} var T = pg ? pg.split(' · ') : [];
-    a.innerHTML = '<p class="h2-xp-h">What happens at ' + esc(H.n) + '</p>' + (T.length ? T.map(function (t) { return '<div class="h2-xp-t"><span class="h2-xp-n">' + esc(t) + '</span><span class="h2-xp-l">' + esc(XPL[t] || '') + '</span></div>'; }).join('') : '<div class="h2-xp-t"><span class="h2-xp-l">A place to gather between sets.</span></div>'); }
+    a.innerHTML = '<p class="h2-xp-h">What happens at ' + esc(H.n) + '</p>' + (H.hook ? '<p class="h2-xp-d">' + esc(H.hook) + '</p>' : '') + (T.length ? T.map(function (t) { return '<div class="h2-xp-t"><span class="h2-xp-n">' + esc(t) + '</span><span class="h2-xp-l">' + esc(XPL[t] || '') + '</span></div>'; }).join('') : '<div class="h2-xp-t"><span class="h2-xp-l">A place to gather between sets.</span></div>'); }
   function markMid(r) { if (!r || !r.children.length) return; var m = ccMid(r); if (r.getAttribute('data-h2') === 'hcards') xpDraw(r, m.i); for (var k = 0; k < r.children.length; k++) { var c = r.children[k]; c.classList.toggle('is-mid', k === m.i); c.classList.toggle('is-prev', k < m.i); c.classList.toggle('is-next', k > m.i); } }
   function midWatch(r) { if (r._mw) return; r._mw = 1; var raf = 0; r.addEventListener('scroll', function () { if (raf) return; raf = requestAnimationFrame(function () { raf = 0; markMid(r); }); }, { passive: true }); }
   /* Zale Nov 16: Another crossfades to a new pick (a shuffled deck, no repeats until all are seen); no sliding, works the same in Safari */
