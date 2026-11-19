@@ -130,8 +130,8 @@ body.pkpl-wide.pkpl-on:not(.pkpl-hood) #pk-scroll-desk>:not(#pkpl):not(style):no
 body.pkpl-wide.pkpl-on:not(.pkpl-hood) #pk-scroll-desk>#pkpl{height:var(--pkpl-vh)}
 body.pkpl-wide.pkpl-on:not(.pkpl-hood) #pk-scroll-desk,body.pkpl-wide.pkpl-on:not(.pkpl-hood)~footer{min-height:0}
 body.pkpl-wide.pkpl-hood #pkpl{position:sticky;top:var(--pkpl-hd,0px);height:0;overflow:visible;z-index:2}
-body.pkpl-wide.pkpl-hood #pkpl .pkpl-map{left:auto;right:0;width:55%}
-body.pkpl-wide.pkpl-hood #pk-scroll-desk>:not(#pkpl):not(style),body.pkpl-wide.pkpl-hood #pk-scroll-phone>:not(#pkpl):not(style){width:45%;max-width:45%;margin-left:0!important;margin-right:0!important}
+body.pkpl-wide.pkpl-hood #pkpl .pkpl-map{left:auto;right:0;width:calc(100% - var(--pkpl-lw))}
+body.pkpl-wide.pkpl-hood #pk-scroll-desk>:not(#pkpl):not(style),body.pkpl-wide.pkpl-hood #pk-scroll-phone>:not(#pkpl):not(style){width:var(--pkpl-lw);max-width:var(--pkpl-lw);margin-left:0!important;margin-right:0!important}
 body.pkpl-wide.pkpl-hood #pk-scroll-phone>:not(#pkpl):not(style){position:relative;z-index:1}
 body.pkpl-wide .pkpl-sheet{border-radius:0;box-shadow:none}
 body.pkpl-wide .pkpl-grab{display:none}
@@ -145,7 +145,7 @@ body.pkpl-wide #root #pkpl-top .pkpl-hook,body.pkpl-wide #root #pkpl-top .pkpl-f
 body.pkpl-wide .pkpl-sc{padding-left:32px;padding-right:32px}
 body.pkpl-wide .pkpl-days{margin:0 -32px;padding:0 32px 2px}
 body.pkpl-wide .pkpl-em{width:48px;height:48px;margin:-24px 0 0 -24px}
-body.pkpl-wide .pkpl-title{right:auto;bottom:0;width:min(46%,560px);padding:48px 40px;background:linear-gradient(90deg,rgba(18,22,15,.92) 0%,rgba(18,22,15,.8) 70%,rgba(18,22,15,0) 100%);display:flex;flex-direction:column;justify-content:center}
+body.pkpl-wide .pkpl-title{right:auto;bottom:0;width:var(--pkpl-lw);padding:48px 32px;isolation:isolate;background:linear-gradient(90deg,rgba(18,22,15,.92) 0%,rgba(18,22,15,.8) 70%,rgba(18,22,15,0) 100%);display:flex;flex-direction:column;justify-content:center}
 body.pkpl-wide #root #pkpl .pkpl-d{font-size:clamp(44px,4.6vw,72px)!important}
 body.pkpl-wide #root #pkpl .pkpl-l{font-size:19px}
 body.pkpl-wide .pkpl-find{left:auto;width:420px;border-left:1px solid #2F372A}
@@ -247,3 +247,11 @@ body:not(.pkpl-wide) .pkpl-pl{display:none}
 body.pkpl-hood.pkpl-wide .pkpl-tools{top:auto;bottom:16px}
 body.pkpl-wide .pkpl-xb{justify-content:safe center}
 body.pkpl-xpup div:has(> .pk-backb){display:none}
+
+/* desktop: a phone-width left column; the map is the hero and slides over when you pick (Nov 19) */
+:root{--pkpl-lw:clamp(400px,32vw,480px)}
+body.pkpl-wide .pkpl-title::before{content:'';position:absolute;inset:0;z-index:-1;background:#141A11;opacity:0;transition:opacity .45s ease}
+body.pkpl-wide .pkpl-xpon .pkpl-title::before,body.pkpl-wide .pkpl-amon .pkpl-title::before{opacity:.97}
+body.pkpl-wide .pkpl-xb{left:var(--pkpl-lw)}
+body.pkpl-wide.pkpl-hood .pkpl-xb{left:0}
+body.pkpl-wide.pkpl-hood #root .pk-hd-creds{grid-template-columns:1fr 1fr!important}
