@@ -48,7 +48,7 @@
 
   /* ---------- experiences (Zale, Nov 19: it is all about the experience; Home's list, order, icons and words) ---------- */
   var XO = XH ? Object.keys(XH.XPD) : [];
-  var XFIX = { DJs: ['market', 'courtyard', 'windmill', 'galaxy', 'cherryhill', 'grove', 'woods'], Literary: ['woods', 'windmill'], Wellness: ['lucky', 'courtyard', 'refuge', 'coyote', 'windmill'] };   /* Zale's Nov 19 rulings over Home's first lists: no Literary or DJs at Lucky; Literary at the Woods; Wellness at Coyote is movement and play */
+  var XFIX = { DJs: ['market', 'courtyard', 'windmill', 'woods'], Literary: ['woods', 'windmill'], Wellness: ['lucky', 'courtyard', 'refuge', 'coyote', 'windmill'] };   /* Zale's Nov 19 rulings over Home's first lists: no Literary or DJs at Lucky; Literary at the Woods; Wellness at Coyote is movement and play */
   var XPC = {}, XAC = {};
   function xpPlaces(e) {
     if (XPC[e]) return XPC[e]; var D = data(), L;
