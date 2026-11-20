@@ -1,12 +1,25 @@
 (function () {
-  var bar = document.querySelector('.mockbar');
+  var bar = document.querySelector('.mockbar'); var hist = [];
   function show(id) {
+    hist.length = 0;
     document.querySelectorAll('.screen').forEach(function (s) { s.hidden = s.id !== id; });
     bar.querySelectorAll('button').forEach(function (b) { b.classList.toggle('on', b.dataset.s === id); }); var ys = document.getElementById('ysel'); if (ys) ys.value = /^y/.test(id) ? id : '';
     window.scrollTo(0, 0);
   }
   bar.addEventListener('click', function (e) { var b = e.target.closest('button'); if (b) show(b.dataset.s); });
   document.addEventListener('change', function (e) { var t = e.target; if ((t.id === 'ysel' || t.classList.contains('ysel2')) && t.value) { show(t.value); if (t.classList.contains('ysel2')) { var o = t.querySelector('option[selected]'); if (o) t.value = o.value; } } });
+  function openArt(slug, an) {  // every name, tile and card opens its artist page (Nov 20: Zale said yes)
+    var el = document.getElementById('a-' + slug) || document.getElementById('a-' + slug.replace(/^the/, ''));
+    if (!el) return false;
+    var cur = document.querySelector('.screen:not([hidden])'); if (cur && cur !== el) hist.push(cur.id);
+    document.querySelectorAll('.screen').forEach(function (m) { m.hidden = m !== el; });
+    if (an) el.querySelectorAll('.hd-t b, .hero-tx h1').forEach(function (x) { x.textContent = an; });  // the page carries the name the poster printed
+    window.scrollTo(0, 0); return true;
+  }
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest('[data-art]'); if (a && openArt(a.dataset.art, a.dataset.an)) { e.preventDefault(); return; }
+    var b = e.target.closest('.hd button[aria-label="Back"]'); if (b && hist.length) { var id = hist.pop(); show(id); e.preventDefault(); }
+  });
   document.addEventListener('click', function (e) { var a = e.target.closest('[data-go]'); if (a) { e.preventDefault(); show(a.dataset.go); } });
   var m = (location.hash || '').match(/^#(s[136]|y\d{4})$/); if (m && document.getElementById(m[1])) show(m[1]);
   document.querySelectorAll('.poster').forEach(function (p) {

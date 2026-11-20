@@ -43,16 +43,29 @@ for _y, _bill in d['yearBill'].items():
     for _a in _bill:
         _r = _IDX.get((_n(_a['n']), _y))
         if not _r or _a.get('c'): continue
-        _k = 'leg' if _r.get('legend_flag','').strip().lower()=='yes' else _M.get(_r['today_class'], 'none')
+        _music = _r.get('lineup', '').strip() == 'Music'  # Artist Classification (Nov 20): classes and magnitudes only for lineup = Music
+        # TODAY model: class (= class_today) + legend_flag_today + magnitude_dec. Never class_booking.
+        _k = 'leg' if _r.get('legend_flag_today', '').strip().lower() == 'yes' else _M.get(_r['class'].strip(), 'none')
+        # BOOKING model: class_booking + legend_flag_booking + at_festival_magnitude_dec. Never class.
+        _kb = 'leg' if _r.get('legend_flag_booking', '').strip().lower() == 'yes' else _M.get(_r['class_booking'].strip(), 'none')
+        if not _music: _k = _kb = 'none'
         if _k != _a['k']: CLASS_CHANGED.append((_y, _a['n'], _a['k'], _k))
-        _a['k'] = _k
+        _a['k'] = _k; _a['kb'] = _kb
         try: _a['m'] = float(_r['magnitude_dec'] or 0)
         except ValueError: pass
+        try: _a['mb'] = float(_r['at_festival_magnitude_dec']) if _music and _r['at_festival_magnitude_dec'].strip() else None
+        except ValueError: _a['mb'] = None
+# 2026 poster order = printed poster (poster_order_by_year_1999_2026.md): ten top-tier names in that order, then everyone else in data order.
+# The combined row 'Meridian Brothers, Mexican Institute of Sound' is the same two acts already listed separately: drop it so no act prints twice.
+_P26 = ['Steve Earle', 'Thee Sinseers', 'Built to Spill', 'The Womack Sisters', 'Mexican Institute of Sound', 'Marcos Valle', 'The Brothers Comatose', 'Meridian Brothers', 'The Altons', 'Shakey Graves']
+_b26 = [a for a in d['yearBill']['2026'] if a['n'] != 'Meridian Brothers, Mexican Institute of Sound']
+_top = [next(a for a in _b26 if _n(a['n']) == _n(p)) for p in _P26 if any(_n(a['n']) == _n(p) for a in _b26)]
+d['yearBill']['2026'] = _top + [a for a in _b26 if a not in _top]
 # reel class labels follow the same live table (v159); Neither prints no class
 _LAB = {'Discovery': 'Discovery', 'Legend': 'Legend', 'Deep cut': 'Deep cut'}
 for _r26 in d['yearReel'].get('2026', []):
     _row = _IDX.get((_n(_r26['n']), '2026'))
-    _lab = ('Legend' if _row.get('legend_flag','').strip().lower()=='yes' else _LAB.get(_row['today_class'], '')) if _row else ''
+    _lab = ('Legend' if _row.get('legend_flag_today','').strip().lower()=='yes' else _LAB.get(_row['class'].strip(), '')) if _row else ''
     _g = (_r26.get('k') or '').split(' · ')
     _genre = _g[1] if len(_g) > 1 else ''
     _r26['k'] = (_lab + (' · ' + _genre if _genre and _lab else '')) if _lab else ''
@@ -89,6 +102,8 @@ def b64(path, mime):
     return 'data:%s;base64,%s' % (mime, base64.b64encode(open(path, 'rb').read()).decode())
 
 E = html.escape
+def _aslug(x):
+    return _re.sub('[^a-z0-9]', '', x.lower()) if False else __import__('re').sub('[^a-z0-9]', '', x.lower())  # artist page id key (Nov 20: names open their page)
 GEN = {g['id']: g['n'] for g in d['genres']}
 GSHORT = {'indie': 'Indie rock', 'folk': 'Folk', 'soul': 'Soul', 'global': 'Global', 'country': 'Country',
           'bluegrass': 'Bluegrass', 'jazz': 'Jazz', 'psych': 'Psych', 'punk': 'Punk', 'hiphop': 'Hip-hop', 'experimental': 'Experimental'}
@@ -131,10 +146,14 @@ def poster_lines(acts, mode):
             out.append((size, row))
     return out, len(names) - i
 
-def poster_html(lines):
+_ORIG = {}
+def ctag(k):
+    return KLAB.get(k, '')  # kept as a hidden data-c attribute for check_classes.py; the poster prints NO class words (Zale, Nov 20 12:25)
+def poster_html(lines, tags=None):
+    tags = tags or {}
     h = ''
     for cls, row in lines:
-        h += '<div class="pl %s">%s</div>' % (cls, '<span class="dot">•</span>'.join('<span>%s</span>' % E(n) for n in row))
+        h += '<div class="pl %s">%s</div>' % (cls, '<span class="dot">•</span>'.join('<span data-c="%s" data-art="%s" data-an="%s">%s</span>' % (tags.get(n, ''), _aslug(n), E(_ORIG.get(n, n)), E(n)) for n in row))
     return h
 
 
@@ -162,9 +181,9 @@ def play(sz=''):
     return '<span class="ring %s" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 6.5v11l9-5.5z" fill="#fff"/></svg></span>' % sz
 
 def card(n, yr, k, g, src, pos='50% 40%', vid=True, cls=''):
-    return ('<a class="card %s" data-g="%s" href="#"><img src="%s" alt="" style="object-position:%s">%s<span class="cyr">%s</span>'
+    return ('<a class="card %s" data-g="%s" data-art="%s" data-an="%s" href="#"><img src="%s" alt="" style="object-position:%s">%s<span class="cyr">%s</span>'
             '<span class="cbody"><span class="krow"><span class="k k-%s">%s</span><span class="g">%s</span></span>'
-            '<span class="cname">%s</span></span></a>') % (cls, E(g), src, pos, play('sm') if vid else '', yr, k, KLAB[k], E(g), E(n))
+            '<span class="cname">%s</span></span></a>') % (cls, E(g), _aslug(n), E(n), src, pos, play('sm') if vid else '', yr, k, KLAB[k], E(g), E(n))
 
 # ---------- shared chrome ----------
 ICON = {
@@ -245,10 +264,12 @@ def now_html(acts, rest=False):
     ms = [(a.get('m') or 0) for a in acts] or [1]; mx, mn = max(ms), min(ms); out = ''
     for a in acts:
         v = ((a.get('m') or 0) - mn) / (mx - mn) if mx > mn else 1.0
-        out += '<span class="pn" style="--s:%.3f">%s</span>' % (v, E(nm(a)))
+        out += '<span class="pn" style="--s:%.3f" data-c="%s" data-art="%s" data-an="%s">%s</span>' % (v, ctag(a['k']), _aslug(nm(a)), E(a['n']), E(nm(a)))
     return '<div class="pcloud%s">%s</div>' % (' rest' if rest else '', out)
 
 def poster_block(P, badge, yr, then, now, total, joined=True, ranked=True):
+    for _a in then + now: _ORIG.setdefault(nm(_a), _a['n'])
+    TG = {nm(a): ctag(a.get('kb', 'none')) for a in then}  # booking model tags (class_booking), printed order
     s = P['stripe']
     stripe = '<div class="stripe">%s</div>' % ''.join('<i style="background:%s"></i>' % c for c in s[:3])
     cc = P['light'] if P['light'].upper() != P['paper'].upper() else P['warm']
@@ -262,7 +283,7 @@ def poster_block(P, badge, yr, then, now, total, joined=True, ranked=True):
             '<button class="po-all" data-open="Show the top ten" data-shut="See the whole bill · %d bands">See the whole bill · %d bands</button>'
             '<p class="po-tap">Tap any name</p></div>%s</section>') % (
             P['paper'], P['ink'], P['ink2'], P['band'], yr, cloud, badge, yr, dates, yr, yr, yr, yr,
-            poster_html(ten_lines(then)), poster_html(rest_lines(then)), now_html(now[:10]), now_html(now[10:], True), total, total, stripe)
+            poster_html(ten_lines(then), TG), poster_html(rest_lines(then), TG), now_html(now[:10]), now_html(now[10:], True), total, total, stripe)
     html_ = html_.replace('poster JOIN', 'poster joined' if joined else 'poster solo')
     if not ranked:
         a = html_.index('<div class="po-ctl">'); b = html_.index('<div class="po-names then">')
@@ -496,8 +517,8 @@ def tile(a, y, P, photo):
     if len(n) > 30: fs = min(fs, 14.5)
     elif len(n) > 20: fs = min(fs, 17)
     foot = ('<span class="yt-y">%s · %s CD</span>%s' % (E(cd), y, play('sm'))) if cd else '<span class="yt-y">Pickathon %s</span>' % y
-    return ('<a class="card tt ytile" href="#" style="--paper:%s;--ink:%s;--ink2:%s;--band:%s"><span class="yt-k">%s</span>'
-            '<span class="yt-n" style="font-size:%.1fpx">%s</span>%s</a>') % (P['paper'], P['ink'], P['ink2'], P['band'], KLAB[k], fs, '<br>'.join(E(x) for x in lines), foot)
+    return ('<a class="card tt ytile" data-art="%s" data-an="%s" href="#" style="--paper:%s;--ink:%s;--ink2:%s;--band:%s"><span class="yt-k">%s</span>'
+            '<span class="yt-n" style="font-size:%.1fpx">%s</span>%s</a>') % (_aslug(n), E(n), P['paper'], P['ink'], P['ink2'], P['band'], KLAB[k], fs, '<br>'.join(E(x) for x in lines), foot)
 
 def year_page(y):
     P = d['yearBrand'][y]; st = d['yearStory'].get(y, {}); yp = d['yearPhotos'].get(y, {})
@@ -551,14 +572,14 @@ def year_page(y):
         for a in show:
             g = GSHORT.get(a.get('g'), '')
             if ph(a):
-                body += '<a class="mini" data-g="%s" href="#"><img loading="lazy" src="%s" alt="" style="object-position:%s"><b>%s</b><span>%s</span></a>' % (E(g), img(ph(a), 400, 70), fpos(ph(a), d and json.load(open(APP + 'focus.json')) if False else FOC), E(a['n']), E(g))
+                body += '<a class="mini" data-g="%s" data-art="%s" data-an="%s" href="#"><img loading="lazy" src="%s" alt="" style="object-position:%s"><b>%s</b><span>%s</span></a>' % (E(g), _aslug(a['n']), E(a['n']), img(ph(a), 400, 70), fpos(ph(a), d and json.load(open(APP + 'focus.json')) if False else FOC), E(a['n']), E(g))
             else:
-                body += '<a class="mini" data-g="%s" href="#"><span class="mini-n" style="background:%s;color:%s">%s</span><b>%s</b><span>%s</span></a>' % (E(g), P['paper'], P['ink'], E(a['n'].upper()), E(a['n']), E(g))
+                body += '<a class="mini" data-g="%s" data-art="%s" data-an="%s" href="#"><span class="mini-n" style="background:%s;color:%s">%s</span><b>%s</b><span>%s</span></a>' % (E(g), _aslug(a['n']), E(a['n']), P['paper'], P['ink'], E(a['n'].upper()), E(a['n']), E(g))
         sel = '#y%s .mini' % y
         body = '<div class="grid2 minis">%s</div>' % body + ('<button class="btn line wide">See everyone · %d more</button>' % (len(others) - 8) if len(others) > 8 else '')
     else:
         sel = '#y%s .row' % y
-        body = '<div class="rows">%s</div>' % ''.join('<a class="row" data-g="%s" href="#"><b>%s</b><span>%s</span></a>' % (E(GSHORT.get(x.get('g'), '')), E(x['n']), E(' · '.join(t for t in (KLAB.get(x.get('k'), ''), GSHORT.get(x.get('g'), '')) if t))) for x in others)
+        body = '<div class="rows">%s</div>' % ''.join('<a class="row" data-g="%s" data-art="%s" data-an="%s" href="#"><b>%s</b><span>%s</span></a>' % (E(GSHORT.get(x.get('g'), '')), _aslug(x['n']), E(x['n']), E(x['n']), E(' · '.join(t for t in (KLAB.get(x.get('k'), ''), GSHORT.get(x.get('g'), '')) if t))) for x in others)
     if others:
         h += '<section class="rest"><h2 class="h-big">Keep wandering</h2>%s%s</section>' % (gpick(sel, opts=['Everything'] + gs) if len(gs) >= 3 else '', body)
     h += ('<section class="years"><p class="kick">See other years</p><div class="swipe yrs"><a class="yr" data-go="s1" href="#">2027</a>%s</div></section>') % ''.join(
@@ -656,6 +677,13 @@ def art_page(slug, ap):
             h += ('<div class="vid" role="button" tabindex="0" data-clip="%s"><span class="vth"><img src="%s" alt="" style="object-position:50%% 40%%">%s</span>'
                   '<b>%s</b><span>%s · Pickathon 2026</span></div>') % (_h.escape(r['v'], quote=True), img(r['i'], 600), play('sm'), E(name), E(r.get('sg', '')))
         h += '</div></section>'
+    vids2 = ap.get('vids') or []
+    if vids2:
+        h += '<section class="shelf vids"><div class="sh-h"><div><p class="kick">Videos</p><h2>Pickathon</h2></div></div><div class="swipe">'
+        for v in vids2:
+            h += ('<div class="vid" role="button" tabindex="0" data-clip="%s"><span class="vth"><img src="%s" alt="" style="object-position:50%% 40%%">%s</span>'
+                  '<b>%s</b><span>%s</span></div>') % (_h.escape(v['u'], quote=True), img(v['i'], 600), play('sm'), E(name), E(v['sg']))
+        h += '</div></section>'
     years = sorted({y for y, _ in _KIN.get(name, [])})
     if years:
         h += '<section class="theirs"><p class="kick">Their Pickathons</p><div class="filt">%s</div></section>' % ''.join(
@@ -672,6 +700,41 @@ for _s, _ap in d['actPages'].items():
             ARTISTS[_s] = art_page(_s, _ap)
         except Exception as _e:
             print('skip', _s, _e)
+# pages for the acts the lineup has but no artist page yet (Nov 20, Lineup's join): lineup facts only, no story or photos yet
+_OWN = {'altngn': 'altngn', 'anasmitchell': 'anasmitchell', 'billywoods': 'billywoods', 'elucid': 'elucid', 'laiththetexasbirds': 'laiththetexasbirds',
+        'scottlaw': 'scottlaw', 'sundayvalley': 'sundayvalley', 'theearnestlovers': 'theearnestlovers', 'themidnightshivers': 'themidnightshivers',
+        'calebklauder': 'calebklauder', 'calebklauderreebwillms': 'calebklauderreebwillms'}
+_ALIAS = {'2mangentlemanband': 'twomangentlemenband', '79ersgang': '79rsgang', 'billystringsdonjulin': 'billystrings',
+          'bonnieprincebillythecairogang': 'bonnieprincebilly', 'brownoutbrownsabbath': 'brownoutpresentsbrownsabbath',
+          'brucemolskyband': 'brucemolsky', 'deryayildirim': 'deryayldrm', 'destroyersolo': 'destroyer',
+          'hungermtboys': 'hungermountainboys', 'johndoethesadies': 'sadies', 'kurtviletheviolators': 'kurtvile',
+          'laurielewistomrozumandtomsauber': 'laurielewis', 'leefieldstheexpressions': 'leefields',
+          'thequebesistersband': 'quebesisters', 'tysegallthemuggers': 'tysegall', 'whiteymorgan': 'whiteymorganthe78s',
+          'darolangerscottnygaard': 'darolanger',
+          # Lineup's act join (Nov 20 13:19 note): same act, page already in the build
+          'michaelnau': 'cottonjones', 'sethandmay': 'daisymaysethbernard', 'kevinburke': 'kevinburkecaseyneill',
+          'caseyneill': 'kevinburkecaseyneill', 'cahalenmorrisoncountryhammer': 'cahalenmorrisoneliwest',
+          # r21: name variants of the pages above (Lineup's Nov 20 join)
+          'altingn': 'altngn', 'calebklauderband': 'calebklauder', 'calebklaudercountryband': 'calebklauder', 'calebreeb': 'calebklauderreebwillms'}
+_GROUP = {}
+for _k, _v in list(_ALIAS.items()) + [(o, o) for o in _OWN]:
+    _GROUP.setdefault(_v, set()).update({_k, _v})
+for _o in _OWN:
+    if _o not in ARTISTS and _o in _NAMES and _NAMES[_o] in _KIN:
+        _g = _GROUP.get(_o, {_o})
+        _ph = []
+        for _yy, _m in d['yearPhotos'].items():
+            for _nn, _p in _m.items():
+                if _slug(_nn) in _g and _p.get('i'):
+                    _ph.append({'i': _p['i'], 'st': '%s%s' % (_yy, (' · ' + _p['s']) if _p.get('s') else ''), 'by': _p.get('ph', '')})
+        _vi = []
+        for _v in sorted(d['videos'], key=lambda v: v.get('y') or 0):
+            if _slug(_v.get('a') or '') in _g and _v.get('vm') and _v.get('vh') and _v.get('y'):
+                _vi.append({'u': 'https://vimeo.com/%s/%s' % (_v['vm'], _v['vh']), 'i': '', 'sg': '%s · %s' % (_v['y'], _v.get('s') or _v.get('vn') or '')})
+        _thumb = next((p['i'] for p in _ph if os.path.exists(APP + p['i'])), None)  # a video card needs a still; no photo, no card
+        for _x in _vi: _x['i'] = _thumb or ''
+        _vi = [x for x in _vi if x['i']]
+        ARTISTS[_o] = art_page(_o, {'yr': str(min(int(y) for y, _ in _KIN[_NAMES[_o]])), 'gal': _ph[:8], 'vids': _vi})
 print(len(ARTISTS), 'artist pages generated')
 _ASEL = '<label class="mb-sel">Artist <select id="asel"><option value="">Pick an artist</option>%s</select></label>' % ''.join(
     '<option value="%s">%s</option>' % (s, E(_NAMES[s])) for s in sorted(ARTISTS, key=lambda s: _NAMES[s].lower()))
@@ -680,5 +743,13 @@ _ASCRIPT = ('<script>document.getElementById("asel").addEventListener("change",f
             'if(m){m.hidden=false;window.scrollTo(0,0);}});</script>')
 
 page = page.replace('<button data-s="s3">', _ASEL + '<button data-s="s3">', 1).replace('<nav class="tabs">', ''.join(ARTISTS.values()) + '<nav class="tabs">', 1).replace('</body>', _ASCRIPT + _PLAYER + '</body>')
+# name variants and collab billings that point at a page we have (Zale, Nov 20: "those names obviously map to an artist")
+_PIDS0 = set(_re.findall(r'id="a-([a-z0-9]+)"', page))
+page = _re.sub(r' data-art="([a-z0-9]*)"', lambda m: (' data-art="%s"' % _ALIAS[m.group(1)]) if (m.group(1) in _ALIAS and _ALIAS[m.group(1)] in _PIDS0) else m.group(0), page)
+# names with no artist page keep no link (a tap must never go nowhere); the gaps are listed in the build log
+_PIDS = set(_re.findall(r'id="a-([a-z0-9]+)"', page))
+_DROP = sorted({m.group(1) for m in _re.finditer(r' data-art="([a-z0-9]*)"', page) if m.group(1) not in _PIDS and _re.sub(r'^the', '', m.group(1)) not in _PIDS})
+page = _re.sub(r' data-art="([a-z0-9]*)"', lambda m: m.group(0) if (m.group(1) in _PIDS or _re.sub(r'^the', '', m.group(1)) in _PIDS) else '', page)
+print('names without an artist page (no link):', len(_DROP), _DROP)
 open(OUT + 'index.html', 'w').write(page)
 print(len(page) // 1024, 'KB html', len(os.listdir(OUT + 'img')), 'images', sum(os.path.getsize(OUT + 'img/' + f) for f in os.listdir(OUT + 'img')) // 1024, 'KB')

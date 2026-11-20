@@ -50,4 +50,9 @@ async def main():
             await pg.close()
         await b.close()
 asyncio.run(main())
+# every name, tile, card and row opens an artist page (Nov 20): each data-art slug must have its page
+_h = open(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'index.html'), encoding='utf-8').read()
+_arts = set(re.findall(r'data-art="([a-z0-9]*)"', _h)); _ids = set(re.findall(r'id="a-([a-z0-9]+)"', _h))
+_miss = sorted(x for x in _arts if x not in _ids and re.sub(r'^the', '', x) not in _ids)
+ok(len(_arts) > 500 and not _miss, 'every named link opens an artist page: %d links, %d without a page %s' % (len(_arts), len(_miss), _miss[:5]))
 print('\n%d failure(s)' % len(FAILS)); sys.exit(1 if FAILS else 0)

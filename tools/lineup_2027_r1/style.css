@@ -524,8 +524,36 @@ h2{font-family:var(--display);font-weight:400;font-size:27px;line-height:1.14;le
 .seam .sm-disc{position:absolute;bottom:26px;width:44px;height:44px;border-radius:50%;transform:translateX(-50%);display:block}
 @media (min-width:1000px){.seam .sm-tile{height:60px;bottom:10px}.seam .sm-sc{height:40px}.seam .sm-disc{width:60px;height:60px;bottom:34px}}
 
-/* year chip: LINEUP kicker above the year (Nov 20) */
+.hero .ring{position:absolute;z-index:4}
+.hero .ring{pointer-events:auto;cursor:pointer}
 .yrchip{position:relative;display:grid;grid-template-columns:auto auto;grid-template-rows:auto auto;column-gap:6px;align-items:center;height:48px;padding:0 10px}
 .yrchip .yc-k{grid-column:1;grid-row:1;font-family:var(--text);font-size:9px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);line-height:1;align-self:end}
 .yrchip select{grid-column:1;grid-row:2;min-height:0;line-height:1.05;align-self:start;padding:0}
 .yrchip svg{grid-column:2;grid-row:1/3;align-self:center}
+/* desktop poster: names must wrap inside the column, never run off the page (Nov 20) */
+@media (min-width:1000px){
+  .poster.joined .po-in,.poster.solo .po-in{grid-template-columns:460px minmax(0,1fr)}
+  .po-names,.po-names div,.po-names .po-ln,.po-cap,.po-ctl{min-width:0;max-width:100%;white-space:normal;overflow-wrap:anywhere;text-wrap:balance}
+}
+.pl{max-width:100%;min-width:0}.pl>*{min-width:0;max-width:100%;overflow-wrap:break-word;white-space:normal}
+@media (min-width:1000px){.pl{justify-content:flex-start}}
+@media (min-width:1000px){.po-names.then .pl span,.po-names .pl span{white-space:normal;overflow-wrap:break-word;text-wrap:balance}}
+/* desktop: year-page genre pickers match the Archive bar button: small kicker, value, caret, 3-column pop-over (Nov 20) */
+@media (min-width:1000px){
+  .gp:not(.gpc){position:relative;max-width:none;width:max-content}
+  .gp:not(.gpc) .gp-b{width:auto;min-width:250px;min-height:56px;padding:0 14px;justify-content:center;gap:2px;border-radius:6px}
+  .gp:not(.gpc) .gp-q{font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-weight:700}
+  .gp:not(.gpc) .gp-a{font-size:18px;gap:18px}
+  .gp:not(.gpc) .gp-a svg{width:14px;height:14px}
+  .gp:not(.gpc) .gp-list{position:absolute;left:0;top:calc(100% + 4px);width:min(440px,90vw);z-index:30;background:var(--deep);border:1px solid var(--line2);border-radius:8px;padding:8px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;max-height:60vh;overflow:auto;box-shadow:0 14px 24px rgba(0,0,0,.5)}
+  .gp:not(.gpc) .gp-list[hidden]{display:none}
+  .gp:not(.gpc) .gp-o{min-height:44px;font-size:15px}
+  .gp:not(.gpc) .gp-none{position:absolute;left:0;top:calc(100% + 4px);background:var(--deep);padding:10px 12px;border-radius:8px;white-space:nowrap}
+  .gp:not(.gpc) .gp-none[hidden]{display:none}
+}
+
+/* class word beside a poster name: booking view reads class_booking, today view reads class (never crossed) */
+.pc{font-style:normal;font-family:var(--body,inherit);text-transform:uppercase;letter-spacing:.12em;font-size:9.5px;font-weight:700;margin-left:.6em;white-space:nowrap;vertical-align:.35em}
+.pcloud .pn .pc{font-size:9.5px;display:inline-block;margin-left:.5em}
+.pcloud.rest .pn .pc{font-size:8.5px}
+@media (min-width:1000px){.pc{font-size:11px}}
