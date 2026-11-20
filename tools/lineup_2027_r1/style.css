@@ -497,3 +497,24 @@ h2{font-family:var(--display);font-weight:400;font-size:27px;line-height:1.14;le
   .story.short{max-width:none}
   .story .lead{max-width:30ch;font-size:40px}
 }
+/* r8b */
+.seam .sm-i.sm-on-hill{bottom:calc(30px*var(--sc))}
+.seam .sm-dot{position:absolute;width:calc(5px*var(--sc));height:calc(5px*var(--sc));border-radius:50%;display:block}
+.seam .sm-stripe25{position:absolute;right:22%;bottom:10px;width:calc(46px*var(--sc));height:calc(150px*var(--sc));background:#0FF2FF;transform:skewX(-34deg);transform-origin:bottom}
+/* r8 per-year seam (Nov 20): a full-width horizon from each year's own brand art; the badge sits in front, as on 2024 */
+.poster.joined .seam{position:relative;height:70px;z-index:1;pointer-events:none;--sc:1}
+.seam .sm-g{position:absolute;left:0;right:0;bottom:0;width:100%;height:100%;display:block;z-index:300}
+.seam .sm-i{position:absolute;bottom:14px;height:calc(var(--h)*var(--sc)*1px);transform:translateX(-50%);display:block}
+.seam .sm-sun{position:absolute;left:79%;bottom:calc(66px*var(--sc));width:calc(64px*var(--sc));z-index:1}
+.seam .sm-hill{position:absolute;left:0;bottom:8px;width:100%;height:calc(62px*var(--sc));display:block}
+.seam .sm-st{position:absolute;width:calc(var(--s)*var(--sc)*1px);height:calc(var(--s)*var(--sc)*1px);transform:translateX(-50%);display:block}
+.seam .sm-st svg{width:100%;height:100%;display:block}
+.seam .sm-frog{position:absolute;left:44%;bottom:calc(30px*var(--sc));width:calc(170px*var(--sc));transform:rotate(-10deg);z-index:250}
+.hyr:has(+ .poster .seam) .hero-tx{padding-bottom:118px}
+@media (min-width:1000px){
+  .poster.joined .seam{height:110px;--sc:1.75}
+  .seam .sm-sun{left:79%}
+  .seam .sm-frog{width:calc(200px*var(--sc))}
+  .seam .sm-frog{left:62%}
+  .hyr:has(+ .poster .seam) .hero-tx{padding-bottom:190px}
+}
