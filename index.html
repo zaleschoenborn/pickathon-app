@@ -13510,7 +13510,7 @@ window.pkClimbRank = function (C, dd) {
     var W = XPO.filter(function (t) { return xpList(t).length; });
     a.innerHTML = '<p class="h2-xp-h">What do you want to experience?</p><div class="h2-xp-ch" role="group" aria-label="Experiences">' + W.map(function (t) { return '<button type="button" class="h2-xp-c' + (t === XPF ? ' on' : '') + '" data-xp="' + t + '" aria-pressed="' + (t === XPF) + '"><span class="h2-xpi">' + xpIc(t) + '</span><span class="h2-xpl">' + esc(t) + '</span></button>'; }).join('') + '</div><div class="h2-xp-card"><p class="h2-xp-t"></p><p class="h2-xp-d"></p><div class="h2-xp-w"></div></div>';
     xpWhere(a); setTimeout(function () { xpCenter(a, false); }, 60);
-    a.addEventListener('click', function (ev) { var rr = $('[data-h2="hcards"]', root), e = ev.target.closest('.h2-xp-e'); if (e) { if (!rr) return; if (e.classList.contains('on')) { var mc = rr.children[ccMid(rr).i], hb = mc && (mc.matches('[data-h2="hcard"]') ? mc : mc.querySelector('[data-h2="hcard"]')); if (hb) hb.click(); return; } xpGo(rr, e.getAttribute('data-xh')); return; }
+    a.addEventListener('click', function (ev) { var rr = $('[data-h2="hcards"]', root), e = ev.target.closest('.h2-xp-e'); if (e) { if (!rr) return; if (e.classList.contains('on')) { homeOpenHood(e.getAttribute('data-xh')); return; } xpGo(rr, e.getAttribute('data-xh')); return; }
       var b = ev.target.closest('button[data-xp]'); if (!b) return; var t = b.getAttribute('data-xp'); if (t === XPF) return; XPF = t;
       $$('.h2-xp-c', a).forEach(function (c) { var on = c.getAttribute('data-xp') === XPF; c.classList.toggle('on', on); c.setAttribute('aria-pressed', on ? 'true' : 'false'); }); xpCenter(a, true);
       xpWhere(a); ROT = xpList(XPF); XPS = 1; drawHoods(); }); }
@@ -13701,10 +13701,19 @@ window.pkClimbRank = function (C, dd) {
     }
     drawCTA();
   }
+  /* Zale Nov 20: a tap on a Summer camp card or icon opens that neighborhood's page; closing it returns to Summer camp */
+  function homeOpenHood(k) {
+    if (!k || k === '__hero' || k === '__intro') return;
+    if (k === 'trails') { if (window.__pkGoFarm) window.__pkGoFarm(); else go('hoods'); return; }
+    try { localStorage.setItem('pk-h0', k); sessionStorage.setItem('pk-hcret', k); var mnO = homeSc(); window.__pkHomeY = { y: mnO ? mnO.scrollTop : 0, t: Date.now() }; } catch (x) {}
+    go('hood', { h: k });
+  }
   function onClick(e) {
     var b = e.target.closest ? e.target.closest('button,[data-h2]') : null; if (!b) return;
     if (b.hasAttribute('data-h2tix')) { e.preventDefault(); doTix(tix()); return; }
     if (!root || !root.contains(b)) return;
+    var cov = e.target.closest ? e.target.closest('article[data-h="__hero"]') : null;
+    if (cov && root.contains(cov)) { var onIc = root.querySelector('[data-h2="xpto"].on'); if (onIc) { homeOpenHood(onIc.getAttribute('data-xh')); return; } }
     if (b.classList.contains('h2-em')) { var hk = b.getAttribute('data-h'); if (hk === cur && Date.now() - (root._pickAt || 0) > 400) { go('hood', { h: cur }); return; } hood(hk); root._pickAt = Date.now(); return; }   /* Zale Nov 14: the first tap picks (map glides in), a second tap on the same one opens it */
     var a = b.getAttribute('data-h2');
     if (a === 'cnext') { cardStep(1); return; }
@@ -13728,7 +13737,7 @@ window.pkClimbRank = function (C, dd) {
     if (a === 'lu27') { go('lineup'); return; }
     if (a === 'xpgo') { xpEnter(b.getAttribute('data-xp')); return; }
     if (a === 'xpsel') { xpPick(b.getAttribute('data-xp')); return; }
-    if (a === 'xpto') { var bx = $('[data-h2="hcards"]', root); if (bx) xpGo(bx, b.getAttribute('data-xh')); return; }
+    if (a === 'xpto') { homeOpenHood(b.getAttribute('data-xh')); return; }
     if (a === 'xpbuild') { go('build'); return; }
     if (a === 'pqgo') { pqShow(+b.getAttribute('data-i') || 0, true); return; }
     if (a === 'face') { toArchive(b.getAttribute('data-n')); return; }
