@@ -677,6 +677,13 @@ def art_page(slug, ap):
             h += ('<div class="vid" role="button" tabindex="0" data-clip="%s"><span class="vth"><img src="%s" alt="" style="object-position:50%% 40%%">%s</span>'
                   '<b>%s</b><span>%s · Pickathon 2026</span></div>') % (_h.escape(r['v'], quote=True), img(r['i'], 600), play('sm'), E(name), E(r.get('sg', '')))
         h += '</div></section>'
+    vids2 = ap.get('vids') or []
+    if vids2:
+        h += '<section class="shelf vids"><div class="sh-h"><div><p class="kick">Videos</p><h2>Pickathon</h2></div></div><div class="swipe">'
+        for v in vids2:
+            h += ('<div class="vid" role="button" tabindex="0" data-clip="%s"><span class="vth"><img src="%s" alt="" style="object-position:50%% 40%%">%s</span>'
+                  '<b>%s</b><span>%s</span></div>') % (_h.escape(v['u'], quote=True), img(v['i'], 600), play('sm'), E(name), E(v['sg']))
+        h += '</div></section>'
     years = sorted({y for y, _ in _KIN.get(name, [])})
     if years:
         h += '<section class="theirs"><p class="kick">Their Pickathons</p><div class="filt">%s</div></section>' % ''.join(
@@ -697,18 +704,6 @@ for _s, _ap in d['actPages'].items():
 _OWN = {'altngn': 'altngn', 'anasmitchell': 'anasmitchell', 'billywoods': 'billywoods', 'elucid': 'elucid', 'laiththetexasbirds': 'laiththetexasbirds',
         'scottlaw': 'scottlaw', 'sundayvalley': 'sundayvalley', 'theearnestlovers': 'theearnestlovers', 'themidnightshivers': 'themidnightshivers',
         'calebklauder': 'calebklauder', 'calebklauderreebwillms': 'calebklauderreebwillms'}
-for _o in _OWN:
-    if _o not in ARTISTS and _o in _NAMES and _NAMES[_o] in _KIN:
-        ARTISTS[_o] = art_page(_o, {'yr': str(min(int(y) for y, _ in _KIN[_NAMES[_o]]))})
-print(len(ARTISTS), 'artist pages generated')
-_ASEL = '<label class="mb-sel">Artist <select id="asel"><option value="">Pick an artist</option>%s</select></label>' % ''.join(
-    '<option value="%s">%s</option>' % (s, E(_NAMES[s])) for s in sorted(ARTISTS, key=lambda s: _NAMES[s].lower()))
-_ASCRIPT = ('<script>document.getElementById("asel").addEventListener("change",function(e){var v=e.target.value;if(!v)return;'
-            'document.querySelectorAll(".screen").forEach(function(m){m.hidden=true;});var m=document.getElementById("a-"+v);'
-            'if(m){m.hidden=false;window.scrollTo(0,0);}});</script>')
-
-page = page.replace('<button data-s="s3">', _ASEL + '<button data-s="s3">', 1).replace('<nav class="tabs">', ''.join(ARTISTS.values()) + '<nav class="tabs">', 1).replace('</body>', _ASCRIPT + _PLAYER + '</body>')
-# name variants and collab billings that point at a page we have (Zale, Nov 20: "those names obviously map to an artist")
 _ALIAS = {'2mangentlemanband': 'twomangentlemenband', '79ersgang': '79rsgang', 'billystringsdonjulin': 'billystrings',
           'bonnieprincebillythecairogang': 'bonnieprincebilly', 'brownoutbrownsabbath': 'brownoutpresentsbrownsabbath',
           'brucemolskyband': 'brucemolsky', 'deryayildirim': 'deryayldrm', 'destroyersolo': 'destroyer',
@@ -721,6 +716,34 @@ _ALIAS = {'2mangentlemanband': 'twomangentlemenband', '79ersgang': '79rsgang', '
           'caseyneill': 'kevinburkecaseyneill', 'cahalenmorrisoncountryhammer': 'cahalenmorrisoneliwest',
           # r21: name variants of the pages above (Lineup's Nov 20 join)
           'altingn': 'altngn', 'calebklauderband': 'calebklauder', 'calebklaudercountryband': 'calebklauder', 'calebreeb': 'calebklauderreebwillms'}
+_GROUP = {}
+for _k, _v in list(_ALIAS.items()) + [(o, o) for o in _OWN]:
+    _GROUP.setdefault(_v, set()).update({_k, _v})
+for _o in _OWN:
+    if _o not in ARTISTS and _o in _NAMES and _NAMES[_o] in _KIN:
+        _g = _GROUP.get(_o, {_o})
+        _ph = []
+        for _yy, _m in d['yearPhotos'].items():
+            for _nn, _p in _m.items():
+                if _slug(_nn) in _g and _p.get('i'):
+                    _ph.append({'i': _p['i'], 'st': '%s%s' % (_yy, (' · ' + _p['s']) if _p.get('s') else ''), 'by': _p.get('ph', '')})
+        _vi = []
+        for _v in sorted(d['videos'], key=lambda v: v.get('y') or 0):
+            if _slug(_v.get('a') or '') in _g and _v.get('vm') and _v.get('vh') and _v.get('y'):
+                _vi.append({'u': 'https://vimeo.com/%s/%s' % (_v['vm'], _v['vh']), 'i': '', 'sg': '%s · %s' % (_v['y'], _v.get('s') or _v.get('vn') or '')})
+        _thumb = next((p['i'] for p in _ph if os.path.exists(APP + p['i'])), None)  # a video card needs a still; no photo, no card
+        for _x in _vi: _x['i'] = _thumb or ''
+        _vi = [x for x in _vi if x['i']]
+        ARTISTS[_o] = art_page(_o, {'yr': str(min(int(y) for y, _ in _KIN[_NAMES[_o]])), 'gal': _ph[:8], 'vids': _vi})
+print(len(ARTISTS), 'artist pages generated')
+_ASEL = '<label class="mb-sel">Artist <select id="asel"><option value="">Pick an artist</option>%s</select></label>' % ''.join(
+    '<option value="%s">%s</option>' % (s, E(_NAMES[s])) for s in sorted(ARTISTS, key=lambda s: _NAMES[s].lower()))
+_ASCRIPT = ('<script>document.getElementById("asel").addEventListener("change",function(e){var v=e.target.value;if(!v)return;'
+            'document.querySelectorAll(".screen").forEach(function(m){m.hidden=true;});var m=document.getElementById("a-"+v);'
+            'if(m){m.hidden=false;window.scrollTo(0,0);}});</script>')
+
+page = page.replace('<button data-s="s3">', _ASEL + '<button data-s="s3">', 1).replace('<nav class="tabs">', ''.join(ARTISTS.values()) + '<nav class="tabs">', 1).replace('</body>', _ASCRIPT + _PLAYER + '</body>')
+# name variants and collab billings that point at a page we have (Zale, Nov 20: "those names obviously map to an artist")
 _PIDS0 = set(_re.findall(r'id="a-([a-z0-9]+)"', page))
 page = _re.sub(r' data-art="([a-z0-9]*)"', lambda m: (' data-art="%s"' % _ALIAS[m.group(1)]) if (m.group(1) in _ALIAS and _ALIAS[m.group(1)] in _PIDS0) else m.group(0), page)
 # names with no artist page keep no link (a tap must never go nowhere); the gaps are listed in the build log
