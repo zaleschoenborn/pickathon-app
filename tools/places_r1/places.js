@@ -598,6 +598,9 @@
     set(); requestAnimationFrame(set); setTimeout(function () { if (!touched) set(); }, 120);   /* once, after the app's own scroll-to-top for a new page */
   }
 
+  /* the page never pinch-zooms (Zale, Nov 20): the map does its own pinch. iOS ignores user-scalable=no, so the Safari gesture is stopped here too */
+  ['gesturestart', 'gesturechange', 'gestureend'].forEach(function (ev) { document.addEventListener(ev, function (e) { e.preventDefault(); }, { passive: false }); });
+
   /* ---------- keeping in step with the app ---------- */
   function mount() {
     var isle = document.getElementById('pkpl'), t = top();
