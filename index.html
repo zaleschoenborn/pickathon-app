@@ -12654,8 +12654,8 @@ html:root:root #root#root#root#root#root#root#root#root#root#root#root#root#root
   @media (min-width:1200px){
   #root#root#root#root#root#root #pkh2 .h2-s3c .h2-ccw{display:grid!important;grid-template-columns:clamp(290px,21vw,320px) minmax(0,1fr);gap:18px;align-self:stretch!important;width:auto!important;max-width:none!important}
   #pkh2 .h2-xpan{display:block;position:relative;min-height:0;overflow:hidden;border-radius:12px;background:#14110f}
-  #pkh2 .h2-xpbg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.32;filter:saturate(.8)}
-  #pkh2 .h2-xpan::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(20,17,15,.55) 0%,rgba(20,17,15,.88) 45%,rgba(20,17,15,.95) 100%);pointer-events:none}
+  #pkh2 .h2-xpbg{position:absolute;left:0;right:0;bottom:0;width:100%;height:72%;object-fit:contain;object-position:50% 100%;opacity:.6;filter:saturate(.75) brightness(.9)}
+  #pkh2 .h2-xpan::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,#14110f 0%,#14110f 34%,rgba(20,17,15,.78) 52%,rgba(20,17,15,.5) 72%,rgba(20,17,15,.62) 100%);pointer-events:none}
   #pkh2 .h2-xpin{position:relative;z-index:1;display:flex;flex-direction:column;gap:12px;height:100%;padding:24px 22px 16px;box-sizing:border-box}
   #pkh2 .h2-xph{display:flex;align-items:center;gap:14px}
   #pkh2 .h2-xpbd{flex:none;display:grid;place-items:center;width:52px;height:52px;border-radius:10px;background:#F2EDE3;color:#1d1a16}
@@ -12679,7 +12679,8 @@ html:root:root #root#root#root#root#root#root#root#root#root#root#root#root#root
   #pkh2 .h2-xpg.c4 .h2-xpe img{width:28px;height:28px}
   #pkh2 .h2-xpg.c4 .h2-xpe b{font-size:11.5px}
   #pkh2 .h2-xpe:hover{opacity:1}
-  #pkh2 .h2-xpe.on{opacity:1;background:rgba(242,237,227,.1)}
+  #pkh2 .h2-xpe{text-shadow:0 1px 6px rgba(0,0,0,.9)}
+  #pkh2 .h2-xpe.on{opacity:1;background:rgba(20,17,15,.7)}
   #pkh2 .h2-xpe.on .h2-xso{display:none}
   #pkh2 .h2-xpe.on .h2-xsf{display:block}
   #root#root#root#root#root#root #pkh2 .h2-s3c .h2-ccw .h2-cc-r{grid-column:2;grid-row:1;height:100%;min-width:0;position:relative;padding:0 6%!important;scroll-padding:0 6%!important;gap:12px!important}
@@ -13206,7 +13207,7 @@ window.pkClimbRank = function (C, dd) {
   /* the neighborhood cards (simpler Home): same card anatomy as Who's up next, same centered loop (two clones at each end) */
   function drawHoods() {
     var box = root && $('[data-h2="hcards"]', root), PH = !!(window.matchMedia && matchMedia('(max-width:1199px)').matches); if (!box || !ROT.length || box._k === XPF + ROT.join() + PH) return; box._k = XPF + ROT.join() + PH; box._ph = PH;
-    var A = ROT.filter(function (k) { return k === 'trails' ? XPF === 'Wellness' : hoodSet(k).length; }), K = 0, seq = [], q;
+    var A = ROT.filter(function (k) { return k === 'trails' ? XPF === 'Wellness' : hoodSet(k).length; }), K = PH ? 0 : (A.length < 3 ? 0 : Math.min(2, A.length)), seq = [], q;
     for (q = A.length - K; q < A.length; q++) seq.push([q, 1]); A.forEach(function (x, j) { seq.push([j, 0]); }); for (q = 0; q < K; q++) seq.push([q, 1]);
     box.innerHTML = (PH ? xpCover(A) : '') + seq.map(function (e) { var k = A[e[0]], H = D.hoods[k], L = xpSet(k), x = L[0], cl = e[1], ti = cl ? ' tabindex="-1"' : ''; if (!x) x = { i: '', p: '' }; var kick = XPF ? XPF + ' at ' + H.n : KIND[H.k];
       return '<article class="h2-cc h2-hc' + (cl ? ' h2-cc-cl' : '') + '" data-h="' + k + '"' + (cl ? ' aria-hidden="true"' : ' role="listitem"') + '><button type="button"' + ti + ' class="h2-cc-ph" data-h2="hcard" data-h="' + k + '" aria-label="' + esc(H.n + ', ' + KIND[H.k] + (H.t ? ', ' + H.t : '') + '. Open its page') + '">' +
@@ -13216,7 +13217,7 @@ window.pkClimbRank = function (C, dd) {
     guard(box); box._K = K; box._N = A.length + (PH ? 1 : 0); box._A = A; xpPanel(A, PH); xpStrip(box); xpRowOn(); xovWire();
     var last = '', back = false; try { last = localStorage.getItem('pk-h0') || ''; var rt = sessionStorage.getItem('pk-hcret'); if (rt) { sessionStorage.removeItem('pk-hcret'); last = rt; back = true; } } catch (e) {}
     var i0 = A.indexOf(last); if (!back || i0 < 0) i0 = (i0 + 1) % A.length; if (XPS) { i0 = 0; XPS = 0; } var introAt = PH && !back; if (!PH) try { localStorage.setItem('pk-h0', A[i0]); } catch (e) {}   /* a new neighborhood each visit; Back returns to the one they left */
-    var go = function () { if (!box.clientWidth) return; try { xovFit(); } catch (e) {} jumpTo(box, (back && i0 >= 0) ? i0 + (PH ? 1 : 0) : 0); hcLabel(); };
+    var go = function () { if (!box.clientWidth) return; try { xovFit(); } catch (e) {} jumpTo(box, PH ? ((back && i0 >= 0) ? i0 + 1 : 0) : K + ((back && i0 >= 0) ? i0 : 0)); hcLabel(); };
     if (window.requestAnimationFrame) requestAnimationFrame(function () { requestAnimationFrame(go); }); else setTimeout(go, 30);
     if (!box._lp) { box._lp = 1; var tmo = 0; box.addEventListener('scroll', function () { clearTimeout(tmo); tmo = setTimeout(function () { loopFix(box); hcLabel(); var m = ccMid(box), c = box.children[m.i]; if (c && !/^__/.test(c.getAttribute('data-h'))) { try { localStorage.setItem('pk-h0', c.getAttribute('data-h')); } catch (e) {} } }, 140); }, { passive: true }); }
   }
@@ -13384,7 +13385,7 @@ window.pkClimbRank = function (C, dd) {
       xpCoverW(A) + '<p class="h2-xhs">' + (A.length > 1 ? 'Swipe to see where, ' + A.length + ' places' : 'Swipe to see where') + ' <b aria-hidden="true">→</b></p></div></article>'; }
   /* Zale Nov 19 15:33: desktop, the experience's cover is a left panel like the Places map page: name, what it is, its neighborhoods; the lit one tracks the photo */
   function xpPanel(A, PH) { var el = root && $('[data-h2="xpan"]', root); if (!el) return; if (PH) { el.innerHTML = ''; return; }
-    var bg = (xpSet(A[1] || A[0] || '')[0] || {}).i || '';   /* Zale Nov 19 16:09: styled like the Places map panel: dim photo behind, badge + "X at Pickathon", gold line, a list of places with their own line */
+    var bg = 'farmmap/map_calm.webp';   /* Zale Nov 19 16:09: styled like the Places map panel: dim photo behind, badge + "X at Pickathon", gold line, a list of places with their own line */
     el.innerHTML = (bg ? '<img class="h2-xpbg" src="' + esc(bg) + '" alt="" aria-hidden="true">' : '') + '<div class="h2-xpin"><div class="h2-xph"><span class="h2-xpbd">' + xpIc(XPF) + '</span><p class="h2-d h2-xpn pkp-head">' + esc(XPF) + ' at Pickathon</p></div>' +
       '<p class="h2-xpd">' + esc(XPD[XPF] || '') + '</p>' + (XPF === 'Architecture' ? '<button type="button" class="h2-xpbb" data-h2="xpbuild">Build with us <span aria-hidden="true">→</span></button><p class="h2-xpcn">Creative Neighborhoods, our nonprofit, builds them.</p>' : '') +
       '<p class="h2-xpw">Where to find it <span>' + A.length + (A.length === 1 ? ' place' : ' places') + '</span></p><div class="h2-xpg' + (A.length > 9 ? ' c4' : '') + '">' + A.map(function (hk) { var H = D.hoods[hk] || {};
