@@ -14617,7 +14617,7 @@ html body.pkpl-hood:not(.pkpl-wide) #root#root#root#root#root#root#root#root .pk
       if (M.cur && !M.amen && (!e.target.closest('[data-h]') || e.target.closest('[data-h]').getAttribute('data-h') === M.cur)) { var gk = iconAt(rel(e)); if (gk) { glow(gk === M.glow ? '' : gk); e.stopPropagation(); return; } }   /* a tap on ANOTHER neighborhood's shape always opens that neighborhood (Zale, Nov 20: it got stuck behind an icon glow) */   /* Nov 20 (Zale): inside a place, tap one of its icons and every icon of that kind glows on the real map; the view stays put */
       var h = e.target.closest('[data-h]');
       if (M.title) { M.title = false; M.el.classList.add('pkpl-notitle'); if (!h) return; }   /* the title screen holds until a click on the map or an icon */
-      if (!h) return;
+      if (!h) { if (!wide() && top().r === 'hood' && cardEl() && !cardEl().classList.contains('pkpl-folded')) setFold(true); return; }   /* Nov 20 (Zale): tap the map above an open sheet to fold it and reach the rest of the map */
       tap(h.getAttribute('data-h'), e.target.closest('.pkpl-em'));
     }, true);
     el.addEventListener('wheel', function (e) { if (wide() && !e.target.closest('.pkpl-find') && e.clientX - el.getBoundingClientRect().left < lw() && (M.xp || M.amen || M.title || top().r === 'hood') && e.target.closest('.pkpl-title,.pkpl-pl,.pkpl-xls')) return;   /* Nov 20: scrolling over the left column never moves the map or brings the full map back */
