@@ -1068,7 +1068,7 @@ setInterval(function(){if(bar)bar.style.display=document.querySelector('[aria-mo
  setInterval(function(){reg.update().catch(function(){})},5*60*1000); reg.update().catch(function(){}); try{navigator.storage&&navigator.storage.persist&&navigator.storage.persist()}catch(e){} navigator.serviceWorker.ready.then(function(r){r.active&&r.active.postMessage('pack')}).catch(function(){});
  window.__pkReg=reg;document.addEventListener('visibilitychange',function(){if(!document.hidden)reg.update().catch(function(){})});
 }).catch(function(){});
-window.__pkBuild='20261120-5368';
+window.__pkBuild='20261120-5369';
 /* New builds reach returning visitors (QC Round 3.5, Nov 11). tools/stamp_build.py writes the build into __pkBuild, sw.js and version.json.
    On load and on every return to the page, version.json (no-store) and the service worker say whether a newer build is waiting or active;
    if so the page reloads on that return. Touching the page never blocks it; only an order in progress does: the checkout open, a ticket
@@ -14255,12 +14255,9 @@ body.pkpl-hood:not(.pkpl-wide) #pkpl-top .pkpl-bn,body.pkpl-hood:not(.pkpl-wide)
 body.pkpl-hood:not(.pkpl-wide) #pkpl-top.pkpl-folded .pkpl-bar{height:56px;justify-content:flex-start;padding:12px 16px 0;gap:10px;border-bottom:1px solid #3A4331}
 body.pkpl-hood:not(.pkpl-wide) #pkpl-top.pkpl-folded .pkpl-bi{display:block;width:36px;height:36px;flex:none;border-radius:50%;background:#12160F;padding:2px;object-fit:contain}
 body.pkpl-hood:not(.pkpl-wide) #pkpl-top.pkpl-folded .pkpl-bn{display:block;font-size:19px;line-height:1}
-/* desktop scroll cue (Zale, Nov 20): a static icon button (6px corners, one button system) at the bottom-left of the panel while more is below; no pulse */
-#pkpl-more{display:none;position:fixed;left:16px;bottom:16px;z-index:5;width:44px;height:44px;padding:0;align-items:center;justify-content:center;border:1px solid #3A4331;border-radius:6px;background:rgba(18,22,15,.9);color:#F2EDE3;cursor:pointer}
-#pkpl-more svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
-#pkpl-more:hover{border-color:#D6B54A;color:#FFE7A3}
-#pkpl-more:focus-visible{outline:2px solid #D6B54A;outline-offset:2px}
-body.pkpl-wide.pkpl-hood #pkpl-more.pkpl-more-on{display:flex}
+/* desktop scroll cue (Zale, Nov 20): the bottom of the panel fades into the page while more is below; no icon, no pulse */
+#pkpl-more{display:none;position:fixed;left:0;bottom:0;z-index:5;width:var(--pkpl-lw,40%);height:140px;pointer-events:none;background:linear-gradient(180deg,rgba(43,38,40,0) 0%,rgba(43,38,40,.92) 85%,#2B2628 100%)}
+body.pkpl-wide.pkpl-hood #pkpl-more.pkpl-more-on{display:block}
 </style>
 <script id="pk-places">
 /* pk-places: Places map and neighborhood pages, round 1 (Nov 13 2026). Source: tools/places_r1/places.js, spliced into index.html by tools/places_r1/build.py.
@@ -14880,13 +14877,11 @@ body.pkpl-wide.pkpl-hood #pkpl-more.pkpl-more-on{display:flex}
     var full = $('[data-pl="full"]', M.el); if (full) full.hidden = !M.cur && !M.amen && !(M.s > startView()[0] * 1.15);
     moreCue();
   }
-  /* desktop scroll cue (Zale, Nov 20): one static chevron at the bottom-left of the panel while more of the page is below; it hides at the end. No pulse. */
+  /* desktop scroll cue (Zale, Nov 20): the bottom of the panel fades out while more of the page is below; it clears at the end. Static, no icon. */
   function moreEl() {
     var b = document.getElementById('pkpl-more');
     if (b && b.isConnected) return b;
-    b = document.createElement('button'); b.id = 'pkpl-more'; b.type = 'button'; b.setAttribute('aria-label', 'Scroll down for more');
-    b.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>';
-    b.addEventListener('click', function () { var el = moreScroller(); if (el) el.scrollBy({ top: Math.round(window.innerHeight * 0.8), behavior: 'smooth' }); });
+    b = document.createElement('div'); b.id = 'pkpl-more'; b.setAttribute('aria-hidden', 'true');
     document.body.appendChild(b);
     return b;
   }

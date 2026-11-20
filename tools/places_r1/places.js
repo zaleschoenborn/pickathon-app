@@ -615,13 +615,11 @@
     var full = $('[data-pl="full"]', M.el); if (full) full.hidden = !M.cur && !M.amen && !(M.s > startView()[0] * 1.15);
     moreCue();
   }
-  /* desktop scroll cue (Zale, Nov 20): one static chevron at the bottom-left of the panel while more of the page is below; it hides at the end. No pulse. */
+  /* desktop scroll cue (Zale, Nov 20): the bottom of the panel fades out while more of the page is below; it clears at the end. Static, no icon. */
   function moreEl() {
     var b = document.getElementById('pkpl-more');
     if (b && b.isConnected) return b;
-    b = document.createElement('button'); b.id = 'pkpl-more'; b.type = 'button'; b.setAttribute('aria-label', 'Scroll down for more');
-    b.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>';
-    b.addEventListener('click', function () { var el = moreScroller(); if (el) el.scrollBy({ top: Math.round(window.innerHeight * 0.8), behavior: 'smooth' }); });
+    b = document.createElement('div'); b.id = 'pkpl-more'; b.setAttribute('aria-hidden', 'true');
     document.body.appendChild(b);
     return b;
   }

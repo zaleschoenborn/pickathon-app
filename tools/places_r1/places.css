@@ -507,9 +507,6 @@ body.pkpl-hood:not(.pkpl-wide) #pkpl-top .pkpl-bn,body.pkpl-hood:not(.pkpl-wide)
 body.pkpl-hood:not(.pkpl-wide) #pkpl-top.pkpl-folded .pkpl-bar{height:56px;justify-content:flex-start;padding:12px 16px 0;gap:10px;border-bottom:1px solid #3A4331}
 body.pkpl-hood:not(.pkpl-wide) #pkpl-top.pkpl-folded .pkpl-bi{display:block;width:36px;height:36px;flex:none;border-radius:50%;background:#12160F;padding:2px;object-fit:contain}
 body.pkpl-hood:not(.pkpl-wide) #pkpl-top.pkpl-folded .pkpl-bn{display:block;font-size:19px;line-height:1}
-/* desktop scroll cue (Zale, Nov 20): a static icon button (6px corners, one button system) at the bottom-left of the panel while more is below; no pulse */
-#pkpl-more{display:none;position:fixed;left:16px;bottom:16px;z-index:5;width:44px;height:44px;padding:0;align-items:center;justify-content:center;border:1px solid #3A4331;border-radius:6px;background:rgba(18,22,15,.9);color:#F2EDE3;cursor:pointer}
-#pkpl-more svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
-#pkpl-more:hover{border-color:#D6B54A;color:#FFE7A3}
-#pkpl-more:focus-visible{outline:2px solid #D6B54A;outline-offset:2px}
-body.pkpl-wide.pkpl-hood #pkpl-more.pkpl-more-on{display:flex}
+/* desktop scroll cue (Zale, Nov 20): the bottom of the panel fades into the page while more is below; no icon, no pulse */
+#pkpl-more{display:none;position:fixed;left:0;bottom:0;z-index:5;width:var(--pkpl-lw,40%);height:140px;pointer-events:none;background:linear-gradient(180deg,rgba(43,38,40,0) 0%,rgba(43,38,40,.92) 85%,#2B2628 100%)}
+body.pkpl-wide.pkpl-hood #pkpl-more.pkpl-more-on{display:block}
