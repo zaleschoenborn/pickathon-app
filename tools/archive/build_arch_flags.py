@@ -7,7 +7,7 @@
 import json, sys, re, os, csv, unicodedata, collections, subprocess
 SITE = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..')
 def key(s):
-    s = str(s or '').replace('³', '').replace(' ft Gordon Gano', '')
+    s = str(s or '').replace('³', '').replace(' ft Gordon Gano', '').replace('&', ' and ').replace('\u2019', "'")   # & = and, curly = straight apostrophe: keep the site's existing name and its video
     s = unicodedata.normalize('NFKD', s).encode('ascii', 'ignore').decode().lower()
     s = re.sub(r'^the\s+', '', s); return re.sub(r'[^a-z0-9]', '', s)
 rows = [x for x in csv.DictReader(open(sys.argv[1], encoding='utf-8-sig')) if x['lineup'] == 'Music' and not (x['merged_into'] or '').strip() and not (x['duplicate_of'] or '').strip()]
