@@ -1068,7 +1068,7 @@ setInterval(function(){if(bar)bar.style.display=document.querySelector('[aria-mo
  setInterval(function(){reg.update().catch(function(){})},5*60*1000); reg.update().catch(function(){}); try{navigator.storage&&navigator.storage.persist&&navigator.storage.persist()}catch(e){} navigator.serviceWorker.ready.then(function(r){r.active&&r.active.postMessage('pack')}).catch(function(){});
  window.__pkReg=reg;document.addEventListener('visibilitychange',function(){if(!document.hidden)reg.update().catch(function(){})});
 }).catch(function(){});
-window.__pkBuild='20261120-5364';
+window.__pkBuild='20261120-5365';
 /* New builds reach returning visitors (QC Round 3.5, Nov 11). tools/stamp_build.py writes the build into __pkBuild, sw.js and version.json.
    On load and on every return to the page, version.json (no-store) and the service worker say whether a newer build is waiting or active;
    if so the page reloads on that return. Touching the page never blocks it; only an order in progress does: the checkout open, a ticket
@@ -14242,6 +14242,13 @@ body.pkpl-hood:not(.pkpl-wide) #pkpl-top .pkpl-sheet{flex:1 1 auto;min-height:0;
 body.pkpl-hood:not(.pkpl-wide) #pkpl-top .pkpl-grab{display:none}
 /* phone: the map and the card are the whole screen; the page sections below the card are hidden here (they covered the map) */
 body.pkpl-hood:not(.pkpl-wide) #pk-scroll-phone>*:not(#pkpl):not(#pkpl-top):not(#pkpl-sp):not(#pk-farmmap):not(style):not([aria-label="Listen"]):not([aria-label="Cookie choices"]){display:none!important}
+
+/* phone experience strip (Zale, Nov 20): one compact row of chips on a solid dark bar, right above the tab bar; Find and Full map sit just above it */
+html body:not(.pkpl-wide) #root .pkpl-xb{padding:8px 10px calc(8px + env(safe-area-inset-bottom,0px));gap:6px;align-items:center;background:#12160F;border-top:1px solid #3A4331}
+html body:not(.pkpl-wide) #root .pkpl-xb .pkpl-xe{flex-direction:row;gap:6px;min-width:0;min-height:40px;padding:0 12px;border-radius:6px;font-size:13px;line-height:1;white-space:nowrap}
+html body:not(.pkpl-wide) #root .pkpl-xb .pkpl-xe svg{width:18px;height:18px;flex:none}
+html body:not(.pkpl-wide) #root#root .pkpl-tools{bottom:66px;gap:8px}
+html body:not(.pkpl-wide) #root#root#root .pkpl-tools .pkpl-tb{min-height:44px!important;height:44px!important;padding:0 14px!important;font-size:13px!important;width:auto!important;min-width:0!important}
 </style>
 <script id="pk-places">
 /* pk-places: Places map and neighborhood pages, round 1 (Nov 13 2026). Source: tools/places_r1/places.js, spliced into index.html by tools/places_r1/build.py.
