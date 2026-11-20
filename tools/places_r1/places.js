@@ -483,7 +483,7 @@
   }
   function vids(k, XE) {   /* a square, thumb-swipe row of performances right under the hero (Zale, Nov 19) */
     var L = XE ? vidList(k, XE) : []; if (!L.length) return '';
-    return '<section class="pkpl-vids" aria-label="Watch"><div class="pkpl-vr">' + L.map(function (v) {
+    return '<section class="pkpl-vids" aria-label="Watch"><h2 class="pkpl-vh">Watch ' + esc((XE === 'Music' ? '' : XE.toLowerCase() + ' ') + 'at ' + data().hoods[k].n) + '</h2><div class="pkpl-vr">' + L.map(function (v) {
       var u = v.vm ? 'https://vimeo.com/' + v.vm + (v.vh ? '/' + v.vh : '') : 'https://www.youtube.com/watch?v=' + v.id, th = v.th || ('https://i.ytimg.com/vi/' + v.id + '/hqdefault.jpg');
       return '<button type="button" class="pkpl-vt" data-pk="vid" data-u="' + esc(u) + '" data-c="' + esc(v.a + ' · Pickathon ' + v.y) + '"><img src="' + esc(th) + '" alt="" loading="lazy"><span class="pkpl-pr0" aria-hidden="true"><i></i></span><span class="pkpl-vc"><b>' + esc(v.a) + '</b><small>Pickathon ' + v.y + '</small></span></button>';
     }).join('') + '</div></section>';
