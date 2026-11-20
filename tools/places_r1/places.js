@@ -335,7 +335,7 @@
     el.addEventListener('pointerup', up); el.addEventListener('pointercancel', up);
     el.addEventListener('pointerleave', function (e) { if (e.pointerType === 'mouse') hover(''); });
     el.addEventListener('click', function (e) {
-      if (el._drag && Date.now() - el._drag < 300) { e.stopPropagation(); e.preventDefault(); return; }
+      if (el._drag && Date.now() - el._drag < 140) { e.stopPropagation(); e.preventDefault(); return; }
       var xb = e.target.closest('[data-xp]'); if (xb) { xpPick(xb.getAttribute('data-xp')); return; }
       var gb = e.target.closest('[data-go]'); if (gb) { go(gb.getAttribute('data-go')); return; }
       var hp = e.target.closest('[data-hp]'); if (hp) { if (M.title) { M.title = false; } open(hp.getAttribute('data-hp')); return; }
@@ -377,7 +377,7 @@
   }
   function open(k) { if (top().r === 'hood' && top().h === k) { frame(k); return; } go('hood', { h: k }); }
   function tool(a) {
-    if (a === 'full') { M.amen = ''; amenDraw(); M.xp = ''; M.was = ''; titleDraw(); if (top().r === 'hood') { go('hoods'); return; } M.title = true; M.el.classList.remove('pkpl-notitle'); home(); return; }   /* Full map: the whole start view with the title back */
+    if (a === 'full') { M.amen = ''; amenDraw(); M.xp = ''; M.was = ''; titleDraw(); if (top().r === 'hood') { go('hoods'); M.cur = ''; lit(); home(); return; } M.title = true; M.el.classList.remove('pkpl-notitle'); home(); return; }   /* Full map: the whole start view with the title back */
     if (a === 'allxp') { M.xp = ''; M.amen = ''; amenDraw(); M.was = ''; M.title = true; M.el.classList.remove('pkpl-notitle'); titleDraw(); lit(); home(); return; }
     if (a === 'find') { findOpen(); return; }
     if (a === 'amclear') { if (M.glow && !M.amen) { glow(''); return; } M.amen = ''; amenDraw(); lit(); return; }

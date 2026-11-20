@@ -1068,7 +1068,7 @@ setInterval(function(){if(bar)bar.style.display=document.querySelector('[aria-mo
  setInterval(function(){reg.update().catch(function(){})},5*60*1000); reg.update().catch(function(){}); try{navigator.storage&&navigator.storage.persist&&navigator.storage.persist()}catch(e){} navigator.serviceWorker.ready.then(function(r){r.active&&r.active.postMessage('pack')}).catch(function(){});
  window.__pkReg=reg;document.addEventListener('visibilitychange',function(){if(!document.hidden)reg.update().catch(function(){})});
 }).catch(function(){});
-window.__pkBuild='20261119-5360';
+window.__pkBuild='20261120-5363';
 /* New builds reach returning visitors (QC Round 3.5, Nov 11). tools/stamp_build.py writes the build into __pkBuild, sw.js and version.json.
    On load and on every return to the page, version.json (no-store) and the service worker say whether a newer build is waiting or active;
    if so the page reloads on that return. Touching the page never blocks it; only an order in progress does: the checkout open, a ticket
@@ -14563,7 +14563,7 @@ html body.pkpl-wide #root#root#root#root #pkpl .pkpl-title.pkpl-tight5 .pkpl-abb
     el.addEventListener('pointerup', up); el.addEventListener('pointercancel', up);
     el.addEventListener('pointerleave', function (e) { if (e.pointerType === 'mouse') hover(''); });
     el.addEventListener('click', function (e) {
-      if (el._drag && Date.now() - el._drag < 300) { e.stopPropagation(); e.preventDefault(); return; }
+      if (el._drag && Date.now() - el._drag < 140) { e.stopPropagation(); e.preventDefault(); return; }
       var xb = e.target.closest('[data-xp]'); if (xb) { xpPick(xb.getAttribute('data-xp')); return; }
       var gb = e.target.closest('[data-go]'); if (gb) { go(gb.getAttribute('data-go')); return; }
       var hp = e.target.closest('[data-hp]'); if (hp) { if (M.title) { M.title = false; } open(hp.getAttribute('data-hp')); return; }
@@ -14605,7 +14605,7 @@ html body.pkpl-wide #root#root#root#root #pkpl .pkpl-title.pkpl-tight5 .pkpl-abb
   }
   function open(k) { if (top().r === 'hood' && top().h === k) { frame(k); return; } go('hood', { h: k }); }
   function tool(a) {
-    if (a === 'full') { M.amen = ''; amenDraw(); M.xp = ''; M.was = ''; titleDraw(); if (top().r === 'hood') { go('hoods'); return; } M.title = true; M.el.classList.remove('pkpl-notitle'); home(); return; }   /* Full map: the whole start view with the title back */
+    if (a === 'full') { M.amen = ''; amenDraw(); M.xp = ''; M.was = ''; titleDraw(); if (top().r === 'hood') { go('hoods'); M.cur = ''; lit(); home(); return; } M.title = true; M.el.classList.remove('pkpl-notitle'); home(); return; }   /* Full map: the whole start view with the title back */
     if (a === 'allxp') { M.xp = ''; M.amen = ''; amenDraw(); M.was = ''; M.title = true; M.el.classList.remove('pkpl-notitle'); titleDraw(); lit(); home(); return; }
     if (a === 'find') { findOpen(); return; }
     if (a === 'amclear') { if (M.glow && !M.amen) { glow(''); return; } M.amen = ''; amenDraw(); lit(); return; }
