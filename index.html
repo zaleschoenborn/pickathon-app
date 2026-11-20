@@ -12688,6 +12688,11 @@ html:root:root #root#root#root#root#root#root#root#root#root#root#root#root#root
   #root#root#root#root#root#root #pkh2 .h2-s3c .h2-arl{left:calc(clamp(290px,21vw,320px) + 18px + 8px)!important}
   #root#root#root#root#root#root #pkh2 .h2-s3c .h2-arr{right:10px!important}
   #root#root#root#root #pkh2 .h2-s3c>.h2-xstrip{display:none!important}
+  #root#root#root#root#root#root #pkh2 .h2-s3c .h2-ccw .h2-cc{transition:transform .45s ease,opacity .45s ease!important}
+  #root#root#root#root#root#root #pkh2 .h2-s3c .h2-ccw .h2-cc:not(.is-mid){transform:scale(.86)!important;opacity:.55!important}
+  #root#root#root#root#root#root #pkh2 .h2-s3c .h2-ccw .h2-cc:not(.is-mid):hover{opacity:.85!important}
+  #root#root#root#root#root#root #pkh2 .h2-s3c .h2-ccw .h2-cc-r{padding:0 5%!important;scroll-padding:0 5%!important;gap:0!important}
+  #root#root#root#root#root#root #pkh2 .h2-s3c .h2-ccw .h2-cc{flex:0 0 90%!important;flex-basis:90%!important}
   }
   @media (min-width:1200px) and (max-height:820px){#root#root#root#root #pkh2 .h2-xpcn{display:none!important}#root#root#root#root #pkh2 .h2-xpd{font-size:14px!important;line-height:1.32!important}#pkh2 .h2-xpg.c4 .h2-xpe img{width:24px;height:24px}#pkh2 .h2-xpg.c4{gap:2px 2px}#pkh2 .h2-xph{gap:10px}}
   @media (min-width:1200px) and (max-height:820px){#pkh2 .h2-xpin{padding:18px 18px 12px;gap:9px}#root#root#root#root #pkh2 .h2-xpn{font-size:24px!important}#pkh2 .h2-xpbd{width:44px;height:44px}#pkh2 .h2-xpd{font-size:15px}#pkh2 .h2-xpg{gap:4px 2px}#pkh2 .h2-xpe img{width:28px;height:28px}#pkh2 .h2-xpbb{min-height:42px}}
@@ -13382,7 +13387,7 @@ window.pkClimbRank = function (C, dd) {
     return '<article class="h2-cc h2-hc h2-xh" data-h="__hero" role="listitem"><img class="h2-hci h2-xhbg is-on" src="' + esc(x.i) + '" alt="" style="object-position:' + esc(x.p || '50% 50%') + '" decoding="async"><img class="h2-hci h2-xhbg" alt="" decoding="async"><div class="h2-xho">' +
       '<p class="h2-xhk">' + xpIc(XPF) + '<span class="h2-d pkp-head' + (XPF.length > 8 ? ' lg' : '') + '">' + esc(XPF) + '</span></p><p class="h2-xhd">' + esc(XPD[XPF] || '') +
       (XPF === 'Architecture' ? ' <button type="button" class="h2-xlb" data-h2="xpbuild">Build with us<span aria-hidden="true"> →</span></button>' : '') + '</p>' +
-      xpCoverW(A) + '<p class="h2-xhs">' + (A.length > 1 ? 'Swipe to see where, ' + A.length + ' places' : 'Swipe to see where') + ' <b aria-hidden="true">→</b></p></div></article>'; }
+      xpCoverW(A) + '<p class="h2-xhs">' + (A.length > 1 ? 'Swipe to see where, ' + A.length + ' places' : 'Swipe to ' + esc((D.hoods[A[0]] || {}).n || 'see where')) + ' <b aria-hidden="true">→</b></p></div></article>'; }
   /* Zale Nov 19 15:33: desktop, the experience's cover is a left panel like the Places map page: name, what it is, its neighborhoods; the lit one tracks the photo */
   function xpPanel(A, PH) { var el = root && $('[data-h2="xpan"]', root); if (!el) return; if (PH) { el.innerHTML = ''; return; }
     var bg = 'farmmap/map_calm.webp';   /* Zale Nov 19 16:09: styled like the Places map panel: dim photo behind, badge + "X at Pickathon", gold line, a list of places with their own line */
@@ -13391,7 +13396,7 @@ window.pkClimbRank = function (C, dd) {
       '<p class="h2-xpw">Where to find it <span>' + A.length + (A.length === 1 ? ' place' : ' places') + '</span></p><div class="h2-xpg' + (A.length > 9 ? ' c4' : '') + '">' + A.map(function (hk) { var H = D.hoods[hk] || {};
         return '<button type="button" class="h2-xpe" data-h2="xpto" data-xh="' + hk + '"><img class="h2-xso" src="' + esc(XIC[hk] ? 'ic/' + hk + '.svg' : (H.icw || H.ic || '')) + '" alt="" width="34" height="34"><img class="h2-xsf" src="' + esc(H.icw || ('ic2/' + hk + '.png')) + '" alt="" width="34" height="34"><b>' + esc(H.n || hk) + '</b></button>'; }).join('') + '</div></div>'; }
   /* Zale Nov 19 14:32: the cover shows where to find it: every place as an equal icon tile; a tap jumps to that place's card */
-  function xpCoverW(A) { var n = A.length, c = n <= 4 ? n : (n <= 6 ? 3 : (n <= 8 ? 4 : 5));
+  function xpCoverW(A) { if (A.length < 2) return ''; var n = A.length, c = n <= 4 ? n : (n <= 6 ? 3 : (n <= 8 ? 4 : 5));
     return '<div class="h2-xhw" style="--c:' + c + '" role="group" aria-label="Where to find it">' + A.map(function (hk) { var H = D.hoods[hk] || {}; return '<button type="button" class="h2-xhe" data-h2="xpto" data-xh="' + hk + '"><img src="' + esc(XIC[hk] ? 'ic/' + hk + '.svg' : (H.icw || H.ic || '')) + '" alt="" width="36" height="36"><span>' + esc(H.n || hk) + '</span></button>'; }).join('') + '</div>'; }
   /* Zale Nov 19 11:52: pick an experience (from the hero or the row), the row shows it filled and centered, the line says what it is, the strip lists its places */
   function xpEnter(t) { var ov = root && $('[data-h2="xov"]', root); if (ov && !ov.classList.contains('gone')) { ov.classList.add('gone'); if (ov.parentNode) ov.parentNode.classList.add('xin'); setTimeout(function () { ov.hidden = true; }, 600); } if (t !== XPF) xpPick(t); else { var bx = $('[data-h2="hcards"]', root); if (bx) jumpTo(bx, 0); xpRowOn(true); } }
