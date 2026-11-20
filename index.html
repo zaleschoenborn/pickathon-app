@@ -1068,7 +1068,7 @@ setInterval(function(){if(bar)bar.style.display=document.querySelector('[aria-mo
  setInterval(function(){reg.update().catch(function(){})},5*60*1000); reg.update().catch(function(){}); try{navigator.storage&&navigator.storage.persist&&navigator.storage.persist()}catch(e){} navigator.serviceWorker.ready.then(function(r){r.active&&r.active.postMessage('pack')}).catch(function(){});
  window.__pkReg=reg;document.addEventListener('visibilitychange',function(){if(!document.hidden)reg.update().catch(function(){})});
 }).catch(function(){});
-window.__pkBuild='20261120-5365';
+window.__pkBuild='20261120-5366';
 /* New builds reach returning visitors (QC Round 3.5, Nov 11). tools/stamp_build.py writes the build into __pkBuild, sw.js and version.json.
    On load and on every return to the page, version.json (no-store) and the service worker say whether a newer build is waiting or active;
    if so the page reloads on that return. Touching the page never blocks it; only an order in progress does: the checkout open, a ticket
@@ -14249,6 +14249,12 @@ html body:not(.pkpl-wide) #root .pkpl-xb .pkpl-xe{flex-direction:row;gap:6px;min
 html body:not(.pkpl-wide) #root .pkpl-xb .pkpl-xe svg{width:18px;height:18px;flex:none}
 html body:not(.pkpl-wide) #root#root .pkpl-tools{bottom:66px;gap:8px}
 html body:not(.pkpl-wide) #root#root#root .pkpl-tools .pkpl-tb{min-height:44px!important;height:44px!important;padding:0 14px!important;font-size:13px!important;width:auto!important;min-width:0!important}
+/* phone card bar (Zale, Nov 20): open, the bar is only the pull handle; minimized, it is a small card with the logo and the name */
+body.pkpl-hood:not(.pkpl-wide) #pkpl-top .pkpl-bar{justify-content:center;padding:0 14px}
+body.pkpl-hood:not(.pkpl-wide) #pkpl-top .pkpl-bn,body.pkpl-hood:not(.pkpl-wide) #pkpl-top .pkpl-bi{display:none}
+body.pkpl-hood:not(.pkpl-wide) #pkpl-top.pkpl-folded .pkpl-bar{justify-content:flex-start;padding:12px 16px 0;gap:10px}
+body.pkpl-hood:not(.pkpl-wide) #pkpl-top.pkpl-folded .pkpl-bi{display:block;width:36px;height:36px;flex:none;border-radius:50%;background:#12160F;padding:2px;object-fit:contain}
+body.pkpl-hood:not(.pkpl-wide) #pkpl-top.pkpl-folded .pkpl-bn{display:block;font-size:19px;line-height:1}
 </style>
 <script id="pk-places">
 /* pk-places: Places map and neighborhood pages, round 1 (Nov 13 2026). Source: tools/places_r1/places.js, spliced into index.html by tools/places_r1/build.py.
@@ -14725,7 +14731,7 @@ html body:not(.pkpl-wide) #root#root#root .pkpl-tools .pkpl-tb{min-height:44px!i
     if (el._key === key) return; el._key = key;
     var dayN = {}; (D.days || []).forEach(function (d) { dayN[d.id] = d.n; });
     var rows = has ? S[TOP.day] : [], showN = TOP.all ? rows.length : 3;
-    var html = (XH && M && M.xp && wide() ? '<button type="button" class="pkpl-up" data-pk="up"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5 8 12l7 7"/></svg>' + esc(M.xp) + ' at Pickathon</button>' : '') + '<div class="pkpl-bar" role="button" tabindex="0" aria-expanded="true" aria-label="Show or hide ' + esc(h.n) + '"><i aria-hidden="true"></i><span class="pkpl-bn">' + esc(h.n) + '</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 15l6-6 6 6"/></svg></div>' + '<div class="pkpl-sheet' + (has ? ' pkpl-has' : '') + '">' +
+    var html = (XH && M && M.xp && wide() ? '<button type="button" class="pkpl-up" data-pk="up"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5 8 12l7 7"/></svg>' + esc(M.xp) + ' at Pickathon</button>' : '') + '<div class="pkpl-bar" role="button" tabindex="0" aria-expanded="true" aria-label="Show or hide ' + esc(h.n) + '"><i aria-hidden="true"></i><img class="pkpl-bi" src="' + esc(emb(k)) + '" alt=""><span class="pkpl-bn">' + esc(h.n) + '</span></div>' + '<div class="pkpl-sheet' + (has ? ' pkpl-has' : '') + '">' +
       '<div class="pkpl-grab" aria-hidden="true"><i></i></div>' +
       '<div class="pkpl-hero" aria-roledescription="carousel" aria-label="' + esc(h.n) + ' photos">' +
       ph.map(function (p, i) { return '<img src="' + esc(p.i) + '" alt="" style="object-position:' + esc(p.p) + '"' + (i === 0 ? ' class="on"' : ' loading="lazy"') + ' draggable="false">'; }).join('') +

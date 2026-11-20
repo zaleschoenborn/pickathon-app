@@ -501,3 +501,9 @@ html body:not(.pkpl-wide) #root .pkpl-xb .pkpl-xe{flex-direction:row;gap:6px;min
 html body:not(.pkpl-wide) #root .pkpl-xb .pkpl-xe svg{width:18px;height:18px;flex:none}
 html body:not(.pkpl-wide) #root#root .pkpl-tools{bottom:66px;gap:8px}
 html body:not(.pkpl-wide) #root#root#root .pkpl-tools .pkpl-tb{min-height:44px!important;height:44px!important;padding:0 14px!important;font-size:13px!important;width:auto!important;min-width:0!important}
+/* phone card bar (Zale, Nov 20): open, the bar is only the pull handle; minimized, it is a small card with the logo and the name */
+body.pkpl-hood:not(.pkpl-wide) #pkpl-top .pkpl-bar{justify-content:center;padding:0 14px}
+body.pkpl-hood:not(.pkpl-wide) #pkpl-top .pkpl-bn,body.pkpl-hood:not(.pkpl-wide) #pkpl-top .pkpl-bi{display:none}
+body.pkpl-hood:not(.pkpl-wide) #pkpl-top.pkpl-folded .pkpl-bar{justify-content:flex-start;padding:12px 16px 0;gap:10px}
+body.pkpl-hood:not(.pkpl-wide) #pkpl-top.pkpl-folded .pkpl-bi{display:block;width:36px;height:36px;flex:none;border-radius:50%;background:#12160F;padding:2px;object-fit:contain}
+body.pkpl-hood:not(.pkpl-wide) #pkpl-top.pkpl-folded .pkpl-bn{display:block;font-size:19px;line-height:1}
