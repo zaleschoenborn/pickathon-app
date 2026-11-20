@@ -436,4 +436,11 @@ html body.pkpl-hood #root#root#root#root#root#root#root#root#root#root#root#root
 #root #pkpl-top .pkpl-yr .pkpl-more p{-webkit-line-clamp:3;color:#E8E2D4}
 #root #pkpl-top .pkpl-what{padding:18px 16px 0}
 #root #pkpl-top .pkpl-ab1{margin:0 0 6px;font:600 17px/1.45 'Bricolage Grotesque',system-ui,sans-serif;color:#F2EDE3;max-width:none}
-html body.pkpl-hood #root#root#root#root#root#root#root#root#root#root#root#root .pk-hd-story :is(.pk-hd-lab,.pk-hd-sh,.pk-hd-sp){display:none!important}
+html body.pkpl-hood #root#root#root#root#root#root#root#root#root#root#root#root .pk-hd-story{display:none!important}
+
+#root #pkpl-top .pkpl-yr .pkpl-more p{-webkit-line-clamp:4;margin:0 0 10px}
+#root #pkpl-top .pkpl-yr .pkpl-more:not(.open) p+p{display:none}
+#root #pkpl-top .pkpl-yr .pkpl-ab1{margin:0 0 10px;font-size:18px;color:#F2CF62}
+#root #pkpl-top .pkpl-cred:not(:empty){margin-top:16px;padding-top:14px;border-top:1px solid #3A4331}
+#root #pkpl-top .pkpl-cred .pkpl-sk{margin:0 0 8px}
+#root #pkpl-top .pkpl-cred .pkpl-bw{margin-top:12px;min-height:44px!important;font-size:13px!important}

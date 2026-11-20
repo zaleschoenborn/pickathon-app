@@ -465,7 +465,7 @@
       (has ? '<section class="pkpl-sc" aria-label="Schedule at ' + esc(h.n) + '"><div class="pkpl-days" role="group" aria-label="Day">' + days.map(function (d) { return '<button type="button" class="pk-cta sec pkpl-chip" data-pk="day" data-d="' + d + '"' + (d === TOP.day ? ' aria-pressed="true"' : ' aria-pressed="false"') + '>' + esc(dayN[d] || d.slice(5)) + '</button>'; }).join('') + '</div>' +
         '<ol class="pkpl-sets">' + rows.slice(0, showN).map(function (s) { var A = (D.artists || {})[s.a] || {}; return '<li><span class="pkpl-st">' + tm(s.s) + '</span><span class="pkpl-sa"><b>' + esc(A.n || s.a) + '</b><small>' + esc(LBL[s.l] || '') + '</small></span></li>'; }).join('') + '</ol>' +
         (rows.length > 3 ? '<button type="button" class="pk-cta sec pkpl-whole" data-pk="whole" aria-expanded="' + TOP.all + '">' + (TOP.all ? 'Show less' : 'Whole day at ' + esc(h.n)) + '</button>' : '') + '</section>' : '') +
-      yearIs(h) + whatIs(h, has) +
+      storyIs(h, has) +
       (season === 'fest' ? soon(k, XE, h, has) + vids(k, XE) : vids(k, XE) + soon(k, XE, h, has)) +
       alsoAt(k, XE, h) +
       '</div>';
@@ -487,6 +487,13 @@
       var u = v.vm ? 'https://vimeo.com/' + v.vm + (v.vh ? '/' + v.vh : '') : 'https://www.youtube.com/watch?v=' + v.id, th = v.th || ('https://i.ytimg.com/vi/' + v.id + '/hqdefault.jpg');
       return '<button type="button" class="pkpl-vt" data-pk="vid" data-u="' + esc(u) + '" data-c="' + esc(v.a + ' · Pickathon ' + v.y) + '"><img src="' + esc(th) + '" alt="" loading="lazy"><span class="pkpl-pr0" aria-hidden="true"><i></i></span><span class="pkpl-vc"><b>' + esc(v.a) + '</b><small>Pickathon ' + v.y + '</small></span></button>';
     }).join('') + '</div></section>';
+  }
+  function storyIs(h, has) {   /* one story of the place (Zale, Nov 19): this year's headline, the place's one-liner, then this year's story and the place in one read; credits at the end */
+    var by = h.by || {}, y = Object.keys(by).sort().pop(), st = y && by[y] && by[y].t ? by[y] : null;
+    var j = function (d) { return Array.isArray(d) ? d.join(' ') : (d || ''); }, yr = st ? j(st.d) : '', ab = h.dd || j(h.d), hk = has ? '' : (h.hook || '');
+    var body = [yr, ab].filter(Boolean).map(function (t) { return '<p>' + esc(t) + '</p>'; }).join('');
+    return '<section class="pkpl-yr"><p class="pkpl-sk">' + esc(h.n) + (st ? ' in ' + y : '') + '</p>' + (st ? '<h2>' + esc(st.t) + '</h2>' : '') + (hk ? '<p class="pkpl-ab1">' + esc(hk) + '</p>' : '') +
+      (body ? '<div class="pkpl-more">' + body + '<button type="button" class="pkpl-rm" data-pk="rm" aria-expanded="false">Read more</button></div>' : '') + '<div class="pkpl-cred"></div></section>';
   }
   function yearIs(h) {   /* this year's story leads (Zale, Nov 19): kicker, headline, a few lines, Read more */
     var by = h.by || {}, y = Object.keys(by).sort().pop(), st = y && by[y]; if (!st || !st.t) return '';
@@ -573,9 +580,10 @@
   }
   function shape() {   /* one clean page (Zale, Nov 19): fold the page's long description into the card with Read more, drop the duplicate video and summer boxes, credits into the story, walk times into the map card */
     if (top().r !== 'hood') return; var w = document.querySelector('#root section.pk-hd-w'), card = document.getElementById('pkpl-top'); if (!w || !card) return;
-    var st = w.querySelector('.pk-hd-story'), who = w.querySelector('.pk-hd-who');
-    if (st && who && !st.querySelector('.pkpl-credit')) { var cr = who.querySelector('.pk-hd-creds'), bt = who.querySelector('.pk-hd-pitch .pk-cta');
-      var c = document.createElement('div'); c.className = 'pkpl-credit'; c.innerHTML = '<p class="pkpl-sk">Who built it</p>'; if (cr) c.appendChild(cr.cloneNode(true)); if (bt) { var b2 = bt.cloneNode(true); b2.className = 'pk-cta sec pkpl-bw'; b2.addEventListener('click', function () { bt.click(); }); c.appendChild(b2); } st.appendChild(c); }
+    var tgt = card.querySelector('.pkpl-cred'), who = w.querySelector('.pk-hd-who');
+    if (tgt && who && !tgt.firstChild) { var cr = who.querySelector('.pk-hd-creds'), bt = who.querySelector('.pk-hd-pitch .pk-cta');
+      if (cr) { var lb = document.createElement('p'); lb.className = 'pkpl-sk'; lb.textContent = 'Who built it'; tgt.appendChild(lb); tgt.appendChild(cr.cloneNode(true)); }
+      if (bt) { var b2 = bt.cloneNode(true); b2.className = 'pk-cta sec pkpl-bw'; b2.addEventListener('click', function () { bt.click(); }); tgt.appendChild(b2); } }
   }
   function backMap() {   /* end of a neighborhood page: the map again; tap it to go back to how you came in (Zale, Nov 19) */
     var old = document.getElementById('pkpl-back'), t = top(), k = t.h;
