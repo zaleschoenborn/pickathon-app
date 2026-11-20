@@ -516,3 +516,5 @@ html body.pkpl-hood:not(.pkpl-wide) #pkpl-top{bottom:61px}
 /* Nov 20 (Zale): Find and full map are icons only on phone */
 #root#root#root#root#root#root#root#root .pkpl-tools .pkpl-tb span{display:none}
 html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .pkpl-tools .pkpl-tb{width:44px!important;min-width:44px!important;box-sizing:border-box!important;padding:0!important;justify-content:center!important}
+/* Nov 20 (Zale): no Find or full-map on a phone neighborhood page; the back arrow returns to the map */
+html body.pkpl-hood:not(.pkpl-wide) #root#root#root#root#root#root#root#root .pkpl-tools{display:none}
