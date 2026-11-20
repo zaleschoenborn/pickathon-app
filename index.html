@@ -12672,7 +12672,12 @@ html:root:root #root#root#root#root#root#root#root#root#root#root#root#root#root
   }
   /* Zale Nov 19 18:48: the city line lives in the first-view photo */
   #root#root#root#root#root#root#root#root #pkh2 .h2-xovk{text-transform:none!important;white-space:normal!important;font-size:16px!important;line-height:1.35!important;letter-spacing:0!important;font-weight:600!important;color:#F2EDE3!important;max-width:30ch;text-shadow:0 1px 10px rgba(0,0,0,.7)}
-  #pkh2 .h2-xpan{display:none}
+    /* Zale Nov 20: phone top line is one line so the first-view panel fits (it was ~30px too tall and clipped the top). Desktop keeps the full line. */
+  @media (max-width:1199px){#pkh2 .h2-xk-l{display:none}}
+  @media (min-width:1200px){#pkh2 .h2-xk-s{display:none}}
+  @media (max-width:599px){#pkh2 .h2-xovo{gap:8px;padding-bottom:10px}}
+  @media (max-width:599px){#root#root#root #pkh2 .h2-xovb{gap:4px!important}}
+#pkh2 .h2-xpan{display:none}
   @media (min-width:1200px){
   #root#root#root#root#root#root #pkh2 .h2-s3c .h2-ccw{display:grid!important;grid-template-columns:clamp(290px,21vw,320px) minmax(0,1fr);gap:18px;align-self:stretch!important;width:auto!important;max-width:none!important}
   #pkh2 .h2-xpan{display:block;position:relative;min-height:0;overflow:hidden;border-radius:12px;background:#14110f}
@@ -13105,7 +13110,7 @@ window.pkClimbRank = function (C, dd) {
       h += '<section class="h2-s h2-s3 h2-s3c" aria-labelledby="h2-h3"><div class="h2-s5head"><div><h2 class="h2-d h2-sec pkp-head" id="h2-h3">Summer camp for your soul</h2></div>' +
         '<div class="h2-cc-nav"><button type="button" class="h2-pill h2-s5top h2-anb" data-h2="allhoods">Explore the map</button></div></div>' +
         '<div class="h2-xov" data-h2="xov"><div class="h2-xovp" aria-hidden="true">' + XOVI.map(function (x, n) { return '<img class="h2-xovi' + (n ? '' : ' on') + '" src="' + x.i + '" alt="" style="object-position:' + x.p + '" decoding="async"' + (n ? ' loading="lazy"' : '') + '>'; }).join('') + '</div>' +
-        '<div class="h2-xovo"><p class="h2-xovk">A city of twenty neighborhoods, built new in the forest every summer.</p><p class="h2-d h2-xovh pkp-head">Choose your own adventure</p>' +
+        '<div class="h2-xovo"><p class="h2-xovk"><span class="h2-xk-l">A city of twenty neighborhoods, built new in the forest every summer.</span><span class="h2-xk-s">Twenty neighborhoods in the forest.</span></p><p class="h2-d h2-xovh pkp-head">Choose your own adventure</p>' +
         '<div class="h2-xovb" role="group" aria-label="Choose an experience">' + XPO.map(function (t) { return '<button type="button" class="h2-xb" data-h2="xpgo" data-xp="' + t + '">' + xpIc(t) + '<span>' + esc(t) + '</span></button>'; }).join('') + '</div>' +
         '<button type="button" class="h2-xovs" data-h2="xpgo" data-xp="Architecture"><span class="h2-xsw-m">Or swipe to wander the farm</span><span class="h2-xsw-d">Or just wander the farm</span><span aria-hidden="true"> →</span></button></div>' +
         '<button type="button" class="h2-xova" data-h2="xpgo" data-xp="Architecture" aria-label="Wander the farm">' + CHEV + '</button></div>' +
