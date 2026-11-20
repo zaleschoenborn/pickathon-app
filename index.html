@@ -1068,7 +1068,7 @@ setInterval(function(){if(bar)bar.style.display=document.querySelector('[aria-mo
  setInterval(function(){reg.update().catch(function(){})},5*60*1000); reg.update().catch(function(){}); try{navigator.storage&&navigator.storage.persist&&navigator.storage.persist()}catch(e){} navigator.serviceWorker.ready.then(function(r){r.active&&r.active.postMessage('pack')}).catch(function(){});
  window.__pkReg=reg;document.addEventListener('visibilitychange',function(){if(!document.hidden)reg.update().catch(function(){})});
 }).catch(function(){});
-window.__pkBuild='20261120-5371';
+window.__pkBuild='20261120-5372';
 /* New builds reach returning visitors (QC Round 3.5, Nov 11). tools/stamp_build.py writes the build into __pkBuild, sw.js and version.json.
    On load and on every return to the page, version.json (no-store) and the service worker say whether a newer build is waiting or active;
    if so the page reloads on that return. Touching the page never blocks it; only an order in progress does: the checkout open, a ticket
@@ -13937,7 +13937,7 @@ body.pkpl-hood #root .pk-hd-desc0.pkpl-dup{display:none!important}   /* the long
 .pkpl-tools{bottom:92px}
 body.pkpl-wide .pkpl-xb{justify-content:center}
 body.pkpl-wide .pkpl-xe{min-width:74px}
-body.pkpl-hood:not(.pkpl-wide) .pkpl-xb{display:none}
+body.pkpl-hood:not(.pkpl-wide) #pkpl .pkpl-xb{display:flex;bottom:calc(var(--pkpl-open,60vh) - var(--pkpl-y,0px));transition:bottom .32s cubic-bezier(.2,.8,.2,1)}   /* Nov 20 (Zale): the experience row shows on a phone neighborhood page, sitting on the sheet's top edge and following it when folded */
 #root #pkpl-top .pkpl-also{padding:20px 16px 10px}
 #root #pkpl-top .pkpl-also h2{margin:0 0 12px;font-size:20px!important;line-height:1.1!important;font:800 13px/1.2 'Bricolage Grotesque',system-ui,sans-serif;font-stretch:75%;letter-spacing:.14em;text-transform:uppercase;color:#D6B54A}
 #root #pkpl-top .pkpl-at{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
@@ -14244,7 +14244,7 @@ body.pkpl-hood:not(.pkpl-wide) #pkpl-top .pkpl-grab{display:none}
 body.pkpl-hood:not(.pkpl-wide) #pk-scroll-phone>*:not(#pkpl):not(#pkpl-top):not(#pkpl-sp):not(#pk-farmmap):not(style):not([aria-label="Listen"]):not([aria-label="Cookie choices"]){display:none!important}
 
 /* phone experience strip (Zale, Nov 20): one compact row of chips on a solid dark bar, right above the tab bar; Find and Full map sit just above it */
-html body:not(.pkpl-wide) #root .pkpl-xb{padding:8px 10px calc(8px + env(safe-area-inset-bottom,0px));gap:6px;align-items:center;background:#12160F;border-top:1px solid #3A4331}
+html body:not(.pkpl-wide) #root .pkpl-xb{padding:8px 10px;gap:6px;align-items:center;background:#12160F;border-top:1px solid #3A4331}   /* no safe-area padding here: the tab bar below already carries it, so this padding made a gap (Zale, Nov 20) */
 html body:not(.pkpl-wide) #root .pkpl-xb .pkpl-xe{flex-direction:row;gap:6px;min-width:0;min-height:40px;padding:0 12px;border-radius:6px;font-size:13px;line-height:1;white-space:nowrap}
 html body:not(.pkpl-wide) #root .pkpl-xb .pkpl-xe svg{width:18px;height:18px;flex:none}
 html body:not(.pkpl-wide) #root#root .pkpl-tools{bottom:66px;gap:8px}
@@ -14605,7 +14605,7 @@ body.pkpl-wide.pkpl-hood #pkpl-more.pkpl-more-on{display:block}
       var hp = e.target.closest('[data-hp]'); if (hp) { if (M.title) { M.title = false; } open(hp.getAttribute('data-hp')); return; }
       var b = e.target.closest('[data-pl]'); if (b) { tool(b.getAttribute('data-pl'), b); return; }
       var a = e.target.closest('.pkpl-amdot'); if (a) return;
-      if (M.cur && !M.amen) { var gk = iconAt(rel(e)); if (gk) { glow(gk === M.glow ? '' : gk); e.stopPropagation(); return; } }   /* Nov 20 (Zale): inside a place, tap one of its icons and every icon of that kind glows on the real map; the view stays put */
+      if (M.cur && !M.amen && (!e.target.closest('[data-h]') || e.target.closest('[data-h]').getAttribute('data-h') === M.cur)) { var gk = iconAt(rel(e)); if (gk) { glow(gk === M.glow ? '' : gk); e.stopPropagation(); return; } }   /* a tap on ANOTHER neighborhood's shape always opens that neighborhood (Zale, Nov 20: it got stuck behind an icon glow) */   /* Nov 20 (Zale): inside a place, tap one of its icons and every icon of that kind glows on the real map; the view stays put */
       var h = e.target.closest('[data-h]');
       if (M.title) { M.title = false; M.el.classList.add('pkpl-notitle'); if (!h) return; }   /* the title screen holds until a click on the map or an icon */
       if (!h) return;
@@ -14951,12 +14951,12 @@ body.pkpl-wide.pkpl-hood #pkpl-more.pkpl-more-on{display:block}
   /* the phone card: the bar is the handle; drag it down to fold, up to open, or tap it to flip */
   function cardEl() { return document.getElementById('pkpl-top'); }
   function foldY() { return sheetOpen() - 56; }
-  function setFold(f) { var el = cardEl(); if (!el) return; el.classList.add('pkpl-anim'); el.classList.toggle('pkpl-folded', !!f); el.style.setProperty('--pkpl-y', (f ? foldY() : 0) + 'px'); var b = el.querySelector('.pkpl-bar'); if (b) b.setAttribute('aria-expanded', String(!f)); }
+  function setFold(f) { var el = cardEl(); if (!el) return; el.classList.add('pkpl-anim'); el.classList.toggle('pkpl-folded', !!f); el.style.setProperty('--pkpl-y', (f ? foldY() : 0) + 'px'); document.documentElement.style.setProperty('--pkpl-y', (f ? foldY() : 0) + 'px');   /* the chip row above the sheet follows it */ var b = el.querySelector('.pkpl-bar'); if (b) b.setAttribute('aria-expanded', String(!f)); }
   (function sheetDrag() {
     var st = null;
     var onBar = function (t) { return t && t.closest && t.closest('#pkpl-top .pkpl-bar'); };
     document.addEventListener('pointerdown', function (e) { if (wide() || !onBar(e.target)) return; var el = cardEl(); if (!el) return; st = { y: e.clientY, base: el.classList.contains('pkpl-folded') ? foldY() : 0, moved: false }; el.classList.remove('pkpl-anim'); try { e.target.closest('.pkpl-bar').setPointerCapture(e.pointerId); } catch (x) {} }, true);
-    document.addEventListener('pointermove', function (e) { if (!st) return; var dy = e.clientY - st.y; if (Math.abs(dy) > 6) st.moved = true; if (!st.moved) return; var y = Math.min(foldY(), Math.max(0, st.base + dy)); cardEl().style.setProperty('--pkpl-y', y + 'px'); }, true);
+    document.addEventListener('pointermove', function (e) { if (!st) return; var dy = e.clientY - st.y; if (Math.abs(dy) > 6) st.moved = true; if (!st.moved) return; var y = Math.min(foldY(), Math.max(0, st.base + dy)); cardEl().style.setProperty('--pkpl-y', y + 'px'); document.documentElement.style.setProperty('--pkpl-y', y + 'px'); }, true);
     var end = function (e) { if (!st) return; var s = st; st = null; var el = cardEl(); if (!el) return; if (!s.moved) { setFold(!el.classList.contains('pkpl-folded')); return; } var y = parseFloat(getComputedStyle(el).getPropertyValue('--pkpl-y')) || 0; setFold(y > foldY() / 2); };
     document.addEventListener('pointerup', end, true); document.addEventListener('pointercancel', end, true);
     document.addEventListener('keydown', function (e) { if ((e.key === 'Enter' || e.key === ' ') && onBar(e.target) && !wide()) { e.preventDefault(); var el = cardEl(); setFold(!el.classList.contains('pkpl-folded')); } }, true);
