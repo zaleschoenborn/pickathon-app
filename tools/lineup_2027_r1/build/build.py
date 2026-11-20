@@ -699,6 +699,16 @@ _ASCRIPT = ('<script>document.getElementById("asel").addEventListener("change",f
             'if(m){m.hidden=false;window.scrollTo(0,0);}});</script>')
 
 page = page.replace('<button data-s="s3">', _ASEL + '<button data-s="s3">', 1).replace('<nav class="tabs">', ''.join(ARTISTS.values()) + '<nav class="tabs">', 1).replace('</body>', _ASCRIPT + _PLAYER + '</body>')
+# name variants and collab billings that point at a page we have (Zale, Nov 20: "those names obviously map to an artist")
+_ALIAS = {'2mangentlemanband': 'twomangentlemenband', '79ersgang': '79rsgang', 'billystringsdonjulin': 'billystrings',
+          'bonnieprincebillythecairogang': 'bonnieprincebilly', 'brownoutbrownsabbath': 'brownoutpresentsbrownsabbath',
+          'brucemolskyband': 'brucemolsky', 'deryayildirim': 'deryayldrm', 'destroyersolo': 'destroyer',
+          'hungermtboys': 'hungermountainboys', 'johndoethesadies': 'sadies', 'kurtviletheviolators': 'kurtvile',
+          'laurielewistomrozumandtomsauber': 'laurielewis', 'leefieldstheexpressions': 'leefields',
+          'thequebesistersband': 'quebesisters', 'tysegallthemuggers': 'tysegall', 'whiteymorgan': 'whiteymorganthe78s',
+          'darolangerscottnygaard': 'darolanger'}
+_PIDS0 = set(_re.findall(r'id="a-([a-z0-9]+)"', page))
+page = _re.sub(r' data-art="([a-z0-9]*)"', lambda m: (' data-art="%s"' % _ALIAS[m.group(1)]) if (m.group(1) in _ALIAS and _ALIAS[m.group(1)] in _PIDS0) else m.group(0), page)
 # names with no artist page keep no link (a tap must never go nowhere); the gaps are listed in the build log
 _PIDS = set(_re.findall(r'id="a-([a-z0-9]+)"', page))
 _DROP = sorted({m.group(1) for m in _re.finditer(r' data-art="([a-z0-9]*)"', page) if m.group(1) not in _PIDS and _re.sub(r'^the', '', m.group(1)) not in _PIDS})
