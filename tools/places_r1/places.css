@@ -479,3 +479,34 @@ html body.pkpl-wide #root#root#root#root #pkpl .pkpl-title.pkpl-tight5 .pkpl-abb
 
 /* Nov 20: on a desktop neighborhood page the map box can run below the window; the map's own buttons stay on screen */
 html body.pkpl-wide.pkpl-hood #root #pkpl .pkpl-tools{position:fixed;right:16px;bottom:16px;top:auto;z-index:20}
+
+/* ---------- phone neighborhood card (Zale, Nov 20): a bottom card that rises, scrolls inside, and folds to a bar ---------- */
+.pkpl-bar{display:none}
+body.pkpl-hood:not(.pkpl-wide) #pkpl-sp{display:none}
+body.pkpl-hood:not(.pkpl-wide) #pkpl-top{position:absolute;left:0;right:0;bottom:0;height:var(--pkpl-open,60vh);z-index:6;display:flex;flex-direction:column;overflow:hidden;background:#2B2628;border-radius:16px 16px 0 0;box-shadow:0 -6px 22px rgba(0,0,0,.45);transform:translateY(var(--pkpl-y,0px));padding-bottom:env(safe-area-inset-bottom,0px)}
+body.pkpl-hood:not(.pkpl-wide) #pkpl-top.pkpl-anim{transition:transform .32s cubic-bezier(.2,.8,.2,1)}
+body.pkpl-hood:not(.pkpl-wide) #pkpl-top .pkpl-bar{display:flex;flex:none;position:relative;align-items:center;gap:10px;height:22px;padding:0;background:#2B2628;cursor:pointer;touch-action:none;user-select:none;-webkit-user-select:none}
+body.pkpl-hood:not(.pkpl-wide) #pkpl-top .pkpl-bar i{position:absolute;left:50%;top:6px;width:32px;height:4px;margin-left:-16px;border-radius:3px;background:rgba(242,237,227,.85)}
+body.pkpl-hood:not(.pkpl-wide) #pkpl-top .pkpl-bn{flex:1;min-width:0;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;font-family:'Pickathon 2014',sans-serif;font-size:22px;line-height:1;text-transform:uppercase;letter-spacing:.02em;color:#F2EDE3}
+body.pkpl-hood:not(.pkpl-wide) #pkpl-top .pkpl-bar svg{flex:none;width:22px;height:22px;fill:none;stroke:#FFE7A3;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;transition:transform .32s ease}
+body.pkpl-hood:not(.pkpl-wide) #pkpl-top.pkpl-folded .pkpl-bar svg{transform:rotate(180deg)}
+body.pkpl-hood:not(.pkpl-wide) #pkpl-top .pkpl-sheet{flex:1 1 auto;min-height:0;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;border-radius:0;box-shadow:none}
+body.pkpl-hood:not(.pkpl-wide) #pkpl-top .pkpl-grab{display:none}
+/* phone: the map and the card are the whole screen; the page sections below the card are hidden here (they covered the map) */
+body.pkpl-hood:not(.pkpl-wide) #pk-scroll-phone>*:not(#pkpl):not(#pkpl-top):not(#pkpl-sp):not(#pk-farmmap):not(style):not([aria-label="Listen"]):not([aria-label="Cookie choices"]){display:none!important}
+
+/* phone experience strip (Zale, Nov 20): one compact row of chips on a solid dark bar, right above the tab bar; Find and Full map sit just above it */
+html body:not(.pkpl-wide) #root .pkpl-xb{padding:8px 10px calc(8px + env(safe-area-inset-bottom,0px));gap:6px;align-items:center;background:#12160F;border-top:1px solid #3A4331}
+html body:not(.pkpl-wide) #root .pkpl-xb .pkpl-xe{flex-direction:row;gap:6px;min-width:0;min-height:40px;padding:0 12px;border-radius:6px;font-size:13px;line-height:1;white-space:nowrap}
+html body:not(.pkpl-wide) #root .pkpl-xb .pkpl-xe svg{width:18px;height:18px;flex:none}
+html body:not(.pkpl-wide) #root#root .pkpl-tools{bottom:66px;gap:8px}
+html body:not(.pkpl-wide) #root#root#root .pkpl-tools .pkpl-tb{min-height:44px!important;height:44px!important;padding:0 14px!important;font-size:13px!important;width:auto!important;min-width:0!important}
+/* phone card bar (Zale, Nov 20): open, the bar is only the pull handle; minimized, it is a small card with the logo and the name */
+body.pkpl-hood:not(.pkpl-wide) #pkpl-top .pkpl-bar{justify-content:center;padding:0}
+body.pkpl-hood:not(.pkpl-wide) #pkpl-top .pkpl-bn,body.pkpl-hood:not(.pkpl-wide) #pkpl-top .pkpl-bi{display:none}
+body.pkpl-hood:not(.pkpl-wide) #pkpl-top.pkpl-folded .pkpl-bar{height:56px;justify-content:flex-start;padding:12px 16px 0;gap:10px;border-bottom:1px solid #3A4331}
+body.pkpl-hood:not(.pkpl-wide) #pkpl-top.pkpl-folded .pkpl-bi{display:block;width:36px;height:36px;flex:none;border-radius:50%;background:#12160F;padding:2px;object-fit:contain}
+body.pkpl-hood:not(.pkpl-wide) #pkpl-top.pkpl-folded .pkpl-bn{display:block;font-size:19px;line-height:1}
+/* desktop scroll cue (Zale, Nov 20): the bottom of the panel fades into the page while more is below; no icon, no pulse */
+#pkpl-more{display:none;position:fixed;left:0;bottom:0;z-index:5;width:var(--pkpl-lw,40%);height:140px;pointer-events:none;background:linear-gradient(180deg,rgba(43,38,40,0) 0%,rgba(43,38,40,.92) 85%,#2B2628 100%)}
+body.pkpl-wide.pkpl-hood #pkpl-more.pkpl-more-on{display:block}
