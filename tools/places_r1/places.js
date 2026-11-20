@@ -202,7 +202,8 @@
   function home(now) { M.cur = ''; lit(); animTo(startView(), now ? 0 : 520); }
   /* the visible part of the map (phone: above the sheet) */
   function lw() { return Math.round(Math.max(400, Math.min(480, window.innerWidth * 0.32))); }   /* desktop left column: phone-card width, the map is the hero (Zale, Nov 19) */
-  function sheetOpen() { var sc = scroller(); return Math.round((sc ? sc.clientHeight : 600) * 0.6); }   /* the card opens to 60% of the phone's scroll area */
+  function sheetOpen() { var sc = scroller(); return openH(sc ? sc.clientHeight : 600); }   /* the card opens to the phone's scroll area less a map margin at the top (Nov 20, Zale) */
+  function openH(vh) { return Math.max(200, Math.round(vh - 150)); }
   function clear() { var r = region(), t = wide() && top().r !== 'hood' ? lw() : 0, ti = $('.pkpl-title', M.el), up = wide() ? 78 : (M.title && ti ? Math.max(0, ti.offsetHeight - 14) : 0), dn = wide() ? 8 : (top().r === 'hood' ? sheetOpen() : 150); return { x: r.x + t, y: r.y + up, w: r.w - t, h: Math.max(160, r.h - up - dn) }; }   /* the lit places fill what is left */   /* above the experience bar and the amenity tag */
   function region() {
     if (wide() || top().r !== 'hood') return { x: 0, y: 0, w: M.vw, h: M.vh };
@@ -584,7 +585,7 @@
     var sc = scroller(), vh, hd = 0;
     if (sc) vh = sc.clientHeight; else { var h = document.querySelector('#root header'); hd = h && getComputedStyle(h).position === 'sticky' ? h.offsetHeight : 0; vh = window.innerHeight - ((top().r === 'hoods' || top().r === 'hood') && h ? Math.max(hd, Math.round(h.getBoundingClientRect().bottom)) : hd); }
     var k = vh + '|' + hd; if (k === sheetVars._k) return; sheetVars._k = k;
-    document.documentElement.style.setProperty('--pkpl-vh', vh + 'px'); document.documentElement.style.setProperty('--pkpl-hd', hd + 'px'); document.documentElement.style.setProperty('--pkpl-open', Math.round(vh * 0.6) + 'px');
+    document.documentElement.style.setProperty('--pkpl-vh', vh + 'px'); document.documentElement.style.setProperty('--pkpl-hd', hd + 'px'); document.documentElement.style.setProperty('--pkpl-open', openH(vh) + 'px');
   }
   var lastHood = '';
   function settleSheet() {   /* a new place opens with the sheet at about 60% (55% on portrait tablet) */

@@ -13817,7 +13817,7 @@ window.pkClimbRank = function (C, dd) {
 .pkpl-hero>img.on{opacity:1}
 .pkpl-hero>img.top{z-index:1}
 .pkpl-hero>img.cut{transition:none}
-.pkpl-shade{position:absolute;left:0;right:0;bottom:0;height:70%;background:linear-gradient(180deg,rgba(18,22,15,0) 0%,rgba(18,22,15,.6) 50%,rgba(18,22,15,.92) 100%);pointer-events:none}
+.pkpl-shade{position:absolute;left:0;right:0;bottom:0;height:70%;z-index:2;background:linear-gradient(180deg,rgba(18,22,15,0) 0%,rgba(18,22,15,.6) 50%,rgba(18,22,15,.92) 100%);pointer-events:none}
 .pkpl-shade::before{content:"";position:absolute;left:0;right:0;bottom:100%;height:60px;background:linear-gradient(0deg,rgba(18,22,15,0),rgba(18,22,15,.28));transform:translateY(-100%)}
 .pkpl-hi:not(.pkpl-map){position:absolute;left:0;right:0;bottom:0;padding:0 16px 36px;z-index:2;pointer-events:none}
 #root #pkpl-top .pkpl-kind{margin:0 0 6px;font:800 12.5px/1.2 'Bricolage Grotesque',system-ui,sans-serif;font-stretch:75%;letter-spacing:.14em;text-transform:uppercase;color:#9FCB8A;max-width:none}
@@ -13937,7 +13937,7 @@ body.pkpl-hood #root .pk-hd-desc0.pkpl-dup{display:none!important}   /* the long
 .pkpl-tools{bottom:92px}
 body.pkpl-wide .pkpl-xb{justify-content:center}
 body.pkpl-wide .pkpl-xe{min-width:74px}
-body.pkpl-hood:not(.pkpl-wide) #pkpl .pkpl-xb{display:flex;bottom:calc(var(--pkpl-open,60vh) - var(--pkpl-y,0px));transition:bottom .32s cubic-bezier(.2,.8,.2,1)}   /* Nov 20 (Zale): the experience row shows on a phone neighborhood page, sitting on the sheet's top edge and following it when folded */
+body.pkpl-hood:not(.pkpl-wide) #pkpl .pkpl-xb{display:flex}   /* Nov 20 (Zale): the experience row stays pinned above the tab bar on a phone neighborhood page; the sheet rises above it */
 #root #pkpl-top .pkpl-also{padding:20px 16px 10px}
 #root #pkpl-top .pkpl-also h2{margin:0 0 12px;font-size:20px!important;line-height:1.1!important;font:800 13px/1.2 'Bricolage Grotesque',system-ui,sans-serif;font-stretch:75%;letter-spacing:.14em;text-transform:uppercase;color:#D6B54A}
 #root #pkpl-top .pkpl-at{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
@@ -14258,6 +14258,12 @@ body.pkpl-hood:not(.pkpl-wide) #pkpl-top.pkpl-folded .pkpl-bn{display:block;font
 /* desktop scroll cue (Zale, Nov 20): the bottom of the panel fades into the page while more is below; no icon, no pulse */
 #pkpl-more{display:none;position:fixed;left:0;bottom:0;z-index:5;width:var(--pkpl-lw,40%);height:140px;pointer-events:none;background:linear-gradient(180deg,rgba(43,38,40,0) 0%,rgba(43,38,40,.92) 85%,#2B2628 100%)}
 body.pkpl-wide.pkpl-hood #pkpl-more.pkpl-more-on{display:block}
+
+/* Nov 20 (Zale): phone neighborhood page: the experience row stays pinned; the sheet rises above it and stops short of the top, leaving a map margin */
+html body.pkpl-hood:not(.pkpl-wide) #pkpl-top{bottom:61px}
+/* Nov 20 (Zale): Find and full map are icons only on phone */
+#root#root#root#root#root#root#root#root .pkpl-tools .pkpl-tb span{display:none}
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .pkpl-tools .pkpl-tb{width:44px!important;min-width:44px!important;box-sizing:border-box!important;padding:0!important;justify-content:center!important}
 </style>
 <script id="pk-places">
 /* pk-places: Places map and neighborhood pages, round 1 (Nov 13 2026). Source: tools/places_r1/places.js, spliced into index.html by tools/places_r1/build.py.
@@ -14464,7 +14470,8 @@ body.pkpl-wide.pkpl-hood #pkpl-more.pkpl-more-on{display:block}
   function home(now) { M.cur = ''; lit(); animTo(startView(), now ? 0 : 520); }
   /* the visible part of the map (phone: above the sheet) */
   function lw() { return Math.round(Math.max(400, Math.min(480, window.innerWidth * 0.32))); }   /* desktop left column: phone-card width, the map is the hero (Zale, Nov 19) */
-  function sheetOpen() { var sc = scroller(); return Math.round((sc ? sc.clientHeight : 600) * 0.6); }   /* the card opens to 60% of the phone's scroll area */
+  function sheetOpen() { var sc = scroller(); return openH(sc ? sc.clientHeight : 600); }   /* the card opens to the phone's scroll area less a map margin at the top (Nov 20, Zale) */
+  function openH(vh) { return Math.max(200, Math.round(vh - 150)); }
   function clear() { var r = region(), t = wide() && top().r !== 'hood' ? lw() : 0, ti = $('.pkpl-title', M.el), up = wide() ? 78 : (M.title && ti ? Math.max(0, ti.offsetHeight - 14) : 0), dn = wide() ? 8 : (top().r === 'hood' ? sheetOpen() : 150); return { x: r.x + t, y: r.y + up, w: r.w - t, h: Math.max(160, r.h - up - dn) }; }   /* the lit places fill what is left */   /* above the experience bar and the amenity tag */
   function region() {
     if (wide() || top().r !== 'hood') return { x: 0, y: 0, w: M.vw, h: M.vh };
@@ -14846,7 +14853,7 @@ body.pkpl-wide.pkpl-hood #pkpl-more.pkpl-more-on{display:block}
     var sc = scroller(), vh, hd = 0;
     if (sc) vh = sc.clientHeight; else { var h = document.querySelector('#root header'); hd = h && getComputedStyle(h).position === 'sticky' ? h.offsetHeight : 0; vh = window.innerHeight - ((top().r === 'hoods' || top().r === 'hood') && h ? Math.max(hd, Math.round(h.getBoundingClientRect().bottom)) : hd); }
     var k = vh + '|' + hd; if (k === sheetVars._k) return; sheetVars._k = k;
-    document.documentElement.style.setProperty('--pkpl-vh', vh + 'px'); document.documentElement.style.setProperty('--pkpl-hd', hd + 'px'); document.documentElement.style.setProperty('--pkpl-open', Math.round(vh * 0.6) + 'px');
+    document.documentElement.style.setProperty('--pkpl-vh', vh + 'px'); document.documentElement.style.setProperty('--pkpl-hd', hd + 'px'); document.documentElement.style.setProperty('--pkpl-open', openH(vh) + 'px');
   }
   var lastHood = '';
   function settleSheet() {   /* a new place opens with the sheet at about 60% (55% on portrait tablet) */
