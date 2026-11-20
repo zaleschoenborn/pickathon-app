@@ -72,7 +72,7 @@ for _r26 in d['yearReel'].get('2026', []):
 EXTF = {}
 for _y, _acts in json.load(open(ROOT + 'ext_photos.json')).items():
     for _n2, _v in _acts.items():
-        d['yearPhotos'].setdefault(_y, {})[_n2] = {'i': _v['i']}
+        d['yearPhotos'].setdefault(_y, {})[_n2] = {'i': _v['i'], **({'s': _v['s']} if _v.get('s') else {})}
         EXTF[_v['i']] = _v['f']
 
 import hashlib
@@ -648,7 +648,7 @@ def art_page(slug, ap):
     name = _NAMES[slug]; yr = str(ap.get('yr') or max([y for y, _ in _KIN.get(name, [])] or [2024]))
     if not str(ap.get('hero','')).startswith('i/') or not os.path.exists(APP + ap['hero']):
         ap = dict(ap, hero=d['yearLogo'][yr] if yr in d['yearLogo'] else 'logo27-gold.png')
-    ap = dict(ap, gal=[p for p in (ap.get('gal') or []) if str(p.get('i','')).startswith('i/') and os.path.exists(APP + p['i'])])
+    ap = dict(ap, gal=[p for p in (ap.get('gal') or []) if str(p.get('i','')).startswith(('i/', 'ext/')) and os.path.exists(_src(p['i']))])
     x = _cls(name, yr) or {}
     k = x.get('k', 'none'); g = x.get('g', '')
     P = d['yearBrand'].get(yr, P24)
@@ -731,7 +731,7 @@ for _o in _OWN:
         for _v in sorted(d['videos'], key=lambda v: v.get('y') or 0):
             if _slug(_v.get('a') or '') in _g and _v.get('vm') and _v.get('vh') and _v.get('y'):
                 _vi.append({'u': 'https://vimeo.com/%s/%s' % (_v['vm'], _v['vh']), 'i': '', 'sg': '%s · %s' % (_v['y'], _v.get('s') or _v.get('vn') or '')})
-        _thumb = next((p['i'] for p in _ph if os.path.exists(APP + p['i'])), None)  # a video card needs a still; no photo, no card
+        _thumb = next((p['i'] for p in _ph if os.path.exists(_src(p['i']))), None)  # a video card needs a still; no photo, no card
         for _x in _vi: _x['i'] = _thumb or ''
         _vi = [x for x in _vi if x['i']]
         ARTISTS[_o] = art_page(_o, {'yr': str(min(int(y) for y, _ in _KIN[_NAMES[_o]])), 'gal': _ph[:8], 'vids': _vi})
