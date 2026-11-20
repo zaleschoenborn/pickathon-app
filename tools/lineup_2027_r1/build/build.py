@@ -691,6 +691,13 @@ for _s, _ap in d['actPages'].items():
             ARTISTS[_s] = art_page(_s, _ap)
         except Exception as _e:
             print('skip', _s, _e)
+# pages for the acts the lineup has but no artist page yet (Nov 20, Lineup's join): lineup facts only, no story or photos yet
+_OWN = {'altngn': 'altngn', 'anasmitchell': 'anasmitchell', 'billywoods': 'billywoods', 'elucid': 'elucid', 'laiththetexasbirds': 'laiththetexasbirds',
+        'scottlaw': 'scottlaw', 'sundayvalley': 'sundayvalley', 'theearnestlovers': 'theearnestlovers', 'themidnightshivers': 'themidnightshivers',
+        'calebklauder': 'calebklauder', 'calebklauderreebwillms': 'calebklauderreebwillms'}
+for _o in _OWN:
+    if _o not in ARTISTS and _o in _NAMES and _NAMES[_o] in _KIN:
+        ARTISTS[_o] = art_page(_o, {'yr': str(min(int(y) for y, _ in _KIN[_NAMES[_o]]))})
 print(len(ARTISTS), 'artist pages generated')
 _ASEL = '<label class="mb-sel">Artist <select id="asel"><option value="">Pick an artist</option>%s</select></label>' % ''.join(
     '<option value="%s">%s</option>' % (s, E(_NAMES[s])) for s in sorted(ARTISTS, key=lambda s: _NAMES[s].lower()))
@@ -709,7 +716,9 @@ _ALIAS = {'2mangentlemanband': 'twomangentlemenband', '79ersgang': '79rsgang', '
           'darolangerscottnygaard': 'darolanger',
           # Lineup's act join (Nov 20 13:19 note): same act, page already in the build
           'michaelnau': 'cottonjones', 'sethandmay': 'daisymaysethbernard', 'kevinburke': 'kevinburkecaseyneill',
-          'caseyneill': 'kevinburkecaseyneill', 'cahalenmorrisoncountryhammer': 'cahalenmorrisoneliwest'}
+          'caseyneill': 'kevinburkecaseyneill', 'cahalenmorrisoncountryhammer': 'cahalenmorrisoneliwest',
+          # r21: name variants of the pages above (Lineup's Nov 20 join)
+          'altingn': 'altngn', 'calebklauderband': 'calebklauder', 'calebklaudercountryband': 'calebklauder', 'calebreeb': 'calebklauderreebwillms'}
 _PIDS0 = set(_re.findall(r'id="a-([a-z0-9]+)"', page))
 page = _re.sub(r' data-art="([a-z0-9]*)"', lambda m: (' data-art="%s"' % _ALIAS[m.group(1)]) if (m.group(1) in _ALIAS and _ALIAS[m.group(1)] in _PIDS0) else m.group(0), page)
 # names with no artist page keep no link (a tap must never go nowhere); the gaps are listed in the build log
