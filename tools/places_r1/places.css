@@ -446,3 +446,10 @@ html body.pkpl-hood #root#root#root#root#root#root#root#root#root#root#root#root
 #root #pkpl-top .pkpl-cred .pkpl-bw{margin-top:12px;min-height:44px!important;font-size:13px!important}
 #root#root #pkpl-top .pkpl-vh{margin:0 16px 12px;font:800 13px/1.2 'Bricolage Grotesque',system-ui,sans-serif!important;letter-spacing:.14em;text-transform:uppercase;color:#D6B54A}
 #root #pkpl-top .pkpl-vids{padding-top:22px}
+
+#root #pkpl-top .pkpl-vall{display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-end;gap:6px;padding:16px;background:#1A2017;border:1px solid #3A4331;text-align:left}
+#root #pkpl-top .pkpl-vall::after{display:none}
+#root #pkpl-top .pkpl-vall b{display:block;font:800 18px/1.15 'Bricolage Grotesque',system-ui,sans-serif;color:#F2EDE3}
+#root #pkpl-top .pkpl-vall small{display:block;margin-top:3px;font:600 13px/1.2 'Bricolage Grotesque',system-ui,sans-serif;color:#D6B54A}
+#root #pkpl-top .pkpl-vall svg{position:absolute;top:14px;right:14px;width:22px;height:22px;fill:none;stroke:#FFE7A3;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+#root#root#root #pkpl-top .pkpl-vh{text-transform:uppercase!important;letter-spacing:.14em!important;font-size:13px!important}

@@ -472,21 +472,35 @@
     el.innerHTML = html; TOP.i = 0; heroArm(el); document.body.classList.toggle('pkpl-xpup', !!$('.pkpl-up', el));   /* our link up replaces the app's Back to map */
   }
   var VN = { woods: ['Woods', 'Woods Stage'], cherryhill: ['Cherry Hill'], grove: ['Grove'], windmill: ['Windmill'], paddock: ['Paddock'], galaxy: ['Galaxy Barn'], lucky: ['Lucky Barn'], curation: ['Curation'], farmhouse: ['Farmhouse'] };
-  function vidList(k, e) {   /* the video catalog by place and experience: songs, not full sets; best first (k), then newest */
-    var V = data().videos || [], f;
+  var MAG = null;
+  function mag(a) { if (!MAG) { MAG = {}; var B = data().yearBill || {}; Object.keys(B).forEach(function (y) { (B[y] || []).forEach(function (r) { var n = (r.n || '').toLowerCase(); if (r.m && (!MAG[n] || r.m > MAG[n])) MAG[n] = r.m; }); }); } return MAG[(a || '').toLowerCase()] || 3; }
+  function vidPool(k, e) {   /* every song video for this experience at this place; music when the experience has none (Zale, Nov 19) */
+    var V = data().videos || [], song = function (v) { return !v.f && !/full set/i.test(v.s || ''); }, f = null, x = e;
     if (e === 'Comedy' && k === 'lucky') f = function (v) { return v.vn === 'Laugh'; };
     else if (e === 'Literary' && k === 'woods') f = function (v) { return v.vn === 'Spoken'; };
     else if ((e === 'Food' || e === 'Music') && k === 'curation') f = function (v) { return v.cur; };
-    else if (e === 'Music' && VN[k]) f = function (v) { return VN[k].indexOf(v.vn) >= 0 && !v.nonact && !v.cur && !v.f && !/full set/i.test(v.s || ''); };
-    if (!f) return [];
-    var seen = {}; return V.filter(f).sort(function (a, b) { return ((b.k || 0) - (a.k || 0)) || (b.y - a.y); }).filter(function (v) { if (seen[v.a]) return false; seen[v.a] = 1; return true; }).slice(0, 8);
+    var L = f ? V.filter(function (v) { return f(v) && song(v); }) : [];
+    if (!L.length && VN[k]) { x = 'Music'; L = V.filter(function (v) { return VN[k].indexOf(v.vn) >= 0 && !v.nonact && !v.cur && song(v); }); }
+    return { L: L, x: x };
   }
-  function vids(k, XE) {   /* a square, thumb-swipe row of performances right under the hero (Zale, Nov 19) */
-    var L = XE ? vidList(k, XE) : []; if (!L.length) return '';
-    return '<section class="pkpl-vids" aria-label="Watch"><h2 class="pkpl-vh">Watch ' + esc((XE === 'Music' ? '' : XE.toLowerCase() + ' ') + 'at ' + data().hoods[k].n) + '</h2><div class="pkpl-vr">' + L.map(function (v) {
-      var u = v.vm ? 'https://vimeo.com/' + v.vm + (v.vh ? '/' + v.vh : '') : 'https://www.youtube.com/watch?v=' + v.id, th = v.th || ('https://i.ytimg.com/vi/' + v.id + '/hqdefault.jpg');
-      return '<button type="button" class="pkpl-vt" data-pk="vid" data-u="' + esc(u) + '" data-c="' + esc(v.a + ' · Pickathon ' + v.y) + '"><img src="' + esc(th) + '" alt="" loading="lazy"><span class="pkpl-pr0" aria-hidden="true"><i></i></span><span class="pkpl-vc"><b>' + esc(v.a) + '</b><small>Pickathon ' + v.y + '</small></span></button>';
-    }).join('') + '</div></section>';
+  function vidPick(L, n) {   /* five: one per band, at most two a year, weighted to bigger acts and the catalog's best, fresh each visit */
+    var by = {}; L.forEach(function (v) { var w = Math.pow(mag(v.a), 2) * (v.k ? 1.6 : 1); if (!by[v.a] || w * Math.random() > by[v.a].w * Math.random()) by[v.a] = { v: v, w: w }; });
+    var C = Object.keys(by).map(function (a) { return by[a]; }), out = [], yc = {}, sk = [];
+    while (out.length < n && C.length) { var T = C.reduce(function (t, c) { return t + c.w; }, 0), r = Math.random() * T, i = 0; while (i < C.length - 1 && (r -= C[i].w) > 0) i++;
+      var c = C.splice(i, 1)[0]; if ((yc[c.v.y] || 0) >= 2) { sk.push(c); continue; } yc[c.v.y] = (yc[c.v.y] || 0) + 1; out.push(c.v); }
+    while (out.length < n && sk.length) out.push(sk.shift().v);   /* few years on record: fill the rest anyway */
+    return out.sort(function (a, b) { return mag(b.a) - mag(a.a); });
+  }
+  var VPK = {};
+  function vidU(v) { return v.vm ? 'https://vimeo.com/' + v.vm + (v.vh ? '/' + v.vh : '') : 'https://www.youtube.com/watch?v=' + v.id; }
+  function vids(k, XE) {   /* "Watch at <place>": five as a playlist, then a door to all of them */
+    var P = vidPool(k, XE || 'Music'); if (!P.L.length) return '';
+    var key = k + '|' + P.x, L = VPK[key] || (VPK[key] = vidPick(P.L, 5)), h = data().hoods[k], nm = h.n;
+    var lab = P.x === 'Music' ? 'Watch at ' + nm : 'Watch ' + P.x.toLowerCase() + ' at ' + nm;
+    return '<section class="pkpl-vids" aria-label="' + esc(lab) + '"><h2 class="pkpl-vh">' + esc(lab) + '</h2><div class="pkpl-vr">' + L.map(function (v, i) {
+      var th = v.th || ('https://i.ytimg.com/vi/' + v.id + '/hqdefault.jpg');
+      return '<button type="button" class="pkpl-vt" data-pk="vid" data-vk="' + esc(key) + '" data-i="' + i + '"><img src="' + esc(th) + '" alt="" loading="lazy"><span class="pkpl-pr0" aria-hidden="true"><i></i></span><span class="pkpl-vc"><b>' + esc(v.a) + '</b><small>Pickathon ' + v.y + '</small></span></button>';
+    }).join('') + (P.L.length > L.length ? '<button type="button" class="pkpl-vt pkpl-vall" data-pk="vall" data-h="' + k + '"><span><b>All ' + P.L.length + ' videos</b><small>at ' + esc(nm) + '</small></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>' : '') + '</div></section>';
   }
   function storyIs(h, has) {   /* one story of the place (Zale, Nov 19): this year's headline, the place's one-liner, then this year's story and the place in one read; credits at the end */
     var by = h.by || {}, y = Object.keys(by).sort().pop(), st = y && by[y] && by[y].t ? by[y] : null;
@@ -611,7 +625,9 @@
     if (a === 'whole') { TOP.all = !TOP.all; drawTop(); return; }
     if (a === 'up') { go('hoods'); return; }
     if (a === 'rm') { var mo = b.closest('.pkpl-more'), o = mo.classList.toggle('open'); b.textContent = o ? 'Show less' : 'Read more'; b.setAttribute('aria-expanded', o); return; }
-    if (a === 'vid') { if (window.__pkPlayVid) window.__pkPlayVid(b.getAttribute('data-u'), b.getAttribute('data-c')); return; }
+    if (a === 'vid') { var L = VPK[b.getAttribute('data-vk')] || [], i0 = +b.getAttribute('data-i') || 0, Q = L.slice(i0).concat(L.slice(0, i0)).map(function (v) { return { u: vidU(v), c: v.a + ' · Pickathon ' + v.y }; });
+      if (Q.length > 1 && window.__pkRadio) window.__pkRadio(Q, ''); else if (Q[0] && window.__pkPlayVid) window.__pkPlayVid(Q[0].u, Q[0].c); return; }   /* tap one: the five play in a row */
+    if (a === 'vall') { go('watch', { hood: b.getAttribute('data-h') }); return; }
     if (a === 'xp') { TOP.xp = b.getAttribute('data-e'); TOP.all = false; var sc = scroller(); drawTop(); xbDraw(); return; }
   }
   /* sideways swipe on the sheet steps to the next place (phone, tablet; a mouse drag on desktop) */
