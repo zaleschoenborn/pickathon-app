@@ -12648,6 +12648,7 @@ html:root:root #root#root#root#root#root#root#root#root#root#root#root#root#root
   #pkh2 .h2-xs:hover{opacity:.85}
   #pkh2 .h2-xs.on{opacity:1;color:var(--cream)}
   #pkh2 .h2-xstrip{transition:opacity .35s ease}
+  #pkh2 .h2-xstrip>.h2-xs:first-child{margin-left:auto}#pkh2 .h2-xstrip>.h2-xs:last-child{margin-right:auto}
   #pkh2 .h2-xstrip.cov{opacity:0;pointer-events:none}
   /* Zale Nov 19 16:09: desktop panel styled like the Places map panel; skinnier, so the photo gets wider */
   #pkh2 .h2-xpan{display:none}
@@ -13387,7 +13388,7 @@ window.pkClimbRank = function (C, dd) {
     return '<article class="h2-cc h2-hc h2-xh" data-h="__hero" role="listitem"><img class="h2-hci h2-xhbg is-on" src="' + esc(x.i) + '" alt="" style="object-position:' + esc(x.p || '50% 50%') + '" decoding="async"><img class="h2-hci h2-xhbg" alt="" decoding="async"><div class="h2-xho">' +
       '<p class="h2-xhk">' + xpIc(XPF) + '<span class="h2-d pkp-head' + (XPF.length > 8 ? ' lg' : '') + '">' + esc(XPF) + '</span></p><p class="h2-xhd">' + esc(XPD[XPF] || '') +
       (XPF === 'Architecture' ? ' <button type="button" class="h2-xlb" data-h2="xpbuild">Build with us<span aria-hidden="true"> →</span></button>' : '') + '</p>' +
-      xpCoverW(A) + '<p class="h2-xhs">' + (A.length > 1 ? 'Swipe to see where, ' + A.length + ' places' : 'Swipe to ' + esc((D.hoods[A[0]] || {}).n || 'see where')) + ' <b aria-hidden="true">→</b></p></div></article>'; }
+      '<p class="h2-xhs">' + (A.length > 1 ? 'Swipe to see where, ' + A.length + ' places' : 'Swipe to ' + esc((D.hoods[A[0]] || {}).n || 'see where')) + ' <b aria-hidden="true">→</b></p></div></article>'; }
   /* Zale Nov 19 15:33: desktop, the experience's cover is a left panel like the Places map page: name, what it is, its neighborhoods; the lit one tracks the photo */
   function xpPanel(A, PH) { var el = root && $('[data-h2="xpan"]', root); if (!el) return; if (PH) { el.innerHTML = ''; return; }
     var bg = 'farmmap/map_calm.webp';   /* Zale Nov 19 16:09: styled like the Places map panel: dim photo behind, badge + "X at Pickathon", gold line, a list of places with their own line */
@@ -13426,7 +13427,7 @@ window.pkClimbRank = function (C, dd) {
   function xpStrip(box) { var el = root && $('[data-h2="xstrip"]', root); if (!el) return; var A = box._A || [];
     el.innerHTML = A.map(function (hk) { var H = D.hoods[hk] || {}; return '<button type="button" class="h2-xs" data-h2="xpto" data-xh="' + hk + '"><img class="h2-xso" src="' + esc(XIC[hk] ? 'ic/' + hk + '.svg' : (H.icw || H.ic || '')) + '" alt="" width="36" height="36"><img class="h2-xsf" src="' + esc(H.icw || ('ic2/' + hk + '.png')) + '" alt="" width="36" height="36"><span>' + esc(H.n || hk) + '</span></button>'; }).join('');
     xpStripOn(box); }
-  function xpStripOn(box) { var el = root && $('[data-h2="xstrip"]', root); if (!el || !box.children.length) return; var c = box.children[ccMid(box).i], k = c && c.getAttribute('data-h'), hit = null; el.classList.toggle('cov', k === '__hero'); var pn = root && $('[data-h2="xpan"]', root); if (pn) $$('.h2-xpe', pn).forEach(function (b) { var on = b.getAttribute('data-xh') === k; b.classList.toggle('on', on); if (on) { var L = b.parentNode, t = b.offsetTop - L.offsetTop; if (t < L.scrollTop || t + b.offsetHeight > L.scrollTop + L.clientHeight) { try { L.scrollTo({ top: Math.max(0, t - 8), behavior: 'smooth' }); } catch (e) { L.scrollTop = t; } } } });
+  function xpStripOn(box) { var el = root && $('[data-h2="xstrip"]', root); if (!el || !box.children.length) return; var c = box.children[ccMid(box).i], k = c && c.getAttribute('data-h'), hit = null; if (k === '__hero') k = (box._A || [])[0]; var pn = root && $('[data-h2="xpan"]', root); if (pn) $$('.h2-xpe', pn).forEach(function (b) { var on = b.getAttribute('data-xh') === k; b.classList.toggle('on', on); if (on) { var L = b.parentNode, t = b.offsetTop - L.offsetTop; if (t < L.scrollTop || t + b.offsetHeight > L.scrollTop + L.clientHeight) { try { L.scrollTo({ top: Math.max(0, t - 8), behavior: 'smooth' }); } catch (e) { L.scrollTop = t; } } } });
     $$('.h2-xs', el).forEach(function (b) { var on = b.getAttribute('data-xh') === k; b.classList.toggle('on', on); if (on) { b.setAttribute('aria-current', 'true'); hit = b; } else b.removeAttribute('aria-current'); });
     if (hit && el.scrollWidth > el.clientWidth + 2) { var x = hit.offsetLeft - (el.clientWidth - hit.offsetWidth) / 2; try { el.scrollTo({ left: x, behavior: 'smooth' }); } catch (e) { el.scrollLeft = x; } } }
   var XPC = {};
