@@ -706,7 +706,10 @@ _ALIAS = {'2mangentlemanband': 'twomangentlemenband', '79ersgang': '79rsgang', '
           'hungermtboys': 'hungermountainboys', 'johndoethesadies': 'sadies', 'kurtviletheviolators': 'kurtvile',
           'laurielewistomrozumandtomsauber': 'laurielewis', 'leefieldstheexpressions': 'leefields',
           'thequebesistersband': 'quebesisters', 'tysegallthemuggers': 'tysegall', 'whiteymorgan': 'whiteymorganthe78s',
-          'darolangerscottnygaard': 'darolanger'}
+          'darolangerscottnygaard': 'darolanger',
+          # Lineup's act join (Nov 20 13:19 note): same act, page already in the build
+          'michaelnau': 'cottonjones', 'sethandmay': 'daisymaysethbernard', 'kevinburke': 'kevinburkecaseyneill',
+          'caseyneill': 'kevinburkecaseyneill', 'cahalenmorrisoncountryhammer': 'cahalenmorrisoneliwest'}
 _PIDS0 = set(_re.findall(r'id="a-([a-z0-9]+)"', page))
 page = _re.sub(r' data-art="([a-z0-9]*)"', lambda m: (' data-art="%s"' % _ALIAS[m.group(1)]) if (m.group(1) in _ALIAS and _ALIAS[m.group(1)] in _PIDS0) else m.group(0), page)
 # names with no artist page keep no link (a tap must never go nowhere); the gaps are listed in the build log
