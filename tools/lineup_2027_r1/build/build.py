@@ -614,6 +614,8 @@ _NAMES = {}
 for _y, _lst in d['yearBill'].items():
     for _x in _lst: _NAMES.setdefault(_slug(_x['n']), _x['n'])
 for _x in d['past']['deep']: _NAMES.setdefault(_slug(_x['n']), _x['n'])
+for _k, _v in list(_NAMES.items()):
+    if _k.startswith('the') and len(_k) > 5: _NAMES.setdefault(_k[3:], _v)  # actPages drops a leading 'The'
 _KIN = {}
 for _y, _lst in d['yearBill'].items():
     for _x in _lst: _KIN.setdefault(_x['n'], []).append((int(_y), _x))
