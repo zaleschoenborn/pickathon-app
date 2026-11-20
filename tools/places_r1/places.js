@@ -347,7 +347,7 @@
       if (M.cur && !M.amen && (!e.target.closest('[data-h]') || e.target.closest('[data-h]').getAttribute('data-h') === M.cur)) { var gk = iconAt(rel(e)); if (gk) { glow(gk === M.glow ? '' : gk); e.stopPropagation(); return; } }   /* a tap on ANOTHER neighborhood's shape always opens that neighborhood (Zale, Nov 20: it got stuck behind an icon glow) */   /* Nov 20 (Zale): inside a place, tap one of its icons and every icon of that kind glows on the real map; the view stays put */
       var h = e.target.closest('[data-h]');
       if (M.title) { M.title = false; M.el.classList.add('pkpl-notitle'); if (!h) return; }   /* the title screen holds until a click on the map or an icon */
-      if (!h) return;
+      if (!h) { if (!wide() && top().r === 'hood' && cardEl() && !cardEl().classList.contains('pkpl-folded')) setFold(true); return; }   /* Nov 20 (Zale): tap the map above an open sheet to fold it and reach the rest of the map */
       tap(h.getAttribute('data-h'), e.target.closest('.pkpl-em'));
     }, true);
     el.addEventListener('wheel', function (e) { if (wide() && !e.target.closest('.pkpl-find') && e.clientX - el.getBoundingClientRect().left < lw() && (M.xp || M.amen || M.title || top().r === 'hood') && e.target.closest('.pkpl-title,.pkpl-pl,.pkpl-xls')) return;   /* Nov 20: scrolling over the left column never moves the map or brings the full map back */
@@ -700,7 +700,10 @@
     document.addEventListener('pointerup', end, true); document.addEventListener('pointercancel', end, true);
     document.addEventListener('keydown', function (e) { if ((e.key === 'Enter' || e.key === ' ') && onBar(e.target) && !wide()) { e.preventDefault(); var el = cardEl(); setFold(!el.classList.contains('pkpl-folded')); } }, true);
   })();
-  function sync() { try { mount(); } catch (e) { if (window.console) console.error('pk-places', e); } }
+  /* Nov 20 (Zale): the fade at the sheet's bottom shows only while more text is below */
+  function moreCheck() { var sh = document.querySelector('#pkpl-top .pkpl-sheet'), t = cardEl(); if (!t) return; var more = !!sh && sh.scrollTop + sh.clientHeight < sh.scrollHeight - 8; t.classList.toggle('pkpl-more', more); }
+  document.addEventListener('scroll', function (e) { if (e.target && e.target.classList && e.target.classList.contains('pkpl-sheet')) moreCheck(); }, true);
+  function sync() { try { mount(); moreCheck(); } catch (e) { if (window.console) console.error('pk-places', e); } }
   var render0 = window.__render;
   if (typeof render0 === 'function') window.__render = function () { var r = render0.apply(this, arguments); sync(); return r; };
   document.addEventListener('click', onClick);

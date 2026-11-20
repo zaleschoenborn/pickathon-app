@@ -518,3 +518,7 @@ html body.pkpl-hood:not(.pkpl-wide) #pkpl-top{bottom:61px}
 html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .pkpl-tools .pkpl-tb{width:44px!important;min-width:44px!important;box-sizing:border-box!important;padding:0!important;justify-content:center!important}
 /* Nov 20 (Zale): no Find or full-map on a phone neighborhood page; the back arrow returns to the map */
 html body.pkpl-hood:not(.pkpl-wide) #root#root#root#root#root#root#root#root .pkpl-tools{display:none}
+
+/* Nov 20 (Zale): phone neighborhood sheet: a soft fade at the bottom while more text is below */
+body.pkpl-hood:not(.pkpl-wide) #pkpl-top::after{content:'';position:absolute;left:0;right:0;bottom:0;height:56px;pointer-events:none;z-index:3;background:linear-gradient(180deg,rgba(43,38,40,0) 0%,rgba(43,38,40,.9) 80%,#2B2628 100%);opacity:0;transition:opacity .25s}
+body.pkpl-hood:not(.pkpl-wide) #pkpl-top.pkpl-more::after{opacity:1}
