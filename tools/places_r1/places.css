@@ -479,3 +479,18 @@ html body.pkpl-wide #root#root#root#root #pkpl .pkpl-title.pkpl-tight5 .pkpl-abb
 
 /* Nov 20: on a desktop neighborhood page the map box can run below the window; the map's own buttons stay on screen */
 html body.pkpl-wide.pkpl-hood #root #pkpl .pkpl-tools{position:fixed;right:16px;bottom:16px;top:auto;z-index:20}
+
+/* ---------- phone neighborhood card (Zale, Nov 20): a bottom card that rises, scrolls inside, and folds to a bar ---------- */
+.pkpl-bar{display:none}
+body.pkpl-hood:not(.pkpl-wide) #pkpl-sp{display:none}
+body.pkpl-hood:not(.pkpl-wide) #pkpl-top{position:absolute;left:0;right:0;bottom:0;height:var(--pkpl-open,60vh);z-index:6;display:flex;flex-direction:column;overflow:hidden;background:#2B2628;border-radius:16px 16px 0 0;box-shadow:0 -6px 22px rgba(0,0,0,.45);transform:translateY(var(--pkpl-y,0px));padding-bottom:env(safe-area-inset-bottom,0px)}
+body.pkpl-hood:not(.pkpl-wide) #pkpl-top.pkpl-anim{transition:transform .32s cubic-bezier(.2,.8,.2,1)}
+body.pkpl-hood:not(.pkpl-wide) #pkpl-top .pkpl-bar{display:flex;flex:none;position:relative;align-items:center;gap:10px;height:56px;padding:14px 16px 0;background:#2B2628;border-bottom:1px solid #3A4331;cursor:pointer;touch-action:none;user-select:none;-webkit-user-select:none}
+body.pkpl-hood:not(.pkpl-wide) #pkpl-top .pkpl-bar i{position:absolute;left:50%;top:7px;width:40px;height:5px;margin-left:-20px;border-radius:3px;background:rgba(242,237,227,.85)}
+body.pkpl-hood:not(.pkpl-wide) #pkpl-top .pkpl-bn{flex:1;min-width:0;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;font-family:'Pickathon 2014',sans-serif;font-size:22px;line-height:1;text-transform:uppercase;letter-spacing:.02em;color:#F2EDE3}
+body.pkpl-hood:not(.pkpl-wide) #pkpl-top .pkpl-bar svg{flex:none;width:22px;height:22px;fill:none;stroke:#FFE7A3;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;transition:transform .32s ease}
+body.pkpl-hood:not(.pkpl-wide) #pkpl-top.pkpl-folded .pkpl-bar svg{transform:rotate(180deg)}
+body.pkpl-hood:not(.pkpl-wide) #pkpl-top .pkpl-sheet{flex:1 1 auto;min-height:0;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;border-radius:0;box-shadow:none}
+body.pkpl-hood:not(.pkpl-wide) #pkpl-top .pkpl-grab{display:none}
+/* phone: the map and the card are the whole screen; the page sections below the card are hidden here (they covered the map) */
+body.pkpl-hood:not(.pkpl-wide) #pk-scroll-phone>*:not(#pkpl):not(#pkpl-top):not(#pkpl-sp):not(#pk-farmmap):not(style):not([aria-label="Listen"]):not([aria-label="Cookie choices"]){display:none!important}
