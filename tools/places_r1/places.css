@@ -476,3 +476,6 @@ body.pkpl-wide .pkpl-tight6 .pkpl-ab p{font-size:13.5px!important;line-height:1.
 html body.pkpl-wide #root#root#root#root #pkpl .pkpl-title.pkpl-tight5 .pkpl-ab p{font-size:14px!important;line-height:1.36!important;margin-bottom:8px!important}
 html body.pkpl-wide #root#root#root#root #pkpl .pkpl-title.pkpl-tight6 .pkpl-ab p{font-size:13px!important;line-height:1.3!important}
 html body.pkpl-wide #root#root#root#root #pkpl .pkpl-title.pkpl-tight5 .pkpl-abb{min-height:38px!important;font-size:12px!important;padding:0 14px!important}
+
+/* Nov 20: on a desktop neighborhood page the map box can run below the window; the map's own buttons stay on screen */
+html body.pkpl-wide.pkpl-hood #root #pkpl .pkpl-tools{position:fixed;right:16px;bottom:16px;top:auto;z-index:20}

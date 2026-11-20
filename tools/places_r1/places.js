@@ -46,6 +46,7 @@
     var n = String(HH.shapes[k] || '').match(/-?\d+(\.\d+)?/g) || [], x0 = 1e9, y0 = 1e9, x1 = -1e9, y1 = -1e9;
     for (var i = 0; i + 1 < n.length; i += 2) { var x = +n[i], y = +n[i + 1]; if (x < x0) x0 = x; if (x > x1) x1 = x; if (y < y0) y0 = y; if (y > y1) y1 = y; }
     if (x0 > x1) { var p = pt(k); x0 = p[0] - 60; x1 = p[0] + 60; y0 = p[1] - 60; y1 = p[1] + 60; }
+    if ((x1 - x0) * (y1 - y0) > 0.12 * W * H) { var q = pt(k), R = 340; x0 = q[0] - R; x1 = q[0] + R; y0 = q[1] - R; y1 = q[1] + R; }   /* Nov 20: the big camp zones (Wild Camp, Lush Camp) are most of the farm; frame them around their own emblem, not the whole zone, so a pick lands on the place */
     return (BOX[k] = [x0, y0, x1, y1]);
   }
   function union(L) { var b = [1e9, 1e9, -1e9, -1e9]; L.forEach(function (k) { var x = box(k); b = [Math.min(b[0], x[0]), Math.min(b[1], x[1]), Math.max(b[2], x[2]), Math.max(b[3], x[3])]; }); return b; }
