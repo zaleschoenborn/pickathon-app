@@ -465,8 +465,7 @@
       (has ? '<section class="pkpl-sc" aria-label="Schedule at ' + esc(h.n) + '"><div class="pkpl-days" role="group" aria-label="Day">' + days.map(function (d) { return '<button type="button" class="pk-cta sec pkpl-chip" data-pk="day" data-d="' + d + '"' + (d === TOP.day ? ' aria-pressed="true"' : ' aria-pressed="false"') + '>' + esc(dayN[d] || d.slice(5)) + '</button>'; }).join('') + '</div>' +
         '<ol class="pkpl-sets">' + rows.slice(0, showN).map(function (s) { var A = (D.artists || {})[s.a] || {}; return '<li><span class="pkpl-st">' + tm(s.s) + '</span><span class="pkpl-sa"><b>' + esc(A.n || s.a) + '</b><small>' + esc(LBL[s.l] || '') + '</small></span></li>'; }).join('') + '</ol>' +
         (rows.length > 3 ? '<button type="button" class="pk-cta sec pkpl-whole" data-pk="whole" aria-expanded="' + TOP.all + '">' + (TOP.all ? 'Show less' : 'Whole day at ' + esc(h.n)) + '</button>' : '') + '</section>' : '') +
-      (has ? '' : '<p class="pkpl-hook">' + esc(h.hook || '') + '</p>') +
-      whatIs(h) +
+      yearIs(h) + whatIs(h, has) +
       (season === 'fest' ? soon(k, XE, h, has) + vids(k, XE) : vids(k, XE) + soon(k, XE, h, has)) +
       alsoAt(k, XE, h) +
       '</div>';
@@ -489,7 +488,12 @@
       return '<button type="button" class="pkpl-vt" data-pk="vid" data-u="' + esc(u) + '" data-c="' + esc(v.a + ' · Pickathon ' + v.y) + '"><img src="' + esc(th) + '" alt="" loading="lazy"><span class="pkpl-pr0" aria-hidden="true"><i></i></span><span class="pkpl-vc"><b>' + esc(v.a) + '</b><small>Pickathon ' + v.y + '</small></span></button>';
     }).join('') + '</div></section>';
   }
-  function whatIs(h) { var t = h.dd || (Array.isArray(h.d) ? h.d.join(' ') : (h.d || '')); return t ? '<div class="pkpl-what"><div class="pkpl-more"><p>' + esc(t) + '</p><button type="button" class="pkpl-rm" data-pk="rm" aria-expanded="false">Read more</button></div></div>' : ''; }
+  function yearIs(h) {   /* this year's story leads (Zale, Nov 19): kicker, headline, a few lines, Read more */
+    var by = h.by || {}, y = Object.keys(by).sort().pop(), st = y && by[y]; if (!st || !st.t) return '';
+    var tx = Array.isArray(st.d) ? st.d.join(' ') : (st.d || '');
+    return '<section class="pkpl-yr"><p class="pkpl-sk">' + esc(h.n) + ' in ' + y + '</p><h2>' + esc(st.t) + '</h2>' + (tx ? '<div class="pkpl-more"><p>' + esc(tx) + '</p><button type="button" class="pkpl-rm" data-pk="rm" aria-expanded="false">Read more</button></div>' : '') + '</section>';
+  }
+  function whatIs(h, has) { var t = h.dd || (Array.isArray(h.d) ? h.d.join(' ') : (h.d || '')), hk = has ? '' : (h.hook || ''); return (t || hk) ? '<div class="pkpl-what"><p class="pkpl-sk">About ' + esc(h.n) + '</p>' + (hk ? '<p class="pkpl-ab1">' + esc(hk) + '</p>' : '') + '<div class="pkpl-more"><p>' + esc(t) + '</p><button type="button" class="pkpl-rm" data-pk="rm" aria-expanded="false">Read more</button></div></div>' : ''; }
   function soon(k, XE, h, has) {
     if (has) return '';   /* the real schedule is showing: it is the 2027 card */   /* the 2027 schedule, summarized until it posts (Zale, Nov 19: more useful than every past year) */
     var HP = (data().hoodProg || {})[k], kinds = HP ? (HP.kinds || []).map(function (g) { return g[0]; }).filter(function (n) { return !/^(more|showcases)/i.test(n); }) : [];

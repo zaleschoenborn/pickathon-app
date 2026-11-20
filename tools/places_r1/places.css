@@ -428,3 +428,12 @@ html body.pkpl-hood #root#root#root#root#root#root#root#root#root#root#root#root
 #root#root#root #pkpl-top .pkpl-soon p{font-size:16px!important;line-height:1.5!important}#root#root#root #pkpl-top .pkpl-soon h2{font-size:22px!important}
 #root #pkpl-top .pkpl-hook{padding:16px 16px 0!important;margin:0!important}
 #root #pkpl-top .pkpl-what{padding:10px 16px 0}
+
+/* this year's story leads, the place follows (Nov 19) */
+#root #pkpl-top .pkpl-yr{padding:22px 16px 4px}
+#root #pkpl-top .pkpl-yr .pkpl-sk,#root #pkpl-top .pkpl-what .pkpl-sk{margin:0 0 6px;font:800 12px/1.2 'Bricolage Grotesque',system-ui,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#D6B54A}
+#root#root #pkpl-top .pkpl-yr h2{margin:0 0 10px;font-family:'Pickathon 2014',sans-serif!important;font-weight:400!important;font-size:clamp(28px,7vw,34px)!important;line-height:1.02!important;letter-spacing:.02em;color:#F2EDE3}
+#root #pkpl-top .pkpl-yr .pkpl-more p{-webkit-line-clamp:3;color:#E8E2D4}
+#root #pkpl-top .pkpl-what{padding:18px 16px 0}
+#root #pkpl-top .pkpl-ab1{margin:0 0 6px;font:600 17px/1.45 'Bricolage Grotesque',system-ui,sans-serif;color:#F2EDE3;max-width:none}
+html body.pkpl-hood #root#root#root#root#root#root#root#root#root#root#root#root .pk-hd-story :is(.pk-hd-lab,.pk-hd-sh,.pk-hd-sp){display:none!important}
