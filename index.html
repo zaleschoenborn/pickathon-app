@@ -14266,6 +14266,10 @@ html body.pkpl-hood:not(.pkpl-wide) #pkpl-top{bottom:61px}
 html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .pkpl-tools .pkpl-tb{width:44px!important;min-width:44px!important;box-sizing:border-box!important;padding:0!important;justify-content:center!important}
 /* Nov 20 (Zale): no Find or full-map on a phone neighborhood page; the back arrow returns to the map */
 html body.pkpl-hood:not(.pkpl-wide) #root#root#root#root#root#root#root#root .pkpl-tools{display:none}
+
+/* Nov 20 (Zale): phone neighborhood sheet: a soft fade at the bottom while more text is below */
+body.pkpl-hood:not(.pkpl-wide) #pkpl-top::after{content:'';position:absolute;left:0;right:0;bottom:0;height:56px;pointer-events:none;z-index:3;background:linear-gradient(180deg,rgba(43,38,40,0) 0%,rgba(43,38,40,.9) 80%,#2B2628 100%);opacity:0;transition:opacity .25s}
+body.pkpl-hood:not(.pkpl-wide) #pkpl-top.pkpl-more::after{opacity:1}
 </style>
 <script id="pk-places">
 /* pk-places: Places map and neighborhood pages, round 1 (Nov 13 2026). Source: tools/places_r1/places.js, spliced into index.html by tools/places_r1/build.py.
@@ -14970,7 +14974,10 @@ html body.pkpl-hood:not(.pkpl-wide) #root#root#root#root#root#root#root#root .pk
     document.addEventListener('pointerup', end, true); document.addEventListener('pointercancel', end, true);
     document.addEventListener('keydown', function (e) { if ((e.key === 'Enter' || e.key === ' ') && onBar(e.target) && !wide()) { e.preventDefault(); var el = cardEl(); setFold(!el.classList.contains('pkpl-folded')); } }, true);
   })();
-  function sync() { try { mount(); } catch (e) { if (window.console) console.error('pk-places', e); } }
+  /* Nov 20 (Zale): the fade at the sheet's bottom shows only while more text is below */
+  function moreCheck() { var sh = document.querySelector('#pkpl-top .pkpl-sheet'), t = cardEl(); if (!t) return; var more = !!sh && sh.scrollTop + sh.clientHeight < sh.scrollHeight - 8; t.classList.toggle('pkpl-more', more); }
+  document.addEventListener('scroll', function (e) { if (e.target && e.target.classList && e.target.classList.contains('pkpl-sheet')) moreCheck(); }, true);
+  function sync() { try { mount(); moreCheck(); } catch (e) { if (window.console) console.error('pk-places', e); } }
   var render0 = window.__render;
   if (typeof render0 === 'function') window.__render = function () { var r = render0.apply(this, arguments); sync(); return r; };
   document.addEventListener('click', onClick);

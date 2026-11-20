@@ -700,7 +700,10 @@
     document.addEventListener('pointerup', end, true); document.addEventListener('pointercancel', end, true);
     document.addEventListener('keydown', function (e) { if ((e.key === 'Enter' || e.key === ' ') && onBar(e.target) && !wide()) { e.preventDefault(); var el = cardEl(); setFold(!el.classList.contains('pkpl-folded')); } }, true);
   })();
-  function sync() { try { mount(); } catch (e) { if (window.console) console.error('pk-places', e); } }
+  /* Nov 20 (Zale): the fade at the sheet's bottom shows only while more text is below */
+  function moreCheck() { var sh = document.querySelector('#pkpl-top .pkpl-sheet'), t = cardEl(); if (!t) return; var more = !!sh && sh.scrollTop + sh.clientHeight < sh.scrollHeight - 8; t.classList.toggle('pkpl-more', more); }
+  document.addEventListener('scroll', function (e) { if (e.target && e.target.classList && e.target.classList.contains('pkpl-sheet')) moreCheck(); }, true);
+  function sync() { try { mount(); moreCheck(); } catch (e) { if (window.console) console.error('pk-places', e); } }
   var render0 = window.__render;
   if (typeof render0 === 'function') window.__render = function () { var r = render0.apply(this, arguments); sync(); return r; };
   document.addEventListener('click', onClick);
