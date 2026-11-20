@@ -475,7 +475,7 @@
     var html = (XH && M && M.xp && wide() ? '<button type="button" class="pkpl-up" data-pk="up"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5 8 12l7 7"/></svg>' + esc(M.xp) + ' at Pickathon</button>' : '') + '<div class="pkpl-bar" role="button" tabindex="0" aria-expanded="true" aria-label="Show or hide ' + esc(h.n) + '"><i aria-hidden="true"></i><img class="pkpl-bi" src="' + esc(emb(k)) + '" alt=""><span class="pkpl-bn">' + esc(h.n) + '</span></div>' + '<div class="pkpl-sheet' + (has ? ' pkpl-has' : '') + '">' +
       '<div class="pkpl-grab" aria-hidden="true"><i></i></div>' +
       '<div class="pkpl-hero" aria-roledescription="carousel" aria-label="' + esc(h.n) + ' photos">' +
-      ph.map(function (p, i) { return '<img src="' + esc(p.i) + '" alt="" style="object-position:' + esc(p.p) + '"' + (i === 0 ? ' class="on"' : ' loading="lazy"') + ' draggable="false">'; }).join('') +
+      ph.map(function (p, i) { return '<img src="' + esc(p.i) + '" alt="" style="object-position:' + esc(p.p) + '"' + (i === 0 ? '' : ' loading="lazy"') + ' draggable="false">'; }).join('') +
       '<div class="pkpl-shade" aria-hidden="true"></div>' +
       '<button type="button" class="pkpl-arr l" data-pk="step" data-to="' + prev + '" aria-label="Previous ' + esc(XE && XE !== 'Architecture' ? XE + ' place' : 'place') + ': ' + esc(D.hoods[prev].n) + '"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5 8 12l7 7"/></svg></button>' +
       '<button type="button" class="pkpl-arr r" data-pk="step" data-to="' + next + '" aria-label="Next ' + esc(XE && XE !== 'Architecture' ? XE + ' place' : 'place') + ': ' + esc(D.hoods[next].n) + '"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>' +
@@ -556,7 +556,9 @@
   }
   function heroArm(el) {
     clearTimeout(TOP.timer); var hero = $('.pkpl-hero', el); if (!hero) return;
-    var imgs = $$('img:not(.pkpl-nmrow img)', hero).filter(function (x) { return x.parentNode === hero; }); if (imgs.length > 1) heroReady(imgs[1]); if (imgs.length < 2 || calm()) return;
+    var imgs = $$('img:not(.pkpl-nmrow img)', hero).filter(function (x) { return x.parentNode === hero; }); if (imgs.length > 1) heroReady(imgs[1]);
+    if (imgs[0]) heroReady(imgs[0]).then(function (ok) { var f = imgs[0]; if (!ok || !f.isConnected || f.classList.contains('on') || TOP.i !== 0) return; requestAnimationFrame(function () { f.classList.add('top'); requestAnimationFrame(function () { f.classList.add('on'); }); }); });   /* the first photo fades in once it has decoded, never pops in over the dark frame (Zale, Nov 20) */
+    if (imgs.length < 2 || calm()) return;
     (function step() { TOP.timer = setTimeout(function () { if (!hero.isConnected) return; if (document.hidden) { step(); return; } heroShow(hero, (TOP.i + 1) % imgs.length); step(); }, HERO_MS); })();   /* the photo rotation itself, not layout */
   }
   function heroReady(im) {   /* the next photo is loaded and decoded before it fades in, so a fade never shows a blank */
