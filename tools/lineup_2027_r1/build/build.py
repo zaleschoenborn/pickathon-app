@@ -102,6 +102,8 @@ def b64(path, mime):
     return 'data:%s;base64,%s' % (mime, base64.b64encode(open(path, 'rb').read()).decode())
 
 E = html.escape
+def _aslug(x):
+    return _re.sub('[^a-z0-9]', '', x.lower()) if False else __import__('re').sub('[^a-z0-9]', '', x.lower())  # artist page id key (Nov 20: names open their page)
 GEN = {g['id']: g['n'] for g in d['genres']}
 GSHORT = {'indie': 'Indie rock', 'folk': 'Folk', 'soul': 'Soul', 'global': 'Global', 'country': 'Country',
           'bluegrass': 'Bluegrass', 'jazz': 'Jazz', 'psych': 'Psych', 'punk': 'Punk', 'hiphop': 'Hip-hop', 'experimental': 'Experimental'}
@@ -150,7 +152,7 @@ def poster_html(lines, tags=None):
     tags = tags or {}
     h = ''
     for cls, row in lines:
-        h += '<div class="pl %s">%s</div>' % (cls, '<span class="dot">•</span>'.join('<span data-c="%s">%s</span>' % (tags.get(n, ''), E(n)) for n in row))
+        h += '<div class="pl %s">%s</div>' % (cls, '<span class="dot">•</span>'.join('<span data-c="%s" data-art="%s">%s</span>' % (tags.get(n, ''), _aslug(n), E(n)) for n in row))
     return h
 
 
@@ -178,9 +180,9 @@ def play(sz=''):
     return '<span class="ring %s" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 6.5v11l9-5.5z" fill="#fff"/></svg></span>' % sz
 
 def card(n, yr, k, g, src, pos='50% 40%', vid=True, cls=''):
-    return ('<a class="card %s" data-g="%s" href="#"><img src="%s" alt="" style="object-position:%s">%s<span class="cyr">%s</span>'
+    return ('<a class="card %s" data-g="%s" data-art="%s" href="#"><img src="%s" alt="" style="object-position:%s">%s<span class="cyr">%s</span>'
             '<span class="cbody"><span class="krow"><span class="k k-%s">%s</span><span class="g">%s</span></span>'
-            '<span class="cname">%s</span></span></a>') % (cls, E(g), src, pos, play('sm') if vid else '', yr, k, KLAB[k], E(g), E(n))
+            '<span class="cname">%s</span></span></a>') % (cls, E(g), _aslug(n), src, pos, play('sm') if vid else '', yr, k, KLAB[k], E(g), E(n))
 
 # ---------- shared chrome ----------
 ICON = {
@@ -261,7 +263,7 @@ def now_html(acts, rest=False):
     ms = [(a.get('m') or 0) for a in acts] or [1]; mx, mn = max(ms), min(ms); out = ''
     for a in acts:
         v = ((a.get('m') or 0) - mn) / (mx - mn) if mx > mn else 1.0
-        out += '<span class="pn" style="--s:%.3f" data-c="%s">%s</span>' % (v, ctag(a['k']), E(nm(a)))
+        out += '<span class="pn" style="--s:%.3f" data-c="%s" data-art="%s">%s</span>' % (v, ctag(a['k']), _aslug(nm(a)), E(nm(a)))
     return '<div class="pcloud%s">%s</div>' % (' rest' if rest else '', out)
 
 def poster_block(P, badge, yr, then, now, total, joined=True, ranked=True):
@@ -513,8 +515,8 @@ def tile(a, y, P, photo):
     if len(n) > 30: fs = min(fs, 14.5)
     elif len(n) > 20: fs = min(fs, 17)
     foot = ('<span class="yt-y">%s · %s CD</span>%s' % (E(cd), y, play('sm'))) if cd else '<span class="yt-y">Pickathon %s</span>' % y
-    return ('<a class="card tt ytile" href="#" style="--paper:%s;--ink:%s;--ink2:%s;--band:%s"><span class="yt-k">%s</span>'
-            '<span class="yt-n" style="font-size:%.1fpx">%s</span>%s</a>') % (P['paper'], P['ink'], P['ink2'], P['band'], KLAB[k], fs, '<br>'.join(E(x) for x in lines), foot)
+    return ('<a class="card tt ytile" data-art="%s" href="#" style="--paper:%s;--ink:%s;--ink2:%s;--band:%s"><span class="yt-k">%s</span>'
+            '<span class="yt-n" style="font-size:%.1fpx">%s</span>%s</a>') % (_aslug(n), P['paper'], P['ink'], P['ink2'], P['band'], KLAB[k], fs, '<br>'.join(E(x) for x in lines), foot)
 
 def year_page(y):
     P = d['yearBrand'][y]; st = d['yearStory'].get(y, {}); yp = d['yearPhotos'].get(y, {})
@@ -568,14 +570,14 @@ def year_page(y):
         for a in show:
             g = GSHORT.get(a.get('g'), '')
             if ph(a):
-                body += '<a class="mini" data-g="%s" href="#"><img loading="lazy" src="%s" alt="" style="object-position:%s"><b>%s</b><span>%s</span></a>' % (E(g), img(ph(a), 400, 70), fpos(ph(a), d and json.load(open(APP + 'focus.json')) if False else FOC), E(a['n']), E(g))
+                body += '<a class="mini" data-g="%s" data-art="%s" href="#"><img loading="lazy" src="%s" alt="" style="object-position:%s"><b>%s</b><span>%s</span></a>' % (E(g), _aslug(a['n']), img(ph(a), 400, 70), fpos(ph(a), d and json.load(open(APP + 'focus.json')) if False else FOC), E(a['n']), E(g))
             else:
-                body += '<a class="mini" data-g="%s" href="#"><span class="mini-n" style="background:%s;color:%s">%s</span><b>%s</b><span>%s</span></a>' % (E(g), P['paper'], P['ink'], E(a['n'].upper()), E(a['n']), E(g))
+                body += '<a class="mini" data-g="%s" data-art="%s" href="#"><span class="mini-n" style="background:%s;color:%s">%s</span><b>%s</b><span>%s</span></a>' % (E(g), _aslug(a['n']), P['paper'], P['ink'], E(a['n'].upper()), E(a['n']), E(g))
         sel = '#y%s .mini' % y
         body = '<div class="grid2 minis">%s</div>' % body + ('<button class="btn line wide">See everyone · %d more</button>' % (len(others) - 8) if len(others) > 8 else '')
     else:
         sel = '#y%s .row' % y
-        body = '<div class="rows">%s</div>' % ''.join('<a class="row" data-g="%s" href="#"><b>%s</b><span>%s</span></a>' % (E(GSHORT.get(x.get('g'), '')), E(x['n']), E(' · '.join(t for t in (KLAB.get(x.get('k'), ''), GSHORT.get(x.get('g'), '')) if t))) for x in others)
+        body = '<div class="rows">%s</div>' % ''.join('<a class="row" data-g="%s" data-art="%s" href="#"><b>%s</b><span>%s</span></a>' % (E(GSHORT.get(x.get('g'), '')), _aslug(x['n']), E(x['n']), E(' · '.join(t for t in (KLAB.get(x.get('k'), ''), GSHORT.get(x.get('g'), '')) if t))) for x in others)
     if others:
         h += '<section class="rest"><h2 class="h-big">Keep wandering</h2>%s%s</section>' % (gpick(sel, opts=['Everything'] + gs) if len(gs) >= 3 else '', body)
     h += ('<section class="years"><p class="kick">See other years</p><div class="swipe yrs"><a class="yr" data-go="s1" href="#">2027</a>%s</div></section>') % ''.join(
@@ -697,5 +699,10 @@ _ASCRIPT = ('<script>document.getElementById("asel").addEventListener("change",f
             'if(m){m.hidden=false;window.scrollTo(0,0);}});</script>')
 
 page = page.replace('<button data-s="s3">', _ASEL + '<button data-s="s3">', 1).replace('<nav class="tabs">', ''.join(ARTISTS.values()) + '<nav class="tabs">', 1).replace('</body>', _ASCRIPT + _PLAYER + '</body>')
+# names with no artist page keep no link (a tap must never go nowhere); the gaps are listed in the build log
+_PIDS = set(_re.findall(r'id="a-([a-z0-9]+)"', page))
+_DROP = sorted({m.group(1) for m in _re.finditer(r' data-art="([a-z0-9]*)"', page) if m.group(1) not in _PIDS and _re.sub(r'^the', '', m.group(1)) not in _PIDS})
+page = _re.sub(r' data-art="([a-z0-9]*)"', lambda m: m.group(0) if (m.group(1) in _PIDS or _re.sub(r'^the', '', m.group(1)) in _PIDS) else '', page)
+print('names without an artist page (no link):', len(_DROP), _DROP)
 open(OUT + 'index.html', 'w').write(page)
 print(len(page) // 1024, 'KB html', len(os.listdir(OUT + 'img')), 'images', sum(os.path.getsize(OUT + 'img/' + f) for f in os.listdir(OUT + 'img')) // 1024, 'KB')
