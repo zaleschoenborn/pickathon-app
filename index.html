@@ -13451,9 +13451,23 @@ window.pkClimbRank = function (C, dd) {
   function xpStrip(box) { var el = root && $('[data-h2="xstrip"]', root); if (!el) return; var A = box._A || [];
     el.innerHTML = A.map(function (hk) { var H = D.hoods[hk] || {}; return '<button type="button" class="h2-xs" data-h2="xpto" data-xh="' + hk + '"><img class="h2-xso" src="' + esc('ic3/' + hk + '.png') + '" onerror="this.onerror=null;this.src=\'' + esc(XIC[hk] ? 'ic/' + hk + '.svg' : (H.icw || '')) + '\'" alt="" width="36" height="36"><img class="h2-xsf" src="' + esc(H.icw || ('ic2/' + hk + '.png')) + '" alt="" width="36" height="36"><span>' + esc(H.n || hk) + '</span></button>'; }).join('');
     xpStripOn(box); }
+  /* Zale Nov 20: the emblem row and the carousel move as one. Each frame of a swipe the row is set (not eased) to the same fraction between two emblems as the carousel is between two cards, so both land on the same neighborhood together. */
+  function xpLock(r) {
+    var el = root && $('[data-h2="xstrip"]', root), C = r && r.children; if (!el || !C || C.length < 2 || el.scrollWidth <= el.clientWidth + 2) return;
+    var A = r._A || [], E = [], n = C.length, j, b, k, last = null;
+    for (j = 0; j < n; j++) { k = C[j].getAttribute('data-h'); if (k === '__hero') k = A[0]; b = k && el.querySelector('[data-xh="' + k + '"]'); E.push(b ? b.offsetLeft + b.offsetWidth / 2 : null); }
+    for (j = 0; j < n; j++) if (E[j] != null) { last = E[j]; break; } if (last == null) return;
+    for (j = 0; j < n; j++) { if (E[j] == null) E[j] = last; else last = E[j]; }
+    var cx = r.scrollLeft + r.clientWidth / 2, i = 0, ci, cn, t, x;
+    for (j = 0; j < n - 1; j++) { if (C[j + 1].offsetLeft + C[j + 1].offsetWidth / 2 <= cx) i = j + 1; else break; }
+    ci = C[i].offsetLeft + C[i].offsetWidth / 2; cn = i < n - 1 ? C[i + 1].offsetLeft + C[i + 1].offsetWidth / 2 : ci;
+    t = cn > ci ? Math.min(1, Math.max(0, (cx - ci) / (cn - ci))) : 0; if (i === n - 1) t = 0;
+    x = (E[i] + (E[Math.min(n - 1, i + 1)] - E[i]) * t) - el.clientWidth / 2; x = Math.max(0, Math.min(el.scrollWidth - el.clientWidth, x));
+    if (Math.abs(el.scrollLeft - x) > 0.5) el.scrollLeft = x;
+  }
   function xpStripOn(box) { var el = root && $('[data-h2="xstrip"]', root); if (!el || !box.children.length) return; var c = box.children[ccMid(box).i], k = c && c.getAttribute('data-h'), hit = null; if (k === '__hero') k = (box._A || [])[0]; var pn = root && $('[data-h2="xpan"]', root); if (pn) $$('.h2-xpe', pn).forEach(function (b) { var on = b.getAttribute('data-xh') === k; b.classList.toggle('on', on); if (on) { var L = b.parentNode, t = b.offsetTop - L.offsetTop; if (t < L.scrollTop || t + b.offsetHeight > L.scrollTop + L.clientHeight) { try { L.scrollTo({ top: Math.max(0, t - 8), behavior: 'smooth' }); } catch (e) { L.scrollTop = t; } } } });
     $$('.h2-xs', el).forEach(function (b) { var on = b.getAttribute('data-xh') === k; b.classList.toggle('on', on); if (on) { b.setAttribute('aria-current', 'true'); hit = b; } else b.removeAttribute('aria-current'); });
-    if (hit && el.scrollWidth > el.clientWidth + 2) { var x = hit.offsetLeft - (el.clientWidth - hit.offsetWidth) / 2; try { el.scrollTo({ left: x, behavior: 'smooth' }); } catch (e) { el.scrollLeft = x; } } }
+    if (hit) xpLock(box); }
   var XPC = {};
   function xpIntro(A) {
     var ph = A.length ? xpSet(A[0])[0] : null, src = (XPC[XPF] && XPC[XPF].i) || (ph ? ph.i : ''), pos = (XPC[XPF] && XPC[XPF].p) || (ph && ph.p) || '50% 50%', n = A.length, W, c;
@@ -13496,7 +13510,7 @@ window.pkClimbRank = function (C, dd) {
       xpWhere(a); ROT = xpList(XPF); XPS = 1; drawHoods(); }); }
 
   function markMid(r) { if (!r || !r.children.length) return; var m = ccMid(r); if (r.getAttribute('data-h2') === 'hcards') { xpStripOn(r); xpRowOn(); } for (var k = 0; k < r.children.length; k++) { var c = r.children[k]; c.classList.toggle('is-mid', k === m.i); c.classList.toggle('is-prev', k < m.i); c.classList.toggle('is-next', k > m.i); } }
-  function midWatch(r) { if (r._mw) return; r._mw = 1; var raf = 0; r.addEventListener('scroll', function () { if (raf) return; raf = requestAnimationFrame(function () { raf = 0; markMid(r); }); }, { passive: true }); }
+  function midWatch(r) { if (r._mw) return; r._mw = 1; var raf = 0; r.addEventListener('scroll', function () { if (raf) return; raf = requestAnimationFrame(function () { raf = 0; if (r.getAttribute('data-h2') === 'hcards') xpLock(r); markMid(r); }); }, { passive: true }); }
   /* Zale Nov 16: Another crossfades to a new pick (a shuffled deck, no repeats until all are seen); no sliding, works the same in Safari */
   function anotherFade(r) {
     if (!r || r._fading || !r.children.length) return; var K = r._K || 0, N = r._N || r.children.length, cur = ccMid(r).i, real = ((cur - K) % N + N) % N;
