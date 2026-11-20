@@ -44,10 +44,17 @@ for _y, _bill in d['yearBill'].items():
         _r = _IDX.get((_n(_a['n']), _y))
         if not _r or _a.get('c'): continue
         _k = 'leg' if _r.get('legend_flag','').strip().lower()=='yes' else _M.get(_r['today_class'], 'none')
+        if _r.get('lineup','').strip() != 'Music': _k = 'none'  # Artist Classification (Nov 20): classes and magnitudes only for lineup = Music
         if _k != _a['k']: CLASS_CHANGED.append((_y, _a['n'], _a['k'], _k))
         _a['k'] = _k
         try: _a['m'] = float(_r['magnitude_dec'] or 0)
         except ValueError: pass
+# 2026 poster order = printed poster (poster_order_by_year_1999_2026.md): ten top-tier names in that order, then everyone else in data order.
+# The combined row 'Meridian Brothers, Mexican Institute of Sound' is the same two acts already listed separately: drop it so no act prints twice.
+_P26 = ['Steve Earle', 'Thee Sinseers', 'Built to Spill', 'The Womack Sisters', 'Mexican Institute of Sound', 'Marcos Valle', 'The Brothers Comatose', 'Meridian Brothers', 'The Altons', 'Shakey Graves']
+_b26 = [a for a in d['yearBill']['2026'] if a['n'] != 'Meridian Brothers, Mexican Institute of Sound']
+_top = [next(a for a in _b26 if _n(a['n']) == _n(p)) for p in _P26 if any(_n(a['n']) == _n(p) for a in _b26)]
+d['yearBill']['2026'] = _top + [a for a in _b26 if a not in _top]
 # reel class labels follow the same live table (v159); Neither prints no class
 _LAB = {'Discovery': 'Discovery', 'Legend': 'Legend', 'Deep cut': 'Deep cut'}
 for _r26 in d['yearReel'].get('2026', []):
