@@ -613,6 +613,30 @@
     if (t.r === 'hoods' && M.cur) { M.was = M.cur; M.cur = ''; lit(); if (M.xp || M.amen) fitLit(); }   /* closing a card: back to the experience's places, lit */
     settleSheet(); dedupe(); shape(); backMap();
     var full = $('[data-pl="full"]', M.el); if (full) full.hidden = !M.cur && !M.amen && !(M.s > startView()[0] * 1.15);
+    moreCue();
+  }
+  /* desktop scroll cue (Zale, Nov 20): one static chevron at the bottom-left of the panel while more of the page is below; it hides at the end. No pulse. */
+  function moreEl() {
+    var b = document.getElementById('pkpl-more');
+    if (b && b.isConnected) return b;
+    b = document.createElement('button'); b.id = 'pkpl-more'; b.type = 'button'; b.setAttribute('aria-label', 'Scroll down for more');
+    b.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>';
+    b.addEventListener('click', function () { var el = moreScroller(); if (el) el.scrollBy({ top: Math.round(window.innerHeight * 0.8), behavior: 'smooth' }); });
+    document.body.appendChild(b);
+    return b;
+  }
+  function moreScroller() {   /* the panel scroller on desktop, or the window when the page itself scrolls */
+    var d = document.getElementById('pk-scroll-desk');
+    if (d && d.scrollHeight > d.clientHeight + 4) return d;
+    return document.scrollingElement || document.documentElement;
+  }
+  function moreCue() {
+    if (!moreCue._on) { moreCue._on = 1; document.addEventListener('scroll', moreCue, true); window.addEventListener('resize', moreCue); }
+    var on = document.body.classList.contains('pkpl-wide') && document.body.classList.contains('pkpl-hood');
+    var b = on ? moreEl() : document.getElementById('pkpl-more');
+    if (!b) return;
+    var el = on ? moreScroller() : null;
+    b.classList.toggle('pkpl-more-on', !!el && el.scrollTop + el.clientHeight < el.scrollHeight - 24);
   }
   function shape() {   /* one clean page (Zale, Nov 19): fold the page's long description into the card with Read more, drop the duplicate video and summer boxes, credits into the story, walk times into the map card */
     if (top().r !== 'hood') return; var w = document.querySelector('#root section.pk-hd-w'), card = document.getElementById('pkpl-top'); if (!w || !card) return;
