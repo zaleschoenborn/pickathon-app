@@ -142,16 +142,18 @@
   function animTo(v, ms) {
     cancelAnimationFrame(M.anim);
     if (!M.s || calm() || ms === 0) { apply(v[0], v[1], v[2]); return; }
-    var a = [M.s, M.tx, M.ty], t0 = 0, dur = ms || 520;
-    var ease = function (u) { return 1 - Math.pow(1 - u, 3); };
-    (function f(t) { if (!t0) t0 = t; var u = Math.min(1, (t - t0) / dur), e = ease(u);
-      var s = Math.exp(Math.log(a[0]) + (Math.log(v[0]) - Math.log(a[0])) * e);
+    var a = [M.s, M.tx, M.ty], t0 = -1, dur = ms || 520;
+    var dsc = Math.hypot((M.vw / 2 - a[1]) / a[0] - (M.vw / 2 - v[1]) / v[0], (M.vh / 2 - a[2]) / a[0] - (M.vh / 2 - v[2]) / v[0]) * Math.min(a[0], v[0]), far = dsc / Math.max(320, Math.min(M.vw, M.vh));   /* Nov 20: a long move is a short flight: it eases out a little mid-way and takes a bit longer, so you see where you travel */
+    var dip = far > 0.9 ? Math.min(0.9, Math.log(1 + (far - 0.9) * 0.7)) : 0; dur += Math.min(500, Math.max(0, far - 0.9) * 160);
+    var ease = function (u) { return u < 0.5 ? 4 * u * u * u : 1 - Math.pow(-2 * u + 2, 3) / 2; };   /* ease in and out: no lurch at the start */
+    (function f(t) { if (t0 < 0) t0 = t; var u = Math.max(0, Math.min(1, (t - t0) / dur)), e = ease(u);   /* Nov 20: a frame's timestamp can be earlier than the start; clamping stops a one-frame fling to full zoom */
+      var s = Math.exp(Math.log(a[0]) + (Math.log(v[0]) - Math.log(a[0])) * e - dip * Math.sin(Math.PI * e));
       /* interpolate the map point at the region's centre so the zoom feels anchored */
       var cx0 = (M.vw / 2 - a[1]) / a[0], cy0 = (M.vh / 2 - a[2]) / a[0], cx1 = (M.vw / 2 - v[1]) / v[0], cy1 = (M.vh / 2 - v[2]) / v[0];
       var cx = cx0 + (cx1 - cx0) * e, cy = cy0 + (cy1 - cy0) * e;
       if (!M.moving) moving(true);
       apply(s, M.vw / 2 - cx * s, M.vh / 2 - cy * s);
-      if (u < 1) M.anim = requestAnimationFrame(f); else moving(false); })(performance.now());
+      if (u < 1) M.anim = requestAnimationFrame(f); else { M.anim = 0; moving(false); } })(performance.now());
   }
   function tiles() {
     var dpr = window.devicePixelRatio || 1, on = M.s * dpr > 1.0;
@@ -184,10 +186,12 @@
     if (!M || !M.el.isConnected) return; xbHome();
     var r = M.el.getBoundingClientRect(), w = Math.round(r.width), h = Math.round(r.height);
     if (!w || !h) return;
-    if (w === M.vw && h === M.vh && M.s) return;
+    var rx = Math.round(r.left), ry = Math.round(r.top), dx = M.rx == null ? 0 : rx - M.rx, dy = M.ry == null ? 0 : ry - M.ry; M.rx = rx; M.ry = ry;
+    if (w === M.vw && h === M.vh && M.s && !dx && !dy) return;
     var had = !!M.s; M.vw = w; M.vh = h;
     if (!had) { home(true); return; }
-    if (M.cur) frame(M.cur, true); else apply(M.s, M.tx, M.ty);
+    apply(M.s, M.tx - dx, M.ty - dy); if (M.raf) { cancelAnimationFrame(M.raf); paint(); }   /* paint in this frame, before the browser shows the new box */   /* Nov 20: the box moved or resized (a page change): keep the map where it sits on screen, so the next move starts from what you see, no jump */
+    if (M.cur) frame(M.cur);   /* then glide to the place's framing for the new box */
   }
   function startView() {   /* desktop and sideways tablet: the festival core fills the width (the full farm is a narrow strip); phone: the whole farm */
     if (!wide()) return fitBox([0, 0, W, H], { x: 0, y: 0, w: M.vw, h: M.vh }, 8);
@@ -233,7 +237,7 @@
     t.classList.toggle('pkpl-tx', !!M.xp);
     var bg = $('.pkpl-tbg', t); if (!bg) { bg = document.createElement('div'); bg.className = 'pkpl-tbg'; bg.setAttribute('aria-hidden', 'true'); t.insertBefore(bg, t.firstChild); }   /* desktop: the experience's hero photo behind the column, under a dark wash (Zale, Nov 19) */
     var hp = null; if (M.xp) { var L0 = litSet(), pk = M.xp === 'Architecture' ? 'cherryhill' : L0[0]; for (var i = 0; !hp && i < L0.length + 1; i++) { var cand = i === 0 ? pk : L0[i - 1]; if (cand) hp = (M.xp === 'Architecture' ? xpPhotos('Architecture', cand) : (((XM.xp || {})[M.xp] || {})[cand] || []).map(function (z) { return { i: z.f, p: z.p }; }).concat(xpPhotos(M.xp, cand)))[0] || null; } }
-    bg.style.backgroundImage = hp ? 'url("' + hp.i + '")' : 'none'; bg.style.backgroundPosition = hp ? hp.p : ''; t.classList.toggle('pkpl-hasbg', !!hp);
+    if (hp) { var bu = 'url("' + hp.i + '")', bp = hp.p, pre = new Image(); bg._want = bu; pre.onload = pre.onerror = function () { if (bg._want === bu) { bg.style.backgroundImage = bu; bg.style.backgroundPosition = bp; } }; pre.src = hp.i; if (pre.complete) pre.onload(); } else { bg._want = ''; bg.style.backgroundImage = 'none'; }   /* Nov 20: the new hero photo is loaded before it replaces the old one, so no black gap between experiences */ t.classList.toggle('pkpl-hasbg', !!hp);
     $('.pkpl-l', t).textContent = M.xp ? (XH.XPD[M.xp] || '') : (wide() ? 'Pick an experience above, then a place' : 'Pick an experience below, then tap a place that lights up');
     var ab = $('.pkpl-ab', t);   /* Architecture: what it is and how to build with us (Zale, Nov 19: it's how sponsors find us) */
     if (ab) ab.innerHTML = M.xp === 'Architecture' ? '<p>Every summer we build a small city in the forest. Each neighborhood is designed and built new with architects, students, builders and makers, and when the festival ends the structures move on to permanent homes in the community. Two of our builds have won AIA awards.</p><button type="button" class="pk-cta sec pkpl-abb" data-go="build">Build with Pickathon</button>' : '';
