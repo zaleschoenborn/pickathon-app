@@ -12649,35 +12649,38 @@ html:root:root #root#root#root#root#root#root#root#root#root#root#root#root#root
   #pkh2 .h2-xs.on{opacity:1;color:var(--cream)}
   #pkh2 .h2-xstrip{transition:opacity .35s ease}
   #pkh2 .h2-xstrip.cov{opacity:0;pointer-events:none}
-  /* Zale Nov 19 15:33: desktop panel (like the Places map's left panel) */
+  /* Zale Nov 19 16:09: desktop panel styled like the Places map panel; skinnier, so the photo gets wider */
   #pkh2 .h2-xpan{display:none}
   @media (min-width:1200px){
-  #root#root#root#root#root#root #pkh2 .h2-s3c .h2-ccw{display:grid!important;grid-template-columns:clamp(380px,30vw,440px) minmax(0,1fr);gap:24px;align-self:stretch!important;width:auto!important;max-width:none!important;margin:0 max(calc((100% - 1280px) / 2),40px)!important}
-  #pkh2 .h2-xpan{display:flex;flex-direction:column;justify-content:center;gap:14px;min-height:0;overflow:hidden;padding:32px 30px;border-radius:12px;background:linear-gradient(160deg,#211c19 0%,#191512 100%);border:1px solid rgba(242,237,227,.1)}
-  #pkh2 .h2-xpk{display:flex;align-items:center;gap:12px;margin:0;color:#F2CF62}
-  #pkh2 .h2-xpk svg{width:34px;height:34px;flex:none}
-  #root#root#root#root #pkh2 .h2-xpk .h2-d{font-size:46px!important;line-height:1!important;color:var(--cream)!important;text-transform:uppercase}
-  #pkh2 .h2-xpd{margin:0;font:500 18px/1.42 'Bricolage Grotesque',system-ui,sans-serif;color:var(--cream)}
-  #pkh2 .h2-xpw{display:flex;justify-content:space-between;margin:6px 0 0;padding-top:14px;border-top:1px solid rgba(242,207,98,.35);font:800 13px/1 'Bricolage Grotesque',system-ui,sans-serif;letter-spacing:.09em;text-transform:uppercase;color:#D6B54A}
-  #pkh2 .h2-xpw span{color:rgba(242,237,227,.6)}
-  #pkh2 .h2-xpt{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px 4px}
-  #pkh2 .h2-xpe{display:flex;flex-direction:column;align-items:center;gap:5px;min-height:44px;padding:0;border:0;background:none;color:var(--cream);font:600 13px/1.15 'Bricolage Grotesque',system-ui,sans-serif;text-align:center;cursor:pointer;opacity:.6;transition:opacity .2s}
-  #pkh2 .h2-xpe img{width:36px;height:36px}
-  #pkh2 .h2-xpe .h2-xsf{display:none}
-  #pkh2 .h2-xpe.on{opacity:1}
-  #pkh2 .h2-xpe.on .h2-xso{display:none}
-  #pkh2 .h2-xpe.on .h2-xsf{display:block}
+  #root#root#root#root#root#root #pkh2 .h2-s3c .h2-ccw{display:grid!important;grid-template-columns:clamp(320px,24vw,360px) minmax(0,1fr);gap:20px;align-self:stretch!important;width:auto!important;max-width:none!important}
+  #pkh2 .h2-xpan{display:block;position:relative;min-height:0;overflow:hidden;border-radius:12px;background:#14110f}
+  #pkh2 .h2-xpbg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.32;filter:saturate(.8)}
+  #pkh2 .h2-xpan::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(20,17,15,.55) 0%,rgba(20,17,15,.88) 45%,rgba(20,17,15,.95) 100%);pointer-events:none}
+  #pkh2 .h2-xpin{position:relative;z-index:1;display:flex;flex-direction:column;gap:12px;height:100%;padding:24px 22px 16px;box-sizing:border-box}
+  #pkh2 .h2-xph{display:flex;align-items:center;gap:14px}
+  #pkh2 .h2-xpbd{flex:none;display:grid;place-items:center;width:52px;height:52px;border-radius:10px;background:#F2EDE3;color:#1d1a16}
+  #pkh2 .h2-xpbd svg{width:28px;height:28px}
+  #root#root#root#root #pkh2 .h2-xpn{margin:0;font-size:30px!important;line-height:1.02!important;color:var(--cream)!important;text-transform:uppercase}
+  #root#root#root#root #pkh2 .h2-xpd{margin:0;font:700 17px/1.38 'Bricolage Grotesque',system-ui,sans-serif;color:#F2CF62!important}
+  #pkh2 .h2-xpd .h2-xlb{color:var(--cream);text-decoration:underline;text-underline-offset:3px}
+  #pkh2 .h2-xpl{flex:1 1 auto;min-height:0;overflow-y:auto;margin:2px -8px 0;padding:0 4px;scrollbar-width:thin;scrollbar-color:rgba(242,237,227,.25) transparent}
+  #pkh2 .h2-xpe{display:flex;align-items:flex-start;gap:12px;width:100%;min-height:44px;padding:10px 10px;border:0;border-top:1px solid rgba(242,237,227,.12);border-radius:0;background:none;color:var(--cream);text-align:left;cursor:pointer;opacity:.72;transition:opacity .2s,background .2s}
+  #pkh2 .h2-xpe:first-child{border-top:0}
+  #pkh2 .h2-xpe img{flex:none;width:32px;height:32px;margin-top:1px}
+  #pkh2 .h2-xpe span{flex:1 1 auto;display:flex;flex-direction:column;gap:3px;min-width:0}
+  #pkh2 .h2-xpe b{text-wrap:wrap;font:800 16px/1.15 'Bricolage Grotesque',system-ui,sans-serif}
+  #root#root#root #pkh2 .h2-xpe small{display:block;width:100%;max-width:none;text-wrap:wrap!important;font:500 14px/1.3 'Bricolage Grotesque',system-ui,sans-serif;font-style:normal;color:rgba(242,237,227,.75)}
   #pkh2 .h2-xpe:hover{opacity:1}
-  #pkh2 .h2-xpt.c5{grid-template-columns:repeat(5,minmax(0,1fr));gap:10px 2px}
-  #pkh2 .h2-xpt.c5 .h2-xpe{font-size:12px}
-  #pkh2 .h2-xpt.c5 .h2-xpe img{width:30px;height:30px}
-  #root#root#root#root#root#root #pkh2 .h2-s3c .h2-ccw .h2-cc-r{grid-column:2;grid-row:1;height:100%;min-width:0;position:relative;padding:0 12%!important;scroll-padding:0 12%!important;gap:14px!important}
-  #root#root#root#root#root#root #pkh2 .h2-s3c .h2-ccw .h2-cc{flex:0 0 76%!important;flex-basis:76%!important}
-  #root#root#root#root#root#root #pkh2 .h2-s3c .h2-arl{left:calc(clamp(380px,30vw,440px) + 24px + 10px)!important}
+  #pkh2 .h2-xpe.on{opacity:1;background:rgba(242,237,227,.08);border-radius:8px;border-top-color:transparent}
+  #pkh2 .h2-xpe.on+.h2-xpe{border-top-color:transparent}
+  #pkh2 .h2-xpe.on b{color:#F2CF62}
+  #root#root#root#root#root#root #pkh2 .h2-s3c .h2-ccw .h2-cc-r{grid-column:2;grid-row:1;height:100%;min-width:0;position:relative;padding:0 9%!important;scroll-padding:0 9%!important;gap:14px!important}
+  #root#root#root#root#root#root #pkh2 .h2-s3c .h2-ccw .h2-cc{flex:0 0 82%!important;flex-basis:82%!important}
+  #root#root#root#root#root#root #pkh2 .h2-s3c .h2-arl{left:calc(clamp(320px,24vw,360px) + 20px + 10px)!important}
   #root#root#root#root#root#root #pkh2 .h2-s3c .h2-arr{right:10px!important}
   #root#root#root#root #pkh2 .h2-s3c>.h2-xstrip{display:none!important}
   }
-  @media (min-width:1200px) and (max-height:820px){#pkh2 .h2-xpan{padding:22px 24px;gap:10px}#root#root#root#root #pkh2 .h2-xpk .h2-d{font-size:36px!important}#pkh2 .h2-xpk svg{width:28px;height:28px}#pkh2 .h2-xpd{font-size:16px;line-height:1.38}#pkh2 .h2-xpw{margin-top:2px;padding-top:10px}#pkh2 .h2-xpt{gap:8px 2px}#pkh2 .h2-xpe img{width:30px;height:30px}}
+  @media (min-width:1200px) and (max-height:820px){#pkh2 .h2-xpin{padding:18px 18px 12px;gap:9px}#root#root#root#root #pkh2 .h2-xpn{font-size:24px!important}#pkh2 .h2-xpbd{width:44px;height:44px}#pkh2 .h2-xpd{font-size:15px}#pkh2 .h2-xpe{padding:7px 10px}#root#root#root #pkh2 .h2-xpe small{font-size:13px}}
   #pkh2 .h2-xs .h2-xsf{display:none}
   #pkh2 .h2-xs.on .h2-xso{display:none}
   #pkh2 .h2-xs.on .h2-xsf{display:block}
@@ -13372,10 +13375,11 @@ window.pkClimbRank = function (C, dd) {
       xpCoverW(A) + '<p class="h2-xhs">' + (A.length > 1 ? 'Swipe to see where, ' + A.length + ' places' : 'Swipe to see where') + ' <b aria-hidden="true">→</b></p></div></article>'; }
   /* Zale Nov 19 15:33: desktop, the experience's cover is a left panel like the Places map page: name, what it is, its neighborhoods; the lit one tracks the photo */
   function xpPanel(A, PH) { var el = root && $('[data-h2="xpan"]', root); if (!el) return; if (PH) { el.innerHTML = ''; return; }
-    el.innerHTML = '<p class="h2-xpk">' + xpIc(XPF) + '<span class="h2-d pkp-head">' + esc(XPF) + '</span></p><p class="h2-xpd">' + esc(XPD[XPF] || '') +
-      (XPF === 'Architecture' ? ' <button type="button" class="h2-xlb" data-h2="xpbuild">Build with us<span aria-hidden="true"> →</span></button>' : '') + '</p>' +
-      '<p class="h2-xpw">Where to find it' + (A.length > 1 ? ' <span>' + A.length + ' places</span>' : '') + '</p><div class="h2-xpt' + (A.length > 8 ? ' c5' : '') + '">' + A.map(function (hk) { var H = D.hoods[hk] || {};
-        return '<button type="button" class="h2-xpe" data-h2="xpto" data-xh="' + hk + '"><img class="h2-xso" src="' + esc(XIC[hk] ? 'ic/' + hk + '.svg' : (H.icw || H.ic || '')) + '" alt="" width="36" height="36"><img class="h2-xsf" src="' + esc(H.icw || ('ic2/' + hk + '.png')) + '" alt="" width="36" height="36"><span>' + esc(H.n || hk) + '</span></button>'; }).join('') + '</div>'; }
+    var bg = (xpSet(A[1] || A[0] || '')[0] || {}).i || '';   /* Zale Nov 19 16:09: styled like the Places map panel: dim photo behind, badge + "X at Pickathon", gold line, a list of places with their own line */
+    el.innerHTML = (bg ? '<img class="h2-xpbg" src="' + esc(bg) + '" alt="" aria-hidden="true">' : '') + '<div class="h2-xpin"><div class="h2-xph"><span class="h2-xpbd">' + xpIc(XPF) + '</span><p class="h2-d h2-xpn pkp-head">' + esc(XPF) + ' at Pickathon</p></div>' +
+      '<p class="h2-xpd">' + esc(XPD[XPF] || '') + (XPF === 'Architecture' ? ' <button type="button" class="h2-xlb" data-h2="xpbuild">Build with us<span aria-hidden="true"> →</span></button>' : '') + '</p>' +
+      '<div class="h2-xpl">' + A.map(function (hk) { var H = D.hoods[hk] || {}, ln = (XPB[XPF] && XPB[XPF][hk]) || H.t || '';
+        return '<button type="button" class="h2-xpe" data-h2="xpto" data-xh="' + hk + '"><img src="' + esc(H.icw || ('ic2/' + hk + '.png')) + '" alt="" width="34" height="34"><span><b>' + esc(H.n || hk) + '</b>' + (ln ? '<small>' + esc(ln) + '</small>' : '') + '</span></button>'; }).join('') + '</div></div>'; }
   /* Zale Nov 19 14:32: the cover shows where to find it: every place as an equal icon tile; a tap jumps to that place's card */
   function xpCoverW(A) { var n = A.length, c = n <= 4 ? n : (n <= 6 ? 3 : (n <= 8 ? 4 : 5));
     return '<div class="h2-xhw" style="--c:' + c + '" role="group" aria-label="Where to find it">' + A.map(function (hk) { var H = D.hoods[hk] || {}; return '<button type="button" class="h2-xhe" data-h2="xpto" data-xh="' + hk + '"><img src="' + esc(XIC[hk] ? 'ic/' + hk + '.svg' : (H.icw || H.ic || '')) + '" alt="" width="36" height="36"><span>' + esc(H.n || hk) + '</span></button>'; }).join('') + '</div>'; }
@@ -13407,7 +13411,7 @@ window.pkClimbRank = function (C, dd) {
   function xpStrip(box) { var el = root && $('[data-h2="xstrip"]', root); if (!el) return; var A = box._A || [];
     el.innerHTML = A.map(function (hk) { var H = D.hoods[hk] || {}; return '<button type="button" class="h2-xs" data-h2="xpto" data-xh="' + hk + '"><img class="h2-xso" src="' + esc(XIC[hk] ? 'ic/' + hk + '.svg' : (H.icw || H.ic || '')) + '" alt="" width="36" height="36"><img class="h2-xsf" src="' + esc(H.icw || ('ic2/' + hk + '.png')) + '" alt="" width="36" height="36"><span>' + esc(H.n || hk) + '</span></button>'; }).join('');
     xpStripOn(box); }
-  function xpStripOn(box) { var el = root && $('[data-h2="xstrip"]', root); if (!el || !box.children.length) return; var c = box.children[ccMid(box).i], k = c && c.getAttribute('data-h'), hit = null; el.classList.toggle('cov', k === '__hero'); var pn = root && $('[data-h2="xpan"]', root); if (pn) $$('.h2-xpe', pn).forEach(function (b) { b.classList.toggle('on', b.getAttribute('data-xh') === k); });
+  function xpStripOn(box) { var el = root && $('[data-h2="xstrip"]', root); if (!el || !box.children.length) return; var c = box.children[ccMid(box).i], k = c && c.getAttribute('data-h'), hit = null; el.classList.toggle('cov', k === '__hero'); var pn = root && $('[data-h2="xpan"]', root); if (pn) $$('.h2-xpe', pn).forEach(function (b) { var on = b.getAttribute('data-xh') === k; b.classList.toggle('on', on); if (on) { var L = b.parentNode, t = b.offsetTop - L.offsetTop; if (t < L.scrollTop || t + b.offsetHeight > L.scrollTop + L.clientHeight) { try { L.scrollTo({ top: Math.max(0, t - 8), behavior: 'smooth' }); } catch (e) { L.scrollTop = t; } } } });
     $$('.h2-xs', el).forEach(function (b) { var on = b.getAttribute('data-xh') === k; b.classList.toggle('on', on); if (on) { b.setAttribute('aria-current', 'true'); hit = b; } else b.removeAttribute('aria-current'); });
     if (hit && el.scrollWidth > el.clientWidth + 2) { var x = hit.offsetLeft - (el.clientWidth - hit.offsetWidth) / 2; try { el.scrollTo({ left: x, behavior: 'smooth' }); } catch (e) { el.scrollLeft = x; } } }
   var XPC = {};
