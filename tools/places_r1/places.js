@@ -202,7 +202,8 @@
   function home(now) { M.cur = ''; lit(); animTo(startView(), now ? 0 : 520); }
   /* the visible part of the map (phone: above the sheet) */
   function lw() { return Math.round(Math.max(400, Math.min(480, window.innerWidth * 0.32))); }   /* desktop left column: phone-card width, the map is the hero (Zale, Nov 19) */
-  function sheetOpen() { var sc = scroller(); return Math.round((sc ? sc.clientHeight : 600) * 0.6); }   /* the card opens to 60% of the phone's scroll area */
+  function sheetOpen() { var sc = scroller(); return openH(sc ? sc.clientHeight : 600); }   /* the card opens to the phone's scroll area less a map margin at the top (Nov 20, Zale) */
+  function openH(vh) { return Math.max(200, Math.round(vh - 100)); }
   function clear() { var r = region(), t = wide() && top().r !== 'hood' ? lw() : 0, ti = $('.pkpl-title', M.el), up = wide() ? 78 : (M.title && ti ? Math.max(0, ti.offsetHeight - 14) : 0), dn = wide() ? 8 : (top().r === 'hood' ? sheetOpen() : 150); return { x: r.x + t, y: r.y + up, w: r.w - t, h: Math.max(160, r.h - up - dn) }; }   /* the lit places fill what is left */   /* above the experience bar and the amenity tag */
   function region() {
     if (wide() || top().r !== 'hood') return { x: 0, y: 0, w: M.vw, h: M.vh };
@@ -343,7 +344,7 @@
       var hp = e.target.closest('[data-hp]'); if (hp) { if (M.title) { M.title = false; } open(hp.getAttribute('data-hp')); return; }
       var b = e.target.closest('[data-pl]'); if (b) { tool(b.getAttribute('data-pl'), b); return; }
       var a = e.target.closest('.pkpl-amdot'); if (a) return;
-      if (M.cur && !M.amen) { var gk = iconAt(rel(e)); if (gk) { glow(gk === M.glow ? '' : gk); e.stopPropagation(); return; } }   /* Nov 20 (Zale): inside a place, tap one of its icons and every icon of that kind glows on the real map; the view stays put */
+      if (M.cur && !M.amen && (!e.target.closest('[data-h]') || e.target.closest('[data-h]').getAttribute('data-h') === M.cur)) { var gk = iconAt(rel(e)); if (gk) { glow(gk === M.glow ? '' : gk); e.stopPropagation(); return; } }   /* a tap on ANOTHER neighborhood's shape always opens that neighborhood (Zale, Nov 20: it got stuck behind an icon glow) */   /* Nov 20 (Zale): inside a place, tap one of its icons and every icon of that kind glows on the real map; the view stays put */
       var h = e.target.closest('[data-h]');
       if (M.title) { M.title = false; M.el.classList.add('pkpl-notitle'); if (!h) return; }   /* the title screen holds until a click on the map or an icon */
       if (!h) return;
@@ -584,7 +585,7 @@
     var sc = scroller(), vh, hd = 0;
     if (sc) vh = sc.clientHeight; else { var h = document.querySelector('#root header'); hd = h && getComputedStyle(h).position === 'sticky' ? h.offsetHeight : 0; vh = window.innerHeight - ((top().r === 'hoods' || top().r === 'hood') && h ? Math.max(hd, Math.round(h.getBoundingClientRect().bottom)) : hd); }
     var k = vh + '|' + hd; if (k === sheetVars._k) return; sheetVars._k = k;
-    document.documentElement.style.setProperty('--pkpl-vh', vh + 'px'); document.documentElement.style.setProperty('--pkpl-hd', hd + 'px'); document.documentElement.style.setProperty('--pkpl-open', Math.round(vh * 0.6) + 'px');
+    document.documentElement.style.setProperty('--pkpl-vh', vh + 'px'); document.documentElement.style.setProperty('--pkpl-hd', hd + 'px'); document.documentElement.style.setProperty('--pkpl-open', openH(vh) + 'px');
   }
   var lastHood = '';
   function settleSheet() {   /* a new place opens with the sheet at about 60% (55% on portrait tablet) */
@@ -689,12 +690,12 @@
   /* the phone card: the bar is the handle; drag it down to fold, up to open, or tap it to flip */
   function cardEl() { return document.getElementById('pkpl-top'); }
   function foldY() { return sheetOpen() - 56; }
-  function setFold(f) { var el = cardEl(); if (!el) return; el.classList.add('pkpl-anim'); el.classList.toggle('pkpl-folded', !!f); el.style.setProperty('--pkpl-y', (f ? foldY() : 0) + 'px'); var b = el.querySelector('.pkpl-bar'); if (b) b.setAttribute('aria-expanded', String(!f)); }
+  function setFold(f) { var el = cardEl(); if (!el) return; el.classList.add('pkpl-anim'); el.classList.toggle('pkpl-folded', !!f); el.style.setProperty('--pkpl-y', (f ? foldY() : 0) + 'px'); document.documentElement.style.setProperty('--pkpl-y', (f ? foldY() : 0) + 'px');   /* the chip row above the sheet follows it */ var b = el.querySelector('.pkpl-bar'); if (b) b.setAttribute('aria-expanded', String(!f)); }
   (function sheetDrag() {
     var st = null;
     var onBar = function (t) { return t && t.closest && t.closest('#pkpl-top .pkpl-bar'); };
     document.addEventListener('pointerdown', function (e) { if (wide() || !onBar(e.target)) return; var el = cardEl(); if (!el) return; st = { y: e.clientY, base: el.classList.contains('pkpl-folded') ? foldY() : 0, moved: false }; el.classList.remove('pkpl-anim'); try { e.target.closest('.pkpl-bar').setPointerCapture(e.pointerId); } catch (x) {} }, true);
-    document.addEventListener('pointermove', function (e) { if (!st) return; var dy = e.clientY - st.y; if (Math.abs(dy) > 6) st.moved = true; if (!st.moved) return; var y = Math.min(foldY(), Math.max(0, st.base + dy)); cardEl().style.setProperty('--pkpl-y', y + 'px'); }, true);
+    document.addEventListener('pointermove', function (e) { if (!st) return; var dy = e.clientY - st.y; if (Math.abs(dy) > 6) st.moved = true; if (!st.moved) return; var y = Math.min(foldY(), Math.max(0, st.base + dy)); cardEl().style.setProperty('--pkpl-y', y + 'px'); document.documentElement.style.setProperty('--pkpl-y', y + 'px'); }, true);
     var end = function (e) { if (!st) return; var s = st; st = null; var el = cardEl(); if (!el) return; if (!s.moved) { setFold(!el.classList.contains('pkpl-folded')); return; } var y = parseFloat(getComputedStyle(el).getPropertyValue('--pkpl-y')) || 0; setFold(y > foldY() / 2); };
     document.addEventListener('pointerup', end, true); document.addEventListener('pointercancel', end, true);
     document.addEventListener('keydown', function (e) { if ((e.key === 'Enter' || e.key === ' ') && onBar(e.target) && !wide()) { e.preventDefault(); var el = cardEl(); setFold(!el.classList.contains('pkpl-folded')); } }, true);
