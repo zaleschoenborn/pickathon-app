@@ -538,3 +538,16 @@ h2{font-family:var(--display);font-weight:400;font-size:27px;line-height:1.14;le
 .pl{max-width:100%;min-width:0}.pl>*{min-width:0;max-width:100%;overflow-wrap:break-word;white-space:normal}
 @media (min-width:1000px){.pl{justify-content:flex-start}}
 @media (min-width:1000px){.po-names.then .pl span,.po-names .pl span{white-space:normal;overflow-wrap:break-word;text-wrap:balance}}
+/* desktop: year-page genre pickers match the Archive bar button: small kicker, value, caret, 3-column pop-over (Nov 20) */
+@media (min-width:1000px){
+  .gp:not(.gpc){position:relative;max-width:none;width:max-content}
+  .gp:not(.gpc) .gp-b{width:auto;min-width:250px;min-height:56px;padding:0 14px;justify-content:center;gap:2px;border-radius:6px}
+  .gp:not(.gpc) .gp-q{font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-weight:700}
+  .gp:not(.gpc) .gp-a{font-size:18px;gap:18px}
+  .gp:not(.gpc) .gp-a svg{width:14px;height:14px}
+  .gp:not(.gpc) .gp-list{position:absolute;left:0;top:calc(100% + 4px);width:min(440px,90vw);z-index:30;background:var(--deep);border:1px solid var(--line2);border-radius:8px;padding:8px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;max-height:60vh;overflow:auto;box-shadow:0 14px 24px rgba(0,0,0,.5)}
+  .gp:not(.gpc) .gp-list[hidden]{display:none}
+  .gp:not(.gpc) .gp-o{min-height:44px;font-size:15px}
+  .gp:not(.gpc) .gp-none{position:absolute;left:0;top:calc(100% + 4px);background:var(--deep);padding:10px 12px;border-radius:8px;white-space:nowrap}
+  .gp:not(.gpc) .gp-none[hidden]{display:none}
+}
