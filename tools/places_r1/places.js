@@ -144,7 +144,7 @@
     if (!M.s || calm() || ms === 0) { apply(v[0], v[1], v[2]); return; }
     var a = [M.s, M.tx, M.ty], t0 = -1, dur = ms || 520;
     var dsc = Math.hypot((M.vw / 2 - a[1]) / a[0] - (M.vw / 2 - v[1]) / v[0], (M.vh / 2 - a[2]) / a[0] - (M.vh / 2 - v[2]) / v[0]) * Math.min(a[0], v[0]), far = dsc / Math.max(320, Math.min(M.vw, M.vh));   /* Nov 20: a long move is a short flight: it eases out a little mid-way and takes a bit longer, so you see where you travel */
-    var dip = far > 0.9 ? Math.min(0.9, Math.log(1 + (far - 0.9) * 0.7)) : 0; dur += Math.min(500, Math.max(0, far - 0.9) * 160);
+    var dip = far > 0.45 ? Math.min(0.9, Math.log(1 + (far - 0.45) * 0.8)) : 0; dur += Math.min(500, Math.max(0, far - 0.45) * 220);
     var ease = function (u) { return u < 0.5 ? 4 * u * u * u : 1 - Math.pow(-2 * u + 2, 3) / 2; };   /* ease in and out: no lurch at the start */
     (function f(t) { if (t0 < 0) t0 = t; var u = Math.max(0, Math.min(1, (t - t0) / dur)), e = ease(u);   /* Nov 20: a frame's timestamp can be earlier than the start; clamping stops a one-frame fling to full zoom */
       var s = Math.exp(Math.log(a[0]) + (Math.log(v[0]) - Math.log(a[0])) * e - dip * Math.sin(Math.PI * e));
@@ -211,7 +211,7 @@
     var rg = region(); if (wide()) rg = { x: rg.x, y: rg.y + 84, w: rg.w, h: rg.h - 84 };   /* desktop: below the experience row */
     var v = fitBox(box(k), rg, wide() ? 40 : 22, zoomed ? M.s : 0);
     if (!zoomed) v[0] = Math.min(v[0], wide() ? 1.5 : 1.7), v = fitBox(box(k), rg, 0, v[0]);   /* close enough to see the place, with its neighbors around it */
-    M.cur = k; lit(); animTo(v, now ? 0 : 560);
+    if (M.glow && M.cur !== k) glow(''); M.cur = k; lit(); animTo(v, now ? 0 : 560);
   }
   function lit() {
     var k = M.cur, L = (!k && M.amen) ? Object.keys(amenHoods()) : (!k && M.xp) ? litSet() : [], d = k ? HH.shapes[k] : L.map(function (h) { return HH.shapes[h]; }).join(' ');
@@ -231,6 +231,8 @@
   function titleDraw() {
     var t = $('.pkpl-title', M.el); if (!t) return;
 
+    var bk = $('.pkpl-bk0', t); if (!bk) { bk = document.createElement('button'); bk.type = 'button'; bk.className = 'pkpl-bk0'; bk.setAttribute('data-pl', 'allxp'); bk.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5 8 12l7 7"/></svg><span>All experiences</span>'; t.insertBefore(bk, t.firstChild); }   /* Nov 20 (Zale): a way back above the experience's title, to the first screen with every experience */
+    bk.hidden = !M.xp;
     var d = $('.pkpl-d', t);   /* desktop: the experience big, then "at" and the year's logo as the word Pickathon (Zale, Nov 19) */
     if (M.xp) d.innerHTML = '<span class="pkpl-xi">' + xpIcon(M.xp) + '</span><span class="pkpl-xt">' + esc(M.xp) + ' at Pickathon</span>';   /* the experience's icon as a graphic, same plate as the picked button (Zale, Nov 19) */
     else d.textContent = 'Summer camp for your soul';
@@ -244,8 +246,8 @@
     var pl = $('.pkpl-pl', t), L = M.xp ? litSet() : [];   /* desktop: where this experience happens; a row opens the place (Zale, Nov 19) */
     if (pl && !M.xp && !M.amen) { pl.innerHTML = '<div class="pkpl-pg">' + XO.map(function (e) { return '<button type="button" class="pkpl-xe" data-xp="' + e + '">' + xpIcon(e) + '<span>' + e + '</span></button>'; }).join('') + '</div>'; return; }   /* arrival: choose your adventure right under the title */
     if (pl) pl.innerHTML = L.length ? L.map(function (k) { var h = data().hoods[k]; return '<button type="button" class="pkpl-pr" data-hp="' + k + '"><img src="' + esc(emb(k)) + '" alt=""><span><b>' + esc(h.n) + '</b><small>' + esc(xpLine(M.xp, k)) + '</small></span></button>'; }).join('') : '';
-    if (pl && wide()) { pl.classList.remove('pkpl-many'); t.classList.remove('pkpl-tight', 'pkpl-tight2', 'pkpl-tight3', 'pkpl-tight4'); var over = function () { return t.scrollHeight > t.clientHeight + 2; };   /* fit without scrolling: full rows, then a compact grid, then a tighter title (Zale, Nov 19) */
-      if (over()) t.classList.add('pkpl-tight'); if (L.length && over()) pl.classList.add('pkpl-many'); if (over()) t.classList.add('pkpl-tight2'); if (over()) t.classList.add('pkpl-tight3'); if (over()) t.classList.add('pkpl-tight4'); }
+    if (pl && wide()) { pl.classList.remove('pkpl-many'); t.classList.remove('pkpl-tight', 'pkpl-tight2', 'pkpl-tight3', 'pkpl-tight4', 'pkpl-tight5', 'pkpl-tight6'); var over = function () { return t.scrollHeight > t.clientHeight + 2; };   /* fit without scrolling: full rows, then a compact grid, then a tighter title (Zale, Nov 19) */
+      if (over()) t.classList.add('pkpl-tight'); if (L.length && over()) pl.classList.add('pkpl-many'); if (over()) t.classList.add('pkpl-tight2'); if (over()) t.classList.add('pkpl-tight3'); if (over()) t.classList.add('pkpl-tight4'); if (over()) t.classList.add('pkpl-tight5'); if (over()) t.classList.add('pkpl-tight6'); }
   }
   function xpLabels() {
     nmDraw(); var box = $('.pkpl-xls', M.el); if (!box) return; var C = (!M.cur && M.amen) ? amenHoods() : null, L = C ? Object.keys(C) : (!M.cur && M.xp) ? litSet() : [];
@@ -339,18 +341,30 @@
       var hp = e.target.closest('[data-hp]'); if (hp) { if (M.title) { M.title = false; } open(hp.getAttribute('data-hp')); return; }
       var b = e.target.closest('[data-pl]'); if (b) { tool(b.getAttribute('data-pl'), b); return; }
       var a = e.target.closest('.pkpl-amdot'); if (a) return;
+      if (M.cur && !M.amen) { var gk = iconAt(rel(e)); if (gk) { glow(gk === M.glow ? '' : gk); e.stopPropagation(); return; } }   /* Nov 20 (Zale): inside a place, tap one of its icons and every icon of that kind glows on the real map; the view stays put */
       var h = e.target.closest('[data-h]');
       if (M.title) { M.title = false; M.el.classList.add('pkpl-notitle'); if (!h) return; }   /* the title screen holds until a click on the map or an icon */
       if (!h) return;
       tap(h.getAttribute('data-h'), e.target.closest('.pkpl-em'));
     }, true);
-    el.addEventListener('wheel', function (e) { e.preventDefault(); var r = rel(e); if (!M.moving) moving(true); clearTimeout(M.wt); M.wt = setTimeout(function () { moving(false); lit(); }, 140);
+    el.addEventListener('wheel', function (e) { if (wide() && !e.target.closest('.pkpl-find') && e.clientX - el.getBoundingClientRect().left < lw() && (M.xp || M.amen || M.title || top().r === 'hood') && e.target.closest('.pkpl-title,.pkpl-pl,.pkpl-xls')) return;   /* Nov 20: scrolling over the left column never moves the map or brings the full map back */
+      e.preventDefault(); var r = rel(e); if (!M.moving) moving(true); clearTimeout(M.wt); M.wt = setTimeout(function () { moving(false); lit(); }, 140);
       var pad = !e.ctrlKey && e.deltaMode === 0 && (e.deltaX !== 0 || Math.abs(e.deltaY) < 40 || e.deltaY % 1 !== 0);   /* trackpad: two fingers move the map, pinch (ctrl+wheel) zooms; a mouse wheel zooms */
       if (pad) { apply(M.s, M.tx - e.deltaX, M.ty - e.deltaY); return; }
       var f = Math.exp(-e.deltaY * (e.deltaMode ? 0.05 : e.ctrlKey ? 0.012 : 0.0022)), s = Math.max(minS() * 0.9, Math.min(maxS(), M.s * f)), mx = (r[0] - M.tx) / M.s, my = (r[1] - M.ty) / M.s; apply(s, r[0] - mx * s, r[1] - my * s); }, { passive: false });
     el.addEventListener('keydown', function (e) { if (e.target.closest('.pkpl-em,[data-pl],.pkpl-find')) return; var k = e.key, st = 80;
       if (k === '+' || k === '=') zoomAt([M.vw / 2, M.vh / 2], 1.4); else if (k === '-') zoomAt([M.vw / 2, M.vh / 2], 1 / 1.4);
       else if (/^Arrow/.test(k)) apply(M.s, M.tx + (k === 'ArrowLeft' ? st : k === 'ArrowRight' ? -st : 0), M.ty + (k === 'ArrowUp' ? st : k === 'ArrowDown' ? -st : 0)); else return; e.preventDefault(); });
+  }
+  function iconAt(p) {
+    var mx = (p[0] - M.tx) / M.s, my = (p[1] - M.ty) / M.s, r = Math.max(16, 22 / M.s), best = null, bd = 1e9;
+    (MI || []).forEach(function (z) { var d = Math.hypot(z[1] - mx, z[2] - my); if (d < r && d < bd) { bd = d; best = z[0]; } });
+    return best;
+  }
+  function glow(kind) {   /* the kind's icons glow wherever they sit on the map; the camera does not move */
+    M.glow = kind || ''; $('.pkpl-icon', M.svg).innerHTML = kind ? amOf(kind).map(amUse).join('') : '';
+    M.el.classList.toggle('pkpl-glowon', !!kind);
+    var tag = $('.pkpl-amtag', M.el); if (!M.amen) { tag.hidden = !kind; if (kind) $('span', tag).textContent = (AMN[kind] || kind) + ' · ' + amOf(kind).length + ' on the farm'; }
   }
   function zoomAt(c, f) { var s = Math.max(minS() * 0.9, Math.min(maxS(), M.s * f)), mx = (c[0] - M.tx) / M.s, my = (c[1] - M.ty) / M.s; animTo([s, c[0] - mx * s, c[1] - my * s], 260); }
   /* a tap on a crowded cluster zooms into the cluster first (fingers can't hit small shapes) */
@@ -364,8 +378,9 @@
   function open(k) { if (top().r === 'hood' && top().h === k) { frame(k); return; } go('hood', { h: k }); }
   function tool(a) {
     if (a === 'full') { M.amen = ''; amenDraw(); M.xp = ''; M.was = ''; titleDraw(); if (top().r === 'hood') { go('hoods'); return; } M.title = true; M.el.classList.remove('pkpl-notitle'); home(); return; }   /* Full map: the whole start view with the title back */
+    if (a === 'allxp') { M.xp = ''; M.amen = ''; amenDraw(); M.was = ''; M.title = true; M.el.classList.remove('pkpl-notitle'); titleDraw(); lit(); home(); return; }
     if (a === 'find') { findOpen(); return; }
-    if (a === 'amclear') { M.amen = ''; amenDraw(); lit(); return; }
+    if (a === 'amclear') { if (M.glow && !M.amen) { glow(''); return; } M.amen = ''; amenDraw(); lit(); return; }
   }
 
   /* ---------- amenities (from Find) ---------- */
@@ -463,7 +478,7 @@
       '<button type="button" class="pkpl-arr l" data-pk="step" data-to="' + prev + '" aria-label="Previous ' + esc(XE && XE !== 'Architecture' ? XE + ' place' : 'place') + ': ' + esc(D.hoods[prev].n) + '"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5 8 12l7 7"/></svg></button>' +
       '<button type="button" class="pkpl-arr r" data-pk="step" data-to="' + next + '" aria-label="Next ' + esc(XE && XE !== 'Architecture' ? XE + ' place' : 'place') + ': ' + esc(D.hoods[next].n) + '"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>' +
       (ph.length > 1 ? '<div class="pkpl-dots" role="group" aria-label="Photos">' + ph.map(function (p, i) { return '<button type="button" data-pk="dot" data-i="' + i + '" aria-label="Photo ' + (i + 1) + ' of ' + ph.length + '"' + (i === 0 ? ' aria-current="true"' : '') + '><i></i></button>'; }).join('') + '</div>' : '') +
-      '<div class="pkpl-hi">' + (XE && XE !== 'Architecture' ? '' : '<p class="pkpl-kind">' + esc(KIND[h.k] || '') + '</p>') + '<div class="pkpl-nmrow"><img src="' + esc(emb(k)) + '" alt=""><h1>' + esc(XE && XE !== 'Architecture' ? XE + ' at ' + h.n : h.n) + '</h1></div><p class="pkpl-tt">' + esc(XE ? xpLine(XE, k) : (h.t || '')) + '</p></div>' +
+      '<div class="pkpl-hi">' + (XE && XE !== 'Architecture' ? '' : '<p class="pkpl-kind">' + (h.k === 'camp' ? esc(KIND[h.k] || '') : 'Architecture ' + (k === 'woods' ? 'in the Woods' : 'at ' + esc(h.n))) + '</p>') + '<div class="pkpl-nmrow"><img src="' + esc(emb(k)) + '" alt=""><h1>' + esc(XE && XE !== 'Architecture' ? XE + ' at ' + h.n : h.n) + '</h1></div><p class="pkpl-tt">' + esc(XE ? xpLine(XE, k) : (h.t || '')) + '</p></div>' +
       '</div>' +
       (FROM ? '<p class="pkpl-from">' + esc(FROM.n) + ' played ' + esc(h.n) + ' at Pickathon ' + FROM.y + '</p>' : '') +
       (has ? '<section class="pkpl-sc" aria-label="Schedule at ' + esc(h.n) + '"><div class="pkpl-days" role="group" aria-label="Day">' + days.map(function (d) { return '<button type="button" class="pk-cta sec pkpl-chip" data-pk="day" data-d="' + d + '"' + (d === TOP.day ? ' aria-pressed="true"' : ' aria-pressed="false"') + '>' + esc(dayN[d] || d.slice(5)) + '</button>'; }).join('') + '</div>' +
@@ -511,14 +526,14 @@
     var j = function (d) { return Array.isArray(d) ? d.join(' ') : (d || ''); }, yr = st ? j(st.d) : '', ab = h.dd || j(h.d), hk = has ? '' : (h.hook || '');
     var body = [yr, ab].filter(Boolean).map(function (t) { return '<p>' + esc(t) + '</p>'; }).join('');
     return '<section class="pkpl-yr"><p class="pkpl-sk">' + esc(h.n) + (st ? ' in ' + y : '') + '</p>' + (st ? '<h2>' + esc(st.t) + '</h2>' : '') + (hk ? '<p class="pkpl-ab1">' + esc(hk) + '</p>' : '') +
-      (body ? '<div class="pkpl-more">' + body + '<button type="button" class="pkpl-rm" data-pk="rm" aria-expanded="false">Read more</button></div>' : '') + '<div class="pkpl-cred"></div></section>';
+      (body ? '<div class="pkpl-more">' + body + '<button type="button" class="pkpl-rm" data-pk="rm" aria-expanded="false">Keep reading</button></div>' : '') + '<div class="pkpl-cred"></div></section>';
   }
   function yearIs(h) {   /* this year's story leads (Zale, Nov 19): kicker, headline, a few lines, Read more */
     var by = h.by || {}, y = Object.keys(by).sort().pop(), st = y && by[y]; if (!st || !st.t) return '';
     var tx = Array.isArray(st.d) ? st.d.join(' ') : (st.d || '');
-    return '<section class="pkpl-yr"><p class="pkpl-sk">' + esc(h.n) + ' in ' + y + '</p><h2>' + esc(st.t) + '</h2>' + (tx ? '<div class="pkpl-more"><p>' + esc(tx) + '</p><button type="button" class="pkpl-rm" data-pk="rm" aria-expanded="false">Read more</button></div>' : '') + '</section>';
+    return '<section class="pkpl-yr"><p class="pkpl-sk">' + esc(h.n) + ' in ' + y + '</p><h2>' + esc(st.t) + '</h2>' + (tx ? '<div class="pkpl-more"><p>' + esc(tx) + '</p><button type="button" class="pkpl-rm" data-pk="rm" aria-expanded="false">Keep reading</button></div>' : '') + '</section>';
   }
-  function whatIs(h, has) { var t = h.dd || (Array.isArray(h.d) ? h.d.join(' ') : (h.d || '')), hk = has ? '' : (h.hook || ''); return (t || hk) ? '<div class="pkpl-what"><p class="pkpl-sk">About ' + esc(h.n) + '</p>' + (hk ? '<p class="pkpl-ab1">' + esc(hk) + '</p>' : '') + '<div class="pkpl-more"><p>' + esc(t) + '</p><button type="button" class="pkpl-rm" data-pk="rm" aria-expanded="false">Read more</button></div></div>' : ''; }
+  function whatIs(h, has) { var t = h.dd || (Array.isArray(h.d) ? h.d.join(' ') : (h.d || '')), hk = has ? '' : (h.hook || ''); return (t || hk) ? '<div class="pkpl-what"><p class="pkpl-sk">About ' + esc(h.n) + '</p>' + (hk ? '<p class="pkpl-ab1">' + esc(hk) + '</p>' : '') + '<div class="pkpl-more"><p>' + esc(t) + '</p><button type="button" class="pkpl-rm" data-pk="rm" aria-expanded="false">Keep reading</button></div></div>' : ''; }
   function soon(k, XE, h, has) {
     if (has) return '';   /* the real schedule is showing: it is the 2027 card */   /* the 2027 schedule, summarized until it posts (Zale, Nov 19: more useful than every past year) */
     var HP = (data().hoodProg || {})[k], kinds = HP ? (HP.kinds || []).map(function (g) { return g[0]; }).filter(function (n) { return !/^(more|showcases)/i.test(n); }) : [];
@@ -628,7 +643,7 @@
     if (a === 'day') { TOP.day = b.getAttribute('data-d'); TOP.all = false; drawTop(); return; }
     if (a === 'whole') { TOP.all = !TOP.all; drawTop(); return; }
     if (a === 'up') { go('hoods'); return; }
-    if (a === 'rm') { var mo = b.closest('.pkpl-more'), o = mo.classList.toggle('open'); b.textContent = o ? 'Show less' : 'Read more'; b.setAttribute('aria-expanded', o); return; }
+    if (a === 'rm') { var mo = b.closest('.pkpl-more'), o = mo.classList.toggle('open'); b.textContent = o ? 'Show less' : 'Keep reading'; b.setAttribute('aria-expanded', o); return; }
     if (a === 'vid') { var L = VPK[b.getAttribute('data-vk')] || [], i0 = +b.getAttribute('data-i') || 0, Q = L.slice(i0).concat(L.slice(0, i0)).map(function (v) { return { u: vidU(v), c: v.a + ' · Pickathon ' + v.y }; });
       if (Q.length > 1 && window.__pkRadio) window.__pkRadio(Q, ''); else if (Q[0] && window.__pkPlayVid) window.__pkPlayVid(Q[0].u, Q[0].c); return; }   /* tap one: the five play in a row */
     if (a === 'vall') { go('watch', { hood: b.getAttribute('data-h') }); return; }
