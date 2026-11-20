@@ -9,8 +9,8 @@ bad=0;tot=0
 with sync_playwright() as p:
     b=p.chromium.launch(); pg=b.new_page(viewport={'width':390,'height':844}); pg.goto('file://'+__import__('os').path.abspath(__import__('os').path.join(__import__('os').path.dirname(__file__),'..','index.html')))
     data=pg.evaluate('''()=>[...document.querySelectorAll('.poster')].map(s=>({y:s.dataset.yr,
-      then:[...s.querySelectorAll('.po-names.then .pl span:not(.dot)')].map(x=>[(x.childNodes[0]||{}).textContent,(x.querySelector('.pc')||{}).textContent||'']),
-      now:[...s.querySelectorAll('.po-names.now .pn')].map(x=>[(x.childNodes[0]||{}).textContent,(x.querySelector('.pc')||{}).textContent||''])}))''')
+      then:[...s.querySelectorAll('.po-names.then .pl span:not(.dot)')].map(x=>[x.textContent,x.dataset.c||'']),
+      now:[...s.querySelectorAll('.po-names.now .pn')].map(x=>[x.textContent,x.dataset.c||''])}))''')
     for d in data:
         for view,key,fl in (('then','class_booking','legend_flag_booking'),('now','class','legend_flag_today')):
             for n,t in d[view]:

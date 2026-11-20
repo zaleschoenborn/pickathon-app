@@ -145,12 +145,12 @@ def poster_lines(acts, mode):
     return out, len(names) - i
 
 def ctag(k):
-    return '<em class="pc k-%s">%s</em>' % (k, KLAB[k]) if k in ('disc', 'leg', 'deep') else ''
+    return KLAB.get(k, '')  # kept as a hidden data-c attribute for check_classes.py; the poster prints NO class words (Zale, Nov 20 12:25)
 def poster_html(lines, tags=None):
     tags = tags or {}
     h = ''
     for cls, row in lines:
-        h += '<div class="pl %s">%s</div>' % (cls, '<span class="dot">•</span>'.join('<span>%s%s</span>' % (E(n), tags.get(n, '')) for n in row))
+        h += '<div class="pl %s">%s</div>' % (cls, '<span class="dot">•</span>'.join('<span data-c="%s">%s</span>' % (tags.get(n, ''), E(n)) for n in row))
     return h
 
 
@@ -261,7 +261,7 @@ def now_html(acts, rest=False):
     ms = [(a.get('m') or 0) for a in acts] or [1]; mx, mn = max(ms), min(ms); out = ''
     for a in acts:
         v = ((a.get('m') or 0) - mn) / (mx - mn) if mx > mn else 1.0
-        out += '<span class="pn" style="--s:%.3f">%s%s</span>' % (v, E(nm(a)), ctag(a['k']))
+        out += '<span class="pn" style="--s:%.3f" data-c="%s">%s</span>' % (v, ctag(a['k']), E(nm(a)))
     return '<div class="pcloud%s">%s</div>' % (' rest' if rest else '', out)
 
 def poster_block(P, badge, yr, then, now, total, joined=True, ranked=True):
