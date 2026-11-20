@@ -186,7 +186,7 @@ LOGO = img('logo27-gold.png', 300, fmt='PNG')
 def header(title, sub, back=True, chip=None):
     t = '<span class="hd-t"><b>%s</b>%s</span>' % (E(title), ('<i>%s</i>' % E(sub)) if sub else '')
     if chip:
-        t = '<label class="yrchip"><select class="ysel2" aria-label="Year">%s</select>%s</label>' % ('<option value="s1">2027</option>' + ''.join('<option value="y%s"%s>%s</option>' % (yy, ' selected' if yy == chip else '', yy) for yy in sorted(d['yearBill'].keys(), reverse=True)), ICON['caret'])
+        t = '<label class="yrchip"><span class="yc-k">Lineup</span><select class="ysel2" aria-label="Lineup year">%s</select>%s</label>' % ('<option value="s1">2027</option>' + ''.join('<option value="y%s"%s>%s</option>' % (yy, ' selected' if yy == chip else '', yy) for yy in sorted(d['yearBill'].keys(), reverse=True)), ICON['caret'])
     return ('<header class="hd">%s<img class="hd-logo" src="%s" alt="Pickathon 2027"><span class="hd-rule"></span>%s'
             '<span class="hd-sp"></span><button class="hd-listen" aria-label="Listen">%s</button><button class="hd-ic" aria-label="Search">%s</button></header>'
             '<div class="sale"><span><b>Holiday Sale</b> · from $483</span><a href="#" class="sale-b">Get tickets <svg viewBox="0 0 12 12" width="11" height="11"><path d="M4 1.5l5 4.5-5 4.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></a></div>'

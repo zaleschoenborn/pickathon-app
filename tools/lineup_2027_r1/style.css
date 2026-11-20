@@ -523,3 +523,9 @@ h2{font-family:var(--display);font-weight:400;font-size:27px;line-height:1.14;le
 .seam .sm-sc{height:30px}
 .seam .sm-disc{position:absolute;bottom:26px;width:44px;height:44px;border-radius:50%;transform:translateX(-50%);display:block}
 @media (min-width:1000px){.seam .sm-tile{height:60px;bottom:10px}.seam .sm-sc{height:40px}.seam .sm-disc{width:60px;height:60px;bottom:34px}}
+
+/* year chip: LINEUP kicker above the year (Nov 20) */
+.yrchip{position:relative;display:grid;grid-template-columns:auto auto;grid-template-rows:auto auto;column-gap:6px;align-items:center;height:48px;padding:0 10px}
+.yrchip .yc-k{grid-column:1;grid-row:1;font-family:var(--text);font-size:9px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);line-height:1;align-self:end}
+.yrchip select{grid-column:1;grid-row:2;min-height:0;line-height:1.05;align-self:start;padding:0}
+.yrchip svg{grid-column:2;grid-row:1/3;align-self:center}
