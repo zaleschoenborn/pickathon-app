@@ -43,12 +43,18 @@ for _y, _bill in d['yearBill'].items():
     for _a in _bill:
         _r = _IDX.get((_n(_a['n']), _y))
         if not _r or _a.get('c'): continue
-        _k = 'leg' if _r.get('legend_flag','').strip().lower()=='yes' else _M.get(_r['today_class'], 'none')
-        if _r.get('lineup','').strip() != 'Music': _k = 'none'  # Artist Classification (Nov 20): classes and magnitudes only for lineup = Music
+        _music = _r.get('lineup', '').strip() == 'Music'  # Artist Classification (Nov 20): classes and magnitudes only for lineup = Music
+        # TODAY model: class (= class_today) + legend_flag_today + magnitude_dec. Never class_booking.
+        _k = 'leg' if _r.get('legend_flag_today', '').strip().lower() == 'yes' else _M.get(_r['class'].strip(), 'none')
+        # BOOKING model: class_booking + legend_flag_booking + at_festival_magnitude_dec. Never class.
+        _kb = 'leg' if _r.get('legend_flag_booking', '').strip().lower() == 'yes' else _M.get(_r['class_booking'].strip(), 'none')
+        if not _music: _k = _kb = 'none'
         if _k != _a['k']: CLASS_CHANGED.append((_y, _a['n'], _a['k'], _k))
-        _a['k'] = _k
+        _a['k'] = _k; _a['kb'] = _kb
         try: _a['m'] = float(_r['magnitude_dec'] or 0)
         except ValueError: pass
+        try: _a['mb'] = float(_r['at_festival_magnitude_dec']) if _music and _r['at_festival_magnitude_dec'].strip() else None
+        except ValueError: _a['mb'] = None
 # 2026 poster order = printed poster (poster_order_by_year_1999_2026.md): ten top-tier names in that order, then everyone else in data order.
 # The combined row 'Meridian Brothers, Mexican Institute of Sound' is the same two acts already listed separately: drop it so no act prints twice.
 _P26 = ['Steve Earle', 'Thee Sinseers', 'Built to Spill', 'The Womack Sisters', 'Mexican Institute of Sound', 'Marcos Valle', 'The Brothers Comatose', 'Meridian Brothers', 'The Altons', 'Shakey Graves']
@@ -59,7 +65,7 @@ d['yearBill']['2026'] = _top + [a for a in _b26 if a not in _top]
 _LAB = {'Discovery': 'Discovery', 'Legend': 'Legend', 'Deep cut': 'Deep cut'}
 for _r26 in d['yearReel'].get('2026', []):
     _row = _IDX.get((_n(_r26['n']), '2026'))
-    _lab = ('Legend' if _row.get('legend_flag','').strip().lower()=='yes' else _LAB.get(_row['today_class'], '')) if _row else ''
+    _lab = ('Legend' if _row.get('legend_flag_today','').strip().lower()=='yes' else _LAB.get(_row['class'].strip(), '')) if _row else ''
     _g = (_r26.get('k') or '').split(' · ')
     _genre = _g[1] if len(_g) > 1 else ''
     _r26['k'] = (_lab + (' · ' + _genre if _genre and _lab else '')) if _lab else ''
@@ -138,10 +144,13 @@ def poster_lines(acts, mode):
             out.append((size, row))
     return out, len(names) - i
 
-def poster_html(lines):
+def ctag(k):
+    return '<em class="pc k-%s">%s</em>' % (k, KLAB[k]) if k in ('disc', 'leg', 'deep') else ''
+def poster_html(lines, tags=None):
+    tags = tags or {}
     h = ''
     for cls, row in lines:
-        h += '<div class="pl %s">%s</div>' % (cls, '<span class="dot">•</span>'.join('<span>%s</span>' % E(n) for n in row))
+        h += '<div class="pl %s">%s</div>' % (cls, '<span class="dot">•</span>'.join('<span>%s%s</span>' % (E(n), tags.get(n, '')) for n in row))
     return h
 
 
@@ -252,10 +261,11 @@ def now_html(acts, rest=False):
     ms = [(a.get('m') or 0) for a in acts] or [1]; mx, mn = max(ms), min(ms); out = ''
     for a in acts:
         v = ((a.get('m') or 0) - mn) / (mx - mn) if mx > mn else 1.0
-        out += '<span class="pn" style="--s:%.3f">%s</span>' % (v, E(nm(a)))
+        out += '<span class="pn" style="--s:%.3f">%s%s</span>' % (v, E(nm(a)), ctag(a['k']))
     return '<div class="pcloud%s">%s</div>' % (' rest' if rest else '', out)
 
 def poster_block(P, badge, yr, then, now, total, joined=True, ranked=True):
+    TG = {nm(a): ctag(a.get('kb', 'none')) for a in then}  # booking model tags (class_booking), printed order
     s = P['stripe']
     stripe = '<div class="stripe">%s</div>' % ''.join('<i style="background:%s"></i>' % c for c in s[:3])
     cc = P['light'] if P['light'].upper() != P['paper'].upper() else P['warm']
@@ -269,7 +279,7 @@ def poster_block(P, badge, yr, then, now, total, joined=True, ranked=True):
             '<button class="po-all" data-open="Show the top ten" data-shut="See the whole bill · %d bands">See the whole bill · %d bands</button>'
             '<p class="po-tap">Tap any name</p></div>%s</section>') % (
             P['paper'], P['ink'], P['ink2'], P['band'], yr, cloud, badge, yr, dates, yr, yr, yr, yr,
-            poster_html(ten_lines(then)), poster_html(rest_lines(then)), now_html(now[:10]), now_html(now[10:], True), total, total, stripe)
+            poster_html(ten_lines(then), TG), poster_html(rest_lines(then), TG), now_html(now[:10]), now_html(now[10:], True), total, total, stripe)
     html_ = html_.replace('poster JOIN', 'poster joined' if joined else 'poster solo')
     if not ranked:
         a = html_.index('<div class="po-ctl">'); b = html_.index('<div class="po-names then">')

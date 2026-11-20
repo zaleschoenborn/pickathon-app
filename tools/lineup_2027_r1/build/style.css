@@ -551,3 +551,11 @@ h2{font-family:var(--display);font-weight:400;font-size:27px;line-height:1.14;le
   .gp:not(.gpc) .gp-none{position:absolute;left:0;top:calc(100% + 4px);background:var(--deep);padding:10px 12px;border-radius:8px;white-space:nowrap}
   .gp:not(.gpc) .gp-none[hidden]{display:none}
 }
+
+/* class word beside a poster name: booking view reads class_booking, today view reads class (never crossed) */
+.pc{font-style:normal;font-family:var(--body,inherit);text-transform:uppercase;letter-spacing:.12em;font-size:9.5px;font-weight:700;margin-left:.6em;white-space:nowrap;vertical-align:.35em}
+.pcloud .pn .pc{font-size:9.5px;display:inline-block;margin-left:.5em}
+.pcloud.rest .pn .pc{font-size:8.5px}
+@media (min-width:1000px){.pc{font-size:11px}}
+.poster .pc,.poster .pc.k-disc,.poster .pc.k-leg,.poster .pc.k-deep{color:var(--ink2)}
+@media (min-width:1000px){.pc{font-size:12px}}
