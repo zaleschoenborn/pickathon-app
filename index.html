@@ -12670,6 +12670,8 @@ html:root:root #root#root#root#root#root#root#root#root#root#root#root#root#root
   #root#root#root#root#root#root#root#root #pkh2 .h2-s3c{min-height:0!important;padding-top:12px!important;padding-bottom:10px!important;gap:8px!important}
   #root#root#root#root#root#root#root#root #pkh2 .h2-s3c .h2-ccw{height:calc(100svh - 234px)!important;min-height:300px}
   }
+  /* Zale Nov 19 18:48: the city line lives in the first-view photo */
+  #root#root#root#root#root#root#root#root #pkh2 .h2-xovk{text-transform:none!important;white-space:normal!important;font-size:16px!important;line-height:1.35!important;letter-spacing:0!important;font-weight:600!important;color:#F2EDE3!important;max-width:30ch;text-shadow:0 1px 10px rgba(0,0,0,.7)}
   #pkh2 .h2-xpan{display:none}
   @media (min-width:1200px){
   #root#root#root#root#root#root #pkh2 .h2-s3c .h2-ccw{display:grid!important;grid-template-columns:clamp(290px,21vw,320px) minmax(0,1fr);gap:18px;align-self:stretch!important;width:auto!important;max-width:none!important}
@@ -13100,10 +13102,10 @@ window.pkClimbRank = function (C, dd) {
          cards and the strip in place; nothing moves. Tap the lit button again to go back to the whole farm. */
       var XOVI = [{ i: 'i/r3-hood-paddock.jpg', p: '50% 35%' }, { i: 'i/r35-grove-1.jpg', p: '50% 40%' }, { i: 'i/p656.jpg', p: '50% 55%' }, { i: 'i/pk-paddock-01.jpg', p: '50% 45%' }];
       ALLH = ids.slice(); ROT0 = xpAll(ids).filter(function (k) { return d.hoods[k].k !== 'camp'; }); ROT = ROT0.slice(); XPF = 'Architecture';
-      h += '<section class="h2-s h2-s3 h2-s3c" aria-labelledby="h2-h3"><div class="h2-s5head"><div><h2 class="h2-d h2-sec pkp-head" id="h2-h3">Summer camp for your soul</h2><p class="h2-sub h2-s3sub">A city in the forest, built new every summer.</p></div>' +
+      h += '<section class="h2-s h2-s3 h2-s3c" aria-labelledby="h2-h3"><div class="h2-s5head"><div><h2 class="h2-d h2-sec pkp-head" id="h2-h3">Summer camp for your soul</h2></div>' +
         '<div class="h2-cc-nav"><button type="button" class="h2-pill h2-s5top h2-anb" data-h2="allhoods">Explore the map</button></div></div>' +
         '<div class="h2-xov" data-h2="xov"><div class="h2-xovp" aria-hidden="true">' + XOVI.map(function (x, n) { return '<img class="h2-xovi' + (n ? '' : ' on') + '" src="' + x.i + '" alt="" style="object-position:' + x.p + '" decoding="async"' + (n ? ' loading="lazy"' : '') + '>'; }).join('') + '</div>' +
-        '<div class="h2-xovo"><p class="h2-xovk">Four days · Twenty neighborhoods</p><p class="h2-d h2-xovh pkp-head">Choose your own adventure</p>' +
+        '<div class="h2-xovo"><p class="h2-xovk">A city of twenty neighborhoods, built new in the forest every summer.</p><p class="h2-d h2-xovh pkp-head">Choose your own adventure</p>' +
         '<div class="h2-xovb" role="group" aria-label="Choose an experience">' + XPO.map(function (t) { return '<button type="button" class="h2-xb" data-h2="xpgo" data-xp="' + t + '">' + xpIc(t) + '<span>' + esc(t) + '</span></button>'; }).join('') + '</div>' +
         '<button type="button" class="h2-xovs" data-h2="xpgo" data-xp="Architecture"><span class="h2-xsw-m">Or swipe to wander the farm</span><span class="h2-xsw-d">Or just wander the farm</span><span aria-hidden="true"> →</span></button></div>' +
         '<button type="button" class="h2-xova" data-h2="xpgo" data-xp="Architecture" aria-label="Wander the farm">' + CHEV + '</button></div>' +
