@@ -490,6 +490,18 @@ deep.append(('Black Mountain', 2011, 'Psych', 'i/p9704.jpg', '100% 50%'))
 def _canon(n):
     k = _aslug(n); return _ALIAS.get(k, k)
 _FT = json.load(open(APP + 'focus-tall.json'))
+# r32 (Zale, Nov 21): an archive card with no same-year catalog photo takes a same-year frame: first the year reel's own frame
+# (already on the site), then a YouTube frame of that year's Pickathon video, picked by eye (build/arch_frames.json).
+# Archive cards only: these frames never enter yearPhotos, so year pages and artist galleries keep real photos.
+ARCHF = {}
+for _yy, _fr in d['yearReel'].items():
+    for _f in _fr:
+        _i = _f.get('i') or ''
+        if _i and not _i.startswith('http') and 'poster' not in _i and not os.path.basename(_i).startswith(('tf', 'tfw')) and os.path.exists(APP + _i):
+            ARCHF.setdefault((_canon(_f['n']), _yy), _i)
+for _yy, _acts in json.load(open(ROOT + 'arch_frames.json')).items():
+    for _n2, _v in _acts.items():
+        ARCHF.setdefault((_canon(_n2), _yy), _v['i']); EXTF[_v['i']] = _v['f']
 def _fill(lst, kind, want):
     # r30: the hand-picked openers stay only while the class table still gives the act that class in some year
     _ever = {_canon(a['n']) for yy in d['yearBill'] for a in d['yearBill'][yy] if not a.get('c') and a['k'] == kind}
@@ -505,6 +517,7 @@ def _fill(lst, kind, want):
             if key in first or key in have: continue
             p = (d['yearPhotos'].get(yy, {}).get(a['n']) or {}).get('i')
             if not p or p.startswith('http') or not (os.path.exists(APP + p) or os.path.exists(ROOT + p)): p = ''
+            if not p: p = ARCHF.get((_canon(a['n']), yy), '')  # r32: same-year reel frame or video frame (archive only)
             v = (_FT.get(p) or EXTF.get(p)) if p else None
             first[key] = (a['n'], int(yy), GSHORT.get(a.get('g'), ''), p, ('%s%% %s%%' % (v[0], v[1])) if v else '50% 35%', a.get('m') or 0)
     # r30 (Nov 21): every act that held the class in any year (Zale, Nov 13), at its first year in that class; photos first, then by size.
