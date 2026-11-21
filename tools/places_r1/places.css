@@ -483,8 +483,8 @@ html body.pkpl-wide.pkpl-hood #root #pkpl .pkpl-tools{position:fixed;right:16px;
 /* ---------- phone neighborhood card (Zale, Nov 20): a bottom card that rises, scrolls inside, and folds to a bar ---------- */
 .pkpl-bar{display:none}
 body.pkpl-hood:not(.pkpl-wide) #pkpl-sp{display:none}
-body.pkpl-hood:not(.pkpl-wide) #pkpl-top{position:absolute;left:0;right:0;bottom:0;height:var(--pkpl-open,60vh);z-index:6;display:flex;flex-direction:column;overflow:hidden;background:#2B2628;border-radius:16px 16px 0 0;box-shadow:0 -6px 22px rgba(0,0,0,.45);transform:translateY(var(--pkpl-y,0px));padding-bottom:env(safe-area-inset-bottom,0px)}
-body.pkpl-hood:not(.pkpl-wide) #pkpl-top.pkpl-anim{transition:transform .32s cubic-bezier(.2,.8,.2,1)}
+body.pkpl-hood:not(.pkpl-wide) #pkpl-top{position:absolute;left:0;right:0;bottom:0;height:calc(var(--pkpl-open,60vh) + max(0px, -1 * var(--pkpl-y,0px)));z-index:6;display:flex;flex-direction:column;overflow:hidden;background:#2B2628;border-radius:16px 16px 0 0;box-shadow:0 -6px 22px rgba(0,0,0,.45);transform:translateY(max(0px, var(--pkpl-y,0px)));padding-bottom:env(safe-area-inset-bottom,0px)}   /* pulled above open: the sheet grows upward from its bottom edge (no empty band); below open it slides down (Nov 21) */
+body.pkpl-hood:not(.pkpl-wide) #pkpl-top.pkpl-anim{transition:transform .32s cubic-bezier(.2,.8,.2,1),height .32s cubic-bezier(.2,.8,.2,1)}
 body.pkpl-hood:not(.pkpl-wide) #pkpl-top .pkpl-bar{display:flex;flex:none;position:relative;align-items:center;gap:10px;height:22px;padding:0;background:#2B2628;cursor:pointer;touch-action:none;user-select:none;-webkit-user-select:none}
 body.pkpl-hood:not(.pkpl-wide) #pkpl-top .pkpl-bar i{position:absolute;left:50%;top:6px;width:32px;height:4px;margin-left:-16px;border-radius:3px;background:rgba(242,237,227,.85)}
 body.pkpl-hood:not(.pkpl-wide) #pkpl-top .pkpl-bn{flex:1;min-width:0;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;font-family:'Pickathon 2014',sans-serif;font-size:22px;line-height:1;text-transform:uppercase;letter-spacing:.02em;color:#F2EDE3}
