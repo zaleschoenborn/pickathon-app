@@ -1069,7 +1069,7 @@ setInterval(function(){if(bar)bar.style.display=document.querySelector('[aria-mo
  setInterval(function(){reg.update().catch(function(){})},5*60*1000); reg.update().catch(function(){}); try{navigator.storage&&navigator.storage.persist&&navigator.storage.persist()}catch(e){} navigator.serviceWorker.ready.then(function(r){r.active&&r.active.postMessage('pack')}).catch(function(){});
  window.__pkReg=reg;document.addEventListener('visibilitychange',function(){if(!document.hidden)reg.update().catch(function(){})});
 }).catch(function(){});
-window.__pkBuild='20261121-5375';
+window.__pkBuild='20261121-5376';
 /* New builds reach returning visitors (QC Round 3.5, Nov 11). tools/stamp_build.py writes the build into __pkBuild, sw.js and version.json.
    On load and on every return to the page, version.json (no-store) and the service worker say whether a newer build is waiting or active;
    if so the page reloads on that return. Touching the page never blocks it; only an order in progress does: the checkout open, a ticket
@@ -8593,7 +8593,7 @@ if(/[^\s]-[^\s]+-(?:19|20)\d\d|^(?:them|it|this|video|clip)?$|Pickathon on|^Watc
 window.addEventListener('click',function(e){var t=e.target;var a=t&&t.closest?t.closest('a[href]'):null;if(!a||a.closest('[data-nolb]'))return;var h=a.getAttribute('href')||'';if(!/youtube\.com\/(?:watch|playlist\?)|youtu\.be\/|vimeo\.com\/\d+/.test(h)||/music\.youtube\.com/.test(h))return;if(!src(h))return;e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();show([{u:h,c:linkCap(a)}],'')},true);
 window.addEventListener('message',function(e){var m=e.data;if(!m||m.pkMap!=='vid'||typeof m.u!=='string'||e.origin!==location.origin)return;if(src(m.u))show([{u:m.u,c:typeof m.c==='string'?m.c:''}],'')});
 window.__pkPlayVid=function(u,cap){if(/open\.spotify\.com\/(?:intl-[a-z]+\/)?track\//.test(String(u||''))){openSp(u);return true}if(!src(u))return false;return show([{u:u,c:cap==null?'':String(cap)}],'')};
-window.__pkRadio=function(list,label){if(!list||!list.length)return;show(list,label||'')};window.__pkVideo=show})();</script><script src="lx/lx.js?v=5375"></script><script>(function(){var B=[1.1,1.2,1.3,1.4,1.5,1.6,1.8],VC={},st=null;
+window.__pkRadio=function(list,label){if(!list||!list.length)return;show(list,label||'')};window.__pkVideo=show})();</script><script src="lx/lx.js?v=5376"></script><script>(function(){var B=[1.1,1.2,1.3,1.4,1.5,1.6,1.8],VC={},st=null;
 function det(im){try{var c=document.createElement('canvas');c.width=160;c.height=90;var x=c.getContext('2d');x.drawImage(im,0,0,160,90);var d=x.getImageData(0,0,160,90).data,col=[],row=[],i,j;for(i=0;i<160;i++){var a=[];for(j=0;j<90;j++){var p=(j*160+i)*4;a.push(d[p]*.3+d[p+1]*.59+d[p+2]*.11);}a.sort(function(u,v){return u-v;});col.push(a[87]);}for(j=0;j<90;j++){var b=[];for(i=0;i<160;i++){var q=(j*160+i)*4;b.push(d[q]*.3+d[q+1]*.59+d[q+2]*.11);}b.sort(function(u,v){return u-v;});row.push(b[155]);}
 function run(v){var n=0;for(var k=0;k<v.length;k++){if(v[k]<=22)n++;else break;}return n;}
 var l=run(col)/160,r=run(col.slice().reverse())/160,t=run(row)/90,b=run(row.slice().reverse())/90,p=0,e=0;if(Math.abs(l-r)<=.03&&Math.min(l,r)>.03)p=Math.min(l,r);if(Math.abs(t-b)<=.03&&Math.min(t,b)>.04)e=Math.min(t,b);if(p>.3||e>.2||!(p||e))return 0;var s=Math.max(p?1/(1-2*p):1,e?1/(1-2*e):1)+.01;for(var n=0;n<B.length;n++)if(s<=B[n]+.001)return B[n];return B[B.length-1];}catch(err){return 0;}}
@@ -14260,8 +14260,8 @@ html body.pkpl-wide.pkpl-hood #root #pkpl .pkpl-tools{position:fixed;right:16px;
 /* ---------- phone neighborhood card (Zale, Nov 20): a bottom card that rises, scrolls inside, and folds to a bar ---------- */
 .pkpl-bar{display:none}
 body.pkpl-hood:not(.pkpl-wide) #pkpl-sp{display:none}
-body.pkpl-hood:not(.pkpl-wide) #pkpl-top{position:absolute;left:0;right:0;bottom:0;height:var(--pkpl-open,60vh);z-index:6;display:flex;flex-direction:column;overflow:hidden;background:#2B2628;border-radius:16px 16px 0 0;box-shadow:0 -6px 22px rgba(0,0,0,.45);transform:translateY(var(--pkpl-y,0px));padding-bottom:env(safe-area-inset-bottom,0px)}
-body.pkpl-hood:not(.pkpl-wide) #pkpl-top.pkpl-anim{transition:transform .32s cubic-bezier(.2,.8,.2,1)}
+body.pkpl-hood:not(.pkpl-wide) #pkpl-top{position:absolute;left:0;right:0;bottom:0;height:calc(var(--pkpl-open,60vh) + max(0px, -1 * var(--pkpl-y,0px)));z-index:6;display:flex;flex-direction:column;overflow:hidden;background:#2B2628;border-radius:16px 16px 0 0;box-shadow:0 -6px 22px rgba(0,0,0,.45);transform:translateY(max(0px, var(--pkpl-y,0px)));padding-bottom:env(safe-area-inset-bottom,0px)}   /* pulled above open: the sheet grows upward from its bottom edge (no empty band); below open it slides down (Nov 21) */
+body.pkpl-hood:not(.pkpl-wide) #pkpl-top.pkpl-anim{transition:transform .32s cubic-bezier(.2,.8,.2,1),height .32s cubic-bezier(.2,.8,.2,1)}
 body.pkpl-hood:not(.pkpl-wide) #pkpl-top .pkpl-bar{display:flex;flex:none;position:relative;align-items:center;gap:10px;height:22px;padding:0;background:#2B2628;cursor:pointer;touch-action:none;user-select:none;-webkit-user-select:none}
 body.pkpl-hood:not(.pkpl-wide) #pkpl-top .pkpl-bar i{position:absolute;left:50%;top:6px;width:32px;height:4px;margin-left:-16px;border-radius:3px;background:rgba(242,237,227,.85)}
 body.pkpl-hood:not(.pkpl-wide) #pkpl-top .pkpl-bn{flex:1;min-width:0;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;font-family:'Pickathon 2014',sans-serif;font-size:22px;line-height:1;text-transform:uppercase;letter-spacing:.02em;color:#F2EDE3}
@@ -14412,6 +14412,7 @@ body.pkpl-hood:not(.pkpl-wide) #pkpl-top.pkpl-more::after{opacity:1}
   function maxS() { return 2.6 * TF / (window.devicePixelRatio || 1); }
   function clampView(s, tx, ty) {   /* keep some map on screen */
     s = Math.max(minS() * 0.9, Math.min(maxS(), s));
+    if (M.free) return [s, tx, ty];   /* a place was framed: its centre may sit past the map's edge (Zale, Nov 20) */
     var mw = W * s, mh = H * s, pad = 60;
     tx = mw <= M.vw ? Math.min(Math.max(tx, -mw * 0.25), M.vw - mw * 0.75) : Math.min(pad, Math.max(M.vw - mw - pad, tx));
     ty = mh <= M.vh ? Math.min(Math.max(ty, -mh * 0.25), M.vh - mh * 0.75) : Math.min(pad, Math.max(M.vh - mh - pad, ty));
@@ -14485,6 +14486,11 @@ body.pkpl-hood:not(.pkpl-wide) #pkpl-top.pkpl-more::after{opacity:1}
       var n = N[i]; n.style.transform = 'translate(' + Math.round(x) + 'px,' + Math.round(y) + 'px)'; n.hidden = hide || !named || x < 60 || x > M.vw - 60 || y > M.vh - 30;   /* no clipped names at the edges */
     }
   }
+  function chipsAboveFold() {   /* folded on a phone: the experience row sits just above the folded sheet, so it stays usable (Zale, Nov 20) */
+    var c = cardEl(), xb = $('.pkpl-xb', M.el); if (!c || !xb) return;
+    if (!wide() && c.classList.contains('pkpl-folded')) xb.style.bottom = Math.max(0, Math.round(M.el.getBoundingClientRect().bottom - c.getBoundingClientRect().top)) + 'px';
+    else xb.style.bottom = '';
+  }
   function xbHome() { var xb = $('.pkpl-xb', M.el), t = $('.pkpl-title', M.el), want = M.el; if (xb && t && xb.parentNode !== want) want.appendChild(xb); }   /* desktop: a menu under the title; phone: the bottom row */
   function layout() {   /* on load, resize and every render: size the map to its box */
     if (!M || !M.el.isConnected) return; xbHome();
@@ -14506,15 +14512,22 @@ body.pkpl-hood:not(.pkpl-wide) #pkpl-top.pkpl-more::after{opacity:1}
   /* the visible part of the map (phone: above the sheet) */
   function lw() { return Math.round(Math.max(400, Math.min(480, window.innerWidth * 0.32))); }   /* desktop left column: phone-card width, the map is the hero (Zale, Nov 19) */
   function sheetOpen() { var sc = scroller(); return openH(sc ? sc.clientHeight : 600); }   /* the card opens to the phone's scroll area less a map margin at the top (Nov 20, Zale) */
-  function openH(vh) { return Math.max(200, Math.round(vh - 100)); }
+  function openH(vh) { return Math.round(vh * 0.6); }   /* open: the sheet covers 60%, the map shows above it (the yesterday default, Zale, Nov 20) */
   function clear() { var r = region(), t = wide() && top().r !== 'hood' ? lw() : 0, ti = $('.pkpl-title', M.el), up = wide() ? 78 : (M.title && ti ? Math.max(0, ti.offsetHeight - 14) : 0), dn = wide() ? 8 : (top().r === 'hood' ? sheetOpen() : 150); return { x: r.x + t, y: r.y + up, w: r.w - t, h: Math.max(160, r.h - up - dn) }; }   /* the lit places fill what is left */   /* above the experience bar and the amenity tag */
   function region() {
     if (wide() || top().r !== 'hood') return { x: 0, y: 0, w: M.vw, h: M.vh };
-    return { x: 0, y: 0, w: M.vw, h: Math.max(160, Math.round(M.vh * 0.4)) };
+    /* the strip the map shows above the sheet: from the map top to the sheet's real top edge (open ~40%, folded almost all) */
+    var c = cardEl(), mp = document.querySelector('#pkpl .pkpl-map'), h = Math.round(M.vh * 0.4);
+    if (c && mp) h = c.getBoundingClientRect().top - mp.getBoundingClientRect().top;
+    return { x: 0, y: 0, w: M.vw, h: Math.max(160, Math.min(M.vh, Math.round(h))) };
+  }
+  function recenter() {   /* the sheet moved: keep the zoom, slide the selected place back to the middle of the map that shows (Zale, Nov 21) */
+    if (!M || !M.cur || !M.s) return; M.free = true; animTo(fitBox(box(M.cur), region(), 0, M.s), 480);
   }
   function frame(k, now) {   /* first pick zooms in; another pick while zoomed keeps the zoom and centres */
     var zoomed = M.s > minS() * 1.9 && M.cur && M.cur !== k;
-    var rg = region(); if (wide()) rg = { x: rg.x, y: rg.y + 84, w: rg.w, h: rg.h - 84 };   /* desktop: below the experience row */
+    var rg = region(); if (wide()) rg = { x: rg.x, y: rg.y + 84, w: rg.w, h: rg.h - 84 };
+    M.free = true;   /* desktop: below the experience row */
     var v = fitBox(box(k), rg, wide() ? 40 : 22, zoomed ? M.s : 0);
     if (!zoomed) v[0] = Math.min(v[0], wide() ? 1.5 : 1.7), v = fitBox(box(k), rg, 0, v[0]);   /* close enough to see the place, with its neighbors around it */
     if (M.glow && M.cur !== k) glow(''); M.cur = k; lit(); animTo(v, now ? 0 : 560);
@@ -14595,6 +14608,7 @@ body.pkpl-hood:not(.pkpl-wide) #pkpl-top.pkpl-more::after{opacity:1}
     function pts() { return Object.keys(P).map(function (k) { return P[k]; }); }
     function rel(e) { var r = el.getBoundingClientRect(); return [e.clientX - r.left, e.clientY - r.top]; }
     el.addEventListener('pointerdown', function (e) {
+      M.free = false;   /* the visitor takes over: the edge limit returns */
       if (e.target.closest('.pkpl-tools,.pkpl-amtag,.pkpl-find,.pkpl-xb,.pkpl-pl,.pkpl-ab')) return;
       if (e.pointerType === 'mouse' && e.button !== 0) return;
       P[e.pointerId] = rel(e); cancelAnimationFrame(M.anim); cancelAnimationFrame(M.glide);
@@ -14992,14 +15006,18 @@ body.pkpl-hood:not(.pkpl-wide) #pkpl-top.pkpl-more::after{opacity:1}
   })();
   /* the phone card: the bar is the handle; drag it down to fold, up to open, or tap it to flip */
   function cardEl() { return document.getElementById('pkpl-top'); }
-  function foldY() { return sheetOpen() - 56; }
-  function setFold(f) { var el = cardEl(); if (!el) return; el.classList.add('pkpl-anim'); el.classList.toggle('pkpl-folded', !!f); el.style.setProperty('--pkpl-y', (f ? foldY() : 0) + 'px'); document.documentElement.style.setProperty('--pkpl-y', (f ? foldY() : 0) + 'px');   /* the chip row above the sheet follows it */ var b = el.querySelector('.pkpl-bar'); if (b) b.setAttribute('aria-expanded', String(!f)); }
+  function foldY() { var c = cardEl(), b = c ? parseFloat(getComputedStyle(c).bottom) || 0 : 0; return sheetOpen() - 56 + b; }   /* folded: only the bar with the logo and name shows above the tab bar (Zale, Nov 21) */
+  function setFold(f) { var el = cardEl(); if (!el) return; el.classList.add('pkpl-anim'); el.classList.toggle('pkpl-folded', !!f); el.style.setProperty('--pkpl-y', (f ? foldY() : 0) + 'px'); document.documentElement.style.setProperty('--pkpl-y', (f ? foldY() : 0) + 'px');   /* the chip row above the sheet follows it */ if (M.cur && !wide()) setTimeout(function () { if (M.cur) recenter(); }, 420); setTimeout(chipsAboveFold, 360);   /* after the sheet has finished sliding, so the strip above it is measured at rest */   /* the map re-centers on the selected place in the strip that shows */ var b = el.querySelector('.pkpl-bar'); if (b) b.setAttribute('aria-expanded', String(!f)); }
   (function sheetDrag() {
+    /* Nov 20 (Zale): the bar is a handle. Three rests: full frame (pulled up past open), open (the default: a little map above), and folded (a thin bar). A pull down of about 30% of the travel folds it; a pull up past half the map strip takes the whole frame. */
     var st = null;
     var onBar = function (t) { return t && t.closest && t.closest('#pkpl-top .pkpl-bar'); };
-    document.addEventListener('pointerdown', function (e) { if (wide() || !onBar(e.target)) return; var el = cardEl(); if (!el) return; st = { y: e.clientY, base: el.classList.contains('pkpl-folded') ? foldY() : 0, moved: false }; el.classList.remove('pkpl-anim'); try { e.target.closest('.pkpl-bar').setPointerCapture(e.pointerId); } catch (x) {} }, true);
-    document.addEventListener('pointermove', function (e) { if (!st) return; var dy = e.clientY - st.y; if (Math.abs(dy) > 6) st.moved = true; if (!st.moved) return; var y = Math.min(foldY(), Math.max(0, st.base + dy)); cardEl().style.setProperty('--pkpl-y', y + 'px'); document.documentElement.style.setProperty('--pkpl-y', y + 'px'); }, true);
-    var end = function (e) { if (!st) return; var s = st; st = null; var el = cardEl(); if (!el) return; if (!s.moved) { setFold(!el.classList.contains('pkpl-folded')); return; } var y = parseFloat(getComputedStyle(el).getPropertyValue('--pkpl-y')) || 0; setFold(y > foldY() / 2); };
+    var gapOf = function () { var sc = scroller(), c = cardEl(); if (!sc || !c) return 0; return Math.max(0, Math.round(c.getBoundingClientRect().top - sc.getBoundingClientRect().top)); };
+    var yNow = function (el) { return parseFloat(el.style.getPropertyValue('--pkpl-y')) || 0; };
+    var setY = function (el, y) { el.style.setProperty('--pkpl-y', y + 'px'); document.documentElement.style.setProperty('--pkpl-y', y + 'px'); };
+    document.addEventListener('pointerdown', function (e) { if (wide() || !onBar(e.target)) return; var el = cardEl(); if (!el) return; st = { y: e.clientY, base: yNow(el), gap: gapOf(), moved: false }; el.classList.remove('pkpl-anim'); try { e.target.closest('.pkpl-bar').setPointerCapture(e.pointerId); } catch (x) {} }, true);
+    document.addEventListener('pointermove', function (e) { if (!st) return; var dy = e.clientY - st.y; if (Math.abs(dy) > 6) st.moved = true; if (!st.moved) return; var lo = -st.gap, hi = foldY(); setY(cardEl(), Math.min(hi, Math.max(lo, st.base + dy))); }, true);
+    var end = function (e) { if (!st) return; var s = st; st = null; var el = cardEl(); if (!el) return; if (!s.moved) { setFold(!el.classList.contains('pkpl-folded')); return; } var y = yNow(el), f = foldY(), dir = y - s.base, t, folded = false; if (dir < -20) { t = y < -s.gap / 2 ? -s.gap : 0; } else if (dir > 20) { if (y > f * 0.3) { t = f; folded = true; } else { t = Math.max(0, s.base); } } else { t = s.base; folded = s.base >= f - 1; } el.classList.add('pkpl-anim'); el.classList.toggle('pkpl-folded', folded); var b = el.querySelector('.pkpl-bar'); if (b) b.setAttribute('aria-expanded', String(!folded)); setY(el, t); if (M.cur && !wide()) setTimeout(function () { if (M.cur) recenter(); }, 420); setTimeout(chipsAboveFold, 360);   /* after the sheet has finished sliding, so the strip above it is measured at rest */ };
     document.addEventListener('pointerup', end, true); document.addEventListener('pointercancel', end, true);
     document.addEventListener('keydown', function (e) { if ((e.key === 'Enter' || e.key === ' ') && onBar(e.target) && !wide()) { e.preventDefault(); var el = cardEl(); setFold(!el.classList.contains('pkpl-folded')); } }, true);
   })();
