@@ -703,7 +703,7 @@
   })();
   /* the phone card: the bar is the handle; drag it down to fold, up to open, or tap it to flip */
   function cardEl() { return document.getElementById('pkpl-top'); }
-  function foldY() { return sheetOpen() - 56; }
+  function foldY() { var c = cardEl(), b = c ? parseFloat(getComputedStyle(c).bottom) || 0 : 0; return sheetOpen() - 56 + b; }   /* folded: only the bar with the logo and name shows above the tab bar (Zale, Nov 21) */
   function setFold(f) { var el = cardEl(); if (!el) return; el.classList.add('pkpl-anim'); el.classList.toggle('pkpl-folded', !!f); el.style.setProperty('--pkpl-y', (f ? foldY() : 0) + 'px'); document.documentElement.style.setProperty('--pkpl-y', (f ? foldY() : 0) + 'px');   /* the chip row above the sheet follows it */ if (M.cur && !wide()) setTimeout(function () { if (M.cur) recenter(); }, 420); setTimeout(chipsAboveFold, 360);   /* after the sheet has finished sliding, so the strip above it is measured at rest */   /* the map re-centers on the selected place in the strip that shows */ var b = el.querySelector('.pkpl-bar'); if (b) b.setAttribute('aria-expanded', String(!f)); }
   (function sheetDrag() {
     /* Nov 20 (Zale): the bar is a handle. Three rests: full frame (pulled up past open), open (the default: a little map above), and folded (a thin bar). A pull down of about 30% of the travel folds it; a pull up past half the map strip takes the whole frame. */
