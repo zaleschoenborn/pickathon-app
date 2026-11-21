@@ -14477,11 +14477,14 @@ body.pkpl-hood:not(.pkpl-wide) #pkpl-top.pkpl-more::after{opacity:1}
   /* the visible part of the map (phone: above the sheet) */
   function lw() { return Math.round(Math.max(400, Math.min(480, window.innerWidth * 0.32))); }   /* desktop left column: phone-card width, the map is the hero (Zale, Nov 19) */
   function sheetOpen() { var sc = scroller(); return openH(sc ? sc.clientHeight : 600); }   /* the card opens to the phone's scroll area less a map margin at the top (Nov 20, Zale) */
-  function openH(vh) { return Math.max(200, Math.round(vh - 100)); }
+  function openH(vh) { return Math.round(vh * 0.6); }   /* open: the sheet covers 60%, the map shows above it (the yesterday default, Zale, Nov 20) */
   function clear() { var r = region(), t = wide() && top().r !== 'hood' ? lw() : 0, ti = $('.pkpl-title', M.el), up = wide() ? 78 : (M.title && ti ? Math.max(0, ti.offsetHeight - 14) : 0), dn = wide() ? 8 : (top().r === 'hood' ? sheetOpen() : 150); return { x: r.x + t, y: r.y + up, w: r.w - t, h: Math.max(160, r.h - up - dn) }; }   /* the lit places fill what is left */   /* above the experience bar and the amenity tag */
   function region() {
     if (wide() || top().r !== 'hood') return { x: 0, y: 0, w: M.vw, h: M.vh };
-    return { x: 0, y: 0, w: M.vw, h: Math.max(160, Math.round(M.vh * 0.4)) };
+    /* the strip the map shows above the sheet: from the map top to the sheet's real top edge (open ~40%, folded almost all) */
+    var c = cardEl(), mp = document.querySelector('#pkpl .pkpl-map'), h = Math.round(M.vh * 0.4);
+    if (c && mp) h = c.getBoundingClientRect().top - mp.getBoundingClientRect().top;
+    return { x: 0, y: 0, w: M.vw, h: Math.max(160, Math.min(M.vh, Math.round(h))) };
   }
   function frame(k, now) {   /* first pick zooms in; another pick while zoomed keeps the zoom and centres */
     var zoomed = M.s > minS() * 1.9 && M.cur && M.cur !== k;
@@ -14964,13 +14967,17 @@ body.pkpl-hood:not(.pkpl-wide) #pkpl-top.pkpl-more::after{opacity:1}
   /* the phone card: the bar is the handle; drag it down to fold, up to open, or tap it to flip */
   function cardEl() { return document.getElementById('pkpl-top'); }
   function foldY() { return sheetOpen() - 56; }
-  function setFold(f) { var el = cardEl(); if (!el) return; el.classList.add('pkpl-anim'); el.classList.toggle('pkpl-folded', !!f); el.style.setProperty('--pkpl-y', (f ? foldY() : 0) + 'px'); document.documentElement.style.setProperty('--pkpl-y', (f ? foldY() : 0) + 'px');   /* the chip row above the sheet follows it */ var b = el.querySelector('.pkpl-bar'); if (b) b.setAttribute('aria-expanded', String(!f)); }
+  function setFold(f) { var el = cardEl(); if (!el) return; el.classList.add('pkpl-anim'); el.classList.toggle('pkpl-folded', !!f); el.style.setProperty('--pkpl-y', (f ? foldY() : 0) + 'px'); document.documentElement.style.setProperty('--pkpl-y', (f ? foldY() : 0) + 'px');   /* the chip row above the sheet follows it */ if (M.cur && !wide()) setTimeout(function () { if (M.cur) frame(M.cur); }, 420);   /* after the sheet has finished sliding, so the strip above it is measured at rest */   /* the map re-centers on the selected place in the strip that shows */ var b = el.querySelector('.pkpl-bar'); if (b) b.setAttribute('aria-expanded', String(!f)); }
   (function sheetDrag() {
+    /* Nov 20 (Zale): the bar is a handle. Three rests: full frame (pulled up past open), open (the default: a little map above), and folded (a thin bar). A pull down of about 30% of the travel folds it; a pull up past half the map strip takes the whole frame. */
     var st = null;
     var onBar = function (t) { return t && t.closest && t.closest('#pkpl-top .pkpl-bar'); };
-    document.addEventListener('pointerdown', function (e) { if (wide() || !onBar(e.target)) return; var el = cardEl(); if (!el) return; st = { y: e.clientY, base: el.classList.contains('pkpl-folded') ? foldY() : 0, moved: false }; el.classList.remove('pkpl-anim'); try { e.target.closest('.pkpl-bar').setPointerCapture(e.pointerId); } catch (x) {} }, true);
-    document.addEventListener('pointermove', function (e) { if (!st) return; var dy = e.clientY - st.y; if (Math.abs(dy) > 6) st.moved = true; if (!st.moved) return; var y = Math.min(foldY(), Math.max(0, st.base + dy)); cardEl().style.setProperty('--pkpl-y', y + 'px'); document.documentElement.style.setProperty('--pkpl-y', y + 'px'); }, true);
-    var end = function (e) { if (!st) return; var s = st; st = null; var el = cardEl(); if (!el) return; if (!s.moved) { setFold(!el.classList.contains('pkpl-folded')); return; } var y = parseFloat(getComputedStyle(el).getPropertyValue('--pkpl-y')) || 0; setFold(y > foldY() / 2); };
+    var gapOf = function () { var sc = scroller(), c = cardEl(); if (!sc || !c) return 0; return Math.max(0, Math.round(c.getBoundingClientRect().top - sc.getBoundingClientRect().top)); };
+    var yNow = function (el) { return parseFloat(el.style.getPropertyValue('--pkpl-y')) || 0; };
+    var setY = function (el, y) { el.style.setProperty('--pkpl-y', y + 'px'); document.documentElement.style.setProperty('--pkpl-y', y + 'px'); };
+    document.addEventListener('pointerdown', function (e) { if (wide() || !onBar(e.target)) return; var el = cardEl(); if (!el) return; st = { y: e.clientY, base: yNow(el), gap: gapOf(), moved: false }; el.classList.remove('pkpl-anim'); try { e.target.closest('.pkpl-bar').setPointerCapture(e.pointerId); } catch (x) {} }, true);
+    document.addEventListener('pointermove', function (e) { if (!st) return; var dy = e.clientY - st.y; if (Math.abs(dy) > 6) st.moved = true; if (!st.moved) return; var lo = -st.gap, hi = foldY(); setY(cardEl(), Math.min(hi, Math.max(lo, st.base + dy))); }, true);
+    var end = function (e) { if (!st) return; var s = st; st = null; var el = cardEl(); if (!el) return; if (!s.moved) { setFold(!el.classList.contains('pkpl-folded')); return; } var y = yNow(el), f = foldY(), dir = y - s.base, t, folded = false; if (dir < -20) { t = y < -s.gap / 2 ? -s.gap : 0; } else if (dir > 20) { if (y > f * 0.3) { t = f; folded = true; } else { t = Math.max(0, s.base); } } else { t = s.base; folded = s.base >= f - 1; } el.classList.add('pkpl-anim'); el.classList.toggle('pkpl-folded', folded); var b = el.querySelector('.pkpl-bar'); if (b) b.setAttribute('aria-expanded', String(!folded)); setY(el, t); if (M.cur && !wide()) setTimeout(function () { if (M.cur) frame(M.cur); }, 420);   /* after the sheet has finished sliding, so the strip above it is measured at rest */ };
     document.addEventListener('pointerup', end, true); document.addEventListener('pointercancel', end, true);
     document.addEventListener('keydown', function (e) { if ((e.key === 'Enter' || e.key === ' ') && onBar(e.target) && !wide()) { e.preventDefault(); var el = cardEl(); setFold(!el.classList.contains('pkpl-folded')); } }, true);
   })();
