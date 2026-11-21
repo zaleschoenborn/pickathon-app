@@ -35,7 +35,7 @@ def _n(x):
     x = x.lower().replace('&', 'and').strip()
     if x.startswith('the '): x = x[4:]
     return _re.sub(r'[^a-z0-9]', '', x)
-_CT = os.environ.get('PK_CLASS_TABLE', ROOT + 'class_table_v159.csv')  # copy of live v159 (Dropbox server_modified 2026-11-20 07:20Z); pointer CLASS_TABLE_CURRENT.txt names v159
+_CT = os.environ.get('PK_CLASS_TABLE', ROOT + 'class_table_v163.csv')  # copy of live v163 (Dropbox server_modified 2026-11-21 19:15Z); pointer CLASS_TABLE_CURRENT.txt names v159
 _IDX = {(_n(r['act']), r['year']): r for r in csv.DictReader(open(_CT, encoding='utf-8-sig'))}
 _M = {'Discovery': 'disc', 'Legend': 'leg', 'Deep cut': 'deep'}
 _ALIAS = {'2mangentlemanband': 'twomangentlemenband', '79ersgang': '79rsgang', 'billystringsdonjulin': 'billystrings',
