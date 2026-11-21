@@ -618,3 +618,6 @@ h2{font-family:var(--display);font-weight:400;font-size:27px;line-height:1.14;le
 .card.tt.arch.nop .cbody{top:44px;bottom:12px;display:flex;flex-direction:column;justify-content:center;gap:8px}
 .card.tt.arch.nop .cname{font-size:clamp(20px,6.2vw,26px);line-height:1.08;margin-top:0}
 @media (min-width:1000px){.card.tt.arch.nop .cname{font-size:24px}}
+/* r31: a ring that carries a song can be tapped (44px target); the rest of the card opens the artist page */
+.card .ring[data-clip]{pointer-events:auto;cursor:pointer}
+.card .ring.sm[data-clip]::after{content:"";position:absolute;inset:-6px}

@@ -17,6 +17,7 @@
     window.scrollTo(0, 0); return true;
   }
   document.addEventListener('click', function (e) {
+    if (e.target.closest('.ring[data-clip]')) return;  // r31: a play ring on a card plays its song; the rest of the card opens the artist page
     var a = e.target.closest('[data-art]'); if (a && openArt(a.dataset.art, a.dataset.an)) { e.preventDefault(); return; }
     var b = e.target.closest('.hd button[aria-label="Back"]'); if (b && hist.length) { var id = hist.pop(); show(id); e.preventDefault(); }
   });
@@ -140,6 +141,10 @@
     function sync() { var f = !!(gp && gp.classList.contains('set')); minis.classList.toggle('filt', f); if (evy) evy.hidden = f || minis.classList.contains('open'); }
     if (evy) evy.addEventListener('click', function () { minis.classList.add('open'); sync(); });
     rest.addEventListener('lxfilter', sync);
+  });
+  // r31: inside the live app the ring must win over the card's own link (the app plays it with its own player)
+  document.querySelectorAll('a .ring[data-clip]').forEach(function (r) {
+    r.addEventListener('click', function (e) { if (!window.__pkPlayVid) return; e.preventDefault(); e.stopPropagation(); window.__pkPlayVid(r.getAttribute('data-clip'), ''); });
   });
   // r30: the year story opens in place
   document.querySelectorAll('.stog').forEach(function (b) {

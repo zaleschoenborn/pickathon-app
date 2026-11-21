@@ -239,10 +239,26 @@ def reel_slides(y):
 def play(sz=''):
     return '<span class="ring %s" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 6.5v11l9-5.5z" fill="#fff"/></svg></span>' % sz
 
+# r31 (Nov 21): a play ring on a card plays a song. Best single song per act (never a full set or A Concert A Day), by views.
+def _vurl(v):
+    if v.get('vm'): return 'https://vimeo.com/%s%s' % (v['vm'], ('/' + v['vh']) if v.get('vh') else '')
+    return 'https://www.youtube.com/watch?v=%s' % v['id'] if _re.match(r'^[A-Za-z0-9_-]{11}$', str(v.get('id', ''))) else ''
+CLIPY, CLIPA = {}, {}
+for _v in sorted(d['videos'], key=lambda v: -(v.get('v') or 0)):
+    if _v.get('f') or _v.get('cad') or 'full set' in str(_v.get('s', '')).lower() or not _v.get('a') or not _v.get('y'): continue
+    _u = _vurl(_v)
+    if not _u: continue
+    _kslug = ''.join(ch for ch in _ud.normalize('NFD', _v['a'].lower()) if ch.isalnum())
+    CLIPY.setdefault((_kslug, str(_v['y'])), _u); CLIPA.setdefault(_kslug, _u)
+def clip_for(n, y=None):
+    k = ''.join(ch for ch in _ud.normalize('NFD', n.lower()) if ch.isalnum())
+    return CLIPY.get((k, str(y)), '') if y else CLIPA.get(k, '')
+
 def card(n, yr, k, g, src, pos='50% 40%', vid=True, cls=''):
+    if vid is True: vid = (clip_for(n, yr) if yr else '') or clip_for(n)  # r31: no ring without a song to play
     return ('<a class="card %s" data-g="%s" data-art="%s" data-an="%s" href="#"><img src="%s" alt="" style="object-position:%s">%s<span class="cyr">%s</span>'
             '<span class="cbody"><span class="krow"><span class="k k-%s">%s</span><span class="g">%s</span></span>'
-            '<span class="cname">%s</span></span></a>') % (cls, E(g), _aslug(n), E(n), src, pos, play('sm') if vid else '', yr, k, KLAB[k], E(g), E(n))
+            '<span class="cname">%s</span></span></a>') % (cls, E(g), _aslug(n), E(n), src, pos, (clip_ring(vid, 'sm') if isinstance(vid, str) else play('sm')) if vid else '', yr, k, KLAB[k], E(g), E(n))
 
 # ---------- shared chrome ----------
 ICON = {
@@ -437,8 +453,8 @@ def generic_seam(yr, P):
         art = '<div class="sm-tile sm-sc" style="background-image:%s"></div>' % _tile(t)
     return '<div class="seam s%s" aria-hidden="true">%s%s</div>' % (yr, art, g)
 
-_PLAYER = ("<script>(function(){function pkPlay(u){var p=(u||'').split('|'),m=(p[0]||'').match(/vimeo\\.com\\/(?:video\\/)?(\\d+)/);if(!m)return;"
- "var h=(u.match(/vimeo\\.com\\/\\d+\\/([0-9a-f]+)/)||[])[1]||'',t=(u.match(/#t=(\\d+)s/)||[])[1]||'';var s='https://player.vimeo.com/video/'+m[1]+'?autoplay=1&title=0&byline=0&portrait=0&dnt=1&texttrack=false&vimeo_logo=0'+(h?'&h='+h:'')+(t?'#t='+t+'s':'');"
+_PLAYER = ("<script>(function(){function pkPlay(u){var p=(u||'').split('|'),m=(p[0]||'').match(/vimeo\\.com\\/(?:video\\/)?(\\d+)/),yt=(p[0]||'').match(/(?:v=|youtu\\.be\\/)([\\w-]{11})/);if(!m&&!yt)return;"
+ "var h=(u.match(/vimeo\\.com\\/\\d+\\/([0-9a-f]+)/)||[])[1]||'',t=(u.match(/#t=(\\d+)s/)||[])[1]||'';var s='https://player.vimeo.com/video/'+(m?m[1]:'')+'?autoplay=1&title=0&byline=0&portrait=0&dnt=1&texttrack=false&vimeo_logo=0'+(h?'&h='+h:'')+(t?'#t='+t+'s':'');if(!m)s='https://www.youtube-nocookie.com/embed/'+yt[1]+'?autoplay=1&rel=0&cc_load_policy=0';"
  "var o=document.createElement('div');o.className='pkvid';o.innerHTML='<button class=\"pkvid-x\" aria-label=\"Close video\">&times;</button><div class=\"pkvid-f\"><iframe src=\"'+s+'\" allow=\"autoplay; fullscreen; picture-in-picture\" allowfullscreen title=\"Pickathon clip\"></iframe></div>';"
  "document.body.appendChild(o);function close(){o.remove();document.removeEventListener('keydown',k)}function k(e){if(e.key==='Escape')close()}document.addEventListener('keydown',k);o.addEventListener('click',function(e){if(e.target===o||e.target.classList.contains('pkvid-x'))close()});}"
  "document.addEventListener('click',function(e){var c=e.target.closest('[data-clip]');if(c){e.preventDefault();pkPlay(c.dataset.clip);return}"
@@ -466,7 +482,7 @@ def vcard(n, y, k, g, p, pos):
     if not p:  # no photo for that year: a plain site-color card, same anatomy, no play ring
         return ('<a class="card tt arch nop" data-g="%s" data-art="%s" data-an="%s" href="#"><span class="cyr">%s</span>'
                 '<span class="cbody"><span class="krow"><span class="k k-%s">%s</span></span><span class="cname">%s</span></span></a>') % (E(g), _aslug(n), E(n), y, k, KLAB[k], E(n))
-    return card(n, y, k, g, img(p, 520), pos, True, 'tt arch').replace('<img src=', '<img loading="lazy" src=', 1)
+    return card(n, y, k, g, img(p, 520), pos, clip_for(n), 'tt arch').replace('<img src=', '<img loading="lazy" src=', 1)
 leg.append(("I’m With Her", 2018, 'Bluegrass', 'i/p9615.jpg', '22% 50%'))
 deep.append(('Black Mountain', 2011, 'Psych', 'i/p9704.jpg', '100% 50%'))
 
@@ -580,7 +596,7 @@ def name_lines(n):
 def tile(a, y, P, photo):
     n = a['n']; k = a['k']; cd = CD.get((norm(n), y)); vid = (norm(n), y) in VID
     if photo:
-        h = card(n, '', k, '', img(photo, 560), fpos(photo), vid or bool(cd), 'tt')
+        h = card(n, '', k, '', img(photo, 560), fpos(photo), clip_for(n, y) or bool(cd), 'tt')
         if cd:
             h = h.replace('</span></span></a>', '</span><span class="ctrk">%s · CD</span></span></a>' % E(cd))
         return h
@@ -589,7 +605,7 @@ def tile(a, y, P, photo):
     if len(lines) > 3: fs = min(fs, 21)
     if len(n) > 30: fs = min(fs, 14.5)
     elif len(n) > 20: fs = min(fs, 17)
-    foot = ('<span class="yt-y">%s · %s CD</span>%s' % (E(cd), y, play('sm'))) if cd else '<span class="yt-y">Pickathon %s</span>' % y
+    foot = ('<span class="yt-y">%s · %s CD</span>' % (E(cd), y)) if cd else '<span class="yt-y">Pickathon %s</span>' % y
     return ('<a class="card tt ytile" data-art="%s" data-an="%s" href="#" style="--paper:%s;--ink:%s;--ink2:%s;--band:%s"><span class="yt-k">%s</span>'
             '<span class="yt-n" style="font-size:max(var(--lab),%.1fpx)">%s</span>%s</a>') % (_aslug(n), E(n), P['paper'], P['ink'], P['ink2'], P['band'], KLAB[k], fs, '<br>'.join(E(x) for x in lines), foot)
 
