@@ -16,6 +16,8 @@ Environment overrides (all optional): `PK_APP` (a checkout holding data.json and
 - `ext/`: art the repo does not carry (per-year horizon art cut from the brand kits in `ext/seam/`, extra artist photos). `ext_photos.json` maps those photos to acts.
 - `fonts/`: the display font the page inlines.
 - `class_table_v159.csv`: copy of the live class table (Dropbox `_catalogs/master/class_table_nov19_v159.csv`, saved Nov 20 2026 07:20Z). **Class labels come only from the live table** (pointer `_catalogs/master/CLASS_TABLE_CURRENT.txt`). Before every rebuild, copy the file the pointer names over this one, or set `PK_CLASS_TABLE`.
+- `lineup_115b.json`: copy of the live Lineup By Year (draft 115b, sheet "Lineup By Year (research)"). **Who is on each year comes from this file** (Zale, Nov 21): the build matches every lineup act to the site's rows, adds the ones the site lacked (every lineup: Music, Family, DJs, Literary, Wellness, Food, Craft, Curation, Comedy) and drops site rows Lineup doesn't have. When Lineup posts a new draft, re-copy it. `roster_log.json` lists what was added, dropped, held for a Lineup ruling, and spelled differently.
+- `design_audit.py`: measures the hard rules (text floor, tap targets, contrast, scroll bars, rounded corners, overflow) at 390, 820 and 1280.
 - `check.py`: the checks (images, overflow, horizons, the 2026 reel and its clips, artist pages with clips).
 - `../art/logos_nov20/`: Artwork's final year logos (y07, y11, y12, y13, y17, y22, y24 new, y25). The build uses them when `i/` does not have them yet. Site Build copies them into `i/` at merge; after that this folder can go.
 

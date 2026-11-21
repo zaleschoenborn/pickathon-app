@@ -33,6 +33,7 @@
   }
 
   function wire(root) {
+    if (root._lxw) return; root._lxw = 1;   // the root lives as long as its host: wire it once, not on every redraw
     root.addEventListener('click', function (e) {
       var t = e.target;
       var a = t.closest('[data-art]'); if (a) { e.preventDefault(); openAct(a.getAttribute('data-art'), a.getAttribute('data-an')); return; }
