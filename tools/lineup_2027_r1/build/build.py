@@ -147,7 +147,8 @@ def img(path, w=780, q=74, fmt='JPEG'):
     if key in _cache:
         return _cache[key]
     ext = 'png' if fmt == 'PNG' else 'jpg'
-    name = 'img/%s.%s' % (hashlib.md5(('%s|%s|%s' % key).encode()).hexdigest()[:12], ext)
+    _salt = ('|%d' % os.path.getsize(_src(path))) if str(path).startswith('ext/') else ''  # r33: a replaced ext/ file gets a fresh copy
+    name = 'img/%s.%s' % (hashlib.md5(('%s|%s|%s' % key + _salt).encode()).hexdigest()[:12], ext)
     if not os.path.exists(OUT + name):
         im = Image.open(_src(path))
         if fmt == 'PNG':
@@ -250,6 +251,18 @@ for _v in sorted(d['videos'], key=lambda v: -(v.get('v') or 0)):
     if not _u: continue
     _kslug = ''.join(ch for ch in _ud.normalize('NFD', _v['a'].lower()) if ch.isalnum())
     CLIPY.setdefault((_kslug, str(_v['y'])), _u); CLIPA.setdefault(_kslug, _u)
+# r33 (Nov 21): the Video Ledger (Video Catalog, 2,835 rows, synced to Lineup act_id) is the main source: its single songs and
+# sessions (Pickathon YouTube, Vimeo with hash, KEXP, Live and Breathing) come first; full sets, podcasts, interviews, outside clips,
+# password clips and flagged clips are left out when build/ledger_clips.json is written. data.json clips fill in behind it.
+_LC = json.load(open(ROOT + 'ledger_clips.json', encoding='utf-8'))
+_LC.sort(key=lambda o: (0 if o['kind'] == 'song' else 1, 0 if 'youtu' in o['url'] else 1))
+_LY, _LA = {}, {}
+for _o in _LC:
+    _u = _o['url'].split('&')[0]
+    for _nm in {_o['act'], _o['artist'], _o['act_id'].replace('-', ' ')}:
+        _ks = ''.join(ch for ch in _ud.normalize('NFD', _nm.lower()) if ch.isalnum())
+        _LY.setdefault((_ks, str(_o['y'])), _u); _LA.setdefault(_ks, _u)
+CLIPY = {**CLIPY, **_LY}; CLIPA = {**CLIPA, **_LA}
 def clip_for(n, y=None):
     k = ''.join(ch for ch in _ud.normalize('NFD', n.lower()) if ch.isalnum())
     return CLIPY.get((k, str(y)), '') if y else CLIPA.get(k, '')

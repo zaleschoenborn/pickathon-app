@@ -127,6 +127,14 @@
     40
    ],
    "src": "YouTube 6CcAulF0M9Q, maxresdefault"
+  },
+  "Corrinne West & Kelly Joe Phelps": {
+   "i": "ext/vf_11_corinnewestkellyjoephelps.jpg",
+   "f": [
+    45,
+    40
+   ],
+   "src": "YouTube jGvhRDFDC38, maxres1"
   }
  },
  "2013": {
@@ -149,10 +157,10 @@
   "Pure Bathing Culture": {
    "i": "ext/vf_13_purebathingculture.jpg",
    "f": [
-    78,
+    62,
     40
    ],
-   "src": "YouTube CukaND7hGY4, maxres2"
+   "src": "YouTube CukaND7hGY4"
   },
   "Malcolm Holcombe": {
    "i": "ext/vf_13_malcolmholcombe.jpg",
@@ -397,6 +405,16 @@
     40
    ],
    "src": "YouTube aj6Gypi_w2c, hqdefault"
+  }
+ },
+ "2007": {
+  "Trampled by Turtles": {
+   "i": "ext/vf_07_trampledbyturtles.jpg",
+   "f": [
+    62,
+    45
+   ],
+   "src": "YouTube 6obSO7UT4lw, hq3 (480px only)"
   }
  }
 }
