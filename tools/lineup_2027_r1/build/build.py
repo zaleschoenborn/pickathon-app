@@ -409,14 +409,28 @@ leg.append(("I’m With Her", 2018, 'Bluegrass', 'i/p9615.jpg', '22% 50%'))
 deep.append(('Black Mountain', 2011, 'Psych', 'i/p9704.jpg', '100% 50%'))
 
 # fill the archive out from live data so the sticky bar has a long scroll to work against
+_ALIAS = {'2mangentlemanband': 'twomangentlemenband', '79ersgang': '79rsgang', 'billystringsdonjulin': 'billystrings',
+          'bonnieprincebillythecairogang': 'bonnieprincebilly', 'brownoutbrownsabbath': 'brownoutpresentsbrownsabbath',
+          'brucemolskyband': 'brucemolsky', 'deryayildirim': 'deryayldrm', 'destroyersolo': 'destroyer',
+          'hungermtboys': 'hungermountainboys', 'johndoethesadies': 'sadies', 'kurtviletheviolators': 'kurtvile',
+          'laurielewistomrozumandtomsauber': 'laurielewis', 'leefieldstheexpressions': 'leefields',
+          'thequebesistersband': 'quebesisters', 'tysegallthemuggers': 'tysegall', 'whiteymorgan': 'whiteymorganthe78s',
+          'darolangerscottnygaard': 'darolanger',
+          # Lineup's act join (Nov 20 13:19 note): same act, page already in the build
+          'michaelnau': 'cottonjones', 'sethandmay': 'daisymaysethbernard', 'kevinburke': 'kevinburkecaseyneill',
+          'caseyneill': 'kevinburkecaseyneill', 'cahalenmorrisoncountryhammer': 'cahalenmorrisoneliwest',
+          # r21: name variants of the pages above (Lineup's Nov 20 join)
+          'altingn': 'altngn', 'calebklauderband': 'calebklauder', 'calebklaudercountryband': 'calebklauder', 'calebreeb': 'calebklauderreebwillms'}
+def _canon(n):
+    k = _aslug(n); return _ALIAS.get(k, k)
 _FT = json.load(open(APP + 'focus-tall.json'))
 def _fill(lst, kind, want):
-    have = {_n(x[0]) for x in lst}
+    have = {_canon(x[0]) for x in lst}
     first = {}
     for yy in sorted(d['yearBill']):
         for a in d['yearBill'][yy]:
             if a.get('c') or a['k'] != kind: continue
-            key = _n(a['n'])
+            key = _canon(a['n'])
             if key in first or key in have: continue
             p = (d['yearPhotos'].get(yy, {}).get(a['n']) or {}).get('i')
             if not p or p.startswith('http') or not (os.path.exists(APP + p) or os.path.exists(ROOT + p)): continue
@@ -432,11 +446,7 @@ s1 += ('<section class="hero h27"><img src="%s" alt="" style="object-position:74
        '<div class="hero-tx"><p class="kick">The 2027 lineup · not out yet</p><h1>The names<br>come later.</h1>'
        '<p class="hero-sub">60+ acts on hand-built stages, most playing twice. Be first to hear who.</p>'
        '<a class="btn gold" href="#">Send me the 2027 lineup</a></div></section>') % img('i/pk-yr2024-1.jpg', 1100, 80)
-s1 += ('<section class="p27"><div class="stripe"><i style="background:#F2CF62"></i><i style="background:#86526B"></i><i style="background:#E3B5CF"></i><i style="background:#F2EDE3"></i></div>'
-       '<div class="p27-in"><div class="p27-top"><div><p class="p27-k">Pickathon</p><p class="p27-y">2027</p></div><span class="p27-q" aria-hidden="true">?</span></div>'
-       '<p class="p27-d">August 5–8 · Pendarvis Farm</p><div class="p27-bill" role="img" aria-label="The 2027 poster, names not yet announced">%s</div>'
-       '<p class="p27-c">The 2027 poster · names go here</p></div>'
-       '<div class="stripe"><i style="background:#F2CF62"></i><i style="background:#86526B"></i><i style="background:#E3B5CF"></i><i style="background:#F2EDE3"></i></div></section>') % barh
+# Nov 21 (Zale): the placeholder 2027 poster is gone; the archive sits right under the hero until the lineup is out
 s1 += ('<section class="arch"><p class="kick">While you wait</p><h2>Wait, they played here?</h2><p class="sub">They played the farm in small rooms. Look how big they got.</p>'
        '<div class="bkw"><div class="bk"><button class="bkb on" data-b="disc"><span>Discoveries</span><b>215</b></button><button class="bkb" data-b="leg"><span>Legends</span><b>116</b></button><button class="bkb" data-b="deep"><span>Deep cuts</span><b>413</b></button></div>%s</div>'
        '<div class="grid2 bl" data-b="disc">%s</div><div class="grid2 bl" data-b="leg" hidden>%s</div><div class="grid2 bl" data-b="deep" hidden>%s</div>'
@@ -518,7 +528,7 @@ def tile(a, y, P, photo):
     elif len(n) > 20: fs = min(fs, 17)
     foot = ('<span class="yt-y">%s · %s CD</span>%s' % (E(cd), y, play('sm'))) if cd else '<span class="yt-y">Pickathon %s</span>' % y
     return ('<a class="card tt ytile" data-art="%s" data-an="%s" href="#" style="--paper:%s;--ink:%s;--ink2:%s;--band:%s"><span class="yt-k">%s</span>'
-            '<span class="yt-n" style="font-size:%.1fpx">%s</span>%s</a>') % (_aslug(n), E(n), P['paper'], P['ink'], P['ink2'], P['band'], KLAB[k], fs, '<br>'.join(E(x) for x in lines), foot)
+            '<span class="yt-n" style="font-size:max(var(--lab),%.1fpx)">%s</span>%s</a>') % (_aslug(n), E(n), P['paper'], P['ink'], P['ink2'], P['band'], KLAB[k], fs, '<br>'.join(E(x) for x in lines), foot)
 
 def year_page(y):
     P = d['yearBrand'][y]; st = d['yearStory'].get(y, {}); yp = d['yearPhotos'].get(y, {})
@@ -646,16 +656,16 @@ def _cls(name, yr):
     return None
 def art_page(slug, ap):
     name = _NAMES[slug]; yr = str(ap.get('yr') or max([y for y, _ in _KIN.get(name, [])] or [2024]))
-    if not str(ap.get('hero','')).startswith('i/') or not os.path.exists(APP + ap['hero']):
+    if not str(ap.get('hero','')).startswith(('i/', 'ext/')) or not os.path.exists(_src(ap['hero'])):
         ap = dict(ap, hero=d['yearLogo'][yr] if yr in d['yearLogo'] else 'logo27-gold.png')
     ap = dict(ap, gal=[p for p in (ap.get('gal') or []) if str(p.get('i','')).startswith(('i/', 'ext/')) and os.path.exists(_src(p['i']))])
     x = _cls(name, yr) or {}
     k = x.get('k', 'none'); g = x.get('g', '')
     P = d['yearBrand'].get(yr, P24)
     h = header(name, 'Pickathon ' + yr)
-    h += ('<section class="hero hact"><img src="%s" alt="" style="object-position:50%% 40%%"><div class="hero-sc"></div>'
+    h += ('<section class="hero hact"><img src="%s" alt="" style="object-position:%s"><div class="hero-sc"></div>'
           '<div class="hero-tx"><p class="krow"><span class="k k-%s">%s</span>%s</p><h1>%s</h1><p class="ah-meta">Pickathon %s</p></div></section>') % (
-          img(ap['hero'], 780), k, KLAB.get(k, ''), ('<span class="g">%s</span>' % E(GSHORT.get(g, g))) if g else '', E(name), yr)
+          img(ap['hero'], 780), ap.get('hpos', '50% 40%'), k, KLAB.get(k, ''), ('<span class="g">%s</span>' % E(GSHORT.get(g, g))) if g else '', E(name), yr)
     story = [s for s in (ap.get('story') or []) if s.get('t')]
     if story:
         h += '<section class="liner"><p class="kick">Liner notes</p><p class="lead">%s</p>' % E(story[0]['t'])
@@ -668,7 +678,7 @@ def art_page(slug, ap):
         h += '<section class="shelf photos"><div class="sh-h"><div><p class="kick">Photos</p><h2>Pickathon %s</h2></div></div><div class="swipe">' % yr
         for p in gal[:8]:
             h += '<figure class="ph"><img src="%s" alt="" style="object-position:%s"><figcaption>%s%s</figcaption></figure>' % (
-                img(p['i'], 600), p.get('pos', '50% 50%'), E(p.get('st', '')), (' · ' + E(p['by'])) if p.get('by') else '')
+                img(p['i'], 600), p.get('pos', '50% 50%'), E(p.get('st', '')), '')
         h += '</div></section>'
     clips = [r for r in d['yearReel'].get('2026', []) if norm(r['n']) == norm(name) and r.get('v') and r.get('i') and loc(r['i']) and 'poster' not in r['i']]
     if clips:
@@ -688,10 +698,18 @@ def art_page(slug, ap):
     if years:
         h += '<section class="theirs"><p class="kick">Their Pickathons</p><div class="filt">%s</div></section>' % ''.join(
             '<a class="chip%s" href="#">Pickathon %s</a>' % (' on' if str(y) == yr else '', y) for y in years)
-    same = [p for p in d['past']['deep'] if p['n'] != name and p.get('g') and p.get('g') == g and str(p.get('pi','')).startswith('i/') and os.path.exists(APP + p['pi'])][:5]
+    # Nov 21: class from the live table at the act's first year (never hard-coded); matched on genre, then nearest in size (Zale, Nov 19)
+    _me = x.get('m') or 0
+    same = []
+    for p in d['past']['deep']:
+        if p['n'] == name or not p.get('g') or p.get('g') != g or not str(p.get('pi','')).startswith('i/') or not os.path.exists(APP + p['pi']): continue
+        c = _cls(p['n'], p.get('pyr')) or {}
+        if c.get('k') not in ('disc', 'leg', 'deep'): continue
+        same.append((abs((c.get('m') or 0) - _me), p, c['k']))
+    same = [(p, kk) for _, p, kk in sorted(same, key=lambda t: t[0])[:5]]
     if same:
         h += shelf('Same sound, other summers', 'IF YOU LIKE %s' % name.upper(), 'Acts who stand about where %s stands.' % name, '',
-                   [card(p['n'], p['pyr'], 'leg' if p.get('lg') else 'deep', GSHORT.get(p.get('g',''), p.get('g','')), img(p['pi'], 520)) for p in same])
+                   [card(p['n'], p['pyr'], kk, GSHORT.get(p.get('g',''), p.get('g','')), img(p['pi'], 520)) for p, kk in same])
     return ('<main id="a-%s" class="screen" hidden style="--paper:%s;--ink:%s;--ink2:%s">%s</main>') % (slug, P['paper'], P['ink'], P['ink2'], h)
 ARTISTS = {}
 for _s, _ap in d['actPages'].items():
@@ -704,18 +722,6 @@ for _s, _ap in d['actPages'].items():
 _OWN = {'altngn': 'altngn', 'anasmitchell': 'anasmitchell', 'billywoods': 'billywoods', 'elucid': 'elucid', 'laiththetexasbirds': 'laiththetexasbirds',
         'scottlaw': 'scottlaw', 'sundayvalley': 'sundayvalley', 'theearnestlovers': 'theearnestlovers', 'themidnightshivers': 'themidnightshivers',
         'calebklauder': 'calebklauder', 'calebklauderreebwillms': 'calebklauderreebwillms'}
-_ALIAS = {'2mangentlemanband': 'twomangentlemenband', '79ersgang': '79rsgang', 'billystringsdonjulin': 'billystrings',
-          'bonnieprincebillythecairogang': 'bonnieprincebilly', 'brownoutbrownsabbath': 'brownoutpresentsbrownsabbath',
-          'brucemolskyband': 'brucemolsky', 'deryayildirim': 'deryayldrm', 'destroyersolo': 'destroyer',
-          'hungermtboys': 'hungermountainboys', 'johndoethesadies': 'sadies', 'kurtviletheviolators': 'kurtvile',
-          'laurielewistomrozumandtomsauber': 'laurielewis', 'leefieldstheexpressions': 'leefields',
-          'thequebesistersband': 'quebesisters', 'tysegallthemuggers': 'tysegall', 'whiteymorgan': 'whiteymorganthe78s',
-          'darolangerscottnygaard': 'darolanger',
-          # Lineup's act join (Nov 20 13:19 note): same act, page already in the build
-          'michaelnau': 'cottonjones', 'sethandmay': 'daisymaysethbernard', 'kevinburke': 'kevinburkecaseyneill',
-          'caseyneill': 'kevinburkecaseyneill', 'cahalenmorrisoncountryhammer': 'cahalenmorrisoneliwest',
-          # r21: name variants of the pages above (Lineup's Nov 20 join)
-          'altingn': 'altngn', 'calebklauderband': 'calebklauder', 'calebklaudercountryband': 'calebklauder', 'calebreeb': 'calebklauderreebwillms'}
 _GROUP = {}
 for _k, _v in list(_ALIAS.items()) + [(o, o) for o in _OWN]:
     _GROUP.setdefault(_v, set()).update({_k, _v})
@@ -726,7 +732,7 @@ for _o in _OWN:
         for _yy, _m in d['yearPhotos'].items():
             for _nn, _p in _m.items():
                 if _slug(_nn) in _g and _p.get('i'):
-                    _ph.append({'i': _p['i'], 'st': '%s%s' % (_yy, (' · ' + _p['s']) if _p.get('s') else ''), 'by': _p.get('ph', '')})
+                    _ph.append({'i': _p['i'], 'st': '%s%s' % (_yy, (' · ' + _p['s']) if _p.get('s') else ''), 'pos': fpos(_p['i'])})
         _vi = []
         for _v in sorted(d['videos'], key=lambda v: v.get('y') or 0):
             if _slug(_v.get('a') or '') in _g and _v.get('vm') and _v.get('vh') and _v.get('y'):
@@ -734,7 +740,10 @@ for _o in _OWN:
         _thumb = next((p['i'] for p in _ph if os.path.exists(_src(p['i']))), None)  # a video card needs a still; no photo, no card
         for _x in _vi: _x['i'] = _thumb or ''
         _vi = [x for x in _vi if x['i']]
-        ARTISTS[_o] = art_page(_o, {'yr': str(min(int(y) for y, _ in _KIN[_NAMES[_o]])), 'gal': _ph[:8], 'vids': _vi})
+        _hp = next((p for p in _ph if os.path.exists(_src(p['i']))), None)
+        _apo = {'yr': str(min(int(y) for y, _ in _KIN[_NAMES[_o]])), 'gal': [p for p in _ph if p is not _hp][:8], 'vids': _vi}
+        if _hp: _apo.update(hero=_hp['i'], hpos=_hp['pos'])
+        ARTISTS[_o] = art_page(_o, _apo)
 print(len(ARTISTS), 'artist pages generated')
 _ASEL = '<label class="mb-sel">Artist <select id="asel"><option value="">Pick an artist</option>%s</select></label>' % ''.join(
     '<option value="%s">%s</option>' % (s, E(_NAMES[s])) for s in sorted(ARTISTS, key=lambda s: _NAMES[s].lower()))
