@@ -79,19 +79,35 @@
     knob.addEventListener('keydown', function (e) { if (e.key === 'ArrowRight') go(true); if (e.key === 'ArrowLeft') go(false); });
   });
   document.querySelectorAll('.gp').forEach(function (gp) {
-    var btn = gp.querySelector('.gp-b'), list = gp.querySelector('.gp-list'), word = gp.querySelector('.gp-a b'), none = gp.querySelector('.gp-none');
-    btn.addEventListener('click', function () { list.hidden = !list.hidden; btn.setAttribute('aria-expanded', String(!list.hidden)); });
-    list.addEventListener('click', function (e) {
-      var o = e.target.closest('.gp-o'); if (!o) return; var g = o.dataset.g, shown = 0;
-      list.querySelectorAll('.gp-o').forEach(function (x) { x.classList.toggle('on', x === o); });
-      word.textContent = g; gp.classList.toggle('set', g !== gp.dataset.all); list.hidden = true; btn.setAttribute('aria-expanded', 'false');
+    // r29 (Zale, Nov 21): pick as many kinds of music as you like. "Everything" clears; the gold button closes the list.
+    var btn = gp.querySelector('.gp-b'), list = gp.querySelector('.gp-list'), word = gp.querySelector('.gp-a b'), none = gp.querySelector('.gp-none'), done = gp.querySelector('.gp-done');
+    var all = gp.dataset.all, picks = [];
+    function shut() { list.hidden = true; btn.setAttribute('aria-expanded', 'false'); }
+    function apply() {
+      var shown = 0;
+      list.querySelectorAll('.gp-o').forEach(function (x) {
+        var on = x.dataset.g === all ? !picks.length : picks.indexOf(x.dataset.g) > -1;
+        x.classList.toggle('on', on); x.setAttribute('aria-pressed', String(on));
+      });
       document.querySelectorAll(gp.dataset.target).forEach(function (c) {
-        var hit = g === gp.dataset.all || (c.dataset.g || '').indexOf(g) === 0 || (g === 'Indie rock' && c.dataset.g === 'Indie');
+        var cg = c.dataset.g || '';
+        var hit = !picks.length || picks.some(function (g) { return cg.indexOf(g) === 0 || (g === 'Indie rock' && cg === 'Indie'); });
         c.classList.toggle('gone', !hit); if (hit && c.offsetParent !== null) shown++;
       });
-      none.hidden = shown > 0 || g === gp.dataset.all;
-      if (gp.dataset.target === '.none') { var sub = document.querySelector('.rest .gp'); if (sub) sub.hidden = g !== 'Music'; none.hidden = g === 'Music'; }
+      word.textContent = !picks.length ? all : picks.length < 3 ? picks.join(' + ') : picks[0] + ' + ' + (picks.length - 1) + ' more';
+      gp.classList.toggle('set', picks.length > 0);
+      none.hidden = shown > 0 || !picks.length;
+      if (done) done.textContent = 'Show ' + shown + (shown === 1 ? ' act' : ' acts');
+    }
+    btn.addEventListener('click', function () { list.hidden = !list.hidden; btn.setAttribute('aria-expanded', String(!list.hidden)); if (!list.hidden) apply(); });
+    list.addEventListener('click', function (e) {
+      if (e.target.closest('.gp-done')) { shut(); return; }
+      var o = e.target.closest('.gp-o'); if (!o) return; var g = o.dataset.g, k = picks.indexOf(g);
+      if (g === all) picks = []; else if (k > -1) picks.splice(k, 1); else picks.push(g);
+      apply();
     });
+    document.addEventListener('click', function (e) { var path = e.composedPath ? e.composedPath() : []; if (!list.hidden && path.indexOf(gp) < 0 && !gp.contains(e.target)) shut(); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !list.hidden) { shut(); btn.focus(); } });
   });
   document.querySelectorAll('.bk').forEach(function (bk) {
     bk.addEventListener('click', function (e) {

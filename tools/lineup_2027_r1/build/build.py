@@ -459,8 +459,8 @@ GLIST = ['Everything', 'Country', 'Folk', 'Bluegrass', 'Indie rock', 'Psych', 'P
 LLIST = ['Music', 'DJs', 'Family', 'Comedy', 'Literary', 'Wellness', 'Food', 'Curation', 'Craft']
 def gpick(target, q='What kind of music do you love?', opts=GLIST):
     return ('<div class="gp" data-target="%s" data-all="%s"><button class="gp-b" aria-expanded="false"><span class="gp-q">%s</span>'
-            '<span class="gp-a"><b>%s</b>%s</span></button><div class="gp-list" hidden>%s</div><p class="gp-none" hidden>Nothing under this one here.</p></div>') % (
-            target, opts[0], q, opts[0], ICON['caret'], ''.join('<button class="gp-o%s" data-g="%s">%s</button>' % (' on' if g == opts[0] else '', g, g) for g in opts))
+            '<span class="gp-a"><b>%s</b>%s</span></button><div class="gp-list" hidden>%s<button class="gp-done">Show</button></div><p class="gp-none" hidden>Nothing under this one here.</p></div>') % (
+            target, opts[0], q, opts[0], ICON['caret'], ''.join('<button class="gp-o%s" data-g="%s" aria-pressed="%s">%s</button>' % (' all on' if g == opts[0] else ' mx', g, 'true' if g == opts[0] else 'false', g) for g in opts))
 
 def vcard(n, y, k, g, p, pos):
     return card(n, y, k, g, img(p, 520), pos, True, 'tt arch')

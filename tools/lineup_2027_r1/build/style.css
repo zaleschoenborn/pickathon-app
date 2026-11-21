@@ -592,3 +592,16 @@ h2{font-family:var(--display);font-weight:400;font-size:27px;line-height:1.14;le
 /* icon buttons: 44px square, 4px corners (buttons.md); only the play ring and the Tour pill are round */
 .hd-listen{border-radius:4px}
 .yr.off{min-width:0;border-style:dashed;font-family:var(--text);font-size:var(--lab);font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--mute);white-space:nowrap}
+
+/* r29 (Zale, Nov 21): the music picker takes several picks. Checkbox rows, Everything on top, gold button closes. */
+.gp-list .gp-o{display:flex;align-items:center;gap:10px;text-align:left}
+.gp-list .gp-o.all{grid-column:1/-1}
+.gp-list .gp-o.all.on{background:transparent;border-color:var(--cream);color:var(--cream)}
+.gp-list .gp-o.mx::before{content:"";flex:none;width:20px;height:20px;border:2px solid var(--line2);border-radius:4px;box-sizing:border-box}
+.gp-list .gp-o.mx.on{background:#4A4130;border-color:var(--gold);color:var(--cream)}
+.gp-list .gp-o.mx.on::before{background:var(--gold) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2.5 6.2l2.4 2.4 4.6-5' fill='none' stroke='%23221E20' stroke-width='2'/%3E%3C/svg%3E") center/14px no-repeat;border-color:var(--gold)}
+.gp-list .gp-done{grid-column:1/-1;min-height:48px;margin-top:4px;border-radius:6px;background:var(--gold);color:#221E20;font-weight:800;letter-spacing:.08em;text-transform:uppercase;font-size:var(--lab)}
+@media (max-width:999px){.bkw .gpc .gp-list{left:14px;right:14px;width:auto;grid-template-columns:minmax(0,1fr) minmax(0,1fr)}}
+.gp-list .gp-done{flex:1 1 100%}
+.gp-list .gp-o{white-space:nowrap}
+@media (min-width:1000px){.gp:not(.gpc) .gp-list{width:min(520px,90vw)}}
