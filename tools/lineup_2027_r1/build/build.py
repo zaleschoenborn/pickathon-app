@@ -459,7 +459,7 @@ GLIST = ['Everything', 'Country', 'Folk', 'Bluegrass', 'Indie rock', 'Psych', 'P
 LLIST = ['Music', 'DJs', 'Family', 'Comedy', 'Literary', 'Wellness', 'Food', 'Curation', 'Craft']
 def gpick(target, q='What kind of music do you love?', opts=GLIST):
     return ('<div class="gp" data-target="%s" data-all="%s"><button class="gp-b" aria-expanded="false"><span class="gp-q">%s</span>'
-            '<span class="gp-a"><b>%s</b>%s</span></button><div class="gp-list" hidden>%s</div><p class="gp-none" hidden>Not filled in for this mockup. The real page has them all.</p></div>') % (
+            '<span class="gp-a"><b>%s</b>%s</span></button><div class="gp-list" hidden>%s</div><p class="gp-none" hidden>Nothing under this one here.</p></div>') % (
             target, opts[0], q, opts[0], ICON['caret'], ''.join('<button class="gp-o%s" data-g="%s">%s</button>' % (' on' if g == opts[0] else '', g, g) for g in opts))
 
 def vcard(n, y, k, g, p, pos):
@@ -493,7 +493,12 @@ s1 += ('<section class="hero h27"><img src="%s" alt="" style="object-position:74
        '<div class="hero-tx"><p class="kick">The 2027 lineup · not out yet</p><h1>The names<br>come later.</h1>'
        '<p class="hero-sub">60+ acts on hand-built stages, most playing twice. Be first to hear who.</p>'
        '<a class="btn gold" href="#">Send me the 2027 lineup</a></div></section>') % img('i/pk-yr2024-1.jpg', 1100, 80)
-# Nov 21 (Zale): the placeholder 2027 poster is gone; the archive sits right under the hero until the lineup is out
+# Nov 21 r27 (Zale, 09:10): the placeholder 2027 poster card is back under the hero, so 2027 has its year block like every other year (r25 had removed it)
+s1 += ('<section class="p27"><div class="stripe"><i style="background:#F2CF62"></i><i style="background:#86526B"></i><i style="background:#E3B5CF"></i><i style="background:#F2EDE3"></i></div>'
+       '<div class="p27-in"><div class="p27-top"><div><p class="p27-k">Pickathon</p><p class="p27-y">2027</p></div><span class="p27-q" aria-hidden="true">?</span></div>'
+       '<p class="p27-d">August 5–8 · Pendarvis Farm</p><div class="p27-bill" role="img" aria-label="The 2027 poster, names not yet announced">%s</div>'
+       '<p class="p27-c">The 2027 poster · names go here</p></div>'
+       '<div class="stripe"><i style="background:#F2CF62"></i><i style="background:#86526B"></i><i style="background:#E3B5CF"></i><i style="background:#F2EDE3"></i></div></section>') % barh
 s1 += ('<section class="arch"><p class="kick">While you wait</p><h2>Wait, they played here?</h2><p class="sub">They played the farm in small rooms. Look how big they got.</p>'
        '<div class="bkw"><div class="bk"><button class="bkb on" data-b="disc"><span>Discoveries</span><b>215</b></button><button class="bkb" data-b="leg"><span>Legends</span><b>116</b></button><button class="bkb" data-b="deep"><span>Deep cuts</span><b>413</b></button></div>%s</div>'
        '<div class="grid2 bl" data-b="disc">%s</div><div class="grid2 bl" data-b="leg" hidden>%s</div><div class="grid2 bl" data-b="deep" hidden>%s</div>'
@@ -618,7 +623,7 @@ def year_page(y):
     h += poster_block(P, badge, y, music, today_all, len(music), joined=bool(hero), ranked=ranked)
     if st.get('headline'):
         h += ('<section class="story short"><p class="kick">The %s story</p><p class="lead">%s.</p><button class="chip">Read the %s story %s</button></section>') % (y, E(st['headline'].rstrip('.')), y, ICON['caret'])
-    lp = gpick('.none', 'What do you want to see?', ['Music'] + other) if other else ''
+    lp = ''  # Nov 21 r27 (Zale): the lineup picker is off until the other lineups (Family, DJs, Comedy...) are drawn; it listed them with nothing behind them
     if ten:
         h += ('<section class="topten">%s<h2 class="h-big">Begin here</h2><p class="sub k2">%s ways into Pickathon %s.</p><div class="grid2%s">%s</div></section>') % (
               lp, NUM.get(len(ten), str(len(ten))), y, '' if any(ph(a) for a in ten) else ' flat', ''.join(tile(a, y, P, ph(a)) for a in ten))
@@ -626,6 +631,7 @@ def year_page(y):
     withph = [a for a in others if ph(a)]
     if len(withph) >= 6:
         show = others[:8]; body = ''
+        gs = sorted(set(GSHORT.get(x['g'], '') for x in show if x.get('g') and GSHORT.get(x['g'])))
         for a in show:
             g = GSHORT.get(a.get('g'), '')
             if ph(a):
@@ -636,11 +642,12 @@ def year_page(y):
         body = '<div class="grid2 minis">%s</div>' % body + ('<button class="btn line wide">See everyone · %d more</button>' % (len(others) - 8) if len(others) > 8 else '')
     else:
         sel = '#y%s .row' % y
+        gs = sorted(set(GSHORT.get(x['g'], '') for x in others if x.get('g') and GSHORT.get(x['g'])))
         body = '<div class="rows">%s</div>' % ''.join('<a class="row" data-g="%s" data-art="%s" data-an="%s" href="#"><b>%s</b><span>%s</span></a>' % (E(GSHORT.get(x.get('g'), '')), _aslug(x['n']), E(x['n']), E(x['n']), E(' · '.join(t for t in (KLAB.get(x.get('k'), ''), GSHORT.get(x.get('g'), '')) if t))) for x in others)
     if others:
         h += '<section class="rest"><h2 class="h-big">Keep wandering</h2>%s%s</section>' % (gpick(sel, opts=['Everything'] + gs) if len(gs) >= 3 else '', body)
     h += ('<section class="years"><p class="kick">See other years</p><div class="swipe yrs"><a class="yr" data-go="s1" href="#">2027</a>%s</div></section>') % ''.join(
-         '<a class="yr%s" data-go="y%s" href="#">%s</a>' % (' on' if x == y else '', x, x) for x in YEARS)
+         ('<span class="yr off">2020–21 · no festival</span>' if x == '2019' else '') + '<a class="yr%s" data-go="y%s" href="#">%s</a>' % (' on' if x == y else '', x, x) for x in YEARS)
     return h
 
 YP = {y: year_page(y) for y in YEARS}

@@ -589,3 +589,4 @@ h2{font-family:var(--display);font-weight:400;font-size:27px;line-height:1.14;le
 .poster [data-art]{padding-block:max(0px,calc((48px - 1.15em) / 2));cursor:pointer}
 /* icon buttons: 44px square, 4px corners (buttons.md); only the play ring and the Tour pill are round */
 .hd-listen{border-radius:4px}
+.yr.off{min-width:0;border-style:dashed;font-family:var(--text);font-size:var(--lab);font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--mute);white-space:nowrap}
