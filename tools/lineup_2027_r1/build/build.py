@@ -502,7 +502,7 @@ s1 += ('<section class="p27"><div class="stripe"><i style="background:#F2CF62"><
 s1 += ('<section class="arch"><p class="kick">While you wait</p><h2>Wait, they played here?</h2><p class="sub">They played the farm in small rooms. Look how big they got.</p>'
        '<div class="bkw"><div class="bk"><button class="bkb on" data-b="disc"><span>Discoveries</span><b>215</b></button><button class="bkb" data-b="leg"><span>Legends</span><b>116</b></button><button class="bkb" data-b="deep"><span>Deep cuts</span><b>413</b></button></div>%s</div>'
        '<div class="grid2 bl" data-b="disc">%s</div><div class="grid2 bl" data-b="leg" hidden>%s</div><div class="grid2 bl" data-b="deep" hidden>%s</div>'
-       '<button class="btn line wide more">Keep going</button></section>') % (gpick('.arch .card', 'Genre', GLIST).replace('class="gp"', 'class="gp gpc"'),
+       '<button class="btn line wide more">Keep going</button></section>') % (gpick('.arch .card', 'What kind of music do you love?', GLIST).replace('class="gp"', 'class="gp gpc"'),
        ''.join(vcard(n, y, 'disc', g, p, pos) for n, y, g, p, pos in disc),
        ''.join(vcard(n, y, 'leg', g, p, pos) for n, y, g, p, pos in leg),
        ''.join(vcard(n, y, 'deep', g, p, pos) for n, y, g, p, pos in deep))

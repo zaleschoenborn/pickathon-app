@@ -579,7 +579,9 @@ h2{font-family:var(--display);font-weight:400;font-size:27px;line-height:1.14;le
   .bkw{flex-wrap:wrap}
   .bkw .bk{flex:1 1 100%}
   .bkw .gpc{flex:1 1 100%}
-  .bkw .gpc .gp-b{width:100%;min-height:48px;flex-direction:row;justify-content:space-between;align-items:center;gap:10px}
+  .bkw .gpc .gp-b{width:100%;min-height:56px;flex-direction:column;justify-content:center;align-items:stretch;gap:2px;padding:6px 12px;text-align:left}
+  .bkw .gpc .gp-q{white-space:nowrap}
+  .bkw .gpc .gp-a{display:flex;justify-content:space-between;align-items:center}
 }
 /* tap targets 44 x 44, look unchanged */
 .sale{padding-top:4px;padding-bottom:4px}
