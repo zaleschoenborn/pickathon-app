@@ -522,3 +522,28 @@ html body.pkpl-hood:not(.pkpl-wide) #root#root#root#root#root#root#root#root .pk
 /* Nov 20 (Zale): phone neighborhood sheet: a soft fade at the bottom while more text is below */
 body.pkpl-hood:not(.pkpl-wide) #pkpl-top::after{content:'';position:absolute;left:0;right:0;bottom:0;height:56px;pointer-events:none;z-index:3;background:linear-gradient(180deg,rgba(43,38,40,0) 0%,rgba(43,38,40,.9) 80%,#2B2628 100%);opacity:0;transition:opacity .25s}
 body.pkpl-hood:not(.pkpl-wide) #pkpl-top.pkpl-more::after{opacity:1}
+
+/* MOCK Nov 21 (Zale): desktop left column. Experiences pinned at the top of the column, the words and the places under them; the map runs under the column and fades in, no hard edge; the lower part rises once on a pick, then scrolls */
+body.pkpl-v2:not(.pkpl-hood) #pkpl .pkpl-xb{display:none}
+html body.pkpl-v2 #root #pkpl .pkpl-title{padding:28px 32px 0!important;justify-content:flex-start;overflow:visible;background:none}
+html body.pkpl-v2 #root #pkpl .pkpl-title::before{display:none}
+html body.pkpl-v2 #root #pkpl .pkpl-tbg{display:none!important}
+html body.pkpl-v2 #root #pkpl .pkpl-title::after{content:'';position:absolute;top:0;bottom:0;left:0;width:calc(100% + 170px);z-index:-1;pointer-events:none;background:linear-gradient(90deg,rgba(18,22,15,.93) 0%,rgba(18,22,15,.88) 58%,rgba(18,22,15,.5) 82%,rgba(18,22,15,0) 100%)}
+html body.pkpl-v2.pkpl-v2g #root #pkpl .pkpl-title::after{width:calc(100% + 110px);background:linear-gradient(90deg,rgba(18,22,15,.98) 0%,rgba(18,22,15,.96) 72%,rgba(18,22,15,.6) 90%,rgba(18,22,15,0) 100%)}
+html body.pkpl-v2 #root #pkpl .pkpl-g2{flex:none;display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding-bottom:22px;border-bottom:1px solid rgba(242,237,227,.16)}
+html body.pkpl-v2 #root #pkpl .pkpl-g2 .pkpl-xe{min-width:0;min-height:60px;padding:8px 4px;font-size:12.5px;background:rgba(18,22,15,.6)}
+html body.pkpl-v2 #root #pkpl .pkpl-g2 .pkpl-xe:hover{border-color:#D6B54A;color:#FFE7A3}
+html body.pkpl-v2 #root #pkpl .pkpl-g2 .pkpl-xe[aria-pressed="true"]{background:#F2EDE3;border-color:#F2EDE3;color:#12160F}
+html body.pkpl-v2 #root #pkpl .pkpl-body{flex:1 1 auto;min-height:0;overflow-y:auto;scrollbar-width:none;padding:26px 0 40px;display:flex;flex-direction:column}
+html body.pkpl-v2 #root #pkpl .pkpl-body::-webkit-scrollbar{display:none}
+html body.pkpl-v2 #root #pkpl .pkpl-body>*{flex-shrink:0}
+html body.pkpl-v2 #root #pkpl .pkpl-body.pkpl-more{-webkit-mask-image:linear-gradient(180deg,#000 0,#000 calc(100% - 84px),transparent 100%);mask-image:linear-gradient(180deg,#000 0,#000 calc(100% - 84px),transparent 100%)}
+html body.pkpl-v2 #root #pkpl .pkpl-title:not(.pkpl-tx) .pkpl-body{justify-content:flex-start;padding-top:40px}
+html body.pkpl-v2 #root #pkpl .pkpl-tx .pkpl-d{font-size:30px!important;gap:14px!important;margin-bottom:10px}
+html body.pkpl-v2 #root #pkpl .pkpl-tx .pkpl-xi{width:52px;height:52px;border-radius:10px}
+html body.pkpl-v2 #root #pkpl .pkpl-tx .pkpl-xi svg{width:30px;height:30px}
+html body.pkpl-v2 #root #pkpl .pkpl-tx .pkpl-l{display:block;-webkit-line-clamp:unset;overflow:visible;font-size:17px}
+html body.pkpl-v2 #root #pkpl .pkpl-pl{margin-top:14px}
+@keyframes pkpl-rise{from{transform:translateY(46vh);opacity:0}60%{opacity:1}to{transform:none;opacity:1}}
+html body.pkpl-v2 #root #pkpl .pkpl-body.pkpl-rise{animation:pkpl-rise .62s cubic-bezier(.2,.8,.2,1) both}
+html body.pkpl-v2 #root #pkpl .pkpl-g2,html body.pkpl-v2 #root #pkpl .pkpl-body{pointer-events:auto;position:relative;z-index:2}

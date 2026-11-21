@@ -35,6 +35,7 @@
   function data() { return site().data || null; }
   function top() { var s = site().stack || []; return s[s.length - 1] || {}; }
   function go(r, x) { var a = app(); if (a && a.go) a.go(r, x || {}); }
+  var V2 = /[?&]v2/.test(location.search), V2G = (location.search.match(/[?&]g=(\w+)/) || [])[1] || 'soft';   /* MOCK Nov 21: left-column layout, gradient strength */
   function wide() { return window.innerWidth >= 1200 || (window.innerWidth >= 900 && window.innerWidth > window.innerHeight); }   /* desktop and sideways tablet: panel on the left, map on the right */
   function touch() { return !!(window.matchMedia && matchMedia('(hover: none)').matches); }
   function calm() { return !!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches); }
@@ -257,11 +258,24 @@
     var hp = null; if (M.xp) { var L0 = litSet(), pk = M.xp === 'Architecture' ? 'cherryhill' : L0[0]; for (var i = 0; !hp && i < L0.length + 1; i++) { var cand = i === 0 ? pk : L0[i - 1]; if (cand) hp = (M.xp === 'Architecture' ? xpPhotos('Architecture', cand) : (((XM.xp || {})[M.xp] || {})[cand] || []).map(function (z) { return { i: z.f, p: z.p }; }).concat(xpPhotos(M.xp, cand)))[0] || null; } }
     if (hp) { var bu = 'url("' + hp.i + '")', bp = hp.p, pre = new Image(); bg._want = bu; pre.onload = pre.onerror = function () { if (bg._want === bu) { bg.style.backgroundImage = bu; bg.style.backgroundPosition = bp; } }; pre.src = hp.i; if (pre.complete) pre.onload(); } else { bg._want = ''; bg.style.backgroundImage = 'none'; }   /* Nov 20: the new hero photo is loaded before it replaces the old one, so no black gap between experiences */ t.classList.toggle('pkpl-hasbg', !!hp);
     $('.pkpl-l', t).textContent = M.xp ? (XH.XPD[M.xp] || '') : (wide() ? 'Pick an experience above, then a place' : 'Pick an experience below, then tap a place that lights up');
+    var v2 = V2 && wide(); document.body.classList.toggle('pkpl-v2', v2); document.body.classList.toggle('pkpl-v2g', v2 && V2G === 'strong');
+    if (v2) {   /* MOCK: experiences live in the left column, pinned; the words and places scroll under them */
+      var g2 = $('.pkpl-g2', t), bd = $('.pkpl-body', t);
+      if (!g2) { g2 = document.createElement('div'); g2.className = 'pkpl-g2'; g2.setAttribute('role', 'toolbar'); g2.setAttribute('aria-label', 'Experiences'); g2.innerHTML = XO.map(function (e) { return '<button type="button" class="pkpl-xe" data-xp="' + e + '" aria-pressed="false">' + xpIcon(e) + '<span>' + e + '</span></button>'; }).join('');
+        bd = document.createElement('div'); bd.className = 'pkpl-body'; ['.pkpl-k', '.pkpl-d', '.pkpl-l', '.pkpl-ab', '.pkpl-pl'].forEach(function (q) { var n = $(q, t); if (n) bd.appendChild(n); }); t.appendChild(g2); t.appendChild(bd); }
+      $$('.pkpl-xe', g2).forEach(function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-xp') === M.xp ? 'true' : 'false'); });
+      bk.hidden = true;
+      if (!M.xp) $('.pkpl-l', t).textContent = 'Choose your own adventure: ' + XO.length + ' experiences across ' + ids().length + ' neighborhoods. Pick one above and the map lights up.';
+      if (bd._xp !== M.xp) { bd._xp = M.xp; bd.scrollTop = 0; bd.classList.remove('pkpl-rise'); void bd.offsetWidth; if (M.xp && !calm()) bd.classList.add('pkpl-rise'); }
+      var more = function () { bd.classList.toggle('pkpl-more', bd.scrollHeight - bd.scrollTop > bd.clientHeight + 4); }; if (!bd._on) { bd._on = 1; bd.addEventListener('scroll', more); } setTimeout(more, 0);
+    }
     var ab = $('.pkpl-ab', t);   /* Architecture: what it is and how to build with us (Zale, Nov 19: it's how sponsors find us) */
     if (ab) ab.innerHTML = M.xp === 'Architecture' ? '<p>Every summer we build a small city in the forest. Each neighborhood is designed and built new with architects, students, builders and makers, and when the festival ends the structures move on to permanent homes in the community. Two of our builds have won AIA awards.</p><button type="button" class="pk-cta sec pkpl-abb" data-go="build">Build with Pickathon</button>' : '';
     var pl = $('.pkpl-pl', t), L = M.xp ? litSet() : [];   /* desktop: where this experience happens; a row opens the place (Zale, Nov 19) */
+    if (pl && v2 && !M.xp && !M.amen) { pl.innerHTML = ''; return; }
     if (pl && !M.xp && !M.amen) { pl.innerHTML = '<div class="pkpl-pg">' + XO.map(function (e) { return '<button type="button" class="pkpl-xe" data-xp="' + e + '">' + xpIcon(e) + '<span>' + e + '</span></button>'; }).join('') + '</div>'; return; }   /* arrival: choose your adventure right under the title */
     if (pl) pl.innerHTML = L.length ? L.map(function (k) { var h = data().hoods[k]; return '<button type="button" class="pkpl-pr" data-hp="' + k + '"><img src="' + esc(emb(k)) + '" alt=""><span><b>' + esc(h.n) + '</b><small>' + esc(xpLine(M.xp, k)) + '</small></span></button>'; }).join('') : '';
+    if (v2) { if (pl) pl.classList.remove('pkpl-many'); t.classList.remove('pkpl-tight', 'pkpl-tight2', 'pkpl-tight3', 'pkpl-tight4', 'pkpl-tight5', 'pkpl-tight6'); return; }
     if (pl && wide()) { pl.classList.remove('pkpl-many'); t.classList.remove('pkpl-tight', 'pkpl-tight2', 'pkpl-tight3', 'pkpl-tight4', 'pkpl-tight5', 'pkpl-tight6'); var over = function () { return t.scrollHeight > t.clientHeight + 2; };   /* fit without scrolling: full rows, then a compact grid, then a tighter title (Zale, Nov 19) */
       if (over()) t.classList.add('pkpl-tight'); if (L.length && over()) pl.classList.add('pkpl-many'); if (over()) t.classList.add('pkpl-tight2'); if (over()) t.classList.add('pkpl-tight3'); if (over()) t.classList.add('pkpl-tight4'); if (over()) t.classList.add('pkpl-tight5'); if (over()) t.classList.add('pkpl-tight6'); }
   }
