@@ -92,11 +92,12 @@
       document.querySelectorAll(gp.dataset.target).forEach(function (c) {
         var cg = c.dataset.g || '';
         var hit = !picks.length || picks.some(function (g) { return cg.indexOf(g) === 0 || (g === 'Indie rock' && cg === 'Indie'); });
-        c.classList.toggle('gone', !hit); if (hit && c.offsetParent !== null) shown++;
+        c.classList.toggle('gone', !hit); if (hit && !c.closest('[hidden]')) shown++;
       });
       word.textContent = !picks.length ? all : picks.length < 3 ? picks.join(' + ') : picks[0] + ' + ' + (picks.length - 1) + ' more';
       gp.classList.toggle('set', picks.length > 0);
       none.hidden = shown > 0 || !picks.length;
+      gp.dispatchEvent(new CustomEvent('lxfilter', { bubbles: true }));
       if (done) done.textContent = 'Show ' + shown + (shown === 1 ? ' act' : ' acts');
     }
     btn.addEventListener('click', function () { list.hidden = !list.hidden; btn.setAttribute('aria-expanded', String(!list.hidden)); if (!list.hidden) apply(); });
@@ -114,6 +115,37 @@
       var b = e.target.closest('.bkb'); if (!b) return;
       bk.querySelectorAll('.bkb').forEach(function (x) { x.classList.toggle('on', x === b); });
       bk.closest('.arch').querySelectorAll('.bl').forEach(function (g) { g.hidden = g.dataset.b !== b.dataset.b; });
+    });
+  });
+  // r30 (Nov 21): the archive draws every act; 30 show first and "Keep going" brings 30 more. The count stays true to the cards.
+  document.querySelectorAll('.arch').forEach(function (arch) {
+    var more = arch.querySelector('.more'); if (!more) return; var STEP = 30;
+    function page() {
+      var left = 0;
+      arch.querySelectorAll('.bl').forEach(function (bl) {
+        var n = bl._n || STEP, i = 0, rest = 0;
+        bl.querySelectorAll('.card').forEach(function (c) { if (c.classList.contains('gone')) { c.classList.remove('late'); return; } var late = i >= n; c.classList.toggle('late', late); if (late) rest++; i++; });
+        if (!bl.hidden) left = rest;
+      });
+      more.hidden = left === 0; more.textContent = 'Keep going · ' + left + ' more';
+    }
+    more.addEventListener('click', function () { var bl = arch.querySelector('.bl:not([hidden])'); if (bl) { bl._n = (bl._n || STEP) + STEP; page(); } });
+    arch.addEventListener('lxfilter', page);
+    arch.querySelectorAll('.bkb').forEach(function (b) { b.addEventListener('click', function () { setTimeout(page, 0); }); });
+    page();
+  });
+  // r30: "See everyone" opens the rest of the year's acts; picking a kind of music shows every match
+  document.querySelectorAll('section.rest').forEach(function (rest) {
+    var minis = rest.querySelector('.minis'), evy = rest.querySelector('.evy'), gp = rest.querySelector('.gp'); if (!minis) return;
+    function sync() { var f = !!(gp && gp.classList.contains('set')); minis.classList.toggle('filt', f); if (evy) evy.hidden = f || minis.classList.contains('open'); }
+    if (evy) evy.addEventListener('click', function () { minis.classList.add('open'); sync(); });
+    rest.addEventListener('lxfilter', sync);
+  });
+  // r30: the year story opens in place
+  document.querySelectorAll('.stog').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var body = b.parentNode.querySelector('.body'), open = body.hidden; body.hidden = !open;
+      b.setAttribute('aria-expanded', String(open)); b.classList.toggle('open', open); b.querySelector('span').textContent = open ? b.dataset.shut : b.dataset.open;
     });
   });
   (function () {

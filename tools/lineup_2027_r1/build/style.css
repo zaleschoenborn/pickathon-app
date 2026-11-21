@@ -605,3 +605,16 @@ h2{font-family:var(--display);font-weight:400;font-size:27px;line-height:1.14;le
 .gp-list .gp-done{flex:1 1 100%}
 .gp-list .gp-o{white-space:nowrap}
 @media (min-width:1000px){.gp:not(.gpc) .gp-list{width:min(520px,90vw)}}
+
+/* r30 (Nov 21): full archive with paging, cards without a photo, "See everyone", year story that opens */
+.arch .card.late{display:none}
+.arch .more[hidden]{display:none}
+.card.tt.arch.nop{background:var(--raise);border:1px solid var(--line)}
+.card.tt.arch.nop .cname{font-size:20px}
+.minis:not(.open):not(.filt) .mini.xtra{display:none}
+.rest .evy[hidden]{display:none}
+.story .body[hidden]{display:none}
+.story .chip.stog.open svg{transform:rotate(180deg)}
+.card.tt.arch.nop .cbody{top:44px;bottom:12px;display:flex;flex-direction:column;justify-content:center;gap:8px}
+.card.tt.arch.nop .cname{font-size:clamp(20px,6.2vw,26px);line-height:1.08;margin-top:0}
+@media (min-width:1000px){.card.tt.arch.nop .cname{font-size:24px}}

@@ -463,7 +463,10 @@ def gpick(target, q='What kind of music do you love?', opts=GLIST):
             target, opts[0], q, opts[0], ICON['caret'], ''.join('<button class="gp-o%s" data-g="%s" aria-pressed="%s">%s</button>' % (' all on' if g == opts[0] else ' mx', g, 'true' if g == opts[0] else 'false', g) for g in opts))
 
 def vcard(n, y, k, g, p, pos):
-    return card(n, y, k, g, img(p, 520), pos, True, 'tt arch')
+    if not p:  # no photo for that year: a plain site-color card, same anatomy, no play ring
+        return ('<a class="card tt arch nop" data-g="%s" data-art="%s" data-an="%s" href="#"><span class="cyr">%s</span>'
+                '<span class="cbody"><span class="krow"><span class="k k-%s">%s</span></span><span class="cname">%s</span></span></a>') % (E(g), _aslug(n), E(n), y, k, KLAB[k], E(n))
+    return card(n, y, k, g, img(p, 520), pos, True, 'tt arch').replace('<img src=', '<img loading="lazy" src=', 1)
 leg.append(("I’m With Her", 2018, 'Bluegrass', 'i/p9615.jpg', '22% 50%'))
 deep.append(('Black Mountain', 2011, 'Psych', 'i/p9704.jpg', '100% 50%'))
 
@@ -472,6 +475,11 @@ def _canon(n):
     k = _aslug(n); return _ALIAS.get(k, k)
 _FT = json.load(open(APP + 'focus-tall.json'))
 def _fill(lst, kind, want):
+    # r30: the hand-picked openers stay only while the class table still gives the act that class in some year
+    _ever = {_canon(a['n']) for yy in d['yearBill'] for a in d['yearBill'][yy] if not a.get('c') and a['k'] == kind}
+    _out = [x[0] for x in lst if _canon(x[0]) not in _ever]
+    if _out: print('archive: hand-picked %s no longer in that class, left out: %s' % (kind, _out))
+    lst[:] = [x for x in lst if _canon(x[0]) in _ever]
     have = {_canon(x[0]) for x in lst}
     first = {}
     for yy in sorted(d['yearBill']):
@@ -480,12 +488,14 @@ def _fill(lst, kind, want):
             key = _canon(a['n'])
             if key in first or key in have: continue
             p = (d['yearPhotos'].get(yy, {}).get(a['n']) or {}).get('i')
-            if not p or p.startswith('http') or not (os.path.exists(APP + p) or os.path.exists(ROOT + p)): continue
-            v = _FT.get(p) or EXTF.get(p)
+            if not p or p.startswith('http') or not (os.path.exists(APP + p) or os.path.exists(ROOT + p)): p = ''
+            v = (_FT.get(p) or EXTF.get(p)) if p else None
             first[key] = (a['n'], int(yy), GSHORT.get(a.get('g'), ''), p, ('%s%% %s%%' % (v[0], v[1])) if v else '50% 35%', a.get('m') or 0)
-    extra = sorted(first.values(), key=lambda t: -t[5])[:want]
+    # r30 (Nov 21): every act that held the class in any year (Zale, Nov 13), at its first year in that class; photos first, then by size.
+    # No cap: the count on the button is the number of cards drawn, never a typed number.
+    extra = sorted(first.values(), key=lambda t: (not t[3], -t[5]))
     lst.extend(t[:5] for t in extra)
-_fill(disc, 'disc', 24); _fill(leg, 'leg', 24); _fill(deep, 'deep', 24)
+_fill(disc, 'disc', 0); _fill(leg, 'leg', 0); _fill(deep, 'deep', 0)
 bars = [(1, [58, 34]), (1, [70]), (2, [40, 44]), (2, [30, 26, 30]), (3, [22, 28, 20, 18]), (3, [18, 24, 16, 26]), (4, [14, 18, 12, 16, 14]), (4, [12, 16, 18, 12, 10])]
 barh = ''.join('<div class="br b%d">%s</div>' % (lv, ''.join('<i style="width:%d%%"></i>' % w for w in ws)) for lv, ws in bars)
 s1 = header('Lineup', 'Aug 5–8, 2027', back=False)
@@ -500,12 +510,13 @@ s1 += ('<section class="p27"><div class="stripe"><i style="background:#F2CF62"><
        '<p class="p27-c">The 2027 poster · names go here</p></div>'
        '<div class="stripe"><i style="background:#F2CF62"></i><i style="background:#86526B"></i><i style="background:#E3B5CF"></i><i style="background:#F2EDE3"></i></div></section>') % barh
 s1 += ('<section class="arch"><p class="kick">While you wait</p><h2>Wait, they played here?</h2><p class="sub">They played the farm in small rooms. Look how big they got.</p>'
-       '<div class="bkw"><div class="bk"><button class="bkb on" data-b="disc"><span>Discoveries</span><b>215</b></button><button class="bkb" data-b="leg"><span>Legends</span><b>116</b></button><button class="bkb" data-b="deep"><span>Deep cuts</span><b>413</b></button></div>%s</div>'
+       '<div class="bkw"><div class="bk"><button class="bkb on" data-b="disc"><span>Discoveries</span><b>@ND</b></button><button class="bkb" data-b="leg"><span>Legends</span><b>@NL</b></button><button class="bkb" data-b="deep"><span>Deep cuts</span><b>@NP</b></button></div>%s</div>'
        '<div class="grid2 bl" data-b="disc">%s</div><div class="grid2 bl" data-b="leg" hidden>%s</div><div class="grid2 bl" data-b="deep" hidden>%s</div>'
        '<button class="btn line wide more">Keep going</button></section>') % (gpick('.arch .card', 'What kind of music do you love?', GLIST).replace('class="gp"', 'class="gp gpc"'),
        ''.join(vcard(n, y, 'disc', g, p, pos) for n, y, g, p, pos in disc),
        ''.join(vcard(n, y, 'leg', g, p, pos) for n, y, g, p, pos in leg),
        ''.join(vcard(n, y, 'deep', g, p, pos) for n, y, g, p, pos in deep))
+s1 = s1.replace('@ND', str(len(disc))).replace('@NL', str(len(leg))).replace('@NP', str(len(deep)))
 
 P24 = d['yearBrand']['2024']
 # ---------- SCREEN 3: Geese ----------
@@ -622,7 +633,7 @@ def year_page(y):
         badge = img(d['yearLogo'][y], 460, fmt='PNG')
     h += poster_block(P, badge, y, music, today_all, len(music), joined=bool(hero), ranked=ranked)
     if st.get('headline'):
-        h += ('<section class="story short"><p class="kick">The %s story</p><p class="lead">%s.</p><button class="chip">Read the %s story %s</button></section>') % (y, E(st['headline'].rstrip('.')), y, ICON['caret'])
+        h += ('<section class="story short"><p class="kick">The %s story</p><p class="lead">%s.</p>%s</section>') % (y, E(st['headline'].rstrip('.')), ('<p class="body" hidden>%s</p><button class="chip stog" aria-expanded="false" data-open="Read the %s story" data-shut="Show less"><span>Read the %s story</span> %s</button>' % (E(st['story']), y, y, ICON['caret'])) if st.get('story') else '')
     lp = ''  # Nov 21 r27 (Zale): the lineup picker is off until the other lineups (Family, DJs, Comedy...) are drawn; it listed them with nothing behind them
     if ten:
         h += ('<section class="topten">%s<h2 class="h-big">Begin here</h2><p class="sub k2">%s ways into Pickathon %s.</p><div class="grid2%s">%s</div></section>') % (
@@ -630,16 +641,17 @@ def year_page(y):
     gs = sorted(set(GSHORT.get(x['g'], '') for x in music if x.get('g') and GSHORT.get(x['g'])))
     withph = [a for a in others if ph(a)]
     if len(withph) >= 6:
-        show = others[:8]; body = ''
-        gs = sorted(set(GSHORT.get(x['g'], '') for x in show if x.get('g') and GSHORT.get(x['g'])))
-        for a in show:
-            g = GSHORT.get(a.get('g'), '')
+        show = others; body = ''
+        gs = sorted(set(GSHORT.get(x['g'], '') for x in others if x.get('g') and GSHORT.get(x['g'])))
+        for _i, a in enumerate(show):
+            g = GSHORT.get(a.get('g'), ''); _b0 = len(body)
             if ph(a):
                 body += '<a class="mini" data-g="%s" data-art="%s" data-an="%s" href="#"><img loading="lazy" src="%s" alt="" style="object-position:%s"><b>%s</b><span>%s</span></a>' % (E(g), _aslug(a['n']), E(a['n']), img(ph(a), 400, 70), fpos(ph(a), d and json.load(open(APP + 'focus.json')) if False else FOC), E(a['n']), E(g))
             else:
                 body += '<a class="mini" data-g="%s" data-art="%s" data-an="%s" href="#"><span class="mini-n" style="background:%s;color:%s">%s</span><b>%s</b><span>%s</span></a>' % (E(g), _aslug(a['n']), E(a['n']), P['paper'], P['ink'], E(a['n'].upper()), E(a['n']), E(g))
+            if _i >= 8: body = body[:_b0] + body[_b0:].replace('<a class="mini"', '<a class="mini xtra"', 1)
         sel = '#y%s .mini' % y
-        body = '<div class="grid2 minis">%s</div>' % body + ('<button class="btn line wide">See everyone · %d more</button>' % (len(others) - 8) if len(others) > 8 else '')
+        body = '<div class="grid2 minis">%s</div>' % body + ('<button class="btn line wide evy">See everyone · %d more</button>' % (len(others) - 8) if len(others) > 8 else '')
     else:
         sel = '#y%s .row' % y
         gs = sorted(set(GSHORT.get(x['g'], '') for x in others if x.get('g') and GSHORT.get(x['g'])))
