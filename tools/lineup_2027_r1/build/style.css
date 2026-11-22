@@ -621,3 +621,16 @@ h2{font-family:var(--display);font-weight:400;font-size:27px;line-height:1.14;le
 /* r31: a ring that carries a song can be tapped (44px target); the rest of the card opens the artist page */
 .card .ring[data-clip]{pointer-events:auto;cursor:pointer}
 .card .ring.sm[data-clip]::after{content:"";position:absolute;inset:-6px}
+
+/* r36 (Zale, Nov 22): the photo plays the song; ring centered; name and "Their story" open the artist page */
+.card .pz{position:absolute;inset:0;z-index:2;cursor:pointer;display:block}
+.card .pz .ring.sm,.card.tt .pz .ring.sm{top:50%;pointer-events:none}
+.card.pc .cbody{z-index:3;pointer-events:none}
+.card.pc .cname,.card.pc .cstory{pointer-events:auto}
+.cstory{display:inline-block;margin-top:6px;font-size:14px;font-weight:700;letter-spacing:.02em;color:var(--cream);opacity:.9;text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1px;padding:6px 0;margin-bottom:-6px}
+.card.pc .cname{cursor:pointer}
+.card .pz:focus-visible{outline:3px solid var(--gold,#f2c94c);outline-offset:-3px}
+
+.card.tt.arch.nop.pc .pz .ring.sm{top:32%}
+.card.tt.arch.nop.pc .cbody{top:auto;bottom:12px;display:block}
+.card.tt.arch.nop.pc .cname{font-size:clamp(18px,5.4vw,22px)}

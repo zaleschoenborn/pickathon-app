@@ -255,7 +255,10 @@ for _v in sorted(d['videos'], key=lambda v: -(v.get('v') or 0)):
 # sessions (Pickathon YouTube, Vimeo with hash, KEXP, Live and Breathing) come first; full sets, podcasts, interviews, outside clips,
 # password clips and flagged clips are left out when build/ledger_clips.json is written. data.json clips fill in behind it.
 _LC = json.load(open(ROOT + 'ledger_clips.json', encoding='utf-8'))
-_LC.sort(key=lambda o: (0 if o['kind'] == 'song' else 1, 0 if 'youtu' in o['url'] else 1))
+def _partner(o):  # r36 (Zale, Nov 22): our own clips first, then partners (KEXP, Live & Breathing, Slab, Edge ...)
+    t = (o.get('tail') or '') + ' ' + (o.get('title') or '')
+    return 1 if ('KEXP' in t or 'Live & Breathing' in t or 'Live and Breathing' in t) else 0
+_LC.sort(key=lambda o: (_partner(o), 0 if o['kind'] == 'song' else 1, 0 if 'youtu' in o['url'] else 1))
 _LY, _LA = {}, {}
 for _o in _LC:
     _u = _o['url'].split('&')[0]
@@ -263,15 +266,24 @@ for _o in _LC:
         _ks = ''.join(ch for ch in _ud.normalize('NFD', _nm.lower()) if ch.isalnum())
         _LY.setdefault((_ks, str(_o['y'])), _u); _LA.setdefault(_ks, _u)
 CLIPY = {**CLIPY, **_LY}; CLIPA = {**CLIPA, **_LA}
+_CLIPALIAS = {'Kurt Vile & The Violators': 'Kurt Vile', 'Destroyer (solo)': 'Destroyer', 'Corrinne West & Kelly Joe Phelps': 'Corinne West & Kelly Joe Phelps',
+              'Caleb Klauder Band': 'Caleb Klauder'}  # r36: the card's printed name vs the ledger's name for the same act
 def clip_for(n, y=None):
+    n = _CLIPALIAS.get(n, n)
     k = ''.join(ch for ch in _ud.normalize('NFD', n.lower()) if ch.isalnum())
     return CLIPY.get((k, str(y)), '') if y else CLIPA.get(k, '')
 
+def photo_play(url, n):
+    """r36 (Zale, Nov 22): on a card with a song, the whole photo plays it; the ring is centered and only marks it.
+    The name and 'Their story' open the artist page."""
+    return ('<span class="pz" data-clip="%s" role="button" tabindex="0" aria-label="Play a song by %s">'
+            '<span class="ring sm"><svg viewBox="0 0 24 24"><path d="M9 6.5v11l9-5.5z" fill="#fff"/></svg></span></span>') % (_h.escape(url, quote=True), E(n))
 def card(n, yr, k, g, src, pos='50% 40%', vid=True, cls=''):
     if vid is True: vid = (clip_for(n, yr) if yr else '') or clip_for(n)  # r31: no ring without a song to play
     return ('<a class="card %s" data-g="%s" data-art="%s" data-an="%s" href="#"><img src="%s" alt="" style="object-position:%s">%s<span class="cyr">%s</span>'
             '<span class="cbody"><span class="krow"><span class="k k-%s">%s</span><span class="g">%s</span></span>'
-            '<span class="cname">%s</span></span></a>') % (cls, E(g), _aslug(n), E(n), src, pos, (clip_ring(vid, 'sm') if isinstance(vid, str) else play('sm')) if vid else '', yr, k, KLAB[k], E(g), E(n))
+            '<span class="cname">%s</span>%s</span></a>') % (cls + (' pc' if isinstance(vid, str) and vid else ''), E(g), _aslug(n), E(n), src, pos, (photo_play(vid, n) if isinstance(vid, str) else play('sm')) if vid else '', yr, k, KLAB[k], E(g), E(n),
+            '<span class="cstory">Their story \u2192</span>' if isinstance(vid, str) and vid else '')
 
 # ---------- shared chrome ----------
 ICON = {
@@ -476,7 +488,7 @@ _PLAYER = ("<script>(function(){function pkPlay(u){var p=(u||'').split('|'),m=(p
  "var k=hero.querySelector('.krow .k'),g=hero.querySelector('.krow .g'),h1=hero.querySelector('h1'),sub=hero.querySelector('.hero-sub'),ring=hero.querySelector('.ring');"
  "if(k){k.textContent=f.k;k.className='k k-'+({Discovery:'disc',Legend:'leg','Deep cut':'deep'}[f.k]||'none')}if(g)g.textContent=f.g;if(h1){h1.textContent=f.n;h1.classList.toggle('sm',f.n.length>12)}"
  "if(sub){sub.textContent=f.l;sub.hidden=!f.l}if(ring){if(f.clip){ring.dataset.clip=f.clip;ring.hidden=false}else{ring.hidden=true}}}});"
- "document.addEventListener('keydown',function(e){if(e.key==='Enter'&&e.target.matches&&e.target.matches('.ring[data-clip]')){pkPlay(e.target.dataset.clip)}});})();</script>"
+ "document.addEventListener('keydown',function(e){if(e.key==='Enter'&&e.target.matches&&e.target.matches('[data-clip]')){pkPlay(e.target.dataset.clip)}});})();</script>"
  "<style>.pkvid{position:fixed;inset:0;z-index:9999;background:rgba(10,8,9,.94);display:flex;align-items:center;justify-content:center;padding:56px 12px}"
  ".pkvid-f{width:100%;max-width:1100px;aspect-ratio:16/9}.pkvid-f iframe{width:100%;height:100%;border:0}"
  ".pkvid-x{position:absolute;top:10px;right:14px;width:44px;height:44px;border:0;background:transparent;color:#fff;font-size:34px;cursor:pointer}</style>")
@@ -492,9 +504,11 @@ def gpick(target, q='What kind of music do you love?', opts=GLIST):
             target, opts[0], q, opts[0], ICON['caret'], ''.join('<button class="gp-o%s" data-g="%s" aria-pressed="%s">%s</button>' % (' all on' if g == opts[0] else ' mx', g, 'true' if g == opts[0] else 'false', g) for g in opts))
 
 def vcard(n, y, k, g, p, pos):
-    if not p:  # no photo for that year: a plain site-color card, same anatomy, no play ring
-        return ('<a class="card tt arch nop" data-g="%s" data-art="%s" data-an="%s" href="#"><span class="cyr">%s</span>'
-                '<span class="cbody"><span class="krow"><span class="k k-%s">%s</span></span><span class="cname">%s</span></span></a>') % (E(g), _aslug(n), E(n), y, k, KLAB[k], E(n))
+    if not p:  # no photo for that year: a plain site-color card, same anatomy; r36: it still plays the act's best song when the ledger has one
+        _cv = clip_for(n, y) or clip_for(n)
+        return ('<a class="card tt arch nop%s" data-g="%s" data-art="%s" data-an="%s" href="#"><span class="cyr">%s</span>%s'
+                '<span class="cbody"><span class="krow"><span class="k k-%s">%s</span></span><span class="cname">%s</span>%s</span></a>') % (
+                ' pc' if _cv else '', E(g), _aslug(n), E(n), y, photo_play(_cv, n) if _cv else '', k, KLAB[k], E(n), '<span class="cstory">Their story \u2192</span>' if _cv else '')
     return card(n, y, k, g, img(p, 520), pos, clip_for(n), 'tt arch').replace('<img src=', '<img loading="lazy" src=', 1)
 leg.append(("I’m With Her", 2018, 'Bluegrass', 'i/p9615.jpg', '22% 50%'))
 deep.append(('Black Mountain', 2011, 'Psych', 'i/p9704.jpg', '100% 50%'))
