@@ -620,7 +620,8 @@
     if (el._key === key) return; el._key = key;
     var dayN = {}; (D.days || []).forEach(function (d) { dayN[d.id] = d.n; });
     var rows = has ? S[TOP.day] : [], showN = TOP.all ? rows.length : 3;
-    var html = (XH && M && M.xp && wide() ? '<button type="button" class="pkpl-up" data-pk="up"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5 8 12l7 7"/></svg>Map \u00b7 ' + esc(M.xp) + '</button>' : '') + '<div class="pkpl-bar" role="button" tabindex="0" aria-expanded="true" aria-label="Show or hide ' + esc(h.n) + '"><i aria-hidden="true"></i><img class="pkpl-bi" src="' + esc(emb(k)) + '" alt=""><span class="pkpl-bn">' + esc(h.n) + (XE ? '<small> \u00b7 ' + esc(XE) + '</small>' : '') + '</span></div>' + '<div class="pkpl-sheet' + (has ? ' pkpl-has' : '') + '">' +
+    var html = (XH && M && M.xp && wide() ? '<button type="button" class="pkpl-up" data-pk="up"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5 8 12l7 7"/></svg>Map \u00b7 ' + esc(M.xp) + '</button>' : '') +
+      (XH && wide() ? '<div class="pkpl-hxr" role="toolbar" aria-label="Experiences">' + XO.map(function (e) { return '<button type="button" data-pk="xprow" data-e="' + esc(e) + '" aria-pressed="' + (e === XE) + '">' + xpIcon(e) + '<span>' + esc(e) + '</span></button>'; }).join('') + '</div>' : '')   /* Zale, Nov 22: the experience row is the main navigation on every size, desktop neighborhood pages too */ + '<div class="pkpl-bar" role="button" tabindex="0" aria-expanded="true" aria-label="Show or hide ' + esc(h.n) + '"><i aria-hidden="true"></i><img class="pkpl-bi" src="' + esc(emb(k)) + '" alt=""><span class="pkpl-bn">' + esc(h.n) + (XE ? '<small> \u00b7 ' + esc(XE) + '</small>' : '') + '</span></div>' + '<div class="pkpl-sheet' + (has ? ' pkpl-has' : '') + '">' +
       '<div class="pkpl-grab" aria-hidden="true"><i></i></div>' +
       '<div class="pkpl-hero" aria-roledescription="carousel" aria-label="' + esc(h.n) + ' photos">' +
       ph.map(function (p, i) { return '<img src="' + esc(p.i) + '" alt="" style="object-position:' + esc(p.p) + '"' + (i === 0 ? '' : ' loading="lazy"') + ' draggable="false">'; }).join('') +
@@ -830,6 +831,7 @@
     if (a === 'vid') { var L = VPK[b.getAttribute('data-vk')] || [], i0 = +b.getAttribute('data-i') || 0, Q = L.slice(i0).concat(L.slice(0, i0)).map(function (v) { return { u: vidU(v), c: v.a + ' · Pickathon ' + v.y }; });
       if (Q.length > 1 && window.__pkRadio) window.__pkRadio(Q, ''); else if (Q[0] && window.__pkPlayVid) window.__pkPlayVid(Q[0].u, Q[0].c); return; }   /* tap one: the five play in a row */
     if (a === 'vall') { go('watch', { hood: b.getAttribute('data-h') }); return; }
+    if (a === 'xprow') { xpPick(b.getAttribute('data-e')); return; }   /* same rule as the phone row: to the map with that experience lit */
     if (a === 'xp') { TOP.xp = b.getAttribute('data-e'); TOP.all = false; if (M) { M.xp = TOP.xp; lit(); } var sc = scroller(); drawTop(); xbDraw(); var sh = $('#pkpl-top .pkpl-sheet'); if (sh) sh.scrollTop = 0; return; }   /* Zale, Nov 22: switching here also switches the row and the map */
   }
   /* sideways swipe on the sheet steps to the next place (phone, tablet; a mouse drag on desktop) */
