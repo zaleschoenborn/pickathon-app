@@ -13201,7 +13201,7 @@ window.pkClimbRank = function (C, dd) {
     /* 5 COME (Zale Nov 19 00:17): one full photo section, everything on the photo, phone too. What people want now: the 2027 lineup and tickets.
        The price card left Home (it lives on Tickets and the 2027 page); Plan your trip and the photo tour stay as two quiet links. */
     h += '<section class="h2-s h2-s4 h2-s4x" aria-labelledby="h2-h4"><img class="h2-s4bg" src="' + ACT + '" alt="" width="1600" height="1067" loading="lazy" decoding="async"><div class="h2-s4o">' +
-      '<p class="h2-s4k">' + DATES.replace(/, \d{4}$/, '') + ' · Happy Valley, Oregon</p><h2 class="h2-d h2-sec pkp-head" id="h2-h4">Four days in the woods. Come.</h2>' +
+      '<p class="h2-s4k">' + DATES.replace(/, \d{4}$/, '') + ' · Happy Valley, Oregon</p><h2 class="h2-d h2-sec pkp-head" id="h2-h4">In the woods. Come.</h2>' +
       '<dl class="h2-s4l"><div><dt>The ' + YEAR + ' lineup</dt><dd>' + (preDrop() ? 'Drops in January. Hear it first.' : 'It’s out. Meet your new favorite band.') + '</dd></div><div><dt>Tickets</dt><dd data-h2="tixln"></dd></div></dl>' +
       '<div class="h2-s4b"><span data-h2="cta4"></span><button type="button" class="h2-pill h2-s4lu" data-h2="lu27">The ' + YEAR + ' lineup</button></div>' +
       '<p class="h2-s4q"><button type="button" data-h2="plan">Plan your trip<span aria-hidden="true"> →</span></button></p></div></section>';
@@ -13691,7 +13691,7 @@ window.pkClimbRank = function (C, dd) {
     { i: 'i/p775.jpg', p: '50% 50%' },
     { i: 'i/p573.jpg', p: '32% 50%' }];
   var HSH = null;
-  function heroes() { if (!HSH) { var A = REEL.slice(); for (var i = A.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)), x = A[i]; A[i] = A[j]; A[j] = x; } HSH = A; } return HSH; }
+  function heroes() { if (!HSH) { var A = REEL.slice(); /* panel round 3 (Zale Nov 22): four of eight reviewers found three frames dark or empty under the phone headline (bubbles and speaker tower, red structure with no people, purple tunnel); phone skips them, desktop keeps all 12 */ if (window.innerWidth <= 820) A = A.filter(function (r) { return ['ss/ss172-dc5d584e.jpg', 'i/p563.jpg', 'i/p775.jpg'].indexOf(r.i) < 0; }); for (var i = A.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)), x = A[i]; A[i] = A[j]; A[j] = x; } HSH = A; } return HSH; }
   var hi = 0, hPaused = false, hTimer = null;
   function reduced() { try { return window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { return false; } }
   function heroLoad(k) { var I = $$('.h2-hf', root)[k]; if (I && I.getAttribute('data-src')) { I.src = I.getAttribute('data-src'); I.removeAttribute('data-src'); I.loading = 'eager'; } return I; }
