@@ -122,7 +122,9 @@
       var cy = farmY(), t0 = cy[0] * s, b0 = cy[1] * s, m = Math.min(28, Math.max(0, (s / (minS() * 0.9) - 1) * 120));
       ty = b0 - t0 >= M.vh ? Math.min(m - t0, Math.max(M.vh - b0 - m, ty)) : (M.vh - t0 - b0) / 2;
       var l0 = 280 * s, r0 = 1980 * s, lc = top().r !== 'hood' ? lw() : 0;   /* left and right lock too: the farm (map units 280-1980) reaches under the column and to the right edge, no dark gap either side (Zale, Nov 21) */
-      tx = r0 - l0 >= M.vw ? Math.min(-l0, Math.max(M.vw - r0, tx)) : lc + (M.vw - lc - (r0 - l0)) / 2 - l0;
+      if (r0 - l0 >= M.vw) tx = Math.min(-l0, Math.max(M.vw - r0, tx));
+      else if (r0 - l0 >= M.vw - lc) tx = Math.min(lc - l0, Math.max(M.vw - r0, tx));   /* Nov 21: narrower than the screen but wider than the space beside the column: it may slide anywhere from the column's edge to the right edge, so a place at the side (the Refuge) stays in view */
+      else tx = lc + (M.vw - lc - (r0 - l0)) / 2 - l0;
     }
     if (M.free) return [s, tx, ty];   /* a place was framed: its centre may sit past the map's edge (Zale, Nov 20) */
     var mw = W * s, mh = H * s, pad = 60, lx, hx, ly, hy;
@@ -344,11 +346,15 @@
   }
   function fitLit() {
     var L = M.amen ? Object.keys(amenHoods()) : litSet(); if (!L.length) { home(); return; }
+    if (V2 && wide() && L.length <= 3) { var rgS = clear(), fS = fitBox(union(L), rgS, 36); var vS = v2Fit(fitBox(union(L), rgS, 36, Math.min(fS[0], startView()[0] * 2)), L); M.s0 = vS[0]; M.free = true; animTo(vS, 560); return; }   /* Nov 21: one to three places never zoom closer than twice the overview (Family) */
     if (V2 && wide() && L.length > 3 && !/[?&]z=0/.test(location.search)) {   /* MOCK: fill the screen: frame the heart of this experience, the far places sit off the edge and a drag or a row brings them in */
       var reg = clear(), s0 = fitBox(union(L), reg, 18)[0], K = L.slice(), up = L.filter(function (k) { return (box(k)[1] + box(k)[3]) / 2 < 2900; }), min = Math.ceil(L.length * 0.6);
-      if (up.length >= 2 && up.length < L.length) { K = up; min = Math.max(2, Math.ceil(up.length * 0.6)); }   /* MOCK (Nov 21): tall experiences open on the wide upper farm; the lower places come in when you point at them */
+      if (up.length >= 2 && up.length < L.length) { K = up; min = K.length;
+        var cyOf = function (k) { var bb = box(k); return (bb[1] + bb[3]) / 2; }, far = null, fd = 0;
+        K.forEach(function (k) { var rest = K.filter(function (j) { return j !== k; }), ys = rest.map(cyOf), lo = Math.min.apply(0, ys), hi = Math.max.apply(0, ys), y = cyOf(k), dd = y < lo ? lo - y : y > hi ? y - hi : 0; if (dd > fd) { fd = dd; far = k; } });
+        if (far && fd > 600 && K.length > 2) K = K.filter(function (j) { return j !== far; }); min = K.length; }   /* one place far above or below the rest (the Woods for Music) comes in when pointed at; places beside each other all stay (Wellness) */   /* Nov 21: the upper places all stay in frame (Wellness lost the Refuge when it trimmed further) */   /* MOCK (Nov 21): tall experiences open on the wide upper farm; the lower places come in when you point at them */
       while (K.length > min && fitBox(union(K), reg, 18)[0] < s0 * 1.7) { var best = null, bs = 0; K.forEach(function (k) { var s1 = fitBox(union(K.filter(function (j) { return j !== k; })), reg, 18)[0]; if (s1 > bs) { bs = s1; best = k; } }); K = K.filter(function (j) { return j !== best; }); }
-      var f0 = fitBox(union(K), reg, 18), vv = v2Fit(fitBox(union(K), reg, 18, Math.min(maxS(), f0[0] * 1.4)), K);   /* wide enough that the farm reaches from under the column to the right side */ M.s0 = vv[0]; M.free = true; animTo(vv, 560); return;
+      var f0 = fitBox(union(K), reg, 18), bK = union(K), wFit = (reg.w - 36) / (bK[2] - bK[0]), vv = v2Fit(fitBox(bK, reg, 18, Math.min(maxS(), f0[0] * 1.4, wFit, startView()[0] * 2)), K);   /* never closer than twice the overview (Family is one place) */   /* zoom in to fill the height, but never so far that a lit place leaves the sides (Wellness) */   /* wide enough that the farm reaches from under the column to the right side */ M.s0 = vv[0]; M.free = true; animTo(vv, 560); return;
     }
     animTo(fitBox(union(L), clear(), wide() ? 18 : 16), 560);
   }
