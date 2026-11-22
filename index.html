@@ -11804,6 +11804,8 @@ if (!window.pkOrders) window.pkOrders = (function () {
 #pkh2 .h2-ccw .h2-cc-k .h2-cc-y{margin-left:auto}
 /* Zale Nov 16: no line under the neighborhood title; the card carries the programming types from the latest lineup instead */
 #root#root#root #pkh2 .h2-s3c .h2-sub{display:none!important}
+@media (min-width:1200px){html body:not(#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1) #pkh2 section.h2-s3c.h2-xo{padding-top:6px!important}html body:not(#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1) #pkh2 .h2-bt.h2-bt-s3{padding-bottom:10px!important}}
+@media (max-width:1199px){html body:not(#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1) #pkh2 section.h2-s3c.h2-xo>.h2-xrow{-webkit-mask-image:linear-gradient(90deg,#000 0,#000 calc(100% - 22px),transparent 100%)!important;mask-image:linear-gradient(90deg,#000 0,#000 calc(100% - 22px),transparent 100%)!important}}
 @media (max-width:1199px){html body:not(#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1) #pkh2 section.h2-s3c.h2-xo{padding-top:2px!important}html body:not(#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1) #pkh2 .h2-bt.h2-bt-s3{padding-bottom:6px!important}}
 /* Zale Nov 16: a text-size floor for Home. Sub lines under section titles match the card body (desktop 24, tablet 21, phone 20); every label, button and small line is at least 14 on phone, 15 on tablet, 16 on desktop. Sitewide later; Home first. */
 #root#root#root#root #pkh2 .h2-sub{font-size:20px!important;line-height:1.35!important}
@@ -13702,7 +13704,7 @@ window.pkClimbRank = function (C, dd) {
     { i: 'i/p775.jpg', p: '50% 50%' },
     { i: 'i/p573.jpg', p: '32% 50%' }];
   var HSH = null;
-  function heroes() { if (!HSH) { var A = REEL.slice(); /* panel round 3 (Zale Nov 22): four of eight reviewers found three frames dark or empty under the phone headline (bubbles and speaker tower, red structure with no people, purple tunnel); phone skips them, desktop keeps all 12 */ if (window.innerWidth <= 820) A = A.filter(function (r) { return ['ss/ss172-dc5d584e.jpg', 'i/p563.jpg', 'i/p775.jpg'].indexOf(r.i) < 0; }); for (var i = A.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)), x = A[i]; A[i] = A[j]; A[j] = x; } HSH = A; } return HSH; }
+  function heroes() { if (!HSH) { var A = REEL.slice(); /* panel round 3 (Zale Nov 22): four of eight reviewers found three frames dark or empty under the phone headline (bubbles and speaker tower, red structure with no people, purple tunnel); all sizes skip them (Zale Nov 22: weak desktop frames too) */ A = A.filter(function (r) { return ['ss/ss172-dc5d584e.jpg', 'i/p563.jpg', 'i/p775.jpg'].indexOf(r.i) < 0; }); for (var i = A.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)), x = A[i]; A[i] = A[j]; A[j] = x; } HSH = A; } return HSH; }
   var hi = 0, hPaused = false, hTimer = null;
   function reduced() { try { return window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { return false; } }
   function heroLoad(k) { var I = $$('.h2-hf', root)[k]; if (I && I.getAttribute('data-src')) { I.src = I.getAttribute('data-src'); I.removeAttribute('data-src'); I.loading = 'eager'; } return I; }
