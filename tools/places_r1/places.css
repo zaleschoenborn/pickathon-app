@@ -647,3 +647,9 @@ html body.pkpl-v2 #root #pkpl .pkpl-g2{gap:7px;padding-bottom:16px}
 html body.pkpl-v2 #root #pkpl .pkpl-pl.pkpl-cols.pkpl-c3 .pkpl-pr b{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 html body.pkpl-v2 #root #pkpl .pkpl-pl.pkpl-cols.pkpl-c3 .pkpl-pr span{min-width:0;overflow:hidden}
 html body.pkpl-v2 #root #pkpl .pkpl-pcn{white-space:nowrap}
+
+/* MOCK round 6: a quiet fade when the list changes; Build with Pickathon sits right under Architecture's line */
+@keyframes pkpl-xf{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+html body.pkpl-v2 #root #pkpl .pkpl-body.pkpl-xf{animation:pkpl-xf .32s ease-out both}
+html body.pkpl-v2 #root #pkpl .pkpl-ab{margin:0 0 14px!important}
+html body.pkpl-v2 #root #pkpl .pkpl-ab button{min-height:44px;padding:0 16px;font-size:13px;letter-spacing:.12em}

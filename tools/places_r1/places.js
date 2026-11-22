@@ -107,7 +107,7 @@
     gestures(el);
     return M;
   }
-  function minS() { return Math.min(M.vw / W, M.vh / H); }
+  function minS() { if (V2 && wide()) return M.vh / H / 0.9;   /* the callers allow 0.9 of this, so the farm's full height fits the screen exactly */ return Math.min(M.vw / W, M.vh / H); }   /* MOCK: desktop zooms out no further than the farm's height */
   function maxS() { return 2.6 * TF / (window.devicePixelRatio || 1); }
   function clampView(s, tx, ty) {   /* keep some map on screen */
     s = Math.max(minS() * 0.9, Math.min(maxS(), s));
@@ -239,6 +239,7 @@
   }
   function lit() {
     var k = M.cur, L = (!k && M.amen) ? Object.keys(amenHoods()) : (!k && M.xp) ? litSet() : [], d = k ? HH.shapes[k] : L.map(function (h) { return HH.shapes[h]; }).join(' ');
+    if (!k && V2 && M.hot && HH.shapes[M.hot]) d = HH.shapes[M.hot];   /* MOCK: the place the pointer is on is lit, everything else dims */
     $('.pkpl-veil', M.svg).setAttribute('d', d ? 'M-4000,-4000H' + (W + 4000) + 'V' + (H + 4000) + 'H-4000Z ' + d : '');
     $('.pkpl-lit', M.svg).setAttribute('d', d);
     $('.pkpl-was', M.svg).setAttribute('d', (!k && M.was && (M.xp || M.amen || (V2 && wide())) && HH.shapes[M.was]) || '');
@@ -273,19 +274,19 @@
       var plx = $('.pkpl-pl', bd), abx = $('.pkpl-ab', bd), pd = $('.pkpl-pd', bd);
       if (!pd) { pd = document.createElement('p'); pd.className = 'pkpl-pd'; bd.insertBefore(pd, plx); if (abx) bd.appendChild(abx);
         var hv = 0; bd.addEventListener('mouseover', function (e) { var r = e.target.closest('.pkpl-pr[data-hp]'); if (!r) return; var k = r.getAttribute('data-hp'), h = data().hoods[k]; if (bd._hk === k) return; bd._hk = k;
-          pd.innerHTML = '<b>' + esc(h.n) + '</b> ' + esc(M.xp ? xpLine(M.xp, k) : (h.hook || h.d || '')); pd.classList.add('on'); $$('.pkpl-pr', bd).forEach(function (x) { x.classList.toggle('pkpl-hot', x === r); }); M.was = k; lit(); clearTimeout(hv); hv = setTimeout(function () { M.free = true; animTo(v2Fit(fitBox(union([k]), clear(), 18, Math.min(maxS(), M.s0 ? M.s0 * 1.45 : startView()[0] * 1.3)), [k], 1), 520); }, 110); }); }
+          pd.innerHTML = '<b>' + esc(h.n) + '</b> ' + esc(M.xp ? xpLine(M.xp, k) : (h.hook || h.d || '')); pd.classList.add('on'); $$('.pkpl-pr', bd).forEach(function (x) { x.classList.toggle('pkpl-hot', x === r); }); M.hot = k; lit(); clearTimeout(hv); hv = setTimeout(function () { M.free = true; var rg = clear(), f1 = fitBox(union([k]), rg, Math.round(Math.min(rg.w, rg.h) * 0.2)), cap = (M.s0 || startView()[0]) * 2; animTo(f1[0] > cap ? fitBox(union([k]), rg, 0, cap) : f1, 560);   /* fill the space right of the column, but no closer than twice the overview */ }, 110); }); }
       if (M.xp === 'Architecture') { var l2 = $('.pkpl-l', t); if (l2) l2.textContent = (XH.XPD.Architecture || '').split('. ')[0].replace(/\.?$/, '.'); }   /* MOCK: Architecture kept short (Zale, Nov 21); final words are Copy's */
       if (bd._xp !== M.xp) { bd._hk = null; pd.classList.remove('on'); pd.textContent = ''; if (!M.xp) M.s0 = null; }
       var pc = $('.pkpl-pc', bd); if (!pc) { pc = document.createElement('p'); pc.className = 'pkpl-pc'; bd.insertBefore(pc, pd); } var nL = M.xp ? litSet().length : 0; pc.textContent = M.xp ? 'In ' + nL + (nL === 1 ? ' neighborhood' : ' neighborhoods') : ''; pc.hidden = !M.xp;
       if (!$('.pkpl-gk', t)) { var gk = document.createElement('div'); gk.className = 'pkpl-gk'; gk.innerHTML = '<p>' + ids().length + ' neighborhoods in the forest</p><h2>What are you here for?</h2>'; t.insertBefore(gk, g2); }
       pc.innerHTML = M.xp ? '<span class="pkpl-pci">' + xpIcon(M.xp) + '</span><b>' + esc(M.xp) + '</b><span class="pkpl-pcn">' + nL + (nL === 1 ? ' neighborhood' : ' neighborhoods') + '</span>' : ''; pc.hidden = !M.xp;
       bd._sum = M.xp ? (XH.XPD[M.xp] || '').split(/(?<=[.!?])\s/)[0] : 'Point at a neighborhood to find it on the map, or pick an experience above.';
-      if (!bd._hk) pd.textContent = bd._sum;
-      if (!bd._lv) { bd._lv = 1; bd.addEventListener('mouseleave', function () { bd._hk = null; $$('.pkpl-pr', bd).forEach(function (x) { x.classList.remove('pkpl-hot'); }); pd.classList.remove('on'); pd.textContent = bd._sum; M.was = ''; lit(); }); }
+      if (!bd._hk) pd.textContent = bd._sum; var abm = $('.pkpl-ab', bd), plm = $('.pkpl-pl', bd); if (abm && plm && abm.nextSibling !== plm) bd.insertBefore(abm, plm);
+      if (!bd._lv) { bd._lv = 1; bd.addEventListener('mouseleave', function () { bd._hk = null; $$('.pkpl-pr', bd).forEach(function (x) { x.classList.remove('pkpl-hot'); }); pd.classList.remove('on'); pd.textContent = bd._sum; M.hot = null; lit(); }); }
       $$('.pkpl-xe', g2).forEach(function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-xp') === M.xp ? 'true' : 'false'); });
       bk.hidden = true;
       if (!M.xp) $('.pkpl-l', t).textContent = XO.length + ' experiences across ' + ids().length + ' neighborhoods. Pick one and the map lights up.';
-      if (bd._xp !== M.xp) { bd._xp = M.xp; bd.scrollTop = 0; bd.classList.remove('pkpl-rise'); void bd.offsetWidth; if (M.xp && !calm()) bd.classList.add('pkpl-rise'); }
+      if (bd._xp !== M.xp) { var px = bd._xp; bd._xp = M.xp; bd.scrollTop = 0; M.hot = null; bd.classList.remove('pkpl-rise', 'pkpl-xf'); void bd.offsetWidth; if (px !== undefined && !calm()) bd.classList.add('pkpl-xf'); }   /* MOCK: the list reorders between experiences, so it fades instead of jumping */
       var more = function () { bd.classList.toggle('pkpl-more', bd.scrollHeight - bd.scrollTop > bd.clientHeight + 4); }; if (!bd._on) { bd._on = 1; bd.addEventListener('scroll', more); } setTimeout(more, 0);
     }
     var v2p = V2 && !wide(); document.body.classList.toggle('pkpl-v2p', v2p);
