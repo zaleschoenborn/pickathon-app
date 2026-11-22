@@ -11,11 +11,16 @@
   "architecture": "Built by hand each summer, then given away.",
   "buildKicker": "The {year} build",
   "moreTag": "↓ {n} more",
-  "phoneFirst": "Pick one below to light up the map, or see all 20 neighborhoods."
+  "phoneFirst": "Pick one below to light up the map, or see all 20 neighborhoods.",
+  "aboutKicker": "About {place}",
+  "soonLine": "{What} at {place}, Thursday to Sunday, August 5 to 8. The full schedule comes with the 2027 lineup.",
+  "vidHead": "Then and now",
+  "vidMore": "Their stories:",
+  "cnLine": "Most of each neighborhood is built new each summer by architects, builders and students, and much of it moves on to community projects after the festival."
  },
  "XPD": {
   "Architecture": "Built by hand each summer, then given away to schools, farms and woodworkers.",
-  "Music": "Find your next favorite band in a forest bowl, an old barn or a meadow at sunset.",
+  "Music": "Hear bands in an old barn, a forest bowl and a meadow at sunset.",
   "DJs": "Dance under the trees until the stars come out, and long after.",
   "Family": "Kids 12 and under get in free, and get a camp of their own in the woods.",
   "Comedy": "Touring comics on a barn stage, with a crowd close enough to heckle.",
@@ -136,5 +141,19 @@
   "wildcamp": "Rugged camping in the upper reaches of the property, among the biggest trees on the farm.",
   "willowcamp": "Field camping for cars, vans and RVs under a huge willow, a short shuttle or half-mile walk from the gates.",
   "southcamp": "Vehicle camping right beside the main entrance, for anyone who wants their rig close."
+ },
+ "cn": {
+  "paddock": "Scott Edwards Architecture built the 2026 stage from modular parts made for Portland’s Q-Side Skatepark.",
+  "windmill": "Built in 2026 by architects, students and Sabin CDC as a kit of parts made to move on to Sabin’s work across Portland.",
+  "farmhouse": "Bora Architecture & Interiors and Dream Big City built the 2026 pieces for Dream Plaza 2.0, a skate and arts space in Portland.",
+  "orchard": "The 2026 story poles and archways, by Bora Architecture & Interiors and Dream Big City, were made for Dream Plaza 2.0.",
+  "courtyard": "Designed by Matt Thomas and Chris Cardoza, built by Blackbird Public Arts, with the Guild of Oregon Woodworkers as downstream partner.",
+  "cherryhill": "After the 2026 festival, the stage’s fishing nets were set to go, through Net Your Problem, to protect villages in Ukraine.",
+  "refuge": "Built by Peter Mangano and Duke Stebbins; the 2026 wood was set to go to Alliance Charter Academy in Oregon City."
+ },
+ "home": {
+  "family": "Kids get their own festival in the woods, all weekend.",
+  "camping": "Camping comes with 3-day and 4-day weekend tickets.",
+  "lineupSoon": "Announced in January."
  }
 }

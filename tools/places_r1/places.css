@@ -825,3 +825,14 @@ body.pkpl-wide #root #pkpl-top .pkpl-vx{margin:10px 32px 0}
 #root #pkpl-top .pkpl-vxa:hover{text-decoration-color:#E9B93C}
 #root #pkpl-top .pkpl-cnl{margin:12px 0 4px;font:500 16px/1.5 'Bricolage Grotesque',system-ui,sans-serif;color:#F2EDE3;max-width:52ch}
 #root #pkpl-top .pkpl-what .pkpl-wt{margin:0;font:500 17px/1.55 'Bricolage Grotesque',system-ui,sans-serif;color:#E8E2D4;max-width:60ch}
+
+/* Zale, Nov 22: video cards bigger and simple: the picture plays, the name under it opens the artist page */
+#root #pkpl-top .pkpl-vw{flex:0 0 min(74vw,300px);display:flex;flex-direction:column;scroll-snap-align:start}
+body.pkpl-wide #root #pkpl-top .pkpl-vw{flex-basis:280px}
+#root #pkpl-top .pkpl-vw .pkpl-vt{flex:none;width:100%;aspect-ratio:4/3}
+#root #pkpl-top .pkpl-vw .pkpl-vt::after{display:none}
+#root #pkpl-top .pkpl-vn{display:block;min-height:44px;padding:8px 2px 0;border:0;background:none;text-align:left;cursor:pointer;color:#F2EDE3}
+#root #pkpl-top .pkpl-vn b{display:block;font:800 16px/1.25 'Bricolage Grotesque',system-ui,sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#root #pkpl-top .pkpl-vn small{display:block;margin-top:3px;font:600 14px/1.2 'Bricolage Grotesque',system-ui,sans-serif;color:rgba(242,237,227,.62)}
+#root #pkpl-top .pkpl-vn:hover b{text-decoration:underline;text-underline-offset:3px}
+#root #pkpl-top .pkpl-vr > .pkpl-vt.pkpl-vall{flex-basis:160px;aspect-ratio:auto}

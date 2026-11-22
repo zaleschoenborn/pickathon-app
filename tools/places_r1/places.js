@@ -14,7 +14,7 @@
   var MI = /*@MAP_ICONS*/null, AMI = /*@AMEN_ICONS*/null;   /* the map's amenity icons, lifted from the 2026 layered map PDF: [kind, x, y, owner neighborhood] (tools/places_r1/map_icons.json) and their one-color glyphs (amen_icons.json) */
   var XH = /*@XP_HOME*/null, XM = /*@XP_MINE*/null;   /* experiences: Home's words, icons and photos (tools/places_r1/xp_home.json) and this chat's final Nov 19 picks (tools/places_r1/xp_manifest.json) */
   if (!XH || !XM) XH = XM = null;
-  var XW = /*@XP_WORDS*/null, XWdone = false;   /* Copy Review's words (Nov 22 draft 1, tools/places_r1/xp_words.json); data.json xpWords wins once Site Build merges it */
+  var XW = /*@XP_WORDS*/null, XWdone = false, BYW = /*@BY_WORDS*/null;   /* BYW: Copy's build stories (hoods.<id>.by.<year>.d on copy-review-nov22) until Site Build merges */   /* Copy Review's words (Nov 22 draft 1, tools/places_r1/xp_words.json); data.json xpWords wins once Site Build merges it */
   function words() {
     if (XWdone || !XH) return; var d = data(); if (!d || !d.hoods) return; XWdone = true;
     var W = d.xpWords || XW; if (!W) return; M0W = W.map || {};
@@ -688,11 +688,11 @@
   function vids(k, XE) {   /* "Watch at <place>": five as a playlist, then a door to all of them */
     var P = vidPool(k, XE || 'Music'); if (!P.L.length) return '';
     var key = k + '|' + P.x, L = VPK[key] || (VPK[key] = vidPick(P.L, 5)), h = data().hoods[k], nm = h.n;
-    var lab = (M0W.vidHead && P.x === 'Music') ? M0W.vidHead.replace('{place}', nm) : P.x === 'Music' ? 'Watch at ' + nm : 'Watch ' + P.x.toLowerCase() + ' at ' + nm;   /* Copy owns the heading (xpWords.map.vidHead) */
+    var lab = M0W.vidHead ? M0W.vidHead.replace('{place}', nm) : P.x === 'Music' ? 'Watch at ' + nm : 'Watch ' + P.x.toLowerCase() + ' at ' + nm;   /* Copy owns the heading (xpWords.map.vidHead) */
     return '<section class="pkpl-vids" aria-label="' + esc(lab) + '"><h2 class="pkpl-vh">' + esc(lab) + '</h2><div class="pkpl-vr">' + L.map(function (v, i) {
       var th = v.th || ('https://i.ytimg.com/vi/' + v.id + '/hqdefault.jpg');
-      return '<button type="button" class="pkpl-vt" data-pk="vid" data-vk="' + esc(key) + '" data-i="' + i + '"><img src="' + esc(th) + '" alt="" loading="lazy"><span class="pkpl-pr0" aria-hidden="true"><i></i></span><span class="pkpl-vc"><b>' + esc(v.a) + '</b><small>Pickathon ' + v.y + '</small></span></button>';
-    }).join('') + (P.L.length > L.length ? '<button type="button" class="pkpl-vt pkpl-vall" data-pk="vall" data-h="' + k + '"><span><b>All ' + P.L.length + ' videos</b><small>at ' + esc(nm) + '</small></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>' : '') + '</div>' + (L.length ? '<p class="pkpl-vx">' + esc(M0W.vidMore || 'Meet them:') + ' ' + L.map(function (v) { return '<button type="button" class="pkpl-vxa" data-pk="act" data-n="' + esc(v.a) + '" data-y="' + esc(String(v.y)) + '">' + esc(v.a) + '</button>'; }).join('<span aria-hidden="true"> \u00b7 </span>') + '</p>' : '') + '</section>';
+      return '<div class="pkpl-vw"><button type="button" class="pkpl-vt" data-pk="vid" data-vk="' + esc(key) + '" data-i="' + i + '" aria-label="Play ' + esc(v.a) + ', Pickathon ' + v.y + '"><img src="' + esc(th) + '" alt="" loading="lazy"><span class="pkpl-pr0" aria-hidden="true"><i></i></span></button><button type="button" class="pkpl-vn" data-pk="act" data-n="' + esc(v.a) + '" data-y="' + esc(String(v.y)) + '"><b>' + esc(v.a) + '</b><small>Pickathon ' + v.y + '</small></button></div>';   /* Zale, Nov 22: no extra text; the picture plays, the name opens the artist page */
+    }).join('') + (P.L.length > L.length ? '<button type="button" class="pkpl-vt pkpl-vall" data-pk="vall" data-h="' + k + '"><span><b>All ' + P.L.length + ' videos</b><small>at ' + esc(nm) + '</small></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>' : '') + '</div>' + '</section>';
   }
   function storyIs(h, has) {   /* one story of the place (Zale, Nov 19): this year's headline, the place's one-liner, then this year's story and the place in one read; credits at the end */
     var by = h.by || {}, y = Object.keys(by).sort().pop(), st = y && by[y] && by[y].t ? by[y] : null;
@@ -703,12 +703,12 @@
   }
   function yearIs(h) {   /* this year's story leads (Zale, Nov 19): kicker, headline, a few lines, Read more */
     var by = h.by || {}, y = Object.keys(by).sort().pop(), st = y && by[y]; if (!st || !st.t) return '';
-    var tx = Array.isArray(st.d) ? st.d.join(' ') : (st.d || '');
+    var bw = BYW && hkey(h) && BYW[hkey(h)] && BYW[hkey(h)][y], sd = (data().hoods[hkey(h)] || {}).by && bw ? bw : st.d; var tx = Array.isArray(sd) ? sd.join(' ') : (sd || '');
     return '<section class="pkpl-yr"><p class="pkpl-sk">' + esc(kick(y)) + '</p><h2>' + esc(st.t) + '</h2>' + (tx ? '<div class="pkpl-more"><p>' + esc(tx) + '</p><button type="button" class="pkpl-rm" data-pk="rm" aria-expanded="false">Keep reading</button></div>' : '') + '</section>';
   }
   function whatIs(h, has) { var t = ddOf(h) || (Array.isArray(h.d) ? h.d.join(' ') : (h.d || '')), hk = has ? '' : (hookOf(h) || ''); if (!t && !hk) return '';
     var body = !t ? '' : t.length < 260 ? '<p class="pkpl-wt">' + esc(t) + '</p>' : '<div class="pkpl-more"><p>' + esc(t) + '</p><button type="button" class="pkpl-rm" data-pk="rm" aria-expanded="false">Keep reading</button></div>';   /* a short description shows whole */
-    return '<div class="pkpl-what"><p class="pkpl-sk">About ' + esc(h.n) + '</p>' + (hk ? '<p class="pkpl-ab1">' + esc(hk) + '</p>' : '') + body + '</div>'; }
+    return '<div class="pkpl-what"><p class="pkpl-sk">' + esc((M0W.aboutKicker || 'About {place}').replace('{place}', h.n)) + '</p>' + (hk ? '<p class="pkpl-ab1">' + esc(hk) + '</p>' : '') + body + '</div>'; }
   function soon(k, XE, h, has) {
     if (has) return '';   /* the real schedule is showing: it is the 2027 card */   /* the 2027 schedule, summarized until it posts (Zale, Nov 19: more useful than every past year) */
     var HP = (data().hoodProg || {})[k], kinds = HP ? (HP.kinds || []).map(function (g) { return g[0]; }).filter(function (n) { return !/^(more|showcases)/i.test(n); }) : [];
@@ -719,7 +719,7 @@
     else if (musicy) what = 'music from legends, discoveries and deep cuts';
     else what = kinds.slice(0, 4).map(lc).join(', ').replace(/, ([^,]*)$/, ' and $1') || (XE ? lc(XE) : 'programming');
     var am = (MI || []).filter(function (z) { return z[3] === k; }).map(function (z) { return z[0]; }).filter(function (x, i, a) { return a.indexOf(x) === i && x !== 'tent' && x !== 'gear'; });
-    return '<section class="pkpl-soon" aria-label="2027 at ' + esc(h.n) + '"><p class="pkpl-sk">Schedule</p><h2>2027 at ' + esc(h.n) + '</h2><p>Four days of ' + esc(what) + ' at ' + esc(h.n) + ', Thursday to Sunday, August 5 to 8. The full schedule posts with the 2027 lineup.</p>' +
+    return '<section class="pkpl-soon" aria-label="2027 at ' + esc(h.n) + '"><p class="pkpl-sk">Schedule</p><h2>2027 at ' + esc(h.n) + '</h2><p>' + esc(M0W.soonLine ? M0W.soonLine.replace('{What}', what.charAt(0).toUpperCase() + what.slice(1)).replace('{place}', h.n) : 'Four days of ' + what + ' at ' + h.n + ', Thursday to Sunday, August 5 to 8. The full schedule posts with the 2027 lineup.') + '</p>' +
       (am.length ? '<div class="pkpl-sam">' + am.map(function (x) { return '<span><i class="pkpl-fi">' + amGlyph(x) + '</i>' + esc(AMN[x] || x) + '</span>'; }).join('') + '</div>' : '') + '</section>';
   }
   function alsoAt(k, XE, h) {   /* one tile per other experience at this place */
@@ -834,7 +834,7 @@
     var tgt = card.querySelector('.pkpl-cred'), who = w.querySelector('.pk-hd-who');
     if (tgt && who && !tgt.firstChild) { var cr = who.querySelector('.pk-hd-creds'), bt = who.querySelector('.pk-hd-pitch .pk-cta');
       if (cr) { var lb = document.createElement('p'); lb.className = 'pkpl-sk'; lb.textContent = 'Who built it'; tgt.appendChild(lb); tgt.appendChild(cr.cloneNode(true)); }
-      var cnl = (DSW && HKW && hkey(data().hoods[top().h]) && (WCN[top().h] || M0W.cnLine)) || ''; if (cnl) { var cp = document.createElement('p'); cp.className = 'pkpl-cnl'; cp.textContent = cnl; tgt.appendChild(cp); }
+      var cnl = (DSW && HKW && hkey(data().hoods[top().h]) && (WCN[top().h] || '')) || ''; if (cnl) { var cp = document.createElement('p'); cp.className = 'pkpl-cnl'; cp.textContent = cnl; tgt.appendChild(cp); }
       if (bt) { var b2 = bt.cloneNode(true); b2.className = 'pk-cta sec pkpl-bw'; b2.addEventListener('click', function () { bt.click(); }); tgt.appendChild(b2); } }
   }
   function backMap() {   /* end of a neighborhood page: the map again; tap it to go back to how you came in (Zale, Nov 19) */
