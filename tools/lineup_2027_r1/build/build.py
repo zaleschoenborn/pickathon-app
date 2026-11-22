@@ -169,6 +169,31 @@ GSHORT = {'indie': 'Indie rock', 'folk': 'Folk', 'soul': 'Soul', 'global': 'Glob
           'bluegrass': 'Bluegrass', 'jazz': 'Jazz', 'psych': 'Psych', 'punk': 'Punk', 'hiphop': 'Hip-hop', 'experimental': 'Experimental'}
 KLAB = {'disc': 'Discovery', 'leg': 'Legend', 'deep': 'Deep cut', 'none': ''}
 
+# r42 (Zale, Nov 22): the 15-tag Music list from Artist Classification (class table genre_tags / genre_primary; first tag = primary, "|" splits,
+# never split on commas). Each act has 1 to 3 tags; a picker matches ANY tag. Acts with no tag keep the old one-word genre.
+TAGS15 = ['Folk & songwriters', 'Country & Americana', 'Indie rock', 'Indie pop', 'Bluegrass & string band', 'Soul, funk & R&B', 'Psychedelic & jams',
+          'Electronic & experimental', 'Punk & heavy', 'Blues', 'Jazz', 'Hip-hop', 'African & global', 'Latin', 'Cajun, zydeco & brass']
+_TG = {}
+for _r in csv.DictReader(open(ROOT + 'class_table_v163.csv', encoding='utf-8')):
+    _t = [t for t in (_r.get('genre_tags') or '').split('|') if t in TAGS15]
+    if not _t: continue
+    for _nm in (_r.get('act'), _r.get('lineup_act')):
+        if _nm: _TG.setdefault(_aslug(_nm), _t)
+def tags_of(n):
+    return _TG.get(_aslug(n), [])
+def gp_n(n, fb=''):  # primary tag for a name, else the old one-word genre
+    t = tags_of(n); return t[0] if t else fb
+def gall_n(n, fb=''):  # every tag, "|"-joined, for data-g
+    t = tags_of(n); return '|'.join(t) if t else fb
+def gp_a(a): return gp_n(a['n'], GSHORT.get(a.get('g'), ''))
+def gall_a(a): return gall_n(a['n'], GSHORT.get(a.get('g'), ''))
+def gopts(acts):  # the tags in view, most acts first, then A to Z
+    c = {}
+    for a in acts:
+        for t in (tags_of(a['n']) or [GSHORT.get(a.get('g'), '')]):
+            if t: c[t] = c.get(t, 0) + 1
+    return [t for t, _ in sorted(c.items(), key=lambda kv: (-kv[1], kv[0]))]
+
 # ---------- data ----------
 bill24 = [x for x in d['yearBill']['2024'] if x.get('g')]
 yp24 = d['yearPhotos']['2024']
@@ -292,9 +317,10 @@ def photo_play(url, n):
             '<span class="ring sm"><svg viewBox="0 0 24 24"><path d="M9 6.5v11l9-5.5z" fill="#fff"/></svg></span></span>') % (_h.escape(url, quote=True), E(n))
 def card(n, yr, k, g, src, pos='50% 40%', vid=True, cls=''):
     if vid is True: vid = (clip_for(n, yr) if yr else '') or clip_for(n)  # r31: no ring without a song to play
+    g_all, g = gall_n(n, g), gp_n(n, g)  # r42: filter on every tag, print the primary
     return ('<a class="card %s" data-g="%s" data-art="%s" data-an="%s" href="#"><img src="%s" alt="" style="object-position:%s">%s<span class="cyr">%s</span>'
             '<span class="cbody"><span class="krow"><span class="k k-%s">%s</span><span class="g">%s</span></span>'
-            '<span class="cname">%s</span>%s</span></a>') % (cls + (' pc' if isinstance(vid, str) and vid else ''), E(g), _aslug(n), E(n), src, pos, (photo_play(vid, n) if isinstance(vid, str) else play('sm')) if vid else '', yr, k, KLAB[k], E(g), E(n),
+            '<span class="cname">%s</span>%s</span></a>') % (cls + (' pc' if isinstance(vid, str) and vid else ''), E(g_all), _aslug(n), E(n), src, pos, (photo_play(vid, n) if isinstance(vid, str) else play('sm')) if vid else '', yr, k, KLAB[k], E(g), E(n),
             '<span class="cstory">Their story \u2192</span>' if isinstance(vid, str) and vid else '')
 
 # ---------- shared chrome ----------
@@ -508,7 +534,7 @@ _PLAYER = ("<script>(function(){function pkPlay(u){var p=(u||'').split('|'),m=(p
 CLOUD = ('<svg class="cloud" viewBox="0 0 390 70" preserveAspectRatio="none" aria-hidden="true">'
          '<path fill="#C5AC38" d="M0 40c8-2 14 0 18 3 4-16 22-24 40-20 14 3 22 12 24 22 10-2 22 0 30 6h166c8-6 20-8 30-6 2-10 10-19 24-22 18-4 36 4 40 20 4-3 10-5 18-3v30H0z"/>'
          '<path fill="#FFFEF2" d="M0 60c60-7 130-10 195-10s135 3 195 10v10H0z"/></svg>')
-GLIST = ['Everything', 'Country', 'Folk', 'Bluegrass', 'Indie rock', 'Psych', 'Punk', 'Soul', 'Global', 'Jazz', 'Hip-hop', 'Experimental']
+GLIST = ['Everything'] + TAGS15
 LLIST = ['Music', 'DJs', 'Family', 'Comedy', 'Literary', 'Wellness', 'Food', 'Curation', 'Craft']
 def gpick(target, q='What kind of music do you love?', opts=GLIST):
     return ('<div class="gp" data-target="%s" data-all="%s"><button class="gp-b" aria-expanded="false"><span class="gp-q">%s</span>'
@@ -518,9 +544,10 @@ def gpick(target, q='What kind of music do you love?', opts=GLIST):
 def vcard(n, y, k, g, p, pos):
     if not p:  # no photo for that year: a plain site-color card, same anatomy; r36: it still plays the act's best song when the ledger has one
         _cv = archive_clip(n, y)
+        g_all, g = gall_n(n, g), gp_n(n, g)
         return ('<a class="card tt arch nop%s" data-g="%s" data-art="%s" data-an="%s" href="#"><span class="cyr">%s</span>%s'
                 '<span class="cbody"><span class="krow"><span class="k k-%s">%s</span></span><span class="cname">%s</span>%s</span></a>') % (
-                ' pc' if _cv else '', E(g), _aslug(n), E(n), y, photo_play(_cv, n) if _cv else '', k, KLAB[k], E(n), '<span class="cstory">Their story \u2192</span>' if _cv else '')
+                ' pc' if _cv else '', E(g_all), _aslug(n), E(n), y, photo_play(_cv, n) if _cv else '', k, KLAB[k], E(n), '<span class="cstory">Their story \u2192</span>' if _cv else '')
     return card(n, y, k, g, img(p, 520), pos, archive_clip(n, y), 'tt arch').replace('<img src=', '<img loading="lazy" src=', 1)
 leg.append(("I’m With Her", 2018, 'Bluegrass', 'i/p9615.jpg', '22% 50%'))
 deep.append(('Black Mountain', 2011, 'Psych', 'i/p9704.jpg', '100% 50%'))
@@ -690,7 +717,7 @@ def year_page(y):
         kk = (r0.get('k') or '').split(' · ')
         hero = (r0['i'], r0['n'], kk[0] if kk else '', kk[1] if len(kk) > 1 else '', r0.get('l', ''), bool(r0.get('v')), r0.get('v', ''))
     elif ten and ph(ten[0]):
-        a0 = ten[0]; hero = (ph(a0), a0['n'], KLAB[a0['k']], GSHORT.get(a0.get('g'), ''), '', False, '')
+        a0 = ten[0]; hero = (ph(a0), a0['n'], KLAB[a0['k']], gp_a(a0), '', False, '')
     if hero:
         kc = {'Discovery': 'disc', 'Legend': 'leg', 'Deep cut': 'deep'}.get(hero[2], 'none')
         sl = reel_slides(y) if y == '2026' else []
@@ -717,24 +744,24 @@ def year_page(y):
     if ten:
         h += ('<section class="topten">%s<h2 class="h-big">Begin here</h2><p class="sub k2">%s ways into Pickathon %s.</p><div class="grid2%s">%s</div></section>') % (
               lp, NUM.get(len(ten), str(len(ten))), y, '' if any(ph(a) for a in ten) else ' flat', ''.join(tile(a, y, P, ph(a)) for a in ten))
-    gs = sorted(set(GSHORT.get(x['g'], '') for x in music if x.get('g') and GSHORT.get(x['g'])))
+    gs = gopts([x for x in music if x.get('g')])
     withph = [a for a in others if ph(a)]
     if len(withph) >= 6:
         show = others; body = ''
-        gs = sorted(set(GSHORT.get(x['g'], '') for x in others if x.get('g') and GSHORT.get(x['g'])))
+        gs = gopts([x for x in others if x.get('g')])
         for _i, a in enumerate(show):
-            g = GSHORT.get(a.get('g'), ''); _b0 = len(body)
+            g = gp_a(a); gA = gall_a(a); _b0 = len(body)
             if ph(a):
-                body += '<a class="mini" data-g="%s" data-art="%s" data-an="%s" href="#"><img loading="lazy" src="%s" alt="" style="object-position:%s"><b>%s</b><span>%s</span></a>' % (E(g), _aslug(a['n']), E(a['n']), img(ph(a), 400, 70), fpos(ph(a), d and json.load(open(APP + 'focus.json')) if False else FOC), E(a['n']), E(g))
+                body += '<a class="mini" data-g="%s" data-art="%s" data-an="%s" href="#"><img loading="lazy" src="%s" alt="" style="object-position:%s"><b>%s</b><span>%s</span></a>' % (E(gA), _aslug(a['n']), E(a['n']), img(ph(a), 400, 70), fpos(ph(a), d and json.load(open(APP + 'focus.json')) if False else FOC), E(a['n']), E(g))
             else:
-                body += '<a class="mini" data-g="%s" data-art="%s" data-an="%s" href="#"><span class="mini-n" style="background:%s;color:%s">%s</span><b>%s</b><span>%s</span></a>' % (E(g), _aslug(a['n']), E(a['n']), P['paper'], P['ink'], E(a['n'].upper()), E(a['n']), E(g))
+                body += '<a class="mini" data-g="%s" data-art="%s" data-an="%s" href="#"><span class="mini-n" style="background:%s;color:%s">%s</span><b>%s</b><span>%s</span></a>' % (E(gA), _aslug(a['n']), E(a['n']), P['paper'], P['ink'], E(a['n'].upper()), E(a['n']), E(g))
             if _i >= 8: body = body[:_b0] + body[_b0:].replace('<a class="mini"', '<a class="mini xtra"', 1)
         sel = '#y%s .mini' % y
         body = '<div class="grid2 minis">%s</div>' % body + ('<button class="btn line wide evy">See everyone · %d more</button>' % (len(others) - 8) if len(others) > 8 else '')
     else:
         sel = '#y%s .row' % y
-        gs = sorted(set(GSHORT.get(x['g'], '') for x in others if x.get('g') and GSHORT.get(x['g'])))
-        body = '<div class="rows">%s</div>' % ''.join('<a class="row" data-g="%s" data-art="%s" data-an="%s" href="#"><b>%s</b><span>%s</span></a>' % (E(GSHORT.get(x.get('g'), '')), _aslug(x['n']), E(x['n']), E(x['n']), E(' · '.join(t for t in (KLAB.get(x.get('k'), ''), GSHORT.get(x.get('g'), '')) if t))) for x in others)
+        gs = gopts([x for x in others if x.get('g')])
+        body = '<div class="rows">%s</div>' % ''.join('<a class="row" data-g="%s" data-art="%s" data-an="%s" href="#"><b>%s</b><span>%s</span></a>' % (E(gall_a(x)), _aslug(x['n']), E(x['n']), E(x['n']), E(' · '.join(t for t in (KLAB.get(x.get('k'), ''), gp_a(x)) if t))) for x in others)
     if others:
         h += '<section class="rest"><h2 class="h-big">Keep wandering</h2>%s%s</section>' % (gpick(sel, opts=['Everything'] + gs) if len(gs) >= 3 else '', body)
     h += ('<section class="years"><p class="kick">See other years</p><div class="swipe yrs"><a class="yr" data-go="s1" href="#">2027</a>%s</div></section>') % ''.join(
@@ -810,7 +837,7 @@ def art_page(slug, ap):
     h = header(name, 'Pickathon ' + yr)
     h += ('<section class="hero hact"><img src="%s" alt="" style="object-position:%s"><div class="hero-sc"></div>'
           '<div class="hero-tx"><p class="krow"><span class="k k-%s">%s</span>%s</p><h1>%s</h1><p class="ah-meta">Pickathon %s</p></div></section>') % (
-          img(ap['hero'], 780), ap.get('hpos', '50% 40%'), k, KLAB.get(k, ''), ('<span class="g">%s</span>' % E(GSHORT.get(g, g))) if g else '', E(name), yr)
+          img(ap['hero'], 780), ap.get('hpos', '50% 40%'), k, KLAB.get(k, ''), ('<span class="g">%s</span>' % E(gp_n(name, GSHORT.get(g, g)))) if (gp_n(name) or g) else '', E(name), yr)
     story = [s for s in (ap.get('story') or []) if s.get('t')]
     if story:
         h += '<section class="liner"><p class="kick">Liner notes</p><p class="lead">%s</p>' % E(story[0]['t'])

@@ -92,7 +92,7 @@
       });
       document.querySelectorAll(gp.dataset.target).forEach(function (c) {
         var cg = c.dataset.g || '';
-        var hit = !picks.length || picks.some(function (g) { return cg.indexOf(g) === 0 || (g === 'Indie rock' && cg === 'Indie'); });
+        var ct = cg.split('|'); var hit = !picks.length || picks.some(function (g) { return ct.indexOf(g) > -1; });
         c.classList.toggle('gone', !hit); if (hit && !c.closest('[hidden]')) shown++;
       });
       word.textContent = !picks.length ? all : picks.length < 3 ? picks.join(' + ') : picks[0] + ' + ' + (picks.length - 1) + ' more';
