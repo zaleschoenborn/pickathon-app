@@ -549,15 +549,44 @@ html body.pkpl-v2 #root #pkpl .pkpl-body.pkpl-rise{animation:pkpl-rise .62s cubi
 html body.pkpl-v2 #root #pkpl .pkpl-g2,html body.pkpl-v2 #root #pkpl .pkpl-body{pointer-events:auto;position:relative;z-index:2}
 
 /* MOCK Nov 21 (Zale) phone: the map on top, the swipe row of experiences, the words and the experience's places under it */
+/* phone and upright tablet (Nov 22, Zale 'all form factors'): the same words and places as the desktop column, in a sheet under the experience row */
 html body.pkpl-v2p:not(.pkpl-hood) #root #pkpl .pkpl-title{display:none!important}
-html body.pkpl-v2p:not(.pkpl-hood) #root #pkpl .pkpl-ps{position:absolute;left:0;right:0;bottom:0;z-index:4;overflow-y:auto;scrollbar-width:none;touch-action:pan-y;padding:14px 16px 20px;background:#12160F;color:#F2EDE3}
+html body.pkpl-v2p:not(.pkpl-hood) #root #pkpl .pkpl-ps{position:absolute;left:0;right:0;bottom:0;z-index:4;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:none;touch-action:pan-y;padding:16px 16px 24px;background:#12160F;color:#F2EDE3;transition:height .28s cubic-bezier(.2,.7,.2,1)}
 html body.pkpl-v2p #root #pkpl .pkpl-ps::-webkit-scrollbar{display:none}
-html body.pkpl-v2p.pkpl-hood #root #pkpl .pkpl-ps{display:none}
-html body.pkpl-v2p #root #pkpl .pkpl-psh{margin:0 0 6px;font-family:'Pickathon 2014',sans-serif;font-size:22px;line-height:1.1;letter-spacing:.03em;text-transform:uppercase;color:#F2EDE3}
-html body.pkpl-v2p #root #pkpl .pkpl-psl{margin:0 0 6px;font:600 15px/1.4 'Bricolage Grotesque',system-ui,sans-serif;color:#E9B93C}
-html body.pkpl-v2p #root #pkpl .pkpl-ps .pkpl-pr{min-height:64px;padding:10px 2px;gap:14px}
-html body.pkpl-v2p:not(.pkpl-hood) #root .pkpl-xb{border-top:0;border-bottom:1px solid #2F372A;background:#12160F;padding-top:10px;padding-bottom:10px}
-html body.pkpl-v2p:not(.pkpl-hood) #root#root#root .pkpl-tools{bottom:calc(var(--pkpl-psb,200px))}
+html body.pkpl-v2p #root #pkpl .pkpl-ps.pkpl-ps0{padding-top:0;padding-bottom:0;visibility:hidden}
+html body.pkpl-v2p.pkpl-hood #root #pkpl .pkpl-ps,html body.pkpl-v2p.pkpl-hood #root #pkpl .pkpl-psg,html body:not(.pkpl-v2p) #root #pkpl .pkpl-psg{display:none}
+html body.pkpl-v2p:not(.pkpl-hood) #root .pkpl-xb{transition:bottom .28s cubic-bezier(.2,.7,.2,1);border-top:1px solid #2F372A;border-bottom:0;background:#12160F;padding-top:10px;padding-bottom:10px}
+html body.pkpl-v2p:not(.pkpl-hood) #root#root#root .pkpl-tools{bottom:var(--pkpl-psb,200px);transition:bottom .28s cubic-bezier(.2,.7,.2,1)}
+html body.pkpl-v2p #root #pkpl .pkpl-psg{position:absolute;left:50%;z-index:5;width:72px;height:22px;margin:0 0 0 -36px;padding:0;border:0;border-radius:11px 11px 0 0;background:#12160F;display:grid;place-items:center;cursor:pointer;transition:bottom .28s cubic-bezier(.2,.7,.2,1)}
+html body.pkpl-v2p #root #pkpl .pkpl-psg i{display:block;width:36px;height:4px;border-radius:2px;background:rgba(242,237,227,.45)}
+html body.pkpl-v2p #root #pkpl .pkpl-ps .pkpl-gk{margin:0 0 8px}
+html body.pkpl-v2p #root #pkpl .pkpl-ps .pkpl-gk p{margin:0 0 8px;font:800 clamp(10px,2.8vw,12px)/1 'Bricolage Grotesque',system-ui,sans-serif;letter-spacing:.1em;white-space:nowrap;text-transform:uppercase;color:#E9B93C}
+html body.pkpl-v2p #root #pkpl .pkpl-ps .pkpl-gk h2{margin:0;font-family:'Pickathon 2014',sans-serif;font-size:clamp(24px,7vw,32px);font-weight:400;line-height:1.05;letter-spacing:.02em;text-transform:uppercase;color:#F2EDE3}
+html body.pkpl-v2p #root #pkpl .pkpl-ps .pkpl-pc{display:flex;align-items:center;gap:10px;margin:0 0 8px;font:400 15px/1 'Bricolage Grotesque',system-ui,sans-serif;color:rgba(242,237,227,.7)}
+html body.pkpl-v2p #root #pkpl .pkpl-ps .pkpl-pci{display:inline-grid;place-items:center;flex:none;width:34px;height:34px;border-radius:8px;background:#F2EDE3;color:#12160F}
+html body.pkpl-v2p #root #pkpl .pkpl-ps .pkpl-pci svg{width:20px;height:20px}
+html body.pkpl-v2p #root #pkpl .pkpl-ps .pkpl-pc b{font-family:'Pickathon 2014',sans-serif;font-size:24px;font-weight:400;letter-spacing:.03em;text-transform:uppercase;color:#F2EDE3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+html body.pkpl-v2p #root #pkpl .pkpl-ps .pkpl-pcn{margin-left:auto;flex:none;font-weight:700;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#E9B93C;white-space:nowrap}
+html body.pkpl-v2p #root #pkpl .pkpl-psl{margin:0 0 10px;font:600 15px/1.4 'Bricolage Grotesque',system-ui,sans-serif;color:#E9B93C}
+html body.pkpl-v2p #root #pkpl .pkpl-ps .pkpl-gh{margin:14px 0 4px;font:800 11.5px/1 'Bricolage Grotesque',system-ui,sans-serif;letter-spacing:.2em;text-transform:uppercase;color:rgba(242,237,227,.5)}
+html body.pkpl-v2p #root #pkpl .pkpl-psls{display:grid;grid-template-columns:1fr;column-gap:18px}
+html body.pkpl-v2p #root #pkpl .pkpl-psls.pkpl-pst{grid-template-columns:1fr 1fr}
+html body.pkpl-v2p #root #pkpl .pkpl-ps .pkpl-pr{display:flex;align-items:center;width:100%;min-height:56px;padding:8px 2px;gap:12px;border:0;border-bottom:1px solid #262D22;background:none;color:#F2EDE3;text-align:left;font:inherit;cursor:pointer}
+html body.pkpl-v2p #root #pkpl .pkpl-ps .pkpl-pr img{flex:none;width:40px;height:40px;object-fit:contain}
+html body.pkpl-v2p #root #pkpl .pkpl-ps .pkpl-pr span{display:flex;flex-direction:column;gap:3px;min-width:0}
+html body.pkpl-v2p #root #pkpl .pkpl-ps .pkpl-pr b{font:700 16px/1.2 'Bricolage Grotesque',system-ui,sans-serif}
+html body.pkpl-v2p #root #pkpl .pkpl-ps .pkpl-pr small{font:400 14px/1.35 'Bricolage Grotesque',system-ui,sans-serif;color:rgba(242,237,227,.72)}
+html body.pkpl-v2p #root #pkpl .pkpl-pst .pkpl-pr{min-height:48px}
+html body.pkpl-v2p #root #pkpl .pkpl-pst .pkpl-pr img{width:32px;height:32px}
+html body.pkpl-v2p #root #pkpl .pkpl-pst .pkpl-pr b{font-size:15px}
+html body.pkpl-v2p #root #pkpl .pkpl-psab{margin:0 0 6px}
+html body.pkpl-v2p #root #pkpl .pkpl-ps.pkpl-xf{animation:pkpl-xf .32s ease}
+@media (min-width:600px){
+html body.pkpl-v2p #root #pkpl .pkpl-ps{padding:20px 28px 28px}
+html body.pkpl-v2p #root #pkpl .pkpl-psls.pkpl-psl2{grid-template-columns:1fr 1fr}
+html body.pkpl-v2p #root #pkpl .pkpl-psls.pkpl-pst{grid-template-columns:1fr 1fr 1fr}
+}
+@media (prefers-reduced-motion:reduce){html body.pkpl-v2p #root #pkpl .pkpl-ps,html body.pkpl-v2p #root .pkpl-xb,html body.pkpl-v2p #root .pkpl-tools,html body.pkpl-v2p #root #pkpl .pkpl-psg{transition:none}}
 
 /* MOCK: long lists (more than six places) use compact rows: smaller emblem, the line held to one row */
 html body.pkpl-v2 #root #pkpl .pkpl-pl.pkpl-cmp .pkpl-pr{min-height:54px;padding:7px 4px;gap:12px}

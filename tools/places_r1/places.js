@@ -38,7 +38,7 @@
   var V2Q = /[?&]v2/.test(location.search), V2 = !/[?&]v1\b/.test(location.search), V2G = (location.search.match(/[?&]g=(\w+)/) || [])[1] || 'strong';   /* Zale Nov 22 00:39 'build it': the left-column layout is live on desktop; the phone panel stays behind ?v2; ?v1 shows the old desktop */   /* MOCK Nov 21: left-column layout, gradient strength */
   var V2L = (location.search.match(/[?&]L=(\w+)/) || [])[1] || 'tiles';   /* MOCK: long-list style, tiles or cols */
   /* MOCK Nov 21 (Zale): a rough 2027 palette painted over today's map to judge it; provisional kit colors (near-black #2E292A, mauve #85506A, gold #BF9D27, pink #E5B6CC), official swatches pending from Artwork */
-  var PAL27 = /[?&]pal=27/.test(location.search) || (!/[?&]pal=26/.test(location.search) && (window.innerWidth >= 1200 || (window.innerWidth >= 900 && window.innerWidth > window.innerHeight)));   /* 2027 map look on desktop (Zale Nov 22); phones keep the 2026 look until their check */
+  var PAL27 = !/[?&]pal=26/.test(location.search);   /* 2027 map look on every size (Zale Nov 22 'all form factors'); ?pal=26 shows the old colors */   /* 2027 map look on desktop (Zale Nov 22); phones keep the 2026 look until their check */
   /* Artwork's 2027 map fills (artwork-47, from Travis's binder inks): light tier and deep tier, alternating between neighbors */
   var P27 = { woods: '#D1A47D', cherryhill: '#D79D98', grove: '#8A7632', windmill: '#D79D98', paddock: '#D1A47D', galaxy: '#976D48', lucky: '#C2AD6A', farmhouse: '#D79D98', curation: '#9D6762',
     refuge: '#D19CB4', coyote: '#97667D', courtyard: '#D19CB4', market: '#97667D', orchard: '#97667D', quailtrail: '#B5ABAE',
@@ -114,7 +114,7 @@
     gestures(el);
     return M;
   }
-  function minS() { if (V2 && wide()) { var cy = farmY(); return M.vh / (cy[1] - cy[0]) / 0.9; }   /* the callers allow 0.9 of this, so the farm's own height (not the art's empty bottom) fits the screen exactly */ return Math.min(M.vw / W, M.vh / H); }   /* MOCK: desktop zooms out no further than the farm's height */
+  function minS() { if (V2 && wide()) { var cy = farmY(); return M.vh / (cy[1] - cy[0]) / 0.9; }   /* the callers allow 0.9 of this, so the farm's own height (not the art's empty bottom) fits the screen exactly */ if (v2p()) { var cr = clear(); return Math.min(M.vw / W, cr.h / H); }   /* phone: the whole farm fits the strip above the sheet */ return Math.min(M.vw / W, M.vh / H); }   /* MOCK: desktop zooms out no further than the farm's height */
   function maxS() { return 2.6 * TF / (window.devicePixelRatio || 1); }
   function farmY() { return [0, union(ids())[3] + 40]; }   /* MOCK: the farm from the forest's top edge to just below the camps */
   function clampView(s, tx, ty) {   /* keep some map on screen */
@@ -221,7 +221,7 @@
     if (M.cur) frame(M.cur);   /* then glide to the place's framing for the new box */
   }
   function startView() {   /* desktop and sideways tablet: the festival core fills the width (the full farm is a narrow strip); phone: the whole farm */
-    if (!wide()) return fitBox([0, 0, W, H], { x: 0, y: 0, w: M.vw, h: M.vh }, 8);
+    if (!wide()) return v2p() ? fitBox([0, 0, W, H], clear(), 8) : fitBox([0, 0, W, H], { x: 0, y: 0, w: M.vw, h: M.vh }, 8);
     var b = union(CORE), s = M.vw / 1700;   /* the farm's own width (map units 280-1980) fills the screen */
     return [s, M.vw / 2 - 1130 * s, M.vh / 2 - (b[1] + b[3]) / 2 * s];
   }
@@ -235,8 +235,29 @@
     if (east < lim) tx += lim - east;
     return [s1, tx, v[2]];
   }
-  function psH() { return M.xp ? Math.round(M.vh * 0.4) : 132; }   /* MOCK: phone panel under the experience row */
-  function clear() { var r = region(), t = wide() && top().r !== 'hood' ? lw() : 0, ti = $('.pkpl-title', M.el), up = wide() ? 78 : (M.title && ti ? Math.max(0, ti.offsetHeight - 14) : 0), dn = wide() ? 8 : (top().r === 'hood' ? sheetOpen() : 150); if (V2Q && !wide() && top().r !== 'hood') { up = 8; dn = psH() + 62; } if (V2 && wide()) up = 16; return { x: r.x + t, y: r.y + up, w: r.w - t, h: Math.max(160, r.h - up - dn) }; }   /* the lit places fill what is left */   /* above the experience bar and the amenity tag */
+  function v2p() { return V2 && !wide() && top().r !== 'hood'; }
+  function xbH() { var x = M && $('.pkpl-xb', M.el); return x ? x.offsetHeight : 56; }
+  function psH() { if (!M || !v2p()) return 0; var st = M.ps == null ? 1 : M.ps; return st === 0 ? 0 : st === 2 ? Math.max(0, M.vh - xbH() - 44) : Math.round(M.vh * (M.vw >= 600 ? 0.4 : 0.44)); }   /* the phone sheet: folded (just the experience row), half, full */
+  function psPlace() {   /* size the sheet and slide the experience row and the handle on top of it */
+    var ps = $('.pkpl-ps', M.el), xb = $('.pkpl-xb', M.el), pg = $('.pkpl-psg', M.el), h = psH(); if (!ps) return;
+    ps.style.height = h + 'px'; ps.classList.toggle('pkpl-psfull', M.ps === 2); ps.classList.toggle('pkpl-ps0', !h); if (xb) xb.style.bottom = h + 'px'; if (pg) { pg.style.bottom = (h + xbH()) + 'px'; pg.setAttribute('aria-label', M.ps === 2 ? 'Show the map' : 'Show more'); }
+    M.el.style.setProperty('--pkpl-psb', (h + xbH() + 10) + 'px');
+  }
+  function psSet(st) {   /* change the sheet and frame the map in what still shows */
+    st = Math.max(0, Math.min(2, st)); if (st === M.ps) return; M.ps = st; psPlace();
+    if (st < 2) setTimeout(function () { if (!M || top().r === 'hood') return; if (M.xp || M.amen) fitLit(); else home(); }, calm() ? 0 : 60);
+  }
+  function psTouch() {   /* swipe up on the words, the row or the handle: full; swipe down at the top: half, then folded (same feel as the neighborhood sheet) */
+    var t0 = null, inP = function (el) { return el && el.closest && el.closest('.pkpl-ps,.pkpl-psg,.pkpl-xb'); };
+    M.el.addEventListener('touchstart', function (e) { if (!v2p() || e.touches.length !== 1 || !inP(e.target)) { t0 = null; return; } var p = e.touches[0]; t0 = { x: p.clientX, y: p.clientY, el: e.target, done: 0, sc: $('.pkpl-ps', M.el).scrollTop }; }, { passive: true });
+    M.el.addEventListener('touchmove', function (e) { if (!t0 || t0.done) return; var p = e.touches[0], dx = p.clientX - t0.x, dy = p.clientY - t0.y, ps = $('.pkpl-ps', M.el), onRow = t0.el.closest('.pkpl-xb');
+      if (Math.abs(dy) < 10 || Math.abs(dy) < Math.abs(dx) * 1.2) return;
+      if (dy < 0 && M.ps < 2) { t0.done = 1; if (e.cancelable) e.preventDefault(); psSet(M.ps + 1); return; }
+      if (dy > 0 && (onRow || ps.scrollTop <= 0) && M.ps > 0) { t0.done = 1; if (e.cancelable) e.preventDefault(); psSet(M.ps - 1); } }, { passive: false });
+    M.el.addEventListener('touchend', function () { t0 = null; }, { passive: true });
+    M.el.addEventListener('click', function (e) { if (e.target.closest('.pkpl-psg')) psSet(M.ps === 2 ? 1 : M.ps + 1); });
+  }
+  function clear() { var r = region(), t = wide() && top().r !== 'hood' ? lw() : 0, ti = $('.pkpl-title', M.el), up = wide() ? 78 : (M.title && ti ? Math.max(0, ti.offsetHeight - 14) : 0), dn = wide() ? 8 : (top().r === 'hood' ? sheetOpen() : 150); if (v2p()) { up = 8; dn = psH() + xbH() + 8; } if (V2 && wide()) up = 16; return { x: r.x + t, y: r.y + up, w: r.w - t, h: Math.max(160, r.h - up - dn) }; }   /* the lit places fill what is left */   /* above the experience bar and the amenity tag */
   function region() {
     if (wide() || top().r !== 'hood') return { x: 0, y: 0, w: M.vw, h: M.vh };
     /* the strip the map shows above the sheet: from the map top to the sheet's real top edge (open ~40%, folded almost all) */
@@ -307,14 +328,19 @@
       if (bd._xp !== M.xp) { var px = bd._xp; bd._xp = M.xp; bd.scrollTop = 0; M.hot = null; bd.classList.remove('pkpl-rise', 'pkpl-xf'); void bd.offsetWidth; if (px !== undefined && !calm()) bd.classList.add('pkpl-xf'); }   /* MOCK: the list reorders between experiences, so it fades instead of jumping */
       var more = function () { bd.classList.toggle('pkpl-more', bd.scrollHeight - bd.scrollTop > bd.clientHeight + 4); }; if (!bd._on) { bd._on = 1; bd.addEventListener('scroll', more); } setTimeout(more, 0);
     }
-    var v2p = V2Q && !wide(); document.body.classList.toggle('pkpl-v2p', v2p);
-    if (v2p) {   /* MOCK phone: map on top, the swipe row of experiences, then the words and that experience's places */
-      var ps = $('.pkpl-ps', M.el); if (!ps) { ps = document.createElement('div'); ps.className = 'pkpl-ps'; M.el.appendChild(ps); }
-      var Lp = M.xp ? litSet() : [];
-      ps.innerHTML = M.xp ? '<h2 class="pkpl-psh">' + esc(M.xp) + ' at Pickathon</h2><p class="pkpl-psl">' + esc(XH.XPD[M.xp] || '') + '</p>' + Lp.map(function (k) { var h = data().hoods[k]; return '<button type="button" class="pkpl-pr" data-hp="' + k + '"><img src="' + esc(emb(k)) + '" alt=""><span><b>' + esc(h.n) + '</b><small>' + esc(xpLine(M.xp, k)) + '</small></span></button>'; }).join('')
-        : '<h2 class="pkpl-psh">Summer camp for your soul</h2><p class="pkpl-psl">Choose your own adventure: swipe the ' + XO.length + ' experiences, pick one, and the map lights up.</p>';
-      ps.scrollTop = 0; ps.style.height = psH() + 'px'; var xb2 = $('.pkpl-xb', M.el); if (xb2) xb2.style.bottom = psH() + 'px';
-    }
+    var v2p = V2 && !wide(); document.body.classList.toggle('pkpl-v2p', v2p);
+    if (v2p) {   /* phone and upright tablet (Zale, Nov 22 'work on all form factors'): map on top, the swipe row of experiences, then the same words and places as the desktop column, in a sheet that pulls up to full and folds to the row */
+      var ps = $('.pkpl-ps', M.el); if (!ps) { ps = document.createElement('div'); ps.className = 'pkpl-ps'; M.el.appendChild(ps); var pg = document.createElement('button'); pg.type = 'button'; pg.className = 'pkpl-psg'; pg.setAttribute('aria-label', 'Show more'); pg.innerHTML = '<i></i>'; M.el.appendChild(pg); psTouch(); }
+      var Lp = M.xp ? litSet() : [], D3 = data().hoods, tile = function (k, line) { return '<button type="button" class="pkpl-pr" data-hp="' + k + '"><img src="' + esc(emb(k)) + '" alt=""><span><b>' + esc(D3[k].n) + '</b>' + (line ? '<small>' + esc(line) + '</small>' : '') + '</span></button>'; };
+      var sum = M.xp === 'Architecture' ? (XH.XPD.Architecture || '').split('. ')[0].replace(/\.?$/, '.') : M.xp ? (XH.XPD[M.xp] || '').split(/(?<=[.!?])\s/)[0] : '';
+      if (M.xp) ps.innerHTML = '<p class="pkpl-pc"><span class="pkpl-pci">' + xpIcon(M.xp) + '</span><b>' + esc(M.xp) + '</b><span class="pkpl-pcn">' + Lp.length + (Lp.length === 1 ? ' neighborhood' : ' neighborhoods') + '</span></p><p class="pkpl-psl">' + esc(sum) + '</p>'
+        + (M.xp === 'Architecture' ? '<div class="pkpl-psab"><button type="button" class="pk-cta sec pkpl-abb" data-go="build">Build with Pickathon</button></div>' : '')
+        + '<div class="pkpl-psls' + (Lp.length > 4 ? ' pkpl-psl2' : '') + '">' + Lp.map(function (k) { return tile(k, xpLine(M.xp, k)); }).join('') + '</div>';
+      else ps.innerHTML = '<div class="pkpl-gk"><p>' + ids().length + ' neighborhoods · ' + XO.length + ' experiences</p><h2>What do you want to experience?</h2></div><p class="pkpl-psl">Pick one and the map lights up. Or tap a neighborhood.</p>'
+        + [['stage', 'Stages'], ['around', 'Hangouts'], ['camp', 'Camping']].map(function (g) { var ks = ids().filter(function (k) { return (D3[k].k || 'around') === g[0]; }); return ks.length ? '<p class="pkpl-gh">' + g[1] + '</p><div class="pkpl-psls pkpl-pst">' + ks.map(function (k) { return tile(k); }).join('') + '</div>' : ''; }).join('');
+      if (ps._xp !== M.xp) { var px2 = ps._xp; ps._xp = M.xp; ps.scrollTop = 0; if (M.ps === 0 || M.ps == null) M.ps = 1; ps.classList.remove('pkpl-xf'); void ps.offsetWidth; if (px2 !== undefined && !calm()) ps.classList.add('pkpl-xf'); }
+      psPlace();
+    } else { var ps0 = $('.pkpl-ps', M.el); if (ps0) ps0.style.height = ''; var xb0 = $('.pkpl-xb', M.el); if (xb0) xb0.style.bottom = ''; }
     var ab = $('.pkpl-ab', t);   /* Architecture: what it is and how to build with us (Zale, Nov 19: it's how sponsors find us) */
     if (ab) ab.innerHTML = M.xp === 'Architecture' ? '<p>Every summer we build a small city in the forest. Each neighborhood is designed and built new with architects, students, builders and makers, and when the festival ends the structures move on to permanent homes in the community. Two of our builds have won AIA awards.</p><button type="button" class="pk-cta sec pkpl-abb" data-go="build">Build with Pickathon</button>' : '';
     var pl = $('.pkpl-pl', t), L = M.xp ? litSet() : [];   /* desktop: where this experience happens; a row opens the place (Zale, Nov 19) */
@@ -357,6 +383,8 @@
       while (K.length > min && fitBox(union(K), reg, 18)[0] < s0 * 1.7) { var best = null, bs = 0; K.forEach(function (k) { var s1 = fitBox(union(K.filter(function (j) { return j !== k; })), reg, 18)[0]; if (s1 > bs) { bs = s1; best = k; } }); K = K.filter(function (j) { return j !== best; }); }
       var f0 = fitBox(union(K), reg, 18), bK = union(K), wFit = (reg.w - 36) / (bK[2] - bK[0]), vv = v2Fit(fitBox(bK, reg, 18, Math.min(maxS(), f0[0] * 1.4, wFit, startView()[0] * 2)), K);   /* never closer than twice the overview (Family is one place) */   /* zoom in to fill the height, but never so far that a lit place leaves the sides (Wellness) */   /* wide enough that the farm reaches from under the column to the right side */ M.s0 = vv[0]; M.free = true; animTo(vv, 560); return;
     }
+    if (v2p()) { M.free = true; var Kp = L.slice(); if (Kp.length > 2) { var cyp = function (k) { var bb = box(k); return (bb[1] + bb[3]) / 2; }, fp = null, fdp = 0; Kp.forEach(function (k) { var ys = Kp.filter(function (j) { return j !== k; }).map(cyp), lo = Math.min.apply(0, ys), hi = Math.max.apply(0, ys), y = cyp(k), dd = y < lo ? lo - y : y > hi ? y - hi : 0; if (dd > fdp) { fdp = dd; fp = k; } }); if (fp && fdp > 600) Kp = Kp.filter(function (j) { return j !== fp; }); }
+      animTo(fitBox(union(Kp), clear(), 16), 560); return; }   /* phone: frame the lit places in the strip above the sheet; one place far above or below the rest (the Woods for Music) sits just off the edge, a drag brings it in */   /* phone: frame the lit places in the strip above the sheet */
     animTo(fitBox(union(L), clear(), wide() ? 18 : 16), 560);
   }
   function xpPick(e) {
@@ -382,7 +410,7 @@
     function rel(e) { var r = el.getBoundingClientRect(); return [e.clientX - r.left, e.clientY - r.top]; }
     el.addEventListener('pointerdown', function (e) {
       M.free = false;   /* the visitor takes over: the edge limit returns */
-      if (e.target.closest('.pkpl-tools,.pkpl-amtag,.pkpl-find,.pkpl-xb,.pkpl-pl,.pkpl-ab')) return;
+      if (e.target.closest('.pkpl-tools,.pkpl-amtag,.pkpl-find,.pkpl-xb,.pkpl-pl,.pkpl-ab,.pkpl-ps,.pkpl-psg')) return;
       if (e.pointerType === 'mouse' && e.button !== 0) return;
       P[e.pointerId] = rel(e); cancelAnimationFrame(M.anim); cancelAnimationFrame(M.glide);
       var q = pts(); start = { s: M.s, tx: M.tx, ty: M.ty, p: q.map(function (a) { return a.slice(); }), t: Date.now() }; if (q.length === 1) moved = false;
@@ -429,6 +457,7 @@
     el.addEventListener('pointerleave', function (e) { if (e.pointerType === 'mouse') hover(''); });
     el.addEventListener('click', function (e) {
       if (el._drag && Date.now() - el._drag < 140) { e.stopPropagation(); e.preventDefault(); return; }
+      if (e.target.closest('.pkpl-psg') || (e.target.closest('.pkpl-ps') && !e.target.closest('button'))) return;   /* the phone sheet's handle and its blank space are not the map */
       var xb = e.target.closest('[data-xp]'); if (xb) { xpPick(xb.getAttribute('data-xp')); return; }
       var gb = e.target.closest('[data-go]'); if (gb) { go(gb.getAttribute('data-go')); return; }
       var hp = e.target.closest('[data-hp]'); if (hp) { if (M.title) { M.title = false; } open(hp.getAttribute('data-hp')); return; }
