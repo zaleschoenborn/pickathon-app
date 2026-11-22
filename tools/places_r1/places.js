@@ -306,7 +306,7 @@
     if (ab) ab.innerHTML = M.xp === 'Architecture' ? '<p>Every summer we build a small city in the forest. Each neighborhood is designed and built new with architects, students, builders and makers, and when the festival ends the structures move on to permanent homes in the community. Two of our builds have won AIA awards.</p><button type="button" class="pk-cta sec pkpl-abb" data-go="build">Build with Pickathon</button>' : '';
     var pl = $('.pkpl-pl', t), L = M.xp ? litSet() : [];   /* desktop: where this experience happens; a row opens the place (Zale, Nov 19) */
     if (pl && v2 && !M.xp && !M.amen) {   /* MOCK round 5: before a pick, every neighborhood is a way in */
-      var G = [['stage', 'Stages'], ['around', 'Gathering'], ['camp', 'Camping']], D2 = data().hoods;
+      var G = [['stage', 'Stages'], ['around', 'Hangouts'], ['camp', 'Camping']], D2 = data().hoods;
       pl.className = 'pkpl-pl pkpl-cols pkpl-c3'; t.classList.add('pkpl-long');
       pl.innerHTML = G.map(function (g) { var ks = ids().filter(function (k) { return (D2[k].k || 'around') === g[0]; }); return ks.length ? '<p class="pkpl-gh">' + g[1] + '</p>' + ks.map(function (k) { return '<button type="button" class="pkpl-pr" data-hp="' + k + '"><img src="' + esc(emb(k)) + '" alt=""><span><b>' + esc(D2[k].n) + '</b></span></button>'; }).join('') : ''; }).join('');
       return;
