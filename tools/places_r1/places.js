@@ -162,13 +162,16 @@
     litSet().forEach(function (k) { var b = box(k), mx = (b[0] + b[2]) / 2, my = (b[1] + b[3]) / 2, x = M.tx + mx * M.s, y = M.ty + my * M.s, d = null;
       if (y < cr.y + 10) d = 'up'; else if (y > cr.y + cr.h - 10) d = 'down'; else if (x < cr.x + 10) d = 'left'; else if (x > cr.x + cr.w - 10) d = 'right';
       if (!d || !D4[k]) return; var ar = { up: '\u2191', down: '\u2193', left: '\u2190', right: '\u2192' }[d];
-      var px = d === 'left' ? cr.x + 8 : d === 'right' ? cr.x + cr.w - 8 : Math.max(cr.x + 70, Math.min(cr.x + cr.w - 70, x)), py = d === 'up' ? cr.y + 8 : d === 'down' ? cr.y + cr.h - 52 : Math.max(cr.y + 30, Math.min(cr.y + cr.h - 60, y));
+      var px = d === 'left' ? cr.x + 8 : d === 'right' ? cr.x + cr.w - 8 : Math.max(cr.x + 70, Math.min(cr.x + cr.w - (d === 'down' ? 170 : 70), x)), py = d === 'up' ? cr.y + 8 : d === 'down' ? cr.y + cr.h - 52 : Math.max(cr.y + 30, Math.min(cr.y + cr.h - 60, y));
       out.push('<button type="button" class="pkpl-edgetag pkpl-et-' + d + '" data-et="' + k + '" data-mx="' + mx + '" data-my="' + my + '" style="left:' + Math.round(px) + 'px;top:' + Math.round(py) + 'px">' + ar + ' ' + esc(D4[k].n) + '</button>'); });
-    host.innerHTML = out.join('');
+    var byEdge = {}; out = out.filter(function (h) { var d = /pkpl-et-(\w+)/.exec(h)[1]; byEdge[d] = (byEdge[d] || 0) + 1; return byEdge[d] <= 3; });
+    var extra = Object.keys(byEdge).reduce(function (a, d) { return a + Math.max(0, byEdge[d] - 3); }, 0);
+    if (extra) out.push('<button type="button" class="pkpl-edgetag pkpl-et-down pkpl-etall" style="left:' + Math.round(cr.x + 60) + 'px;top:' + Math.round(cr.y + cr.h - 52) + 'px">+' + extra + ' more</button>');
+    host.innerHTML = out.join('');   /* round 3: never a wall of tags */
     ['up', 'down'].forEach(function (d) { var T = $$('.pkpl-et-' + d, host).sort(function (a, b) { return a.offsetLeft - b.offsetLeft; }), edge = -1e9;   /* tags on one edge never overlap (round 2) */
       T.forEach(function (t) { var w = t.offsetWidth, l = Math.max(t.offsetLeft - w / 2, edge + 8); t.style.left = Math.round(l + w / 2) + 'px'; edge = l + w; }); });
   }
-  function moving(on) { M.moving = on; M.el.classList.toggle('pkpl-moving', on); if (!on) { cancelAnimationFrame(M.raf); M.raf = 0; paint(); } }
+  function moving(on) { if (on && M) { var ht = $('.pkpl-hovtag', M.el); if (ht) ht.hidden = true; } M.moving = on; M.el.classList.toggle('pkpl-moving', on); if (!on) { cancelAnimationFrame(M.raf); M.raf = 0; paint(); } }
   function fitBox(b, reg, pad, keepS) {   /* region in map-box px {x,y,w,h} */
     pad = pad == null ? 24 : pad;
     var s = keepS || Math.min((reg.w - pad * 2) / (b[2] - b[0]), (reg.h - pad * 2) / (b[3] - b[1]));
@@ -483,7 +486,8 @@
     el.addEventListener('pointerleave', function (e) { if (e.pointerType === 'mouse') hover(''); });
     el.addEventListener('click', function (e) {
       if (el._drag && Date.now() - el._drag < 140) { e.stopPropagation(); e.preventDefault(); return; }
-      var et = e.target.closest('.pkpl-edgetag'); if (et) { var cr5 = clear(), mx5 = +et.getAttribute('data-mx'), my5 = +et.getAttribute('data-my'); M.free = true; animTo([M.s, cr5.x + cr5.w / 2 - mx5 * M.s, cr5.y + cr5.h / 2 - my5 * M.s], 460); return; }   /* slide to the tagged place */
+      var et = e.target.closest('.pkpl-edgetag'); if (et && et.classList.contains('pkpl-etall')) { M.free = true; var crA = clear(), vA = fitBox(union(litSet()), crA, 24); animTo(vA, 520); return; }
+      if (et) { var cr5 = clear(), mx5 = +et.getAttribute('data-mx'), my5 = +et.getAttribute('data-my'); M.free = true; animTo([M.s, cr5.x + cr5.w / 2 - mx5 * M.s, cr5.y + cr5.h / 2 - my5 * M.s], 460); return; }   /* slide to the tagged place */
       if (e.target.closest('.pkpl-psh2,.pkpl-psq') || (e.target.closest('.pkpl-ps') && !e.target.closest('button'))) return;   /* the phone sheet's handle and its blank space are not the map */
       var xb = e.target.closest('[data-xp]'); if (xb) { xpPick(xb.getAttribute('data-xp')); return; }
       var gb = e.target.closest('[data-go]'); if (gb) { go(gb.getAttribute('data-go')); return; }
@@ -620,7 +624,7 @@
     if (el._key === key) return; el._key = key;
     var dayN = {}; (D.days || []).forEach(function (d) { dayN[d.id] = d.n; });
     var rows = has ? S[TOP.day] : [], showN = TOP.all ? rows.length : 3;
-    var html = (XH && M && M.xp && wide() ? '<button type="button" class="pkpl-up" data-pk="up"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5 8 12l7 7"/></svg>Map \u00b7 ' + esc(M.xp) + '</button>' : '') +
+    var html = (XH && M && wide() ? '<button type="button" class="pkpl-up" data-pk="up"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5 8 12l7 7"/></svg>Map' + (M.xp ? ' \u00b7 ' + esc(M.xp) : '') + '</button>' : '') +
       (XH && wide() ? '<div class="pkpl-hxr" role="toolbar" aria-label="Experiences">' + XO.map(function (e) { return '<button type="button" data-pk="xprow" data-e="' + esc(e) + '" aria-pressed="' + (e === XE) + '">' + xpIcon(e) + '<span>' + esc(e) + '</span></button>'; }).join('') + '</div>' : '')   /* Zale, Nov 22: the experience row is the main navigation on every size, desktop neighborhood pages too */ + '<div class="pkpl-bar" role="button" tabindex="0" aria-expanded="true" aria-label="Show or hide ' + esc(h.n) + '"><i aria-hidden="true"></i><img class="pkpl-bi" src="' + esc(emb(k)) + '" alt=""><span class="pkpl-bn">' + esc(h.n) + (XE ? '<small> \u00b7 ' + esc(XE) + '</small>' : '') + '</span></div>' + '<div class="pkpl-sheet' + (has ? ' pkpl-has' : '') + '">' +
       '<div class="pkpl-grab" aria-hidden="true"><i></i></div>' +
       '<div class="pkpl-hero" aria-roledescription="carousel" aria-label="' + esc(h.n) + ' photos">' +
@@ -640,6 +644,7 @@
       soon(k, XE, h, has) + vids(k, XE) +
       alsoAt(k, XE, h) + '<div class="pkpl-credw"></div>' +
       '</div>';
+    setTimeout(railArrows, 400);
     el.innerHTML = html; var cr9 = $('.pkpl-cred', el), cw9 = $('.pkpl-credw', el); if (cr9 && cw9) cw9.appendChild(cr9);   /* Nov 22 review: who built it comes after what's here */
     TOP.i = 0; heroArm(el); document.body.classList.toggle('pkpl-xpup', !!$('.pkpl-up', el));   /* our link up replaces the app's Back to map */
   }
@@ -769,8 +774,8 @@
     var hx = window.__pkMapXP; if (hx) { window.__pkMapXP = '';   /* Zale Nov 22 01:03: Home's 'Find Music in 9 neighborhoods' opens the map with Music picked; a place opened from Home keeps the experience (design_home-34) */
       if (XO.indexOf(hx) >= 0) { if (t.r === 'hoods') { if (M.xp !== hx) setTimeout(function () { if (M.xp !== hx) xpPick(hx); }, 0); } else if (t.r === 'hood') M.xp = hx; } }
     if (t.r === 'hood' && t.h && t.h !== M.cur && HH.shapes[t.h]) { if (M.title) { M.title = false; M.el.classList.add('pkpl-notitle'); } frame(t.h, !M.s); }   /* arriving at a place shows it, never the title screen */
-    if (t.r === 'hoods' && M.cur) { M.was = M.cur; M.cur = ''; M.hot = ''; $$('.pkpl-hot', M.el).forEach(function (r) { r.classList.remove('pkpl-hot'); }); if (v2p()) { M.ps = 1; titleDraw(); psPlace(); var mo2 = $('.pkpl-psmore', M.el); if (mo2) mo2.textContent = litSet().length === 1 ? 'See it' : 'See them'; }   /* round 2 #5 */ lit(); if (M.xp || M.amen) fitLit(); setTimeout(xbShow, 60); }   /* closing a card: back to the map you left, the experience's places lit, the sheet half open and the pick in view (review Nov 22 #1) */   /* closing a card: back to the experience's places, lit */
-    settleSheet(); dedupe(); shape(); backMap();
+    if (t.r === 'hoods' && M.cur) { M.was = M.cur; M.cur = ''; M.hot = ''; $$('.pkpl-hot', M.el).forEach(function (r) { r.classList.remove('pkpl-hot'); }); var bd9 = $('.pkpl-body', M.el), pd9 = bd9 && $('.pkpl-pd', bd9); if (bd9) bd9._hk = null; if (pd9 && bd9._sum) { pd9.textContent = bd9._sum; pd9.classList.remove('on'); } if (v2p()) { M.ps = 1; titleDraw(); psPlace(); var mo2 = $('.pkpl-psmore', M.el); if (mo2) mo2.textContent = litSet().length === 1 ? 'See it' : 'See them'; }   /* round 2 #5 */ lit(); if (M.xp || M.amen) fitLit(); setTimeout(xbShow, 60); }   /* closing a card: back to the map you left, the experience's places lit, the sheet half open and the pick in view (review Nov 22 #1) */   /* closing a card: back to the experience's places, lit */
+    settleSheet(); dedupe(); shape(); backMap(); setTimeout(railArrows, 600);
     var full = $('[data-pl="full"]', M.el); if (full) full.hidden = !M.cur && !M.amen && !(M.s > startView()[0] * 1.15);
     moreCue();
   }
@@ -794,6 +799,17 @@
     if (!b) return;
     var el = on ? moreScroller() : null;
     b.classList.toggle('pkpl-more-on', !!el && el.scrollTop + el.clientHeight < el.scrollHeight - 24);
+  }
+  function railArrows() {   /* round 3: on desktop every sideways rail on a neighborhood page gets ‹ › arrows, since a mouse can't swipe */
+    if (!wide() || top().r !== 'hood') return;
+    var root = document.getElementById('pk-scroll-desk') || document.getElementById('root'); if (!root) return;
+    $$('#pkpl-top .pkpl-vr, #pkpl-top .pkpl-at, section.pk-hd-w *', root).forEach(function (r) {
+      if (r._ra || r.scrollWidth <= r.clientWidth + 20) return; var cs = getComputedStyle(r); if (!/(auto|scroll)/.test(cs.overflowX)) return;
+      r._ra = 1; var par = r.parentElement; par.classList.add('pkpl-rail');
+      var mk = function (dir) { var b = document.createElement('button'); b.type = 'button'; b.className = 'pkpl-rarr ' + dir; b.setAttribute('aria-label', dir === 'l' ? 'Scroll back' : 'Scroll on'); b.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="' + (dir === 'l' ? 'M15 5 8 12l7 7' : 'M9 5l7 7-7 7') + '"/></svg>'; b.addEventListener('click', function (e) { e.stopPropagation(); r.scrollBy({ left: (dir === 'l' ? -1 : 1) * r.clientWidth * 0.8, behavior: calm() ? 'auto' : 'smooth' }); }); par.appendChild(b); return b; };
+      var bl = mk('l'), br = mk('r'), upd = function () { bl.hidden = r.scrollLeft < 8; br.hidden = r.scrollLeft + r.clientWidth >= r.scrollWidth - 8; var t = r.offsetTop + r.offsetHeight / 2; bl.style.top = br.style.top = t + 'px'; };
+      r.addEventListener('scroll', upd, { passive: true }); upd();
+    });
   }
   function shape() {   /* one clean page (Zale, Nov 19): fold the page's long description into the card with Read more, drop the duplicate video and summer boxes, credits into the story, walk times into the map card */
     if (top().r !== 'hood') return; var w = document.querySelector('#root section.pk-hd-w'), card = document.getElementById('pkpl-top'); if (!w || !card) return;
@@ -832,7 +848,7 @@
       if (Q.length > 1 && window.__pkRadio) window.__pkRadio(Q, ''); else if (Q[0] && window.__pkPlayVid) window.__pkPlayVid(Q[0].u, Q[0].c); return; }   /* tap one: the five play in a row */
     if (a === 'vall') { go('watch', { hood: b.getAttribute('data-h') }); return; }
     if (a === 'xprow') { xpPick(b.getAttribute('data-e')); return; }   /* same rule as the phone row: to the map with that experience lit */
-    if (a === 'xp') { TOP.xp = b.getAttribute('data-e'); TOP.all = false; if (M) { M.xp = TOP.xp; lit(); } var sc = scroller(); drawTop(); xbDraw(); var sh = $('#pkpl-top .pkpl-sheet'); if (sh) sh.scrollTop = 0; return; }   /* Zale, Nov 22: switching here also switches the row and the map */
+    if (a === 'xp') { TOP.xp = b.getAttribute('data-e'); TOP.all = false; if (M) { M.xp = TOP.xp; lit(); } var sc = scroller(); drawTop(); xbDraw(); var sh = $('#pkpl-top .pkpl-sheet'); if (sh) sh.scrollTop = 0; if (wide()) { var msc = moreScroller(); if (msc) msc.scrollTop = 0; } shape(); return; }   /* round 3: the switch is seen (back to the photo), credits stay */   /* Zale, Nov 22: switching here also switches the row and the map */
   }
   /* sideways swipe on the sheet steps to the next place (phone, tablet; a mouse drag on desktop) */
   (function swipe() {
