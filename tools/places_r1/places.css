@@ -547,3 +547,14 @@ html body.pkpl-v2 #root #pkpl .pkpl-pl{margin-top:14px}
 @keyframes pkpl-rise{from{transform:translateY(46vh);opacity:0}60%{opacity:1}to{transform:none;opacity:1}}
 html body.pkpl-v2 #root #pkpl .pkpl-body.pkpl-rise{animation:pkpl-rise .62s cubic-bezier(.2,.8,.2,1) both}
 html body.pkpl-v2 #root #pkpl .pkpl-g2,html body.pkpl-v2 #root #pkpl .pkpl-body{pointer-events:auto;position:relative;z-index:2}
+
+/* MOCK Nov 21 (Zale) phone: the map on top, the swipe row of experiences, the words and the experience's places under it */
+html body.pkpl-v2p:not(.pkpl-hood) #root #pkpl .pkpl-title{display:none!important}
+html body.pkpl-v2p:not(.pkpl-hood) #root #pkpl .pkpl-ps{position:absolute;left:0;right:0;bottom:0;z-index:4;overflow-y:auto;scrollbar-width:none;touch-action:pan-y;padding:14px 16px 20px;background:#12160F;color:#F2EDE3}
+html body.pkpl-v2p #root #pkpl .pkpl-ps::-webkit-scrollbar{display:none}
+html body.pkpl-v2p.pkpl-hood #root #pkpl .pkpl-ps{display:none}
+html body.pkpl-v2p #root #pkpl .pkpl-psh{margin:0 0 6px;font-family:'Pickathon 2014',sans-serif;font-size:22px;line-height:1.1;letter-spacing:.03em;text-transform:uppercase;color:#F2EDE3}
+html body.pkpl-v2p #root #pkpl .pkpl-psl{margin:0 0 6px;font:600 15px/1.4 'Bricolage Grotesque',system-ui,sans-serif;color:#E9B93C}
+html body.pkpl-v2p #root #pkpl .pkpl-ps .pkpl-pr{min-height:64px;padding:10px 2px;gap:14px}
+html body.pkpl-v2p:not(.pkpl-hood) #root .pkpl-xb{border-top:0;border-bottom:1px solid #2F372A;background:#12160F;padding-top:10px;padding-bottom:10px}
+html body.pkpl-v2p:not(.pkpl-hood) #root#root#root .pkpl-tools{bottom:calc(var(--pkpl-psb,200px))}

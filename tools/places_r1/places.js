@@ -211,7 +211,8 @@
   function lw() { return Math.round(Math.max(400, Math.min(480, window.innerWidth * 0.32))); }   /* desktop left column: phone-card width, the map is the hero (Zale, Nov 19) */
   function sheetOpen() { var sc = scroller(); return openH(sc ? sc.clientHeight : 600); }   /* the card opens to the phone's scroll area less a map margin at the top (Nov 20, Zale) */
   function openH(vh) { return Math.round(vh * 0.6); }   /* open: the sheet covers 60%, the map shows above it (the yesterday default, Zale, Nov 20) */
-  function clear() { var r = region(), t = wide() && top().r !== 'hood' ? lw() : 0, ti = $('.pkpl-title', M.el), up = wide() ? 78 : (M.title && ti ? Math.max(0, ti.offsetHeight - 14) : 0), dn = wide() ? 8 : (top().r === 'hood' ? sheetOpen() : 150); return { x: r.x + t, y: r.y + up, w: r.w - t, h: Math.max(160, r.h - up - dn) }; }   /* the lit places fill what is left */   /* above the experience bar and the amenity tag */
+  function psH() { return M.xp ? Math.round(M.vh * 0.4) : 132; }   /* MOCK: phone panel under the experience row */
+  function clear() { var r = region(), t = wide() && top().r !== 'hood' ? lw() : 0, ti = $('.pkpl-title', M.el), up = wide() ? 78 : (M.title && ti ? Math.max(0, ti.offsetHeight - 14) : 0), dn = wide() ? 8 : (top().r === 'hood' ? sheetOpen() : 150); if (V2 && !wide() && top().r !== 'hood') { up = 8; dn = psH() + 62; } return { x: r.x + t, y: r.y + up, w: r.w - t, h: Math.max(160, r.h - up - dn) }; }   /* the lit places fill what is left */   /* above the experience bar and the amenity tag */
   function region() {
     if (wide() || top().r !== 'hood') return { x: 0, y: 0, w: M.vw, h: M.vh };
     /* the strip the map shows above the sheet: from the map top to the sheet's real top edge (open ~40%, folded almost all) */
@@ -268,6 +269,14 @@
       if (!M.xp) $('.pkpl-l', t).textContent = 'Choose your own adventure: ' + XO.length + ' experiences across ' + ids().length + ' neighborhoods. Pick one above and the map lights up.';
       if (bd._xp !== M.xp) { bd._xp = M.xp; bd.scrollTop = 0; bd.classList.remove('pkpl-rise'); void bd.offsetWidth; if (M.xp && !calm()) bd.classList.add('pkpl-rise'); }
       var more = function () { bd.classList.toggle('pkpl-more', bd.scrollHeight - bd.scrollTop > bd.clientHeight + 4); }; if (!bd._on) { bd._on = 1; bd.addEventListener('scroll', more); } setTimeout(more, 0);
+    }
+    var v2p = V2 && !wide(); document.body.classList.toggle('pkpl-v2p', v2p);
+    if (v2p) {   /* MOCK phone: map on top, the swipe row of experiences, then the words and that experience's places */
+      var ps = $('.pkpl-ps', M.el); if (!ps) { ps = document.createElement('div'); ps.className = 'pkpl-ps'; M.el.appendChild(ps); }
+      var Lp = M.xp ? litSet() : [];
+      ps.innerHTML = M.xp ? '<h2 class="pkpl-psh">' + esc(M.xp) + ' at Pickathon</h2><p class="pkpl-psl">' + esc(XH.XPD[M.xp] || '') + '</p>' + Lp.map(function (k) { var h = data().hoods[k]; return '<button type="button" class="pkpl-pr" data-hp="' + k + '"><img src="' + esc(emb(k)) + '" alt=""><span><b>' + esc(h.n) + '</b><small>' + esc(xpLine(M.xp, k)) + '</small></span></button>'; }).join('')
+        : '<h2 class="pkpl-psh">Summer camp for your soul</h2><p class="pkpl-psl">Choose your own adventure: swipe the ' + XO.length + ' experiences, pick one, and the map lights up.</p>';
+      ps.scrollTop = 0; ps.style.height = psH() + 'px'; var xb2 = $('.pkpl-xb', M.el); if (xb2) xb2.style.bottom = psH() + 'px';
     }
     var ab = $('.pkpl-ab', t);   /* Architecture: what it is and how to build with us (Zale, Nov 19: it's how sponsors find us) */
     if (ab) ab.innerHTML = M.xp === 'Architecture' ? '<p>Every summer we build a small city in the forest. Each neighborhood is designed and built new with architects, students, builders and makers, and when the festival ends the structures move on to permanent homes in the community. Two of our builds have won AIA awards.</p><button type="button" class="pk-cta sec pkpl-abb" data-go="build">Build with Pickathon</button>' : '';
