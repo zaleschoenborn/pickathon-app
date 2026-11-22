@@ -596,3 +596,23 @@ html body.pkpl-v2 #root #pkpl .pkpl-pl.pkpl-cols.pkpl-c3{grid-template-columns:r
 html body.pkpl-v2 #root #pkpl .pkpl-pl.pkpl-cols.pkpl-c3 .pkpl-pr{min-height:46px;gap:8px}
 html body.pkpl-v2 #root #pkpl .pkpl-pl.pkpl-cols.pkpl-c3 .pkpl-pr img{width:26px;height:26px}
 html body.pkpl-v2 #root #pkpl .pkpl-pl.pkpl-cols.pkpl-c3 .pkpl-pr b{font-size:13.5px}
+
+/* MOCK round 4 (Zale, Nov 21 20:28): a narrative at all times: Choose your adventure, the buttons, the experience with its icon, how many neighborhoods, the pointer line, the places. Resting rows are quiet, the pointed one is solid */
+html body.pkpl-v2 #root #pkpl .pkpl-gk{flex:none;margin:0 0 12px;font:800 13px/1 'Bricolage Grotesque',system-ui,sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#E9B93C;position:relative;z-index:2}
+html body.pkpl-v2 #root #pkpl .pkpl-title{padding-top:22px!important}
+html body.pkpl-v2 #root #pkpl .pkpl-g2{padding-bottom:18px}
+html body.pkpl-v2 #root #pkpl .pkpl-body .pkpl-k{display:none}
+html body.pkpl-v2 #root #pkpl .pkpl-title:not(.pkpl-tx) .pkpl-body{padding-top:28px}
+html body.pkpl-v2 #root #pkpl .pkpl-pc{margin:16px 0 0;font:800 12.5px/1 'Bricolage Grotesque',system-ui,sans-serif;letter-spacing:.18em;text-transform:uppercase;color:rgba(242,237,227,.72)}
+html body.pkpl-v2 #root #pkpl .pkpl-long .pkpl-pd{margin-top:8px;min-height:22px}
+html body.pkpl-v2 #root #pkpl .pkpl-pl.pkpl-cols .pkpl-pr{min-height:44px;padding:5px 8px;border-radius:6px;border-bottom-color:transparent;transition:background .15s,color .15s}
+html body.pkpl-v2 #root #pkpl .pkpl-pl.pkpl-cols .pkpl-pr img{opacity:.6}
+html body.pkpl-v2 #root #pkpl .pkpl-pl.pkpl-cols .pkpl-pr b{color:rgba(242,237,227,.78);font-weight:600}
+html body.pkpl-v2 #root #pkpl .pkpl-pl.pkpl-cols .pkpl-pr.pkpl-hot{background:#F2EDE3;border-color:#F2EDE3}
+html body.pkpl-v2 #root #pkpl .pkpl-pl.pkpl-cols .pkpl-pr.pkpl-hot img{opacity:1;filter:invert(1)}
+html body.pkpl-v2 #root #pkpl .pkpl-pl.pkpl-cols .pkpl-pr.pkpl-hot b{color:#12160F;font-weight:800}
+html body.pkpl-v2 #root #pkpl .pkpl-pl.pkpl-cols.pkpl-c1{grid-template-columns:1fr}
+html body.pkpl-v2 #root #pkpl .pkpl-pl.pkpl-cols.pkpl-c3 .pkpl-pr{padding:5px 6px}
+
+html body.pkpl-v2 #root #pkpl .pkpl-long .pkpl-pd{white-space:normal;min-height:42px;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;font-size:14.5px}
+html body.pkpl-v2 #root #pkpl .pkpl-pl.pkpl-cols .pkpl-pr.pkpl-hot{background:#F6F1E6}

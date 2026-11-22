@@ -212,6 +212,11 @@
   function lw() { return Math.round(Math.max(400, Math.min(480, window.innerWidth * 0.32))); }   /* desktop left column: phone-card width, the map is the hero (Zale, Nov 19) */
   function sheetOpen() { var sc = scroller(); return openH(sc ? sc.clientHeight : 600); }   /* the card opens to the phone's scroll area less a map margin at the top (Nov 20, Zale) */
   function openH(vh) { return Math.round(vh * 0.6); }   /* open: the sheet covers 60%, the map shows above it (the yesterday default, Zale, Nov 20) */
+  function v2Fit(v, L, one) {   /* MOCK round 4: no empty margin on the right; the framed places sit against the right side and the map runs under the left column */
+    var b = union(L), s1 = v[0], tx = v[1], east = b[2] * s1 + tx, lim = M.vw - (one ? 190 : 84);
+    if (east < lim) tx += lim - east;
+    return [s1, tx, v[2]];
+  }
   function psH() { return M.xp ? Math.round(M.vh * 0.4) : 132; }   /* MOCK: phone panel under the experience row */
   function clear() { var r = region(), t = wide() && top().r !== 'hood' ? lw() : 0, ti = $('.pkpl-title', M.el), up = wide() ? 78 : (M.title && ti ? Math.max(0, ti.offsetHeight - 14) : 0), dn = wide() ? 8 : (top().r === 'hood' ? sheetOpen() : 150); if (V2 && !wide() && top().r !== 'hood') { up = 8; dn = psH() + 62; } if (V2 && wide()) up = 16; return { x: r.x + t, y: r.y + up, w: r.w - t, h: Math.max(160, r.h - up - dn) }; }   /* the lit places fill what is left */   /* above the experience bar and the amenity tag */
   function region() {
@@ -268,12 +273,14 @@
       var plx = $('.pkpl-pl', bd), abx = $('.pkpl-ab', bd), pd = $('.pkpl-pd', bd);
       if (!pd) { pd = document.createElement('p'); pd.className = 'pkpl-pd'; bd.insertBefore(pd, plx); if (abx) bd.appendChild(abx);
         var hv = 0; bd.addEventListener('mouseover', function (e) { var r = e.target.closest('.pkpl-pr[data-hp]'); if (!r || !M.xp) return; var k = r.getAttribute('data-hp'), h = data().hoods[k]; if (bd._hk === k) return; bd._hk = k;
-          pd.innerHTML = '<b>' + esc(h.n) + '</b> ' + esc(xpLine(M.xp, k)); pd.classList.add('on'); clearTimeout(hv); hv = setTimeout(function () { animTo(fitBox(union([k]), clear(), 18, M.s), 460); }, 110); }); }
+          pd.innerHTML = '<b>' + esc(h.n) + '</b> ' + esc(xpLine(M.xp, k)); pd.classList.add('on'); $$('.pkpl-pr', bd).forEach(function (x) { x.classList.toggle('pkpl-hot', x === r); }); M.was = k; lit(); clearTimeout(hv); hv = setTimeout(function () { M.free = true; animTo(v2Fit(fitBox(union([k]), clear(), 18, Math.min(maxS(), (M.s0 || M.s) * 1.45)), [k], 1), 520); }, 110); }); }
       if (M.xp === 'Architecture') { var l2 = $('.pkpl-l', t); if (l2) l2.textContent = (XH.XPD.Architecture || '').split('. ')[0].replace(/\.?$/, '.'); }   /* MOCK: Architecture kept short (Zale, Nov 21); final words are Copy's */
-      if (bd._xp !== M.xp) { bd._hk = null; pd.classList.remove('on'); pd.textContent = 'Point at a place to find it on the map.'; }
+      if (bd._xp !== M.xp) { bd._hk = null; pd.classList.remove('on'); pd.textContent = 'Point at one to find it on the map.'; }
+      var pc = $('.pkpl-pc', bd); if (!pc) { pc = document.createElement('p'); pc.className = 'pkpl-pc'; bd.insertBefore(pc, pd); } var nL = M.xp ? litSet().length : 0; pc.textContent = M.xp ? 'In ' + nL + (nL === 1 ? ' neighborhood' : ' neighborhoods') : ''; pc.hidden = !M.xp;
+      if (!$('.pkpl-gk', t)) { var gk = document.createElement('p'); gk.className = 'pkpl-gk'; gk.textContent = 'Choose your adventure'; t.insertBefore(gk, g2); }
       $$('.pkpl-xe', g2).forEach(function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-xp') === M.xp ? 'true' : 'false'); });
       bk.hidden = true;
-      if (!M.xp) $('.pkpl-l', t).textContent = 'Choose your own adventure: ' + XO.length + ' experiences across ' + ids().length + ' neighborhoods. Pick one above and the map lights up.';
+      if (!M.xp) $('.pkpl-l', t).textContent = XO.length + ' experiences across ' + ids().length + ' neighborhoods. Pick one and the map lights up.';
       if (bd._xp !== M.xp) { bd._xp = M.xp; bd.scrollTop = 0; bd.classList.remove('pkpl-rise'); void bd.offsetWidth; if (M.xp && !calm()) bd.classList.add('pkpl-rise'); }
       var more = function () { bd.classList.toggle('pkpl-more', bd.scrollHeight - bd.scrollTop > bd.clientHeight + 4); }; if (!bd._on) { bd._on = 1; bd.addEventListener('scroll', more); } setTimeout(more, 0);
     }
@@ -291,7 +298,7 @@
     if (pl && v2 && !M.xp && !M.amen) { pl.innerHTML = ''; return; }
     if (pl && !M.xp && !M.amen) { pl.innerHTML = '<div class="pkpl-pg">' + XO.map(function (e) { return '<button type="button" class="pkpl-xe" data-xp="' + e + '">' + xpIcon(e) + '<span>' + e + '</span></button>'; }).join('') + '</div>'; return; }   /* arrival: choose your adventure right under the title */
     if (pl) pl.innerHTML = L.length ? L.map(function (k) { var h = data().hoods[k]; return '<button type="button" class="pkpl-pr" data-hp="' + k + '"><img src="' + esc(emb(k)) + '" alt=""><span><b>' + esc(h.n) + '</b><small>' + esc(xpLine(M.xp, k)) + '</small></span></button>'; }).join('') : '';
-    if (v2 && pl) { pl.classList.toggle('pkpl-cmp', L.length > 6 && L.length <= 9); pl.classList.toggle('pkpl-c3', L.length > 9 && V2L === 'tiles'); pl.classList.toggle('pkpl-cols', L.length > 9); t.classList.toggle('pkpl-long', L.length > 9); }
+    if (v2 && pl) { pl.classList.remove('pkpl-cmp'); pl.classList.add('pkpl-cols'); pl.classList.toggle('pkpl-c3', L.length > 9); pl.classList.toggle('pkpl-c1', L.length <= 4); t.classList.add('pkpl-long'); }
     if (v2) { if (pl) pl.classList.remove('pkpl-many'); t.classList.remove('pkpl-tight', 'pkpl-tight2', 'pkpl-tight3', 'pkpl-tight4', 'pkpl-tight5', 'pkpl-tight6'); return; }
     if (pl && wide()) { pl.classList.remove('pkpl-many'); t.classList.remove('pkpl-tight', 'pkpl-tight2', 'pkpl-tight3', 'pkpl-tight4', 'pkpl-tight5', 'pkpl-tight6'); var over = function () { return t.scrollHeight > t.clientHeight + 2; };   /* fit without scrolling: full rows, then a compact grid, then a tighter title (Zale, Nov 19) */
       if (over()) t.classList.add('pkpl-tight'); if (L.length && over()) pl.classList.add('pkpl-many'); if (over()) t.classList.add('pkpl-tight2'); if (over()) t.classList.add('pkpl-tight3'); if (over()) t.classList.add('pkpl-tight4'); if (over()) t.classList.add('pkpl-tight5'); if (over()) t.classList.add('pkpl-tight6'); }
@@ -315,7 +322,7 @@
     if (V2 && wide() && L.length > 3 && !/[?&]z=0/.test(location.search)) {   /* MOCK: fill the screen: frame the heart of this experience, the far places sit off the edge and a drag or a row brings them in */
       var reg = clear(), s0 = fitBox(union(L), reg, 18)[0], K = L.slice(), min = Math.ceil(L.length * 0.6);
       while (K.length > min && fitBox(union(K), reg, 18)[0] < s0 * 1.7) { var best = null, bs = 0; K.forEach(function (k) { var s1 = fitBox(union(K.filter(function (j) { return j !== k; })), reg, 18)[0]; if (s1 > bs) { bs = s1; best = k; } }); K = K.filter(function (j) { return j !== best; }); }
-      animTo(fitBox(union(K), reg, 18), 560); return;
+      var f0 = fitBox(union(K), reg, 18), vv = v2Fit(fitBox(union(K), reg, 18, Math.min(maxS(), f0[0] * 1.4)), K);   /* wide enough that the farm reaches from under the column to the right side */ M.s0 = vv[0]; M.free = true; animTo(vv, 560); return;
     }
     animTo(fitBox(union(L), clear(), wide() ? 18 : 16), 560);
   }
