@@ -522,3 +522,139 @@ html body.pkpl-hood:not(.pkpl-wide) #root#root#root#root#root#root#root#root .pk
 /* Nov 20 (Zale): phone neighborhood sheet: a soft fade at the bottom while more text is below */
 body.pkpl-hood:not(.pkpl-wide) #pkpl-top::after{content:'';position:absolute;left:0;right:0;bottom:0;height:56px;pointer-events:none;z-index:3;background:linear-gradient(180deg,rgba(43,38,40,0) 0%,rgba(43,38,40,.9) 80%,#2B2628 100%);opacity:0;transition:opacity .25s}
 body.pkpl-hood:not(.pkpl-wide) #pkpl-top.pkpl-more::after{opacity:1}
+
+/* MOCK Nov 21 (Zale): desktop left column. Experiences pinned at the top of the column, the words and the places under them; the map runs under the column and fades in, no hard edge; the lower part rises once on a pick, then scrolls */
+body.pkpl-v2:not(.pkpl-hood) #pkpl .pkpl-xb{display:none}
+html body.pkpl-v2 #root #pkpl .pkpl-title{padding:28px 32px 0!important;justify-content:flex-start;overflow:visible;background:none}
+html body.pkpl-v2 #root #pkpl .pkpl-title::before{display:none}
+html body.pkpl-v2 #root #pkpl .pkpl-tbg{display:none!important}
+html body.pkpl-v2 #root #pkpl .pkpl-title::after{content:'';position:absolute;top:0;bottom:0;left:0;width:calc(100% + 170px);z-index:-1;pointer-events:none;background:linear-gradient(90deg,rgba(18,22,15,.93) 0%,rgba(18,22,15,.88) 58%,rgba(18,22,15,.5) 82%,rgba(18,22,15,0) 100%)}
+html body.pkpl-v2.pkpl-v2g #root #pkpl .pkpl-title::after{width:calc(100% + 110px);background:linear-gradient(90deg,rgba(18,22,15,.98) 0%,rgba(18,22,15,.96) 72%,rgba(18,22,15,.6) 90%,rgba(18,22,15,0) 100%)}
+html body.pkpl-v2 #root #pkpl .pkpl-g2{flex:none;display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding-bottom:22px;border-bottom:1px solid rgba(242,237,227,.16)}
+html body.pkpl-v2 #root #pkpl .pkpl-g2 .pkpl-xe{min-width:0;min-height:60px;padding:8px 4px;font-size:12.5px;background:rgba(18,22,15,.6)}
+html body.pkpl-v2 #root #pkpl .pkpl-g2 .pkpl-xe:hover{border-color:#D6B54A;color:#FFE7A3}
+html body.pkpl-v2 #root #pkpl .pkpl-g2 .pkpl-xe[aria-pressed="true"]{background:#F2EDE3;border-color:#F2EDE3;color:#12160F}
+html body.pkpl-v2 #root #pkpl .pkpl-body{flex:1 1 auto;min-height:0;overflow-y:auto;scrollbar-width:none;padding:26px 0 40px;display:flex;flex-direction:column}
+html body.pkpl-v2 #root #pkpl .pkpl-body::-webkit-scrollbar{display:none}
+html body.pkpl-v2 #root #pkpl .pkpl-body>*{flex-shrink:0}
+html body.pkpl-v2 #root #pkpl .pkpl-body.pkpl-more{-webkit-mask-image:linear-gradient(180deg,#000 0,#000 calc(100% - 84px),transparent 100%);mask-image:linear-gradient(180deg,#000 0,#000 calc(100% - 84px),transparent 100%)}
+html body.pkpl-v2 #root #pkpl .pkpl-title:not(.pkpl-tx) .pkpl-body{justify-content:flex-start;padding-top:40px}
+html body.pkpl-v2 #root #pkpl .pkpl-tx .pkpl-d{font-size:30px!important;gap:14px!important;margin-bottom:10px}
+html body.pkpl-v2 #root #pkpl .pkpl-tx .pkpl-xi{width:52px;height:52px;border-radius:10px}
+html body.pkpl-v2 #root #pkpl .pkpl-tx .pkpl-xi svg{width:30px;height:30px}
+html body.pkpl-v2 #root #pkpl .pkpl-tx .pkpl-l{display:block;-webkit-line-clamp:unset;overflow:visible;font-size:17px}
+html body.pkpl-v2 #root #pkpl .pkpl-pl{margin-top:14px}
+@keyframes pkpl-rise{from{transform:translateY(46vh);opacity:0}60%{opacity:1}to{transform:none;opacity:1}}
+html body.pkpl-v2 #root #pkpl .pkpl-body.pkpl-rise{animation:pkpl-rise .62s cubic-bezier(.2,.8,.2,1) both}
+html body.pkpl-v2 #root #pkpl .pkpl-g2,html body.pkpl-v2 #root #pkpl .pkpl-body{pointer-events:auto;position:relative;z-index:2}
+
+/* MOCK Nov 21 (Zale) phone: the map on top, the swipe row of experiences, the words and the experience's places under it */
+html body.pkpl-v2p:not(.pkpl-hood) #root #pkpl .pkpl-title{display:none!important}
+html body.pkpl-v2p:not(.pkpl-hood) #root #pkpl .pkpl-ps{position:absolute;left:0;right:0;bottom:0;z-index:4;overflow-y:auto;scrollbar-width:none;touch-action:pan-y;padding:14px 16px 20px;background:#12160F;color:#F2EDE3}
+html body.pkpl-v2p #root #pkpl .pkpl-ps::-webkit-scrollbar{display:none}
+html body.pkpl-v2p.pkpl-hood #root #pkpl .pkpl-ps{display:none}
+html body.pkpl-v2p #root #pkpl .pkpl-psh{margin:0 0 6px;font-family:'Pickathon 2014',sans-serif;font-size:22px;line-height:1.1;letter-spacing:.03em;text-transform:uppercase;color:#F2EDE3}
+html body.pkpl-v2p #root #pkpl .pkpl-psl{margin:0 0 6px;font:600 15px/1.4 'Bricolage Grotesque',system-ui,sans-serif;color:#E9B93C}
+html body.pkpl-v2p #root #pkpl .pkpl-ps .pkpl-pr{min-height:64px;padding:10px 2px;gap:14px}
+html body.pkpl-v2p:not(.pkpl-hood) #root .pkpl-xb{border-top:0;border-bottom:1px solid #2F372A;background:#12160F;padding-top:10px;padding-bottom:10px}
+html body.pkpl-v2p:not(.pkpl-hood) #root#root#root .pkpl-tools{bottom:calc(var(--pkpl-psb,200px))}
+
+/* MOCK: long lists (more than six places) use compact rows: smaller emblem, the line held to one row */
+html body.pkpl-v2 #root #pkpl .pkpl-pl.pkpl-cmp .pkpl-pr{min-height:54px;padding:7px 4px;gap:12px}
+html body.pkpl-v2 #root #pkpl .pkpl-pl.pkpl-cmp .pkpl-pr img{width:32px;height:32px}
+html body.pkpl-v2 #root #pkpl .pkpl-pl.pkpl-cmp .pkpl-pr span{min-width:0}
+html body.pkpl-v2 #root #pkpl .pkpl-pl.pkpl-cmp .pkpl-pr b{font-size:16px}
+html body.pkpl-v2 #root #pkpl .pkpl-pl.pkpl-cmp .pkpl-pr small{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:1px;font-size:13.5px}
+html body.pkpl-v2 #root #pkpl .pkpl-body{padding-top:20px}
+
+/* MOCK round 3: summary held to two lines; the place the pointer is on gets its line in one fixed slot; long lists (ten or more) show every place at once as tiles or two columns */
+html body.pkpl-v2 #root #pkpl .pkpl-tx .pkpl-l{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden}
+html body.pkpl-v2 #root #pkpl .pkpl-pd{display:none;margin:12px 0 0;min-height:42px;font:500 14px/1.45 'Bricolage Grotesque',system-ui,sans-serif;color:rgba(242,237,227,.62)}
+html body.pkpl-v2 #root #pkpl .pkpl-pd.on{color:#F2EDE3}
+html body.pkpl-v2 #root #pkpl .pkpl-pd b{color:#E9B93C;font-weight:800;margin-right:4px}
+html body.pkpl-v2 #root #pkpl .pkpl-long .pkpl-pd{display:block}
+html body.pkpl-v2 #root #pkpl .pkpl-long .pkpl-pl{margin-top:6px}
+html body.pkpl-v2 #root #pkpl .pkpl-pl.pkpl-tiles{display:grid!important;grid-template-columns:repeat(3,1fr);gap:6px}
+html body.pkpl-v2 #root #pkpl .pkpl-pl.pkpl-tiles .pkpl-pr{flex-direction:column;align-items:center;justify-content:center;gap:5px;min-height:70px;padding:8px 4px;border:1px solid rgba(242,237,227,.16);border-radius:8px;background:rgba(18,22,15,.55);text-align:center}
+html body.pkpl-v2 #root #pkpl .pkpl-pl.pkpl-tiles .pkpl-pr img{width:32px;height:32px}
+html body.pkpl-v2 #root #pkpl .pkpl-pl.pkpl-tiles .pkpl-pr b{font-size:13.5px;line-height:1.15}
+html body.pkpl-v2 #root #pkpl .pkpl-pl.pkpl-tiles .pkpl-pr small,html body.pkpl-v2 #root #pkpl .pkpl-pl.pkpl-cols .pkpl-pr small{display:none}
+html body.pkpl-v2 #root #pkpl .pkpl-pl.pkpl-tiles .pkpl-pr:hover,html body.pkpl-v2 #root #pkpl .pkpl-pl.pkpl-cols .pkpl-pr:hover{border-color:#D6B54A;background:rgba(214,181,74,.12)}
+html body.pkpl-v2 #root #pkpl .pkpl-pl.pkpl-cols{display:grid!important;grid-template-columns:1fr 1fr;column-gap:14px;row-gap:0}
+html body.pkpl-v2 #root #pkpl .pkpl-pl.pkpl-cols .pkpl-pr{min-height:46px;padding:6px 4px;gap:10px;border-bottom:1px solid rgba(242,237,227,.12)}
+html body.pkpl-v2 #root #pkpl .pkpl-pl.pkpl-cols .pkpl-pr img{width:28px;height:28px}
+html body.pkpl-v2 #root #pkpl .pkpl-pl.pkpl-cols .pkpl-pr b{font-size:15px}
+html body.pkpl-v2 #root #pkpl .pkpl-ab{margin-top:26px}
+
+/* MOCK: Architecture stays short: no long paragraph, Build with Pickathon is one quiet button under the places */
+html body.pkpl-v2 #root #pkpl .pkpl-ab p{display:none}
+html body.pkpl-v2 #root #pkpl .pkpl-ab{margin-top:18px}
+
+html body.pkpl-v2 #root #pkpl .pkpl-pl.pkpl-cols .pkpl-pr{min-height:39px;padding:4px}
+html body.pkpl-v2 #root #pkpl .pkpl-long .pkpl-pd{min-height:22px;margin-top:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+html body.pkpl-v2 #root #pkpl .pkpl-pl.pkpl-cols.pkpl-c3{grid-template-columns:repeat(3,1fr);column-gap:8px}
+html body.pkpl-v2 #root #pkpl .pkpl-pl.pkpl-cols.pkpl-c3 .pkpl-pr{min-height:46px;gap:8px}
+html body.pkpl-v2 #root #pkpl .pkpl-pl.pkpl-cols.pkpl-c3 .pkpl-pr img{width:26px;height:26px}
+html body.pkpl-v2 #root #pkpl .pkpl-pl.pkpl-cols.pkpl-c3 .pkpl-pr b{font-size:13.5px}
+
+/* MOCK round 4 (Zale, Nov 21 20:28): a narrative at all times: Choose your adventure, the buttons, the experience with its icon, how many neighborhoods, the pointer line, the places. Resting rows are quiet, the pointed one is solid */
+html body.pkpl-v2 #root #pkpl .pkpl-gk{flex:none;margin:0 0 12px;font:800 13px/1 'Bricolage Grotesque',system-ui,sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#E9B93C;position:relative;z-index:2}
+html body.pkpl-v2 #root #pkpl .pkpl-title{padding-top:22px!important}
+html body.pkpl-v2 #root #pkpl .pkpl-g2{padding-bottom:18px}
+html body.pkpl-v2 #root #pkpl .pkpl-body .pkpl-k{display:none}
+html body.pkpl-v2 #root #pkpl .pkpl-title:not(.pkpl-tx) .pkpl-body{padding-top:28px}
+html body.pkpl-v2 #root #pkpl .pkpl-pc{margin:16px 0 0;font:800 12.5px/1 'Bricolage Grotesque',system-ui,sans-serif;letter-spacing:.18em;text-transform:uppercase;color:rgba(242,237,227,.72)}
+html body.pkpl-v2 #root #pkpl .pkpl-long .pkpl-pd{margin-top:8px;min-height:22px}
+html body.pkpl-v2 #root #pkpl .pkpl-pl.pkpl-cols .pkpl-pr{min-height:44px;padding:5px 8px;border-radius:6px;border-bottom-color:transparent;transition:background .15s,color .15s}
+html body.pkpl-v2 #root #pkpl .pkpl-pl.pkpl-cols .pkpl-pr img{opacity:.6}
+html body.pkpl-v2 #root #pkpl .pkpl-pl.pkpl-cols .pkpl-pr b{color:rgba(242,237,227,.78);font-weight:600}
+html body.pkpl-v2 #root #pkpl .pkpl-pl.pkpl-cols .pkpl-pr.pkpl-hot{background:#F2EDE3;border-color:#F2EDE3}
+html body.pkpl-v2 #root #pkpl .pkpl-pl.pkpl-cols .pkpl-pr.pkpl-hot img{opacity:1;filter:invert(1)}
+html body.pkpl-v2 #root #pkpl .pkpl-pl.pkpl-cols .pkpl-pr.pkpl-hot b{color:#12160F;font-weight:800}
+html body.pkpl-v2 #root #pkpl .pkpl-pl.pkpl-cols.pkpl-c1{grid-template-columns:1fr}
+html body.pkpl-v2 #root #pkpl .pkpl-pl.pkpl-cols.pkpl-c3 .pkpl-pr{padding:5px 6px}
+
+html body.pkpl-v2 #root #pkpl .pkpl-long .pkpl-pd{white-space:normal;min-height:42px;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;font-size:14.5px}
+html body.pkpl-v2 #root #pkpl .pkpl-pl.pkpl-cols .pkpl-pr.pkpl-hot{background:#F6F1E6}
+
+/* MOCK round 5 (Zale, Nov 21 20:39): a headline that asks; the experience as one compact line; one line slot for the summary or the pointed place; all 20 neighborhoods before a pick */
+html body.pkpl-v2 #root #pkpl .pkpl-gk{margin:0 0 16px;letter-spacing:0;text-transform:none}
+html body.pkpl-v2 #root #pkpl .pkpl-gk p{margin:0 0 8px;font:800 12px/1 'Bricolage Grotesque',system-ui,sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#E9B93C}
+html body.pkpl-v2 #root #pkpl .pkpl-gk h2{margin:0;font-family:'Pickathon 2014',sans-serif;font-size:34px;line-height:1.05;letter-spacing:.02em;text-transform:uppercase;color:#F2EDE3}
+html body.pkpl-v2 #root #pkpl .pkpl-body .pkpl-d,html body.pkpl-v2 #root #pkpl .pkpl-body .pkpl-l{display:none!important}
+html body.pkpl-v2 #root #pkpl .pkpl-title .pkpl-body{padding-top:18px!important;justify-content:flex-start!important}
+html body.pkpl-v2 #root #pkpl .pkpl-pc{display:flex;align-items:center;gap:10px;margin:0;font:400 15px/1 'Bricolage Grotesque',system-ui,sans-serif;letter-spacing:0;text-transform:none;color:rgba(242,237,227,.7)}
+html body.pkpl-v2 #root #pkpl .pkpl-pc[hidden]{display:none}
+html body.pkpl-v2 #root #pkpl .pkpl-pci{display:inline-grid;place-items:center;width:34px;height:34px;border-radius:8px;background:#F2EDE3;color:#12160F}
+html body.pkpl-v2 #root #pkpl .pkpl-pci svg{width:20px;height:20px}
+html body.pkpl-v2 #root #pkpl .pkpl-pc b{font-family:'Pickathon 2014',sans-serif;font-size:24px;font-weight:400;letter-spacing:.03em;text-transform:uppercase;color:#F2EDE3}
+html body.pkpl-v2 #root #pkpl .pkpl-pcn{margin-left:auto;font-weight:700;font-size:12.5px;letter-spacing:.16em;text-transform:uppercase;color:#E9B93C}
+html body.pkpl-v2 #root #pkpl .pkpl-long .pkpl-pd,html body.pkpl-v2 #root #pkpl .pkpl-pd{display:-webkit-box!important;margin:10px 0 8px;min-height:44px;color:#E9B93C;font-weight:600;font-size:15px}
+html body.pkpl-v2 #root #pkpl .pkpl-pd.on{color:#F2EDE3;font-weight:500}
+html body.pkpl-v2 #root #pkpl .pkpl-pl .pkpl-gh{grid-column:1/-1;margin:10px 0 2px;font:800 11.5px/1 'Bricolage Grotesque',system-ui,sans-serif;letter-spacing:.2em;text-transform:uppercase;color:rgba(242,237,227,.5)}
+html body.pkpl-v2 #root #pkpl .pkpl-pl .pkpl-gh:first-child{margin-top:0}
+html body.pkpl-v2 #root #pkpl .pkpl-pl.pkpl-cols.pkpl-c3 .pkpl-pr{min-height:38px}
+
+html body.pkpl-v2 #root #pkpl .pkpl-gk{margin-bottom:14px}
+html body.pkpl-v2 #root #pkpl .pkpl-gk h2{font-size:31px}
+html body.pkpl-v2 #root #pkpl .pkpl-title:not(.pkpl-tx) .pkpl-pd{min-height:0;margin:2px 0 4px;font-size:14px}
+html body.pkpl-v2 #root #pkpl .pkpl-title:not(.pkpl-tx) .pkpl-body{padding-top:14px!important;padding-bottom:12px}
+html body.pkpl-v2 #root #pkpl .pkpl-pl .pkpl-gh{margin:8px 0 0}
+html body.pkpl-v2 #root #pkpl .pkpl-title:not(.pkpl-tx) .pkpl-pl.pkpl-cols.pkpl-c3 .pkpl-pr{min-height:34px;padding-top:3px;padding-bottom:3px}
+html body.pkpl-v2 #root #pkpl .pkpl-gk p{font-size:11.5px;letter-spacing:.14em;white-space:nowrap}
+html body.pkpl-v2 #root #pkpl .pkpl-g2 .pkpl-xe{min-height:50px;padding:5px 4px;gap:3px}
+html body.pkpl-v2 #root #pkpl .pkpl-g2{gap:7px;padding-bottom:16px}
+html body.pkpl-v2 #root #pkpl .pkpl-pl.pkpl-cols.pkpl-c3 .pkpl-pr b{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+html body.pkpl-v2 #root #pkpl .pkpl-pl.pkpl-cols.pkpl-c3 .pkpl-pr span{min-width:0;overflow:hidden}
+html body.pkpl-v2 #root #pkpl .pkpl-pcn{white-space:nowrap}
+
+/* MOCK round 6: a quiet fade when the list changes; Build with Pickathon sits right under Architecture's line */
+@keyframes pkpl-xf{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+html body.pkpl-v2 #root #pkpl .pkpl-body.pkpl-xf{animation:pkpl-xf .32s ease-out both}
+html body.pkpl-v2 #root #pkpl .pkpl-ab{margin:0 0 14px!important}
+html body.pkpl-v2 #root #pkpl .pkpl-ab button{min-height:44px;padding:0 16px;font-size:13px;letter-spacing:.12em}
+
+/* MOCK: 2027 palette test: the fill takes the hue, the painted art keeps its light and texture */
+#pkpl .pkpl-p27 path{mix-blend-mode:multiply;opacity:.9;pointer-events:none}   /* the new tiles leave each neighborhood a pale ground, so the fill multiplies under the trees, trails and icons */
+/* Nov 21: desktop neighborhood page in the new layout: no experience bar across the map; the column's back link returns to the experience and its buttons */
+html body.pkpl-v2.pkpl-hood #root #pkpl .pkpl-xb{display:none!important}

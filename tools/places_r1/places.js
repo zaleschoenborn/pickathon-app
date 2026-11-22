@@ -35,6 +35,14 @@
   function data() { return site().data || null; }
   function top() { var s = site().stack || []; return s[s.length - 1] || {}; }
   function go(r, x) { var a = app(); if (a && a.go) a.go(r, x || {}); }
+  var V2 = /[?&]v2/.test(location.search), V2G = (location.search.match(/[?&]g=(\w+)/) || [])[1] || 'soft';   /* MOCK Nov 21: left-column layout, gradient strength */
+  var V2L = (location.search.match(/[?&]L=(\w+)/) || [])[1] || 'tiles';   /* MOCK: long-list style, tiles or cols */
+  /* MOCK Nov 21 (Zale): a rough 2027 palette painted over today's map to judge it; provisional kit colors (near-black #2E292A, mauve #85506A, gold #BF9D27, pink #E5B6CC), official swatches pending from Artwork */
+  var PAL27 = /[?&]pal=27/.test(location.search);
+  /* Artwork's 2027 map fills (artwork-47, from Travis's binder inks): light tier and deep tier, alternating between neighbors */
+  var P27 = { woods: '#D1A47D', cherryhill: '#D79D98', grove: '#8A7632', windmill: '#D79D98', paddock: '#D1A47D', galaxy: '#976D48', lucky: '#C2AD6A', farmhouse: '#D79D98', curation: '#9D6762',
+    refuge: '#D19CB4', coyote: '#97667D', courtyard: '#D19CB4', market: '#97667D', orchard: '#97667D', quailtrail: '#B5ABAE',
+    welcomelot: '#B5ABAE', willowcamp: '#7E7577' };
   function wide() { return window.innerWidth >= 1200 || (window.innerWidth >= 900 && window.innerWidth > window.innerHeight); }   /* desktop and sideways tablet: panel on the left, map on the right */
   function touch() { return !!(window.matchMedia && matchMedia('(hover: none)').matches); }
   function calm() { return !!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches); }
@@ -50,7 +58,8 @@
     return (BOX[k] = [x0, y0, x1, y1]);
   }
   function union(L) { var b = [1e9, 1e9, -1e9, -1e9]; L.forEach(function (k) { var x = box(k); b = [Math.min(b[0], x[0]), Math.min(b[1], x[1]), Math.max(b[2], x[2]), Math.max(b[3], x[3])]; }); return b; }
-  function emb(k) { var h = data().hoods[k] || {}; return h.icw || ('ic2/' + k + '.png'); }   /* the white emblems Home uses */
+  function emb(k) { if (PAL27) return 'i/y27em/' + k + '.png';   /* 2027 look: Artwork's one-ink stamps (artwork-48) everywhere the map shows an emblem */
+    var h = data().hoods[k] || {}; return h.icw || ('ic2/' + k + '.png'); }   /* the white emblems Home uses */
   function stageHood() { var D = data(), m = {}; (D.stages || []).forEach(function (s) { m[s.id] = s.h; }); return m; }
 
 
@@ -86,7 +95,7 @@
     var el = document.createElement('div'); el.className = 'pkpl-map'; el.setAttribute('role', 'region'); el.setAttribute('aria-label', 'Farm map');
     var shapes = ids().map(function (k) { return '<path class="pkpl-sh" data-h="' + k + '" d="' + HH.shapes[k] + '"/>'; }).join('');
     el.innerHTML =
-      '<div class="pkpl-world"><img class="pkpl-base" src="farmmap/map2.webp?v=3" alt="" draggable="false" decoding="async"><div class="pkpl-tiles"></div>' +
+      '<div class="pkpl-world"><img class="pkpl-base" src="farmmap/' + (PAL27 ? 'map4' : 'map2') + '.webp?v=3" alt="" draggable="false" decoding="async"><div class="pkpl-tiles"></div>' +
       '<svg class="pkpl-svg" viewBox="0 0 ' + W + ' ' + H + '" preserveAspectRatio="none" aria-hidden="true">' +
       '<defs><filter id="pkpl-glow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="9" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>' + Object.keys(AMI || {}).map(function (k) { return '<symbol id="pkpl-i-' + k + '" viewBox="0 0 24 24"><rect class="pkpl-ip" x=".75" y=".75" width="22.5" height="22.5" rx="5"/><g class="pkpl-ig" transform="translate(2.4 2.4) scale(.8)">' + AMI[k] + '</g></symbol>'; }).join('') + '</defs>' +
       '<g class="pkpl-ics">' + (MI || []).map(amUse).join('') + '</g>' +
@@ -105,10 +114,19 @@
     gestures(el);
     return M;
   }
-  function minS() { return Math.min(M.vw / W, M.vh / H); }
+  function minS() { if (V2 && wide()) { var cy = farmY(); return M.vh / (cy[1] - cy[0]) / 0.9; }   /* the callers allow 0.9 of this, so the farm's own height (not the art's empty bottom) fits the screen exactly */ return Math.min(M.vw / W, M.vh / H); }   /* MOCK: desktop zooms out no further than the farm's height */
   function maxS() { return 2.6 * TF / (window.devicePixelRatio || 1); }
+  function farmY() { return [0, union(ids())[3] + 40]; }   /* MOCK: the farm from the forest's top edge to just below the camps */
   function clampView(s, tx, ty) {   /* keep some map on screen */
     s = Math.max(minS() * 0.9, Math.min(maxS(), s));
+    if (V2 && wide()) {   /* MOCK (Zale, Nov 21): top and bottom lock to the screen; zoomed in, a little margin; zoomed all the way out, none */
+      var cy = farmY(), t0 = cy[0] * s, b0 = cy[1] * s, m = Math.min(28, Math.max(0, (s / (minS() * 0.9) - 1) * 120));
+      ty = b0 - t0 >= M.vh ? Math.min(m - t0, Math.max(M.vh - b0 - m, ty)) : (M.vh - t0 - b0) / 2;
+      var l0 = 280 * s, r0 = 1980 * s, lc = top().r !== 'hood' ? lw() : 0;   /* left and right lock too: the farm (map units 280-1980) reaches under the column and to the right edge, no dark gap either side (Zale, Nov 21) */
+      if (r0 - l0 >= M.vw) tx = Math.min(-l0, Math.max(M.vw - r0, tx));
+      else if (r0 - l0 >= M.vw - lc) tx = Math.min(lc - l0, Math.max(M.vw - r0, tx));   /* Nov 21: narrower than the screen but wider than the space beside the column: it may slide anywhere from the column's edge to the right edge, so a place at the side (the Refuge) stays in view */
+      else tx = lc + (M.vw - lc - (r0 - l0)) / 2 - l0;
+    }
     if (M.free) return [s, tx, ty];   /* a place was framed: its centre may sit past the map's edge (Zale, Nov 20) */
     var mw = W * s, mh = H * s, pad = 60, lx, hx, ly, hy;
     if (mw <= M.vw) { lx = -mw * 0.25; hx = M.vw - mw * 0.75; } else { lx = M.vw - mw - pad; hx = pad; }
@@ -168,7 +186,7 @@
       var im = document.createElement('img'); im.alt = ''; im.draggable = false; im.decoding = 'async';
       im.style.cssText = 'left:' + (c * TS) + 'px;top:' + (r * TS) + 'px;width:' + ((c === 4 ? 802 : 1024) / TF + 0.4) + 'px;height:' + ((r === 8 ? 952 : 1024) / TF + 0.4) + 'px';   /* a hair of overlap so no seam shows between tiles */
       im.onload = function () { this.classList.add('on'); M.done[this._k] = 1; tok(); }; im._k = k;
-      im.src = 'farmmap/t2/' + k + '.webp?v=3'; M.tiles.appendChild(im);
+      im.src = 'farmmap/' + (PAL27 ? 't4/' : 't2/') + k + '.webp?v=3'; M.tiles.appendChild(im);
     }
     M.need = need; tok();
   }
@@ -212,7 +230,13 @@
   function lw() { return Math.round(Math.max(400, Math.min(480, window.innerWidth * 0.32))); }   /* desktop left column: phone-card width, the map is the hero (Zale, Nov 19) */
   function sheetOpen() { var sc = scroller(); return openH(sc ? sc.clientHeight : 600); }   /* the card opens to the phone's scroll area less a map margin at the top (Nov 20, Zale) */
   function openH(vh) { return Math.round(vh * 0.6); }   /* open: the sheet covers 60%, the map shows above it (the yesterday default, Zale, Nov 20) */
-  function clear() { var r = region(), t = wide() && top().r !== 'hood' ? lw() : 0, ti = $('.pkpl-title', M.el), up = wide() ? 78 : (M.title && ti ? Math.max(0, ti.offsetHeight - 14) : 0), dn = wide() ? 8 : (top().r === 'hood' ? sheetOpen() : 150); return { x: r.x + t, y: r.y + up, w: r.w - t, h: Math.max(160, r.h - up - dn) }; }   /* the lit places fill what is left */   /* above the experience bar and the amenity tag */
+  function v2Fit(v, L, one) {   /* MOCK round 4: no empty margin on the right; the framed places sit against the right side and the map runs under the left column */
+    var b = union(L), s1 = v[0], tx = v[1], east = b[2] * s1 + tx, lim = M.vw - (one ? 190 : 84);
+    if (east < lim) tx += lim - east;
+    return [s1, tx, v[2]];
+  }
+  function psH() { return M.xp ? Math.round(M.vh * 0.4) : 132; }   /* MOCK: phone panel under the experience row */
+  function clear() { var r = region(), t = wide() && top().r !== 'hood' ? lw() : 0, ti = $('.pkpl-title', M.el), up = wide() ? 78 : (M.title && ti ? Math.max(0, ti.offsetHeight - 14) : 0), dn = wide() ? 8 : (top().r === 'hood' ? sheetOpen() : 150); if (V2 && !wide() && top().r !== 'hood') { up = 8; dn = psH() + 62; } if (V2 && wide()) up = 16; return { x: r.x + t, y: r.y + up, w: r.w - t, h: Math.max(160, r.h - up - dn) }; }   /* the lit places fill what is left */   /* above the experience bar and the amenity tag */
   function region() {
     if (wide() || top().r !== 'hood') return { x: 0, y: 0, w: M.vw, h: M.vh };
     /* the strip the map shows above the sheet: from the map top to the sheet's real top edge (open ~40%, folded almost all) */
@@ -233,9 +257,10 @@
   }
   function lit() {
     var k = M.cur, L = (!k && M.amen) ? Object.keys(amenHoods()) : (!k && M.xp) ? litSet() : [], d = k ? HH.shapes[k] : L.map(function (h) { return HH.shapes[h]; }).join(' ');
+    if (!k && V2 && M.hot && HH.shapes[M.hot]) d = HH.shapes[M.hot];   /* MOCK: the place the pointer is on is lit, everything else dims */
     $('.pkpl-veil', M.svg).setAttribute('d', d ? 'M-4000,-4000H' + (W + 4000) + 'V' + (H + 4000) + 'H-4000Z ' + d : '');
     $('.pkpl-lit', M.svg).setAttribute('d', d);
-    $('.pkpl-was', M.svg).setAttribute('d', (!k && M.was && (M.xp || M.amen) && HH.shapes[M.was]) || '');
+    $('.pkpl-was', M.svg).setAttribute('d', (!k && M.was && (M.xp || M.amen || (V2 && wide())) && HH.shapes[M.was]) || '');
     $$('.pkpl-sh', M.svg).forEach(function (p) { p.classList.toggle('on', p.getAttribute('data-h') === k); });
     M.el.classList.toggle('pkpl-picked', !!k); M.el.classList.toggle('pkpl-xpon', !k && (!!M.xp || !!M.amen));
     var full = $('[data-pl="full"]', M.el); if (full) full.hidden = !k && !M.amen && !M.xp && !(M.s > startView()[0] * 1.15);
@@ -259,11 +284,50 @@
     var hp = null; if (M.xp) { var L0 = litSet(), pk = M.xp === 'Architecture' ? 'cherryhill' : L0[0]; for (var i = 0; !hp && i < L0.length + 1; i++) { var cand = i === 0 ? pk : L0[i - 1]; if (cand) hp = (M.xp === 'Architecture' ? xpPhotos('Architecture', cand) : (((XM.xp || {})[M.xp] || {})[cand] || []).map(function (z) { return { i: z.f, p: z.p }; }).concat(xpPhotos(M.xp, cand)))[0] || null; } }
     if (hp) { var bu = 'url("' + hp.i + '")', bp = hp.p, pre = new Image(); bg._want = bu; pre.onload = pre.onerror = function () { if (bg._want === bu) { bg.style.backgroundImage = bu; bg.style.backgroundPosition = bp; } }; pre.src = hp.i; if (pre.complete) pre.onload(); } else { bg._want = ''; bg.style.backgroundImage = 'none'; }   /* Nov 20: the new hero photo is loaded before it replaces the old one, so no black gap between experiences */ t.classList.toggle('pkpl-hasbg', !!hp);
     $('.pkpl-l', t).textContent = M.xp ? (XH.XPD[M.xp] || '') : (wide() ? 'Pick an experience above, then a place' : 'Pick an experience below, then tap a place that lights up');
+    var v2 = V2 && wide(); document.body.classList.toggle('pkpl-v2', v2); document.body.classList.toggle('pkpl-v2g', v2 && V2G === 'strong');
+    if (v2) {   /* MOCK: experiences live in the left column, pinned; the words and places scroll under them */
+      var g2 = $('.pkpl-g2', t), bd = $('.pkpl-body', t);
+      if (!g2) { g2 = document.createElement('div'); g2.className = 'pkpl-g2'; g2.setAttribute('role', 'toolbar'); g2.setAttribute('aria-label', 'Experiences'); g2.innerHTML = XO.map(function (e) { return '<button type="button" class="pkpl-xe" data-xp="' + e + '" aria-pressed="false">' + xpIcon(e) + '<span>' + e + '</span></button>'; }).join('');
+        bd = document.createElement('div'); bd.className = 'pkpl-body'; ['.pkpl-k', '.pkpl-d', '.pkpl-l', '.pkpl-ab', '.pkpl-pl'].forEach(function (q) { var n = $(q, t); if (n) bd.appendChild(n); }); t.appendChild(g2); t.appendChild(bd); }
+      var plx = $('.pkpl-pl', bd), abx = $('.pkpl-ab', bd), pd = $('.pkpl-pd', bd);
+      if (!pd) { pd = document.createElement('p'); pd.className = 'pkpl-pd'; bd.insertBefore(pd, plx); if (abx) bd.appendChild(abx);
+        var hv = 0; bd.addEventListener('mouseover', function (e) { var r = e.target.closest('.pkpl-pr[data-hp]'); if (!r) return; var k = r.getAttribute('data-hp'), h = data().hoods[k]; if (bd._hk === k) return; bd._hk = k;
+          pd.innerHTML = '<b>' + esc(h.n) + '</b> ' + esc(M.xp ? xpLine(M.xp, k) : (h.hook || h.d || '')); pd.classList.add('on'); $$('.pkpl-pr', bd).forEach(function (x) { x.classList.toggle('pkpl-hot', x === r); }); M.hot = k; lit(); clearTimeout(hv); hv = setTimeout(function () { M.free = true; var rg = clear(), f1 = fitBox(union([k]), rg, Math.round(Math.min(rg.w, rg.h) * 0.2)), cap = (M.s0 || startView()[0]) * 2; animTo(f1[0] > cap ? fitBox(union([k]), rg, 0, cap) : f1, 560);   /* fill the space right of the column, but no closer than twice the overview */ }, 110); }); }
+      if (M.xp === 'Architecture') { var l2 = $('.pkpl-l', t); if (l2) l2.textContent = (XH.XPD.Architecture || '').split('. ')[0].replace(/\.?$/, '.'); }   /* MOCK: Architecture kept short (Zale, Nov 21); final words are Copy's */
+      if (bd._xp !== M.xp) { bd._hk = null; pd.classList.remove('on'); pd.textContent = ''; if (!M.xp) M.s0 = null; }
+      var pc = $('.pkpl-pc', bd); if (!pc) { pc = document.createElement('p'); pc.className = 'pkpl-pc'; bd.insertBefore(pc, pd); } var nL = M.xp ? litSet().length : 0; pc.textContent = M.xp ? 'In ' + nL + (nL === 1 ? ' neighborhood' : ' neighborhoods') : ''; pc.hidden = !M.xp;
+      if (!$('.pkpl-gk', t)) { var gk = document.createElement('div'); gk.className = 'pkpl-gk'; gk.innerHTML = '<p>' + ids().length + ' neighborhoods \u00b7 ' + XO.length + ' experiences</p><h2>What do you want to experience?</h2>';   /* Zale, Nov 21: the headline is about the experience; Copy polishes */ t.insertBefore(gk, g2); }
+      pc.innerHTML = M.xp ? '<span class="pkpl-pci">' + xpIcon(M.xp) + '</span><b>' + esc(M.xp) + '</b><span class="pkpl-pcn">' + nL + (nL === 1 ? ' neighborhood' : ' neighborhoods') + '</span>' : ''; pc.hidden = !M.xp;
+      bd._sum = M.xp ? (XH.XPD[M.xp] || '').split(/(?<=[.!?])\s/)[0] : 'Point at a neighborhood to find it on the map, or pick an experience above.';
+      if (!bd._hk) pd.textContent = bd._sum; var abm = $('.pkpl-ab', bd), plm = $('.pkpl-pl', bd); if (abm && plm && abm.nextSibling !== plm) bd.insertBefore(abm, plm);
+      if (!bd._lv) { bd._lv = 1; bd.addEventListener('mouseleave', function () { bd._hk = null; $$('.pkpl-pr', bd).forEach(function (x) { x.classList.remove('pkpl-hot'); }); pd.classList.remove('on'); pd.textContent = bd._sum; M.hot = null; lit(); }); }
+      $$('.pkpl-xe', g2).forEach(function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-xp') === M.xp ? 'true' : 'false'); });
+      bk.hidden = true;
+      if (!M.xp) $('.pkpl-l', t).textContent = XO.length + ' experiences across ' + ids().length + ' neighborhoods. Pick one and the map lights up.';
+      if (bd._xp !== M.xp) { var px = bd._xp; bd._xp = M.xp; bd.scrollTop = 0; M.hot = null; bd.classList.remove('pkpl-rise', 'pkpl-xf'); void bd.offsetWidth; if (px !== undefined && !calm()) bd.classList.add('pkpl-xf'); }   /* MOCK: the list reorders between experiences, so it fades instead of jumping */
+      var more = function () { bd.classList.toggle('pkpl-more', bd.scrollHeight - bd.scrollTop > bd.clientHeight + 4); }; if (!bd._on) { bd._on = 1; bd.addEventListener('scroll', more); } setTimeout(more, 0);
+    }
+    var v2p = V2 && !wide(); document.body.classList.toggle('pkpl-v2p', v2p);
+    if (v2p) {   /* MOCK phone: map on top, the swipe row of experiences, then the words and that experience's places */
+      var ps = $('.pkpl-ps', M.el); if (!ps) { ps = document.createElement('div'); ps.className = 'pkpl-ps'; M.el.appendChild(ps); }
+      var Lp = M.xp ? litSet() : [];
+      ps.innerHTML = M.xp ? '<h2 class="pkpl-psh">' + esc(M.xp) + ' at Pickathon</h2><p class="pkpl-psl">' + esc(XH.XPD[M.xp] || '') + '</p>' + Lp.map(function (k) { var h = data().hoods[k]; return '<button type="button" class="pkpl-pr" data-hp="' + k + '"><img src="' + esc(emb(k)) + '" alt=""><span><b>' + esc(h.n) + '</b><small>' + esc(xpLine(M.xp, k)) + '</small></span></button>'; }).join('')
+        : '<h2 class="pkpl-psh">Summer camp for your soul</h2><p class="pkpl-psl">Choose your own adventure: swipe the ' + XO.length + ' experiences, pick one, and the map lights up.</p>';
+      ps.scrollTop = 0; ps.style.height = psH() + 'px'; var xb2 = $('.pkpl-xb', M.el); if (xb2) xb2.style.bottom = psH() + 'px';
+    }
     var ab = $('.pkpl-ab', t);   /* Architecture: what it is and how to build with us (Zale, Nov 19: it's how sponsors find us) */
     if (ab) ab.innerHTML = M.xp === 'Architecture' ? '<p>Every summer we build a small city in the forest. Each neighborhood is designed and built new with architects, students, builders and makers, and when the festival ends the structures move on to permanent homes in the community. Two of our builds have won AIA awards.</p><button type="button" class="pk-cta sec pkpl-abb" data-go="build">Build with Pickathon</button>' : '';
     var pl = $('.pkpl-pl', t), L = M.xp ? litSet() : [];   /* desktop: where this experience happens; a row opens the place (Zale, Nov 19) */
+    if (pl && v2 && !M.xp && !M.amen) {   /* MOCK round 5: before a pick, every neighborhood is a way in */
+      var G = [['stage', 'Stages'], ['around', 'Hangouts'], ['camp', 'Camping']], D2 = data().hoods;
+      pl.className = 'pkpl-pl pkpl-cols pkpl-c3'; t.classList.add('pkpl-long');
+      pl.innerHTML = G.map(function (g) { var ks = ids().filter(function (k) { return (D2[k].k || 'around') === g[0]; }); return ks.length ? '<p class="pkpl-gh">' + g[1] + '</p>' + ks.map(function (k) { return '<button type="button" class="pkpl-pr" data-hp="' + k + '"><img src="' + esc(emb(k)) + '" alt=""><span><b>' + esc(D2[k].n) + '</b></span></button>'; }).join('') : ''; }).join('');
+      return;
+    }
     if (pl && !M.xp && !M.amen) { pl.innerHTML = '<div class="pkpl-pg">' + XO.map(function (e) { return '<button type="button" class="pkpl-xe" data-xp="' + e + '">' + xpIcon(e) + '<span>' + e + '</span></button>'; }).join('') + '</div>'; return; }   /* arrival: choose your adventure right under the title */
     if (pl) pl.innerHTML = L.length ? L.map(function (k) { var h = data().hoods[k]; return '<button type="button" class="pkpl-pr" data-hp="' + k + '"><img src="' + esc(emb(k)) + '" alt=""><span><b>' + esc(h.n) + '</b><small>' + esc(xpLine(M.xp, k)) + '</small></span></button>'; }).join('') : '';
+    if (v2 && pl) { pl.classList.remove('pkpl-cmp'); pl.classList.add('pkpl-cols'); pl.classList.toggle('pkpl-c3', L.length > 9); pl.classList.toggle('pkpl-c1', L.length <= 4); t.classList.add('pkpl-long'); }
+    if (v2) { if (pl) pl.classList.remove('pkpl-many'); t.classList.remove('pkpl-tight', 'pkpl-tight2', 'pkpl-tight3', 'pkpl-tight4', 'pkpl-tight5', 'pkpl-tight6'); return; }
     if (pl && wide()) { pl.classList.remove('pkpl-many'); t.classList.remove('pkpl-tight', 'pkpl-tight2', 'pkpl-tight3', 'pkpl-tight4', 'pkpl-tight5', 'pkpl-tight6'); var over = function () { return t.scrollHeight > t.clientHeight + 2; };   /* fit without scrolling: full rows, then a compact grid, then a tighter title (Zale, Nov 19) */
       if (over()) t.classList.add('pkpl-tight'); if (L.length && over()) pl.classList.add('pkpl-many'); if (over()) t.classList.add('pkpl-tight2'); if (over()) t.classList.add('pkpl-tight3'); if (over()) t.classList.add('pkpl-tight4'); if (over()) t.classList.add('pkpl-tight5'); if (over()) t.classList.add('pkpl-tight6'); }
   }
@@ -283,6 +347,16 @@
   }
   function fitLit() {
     var L = M.amen ? Object.keys(amenHoods()) : litSet(); if (!L.length) { home(); return; }
+    if (V2 && wide() && L.length <= 3) { var rgS = clear(), fS = fitBox(union(L), rgS, 36); var vS = v2Fit(fitBox(union(L), rgS, 36, Math.min(fS[0], startView()[0] * 2)), L); M.s0 = vS[0]; M.free = true; animTo(vS, 560); return; }   /* Nov 21: one to three places never zoom closer than twice the overview (Family) */
+    if (V2 && wide() && L.length > 3 && !/[?&]z=0/.test(location.search)) {   /* MOCK: fill the screen: frame the heart of this experience, the far places sit off the edge and a drag or a row brings them in */
+      var reg = clear(), s0 = fitBox(union(L), reg, 18)[0], K = L.slice(), up = L.filter(function (k) { return (box(k)[1] + box(k)[3]) / 2 < 2900; }), min = Math.ceil(L.length * 0.6);
+      if (up.length >= 2 && up.length < L.length) { K = up; min = K.length;
+        var cyOf = function (k) { var bb = box(k); return (bb[1] + bb[3]) / 2; }, far = null, fd = 0;
+        K.forEach(function (k) { var rest = K.filter(function (j) { return j !== k; }), ys = rest.map(cyOf), lo = Math.min.apply(0, ys), hi = Math.max.apply(0, ys), y = cyOf(k), dd = y < lo ? lo - y : y > hi ? y - hi : 0; if (dd > fd) { fd = dd; far = k; } });
+        if (far && fd > 600 && K.length > 2) K = K.filter(function (j) { return j !== far; }); min = K.length; }   /* one place far above or below the rest (the Woods for Music) comes in when pointed at; places beside each other all stay (Wellness) */   /* Nov 21: the upper places all stay in frame (Wellness lost the Refuge when it trimmed further) */   /* MOCK (Nov 21): tall experiences open on the wide upper farm; the lower places come in when you point at them */
+      while (K.length > min && fitBox(union(K), reg, 18)[0] < s0 * 1.7) { var best = null, bs = 0; K.forEach(function (k) { var s1 = fitBox(union(K.filter(function (j) { return j !== k; })), reg, 18)[0]; if (s1 > bs) { bs = s1; best = k; } }); K = K.filter(function (j) { return j !== best; }); }
+      var f0 = fitBox(union(K), reg, 18), bK = union(K), wFit = (reg.w - 36) / (bK[2] - bK[0]), vv = v2Fit(fitBox(bK, reg, 18, Math.min(maxS(), f0[0] * 1.4, wFit, startView()[0] * 2)), K);   /* never closer than twice the overview (Family is one place) */   /* zoom in to fill the height, but never so far that a lit place leaves the sides (Wellness) */   /* wide enough that the farm reaches from under the column to the right side */ M.s0 = vv[0]; M.free = true; animTo(vv, 560); return;
+    }
     animTo(fitBox(union(L), clear(), wide() ? 18 : 16), 560);
   }
   function xpPick(e) {
