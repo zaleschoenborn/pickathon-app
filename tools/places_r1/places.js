@@ -706,6 +706,8 @@
     sheetVars(); layout();
     if (M._tw !== wide()) { M._tw = wide(); titleDraw(); }   /* first paint and phone/desktop switch: the title's words and buttons */
     drawTop();
+    var hx = window.__pkMapXP; if (hx) { window.__pkMapXP = '';   /* Zale Nov 22 01:03: Home's 'Find Music in 9 neighborhoods' opens the map with Music picked; a place opened from Home keeps the experience (design_home-34) */
+      if (XO.indexOf(hx) >= 0) { if (t.r === 'hoods') { if (M.xp !== hx) setTimeout(function () { if (M.xp !== hx) xpPick(hx); }, 0); } else if (t.r === 'hood') M.xp = hx; } }
     if (t.r === 'hood' && t.h && t.h !== M.cur && HH.shapes[t.h]) { if (M.title) { M.title = false; M.el.classList.add('pkpl-notitle'); } frame(t.h, !M.s); }   /* arriving at a place shows it, never the title screen */
     if (t.r === 'hoods' && M.cur) { M.was = M.cur; M.cur = ''; lit(); if (M.xp || M.amen) fitLit(); }   /* closing a card: back to the experience's places, lit */
     settleSheet(); dedupe(); shape(); backMap();
