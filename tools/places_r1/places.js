@@ -14,6 +14,18 @@
   var MI = /*@MAP_ICONS*/null, AMI = /*@AMEN_ICONS*/null;   /* the map's amenity icons, lifted from the 2026 layered map PDF: [kind, x, y, owner neighborhood] (tools/places_r1/map_icons.json) and their one-color glyphs (amen_icons.json) */
   var XH = /*@XP_HOME*/null, XM = /*@XP_MINE*/null;   /* experiences: Home's words, icons and photos (tools/places_r1/xp_home.json) and this chat's final Nov 19 picks (tools/places_r1/xp_manifest.json) */
   if (!XH || !XM) XH = XM = null;
+  var XW = /*@XP_WORDS*/null, XWdone = false;   /* Copy Review's words (Nov 22 draft 1, tools/places_r1/xp_words.json); data.json xpWords wins once Site Build merges it */
+  function words() {
+    if (XWdone || !XH) return; var d = data(); if (!d || !d.hoods) return; XWdone = true;
+    var W = d.xpWords || XW; if (!W) return; M0W = W.map || {};
+    Object.keys(W.XPD || {}).forEach(function (e) { XH.XPD[e] = W.XPD[e]; });
+    Object.keys(W.XPB || {}).forEach(function (e) { XH.XPB[e] = XH.XPB[e] || {}; Object.keys(W.XPB[e]).forEach(function (k) { XH.XPB[e][k] = W.XPB[e][k]; }); });
+    HKW = W.hook || {}; DSW = W.desc || {};   /* read through hookOf/ddOf, so the shared data (and Home) are never changed */
+  }
+  var M0W = {}, HKW = {}, DSW = {}, HKEY = null;
+  function hkey(h) { if (!HKEY) { HKEY = new Map(); var d = data(); Object.keys(d.hoods).forEach(function (k) { HKEY.set(d.hoods[k], k); }); } return HKEY.get(h); }
+  function hookOf(h) { var k = h && hkey(h); return (k && HKW[k]) || (h && h.hook) || ''; }
+  function ddOf(h) { var k = h && hkey(h); return (k && DSW[k]) || (h && h.dd) || ''; }
   var W = HH.size[0], H = HH.size[1], TF = 4898 / 2041, TS = 1024 / TF;   /* farmmap/t/<col>_<row>.webp: the full-detail map in 1024px tiles (4898 x 9144) */
   var KIND = { stage: 'Stage neighborhood', around: 'Gathering neighborhood', camp: 'Camping neighborhood' };
   var ORDER = ['woods', 'paddock', 'cherryhill', 'grove', 'windmill', 'galaxy', 'lucky', 'farmhouse', 'curation', 'refuge', 'coyote', 'courtyard', 'market', 'orchard', 'welcomelot', 'lushcamp', 'quailtrail', 'southcamp', 'wildcamp', 'willowcamp'];
@@ -338,13 +350,13 @@
       var plx = $('.pkpl-pl', bd), abx = $('.pkpl-ab', bd), pd = $('.pkpl-pd', bd);
       if (!pd) { pd = document.createElement('p'); pd.className = 'pkpl-pd'; bd.insertBefore(pd, plx); if (abx) bd.appendChild(abx);
         var hv = 0; bd.addEventListener('mouseover', function (e) { var r = e.target.closest('.pkpl-pr[data-hp]'); if (!r) return; var k = r.getAttribute('data-hp'), h = data().hoods[k]; if (bd._hk === k) return; bd._hk = k;
-          pd.innerHTML = '<b>' + esc(h.n) + '</b> ' + esc(M.xp ? xpLine(M.xp, k) : (h.hook || h.d || '')); pd.classList.add('on'); $$('.pkpl-pr', bd).forEach(function (x) { x.classList.toggle('pkpl-hot', x === r); }); M.hot = k; lit(); clearTimeout(hv); if (0) hv = setTimeout(function () {   /* Zale, Nov 22: hover only lights the place; the map moves on a click, never on a hover */ var rg = clear(), b = box(k), cx = M.tx + (b[0] + b[2]) / 2 * M.s, cy = M.ty + (b[1] + b[3]) / 2 * M.s; if (cx < rg.x + 40 || cx > rg.x + rg.w - 40 || cy < rg.y + 40 || cy > rg.y + rg.h - 40) { M.free = true; animTo([M.s, rg.x + rg.w / 2 - (b[0] + b[2]) / 2 * M.s, rg.y + rg.h / 2 - (b[1] + b[3]) / 2 * M.s], 520); } }, 160);   /* round 2: pointing lights the place where it is; the map only slides if it's off screen, never zooms */ }); }
+          pd.innerHTML = '<b>' + esc(h.n) + '</b> ' + esc(M.xp ? xpLine(M.xp, k) : (hookOf(h) || h.d || '')); pd.classList.add('on'); $$('.pkpl-pr', bd).forEach(function (x) { x.classList.toggle('pkpl-hot', x === r); }); M.hot = k; lit(); clearTimeout(hv); if (0) hv = setTimeout(function () {   /* Zale, Nov 22: hover only lights the place; the map moves on a click, never on a hover */ var rg = clear(), b = box(k), cx = M.tx + (b[0] + b[2]) / 2 * M.s, cy = M.ty + (b[1] + b[3]) / 2 * M.s; if (cx < rg.x + 40 || cx > rg.x + rg.w - 40 || cy < rg.y + 40 || cy > rg.y + rg.h - 40) { M.free = true; animTo([M.s, rg.x + rg.w / 2 - (b[0] + b[2]) / 2 * M.s, rg.y + rg.h / 2 - (b[1] + b[3]) / 2 * M.s], 520); } }, 160);   /* round 2: pointing lights the place where it is; the map only slides if it's off screen, never zooms */ }); }
       if (M.xp === 'Architecture') { var l2 = $('.pkpl-l', t); if (l2) l2.textContent = (XH.XPD.Architecture || '').split('. ')[0].replace(/\.?$/, '.'); }   /* MOCK: Architecture kept short (Zale, Nov 21); final words are Copy's */
       if (bd._xp !== M.xp) { bd._hk = null; pd.classList.remove('on'); pd.textContent = ''; if (!M.xp) M.s0 = null; }
       var pc = $('.pkpl-pc', bd); if (!pc) { pc = document.createElement('p'); pc.className = 'pkpl-pc'; bd.insertBefore(pc, pd); } var nL = M.xp ? litSet().length : 0; pc.textContent = M.xp ? 'In ' + nL + (nL === 1 ? ' neighborhood' : ' neighborhoods') : ''; pc.hidden = !M.xp;
-      if (!$('.pkpl-gk', t)) { var gk = document.createElement('div'); gk.className = 'pkpl-gk'; gk.innerHTML = '<p>' + ids().length + ' neighborhoods \u00b7 ' + XO.length + ' experiences</p><h2>What do you want to experience?</h2>';   /* Zale, Nov 21: the headline is about the experience; Copy polishes */ t.insertBefore(gk, g2); }
+      if (!$('.pkpl-gk', t)) { var gk = document.createElement('div'); gk.className = 'pkpl-gk'; gk.innerHTML = '<p>' + ids().length + ' neighborhoods \u00b7 ' + XO.length + ' experiences</p><h2>' + esc(M0W.headline || 'What do you want to experience?') + '</h2>';   /* Zale, Nov 21: the headline is about the experience; Copy polishes */ t.insertBefore(gk, g2); }
       pc.innerHTML = M.xp ? '<span class="pkpl-pci">' + xpIcon(M.xp) + '</span><b>' + esc(M.xp) + '</b><span class="pkpl-pcn">' + nL + (nL === 1 ? ' neighborhood' : ' neighborhoods') + '</span>' : ''; pc.hidden = !M.xp;
-      bd._sum = M.xp ? (XH.XPD[M.xp] || '').split(/(?<=[.!?])\s/)[0] : 'Point at a neighborhood to find it on the map, or pick an experience above.';
+      bd._sum = M.xp ? (XH.XPD[M.xp] || '').split(/(?<=[.!?])\s/)[0] : (M0W.first || 'Point at a neighborhood to find it on the map, or pick an experience above.');
       if (!bd._hk) pd.textContent = bd._sum; var abm = $('.pkpl-ab', bd), plm = $('.pkpl-pl', bd); if (abm && plm && abm.nextSibling !== plm) bd.insertBefore(abm, plm);
       if (!bd._lv) { bd._lv = 1; bd.addEventListener('mouseleave', function () { bd._hk = null; $$('.pkpl-pr', bd).forEach(function (x) { x.classList.remove('pkpl-hot'); }); pd.classList.remove('on'); pd.textContent = bd._sum; M.hot = null; lit(); }); }
       $$('.pkpl-xe', g2).forEach(function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-xp') === M.xp ? 'true' : 'false'); });
@@ -681,7 +693,7 @@
   }
   function storyIs(h, has) {   /* one story of the place (Zale, Nov 19): this year's headline, the place's one-liner, then this year's story and the place in one read; credits at the end */
     var by = h.by || {}, y = Object.keys(by).sort().pop(), st = y && by[y] && by[y].t ? by[y] : null;
-    var j = function (d) { return Array.isArray(d) ? d.join(' ') : (d || ''); }, yr = st ? j(st.d) : '', ab = h.dd || j(h.d), hk = has ? '' : (h.hook || '');
+    var j = function (d) { return Array.isArray(d) ? d.join(' ') : (d || ''); }, yr = st ? j(st.d) : '', ab = ddOf(h) || j(h.d), hk = has ? '' : (hookOf(h) || '');
     var body = [yr, ab].filter(Boolean).map(function (t) { return '<p>' + esc(t) + '</p>'; }).join('');
     return '<section class="pkpl-yr"><p class="pkpl-sk">' + esc(h.n) + (st ? ' in ' + y : '') + '</p>' + (st ? '<h2>' + esc(st.t) + '</h2>' : '') + (hk ? '<p class="pkpl-ab1">' + esc(hk) + '</p>' : '') +
       (body ? '<div class="pkpl-more">' + body + '<button type="button" class="pkpl-rm" data-pk="rm" aria-expanded="false">Keep reading</button></div>' : '') + '<div class="pkpl-cred"></div></section>';
@@ -691,7 +703,7 @@
     var tx = Array.isArray(st.d) ? st.d.join(' ') : (st.d || '');
     return '<section class="pkpl-yr"><p class="pkpl-sk">' + esc(h.n) + ' in ' + y + '</p><h2>' + esc(st.t) + '</h2>' + (tx ? '<div class="pkpl-more"><p>' + esc(tx) + '</p><button type="button" class="pkpl-rm" data-pk="rm" aria-expanded="false">Keep reading</button></div>' : '') + '</section>';
   }
-  function whatIs(h, has) { var t = h.dd || (Array.isArray(h.d) ? h.d.join(' ') : (h.d || '')), hk = has ? '' : (h.hook || ''); return (t || hk) ? '<div class="pkpl-what"><p class="pkpl-sk">About ' + esc(h.n) + '</p>' + (hk ? '<p class="pkpl-ab1">' + esc(hk) + '</p>' : '') + '<div class="pkpl-more"><p>' + esc(t) + '</p><button type="button" class="pkpl-rm" data-pk="rm" aria-expanded="false">Keep reading</button></div></div>' : ''; }
+  function whatIs(h, has) { var t = ddOf(h) || (Array.isArray(h.d) ? h.d.join(' ') : (h.d || '')), hk = has ? '' : (hookOf(h) || ''); return (t || hk) ? '<div class="pkpl-what"><p class="pkpl-sk">About ' + esc(h.n) + '</p>' + (hk ? '<p class="pkpl-ab1">' + esc(hk) + '</p>' : '') + '<div class="pkpl-more"><p>' + esc(t) + '</p><button type="button" class="pkpl-rm" data-pk="rm" aria-expanded="false">Keep reading</button></div></div>' : ''; }
   function soon(k, XE, h, has) {
     if (has) return '';   /* the real schedule is showing: it is the 2027 card */   /* the 2027 schedule, summarized until it posts (Zale, Nov 19: more useful than every past year) */
     var HP = (data().hoodProg || {})[k], kinds = HP ? (HP.kinds || []).map(function (g) { return g[0]; }).filter(function (n) { return !/^(more|showcases)/i.test(n); }) : [];
@@ -759,7 +771,7 @@
   ['gesturestart', 'gesturechange', 'gestureend'].forEach(function (ev) { document.addEventListener(ev, function (e) { e.preventDefault(); }, { passive: false }); });
 
   /* ---------- keeping in step with the app ---------- */
-  function mount() {
+  function mount() { words();
     var isle = document.getElementById('pkpl'), t = top();
     document.body.classList.toggle('pkpl-on', !!isle);
     document.body.classList.toggle('pkpl-hood', !!isle && t.r === 'hood');
@@ -835,7 +847,7 @@
     var lk = w.querySelector('.pk-hd-links'); if (lk) { var l2 = lk.cloneNode(true); l2.className = 'pk-hd-links pkpl-walk'; l2.querySelectorAll('button').forEach(function (x, i) { var src = lk.querySelectorAll('button')[i]; x.addEventListener('click', function () { src.click(); }); }); d.appendChild(l2); }
     anchor.parentNode.insertBefore(d, anchor.nextSibling);
   }
-  function dedupe() { var d = document.querySelector('.pk-hd-desc0'), h = data().hoods[top().h || ''] || {}; if (d) d.classList.toggle('pkpl-dup', !!h.hook && fold(d.textContent).trim() === fold(h.hook).trim()); }
+  function dedupe() { var d = document.querySelector('.pk-hd-desc0'), h = data().hoods[top().h || ''] || {}; if (d) d.classList.toggle('pkpl-dup', !!hookOf(h) && fold(d.textContent).trim() === fold(hookOf(h)).trim()); }
   function onClick(e) {
     var b = e.target.closest ? e.target.closest('[data-pk]') : null; if (!b || !b.closest('#pkpl-top')) return;
     var a = b.getAttribute('data-pk');
