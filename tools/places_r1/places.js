@@ -35,7 +35,7 @@
   function data() { return site().data || null; }
   function top() { var s = site().stack || []; return s[s.length - 1] || {}; }
   function go(r, x) { var a = app(); if (a && a.go) a.go(r, x || {}); }
-  var V2Q = /[?&]v2/.test(location.search), V2 = !/[?&]v1\b/.test(location.search), V2G = (location.search.match(/[?&]g=(\w+)/) || [])[1] || 'strong';   /* Zale Nov 22 00:39 'build it': the left-column layout is live on desktop; the phone panel stays behind ?v2; ?v1 shows the old desktop */   /* MOCK Nov 21: left-column layout, gradient strength */
+  var V2Q = !/[?&]v1\b/.test(location.search), V2 = !/[?&]v1\b/.test(location.search), V2G = (location.search.match(/[?&]g=(\w+)/) || [])[1] || 'strong';   /* Zale Nov 22 00:39 'build it': the left-column layout is live on desktop; phone and tablet too since Nov 22 00:50; ?v1 shows the old layout */   /* MOCK Nov 21: left-column layout, gradient strength */
   var V2L = (location.search.match(/[?&]L=(\w+)/) || [])[1] || 'tiles';   /* MOCK: long-list style, tiles or cols */
   /* MOCK Nov 21 (Zale): a rough 2027 palette painted over today's map to judge it; provisional kit colors (near-black #2E292A, mauve #85506A, gold #BF9D27, pink #E5B6CC), official swatches pending from Artwork */
   var PAL27 = !/[?&]pal=26/.test(location.search);   /* 2027 map look on every size (Zale Nov 22 'all form factors'); ?pal=26 shows the old colors */   /* 2027 map look on desktop (Zale Nov 22); phones keep the 2026 look until their check */
@@ -735,6 +735,8 @@
     sheetVars(); layout();
     if (M._tw !== wide()) { M._tw = wide(); titleDraw(); }   /* first paint and phone/desktop switch: the title's words and buttons */
     drawTop();
+    var hx = window.__pkMapXP; if (hx) { window.__pkMapXP = '';   /* Zale Nov 22 01:03: Home's 'Find Music in 9 neighborhoods' opens the map with Music picked; a place opened from Home keeps the experience (design_home-34) */
+      if (XO.indexOf(hx) >= 0) { if (t.r === 'hoods') { if (M.xp !== hx) setTimeout(function () { if (M.xp !== hx) xpPick(hx); }, 0); } else if (t.r === 'hood') M.xp = hx; } }
     if (t.r === 'hood' && t.h && t.h !== M.cur && HH.shapes[t.h]) { if (M.title) { M.title = false; M.el.classList.add('pkpl-notitle'); } frame(t.h, !M.s); }   /* arriving at a place shows it, never the title screen */
     if (t.r === 'hoods' && M.cur) { M.was = M.cur; M.cur = ''; lit(); if (M.xp || M.amen) fitLit(); }   /* closing a card: back to the experience's places, lit */
     settleSheet(); dedupe(); shape(); backMap();
