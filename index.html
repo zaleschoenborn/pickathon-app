@@ -7349,9 +7349,9 @@ window.__pkMapH = mapH; window.__pkGoFarm = goFarm;   // pk-home2: the Home neig
           var findA = function (k) { if (byK[k]) return byK[k]; var hit = null; Object.keys(byK).some(function (k2) { if (Math.min(k.length, k2.length) >= 6 && (k.indexOf(k2) === 0 || k2.indexOf(k) === 0)) { hit = byK[k2]; return true; } return false; }); return hit; };
           var GLc = function (g) { var GN = { hiphop: 'Hip-hop', global: 'Global', electronic: 'Electronic', experimental: 'Experimental' }; return g ? ' · ' + (GN[g] || String(g).replace(/^./, function (c) { return c.toUpperCase(); })) : ''; };
           CT.forEach(function (c) { var k = nkA(c.n), a = findA(k); var kind = c.k === 'leg' ? 'Music legend' : c.k === 'deep' ? 'Deep cut' : 'Discovery' + GLc(c.g);
-            if (a && a.__ct) return; if (a) { a.__ct = 1; a.m = c.m; a.cf = c.c || ''; a.ctk = c.k; a.ks = c.ks || null; if (c.k === 'disc') a.yr = String(c.y); var cur = a.dc ? 'deep' : a.leg ? 'leg' : 'disc'; if (cur !== c.k) { a.leg = c.k === 'leg'; a.dc = c.k === 'deep'; a.kind = c.k === 'disc' ? 'Discovery' + GLc(a.g || c.g) : kind; a.rank = c.k === 'deep' ? 5 : (c.m >= 8 ? 1 : 3); a.yr = String(c.y); } if (!a.g && c.g) a.g = c.g; return; }
+            if (a && a.__ct) return; if (a) { a.__ct = 1; a.m = c.m; a.cf = c.c || ''; a.ctk = c.k; a.ks = c.ks || null; if (c.l) { a.line = c.l; a.ctl = c.l; }   /* copy_review-32: Copy Review's archCT line wins over older text */ if (c.k === 'disc') a.yr = String(c.y); var cur = a.dc ? 'deep' : a.leg ? 'leg' : 'disc'; if (cur !== c.k) { a.leg = c.k === 'leg'; a.dc = c.k === 'deep'; a.kind = c.k === 'disc' ? 'Discovery' + GLc(a.g || c.g) : kind; a.rank = c.k === 'deep' ? 5 : (c.m >= 8 ? 1 : 3); a.yr = String(c.y); } if (!a.g && c.g) a.g = c.g; return; }
             var ys = (c.ys || [c.y]).filter(function (y) { return y < 2025 || c.y >= 2025; }); var PH = ((d.yearPhotos || {})[String(c.y)] || {})[c.n];
-            var na = { n: c.n, kind: kind, leg: c.k === 'leg', dc: c.k === 'deep', cat: 'music', g: c.g || '', rank: c.k === 'deep' ? 5 : (c.m >= 8 ? 1 : 3), years: ys, yr: String(c.y), line: c.l || '', sp: '', img: (PH && PH.i) || (d.photoOf || {})[c.n] || ALI[c.n] || '', vu: '', vt: '', ct: 1, m: c.m, cf: c.c || '', ctk: c.k, ks: c.ks || null };
+            var na = { n: c.n, kind: kind, leg: c.k === 'leg', dc: c.k === 'deep', cat: 'music', g: c.g || '', rank: c.k === 'deep' ? 5 : (c.m >= 8 ? 1 : 3), years: ys, yr: String(c.y), line: c.l || '', ctl: c.l || '', sp: '', img: (PH && PH.i) || (d.photoOf || {})[c.n] || ALI[c.n] || '', vu: '', vt: '', ct: 1, m: c.m, cf: c.c || '', ctk: c.k, ks: c.ks || null };
             all.push(na); byK[k] = na; });
           var MRG = { sundayvalley: 'sturgillsimpson', leefields: 'leefieldstheexpressions' };   /* Lee Fields 2023 = Lee Fields & The Expressions 2011 (Artist Classification, Nov 9): one card, first year 2011 */ Object.keys(MRG).forEach(function (fk) { var A1 = all.filter(function (a) { return nkA(a.n) === fk; })[0], B1 = all.filter(function (a) { return nkA(a.n) === MRG[fk]; })[0]; if (!A1 || !B1) return; B1.years = (B1.years || []).concat(A1.years || []).map(Number).filter(function (y, i, Z) { return y && Z.indexOf(y) === i; }).sort(); all.splice(all.indexOf(A1), 1); });   /* a band name an act played under first (Sunday Valley = Sturgill Simpson, 2011) */
         } catch (e) {}
@@ -13151,7 +13151,7 @@ window.pkClimbRank = function (C, dd) {
       var XOVI = [{ i: 'i/r3-hood-paddock.jpg', p: '50% 35%' }, { i: 'i/r35-grove-1.jpg', p: '50% 40%' }, { i: 'i/p656.jpg', p: '50% 55%' }, { i: 'i/pk-paddock-01.jpg', p: '50% 45%' }];
       ALLH = ids.slice(); ROT0 = xpAll(ids).filter(function (k) { return d.hoods[k].k !== 'camp'; }); ROT = ROT0.slice(); XPF = 'Architecture';
       h += '<div class="h2-bt h2-bt-s3"><p class="h2-btn" aria-hidden="true">2</p><h2 class="h2-bth" id="h2-h3">Summer camp for your soul</h2></div><section class="h2-s h2-s3 h2-s3c xin h2-xo" aria-labelledby="h2-h3">' +
-        '<div class="h2-s5head h2-s5head-x"><div><p class="h2-btl">Twenty neighborhoods, built new in the forest every summer.</p></div>' +
+        '<div class="h2-s5head h2-s5head-x"><div><p class="h2-btl">Four days in twenty neighborhoods, built new in the forest every summer.</p></div>' +
         '<div class="h2-cc-nav"><button type="button" class="h2-pill h2-s5top h2-anb" data-h2="allhoods">Explore the map</button></div></div>' +
         '<div class="h2-xrow h2-xrow2" data-h2="xrow" role="group" aria-label="Experiences">' + XPO.map(function (t) { return '<button type="button" class="h2-xb" data-h2="xpsel" data-xp="' + t + '" aria-pressed="false">' + xpIc(t) + '<span>' + esc(t) + '</span></button>'; }).join('') + '</div>' +
         '<p class="h2-xsl" data-h2="xsl">Find it in</p>' +
@@ -13178,7 +13178,7 @@ window.pkClimbRank = function (C, dd) {
     var hPlace = h; h = '';
     /* 4 PRESS (Zale Nov 19 00:17): one big quote at a time, slowly rotating, after Summer camp */
     var PQ = ((d.about && d.about.press) || []).filter(function (q) { return q && q.q && q.q.length <= 82; });
-    PQ = [{ q: QUOTE[0], o: QUOTE[1].replace(/, \d{4}$/, ''), y: (QUOTE[1].match(/\d{4}$/) || [''])[0] }].concat(PQ.filter(function (q) { return q.q !== QUOTE[0]; })).slice(0, 6);
+    PQ = PQ.slice(0, 6);   /* copy_review-32: no longer leads with QUOTE (the Times picked nine festivals, and those weren't its exact words) */
     /* Copy Review owns the rotation (Zale Nov 21 23:25; copy_review-36): data.json homePress, shown in its cycle order (top six twice per cycle); falls back to the list above until that data ships */
     var HP = d.homePress; if (HP && HP.quotes && HP.quotes.length) { var HC = (HP.cycle && HP.cycle.length) ? HP.cycle : HP.quotes.map(function (q, i) { return i; }); PQ = HC.map(function (k) { var q = HP.quotes[k]; return q ? { q: q.q, o: q.o, y: q.y || '' } : null; }).filter(Boolean); }
     var hPress = PQ.length ? '<section class="h2-s h2-s7" aria-labelledby="h2-h7"><h2 class="h2-vh" id="h2-h7">What the press says</h2><div class="h2-pq" data-h2="pq">' +
@@ -13221,7 +13221,7 @@ window.pkClimbRank = function (C, dd) {
     var c1 = $('[data-h2="cta1"]', root), c4 = $('[data-h2="cta4"]', root), c6 = $('[data-h2="cta6"]', root);
     if (c1) c1.innerHTML = heroCTA(t);
     if (c4) c4.innerHTML = ctaHTML(t, true);
-    var tl = $('[data-h2="tixln"]', root); if (tl) tl.textContent = !t ? 'On sale soon.' : t.w === 'has' ? 'You have your passes. Add parking, camping or a friend.' : t.w === 'sale' ? String(t.side[0] || '').replace(/ prices$/, '') + ' is on. Tickets are running out.' : (t.side[0] || 'Tickets open soon') + (t.side[1] ? ', ' + t.side[1] : '') + '.';
+    var tl = $('[data-h2="tixln"]', root); if (tl) tl.textContent = !t ? 'On sale soon.' : t.w === 'has' ? 'You have your passes. Add parking, camping or a friend.' : t.w === 'sale' ? String(t.side[0] || '').replace(/ prices$/, '') + ' is on.' :   /* copy_review-32: the hero already says "Tickets are running out" */ (t.side[0] || 'Tickets open soon') + (t.side[1] ? ', ' + t.side[1] : '') + '.';
     if (c6) c6.innerHTML = ctaHTML(t, false);
     $$('[data-h2="from"]', root).forEach(function (e) { e.textContent = t ? t.from : ''; });
   }
@@ -13283,7 +13283,7 @@ window.pkClimbRank = function (C, dd) {
   }
   var ROT = [], ROT0 = [], ALLH = [];
   /* the neighborhood cards (simpler Home): same card anatomy as Who's up next, same centered loop (two clones at each end) */
-  function drawHoods() {
+  function drawHoods() { xpWordsIn();
     var box = root && $('[data-h2="hcards"]', root), PH = !!(window.matchMedia && matchMedia('(max-width:1199px)').matches); if (!box || !ROT.length || box._k === XPF + ROT.join() + PH) return; box._k = XPF + ROT.join() + PH; box._ph = PH;
     var A = ROT.filter(function (k) { return k === 'trails' ? XPF === 'Wellness' : hoodSet(k).length; }), K = PH ? 0 : (A.length < 3 ? 0 : Math.min(2, A.length)), seq = [], q;
     for (q = A.length - K; q < A.length; q++) seq.push([q, 1]); A.forEach(function (x, j) { seq.push([j, 0]); }); for (q = 0; q < K; q++) seq.push([q, 1]);
@@ -13355,7 +13355,7 @@ window.pkClimbRank = function (C, dd) {
     BL = pool.filter(function (a) { return a.cat === 'music' && a.ctk === 'disc' && !a.dc && !a.leg && a.line && a.vu; }).map(function (a) {
       var pv = PV[a.n], img = (pv && String(pv.y) === String(a.yr) && pv.i) || a.img || (pv && pv.i) || '';
       var v = vidOf(a.vu), r = vidRec(v), full = !!(r && r.f), watch = !!a.vu && !full && /^(Watch|Listen)/.test(a.vt || '');
-      var up = UPT[a.n]; return { n: a.n, kind: a.kind || 'Discovery', y: String(a.yr || ''), line: shortLine(a.line), img: up ? 'i/' + up + '.jpg' : img, ss: up ? 'i/' + up + '-s.jpg 720w, i/' + up + '.jpg 1080w' : '', vu: watch ? a.vu : '', vt: watch ? a.vt : '', m: a.m, k: 'disc', c: a.cf };
+      var up = UPT[a.n]; return { n: a.n, cl: a.ctl || '', kind: a.kind || 'Discovery', y: String(a.yr || ''), line: shortLine(a.line), img: up ? 'i/' + up + '.jpg' : img, ss: up ? 'i/' + up + '-s.jpg 720w, i/' + up + '.jpg 1080w' : '', vu: watch ? a.vu : '', vt: watch ? a.vt : '', m: a.m, k: 'disc', c: a.cf };
     }).filter(function (a) { return a.img; });
     BL.sort(window.pkRankCmp || function () { return 0; }); BLd = D; return BL;
   }
@@ -13410,7 +13410,7 @@ window.pkClimbRank = function (C, dd) {
         '<img src="' + esc(a.img) + '"' + (a.ss ? ' srcset="' + esc(a.ss) + '" sizes="(min-width:1200px) 380px, (min-width:600px) 46vw, 84vw" class="h2-cc-up"' : '') + ' alt="" loading="' + (i < 3 ? 'eager' : 'lazy') + '" decoding="async">' + (a.vu ? RING : '') + '</button>' +
         '<button type="button"' + ti + ' class="h2-cc-t" data-h2="barch" data-i="' + i + '" aria-label="' + esc(a.n + ', ' + a.kind + ', Pickathon ' + a.y + '. See ' + a.n + ' in the archive') + '">' +
         '<span class="h2-cc-k">' + (function (k) { var pr = String(k).split(/\s*·\s*/); return '<span class="h2-cc-cls">' + esc(pr[0]) + '</span>' + (pr[1] ? '<span class="h2-cc-gen">' + esc(pr.slice(1).join(' · ')) + '</span>' : ''); })(a.kind) + '<span class="h2-cc-y">' + esc(a.y) + '</span></span><span class="h2-d h2-cc-n pkp-head">' + esc(a.n) + '</span>' +
-        (HB[a.n] || a.line ? '<span class="h2-cc-bl">' + esc(HB[a.n] || a.line) + '</span>' : '') + (cap ? '<span class="h2-cc-c">' + esc(cap) + '</span>' : '') + '</button>' +
+        (a.cl || HB[a.n] || a.line ? '<span class="h2-cc-bl">' + esc(a.cl || HB[a.n] || a.line) + '</span>' : '') + (cap ? '<span class="h2-cc-c">' + esc(cap) + '</span>' : '') + '</button>' +
         '<span class="h2-cc-yt" aria-hidden="true">' + esc(a.y) + '</span>' +
         '</article>';   /* Zale Nov 21: the hidden Explore all Discoveries link on each card is gone; the card's photo plays and its words open the artist */   /* Zale Nov 15: the way to all of them sits on the card, lower right, like Explore <neighborhood> */
     }).join('');
@@ -13473,6 +13473,9 @@ window.pkClimbRank = function (C, dd) {
       im.style.setProperty('top', t + 'px', 'important'); im.style.setProperty('height', Math.max(0, hh) + 'px', 'important'); im.style.visibility = hh < 90 ? 'hidden' : ''; };
     requestAnimationFrame(f); if (document.fonts && document.fonts.ready) document.fonts.ready.then(f);
     if (!window.__pkXPR) { window.__pkXPR = 1; addEventListener('resize', function () { var e = root && $('[data-h2="xpan"]', root); if (e) xpFitMap(e); }); } }
+  function xpWordsIn() { if (xpWordsIn.ok || !D || !D.xpWords) return; var W = D.xpWords; xpWordsIn.ok = 1;   /* copy_review-35: one shared set of experience and place words (Home and the Places map) */
+    if (W.XPD) Object.keys(W.XPD).forEach(function (k) { if (W.XPD[k]) XPD[k] = W.XPD[k]; });
+    if (W.XPB) Object.keys(W.XPB).forEach(function (x) { XPB[x] = XPB[x] || {}; Object.keys(W.XPB[x] || {}).forEach(function (h) { if (W.XPB[x][h]) XPB[x][h] = W.XPB[x][h]; }); }); }
   function xpPanel(A, PH) { var lk = root && $('.h2-xpw3', root); if (lk) lk.innerHTML = 'Find ' + esc(XPF) + ' in ' + xpCount(A) + ' <span aria-hidden="true">→</span>'; if (lk && lk.offsetWidth && lk.scrollWidth > lk.clientWidth + 1) lk.innerHTML = 'Find ' + esc(XPF) + ' in ' + String(xpCount(A)).replace(/ \+ the trails$/, '') + ' <span aria-hidden="true">→</span>';   /* too long for a phone button: the trails still show as their own card in the swipe */   /* Zale Nov 22 00:40: name the experience */
     var el = root && $('[data-h2="xpan"]', root); if (!el) return; if (PH) { el.innerHTML = ''; return; }
     /* Zale Nov 22 00:04: desktop left column like the Places map: a label, the twelve experiences, the experience's line, then the map for the "where"; no place icons (the photo steps through the places) */
