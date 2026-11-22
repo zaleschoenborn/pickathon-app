@@ -110,9 +110,11 @@
   function clampView(s, tx, ty) {   /* keep some map on screen */
     s = Math.max(minS() * 0.9, Math.min(maxS(), s));
     if (M.free) return [s, tx, ty];   /* a place was framed: its centre may sit past the map's edge (Zale, Nov 20) */
-    var mw = W * s, mh = H * s, pad = 60;
-    tx = mw <= M.vw ? Math.min(Math.max(tx, -mw * 0.25), M.vw - mw * 0.75) : Math.min(pad, Math.max(M.vw - mw - pad, tx));
-    ty = mh <= M.vh ? Math.min(Math.max(ty, -mh * 0.25), M.vh - mh * 0.75) : Math.min(pad, Math.max(M.vh - mh - pad, ty));
+    var mw = W * s, mh = H * s, pad = 60, lx, hx, ly, hy;
+    if (mw <= M.vw) { lx = -mw * 0.25; hx = M.vw - mw * 0.75; } else { lx = M.vw - mw - pad; hx = pad; }
+    if (mh <= M.vh) { ly = -mh * 0.25; hy = M.vh - mh * 0.75; } else { ly = M.vh - mh - pad; hy = pad; }
+    if (M.s && Math.abs(s - M.s) < 1e-6 && M.tx != null) { lx = Math.min(lx, M.tx); hx = Math.max(hx, M.tx); ly = Math.min(ly, M.ty); hy = Math.max(hy, M.ty); }   /* Nov 21 (Zale: the map "glitched back" on the Woods): a framed place can sit past the edge; a pan from there never snaps back, it only stops going further out */
+    tx = Math.min(hx, Math.max(lx, tx)); ty = Math.min(hy, Math.max(ly, ty));
     return [s, tx, ty];
   }
   /* Nov 18 (fluid map): one paint per frame. While a finger or glide is moving the map only the world moves
@@ -360,6 +362,7 @@
       var a = e.target.closest('.pkpl-amdot'); if (a) return;
       if (M.cur && !M.amen && (!e.target.closest('[data-h]') || e.target.closest('[data-h]').getAttribute('data-h') === M.cur)) { var gk = iconAt(rel(e)); if (gk) { glow(gk === M.glow ? '' : gk); e.stopPropagation(); return; } }   /* a tap on ANOTHER neighborhood's shape always opens that neighborhood (Zale, Nov 20: it got stuck behind an icon glow) */   /* Nov 20 (Zale): inside a place, tap one of its icons and every icon of that kind glows on the real map; the view stays put */
       var h = e.target.closest('[data-h]');
+      if (!h && !wide() && e.clientX != null) { for (var ri = 0; ri < 16 && !h; ri++) { var ang = ri * Math.PI / 4, rr = ri < 8 ? 12 : 22, q = document.elementFromPoint(e.clientX + rr * Math.cos(ang), e.clientY + rr * Math.sin(ang)); h = q && q.closest && q.closest('#pkpl [data-h]'); } }   /* Nov 21: a finger that just misses a thin place (Quail Trail) still opens it */
       if (M.title) { M.title = false; M.el.classList.add('pkpl-notitle'); if (!h) return; }   /* the title screen holds until a click on the map or an icon */
       if (!h) { if (!wide() && top().r === 'hood' && cardEl() && !cardEl().classList.contains('pkpl-folded')) setFold(true); return; }   /* Nov 20 (Zale): tap the map above an open sheet to fold it and reach the rest of the map */
       tap(h.getAttribute('data-h'), e.target.closest('.pkpl-em'));
@@ -716,6 +719,18 @@
     document.addEventListener('pointermove', function (e) { if (!st) return; var dy = e.clientY - st.y; if (Math.abs(dy) > 6) st.moved = true; if (!st.moved) return; var lo = -st.gap, hi = foldY(); setY(cardEl(), Math.min(hi, Math.max(lo, st.base + dy))); }, true);
     var end = function (e) { if (!st) return; var s = st; st = null; var el = cardEl(); if (!el) return; if (!s.moved) { setFold(!el.classList.contains('pkpl-folded')); return; } var y = yNow(el), f = foldY(), dir = y - s.base, t, folded = false; if (dir < -20) { t = y < -s.gap / 2 ? -s.gap : 0; } else if (dir > 20) { if (y > f * 0.3) { t = f; folded = true; } else { t = Math.max(0, s.base); } } else { t = s.base; folded = s.base >= f - 1; } el.classList.add('pkpl-anim'); el.classList.toggle('pkpl-folded', folded); var b = el.querySelector('.pkpl-bar'); if (b) b.setAttribute('aria-expanded', String(!folded)); setY(el, t); if (M.cur && !wide()) setTimeout(function () { if (M.cur) recenter(); }, 420); setTimeout(chipsAboveFold, 360);   /* after the sheet has finished sliding, so the strip above it is measured at rest */ };
     document.addEventListener('pointerup', end, true); document.addEventListener('pointercancel', end, true);
+    /* Nov 21 (Zale): the sheet follows a swipe on its content, not only the bar. Swipe up: it grows to the full frame first, then the story scrolls. At the top of the story, swipe down: it slides back to open, and on down to the folded bar. */
+    var tc = null;
+    var inSheet = function (t) { return t && t.closest && t.closest('#pkpl-top .pkpl-sheet') && !onBar(t); };
+    document.addEventListener('touchstart', function (e) { if (wide() || !inSheet(e.target) || e.touches.length !== 1) { tc = null; return; } var el = cardEl(), sh = document.querySelector('#pkpl-top .pkpl-sheet'); if (!el || !sh) return; tc = { y: e.touches[0].clientY, base: yNow(el), gap: gapOf(), sh: sh, mode: null }; }, { capture: true, passive: true });
+    document.addEventListener('touchmove', function (e) { if (!tc) return; var el = cardEl(); if (!el) return; var dy = e.touches[0].clientY - tc.y;
+      if (!tc.mode) { if (Math.abs(dy) < 6) return; var full = tc.base <= -tc.gap + 1; tc.mode = (dy < 0 && !full) || (dy > 0 && tc.sh.scrollTop <= 0) ? 'sheet' : 'scroll'; if (tc.mode === 'sheet') { el.classList.remove('pkpl-anim'); tc.y = e.touches[0].clientY; dy = 0; } }
+      if (tc.mode !== 'sheet') return; e.preventDefault(); setY(el, Math.min(foldY(), Math.max(-tc.gap, tc.base + dy))); }, { capture: true, passive: false });
+    var tend = function () { if (!tc) return; var s = tc; tc = null; if (s.mode !== 'sheet') return; var el = cardEl(); if (!el) return; var y = yNow(el), f = foldY(), dir = y - s.base, t, folded = false;
+      if (dir < -20) t = y < -s.gap / 2 || s.base >= -1 ? -s.gap : 0; else if (dir > 20) { if (s.base < -1) t = (y > f * 0.3) ? f : 0; else t = f; folded = t === f; } else { t = s.base; folded = s.base >= f - 1; }
+      el.classList.add('pkpl-anim'); el.classList.toggle('pkpl-folded', folded); var b = el.querySelector('.pkpl-bar'); if (b) b.setAttribute('aria-expanded', String(!folded)); setY(el, t);
+      if (M.cur && !wide()) setTimeout(function () { if (M.cur) recenter(); }, 420); setTimeout(chipsAboveFold, 360); };
+    document.addEventListener('touchend', tend, true); document.addEventListener('touchcancel', tend, true);
     document.addEventListener('keydown', function (e) { if ((e.key === 'Enter' || e.key === ' ') && onBar(e.target) && !wide()) { e.preventDefault(); var el = cardEl(); setFold(!el.classList.contains('pkpl-folded')); } }, true);
   })();
   /* Nov 20 (Zale): the fade at the sheet's bottom shows only while more text is below */
