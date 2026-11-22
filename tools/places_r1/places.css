@@ -817,3 +817,11 @@ html body.pkpl-v2 #root #pkpl .pkpl-title::after,html body.pkpl-v2.pkpl-v2g #roo
 /* Zale, Nov 22: tablet uses its space; on neighborhood pages the experience buttons wrap to full rows like on the map */
 @media (min-width:600px){html body.pkpl-hood:not(.pkpl-wide) #root #pkpl .pkpl-xb{flex-wrap:wrap;overflow-x:visible;row-gap:8px}html body.pkpl-hood:not(.pkpl-wide) #root #pkpl .pkpl-xb::after,html body.pkpl-hood:not(.pkpl-wide) #root #pkpl .pkpl-xb::before{display:none}}
 @media (min-width:600px){html body.pkpl-hood:not(.pkpl-wide) #root #pkpl-top{bottom:var(--pkpl-xbh,61px)}}
+
+/* mission review (Nov 22): the bands under the video row link to their pages; the Creative Neighborhoods line under Who built it */
+#root #pkpl-top .pkpl-vx{margin:10px 16px 0;font:500 15px/1.6 'Bricolage Grotesque',system-ui,sans-serif;color:rgba(242,237,227,.72)}
+body.pkpl-wide #root #pkpl-top .pkpl-vx{margin:10px 32px 0}
+#root #pkpl-top .pkpl-vxa{display:inline-block;min-height:44px;padding:10px 0;line-height:24px;border:0;background:none;color:#F2EDE3;font:inherit;font-weight:700;text-decoration:underline;text-decoration-color:rgba(242,237,227,.35);text-underline-offset:3px;cursor:pointer}
+#root #pkpl-top .pkpl-vxa:hover{text-decoration-color:#E9B93C}
+#root #pkpl-top .pkpl-cnl{margin:12px 0 4px;font:500 16px/1.5 'Bricolage Grotesque',system-ui,sans-serif;color:#F2EDE3;max-width:52ch}
+#root #pkpl-top .pkpl-what .pkpl-wt{margin:0;font:500 17px/1.55 'Bricolage Grotesque',system-ui,sans-serif;color:#E8E2D4;max-width:60ch}

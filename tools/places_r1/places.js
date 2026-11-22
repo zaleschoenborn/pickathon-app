@@ -20,9 +20,9 @@
     var W = d.xpWords || XW; if (!W) return; M0W = W.map || {};
     Object.keys(W.XPD || {}).forEach(function (e) { XH.XPD[e] = W.XPD[e]; });
     Object.keys(W.XPB || {}).forEach(function (e) { XH.XPB[e] = XH.XPB[e] || {}; Object.keys(W.XPB[e]).forEach(function (k) { XH.XPB[e][k] = W.XPB[e][k]; }); });
-    HKW = W.hook || {}; DSW = W.desc || {};   /* read through hookOf/ddOf, so the shared data (and Home) are never changed */
+    HKW = W.hook || {}; DSW = W.desc || {}; WCN = W.cn || {};   /* read through hookOf/ddOf, so the shared data (and Home) are never changed */
   }
-  var M0W = {}, HKW = {}, DSW = {}, HKEY = null;
+  var M0W = {}, HKW = {}, DSW = {}, WCN = {}, HKEY = null;
   function kick(y) { return (M0W.buildKicker || 'The {year} build').replace('{year}', y); }   /* Copy, Nov 22 (copy_review-40 g) */
   function phoneFirst() { var t = M0W.phoneFirst || 'Pick one below to light up the map, or see all 20 neighborhoods.', a = 'see all ' + ids().length + ' neighborhoods', m = /see all \d+ neighborhoods/.exec(t);
     t = esc(t); return m ? t.replace(esc(m[0]), '<button type="button" class="pkpl-psall">' + esc(a) + '</button>') : t; }
@@ -655,12 +655,12 @@
       (has ? '<section class="pkpl-sc" aria-label="Schedule at ' + esc(h.n) + '"><div class="pkpl-days" role="group" aria-label="Day">' + days.map(function (d) { return '<button type="button" class="pk-cta sec pkpl-chip" data-pk="day" data-d="' + d + '"' + (d === TOP.day ? ' aria-pressed="true"' : ' aria-pressed="false"') + '>' + esc(dayN[d] || d.slice(5)) + '</button>'; }).join('') + '</div>' +
         '<ol class="pkpl-sets">' + rows.slice(0, showN).map(function (s) { var A = (D.artists || {})[s.a] || {}; return '<li><span class="pkpl-st">' + tm(s.s) + '</span><span class="pkpl-sa"><b>' + esc(A.n || s.a) + '</b><small>' + esc(LBL[s.l] || '') + '</small></span></li>'; }).join('') + '</ol>' +
         (rows.length > 3 ? '<button type="button" class="pk-cta sec pkpl-whole" data-pk="whole" aria-expanded="' + TOP.all + '">' + (TOP.all ? 'Show less' : 'Whole day at ' + esc(h.n)) + '</button>' : '') + '</section>' : '') +
-      storyIs(h, has) +
+      whatIs(h, has) +   /* Zale, Nov 22 (mission review): lead with what the place is now */
       soon(k, XE, h, has) + vids(k, XE) +
-      alsoAt(k, XE, h) + '<div class="pkpl-credw"></div>' +
+      alsoAt(k, XE, h) + yearIs(h) + '<div class="pkpl-credw"><div class="pkpl-cred"></div></div>' +   /* the last build is history, next to who built it */
       '</div>';
     setTimeout(railArrows, 400);
-    el.innerHTML = html; (function () { var tt = $('.pkpl-hi .pkpl-tt', el), a1 = $('.pkpl-yr .pkpl-ab1', el); if (tt && a1 && tt.textContent.trim() === a1.textContent.trim()) a1.remove(); })();   /* never the same line twice (Architecture shows the hook on the photo) */ var cr9 = $('.pkpl-cred', el), cw9 = $('.pkpl-credw', el); if (cr9 && cw9) cw9.appendChild(cr9);   /* Nov 22 review: who built it comes after what's here */
+    el.innerHTML = html; (function () { var tt = $('.pkpl-hi .pkpl-tt', el), a1 = $('.pkpl-what .pkpl-ab1', el) || $('.pkpl-yr .pkpl-ab1', el); if (tt && a1 && tt.textContent.trim() === a1.textContent.trim()) a1.remove(); })();   /* never the same line twice (Architecture shows the hook on the photo) */ var cr9 = $('.pkpl-cred', el), cw9 = $('.pkpl-credw', el); if (cr9 && cw9) cw9.appendChild(cr9);   /* Nov 22 review: who built it comes after what's here */
     TOP.i = 0; heroArm(el); document.body.classList.toggle('pkpl-xpup', !!$('.pkpl-up', el));   /* our link up replaces the app's Back to map */
   }
   var VN = { woods: ['Woods', 'Woods Stage'], cherryhill: ['Cherry Hill'], grove: ['Grove'], windmill: ['Windmill'], paddock: ['Paddock'], galaxy: ['Galaxy Barn'], lucky: ['Lucky Barn'], curation: ['Curation'], farmhouse: ['Farmhouse'] };
@@ -688,11 +688,11 @@
   function vids(k, XE) {   /* "Watch at <place>": five as a playlist, then a door to all of them */
     var P = vidPool(k, XE || 'Music'); if (!P.L.length) return '';
     var key = k + '|' + P.x, L = VPK[key] || (VPK[key] = vidPick(P.L, 5)), h = data().hoods[k], nm = h.n;
-    var lab = P.x === 'Music' ? 'Watch at ' + nm : 'Watch ' + P.x.toLowerCase() + ' at ' + nm;
+    var lab = (M0W.vidHead && P.x === 'Music') ? M0W.vidHead.replace('{place}', nm) : P.x === 'Music' ? 'Watch at ' + nm : 'Watch ' + P.x.toLowerCase() + ' at ' + nm;   /* Copy owns the heading (xpWords.map.vidHead) */
     return '<section class="pkpl-vids" aria-label="' + esc(lab) + '"><h2 class="pkpl-vh">' + esc(lab) + '</h2><div class="pkpl-vr">' + L.map(function (v, i) {
       var th = v.th || ('https://i.ytimg.com/vi/' + v.id + '/hqdefault.jpg');
       return '<button type="button" class="pkpl-vt" data-pk="vid" data-vk="' + esc(key) + '" data-i="' + i + '"><img src="' + esc(th) + '" alt="" loading="lazy"><span class="pkpl-pr0" aria-hidden="true"><i></i></span><span class="pkpl-vc"><b>' + esc(v.a) + '</b><small>Pickathon ' + v.y + '</small></span></button>';
-    }).join('') + (P.L.length > L.length ? '<button type="button" class="pkpl-vt pkpl-vall" data-pk="vall" data-h="' + k + '"><span><b>All ' + P.L.length + ' videos</b><small>at ' + esc(nm) + '</small></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>' : '') + '</div></section>';
+    }).join('') + (P.L.length > L.length ? '<button type="button" class="pkpl-vt pkpl-vall" data-pk="vall" data-h="' + k + '"><span><b>All ' + P.L.length + ' videos</b><small>at ' + esc(nm) + '</small></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>' : '') + '</div>' + (L.length ? '<p class="pkpl-vx">' + esc(M0W.vidMore || 'Meet them:') + ' ' + L.map(function (v) { return '<button type="button" class="pkpl-vxa" data-pk="act" data-n="' + esc(v.a) + '" data-y="' + esc(String(v.y)) + '">' + esc(v.a) + '</button>'; }).join('<span aria-hidden="true"> \u00b7 </span>') + '</p>' : '') + '</section>';
   }
   function storyIs(h, has) {   /* one story of the place (Zale, Nov 19): this year's headline, the place's one-liner, then this year's story and the place in one read; credits at the end */
     var by = h.by || {}, y = Object.keys(by).sort().pop(), st = y && by[y] && by[y].t ? by[y] : null;
@@ -706,7 +706,9 @@
     var tx = Array.isArray(st.d) ? st.d.join(' ') : (st.d || '');
     return '<section class="pkpl-yr"><p class="pkpl-sk">' + esc(kick(y)) + '</p><h2>' + esc(st.t) + '</h2>' + (tx ? '<div class="pkpl-more"><p>' + esc(tx) + '</p><button type="button" class="pkpl-rm" data-pk="rm" aria-expanded="false">Keep reading</button></div>' : '') + '</section>';
   }
-  function whatIs(h, has) { var t = ddOf(h) || (Array.isArray(h.d) ? h.d.join(' ') : (h.d || '')), hk = has ? '' : (hookOf(h) || ''); return (t || hk) ? '<div class="pkpl-what"><p class="pkpl-sk">About ' + esc(h.n) + '</p>' + (hk ? '<p class="pkpl-ab1">' + esc(hk) + '</p>' : '') + '<div class="pkpl-more"><p>' + esc(t) + '</p><button type="button" class="pkpl-rm" data-pk="rm" aria-expanded="false">Keep reading</button></div></div>' : ''; }
+  function whatIs(h, has) { var t = ddOf(h) || (Array.isArray(h.d) ? h.d.join(' ') : (h.d || '')), hk = has ? '' : (hookOf(h) || ''); if (!t && !hk) return '';
+    var body = !t ? '' : t.length < 260 ? '<p class="pkpl-wt">' + esc(t) + '</p>' : '<div class="pkpl-more"><p>' + esc(t) + '</p><button type="button" class="pkpl-rm" data-pk="rm" aria-expanded="false">Keep reading</button></div>';   /* a short description shows whole */
+    return '<div class="pkpl-what"><p class="pkpl-sk">About ' + esc(h.n) + '</p>' + (hk ? '<p class="pkpl-ab1">' + esc(hk) + '</p>' : '') + body + '</div>'; }
   function soon(k, XE, h, has) {
     if (has) return '';   /* the real schedule is showing: it is the 2027 card */   /* the 2027 schedule, summarized until it posts (Zale, Nov 19: more useful than every past year) */
     var HP = (data().hoodProg || {})[k], kinds = HP ? (HP.kinds || []).map(function (g) { return g[0]; }).filter(function (n) { return !/^(more|showcases)/i.test(n); }) : [];
@@ -832,6 +834,7 @@
     var tgt = card.querySelector('.pkpl-cred'), who = w.querySelector('.pk-hd-who');
     if (tgt && who && !tgt.firstChild) { var cr = who.querySelector('.pk-hd-creds'), bt = who.querySelector('.pk-hd-pitch .pk-cta');
       if (cr) { var lb = document.createElement('p'); lb.className = 'pkpl-sk'; lb.textContent = 'Who built it'; tgt.appendChild(lb); tgt.appendChild(cr.cloneNode(true)); }
+      var cnl = (DSW && HKW && hkey(data().hoods[top().h]) && (WCN[top().h] || M0W.cnLine)) || ''; if (cnl) { var cp = document.createElement('p'); cp.className = 'pkpl-cnl'; cp.textContent = cnl; tgt.appendChild(cp); }
       if (bt) { var b2 = bt.cloneNode(true); b2.className = 'pk-cta sec pkpl-bw'; b2.addEventListener('click', function () { bt.click(); }); tgt.appendChild(b2); } }
   }
   function backMap() {   /* end of a neighborhood page: the map again; tap it to go back to how you came in (Zale, Nov 19) */
@@ -863,6 +866,7 @@
     if (a === 'vid') { var L = VPK[b.getAttribute('data-vk')] || [], i0 = +b.getAttribute('data-i') || 0, Q = L.slice(i0).concat(L.slice(0, i0)).map(function (v) { return { u: vidU(v), c: v.a + ' · Pickathon ' + v.y }; });
       if (Q.length > 1 && window.__pkRadio) window.__pkRadio(Q, ''); else if (Q[0] && window.__pkPlayVid) window.__pkPlayVid(Q[0].u, Q[0].c); return; }   /* tap one: the five play in a row */
     if (a === 'vall') { go('watch', { hood: b.getAttribute('data-h') }); return; }
+    if (a === 'act') { go('act', { n: b.getAttribute('data-n'), y: b.getAttribute('data-y') || '' }); return; }   /* the video row's names lead to the artist page */
     if (a === 'xprow') { xpPick(b.getAttribute('data-e')); return; }   /* same rule as the phone row: to the map with that experience lit */
     if (a === 'xp') { TOP.xp = b.getAttribute('data-e'); TOP.all = false; if (M) { M.xp = TOP.xp; lit(); } var sc = scroller(); drawTop(); xbDraw(); var sh = $('#pkpl-top .pkpl-sheet'); if (sh) sh.scrollTop = 0; if (wide()) { var msc = moreScroller(); if (msc) msc.scrollTop = 0; } shape(); return; }   /* round 3: the switch is seen (back to the photo), credits stay */   /* Zale, Nov 22: switching here also switches the row and the map */
   }
