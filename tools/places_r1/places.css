@@ -810,3 +810,6 @@ html body.pkpl-v2 #root #pkpl .pkpl-pr.pkpl-was{border-color:#F2EDE3!important;b
 
 /* Zale, Nov 22 (round 4): lit names at most 1.6x; names of the other places stay readable above the veil, softer */
 .pkpl-nms path.dim{display:inline;fill:#E8E1D2;fill-opacity:.6;stroke:#12160F;stroke-opacity:.5;stroke-width:2px}
+
+/* Zale, Nov 22 (round 4): the desktop panel is solid behind every word, in every state, with a short soft edge where it meets the map */
+html body.pkpl-v2 #root #pkpl .pkpl-title::after,html body.pkpl-v2.pkpl-v2g #root #pkpl .pkpl-title::after{width:calc(100% + 28px);background:linear-gradient(90deg,#12160F 0,#12160F calc(100% - 28px),rgba(18,22,15,0) 100%)}
