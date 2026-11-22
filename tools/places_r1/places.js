@@ -58,7 +58,8 @@
     return (BOX[k] = [x0, y0, x1, y1]);
   }
   function union(L) { var b = [1e9, 1e9, -1e9, -1e9]; L.forEach(function (k) { var x = box(k); b = [Math.min(b[0], x[0]), Math.min(b[1], x[1]), Math.max(b[2], x[2]), Math.max(b[3], x[3])]; }); return b; }
-  function emb(k) { var h = data().hoods[k] || {}; return h.icw || ('ic2/' + k + '.png'); }   /* the white emblems Home uses */
+  function emb(k) { if (PAL27) return 'i/y27em/' + k + '.png';   /* 2027 look: Artwork's one-ink stamps (artwork-48) everywhere the map shows an emblem */
+    var h = data().hoods[k] || {}; return h.icw || ('ic2/' + k + '.png'); }   /* the white emblems Home uses */
   function stageHood() { var D = data(), m = {}; (D.stages || []).forEach(function (s) { m[s.id] = s.h; }); return m; }
 
 
