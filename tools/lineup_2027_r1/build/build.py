@@ -343,7 +343,9 @@ LOGO = img('logo27-gold.png', 300, fmt='PNG')
 def header(title, sub, back=True, chip=None):
     t = '<span class="hd-t"><b>%s</b>%s</span>' % (E(title), ('<i>%s</i>' % E(sub)) if sub else '')
     if chip:
-        t = '<label class="yrchip"><span class="yc-k">Lineup</span><select class="ysel2" aria-label="Lineup year">%s</select>%s</label>' % ('<option value="s1">2027</option>' + ''.join('<option value="y%s"%s>%s</option>' % (yy, ' selected' if yy == chip else '', yy) for yy in sorted(d['yearBill'].keys(), reverse=True)), ICON['caret'])
+        # r45 (Zale, Nov 22): the year switch must be obvious on every Lineup page, 2027 included: 'Lineup 2027 >' opens every year
+        t = ('<label class="yrchip"><span class="yc-k">Lineup</span><b class="yc-y">%s</b><span class="yc-a" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M4 1.5l5 4.5-5 4.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>'
+             '<select class="ysel2" aria-label="Change lineup year">%s</select></label>') % (chip, '<option value="s1"%s>2027</option>' % (' selected' if chip == '2027' else '') + ''.join('<option value="y%s"%s>%s</option>' % (yy, ' selected' if yy == chip else '', yy) for yy in sorted(d['yearBill'].keys(), reverse=True)))
     return ('<header class="hd">%s<img class="hd-logo" src="%s" alt="Pickathon 2027"><span class="hd-rule"></span>%s'
             '<span class="hd-sp"></span><button class="hd-listen" aria-label="Listen">%s</button><button class="hd-ic" aria-label="Search">%s</button></header>'
             '<div class="sale"><span><b>Holiday Sale</b> · from $483</span><a href="#" class="sale-b">Get tickets <svg viewBox="0 0 12 12" width="11" height="11"><path d="M4 1.5l5 4.5-5 4.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></a></div>'
@@ -398,11 +400,12 @@ def rest_lines(acts):
         out.append(('l4', row))
     return out
 
-def now_html(acts, rest=False):
-    ms = [(a.get('m') or 0) for a in acts] or [1]; mx, mn = max(ms), min(ms); out = ''
+def now_html(acts, rest=False, then=False):
+    mk = (lambda a: a.get('mb') or 0) if then else (lambda a: a.get('m') or 0)
+    ms = [mk(a) for a in acts] or [1]; mx, mn = max(ms), min(ms); out = ''
     for a in acts:
-        v = ((a.get('m') or 0) - mn) / (mx - mn) if mx > mn else 1.0
-        out += '<span class="pn" style="--s:%.3f" data-c="%s" data-art="%s" data-an="%s">%s</span>' % (v, ctag(a['k']), _aslug(nm(a)), E(a['n']), E(nm(a)))
+        v = (mk(a) - mn) / (mx - mn) if mx > mn else 1.0
+        out += '<span class="pn" style="--s:%.3f" data-c="%s" data-art="%s" data-an="%s">%s</span>' % (v, ctag(a.get('kb', 'none') if then else a['k']), _aslug(nm(a)), E(a['n']), E(nm(a)))
     return '<div class="pcloud%s">%s</div>' % (' rest' if rest else '', out)
 
 def poster_block(P, badge, yr, then, now, total, joined=True, ranked=True):
@@ -416,12 +419,12 @@ def poster_block(P, badge, yr, then, now, total, joined=True, ranked=True):
     html_ = ('<section class="poster JOIN" style="--paper:%s;--ink:%s;--ink2:%s;--band:%s" data-yr="%s">%s<div class="po-in">'
             '<div class="po-art"><img class="po-badge" src="%s" alt="Pickathon %s poster art">%s</div>'
             '<h2 class="po-cap" data-then="This is the lineup in %s." data-now="This is the lineup today.">This is the lineup in %s.</h2>'
-            '<div class="po-ctl"><button class="po-b on" data-m="then">Lineup %s</button><span class="po-track"><i class="po-knob" role="slider" tabindex="0" aria-label="Slide from %s to today" aria-valuemin="0" aria-valuemax="1" aria-valuenow="0"></i></span><button class="po-b" data-m="now">Lineup today</button></div>'
+            '<div class="po-ctl"><button class="po-b on" data-m="then">Lineup %s</button><span class="po-track"><i class="po-knob" role="slider" tabindex="0" aria-label="Slide from %s to today" aria-valuemin="0" aria-valuemax="1" aria-valuenow="0"><b class="po-yr" data-y0="%s">%s</b></i></span><button class="po-b" data-m="now">Lineup today</button></div>'
             '<div class="po-names then">%s<div class="po-rest" hidden>%s</div></div><div class="po-names now" hidden>%s<div class="po-rest" hidden>%s</div></div>'
             '<button class="po-all" data-open="Show the top ten" data-shut="See the whole bill · %d bands">See the whole bill · %d bands</button>'
             '<p class="po-tap">Tap any name</p></div>%s</section>') % (
-            P['paper'], P['ink'], P['ink2'], P['band'], yr, cloud, badge, yr, dates, yr, yr, yr, yr,
-            poster_html(ten_lines(then), TG), poster_html(rest_lines(then), TG), now_html(now[:10]), now_html(now[10:], True), total, total, stripe)
+            P['paper'], P['ink'], P['ink2'], P['band'], yr, cloud, badge, yr, dates, yr, yr, yr, yr, yr, yr,
+            now_html(then[:10], then=True), now_html(then[10:], True, then=True), now_html(now[:10]), now_html(now[10:], True), total, total, stripe)
     html_ = html_.replace('poster JOIN', 'poster joined' if joined else 'poster solo')
     if not ranked:
         a = html_.index('<div class="po-ctl">'); b = html_.index('<div class="po-names then">')
@@ -623,7 +626,7 @@ with open(ROOT + 'home_top_discoveries.csv', 'w', newline='', encoding='utf-8') 
 
 bars = [(1, [58, 34]), (1, [70]), (2, [40, 44]), (2, [30, 26, 30]), (3, [22, 28, 20, 18]), (3, [18, 24, 16, 26]), (4, [14, 18, 12, 16, 14]), (4, [12, 16, 18, 12, 10])]
 barh = ''.join('<div class="br b%d">%s</div>' % (lv, ''.join('<i style="width:%d%%"></i>' % w for w in ws)) for lv, ws in bars)
-s1 = header('Lineup', 'Aug 5–8, 2027', back=False)
+s1 = header('Lineup', 'Aug 5–8, 2027', back=False, chip='2027')
 s1 += ('<section class="hero h27"><img src="%s" alt="" style="object-position:74%% 50%%"><div class="hero-sc"></div>'
        '<div class="hero-tx"><p class="kick">The 2027 lineup · not out yet</p><h1>The names<br>come later.</h1>'
        '<p class="hero-sub">60+ acts on hand-built stages, most playing twice. Be first to hear who.</p>'
@@ -718,6 +721,7 @@ def tile(a, y, P, photo):
     return ('<a class="card tt ytile" data-art="%s" data-an="%s" href="#" style="--paper:%s;--ink:%s;--ink2:%s;--band:%s"><span class="yt-k">%s</span>'
             '<span class="yt-n" style="font-size:max(var(--lab),%.1fpx)">%s</span>%s</a>') % (_aslug(n), E(n), P['paper'], P['ink'], P['ink2'], P['band'], KLAB[k], fs, '<br>'.join(E(x) for x in lines), foot)
 
+YREEL = {}
 def year_page(y):
     P = d['yearBrand'][y]; st = d['yearStory'].get(y, {}); yp = d['yearPhotos'].get(y, {})
     allb = d['yearBill'][y]
@@ -737,15 +741,32 @@ def year_page(y):
         hero = (r0['i'], r0['n'], kk[0] if kk else '', kk[1] if len(kk) > 1 else '', r0.get('l', ''), bool(r0.get('v')), r0.get('v', ''))
     elif ten and ph(ten[0]):
         a0 = ten[0]; hero = (ph(a0), a0['n'], KLAB[a0['k']], gp_a(a0), '', False, '')
+    # r45 (Zale, Nov 22): every year opens on a ten-band reel built from TODAY's magnitude (class table magnitude_dec), top act first.
+    # Photo: that year's catalog photo, else a same-year reel or video frame. Song: that year's clip, else the nearest later year, then earlier.
+    # Plays on its own, 4 seconds a frame, hard cut (no crossfade); tap a segment to jump; tap the photo to play the song.
+    _ov = {r['n']: r for r in reel}
+    sl = []
+    _ovc = {_canon(r['n']): r for r in reel}
+    for a in today:
+        o = _ov.get(a['n']) or _ovc.get(_canon(a['n'])) or {}
+        rp = o.get('i') if (o.get('i') and loc(o['i']) and 'poster' not in o['i']) else ''
+        p = ph(a) or rp or ARCHF.get((_canon(a['n']), y), '')
+        clip = o.get('v') or archive_clip(a['n'], y)
+        if not p or 'poster' in p or not clip: continue  # every frame plays a song (Zale: 'we go to different videos if we can't find them')
+        sl.append({'i': img(p, 1100, 80), 'raw': p, 'n': a['n'], 'k': KLAB[a['k']], 'g': gp_a(a), 'l': o.get('l', ''), 'clip': clip, 'sg': ''})
+        if len(sl) == 10: break
+    if not sl and hero:
+        sl = [{'i': img(hero[0], 1100, 80), 'raw': hero[0], 'n': hero[1], 'k': hero[2], 'g': hero[3], 'l': hero[4], 'clip': hero[6], 'sg': ''}]
+    YREEL[y] = sl
+    if sl: hero = hero or (sl[0]['raw'],)
     if hero:
-        kc = {'Discovery': 'disc', 'Legend': 'leg', 'Deep cut': 'deep'}.get(hero[2], 'none')
-        sl = reel_slides(y) if y == '2026' else []
         if sl:
-            segs = ''.join('<i data-slide="%d"%s></i>' % (k, ' class="on"' if k == 0 else '') for k in range(len(sl)))
+            kc = {'Discovery': 'disc', 'Legend': 'leg', 'Deep cut': 'deep'}.get(sl[0]['k'], 'none')
+            segs = ''.join('<i data-slide="%d"%s><b></b></i>' % (k, ' class="on"' if k == 0 else '') for k in range(len(sl)))
             sattr = ' data-slides="%s"' % html.escape(json.dumps(sl), quote=True)
-            h += ('<section class="hero hyr"%s><img src="%s" alt="" style="object-position:%s"><div class="hero-sc"></div><div class="segs">%s</div><span class="hyr-y">%s</span>%s'
+            h += ('<section class="hero hyr reel"%s><img src="%s" alt="" style="object-position:%s" data-clip="%s"><div class="hero-sc"></div><div class="segs">%s</div><span class="hyr-y">%s</span>%s'
                   '<div class="hero-tx"><p class="krow"><span class="k k-%s">%s</span><span class="g">%s</span></p><h1 class="act%s">%s</h1>%s</div></section>') % (
-                  sattr, sl[0]['i'], fpos(sl[0]['raw'], FOCH), segs, y, clip_ring(sl[0]['clip'], 'lg'),
+                  sattr, sl[0]['i'], fpos(sl[0]['raw'], FOCH), E(sl[0]['clip']), segs, y, clip_ring(sl[0]['clip'], 'lg'),
                   kc, E(sl[0]['k']), E(sl[0]['g']), ' sm' if len(sl[0]['n']) > 12 else '', E(sl[0]['n']), ('<p class="hero-sub">%s</p>' % E(sl[0]['l'])) if sl[0]['l'] else '')
         else:
             h += ('<section class="hero hyr"><img src="%s" alt="" style="object-position:%s"><div class="hero-sc"></div><div class="segs">%s</div><span class="hyr-y">%s</span>%s'
@@ -756,7 +777,9 @@ def year_page(y):
         badge = img('i/y24-badge-keyline.png', 460, fmt='PNG')
     else:
         badge = img(d['yearLogo'][y], 460, fmt='PNG')
-    h += poster_block(P, badge, y, music, today_all, len(music), joined=bool(hero), ranked=ranked)
+    # r45 (Zale, Nov 22): the booking view is ordered and sized by AT-FESTIVAL magnitude (class table at_festival_magnitude_dec) from 2009 on; earlier years keep the printed poster order
+    then_list = sorted(music, key=lambda x: -(x.get('mb') if x.get('mb') is not None else -1)) if (ranked and int(y) >= 2009) else music
+    h += poster_block(P, badge, y, then_list, today_all, len(music), joined=bool(hero), ranked=ranked)
     if st.get('headline'):
         h += ('<section class="story short"><p class="kick">The %s story</p><p class="lead">%s.</p>%s</section>') % (y, E(st['headline'].rstrip('.')), ('<p class="body" hidden>%s</p><button class="chip stog" aria-expanded="false" data-open="Read the %s story" data-shut="Show less"><span>Read the %s story</span> %s</button>' % (E(st['story']), y, y, ICON['caret'])) if st.get('story') else '')
     lp = ''  # Nov 21 r27 (Zale): the lineup picker is off until the other lineups (Family, DJs, Comedy...) are drawn; it listed them with nothing behind them
