@@ -23,6 +23,9 @@
     HKW = W.hook || {}; DSW = W.desc || {};   /* read through hookOf/ddOf, so the shared data (and Home) are never changed */
   }
   var M0W = {}, HKW = {}, DSW = {}, HKEY = null;
+  function kick(y) { return (M0W.buildKicker || 'The {year} build').replace('{year}', y); }   /* Copy, Nov 22 (copy_review-40 g) */
+  function phoneFirst() { var t = M0W.phoneFirst || 'Pick one below to light up the map, or see all 20 neighborhoods.', a = 'see all ' + ids().length + ' neighborhoods', m = /see all \d+ neighborhoods/.exec(t);
+    t = esc(t); return m ? t.replace(esc(m[0]), '<button type="button" class="pkpl-psall">' + esc(a) + '</button>') : t; }
   function hkey(h) { if (!HKEY) { HKEY = new Map(); var d = data(); Object.keys(d.hoods).forEach(function (k) { HKEY.set(d.hoods[k], k); }); } return HKEY.get(h); }
   function hookOf(h) { var k = h && hkey(h); return (k && HKW[k]) || (h && h.hook) || ''; }
   function ddOf(h) { var k = h && hkey(h); return (k && DSW[k]) || (h && h.dd) || ''; }
@@ -98,7 +101,7 @@
     if (out.length < 3 && e !== 'Architecture') (((XM.arch || {})[k]) || []).slice(0, 3 - out.length).forEach(function (z) { add({ i: z.f, p: z.p }); });
     return out.slice(0, e === 'Architecture' ? 8 : 5);
   }
-  function xpLine(e, k) { var b = ((XH.XPB || {})[e] || {})[k]; return b || (e === 'Architecture' ? ((data().hoods[k] || {}).t || '') : XH.XPD[e] || ''); }
+  function xpLine(e, k) { var b = ((XH.XPB || {})[e] || {})[k]; return b || (e === 'Architecture' ? (hookOf(data().hoods[k]) || (data().hoods[k] || {}).t || '') : XH.XPD[e] || ''); }
   function xpIcon(e) { return '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">' + (XH.XPI[e] || '') + '</svg>'; }
   function litSet() { return M && M.xp ? xpPlaces(M.xp) : []; }
 
@@ -178,7 +181,7 @@
       out.push('<button type="button" class="pkpl-edgetag pkpl-et-' + d + '" data-et="' + k + '" data-mx="' + mx + '" data-my="' + my + '" style="left:' + Math.round(px) + 'px;top:' + Math.round(py) + 'px">' + ar + ' ' + esc(D4[k].n) + '</button>'); });
     var byEdge = {}; out = out.filter(function (h) { var d = /pkpl-et-(\w+)/.exec(h)[1]; byEdge[d] = (byEdge[d] || 0) + 1; return byEdge[d] <= (wide() ? 5 : 3); });
     var extra = Object.keys(byEdge).reduce(function (a, d) { return a + Math.max(0, byEdge[d] - (wide() ? 5 : 3)); }, 0);
-    if (extra) out.push('<button type="button" class="pkpl-edgetag pkpl-et-down pkpl-etall" style="left:' + Math.round(cr.x + 60) + 'px;top:' + Math.round(cr.y + cr.h - 52) + 'px">\u2193 ' + extra + ' more</button>');
+    if (extra) out.push('<button type="button" class="pkpl-edgetag pkpl-et-down pkpl-etall" style="left:' + Math.round(cr.x + 60) + 'px;top:' + Math.round(cr.y + cr.h - 52) + 'px">' + esc((M0W.moreTag || '\u2193 {n} more').replace('{n}', extra)) + '</button>');
     host.innerHTML = out.join('');   /* round 3: never a wall of tags */
     ['up', 'down'].forEach(function (d) { var T = $$('.pkpl-et-' + d, host).sort(function (a, b) { return a.offsetLeft - b.offsetLeft; }), edge = -1e9;   /* tags on one edge never overlap (round 2) */
       T.forEach(function (t) { var w = t.offsetWidth, l = Math.max(t.offsetLeft - w / 2, edge + 8); t.style.left = Math.round(l + w / 2) + 'px'; edge = l + w; }); });
@@ -375,7 +378,7 @@
       if (M.xp) ps.innerHTML = '<p class="pkpl-psl">' + esc(sum) + '</p>'
         + (M.xp === 'Architecture' ? '<div class="pkpl-psab"><button type="button" class="pk-cta sec pkpl-abb" data-go="build">Build with Pickathon</button></div>' : '')
         + '<div class="pkpl-psls' + (Lp.length > 4 ? ' pkpl-psl2' : '') + '">' + Lp.map(function (k) { return tile(k, xpLine(M.xp, k)); }).join('') + '</div>';
-      else ps.innerHTML = '<p class="pkpl-psl">Pick one of ' + XO.length + ' below and the map lights up, or <button type="button" class="pkpl-psall">see all ' + ids().length + ' neighborhoods</button>.</p>'
+      else ps.innerHTML = '<p class="pkpl-psl">' + phoneFirst() + '</p>'
         + [['stage', 'Stages'], ['around', 'Hangouts'], ['camp', 'Camping']].map(function (g) { var ks = ids().filter(function (k) { return (D3[k].k || 'around') === g[0]; }); return ks.length ? '<p class="pkpl-gh">' + g[1] + '</p><div class="pkpl-psls pkpl-pst">' + ks.map(function (k) { return tile(k); }).join('') + '</div>' : ''; }).join('');
       if (ps._xp !== M.xp) { var px2 = ps._xp; ps._xp = M.xp; ps.scrollTop = 0; if (M.ps === 0 || M.ps == null) M.ps = 1; ps.classList.remove('pkpl-xf'); void ps.offsetWidth; if (px2 !== undefined && !calm()) ps.classList.add('pkpl-xf'); var xr = $('.pkpl-xb', M.el), xs = M.xp && xr && $('.pkpl-xe[data-xp="' + M.xp + '"]', xr); if (xs) { var cx = xs.offsetLeft + xs.offsetWidth / 2 - xr.clientWidth / 2; if (xs.offsetLeft < xr.scrollLeft + 8 || xs.offsetLeft + xs.offsetWidth > xr.scrollLeft + xr.clientWidth - 8) xr.scrollTo({ left: Math.max(0, cx), behavior: calm() ? 'auto' : 'smooth' }); } }   /* the picked button is never half off the edge (Site Build, Nov 22) */
       var qq2 = $('.pkpl-psq', M.el); if (qq2) qq2.classList.add('pkpl-psq0');   /* the question line is dropped: arrival's title asks it, and after a pick the pressed button answers it */
@@ -657,7 +660,7 @@
       alsoAt(k, XE, h) + '<div class="pkpl-credw"></div>' +
       '</div>';
     setTimeout(railArrows, 400);
-    el.innerHTML = html; var cr9 = $('.pkpl-cred', el), cw9 = $('.pkpl-credw', el); if (cr9 && cw9) cw9.appendChild(cr9);   /* Nov 22 review: who built it comes after what's here */
+    el.innerHTML = html; (function () { var tt = $('.pkpl-hi .pkpl-tt', el), a1 = $('.pkpl-yr .pkpl-ab1', el); if (tt && a1 && tt.textContent.trim() === a1.textContent.trim()) a1.remove(); })();   /* never the same line twice (Architecture shows the hook on the photo) */ var cr9 = $('.pkpl-cred', el), cw9 = $('.pkpl-credw', el); if (cr9 && cw9) cw9.appendChild(cr9);   /* Nov 22 review: who built it comes after what's here */
     TOP.i = 0; heroArm(el); document.body.classList.toggle('pkpl-xpup', !!$('.pkpl-up', el));   /* our link up replaces the app's Back to map */
   }
   var VN = { woods: ['Woods', 'Woods Stage'], cherryhill: ['Cherry Hill'], grove: ['Grove'], windmill: ['Windmill'], paddock: ['Paddock'], galaxy: ['Galaxy Barn'], lucky: ['Lucky Barn'], curation: ['Curation'], farmhouse: ['Farmhouse'] };
@@ -695,13 +698,13 @@
     var by = h.by || {}, y = Object.keys(by).sort().pop(), st = y && by[y] && by[y].t ? by[y] : null;
     var j = function (d) { return Array.isArray(d) ? d.join(' ') : (d || ''); }, yr = st ? j(st.d) : '', ab = ddOf(h) || j(h.d), hk = has ? '' : (hookOf(h) || '');
     var body = [yr, ab].filter(Boolean).map(function (t) { return '<p>' + esc(t) + '</p>'; }).join('');
-    return '<section class="pkpl-yr"><p class="pkpl-sk">' + esc(h.n) + (st ? ' in ' + y : '') + '</p>' + (st ? '<h2>' + esc(st.t) + '</h2>' : '') + (hk ? '<p class="pkpl-ab1">' + esc(hk) + '</p>' : '') +
+    return '<section class="pkpl-yr"><p class="pkpl-sk">' + (st ? esc(kick(y)) : esc(h.n)) + '</p>' + (st ? '<h2>' + esc(st.t) + '</h2>' : '') + (hk ? '<p class="pkpl-ab1">' + esc(hk) + '</p>' : '') +
       (body ? '<div class="pkpl-more">' + body + '<button type="button" class="pkpl-rm" data-pk="rm" aria-expanded="false">Keep reading</button></div>' : '') + '<div class="pkpl-cred"></div></section>';
   }
   function yearIs(h) {   /* this year's story leads (Zale, Nov 19): kicker, headline, a few lines, Read more */
     var by = h.by || {}, y = Object.keys(by).sort().pop(), st = y && by[y]; if (!st || !st.t) return '';
     var tx = Array.isArray(st.d) ? st.d.join(' ') : (st.d || '');
-    return '<section class="pkpl-yr"><p class="pkpl-sk">' + esc(h.n) + ' in ' + y + '</p><h2>' + esc(st.t) + '</h2>' + (tx ? '<div class="pkpl-more"><p>' + esc(tx) + '</p><button type="button" class="pkpl-rm" data-pk="rm" aria-expanded="false">Keep reading</button></div>' : '') + '</section>';
+    return '<section class="pkpl-yr"><p class="pkpl-sk">' + esc(kick(y)) + '</p><h2>' + esc(st.t) + '</h2>' + (tx ? '<div class="pkpl-more"><p>' + esc(tx) + '</p><button type="button" class="pkpl-rm" data-pk="rm" aria-expanded="false">Keep reading</button></div>' : '') + '</section>';
   }
   function whatIs(h, has) { var t = ddOf(h) || (Array.isArray(h.d) ? h.d.join(' ') : (h.d || '')), hk = has ? '' : (hookOf(h) || ''); return (t || hk) ? '<div class="pkpl-what"><p class="pkpl-sk">About ' + esc(h.n) + '</p>' + (hk ? '<p class="pkpl-ab1">' + esc(hk) + '</p>' : '') + '<div class="pkpl-more"><p>' + esc(t) + '</p><button type="button" class="pkpl-rm" data-pk="rm" aria-expanded="false">Keep reading</button></div></div>' : ''; }
   function soon(k, XE, h, has) {

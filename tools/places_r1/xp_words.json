@@ -8,7 +8,10 @@
    "Hangouts": "Hangouts",
    "Camping": "Camping"
   },
-  "architecture": "Built by hand each summer, then given away."
+  "architecture": "Built by hand each summer, then given away.",
+  "buildKicker": "The {year} build",
+  "moreTag": "↓ {n} more",
+  "phoneFirst": "Pick one below to light up the map, or see all 20 neighborhoods."
  },
  "XPD": {
   "Architecture": "Built by hand each summer, then given away to schools, farms and woodworkers.",
@@ -99,7 +102,7 @@
   "galaxy": "A century-old barn, sweaty and loud",
   "lucky": "A barn with seats, built for listening",
   "farmhouse": "The front door, where wristbands go on",
-  "curation": "One chef, one band, a hundred seats",
+  "curation": "Just off the farm: one chef, one band",
   "refuge": "A quiet pocket of forest to reset",
   "coyote": "A whole camp in the woods built for kids",
   "courtyard": "Fire pit, bar and open sky outside the barn",
@@ -121,7 +124,7 @@
   "galaxy": "A century-old barn where the line between band and crowd disappears. Psych, punk and soul you feel in your chest.",
   "lucky": "A barn with seats for sets that need a quieter room, with shade and a hundred seats outside for the wait.",
   "farmhouse": "The front door to the farm: rideshare, shuttle and bikes arrive here, wristbands go on, and the first music of the day greets you.",
-  "curation": "A hidden room by the creek where one chef and one band share a hundred people, from Friday dinner to Sunday brunch.",
+  "curation": "A room just off the farm, beside the creek, where one chef and one band share a table with a hundred people, from Friday dinner to Sunday brunch.",
   "refuge": "A protected pocket of the farm for rest: yoga, sound baths, plant meditation, tarot, and a sober-friendly place to land. Cedar showers are tucked in the trees.",
   "coyote": "A camp of their own for kids, with kid bands, puppet parades, crafts and drop-off care. Kids 12 and under get in free.",
   "courtyard": "The open-air plaza outside the Galaxy Barn, with a fire pit, a bar and a screen showing the stage inside. Its lumber goes on to Oregon woodworkers.",
