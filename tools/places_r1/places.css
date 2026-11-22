@@ -555,13 +555,15 @@ html body.pkpl-v2p:not(.pkpl-hood) #root #pkpl .pkpl-ps{position:absolute;left:0
 html body.pkpl-v2p #root #pkpl .pkpl-ps::-webkit-scrollbar{display:none}
 html body.pkpl-v2p #root #pkpl .pkpl-ps.pkpl-ps0{padding-top:0;padding-bottom:0;visibility:hidden}
 html body.pkpl-v2p.pkpl-hood #root #pkpl .pkpl-ps,html body.pkpl-v2p.pkpl-hood #root #pkpl .pkpl-psg,html body:not(.pkpl-v2p) #root #pkpl .pkpl-psg{display:none}
-html body.pkpl-v2p:not(.pkpl-hood) #root .pkpl-xb{transition:bottom .28s cubic-bezier(.2,.7,.2,1);border-top:0;border-bottom:0;background:#12160F;padding-top:10px;padding-bottom:10px}
+html body.pkpl-v2p:not(.pkpl-hood) #root .pkpl-xb{z-index:5;border-top:0;border-bottom:0;background:#12160F;padding-top:4px;padding-bottom:10px}
 html body.pkpl-v2p:not(.pkpl-hood) #root#root#root .pkpl-tools{bottom:var(--pkpl-psb,200px);transition:bottom .28s cubic-bezier(.2,.7,.2,1)}
 html body.pkpl-v2p:not(.pkpl-hood) #root #pkpl .pkpl-psh2{position:absolute;left:0;right:0;z-index:5;padding:0 16px 10px;background:#12160F;border-radius:16px 16px 0 0;cursor:pointer;transition:bottom .28s cubic-bezier(.2,.7,.2,1)}
 html body:not(.pkpl-v2p) #root #pkpl .pkpl-psh2,html body.pkpl-hood #root #pkpl .pkpl-psh2{display:none}
 html body.pkpl-v2p #root #pkpl .pkpl-psg{display:grid;place-items:center;width:72px;height:20px;margin:0 auto 4px;padding:0;border:0;background:none;cursor:pointer}
 html body.pkpl-v2p #root #pkpl .pkpl-psg i{display:block;width:36px;height:4px;border-radius:2px;background:rgba(242,237,227,.45)}
-html body.pkpl-v2p #root #pkpl .pkpl-psht{min-height:58px}
+html body.pkpl-v2p #root #pkpl .pkpl-psht{min-height:34px}
+html body.pkpl-v2p:not(.pkpl-hood) #root #pkpl .pkpl-psq{position:absolute;left:0;right:0;z-index:5;padding:12px 16px 4px;background:#12160F;border-top:1px solid #2F372A;box-shadow:0 -14px 14px -6px #12160F;font:800 clamp(10px,2.8vw,12px)/1 'Bricolage Grotesque',system-ui,sans-serif;letter-spacing:.09em;white-space:nowrap;text-transform:uppercase;color:#E9B93C;transition:bottom .28s cubic-bezier(.2,.7,.2,1)}
+html body:not(.pkpl-v2p) #root #pkpl .pkpl-psq,html body.pkpl-hood #root #pkpl .pkpl-psq{display:none}
 html body.pkpl-v2p #root #pkpl .pkpl-psk{margin:0 0 7px;font:800 clamp(9.5px,2.65vw,12px)/1 'Bricolage Grotesque',system-ui,sans-serif;letter-spacing:.09em;white-space:nowrap;text-transform:uppercase;color:#E9B93C}
 html body.pkpl-v2p #root #pkpl .pkpl-psht h2{margin:0;font-family:'Pickathon 2014',sans-serif;font-size:clamp(21px,6vw,30px);font-weight:400;line-height:1.05;letter-spacing:.02em;text-transform:uppercase;color:#F2EDE3}
 html body.pkpl-v2p #root #pkpl .pkpl-psht .pkpl-pc{display:flex;align-items:center;gap:10px;margin:0;font:400 15px/1 'Bricolage Grotesque',system-ui,sans-serif;color:rgba(242,237,227,.7)}
@@ -584,6 +586,7 @@ html body.pkpl-v2p #root #pkpl .pkpl-pst .pkpl-pr b{font-size:15px}
 html body.pkpl-v2p #root #pkpl .pkpl-psab{margin:0 0 6px}
 html body.pkpl-v2p #root #pkpl .pkpl-ps.pkpl-xf{animation:pkpl-xf .32s ease}
 @media (min-width:600px){
+html body.pkpl-v2p:not(.pkpl-hood) #root #pkpl .pkpl-psq{padding-left:28px;padding-right:28px}
 html body.pkpl-v2p #root #pkpl .pkpl-ps{padding:12px 28px 28px}
 html body.pkpl-v2p:not(.pkpl-hood) #root #pkpl .pkpl-psh2{padding:0 28px 10px}
 html body.pkpl-v2p #root #pkpl .pkpl-psls.pkpl-psl2{grid-template-columns:1fr 1fr}
@@ -691,3 +694,5 @@ html body.pkpl-v2 #root #pkpl .pkpl-ab button{min-height:44px;padding:0 16px;fon
 /* Nov 21: desktop neighborhood page in the new layout: no experience bar across the map; the column's back link returns to the experience and its buttons */
 html body.pkpl-v2.pkpl-hood #root #pkpl .pkpl-xb{display:none!important}
 @media (max-width:380px){html body.pkpl-v2p #root #pkpl .pkpl-psk{letter-spacing:.04em}}
+
+@media (max-width:380px){html body.pkpl-v2p #root #pkpl .pkpl-psq{letter-spacing:.04em}}

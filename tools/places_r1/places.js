@@ -237,21 +237,22 @@
   }
   function v2p() { return V2 && !wide() && top().r !== 'hood'; }
   function xbH() { var x = M && $('.pkpl-xb', M.el); return x ? x.offsetHeight : 56; }
-  function hdH() { var x = M && $('.pkpl-psh2', M.el); return x && v2p() ? x.offsetHeight : 0; }
+  function hdH() { var x = M && $('.pkpl-psh2', M.el), q = M && $('.pkpl-psq', M.el); return x && v2p() ? x.offsetHeight + (q ? q.offsetHeight : 0) : 0; }   /* the cap (handle, title) plus the question line */
   function psH() { if (!M || !v2p()) return 0; var st = M.ps == null ? 1 : M.ps, top2 = xbH() + hdH(); return st === 0 ? 0 : st === 2 ? Math.max(0, M.vh - top2) : Math.max(96, Math.round(M.vh * (M.vw >= 600 ? 0.36 : 0.42)) - top2); }   /* Zale, Nov 22: opens low: the question, the row and a first look at the places; pull up for the rest */   /* the phone sheet: folded (just the experience row), half, full */
   function psPlace() {   /* size the sheet and slide the experience row and the handle on top of it */
     var ps = $('.pkpl-ps', M.el), xb = $('.pkpl-xb', M.el), pg = $('.pkpl-psg', M.el), h = psH(); if (!ps) return;
-    ps.style.height = h + 'px'; ps.classList.toggle('pkpl-psfull', M.ps === 2); ps.classList.toggle('pkpl-ps0', !h); if (xb) xb.style.bottom = h + 'px'; if (pg) { pg.setAttribute('aria-label', M.ps === 2 ? 'Show the map' : 'Show more'); }
-    var hd = $('.pkpl-psh2', M.el); if (hd) hd.style.bottom = (h + xbH()) + 'px'; M.el.style.setProperty('--pkpl-psb', (h + xbH() + hdH() + 10) + 'px');
+    var qq = $('.pkpl-psq', M.el), hd = $('.pkpl-psh2', M.el), qh = qq ? qq.offsetHeight : 0, xh = xbH();
+    ps.style.height = h + 'px'; ps.classList.toggle('pkpl-psfull', M.ps === 2); ps.classList.toggle('pkpl-ps0', !h); ps.style.bottom = (xh + qh) + 'px'; if (xb) xb.style.bottom = '0px'; if (qq) qq.style.bottom = xh + 'px'; if (pg) { pg.setAttribute('aria-label', M.ps === 2 ? 'Show the map' : 'Show more'); }
+    if (hd) hd.style.bottom = (h + xh + qh) + 'px'; M.el.style.setProperty('--pkpl-psb', (h + xh + hdH() + 10) + 'px');
   }
   function psSet(st) {   /* change the sheet and frame the map in what still shows */
     st = Math.max(0, Math.min(2, st)); if (st === M.ps) return; M.ps = st; psPlace();
     if (st < 2) setTimeout(function () { if (!M || top().r === 'hood') return; if (M.xp || M.amen) fitLit(); else home(); }, calm() ? 0 : 60);
   }
   function psTouch() {   /* swipe up on the words, the row or the handle: full; swipe down at the top: half, then folded (same feel as the neighborhood sheet) */
-    var t0 = null, inP = function (el) { return el && el.closest && el.closest('.pkpl-ps,.pkpl-psh2,.pkpl-xb'); };
+    var t0 = null, inP = function (el) { return el && el.closest && el.closest('.pkpl-ps,.pkpl-psh2,.pkpl-psq,.pkpl-xb'); };
     M.el.addEventListener('touchstart', function (e) { if (!v2p() || e.touches.length !== 1 || !inP(e.target)) { t0 = null; return; } var p = e.touches[0]; t0 = { x: p.clientX, y: p.clientY, el: e.target, done: 0, sc: $('.pkpl-ps', M.el).scrollTop }; }, { passive: true });
-    M.el.addEventListener('touchmove', function (e) { if (!t0 || t0.done) return; var p = e.touches[0], dx = p.clientX - t0.x, dy = p.clientY - t0.y, ps = $('.pkpl-ps', M.el), onRow = t0.el.closest('.pkpl-xb,.pkpl-psh2');
+    M.el.addEventListener('touchmove', function (e) { if (!t0 || t0.done) return; var p = e.touches[0], dx = p.clientX - t0.x, dy = p.clientY - t0.y, ps = $('.pkpl-ps', M.el), onRow = t0.el.closest('.pkpl-xb,.pkpl-psh2,.pkpl-psq');
       if (Math.abs(dy) < 10 || Math.abs(dy) < Math.abs(dx) * 1.2) return;
       if (dy < 0 && M.ps < 2) { t0.done = 1; if (e.cancelable) e.preventDefault(); psSet(M.ps + 1); return; }
       if (dy > 0 && (onRow || ps.scrollTop <= 0) && M.ps > 0) { t0.done = 1; if (e.cancelable) e.preventDefault(); psSet(M.ps - 1); } }, { passive: false });
@@ -331,11 +332,11 @@
     }
     var v2p = V2 && !wide(); document.body.classList.toggle('pkpl-v2p', v2p);
     if (v2p) {   /* phone and upright tablet (Zale, Nov 22 'work on all form factors'): map on top, the swipe row of experiences, then the same words and places as the desktop column, in a sheet that pulls up to full and folds to the row */
-      var ps = $('.pkpl-ps', M.el); if (!ps) { ps = document.createElement('div'); ps.className = 'pkpl-ps'; M.el.appendChild(ps); var hd = document.createElement('div'); hd.className = 'pkpl-psh2'; hd.innerHTML = '<button type="button" class="pkpl-psg" aria-label="Show more"><i></i></button><div class="pkpl-psht"></div>'; M.el.appendChild(hd); psTouch(); }
+      var ps = $('.pkpl-ps', M.el); if (!ps) { ps = document.createElement('div'); ps.className = 'pkpl-ps'; M.el.appendChild(ps); var hd = document.createElement('div'); hd.className = 'pkpl-psh2'; hd.innerHTML = '<button type="button" class="pkpl-psg" aria-label="Show more"><i></i></button><div class="pkpl-psht"></div>'; M.el.appendChild(hd); var qq = document.createElement('div'); qq.className = 'pkpl-psq'; qq.textContent = 'What do you want to experience?'; M.el.appendChild(qq); psTouch(); }
       var Lp = M.xp ? litSet() : [], D3 = data().hoods, tile = function (k, line) { return '<button type="button" class="pkpl-pr" data-hp="' + k + '"><img src="' + esc(emb(k)) + '" alt=""><span><b>' + esc(D3[k].n) + '</b>' + (line ? '<small>' + esc(line) + '</small>' : '') + '</span></button>'; };
       var sum = M.xp === 'Architecture' ? (XH.XPD.Architecture || '').split('. ')[0].replace(/\.?$/, '.') : M.xp ? (XH.XPD[M.xp] || '').split(/(?<=[.!?])\s/)[0] : '';
-      $('.pkpl-psht', M.el).innerHTML = M.xp ? '<p class="pkpl-psk">What do you want to experience?</p><div class="pkpl-pc"><span class="pkpl-pci">' + xpIcon(M.xp) + '</span><h2 class="pkpl-pcb">' + esc(M.xp) + '</h2><span class="pkpl-pcn">' + Lp.length + (Lp.length === 1 ? ' neighborhood' : ' neighborhoods') + '</span></div>'
-        : '<p class="pkpl-psk">' + ids().length + ' neighborhoods · ' + XO.length + ' experiences</p><h2>What do you want to experience?</h2>';   /* Zale, Nov 22: the question sits above the row of experiences it asks about */
+      $('.pkpl-psht', M.el).innerHTML = M.xp ? '<div class="pkpl-pc"><span class="pkpl-pci">' + xpIcon(M.xp) + '</span><h2 class="pkpl-pcb">' + esc(M.xp) + '</h2><span class="pkpl-pcn">' + Lp.length + (Lp.length === 1 ? ' neighborhood' : ' neighborhoods') + '</span></div>'
+        : '<p class="pkpl-psk">' + ids().length + ' neighborhoods \u00b7 ' + XO.length + ' experiences</p>';   /* Zale, Nov 22 06:08: the row of experiences sits right above the nav bar and never moves; the question is the line above it; the picked experience's words and places stack up above that */
       if (M.xp) ps.innerHTML = '<p class="pkpl-psl">' + esc(sum) + '</p>'
         + (M.xp === 'Architecture' ? '<div class="pkpl-psab"><button type="button" class="pk-cta sec pkpl-abb" data-go="build">Build with Pickathon</button></div>' : '')
         + '<div class="pkpl-psls' + (Lp.length > 4 ? ' pkpl-psl2' : '') + '">' + Lp.map(function (k) { return tile(k, xpLine(M.xp, k)); }).join('') + '</div>';
@@ -413,7 +414,7 @@
     function rel(e) { var r = el.getBoundingClientRect(); return [e.clientX - r.left, e.clientY - r.top]; }
     el.addEventListener('pointerdown', function (e) {
       M.free = false;   /* the visitor takes over: the edge limit returns */
-      if (e.target.closest('.pkpl-tools,.pkpl-amtag,.pkpl-find,.pkpl-xb,.pkpl-pl,.pkpl-ab,.pkpl-ps,.pkpl-psh2')) return;
+      if (e.target.closest('.pkpl-tools,.pkpl-amtag,.pkpl-find,.pkpl-xb,.pkpl-pl,.pkpl-ab,.pkpl-ps,.pkpl-psh2,.pkpl-psq')) return;
       if (e.pointerType === 'mouse' && e.button !== 0) return;
       P[e.pointerId] = rel(e); cancelAnimationFrame(M.anim); cancelAnimationFrame(M.glide);
       var q = pts(); start = { s: M.s, tx: M.tx, ty: M.ty, p: q.map(function (a) { return a.slice(); }), t: Date.now() }; if (q.length === 1) moved = false;
@@ -460,7 +461,7 @@
     el.addEventListener('pointerleave', function (e) { if (e.pointerType === 'mouse') hover(''); });
     el.addEventListener('click', function (e) {
       if (el._drag && Date.now() - el._drag < 140) { e.stopPropagation(); e.preventDefault(); return; }
-      if (e.target.closest('.pkpl-psh2') || (e.target.closest('.pkpl-ps') && !e.target.closest('button'))) return;   /* the phone sheet's handle and its blank space are not the map */
+      if (e.target.closest('.pkpl-psh2,.pkpl-psq') || (e.target.closest('.pkpl-ps') && !e.target.closest('button'))) return;   /* the phone sheet's handle and its blank space are not the map */
       var xb = e.target.closest('[data-xp]'); if (xb) { xpPick(xb.getAttribute('data-xp')); return; }
       var gb = e.target.closest('[data-go]'); if (gb) { go(gb.getAttribute('data-go')); return; }
       var hp = e.target.closest('[data-hp]'); if (hp) { if (M.title) { M.title = false; } open(hp.getAttribute('data-hp')); return; }
