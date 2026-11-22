@@ -13760,6 +13760,7 @@ window.pkClimbRank = function (C, dd) {
     if (!k || k === '__hero' || k === '__intro') return;
     if (k === 'trails') { if (window.__pkGoFarm) window.__pkGoFarm(); else go('hoods'); return; }
     try { localStorage.setItem('pk-h0', k); sessionStorage.setItem('pk-hcret', k); var mnO = homeSc(); window.__pkHomeY = { y: mnO ? mnO.scrollTop : 0, t: Date.now() }; } catch (x) {}
+    window.__pkMapXP = XPF || '';   /* the place opens inside the chosen experience (Back to Music at Pickathon), design_home-34 */
     go('hood', { h: k });
   }
   function onClick(e) {
@@ -13787,7 +13788,7 @@ window.pkClimbRank = function (C, dd) {
       if (!e.clientX && !e.clientY) { if (cur) go('hood', { h: cur }); return; }
       var mk = mapHit(e); if (!mk) return;
       if (mk !== cur) hood(mk); root._pickAt = Date.now(); return; }
-    if (a === 'allhoods') { if (window.__pkGoFarm) window.__pkGoFarm(); else go('hoods'); return; }
+    if (a === 'allhoods') { /* Zale Nov 22 00:38: from Summer camp, the map opens on the chosen experience (Design Neighborhoods reads window.__pkMapXP, design_home-34) */ window.__pkMapXP = (b.closest && b.closest('.h2-s3c') && XPF) ? XPF : ''; if (window.__pkGoFarm) window.__pkGoFarm(); else go('hoods'); return; }
     if (a === 'plan') { go('info'); return; }
     if (a === 'lu27') { go('lineup'); return; }
     if (a === 'xpgo') { xpEnter(b.getAttribute('data-xp')); return; }
