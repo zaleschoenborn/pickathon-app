@@ -716,12 +716,12 @@ html body.pkpl-v2p.pkpl-hood #root #pkpl .pkpl-title{display:none!important}   /
 /* review Nov 22 (#6, #7, #10, #15) and Zale's soft fade */
 html body.pkpl-v2p:not(.pkpl-hood) #root #pkpl .pkpl-psh2{border-radius:0}
 html body.pkpl-v2p:not(.pkpl-hood) #root #pkpl .pkpl-psh2::before{content:'';position:absolute;left:0;right:0;top:-40px;height:40px;background:linear-gradient(to bottom,rgba(18,22,15,0),rgba(18,22,15,.72) 60%,#12160F);pointer-events:none}
-html body.pkpl-v2p #root #pkpl .pkpl-psg{height:28px;margin-bottom:0}
+html body.pkpl-v2p #root #pkpl .pkpl-psg{height:44px;margin:-8px auto -8px}   /* 44 px to grab; the bar itself stays small (round 2 #8) */
 html body.pkpl-v2p #root #pkpl .pkpl-psln{min-height:44px}
 html body.pkpl-v2p #root #pkpl .pkpl-psmore{min-height:44px;padding:0 16px}
-html body.pkpl-v2p:not(.pkpl-hood) #root .pkpl-xb.pkpl-xbmore{-webkit-mask-image:linear-gradient(to right,#000 calc(100% - 44px),transparent);mask-image:linear-gradient(to right,#000 calc(100% - 44px),transparent)}
+html body.pkpl-v2p #root .pkpl-xb.pkpl-xbmore::after{content:'';position:sticky;right:0;flex:none;width:44px;margin-left:-44px;align-self:stretch;pointer-events:none;background:linear-gradient(to right,rgba(18,22,15,0),#12160F 85%)}   /* the fade covers the buttons, never the map behind the row (round 2 #9) */
 html body.pkpl-v2p #root #pkpl .pkpl-psall{display:inline;min-height:44px;padding:10px 0;margin:-10px 0;border:0;background:none;font:inherit;color:#F2EDE3;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
-@media (min-width:600px){html body.pkpl-v2p:not(.pkpl-hood) #root .pkpl-xb{flex-wrap:wrap;overflow-x:visible;row-gap:8px}html body.pkpl-v2p:not(.pkpl-hood) #root .pkpl-xb.pkpl-xbmore{-webkit-mask-image:none;mask-image:none}}
+@media (min-width:600px){html body.pkpl-v2p:not(.pkpl-hood) #root .pkpl-xb{flex-wrap:wrap;overflow-x:visible;row-gap:8px}html body.pkpl-v2p #root .pkpl-xb.pkpl-xbmore::after{display:none}}
 
 /* edge tags for lit places outside the view (Zale, Nov 22: chosen after the independent review) */
 #root #pkpl .pkpl-edge{position:absolute;inset:0;pointer-events:none;z-index:3}
@@ -752,3 +752,14 @@ html body.pkpl-v2p.pkpl-hood #pkpl-top.pkpl-folded{clip-path:inset(0 0 var(--pkp
 .pkpl-picked .pkpl-veil{fill:rgba(12,14,10,.48)}
 /* 3. text slides under the sheet's top edge instead of being cut mid-letter */
 html body.pkpl-hood:not(.pkpl-wide) #root #pkpl-top .pkpl-sheet{-webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 16px);mask-image:linear-gradient(to bottom,transparent 0,#000 16px)}
+
+/* round 2 review (Nov 22) */
+html body.pkpl-v2p #root .pkpl-xb.pkpl-xbleft::before{content:'';position:sticky;left:0;flex:none;width:36px;margin-right:-36px;align-self:stretch;pointer-events:none;z-index:1;background:linear-gradient(to left,rgba(18,22,15,0),#12160F 85%)}
+@media (min-width:600px){html body.pkpl-v2p #root .pkpl-xb.pkpl-xbleft::before{display:none}}
+#root #pkpl-top .pkpl-stepl button{min-width:118px;border-radius:6px;text-transform:none;letter-spacing:0;font-size:14px}
+#root #pkpl-top .pkpl-stepl button:last-child{text-align:right}
+#root #pkpl-top .pkpl-stepl span{color:rgba(242,237,227,.78);white-space:nowrap}
+#root #pkpl .pkpl-edgetag{background:#12160F;box-shadow:none}
+#root #pkpl-top .pkpl-tt{color:#F2EDE3}
+#root #pkpl-top .pkpl-bn{font-family:'Pickathon 2014',sans-serif!important;font-weight:400!important;letter-spacing:.03em}
+#root #pkpl-top .pkpl-bn small{font-family:'Bricolage Grotesque',system-ui,sans-serif;font-weight:700;letter-spacing:.06em}
