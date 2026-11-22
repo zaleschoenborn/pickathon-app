@@ -1,6 +1,6 @@
 {
  "2011": {
-  "Whitey Morgan & The 78\u2019s": {
+  "Whitey Morgan & The 78’s": {
    "i": "ext/vf_11_whiteymorganthe78s.jpg",
    "f": [
     60,
@@ -143,6 +143,30 @@
     45
    ],
    "src": "YouTube Izb9i3D-hE4, maxresdefault, picked by eye Nov 22 (the card's own clip)"
+  },
+  "Strand of Oaks": {
+   "i": "ext/vf_11_strandofoaks.jpg",
+   "f": [
+    50,
+    50
+   ],
+   "src": "Vimeo 186906658 still (oEmbed), crop by eye"
+  },
+  "Mavis Staples": {
+   "i": "ext/vf_11_mavisstaples.jpg",
+   "f": [
+    50,
+    50
+   ],
+   "src": "Vimeo 187598210 still"
+  },
+  "Bill Callahan": {
+   "i": "ext/vf_11_billcallahan.jpg",
+   "f": [
+    50,
+    50
+   ],
+   "src": "Vimeo 187319053 still"
   }
  },
  "2013": {
@@ -357,6 +381,14 @@
     45
    ],
    "src": "YouTube U04WHHZUTPU, maxres2, picked by eye Nov 22 (the card's own clip)"
+  },
+  "Michael Hurley": {
+   "i": "ext/vf_10_michaelhurley.jpg",
+   "f": [
+    50,
+    50
+   ],
+   "src": "Vimeo 186937410 still"
   }
  },
  "2019": {
@@ -415,6 +447,14 @@
     40
    ],
    "src": "YouTube nrX1yEtg--Y, maxresdefault"
+  },
+  "Flasher": {
+   "i": "ext/vf_19_flasher.jpg",
+   "f": [
+    50,
+    50
+   ],
+   "src": "Vimeo 809972981 still"
   }
  },
  "2018": {
@@ -545,6 +585,14 @@
     50
    ],
    "src": "YouTube PXz4w8Tcr40, hq3, picked by eye Nov 22 (the card's own clip)"
+  },
+  "Laura Gibson": {
+   "i": "ext/vf_08_laura_gibson.jpg",
+   "f": [
+    50,
+    50
+   ],
+   "src": "Vimeo 335373760 still"
   }
  },
  "2005": {
@@ -565,6 +613,46 @@
     50
    ],
    "src": "YouTube 32N2bqZOPBY, maxres2, picked by eye Nov 22 (the card's own clip)"
+  }
+ },
+ "2022": {
+  "sunbathe": {
+   "i": "ext/vf_22_sunbathe.jpg",
+   "f": [
+    50,
+    50
+   ],
+   "src": "Vimeo 1536138833 still, recropped on the pair"
+  }
+ },
+ "2004": {
+  "Danny Barnes Collective": {
+   "i": "ext/vf_04_dannybarnescollective.jpg",
+   "f": [
+    50,
+    50
+   ],
+   "src": "YouTube cxIdAu6DXLM, hqdefault, cropped on guitarist and drummer"
+  }
+ },
+ "2017": {
+  "McTuff": {
+   "i": "ext/vf_17_mctuff.jpg",
+   "f": [
+    50,
+    50
+   ],
+   "src": "Vimeo 237998555 thumbnail, centre-cropped 3:4"
+  }
+ },
+ "2001": {
+  "Caleb Klauder Band": {
+   "i": "ext/vf_01_calebklauderband.jpg",
+   "f": [
+    50,
+    50
+   ],
+   "src": "Vimeo 203223654 thumbnail (Pumphouse Sessions 2016), centre-cropped 3:4"
   }
  }
 }
