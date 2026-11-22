@@ -776,3 +776,9 @@ html body.pkpl-v2p #root .pkpl-xb.pkpl-xbleft::before{background:linear-gradient
 #root #pkpl-top .pkpl-hxr button svg{width:15px;height:15px}
 #root #pkpl-top .pkpl-hxr button[aria-pressed="true"]{background:#F2EDE3;color:#12160F;border-color:#F2EDE3}
 #root #pkpl-top .pkpl-hxr button:hover{border-color:#F2EDE3}
+
+/* Zale, Nov 22 11:15: on desktop the row is a compact 4x3 grid (a mouse can't swipe); same component as the map page's grid */
+#root #pkpl-top .pkpl-hxr{display:grid!important;grid-template-columns:repeat(4,1fr);gap:6px;overflow:visible;padding:10px 16px 12px}
+#root #pkpl-top .pkpl-hxr button{height:auto;min-height:44px;flex-direction:column;justify-content:center;gap:3px;padding:5px 4px;font-size:12px;text-align:center}
+#root #pkpl-top .pkpl-hxr button svg{width:16px;height:16px}
+#root#root#root#root #pkpl-top .pkpl-hxr button[aria-pressed="true"]{background:#F2EDE3!important;color:#12160F!important;border-color:#F2EDE3!important}   /* pressed = cream, same as the map grid */
