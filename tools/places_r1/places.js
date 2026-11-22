@@ -94,11 +94,11 @@
     var el = document.createElement('div'); el.className = 'pkpl-map'; el.setAttribute('role', 'region'); el.setAttribute('aria-label', 'Farm map');
     var shapes = ids().map(function (k) { return '<path class="pkpl-sh" data-h="' + k + '" d="' + HH.shapes[k] + '"/>'; }).join('');
     el.innerHTML =
-      '<div class="pkpl-world"><img class="pkpl-base" src="farmmap/' + (PAL27 ? 'map3' : 'map2') + '.webp?v=3" alt="" draggable="false" decoding="async"><div class="pkpl-tiles"></div>' +
+      '<div class="pkpl-world"><img class="pkpl-base" src="farmmap/' + (PAL27 ? 'map4' : 'map2') + '.webp?v=3" alt="" draggable="false" decoding="async"><div class="pkpl-tiles"></div>' +
       '<svg class="pkpl-svg" viewBox="0 0 ' + W + ' ' + H + '" preserveAspectRatio="none" aria-hidden="true">' +
       '<defs><filter id="pkpl-glow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="9" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>' + Object.keys(AMI || {}).map(function (k) { return '<symbol id="pkpl-i-' + k + '" viewBox="0 0 24 24"><rect class="pkpl-ip" x=".75" y=".75" width="22.5" height="22.5" rx="5"/><g class="pkpl-ig" transform="translate(2.4 2.4) scale(.8)">' + AMI[k] + '</g></symbol>'; }).join('') + '</defs>' +
       '<g class="pkpl-ics">' + (MI || []).map(amUse).join('') + '</g>' +
-      (PAL27 ? '<g class="pkpl-p27">' + Object.keys(P27).filter(function (k) { return HH.shapes[k]; }).map(function (k) { return '<path data-h="' + k + '" fill="' + P27[k] + '" d="' + HH.shapes[k] + '"/>'; }).join('') + '</g>' : '') + '<path class="pkpl-veil" fill-rule="evenodd" d=""/><g class="pkpl-icon"></g><g class="pkpl-shs">' + shapes + '</g><path class="pkpl-lit" d=""/><path class="pkpl-was" d=""/><g class="pkpl-nms">' + Object.keys(NP || {}).map(function (k) { return '<path data-h="' + k + '" d="' + NP[k] + '"/>'; }).join('') + '</g><path class="pkpl-hov" d=""/></svg></div>' +
+      '<path class="pkpl-veil" fill-rule="evenodd" d=""/><g class="pkpl-icon"></g><g class="pkpl-shs">' + shapes + '</g><path class="pkpl-lit" d=""/><path class="pkpl-was" d=""/><g class="pkpl-nms">' + Object.keys(NP || {}).map(function (k) { return '<path data-h="' + k + '" d="' + NP[k] + '"/>'; }).join('') + '</g><path class="pkpl-hov" d=""/></svg></div>' +
       '<div class="pkpl-pins"></div><div class="pkpl-am"></div>' +
       '<div class="pkpl-title" aria-hidden="false"><p class="pkpl-k"><img class="pkpl-logo" src="logo27-gold.png" alt="Pickathon 2027"><span>Pickathon</span></p><h1 class="pkpl-d">Summer camp for your soul</h1><p class="pkpl-l">Pick an experience below, then tap a place that lights up</p><div class="pkpl-ab"></div><div class="pkpl-pl"></div></div>' +
       '<div class="pkpl-xls"></div>' +
@@ -181,7 +181,7 @@
       var im = document.createElement('img'); im.alt = ''; im.draggable = false; im.decoding = 'async';
       im.style.cssText = 'left:' + (c * TS) + 'px;top:' + (r * TS) + 'px;width:' + ((c === 4 ? 802 : 1024) / TF + 0.4) + 'px;height:' + ((r === 8 ? 952 : 1024) / TF + 0.4) + 'px';   /* a hair of overlap so no seam shows between tiles */
       im.onload = function () { this.classList.add('on'); M.done[this._k] = 1; tok(); }; im._k = k;
-      im.src = 'farmmap/' + (PAL27 ? 't3/' : 't2/') + k + '.webp?v=3'; M.tiles.appendChild(im);
+      im.src = 'farmmap/' + (PAL27 ? 't4/' : 't2/') + k + '.webp?v=3'; M.tiles.appendChild(im);
     }
     M.need = need; tok();
   }
