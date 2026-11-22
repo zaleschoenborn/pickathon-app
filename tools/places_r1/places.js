@@ -391,8 +391,8 @@
   }
   function nmDraw() {   /* the map's own lettering, crisp, for the lit places (Zale, Nov 19: no added tags) */
     var C = (!M.cur && M.amen) ? amenHoods() : null, L = M.cur ? [M.cur] : C ? Object.keys(C) : M.xp ? litSet() : [];   /* Nov 22: the place you're on gets the same crisp lettering as lit places */
-    $$('.pkpl-nms path', M.svg).forEach(function (p) { var k = p.getAttribute('data-h'), on = L.indexOf(k) >= 0, nb = (NB || {})[k]; p.classList.toggle('on', on);
-      if (on && nb) { var cx = (nb[0] + nb[2]) / 2, cy = (nb[1] + nb[3]) / 2, f = Math.max(1, Math.min(3, 12 / ((nb[3] - nb[1]) * M.s))); p.setAttribute('transform', 'translate(' + cx + ' ' + cy + ') scale(' + f.toFixed(2) + ') translate(' + (-cx) + ' ' + (-cy) + ')'); } });
+    $$('.pkpl-nms path', M.svg).forEach(function (p) { var k = p.getAttribute('data-h'), on = L.indexOf(k) >= 0, nb = (NB || {})[k]; p.classList.toggle('on', on); p.classList.toggle('dim', !on && L.length > 0); if (!on) p.removeAttribute('transform');   /* Zale, Nov 22: the other places' names stay readable over the veil */
+      if (on && nb) { var cx = (nb[0] + nb[2]) / 2, cy = (nb[1] + nb[3]) / 2, f = Math.max(1, Math.min(1.6, 12 / ((nb[3] - nb[1]) * M.s))); p.setAttribute('transform', 'translate(' + cx + ' ' + cy + ') scale(' + f.toFixed(2) + ') translate(' + (-cx) + ' ' + (-cy) + ')'); } });
   }
   function xlPlace() { if (M.svg) nmDraw();
     var els = $$('.pkpl-xl', M.el); if (!els.length) return;

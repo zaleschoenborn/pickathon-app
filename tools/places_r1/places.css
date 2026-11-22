@@ -807,3 +807,6 @@ body.pkpl-wide #root #pkpl-top .pkpl-hi .pkpl-tt{color:#F2EDE3}
 /* round 4: the place you came back from stays marked for a moment (no motion) */
 html body.pkpl-v2 #root #pkpl .pkpl-pr.pkpl-was{border-color:#F2EDE3!important;background:rgba(242,237,227,.08)!important}
 #root #pkpl-top .pkpl-kind.pkpl-kx{color:#E9B93C}
+
+/* Zale, Nov 22 (round 4): lit names at most 1.6x; names of the other places stay readable above the veil, softer */
+.pkpl-nms path.dim{display:inline;fill:#E8E1D2;fill-opacity:.6;stroke:#12160F;stroke-opacity:.5;stroke-width:2px}
