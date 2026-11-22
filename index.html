@@ -14644,6 +14644,10 @@ body.pkpl-wide #root #pkpl-top .pkpl-hi .pkpl-tt{color:#F2EDE3}
 .pkpl-rarr svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
 .pkpl-rarr.l{left:6px}.pkpl-rarr.r{right:6px}
 .pkpl-rarr[hidden]{display:none}
+
+/* round 4: the place you came back from stays marked for a moment (no motion) */
+html body.pkpl-v2 #root #pkpl .pkpl-pr.pkpl-was{border-color:#F2EDE3!important;background:rgba(242,237,227,.08)!important}
+#root #pkpl-top .pkpl-kind.pkpl-kx{color:#E9B93C}
 </style>
 <script id="pk-places">
 /* pk-places: Places map and neighborhood pages, round 1 (Nov 13 2026). Source: tools/places_r1/places.js, spliced into index.html by tools/places_r1/build.py.
@@ -14812,9 +14816,9 @@ body.pkpl-wide #root #pkpl-top .pkpl-hi .pkpl-tt{color:#F2EDE3}
       if (!d || !D4[k]) return; var ar = { up: '\u2191', down: '\u2193', left: '\u2190', right: '\u2192' }[d];
       var px = d === 'left' ? cr.x + 8 : d === 'right' ? cr.x + cr.w - 8 : Math.max(cr.x + 70, Math.min(cr.x + cr.w - (d === 'down' ? 170 : 70), x)), py = d === 'up' ? cr.y + 8 : d === 'down' ? cr.y + cr.h - 52 : Math.max(cr.y + 30, Math.min(cr.y + cr.h - 60, y));
       out.push('<button type="button" class="pkpl-edgetag pkpl-et-' + d + '" data-et="' + k + '" data-mx="' + mx + '" data-my="' + my + '" style="left:' + Math.round(px) + 'px;top:' + Math.round(py) + 'px">' + ar + ' ' + esc(D4[k].n) + '</button>'); });
-    var byEdge = {}; out = out.filter(function (h) { var d = /pkpl-et-(\w+)/.exec(h)[1]; byEdge[d] = (byEdge[d] || 0) + 1; return byEdge[d] <= 3; });
-    var extra = Object.keys(byEdge).reduce(function (a, d) { return a + Math.max(0, byEdge[d] - 3); }, 0);
-    if (extra) out.push('<button type="button" class="pkpl-edgetag pkpl-et-down pkpl-etall" style="left:' + Math.round(cr.x + 60) + 'px;top:' + Math.round(cr.y + cr.h - 52) + 'px">+' + extra + ' more</button>');
+    var byEdge = {}; out = out.filter(function (h) { var d = /pkpl-et-(\w+)/.exec(h)[1]; byEdge[d] = (byEdge[d] || 0) + 1; return byEdge[d] <= (wide() ? 5 : 3); });
+    var extra = Object.keys(byEdge).reduce(function (a, d) { return a + Math.max(0, byEdge[d] - (wide() ? 5 : 3)); }, 0);
+    if (extra) out.push('<button type="button" class="pkpl-edgetag pkpl-et-down pkpl-etall" style="left:' + Math.round(cr.x + 60) + 'px;top:' + Math.round(cr.y + cr.h - 52) + 'px">\u2193 ' + extra + ' more</button>');
     host.innerHTML = out.join('');   /* round 3: never a wall of tags */
     ['up', 'down'].forEach(function (d) { var T = $$('.pkpl-et-' + d, host).sort(function (a, b) { return a.offsetLeft - b.offsetLeft; }), edge = -1e9;   /* tags on one edge never overlap (round 2) */
       T.forEach(function (t) { var w = t.offsetWidth, l = Math.max(t.offsetLeft - w / 2, edge + 8); t.style.left = Math.round(l + w / 2) + 'px'; edge = l + w; }); });
@@ -15267,7 +15271,7 @@ body.pkpl-wide #root #pkpl-top .pkpl-hi .pkpl-tt{color:#F2EDE3}
     var days = Object.keys(S).sort(), has = days.length > 0;
     if (TOP.k !== k) { TOP.k = k; TOP.all = false; TOP.i = 0; TOP.day = days[0] || ''; if (FROM && FROM.h !== k) FROM = null; }
     if (days.indexOf(TOP.day) < 0) TOP.day = days[0] || '';
-    var ph = XE ? xpPhotos(XE, k) : photos(k); if (!ph.length) ph = photos(k); var L = (XE && XE !== 'Architecture' && xpPlaces(XE).length > 1) ? xpPlaces(XE) : ids(), j = L.indexOf(k), prev = L[(j - 1 + L.length) % L.length], next = L[(j + 1) % L.length];
+    var ph = XE ? xpPhotos(XE, k) : photos(k); if (!ph.length) ph = photos(k); var L = (XE && xpPlaces(XE).length > 1 && xpPlaces(XE).indexOf(k) >= 0) ? xpPlaces(XE) : ids(), j = L.indexOf(k), prev = L[(j - 1 + L.length) % L.length], next = L[(j + 1) % L.length];
     var key = k + '|' + XE + '|' + (M && M.xp) + '|' + has + '|' + TOP.day + '|' + TOP.all + '|' + (FROM ? FROM.n : '') + '|' + wide();
     if (el._key === key) return; el._key = key;
     var dayN = {}; (D.days || []).forEach(function (d) { dayN[d.id] = d.n; });
@@ -15281,9 +15285,9 @@ body.pkpl-wide #root #pkpl-top .pkpl-hi .pkpl-tt{color:#F2EDE3}
       '<button type="button" class="pkpl-arr l" data-pk="step" data-to="' + prev + '" aria-label="Previous ' + esc(XE && XE !== 'Architecture' ? XE + ' place' : 'place') + ': ' + esc(D.hoods[prev].n) + '"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5 8 12l7 7"/></svg></button>' +
       '<button type="button" class="pkpl-arr r" data-pk="step" data-to="' + next + '" aria-label="Next ' + esc(XE && XE !== 'Architecture' ? XE + ' place' : 'place') + ': ' + esc(D.hoods[next].n) + '"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>' +
       (ph.length > 1 ? '<div class="pkpl-dots" role="group" aria-label="Photos">' + ph.map(function (p, i) { return '<button type="button" data-pk="dot" data-i="' + i + '" aria-label="Photo ' + (i + 1) + ' of ' + ph.length + '"' + (i === 0 ? ' aria-current="true"' : '') + '><i></i></button>'; }).join('') + '</div>' : '') +
-      '<div class="pkpl-hi">' + (XE && XE !== 'Architecture' ? '<p class="pkpl-kind pkpl-kx"><span class="pkpl-kci">' + xpIcon(XE) + '</span>' + esc(XE) + '</p>' : '<p class="pkpl-kind">' + (h.k === 'camp' ? esc(KIND[h.k] || '') : 'Architecture ' + (k === 'woods' ? 'in the Woods' : 'at ' + esc(h.n))) + '</p>') + '<div class="pkpl-nmrow"><img src="' + esc(emb(k)) + '" alt=""><h1>' + esc(h.n) + '</h1></div><p class="pkpl-tt">' + esc(XE ? xpLine(XE, k) : (h.t || '')) + '</p></div>' +
+      '<div class="pkpl-hi">' + (XE && XE !== 'Architecture' ? '<p class="pkpl-kind pkpl-kx"><span class="pkpl-kci">' + xpIcon(XE) + '</span>' + esc(XE) + '</p>' : '<p class="pkpl-kind' + (XE ? ' pkpl-kx' : '') + '">' + (h.k === 'camp' ? esc(KIND[h.k] || '') : 'Architecture ' + (k === 'woods' ? 'in the Woods' : 'at ' + esc(h.n))) + '</p>') + '<div class="pkpl-nmrow"><img src="' + esc(emb(k)) + '" alt=""><h1>' + esc(h.n) + '</h1></div><p class="pkpl-tt">' + esc(XE ? xpLine(XE, k) : (h.t || '')) + '</p></div>' +
       '</div>' +
-      (XE && XE !== 'Architecture' && L.length > 1 && L.length < ids().length ? '<nav class="pkpl-stepl" aria-label="' + esc(XE) + ' places"><button type="button" data-pk="step" data-to="' + prev + '">\u2039 ' + esc(D.hoods[prev].n) + '</button><span>' + (j + 1) + ' of ' + L.length + '</span><button type="button" data-pk="step" data-to="' + next + '">' + esc(D.hoods[next].n) + ' \u203a</button></nav>' : '') +   /* Nov 22: walk this experience's places without the map */
+      (XE && L.length > 1 && L.length < ids().length ? '<nav class="pkpl-stepl" aria-label="' + esc(XE) + ' places"><button type="button" data-pk="step" data-to="' + prev + '">\u2039 ' + esc(D.hoods[prev].n) + '</button><span>' + (j + 1) + ' of ' + L.length + '</span><button type="button" data-pk="step" data-to="' + next + '">' + esc(D.hoods[next].n) + ' \u203a</button></nav>' : '') +   /* Nov 22: walk this experience's places without the map */
       (FROM ? '<p class="pkpl-from">' + esc(FROM.n) + ' played ' + esc(h.n) + ' at Pickathon ' + FROM.y + '</p>' : '') +
       (has ? '<section class="pkpl-sc" aria-label="Schedule at ' + esc(h.n) + '"><div class="pkpl-days" role="group" aria-label="Day">' + days.map(function (d) { return '<button type="button" class="pk-cta sec pkpl-chip" data-pk="day" data-d="' + d + '"' + (d === TOP.day ? ' aria-pressed="true"' : ' aria-pressed="false"') + '>' + esc(dayN[d] || d.slice(5)) + '</button>'; }).join('') + '</div>' +
         '<ol class="pkpl-sets">' + rows.slice(0, showN).map(function (s) { var A = (D.artists || {})[s.a] || {}; return '<li><span class="pkpl-st">' + tm(s.s) + '</span><span class="pkpl-sa"><b>' + esc(A.n || s.a) + '</b><small>' + esc(LBL[s.l] || '') + '</small></span></li>'; }).join('') + '</ol>' +
@@ -15422,7 +15426,7 @@ body.pkpl-wide #root #pkpl-top .pkpl-hi .pkpl-tt{color:#F2EDE3}
     var hx = window.__pkMapXP; if (hx) { window.__pkMapXP = '';   /* Zale Nov 22 01:03: Home's 'Find Music in 9 neighborhoods' opens the map with Music picked; a place opened from Home keeps the experience (design_home-34) */
       if (XO.indexOf(hx) >= 0) { if (t.r === 'hoods') { if (M.xp !== hx) setTimeout(function () { if (M.xp !== hx) xpPick(hx); }, 0); } else if (t.r === 'hood') M.xp = hx; } }
     if (t.r === 'hood' && t.h && t.h !== M.cur && HH.shapes[t.h]) { if (M.title) { M.title = false; M.el.classList.add('pkpl-notitle'); } frame(t.h, !M.s); }   /* arriving at a place shows it, never the title screen */
-    if (t.r === 'hoods' && M.cur) { M.was = M.cur; M.cur = ''; M.hot = ''; $$('.pkpl-hot', M.el).forEach(function (r) { r.classList.remove('pkpl-hot'); }); var bd9 = $('.pkpl-body', M.el), pd9 = bd9 && $('.pkpl-pd', bd9); if (bd9) bd9._hk = null; if (pd9 && bd9._sum) { pd9.textContent = bd9._sum; pd9.classList.remove('on'); } if (v2p()) { M.ps = 1; titleDraw(); psPlace(); var mo2 = $('.pkpl-psmore', M.el); if (mo2) mo2.textContent = litSet().length === 1 ? 'See it' : 'See them'; }   /* round 2 #5 */ lit(); if (M.xp || M.amen) fitLit(); setTimeout(xbShow, 60); }   /* closing a card: back to the map you left, the experience's places lit, the sheet half open and the pick in view (review Nov 22 #1) */   /* closing a card: back to the experience's places, lit */
+    if (t.r === 'hoods' && M.cur) { M.was = M.cur; M.cur = ''; M.hot = ''; $$('.pkpl-hot', M.el).forEach(function (r) { r.classList.remove('pkpl-hot'); }); var bd9 = $('.pkpl-body', M.el), pd9 = bd9 && $('.pkpl-pd', bd9); if (bd9) bd9._hk = null; if (pd9 && bd9._sum) { pd9.textContent = bd9._sum; pd9.classList.remove('on'); } var from9 = M.was; if (wide() && from9 && bd9) { var r9 = $('.pkpl-pr[data-hp="' + from9 + '"]', bd9); if (r9 && pd9) { var xl9 = M.xp ? xpLine(M.xp, from9) : ''; if (xl9) { pd9.innerHTML = '<b>' + esc(data().hoods[from9].n) + '</b> ' + esc(xl9); } } if (r9) { r9.classList.add('pkpl-was'); setTimeout(function () { r9.classList.remove('pkpl-was'); }, 4000); } } if (v2p()) { M.ps = 1; titleDraw(); psPlace(); var mo2 = $('.pkpl-psmore', M.el); if (mo2) mo2.textContent = litSet().length === 1 ? 'See it' : 'See them'; }   /* round 2 #5 */ lit(); if (M.xp || M.amen) fitLit(); setTimeout(xbShow, 60); }   /* closing a card: back to the map you left, the experience's places lit, the sheet half open and the pick in view (review Nov 22 #1) */   /* closing a card: back to the experience's places, lit */
     settleSheet(); dedupe(); shape(); backMap(); setTimeout(railArrows, 600);
     var full = $('[data-pl="full"]', M.el); if (full) full.hidden = !M.cur && !M.amen && !(M.s > startView()[0] * 1.15);
     moreCue();
