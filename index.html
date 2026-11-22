@@ -14562,7 +14562,7 @@ html body.pkpl-v2p #root #pkpl .pkpl-psln{min-height:44px}
 html body.pkpl-v2p #root #pkpl .pkpl-psmore{min-height:44px;padding:0 16px}
 html body.pkpl-v2p #root .pkpl-xb.pkpl-xbmore::after{content:'';position:sticky;right:0;flex:none;width:44px;margin-left:-44px;align-self:stretch;pointer-events:none;background:linear-gradient(to right,rgba(18,22,15,0),#12160F 85%)}   /* the fade covers the buttons, never the map behind the row (round 2 #9) */
 html body.pkpl-v2p #root #pkpl .pkpl-psall{display:inline;min-height:44px;padding:10px 0;margin:-10px 0;border:0;background:none;font:inherit;color:#F2EDE3;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
-@media (min-width:600px){html body.pkpl-v2p:not(.pkpl-hood) #root .pkpl-xb{flex-wrap:wrap;overflow-x:visible;row-gap:8px}html body.pkpl-v2p #root .pkpl-xb.pkpl-xbmore::after{display:none}}
+@media (min-width:600px) and (min-height:600px){html body.pkpl-v2p:not(.pkpl-hood) #root .pkpl-xb{flex-wrap:wrap;overflow-x:visible;row-gap:8px}html body.pkpl-v2p #root .pkpl-xb.pkpl-xbmore::after{display:none}}
 
 /* edge tags for lit places outside the view (Zale, Nov 22: chosen after the independent review) */
 #root #pkpl .pkpl-edge{position:absolute;inset:0;pointer-events:none;z-index:3}
@@ -14596,7 +14596,7 @@ html body.pkpl-hood:not(.pkpl-wide) #root #pkpl-top .pkpl-sheet{-webkit-mask-ima
 
 /* round 2 review (Nov 22) */
 html body.pkpl-v2p #root .pkpl-xb.pkpl-xbleft::before{content:'';position:sticky;left:0;flex:none;width:36px;margin-right:-36px;align-self:stretch;pointer-events:none;z-index:1;background:linear-gradient(to left,rgba(18,22,15,0),#12160F 85%)}
-@media (min-width:600px){html body.pkpl-v2p #root .pkpl-xb.pkpl-xbleft::before{display:none}}
+@media (min-width:600px) and (min-height:600px){html body.pkpl-v2p #root .pkpl-xb.pkpl-xbleft::before{display:none}}
 #root #pkpl-top .pkpl-stepl button{min-width:118px;border-radius:6px;text-transform:none;letter-spacing:0;font-size:14px}
 #root #pkpl-top .pkpl-stepl button:last-child{text-align:right}
 #root #pkpl-top .pkpl-stepl span{color:rgba(242,237,227,.78);white-space:nowrap}
@@ -14656,8 +14656,8 @@ html body.pkpl-v2 #root #pkpl .pkpl-pr.pkpl-was{border-color:#F2EDE3!important;b
 html body.pkpl-v2 #root #pkpl .pkpl-title::after,html body.pkpl-v2.pkpl-v2g #root #pkpl .pkpl-title::after{width:calc(100% + 28px);background:linear-gradient(90deg,#12160F 0,#12160F calc(100% - 28px),rgba(18,22,15,0) 100%)}
 
 /* Zale, Nov 22: tablet uses its space; on neighborhood pages the experience buttons wrap to full rows like on the map */
-@media (min-width:600px){html body.pkpl-hood:not(.pkpl-wide) #root #pkpl .pkpl-xb{flex-wrap:wrap;overflow-x:visible;row-gap:8px}html body.pkpl-hood:not(.pkpl-wide) #root #pkpl .pkpl-xb::after,html body.pkpl-hood:not(.pkpl-wide) #root #pkpl .pkpl-xb::before{display:none}}
-@media (min-width:600px){html body.pkpl-hood:not(.pkpl-wide) #root #pkpl-top{bottom:var(--pkpl-xbh,61px)}}
+@media (min-width:600px) and (min-height:600px){html body.pkpl-hood:not(.pkpl-wide) #root #pkpl .pkpl-xb{flex-wrap:wrap;overflow-x:visible;row-gap:8px}html body.pkpl-hood:not(.pkpl-wide) #root #pkpl .pkpl-xb::after,html body.pkpl-hood:not(.pkpl-wide) #root #pkpl .pkpl-xb::before{display:none}}
+@media (min-width:600px) and (min-height:600px){html body.pkpl-hood:not(.pkpl-wide) #root #pkpl-top{bottom:var(--pkpl-xbh,61px)}}
 
 /* mission review (Nov 22): the bands under the video row link to their pages; the Creative Neighborhoods line under Who built it */
 #root #pkpl-top .pkpl-vx{margin:10px 16px 0;font:500 15px/1.6 'Bricolage Grotesque',system-ui,sans-serif;color:rgba(242,237,227,.72)}
@@ -14944,7 +14944,7 @@ body.pkpl-wide #root #pkpl-top .pkpl-vw{flex-basis:280px}
   /* the visible part of the map (phone: above the sheet) */
   function lw() { return Math.round(Math.max(400, Math.min(480, window.innerWidth * 0.32))); }   /* desktop left column: phone-card width, the map is the hero (Zale, Nov 19) */
   function sheetOpen() { var sc = scroller(); return openH(sc ? sc.clientHeight : 600); }   /* the card opens to the phone's scroll area less a map margin at the top (Nov 20, Zale) */
-  function openH(vh) { return Math.round(vh * 0.6) + (V2 && !wide() ? 50 : 0); }   /* Zale, Nov 22: about 50px taller on phone and tablet so prev/next shows above the experience row */   /* open: the sheet covers 60%, the map shows above it (the yesterday default, Zale, Nov 20) */
+  function openH(vh) { return Math.round(vh * 0.6) + (V2 && !wide() && vh > 500 ? 50 : 0); }   /* Zale, Nov 22: about 50px taller on phone and tablet so prev/next shows above the experience row */   /* open: the sheet covers 60%, the map shows above it (the yesterday default, Zale, Nov 20) */
   function v2Fit(v, L, one) {   /* MOCK round 4: no empty margin on the right; the framed places sit against the right side and the map runs under the left column */
     var b = union(L), s1 = v[0], tx = v[1], east = b[2] * s1 + tx, lim = M.vw - (one ? 190 : 84);
     if (east < lim) tx += lim - east;
