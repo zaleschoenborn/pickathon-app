@@ -26,7 +26,7 @@ css = re.sub(r"@font-face\{[^}]*\}", '', css)                       # fonts live
 css = css.replace(':root{', ':host{', 1)
 css = re.sub(r'(^|\}|\n)html\{[^}]*\}', r'\1', css)
 css = re.sub(r'(^|\}|\n)body\{[^}]*\}', r'\1:host{display:block;background:var(--ground);color:var(--cream);font-family:var(--text);font-size:16px;line-height:1.45;-webkit-font-smoothing:antialiased}', css, count=1)
-css = re.sub(r'\.mockbar[^{}]*\{[^}]*\}', '', css)                  # the mock bar and its select
+css = re.sub(r'(^|(?<=[{}]))\s*\.mockbar[^{}]*\{[^}]*\}', '', css, flags=re.M)   # only rules whose selector is the mock bar (keep :not(.mockbar))                  # the mock bar and its select
 css = re.sub(r'\.mb-sel[^{}]*\{[^}]*\}', '', css)
 css = css.replace('.phone{', '.phone{--lxpad:0;', 1)
 os.makedirs(OUT + '/a', exist_ok=True)
@@ -79,6 +79,7 @@ a = app.index("document.querySelectorAll('.poster')")
 b = app.index("(function () {\n    var bar = document.querySelector('.bkw')")
 widgets = app[a:b].replace('document.querySelectorAll', 'root.querySelectorAll').replace('document.querySelector', 'root.querySelector')
 widgets = widgets.replace('document.createElement', 'document.createElement')
+widgets = widgets.replace('document.addEventListener(', 'docOn(')   # page-level listeners are dropped on the next redraw
 rt = open(os.path.join(ROOT, 'tools/lineup_2027_r1/build/lx_runtime.js'), encoding='utf-8').read()
 open(OUT + '/lx.js', 'w', encoding='utf-8').write(rt.replace('/*WIDGETS*/', widgets))
 print('lx.js written')
