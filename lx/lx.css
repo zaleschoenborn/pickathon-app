@@ -615,3 +615,50 @@ h2{font-family:var(--display);font-weight:400;font-size:27px;line-height:1.14;le
 /* r31: a ring that carries a song can be tapped (44px target); the rest of the card opens the artist page */
 .card .ring[data-clip]{pointer-events:auto;cursor:pointer}
 .card .ring.sm[data-clip]::after{content:"";position:absolute;inset:-6px}
+
+/* r36 (Zale, Nov 22): the photo plays the song; ring centered; name and "Their story" open the artist page */
+.card .pz{position:absolute;inset:0;z-index:2;cursor:pointer;display:block}
+.card .pz .ring.sm,.card.tt .pz .ring.sm{top:50%;pointer-events:none}
+.card.pc .cbody{z-index:3;pointer-events:none}
+.card.pc .cname,.card.pc .cstory{pointer-events:auto}
+.cstory{display:inline-block;margin-top:6px;font-size:14px;font-weight:700;letter-spacing:.02em;color:var(--cream);opacity:.9;text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1px;padding:6px 0;margin-bottom:-6px}
+.card.pc .cname{cursor:pointer}
+.card .pz:focus-visible{outline:3px solid var(--gold,#f2c94c);outline-offset:-3px}
+
+.card.tt.arch.nop.pc .pz .ring.sm{top:32%}
+.card.tt.arch.nop.pc .cbody{top:auto;bottom:12px;display:block}
+.card.tt.arch.nop.pc .cname{font-size:clamp(18px,5.4vw,22px)}
+/* r37: centered in the picture above the text block, so it never sits on the class label */
+.card.pc:not(.nop) .pz .ring.sm,.card.tt.pc:not(.nop) .pz .ring.sm{top:calc(50% - 46px)}
+/* r38 (Zale, Nov 22): archive cards a hair taller, 3:4 */
+.card.tt.arch{aspect-ratio:3/4}
+.card.pc:not(.nop) .pz .ring.sm,.card.tt.pc:not(.nop) .pz .ring.sm{top:calc(50% - 40px)}
+
+/* r44: Copy Review's card line, three lines at most */
+.cline{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;line-clamp:3;overflow:hidden;margin-top:6px;font-size:14px;line-height:1.3;color:var(--cream);opacity:.92;text-wrap:pretty}
+
+/* r45 (Zale, Nov 22): both poster views are weighted clouds (top name biggest), bands close together; the year rides above the knob */
+.po-names .pcloud{gap:0 16px;line-height:.98}
+.po-names .pcloud .pn{--lo:15;--hi:40}
+.po-names .pcloud.rest{gap:0 12px}
+.po-names .pcloud.rest .pn{--lo:12;--hi:19}
+@media (min-width:1000px){.po-names .pcloud .pn{--lo:22;--hi:78}}
+.po-track .po-knob{overflow:visible}
+.po-yr{position:absolute;left:50%;bottom:30px;transform:translateX(-50%);font-family:var(--display);font-style:normal;font-weight:400;font-size:17px;letter-spacing:.06em;color:var(--ink);white-space:nowrap;pointer-events:none}
+.po-ctl{margin-top:30px}
+
+/* r45 (Zale, Nov 22): year reel segments fill over the 4 s a frame shows; the year switch reads as a control (year + arrow) */
+.segs i{position:relative}
+.segs i.on{background:rgba(255,255,255,.34);background-clip:content-box}
+.segs i b{position:absolute;left:0;top:21px;height:3px;width:0;background:#fff;border-radius:2px}
+.segs i.done b{width:100%}
+.segs i.on b{animation:segfill 4s linear forwards}
+@keyframes segfill{to{width:100%}}
+@media (prefers-reduced-motion:reduce){.segs i.on b{animation:none;width:100%}}
+.hd .yrchip{display:inline-flex;align-items:center;gap:8px;position:relative;height:46px;min-height:46px;padding:0 8px 0 12px;border:2px solid var(--gold,#D6B54A);border-radius:6px;cursor:pointer}
+.hd .yrchip .yc-k{align-self:center;color:var(--cream)}
+.yrchip .yc-k{font-size:12px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;color:var(--cream)}
+.yrchip .yc-y{font-family:var(--display);font-size:26px;letter-spacing:.04em;color:#fff;line-height:1}
+.yrchip .yc-a{display:grid;place-items:center;width:24px;height:24px;border-radius:50%;background:var(--gold,#D6B54A);color:#1c1719}
+.yrchip .yc-a svg{width:12px;height:12px}
+.yrchip select{position:absolute;inset:0;opacity:0;width:100%;height:100%;cursor:pointer;font-size:16px}

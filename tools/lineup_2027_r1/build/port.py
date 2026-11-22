@@ -75,11 +75,13 @@ print('lx:', len(years), 'years,', n_art, 'artist pages, css', len(css) // 1024,
 
 # ---- runtime -----------------------------------------------------------------------------------
 app = open(os.path.join(ROOT, 'tools/lineup_2027_r1/build/app.js'), encoding='utf-8').read()
-a = app.index("document.querySelectorAll('.poster')")
+a = app.index("  // r45 (Zale, Nov 22): the year reel") if "  // r45 (Zale, Nov 22): the year reel" in app else app.index("document.querySelectorAll('.poster')")   # r45 year reel rides along with the poster widgets
 b = app.index("(function () {\n    var bar = document.querySelector('.bkw')")
 widgets = app[a:b].replace('document.querySelectorAll', 'root.querySelectorAll').replace('document.querySelector', 'root.querySelector')
 widgets = widgets.replace('document.createElement', 'document.createElement')
-widgets = widgets.replace('document.addEventListener(', 'docOn(')   # page-level listeners are dropped on the next redraw
+widgets = widgets.replace('document.addEventListener(', 'docOn(')
+widgets = widgets.replace('timer = setInterval(', 'timer = ivOn(')   # reel timers stop on the next redraw
+widgets = widgets.replace("root.querySelector('.pkvid')", "(document.querySelector('.pkvid') || document.querySelector('.pk-vo'))")   # the video player lives in the page, not the shadow root   # page-level listeners are dropped on the next redraw
 rt = open(os.path.join(ROOT, 'tools/lineup_2027_r1/build/lx_runtime.js'), encoding='utf-8').read()
 open(OUT + '/lx.js', 'w', encoding='utf-8').write(rt.replace('/*WIDGETS*/', widgets))
 print('lx.js written')
