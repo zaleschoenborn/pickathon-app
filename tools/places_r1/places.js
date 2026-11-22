@@ -35,10 +35,10 @@
   function data() { return site().data || null; }
   function top() { var s = site().stack || []; return s[s.length - 1] || {}; }
   function go(r, x) { var a = app(); if (a && a.go) a.go(r, x || {}); }
-  var V2 = /[?&]v2/.test(location.search), V2G = (location.search.match(/[?&]g=(\w+)/) || [])[1] || 'soft';   /* MOCK Nov 21: left-column layout, gradient strength */
+  var V2Q = /[?&]v2/.test(location.search), V2 = !/[?&]v1\b/.test(location.search), V2G = (location.search.match(/[?&]g=(\w+)/) || [])[1] || 'strong';   /* Zale Nov 22 00:39 'build it': the left-column layout is live on desktop; the phone panel stays behind ?v2; ?v1 shows the old desktop */   /* MOCK Nov 21: left-column layout, gradient strength */
   var V2L = (location.search.match(/[?&]L=(\w+)/) || [])[1] || 'tiles';   /* MOCK: long-list style, tiles or cols */
   /* MOCK Nov 21 (Zale): a rough 2027 palette painted over today's map to judge it; provisional kit colors (near-black #2E292A, mauve #85506A, gold #BF9D27, pink #E5B6CC), official swatches pending from Artwork */
-  var PAL27 = /[?&]pal=27/.test(location.search);
+  var PAL27 = /[?&]pal=27/.test(location.search) || (!/[?&]pal=26/.test(location.search) && (window.innerWidth >= 1200 || (window.innerWidth >= 900 && window.innerWidth > window.innerHeight)));   /* 2027 map look on desktop (Zale Nov 22); phones keep the 2026 look until their check */
   /* Artwork's 2027 map fills (artwork-47, from Travis's binder inks): light tier and deep tier, alternating between neighbors */
   var P27 = { woods: '#D1A47D', cherryhill: '#D79D98', grove: '#8A7632', windmill: '#D79D98', paddock: '#D1A47D', galaxy: '#976D48', lucky: '#C2AD6A', farmhouse: '#D79D98', curation: '#9D6762',
     refuge: '#D19CB4', coyote: '#97667D', courtyard: '#D19CB4', market: '#97667D', orchard: '#97667D', quailtrail: '#B5ABAE',
@@ -236,7 +236,7 @@
     return [s1, tx, v[2]];
   }
   function psH() { return M.xp ? Math.round(M.vh * 0.4) : 132; }   /* MOCK: phone panel under the experience row */
-  function clear() { var r = region(), t = wide() && top().r !== 'hood' ? lw() : 0, ti = $('.pkpl-title', M.el), up = wide() ? 78 : (M.title && ti ? Math.max(0, ti.offsetHeight - 14) : 0), dn = wide() ? 8 : (top().r === 'hood' ? sheetOpen() : 150); if (V2 && !wide() && top().r !== 'hood') { up = 8; dn = psH() + 62; } if (V2 && wide()) up = 16; return { x: r.x + t, y: r.y + up, w: r.w - t, h: Math.max(160, r.h - up - dn) }; }   /* the lit places fill what is left */   /* above the experience bar and the amenity tag */
+  function clear() { var r = region(), t = wide() && top().r !== 'hood' ? lw() : 0, ti = $('.pkpl-title', M.el), up = wide() ? 78 : (M.title && ti ? Math.max(0, ti.offsetHeight - 14) : 0), dn = wide() ? 8 : (top().r === 'hood' ? sheetOpen() : 150); if (V2Q && !wide() && top().r !== 'hood') { up = 8; dn = psH() + 62; } if (V2 && wide()) up = 16; return { x: r.x + t, y: r.y + up, w: r.w - t, h: Math.max(160, r.h - up - dn) }; }   /* the lit places fill what is left */   /* above the experience bar and the amenity tag */
   function region() {
     if (wide() || top().r !== 'hood') return { x: 0, y: 0, w: M.vw, h: M.vh };
     /* the strip the map shows above the sheet: from the map top to the sheet's real top edge (open ~40%, folded almost all) */
@@ -307,7 +307,7 @@
       if (bd._xp !== M.xp) { var px = bd._xp; bd._xp = M.xp; bd.scrollTop = 0; M.hot = null; bd.classList.remove('pkpl-rise', 'pkpl-xf'); void bd.offsetWidth; if (px !== undefined && !calm()) bd.classList.add('pkpl-xf'); }   /* MOCK: the list reorders between experiences, so it fades instead of jumping */
       var more = function () { bd.classList.toggle('pkpl-more', bd.scrollHeight - bd.scrollTop > bd.clientHeight + 4); }; if (!bd._on) { bd._on = 1; bd.addEventListener('scroll', more); } setTimeout(more, 0);
     }
-    var v2p = V2 && !wide(); document.body.classList.toggle('pkpl-v2p', v2p);
+    var v2p = V2Q && !wide(); document.body.classList.toggle('pkpl-v2p', v2p);
     if (v2p) {   /* MOCK phone: map on top, the swipe row of experiences, then the words and that experience's places */
       var ps = $('.pkpl-ps', M.el); if (!ps) { ps = document.createElement('div'); ps.className = 'pkpl-ps'; M.el.appendChild(ps); }
       var Lp = M.xp ? litSet() : [];
