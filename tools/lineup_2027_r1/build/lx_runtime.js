@@ -51,7 +51,11 @@
     });
   }
 
+  var DOCL = [];
+  function docOn(type, fn, opt) { document.addEventListener(type, fn, opt); DOCL.push([type, fn, opt]); }
+  function docOff() { DOCL.forEach(function (x) { document.removeEventListener(x[0], x[1], x[2]); }); DOCL = []; }
   function widgets(root) {
+    docOff();
 /*WIDGETS*/
   }
 

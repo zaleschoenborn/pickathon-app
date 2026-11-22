@@ -8,11 +8,6 @@ a{color:inherit;text-decoration:none}
 button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
 img{display:block}
 h1,h2,h3,p{margin:0}
-
-
-
-
-
 .phone{--lxpad:0;overflow-x:clip;max-width:480px;margin:0 auto;background:var(--ground);min-height:100vh;padding-bottom:74px;position:relative}
 .screen{display:block}
 .screen[hidden]{display:none}
@@ -361,7 +356,6 @@ h2{font-family:var(--display);font-weight:400;font-size:27px;line-height:1.14;le
 
 /* ===== desktop (>=1000px): badge left, names right, wider grids ===== */
 @media (min-width:1000px){
-  
   .phone{max-width:1280px;padding-bottom:40px}
   .hero{height:560px}
   .hero h1{font-size:76px}.hero h1.act{font-size:84px}
@@ -382,7 +376,7 @@ h2{font-family:var(--display);font-weight:400;font-size:27px;line-height:1.14;le
   h2,.lead{padding-left:0}
 }
 @media (min-width:1000px){
-  .phone>main>*:not(.hero):not(.poster):not(.hd):not(.sale):not(.stripe),.phone>*:not(main):not(.hero):not(.poster):not(.hd):not(.sale):not(.stripe):not(
+  .phone>main>*:not(.hero):not(.poster):not(.hd):not(.sale):not(.stripe),.phone>*:not(main):not(.hero):not(.poster):not(.hd):not(.sale):not(.stripe):not(.mockbar){padding-left:max(64px,calc((100% - 1152px)/2))!important;padding-right:max(64px,calc((100% - 1152px)/2))!important}
   .grid2{grid-template-columns:repeat(5,minmax(0,1fr))}
 }
 
@@ -579,7 +573,9 @@ h2{font-family:var(--display);font-weight:400;font-size:27px;line-height:1.14;le
   .bkw{flex-wrap:wrap}
   .bkw .bk{flex:1 1 100%}
   .bkw .gpc{flex:1 1 100%}
-  .bkw .gpc .gp-b{width:100%;min-height:48px;flex-direction:row;justify-content:space-between;align-items:center;gap:10px}
+  .bkw .gpc .gp-b{width:100%;min-height:56px;flex-direction:column;justify-content:center;align-items:stretch;gap:2px;padding:6px 12px;text-align:left}
+  .bkw .gpc .gp-q{white-space:nowrap}
+  .bkw .gpc .gp-a{display:flex;justify-content:space-between;align-items:center}
 }
 /* tap targets 44 x 44, look unchanged */
 .sale{padding-top:4px;padding-bottom:4px}
@@ -589,3 +585,33 @@ h2{font-family:var(--display);font-weight:400;font-size:27px;line-height:1.14;le
 .poster [data-art]{padding-block:max(0px,calc((48px - 1.15em) / 2));cursor:pointer}
 /* icon buttons: 44px square, 4px corners (buttons.md); only the play ring and the Tour pill are round */
 .hd-listen{border-radius:4px}
+.yr.off{min-width:0;border-style:dashed;font-family:var(--text);font-size:var(--lab);font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--mute);white-space:nowrap}
+
+/* r29 (Zale, Nov 21): the music picker takes several picks. Checkbox rows, Everything on top, gold button closes. */
+.gp-list .gp-o{display:flex;align-items:center;gap:10px;text-align:left}
+.gp-list .gp-o.all{grid-column:1/-1}
+.gp-list .gp-o.all.on{background:transparent;border-color:var(--cream);color:var(--cream)}
+.gp-list .gp-o.mx::before{content:"";flex:none;width:20px;height:20px;border:2px solid var(--line2);border-radius:4px;box-sizing:border-box}
+.gp-list .gp-o.mx.on{background:#4A4130;border-color:var(--gold);color:var(--cream)}
+.gp-list .gp-o.mx.on::before{background:var(--gold) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2.5 6.2l2.4 2.4 4.6-5' fill='none' stroke='%23221E20' stroke-width='2'/%3E%3C/svg%3E") center/14px no-repeat;border-color:var(--gold)}
+.gp-list .gp-done{grid-column:1/-1;min-height:48px;margin-top:4px;border-radius:6px;background:var(--gold);color:#221E20;font-weight:800;letter-spacing:.08em;text-transform:uppercase;font-size:var(--lab)}
+@media (max-width:999px){.bkw .gpc .gp-list{left:14px;right:14px;width:auto;grid-template-columns:minmax(0,1fr) minmax(0,1fr)}}
+.gp-list .gp-done{flex:1 1 100%}
+.gp-list .gp-o{white-space:nowrap}
+@media (min-width:1000px){.gp:not(.gpc) .gp-list{width:min(520px,90vw)}}
+
+/* r30 (Nov 21): full archive with paging, cards without a photo, "See everyone", year story that opens */
+.arch .card.late{display:none}
+.arch .more[hidden]{display:none}
+.card.tt.arch.nop{background:var(--raise);border:1px solid var(--line)}
+.card.tt.arch.nop .cname{font-size:20px}
+.minis:not(.open):not(.filt) .mini.xtra{display:none}
+.rest .evy[hidden]{display:none}
+.story .body[hidden]{display:none}
+.story .chip.stog.open svg{transform:rotate(180deg)}
+.card.tt.arch.nop .cbody{top:44px;bottom:12px;display:flex;flex-direction:column;justify-content:center;gap:8px}
+.card.tt.arch.nop .cname{font-size:clamp(20px,6.2vw,26px);line-height:1.08;margin-top:0}
+@media (min-width:1000px){.card.tt.arch.nop .cname{font-size:24px}}
+/* r31: a ring that carries a song can be tapped (44px target); the rest of the card opens the artist page */
+.card .ring[data-clip]{pointer-events:auto;cursor:pointer}
+.card .ring.sm[data-clip]::after{content:"";position:absolute;inset:-6px}
