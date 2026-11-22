@@ -273,6 +273,18 @@ def clip_for(n, y=None):
     k = ''.join(ch for ch in _ud.normalize('NFD', n.lower()) if ch.isalnum())
     return CLIPY.get((k, str(y)), '') if y else CLIPA.get(k, '')
 
+# r41 (Zale, Nov 22): an Archive card plays the act's video from the card's own year (the first year in that class); if that year has none,
+# the nearest LATER year; only then an earlier year. Never the act's most-viewed clip from some other year.
+def archive_clip(n, y):
+    n2 = _CLIPALIAS.get(n, n)
+    k = ''.join(ch for ch in _ud.normalize('NFD', n2.lower()) if ch.isalnum())
+    yrs = sorted(int(yy) for (kk, yy) in CLIPY if kk == k)
+    y = int(y)
+    for yy in [y] + [a for a in yrs if a > y] + [a for a in reversed(yrs) if a < y]:
+        u = CLIPY.get((k, str(yy)))
+        if u: return u
+    return ''
+
 def photo_play(url, n):
     """r36 (Zale, Nov 22): on a card with a song, the whole photo plays it; the ring is centered and only marks it.
     The name and 'Their story' open the artist page."""
@@ -505,11 +517,11 @@ def gpick(target, q='What kind of music do you love?', opts=GLIST):
 
 def vcard(n, y, k, g, p, pos):
     if not p:  # no photo for that year: a plain site-color card, same anatomy; r36: it still plays the act's best song when the ledger has one
-        _cv = clip_for(n, y) or clip_for(n)
+        _cv = archive_clip(n, y)
         return ('<a class="card tt arch nop%s" data-g="%s" data-art="%s" data-an="%s" href="#"><span class="cyr">%s</span>%s'
                 '<span class="cbody"><span class="krow"><span class="k k-%s">%s</span></span><span class="cname">%s</span>%s</span></a>') % (
                 ' pc' if _cv else '', E(g), _aslug(n), E(n), y, photo_play(_cv, n) if _cv else '', k, KLAB[k], E(n), '<span class="cstory">Their story \u2192</span>' if _cv else '')
-    return card(n, y, k, g, img(p, 520), pos, clip_for(n), 'tt arch').replace('<img src=', '<img loading="lazy" src=', 1)
+    return card(n, y, k, g, img(p, 520), pos, archive_clip(n, y), 'tt arch').replace('<img src=', '<img loading="lazy" src=', 1)
 leg.append(("I’m With Her", 2018, 'Bluegrass', 'i/p9615.jpg', '22% 50%'))
 deep.append(('Black Mountain', 2011, 'Psych', 'i/p9704.jpg', '100% 50%'))
 
@@ -554,8 +566,14 @@ def _fill(lst, kind, want):
 _fill(disc, 'disc', 0); _fill(leg, 'leg', 0); _fill(deep, 'deep', 0)
 # r40 (Zale, Nov 22: video only, hide the rest): the Archive draws only acts that have a song to play; counts follow the cards drawn
 for _lst in (disc, leg, deep):
-    _keep = [x for x in _lst if clip_for(x[0], x[1]) or clip_for(x[0])]
+    _keep = [x for x in _lst if archive_clip(x[0], x[1])]
     print('archive: %d cards with no song left out' % (len(_lst) - len(_keep)))
+    _st = [0, 0, 0]
+    for _x in _keep:
+        _u = archive_clip(_x[0], _x[1]); _kk = ''.join(ch for ch in _ud.normalize('NFD', _CLIPALIAS.get(_x[0], _x[0]).lower()) if ch.isalnum())
+        _yy = [int(a) for (b, a), u2 in CLIPY.items() if b == _kk and u2 == _u]
+        _st[0 if int(_x[1]) in _yy else (1 if _yy and min(_yy) > int(_x[1]) else 2)] += 1
+    print('archive clips: same year %d, later year %d, earlier year %d' % tuple(_st))
     _lst[:] = _keep
 bars = [(1, [58, 34]), (1, [70]), (2, [40, 44]), (2, [30, 26, 30]), (3, [22, 28, 20, 18]), (3, [18, 24, 16, 26]), (4, [14, 18, 12, 16, 14]), (4, [12, 16, 18, 12, 10])]
 barh = ''.join('<div class="br b%d">%s</div>' % (lv, ''.join('<i style="width:%d%%"></i>' % w for w in ws)) for lv, ws in bars)
