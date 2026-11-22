@@ -13372,6 +13372,11 @@ window.pkClimbRank = function (C, dd) {
       pool = pool.filter(function (a) { return !(a && a.n === 'Courtney Barnett'); });
       pool.push({ n: 'Courtney Barnett', cat: 'music', ctk: 'disc', dc: false, leg: false, kind: 'Discovery \u00b7 Indie', yr: 2014, m: 5.7, cf: 'high', ctl: '', line: 'Two EPs and small clubs, then a Best New Artist Grammy nomination.', vu: 'https://www.youtube.com/watch?v=Dq7nrBvuuf8', vt: 'Watch from Pickathon 2014', img: 'i/up-courtneybarnett.jpg' });
     }
+    /* Zale Nov 22: Shakey Graves is a Discovery at his first year, 2013 (class table v165, magnitude 5.4) but has no Discovery row in the live Archive yet. Pickathon's own 2013 Woods clip; photo is the 2018 stage photo (a same-year photo is not required on this row). Dr. Dog (2009, 5.0) waits for a real photo from Photo Catalog: the only frames on hand are video stills. */
+    if (!pool.some(function (a) { return a && a.n === 'Shakey Graves' && a.ctk === 'disc'; })) {
+      pool = pool.filter(function (a) { return !(a && a.n === 'Shakey Graves'); });
+      pool.push({ n: 'Shakey Graves', cat: 'music', ctk: 'disc', dc: false, leg: false, kind: 'Discovery \u00b7 Folk', yr: 2013, m: 5.4, cf: 'high', ctl: '', line: 'A one-man band in small clubs. Eighteen months later, Letterman and ballrooms.', vu: 'https://www.youtube.com/watch?v=5BOaL2Qns5M', vt: 'Watch from Pickathon 2013', img: 'i/pv-shakeygraves.jpg' });
+    }
     BL = pool.filter(function (a) { return a.cat === 'music' && a.ctk === 'disc' && !a.dc && !a.leg && a.line && a.vu; }).map(function (a) {
       var pv = PV[a.n], img = (pv && String(pv.y) === String(a.yr) && pv.i) || a.img || (pv && pv.i) || '';
       var v = vidOf(a.vu), r = vidRec(v), full = !!(r && r.f), watch = !!a.vu && !full && /^(Watch|Listen)/.test(a.vt || '');
