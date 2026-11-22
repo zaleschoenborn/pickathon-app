@@ -35,7 +35,7 @@ def _n(x):
     x = x.lower().replace('&', 'and').strip()
     if x.startswith('the '): x = x[4:]
     return _re.sub(r'[^a-z0-9]', '', x)
-_CT = os.environ.get('PK_CLASS_TABLE', ROOT + 'class_table_v159.csv')  # copy of live v159 (Dropbox server_modified 2026-11-20 07:20Z); pointer CLASS_TABLE_CURRENT.txt names v159
+_CT = os.environ.get('PK_CLASS_TABLE', ROOT + 'class_table_v163.csv')  # copy of live v163 (Dropbox server_modified 2026-11-21 19:15Z); pointer CLASS_TABLE_CURRENT.txt names v159
 _IDX = {(_n(r['act']), r['year']): r for r in csv.DictReader(open(_CT, encoding='utf-8-sig'))}
 _M = {'Discovery': 'disc', 'Legend': 'leg', 'Deep cut': 'deep'}
 _ALIAS = {'2mangentlemanband': 'twomangentlemenband', '79ersgang': '79rsgang', 'billystringsdonjulin': 'billystrings',
@@ -147,7 +147,8 @@ def img(path, w=780, q=74, fmt='JPEG'):
     if key in _cache:
         return _cache[key]
     ext = 'png' if fmt == 'PNG' else 'jpg'
-    name = 'img/%s.%s' % (hashlib.md5(('%s|%s|%s' % key).encode()).hexdigest()[:12], ext)
+    _salt = ('|%d' % os.path.getsize(_src(path))) if str(path).startswith('ext/') else ''  # r33: a replaced ext/ file gets a fresh copy
+    name = 'img/%s.%s' % (hashlib.md5(('%s|%s|%s' % key + _salt).encode()).hexdigest()[:12], ext)
     if not os.path.exists(OUT + name):
         im = Image.open(_src(path))
         if fmt == 'PNG':
@@ -239,10 +240,38 @@ def reel_slides(y):
 def play(sz=''):
     return '<span class="ring %s" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 6.5v11l9-5.5z" fill="#fff"/></svg></span>' % sz
 
+# r31 (Nov 21): a play ring on a card plays a song. Best single song per act (never a full set or A Concert A Day), by views.
+def _vurl(v):
+    if v.get('vm'): return 'https://vimeo.com/%s%s' % (v['vm'], ('/' + v['vh']) if v.get('vh') else '')
+    return 'https://www.youtube.com/watch?v=%s' % v['id'] if _re.match(r'^[A-Za-z0-9_-]{11}$', str(v.get('id', ''))) else ''
+CLIPY, CLIPA = {}, {}
+for _v in sorted(d['videos'], key=lambda v: -(v.get('v') or 0)):
+    if _v.get('f') or _v.get('cad') or 'full set' in str(_v.get('s', '')).lower() or not _v.get('a') or not _v.get('y'): continue
+    _u = _vurl(_v)
+    if not _u: continue
+    _kslug = ''.join(ch for ch in _ud.normalize('NFD', _v['a'].lower()) if ch.isalnum())
+    CLIPY.setdefault((_kslug, str(_v['y'])), _u); CLIPA.setdefault(_kslug, _u)
+# r33 (Nov 21): the Video Ledger (Video Catalog, 2,835 rows, synced to Lineup act_id) is the main source: its single songs and
+# sessions (Pickathon YouTube, Vimeo with hash, KEXP, Live and Breathing) come first; full sets, podcasts, interviews, outside clips,
+# password clips and flagged clips are left out when build/ledger_clips.json is written. data.json clips fill in behind it.
+_LC = json.load(open(ROOT + 'ledger_clips.json', encoding='utf-8'))
+_LC.sort(key=lambda o: (0 if o['kind'] == 'song' else 1, 0 if 'youtu' in o['url'] else 1))
+_LY, _LA = {}, {}
+for _o in _LC:
+    _u = _o['url'].split('&')[0]
+    for _nm in {_o['act'], _o['artist'], _o['act_id'].replace('-', ' ')}:
+        _ks = ''.join(ch for ch in _ud.normalize('NFD', _nm.lower()) if ch.isalnum())
+        _LY.setdefault((_ks, str(_o['y'])), _u); _LA.setdefault(_ks, _u)
+CLIPY = {**CLIPY, **_LY}; CLIPA = {**CLIPA, **_LA}
+def clip_for(n, y=None):
+    k = ''.join(ch for ch in _ud.normalize('NFD', n.lower()) if ch.isalnum())
+    return CLIPY.get((k, str(y)), '') if y else CLIPA.get(k, '')
+
 def card(n, yr, k, g, src, pos='50% 40%', vid=True, cls=''):
+    if vid is True: vid = (clip_for(n, yr) if yr else '') or clip_for(n)  # r31: no ring without a song to play
     return ('<a class="card %s" data-g="%s" data-art="%s" data-an="%s" href="#"><img src="%s" alt="" style="object-position:%s">%s<span class="cyr">%s</span>'
             '<span class="cbody"><span class="krow"><span class="k k-%s">%s</span><span class="g">%s</span></span>'
-            '<span class="cname">%s</span></span></a>') % (cls, E(g), _aslug(n), E(n), src, pos, play('sm') if vid else '', yr, k, KLAB[k], E(g), E(n))
+            '<span class="cname">%s</span></span></a>') % (cls, E(g), _aslug(n), E(n), src, pos, (clip_ring(vid, 'sm') if isinstance(vid, str) else play('sm')) if vid else '', yr, k, KLAB[k], E(g), E(n))
 
 # ---------- shared chrome ----------
 ICON = {
@@ -437,8 +466,8 @@ def generic_seam(yr, P):
         art = '<div class="sm-tile sm-sc" style="background-image:%s"></div>' % _tile(t)
     return '<div class="seam s%s" aria-hidden="true">%s%s</div>' % (yr, art, g)
 
-_PLAYER = ("<script>(function(){function pkPlay(u){var p=(u||'').split('|'),m=(p[0]||'').match(/vimeo\\.com\\/(?:video\\/)?(\\d+)/);if(!m)return;"
- "var h=(u.match(/vimeo\\.com\\/\\d+\\/([0-9a-f]+)/)||[])[1]||'',t=(u.match(/#t=(\\d+)s/)||[])[1]||'';var s='https://player.vimeo.com/video/'+m[1]+'?autoplay=1&title=0&byline=0&portrait=0&dnt=1&texttrack=false&vimeo_logo=0'+(h?'&h='+h:'')+(t?'#t='+t+'s':'');"
+_PLAYER = ("<script>(function(){function pkPlay(u){var p=(u||'').split('|'),m=(p[0]||'').match(/vimeo\\.com\\/(?:video\\/)?(\\d+)/),yt=(p[0]||'').match(/(?:v=|youtu\\.be\\/)([\\w-]{11})/);if(!m&&!yt)return;"
+ "var h=(u.match(/vimeo\\.com\\/\\d+\\/([0-9a-f]+)/)||[])[1]||'',t=(u.match(/#t=(\\d+)s/)||[])[1]||'';var s='https://player.vimeo.com/video/'+(m?m[1]:'')+'?autoplay=1&title=0&byline=0&portrait=0&dnt=1&texttrack=false&vimeo_logo=0'+(h?'&h='+h:'')+(t?'#t='+t+'s':'');if(!m)s='https://www.youtube-nocookie.com/embed/'+yt[1]+'?autoplay=1&rel=0&cc_load_policy=0';"
  "var o=document.createElement('div');o.className='pkvid';o.innerHTML='<button class=\"pkvid-x\" aria-label=\"Close video\">&times;</button><div class=\"pkvid-f\"><iframe src=\"'+s+'\" allow=\"autoplay; fullscreen; picture-in-picture\" allowfullscreen title=\"Pickathon clip\"></iframe></div>';"
  "document.body.appendChild(o);function close(){o.remove();document.removeEventListener('keydown',k)}function k(e){if(e.key==='Escape')close()}document.addEventListener('keydown',k);o.addEventListener('click',function(e){if(e.target===o||e.target.classList.contains('pkvid-x'))close()});}"
  "document.addEventListener('click',function(e){var c=e.target.closest('[data-clip]');if(c){e.preventDefault();pkPlay(c.dataset.clip);return}"
@@ -459,11 +488,14 @@ GLIST = ['Everything', 'Country', 'Folk', 'Bluegrass', 'Indie rock', 'Psych', 'P
 LLIST = ['Music', 'DJs', 'Family', 'Comedy', 'Literary', 'Wellness', 'Food', 'Curation', 'Craft']
 def gpick(target, q='What kind of music do you love?', opts=GLIST):
     return ('<div class="gp" data-target="%s" data-all="%s"><button class="gp-b" aria-expanded="false"><span class="gp-q">%s</span>'
-            '<span class="gp-a"><b>%s</b>%s</span></button><div class="gp-list" hidden>%s</div><p class="gp-none" hidden>Not filled in for this mockup. The real page has them all.</p></div>') % (
-            target, opts[0], q, opts[0], ICON['caret'], ''.join('<button class="gp-o%s" data-g="%s">%s</button>' % (' on' if g == opts[0] else '', g, g) for g in opts))
+            '<span class="gp-a"><b>%s</b>%s</span></button><div class="gp-list" hidden>%s<button class="gp-done">Show</button></div><p class="gp-none" hidden>Nothing under this one here.</p></div>') % (
+            target, opts[0], q, opts[0], ICON['caret'], ''.join('<button class="gp-o%s" data-g="%s" aria-pressed="%s">%s</button>' % (' all on' if g == opts[0] else ' mx', g, 'true' if g == opts[0] else 'false', g) for g in opts))
 
 def vcard(n, y, k, g, p, pos):
-    return card(n, y, k, g, img(p, 520), pos, True, 'tt arch')
+    if not p:  # no photo for that year: a plain site-color card, same anatomy, no play ring
+        return ('<a class="card tt arch nop" data-g="%s" data-art="%s" data-an="%s" href="#"><span class="cyr">%s</span>'
+                '<span class="cbody"><span class="krow"><span class="k k-%s">%s</span></span><span class="cname">%s</span></span></a>') % (E(g), _aslug(n), E(n), y, k, KLAB[k], E(n))
+    return card(n, y, k, g, img(p, 520), pos, clip_for(n), 'tt arch').replace('<img src=', '<img loading="lazy" src=', 1)
 leg.append(("I’m With Her", 2018, 'Bluegrass', 'i/p9615.jpg', '22% 50%'))
 deep.append(('Black Mountain', 2011, 'Psych', 'i/p9704.jpg', '100% 50%'))
 
@@ -471,7 +503,24 @@ deep.append(('Black Mountain', 2011, 'Psych', 'i/p9704.jpg', '100% 50%'))
 def _canon(n):
     k = _aslug(n); return _ALIAS.get(k, k)
 _FT = json.load(open(APP + 'focus-tall.json'))
+# r32 (Zale, Nov 21): an archive card with no same-year catalog photo takes a same-year frame: first the year reel's own frame
+# (already on the site), then a YouTube frame of that year's Pickathon video, picked by eye (build/arch_frames.json).
+# Archive cards only: these frames never enter yearPhotos, so year pages and artist galleries keep real photos.
+ARCHF = {}
+for _yy, _fr in d['yearReel'].items():
+    for _f in _fr:
+        _i = _f.get('i') or ''
+        if _i and not _i.startswith('http') and 'poster' not in _i and not os.path.basename(_i).startswith(('tf', 'tfw')) and os.path.exists(APP + _i):
+            ARCHF.setdefault((_canon(_f['n']), _yy), _i)
+for _yy, _acts in json.load(open(ROOT + 'arch_frames.json')).items():
+    for _n2, _v in _acts.items():
+        ARCHF.setdefault((_canon(_n2), _yy), _v['i']); EXTF[_v['i']] = _v['f']
 def _fill(lst, kind, want):
+    # r30: the hand-picked openers stay only while the class table still gives the act that class in some year
+    _ever = {_canon(a['n']) for yy in d['yearBill'] for a in d['yearBill'][yy] if not a.get('c') and a['k'] == kind}
+    _out = [x[0] for x in lst if _canon(x[0]) not in _ever]
+    if _out: print('archive: hand-picked %s no longer in that class, left out: %s' % (kind, _out))
+    lst[:] = [x for x in lst if _canon(x[0]) in _ever]
     have = {_canon(x[0]) for x in lst}
     first = {}
     for yy in sorted(d['yearBill']):
@@ -480,12 +529,15 @@ def _fill(lst, kind, want):
             key = _canon(a['n'])
             if key in first or key in have: continue
             p = (d['yearPhotos'].get(yy, {}).get(a['n']) or {}).get('i')
-            if not p or p.startswith('http') or not (os.path.exists(APP + p) or os.path.exists(ROOT + p)): continue
-            v = _FT.get(p) or EXTF.get(p)
+            if not p or p.startswith('http') or not (os.path.exists(APP + p) or os.path.exists(ROOT + p)): p = ''
+            if not p: p = ARCHF.get((_canon(a['n']), yy), '')  # r32: same-year reel frame or video frame (archive only)
+            v = (_FT.get(p) or EXTF.get(p)) if p else None
             first[key] = (a['n'], int(yy), GSHORT.get(a.get('g'), ''), p, ('%s%% %s%%' % (v[0], v[1])) if v else '50% 35%', a.get('m') or 0)
-    extra = sorted(first.values(), key=lambda t: -t[5])[:want]
+    # r30 (Nov 21): every act that held the class in any year (Zale, Nov 13), at its first year in that class; photos first, then by size.
+    # No cap: the count on the button is the number of cards drawn, never a typed number.
+    extra = sorted(first.values(), key=lambda t: (not t[3], -t[5]))
     lst.extend(t[:5] for t in extra)
-_fill(disc, 'disc', 24); _fill(leg, 'leg', 24); _fill(deep, 'deep', 24)
+_fill(disc, 'disc', 0); _fill(leg, 'leg', 0); _fill(deep, 'deep', 0)
 bars = [(1, [58, 34]), (1, [70]), (2, [40, 44]), (2, [30, 26, 30]), (3, [22, 28, 20, 18]), (3, [18, 24, 16, 26]), (4, [14, 18, 12, 16, 14]), (4, [12, 16, 18, 12, 10])]
 barh = ''.join('<div class="br b%d">%s</div>' % (lv, ''.join('<i style="width:%d%%"></i>' % w for w in ws)) for lv, ws in bars)
 s1 = header('Lineup', 'Aug 5–8, 2027', back=False)
@@ -493,14 +545,20 @@ s1 += ('<section class="hero h27"><img src="%s" alt="" style="object-position:74
        '<div class="hero-tx"><p class="kick">The 2027 lineup · not out yet</p><h1>The names<br>come later.</h1>'
        '<p class="hero-sub">60+ acts on hand-built stages, most playing twice. Be first to hear who.</p>'
        '<a class="btn gold" href="#">Send me the 2027 lineup</a></div></section>') % img('i/pk-yr2024-1.jpg', 1100, 80)
-# Nov 21 (Zale): the placeholder 2027 poster is gone; the archive sits right under the hero until the lineup is out
+# Nov 21 r27 (Zale, 09:10): the placeholder 2027 poster card is back under the hero, so 2027 has its year block like every other year (r25 had removed it)
+s1 += ('<section class="p27"><div class="stripe"><i style="background:#F2CF62"></i><i style="background:#86526B"></i><i style="background:#E3B5CF"></i><i style="background:#F2EDE3"></i></div>'
+       '<div class="p27-in"><div class="p27-top"><div><p class="p27-k">Pickathon</p><p class="p27-y">2027</p></div><span class="p27-q" aria-hidden="true">?</span></div>'
+       '<p class="p27-d">August 5–8 · Pendarvis Farm</p><div class="p27-bill" role="img" aria-label="The 2027 poster, names not yet announced">%s</div>'
+       '<p class="p27-c">The 2027 poster · names go here</p></div>'
+       '<div class="stripe"><i style="background:#F2CF62"></i><i style="background:#86526B"></i><i style="background:#E3B5CF"></i><i style="background:#F2EDE3"></i></div></section>') % barh
 s1 += ('<section class="arch"><p class="kick">While you wait</p><h2>Wait, they played here?</h2><p class="sub">They played the farm in small rooms. Look how big they got.</p>'
-       '<div class="bkw"><div class="bk"><button class="bkb on" data-b="disc"><span>Discoveries</span><b>215</b></button><button class="bkb" data-b="leg"><span>Legends</span><b>116</b></button><button class="bkb" data-b="deep"><span>Deep cuts</span><b>413</b></button></div>%s</div>'
+       '<div class="bkw"><div class="bk"><button class="bkb on" data-b="disc"><span>Discoveries</span><b>@ND</b></button><button class="bkb" data-b="leg"><span>Legends</span><b>@NL</b></button><button class="bkb" data-b="deep"><span>Deep cuts</span><b>@NP</b></button></div>%s</div>'
        '<div class="grid2 bl" data-b="disc">%s</div><div class="grid2 bl" data-b="leg" hidden>%s</div><div class="grid2 bl" data-b="deep" hidden>%s</div>'
-       '<button class="btn line wide more">Keep going</button></section>') % (gpick('.arch .card', 'Genre', GLIST).replace('class="gp"', 'class="gp gpc"'),
+       '<button class="btn line wide more">Keep going</button></section>') % (gpick('.arch .card', 'What kind of music do you love?', GLIST).replace('class="gp"', 'class="gp gpc"'),
        ''.join(vcard(n, y, 'disc', g, p, pos) for n, y, g, p, pos in disc),
        ''.join(vcard(n, y, 'leg', g, p, pos) for n, y, g, p, pos in leg),
        ''.join(vcard(n, y, 'deep', g, p, pos) for n, y, g, p, pos in deep))
+s1 = s1.replace('@ND', str(len(disc))).replace('@NL', str(len(leg))).replace('@NP', str(len(deep)))
 
 P24 = d['yearBrand']['2024']
 # ---------- SCREEN 3: Geese ----------
@@ -564,7 +622,7 @@ def name_lines(n):
 def tile(a, y, P, photo):
     n = a['n']; k = a['k']; cd = CD.get((norm(n), y)); vid = (norm(n), y) in VID
     if photo:
-        h = card(n, '', k, '', img(photo, 560), fpos(photo), vid or bool(cd), 'tt')
+        h = card(n, '', k, '', img(photo, 560), fpos(photo), clip_for(n, y) or bool(cd), 'tt')
         if cd:
             h = h.replace('</span></span></a>', '</span><span class="ctrk">%s · CD</span></span></a>' % E(cd))
         return h
@@ -573,7 +631,7 @@ def tile(a, y, P, photo):
     if len(lines) > 3: fs = min(fs, 21)
     if len(n) > 30: fs = min(fs, 14.5)
     elif len(n) > 20: fs = min(fs, 17)
-    foot = ('<span class="yt-y">%s · %s CD</span>%s' % (E(cd), y, play('sm'))) if cd else '<span class="yt-y">Pickathon %s</span>' % y
+    foot = ('<span class="yt-y">%s · %s CD</span>' % (E(cd), y)) if cd else '<span class="yt-y">Pickathon %s</span>' % y
     return ('<a class="card tt ytile" data-art="%s" data-an="%s" href="#" style="--paper:%s;--ink:%s;--ink2:%s;--band:%s"><span class="yt-k">%s</span>'
             '<span class="yt-n" style="font-size:max(var(--lab),%.1fpx)">%s</span>%s</a>') % (_aslug(n), E(n), P['paper'], P['ink'], P['ink2'], P['band'], KLAB[k], fs, '<br>'.join(E(x) for x in lines), foot)
 
@@ -617,30 +675,33 @@ def year_page(y):
         badge = img(d['yearLogo'][y], 460, fmt='PNG')
     h += poster_block(P, badge, y, music, today_all, len(music), joined=bool(hero), ranked=ranked)
     if st.get('headline'):
-        h += ('<section class="story short"><p class="kick">The %s story</p><p class="lead">%s.</p><button class="chip">Read the %s story %s</button></section>') % (y, E(st['headline'].rstrip('.')), y, ICON['caret'])
-    lp = gpick('.none', 'What do you want to see?', ['Music'] + other) if other else ''
+        h += ('<section class="story short"><p class="kick">The %s story</p><p class="lead">%s.</p>%s</section>') % (y, E(st['headline'].rstrip('.')), ('<p class="body" hidden>%s</p><button class="chip stog" aria-expanded="false" data-open="Read the %s story" data-shut="Show less"><span>Read the %s story</span> %s</button>' % (E(st['story']), y, y, ICON['caret'])) if st.get('story') else '')
+    lp = ''  # Nov 21 r27 (Zale): the lineup picker is off until the other lineups (Family, DJs, Comedy...) are drawn; it listed them with nothing behind them
     if ten:
         h += ('<section class="topten">%s<h2 class="h-big">Begin here</h2><p class="sub k2">%s ways into Pickathon %s.</p><div class="grid2%s">%s</div></section>') % (
               lp, NUM.get(len(ten), str(len(ten))), y, '' if any(ph(a) for a in ten) else ' flat', ''.join(tile(a, y, P, ph(a)) for a in ten))
     gs = sorted(set(GSHORT.get(x['g'], '') for x in music if x.get('g') and GSHORT.get(x['g'])))
     withph = [a for a in others if ph(a)]
     if len(withph) >= 6:
-        show = others[:8]; body = ''
-        for a in show:
-            g = GSHORT.get(a.get('g'), '')
+        show = others; body = ''
+        gs = sorted(set(GSHORT.get(x['g'], '') for x in others if x.get('g') and GSHORT.get(x['g'])))
+        for _i, a in enumerate(show):
+            g = GSHORT.get(a.get('g'), ''); _b0 = len(body)
             if ph(a):
                 body += '<a class="mini" data-g="%s" data-art="%s" data-an="%s" href="#"><img loading="lazy" src="%s" alt="" style="object-position:%s"><b>%s</b><span>%s</span></a>' % (E(g), _aslug(a['n']), E(a['n']), img(ph(a), 400, 70), fpos(ph(a), d and json.load(open(APP + 'focus.json')) if False else FOC), E(a['n']), E(g))
             else:
                 body += '<a class="mini" data-g="%s" data-art="%s" data-an="%s" href="#"><span class="mini-n" style="background:%s;color:%s">%s</span><b>%s</b><span>%s</span></a>' % (E(g), _aslug(a['n']), E(a['n']), P['paper'], P['ink'], E(a['n'].upper()), E(a['n']), E(g))
+            if _i >= 8: body = body[:_b0] + body[_b0:].replace('<a class="mini"', '<a class="mini xtra"', 1)
         sel = '#y%s .mini' % y
-        body = '<div class="grid2 minis">%s</div>' % body + ('<button class="btn line wide">See everyone · %d more</button>' % (len(others) - 8) if len(others) > 8 else '')
+        body = '<div class="grid2 minis">%s</div>' % body + ('<button class="btn line wide evy">See everyone · %d more</button>' % (len(others) - 8) if len(others) > 8 else '')
     else:
         sel = '#y%s .row' % y
+        gs = sorted(set(GSHORT.get(x['g'], '') for x in others if x.get('g') and GSHORT.get(x['g'])))
         body = '<div class="rows">%s</div>' % ''.join('<a class="row" data-g="%s" data-art="%s" data-an="%s" href="#"><b>%s</b><span>%s</span></a>' % (E(GSHORT.get(x.get('g'), '')), _aslug(x['n']), E(x['n']), E(x['n']), E(' · '.join(t for t in (KLAB.get(x.get('k'), ''), GSHORT.get(x.get('g'), '')) if t))) for x in others)
     if others:
         h += '<section class="rest"><h2 class="h-big">Keep wandering</h2>%s%s</section>' % (gpick(sel, opts=['Everything'] + gs) if len(gs) >= 3 else '', body)
     h += ('<section class="years"><p class="kick">See other years</p><div class="swipe yrs"><a class="yr" data-go="s1" href="#">2027</a>%s</div></section>') % ''.join(
-         '<a class="yr%s" data-go="y%s" href="#">%s</a>' % (' on' if x == y else '', x, x) for x in YEARS)
+         ('<span class="yr off">2020–21 · no festival</span>' if x == '2019' else '') + '<a class="yr%s" data-go="y%s" href="#">%s</a>' % (' on' if x == y else '', x, x) for x in YEARS)
     return h
 
 YP = {y: year_page(y) for y in YEARS}

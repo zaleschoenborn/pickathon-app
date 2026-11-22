@@ -1,7 +1,7 @@
 import csv,re,sys,asyncio
 from playwright.sync_api import sync_playwright
 R={}
-for r in csv.DictReader(open(__import__('os').path.join(__import__('os').path.dirname(__import__('os').path.abspath(__file__)),'class_table_v159.csv'),encoding='utf-8-sig')):
+for r in csv.DictReader(open(__import__('os').path.join(__import__('os').path.dirname(__import__('os').path.abspath(__file__)),'class_table_v163.csv'),encoding='utf-8-sig')):
     if r['lineup'].strip()=='Music' and not r['duplicate_of'] and not r['merged_into']:
         R[(re.sub(r'[^a-z0-9]','',r['act'].lower().replace('&','and').removeprefix('the ')),r['year'])]=r
 def lab(c,leg): return 'Legend' if leg=='yes' else {'Discovery':'Discovery','Deep cut':'Deep cut'}.get(c,'')
