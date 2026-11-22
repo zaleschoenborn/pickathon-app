@@ -700,3 +700,12 @@ html body.pkpl-v2.pkpl-hood #root #pkpl .pkpl-xb{display:none!important}
 /* Nov 22 06:19: arrival title; the small question line hides until something is picked */
 html body.pkpl-v2p #root #pkpl .pkpl-psht .pkpl-psbig{margin:0;font-family:'Pickathon 2014',sans-serif;font-size:clamp(22px,6.4vw,32px);font-weight:400;line-height:1.05;letter-spacing:.02em;text-transform:uppercase;color:#F2EDE3}
 html body.pkpl-v2p #root #pkpl .pkpl-psq.pkpl-psq0{padding-top:6px;padding-bottom:0;font-size:0;line-height:0;border-top-color:transparent}
+
+/* Nov 22 06:46 trims: small experience line that opens the list; smaller summary */
+html body.pkpl-v2p #root #pkpl .pkpl-psht{min-height:0}
+html body.pkpl-v2p #root #pkpl .pkpl-psln{display:flex;align-items:center;gap:10px;min-height:32px}
+html body.pkpl-v2p #root #pkpl .pkpl-psln .pkpl-pci{display:inline-grid;place-items:center;flex:none;width:28px;height:28px;border-radius:7px;background:#F2EDE3;color:#12160F}
+html body.pkpl-v2p #root #pkpl .pkpl-psln .pkpl-pci svg{width:17px;height:17px}
+html body.pkpl-v2p #root #pkpl .pkpl-psn{flex:1;min-width:0;font:800 12px/1.2 'Bricolage Grotesque',system-ui,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#E9B93C;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+html body.pkpl-v2p #root #pkpl .pkpl-psmore{flex:none;display:inline-flex;align-items:center;gap:6px;min-height:32px;padding:0 12px;border:1px solid rgba(242,237,227,.5);border-radius:6px;font:700 13px/1 'Bricolage Grotesque',system-ui,sans-serif;color:#F2EDE3}
+html body.pkpl-v2p #root #pkpl .pkpl-ps .pkpl-psl{font-size:15px;line-height:1.4;font-weight:500;color:rgba(242,237,227,.86);margin-bottom:8px}

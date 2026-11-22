@@ -14536,6 +14536,15 @@ html body.pkpl-v2.pkpl-hood #root #pkpl .pkpl-xb{display:none!important}
 /* Nov 22 06:19: arrival title; the small question line hides until something is picked */
 html body.pkpl-v2p #root #pkpl .pkpl-psht .pkpl-psbig{margin:0;font-family:'Pickathon 2014',sans-serif;font-size:clamp(22px,6.4vw,32px);font-weight:400;line-height:1.05;letter-spacing:.02em;text-transform:uppercase;color:#F2EDE3}
 html body.pkpl-v2p #root #pkpl .pkpl-psq.pkpl-psq0{padding-top:6px;padding-bottom:0;font-size:0;line-height:0;border-top-color:transparent}
+
+/* Nov 22 06:46 trims: small experience line that opens the list; smaller summary */
+html body.pkpl-v2p #root #pkpl .pkpl-psht{min-height:0}
+html body.pkpl-v2p #root #pkpl .pkpl-psln{display:flex;align-items:center;gap:10px;min-height:32px}
+html body.pkpl-v2p #root #pkpl .pkpl-psln .pkpl-pci{display:inline-grid;place-items:center;flex:none;width:28px;height:28px;border-radius:7px;background:#F2EDE3;color:#12160F}
+html body.pkpl-v2p #root #pkpl .pkpl-psln .pkpl-pci svg{width:17px;height:17px}
+html body.pkpl-v2p #root #pkpl .pkpl-psn{flex:1;min-width:0;font:800 12px/1.2 'Bricolage Grotesque',system-ui,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#E9B93C;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+html body.pkpl-v2p #root #pkpl .pkpl-psmore{flex:none;display:inline-flex;align-items:center;gap:6px;min-height:32px;padding:0 12px;border:1px solid rgba(242,237,227,.5);border-radius:6px;font:700 13px/1 'Bricolage Grotesque',system-ui,sans-serif;color:#F2EDE3}
+html body.pkpl-v2p #root #pkpl .pkpl-ps .pkpl-psl{font-size:15px;line-height:1.4;font-weight:500;color:rgba(242,237,227,.86);margin-bottom:8px}
 </style>
 <script id="pk-places">
 /* pk-places: Places map and neighborhood pages, round 1 (Nov 13 2026). Source: tools/places_r1/places.js, spliced into index.html by tools/places_r1/build.py.
@@ -14789,7 +14798,7 @@ html body.pkpl-v2p #root #pkpl .pkpl-psq.pkpl-psq0{padding-top:6px;padding-botto
     if (hd) hd.style.bottom = (h + xh + qh) + 'px'; M.el.style.setProperty('--pkpl-psb', (h + xh + hdH() + 10) + 'px');
   }
   function psSet(st) {   /* change the sheet and frame the map in what still shows */
-    st = Math.max(0, Math.min(2, st)); if (st === M.ps) return; M.ps = st; psPlace();
+    st = Math.max(0, Math.min(2, st)); if (st === M.ps) return; M.ps = st; psPlace(); var mo = $('.pkpl-psmore', M.el); if (mo) { var nL = M.xp ? litSet().length : 0; mo.textContent = st === 2 ? 'Map' : 'See ' + (nL === 1 ? 'it' : 'them'); }
     if (st < 2) setTimeout(function () { if (!M || top().r === 'hood') return; if (M.xp || M.amen) fitLit(); else home(); }, calm() ? 0 : 60);
   }
   function psTouch() {   /* swipe up on the words, the row or the handle: full; swipe down at the top: half, then folded (same feel as the neighborhood sheet) */
@@ -14878,15 +14887,15 @@ html body.pkpl-v2p #root #pkpl .pkpl-psq.pkpl-psq0{padding-top:6px;padding-botto
       var ps = $('.pkpl-ps', M.el); if (!ps) { ps = document.createElement('div'); ps.className = 'pkpl-ps'; M.el.appendChild(ps); var hd = document.createElement('div'); hd.className = 'pkpl-psh2'; hd.innerHTML = '<button type="button" class="pkpl-psg" aria-label="Show more"><i></i></button><div class="pkpl-psht"></div>'; M.el.appendChild(hd); var qq = document.createElement('div'); qq.className = 'pkpl-psq'; qq.textContent = 'What do you want to experience?'; M.el.appendChild(qq); psTouch(); }
       var Lp = M.xp ? litSet() : [], D3 = data().hoods, tile = function (k, line) { return '<button type="button" class="pkpl-pr" data-hp="' + k + '"><img src="' + esc(emb(k)) + '" alt=""><span><b>' + esc(D3[k].n) + '</b>' + (line ? '<small>' + esc(line) + '</small>' : '') + '</span></button>'; };
       var sum = M.xp === 'Architecture' ? (XH.XPD.Architecture || '').split('. ')[0].replace(/\.?$/, '.') : M.xp ? (XH.XPD[M.xp] || '').split(/(?<=[.!?])\s/)[0] : '';
-      $('.pkpl-psht', M.el).innerHTML = M.xp ? '<div class="pkpl-pc"><span class="pkpl-pci">' + xpIcon(M.xp) + '</span><h2 class="pkpl-pcb">' + esc(M.xp) + '</h2><span class="pkpl-pcn">' + Lp.length + (Lp.length === 1 ? ' neighborhood' : ' neighborhoods') + '</span></div>'
-        : '<h2 class="pkpl-psbig">What do you want to experience?</h2>';   /* Zale, Nov 22 06:19: arrival asks, nothing picked */   /* Zale, Nov 22 06:08: the row of experiences sits right above the nav bar and never moves; the question is the line above it; the picked experience's words and places stack up above that */
+      $('.pkpl-psht', M.el).innerHTML = M.xp ? '<div class="pkpl-psln"><span class="pkpl-pci">' + xpIcon(M.xp) + '</span><span class="pkpl-psn">' + esc(M.xp) + ' in ' + Lp.length + (Lp.length === 1 ? ' neighborhood' : ' neighborhoods') + '</span><span class="pkpl-psmore">' + (M.ps === 2 ? 'Map' : 'See ' + (Lp.length === 1 ? 'it' : 'them')) + '</span></div>'   /* Zale, Nov 22 06:46 trims: the pressed button already names the experience, so a small line that opens the list */
+        : '<h2 class="pkpl-psbig">What do you want to experience?</h2>';   /* Zale, Nov 22 06:19: arrival asks, nothing picked */
       if (M.xp) ps.innerHTML = '<p class="pkpl-psl">' + esc(sum) + '</p>'
         + (M.xp === 'Architecture' ? '<div class="pkpl-psab"><button type="button" class="pk-cta sec pkpl-abb" data-go="build">Build with Pickathon</button></div>' : '')
         + '<div class="pkpl-psls' + (Lp.length > 4 ? ' pkpl-psl2' : '') + '">' + Lp.map(function (k) { return tile(k, xpLine(M.xp, k)); }).join('') + '</div>';
       else ps.innerHTML = '<p class="pkpl-psl">Pick one below and the map lights up.</p>'
         + [['stage', 'Stages'], ['around', 'Hangouts'], ['camp', 'Camping']].map(function (g) { var ks = ids().filter(function (k) { return (D3[k].k || 'around') === g[0]; }); return ks.length ? '<p class="pkpl-gh">' + g[1] + '</p><div class="pkpl-psls pkpl-pst">' + ks.map(function (k) { return tile(k); }).join('') + '</div>' : ''; }).join('');
       if (ps._xp !== M.xp) { var px2 = ps._xp; ps._xp = M.xp; ps.scrollTop = 0; if (M.ps === 0 || M.ps == null) M.ps = 1; ps.classList.remove('pkpl-xf'); void ps.offsetWidth; if (px2 !== undefined && !calm()) ps.classList.add('pkpl-xf'); var xr = $('.pkpl-xb', M.el), xs = M.xp && xr && $('.pkpl-xe[data-xp="' + M.xp + '"]', xr); if (xs) { var cx = xs.offsetLeft + xs.offsetWidth / 2 - xr.clientWidth / 2; if (xs.offsetLeft < xr.scrollLeft + 8 || xs.offsetLeft + xs.offsetWidth > xr.scrollLeft + xr.clientWidth - 8) xr.scrollTo({ left: Math.max(0, cx), behavior: calm() ? 'auto' : 'smooth' }); } }   /* the picked button is never half off the edge (Site Build, Nov 22) */
-      var qq2 = $('.pkpl-psq', M.el); if (qq2) qq2.classList.toggle('pkpl-psq0', !M.xp);
+      var qq2 = $('.pkpl-psq', M.el); if (qq2) qq2.classList.add('pkpl-psq0');   /* the question line is dropped: arrival's title asks it, and after a pick the pressed button answers it */
       psPlace();
     } else { var ps0 = $('.pkpl-ps', M.el); if (ps0) ps0.style.height = ''; var xb0 = $('.pkpl-xb', M.el); if (xb0) xb0.style.bottom = ''; }
     var ab = $('.pkpl-ab', t);   /* Architecture: what it is and how to build with us (Zale, Nov 19: it's how sponsors find us) */
