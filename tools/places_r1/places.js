@@ -278,7 +278,7 @@
       if (M.xp === 'Architecture') { var l2 = $('.pkpl-l', t); if (l2) l2.textContent = (XH.XPD.Architecture || '').split('. ')[0].replace(/\.?$/, '.'); }   /* MOCK: Architecture kept short (Zale, Nov 21); final words are Copy's */
       if (bd._xp !== M.xp) { bd._hk = null; pd.classList.remove('on'); pd.textContent = ''; if (!M.xp) M.s0 = null; }
       var pc = $('.pkpl-pc', bd); if (!pc) { pc = document.createElement('p'); pc.className = 'pkpl-pc'; bd.insertBefore(pc, pd); } var nL = M.xp ? litSet().length : 0; pc.textContent = M.xp ? 'In ' + nL + (nL === 1 ? ' neighborhood' : ' neighborhoods') : ''; pc.hidden = !M.xp;
-      if (!$('.pkpl-gk', t)) { var gk = document.createElement('div'); gk.className = 'pkpl-gk'; gk.innerHTML = '<p>' + ids().length + ' neighborhoods in the forest</p><h2>What are you here for?</h2>'; t.insertBefore(gk, g2); }
+      if (!$('.pkpl-gk', t)) { var gk = document.createElement('div'); gk.className = 'pkpl-gk'; gk.innerHTML = '<p>' + ids().length + ' neighborhoods \u00b7 ' + XO.length + ' experiences</p><h2>What do you want to experience?</h2>';   /* Zale, Nov 21: the headline is about the experience; Copy polishes */ t.insertBefore(gk, g2); }
       pc.innerHTML = M.xp ? '<span class="pkpl-pci">' + xpIcon(M.xp) + '</span><b>' + esc(M.xp) + '</b><span class="pkpl-pcn">' + nL + (nL === 1 ? ' neighborhood' : ' neighborhoods') + '</span>' : ''; pc.hidden = !M.xp;
       bd._sum = M.xp ? (XH.XPD[M.xp] || '').split(/(?<=[.!?])\s/)[0] : 'Point at a neighborhood to find it on the map, or pick an experience above.';
       if (!bd._hk) pd.textContent = bd._sum; var abm = $('.pkpl-ab', bd), plm = $('.pkpl-pl', bd); if (abm && plm && abm.nextSibling !== plm) bd.insertBefore(abm, plm);
