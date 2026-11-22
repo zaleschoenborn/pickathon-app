@@ -343,7 +343,8 @@
   function fitLit() {
     var L = M.amen ? Object.keys(amenHoods()) : litSet(); if (!L.length) { home(); return; }
     if (V2 && wide() && L.length > 3 && !/[?&]z=0/.test(location.search)) {   /* MOCK: fill the screen: frame the heart of this experience, the far places sit off the edge and a drag or a row brings them in */
-      var reg = clear(), s0 = fitBox(union(L), reg, 18)[0], K = L.slice(), min = Math.ceil(L.length * 0.6);
+      var reg = clear(), s0 = fitBox(union(L), reg, 18)[0], K = L.slice(), up = L.filter(function (k) { return (box(k)[1] + box(k)[3]) / 2 < 2900; }), min = Math.ceil(L.length * 0.6);
+      if (up.length >= 2 && up.length < L.length) { K = up; min = Math.max(2, Math.ceil(up.length * 0.6)); }   /* MOCK (Nov 21): tall experiences open on the wide upper farm; the lower places come in when you point at them */
       while (K.length > min && fitBox(union(K), reg, 18)[0] < s0 * 1.7) { var best = null, bs = 0; K.forEach(function (k) { var s1 = fitBox(union(K.filter(function (j) { return j !== k; })), reg, 18)[0]; if (s1 > bs) { bs = s1; best = k; } }); K = K.filter(function (j) { return j !== best; }); }
       var f0 = fitBox(union(K), reg, 18), vv = v2Fit(fitBox(union(K), reg, 18, Math.min(maxS(), f0[0] * 1.4)), K);   /* wide enough that the farm reaches from under the column to the right side */ M.s0 = vv[0]; M.free = true; animTo(vv, 560); return;
     }
