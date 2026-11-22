@@ -653,3 +653,6 @@ html body.pkpl-v2 #root #pkpl .pkpl-pcn{white-space:nowrap}
 html body.pkpl-v2 #root #pkpl .pkpl-body.pkpl-xf{animation:pkpl-xf .32s ease-out both}
 html body.pkpl-v2 #root #pkpl .pkpl-ab{margin:0 0 14px!important}
 html body.pkpl-v2 #root #pkpl .pkpl-ab button{min-height:44px;padding:0 16px;font-size:13px;letter-spacing:.12em}
+
+/* MOCK: 2027 palette test: the fill takes the hue, the painted art keeps its light and texture */
+#pkpl .pkpl-p27 path{mix-blend-mode:multiply;opacity:.9;pointer-events:none}   /* the new tiles leave each neighborhood a pale ground, so the fill multiplies under the trees, trails and icons */
