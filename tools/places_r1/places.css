@@ -813,3 +813,7 @@ html body.pkpl-v2 #root #pkpl .pkpl-pr.pkpl-was{border-color:#F2EDE3!important;b
 
 /* Zale, Nov 22 (round 4): the desktop panel is solid behind every word, in every state, with a short soft edge where it meets the map */
 html body.pkpl-v2 #root #pkpl .pkpl-title::after,html body.pkpl-v2.pkpl-v2g #root #pkpl .pkpl-title::after{width:calc(100% + 28px);background:linear-gradient(90deg,#12160F 0,#12160F calc(100% - 28px),rgba(18,22,15,0) 100%)}
+
+/* Zale, Nov 22: tablet uses its space; on neighborhood pages the experience buttons wrap to full rows like on the map */
+@media (min-width:600px){html body.pkpl-hood:not(.pkpl-wide) #root #pkpl .pkpl-xb{flex-wrap:wrap;overflow-x:visible;row-gap:8px}html body.pkpl-hood:not(.pkpl-wide) #root #pkpl .pkpl-xb::after,html body.pkpl-hood:not(.pkpl-wide) #root #pkpl .pkpl-xb::before{display:none}}
+@media (min-width:600px){html body.pkpl-hood:not(.pkpl-wide) #root #pkpl-top{bottom:var(--pkpl-xbh,61px)}}

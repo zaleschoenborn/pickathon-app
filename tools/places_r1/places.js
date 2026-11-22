@@ -257,7 +257,7 @@
   function v2p() { return V2 && !wide() && top().r !== 'hood'; }
   function xbH() { var x = M && $('.pkpl-xb', M.el); return x ? x.offsetHeight : 56; }
   function hdH() { var x = M && $('.pkpl-psh2', M.el), q = M && $('.pkpl-psq', M.el); return x && v2p() ? x.offsetHeight + (q ? q.offsetHeight : 0) : 0; }   /* the cap (handle, title) plus the question line */
-  function psH() { if (!M || !v2p()) return 0; var st = M.ps == null ? 1 : M.ps, top2 = xbH() + hdH(); if (st === 0) return 0; if (st === 2) return Math.max(0, M.vh - top2);
+  function psH() { if (!M || !v2p()) return 0; var st = M.ps == null ? 1 : M.ps, top2 = xbH() + hdH(); if (st === 0) return 0; if (st === 2) { var full = Math.max(0, M.vh - top2), ps2 = $('.pkpl-ps', M.el), inner = ps2 && ps2.firstElementChild; if (window.innerWidth >= 600 && ps2) { var need = 0; Array.prototype.forEach.call(ps2.children, function (c) { need = Math.max(need, c.offsetTop + c.offsetHeight); }); if (need > 0) return Math.min(full, need + 24); } return full; }   /* Zale, Nov 22: on tablet a short list stops where it ends, the map shows above */
     var ps = $('.pkpl-ps', M.el), l1 = ps && $('.pkpl-psl', ps); return l1 ? l1.offsetTop + l1.offsetHeight + 14 : 96; }   /* Zale, Nov 22 06:19: half-open shows the title and summary only; pull up for the neighborhoods */
   function psPlace() {   /* size the sheet and slide the experience row and the handle on top of it */
     var ps = $('.pkpl-ps', M.el), xb = $('.pkpl-xb', M.el), pg = $('.pkpl-psg', M.el), h = psH(); if (!ps) return;
@@ -743,7 +743,8 @@
     document.documentElement.style.setProperty('--pkpl-vh', vh + 'px'); document.documentElement.style.setProperty('--pkpl-hd', hd + 'px'); document.documentElement.style.setProperty('--pkpl-open', openH(vh) + 'px');
   }
   var lastHood = '';
-  function settleSheet() {   /* a new place opens with the sheet at about 60% (55% on portrait tablet) */
+  function xbVar() { if (!M || wide()) return; var x = $('.pkpl-xb', M.el); if (x && x.offsetHeight) document.documentElement.style.setProperty('--pkpl-xbh', (x.offsetHeight + 5) + 'px'); }   /* tablet: the row can be two lines on a neighborhood page */
+  function settleSheet() { xbVar(); setTimeout(xbVar, 300);   /* a new place opens with the sheet at about 60% (55% on portrait tablet) */
     var t = top(); if (t.r !== 'hood' || wide()) { lastHood = t.r === 'hood' ? t.h : ''; return; }
     if (lastHood === t.h) return; lastHood = t.h;
     var sc0 = scroller(); if (sc0) sc0.scrollTop = 0; setFold(false); return;   /* the card is pinned on phone; the page never scrolls to place it */
