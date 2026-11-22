@@ -440,7 +440,7 @@ html body.pkpl-hood #root#root#root#root#root#root#root#root#root#root#root#root
 
 #root #pkpl-top .pkpl-yr .pkpl-more p{-webkit-line-clamp:4;margin:0 0 10px}
 #root #pkpl-top .pkpl-yr .pkpl-more:not(.open) p+p{display:none}
-#root #pkpl-top .pkpl-yr .pkpl-ab1{margin:0 0 10px;font-size:18px;color:#F2CF62}
+#root #pkpl-top .pkpl-yr .pkpl-ab1{margin:0 0 10px;font-size:18px;color:#F2EDE3}   /* review Nov 22 #9: gold for short lines only */
 #root #pkpl-top .pkpl-cred:not(:empty){margin-top:16px;padding-top:14px;border-top:1px solid #3A4331}
 #root #pkpl-top .pkpl-cred .pkpl-sk{margin:0 0 8px}
 #root #pkpl-top .pkpl-cred .pkpl-bw{margin-top:12px;min-height:44px!important;font-size:13px!important}
@@ -709,3 +709,24 @@ html body.pkpl-v2p #root #pkpl .pkpl-psln .pkpl-pci svg{width:17px;height:17px}
 html body.pkpl-v2p #root #pkpl .pkpl-psn{flex:1;min-width:0;font:800 12px/1.2 'Bricolage Grotesque',system-ui,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#E9B93C;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 html body.pkpl-v2p #root #pkpl .pkpl-psmore{flex:none;display:inline-flex;align-items:center;gap:6px;min-height:32px;padding:0 12px;border:1px solid rgba(242,237,227,.5);border-radius:6px;font:700 13px/1 'Bricolage Grotesque',system-ui,sans-serif;color:#F2EDE3}
 html body.pkpl-v2p #root #pkpl .pkpl-ps .pkpl-psl{font-size:15px;line-height:1.4;font-weight:500;color:rgba(242,237,227,.86);margin-bottom:8px}
+
+/* review Nov 22 (#2, #3): on a neighborhood page the phone shows one title and one way back; the experience row and the old title block step aside */
+html body.pkpl-v2p.pkpl-hood #root #pkpl .pkpl-title{display:none!important}   /* the experience row stays (Zale's Nov 20 ruling); reviewers' 'hide it' is his call */
+
+/* review Nov 22 (#6, #7, #10, #15) and Zale's soft fade */
+html body.pkpl-v2p:not(.pkpl-hood) #root #pkpl .pkpl-psh2{border-radius:0}
+html body.pkpl-v2p:not(.pkpl-hood) #root #pkpl .pkpl-psh2::before{content:'';position:absolute;left:0;right:0;top:-40px;height:40px;background:linear-gradient(to bottom,rgba(18,22,15,0),rgba(18,22,15,.72) 60%,#12160F);pointer-events:none}
+html body.pkpl-v2p #root #pkpl .pkpl-psg{height:28px;margin-bottom:0}
+html body.pkpl-v2p #root #pkpl .pkpl-psln{min-height:44px}
+html body.pkpl-v2p #root #pkpl .pkpl-psmore{min-height:44px;padding:0 16px}
+html body.pkpl-v2p:not(.pkpl-hood) #root .pkpl-xb.pkpl-xbmore{-webkit-mask-image:linear-gradient(to right,#000 calc(100% - 44px),transparent);mask-image:linear-gradient(to right,#000 calc(100% - 44px),transparent)}
+html body.pkpl-v2p #root #pkpl .pkpl-psall{display:inline;min-height:44px;padding:10px 0;margin:-10px 0;border:0;background:none;font:inherit;color:#F2EDE3;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+@media (min-width:600px){html body.pkpl-v2p:not(.pkpl-hood) #root .pkpl-xb{flex-wrap:wrap;overflow-x:visible;row-gap:8px}html body.pkpl-v2p:not(.pkpl-hood) #root .pkpl-xb.pkpl-xbmore{-webkit-mask-image:none;mask-image:none}}
+
+/* edge tags for lit places outside the view (Zale, Nov 22: chosen after the independent review) */
+#root #pkpl .pkpl-edge{position:absolute;inset:0;pointer-events:none;z-index:3}
+#root #pkpl .pkpl-edgetag{position:absolute;pointer-events:auto;min-height:44px;padding:0 14px;border:1px solid rgba(242,237,227,.55);border-radius:22px;background:rgba(18,22,15,.86);color:#F2EDE3;font:700 14px/1 'Bricolage Grotesque',system-ui,sans-serif;letter-spacing:.02em;white-space:nowrap;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.35)}
+#root #pkpl .pkpl-et-up,#root #pkpl .pkpl-et-down{transform:translateX(-50%)}
+#root #pkpl .pkpl-et-right{transform:translate(-100%,-50%)}
+#root #pkpl .pkpl-et-left{transform:translateY(-50%)}
+.pkpl-pinch .pkpl-edge,.pkpl-moving .pkpl-edge{opacity:0}
