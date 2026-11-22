@@ -14369,8 +14369,8 @@ body.pkpl-v2:not(.pkpl-hood) #pkpl .pkpl-xb{display:none}
 html body.pkpl-v2 #root #pkpl .pkpl-title{padding:28px 32px 0!important;justify-content:flex-start;overflow:visible;background:none}
 html body.pkpl-v2 #root #pkpl .pkpl-title::before{display:none}
 html body.pkpl-v2 #root #pkpl .pkpl-tbg{display:none!important}
-html body.pkpl-v2 #root #pkpl .pkpl-title::after{content:'';position:absolute;top:0;bottom:0;left:0;width:calc(100% + 170px);z-index:-1;pointer-events:none;background:linear-gradient(90deg,rgba(18,22,15,.93) 0%,rgba(18,22,15,.88) 58%,rgba(18,22,15,.5) 82%,rgba(18,22,15,0) 100%)}
-html body.pkpl-v2.pkpl-v2g #root #pkpl .pkpl-title::after{width:calc(100% + 110px);background:linear-gradient(90deg,rgba(18,22,15,.98) 0%,rgba(18,22,15,.96) 72%,rgba(18,22,15,.6) 90%,rgba(18,22,15,0) 100%)}
+html body.pkpl-v2 #root #pkpl .pkpl-title::after{content:'';position:absolute;top:0;bottom:0;left:0;width:calc(100% + 64px);z-index:-1;pointer-events:none;background:linear-gradient(90deg,rgba(18,22,15,.93) 0%,rgba(18,22,15,.9) 80%,rgba(18,22,15,0) 100%)}
+html body.pkpl-v2.pkpl-v2g #root #pkpl .pkpl-title::after{width:calc(100% + 64px);background:linear-gradient(90deg,rgba(18,22,15,.98) 0%,rgba(18,22,15,.96) 72%,rgba(18,22,15,.6) 90%,rgba(18,22,15,0) 100%)}
 html body.pkpl-v2 #root #pkpl .pkpl-g2{flex:none;display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding-bottom:22px;border-bottom:1px solid rgba(242,237,227,.16)}
 html body.pkpl-v2 #root #pkpl .pkpl-g2 .pkpl-xe{min-width:0;min-height:60px;padding:8px 4px;font-size:12.5px;background:rgba(18,22,15,.6)}
 html body.pkpl-v2 #root #pkpl .pkpl-g2 .pkpl-xe:hover{border-color:#D6B54A;color:#FFE7A3}
@@ -14588,6 +14588,11 @@ html body.pkpl-v2p #root #pkpl .pkpl-psall{display:inline;min-height:44px;paddin
 html body #root .pkpl-xb .pkpl-xe.quiet{opacity:1!important}
 html body.pkpl-hood:not(.pkpl-wide) #root #pkpl .pkpl-xb{z-index:7;background:#12160F}   /* Nov 22: the row stays on top, right above the nav; the folded bar shows above it */
 html body.pkpl-v2p.pkpl-hood #pkpl-top.pkpl-folded{clip-path:inset(0 0 var(--pkpl-y,0px) 0)}   /* the folded sheet stops at the row instead of sliding under it */
+
+/* Nov 22: on a neighborhood page the neighbors step back a little more, so the place you're on reads first */
+.pkpl-picked .pkpl-veil{fill:rgba(12,14,10,.48)}
+/* 3. text slides under the sheet's top edge instead of being cut mid-letter */
+html body.pkpl-hood:not(.pkpl-wide) #root #pkpl-top .pkpl-sheet{-webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 16px);mask-image:linear-gradient(to bottom,transparent 0,#000 16px)}
 </style>
 <script id="pk-places">
 /* pk-places: Places map and neighborhood pages, round 1 (Nov 13 2026). Source: tools/places_r1/places.js, spliced into index.html by tools/places_r1/build.py.
@@ -14826,7 +14831,7 @@ html body.pkpl-v2p.pkpl-hood #pkpl-top.pkpl-folded{clip-path:inset(0 0 var(--pkp
     if (M.cur) frame(M.cur);   /* then glide to the place's framing for the new box */
   }
   function startView() {   /* desktop and sideways tablet: the festival core fills the width (the full farm is a narrow strip); phone: the whole farm */
-    if (v2p()) { var cr0 = clear(), b0 = union(ids()), s0 = M.vw / 1700; return [s0, -280 * s0, cr0.y + cr0.h / 2 - (b0[1] + b0[3]) / 2 * s0]; }   /* Zale, Nov 22 06:35: phone and tablet fill the screen like desktop: the farm's width edge to edge, the core centered in the strip above the sheet */
+    if (v2p()) { var cr0 = clear(), b0 = union(ids()), s0 = M.vw / 1700; return [s0, -280 * s0, cr0.y + cr0.h / 2 - (b0[1] + b0[3]) / 2 * s0]; }   /* tried starting at the top-most place (Nov 22): the forest camps sit at the top, so it showed more forest; centered stays */   /* Zale, Nov 22 06:35: phone and tablet fill the screen like desktop: the farm's width edge to edge, the core centered in the strip above the sheet */
     if (!wide()) return fitBox([0, 0, W, H], { x: 0, y: 0, w: M.vw, h: M.vh }, 8);
     var b = union(CORE), s = M.vw / 1700;   /* the farm's own width (map units 280-1980) fills the screen */
     return [s, M.vw / 2 - 1130 * s, M.vh / 2 - (b[1] + b[3]) / 2 * s];
@@ -14882,7 +14887,7 @@ html body.pkpl-v2p.pkpl-hood #pkpl-top.pkpl-folded{clip-path:inset(0 0 var(--pkp
     var rg = region(); if (wide()) rg = { x: rg.x, y: rg.y + 84, w: rg.w, h: rg.h - 84 };
     M.free = true;   /* desktop: below the experience row */
     var v = fitBox(box(k), rg, wide() ? 40 : 22, zoomed ? M.s : 0);
-    if (!zoomed) v[0] = Math.min(v[0], wide() ? 1.5 : 1.7), v = fitBox(box(k), rg, 0, v[0]);   /* close enough to see the place, with its neighbors around it */
+    if (!zoomed) v[0] = Math.min(v[0], wide() ? Math.min(1.5, startView()[0] * 2.2) : 1.7), v = fitBox(box(k), rg, 0, v[0]);   /* close enough to see the place, with its neighbors around it */
     if (M.glow && M.cur !== k) glow(''); M.cur = k; lit(); animTo(v, now ? 0 : 560);
   }
   function lit() {
@@ -14977,7 +14982,7 @@ html body.pkpl-v2p.pkpl-hood #pkpl-top.pkpl-folded{clip-path:inset(0 0 var(--pkp
     box.innerHTML = L.map(function (k) { return '<span class="pkpl-xl" data-h="' + k + '">' + esc(data().hoods[k].n) + (C && C[k] ? ' · ' + C[k] : '') + '</span>'; }).join(''); xlPlace();
   }
   function nmDraw() {   /* the map's own lettering, crisp, for the lit places (Zale, Nov 19: no added tags) */
-    var C = (!M.cur && M.amen) ? amenHoods() : null, L = C ? Object.keys(C) : (!M.cur && M.xp) ? litSet() : [];
+    var C = (!M.cur && M.amen) ? amenHoods() : null, L = M.cur ? [M.cur] : C ? Object.keys(C) : M.xp ? litSet() : [];   /* Nov 22: the place you're on gets the same crisp lettering as lit places */
     $$('.pkpl-nms path', M.svg).forEach(function (p) { var k = p.getAttribute('data-h'), on = L.indexOf(k) >= 0, nb = (NB || {})[k]; p.classList.toggle('on', on);
       if (on && nb) { var cx = (nb[0] + nb[2]) / 2, cy = (nb[1] + nb[3]) / 2, f = Math.max(1, Math.min(2.2, 10 / ((nb[3] - nb[1]) * M.s))); p.setAttribute('transform', 'translate(' + cx + ' ' + cy + ') scale(' + f.toFixed(2) + ') translate(' + (-cx) + ' ' + (-cy) + ')'); } });
   }

@@ -234,7 +234,7 @@
     if (M.cur) frame(M.cur);   /* then glide to the place's framing for the new box */
   }
   function startView() {   /* desktop and sideways tablet: the festival core fills the width (the full farm is a narrow strip); phone: the whole farm */
-    if (v2p()) { var cr0 = clear(), b0 = union(ids()), s0 = M.vw / 1700; return [s0, -280 * s0, cr0.y + cr0.h / 2 - (b0[1] + b0[3]) / 2 * s0]; }   /* Zale, Nov 22 06:35: phone and tablet fill the screen like desktop: the farm's width edge to edge, the core centered in the strip above the sheet */
+    if (v2p()) { var cr0 = clear(), b0 = union(ids()), s0 = M.vw / 1700; return [s0, -280 * s0, cr0.y + cr0.h / 2 - (b0[1] + b0[3]) / 2 * s0]; }   /* tried starting at the top-most place (Nov 22): the forest camps sit at the top, so it showed more forest; centered stays */   /* Zale, Nov 22 06:35: phone and tablet fill the screen like desktop: the farm's width edge to edge, the core centered in the strip above the sheet */
     if (!wide()) return fitBox([0, 0, W, H], { x: 0, y: 0, w: M.vw, h: M.vh }, 8);
     var b = union(CORE), s = M.vw / 1700;   /* the farm's own width (map units 280-1980) fills the screen */
     return [s, M.vw / 2 - 1130 * s, M.vh / 2 - (b[1] + b[3]) / 2 * s];
@@ -290,7 +290,7 @@
     var rg = region(); if (wide()) rg = { x: rg.x, y: rg.y + 84, w: rg.w, h: rg.h - 84 };
     M.free = true;   /* desktop: below the experience row */
     var v = fitBox(box(k), rg, wide() ? 40 : 22, zoomed ? M.s : 0);
-    if (!zoomed) v[0] = Math.min(v[0], wide() ? 1.5 : 1.7), v = fitBox(box(k), rg, 0, v[0]);   /* close enough to see the place, with its neighbors around it */
+    if (!zoomed) v[0] = Math.min(v[0], wide() ? Math.min(1.5, startView()[0] * 2.2) : 1.7), v = fitBox(box(k), rg, 0, v[0]);   /* close enough to see the place, with its neighbors around it */
     if (M.glow && M.cur !== k) glow(''); M.cur = k; lit(); animTo(v, now ? 0 : 560);
   }
   function lit() {
@@ -385,7 +385,7 @@
     box.innerHTML = L.map(function (k) { return '<span class="pkpl-xl" data-h="' + k + '">' + esc(data().hoods[k].n) + (C && C[k] ? ' · ' + C[k] : '') + '</span>'; }).join(''); xlPlace();
   }
   function nmDraw() {   /* the map's own lettering, crisp, for the lit places (Zale, Nov 19: no added tags) */
-    var C = (!M.cur && M.amen) ? amenHoods() : null, L = C ? Object.keys(C) : (!M.cur && M.xp) ? litSet() : [];
+    var C = (!M.cur && M.amen) ? amenHoods() : null, L = M.cur ? [M.cur] : C ? Object.keys(C) : M.xp ? litSet() : [];   /* Nov 22: the place you're on gets the same crisp lettering as lit places */
     $$('.pkpl-nms path', M.svg).forEach(function (p) { var k = p.getAttribute('data-h'), on = L.indexOf(k) >= 0, nb = (NB || {})[k]; p.classList.toggle('on', on);
       if (on && nb) { var cx = (nb[0] + nb[2]) / 2, cy = (nb[1] + nb[3]) / 2, f = Math.max(1, Math.min(2.2, 10 / ((nb[3] - nb[1]) * M.s))); p.setAttribute('transform', 'translate(' + cx + ' ' + cy + ') scale(' + f.toFixed(2) + ') translate(' + (-cx) + ' ' + (-cy) + ')'); } });
   }

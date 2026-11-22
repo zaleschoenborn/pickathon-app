@@ -528,8 +528,8 @@ body.pkpl-v2:not(.pkpl-hood) #pkpl .pkpl-xb{display:none}
 html body.pkpl-v2 #root #pkpl .pkpl-title{padding:28px 32px 0!important;justify-content:flex-start;overflow:visible;background:none}
 html body.pkpl-v2 #root #pkpl .pkpl-title::before{display:none}
 html body.pkpl-v2 #root #pkpl .pkpl-tbg{display:none!important}
-html body.pkpl-v2 #root #pkpl .pkpl-title::after{content:'';position:absolute;top:0;bottom:0;left:0;width:calc(100% + 170px);z-index:-1;pointer-events:none;background:linear-gradient(90deg,rgba(18,22,15,.93) 0%,rgba(18,22,15,.88) 58%,rgba(18,22,15,.5) 82%,rgba(18,22,15,0) 100%)}
-html body.pkpl-v2.pkpl-v2g #root #pkpl .pkpl-title::after{width:calc(100% + 110px);background:linear-gradient(90deg,rgba(18,22,15,.98) 0%,rgba(18,22,15,.96) 72%,rgba(18,22,15,.6) 90%,rgba(18,22,15,0) 100%)}
+html body.pkpl-v2 #root #pkpl .pkpl-title::after{content:'';position:absolute;top:0;bottom:0;left:0;width:calc(100% + 64px);z-index:-1;pointer-events:none;background:linear-gradient(90deg,rgba(18,22,15,.93) 0%,rgba(18,22,15,.9) 80%,rgba(18,22,15,0) 100%)}
+html body.pkpl-v2.pkpl-v2g #root #pkpl .pkpl-title::after{width:calc(100% + 64px);background:linear-gradient(90deg,rgba(18,22,15,.98) 0%,rgba(18,22,15,.96) 72%,rgba(18,22,15,.6) 90%,rgba(18,22,15,0) 100%)}
 html body.pkpl-v2 #root #pkpl .pkpl-g2{flex:none;display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding-bottom:22px;border-bottom:1px solid rgba(242,237,227,.16)}
 html body.pkpl-v2 #root #pkpl .pkpl-g2 .pkpl-xe{min-width:0;min-height:60px;padding:8px 4px;font-size:12.5px;background:rgba(18,22,15,.6)}
 html body.pkpl-v2 #root #pkpl .pkpl-g2 .pkpl-xe:hover{border-color:#D6B54A;color:#FFE7A3}
@@ -747,3 +747,8 @@ html body.pkpl-v2p #root #pkpl .pkpl-psall{display:inline;min-height:44px;paddin
 html body #root .pkpl-xb .pkpl-xe.quiet{opacity:1!important}
 html body.pkpl-hood:not(.pkpl-wide) #root #pkpl .pkpl-xb{z-index:7;background:#12160F}   /* Nov 22: the row stays on top, right above the nav; the folded bar shows above it */
 html body.pkpl-v2p.pkpl-hood #pkpl-top.pkpl-folded{clip-path:inset(0 0 var(--pkpl-y,0px) 0)}   /* the folded sheet stops at the row instead of sliding under it */
+
+/* Nov 22: on a neighborhood page the neighbors step back a little more, so the place you're on reads first */
+.pkpl-picked .pkpl-veil{fill:rgba(12,14,10,.48)}
+/* 3. text slides under the sheet's top edge instead of being cut mid-letter */
+html body.pkpl-hood:not(.pkpl-wide) #root #pkpl-top .pkpl-sheet{-webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 16px);mask-image:linear-gradient(to bottom,transparent 0,#000 16px)}
