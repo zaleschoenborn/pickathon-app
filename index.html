@@ -13166,6 +13166,8 @@ window.pkClimbRank = function (C, dd) {
     /* 4 PRESS (Zale Nov 19 00:17): one big quote at a time, slowly rotating, after Summer camp */
     var PQ = ((d.about && d.about.press) || []).filter(function (q) { return q && q.q && q.q.length <= 82; });
     PQ = [{ q: QUOTE[0], o: QUOTE[1].replace(/, \d{4}$/, ''), y: (QUOTE[1].match(/\d{4}$/) || [''])[0] }].concat(PQ.filter(function (q) { return q.q !== QUOTE[0]; })).slice(0, 6);
+    /* Copy Review owns the rotation (Zale Nov 21 23:25; copy_review-36): data.json homePress, shown in its cycle order (top six twice per cycle); falls back to the list above until that data ships */
+    var HP = d.homePress; if (HP && HP.quotes && HP.quotes.length) { var HC = (HP.cycle && HP.cycle.length) ? HP.cycle : HP.quotes.map(function (q, i) { return i; }); PQ = HC.map(function (k) { var q = HP.quotes[k]; return q ? { q: q.q, o: q.o, y: q.y || '' } : null; }).filter(Boolean); }
     var hPress = PQ.length ? '<section class="h2-s h2-s7" aria-labelledby="h2-h7"><h2 class="h2-vh" id="h2-h7">What the press says</h2><div class="h2-pq" data-h2="pq">' +
       PQ.map(function (q, i) { return '<figure class="h2-pqi' + (i ? '' : ' is-on') + '"' + (i ? ' aria-hidden="true"' : '') + '><blockquote>“' + esc(q.q) + '”</blockquote><figcaption>' + esc(q.o) + (q.y ? ', ' + esc(q.y) : '') + '</figcaption></figure>'; }).join('') +
       '</div><div class="h2-pqd" role="group" aria-label="Press quotes">' + PQ.map(function (q, i) { return '<button type="button" class="h2-pqb' + (i ? '' : ' on') + '" data-h2="pqgo" data-i="' + i + '" aria-label="Quote ' + (i + 1) + ': ' + esc(q.o) + '"><i></i></button>'; }).join('') + '</div></section>' : '';
