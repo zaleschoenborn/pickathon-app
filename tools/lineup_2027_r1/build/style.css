@@ -636,3 +636,6 @@ h2{font-family:var(--display);font-weight:400;font-size:27px;line-height:1.14;le
 .card.tt.arch.nop.pc .cname{font-size:clamp(18px,5.4vw,22px)}
 /* r37: centered in the picture above the text block, so it never sits on the class label */
 .card.pc:not(.nop) .pz .ring.sm,.card.tt.pc:not(.nop) .pz .ring.sm{top:calc(50% - 46px)}
+/* r38 (Zale, Nov 22): archive cards a hair taller, 3:4 */
+.card.tt.arch{aspect-ratio:3/4}
+.card.pc:not(.nop) .pz .ring.sm,.card.tt.pc:not(.nop) .pz .ring.sm{top:calc(50% - 40px)}
