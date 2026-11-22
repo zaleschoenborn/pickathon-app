@@ -13356,6 +13356,12 @@ window.pkClimbRank = function (C, dd) {
     if (BL && BLd === D) return BL;
     var pool = []; try { pool = window.__pkArchPool ? window.__pkArchPool() : []; } catch (e) { pool = []; }
     var PV = (D && D.preview) || {};
+    /* Zale Nov 22: Home picks its own clips for this row so an Archive rebuild cannot change it (Video Catalog, Nov 21 ledger). Lake Street Dive 2012: Pumphouse session (Live and Breathing), not the 2013 Galaxy Barn clip. Courtney Barnett is a Discovery at her first year, 2014 (class table v165; the Archive files her as a Legend 2024 because of legend_flag), with her 2014 Galaxy Barn clip. */
+    pool = pool.map(function (a) { return a && a.n === 'Lake Street Dive' ? Object.assign({}, a, { vu: 'https://www.youtube.com/watch?v=HNNUgAVQjnQ', vt: 'Watch from Pickathon 2012', yr: 2012 }) : a; });
+    if (!pool.some(function (a) { return a && a.n === 'Courtney Barnett' && a.ctk === 'disc'; })) {
+      pool = pool.filter(function (a) { return !(a && a.n === 'Courtney Barnett'); });
+      pool.push({ n: 'Courtney Barnett', cat: 'music', ctk: 'disc', dc: false, leg: false, kind: 'Discovery \u00b7 Indie', yr: 2014, m: 5.7, cf: 'high', ctl: '', line: 'Two EPs and small clubs, then a Best New Artist Grammy nomination.', vu: 'https://www.youtube.com/watch?v=Dq7nrBvuuf8', vt: 'Watch from Pickathon 2014', img: 'i/up-courtneybarnett.jpg' });
+    }
     BL = pool.filter(function (a) { return a.cat === 'music' && a.ctk === 'disc' && !a.dc && !a.leg && a.line && a.vu; }).map(function (a) {
       var pv = PV[a.n], img = (pv && String(pv.y) === String(a.yr) && pv.i) || a.img || (pv && pv.i) || '';
       var v = vidOf(a.vu), r = vidRec(v), full = !!(r && r.f), watch = !!a.vu && !full && /^(Watch|Listen)/.test(a.vt || '');
@@ -13396,7 +13402,7 @@ window.pkClimbRank = function (C, dd) {
     var box = $('[data-h2="cards"]', s), key = L.length + '|' + (L[0] || {}).n; if (box._k === key) return; box._k = key;
     /* Zale, Nov 13: on Home, Future Islands takes Typhoon's spot (Home only; the archive keeps the ranking) */
     /* Zale, Nov 13: Avett Brothers and Trampled by Turtles (Spotify-only, dark old photos) leave Home; Ty Segall (Woods) and Courtney Barnett (Galaxy Barn) take their slots. The archive keeps the full ranking. */
-    L = L.slice(); (function () { var out = { 'The Avett Brothers': 1, 'Trampled by Turtles': 1 }, inn = ['Ty Segall', 'Courtney Barnett'], at = []; L.forEach(function (x, k) { if (out[x.n]) at.push(k); }); var add = []; inn.forEach(function (nm) { var j = -1; L.forEach(function (x, k) { if (x.n === nm) j = k; }); if (j >= 0) add.push(L[j]); }); add.forEach(function (x) { var j = L.indexOf(x); if (j >= 0) L.splice(j, 1); }); L = L.filter(function (x) { return !out[x.n]; }); add.forEach(function (x, n) { L.splice(Math.min((at[n] != null ? at[n] : 1) - n, L.length), 0, x); }); })();
+    L = L.slice(); (function () { var out = { 'The Avett Brothers': 1, 'Trampled by Turtles': 1 }, inn = ['Ty Segall'], at = []; L.forEach(function (x, k) { if (out[x.n]) at.push(k); }); var add = []; inn.forEach(function (nm) { var j = -1; L.forEach(function (x, k) { if (x.n === nm) j = k; }); if (j >= 0) add.push(L[j]); }); add.forEach(function (x) { var j = L.indexOf(x); if (j >= 0) L.splice(j, 1); }); L = L.filter(function (x) { return !out[x.n]; }); add.forEach(function (x, n) { L.splice(Math.min((at[n] != null ? at[n] : 1) - n, L.length), 0, x); }); })();
     (function () { var t = -1, f = -1; L.forEach(function (x, k) { if (x.n === 'Typhoon') t = k; if (x.n === 'Future Islands') f = k; }); if (t >= 0 && f >= 0) { var F = L.splice(f, 1)[0]; if (f < t) t--; L.splice(t, 1, F); } })();
     /* Zale, Nov 13: the card sits centered with the neighbors peeking on both sides and the row loops (card 30 peeks left of card 1).
        Two clones at each end; when a swipe settles on a clone, the row jumps silently to the real card. */
