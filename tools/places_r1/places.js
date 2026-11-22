@@ -641,7 +641,7 @@
     var rows = has ? S[TOP.day] : [], showN = TOP.all ? rows.length : 3;
     var html = (XH && M && wide() ? '<button type="button" class="pkpl-up" data-pk="up"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5 8 12l7 7"/></svg>Map' + (M.xp ? ' \u00b7 ' + esc(M.xp) : '') + '</button>' : '') +
       (XH && wide() ? '<div class="pkpl-hxr" role="toolbar" aria-label="Experiences">' + XO.map(function (e) { return '<button type="button" data-pk="xprow" data-e="' + esc(e) + '" aria-pressed="' + (e === XE) + '">' + xpIcon(e) + '<span>' + esc(e) + '</span></button>'; }).join('') + '</div>' : '')   /* Zale, Nov 22: the experience row is the main navigation on every size, desktop neighborhood pages too */ + '<div class="pkpl-bar" role="button" tabindex="0" aria-expanded="true" aria-label="Show or hide ' + esc(h.n) + '"><i aria-hidden="true"></i><img class="pkpl-bi" src="' + esc(emb(k)) + '" alt=""><span class="pkpl-bn">' + esc(h.n) + (XE ? '<small> \u00b7 ' + esc(XE) + '</small>' : '') + '</span></div>' + '<div class="pkpl-sheet' + (has ? ' pkpl-has' : '') + '">' +
-      '<div class="pkpl-grab" aria-hidden="true"><i></i></div>' +
+      (wide() ? '<button type="button" class="pkpl-grab pkpl-dgrab" data-pk="dgrab" aria-label="Show or hide the experiences"><i></i></button>' : '<div class="pkpl-grab" aria-hidden="true"><i></i></div>') +
       '<div class="pkpl-hero" aria-roledescription="carousel" aria-label="' + esc(h.n) + ' photos">' +
       ph.map(function (p, i) { return '<img src="' + esc(p.i) + '" alt="" style="object-position:' + esc(p.p) + '"' + (i === 0 ? '' : ' loading="lazy"') + ' draggable="false">'; }).join('') +
       '<div class="pkpl-shade" aria-hidden="true"></div>' +
@@ -761,7 +761,8 @@
   }
   var lastHood = '';
   function xbVar() { if (!M || wide()) return; var x = $('.pkpl-xb', M.el); if (x && x.offsetHeight) document.documentElement.style.setProperty('--pkpl-xbh', (x.offsetHeight + 5) + 'px'); }   /* tablet: the row can be two lines on a neighborhood page */
-  function settleSheet() { xbVar(); setTimeout(xbVar, 300);   /* a new place opens with the sheet at about 60% (55% on portrait tablet) */
+  function hhVar() { var hd = document.querySelector('#root header'); if (hd && wide()) document.documentElement.style.setProperty('--pkpl-hh', hd.offsetHeight + 'px'); }
+  function settleSheet() { xbVar(); setTimeout(xbVar, 300); hhVar();   /* a new place opens with the sheet at about 60% (55% on portrait tablet) */
     var t = top(); if (t.r !== 'hood' || wide()) { lastHood = t.r === 'hood' ? t.h : ''; return; }
     if (lastHood === t.h) return; lastHood = t.h;
     var sc0 = scroller(); if (sc0) sc0.scrollTop = 0; setFold(false); return;   /* the card is pinned on phone; the page never scrolls to place it */
@@ -866,6 +867,10 @@
     if (a === 'vid') { var L = VPK[b.getAttribute('data-vk')] || [], i0 = +b.getAttribute('data-i') || 0, Q = L.slice(i0).concat(L.slice(0, i0)).map(function (v) { return { u: vidU(v), c: v.a + ' · Pickathon ' + v.y }; });
       if (Q.length > 1 && window.__pkRadio) window.__pkRadio(Q, ''); else if (Q[0] && window.__pkPlayVid) window.__pkPlayVid(Q[0].u, Q[0].c); return; }   /* tap one: the five play in a row */
     if (a === 'vall') { go('watch', { hood: b.getAttribute('data-h') }); return; }
+    if (a === 'dgrab') {   /* Zale, Nov 22: on desktop the neighborhood card rises over the experiences; the handle covers or shows them */
+      var sh = $('#pkpl-top .pkpl-sheet'), gx = $('#pkpl-top .pkpl-hxr'); if (!sh || !gx) return;
+      var gb = gx.getBoundingClientRect(), st = sh.getBoundingClientRect(), covered = st.top < gb.bottom - 8;
+      window.scrollBy({ top: covered ? -(gb.bottom - st.top) : (st.top - gb.top), behavior: calm() ? 'auto' : 'smooth' }); return; }
     if (a === 'act') { go('act', { n: b.getAttribute('data-n'), y: b.getAttribute('data-y') || '' }); return; }   /* the video row's names lead to the artist page */
     if (a === 'xprow') { xpPick(b.getAttribute('data-e')); return; }   /* same rule as the phone row: to the map with that experience lit */
     if (a === 'xp') { TOP.xp = b.getAttribute('data-e'); TOP.all = false; if (M) { M.xp = TOP.xp; lit(); } var sc = scroller(); drawTop(); xbDraw(); var sh = $('#pkpl-top .pkpl-sheet'); if (sh) sh.scrollTop = 0; if (wide()) { var msc = moreScroller(); if (msc) msc.scrollTop = 0; } shape(); return; }   /* round 3: the switch is seen (back to the photo), credits stay */   /* Zale, Nov 22: switching here also switches the row and the map */

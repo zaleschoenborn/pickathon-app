@@ -836,3 +836,17 @@ body.pkpl-wide #root #pkpl-top .pkpl-vw{flex-basis:280px}
 #root #pkpl-top .pkpl-vn small{display:block;margin-top:3px;font:600 14px/1.2 'Bricolage Grotesque',system-ui,sans-serif;color:rgba(242,237,227,.62)}
 #root #pkpl-top .pkpl-vn:hover b{text-decoration:underline;text-underline-offset:3px}
 #root #pkpl-top .pkpl-vr > .pkpl-vt.pkpl-vall{flex-basis:160px;aspect-ratio:auto}
+
+/* Zale, Nov 22: desktop neighborhood card rises over the experience grid, like the phone sheet. '‹ Map' stays on top, the grid stays put, the card scrolls up over it; the handle covers or shows the grid */
+body.pkpl-wide.pkpl-hood #root #pkpl-top .pkpl-up{position:sticky;top:var(--pkpl-hh,89px);z-index:3;background:#12160F}
+body.pkpl-wide.pkpl-hood #root #pkpl-top .pkpl-hxr{position:sticky;top:calc(var(--pkpl-hh,89px) + 48px);z-index:1}
+body.pkpl-wide.pkpl-hood #root #pkpl-top .pkpl-sheet{position:relative;z-index:2;border-radius:16px 16px 0 0;box-shadow:0 -12px 28px rgba(0,0,0,.45);margin-top:4px}
+body.pkpl-wide #root #pkpl-top .pkpl-dgrab{display:flex;position:absolute;left:0;right:0;top:0;height:28px;padding:0;border:0;background:transparent;cursor:pointer;pointer-events:auto;z-index:5}
+body.pkpl-wide #root #pkpl-top .pkpl-dgrab i{width:44px}
+body.pkpl-wide.pkpl-hood #root #pkpl-top .pkpl-up{display:flex;width:100%;box-sizing:border-box}
+body.pkpl-wide #root #pkpl-top .pkpl-dgrab{z-index:9}
+body.pkpl-wide #root #pkpl-top .pkpl-dgrab i{display:block}
+body.pkpl-wide.pkpl-hood #root #pkpl-top .pkpl-sheet{padding-top:22px;background:#2B2628}
+body.pkpl-wide #root #pkpl-top .pkpl-dgrab{height:22px}
+body.pkpl-wide #root #pkpl-top .pkpl-dgrab i{width:48px;height:5px;background:rgba(242,237,227,.7);box-shadow:none}
+body.pkpl-wide #root #pkpl-top .pkpl-dgrab:hover i{background:#F2EDE3}
