@@ -541,7 +541,12 @@ def gpick(target, q='What kind of music do you love?', opts=GLIST):
             '<span class="gp-a"><b>%s</b>%s</span></button><div class="gp-list" hidden>%s<button class="gp-done">Show</button></div><p class="gp-none" hidden>Nothing under this one here.</p></div>') % (
             target, opts[0], q, opts[0], ICON['caret'], ''.join('<button class="gp-o%s" data-g="%s" aria-pressed="%s">%s</button>' % (' all on' if g == opts[0] else ' mx', g, 'true' if g == opts[0] else 'false', g) for g in opts))
 
+_ALINES = json.load(open(ROOT + 'arch_lines.json'))  # r44: Copy Review's one line per card (archCT l, copy_review-39), 93 characters or fewer
 def vcard(n, y, k, g, p, pos):
+    h = _vcard(n, y, k, g, p, pos)
+    ln = _ALINES.get('%s|%s|%s' % (k, ''.join(c for c in _ud.normalize('NFD', n.lower()) if c.isalnum() and ord(c) < 128), y), '')
+    return h.replace('</span><span class="cstory">', '</span><span class="cline">%s</span><span class="cstory">' % E(ln), 1) if ln and '<span class="cstory">' in h else h
+def _vcard(n, y, k, g, p, pos):
     if not p:  # no photo for that year: a plain site-color card, same anatomy; r36: it still plays the act's best song when the ledger has one
         _cv = archive_clip(n, y)
         g_all, g = gall_n(n, g), gp_n(n, g)
