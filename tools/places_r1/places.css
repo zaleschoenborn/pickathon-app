@@ -616,3 +616,34 @@ html body.pkpl-v2 #root #pkpl .pkpl-pl.pkpl-cols.pkpl-c3 .pkpl-pr{padding:5px 6p
 
 html body.pkpl-v2 #root #pkpl .pkpl-long .pkpl-pd{white-space:normal;min-height:42px;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;font-size:14.5px}
 html body.pkpl-v2 #root #pkpl .pkpl-pl.pkpl-cols .pkpl-pr.pkpl-hot{background:#F6F1E6}
+
+/* MOCK round 5 (Zale, Nov 21 20:39): a headline that asks; the experience as one compact line; one line slot for the summary or the pointed place; all 20 neighborhoods before a pick */
+html body.pkpl-v2 #root #pkpl .pkpl-gk{margin:0 0 16px;letter-spacing:0;text-transform:none}
+html body.pkpl-v2 #root #pkpl .pkpl-gk p{margin:0 0 8px;font:800 12px/1 'Bricolage Grotesque',system-ui,sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#E9B93C}
+html body.pkpl-v2 #root #pkpl .pkpl-gk h2{margin:0;font-family:'Pickathon 2014',sans-serif;font-size:34px;line-height:1.05;letter-spacing:.02em;text-transform:uppercase;color:#F2EDE3}
+html body.pkpl-v2 #root #pkpl .pkpl-body .pkpl-d,html body.pkpl-v2 #root #pkpl .pkpl-body .pkpl-l{display:none!important}
+html body.pkpl-v2 #root #pkpl .pkpl-title .pkpl-body{padding-top:18px!important;justify-content:flex-start!important}
+html body.pkpl-v2 #root #pkpl .pkpl-pc{display:flex;align-items:center;gap:10px;margin:0;font:400 15px/1 'Bricolage Grotesque',system-ui,sans-serif;letter-spacing:0;text-transform:none;color:rgba(242,237,227,.7)}
+html body.pkpl-v2 #root #pkpl .pkpl-pc[hidden]{display:none}
+html body.pkpl-v2 #root #pkpl .pkpl-pci{display:inline-grid;place-items:center;width:34px;height:34px;border-radius:8px;background:#F2EDE3;color:#12160F}
+html body.pkpl-v2 #root #pkpl .pkpl-pci svg{width:20px;height:20px}
+html body.pkpl-v2 #root #pkpl .pkpl-pc b{font-family:'Pickathon 2014',sans-serif;font-size:24px;font-weight:400;letter-spacing:.03em;text-transform:uppercase;color:#F2EDE3}
+html body.pkpl-v2 #root #pkpl .pkpl-pcn{margin-left:auto;font-weight:700;font-size:12.5px;letter-spacing:.16em;text-transform:uppercase;color:#E9B93C}
+html body.pkpl-v2 #root #pkpl .pkpl-long .pkpl-pd,html body.pkpl-v2 #root #pkpl .pkpl-pd{display:-webkit-box!important;margin:10px 0 8px;min-height:44px;color:#E9B93C;font-weight:600;font-size:15px}
+html body.pkpl-v2 #root #pkpl .pkpl-pd.on{color:#F2EDE3;font-weight:500}
+html body.pkpl-v2 #root #pkpl .pkpl-pl .pkpl-gh{grid-column:1/-1;margin:10px 0 2px;font:800 11.5px/1 'Bricolage Grotesque',system-ui,sans-serif;letter-spacing:.2em;text-transform:uppercase;color:rgba(242,237,227,.5)}
+html body.pkpl-v2 #root #pkpl .pkpl-pl .pkpl-gh:first-child{margin-top:0}
+html body.pkpl-v2 #root #pkpl .pkpl-pl.pkpl-cols.pkpl-c3 .pkpl-pr{min-height:38px}
+
+html body.pkpl-v2 #root #pkpl .pkpl-gk{margin-bottom:14px}
+html body.pkpl-v2 #root #pkpl .pkpl-gk h2{font-size:31px}
+html body.pkpl-v2 #root #pkpl .pkpl-title:not(.pkpl-tx) .pkpl-pd{min-height:0;margin:2px 0 4px;font-size:14px}
+html body.pkpl-v2 #root #pkpl .pkpl-title:not(.pkpl-tx) .pkpl-body{padding-top:14px!important;padding-bottom:12px}
+html body.pkpl-v2 #root #pkpl .pkpl-pl .pkpl-gh{margin:8px 0 0}
+html body.pkpl-v2 #root #pkpl .pkpl-title:not(.pkpl-tx) .pkpl-pl.pkpl-cols.pkpl-c3 .pkpl-pr{min-height:34px;padding-top:3px;padding-bottom:3px}
+html body.pkpl-v2 #root #pkpl .pkpl-gk p{font-size:11.5px;letter-spacing:.14em;white-space:nowrap}
+html body.pkpl-v2 #root #pkpl .pkpl-g2 .pkpl-xe{min-height:50px;padding:5px 4px;gap:3px}
+html body.pkpl-v2 #root #pkpl .pkpl-g2{gap:7px;padding-bottom:16px}
+html body.pkpl-v2 #root #pkpl .pkpl-pl.pkpl-cols.pkpl-c3 .pkpl-pr b{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+html body.pkpl-v2 #root #pkpl .pkpl-pl.pkpl-cols.pkpl-c3 .pkpl-pr span{min-width:0;overflow:hidden}
+html body.pkpl-v2 #root #pkpl .pkpl-pcn{white-space:nowrap}
