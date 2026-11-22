@@ -248,7 +248,7 @@
   /* the visible part of the map (phone: above the sheet) */
   function lw() { return Math.round(Math.max(400, Math.min(480, window.innerWidth * 0.32))); }   /* desktop left column: phone-card width, the map is the hero (Zale, Nov 19) */
   function sheetOpen() { var sc = scroller(); return openH(sc ? sc.clientHeight : 600); }   /* the card opens to the phone's scroll area less a map margin at the top (Nov 20, Zale) */
-  function openH(vh) { return Math.round(vh * 0.6); }   /* open: the sheet covers 60%, the map shows above it (the yesterday default, Zale, Nov 20) */
+  function openH(vh) { return Math.round(vh * 0.6) + (V2 && !wide() ? 50 : 0); }   /* Zale, Nov 22: about 50px taller on phone and tablet so prev/next shows above the experience row */   /* open: the sheet covers 60%, the map shows above it (the yesterday default, Zale, Nov 20) */
   function v2Fit(v, L, one) {   /* MOCK round 4: no empty margin on the right; the framed places sit against the right side and the map runs under the left column */
     var b = union(L), s1 = v[0], tx = v[1], east = b[2] * s1 + tx, lim = M.vw - (one ? 190 : 84);
     if (east < lim) tx += lim - east;
