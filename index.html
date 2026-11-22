@@ -12701,6 +12701,9 @@ html:root:root #root#root#root#root#root#root#root#root#root#root#root#root#root
   /* Zale Nov 22 14:53: photos never shrink for words: the section grows by what the camping line adds to the heading (--xfx, measured in xfxFit) */
   #root#root#root#root#root#root #pkh2 .h2-s3c.h2-xo{height:calc(var(--scr) + var(--xfx,0px))!important}
   @media (min-width:1200px){#root#root#root#root#root#root #pkh2 .h2-s3c.h2-xo{height:calc(100svh - 72px + var(--xfx,0px))!important}}
+  html body:not(#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1) #pkh2 .h2-xfacts b{display:block;font:800 11px/1.2 'Bricolage Grotesque',system-ui,sans-serif!important;letter-spacing:.12em;text-transform:uppercase;color:#D6B54A;margin:0 0 3px}
+  html body:not(#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1) #pkh2 .h2-xfacts span{display:block}
+  @media (min-width:1200px){html body:not(#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1) #pkh2 .h2-xfacts{display:none!important}}
   html body:not(#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1) #pkh2 .h2-xfacts{margin:8px 0 0!important;font:500 15px/1.45 'Bricolage Grotesque',system-ui,sans-serif!important;color:#CFC9BC!important;max-width:34em}
   @media (min-width:1200px){html body:not(#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1) #pkh2 .h2-xfacts{font-size:16px!important}}
   #pkh2 .h2-xrow{display:flex;flex-wrap:nowrap;gap:8px;overflow-x:auto;padding:2px 18px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
@@ -13189,7 +13192,7 @@ window.pkClimbRank = function (C, dd) {
       var XOVI = [{ i: 'i/r3-hood-paddock.jpg', p: '50% 35%' }, { i: 'i/r35-grove-1.jpg', p: '50% 40%' }, { i: 'i/p656.jpg', p: '50% 55%' }, { i: 'i/pk-paddock-01.jpg', p: '50% 45%' }];
       ALLH = ids.slice(); ROT0 = xpAll(ids).filter(function (k) { return d.hoods[k].k !== 'camp'; }); ROT = ROT0.slice(); XPF = 'Architecture';
       h += '<div class="h2-bt h2-bt-s3"><p class="h2-btn" aria-hidden="true">2</p><h2 class="h2-bth" id="h2-h3">Summer camp for your soul</h2></div><section class="h2-s h2-s3 h2-s3c xin h2-xo" aria-labelledby="h2-h3">' +
-        '<div class="h2-s5head h2-s5head-x"><div><p class="h2-btl">Four days in twenty neighborhoods, built new each summer.</p></div>' +
+        '<div class="h2-s5head h2-s5head-x"><div><p class="h2-btl">Four days in twenty neighborhoods, built new each summer.</p><p class="h2-xfacts" data-h2="xfx"></p></div>' +
         '<div class="h2-cc-nav"><button type="button" class="h2-pill h2-s5top h2-anb" data-h2="allhoods">Explore the map</button></div></div>' +
         '<div class="h2-xrow h2-xrow2" data-h2="xrow" role="group" aria-label="Experiences">' + XPO.map(function (t) { return '<button type="button" class="h2-xb" data-h2="xpsel" data-xp="' + t + '" aria-pressed="false">' + xpIc(t) + '<span>' + esc(t) + '</span></button>'; }).join('') + '</div>' +
         '<p class="h2-xsl" data-h2="xsl">Find it in</p>' +
@@ -13535,6 +13538,7 @@ window.pkClimbRank = function (C, dd) {
     if (W.XPB) Object.keys(W.XPB).forEach(function (x) { XPB[x] = XPB[x] || {}; Object.keys(W.XPB[x] || {}).forEach(function (h) { if (W.XPB[x][h]) XPB[x][h] = W.XPB[x][h]; }); });
     if (W.hook) { XPB.Architecture = XPB.Architecture || {}; Object.keys(W.hook).forEach(function (h) { if (W.hook[h] && !(W.XPB && W.XPB.Architecture && W.XPB.Architecture[h])) XPB.Architecture[h] = W.hook[h]; }); }   /* Architecture cards use Copy Review's place hook */ }
   function xpPanel(A, PH) { var lk = root && $('.h2-xpw3', root); if (lk) lk.innerHTML = 'Find ' + esc(XPF) + ' in ' + xpCount(A) + ' <span aria-hidden="true">→</span>'; if (lk && lk.offsetWidth && lk.scrollWidth > lk.clientWidth + 1) lk.innerHTML = 'Find ' + esc(XPF) + ' in ' + String(xpCount(A)).replace(/ \+ the trails$/, '') + ' <span aria-hidden="true">→</span>';   /* too long for a phone button: the trails still show as their own card in the swipe */   /* Zale Nov 22 00:40: name the experience */
+    var xf = root && $('[data-h2="xfx"]', root); if (xf) { xf.innerHTML = '<b>Pick your adventure</b><span>' + esc(XPD[XPF] || '') + '</span>'; try { xfxFit(); } catch (e) {} }   /* Zale Nov 22 15:53: phone and tablet say what the buttons are and what the pick means, under the subline (desktop has the left panel) */
     var el = root && $('[data-h2="xpan"]', root); if (!el) return; if (PH) { el.innerHTML = ''; return; }
     /* Zale Nov 22 00:04: desktop left column like the Places map: a label, the twelve experiences, the experience's line, then the map for the "where"; no place icons (the photo steps through the places) */
     el.innerHTML = '<div class="h2-xpin"><p class="h2-d pkp-head h2-xpk">Pick your adventure</p><div class="h2-xpx" role="group" aria-label="Experiences">' + XPO.map(function (t) { var on = t === XPF; return '<button type="button" class="h2-xb' + (on ? ' on' : '') + '" data-h2="xpsel" data-xp="' + t + '" aria-pressed="' + on + '">' + xpIc(t) + '<span>' + esc(t) + '</span></button>'; }).join('') + '</div>' +
