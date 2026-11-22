@@ -218,7 +218,7 @@
   }
   function chipsAboveFold() {   /* folded on a phone: the experience row sits just above the folded sheet, so it stays usable (Zale, Nov 20) */
     var c = cardEl(), xb = $('.pkpl-xb', M.el); if (!c || !xb) return;
-    if (!wide() && c.classList.contains('pkpl-folded')) xb.style.bottom = Math.max(0, Math.round(M.el.getBoundingClientRect().bottom - c.getBoundingClientRect().top)) + 'px';
+    if (!wide() && !V2 && c.classList.contains('pkpl-folded')) xb.style.bottom = Math.max(0, Math.round(M.el.getBoundingClientRect().bottom - c.getBoundingClientRect().top)) + 'px';
     else xb.style.bottom = '';
   }
   function xbHome() { var xb = $('.pkpl-xb', M.el), t = $('.pkpl-title', M.el), want = M.el; if (xb && t && xb.parentNode !== want) want.appendChild(xb); }   /* desktop: a menu under the title; phone: the bottom row */
@@ -306,10 +306,11 @@
   }
   /* the experience bar, its title screen and the names on the lit places */
   function xbEnd() { var xr = M && $('.pkpl-xb', M.el); if (xr) xr.classList.toggle('pkpl-xbmore', xr.scrollLeft + xr.clientWidth < xr.scrollWidth - 4); }
-  function xbShow() { var xr = M && $('.pkpl-xb', M.el), xs = M && M.xp && xr && $('.pkpl-xe[data-xp="' + M.xp + '"]', xr); if (!xs) return; if (xs.offsetLeft < xr.scrollLeft + 8 || xs.offsetLeft + xs.offsetWidth > xr.scrollLeft + xr.clientWidth - 8) xr.scrollTo({ left: Math.max(0, xs.offsetLeft + xs.offsetWidth / 2 - xr.clientWidth / 2), behavior: calm() ? 'auto' : 'smooth' }); }
+  function xbShow() { var xr = M && $('.pkpl-xb', M.el), cx0 = M && (top().r === 'hood' ? TOP.xp : M.xp), xs = cx0 && xr && $('.pkpl-xe[data-xp="' + cx0 + '"]', xr); if (!xs) return; if (xs.offsetLeft < xr.scrollLeft + 8 || xs.offsetLeft + xs.offsetWidth > xr.scrollLeft + xr.clientWidth - 8) xr.scrollTo({ left: Math.max(0, xs.offsetLeft + xs.offsetWidth / 2 - xr.clientWidth / 2), behavior: calm() ? 'auto' : 'smooth' }); }
   function xbDraw() {
     if (!M) return; var t = top(), at = (t.r === 'hood' && t.h) ? xpAt(t.h) : null;
-    $$('.pkpl-xe', M.el).forEach(function (b) { var e = b.getAttribute('data-xp'); var cur = at ? TOP.xp : M.xp; b.setAttribute('aria-pressed', e === cur ? 'true' : 'false'); b.classList.toggle('quiet', !!at && at.indexOf(e) < 0); });
+    $$('.pkpl-xe', M.el).forEach(function (b) { var e = b.getAttribute('data-xp'); var cur = at ? TOP.xp : M.xp; b.setAttribute('aria-pressed', e === cur ? 'true' : 'false'); b.classList.toggle('quiet', false); });   /* Zale, Nov 22: no dimmed buttons; every experience works from anywhere */
+    setTimeout(xbShow, 60);
   }
   function titleDraw() {
     var t = $('.pkpl-title', M.el); if (!t) return;
@@ -406,7 +407,8 @@
       var f0 = fitBox(union(K), reg, 18), bK = union(K), wFit = (reg.w - 36) / (bK[2] - bK[0]), vv = v2Fit(fitBox(bK, reg, 18, Math.min(maxS(), f0[0] * 1.4, wFit, startView()[0] * 2)), K);   /* never closer than twice the overview (Family is one place) */   /* zoom in to fill the height, but never so far that a lit place leaves the sides (Wellness) */   /* wide enough that the farm reaches from under the column to the right side */ M.s0 = vv[0]; M.free = true; animTo(vv, 560); return;
     }
     if (v2p()) { M.free = true; var Kp = L.slice(); if (Kp.length > 2) { var cyp = function (k) { var bb = box(k); return (bb[1] + bb[3]) / 2; }, fp = null, fdp = 0; Kp.forEach(function (k) { var ys = Kp.filter(function (j) { return j !== k; }).map(cyp), lo = Math.min.apply(0, ys), hi = Math.max.apply(0, ys), y = cyp(k), dd = y < lo ? lo - y : y > hi ? y - hi : 0; if (dd > fdp) { fdp = dd; fp = k; } }); if (fp && fdp > 600) Kp = Kp.filter(function (j) { return j !== fp; }); }
-      animTo(fitBox(union(Kp), clear(), 16), 560); return; }   /* phone: frame the lit places in the strip above the sheet; one place far above or below the rest (the Woods for Music) sits just off the edge, a drag brings it in */   /* phone: frame the lit places in the strip above the sheet */
+      var vp = fitBox(union(Kp), clear(), 16), sc0 = startView()[0] * 2.2; if (vp[0] > sc0) { var bq = union(Kp), crq = clear(); vp = [sc0, crq.x + crq.w / 2 - (bq[0] + bq[2]) / 2 * sc0, crq.y + crq.h / 2 - (bq[1] + bq[3]) / 2 * sc0]; }   /* one place (Comedy: Lucky) stays a place on the farm, not a close-up */
+      animTo(vp, 560); return; }   /* phone: frame the lit places in the strip above the sheet; one place far above or below the rest (the Woods for Music) sits just off the edge, a drag brings it in */   /* phone: frame the lit places in the strip above the sheet */
     animTo(fitBox(union(L), clear(), wide() ? 18 : 16), 560);
   }
   function xpPick(e) {
@@ -616,7 +618,7 @@
     if (el._key === key) return; el._key = key;
     var dayN = {}; (D.days || []).forEach(function (d) { dayN[d.id] = d.n; });
     var rows = has ? S[TOP.day] : [], showN = TOP.all ? rows.length : 3;
-    var html = (XH && M && M.xp && wide() ? '<button type="button" class="pkpl-up" data-pk="up"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5 8 12l7 7"/></svg>Map \u00b7 ' + esc(M.xp) + '</button>' : '') + '<div class="pkpl-bar" role="button" tabindex="0" aria-expanded="true" aria-label="Show or hide ' + esc(h.n) + '"><i aria-hidden="true"></i><img class="pkpl-bi" src="' + esc(emb(k)) + '" alt=""><span class="pkpl-bn">' + esc(h.n) + '</span></div>' + '<div class="pkpl-sheet' + (has ? ' pkpl-has' : '') + '">' +
+    var html = (XH && M && M.xp && wide() ? '<button type="button" class="pkpl-up" data-pk="up"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5 8 12l7 7"/></svg>Map \u00b7 ' + esc(M.xp) + '</button>' : '') + '<div class="pkpl-bar" role="button" tabindex="0" aria-expanded="true" aria-label="Show or hide ' + esc(h.n) + '"><i aria-hidden="true"></i><img class="pkpl-bi" src="' + esc(emb(k)) + '" alt=""><span class="pkpl-bn">' + esc(h.n) + (XE ? '<small> \u00b7 ' + esc(XE) + '</small>' : '') + '</span></div>' + '<div class="pkpl-sheet' + (has ? ' pkpl-has' : '') + '">' +
       '<div class="pkpl-grab" aria-hidden="true"><i></i></div>' +
       '<div class="pkpl-hero" aria-roledescription="carousel" aria-label="' + esc(h.n) + ' photos">' +
       ph.map(function (p, i) { return '<img src="' + esc(p.i) + '" alt="" style="object-position:' + esc(p.p) + '"' + (i === 0 ? '' : ' loading="lazy"') + ' draggable="false">'; }).join('') +
@@ -624,17 +626,19 @@
       '<button type="button" class="pkpl-arr l" data-pk="step" data-to="' + prev + '" aria-label="Previous ' + esc(XE && XE !== 'Architecture' ? XE + ' place' : 'place') + ': ' + esc(D.hoods[prev].n) + '"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5 8 12l7 7"/></svg></button>' +
       '<button type="button" class="pkpl-arr r" data-pk="step" data-to="' + next + '" aria-label="Next ' + esc(XE && XE !== 'Architecture' ? XE + ' place' : 'place') + ': ' + esc(D.hoods[next].n) + '"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>' +
       (ph.length > 1 ? '<div class="pkpl-dots" role="group" aria-label="Photos">' + ph.map(function (p, i) { return '<button type="button" data-pk="dot" data-i="' + i + '" aria-label="Photo ' + (i + 1) + ' of ' + ph.length + '"' + (i === 0 ? ' aria-current="true"' : '') + '><i></i></button>'; }).join('') + '</div>' : '') +
-      '<div class="pkpl-hi">' + (XE && XE !== 'Architecture' ? '<p class="pkpl-kind">' + esc(XE) + '</p>' : '<p class="pkpl-kind">' + (h.k === 'camp' ? esc(KIND[h.k] || '') : 'Architecture ' + (k === 'woods' ? 'in the Woods' : 'at ' + esc(h.n))) + '</p>') + '<div class="pkpl-nmrow"><img src="' + esc(emb(k)) + '" alt=""><h1>' + esc(h.n) + '</h1></div><p class="pkpl-tt">' + esc(XE ? xpLine(XE, k) : (h.t || '')) + '</p></div>' +
+      '<div class="pkpl-hi">' + (XE && XE !== 'Architecture' ? '<p class="pkpl-kind pkpl-kx"><span class="pkpl-kci">' + xpIcon(XE) + '</span>' + esc(XE) + '</p>' : '<p class="pkpl-kind">' + (h.k === 'camp' ? esc(KIND[h.k] || '') : 'Architecture ' + (k === 'woods' ? 'in the Woods' : 'at ' + esc(h.n))) + '</p>') + '<div class="pkpl-nmrow"><img src="' + esc(emb(k)) + '" alt=""><h1>' + esc(h.n) + '</h1></div><p class="pkpl-tt">' + esc(XE ? xpLine(XE, k) : (h.t || '')) + '</p></div>' +
       '</div>' +
+      (XE && XE !== 'Architecture' && L.length > 1 && L.length < ids().length ? '<nav class="pkpl-stepl" aria-label="' + esc(XE) + ' places"><button type="button" data-pk="step" data-to="' + prev + '">\u2039 ' + esc(D.hoods[prev].n) + '</button><span>' + (j + 1) + ' of ' + L.length + ' ' + esc(XE) + ' places</span><button type="button" data-pk="step" data-to="' + next + '">' + esc(D.hoods[next].n) + ' \u203a</button></nav>' : '') +   /* Nov 22: walk this experience's places without the map */
       (FROM ? '<p class="pkpl-from">' + esc(FROM.n) + ' played ' + esc(h.n) + ' at Pickathon ' + FROM.y + '</p>' : '') +
       (has ? '<section class="pkpl-sc" aria-label="Schedule at ' + esc(h.n) + '"><div class="pkpl-days" role="group" aria-label="Day">' + days.map(function (d) { return '<button type="button" class="pk-cta sec pkpl-chip" data-pk="day" data-d="' + d + '"' + (d === TOP.day ? ' aria-pressed="true"' : ' aria-pressed="false"') + '>' + esc(dayN[d] || d.slice(5)) + '</button>'; }).join('') + '</div>' +
         '<ol class="pkpl-sets">' + rows.slice(0, showN).map(function (s) { var A = (D.artists || {})[s.a] || {}; return '<li><span class="pkpl-st">' + tm(s.s) + '</span><span class="pkpl-sa"><b>' + esc(A.n || s.a) + '</b><small>' + esc(LBL[s.l] || '') + '</small></span></li>'; }).join('') + '</ol>' +
         (rows.length > 3 ? '<button type="button" class="pk-cta sec pkpl-whole" data-pk="whole" aria-expanded="' + TOP.all + '">' + (TOP.all ? 'Show less' : 'Whole day at ' + esc(h.n)) + '</button>' : '') + '</section>' : '') +
       storyIs(h, has) +
-      (season === 'fest' ? soon(k, XE, h, has) + vids(k, XE) : vids(k, XE) + soon(k, XE, h, has)) +
-      alsoAt(k, XE, h) +
+      soon(k, XE, h, has) + vids(k, XE) +
+      alsoAt(k, XE, h) + '<div class="pkpl-credw"></div>' +
       '</div>';
-    el.innerHTML = html; TOP.i = 0; heroArm(el); document.body.classList.toggle('pkpl-xpup', !!$('.pkpl-up', el));   /* our link up replaces the app's Back to map */
+    el.innerHTML = html; var cr9 = $('.pkpl-cred', el), cw9 = $('.pkpl-credw', el); if (cr9 && cw9) cw9.appendChild(cr9);   /* Nov 22 review: who built it comes after what's here */
+    TOP.i = 0; heroArm(el); document.body.classList.toggle('pkpl-xpup', !!$('.pkpl-up', el));   /* our link up replaces the app's Back to map */
   }
   var VN = { woods: ['Woods', 'Woods Stage'], cherryhill: ['Cherry Hill'], grove: ['Grove'], windmill: ['Windmill'], paddock: ['Paddock'], galaxy: ['Galaxy Barn'], lucky: ['Lucky Barn'], curation: ['Curation'], farmhouse: ['Farmhouse'] };
   var MAG = null;
@@ -696,7 +700,7 @@
   function alsoAt(k, XE, h) {   /* one tile per other experience at this place */
     if (!XE) return ''; var O = xpAt(k).filter(function (e) { return e !== XE; }); if (!O.length) return '';
     return '<section class="pkpl-also" aria-label="Also at ' + esc(h.n) + '"><h2>Also at ' + esc(h.n) + '</h2><div class="pkpl-at">' + O.map(function (e) {
-      var ph = xpPhotos(e, k)[0]; return '<button type="button" class="pkpl-ax" data-pk="xp" data-e="' + esc(e) + '">' + (ph ? '<img src="' + esc(ph.i) + '" alt="" loading="lazy" style="object-position:' + esc(ph.p) + '">' : '') + '<span class="pkpl-axs"></span><span class="pkpl-axn">' + xpIcon(e) + '<b>' + esc(e) + '</b></span></button>'; }).join('') + '</div></section>';
+      return '<button type="button" class="pkpl-ax pkpl-axc" data-pk="xp" data-e="' + esc(e) + '">' + xpIcon(e) + '<b>' + esc(e) + '</b></button>'; }).join('') + '</div></section>';   /* Nov 22: a side note in small chips, same look as the row */
   }
   function heroArm(el) {
     clearTimeout(TOP.timer); var hero = $('.pkpl-hero', el); if (!hero) return;
@@ -750,6 +754,7 @@
     var isle = document.getElementById('pkpl'), t = top();
     document.body.classList.toggle('pkpl-on', !!isle);
     document.body.classList.toggle('pkpl-hood', !!isle && t.r === 'hood');
+    if (isle && t.r === 'hood' && M) { var xr7 = $('.pkpl-xb', M.el); if (xr7) xr7.style.bottom = ''; }   /* the map sheet lifts the row; on a neighborhood page it goes back to just above the nav */
     document.body.classList.toggle('pkpl-wide', !!isle && wide());
     if (!isle) { lastHood = ''; return; }
     if (!data()) return;
@@ -761,7 +766,7 @@
     var hx = window.__pkMapXP; if (hx) { window.__pkMapXP = '';   /* Zale Nov 22 01:03: Home's 'Find Music in 9 neighborhoods' opens the map with Music picked; a place opened from Home keeps the experience (design_home-34) */
       if (XO.indexOf(hx) >= 0) { if (t.r === 'hoods') { if (M.xp !== hx) setTimeout(function () { if (M.xp !== hx) xpPick(hx); }, 0); } else if (t.r === 'hood') M.xp = hx; } }
     if (t.r === 'hood' && t.h && t.h !== M.cur && HH.shapes[t.h]) { if (M.title) { M.title = false; M.el.classList.add('pkpl-notitle'); } frame(t.h, !M.s); }   /* arriving at a place shows it, never the title screen */
-    if (t.r === 'hoods' && M.cur) { M.was = M.cur; M.cur = ''; M.hot = ''; $$('.pkpl-hot', M.el).forEach(function (r) { r.classList.remove('pkpl-hot'); }); if (v2p()) { M.ps = 1; psPlace(); var mo2 = $('.pkpl-psmore', M.el); if (mo2) mo2.textContent = 'See them'; } lit(); if (M.xp || M.amen) fitLit(); setTimeout(xbShow, 60); }   /* closing a card: back to the map you left, the experience's places lit, the sheet half open and the pick in view (review Nov 22 #1) */   /* closing a card: back to the experience's places, lit */
+    if (t.r === 'hoods' && M.cur) { M.was = M.cur; M.cur = ''; M.hot = ''; $$('.pkpl-hot', M.el).forEach(function (r) { r.classList.remove('pkpl-hot'); }); if (v2p()) { M.ps = 1; titleDraw(); psPlace(); var mo2 = $('.pkpl-psmore', M.el); if (mo2) mo2.textContent = 'See them'; } lit(); if (M.xp || M.amen) fitLit(); setTimeout(xbShow, 60); }   /* closing a card: back to the map you left, the experience's places lit, the sheet half open and the pick in view (review Nov 22 #1) */   /* closing a card: back to the experience's places, lit */
     settleSheet(); dedupe(); shape(); backMap();
     var full = $('[data-pl="full"]', M.el); if (full) full.hidden = !M.cur && !M.amen && !(M.s > startView()[0] * 1.15);
     moreCue();
@@ -823,7 +828,7 @@
     if (a === 'vid') { var L = VPK[b.getAttribute('data-vk')] || [], i0 = +b.getAttribute('data-i') || 0, Q = L.slice(i0).concat(L.slice(0, i0)).map(function (v) { return { u: vidU(v), c: v.a + ' · Pickathon ' + v.y }; });
       if (Q.length > 1 && window.__pkRadio) window.__pkRadio(Q, ''); else if (Q[0] && window.__pkPlayVid) window.__pkPlayVid(Q[0].u, Q[0].c); return; }   /* tap one: the five play in a row */
     if (a === 'vall') { go('watch', { hood: b.getAttribute('data-h') }); return; }
-    if (a === 'xp') { TOP.xp = b.getAttribute('data-e'); TOP.all = false; var sc = scroller(); drawTop(); xbDraw(); return; }
+    if (a === 'xp') { TOP.xp = b.getAttribute('data-e'); TOP.all = false; if (M) { M.xp = TOP.xp; lit(); } var sc = scroller(); drawTop(); xbDraw(); var sh = $('#pkpl-top .pkpl-sheet'); if (sh) sh.scrollTop = 0; return; }   /* Zale, Nov 22: switching here also switches the row and the map */
   }
   /* sideways swipe on the sheet steps to the next place (phone, tablet; a mouse drag on desktop) */
   (function swipe() {
@@ -834,7 +839,7 @@
   })();
   /* the phone card: the bar is the handle; drag it down to fold, up to open, or tap it to flip */
   function cardEl() { return document.getElementById('pkpl-top'); }
-  function foldY() { var c = cardEl(), b = c ? parseFloat(getComputedStyle(c).bottom) || 0 : 0; return sheetOpen() - 56 + b; }   /* folded: only the bar with the logo and name shows above the tab bar (Zale, Nov 21) */
+  function foldY() { var c = cardEl(), b = c ? parseFloat(getComputedStyle(c).bottom) || 0 : 0; return sheetOpen() - 56 + (V2 && !wide() ? 0 : b); }   /* Nov 22: on phone the folded bar sits right above the experience row, which stays above the nav */   /* folded: only the bar with the logo and name shows above the tab bar (Zale, Nov 21) */
   function setFold(f) { var el = cardEl(); if (!el) return; el.classList.add('pkpl-anim'); el.classList.toggle('pkpl-folded', !!f); el.style.setProperty('--pkpl-y', (f ? foldY() : 0) + 'px'); document.documentElement.style.setProperty('--pkpl-y', (f ? foldY() : 0) + 'px');   /* the chip row above the sheet follows it */ if (M.cur && !wide()) setTimeout(function () { if (M.cur) recenter(); }, 420); setTimeout(chipsAboveFold, 360);   /* after the sheet has finished sliding, so the strip above it is measured at rest */   /* the map re-centers on the selected place in the strip that shows */ var b = el.querySelector('.pkpl-bar'); if (b) b.setAttribute('aria-expanded', String(!f)); }
   (function sheetDrag() {
     /* Nov 20 (Zale): the bar is a handle. Three rests: full frame (pulled up past open), open (the default: a little map above), and folded (a thin bar). A pull down of about 30% of the travel folds it; a pull up past half the map strip takes the whole frame. */

@@ -730,3 +730,20 @@ html body.pkpl-v2p #root #pkpl .pkpl-psall{display:inline;min-height:44px;paddin
 #root #pkpl .pkpl-et-right{transform:translate(-100%,-50%)}
 #root #pkpl .pkpl-et-left{transform:translateY(-50%)}
 .pkpl-pinch .pkpl-edge,.pkpl-moving .pkpl-edge{opacity:0}
+
+/* Nov 22 (Zale): one navigation model on neighborhood pages */
+#root #pkpl-top .pkpl-kind.pkpl-kx{display:inline-flex;align-items:center;gap:8px;color:#F2CF62;text-shadow:0 1px 6px rgba(0,0,0,.65)}
+#root #pkpl-top .pkpl-kci{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:6px;background:#F2EDE3;color:#12160F;text-shadow:none}
+#root #pkpl-top .pkpl-kci svg{width:15px;height:15px}
+#root #pkpl-top .pkpl-hero .pkpl-arr{display:none}
+#root #pkpl-top .pkpl-stepl{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:10px 12px 2px}
+#root #pkpl-top .pkpl-stepl button{min-height:44px;padding:0 12px;border:1px solid rgba(242,237,227,.4);border-radius:22px;background:none;color:#F2EDE3;font:700 14px/1 'Bricolage Grotesque',system-ui,sans-serif;white-space:nowrap;cursor:pointer}
+#root #pkpl-top .pkpl-stepl span{font:600 12px/1.2 'Bricolage Grotesque',system-ui,sans-serif;color:rgba(242,237,227,.6);text-align:center}
+#root #pkpl-top .pkpl-also .pkpl-at{display:flex!important;flex-wrap:wrap;gap:8px;grid-template-columns:none!important}
+#root #pkpl-top .pkpl-also .pkpl-axc{display:inline-flex;align-items:center;gap:8px;width:auto!important;height:44px!important;min-height:44px;aspect-ratio:auto!important;padding:0 14px;border:1px solid rgba(242,237,227,.5);border-radius:6px;background:none;color:#F2EDE3;font:700 15px/1 'Bricolage Grotesque',system-ui,sans-serif;cursor:pointer}
+#root #pkpl-top .pkpl-also .pkpl-axc svg{width:18px;height:18px}
+#root #pkpl-top .pkpl-also .pkpl-axc b{font-weight:700;color:#F2EDE3}
+#root #pkpl-top .pkpl-bn small{font-weight:600;color:#E9B93C}
+html body #root .pkpl-xb .pkpl-xe.quiet{opacity:1!important}
+html body.pkpl-hood:not(.pkpl-wide) #root #pkpl .pkpl-xb{z-index:7;background:#12160F}   /* Nov 22: the row stays on top, right above the nav; the folded bar shows above it */
+html body.pkpl-v2p.pkpl-hood #pkpl-top.pkpl-folded{clip-path:inset(0 0 var(--pkpl-y,0px) 0)}   /* the folded sheet stops at the row instead of sliding under it */
