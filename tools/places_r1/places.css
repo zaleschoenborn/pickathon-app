@@ -117,7 +117,7 @@ body.pkpl-hood #root .pk-hd-w>.pk-hd-cols{order:0}
 body.pkpl-hood #root .pk-hd-w>.pk-hd-desc0{order:1;margin-top:22px}   /* the hook is the short description; the long one follows the video */
 body.pkpl-hood .pk-hd-links>li:first-child{display:none}   /* no map link at the bottom (rulebook) */
 body.pkpl-hood .pk-hd-vid{margin-top:16px}
-body.pkpl-on [aria-label="Listen"]{display:none!important}
+/* Listen stays in the header on the map and neighborhood pages (Zale, Nov 22 06:33: rulebook, icon only on phone) */
 #pkpl-sp{display:none}
 @media (min-width:700px) and (max-width:1199px){
   .pkpl-hero{height:clamp(300px,34svh,380px)}

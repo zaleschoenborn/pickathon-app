@@ -114,15 +114,16 @@
     gestures(el);
     return M;
   }
-  function minS() { if (V2 && wide()) { var cy = farmY(); return M.vh / (cy[1] - cy[0]) / 0.9; }   /* the callers allow 0.9 of this, so the farm's own height (not the art's empty bottom) fits the screen exactly */ if (v2p()) { var cr = clear(); return Math.min(M.vw / W, cr.h / H); }   /* phone: the whole farm fits the strip above the sheet */ return Math.min(M.vw / W, M.vh / H); }   /* MOCK: desktop zooms out no further than the farm's height */
+  function minS() { if (V2 && wide()) { var cy = farmY(); return M.vh / (cy[1] - cy[0]) / 0.9; }   /* the callers allow 0.9 of this, so the farm's own height (not the art's empty bottom) fits the screen exactly */ if (v2p()) return M.vw / 1700 / 0.9;   /* phone: the whole farm fits the strip above the sheet */ return Math.min(M.vw / W, M.vh / H); }   /* MOCK: desktop zooms out no further than the farm's height */
   function maxS() { return 2.6 * TF / (window.devicePixelRatio || 1); }
   function farmY() { return [0, union(ids())[3] + 40]; }   /* MOCK: the farm from the forest's top edge to just below the camps */
   function clampView(s, tx, ty) {   /* keep some map on screen */
     s = Math.max(minS() * 0.9, Math.min(maxS(), s));
-    if (V2 && wide()) {   /* MOCK (Zale, Nov 21): top and bottom lock to the screen; zoomed in, a little margin; zoomed all the way out, none */
+    if (V2 && (wide() || v2p())) {   /* MOCK (Zale, Nov 21): top and bottom lock to the screen; zoomed in, a little margin; zoomed all the way out, none */
       var cy = farmY(), t0 = cy[0] * s, b0 = cy[1] * s, m = Math.min(28, Math.max(0, (s / (minS() * 0.9) - 1) * 120));
-      ty = b0 - t0 >= M.vh ? Math.min(m - t0, Math.max(M.vh - b0 - m, ty)) : (M.vh - t0 - b0) / 2;
-      var l0 = 280 * s, r0 = 1980 * s, lc = top().r !== 'hood' ? lw() : 0;   /* left and right lock too: the farm (map units 280-1980) reaches under the column and to the right edge, no dark gap either side (Zale, Nov 21) */
+      var vb = v2p() ? clear() : { y: 0, h: M.vh };   /* phone: the farm may slide until its bottom reaches the top of the sheet */
+      ty = b0 - t0 >= vb.h ? Math.min(m - t0, Math.max(vb.y + vb.h - b0 - m, ty)) : vb.y + (vb.h - t0 - b0) / 2;
+      var l0 = 280 * s, r0 = 1980 * s, lc = !wide() ? 0 : top().r !== 'hood' ? lw() : 0;   /* left and right lock too: the farm (map units 280-1980) reaches under the column and to the right edge, no dark gap either side (Zale, Nov 21) */
       if (r0 - l0 >= M.vw) tx = Math.min(-l0, Math.max(M.vw - r0, tx));
       else if (r0 - l0 >= M.vw - lc) tx = Math.min(lc - l0, Math.max(M.vw - r0, tx));   /* Nov 21: narrower than the screen but wider than the space beside the column: it may slide anywhere from the column's edge to the right edge, so a place at the side (the Refuge) stays in view */
       else tx = lc + (M.vw - lc - (r0 - l0)) / 2 - l0;
@@ -221,7 +222,8 @@
     if (M.cur) frame(M.cur);   /* then glide to the place's framing for the new box */
   }
   function startView() {   /* desktop and sideways tablet: the festival core fills the width (the full farm is a narrow strip); phone: the whole farm */
-    if (!wide()) return v2p() ? fitBox([280, 0, 1980, farmY()[1]], clear(), 8) : fitBox([0, 0, W, H], { x: 0, y: 0, w: M.vw, h: M.vh }, 8);
+    if (v2p()) { var cr0 = clear(), b0 = union(CORE), s0 = M.vw / 1700; return [s0, -280 * s0, cr0.y + cr0.h / 2 - (b0[1] + b0[3]) / 2 * s0]; }   /* Zale, Nov 22 06:35: phone and tablet fill the screen like desktop: the farm's width edge to edge, the core centered in the strip above the sheet */
+    if (!wide()) return fitBox([0, 0, W, H], { x: 0, y: 0, w: M.vw, h: M.vh }, 8);
     var b = union(CORE), s = M.vw / 1700;   /* the farm's own width (map units 280-1980) fills the screen */
     return [s, M.vw / 2 - 1130 * s, M.vh / 2 - (b[1] + b[3]) / 2 * s];
   }
