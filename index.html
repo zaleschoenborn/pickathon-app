@@ -13177,10 +13177,10 @@ window.pkClimbRank = function (C, dd) {
        "Pickathon YYYY" in the caption. Photo plays, words open the archive at that artist. See all Discoveries under it. Filled by drawBand(). */
     var hBand = '<div class="h2-bt h2-bt-s5"><p class="h2-btk">Why Pickathon?</p><p class="h2-btn" aria-hidden="true">1</p><h2 class="h2-bth" id="h2-h5">See bands before they\u2019re big</h2></div><section class="h2-s h2-s5" aria-labelledby="h2-h5">' +
       '<div class="h2-s5head"><div><p class="h2-btl">Few people knew these bands before Pickathon.</p></div>' +
-      '<div class="h2-cc-nav"><button type="button" class="h2-pill h2-s5top h2-anb" data-h2="alldisc">See all Discoveries</button><button type="button" class="h2-ib" data-h2="cprev" aria-label="Previous discoveries">' + CHEV + '</button><button type="button" class="h2-ib" data-h2="cnext" aria-label="More discoveries">' + CHEV + '</button></div></div>' +
+      '<div class="h2-cc-nav"><button type="button" class="h2-pill h2-s5top h2-anb" data-h2="alldisc">The 2027 lineup</button><button type="button" class="h2-ib" data-h2="cprev" aria-label="Previous discoveries">' + CHEV + '</button><button type="button" class="h2-ib" data-h2="cnext" aria-label="More discoveries">' + CHEV + '</button></div></div>' +
       '<div class="h2-ccw"><div class="h2-cc-r" data-h2="cards" role="list" aria-label="Discoveries, ranked by how big they are today"></div>' +
       '<button type="button" class="h2-arw h2-arl" data-h2="cprev" aria-label="Previous discovery">' + CHEV + '</button><button type="button" class="h2-arw h2-arr" data-h2="cnext" aria-label="Next discovery">' + CHEV + '</button></div>' +
-      '<div class="pk-cl-btns h2-two"><button type="button" class="pk-bkb pri pk-cl-ex" data-h2="alldisc">See all Discoveries</button></div></section>';
+      '<div class="pk-cl-btns h2-two"><button type="button" class="pk-bkb pri pk-cl-ex" data-h2="alldisc">The 2027 lineup</button></div></section>';
     return hP + hBand + hPoster + hPlace + hPress + h;   /* Zale, Nov 12 night: the poster is the proof and follows the stories; neighborhoods lead into the ticket line. Current architecture, not a hard rule (see home_poster_frame_nov12.md) */
   }
   /* the hero's sale line and its one button (5174 wording). Before the round: "Holiday Sale opens Nov 19, 10 am PT" + Alert me when it opens (the
@@ -13389,10 +13389,11 @@ window.pkClimbRank = function (C, dd) {
         '<span class="h2-cc-k">' + (function (k) { var pr = String(k).split(/\s*·\s*/); return '<span class="h2-cc-cls">' + esc(pr[0]) + '</span>' + (pr[1] ? '<span class="h2-cc-gen">' + esc(pr.slice(1).join(' · ')) + '</span>' : ''); })(a.kind) + '<span class="h2-cc-y">' + esc(a.y) + '</span></span><span class="h2-d h2-cc-n pkp-head">' + esc(a.n) + '</span>' +
         (HB[a.n] || a.line ? '<span class="h2-cc-bl">' + esc(HB[a.n] || a.line) + '</span>' : '') + (cap ? '<span class="h2-cc-c">' + esc(cap) + '</span>' : '') + '</button>' +
         '<span class="h2-cc-yt" aria-hidden="true">' + esc(a.y) + '</span>' +
-        '<button type="button"' + ti + ' class="h2-ccx" data-h2="alldisc">Explore all ' + (window.__pkNDisc ? window.__pkNDisc + ' ' : '') + 'Discoveries ' + CHEV + '</button></article>';   /* Zale Nov 15: the way to all of them sits on the card, lower right, like Explore <neighborhood> */
+        '<button type="button"' + ti + ' class="h2-ccx" data-h2="cardarch">Explore all Discoveries ' + CHEV + '</button></article>';   /* Zale Nov 15: the way to all of them sits on the card, lower right, like Explore <neighborhood> */
     }).join('');
     guard(box); s._L = L; box._K = K; box._N = A.length;
-    if (window.__pkNDisc) $$('.h2-two [data-h2="alldisc"], .h2-cc-nav [data-h2="alldisc"]', root).forEach(function (b) { b.textContent = 'See all ' + window.__pkNDisc + ' Discoveries'; });
+    /* Zale Nov 21: reason 1's button points forward, to who's next: the 2027 lineup (Remind me first, past summers below it) */
+    $$('.h2-two [data-h2="alldisc"], .h2-cc-nav [data-h2="alldisc"]', root).forEach(function (b) { b.textContent = preDrop() ? 'Hear the ' + YEAR + ' lineup first' : 'See the ' + YEAR + ' lineup'; });
     loopHome(box);
     if (!box._lp) { box._lp = 1; var tmo = 0; box.addEventListener('scroll', function () { clearTimeout(tmo); tmo = setTimeout(function () { loopFix(box); }, 140); }, { passive: true });
       cardsBox = box; if (!cardsRz) { cardsRz = 1; window.addEventListener('resize', function () { if (cardsBox && cardsBox.isConnected) loopHome(cardsBox, true); }); } }   /* Nov 14 leak fix: one resize listener for the current card row; a new one per Home draw kept every old Home alive (about 1,100 page elements per visit, the iPhone blank and reload) */
@@ -13740,7 +13741,8 @@ window.pkClimbRank = function (C, dd) {
     var a = b.getAttribute('data-h2');
     if (a === 'cnext') { cardStep(1); return; }
     if (a === 'cprev') { cardStep(-1); return; }
-    if (a === 'alldisc') { toArchive(null); return; }
+    if (a === 'alldisc') { go('lineup'); return; }
+    if (a === 'cardarch') { toArchive(null); return; }
     if (a === 'barch' || a === 'bph') { var sl = $('.h2-s5', root), ba = sl && sl._L && sl._L[+b.getAttribute('data-i')]; if (!ba) return;
       if (a === 'barch' || !ba.vu) { toArchive(ba.n); return; }
       try { if (/open\.spotify\.com/.test(ba.vu) && window.__pkOpenMusic) { window.__pkOpenMusic(ba.vu); return; } if (window.__pkPlayVid) { var cc = clipCap(ba); window.__pkPlayVid(ba.vu, ba.n + (cc && cc !== 'Listen' ? ' · ' + cc : '') + ' · Pickathon ' + ba.y); } } catch (x) {} return; }
