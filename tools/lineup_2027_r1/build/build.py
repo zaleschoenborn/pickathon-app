@@ -602,6 +602,20 @@ for _lst in (disc, leg, deep):
         _st[0 if int(_x[1]) in _yy else (1 if _yy and min(_yy) > int(_x[1]) else 2)] += 1
     print('archive clips: same year %d, later year %d, earlier year %d' % tuple(_st))
     _lst[:] = _keep
+# r42 (Zale, Nov 22): top-ranked Discoveries in one batch for Home (design_home-40): same cards, same clips, same tags as the Archive
+_mag = {}
+for _r in csv.DictReader(open(ROOT + 'class_table_v163.csv', encoding='utf-8')):
+    if _r.get('site_row') == 'yes' and _r.get('class') == 'Discovery':
+        try: _mag[(_aslug(_r.get('lineup_act') or _r['act']), _r['year'])] = float(_r.get('magnitude_dec') or 0)
+        except ValueError: pass
+_rows = []
+for x in disc:
+    _y = str(x[1]); _rows.append((_mag.get((_aslug(x[0]), _y), 0), x[0], _y, archive_clip(x[0], x[1]), '|'.join(tags_of(x[0]))))
+_rows.sort(key=lambda r: (-r[0], r[1]))
+with open(ROOT + 'home_top_discoveries.csv', 'w', newline='', encoding='utf-8') as _f:
+    _w = csv.writer(_f); _w.writerow(['rank', 'act', 'first_year', 'magnitude_dec', 'clip_url', 'tags'])
+    for _i, r in enumerate(_rows, 1): _w.writerow([_i, r[1], r[2], r[0], r[3], r[4]])
+
 bars = [(1, [58, 34]), (1, [70]), (2, [40, 44]), (2, [30, 26, 30]), (3, [22, 28, 20, 18]), (3, [18, 24, 16, 26]), (4, [14, 18, 12, 16, 14]), (4, [12, 16, 18, 12, 10])]
 barh = ''.join('<div class="br b%d">%s</div>' % (lv, ''.join('<i style="width:%d%%"></i>' % w for w in ws)) for lv, ws in bars)
 s1 = header('Lineup', 'Aug 5–8, 2027', back=False)
