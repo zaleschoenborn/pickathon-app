@@ -35,10 +35,10 @@
   function data() { return site().data || null; }
   function top() { var s = site().stack || []; return s[s.length - 1] || {}; }
   function go(r, x) { var a = app(); if (a && a.go) a.go(r, x || {}); }
-  var V2Q = /[?&]v2/.test(location.search), V2 = !/[?&]v1\b/.test(location.search), V2G = (location.search.match(/[?&]g=(\w+)/) || [])[1] || 'strong';   /* Zale Nov 22 00:39 'build it': the left-column layout is live on desktop; the phone panel stays behind ?v2; ?v1 shows the old desktop */   /* MOCK Nov 21: left-column layout, gradient strength */
+  var V2Q = !/[?&]v1\b/.test(location.search), V2 = !/[?&]v1\b/.test(location.search), V2G = (location.search.match(/[?&]g=(\w+)/) || [])[1] || 'strong';   /* Zale Nov 22 00:39 'build it': the left-column layout is live on desktop; phone and tablet too since Nov 22 00:50; ?v1 shows the old layout */   /* MOCK Nov 21: left-column layout, gradient strength */
   var V2L = (location.search.match(/[?&]L=(\w+)/) || [])[1] || 'tiles';   /* MOCK: long-list style, tiles or cols */
   /* MOCK Nov 21 (Zale): a rough 2027 palette painted over today's map to judge it; provisional kit colors (near-black #2E292A, mauve #85506A, gold #BF9D27, pink #E5B6CC), official swatches pending from Artwork */
-  var PAL27 = /[?&]pal=27/.test(location.search) || (!/[?&]pal=26/.test(location.search) && (window.innerWidth >= 1200 || (window.innerWidth >= 900 && window.innerWidth > window.innerHeight)));   /* 2027 map look on desktop (Zale Nov 22); phones keep the 2026 look until their check */
+  var PAL27 = !/[?&]pal=26/.test(location.search);   /* 2027 map look everywhere (Zale Nov 22 00:50: phone, tablet and desktop) */   /* 2027 map look on desktop (Zale Nov 22); phones keep the 2026 look until their check */
   /* Artwork's 2027 map fills (artwork-47, from Travis's binder inks): light tier and deep tier, alternating between neighbors */
   var P27 = { woods: '#D1A47D', cherryhill: '#D79D98', grove: '#8A7632', windmill: '#D79D98', paddock: '#D1A47D', galaxy: '#976D48', lucky: '#C2AD6A', farmhouse: '#D79D98', curation: '#9D6762',
     refuge: '#D19CB4', coyote: '#97667D', courtyard: '#D19CB4', market: '#97667D', orchard: '#97667D', quailtrail: '#B5ABAE',
