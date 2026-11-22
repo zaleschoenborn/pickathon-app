@@ -13402,8 +13402,8 @@ window.pkClimbRank = function (C, dd) {
        Two clones at each end; when a swipe settles on a clone, the row jumps silently to the real card. */
     var A = sudoku(L.slice(0, NCARD)), K = Math.min(2, A.length), seq = [];
     /* Zale, Nov 15: the row opens on names a stranger already knows (Home only; the archive keeps the ranking) */
-    /* Zale Nov 22: the row opens on a random one of the top quarter by today's magnitude (the pinned three are retired); the rest keep their ranked order */
-    (function () { var top = Math.max(1, Math.ceil(A.length / 4)), j = Math.floor(Math.random() * top); if (j > 0) A.unshift(A.splice(j, 1)[0]); })();
+    /* Zale Nov 22: the row opens on a random one of seven curated acts (Khruangbin always in the draw); the rest keep their ranked order */
+    (function () { var OPEN7 = ['Sturgill Simpson', 'Tyler Childers', 'Khruangbin', 'Billy Strings', 'Caamp', 'Leon Bridges', 'The War on Drugs'], at = []; A.forEach(function (x, k) { if (OPEN7.indexOf(x.n) >= 0) at.push(k); }); if (!at.length) return; var j = at[Math.floor(Math.random() * at.length)]; if (j > 0) A.unshift(A.splice(j, 1)[0]); })();
     L = A;   /* data-i indexes this order */
     for (var q = A.length - K; q < A.length; q++) seq.push([q, 1]);
     A.forEach(function (x, q) { seq.push([q, 0]); });
