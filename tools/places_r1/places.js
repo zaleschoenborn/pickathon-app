@@ -115,6 +115,8 @@
     if (V2 && wide()) {   /* MOCK (Zale, Nov 21): top and bottom lock to the screen; zoomed in, a little margin; zoomed all the way out, none */
       var cy = farmY(), t0 = cy[0] * s, b0 = cy[1] * s, m = Math.min(28, Math.max(0, (s / (minS() * 0.9) - 1) * 120));
       ty = b0 - t0 >= M.vh ? Math.min(m - t0, Math.max(M.vh - b0 - m, ty)) : (M.vh - t0 - b0) / 2;
+      var l0 = 280 * s, r0 = 1980 * s, lc = top().r !== 'hood' ? lw() : 0;   /* left and right lock too: the farm (map units 280-1980) reaches under the column and to the right edge, no dark gap either side (Zale, Nov 21) */
+      tx = r0 - l0 >= M.vw ? Math.min(-l0, Math.max(M.vw - r0, tx)) : lc + (M.vw - lc - (r0 - l0)) / 2 - l0;
     }
     if (M.free) return [s, tx, ty];   /* a place was framed: its centre may sit past the map's edge (Zale, Nov 20) */
     var mw = W * s, mh = H * s, pad = 60;
