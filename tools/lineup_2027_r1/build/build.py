@@ -552,6 +552,11 @@ def _fill(lst, kind, want):
     extra = sorted(first.values(), key=lambda t: (not t[3], -t[5]))
     lst.extend(t[:5] for t in extra)
 _fill(disc, 'disc', 0); _fill(leg, 'leg', 0); _fill(deep, 'deep', 0)
+# r40 (Zale, Nov 22: video only, hide the rest): the Archive draws only acts that have a song to play; counts follow the cards drawn
+for _lst in (disc, leg, deep):
+    _keep = [x for x in _lst if clip_for(x[0], x[1]) or clip_for(x[0])]
+    print('archive: %d cards with no song left out' % (len(_lst) - len(_keep)))
+    _lst[:] = _keep
 bars = [(1, [58, 34]), (1, [70]), (2, [40, 44]), (2, [30, 26, 30]), (3, [22, 28, 20, 18]), (3, [18, 24, 16, 26]), (4, [14, 18, 12, 16, 14]), (4, [12, 16, 18, 12, 10])]
 barh = ''.join('<div class="br b%d">%s</div>' % (lv, ''.join('<i style="width:%d%%"></i>' % w for w in ws)) for lv, ws in bars)
 s1 = header('Lineup', 'Aug 5–8, 2027', back=False)
