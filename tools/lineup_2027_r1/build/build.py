@@ -739,6 +739,13 @@ def tile(a, y, P, photo):
             '<span class="yt-n" style="font-size:max(var(--lab),%.1fpx)">%s</span>%s</a>') % (_aslug(n), E(n), P['paper'], P['ink'], P['ink2'], P['band'], KLAB[k], fs, '<br>'.join(E(x) for x in lines), foot)
 
 YREEL = {}
+_RF = json.load(open(ROOT + 'reel_focus.json'))
+def _rline(n, y, k):  # r50: the reel frame carries Copy Review's three-line card line (then -> now) when one exists
+    sl_ = ''.join(c for c in _ud.normalize('NFD', n.lower()) if c.isalnum() and ord(c) < 128)
+    for kk in (k, 'disc', 'leg', 'deep'):
+        v = _ALINES.get('%s|%s|%s' % (kk, sl_, y))
+        if v: return v
+    return ''
 def year_page(y):
     P = d['yearBrand'][y]; st = d['yearStory'].get(y, {}); yp = d['yearPhotos'].get(y, {})
     allb = d['yearBill'][y]
@@ -769,8 +776,9 @@ def year_page(y):
         rp = o.get('i') if (o.get('i') and loc(o['i']) and 'poster' not in o['i']) else ''
         p = ph(a) or rp or ARCHF.get((_canon(a['n']), y), '')
         clip = o.get('v') or archive_clip(a['n'], y)
-        if not p or 'poster' in p or not clip: continue  # every frame plays a song (Zale: 'we go to different videos if we can't find them')
-        sl.append({'i': img(p, 1100, 80), 'raw': p, 'pos': fpos(p, FOC), 'n': a['n'], 'k': KLAB[a['k']], 'g': gp_a(a), 'l': o.get('l', ''), 'clip': clip, 'sg': ''})
+        if not p or 'poster' in p or not clip or p in _RF['drop']: continue  # every frame plays a song (Zale: 'we go to different videos if we can't find them')
+        _fx = _RF['focus'].get(p)
+        sl.append({'i': img(p, 1100, 80), 'raw': p, 'pos': ('%s%% %s%%' % tuple(_fx)) if _fx else fpos(p, FOC), 'n': a['n'], 'k': KLAB[a['k']], 'g': gp_a(a), 'l': _rline(a['n'], y, a['k']) or o.get('l', ''), 'clip': clip, 'sg': ''})
         if len(sl) == 10: break
     if not sl and hero:
         sl = [{'i': img(hero[0], 1100, 80), 'raw': hero[0], 'n': hero[1], 'k': hero[2], 'g': hero[3], 'l': hero[4], 'clip': hero[6], 'sg': ''}]

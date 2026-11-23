@@ -83,10 +83,10 @@
       cap.textContent = now ? cap.dataset.now : cap.dataset.then; knob.setAttribute('aria-valuenow', now ? 1 : 0);
     }
     function begin() { measure(); busy = true; thenEl.hidden = true; nowEl.hidden = true; morph.hidden = false; }
-    function go(now) {
+    function go(now, slow) {
       if (p.classList.contains('all')) { settle(now); return; }
       cancelAnimationFrame(raf); if (!busy) begin(); flags(now);
-      var from = t, to = now ? 1 : 0, t0 = performance.now(), dur = 150 + 650 * Math.abs(to - from);
+      var from = t, to = now ? 1 : 0, t0 = performance.now(), dur = slow || (150 + 650 * Math.abs(to - from));
       (function step(n) { var k = Math.min(1, (n - t0) / dur); k = k < .5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2; t = from + (to - from) * k; render(); if (n - t0 < dur) raf = requestAnimationFrame(step); else settle(now); })(t0);
     }
     p.addEventListener('click', function (e) {
@@ -104,6 +104,19 @@
     function up(e) { if (!track.classList.contains('drag')) return; track.classList.remove('drag'); var now = frac(e) > 0.5; knob.style.left = ''; if (p.classList.contains('all')) settle(now); else go(now); }
     track.addEventListener('pointerup', up); track.addEventListener('pointercancel', up);
     knob.addEventListener('keydown', function (e) { if (e.key === 'ArrowRight') go(true); if (e.key === 'ArrowLeft') go(false); });
+    // r50 (Zale, Nov 22): the first time the poster is nearly in full view it plays once on its own: the booking lineup holds long
+    // enough to read (3 s), then slides slowly to today (2.4 s, the year counting over the knob) and stays there. Any tap first cancels it.
+    var touched = false; p.addEventListener('pointerdown', function () { touched = true; }, true); knob.addEventListener('keydown', function () { touched = true; });
+    if (window.IntersectionObserver && !(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)) {
+      var io = new IntersectionObserver(function (es) {
+        es.forEach(function (en) {
+          if (!en.isIntersecting || en.intersectionRatio < 0.6 || touched) return;
+          io.disconnect();
+          setTimeout(function () { if (!touched && t === 0 && !p.classList.contains('all') && p.offsetParent !== null) go(true, 2400); }, 3000);
+        });
+      }, { threshold: [0.6, 0.8] });
+      io.observe(p.querySelector('.po-names.then') || p);
+    }
   });
   document.querySelectorAll('.gp').forEach(function (gp) {
     // r29 (Zale, Nov 21): pick as many kinds of music as you like. "Everything" clears; the gold button closes the list.
