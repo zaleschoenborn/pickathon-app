@@ -1010,3 +1010,4 @@ html body #root #pkpl-top .pkpl-hi .pkpl-q{display:inline-flex!important;align-i
 html body #root #pkpl-top .pkpl-hi .pkpl-q svg,html body #root #pkpl-top .pkpl-hi .pkpl-q .pkpl-fi{width:16px!important;height:16px!important;min-width:0!important;flex:none}
 html body #root #pkpl-top .pkpl-hi .pkpl-q .pkpl-qi{display:inline-flex;gap:4px;align-items:center}
 html body #root #pkpl-top .pkpl-hi .pkpl-q,html body #root #pkpl-top .pkpl-hi .pkpl-q span{white-space:nowrap!important;font-size:14px!important;line-height:1!important}
+html body #root #pkpl-top .pkpl-hi .pkpl-q .pkpl-qp{display:inline-block!important;width:0!important;height:0!important;border-left:8px solid #F2EDE3!important;border-top:5px solid transparent!important;border-bottom:5px solid transparent!important;border-right:0!important;flex:none}
