@@ -1011,3 +1011,7 @@ html body #root #pkpl-top .pkpl-hi .pkpl-q svg,html body #root #pkpl-top .pkpl-h
 html body #root #pkpl-top .pkpl-hi .pkpl-q .pkpl-qi{display:inline-flex;gap:4px;align-items:center}
 html body #root #pkpl-top .pkpl-hi .pkpl-q,html body #root #pkpl-top .pkpl-hi .pkpl-q span{white-space:nowrap!important;font-size:14px!important;line-height:1!important}
 html body #root #pkpl-top .pkpl-hi .pkpl-q .pkpl-qp{display:inline-block!important;width:0!important;height:0!important;border-left:8px solid #F2EDE3!important;border-top:5px solid transparent!important;border-bottom:5px solid transparent!important;border-right:0!important;flex:none}
+/* MOCK (Zale, Nov 23): the neighborhood page in two parts, your visit then the story */
+html body #root #pkpl-top h2.pkpl-grp{margin:30px 20px 4px;padding-top:18px;border-top:1px solid #3A4331;font:400 24px/1.1 'Pickathon 2014','Bricolage Grotesque',sans-serif;letter-spacing:.04em;text-transform:uppercase;color:#F2EDE3}
+html body #root #pkpl-top h2.pkpl-grp:first-of-type{margin-top:22px}
+html body.pkpl-wide #root #pkpl-top h2.pkpl-grp{margin-left:16px;margin-right:16px;font-size:21px}

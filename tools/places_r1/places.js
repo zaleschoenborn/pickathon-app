@@ -692,9 +692,9 @@
       (has ? '<section class="pkpl-sc" aria-label="Schedule at ' + esc(h.n) + '"><div class="pkpl-days" role="group" aria-label="Day">' + days.map(function (d) { return '<button type="button" class="pk-cta sec pkpl-chip" data-pk="day" data-d="' + d + '"' + (d === TOP.day ? ' aria-pressed="true"' : ' aria-pressed="false"') + '>' + esc(dayN[d] || d.slice(5)) + '</button>'; }).join('') + '</div>' +
         '<ol class="pkpl-sets">' + rows.slice(0, showN).map(function (s) { var A = (D.artists || {})[s.a] || {}; return '<li><span class="pkpl-st">' + tm(s.s) + '</span><span class="pkpl-sa"><b>' + esc(A.n || s.a) + '</b><small>' + esc(LBL[s.l] || '') + '</small></span></li>'; }).join('') + '</ol>' +
         (rows.length > 3 ? '<button type="button" class="pk-cta sec pkpl-whole" data-pk="whole" aria-expanded="' + TOP.all + '">' + (TOP.all ? 'Show less' : 'Whole day at ' + esc(h.n)) + '</button>' : '') + '</section>' : '') +
-      whatIs(h, has) +   /* Zale, Nov 22 (mission review): lead with what the place is now */
+      '<h2 class="pkpl-grp">' + esc(M0W.grpVisit || 'Your visit') + '</h2>' + whatIs(h, has) +   /* Zale, Nov 22 (mission review): lead with what the place is now */
       soon(k, XE, h, has) + vids(k, XE) +
-      alsoAt(k, XE, h) + yearIs(h) + '<div class="pkpl-credw"><div class="pkpl-cred"></div></div>' +   /* the last build is history, next to who built it */
+      alsoAt(k, XE, h) + '<h2 class="pkpl-grp">' + esc(M0W.grpStory || 'The story') + '</h2>' + yearIs(h) + '<div class="pkpl-credw"><div class="pkpl-cred"></div></div>' +   /* the last build is history, next to who built it */
       '</div>';
     setTimeout(railArrows, 400);
     el.innerHTML = html; (function () { var tt = $('.pkpl-hi .pkpl-tt', el), a1 = $('.pkpl-what .pkpl-ab1', el) || $('.pkpl-yr .pkpl-ab1', el); if (tt && a1 && tt.textContent.trim() === a1.textContent.trim()) a1.remove(); })();   /* never the same line twice (Architecture shows the hook on the photo) */ var cr9 = $('.pkpl-cred', el), cw9 = $('.pkpl-credw', el); if (cr9 && cw9) cw9.appendChild(cr9);   /* Nov 22 review: who built it comes after what's here */
