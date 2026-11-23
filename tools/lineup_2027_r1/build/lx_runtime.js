@@ -14,10 +14,10 @@
 
   /* which screen the current route shows, or '' to leave the route to the older page */
   window.__lxKey = function (R, cur, st) {
-    if (/[?&]old=lineup/.test(location.search)) return '';
     /* Site Build Nov 22 (Zale: the old Lineup page flashed for ~0.8 s before the new one): the 2027 page and year pages are claimed at once
        (they don't need the index); an artist page holds an empty frame ('wait') until the index arrives, instead of drawing the old page */
-    if (R === 'lineup') return (!cur.keepArch && !st.luArch && (st.lineup || 'music') === 'music' && (st.season || 'off') === 'off') ? 's1' : '';
+    /* cut 2 (Zale Nov 22, old Lineup removed): every Lineup route lands on the 2027 page, which holds the Archive; the old Archive view, non-music tabs and season variants are gone */
+    if (R === 'lineup') return 's1';
     if (R === 'past') return (IDX ? IDX.years.indexOf(String(cur.y)) >= 0 : YRS.test(String(cur.y))) ? 'y' + cur.y : '';
     if (R === 'act') { if (!IDX) return IDXDEAD ? '' : 'wait'; var s = pageSlug(cur.n); return s ? 'a/' + s : ''; }
     return '';
