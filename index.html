@@ -14899,6 +14899,16 @@ html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-pl.pkpl-cols.pkpl-c3 .pkpl-pr.pkpl
 html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-title:not(.pkpl-tv) .pkpl-pc{flex-wrap:nowrap}
 html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-pc .pkpl-pcn{letter-spacing:.1em;white-space:nowrap}
 @media (max-width:1400px){html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-pc .pkpl-pcn{font-size:11px;letter-spacing:.08em}html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-pc{gap:8px}}
+/* Zale, Nov 22 17:50: phone neighborhood photo fades into the page at the bottom so the half-open sheet reads as "there's more" */
+@media (max-width:599px){html body.pkpl-v2p #root #pkpl-top .pkpl-hero::after{content:"";position:absolute;left:0;right:0;bottom:0;height:56px;background:linear-gradient(180deg,rgba(43,38,40,0) 0,rgba(43,38,40,.85) 70%,#2B2628 100%);pointer-events:none;z-index:2}
+}
+/* desktop is back to the map icons (Zale 17:50), a touch bigger now that the headline steps aside */
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-pl.pkpl-cols .pkpl-pr img{width:calc(var(--pkpl-rh,44px) * .76);height:calc(var(--pkpl-rh,44px) * .76);opacity:.9}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-pl.pkpl-cols.pkpl-c3{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-pl.pkpl-cols.pkpl-c3 .pkpl-pr{gap:6px;padding-left:0;padding-right:0}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-pl.pkpl-cols.pkpl-c3 .pkpl-pr b{font-size:14.5px;line-height:1.1;white-space:normal}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-pl.pkpl-cols.pkpl-c3 .pkpl-pr b{overflow:visible;text-overflow:clip;font-size:14px}html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-pl.pkpl-cols.pkpl-c3 .pkpl-pr span{min-width:0;overflow:visible}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-pl.pkpl-cols.pkpl-c3 .pkpl-pr b{white-space:normal!important;font-size:14px!important;line-height:1.1!important}html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-pl.pkpl-cols.pkpl-c3 .pkpl-pr{padding-left:0!important;padding-right:0!important}
 </style>
 <script id="pk-places">
 /* pk-places: Places map and neighborhood pages, round 1 (Nov 13 2026). Source: tools/places_r1/places.js, spliced into index.html by tools/places_r1/build.py.
@@ -15323,7 +15333,7 @@ html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-pc .pkpl-pcn{letter-spacing:.1em;w
       return;
     }
     if (pl && !M.xp && !M.amen) { pl.innerHTML = '<div class="pkpl-pg">' + XO.map(function (e) { return '<button type="button" class="pkpl-xe" data-xp="' + e + '">' + xpIcon(e) + '<span>' + e + '</span></button>'; }).join('') + '</div>'; return; }   /* arrival: choose your adventure right under the title */
-    if (pl) pl.innerHTML = L.length ? L.map(function (k) { var h = data().hoods[k]; return '<button type="button" class="pkpl-pr pkpl-prp" data-hp="' + k + '">' + pic(M.xp, k) + '<span><b>' + esc(h.n) + '</b><small>' + esc(xpLine(M.xp, k)) + '</small></span></button>'; }).join('') : '';
+    if (pl) pl.innerHTML = L.length ? L.map(function (k) { var h = data().hoods[k]; return '<button type="button" class="pkpl-pr" data-hp="' + k + '"><img src="' + esc(emb(k)) + '" alt=""><span><b>' + esc(h.n) + '</b><small>' + esc(xpLine(M.xp, k)) + '</small></span></button>'; }).join('') : '';
     if (v2 && pl) { pl.classList.remove('pkpl-cmp'); pl.classList.add('pkpl-cols'); pl.classList.remove('pkpl-c1'); pl.classList.toggle('pkpl-c3', false); t.classList.add('pkpl-long'); fitList(pl, t, L.length); }
     if (v2) { if (pl) pl.classList.remove('pkpl-many'); t.classList.remove('pkpl-tight', 'pkpl-tight2', 'pkpl-tight3', 'pkpl-tight4', 'pkpl-tight5', 'pkpl-tight6'); return; }
     if (pl && wide()) { pl.classList.remove('pkpl-many'); t.classList.remove('pkpl-tight', 'pkpl-tight2', 'pkpl-tight3', 'pkpl-tight4', 'pkpl-tight5', 'pkpl-tight6'); var over = function () { return t.scrollHeight > t.clientHeight + 2; };   /* fit without scrolling: full rows, then a compact grid, then a tighter title (Zale, Nov 19) */
