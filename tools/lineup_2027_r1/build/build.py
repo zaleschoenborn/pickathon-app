@@ -352,13 +352,17 @@ LOGO = img('logo27-gold.png', 300, fmt='PNG')
 
 def header(title, sub, back=True, chip=None):
     t = '<span class="hd-t"><b>%s</b>%s</span>' % (E(title), ('<i>%s</i>' % E(sub)) if sub else '')
+    # r52 (Zale, Nov 22 18:35): the live app strips this page's header, so the year switch lives in its own bar under the sale strip
     if chip:
         # r45 (Zale, Nov 22): the year switch must be obvious on every Lineup page, 2027 included: 'Lineup 2027 >' opens every year
-        t = ('<label class="yrchip"><span class="yc-k">Lineup</span><b class="yc-y">%s</b><span class="yc-a" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M4 1.5l5 4.5-5 4.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>'
-             '<select class="ysel2" aria-label="Change lineup year">%s</select></label>') % (chip, '<option value="s1"%s>2027</option>' % (' selected' if chip == '2027' else '') + ''.join('<option value="y%s"%s>%s</option>' % (yy, ' selected' if yy == chip else '', yy) for yy in sorted(d['yearBill'].keys(), reverse=True)))
+        bar = ('<div class="yrbar"><label class="yrchip"><span class="yc-k">Lineup</span><b class="yc-y">%s</b><span class="yc-a" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M4 1.5l5 4.5-5 4.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>'
+             '<select class="ysel2" aria-label="Change lineup year">%s</select></label>') % (chip, '<option value="s1"%s>2027</option>' % (' selected' if chip == '2027' else '') + ''.join('<option value="y%s"%s>%s</option>' % (yy, ' selected' if yy == chip else '', yy) for yy in sorted(d['yearBill'].keys(), reverse=True))) + '</div>'
+        t = '<span class="hd-t"><b>Lineup</b><i>%s</i></span>' % chip
+    else:
+        bar = ''
     return ('<header class="hd">%s<img class="hd-logo" src="%s" alt="Pickathon 2027"><span class="hd-rule"></span>%s'
             '<span class="hd-sp"></span><button class="hd-listen" aria-label="Listen">%s</button><button class="hd-ic" aria-label="Search">%s</button></header>'
-            '<div class="sale"><span><b>Holiday Sale</b> · from $483</span><a href="#" class="sale-b">Get tickets <svg viewBox="0 0 12 12" width="11" height="11"><path d="M4 1.5l5 4.5-5 4.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></a></div>'
+            '<div class="sale"><span><b>Holiday Sale</b> · from $483</span><a href="#" class="sale-b">Get tickets <svg viewBox="0 0 12 12" width="11" height="11"><path d="M4 1.5l5 4.5-5 4.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></a></div>' + bar
             ) % (('<button class="hd-ic" aria-label="Back">%s</button>' % ICON['back']) if back else '', LOGO, t, ICON['note'], ICON['search'])
 
 TABBAR = ('<nav class="tabs">' + ''.join('<a href="#">%s<span>%s</span></a>' % (ICON[i], l) for i, l in
@@ -558,7 +562,7 @@ _ALINES = json.load(open(ROOT + 'arch_lines.json'))  # r44: Copy Review's one li
 def vcard(n, y, k, g, p, pos):
     h = _vcard(n, y, k, g, p, pos)
     ln = _ALINES.get('%s|%s|%s' % (k, ''.join(c for c in _ud.normalize('NFD', n.lower()) if c.isalnum() and ord(c) < 128), y), '')
-    h = h.replace('</span><span class="cstory">', '</span><span class="cline">%s</span><span class="cstory">' % E(ln), 1) if ln and '<span class="cstory">' in h else h
+    # r52 (Zale, Nov 22 18:35): no blurb on the small two-up Archive cards; the three-line line lives on the reels and larger previews
     q = act_queue(n, y)  # r51: the player queues this act's songs across the years, starting with this card's
     return h.replace('<span class="pz" data-clip=', '<span class="pz" data-q="%s" data-clip=' % _h.escape(q, quote=True), 1) if q.count(';;') else h
 def _vcard(n, y, k, g, p, pos):

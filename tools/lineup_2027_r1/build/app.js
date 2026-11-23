@@ -42,7 +42,7 @@
       segs.forEach(function (s, x) { s.classList.remove('on'); s.classList.toggle('done', x < i); });
       void hero.offsetWidth; segs[i].classList.add('on');
     }
-    function live() { return hero.offsetParent !== null && !document.hidden && !document.querySelector('.pkvid'); }
+    function live() { return !!hero.getClientRects().length && !document.hidden && !document.querySelector('.pkvid'); }  // r53: offsetParent is null inside the app's fixed shell
     function restart() { clearInterval(timer); timer = setInterval(function () { if (live()) go(i + 1); }, T); }
     hero.querySelector('.segs').addEventListener('click', function (e) { var s = e.target.closest('[data-slide]'); if (!s) return; e.stopPropagation(); go(+s.dataset.slide); restart(); });
     restart();
@@ -132,13 +132,15 @@
     knob.addEventListener('keydown', function (e) { if (e.key === 'ArrowRight') go(true); if (e.key === 'ArrowLeft') go(false); });
     // r50 (Zale, Nov 22): the first time the poster is nearly in full view it plays once on its own: the booking lineup holds long
     // enough to read (3 s), then slides slowly to today (2.4 s, the year counting over the knob) and stays there. Any tap first cancels it.
-    var touched = false; p.addEventListener('pointerdown', function () { touched = true; }, true); knob.addEventListener('keydown', function () { touched = true; });
+    // r53: only a real choice cancels it (a lineup button, the track or the knob), never a finger scrolling across the poster
+    var touched = false; p.querySelectorAll('.po-b, .po-track, .po-all').forEach(function (x) { x.addEventListener('pointerdown', function () { touched = true; }); }); knob.addEventListener('keydown', function () { touched = true; });
+    function shown(el) { return !!(el && el.getClientRects().length); }
     if (window.IntersectionObserver && !(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)) {
       var io = new IntersectionObserver(function (es) {
         es.forEach(function (en) {
           if (!en.isIntersecting || en.intersectionRatio < 0.6 || touched) return;
           io.disconnect();
-          setTimeout(function () { if (!touched && t === 0 && !p.classList.contains('all') && p.offsetParent !== null) go(true, 2400); }, 3000);
+          setTimeout(function () { if (!touched && t === 0 && !p.classList.contains('all') && shown(p)) go(true, 2400); }, 3000);
         });
       }, { threshold: [0.6, 0.8] });
       io.observe(p.querySelector('.po-names.then') || p);

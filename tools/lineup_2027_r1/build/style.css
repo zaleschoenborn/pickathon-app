@@ -738,3 +738,18 @@ h2{font-family:var(--display);font-weight:400;font-size:27px;line-height:1.14;le
 @media (min-width:1000px){.yrtop .p27 .p27-in{padding-left:40px;padding-right:40px}}
 .ypick{padding:26px 18px 0}
 .ypick .gp{max-width:420px}
+
+/* r52 (Zale, Nov 22 18:35): the year switch has its own bar under the sale strip (the live app keeps its own header); the music picker in the Archive bar reads cleanly on phone */
+.yrbar{display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--ground);border-bottom:1px solid var(--line)}
+.yrbar .yrchip{display:inline-flex;align-items:center;gap:10px;position:relative;height:46px;padding:0 8px 0 14px;border:2px solid var(--gold,#D6B54A);border-radius:6px;cursor:pointer}
+.yrbar .yrchip .yc-k{font-family:var(--text);font-size:12px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;color:var(--cream);align-self:center;grid-column:auto;grid-row:auto}
+.yrbar .yrchip .yc-y{font-family:var(--display);font-size:26px;letter-spacing:.04em;color:#fff;line-height:1}
+.yrbar .yrchip select{position:absolute;inset:0;opacity:0;width:100%;height:100%;margin:0;padding:0;cursor:pointer;font-size:16px}
+.yrbar .yrchip svg{grid-column:auto;grid-row:auto}
+@media (min-width:1000px){.yrbar{padding-left:max(64px,calc((100% - 1152px)/2))}}
+@media (max-width:640px){
+  .bkw.one .gpc .gp-b{min-height:58px!important;padding:6px 14px!important;gap:3px!important;overflow:visible}
+  .bkw.one .gpc .gp-q{font-size:12px!important;line-height:1.25!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;height:auto!important}
+  .bkw.one .gpc .gp-a b{font-size:18px!important;line-height:1.1}
+}
+@media (max-width:640px){.bkw.one .gpc .gp-b{height:auto!important;padding-top:9px!important;padding-bottom:9px!important}.bkw.one .gpc .gp-q{overflow:visible!important;padding-top:1px}}
