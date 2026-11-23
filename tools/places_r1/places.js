@@ -273,12 +273,15 @@
   function xbH() { var x = M && $('.pkpl-xb', M.el); return x ? x.offsetHeight : 56; }
   function hdH() { var x = M && $('.pkpl-psh2', M.el), q = M && $('.pkpl-psq', M.el); return x && v2p() ? x.offsetHeight + (q ? q.offsetHeight : 0) : 0; }   /* the cap (handle, title) plus the question line */
   function fitList(pl, t, n) {   /* Zale, Nov 22: the list grows to fill the room in the panel: bigger emblems and names, two columns, three only when two won't fit */
-    if (!wide() || !n) return; pl.style.removeProperty('--pkpl-rh'); pl.classList.remove('pkpl-c3');
+    if (!wide() || !n) return; pl.style.removeProperty('--pkpl-rh'); pl.classList.remove('pkpl-c3'); t.classList.remove('pkpl-tv');
+    var need = function () { var ab0 = pl.nextElementSibling && pl.nextElementSibling.classList.contains('pkpl-ab') ? pl.nextElementSibling.offsetHeight + 18 : 0; return t.getBoundingClientRect().bottom - pl.getBoundingClientRect().top - 28 - ab0; };
+    if (need() < Math.ceil(n / (n > 9 ? 3 : 2)) * (n > 9 ? 36 : 50)) t.classList.add('pkpl-tv');   /* Zale, Nov 22: short laptops (1280x720) tighten the headline and grid so every place fits above the bottom edge */
     var ab = pl.nextElementSibling && pl.nextElementSibling.classList.contains('pkpl-ab') ? pl.nextElementSibling : null;
     var room = t.getBoundingClientRect().bottom - pl.getBoundingClientRect().top - 28 - (ab ? ab.offsetHeight + 18 : 0);
     var rows = Math.ceil(n / 2), rh = Math.floor(room / rows);
     if (rh < 34 && n > 9) { pl.classList.add('pkpl-c3'); rows = Math.ceil(n / 3); rh = Math.floor(room / rows); }
-    rh = Math.max(pl.classList.contains('pkpl-c3') ? 40 : 34, Math.min(64, rh)); pl.style.setProperty('--pkpl-rh', rh + 'px');
+    rh = Math.max(pl.classList.contains('pkpl-c3') && !t.classList.contains('pkpl-tv') ? 40 : 34, Math.min(64, rh)); pl.style.setProperty('--pkpl-rh', rh + 'px');
+    t.classList.remove('pkpl-tv2'); if (t.classList.contains('pkpl-tv') && (ab || pl).getBoundingClientRect().bottom > t.getBoundingClientRect().bottom - 6) t.classList.add('pkpl-tv2');   /* still over: the summary goes to one line */
   }
   function psH() { if (!M || !v2p()) return 0; var st = M.ps == null ? 1 : M.ps, top2 = xbH() + hdH(); if (st === 0) return 0; if (st === 2) { var full = Math.max(0, M.vh - top2), ps2 = $('.pkpl-ps', M.el), inner = ps2 && ps2.firstElementChild; if (window.innerWidth >= 600 && ps2) { var need = 0; Array.prototype.forEach.call(ps2.children, function (c) { need = Math.max(need, c.offsetTop + c.offsetHeight); }); if (need > 0) return Math.min(full, need + 24); } return full; }   /* Zale, Nov 22: on tablet a short list stops where it ends, the map shows above */
     var ps = $('.pkpl-ps', M.el), l1 = ps && $('.pkpl-psl', ps); return l1 ? l1.offsetTop + l1.offsetHeight + 14 : 96; }   /* Zale, Nov 22 06:19: half-open shows the title and summary only; pull up for the neighborhoods */
