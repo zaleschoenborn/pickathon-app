@@ -818,8 +818,15 @@ _RF = json.load(open(ROOT + 'reel_focus.json'))
 _AYL = {}
 for _o in json.load(open(ROOT + 'act_year_lines.json', encoding='utf-8')):
     _AYL[(''.join(c for c in _ud.normalize('NFD', _o['n'].lower()) if c.isalnum() and ord(c) < 128), str(_o['y']))] = _o['l']
+# r78 (Nov 22 23:05): Copy Review's newest lines ride in their stories_<year> CSVs (copy_review-55); those win over older lines
+import glob as _gl0
+_SLN = {}
+for _f in sorted(_gl0.glob(ROOT + 'stories/stories_*.csv')):
+    for _r in csv.DictReader(open(_f, encoding='utf-8')):
+        if _r.get('line'): _SLN[(''.join(c for c in _ud.normalize('NFD', _r['act'].lower()) if c.isalnum() and ord(c) < 128), str(_r['year']))] = _r['line']
 def _rline(n, y, k):  # r50: the reel frame carries Copy Review's three-line card line (then -> now) when one exists
     sl_ = ''.join(c for c in _ud.normalize('NFD', n.lower()) if c.isalnum() and ord(c) < 128)
+    if (sl_, str(y)) in _SLN: return _SLN[(sl_, str(y))]
     for kk in (k, 'disc', 'leg', 'deep'):
         v = _ALINES.get('%s|%s|%s' % (kk, sl_, y))
         if v: return v
