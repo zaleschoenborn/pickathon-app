@@ -990,12 +990,67 @@ main.screen:has(.hd .hd-yr) .yrbar{display:none}
 .hd-yr:focus-visible{outline:2px solid var(--gold,#D6B54A);outline-offset:2px}
 @media (max-width:999px){main.screen:has(.hd .hd-yr) .hd{position:sticky;top:0;z-index:60}}
 
-/* r69: the year logo sits in the chooser; the 2027 wordmark and its rule step aside on Lineup pages */
-.hd:has(.hd-yr) .hd-logo,.hd:has(.hd-yr) .hd-rule{display:none}
-.hd-yr{flex-direction:row;align-items:center;gap:10px}
-.hd-yr>span{display:flex;flex-direction:column;align-items:flex-start}
-.hd-yl{height:40px;width:auto;max-width:96px;object-fit:contain;display:block}
-@media (min-width:1000px){.hd-yl{height:48px;max-width:120px}}
-/* r69b: a logo with dark lettering gets a thin light edge in the header so it reads on the dark bar */
-.hd-yl{filter:drop-shadow(1.5px 0 0 rgba(242,237,227,.85)) drop-shadow(-1.5px 0 0 rgba(242,237,227,.85)) drop-shadow(0 1.5px 0 rgba(242,237,227,.85)) drop-shadow(0 -1.5px 0 rgba(242,237,227,.85))}
-main#s1 .hd-yl{filter:none}
+/* r70 (Zale, Nov 22 21:40): back + 2027 logo stay on the left as home; the year chooser is a centered rounded-square button, words only */
+.hd:has(.hd-yr) .hd-rule{display:none}
+.hd-yr{flex-direction:row;align-items:center;gap:8px;padding:0 14px;height:44px;min-height:44px;flex:none;border:1.5px solid var(--gold,#D6B54A);border-radius:4px;background:#221E20;color:#F2EDE3}
+.hd-yr:hover{background:#2C2729}
+.hd-yr b{font-size:11px;letter-spacing:.16em;text-transform:uppercase;line-height:1;font-weight:700}
+.hd-yr i{font-size:21px;line-height:1}
+.hd-yr>svg{width:13px;height:13px;color:var(--gold,#D6B54A);flex:none}
+.hd-yr[aria-expanded="true"]>svg{transform:rotate(180deg)}
+@media (max-width:599px){
+  .hd:has(.hd-yr){gap:6px}
+  .hd-yr{padding:0 10px;gap:7px}
+  .hd-yr b{font-size:9.5px;letter-spacing:.12em;writing-mode:horizontal-tb}
+  .hd-yr{display:grid;grid-template-columns:auto auto;grid-template-rows:auto auto;column-gap:7px;row-gap:3px;align-content:center}
+  .hd-yr b{grid-column:1;grid-row:1}
+  .hd-yr i{grid-column:1;grid-row:2;font-size:18px}
+  .hd-yr>svg{grid-column:2;grid-row:1/3;align-self:center}
+}
+
+/* r71 (Zale, Nov 22 21:45, picked Light): artist pages wear their year at the edges; the photo and story stay the stars */
+.acrown{position:relative;height:20px;overflow:hidden;background:var(--paper)}
+.acrown>.seam,.acrown>svg.cloud{position:absolute;left:0;right:0;bottom:0;width:100%;height:20px;--sc:.28}
+.acrown .sm-sun{display:none}
+.acrown .sm-g path,.acrown svg.cloud path:last-child{fill:var(--mat)}
+@media (min-width:1000px){
+  .acrown{height:44px}
+  .acrown>.seam,.acrown>svg.cloud{height:44px;--sc:.52}
+  .acrown .sm-sun{display:none}
+}
+main[id^="a-"] .hact{border-top:4px solid var(--mat)}
+main[id^="a-"] .kick{color:var(--acc)}
+main[id^="a-"] .liner .sets{border-left-color:var(--acc)}
+/* Their Pickathons: the logo wall's tiles, each with its year's color as a printed band along the bottom */
+.at-g{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:10px;margin-top:12px;max-width:760px}
+.at-i{position:relative;padding-bottom:12px;overflow:hidden}
+.at-i::after{content:"";position:absolute;left:0;right:0;bottom:0;height:5px;background:var(--yb)}
+.at-i .yw-l{height:64px}
+.at-i .yw-l img{max-height:64px}
+.at-i b{font-size:17px}
+@media (min-width:1000px){.at-g{grid-template-columns:repeat(auto-fill,minmax(120px,1fr))}.at-i .yw-l{height:84px}.at-i .yw-l img{max-height:84px}}
+/* r72 (Zale, Nov 22 21:53): the artist hero fades only enough to read the name, like Home and the year reels; no full fade to the page */
+main[id^="a-"] .hact .hero-sc{background:linear-gradient(180deg,rgba(20,16,17,.22) 0,rgba(20,16,17,0) 20%,rgba(20,16,17,0) 50%,rgba(20,16,17,.55) 76%,rgba(20,16,17,.74) 100%)}
+/* r73 (Zale, Nov 22 21:53-21:56): artist hero = that year's photo reel with one big play button; the year strip turned upside down closes its bottom; no holiday strip on artist pages */
+main[id^="a-"] .sale{display:none}
+.acrown.afoot{transform:scaleY(-1);background:transparent}
+.hact .ring.lg{position:absolute;left:50%;top:44%;transform:translate(-50%,-50%);z-index:3;pointer-events:auto;cursor:pointer}
+.hact .hero-sub{margin:10px 0 0;max-width:34em;font-size:16px;line-height:1.4;color:#F2EDE3;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.hact .ah-meta{margin-top:6px}
+/* r74 (Zale, Nov 22 22:03): the year block under the artist reel: year logo, year and stage, then the years they played (each opens that year's lineup) */
+.ayb{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;align-items:center;margin:14px 18px 0;padding:12px 14px;background:var(--yp);color:var(--yi);border-radius:4px;box-shadow:inset 0 0 0 4px var(--mat),inset 0 0 0 6px var(--yp),inset 0 0 0 7.5px var(--yi)}
+.ayb-l{display:grid;place-items:center;width:64px;height:64px}
+.ayb-l img{max-width:64px;max-height:64px;object-fit:contain}
+.ayb-t b{display:block;font-family:var(--display);font-size:22px;letter-spacing:.03em;line-height:1.1}
+.ayb-t span{display:block;font-size:14px;font-weight:600;margin-top:2px}
+.ayb-y{grid-column:1/-1;padding-top:6px}
+.ayb-y p{margin:0 0 6px;font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase}
+.ayb-y div{display:flex;flex-wrap:wrap;gap:8px}
+.ayb-y button{min-width:64px;height:44px;padding:0 12px;border-radius:4px;border:1.5px solid var(--yi);background:transparent;color:var(--yi);font-family:var(--display);font-size:18px;letter-spacing:.04em;cursor:pointer}
+.ayb-y button[aria-current]{background:var(--yi);color:var(--yp)}
+@media (min-width:1000px){
+  .ayb{grid-template-columns:auto 1fr auto;margin:18px auto 0;max-width:1152px;width:calc(100% - 128px);padding:14px 20px}
+  .ayb-l{width:76px;height:76px}.ayb-l img{max-width:76px;max-height:76px}
+  .ayb-y{grid-column:auto;padding-top:0;text-align:right}.ayb-y div{justify-content:flex-end}
+}
+.acrown .sm-disc,.acrown .sm-badge{display:none}

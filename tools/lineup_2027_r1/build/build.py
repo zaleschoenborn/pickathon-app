@@ -291,6 +291,14 @@ for _o in _LC:
         _ks = ''.join(ch for ch in _ud.normalize('NFD', _nm.lower()) if ch.isalnum())
         _LY.setdefault((_ks, str(_o['y'])), _u); _LA.setdefault(_ks, _u)
 CLIPY = {**CLIPY, **_LY}; CLIPA = {**CLIPA, **_LA}
+# r73 (Zale, Nov 22 21:53): an artist page's big play button plays every song that act has from that year, as one playlist
+CLIPYL = {}
+for _o in _LC:
+    _u = _o['url'].split('&')[0]; _sg = (_o.get('tail') or '').split(' | ')[-1].strip() if _o.get('tail') else ''
+    for _nm in {_o['act'], _o['artist'], _o['act_id'].replace('-', ' ')}:
+        _ks = ''.join(ch for ch in _ud.normalize('NFD', _nm.lower()) if ch.isalnum())
+        _l = CLIPYL.setdefault((_ks, str(_o['y'])), [])
+        if _u not in [x[0] for x in _l]: _l.append((_u, _sg if len(_sg) < 60 else ''))
 # r57 (Zale, Nov 22 19:57): a year reel plays only that year's recordings; an act not recorded that year gets no reel frame
 YURLS = {}
 for _v in d['videos']:
@@ -389,10 +397,9 @@ def header(title, sub, back=True, chip=None):
                '</div>%s') % (chip, chip, year_wall(chip))
         # r68 (Zale, Nov 22 21:22): the header title IS the year chooser; tap "Lineup 2013" to open the wall of year logos
         # r69 (Zale, Nov 22 21:26): the year's own logo leads the chooser in the header (it replaces the 2027 wordmark on year pages)
-        _lg = d['yearLogo'].get(chip)
-        _lgi = img(_lg, 160, fmt='PNG') if (_lg and chip != '2027' and os.path.exists(_src(_lg))) else LOGO
-        t = ('<button type="button" class="hd-t hd-yr ywopen" aria-expanded="false" aria-label="Lineup %s. Choose another year"><img class="hd-yl" src="%s" alt=""><span><b>Lineup</b><i>%s'
-             '<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 4.5l3.5 3.5 3.5-3.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></i></span></button>') % (chip, _lgi, chip)
+        # r70 (Zale, Nov 22 21:40): the 2027 logo and back stay on the left as home; the chooser is a centered, words-only button (no small year logo: it blurs at header size)
+        t = ('<span class="hd-sp hd-sp1"></span><button type="button" class="hd-t hd-yr ywopen" aria-expanded="false" aria-label="Lineup %s. Choose another year"><b>Lineup</b><i>%s</i>'
+             '<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 4.5l3.5 3.5 3.5-3.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>') % (chip, chip)
     else:
         bar = ''
     return ('<header class="hd">%s<img class="hd-logo" src="%s" alt="Pickathon 2027"><span class="hd-rule"></span>%s'
@@ -823,6 +830,18 @@ def _postimg(y):
     return 'data:,'
 def _lum(c):
     r, g, b = (int(c[i:i+2], 16) / 255 for i in (1, 3, 5)); return .2126 * r + .7152 * g + .0722 * b
+def _grl(c):
+    v = [int(c[i:i+2], 16) / 255 for i in (1, 3, 5)]; v = [x / 12.92 if x <= .03928 else ((x + .055) / 1.055) ** 2.4 for x in v]
+    return .2126 * v[0] + .7152 * v[1] + .0722 * v[2]
+def _gcr(a, b): la, lb = sorted([_grl(a), _grl(b)]); return (lb + .05) / (la + .05)
+def _acc(P, bg='#2A2527'):
+    """r71 (Zale, Nov 22 21:45, picked Light): the artist page's labels take the year's own boldest color that still reads 4.5:1 on the dark page."""
+    import colorsys
+    cs = [c for c in [P.get('warm'), P.get('light'), P.get('band'), P.get('ink2'), P['paper']] + list(P.get('stripe', [])) if c and len(c) == 7 and _gcr(c, bg) >= 4.5]
+    def sc(c):
+        r, g, b = (int(c[i:i+2], 16) / 255 for i in (1, 3, 5)); return max(r, g, b) - min(r, g, b)  # chroma: near-whites don't count as a color
+    best = max(cs, key=sc) if cs else None
+    return best if best and sc(best) >= .28 else '#D6B54A'  # no real color that reads: keep the site gold
 def _mat(P):
     """r56c (Zale, Nov 22): the frame takes the year's boldest color; the poster and photo stay on paper below it."""
     import colorsys
@@ -1041,9 +1060,51 @@ def art_page(slug, ap):
     k = x.get('k', 'none'); g = x.get('g', '')
     P = d['yearBrand'].get(yr, P24)
     h = header(name, 'Pickathon ' + yr)
-    h += ('<section class="hero hact"><img src="%s" alt="" style="object-position:%s"><div class="hero-sc"></div>'
-          '<div class="hero-tx"><p class="krow"><span class="k k-%s">%s</span>%s</p><h1>%s</h1><p class="ah-meta">Pickathon %s</p></div></section>') % (
-          img(ap['hero'], 780), ap.get('hpos', '50% 40%'), k, KLAB.get(k, ''), ('<span class="g">%s</span>' % E(gp_n(name, GSHORT.get(g, g)))) if (gp_n(name) or g) else '', E(name), yr)
+    # r71 (Zale, Nov 22 21:45, picked Light): the year's thin border strip sits above the hero, the same strip as the top of the year page
+    _P2 = P if yr in d['yearBrand'] else P27
+    h += '<div class="acrown" aria-hidden="true">%s</div>' % (seam(yr, _P2) if yr != '2027' else generic_seam('2027', P27))
+    # r73 (Zale, Nov 22 21:53, picked "card line"): the hero is a reel of that year's photos (3-5, best first, different stages), 4 s a photo, hard cut;
+    # the name, class and the act-year card line stay put; one big play button plays every song from that year as a playlist
+    _fr, _seen, _sts = [], set(), set()
+    _cand = [(ap['hero'], ap.get('hpos', '50% 40%'), ap.get('heroSt', ''))] + [(g_['i'], g_.get('pos', '50% 50%'), g_.get('st', '')) for g_ in (ap.get('gal') or [])]
+    _cand = [c_ for c_ in _cand if ('/y%s' % yr[2:]) in c_[0] or c_[0] == ap['hero']]
+    for _pass in (0, 1):  # first one photo per stage, then fill
+        for c_ in _cand:
+            if c_[0] in _seen or len(_fr) >= 5: continue
+            if _pass == 0 and c_[2] and c_[2] in _sts and len(_fr) > 0: continue
+            _seen.add(c_[0]); _sts.add(c_[2]); _fr.append(c_)
+    _ksy = ''.join(ch for ch in _ud.normalize('NFD', _CLIPALIAS.get(name, name).lower()) if ch.isalnum())
+    _ysongs = list(CLIPYL.get((_ksy, yr), []))
+    _c1 = CLIPY.get((_ksy, yr))
+    if _c1 and _c1.split('&')[0] not in [u_ for u_, _ in _ysongs]: _ysongs.append((_c1, ''))
+    _q = ';;'.join('%s|%s%s · Pickathon %s' % (u_, name, (' · ' + sg_) if sg_ else '', yr) for u_, sg_ in _ysongs)
+    _ring = ''
+    if _ysongs:
+        _ring = clip_ring(_ysongs[0][0], 'lg')
+        if len(_ysongs) > 1: _ring = _ring.replace('<span class="ring lg" data-clip=', '<span class="ring lg" data-q="%s" data-clip=' % _h.escape(_q, quote=True), 1)
+    _line = _rline(name, yr, k) or ''
+    _gt = gp_n(name, GSHORT.get(g, g)) if (gp_n(name) or g) else ''
+    _sl = [{'i': img(f_[0], 780), 'pos': f_[1], 'n': name, 'k': KLAB.get(k, ''), 'g': _gt, 'l': _line, 'clip': _ysongs[0][0] if _ysongs else ''} for f_ in _fr]
+    _segs = ''.join('<i data-slide="%d"%s><b></b></i>' % (n_, ' class="on"' if n_ == 0 else '') for n_ in range(len(_sl))) if len(_sl) > 1 else ''
+    h += ('<section class="hero hact%s"%s><img src="%s" alt="" style="object-position:%s"><div class="hero-sc"></div>%s%s'
+          '<div class="hero-tx"><p class="krow"><span class="k k-%s">%s</span>%s</p><h1>%s</h1><p class="ah-meta">Pickathon %s</p>%s</div></section>') % (
+          ' areel' if _segs else '', (' data-slides="%s"' % html.escape(json.dumps(_sl), quote=True)) if _segs else '',
+          img(_fr[0][0], 780) if _fr else img(ap['hero'], 780), _fr[0][1] if _fr else ap.get('hpos', '50% 40%'),
+          ('<div class="segs">%s</div>' % _segs) if _segs else '', _ring,
+          k, KLAB.get(k, ''), ('<span class="g">%s</span>' % E(gp_n(name, GSHORT.get(g, g)))) if (gp_n(name) or g) else '', E(name), yr,
+          ('<p class="hero-sub">%s</p>' % E(_line)) if _line else '')
+    # r73 (Zale, Nov 22 21:56): the same year strip turned upside down closes the bottom of the photo
+    h += '<div class="acrown afoot" aria-hidden="true">%s</div>' % (seam(yr, _P2) if yr != '2027' else generic_seam('2027', P27))
+    # r74 (Zale, Nov 22 22:03; picked "go to that year's page"): a small year block under the reel ties the act to its Pickathon:
+    # the year logo, "Pickathon 2013" and the stage, then every year the act played; each year opens that year's lineup page
+    _lgy = d['yearLogo'].get(yr)
+    _lgi = ('<img src="%s" alt="">' % img(_lgy, 220, fmt='PNG')) if (_lgy and not _lgy.startswith('http') and os.path.exists(_src(_lgy))) else ('<img src="%s" alt="">' % LOGO)
+    _stg = (_fr[0][2] if _fr else '') or ap.get('heroSt', '')
+    _yrs = sorted({str(y_) for y_, _ in _KIN.get(name, [])} | {yr})
+    h += ('<section class="ayb" style="--yp:%s;--yi:%s"><span class="ayb-l">%s</span><div class="ayb-t"><b>Pickathon %s</b>%s</div>'
+          '<div class="ayb-y"><p>Their Pickathons</p><div>%s</div></div></section>') % (
+          _P2['paper'], _P2['ink'], _lgi, yr, ('<span>%s</span>' % E(_stg)) if _stg else '',
+          ''.join('<button type="button" data-go="y%s"%s aria-label="Pickathon %s lineup">%s</button>' % (y_, ' aria-current="true"' if y_ == yr else '', y_, y_) for y_ in _yrs))
     # r66 (Zale picked one continuous story, copy_review-54): intro, one story in a few paragraphs, then a small sets block; read from Copy Review's stories_<year> CSVs
     _st = _STORIES.get((_slug(name), yr))
     story = [] if _st else [s for s in (ap.get('story') or []) if s.get('t')]
@@ -1091,10 +1152,7 @@ def art_page(slug, ap):
             h += ('<div class="vid" role="button" tabindex="0" data-clip="%s"><span class="vth"><img loading="lazy" src="%s" alt="" style="object-position:50%% 40%%">%s</span>'
                   '<b>%s, full set</b><span>Pickathon %s</span></div>') % (_h.escape(u, quote=True), _thumb(u, v.get('y')), play('sm'), E(name), v.get('y'))
         h += '</div></section>'
-    years = sorted({y for y, _ in _KIN.get(name, [])})
-    if years:
-        h += '<section class="theirs"><p class="kick">Their Pickathons</p><div class="filt">%s</div></section>' % ''.join(
-            '<a class="chip%s" href="#">Pickathon %s</a>' % (' on' if str(y) == yr else '', y) for y in years)
+    # r74: Their Pickathons moved up into the year block under the reel
     # r58 (Zale, Nov 22 20:06): "If you like" draws from the Archive's cards that share any of the act's music tags, nearest in size today
     _mt = set(tags_of(name)) or ({gp_n(name, GSHORT.get(g, g))} - {''})
     _me = max([v for (cn, _y), v in _magall.items() if cn == _canon(name)] or [x.get('m') or 0])
@@ -1103,7 +1161,7 @@ def art_page(slug, ap):
     if same:
         h += shelf('Same sound, other summers', 'IF YOU LIKE %s' % name.upper(), 'Acts who stand about where %s stands today.' % name, '',
                    [vcard(n_, y_, k_, g_, p_, pos_) for k_, n_, y_, g_, p_, pos_ in same])
-    return ('<main id="a-%s" class="screen" hidden style="--paper:%s;--ink:%s;--ink2:%s">%s</main>') % (slug, P['paper'], P['ink'], P['ink2'], h)
+    return ('<main id="a-%s" class="screen" hidden style="--paper:%s;--ink:%s;--ink2:%s;--acc:%s;--mat:%s">%s</main>') % (slug, P['paper'], P['ink'], P['ink2'], _acc(P), _mat(P), h)
 ARTISTS = {}
 for _s, _ap in d['actPages'].items():
     if _s in _NAMES:

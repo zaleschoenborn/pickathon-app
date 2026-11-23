@@ -64,7 +64,7 @@
   function widgets(root) {
     docOff();
   // r45 (Zale, Nov 22): the year reel plays on its own, 4 s a frame, hard cut; a segment jumps; the photo plays that band's song
-  root.querySelectorAll('.hero.reel').forEach(function (hero) {
+  root.querySelectorAll('.hero.reel, .hero.areel').forEach(function (hero) {
     var S; try { S = JSON.parse(hero.dataset.slides); } catch (e) { return; }
     if (!S || S.length < 2) return;
     var i = 0, T = 4000, timer = 0, ph = hero.querySelector(':scope > img'), segs = hero.querySelectorAll('.segs [data-slide]');
