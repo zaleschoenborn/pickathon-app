@@ -813,3 +813,19 @@ h2{font-family:var(--display);font-weight:400;font-size:27px;line-height:1.14;le
   .yrtop .poster.joined .po-in,.yrtop .poster.solo .po-in{grid-template-columns:240px minmax(0,1fr)}
   .yrtop .po-art,.yrtop .poster .po-badge,.yrtop .poster.joined .po-badge,.yrtop .poster.solo .po-badge{width:240px}
 }
+
+/* r57 (Zale, Nov 22 19:57: "too many white ones", go deeper into customization): a pale paper takes a wash of the year's color,
+   and the poster panel gets a printed border in the year's stripe colors (outer band, paper gap, ink rule), like a screen-printed poster */
+@media (min-width:1000px){
+  .yrtop.framed .poster{background:var(--pnl)!important;border-radius:2px;
+    box-shadow:inset 0 0 0 10px var(--s1),inset 0 0 0 14px var(--pnl),inset 0 0 0 16px var(--ink)}
+  .yrtop.framed .poster .po-in{padding:44px 52px 48px}
+  .yrtop.framed>.hero{border:none;border-radius:2px;box-shadow:0 0 0 3px var(--pnl),0 0 0 5px var(--ink)}
+  .yrtop.framed{column-gap:26px;padding:0 32px 32px}
+  .yrtop.framed .poster .stripe{display:none}
+}
+
+@media (min-width:1000px){
+  .yrtop.framed .poster.joined,.yrtop.framed .poster.solo{background:var(--pnl)!important}
+  .yrtop.framed .poster .po-in{background:transparent!important}
+}

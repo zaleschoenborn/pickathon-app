@@ -291,6 +291,13 @@ for _o in _LC:
         _ks = ''.join(ch for ch in _ud.normalize('NFD', _nm.lower()) if ch.isalnum())
         _LY.setdefault((_ks, str(_o['y'])), _u); _LA.setdefault(_ks, _u)
 CLIPY = {**CLIPY, **_LY}; CLIPA = {**CLIPA, **_LA}
+# r57 (Zale, Nov 22 19:57): a year reel plays only that year's recordings; an act not recorded that year gets no reel frame
+YURLS = {}
+for _v in d['videos']:
+    if _v.get('y'):
+        _u = _vurl(_v)
+        if _u: YURLS.setdefault(str(_v['y']), set()).add(_u.split('&')[0])
+for _o in _LC: YURLS.setdefault(str(_o['y']), set()).add(_o['url'].split('&')[0])
 _CLIPALIAS = {'Kurt Vile & The Violators': 'Kurt Vile', 'Destroyer (solo)': 'Destroyer', 'Corrinne West & Kelly Joe Phelps': 'Corinne West & Kelly Joe Phelps',
               'Caleb Klauder Band': 'Caleb Klauder'}  # r36: the card's printed name vs the ledger's name for the same act
 def clip_for(n, y=None):
@@ -309,6 +316,11 @@ def archive_clip(n, y):
         u = CLIPY.get((k, str(yy)))
         if u: return u
     return ''
+
+def year_clip(n, y):
+    """r57: that year's song for the act, or nothing (never another year's recording)."""
+    n2 = _CLIPALIAS.get(n, n); k = ''.join(ch for ch in _ud.normalize('NFD', n2.lower()) if ch.isalnum())
+    return CLIPY.get((k, str(y)), '')
 
 def act_queue(n, y):
     """r51 (Zale, Nov 22): the sitewide player takes a list. An Archive card queues the act's own songs across the years:
@@ -775,6 +787,8 @@ def _rline(n, y, k):  # r50: the reel frame carries Copy Review's three-line car
         v = _ALINES.get('%s|%s|%s' % (kk, sl_, y))
         if v: return v
     return ''
+def _lum(c):
+    r, g, b = (int(c[i:i+2], 16) / 255 for i in (1, 3, 5)); return .2126 * r + .7152 * g + .0722 * b
 def _mat(P):
     """r56c (Zale, Nov 22): the frame takes the year's boldest color; the poster and photo stay on paper below it."""
     import colorsys
@@ -801,7 +815,8 @@ def year_page(y):
     hero = None
     if r0 and loc(r0.get('i')) and 'poster' not in r0['i']:
         kk = (r0.get('k') or '').split(' · ')
-        hero = (r0['i'], r0['n'], kk[0] if kk else '', kk[1] if len(kk) > 1 else '', r0.get('l', ''), bool(r0.get('v')), r0.get('v', ''))
+        _hv = r0.get('v', '') if (r0.get('v') or '').split('&')[0] in YURLS.get(y, ()) else ''  # r57: same-year song or none
+        hero = (r0['i'], r0['n'], kk[0] if kk else '', kk[1] if len(kk) > 1 else '', r0.get('l', ''), bool(_hv), _hv)
     elif ten and ph(ten[0]):
         a0 = ten[0]; hero = (ph(a0), a0['n'], KLAB[a0['k']], gp_a(a0), '', False, '')
     # r45 (Zale, Nov 22): every year opens on a ten-band reel built from TODAY's magnitude (class table magnitude_dec), top act first.
@@ -814,7 +829,7 @@ def year_page(y):
         o = _ov.get(a['n']) or _ovc.get(_canon(a['n'])) or {}
         rp = o.get('i') if (o.get('i') and loc(o['i']) and 'poster' not in o['i']) else ''
         p = ph(a) or rp or ARCHF.get((_canon(a['n']), y), '')
-        clip = o.get('v') or archive_clip(a['n'], y)
+        clip = year_clip(a['n'], y) or (o.get('v') if (o.get('v') or '').split('&')[0] in YURLS.get(y, ()) else '')
         if not p or 'poster' in p or not clip or p in _RF['drop']: continue  # every frame plays a song (Zale: 'we go to different videos if we can't find them')
         _fx = _RF['focus'].get(p)
         sl.append({'i': img(p, 1100, 80), 'raw': p, 'pos': ('%s%% %s%%' % tuple(_fx)) if _fx else fpos(p, FOC), 'n': a['n'], 'k': KLAB[a['k']], 'g': gp_a(a), 'l': _rline(a['n'], y, a['k']) or o.get('l', ''), 'clip': clip, 'sg': ''})
@@ -849,7 +864,24 @@ def year_page(y):
     h += poster_block(P, badge, y, then_list, today_all, len(music), joined=bool(hero), ranked=ranked)
     # r56 (Zale, Nov 22): paper frame. The year's own art runs along the top (desktop), and the poster paper wraps photo and poster like a printed poster with a photo window
     _crown = '<div class="yrcrown" aria-hidden="true">%s</div>' % seam(y, P)
-    h = h[:_top] + '<div class="yrtop framed" style="--paper:%s;--ink:%s;--mat:%s">%s' % (P['paper'], P['ink'], _mat(P), _crown) + h[_top:] + '</div>'
+    _st = (list(P.get('stripe', [])) + [P['ink']] * 3)[:3]
+    _pale = _lum(P['paper']) > .82
+    _tint = _mat(P)
+    def _mix(a, b, t): return '#%02X%02X%02X' % tuple(round(int(a[i:i+2], 16) * (1 - t) + int(b[i:i+2], 16) * t) for i in (1, 3, 5))
+    def _rl(c):
+        v = [int(c[i:i+2], 16) / 255 for i in (1, 3, 5)]; v = [x / 12.92 if x <= .03928 else ((x + .055) / 1.055) ** 2.4 for x in v]
+        return .2126 * v[0] + .7152 * v[1] + .0722 * v[2]
+    def _cr(a, b): la, lb = sorted([_rl(a), _rl(b)]); return (lb + .05) / (la + .05)
+    _txt = [c for c in (P['ink'], P.get('ink2'), P.get('band')) if c and len(c) == 7 and _cr(c, P['paper']) >= 4.5]
+    _pnl = P['paper']
+    if _lum(P['paper']) > .82:  # r57: pale paper takes a wash of the year color, eased back until every text color keeps 4.5:1
+        for _t in (.14, .10, .07, .04):
+            _c = _mix(P['paper'], _tint, _t)
+            if all(_cr(x, _c) >= 4.5 for x in _txt): _pnl = _c; break
+    def _dist(a, b): return sum((int(a[i:i+2], 16) - int(b[i:i+2], 16)) ** 2 for i in (1, 3, 5)) ** .5
+    _cand = [c for c in list(P.get('stripe', [])) + [P.get('light'), P.get('warm'), P['ink']] if c and len(c) == 7 and _dist(c, P['paper']) > 60]
+    _band = max(_cand, key=lambda c: _dist(c, _tint)) if _cand else P['ink']  # r57: border band contrasts with the frame color
+    h = h[:_top] + '<div class="yrtop framed%s" style="--paper:%s;--ink:%s;--mat:%s;--s1:%s;--s2:%s;--s3:%s;--tint:%s;--pnl:%s">%s' % (' pale' if _pale else '', P['paper'], P['ink'], _mat(P), _band, _st[1], _st[2], _tint, _pnl, _crown) + h[_top:] + '</div>'
     if st.get('headline'):
         h += ('<section class="story short"><p class="kick">The %s story</p><p class="lead">%s.</p>%s</section>') % (y, E(st['headline'].rstrip('.')), ('<p class="body" hidden>%s</p><button class="chip stog" aria-expanded="false" data-open="Read the %s story" data-shut="Show less"><span>Read the %s story</span> %s</button>' % (E(st['story']), y, y, ICON['caret'])) if st.get('story') else '')
     lp = ''  # Nov 21 r27 (Zale): the lineup picker is off until the other lineups (Family, DJs, Comedy...) are drawn; it listed them with nothing behind them
