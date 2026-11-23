@@ -562,7 +562,8 @@ _ALINES = json.load(open(ROOT + 'arch_lines.json'))  # r44: Copy Review's one li
 def vcard(n, y, k, g, p, pos):
     h = _vcard(n, y, k, g, p, pos)
     ln = _ALINES.get('%s|%s|%s' % (k, ''.join(c for c in _ud.normalize('NFD', n.lower()) if c.isalnum() and ord(c) < 128), y), '')
-    # r52 (Zale, Nov 22 18:35): no blurb on the small two-up Archive cards; the three-line line lives on the reels and larger previews
+    # r55 (Zale, Nov 22 19:32): desktop shows 3 bigger cards across WITH the three-line blurb; phone (two-up) hides it in CSS
+    h = h.replace('</span><span class="cstory">', '</span><span class="cline">%s</span><span class="cstory">' % E(ln), 1) if ln and '<span class="cstory">' in h else h
     q = act_queue(n, y)  # r51: the player queues this act's songs across the years, starting with this card's
     return h.replace('<span class="pz" data-clip=', '<span class="pz" data-q="%s" data-clip=' % _h.escape(q, quote=True), 1) if q.count(';;') else h
 def _vcard(n, y, k, g, p, pos):
