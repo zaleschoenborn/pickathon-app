@@ -48,6 +48,7 @@ for i, (st, sid) in enumerate(heads):
     seg = seg.replace(' hidden', '', 0)
     seg = re.sub(r'src="img/', 'src="' + IMG, seg)
     seg = re.sub(r'url\(img/', 'url(' + IMG, seg)
+    seg = re.sub(r'(&quot;i&quot;: &quot;)img/', lambda m: m.group(1) + IMG, seg)   # the year reel's data-slides JSON (frames after the first 404ed without this)
     seg = re.sub(r'<div class="sale">.*?</div>(?=<)', '', seg, count=1, flags=re.S)   # the live shell has the sale strip
     raw = seg
     seg = re.sub(r'<header class="hd">.*?</header>', '', seg, count=1, flags=re.S)       # the live shell has the header (and the year picker)
