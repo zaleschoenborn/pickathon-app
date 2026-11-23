@@ -80,7 +80,8 @@ b = app.index("(function () {\n    var bar = document.querySelector('.bkw')")
 widgets = app[a:b].replace('document.querySelectorAll', 'root.querySelectorAll').replace('document.querySelector', 'root.querySelector')
 widgets = widgets.replace('document.createElement', 'document.createElement')
 widgets = widgets.replace('document.addEventListener(', 'docOn(')
-widgets = widgets.replace('timer = setInterval(', 'timer = ivOn(')   # reel timers stop on the next redraw
+widgets = widgets.replace('timer = setInterval(', 'timer = ivOn(')
+widgets = widgets.replace('e.target.closest(', 'lxT(e).closest(')   # r51: page-level taps see the shadow host; use the real tapped element   # reel timers stop on the next redraw
 widgets = widgets.replace("root.querySelector('.pkvid')", "(document.querySelector('.pkvid') || document.querySelector('.pk-vo'))")   # the video player lives in the page, not the shadow root   # page-level listeners are dropped on the next redraw
 rt = open(os.path.join(ROOT, 'tools/lineup_2027_r1/build/lx_runtime.js'), encoding='utf-8').read()
 open(OUT + '/lx.js', 'w', encoding='utf-8').write(rt.replace('/*WIDGETS*/', widgets))

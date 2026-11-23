@@ -54,6 +54,7 @@
   var DOCL = [];
   function docOn(type, fn, opt) { document.addEventListener(type, fn, opt); DOCL.push([type, fn, opt]); }
   var IVL = [];
+  function lxT(e) { var p = e.composedPath ? e.composedPath() : [], x = p[0] || e.target; return x && x.closest ? x : (x && x.parentElement) || document.body; }
   function ivOn(fn, ms) { var id = setInterval(fn, ms); IVL.push(id); return id; }
   function docOff() { DOCL.forEach(function (x) { document.removeEventListener(x[0], x[1], x[2]); }); DOCL = []; IVL.forEach(clearInterval); IVL = []; }
   function widgets(root) {
@@ -67,7 +68,7 @@
     var KC = { Discovery: 'disc', Legend: 'leg', 'Deep cut': 'deep' };
     function go(n) {
       i = (n + S.length) % S.length; var f = S[i];
-      ph.src = f.i; ph.setAttribute('data-clip', f.clip || ''); if (!f.clip) ph.removeAttribute('data-clip');
+      ph.src = f.i; if (f.pos) ph.style.objectPosition = f.pos; ph.setAttribute('data-clip', f.clip || ''); if (!f.clip) ph.removeAttribute('data-clip');
       var k = hero.querySelector('.krow .k'), g = hero.querySelector('.krow .g'), h1 = hero.querySelector('h1'), sub = hero.querySelector('.hero-sub'), ring = hero.querySelector('.ring');
       if (k) { k.textContent = f.k; k.className = 'k k-' + (KC[f.k] || 'none'); } if (g) g.textContent = f.g;
       if (h1) { h1.textContent = f.n; h1.classList.toggle('sm', f.n.length > 12); }
@@ -78,9 +79,35 @@
     }
     function live() { return hero.offsetParent !== null && !document.hidden && !(document.querySelector('.pkvid') || document.querySelector('.pk-vo')); }
     function restart() { clearInterval(timer); timer = ivOn(function () { if (live()) go(i + 1); }, T); }
-    hero.querySelector('.segs').addEventListener('click', function (e) { var s = e.target.closest('[data-slide]'); if (!s) return; e.stopPropagation(); go(+s.dataset.slide); restart(); });
+    hero.querySelector('.segs').addEventListener('click', function (e) { var s = lxT(e).closest('[data-slide]'); if (!s) return; e.stopPropagation(); go(+s.dataset.slide); restart(); });
     restart();
   });
+
+  // r51 (Zale, Nov 22): the sitewide player takes a list. Year reel: the year's ten songs in reel order, from the frame you tapped.
+  // Archive card: that act's songs across the years (data-q). Artist page video cards: the page's videos in order from the one tapped.
+  // Only inside the live app (window.__pkVideo); the standalone mockup plays the single clip.
+  docOn('click', function (e) {
+    if (!window.__pkVideo) return;
+    var c = lxT(e).closest('[data-clip]'); if (!c) return;
+    var L = [], hero = c.closest('.hero.reel'), S, i0 = 0, k;
+    if (hero) {
+      try { S = JSON.parse(hero.dataset.slides); } catch (x) { S = null; }
+      if (S) { var u0 = c.getAttribute('data-clip'); S.forEach(function (f, x) { if (f.clip === u0) i0 = x; });
+        for (k = 0; k < S.length; k++) { var f = S[(i0 + k) % S.length]; if (f.clip) L.push({ u: f.clip, c: f.n + ' · Pickathon ' + (hero.querySelector('.hyr-y') || {}).textContent }); } }
+    } else if (c.dataset.q) {
+      c.dataset.q.split(';;').forEach(function (p) { var a = p.split('|'); L.push({ u: a[0], c: a.slice(1).join('|') }); });
+    } else if (/^a-/.test((c.closest('main') || {}).id || '')) {
+      // artist page: every song on the page, in page order, starting from the one tapped (one entry per clip)
+      var mn = c.closest('main'), nm0 = (mn.querySelector('.hero-tx h1, .hd-t b') || {}).textContent || '', seen = {};
+      var all = Array.prototype.slice.call(mn.querySelectorAll('[data-clip]')).filter(function (x) { var u = x.getAttribute('data-clip'); if (!u || seen[u]) return false; seen[u] = 1; return true; });
+      var at = Math.max(0, all.findIndex(function (x) { return x.getAttribute('data-clip') === c.getAttribute('data-clip'); }));
+      for (k = 0; k < all.length; k++) { var v = all[(at + k) % all.length], b = v.querySelector('b'), s2 = v.querySelector('span:not(.vth):not(.ring)'), cy = (v.closest('[data-yr]') || {}).dataset;
+        var yr0 = ((v.closest('.card') || v).querySelector('.cyr') || {}).textContent || ''; L.push({ u: v.getAttribute('data-clip'), c: b ? b.textContent + (s2 ? ' · ' + s2.textContent : '') : nm0 + (yr0 ? ' · Pickathon ' + yr0 : '') }); }
+    }
+    if (L.length < 2) return;
+    e.preventDefault(); e.stopPropagation(); e.stopImmediatePropagation();
+    window.__pkVideo(L, '');
+  }, true);
   root.querySelectorAll('.poster').forEach(function (p) {
     var track = p.querySelector('.po-track'), knob = p.querySelector('.po-knob'), cap = p.querySelector('.po-cap'); if (!track || !knob || !cap) return;
     var thenEl = p.querySelector('.po-names.then'), nowEl = p.querySelector('.po-names.now');
@@ -117,15 +144,15 @@
       cap.textContent = now ? cap.dataset.now : cap.dataset.then; knob.setAttribute('aria-valuenow', now ? 1 : 0);
     }
     function begin() { measure(); busy = true; thenEl.hidden = true; nowEl.hidden = true; morph.hidden = false; }
-    function go(now) {
+    function go(now, slow) {
       if (p.classList.contains('all')) { settle(now); return; }
       cancelAnimationFrame(raf); if (!busy) begin(); flags(now);
-      var from = t, to = now ? 1 : 0, t0 = performance.now(), dur = 150 + 650 * Math.abs(to - from);
+      var from = t, to = now ? 1 : 0, t0 = performance.now(), dur = slow || (150 + 650 * Math.abs(to - from));
       (function step(n) { var k = Math.min(1, (n - t0) / dur); k = k < .5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2; t = from + (to - from) * k; render(); if (n - t0 < dur) raf = requestAnimationFrame(step); else settle(now); })(t0);
     }
     p.addEventListener('click', function (e) {
-      var b = e.target.closest('.po-b'); if (b) { go(b.dataset.m === 'now'); return; }
-      var a = e.target.closest('.po-all'); if (a) {
+      var b = lxT(e).closest('.po-b'); if (b) { go(b.dataset.m === 'now'); return; }
+      var a = lxT(e).closest('.po-all'); if (a) {
         var open = !p.classList.contains('all'); p.classList.toggle('all', open);
         p.querySelectorAll('.po-rest').forEach(function (r) { r.hidden = !open; });
         a.textContent = open ? a.dataset.open : a.dataset.shut;
@@ -138,6 +165,19 @@
     function up(e) { if (!track.classList.contains('drag')) return; track.classList.remove('drag'); var now = frac(e) > 0.5; knob.style.left = ''; if (p.classList.contains('all')) settle(now); else go(now); }
     track.addEventListener('pointerup', up); track.addEventListener('pointercancel', up);
     knob.addEventListener('keydown', function (e) { if (e.key === 'ArrowRight') go(true); if (e.key === 'ArrowLeft') go(false); });
+    // r50 (Zale, Nov 22): the first time the poster is nearly in full view it plays once on its own: the booking lineup holds long
+    // enough to read (3 s), then slides slowly to today (2.4 s, the year counting over the knob) and stays there. Any tap first cancels it.
+    var touched = false; p.addEventListener('pointerdown', function () { touched = true; }, true); knob.addEventListener('keydown', function () { touched = true; });
+    if (window.IntersectionObserver && !(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)) {
+      var io = new IntersectionObserver(function (es) {
+        es.forEach(function (en) {
+          if (!en.isIntersecting || en.intersectionRatio < 0.6 || touched) return;
+          io.disconnect();
+          setTimeout(function () { if (!touched && t === 0 && !p.classList.contains('all') && p.offsetParent !== null) go(true, 2400); }, 3000);
+        });
+      }, { threshold: [0.6, 0.8] });
+      io.observe(p.querySelector('.po-names.then') || p);
+    }
   });
   root.querySelectorAll('.gp').forEach(function (gp) {
     // r29 (Zale, Nov 21): pick as many kinds of music as you like. "Everything" clears; the gold button closes the list.
@@ -163,8 +203,8 @@
     }
     btn.addEventListener('click', function () { list.hidden = !list.hidden; btn.setAttribute('aria-expanded', String(!list.hidden)); if (!list.hidden) apply(); });
     list.addEventListener('click', function (e) {
-      if (e.target.closest('.gp-done')) { shut(); return; }
-      var o = e.target.closest('.gp-o'); if (!o) return; var g = o.dataset.g, k = picks.indexOf(g);
+      if (lxT(e).closest('.gp-done')) { shut(); return; }
+      var o = lxT(e).closest('.gp-o'); if (!o) return; var g = o.dataset.g, k = picks.indexOf(g);
       if (g === all) picks = []; else if (k > -1) picks.splice(k, 1); else picks.push(g);
       apply();
     });
@@ -173,7 +213,7 @@
   });
   root.querySelectorAll('.bk').forEach(function (bk) {
     bk.addEventListener('click', function (e) {
-      var b = e.target.closest('.bkb'); if (!b) return;
+      var b = lxT(e).closest('.bkb'); if (!b) return;
       bk.querySelectorAll('.bkb').forEach(function (x) { x.classList.toggle('on', x === b); });
       bk.closest('.arch').querySelectorAll('.bl').forEach(function (g) { g.hidden = g.dataset.b !== b.dataset.b; });
     });
@@ -197,10 +237,10 @@
   });
   // r30: "See everyone" opens the rest of the year's acts; picking a kind of music shows every match
   root.querySelectorAll('section.rest').forEach(function (rest) {
-    var minis = rest.querySelector('.minis'), evy = rest.querySelector('.evy'), gp = rest.querySelector('.gp'); if (!minis) return;
+    var main_ = rest.closest('main') || document, minis = rest.querySelector('.minis'), evy = rest.querySelector('.evy'), gp = main_.querySelector('.ypick .gp') || rest.querySelector('.gp'); if (!minis) return;
     function sync() { var f = !!(gp && gp.classList.contains('set')); minis.classList.toggle('filt', f); if (evy) evy.hidden = f || minis.classList.contains('open'); }
     if (evy) evy.addEventListener('click', function () { minis.classList.add('open'); sync(); });
-    rest.addEventListener('lxfilter', sync);
+    main_.addEventListener('lxfilter', sync);
   });
   // r31: inside the live app the ring must win over the card's own link (the app plays it with its own player)
   root.querySelectorAll('a [data-clip]').forEach(function (r) {

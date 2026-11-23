@@ -382,7 +382,7 @@ h2{font-family:var(--display);font-weight:400;font-size:27px;line-height:1.14;le
   h2,.lead{padding-left:0}
 }
 @media (min-width:1000px){
-  .phone>main>*:not(.hero):not(.poster):not(.hd):not(.sale):not(.stripe),.phone>*:not(main):not(.hero):not(.poster):not(.hd):not(.sale):not(.stripe):not(.mockbar){padding-left:max(64px,calc((100% - 1152px)/2))!important;padding-right:max(64px,calc((100% - 1152px)/2))!important}
+  .phone>main>*:not(.hero):not(.poster):not(.yrtop):not(.hd):not(.sale):not(.stripe),.phone>*:not(main):not(.hero):not(.poster):not(.hd):not(.sale):not(.stripe):not(.mockbar){padding-left:max(64px,calc((100% - 1152px)/2))!important;padding-right:max(64px,calc((100% - 1152px)/2))!important}
   .grid2{grid-template-columns:repeat(5,minmax(0,1fr))}
 }
 
@@ -668,3 +668,73 @@ h2{font-family:var(--display);font-weight:400;font-size:27px;line-height:1.14;le
 .yrchip .yc-a{display:grid;place-items:center;width:24px;height:24px;border-radius:50%;background:var(--gold,#D6B54A);color:#1c1719}
 .yrchip .yc-a svg{width:12px;height:12px}
 .yrchip select{position:absolute;inset:0;opacity:0;width:100%;height:100%;cursor:pointer;font-size:16px}
+/* r46 (Zale, Nov 22): the class bar sticks flush at the top (the page header does not stick), so no cards show above it */
+.bkw{top:0}
+/* r47: four filters (All + the three classes) sit on one row; on phone the music picker takes a slim second row */
+.bkw .bk{grid-template-columns:1fr 1.35fr 1.1fr 1.15fr}
+.bkw .bkb{min-height:50px;padding:0 4px}
+.bkw .bkb span{font-size:13px;text-transform:none;letter-spacing:0;font-weight:800;white-space:nowrap}
+.bkw .bkb b{font-size:14px}
+@media (max-width:640px){
+  .bkw{flex-wrap:wrap;row-gap:6px}
+  .bkw .bk{flex:1 1 100%}
+  .bkw .gpc{flex:1 1 100%}
+  .bkw .gpc .gp-b{min-height:44px;width:100%;flex-direction:row;align-items:center;justify-content:flex-start;gap:8px}
+}
+@media (max-width:640px){
+  .bkw .gpc .gp-q{font-size:12px;letter-spacing:.06em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;flex:0 1 auto}
+  .bkw .gpc .gp-a{flex:none;margin-left:auto}
+}
+@media (max-width:640px){
+  .bkw .gpc,.bkw .gpc .gp{min-width:0;max-width:100%}
+  .bkw .gpc .gp-b{box-sizing:border-box;max-width:100%;padding:0 12px}
+  .bkw .gpc .gp-q{flex:1 1 auto}
+  .bkw .gpc .gp-a{display:flex;align-items:center;gap:6px}
+}
+@media (max-width:640px){.bkw .gpc .gp-b{display:flex!important;flex-direction:row!important}.bkw .gpc .gp-q{flex:1 1 0!important;width:auto!important;text-align:left}}
+@media (max-width:640px){.bkw .gpc .gp-q{display:none!important}.bkw .gpc .gp-a{margin-left:0;flex:1 1 auto;justify-content:space-between}.bkw .gpc .gp-a b::before{content:"Music \00b7  ";color:var(--dim)}}
+
+/* r48 (Zale, Nov 22): one question only; the bar is the music picker, with a thin gold line along its bottom for how far you've come */
+.bkw.one{position:sticky}
+.bkw.one .gpc{flex:1 1 100%}
+.bkw.one .gpc .gp-b{width:100%}
+.bkw.one::after{content:"";position:absolute;left:0;bottom:0;height:3px;width:var(--p,0%);background:var(--gold)}
+@media (max-width:640px){.bkw.one .gpc .gp-q{display:block!important;font-size:12px}.bkw.one .gpc .gp-a b::before{content:none}.bkw.one .gpc .gp-b{flex-direction:column!important;align-items:flex-start;justify-content:center;gap:2px;min-height:52px}.bkw.one .gpc .gp-a{width:100%}}
+.bkw.one .bk{display:none!important}
+
+/* r49 (Zale, Nov 22): the hero and the poster share one band. Phone: a shorter hero and a smaller badge so the names reach the
+   first screen sooner. Desktop: hero left (one column), poster right (two columns), same height, names wider not taller. */
+.hyr{height:470px}.h27{height:500px}
+.poster.joined .po-badge{width:150px;margin-top:-52px}
+@media (min-width:1000px){
+  .yrtop{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2fr);align-items:stretch;max-width:1280px;margin:0 auto}
+  .yrtop>.hero{height:auto;min-height:660px}
+  .yrtop>.hero .hero-tx{padding:0 32px 56px}
+  .yrtop>.hero h1,.yrtop>.hero h1.act{font-size:54px}
+  .yrtop>.hero h1.act.sm{font-size:44px}
+  .yrtop>.hero .hero-sub{font-size:18px}
+  .yrtop>.hero .hyr-y{right:24px;top:36px;font-size:32px}
+  .yrtop>.hero .segs{left:24px;right:24px}
+  .yrtop .poster .seam{display:none}
+  .yrtop .poster.joined .po-in,.yrtop .poster.solo .po-in{grid-template-columns:190px minmax(0,1fr);column-gap:36px;row-gap:0;align-items:start;padding:40px 48px 44px;max-width:none}
+  .yrtop .po-art{grid-column:1;grid-row:1/span 2;width:190px}
+  .yrtop .poster .po-badge,.yrtop .poster.joined .po-badge,.yrtop .poster.solo .po-badge{width:190px;margin:0}
+  .yrtop .po-art .po-dates{font-size:11px;padding:6px 8px;letter-spacing:.1em}
+  .yrtop .poster .po-cap{grid-column:2;grid-row:1;margin-top:6px;font-size:30px;text-align:left}
+  .yrtop .po-ctl{grid-column:2;grid-row:2;margin-top:16px}
+  .yrtop .po-names,.yrtop .po-all,.yrtop .po-tap{grid-column:1/-1}
+  .yrtop .po-names{margin-top:30px}
+  .yrtop .pcloud{justify-content:center;max-width:none}
+  .yrtop .po-names .pcloud .pn{--lo:20;--hi:60;white-space:normal;overflow-wrap:break-word;max-width:100%}
+  .yrtop .po-names .pcloud.rest .pn{--lo:14;--hi:22}
+  .yrtop .p27{display:flex;flex-direction:column;justify-content:center}
+}
+@media (min-width:1000px){
+  .yrtop>.poster{margin:0!important;display:flex;flex-direction:column;justify-content:center}
+  .yrtop>.poster>.po-in{width:100%;box-sizing:border-box}
+  .yrtop .poster .po-names{grid-row:3}.yrtop .poster .po-all{grid-row:4}.yrtop .poster .po-tap{grid-row:5}
+  .yrtop>.poster>.stripe{margin-top:auto}
+}
+@media (min-width:1000px){.yrtop .p27 .p27-in{padding-left:40px;padding-right:40px}}
+.ypick{padding:26px 18px 0}
+.ypick .gp{max-width:420px}

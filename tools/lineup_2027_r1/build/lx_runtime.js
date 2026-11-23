@@ -54,6 +54,7 @@
   var DOCL = [];
   function docOn(type, fn, opt) { document.addEventListener(type, fn, opt); DOCL.push([type, fn, opt]); }
   var IVL = [];
+  function lxT(e) { var p = e.composedPath ? e.composedPath() : [], x = p[0] || e.target; return x && x.closest ? x : (x && x.parentElement) || document.body; }
   function ivOn(fn, ms) { var id = setInterval(fn, ms); IVL.push(id); return id; }
   function docOff() { DOCL.forEach(function (x) { document.removeEventListener(x[0], x[1], x[2]); }); DOCL = []; IVL.forEach(clearInterval); IVL = []; }
   function widgets(root) {
