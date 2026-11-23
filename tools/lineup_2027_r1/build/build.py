@@ -1101,11 +1101,9 @@ def art_page(slug, ap):
     _lgy = d['yearLogo'].get(yr)
     _lgi = ('<img src="%s" alt="">' % img(_lgy, 220, fmt='PNG')) if (_lgy and not _lgy.startswith('http') and os.path.exists(_src(_lgy))) else ('<img src="%s" alt="">' % LOGO)
     _stg = (_fr[0][2] if _fr else '') or ap.get('heroSt', '')
-    _yrs = sorted({str(y_) for y_, _ in _KIN.get(name, [])} | {yr})
-    h += ('<section class="ayb" style="--yp:%s;--yi:%s"><span class="ayb-l">%s</span><div class="ayb-t"><b>Pickathon %s</b>%s</div>'
-          '<div class="ayb-y"><p>Their Pickathons</p><div>%s</div></div></section>') % (
-          _P2['paper'], _P2['ink'], _lgi, yr, ('<span>%s</span>' % E(_stg)) if _stg else '',
-          ''.join('<button type="button" data-go="y%s"%s aria-label="Pickathon %s lineup">%s</button>' % (y_, ' aria-current="true"' if y_ == yr else '', y_, y_) for y_ in _yrs))
+    # r76 (Zale, Nov 22 22:45, picked A): the year seal sits across the join of photo and page, like a stamp; year and stage under it
+    h += ('<div class="aseal" style="--yp:%s;--yi:%s"><span class="as-l">%s</span><p>Pickathon %s%s</p></div>') % (
+          _P2['paper'], _P2['ink'], _lgi, yr, (' · %s' % E(_stg)) if _stg else '')
     # r66 (Zale picked one continuous story, copy_review-54): intro, one story in a few paragraphs, then a small sets block; read from Copy Review's stories_<year> CSVs
     _st = _STORIES.get((_slug(name), yr))
     story = [] if _st else [s for s in (ap.get('story') or []) if s.get('t')]
