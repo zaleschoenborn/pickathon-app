@@ -562,7 +562,8 @@ _ALINES = json.load(open(ROOT + 'arch_lines.json'))  # r44: Copy Review's one li
 def vcard(n, y, k, g, p, pos):
     h = _vcard(n, y, k, g, p, pos)
     ln = _ALINES.get('%s|%s|%s' % (k, ''.join(c for c in _ud.normalize('NFD', n.lower()) if c.isalnum() and ord(c) < 128), y), '')
-    # r52 (Zale, Nov 22 18:35): no blurb on the small two-up Archive cards; the three-line line lives on the reels and larger previews
+    # r55 (Zale, Nov 22 19:32): desktop shows 3 bigger cards across WITH the three-line blurb; phone (two-up) hides it in CSS
+    h = h.replace('</span><span class="cstory">', '</span><span class="cline">%s</span><span class="cstory">' % E(ln), 1) if ln and '<span class="cstory">' in h else h
     q = act_queue(n, y)  # r51: the player queues this act's songs across the years, starting with this card's
     return h.replace('<span class="pz" data-clip=', '<span class="pz" data-q="%s" data-clip=' % _h.escape(q, quote=True), 1) if q.count(';;') else h
 def _vcard(n, y, k, g, p, pos):
@@ -673,7 +674,7 @@ s1 += ('<section class="p27"><div class="stripe"><i style="background:#F2CF62"><
 s1 += '</div>'
 s1 += ('<section class="arch"><p class="kick">While you wait</p><h2>Wait, they played here?</h2><p class="sub">They played the farm in small rooms. Look how big they got.</p>'
        # r48 (Zale, Nov 22: one question only): no class tabs; the class word stays on each card; one mixed feed, biggest today first
-       '<div class="bkw one"><div class="bk" hidden><button class="bkb on" data-b="all"></button></div>%s</div>'
+       '<div class="bkw one"><div class="bk" hidden><button class="bkb on" data-b="all"></button></div>%s<span class="bkc" aria-live="off"><b>0</b> of <i>@NA</i></span></div>'
        '<div class="grid2 bl" data-b="all">%s</div>'
        '<button class="btn line wide more">Keep going</button></section>') % (gpick('.arch .card', 'What kind of music do you love?', GLIST).replace('class="gp"', 'class="gp gpc"'),
        ''.join(vcard(n, y, k, g, p, pos) for k, n, y, g, p, pos in ARCH_ALL))

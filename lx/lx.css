@@ -747,3 +747,19 @@ h2{font-family:var(--display);font-weight:400;font-size:27px;line-height:1.14;le
   .bkw.one .gpc .gp-a b{font-size:18px!important;line-height:1.1}
 }
 @media (max-width:640px){.bkw.one .gpc .gp-b{height:auto!important;padding-top:9px!important;padding-bottom:9px!important}.bkw.one .gpc .gp-q{overflow:visible!important;padding-top:1px}}
+
+/* r54 (Zale, Nov 22 19:29): the count rides in the sticky bar, right of the music picker, same on phone and desktop */
+.bkw.one{flex-wrap:nowrap!important;align-items:center;gap:12px}
+.bkw.one .gpc{flex:1 1 auto!important;min-width:0}
+.bkc{flex:none;font-size:14px;font-weight:700;color:var(--dim);white-space:nowrap;font-variant-numeric:tabular-nums}
+.bkc b{color:var(--gold);font-weight:800}.bkc i{font-style:normal}
+@media (min-width:1000px){.bkw.one .gpc{flex:0 1 460px!important}.bkc{margin-left:auto;font-size:16px}}
+
+/* r55 (Zale, Nov 22 19:32): Archive on desktop = 3 big cards across with the blurb; phone = 2 across, no blurb */
+.arch .card .cline{display:none}
+@media (min-width:1000px){
+  .arch .grid2.bl{grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}
+  .arch .card.arch{aspect-ratio:4/5}
+  .arch .card .cline{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;font-size:17px;line-height:1.35;letter-spacing:0;text-transform:none;font-family:var(--text);font-weight:500;color:var(--cream);margin-top:8px;max-width:34ch}
+  .arch .card .cname{font-size:28px}
+}
