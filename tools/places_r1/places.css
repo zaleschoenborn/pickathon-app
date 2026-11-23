@@ -992,3 +992,16 @@ html body.pkpl-v2 #root #pkpl .pkpl-gk p.pkpl-ask{font-size:12px!important;lette
 /* Zale, Nov 23: merch gets a plain merch plate over the 2026 frog badge baked into the art */
 /* amenity name on hover (desktop) */
 #pkpl .pkpl-amhov{position:absolute;left:0;top:0;z-index:30;pointer-events:none;padding:7px 11px;border-radius:8px;background:#12160F;border:1px solid #3A4331;color:#F2EDE3;font:700 14px/1 'Bricolage Grotesque',system-ui,sans-serif;white-space:nowrap;box-shadow:0 4px 14px rgba(0,0,0,.4)}
+
+/* Zale, Nov 23: quick links on the neighborhood photo (one quiet row): what's here, then and now, the story */
+html body #root #pkpl .pkpl-qr{display:flex;gap:8px;margin-top:12px;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;pointer-events:auto}
+html body #root #pkpl .pkpl-qr::-webkit-scrollbar{display:none}
+html body #root #pkpl .pkpl-q{flex:none;display:inline-flex;align-items:center;gap:7px;min-height:40px;padding:0 13px;border-radius:20px;border:1px solid rgba(242,237,227,.38);background:rgba(18,22,15,.55);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);color:#F2EDE3;font:700 14px/1 'Bricolage Grotesque',system-ui,sans-serif;cursor:pointer;white-space:nowrap}
+html body #root #pkpl .pkpl-q:hover{border-color:#E9B93C}
+html body #root #pkpl .pkpl-qi{display:inline-flex;gap:3px}
+html body #root #pkpl .pkpl-qi .pkpl-fi{display:inline-flex;width:16px;height:16px}
+html body #root #pkpl .pkpl-qi .pkpl-fi svg{width:16px;height:16px}
+html body #root #pkpl .pkpl-qp{width:0;height:0;border-left:8px solid #F2EDE3;border-top:5px solid transparent;border-bottom:5px solid transparent}
+html body #root #pkpl-top .pkpl-soon,html body #root #pkpl-top .pkpl-sc,html body #root #pkpl-top .pkpl-what,html body #root #pkpl-top .pkpl-vids,html body #root #pkpl-top .pkpl-yr{scroll-margin-top:72px}
+html body.pkpl-wide #root #pkpl-top .pkpl-soon,html body.pkpl-wide #root #pkpl-top .pkpl-sc,html body.pkpl-wide #root #pkpl-top .pkpl-vids,html body.pkpl-wide #root #pkpl-top .pkpl-yr{scroll-margin-top:calc(var(--pkpl-hh,88px) + 16px)}
+@media (max-width:599px){html body.pkpl-v2p #root #pkpl-top .pkpl-hi:not(.pkpl-map){padding-bottom:62px}}
