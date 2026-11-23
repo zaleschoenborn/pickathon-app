@@ -782,3 +782,67 @@ body:has(#tk2 #tk-bar:not([hidden])) #pk-toast,body:has(#pk-co) #pk-toast{displa
 #tk2 .tk-s-stack .tk-s-end{padding:22px 0 4px;margin:6px 0 0;background:none;border-top:1px solid var(--line)}
 #tk2 .tk-s-stack .tk-s-pl li{border-top:1px dotted var(--line)}
 #tk2 .tk-e-why .tk-e-reel{margin-left:0;margin-right:0;padding-left:12px;padding-right:12px;scroll-padding-left:12px}
+/* ---------- Intro, days first (Nov 23): .tk-e3. Phone and tablet: one column (hook, then the days). Desktop 1025+: hook left, days right. ---------- */
+.tk2 .tk-e3-in{display:block}
+.tk2 .tk-e3-ph{position:relative;height:200px;overflow:hidden}
+.tk2 .tk-e3-ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 40%}
+.tk2 .tk-e3-ph:after{content:'';position:absolute;inset:auto 0 0 0;height:64px;background:linear-gradient(transparent,var(--ground))}
+.tk2 .tk-e3-buy{padding:4px var(--gutter) 0}
+.tk2 .tk-e3-sale{margin:6px 0 4px;font-weight:700;font-size:var(--t-sm);color:var(--cream-dim)}
+.tk2 .tk-e3-sale .tk-runout{color:var(--gold,#F2CF62);margin-left:.35em}
+.tk2 .tk-e3-sale .tk-runout:before{content:'· ';color:var(--cream-dim)}
+.tk2 .tk-e3 .tk-e-days h1{margin:6px 0 4px;font-size:clamp(26px,7.4vw,34px)!important;line-height:1.05;color:var(--cream)}
+.tk2 .tk-e3 .tk-e-next{margin-top:14px}
+.tk2 .tk-e3-know{margin-top:18px;border-top:1px solid var(--line);padding-top:4px}
+.tk2 .tk-e3-know>summary{list-style:none;display:flex;align-items:center;gap:8px;min-height:48px;cursor:pointer;color:var(--gold,#F2CF62);font-weight:800}
+.tk2 .tk-e3-know>summary::-webkit-details-marker{display:none}
+.tk2 .tk-e3-know[open]>summary .tk-e-chev{transform:rotate(180deg)}
+.tk2 .tk-e3-more{padding:8px var(--gutter) 0}
+.tk2 .tk-e3-why{margin:14px 0 0}
+/* the experience picker (cold visitors only) */
+.tk2 .tk-x{padding:14px 0 6px}
+.tk2 .tk-x-k{padding:0 var(--gutter);margin:0 0 10px}
+.tk2 .tk-x-ch{display:flex;gap:8px;overflow-x:auto;padding:0 var(--gutter) 2px;scrollbar-width:none;scroll-padding:0 var(--gutter)}
+.tk2 .tk-x-ch::-webkit-scrollbar{display:none}
+.tk2 .tk-x-chip{flex:none;display:inline-flex;align-items:center;gap:7px;min-height:44px;padding:0 14px;border:2px solid var(--line);border-radius:6px;background:transparent;color:var(--cream);font:inherit;font-size:15px;font-weight:800;cursor:pointer}
+.tk2 .tk-x-chip[aria-pressed="true"]{background:var(--cream);color:#12160F;border-color:var(--cream)}
+.tk2 .tk-x-ic{width:18px;height:18px;flex:none}
+.tk2 .tk-x-row{list-style:none;margin:12px 0 0;padding:0 var(--gutter);display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding:0 var(--gutter);scrollbar-width:none}
+.tk2 .tk-x-row::-webkit-scrollbar{display:none}
+.tk2 .tk-x-c{flex:none;width:min(78vw,300px);scroll-snap-align:start}
+.tk2 .tk-x-ph{position:relative;display:block;width:100%;height:min(80vw,320px);padding:0;border:0;border-radius:10px;overflow:hidden;background:var(--deep);cursor:pointer;text-align:left;color:var(--cream)}
+.tk2 .tk-x-ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.tk2 .tk-x-sh{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.38) 0,rgba(0,0,0,0) 22%,rgba(0,0,0,0) 45%,rgba(18,16,17,.92) 100%)}
+.tk2 .tk-x-yr{position:absolute;top:12px;right:14px;font-size:26px!important;line-height:1;color:var(--cream)}
+.tk2 .tk-x-ph .tk-ring{top:42%}
+.tk2 .tk-x-low{position:absolute;left:14px;right:14px;bottom:14px;display:block}
+.tk2 .tk-x-kk{display:flex;justify-content:space-between;gap:8px;font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase}
+.tk2 .tk-x-kk b{color:var(--gold,#F2CF62)}
+.tk2 .tk-x-n{display:block;margin:4px 0 4px;font-size:22px!important;line-height:1.05;color:var(--cream)}
+.tk2 .tk-x-l{display:block;font-size:15px;line-height:1.35;color:var(--cream)}
+.tk2 .tk-x-line{padding:0 var(--gutter);margin:12px 0 0;font-size:15px;line-height:1.4;color:var(--cream-dim)}
+.tk2 .tk-x-line b{display:block;margin-top:4px;color:var(--gold,#F2CF62)}
+.tk2 .tk-e3-cold .tk-e3-buy{margin-top:10px;border-top:1px solid var(--line);margin-left:var(--gutter);margin-right:var(--gutter);padding-left:0;padding-right:0;padding-top:10px}
+@media (min-width:600px) and (max-width:1024px){
+ .tk2 .tk-e3{max-width:660px;margin:0 auto}
+ .tk2 .tk-e3-ph{height:260px;border-radius:0 0 12px 12px}
+ .tk2 .tk-x-c{width:300px}
+ .tk2 .tk-x-ph{height:360px}
+}
+@media (min-width:1025px){
+ .tk2 .tk-e3-in{display:grid;grid-template-columns:minmax(0,1fr) 440px;gap:56px;max-width:1200px;margin:0 auto;padding:36px var(--gutter) 0;align-items:start}
+ .tk2 .tk-e3-cold .tk-e3-buy,.tk2 .tk-e3-buy{margin:0;border:0;padding:0}
+ .tk2 .tk-e3-ph{height:460px;border-radius:12px}
+ .tk2 .tk-e3-ph:after{display:none}
+ .tk2 .tk-x{padding:0}
+ .tk2 .tk-x-k,.tk2 .tk-x-ch,.tk2 .tk-x-row,.tk2 .tk-x-line{padding-left:0;padding-right:0}
+ .tk2 .tk-x-c{width:300px}
+ .tk2 .tk-x-ph{height:400px}
+ .tk2 .tk-e3-more{max-width:1200px;margin:24px auto 0}
+}
+#tk2 .tk-e3 .tk-e-days{padding:4px 0 0;margin:0;max-width:none}
+#tk2 .tk-e3 .tk-e-days h1{margin:4px 0 4px!important;padding:0!important}
+
+/* a cold visitor's experience pick lights its row in the steps (Family: kids) */
+#tk2 .tk-g-hl,.tk2 .tk-g-hl,.tk-gscrim .tk-g-hl{outline:2px solid #F2CF62;outline-offset:2px;border-radius:8px;background:rgba(242,207,98,.07)}
+.tk-g-yp{font-style:normal;color:#F2CF62;font-weight:700}
