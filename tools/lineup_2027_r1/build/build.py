@@ -775,6 +775,15 @@ def _rline(n, y, k):  # r50: the reel frame carries Copy Review's three-line car
         v = _ALINES.get('%s|%s|%s' % (kk, sl_, y))
         if v: return v
     return ''
+def _mat(P):
+    """r56c (Zale, Nov 22): the frame takes the year's boldest color; the poster and photo stay on paper below it."""
+    import colorsys
+    pa = P['paper'].upper()
+    cs = [c for c in [P.get('band'), P.get('warm'), P.get('light')] + list(P.get('stripe', [])) if c and c.upper() != pa and len(c) == 7]
+    def sc(c):
+        r, g, b = (int(c[i:i+2], 16) / 255 for i in (1, 3, 5)); h_, l_, s_ = colorsys.rgb_to_hls(r, g, b)
+        return s_ * (1 - abs(l_ - .45) * 1.4)
+    return max(cs, key=sc) if cs else P['band']
 EARLY_ART = {y_: 'ext/art/y%s-art-centre.png' % y_[2:] for y_ in ['2000','2001','2002','2003','2004','2005','2006'] if os.path.exists(ROOT + 'ext/art/y%s-art-centre.png' % y_[2:])}
 def year_page(y):
     P = d['yearBrand'][y]; st = d['yearStory'].get(y, {}); yp = d['yearPhotos'].get(y, {})
@@ -840,7 +849,7 @@ def year_page(y):
     h += poster_block(P, badge, y, then_list, today_all, len(music), joined=bool(hero), ranked=ranked)
     # r56 (Zale, Nov 22): paper frame. The year's own art runs along the top (desktop), and the poster paper wraps photo and poster like a printed poster with a photo window
     _crown = '<div class="yrcrown" aria-hidden="true">%s</div>' % seam(y, P)
-    h = h[:_top] + '<div class="yrtop framed" style="--paper:%s;--ink:%s">%s' % (P['paper'], P['ink'], _crown) + h[_top:] + '</div>'
+    h = h[:_top] + '<div class="yrtop framed" style="--paper:%s;--ink:%s;--mat:%s">%s' % (P['paper'], P['ink'], _mat(P), _crown) + h[_top:] + '</div>'
     if st.get('headline'):
         h += ('<section class="story short"><p class="kick">The %s story</p><p class="lead">%s.</p>%s</section>') % (y, E(st['headline'].rstrip('.')), ('<p class="body" hidden>%s</p><button class="chip stog" aria-expanded="false" data-open="Read the %s story" data-shut="Show less"><span>Read the %s story</span> %s</button>' % (E(st['story']), y, y, ICON['caret'])) if st.get('story') else '')
     lp = ''  # Nov 21 r27 (Zale): the lineup picker is off until the other lineups (Family, DJs, Comedy...) are drawn; it listed them with nothing behind them

@@ -801,3 +801,15 @@ h2{font-family:var(--display);font-weight:400;font-size:27px;line-height:1.14;le
   .seam .sm-wm.sm-wm02{height:calc(50px*var(--sc));bottom:20px}
   .seam .sm-wm{height:calc(70px*var(--sc))}
 }
+
+/* r56c (Zale, Nov 22): no dates tag under the logo; bigger logo; the frame is the year's boldest color, the poster panel stays paper */
+.yrtop .po-art .po-dates{display:none!important}
+@media (min-width:1000px){
+  .yrtop.framed{background:linear-gradient(to bottom,transparent 0 58px,var(--mat) 58px);padding:0 28px 28px;column-gap:20px}
+  .yrtop.framed>.yrcrown .sm-g path,.yrtop.framed>.yrcrown svg.cloud path:last-child{fill:var(--mat)}
+  .yrtop.framed>.hero{border:3px solid var(--paper)}
+  .yrtop.framed .poster{background:var(--paper)!important;border-radius:4px}
+  .yrtop.framed .poster .po-in{padding-top:36px}
+  .yrtop .poster.joined .po-in,.yrtop .poster.solo .po-in{grid-template-columns:240px minmax(0,1fr)}
+  .yrtop .po-art,.yrtop .poster .po-badge,.yrtop .poster.joined .po-badge,.yrtop .poster.solo .po-badge{width:240px}
+}
