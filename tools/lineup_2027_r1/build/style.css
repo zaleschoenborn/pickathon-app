@@ -829,3 +829,16 @@ h2{font-family:var(--display);font-weight:400;font-size:27px;line-height:1.14;le
   .yrtop.framed .poster.joined,.yrtop.framed .poster.solo{background:var(--pnl)!important}
   .yrtop.framed .poster .po-in{background:transparent!important}
 }
+/* r58 (Zale, Nov 22 20:06) */
+/* the year list opened black on Windows: an invisible select hides its own option list there; keep the select see-through, not invisible */
+.yrbar .yrchip select{opacity:1;color:transparent;background:transparent}
+.yrbar .yrchip select option{color:#1c1718;background:#fff}
+/* the reel blurb gets three lines, and the photo no longer fades to a solid band at the bottom */
+.hero.reel .hero-sc{background:linear-gradient(180deg,rgba(20,16,17,.25) 0,rgba(20,16,17,0) 22%,rgba(20,16,17,0) 44%,rgba(20,16,17,.62) 78%,rgba(20,16,17,.78) 100%)}
+.hero.reel .hero-sub{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+@media (min-width:1000px){
+  .yrtop>.hero.reel .hero-sub{max-width:26ch;font-size:18px}
+  /* opening the whole bill no longer stretches the photo: it holds its size and stays in view */
+  .yrtop.framed>.hero{align-self:start;position:sticky;top:12px;height:660px;min-height:0}
+}
+.hero .krow .k{white-space:nowrap}

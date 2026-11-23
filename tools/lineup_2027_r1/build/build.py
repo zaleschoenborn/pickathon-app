@@ -1000,36 +1000,45 @@ def art_page(slug, ap):
             h += '<figure class="ph"><img src="%s" alt="" style="object-position:%s"><figcaption>%s%s</figcaption></figure>' % (
                 img(p['i'], 600), p.get('pos', '50% 50%'), E(p.get('st', '')), '')
         h += '</div></section>'
-    clips = [r for r in d['yearReel'].get('2026', []) if norm(r['n']) == norm(name) and r.get('v') and r.get('i') and loc(r['i']) and 'poster' not in r['i']]
-    if clips:
-        h += '<section class="shelf vids"><div class="sh-h"><div><p class="kick">Filmed on the farm</p><h2>Videos · Pickathon 2026</h2></div></div><div class="swipe">'
-        for r in clips:
-            h += ('<div class="vid" role="button" tabindex="0" data-clip="%s"><span class="vth"><img src="%s" alt="" style="object-position:50%% 40%%">%s</span>'
-                  '<b>%s</b><span>%s · Pickathon 2026</span></div>') % (_h.escape(r['v'], quote=True), img(r['i'], 600), play('sm'), E(name), E(r.get('sg', '')))
+    # r58 (Zale, Nov 22 20:06): an artist page carries every song the act has from every Pickathon year (newest first), then its full sets
+    _ks = ''.join(ch for ch in _ud.normalize('NFD', _CLIPALIAS.get(name, name).lower()) if ch.isalnum())
+    _yp = lambda yy: (d['yearPhotos'].get(str(yy), {}).get(name, {}) or {}).get('i')
+    def _thumb(u, yy):
+        p_ = _yp(yy)
+        if p_ and loc(p_): return img(p_, 520)
+        m_ = _re.search(r'v=([A-Za-z0-9_-]{11})', u)
+        return ('https://i.ytimg.com/vi/%s/hqdefault.jpg' % m_.group(1)) if m_ else img(ap['hero'], 520)
+    songs, seen_u = [], set()
+    for (kk, yy), u in sorted(CLIPY.items(), key=lambda t: -int(t[0][1])):
+        if kk == _ks and u.split('&')[0] not in seen_u: seen_u.add(u.split('&')[0]); songs.append((u, yy, ''))
+    for v in (ap.get('vids') or []):
+        if v.get('u') and v['u'].split('&')[0] not in seen_u: seen_u.add(v['u'].split('&')[0]); songs.append((v['u'], ap.get('yr') or yr, v.get('sg', '')))
+    if songs:
+        h += '<section class="shelf vids"><div class="sh-h"><div><p class="kick">Filmed on the farm</p><h2>Songs at Pickathon</h2></div></div><div class="swipe">'
+        for u, yy, sg in songs[:12]:
+            h += ('<div class="vid" role="button" tabindex="0" data-clip="%s"><span class="vth"><img loading="lazy" src="%s" alt="" style="object-position:50%% 40%%">%s</span>'
+                  '<b>%s</b><span>%sPickathon %s</span></div>') % (_h.escape(u, quote=True), _thumb(u, yy), play('sm'), E(name), (E(sg) + ' · ') if sg else '', yy)
         h += '</div></section>'
-    vids2 = ap.get('vids') or []
-    if vids2:
-        h += '<section class="shelf vids"><div class="sh-h"><div><p class="kick">Videos</p><h2>Pickathon</h2></div></div><div class="swipe">'
-        for v in vids2:
-            h += ('<div class="vid" role="button" tabindex="0" data-clip="%s"><span class="vth"><img src="%s" alt="" style="object-position:50%% 40%%">%s</span>'
-                  '<b>%s</b><span>%s</span></div>') % (_h.escape(v['u'], quote=True), img(v['i'], 600), play('sm'), E(name), E(v['sg']))
+    fulls = [v for v in d['videos'] if _slug(v.get('a') or '') in (_slug(name), _ks) and (v.get('f') or v.get('cad') or 'full set' in str(v.get('s', '')).lower()) and _vurl(v)]
+    if fulls:
+        h += '<section class="shelf vids"><div class="sh-h"><div><p class="kick">The whole show</p><h2>Full sets</h2></div></div><div class="swipe">'
+        for v in sorted(fulls, key=lambda v: -int(v.get('y') or 0))[:6]:
+            u = _vurl(v)
+            h += ('<div class="vid" role="button" tabindex="0" data-clip="%s"><span class="vth"><img loading="lazy" src="%s" alt="" style="object-position:50%% 40%%">%s</span>'
+                  '<b>%s, full set</b><span>Pickathon %s</span></div>') % (_h.escape(u, quote=True), _thumb(u, v.get('y')), play('sm'), E(name), v.get('y'))
         h += '</div></section>'
     years = sorted({y for y, _ in _KIN.get(name, [])})
     if years:
         h += '<section class="theirs"><p class="kick">Their Pickathons</p><div class="filt">%s</div></section>' % ''.join(
             '<a class="chip%s" href="#">Pickathon %s</a>' % (' on' if str(y) == yr else '', y) for y in years)
-    # Nov 21: class from the live table at the act's first year (never hard-coded); matched on genre, then nearest in size (Zale, Nov 19)
-    _me = x.get('m') or 0
-    same = []
-    for p in d['past']['deep']:
-        if p['n'] == name or not p.get('g') or p.get('g') != g or not str(p.get('pi','')).startswith('i/') or not os.path.exists(APP + p['pi']): continue
-        c = _cls(p['n'], p.get('pyr')) or {}
-        if c.get('k') not in ('disc', 'leg', 'deep'): continue
-        same.append((abs((c.get('m') or 0) - _me), p, c['k']))
-    same = [(p, kk) for _, p, kk in sorted(same, key=lambda t: t[0])[:5]]
+    # r58 (Zale, Nov 22 20:06): "If you like" draws from the Archive's cards that share any of the act's music tags, nearest in size today
+    _mt = set(tags_of(name)) or ({gp_n(name, GSHORT.get(g, g))} - {''})
+    _me = max([v for (cn, _y), v in _magall.items() if cn == _canon(name)] or [x.get('m') or 0])
+    same = sorted([c for c in ARCH_ALL if _canon(c[1]) != _canon(name) and c[4] and (set(tags_of(c[1])) or {c[3]}) & _mt],
+                  key=lambda c: abs(_mg((c[1], c[2])) - _me))[:6]
     if same:
-        h += shelf('Same sound, other summers', 'IF YOU LIKE %s' % name.upper(), 'Acts who stand about where %s stands.' % name, '',
-                   [card(p['n'], p['pyr'], kk, GSHORT.get(p.get('g',''), p.get('g','')), img(p['pi'], 520)) for p, kk in same])
+        h += shelf('Same sound, other summers', 'IF YOU LIKE %s' % name.upper(), 'Acts who stand about where %s stands today.' % name, '',
+                   [vcard(n_, y_, k_, g_, p_, pos_) for k_, n_, y_, g_, p_, pos_ in same])
     return ('<main id="a-%s" class="screen" hidden style="--paper:%s;--ink:%s;--ink2:%s">%s</main>') % (slug, P['paper'], P['ink'], P['ink2'], h)
 ARTISTS = {}
 for _s, _ap in d['actPages'].items():
