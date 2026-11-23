@@ -291,6 +291,14 @@ for _o in _LC:
         _ks = ''.join(ch for ch in _ud.normalize('NFD', _nm.lower()) if ch.isalnum())
         _LY.setdefault((_ks, str(_o['y'])), _u); _LA.setdefault(_ks, _u)
 CLIPY = {**CLIPY, **_LY}; CLIPA = {**CLIPA, **_LA}
+# r73 (Zale, Nov 22 21:53): an artist page's big play button plays every song that act has from that year, as one playlist
+CLIPYL = {}
+for _o in _LC:
+    _u = _o['url'].split('&')[0]; _sg = (_o.get('tail') or '').split(' | ')[-1].strip() if _o.get('tail') else ''
+    for _nm in {_o['act'], _o['artist'], _o['act_id'].replace('-', ' ')}:
+        _ks = ''.join(ch for ch in _ud.normalize('NFD', _nm.lower()) if ch.isalnum())
+        _l = CLIPYL.setdefault((_ks, str(_o['y'])), [])
+        if _u not in [x[0] for x in _l]: _l.append((_u, _sg if len(_sg) < 60 else ''))
 # r57 (Zale, Nov 22 19:57): a year reel plays only that year's recordings; an act not recorded that year gets no reel frame
 YURLS = {}
 for _v in d['videos']:
@@ -1055,9 +1063,38 @@ def art_page(slug, ap):
     # r71 (Zale, Nov 22 21:45, picked Light): the year's thin border strip sits above the hero, the same strip as the top of the year page
     _P2 = P if yr in d['yearBrand'] else P27
     h += '<div class="acrown" aria-hidden="true">%s</div>' % (seam(yr, _P2) if yr != '2027' else generic_seam('2027', P27))
-    h += ('<section class="hero hact"><img src="%s" alt="" style="object-position:%s"><div class="hero-sc"></div>'
-          '<div class="hero-tx"><p class="krow"><span class="k k-%s">%s</span>%s</p><h1>%s</h1><p class="ah-meta">Pickathon %s</p></div></section>') % (
-          img(ap['hero'], 780), ap.get('hpos', '50% 40%'), k, KLAB.get(k, ''), ('<span class="g">%s</span>' % E(gp_n(name, GSHORT.get(g, g)))) if (gp_n(name) or g) else '', E(name), yr)
+    # r73 (Zale, Nov 22 21:53, picked "card line"): the hero is a reel of that year's photos (3-5, best first, different stages), 4 s a photo, hard cut;
+    # the name, class and the act-year card line stay put; one big play button plays every song from that year as a playlist
+    _fr, _seen, _sts = [], set(), set()
+    _cand = [(ap['hero'], ap.get('hpos', '50% 40%'), ap.get('heroSt', ''))] + [(g_['i'], g_.get('pos', '50% 50%'), g_.get('st', '')) for g_ in (ap.get('gal') or [])]
+    _cand = [c_ for c_ in _cand if ('/y%s' % yr[2:]) in c_[0] or c_[0] == ap['hero']]
+    for _pass in (0, 1):  # first one photo per stage, then fill
+        for c_ in _cand:
+            if c_[0] in _seen or len(_fr) >= 5: continue
+            if _pass == 0 and c_[2] and c_[2] in _sts and len(_fr) > 0: continue
+            _seen.add(c_[0]); _sts.add(c_[2]); _fr.append(c_)
+    _ksy = ''.join(ch for ch in _ud.normalize('NFD', _CLIPALIAS.get(name, name).lower()) if ch.isalnum())
+    _ysongs = list(CLIPYL.get((_ksy, yr), []))
+    _c1 = CLIPY.get((_ksy, yr))
+    if _c1 and _c1.split('&')[0] not in [u_ for u_, _ in _ysongs]: _ysongs.append((_c1, ''))
+    _q = ';;'.join('%s|%s%s · Pickathon %s' % (u_, name, (' · ' + sg_) if sg_ else '', yr) for u_, sg_ in _ysongs)
+    _ring = ''
+    if _ysongs:
+        _ring = clip_ring(_ysongs[0][0], 'lg')
+        if len(_ysongs) > 1: _ring = _ring.replace('<span class="ring lg" data-clip=', '<span class="ring lg" data-q="%s" data-clip=' % _h.escape(_q, quote=True), 1)
+    _line = _rline(name, yr, k) or ''
+    _gt = gp_n(name, GSHORT.get(g, g)) if (gp_n(name) or g) else ''
+    _sl = [{'i': img(f_[0], 780), 'pos': f_[1], 'n': name, 'k': KLAB.get(k, ''), 'g': _gt, 'l': _line, 'clip': _ysongs[0][0] if _ysongs else ''} for f_ in _fr]
+    _segs = ''.join('<i data-slide="%d"%s><b></b></i>' % (n_, ' class="on"' if n_ == 0 else '') for n_ in range(len(_sl))) if len(_sl) > 1 else ''
+    h += ('<section class="hero hact%s"%s><img src="%s" alt="" style="object-position:%s"><div class="hero-sc"></div>%s%s'
+          '<div class="hero-tx"><p class="krow"><span class="k k-%s">%s</span>%s</p><h1>%s</h1><p class="ah-meta">Pickathon %s</p>%s</div></section>') % (
+          ' areel' if _segs else '', (' data-slides="%s"' % html.escape(json.dumps(_sl), quote=True)) if _segs else '',
+          img(_fr[0][0], 780) if _fr else img(ap['hero'], 780), _fr[0][1] if _fr else ap.get('hpos', '50% 40%'),
+          ('<div class="segs">%s</div>' % _segs) if _segs else '', _ring,
+          k, KLAB.get(k, ''), ('<span class="g">%s</span>' % E(gp_n(name, GSHORT.get(g, g)))) if (gp_n(name) or g) else '', E(name), yr,
+          ('<p class="hero-sub">%s</p>' % E(_line)) if _line else '')
+    # r73 (Zale, Nov 22 21:56): the same year strip turned upside down closes the bottom of the photo
+    h += '<div class="acrown afoot" aria-hidden="true">%s</div>' % (seam(yr, _P2) if yr != '2027' else generic_seam('2027', P27))
     # r66 (Zale picked one continuous story, copy_review-54): intro, one story in a few paragraphs, then a small sets block; read from Copy Review's stories_<year> CSVs
     _st = _STORIES.get((_slug(name), yr))
     story = [] if _st else [s for s in (ap.get('story') or []) if s.get('t')]
