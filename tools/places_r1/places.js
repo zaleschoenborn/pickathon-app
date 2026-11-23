@@ -34,7 +34,7 @@
   var ORDER = ['woods', 'paddock', 'cherryhill', 'grove', 'windmill', 'galaxy', 'lucky', 'farmhouse', 'curation', 'refuge', 'coyote', 'courtyard', 'market', 'orchard', 'welcomelot', 'lushcamp', 'quailtrail', 'southcamp', 'wildcamp', 'willowcamp'];
   var CORE = ['woods', 'refuge', 'coyote', 'cherryhill', 'market', 'grove', 'windmill', 'paddock', 'galaxy', 'courtyard'];   /* desktop start: Woods down to the Courtyard (addendum 3) */
   var AMN = { stage: 'Stages', restroom: 'Restrooms', water: 'Water', food: 'Food', bar: 'Bars', coffee: 'Coffee', craft: 'Craft and makers', atm: 'ATMs', dishes: 'Dish return', dishwash: 'Dish wash', wash: 'Hand wash', medical: 'Medical', shower: 'Showers', charge: 'Charging', info: 'Info', ice: 'Ice', dj: 'DJ booths', smoke: 'Smoking', shuttle: 'Shuttle', bike: 'Bike parking', moto: 'Motorcycle parking', parking: 'Parking', rv: 'RV camping', carcamp: 'Car camping', access: 'Accessible camping', gear: 'Gear drops', tent: 'Camp sites' };
-  var ISZ = { gear: 40, merch: 40 }, IS0 = 30;   /* plate size in map pixels (the art's plates were about 41) */
+  var ISZ = { gear: 40 }, IS0 = 30;   /* plate size in map pixels (the art's plates were about 41) */
   function amGlyph(k) { return '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">' + ((AMI || {})[k] || '') + '</svg>'; }
   function amOf(k) { return (MI || []).filter(function (z) { return z[0] === k; }); }
   function amUse(z) { var w = ISZ[z[0]] || IS0; return '<use href="#pkpl-i-' + z[0] + '" x="' + (z[1] - w / 2) + '" y="' + (z[2] - w / 2) + '" width="' + w + '" height="' + w + '"/>'; }
@@ -117,7 +117,7 @@
       '<div class="pkpl-world"><img class="pkpl-base" src="farmmap/' + (PAL27 ? 'map4' : 'map2') + '.webp?v=3" alt="" draggable="false" decoding="async" fetchpriority="high"><div class="pkpl-tiles"></div>' +
       '<svg class="pkpl-svg" viewBox="0 0 ' + W + ' ' + H + '" preserveAspectRatio="none" aria-hidden="true">' +
       '<defs><filter id="pkpl-glow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="9" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>' + Object.keys(AMI || {}).map(function (k) { return '<symbol id="pkpl-i-' + k + '" viewBox="0 0 24 24"><rect class="pkpl-ip" x=".75" y=".75" width="22.5" height="22.5" rx="5"/><g class="pkpl-ig" transform="translate(2.4 2.4) scale(.8)">' + AMI[k] + '</g></symbol>'; }).join('') + '</defs>' +
-      '<circle class="pkpl-patch" cx="1544.5" cy="2647.5" r="30.5"/>' + '<g class="pkpl-ics">' + (MI || []).map(amUse).join('') + '</g>' +
+      '<g class="pkpl-ics">' + (MI || []).map(amUse).join('') + '</g>' +
       '<path class="pkpl-veil" fill-rule="evenodd" d=""/><g class="pkpl-icon"></g><g class="pkpl-shs">' + shapes + '</g><path class="pkpl-lit" d=""/><path class="pkpl-was" d=""/><g class="pkpl-nms">' + Object.keys(NP || {}).map(function (k) { return '<path data-h="' + k + '" d="' + NP[k] + '"/>'; }).join('') + '</g><path class="pkpl-hov" d=""/></svg></div>' +
       '<div class="pkpl-pins"></div><div class="pkpl-am"></div>' +
       '<div class="pkpl-title" aria-hidden="false"><p class="pkpl-k"><img class="pkpl-logo" src="logo27-gold.png" alt="Pickathon 2027"><span>Pickathon</span></p><h1 class="pkpl-d">Summer camp for your soul</h1><p class="pkpl-l">Pick an experience below, then tap a place that lights up</p><div class="pkpl-ab"></div><div class="pkpl-pl"></div></div>' +
