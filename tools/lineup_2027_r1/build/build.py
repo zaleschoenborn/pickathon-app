@@ -654,13 +654,11 @@ s1 += ('<section class="p27"><div class="stripe"><i style="background:#F2CF62"><
        '<p class="p27-c">The 2027 poster · names go here</p></div>'
        '<div class="stripe"><i style="background:#F2CF62"></i><i style="background:#86526B"></i><i style="background:#E3B5CF"></i><i style="background:#F2EDE3"></i></div></section>') % barh
 s1 += ('<section class="arch"><p class="kick">While you wait</p><h2>Wait, they played here?</h2><p class="sub">They played the farm in small rooms. Look how big they got.</p>'
-       '<div class="bkw"><div class="bk"><button class="bkb on" data-b="all"><span>All</span><b>@NA</b></button><button class="bkb" data-b="disc"><span>Discoveries</span><b>@ND</b></button><button class="bkb" data-b="leg"><span>Legends</span><b>@NL</b></button><button class="bkb" data-b="deep"><span>Deep cuts</span><b>@NP</b></button></div>%s</div>'
-       '<div class="grid2 bl" data-b="all">%s</div><div class="grid2 bl" data-b="disc" hidden>%s</div><div class="grid2 bl" data-b="leg" hidden>%s</div><div class="grid2 bl" data-b="deep" hidden>%s</div>'
+       # r48 (Zale, Nov 22: one question only): no class tabs; the class word stays on each card; one mixed feed, biggest today first
+       '<div class="bkw one"><div class="bk" hidden><button class="bkb on" data-b="all"></button></div>%s</div>'
+       '<div class="grid2 bl" data-b="all">%s</div>'
        '<button class="btn line wide more">Keep going</button></section>') % (gpick('.arch .card', 'What kind of music do you love?', GLIST).replace('class="gp"', 'class="gp gpc"'),
-       ''.join(vcard(n, y, k, g, p, pos) for k, n, y, g, p, pos in ARCH_ALL),
-       ''.join(vcard(n, y, 'disc', g, p, pos) for n, y, g, p, pos in disc),
-       ''.join(vcard(n, y, 'leg', g, p, pos) for n, y, g, p, pos in leg),
-       ''.join(vcard(n, y, 'deep', g, p, pos) for n, y, g, p, pos in deep))
+       ''.join(vcard(n, y, k, g, p, pos) for k, n, y, g, p, pos in ARCH_ALL))
 s1 = s1.replace('@NA', str(len(ARCH_ALL))).replace('@ND', str(len(disc))).replace('@NL', str(len(leg))).replace('@NP', str(len(deep)))
 
 P24 = d['yearBrand']['2024']

@@ -189,7 +189,7 @@
       var cs = g.querySelectorAll('.card:not(.gone)'), seen = 0, vb = window.innerHeight;
       for (var k = 0; k < cs.length; k++) { if (cs[k].classList.contains('late')) break; var rr = cs[k].getBoundingClientRect(); if (rr.height && rr.bottom <= vb) seen = k + 1; }
       var p = cs.length ? seen / cs.length : 0;
-      bar.querySelectorAll('.bkb').forEach(function (x) { x.style.setProperty('--p', x === on ? (p * 100).toFixed(1) + '%' : '0%'); });
+      bar.querySelectorAll('.bkb').forEach(function (x) { x.style.setProperty('--p', x === on ? (p * 100).toFixed(1) + '%' : '0%'); }); bar.style.setProperty('--p', (p * 100).toFixed(1) + '%');
     }
     // capture: the live app scrolls inside its own container, not the window
     document.addEventListener('scroll', tick, { passive: true, capture: true }); window.addEventListener('resize', tick);

@@ -693,3 +693,11 @@ h2{font-family:var(--display);font-weight:400;font-size:27px;line-height:1.14;le
 }
 @media (max-width:640px){.bkw .gpc .gp-b{display:flex!important;flex-direction:row!important}.bkw .gpc .gp-q{flex:1 1 0!important;width:auto!important;text-align:left}}
 @media (max-width:640px){.bkw .gpc .gp-q{display:none!important}.bkw .gpc .gp-a{margin-left:0;flex:1 1 auto;justify-content:space-between}.bkw .gpc .gp-a b::before{content:"Music \00b7  ";color:var(--dim)}}
+
+/* r48 (Zale, Nov 22): one question only; the bar is the music picker, with a thin gold line along its bottom for how far you've come */
+.bkw.one{position:sticky}
+.bkw.one .gpc{flex:1 1 100%}
+.bkw.one .gpc .gp-b{width:100%}
+.bkw.one::after{content:"";position:absolute;left:0;bottom:0;height:3px;width:var(--p,0%);background:var(--gold)}
+@media (max-width:640px){.bkw.one .gpc .gp-q{display:block!important;font-size:12px}.bkw.one .gpc .gp-a b::before{content:none}.bkw.one .gpc .gp-b{flex-direction:column!important;align-items:flex-start;justify-content:center;gap:2px;min-height:52px}.bkw.one .gpc .gp-a{width:100%}}
+.bkw.one .bk{display:none!important}
