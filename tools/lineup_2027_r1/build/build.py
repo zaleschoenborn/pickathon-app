@@ -478,6 +478,18 @@ def seam(yr, P):
     elif yr == '2023':
         f = img('ext/seam/y23-fir.png', 420, fmt='PNG'); fo = img('ext/seam/y23-fir-orange.png', 420, fmt='PNG')
         art = row(f, 0, 26, 46, 104, alt=fo, every=5)
+    elif yr == '2003':  # r56: a line of Artwork's redrawn horseshoes (artwork-45), like 2023's firs
+        f = img('ext/art/y03-horseshoe-redraw.png', 160, fmt='PNG')
+        art = row(f, 0, 9, 36, 44)
+    elif yr == '2004':  # r56: a line of tonic bottles (artwork-45)
+        f = img('ext/art/y04-tonic-redraw-bottle.png', 200, fmt='PNG')
+        art = row(f, 0, 9, 54, 72)
+    elif yr in ('2001', '2002'):  # r56: the year's redrawn wordmark standing on the ground, over the kit's hills
+        wm = img('ext/art/y01-wordmark-redraw-cutout.png' if yr == '2001' else 'ext/art/y02-tiles-wordmark-redraw-cutout.png', 700, fmt='PNG')
+        c1 = P['light'] if P['light'].upper() != paper.upper() else P['warm']
+        art = (('<svg class="sm-hill" viewBox="0 0 390 70" preserveAspectRatio="none" aria-hidden="true">'
+                '<path fill="%s" d="M0 40c40-12 90-16 140-8 40 7 70 9 110 0 50-11 96-10 140 4V70H0z"/></svg>') % c1 +
+               '<img class="sm-wm sm-wm%s" src="%s" alt="">' % (yr[2:], wm))
     elif yr == '2025':
         STAR = '<svg viewBox="-10 -10 20 20"><path fill="%s" d="M0-10Q1.8-1.8 10 0Q1.8 1.8 0 10Q-1.8 1.8-10 0Q-1.8-1.8 0-10z"/></svg>'
         # confetti spilling off the stripe, graded big to small (the 2025 sheet's sparkles around the trout)
@@ -763,7 +775,7 @@ def _rline(n, y, k):  # r50: the reel frame carries Copy Review's three-line car
         v = _ALINES.get('%s|%s|%s' % (kk, sl_, y))
         if v: return v
     return ''
-EARLY_ART = {y_: 'ext/art/y%s-art-centre.png' % y_[2:] for y_ in ['2004'] if os.path.exists(ROOT + 'ext/art/y%s-art-centre.png' % y_[2:])}
+EARLY_ART = {y_: 'ext/art/y%s-art-centre.png' % y_[2:] for y_ in ['2000','2001','2002','2003','2004','2005','2006'] if os.path.exists(ROOT + 'ext/art/y%s-art-centre.png' % y_[2:])}
 def year_page(y):
     P = d['yearBrand'][y]; st = d['yearStory'].get(y, {}); yp = d['yearPhotos'].get(y, {})
     allb = d['yearBill'][y]
@@ -827,7 +839,7 @@ def year_page(y):
     then_list = sorted(music, key=lambda x: -(x.get('mb') if x.get('mb') is not None else -1)) if (ranked and int(y) >= 2009) else music
     h += poster_block(P, badge, y, then_list, today_all, len(music), joined=bool(hero), ranked=ranked)
     # r56 (Zale, Nov 22): paper frame. The year's own art runs along the top (desktop), and the poster paper wraps photo and poster like a printed poster with a photo window
-    _crown = ('<div class="yrcrown" aria-hidden="true">%s</div>' % seam(y, P)) if hero else ''
+    _crown = '<div class="yrcrown" aria-hidden="true">%s</div>' % seam(y, P)
     h = h[:_top] + '<div class="yrtop framed" style="--paper:%s;--ink:%s">%s' % (P['paper'], P['ink'], _crown) + h[_top:] + '</div>'
     if st.get('headline'):
         h += ('<section class="story short"><p class="kick">The %s story</p><p class="lead">%s.</p>%s</section>') % (y, E(st['headline'].rstrip('.')), ('<p class="body" hidden>%s</p><button class="chip stog" aria-expanded="false" data-open="Read the %s story" data-shut="Show less"><span>Read the %s story</span> %s</button>' % (E(st['story']), y, y, ICON['caret'])) if st.get('story') else '')

@@ -787,3 +787,17 @@ h2{font-family:var(--display);font-weight:400;font-size:27px;line-height:1.14;le
   .yrtop.framed>.yrcrown>.seam,.yrtop.framed>.yrcrown>svg.cloud{height:74px}
   .yrtop.framed .poster>svg.cloud{display:none}
 }
+
+/* r56: 2000-2006 art (artwork-45/46) */
+.seam .sm-wm{position:absolute;left:50%;transform:translateX(-50%);bottom:16px;height:calc(64px*var(--sc));display:block;z-index:250}
+.seam .sm-wm.sm-wm02{height:calc(34px*var(--sc));bottom:22px}
+.poster[data-yr="2006"] .po-badge{width:auto!important;max-height:300px;margin:0 auto!important}
+@media (min-width:1000px){.yrtop .poster[data-yr="2006"] .po-badge{max-height:360px}}
+
+@media (min-width:1000px){
+  .yrtop.framed:not(:has(>.hero)){display:block}
+  .yrtop.framed:not(:has(>.hero))>.yrcrown{margin:0 -28px}
+  .yrtop.framed:not(:has(>.hero)) .poster>.stripe:first-child{display:none}
+  .seam .sm-wm.sm-wm02{height:calc(50px*var(--sc));bottom:20px}
+  .seam .sm-wm{height:calc(70px*var(--sc))}
+}
