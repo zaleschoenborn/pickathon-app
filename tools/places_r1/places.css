@@ -972,3 +972,7 @@ html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-pl.pkpl-cols.pkpl-c3 .pkpl-pr b{wh
   html body.pkpl-v2p #root #pkpl-top .pkpl-hero::after{height:92px!important;background:linear-gradient(180deg,rgba(43,38,40,0) 0,rgba(43,38,40,.5) 58%,#2B2628 100%)!important}
   html body.pkpl-v2p #root #pkpl-top .pkpl-hi:not(.pkpl-map){padding-bottom:76px}
   html body.pkpl-v2p #root #pkpl-top .pkpl-dots{bottom:34px}}
+/* Zale, Nov 22 18:40: arrival leads with the hook; the question is a small label right on the experience buttons */
+html body.pkpl-v2p #root #pkpl .pkpl-psbig.pkpl-hook1{font-size:clamp(24px,6.6vw,30px);line-height:1.08}
+html body.pkpl-v2p #root #pkpl .pkpl-psl.pkpl-psl0{font-size:16px;margin-top:2px;color:rgba(242,237,227,.8)}
+html body.pkpl-v2p:not(.pkpl-hood) #root #pkpl .pkpl-psq:not(.pkpl-psq0){color:#E9B93C;font-size:12px;letter-spacing:.14em}
