@@ -721,7 +721,7 @@ html body.pkpl-v2p #root #pkpl .pkpl-psln{min-height:44px}
 html body.pkpl-v2p #root #pkpl .pkpl-psmore{min-height:44px;padding:0 16px}
 html body.pkpl-v2p #root .pkpl-xb.pkpl-xbmore::after{content:'';position:sticky;right:0;flex:none;width:44px;margin-left:-44px;align-self:stretch;pointer-events:none;background:linear-gradient(to right,rgba(18,22,15,0),#12160F 85%)}   /* the fade covers the buttons, never the map behind the row (round 2 #9) */
 html body.pkpl-v2p #root #pkpl .pkpl-psall{display:inline;min-height:44px;padding:10px 0;margin:-10px 0;border:0;background:none;font:inherit;color:#F2EDE3;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
-@media (min-width:600px){html body.pkpl-v2p:not(.pkpl-hood) #root .pkpl-xb{flex-wrap:wrap;overflow-x:visible;row-gap:8px}html body.pkpl-v2p #root .pkpl-xb.pkpl-xbmore::after{display:none}}
+@media (min-width:600px) and (min-height:600px){html body.pkpl-v2p:not(.pkpl-hood) #root .pkpl-xb{flex-wrap:wrap;overflow-x:visible;row-gap:8px}html body.pkpl-v2p #root .pkpl-xb.pkpl-xbmore::after{display:none}}
 
 /* edge tags for lit places outside the view (Zale, Nov 22: chosen after the independent review) */
 #root #pkpl .pkpl-edge{position:absolute;inset:0;pointer-events:none;z-index:3}
@@ -755,7 +755,7 @@ html body.pkpl-hood:not(.pkpl-wide) #root #pkpl-top .pkpl-sheet{-webkit-mask-ima
 
 /* round 2 review (Nov 22) */
 html body.pkpl-v2p #root .pkpl-xb.pkpl-xbleft::before{content:'';position:sticky;left:0;flex:none;width:36px;margin-right:-36px;align-self:stretch;pointer-events:none;z-index:1;background:linear-gradient(to left,rgba(18,22,15,0),#12160F 85%)}
-@media (min-width:600px){html body.pkpl-v2p #root .pkpl-xb.pkpl-xbleft::before{display:none}}
+@media (min-width:600px) and (min-height:600px){html body.pkpl-v2p #root .pkpl-xb.pkpl-xbleft::before{display:none}}
 #root #pkpl-top .pkpl-stepl button{min-width:118px;border-radius:6px;text-transform:none;letter-spacing:0;font-size:14px}
 #root #pkpl-top .pkpl-stepl button:last-child{text-align:right}
 #root #pkpl-top .pkpl-stepl span{color:rgba(242,237,227,.78);white-space:nowrap}
@@ -815,8 +815,8 @@ html body.pkpl-v2 #root #pkpl .pkpl-pr.pkpl-was{border-color:#F2EDE3!important;b
 html body.pkpl-v2 #root #pkpl .pkpl-title::after,html body.pkpl-v2.pkpl-v2g #root #pkpl .pkpl-title::after{width:calc(100% + 28px);background:linear-gradient(90deg,#12160F 0,#12160F calc(100% - 28px),rgba(18,22,15,0) 100%)}
 
 /* Zale, Nov 22: tablet uses its space; on neighborhood pages the experience buttons wrap to full rows like on the map */
-@media (min-width:600px){html body.pkpl-hood:not(.pkpl-wide) #root #pkpl .pkpl-xb{flex-wrap:wrap;overflow-x:visible;row-gap:8px}html body.pkpl-hood:not(.pkpl-wide) #root #pkpl .pkpl-xb::after,html body.pkpl-hood:not(.pkpl-wide) #root #pkpl .pkpl-xb::before{display:none}}
-@media (min-width:600px){html body.pkpl-hood:not(.pkpl-wide) #root #pkpl-top{bottom:var(--pkpl-xbh,61px)}}
+@media (min-width:600px) and (min-height:600px){html body.pkpl-hood:not(.pkpl-wide) #root #pkpl .pkpl-xb{flex-wrap:wrap;overflow-x:visible;row-gap:8px}html body.pkpl-hood:not(.pkpl-wide) #root #pkpl .pkpl-xb::after,html body.pkpl-hood:not(.pkpl-wide) #root #pkpl .pkpl-xb::before{display:none}}
+@media (min-width:600px) and (min-height:600px){html body.pkpl-hood:not(.pkpl-wide) #root #pkpl-top{bottom:var(--pkpl-xbh,61px)}}
 
 /* mission review (Nov 22): the bands under the video row link to their pages; the Creative Neighborhoods line under Who built it */
 #root #pkpl-top .pkpl-vx{margin:10px 16px 0;font:500 15px/1.6 'Bricolage Grotesque',system-ui,sans-serif;color:rgba(242,237,227,.72)}
@@ -836,3 +836,48 @@ body.pkpl-wide #root #pkpl-top .pkpl-vw{flex-basis:280px}
 #root #pkpl-top .pkpl-vn small{display:block;margin-top:3px;font:600 14px/1.2 'Bricolage Grotesque',system-ui,sans-serif;color:rgba(242,237,227,.62)}
 #root #pkpl-top .pkpl-vn:hover b{text-decoration:underline;text-underline-offset:3px}
 #root #pkpl-top .pkpl-vr > .pkpl-vt.pkpl-vall{flex-basis:160px;aspect-ratio:auto}
+
+/* Zale, Nov 22: desktop neighborhood card rises over the experience grid, like the phone sheet. '‹ Map' stays on top, the grid stays put, the card scrolls up over it; the handle covers or shows the grid */
+body.pkpl-wide.pkpl-hood #root #pkpl-top .pkpl-up{position:sticky;top:var(--pkpl-hh,89px);z-index:3;background:#12160F}
+body.pkpl-wide.pkpl-hood #root #pkpl-top .pkpl-hxr{position:sticky;top:calc(var(--pkpl-hh,89px) + 48px);z-index:1}
+body.pkpl-wide.pkpl-hood #root #pkpl-top .pkpl-sheet{position:relative;z-index:2;border-radius:16px 16px 0 0;box-shadow:0 -12px 28px rgba(0,0,0,.45);margin-top:4px}
+body.pkpl-wide #root #pkpl-top .pkpl-dgrab{display:flex;position:absolute;left:0;right:0;top:0;height:28px;padding:0;border:0;background:transparent;cursor:pointer;pointer-events:auto;z-index:5}
+body.pkpl-wide #root #pkpl-top .pkpl-dgrab i{width:44px}
+body.pkpl-wide.pkpl-hood #root #pkpl-top .pkpl-up{display:flex;width:100%;box-sizing:border-box}
+body.pkpl-wide #root #pkpl-top .pkpl-dgrab{z-index:9}
+body.pkpl-wide #root #pkpl-top .pkpl-dgrab i{display:block}
+body.pkpl-wide.pkpl-hood #root #pkpl-top .pkpl-sheet{padding-top:22px;background:#2B2628}
+body.pkpl-wide #root #pkpl-top .pkpl-dgrab{height:22px}
+body.pkpl-wide #root #pkpl-top .pkpl-dgrab i{width:48px;height:5px;background:rgba(242,237,227,.7);box-shadow:none}
+body.pkpl-wide #root #pkpl-top .pkpl-dgrab:hover i{background:#F2EDE3}
+
+/* Zale, Nov 22: desktop list rows size to the room (--pkpl-rh from fitList): emblem about 70% of the row, name scales with it */
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-pl.pkpl-cols .pkpl-pr{min-height:var(--pkpl-rh,44px);gap:calc(var(--pkpl-rh,44px) * .22)}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-pl.pkpl-cols .pkpl-pr img{width:calc(var(--pkpl-rh,44px) * .68);height:calc(var(--pkpl-rh,44px) * .68);opacity:.85}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-pl.pkpl-cols .pkpl-pr b{font-size:clamp(15px,calc(var(--pkpl-rh,44px) * .3),19px)}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-pl + .pkpl-ab{margin-top:18px}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-pl.pkpl-cols.pkpl-c3{column-gap:6px}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-pl.pkpl-cols.pkpl-c3 .pkpl-pr{gap:7px;padding:4px 4px}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-pl.pkpl-cols.pkpl-c3 .pkpl-pr img{width:28px;height:28px}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-pl.pkpl-cols.pkpl-c3 .pkpl-pr b{font-size:15px;white-space:nowrap;overflow:visible}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-pl.pkpl-cols.pkpl-c3 .pkpl-pr b{font-size:14px;white-space:normal;line-height:1.15;overflow-wrap:normal}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-pl.pkpl-cols.pkpl-c3 .pkpl-pr span{min-width:0}
+
+/* Zale, Nov 22: short screens: a smaller headline, icon-beside-label tiles, so long lists fit without scrolling */
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-title.pkpl-tv{padding-top:18px!important}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-tv .pkpl-gk{margin-bottom:10px}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-tv .pkpl-gk p{margin-bottom:6px}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-tv .pkpl-gk h2{font-size:24px!important;line-height:1.05!important}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-tv .pkpl-g2{gap:6px;padding-bottom:12px}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-tv .pkpl-g2 .pkpl-xe{min-height:44px!important;height:44px;flex-direction:row;justify-content:center;gap:6px;padding:4px}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-tv .pkpl-g2 .pkpl-xe svg{width:16px;height:16px;flex:none}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-tv .pkpl-pd{margin:6px 0 6px;min-height:0}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-tv2 .pkpl-pd{-webkit-line-clamp:1!important;min-height:0!important}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-tv .pkpl-pl + .pkpl-ab{margin-top:8px!important;padding-top:0!important;padding-bottom:0!important}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-tv .pkpl-pl.pkpl-cols.pkpl-c3 .pkpl-pr{padding:2px 2px;gap:6px}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-tv .pkpl-pl.pkpl-cols.pkpl-c3 .pkpl-pr img{width:24px;height:24px}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-tv .pkpl-pl.pkpl-cols.pkpl-c3 .pkpl-pr b{white-space:nowrap;font-size:14px}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-tv .pkpl-g2 .pkpl-xe{gap:4px;padding:2px;letter-spacing:-.01em}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-tv .pkpl-g2 .pkpl-xe svg{width:14px;height:14px}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-tv .pkpl-g2 .pkpl-xe{font-size:12px}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-tv .pkpl-g2 .pkpl-xe span{overflow:visible;text-overflow:clip}
