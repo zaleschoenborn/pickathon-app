@@ -881,3 +881,8 @@ html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-tv .pkpl-g2 .pkpl-xe{gap:4px;paddi
 html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-tv .pkpl-g2 .pkpl-xe svg{width:14px;height:14px}
 html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-tv .pkpl-g2 .pkpl-xe{font-size:12px}
 html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-tv .pkpl-g2 .pkpl-xe span{overflow:visible;text-overflow:clip}
+
+/* Zale, Nov 22 (phone): the sheet follows the finger (no transition while dragging); prev/next never under a fade; the place you're on gets the stronger outline among its lit experience */
+html body.pkpl-v2p #root .pkpl-psdrag .pkpl-ps,html body.pkpl-v2p #root .pkpl-psdrag .pkpl-psh2,html body.pkpl-v2p #root #pkpl.pkpl-psdrag .pkpl-ps,html body.pkpl-v2p #root #pkpl.pkpl-psdrag .pkpl-psh2{transition:none!important}
+html body.pkpl-hood:not(.pkpl-wide) #root #pkpl-top::after{display:none!important}
+.pkpl-was.pkpl-wcur{stroke:#FFF6DA;stroke-opacity:1;stroke-width:5}

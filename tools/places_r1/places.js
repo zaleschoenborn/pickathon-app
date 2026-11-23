@@ -104,6 +104,7 @@
   function xpLine(e, k) { var b = ((XH.XPB || {})[e] || {})[k]; return b || (e === 'Architecture' ? (hookOf(data().hoods[k]) || (data().hoods[k] || {}).t || '') : XH.XPD[e] || ''); }
   function xpIcon(e) { return '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">' + (XH.XPI[e] || '') + '</svg>'; }
   function litSet() { return M && M.xp ? xpPlaces(M.xp) : []; }
+  function curGroup() { if (!M || !M.cur || !M.xp) return null; var g = litSet(); return g.length > 1 && g.indexOf(M.cur) >= 0 ? g : null; }
 
   /* ---------- the map ---------- */
   var M = null;   /* one map for the whole visit */
@@ -298,11 +299,19 @@
   function psTouch() {   /* swipe up on the words, the row or the handle: full; swipe down at the top: half, then folded (same feel as the neighborhood sheet) */
     var t0 = null, inP = function (el) { return el && el.closest && el.closest('.pkpl-ps,.pkpl-psh2,.pkpl-psq,.pkpl-xb'); };
     M.el.addEventListener('touchstart', function (e) { if (!v2p() || e.touches.length !== 1 || !inP(e.target)) { t0 = null; return; } var p = e.touches[0]; t0 = { x: p.clientX, y: p.clientY, el: e.target, done: 0, sc: $('.pkpl-ps', M.el).scrollTop }; }, { passive: true });
+    var hAt = function (st) { var o = M.ps; M.ps = st; var h = psH(); M.ps = o; return h; };   /* Zale, Nov 22: the sheet follows the finger and settles at the nearest stop */
+    var place = function (h) { var ps = $('.pkpl-ps', M.el), hd = $('.pkpl-psh2', M.el), qq = $('.pkpl-psq', M.el), qh = qq ? qq.offsetHeight : 0, xh = xbH(); if (ps) { ps.style.height = h + 'px'; ps.classList.toggle('pkpl-ps0', h < 2); } if (hd) hd.style.bottom = (h + xh + qh) + 'px'; };
     M.el.addEventListener('touchmove', function (e) { if (!t0 || t0.done) return; var p = e.touches[0], dx = p.clientX - t0.x, dy = p.clientY - t0.y, ps = $('.pkpl-ps', M.el), onRow = t0.el.closest('.pkpl-xb,.pkpl-psh2,.pkpl-psq');
-      if (Math.abs(dy) < 10 || Math.abs(dy) < Math.abs(dx) * 1.2) return;
-      if (dy < 0 && M.ps < 2) { t0.done = 1; if (e.cancelable) e.preventDefault(); psSet(M.ps + 1); return; }
-      if (dy > 0 && (onRow || ps.scrollTop <= 0) && M.ps > 0) { t0.done = 1; if (e.cancelable) e.preventDefault(); psSet(M.ps - 1); } }, { passive: false });
-    M.el.addEventListener('touchend', function () { t0 = null; }, { passive: true });
+      if (!t0.drag) {
+        if (Math.abs(dy) < 8 || Math.abs(dy) < Math.abs(dx) * 1.2) return;
+        var up = dy < 0; if ((up && M.ps < 2) || (!up && (onRow || ps.scrollTop <= 0) && M.ps > 0)) { t0.drag = 1; t0.h0 = hAt(M.ps); t0.max = hAt(2); t0.y = p.clientY; dy = 0; M.el.classList.add('pkpl-psdrag'); } else { t0.done = 1; return; }
+      }
+      if (e.cancelable) e.preventDefault(); t0.h = Math.max(0, Math.min(t0.max, t0.h0 - dy)); t0.v = dy - (t0.ly || 0); t0.ly = dy; place(t0.h); }, { passive: false });
+    M.el.addEventListener('touchend', function () { if (t0 && t0.drag) { M.el.classList.remove('pkpl-psdrag'); var h = t0.h == null ? t0.h0 : t0.h, hs = [hAt(0), hAt(1), hAt(2)], best = 0;
+        hs.forEach(function (x, k) { if (Math.abs(x - h) < Math.abs(hs[best] - h)) best = k; });
+        if (Math.abs(t0.v || 0) > 6) { var cur = M.ps; best = t0.v < 0 ? Math.max(best, Math.min(2, cur + (h > hs[cur] ? 1 : 0))) : Math.min(best, Math.max(0, cur - (h < hs[cur] ? 1 : 0))); }   /* a quick flick goes one stop that way */
+        if (best === M.ps) psPlace(); else psSet(best); }
+      t0 = null; }, { passive: true });
     M.el.addEventListener('click', function (e) { if (e.target.closest('.pkpl-psall')) { psSet(2); return; } if (e.target.closest('.pkpl-psh2')) psSet(M.ps === 2 ? 1 : M.ps + 1); });
   }
   function clear() { var r = region(), t = wide() && top().r !== 'hood' ? lw() : 0, ti = $('.pkpl-title', M.el), up = wide() ? 78 : (M.title && ti ? Math.max(0, ti.offsetHeight - 14) : 0), dn = wide() ? 8 : (top().r === 'hood' ? sheetOpen() : 150); if (v2p()) { up = 8; dn = psH() + xbH() + hdH() + 8; } if (V2 && wide()) up = 16; return { x: r.x + t, y: r.y + up, w: r.w - t, h: Math.max(160, r.h - up - dn) }; }   /* the lit places fill what is left */   /* above the experience bar and the amenity tag */
@@ -314,7 +323,9 @@
     return { x: 0, y: 0, w: M.vw, h: Math.max(160, Math.min(M.vh, Math.round(h))) };
   }
   function recenter() {   /* the sheet moved: keep the zoom, slide the selected place back to the middle of the map that shows (Zale, Nov 21) */
-    if (!M || !M.cur || !M.s) return; M.free = true; animTo(fitBox(box(M.cur), region(), 0, M.s), 480);
+    if (!M || !M.cur || !M.s) return; M.free = true; var g = curGroup(), ce = cardEl();
+    if (g && ce && ce.classList.contains('pkpl-folded')) { animTo(fitBox(union(g), region(), 20), 520); return; }   /* Zale, Nov 22: folded, the map shows the whole experience, not a tight zoom on one place */
+    animTo(fitBox(box(M.cur), region(), 0, M.s), 480);
   }
   function frame(k, now) {   /* first pick zooms in; another pick while zoomed keeps the zoom and centres */
     var zoomed = M.s > minS() * 1.9 && M.cur && M.cur !== k;
@@ -326,10 +337,11 @@
   }
   function lit() {
     var k = M.cur, L = (!k && M.amen) ? Object.keys(amenHoods()) : (!k && M.xp) ? litSet() : [], d = k ? HH.shapes[k] : L.map(function (h) { return HH.shapes[h]; }).join(' ');
+    var grp = curGroup(); if (grp) d = grp.map(function (h) { return HH.shapes[h]; }).join(' ');   /* Zale, Nov 22: on a neighborhood page the whole experience stays lit; the place you're on gets the stronger outline */
     if (!k && V2 && M.hot && HH.shapes[M.hot]) d = HH.shapes[M.hot];   /* MOCK: the place the pointer is on is lit, everything else dims */
     $('.pkpl-veil', M.svg).setAttribute('d', d ? 'M-4000,-4000H' + (W + 4000) + 'V' + (H + 4000) + 'H-4000Z ' + d : '');
     $('.pkpl-lit', M.svg).setAttribute('d', d);
-    $('.pkpl-was', M.svg).setAttribute('d', (!k && M.was && (M.xp || M.amen || (V2 && wide())) && HH.shapes[M.was]) || '');
+    var wp = $('.pkpl-was', M.svg); wp.setAttribute('d', grp ? HH.shapes[k] : ((!k && M.was && (M.xp || M.amen || (V2 && wide())) && HH.shapes[M.was]) || '')); wp.classList.toggle('pkpl-wcur', !!grp);
     $$('.pkpl-sh', M.svg).forEach(function (p) { p.classList.toggle('on', p.getAttribute('data-h') === k); });
     M.el.classList.toggle('pkpl-picked', !!k); M.el.classList.toggle('pkpl-xpon', !k && (!!M.xp || !!M.amen));
     var full = $('[data-pl="full"]', M.el); if (full) full.hidden = !k && !M.amen && !M.xp && !(M.s > startView()[0] * 1.15);
@@ -387,8 +399,8 @@
       $('.pkpl-psht', M.el).innerHTML = M.xp ? '<div class="pkpl-psln"><span class="pkpl-pci">' + xpIcon(M.xp) + '</span><span class="pkpl-psn">' + Lp.length + (Lp.length === 1 ? ' neighborhood' : ' neighborhoods') + '</span><span class="pkpl-psmore">' + (M.ps === 2 ? 'Map' : 'See ' + (Lp.length === 1 ? 'it' : 'them')) + '</span></div>'   /* Zale, Nov 22 06:46 trims: the pressed button already names the experience, so a small line that opens the list */
         : '<h2 class="pkpl-psbig">What do you want to experience?</h2>';   /* Zale, Nov 22 06:19: arrival asks, nothing picked */
       if (M.xp) ps.innerHTML = '<p class="pkpl-psl">' + esc(sum) + '</p>'
-        + (M.xp === 'Architecture' ? '<div class="pkpl-psab"><button type="button" class="pk-cta sec pkpl-abb" data-go="build">Build with Pickathon</button></div>' : '')
-        + '<div class="pkpl-psls' + (Lp.length > 4 ? ' pkpl-psl2' : '') + '">' + Lp.map(function (k) { return tile(k, xpLine(M.xp, k)); }).join('') + '</div>';
+        + '<div class="pkpl-psls' + (Lp.length > 4 ? ' pkpl-psl2' : '') + '">' + Lp.map(function (k) { return tile(k, xpLine(M.xp, k)); }).join('') + '</div>'
+        + (M.xp === 'Architecture' ? '<div class="pkpl-psab"><button type="button" class="pk-cta sec pkpl-abb" data-go="build">Build with Pickathon</button></div>' : '');   /* Zale, Nov 22: Build with Pickathon closes the list on every size */
       else ps.innerHTML = '<p class="pkpl-psl">' + phoneFirst() + '</p>'
         + [['stage', 'Stages'], ['around', 'Hangouts'], ['camp', 'Camping']].map(function (g) { var ks = ids().filter(function (k) { return (D3[k].k || 'around') === g[0]; }); return ks.length ? '<p class="pkpl-gh">' + g[1] + '</p><div class="pkpl-psls pkpl-pst">' + ks.map(function (k) { return tile(k); }).join('') + '</div>' : ''; }).join('');
       if (ps._xp !== M.xp) { var px2 = ps._xp; ps._xp = M.xp; ps.scrollTop = 0; if (M.ps === 0 || M.ps == null) M.ps = 1; ps.classList.remove('pkpl-xf'); void ps.offsetWidth; if (px2 !== undefined && !calm()) ps.classList.add('pkpl-xf'); var xr = $('.pkpl-xb', M.el), xs = M.xp && xr && $('.pkpl-xe[data-xp="' + M.xp + '"]', xr); if (xs) { var cx = xs.offsetLeft + xs.offsetWidth / 2 - xr.clientWidth / 2; if (xs.offsetLeft < xr.scrollLeft + 8 || xs.offsetLeft + xs.offsetWidth > xr.scrollLeft + xr.clientWidth - 8) xr.scrollTo({ left: Math.max(0, cx), behavior: calm() ? 'auto' : 'smooth' }); } }   /* the picked button is never half off the edge (Site Build, Nov 22) */
@@ -416,7 +428,7 @@
     box.innerHTML = L.map(function (k) { return '<span class="pkpl-xl" data-h="' + k + '">' + esc(data().hoods[k].n) + (C && C[k] ? ' · ' + C[k] : '') + '</span>'; }).join(''); xlPlace();
   }
   function nmDraw() {   /* the map's own lettering, crisp, for the lit places (Zale, Nov 19: no added tags) */
-    var C = (!M.cur && M.amen) ? amenHoods() : null, L = M.cur ? [M.cur] : C ? Object.keys(C) : M.xp ? litSet() : [];   /* Nov 22: the place you're on gets the same crisp lettering as lit places */
+    var C = (!M.cur && M.amen) ? amenHoods() : null, L = curGroup() || (M.cur ? [M.cur] : C ? Object.keys(C) : M.xp ? litSet() : []);   /* Nov 22: the place you're on gets the same crisp lettering as lit places */
     $$('.pkpl-nms path', M.svg).forEach(function (p) { var k = p.getAttribute('data-h'), on = L.indexOf(k) >= 0, nb = (NB || {})[k]; p.classList.toggle('on', on); p.classList.toggle('dim', !on && L.length > 0); if (!on) p.removeAttribute('transform');   /* Zale, Nov 22: the other places' names stay readable over the veil */
       if (on && nb) { var cx = (nb[0] + nb[2]) / 2, cy = (nb[1] + nb[3]) / 2, f = Math.max(1, Math.min(1.6, 12 / ((nb[3] - nb[1]) * M.s))); p.setAttribute('transform', 'translate(' + cx + ' ' + cy + ') scale(' + f.toFixed(2) + ') translate(' + (-cx) + ' ' + (-cy) + ')'); } });
   }
