@@ -7,15 +7,19 @@
   function pageSlug(n) { var s = slug(n); if (IDX.names[s]) return s; var f = fold(n); if (IDX.fold[f]) return IDX.fold[f]; f = f.replace(/^the/, ''); if (IDX.names[f]) return f; return IDX.fold[f] || ''; }
   function fetchText(u) { return fetch(u).then(function (r) { if (!r.ok) throw new Error(u + ' ' + r.status); return r.text(); }); }
   function rerender() { try { if (window.__pkSet) window.__pkSet({}); } catch (e) {} }
-  fetch(BASE + 'index.json').then(function (r) { return r.json(); }).then(function (j) { IDX = j; rerender(); }).catch(function () {});
+  var YRS = /^(199\d|20(0\d|1\d|2[2-6]))$/, IDXDEAD = 0;   /* the years that have a page (2020-21 had no festival); checked against the index once it arrives */
+  fetch(BASE + 'index.json').then(function (r) { return r.json(); }).then(function (j) { IDX = j; rerender(); }).catch(function () { IDXDEAD = 1; rerender(); });
   fetchText(BASE + 'lx.css').then(function (c) { CSS = c; }).catch(function () {});
+  if (/^#\/(lineup|\d{4})\/?$/.test(location.hash)) fetchText(BASE + (/^#\/lineup/.test(location.hash) ? 's1' : 'y' + location.hash.slice(2, 6)) + '.html').then(function (h) { var k = /^#\/lineup/.test(location.hash) ? 's1' : 'y' + location.hash.slice(2, 6); FR[k] = FR[k] || h; }).catch(function () {});   // arriving on a Lineup page: start its fragment with the index, not after it
 
   /* which screen the current route shows, or '' to leave the route to the older page */
   window.__lxKey = function (R, cur, st) {
-    if (!IDX || /[?&]old=lineup/.test(location.search)) return '';
+    if (/[?&]old=lineup/.test(location.search)) return '';
+    /* Site Build Nov 22 (Zale: the old Lineup page flashed for ~0.8 s before the new one): the 2027 page and year pages are claimed at once
+       (they don't need the index); an artist page holds an empty frame ('wait') until the index arrives, instead of drawing the old page */
     if (R === 'lineup') return (!cur.keepArch && !st.luArch && (st.lineup || 'music') === 'music' && (st.season || 'off') === 'off') ? 's1' : '';
-    if (R === 'past') return IDX.years.indexOf(String(cur.y)) >= 0 ? 'y' + cur.y : '';
-    if (R === 'act') { var s = pageSlug(cur.n); return s ? 'a/' + s : ''; }
+    if (R === 'past') return (IDX ? IDX.years.indexOf(String(cur.y)) >= 0 : YRS.test(String(cur.y))) ? 'y' + cur.y : '';
+    if (R === 'act') { if (!IDX) return IDXDEAD ? '' : 'wait'; var s = pageSlug(cur.n); return s ? 'a/' + s : ''; }
     return '';
   };
 
@@ -264,6 +268,7 @@
     if (LASTK !== key) { LASTK = key; toTop(); }
   }
   function mount(host, key) {
+    if (key === 'wait') { var rt = host.shadowRoot || host.attachShadow({ mode: 'open' }); if (host._k !== 'wait') { rt.innerHTML = ''; host._k = 'wait'; } return; }   // index still on its way: hold an empty frame
     if (!FONTS) { FONTS = 1; var l = document.createElement('link'); l.rel = 'stylesheet'; l.href = BASE + 'fonts.css'; document.head.appendChild(l); }
     if (FR[key] && CSS) { paint(host, key, FR[key], CSS); return; }   // cached: draw in the same frame, no flash
     var need = FR[key] ? Promise.resolve(FR[key]) : fetchText(BASE + key + '.html').then(function (h) { FR[key] = h; return h; });

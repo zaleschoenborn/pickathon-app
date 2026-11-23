@@ -114,7 +114,7 @@
     var el = document.createElement('div'); el.className = 'pkpl-map'; el.setAttribute('role', 'region'); el.setAttribute('aria-label', 'Farm map');
     var shapes = ids().map(function (k) { return '<path class="pkpl-sh" data-h="' + k + '" d="' + HH.shapes[k] + '"/>'; }).join('');
     el.innerHTML =
-      '<div class="pkpl-world"><img class="pkpl-base" src="farmmap/' + (PAL27 ? 'map4' : 'map2') + '.webp?v=3" alt="" draggable="false" decoding="async"><div class="pkpl-tiles"></div>' +
+      '<div class="pkpl-world"><img class="pkpl-base" src="farmmap/' + (PAL27 ? 'map4' : 'map2') + '.webp?v=3" alt="" draggable="false" decoding="async" fetchpriority="high"><div class="pkpl-tiles"></div>' +
       '<svg class="pkpl-svg" viewBox="0 0 ' + W + ' ' + H + '" preserveAspectRatio="none" aria-hidden="true">' +
       '<defs><filter id="pkpl-glow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="9" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>' + Object.keys(AMI || {}).map(function (k) { return '<symbol id="pkpl-i-' + k + '" viewBox="0 0 24 24"><rect class="pkpl-ip" x=".75" y=".75" width="22.5" height="22.5" rx="5"/><g class="pkpl-ig" transform="translate(2.4 2.4) scale(.8)">' + AMI[k] + '</g></symbol>'; }).join('') + '</defs>' +
       '<g class="pkpl-ics">' + (MI || []).map(amUse).join('') + '</g>' +
@@ -134,7 +134,7 @@
     return M;
   }
   function minS() { if (V2 && wide()) { var cy = farmY(); return M.vh / (cy[1] - cy[0]) / 0.9; }   /* the callers allow 0.9 of this, so the farm's own height (not the art's empty bottom) fits the screen exactly */ if (v2p()) return M.vw / 1700 / 0.9;   /* phone: the whole farm fits the strip above the sheet */ return Math.min(M.vw / W, M.vh / H); }   /* MOCK: desktop zooms out no further than the farm's height */
-  function maxS() { return 2.6 * TF / (window.devicePixelRatio || 1); }
+  function maxS() { return 1.5 * TF / (window.devicePixelRatio || 1); }   /* Site Build Nov 22 (Zale: zoomed trail names not sharp): was 2.6x past the sharpest tiles; 1.5x keeps lettering crisp */
   function farmY() { return [0, union(ids())[3] + 40]; }   /* MOCK: the farm from the forest's top edge to just below the camps */
   function clampView(s, tx, ty) {   /* keep some map on screen */
     s = Math.max(minS() * 0.9, Math.min(maxS(), s));
