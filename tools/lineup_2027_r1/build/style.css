@@ -989,3 +989,10 @@ main.screen:has(.hd .hd-yr) .yrbar{display:none}
 .hd-yr b{font-size:11px;letter-spacing:.14em;text-transform:uppercase;line-height:1.2}
 .hd-yr:focus-visible{outline:2px solid var(--gold,#D6B54A);outline-offset:2px}
 @media (max-width:999px){main.screen:has(.hd .hd-yr) .hd{position:sticky;top:0;z-index:60}}
+
+/* r69: the year logo sits in the chooser; the 2027 wordmark and its rule step aside on Lineup pages */
+.hd:has(.hd-yr) .hd-logo,.hd:has(.hd-yr) .hd-rule{display:none}
+.hd-yr{flex-direction:row;align-items:center;gap:10px}
+.hd-yr>span{display:flex;flex-direction:column;align-items:flex-start}
+.hd-yl{height:40px;width:auto;max-width:96px;object-fit:contain;display:block}
+@media (min-width:1000px){.hd-yl{height:48px;max-width:120px}}

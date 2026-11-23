@@ -388,8 +388,11 @@ def header(title, sub, back=True, chip=None):
                '<span class="yc-k">Lineup</span><b class="yc-y">%s</b><span class="yc-a" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M4 1.5l5 4.5-5 4.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>'
                '</div>%s') % (chip, chip, year_wall(chip))
         # r68 (Zale, Nov 22 21:22): the header title IS the year chooser; tap "Lineup 2013" to open the wall of year logos
-        t = ('<button type="button" class="hd-t hd-yr ywopen" aria-expanded="false" aria-label="Lineup %s. Choose another year"><b>Lineup</b><i>%s'
-             '<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 4.5l3.5 3.5 3.5-3.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></i></button>') % (chip, chip)
+        # r69 (Zale, Nov 22 21:26): the year's own logo leads the chooser in the header (it replaces the 2027 wordmark on year pages)
+        _lg = d['yearLogo'].get(chip)
+        _lgi = img(_lg, 160, fmt='PNG') if (_lg and chip != '2027' and os.path.exists(_src(_lg))) else LOGO
+        t = ('<button type="button" class="hd-t hd-yr ywopen" aria-expanded="false" aria-label="Lineup %s. Choose another year"><img class="hd-yl" src="%s" alt=""><span><b>Lineup</b><i>%s'
+             '<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 4.5l3.5 3.5 3.5-3.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></i></span></button>') % (chip, _lgi, chip)
     else:
         bar = ''
     return ('<header class="hd">%s<img class="hd-logo" src="%s" alt="Pickathon 2027"><span class="hd-rule"></span>%s'
