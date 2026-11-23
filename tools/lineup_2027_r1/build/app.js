@@ -182,14 +182,19 @@
   (function () {
     var bar = document.querySelector('.bkw'); if (!bar) return;
     function tick() {
-      var top = bar.getBoundingClientRect().top; bar.classList.toggle('stuck', top <= 50);
+      var top = bar.getBoundingClientRect().top; bar.classList.toggle('stuck', top <= 1);
+      // r46 (Zale, Nov 22: "the progress bar did not move ... stuck too low"): progress = cards you've seen out of every card in that
+      // class under the current music pick (loaded or not), so it never resets when Keep going adds more
       var on = bar.querySelector('.bkb.on'), g = bar.parentNode.querySelector('.bl:not([hidden])'); if (!on || !g) return;
-      var r = g.getBoundingClientRect(), bh = bar.offsetHeight + 49, total = r.height - (window.innerHeight - bh) * 0.6;
-      var p = total > 0 ? Math.min(1, Math.max(0, (bh - r.top) / total)) : 0;
+      var cs = g.querySelectorAll('.card:not(.gone)'), seen = 0, vb = window.innerHeight;
+      for (var k = 0; k < cs.length; k++) { if (cs[k].classList.contains('late')) break; var rr = cs[k].getBoundingClientRect(); if (rr.height && rr.bottom <= vb) seen = k + 1; }
+      var p = cs.length ? seen / cs.length : 0;
       bar.querySelectorAll('.bkb').forEach(function (x) { x.style.setProperty('--p', x === on ? (p * 100).toFixed(1) + '%' : '0%'); });
     }
-    window.addEventListener('scroll', tick, { passive: true }); window.addEventListener('resize', tick);
-    bar.addEventListener('click', function () { setTimeout(tick, 30); }); tick();
+    // capture: the live app scrolls inside its own container, not the window
+    document.addEventListener('scroll', tick, { passive: true, capture: true }); window.addEventListener('resize', tick);
+    bar.addEventListener('click', function () { setTimeout(tick, 30); }); bar.parentNode.addEventListener('lxfilter', function () { setTimeout(tick, 30); });
+    var mo = bar.parentNode.querySelector('.more'); if (mo) mo.addEventListener('click', function () { setTimeout(tick, 30); }); tick();
   })();
   document.addEventListener('click', function (e) { var a = e.target.closest('a[href="#"]'); if (a) e.preventDefault(); });
 })();
