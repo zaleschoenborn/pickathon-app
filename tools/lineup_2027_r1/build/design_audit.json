@@ -2,7 +2,7 @@
  "y2024@phone": {
   "text": [
    {
-    "at": "div.yrbar > label.yrchip > span.yc-k",
+    "at": "div.yrbar > button.yrchip.ywopen > span.yc-k",
     "fs": 12,
     "floor": 14,
     "poster": false,
@@ -100,111 +100,10 @@
   "round": [],
   "overflow": false
  },
- "y2026@phone": {
-  "text": [
-   {
-    "at": "div.yrbar > label.yrchip > span.yc-k",
-    "fs": 12,
-    "floor": 14,
-    "poster": false,
-    "t": "Lineup"
-   }
-  ],
-  "tap": [
-   {
-    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i.on",
-    "w": 33,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
-    "w": 33,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
-    "w": 33,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
-    "w": 33,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
-    "w": 33,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
-    "w": 33,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
-    "w": 33,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
-    "w": 33,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
-    "w": 33,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
-    "w": 33,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "div.po-in > div.po-names.then > div.pcloud > span.pn",
-    "w": 316,
-    "h": 41,
-    "poster": true,
-    "t": "SHAKEY GRAVES"
-   }
-  ],
-  "contrast": [
-   {
-    "at": "div.po-ctl > span.po-track > i.po-knob > b.po-yr",
-    "cr": 1,
-    "t": "2026",
-    "poster": true
-   }
-  ],
-  "scroll": [],
-  "round": [],
-  "overflow": false
- },
  "y2015@phone": {
   "text": [
    {
-    "at": "div.yrbar > label.yrchip > span.yc-k",
+    "at": "div.yrbar > button.yrchip.ywopen > span.yc-k",
     "fs": 12,
     "floor": 14,
     "poster": false,
@@ -309,302 +208,22 @@
   "round": [],
   "overflow": false
  },
- "y2001@phone": {
+ "y2009@phone": {
   "text": [
    {
-    "at": "div.yrbar > label.yrchip > span.yc-k",
+    "at": "div.yrbar > button.yrchip.ywopen > span.yc-k",
     "fs": 12,
     "floor": 14,
     "poster": false,
     "t": "Lineup"
    }
   ],
-  "tap": [
-   {
-    "at": "div.po-in > div.po-names.then > div.pcloud > span.pn",
-    "w": 317,
-    "h": 41,
-    "poster": true,
-    "t": "CLUMSY LOVERS"
-   },
-   {
-    "at": "div.po-in > div.po-names.then > div.pcloud > span.pn",
-    "w": 275,
-    "h": 41,
-    "poster": true,
-    "t": "LAURIE LEWIS"
-   },
-   {
-    "at": "div.po-in > div.po-names.then > div.pcloud > span.pn",
-    "w": 235,
-    "h": 41,
-    "poster": true,
-    "t": "TERRY ROBB"
-   },
-   {
-    "at": "div.po-in > div.po-names.then > div.pcloud > span.pn",
-    "w": 358,
-    "h": 41,
-    "poster": true,
-    "t": "DICKEL BROTHERS"
-   },
-   {
-    "at": "div.po-in > div.po-names.then > div.pcloud > span.pn",
-    "w": 272,
-    "h": 41,
-    "poster": true,
-    "t": "HAREBRAINED"
-   },
-   {
-    "at": "div.po-in > div.po-names.then > div.pcloud > span.pn",
-    "w": 239,
-    "h": 41,
-    "poster": true,
-    "t": "JACKSTRAW"
-   },
-   {
-    "at": "div.po-in > div.po-names.then > div.pcloud > span.pn",
-    "w": 293,
-    "h": 41,
-    "poster": true,
-    "t": "LYNN CONOVER"
-   },
-   {
-    "at": "div.po-in > div.po-names.then > div.pcloud > span.pn",
-    "w": 172,
-    "h": 41,
-    "poster": true,
-    "t": "PIG IRON"
-   }
-  ],
+  "tap": [],
   "contrast": [
    {
     "at": "div.po-ctl > span.po-track > i.po-knob > b.po-yr",
     "cr": 1,
-    "t": "2001",
-    "poster": true
-   }
-  ],
-  "scroll": [],
-  "round": [],
-  "overflow": false
- },
- "y2022@phone": {
-  "text": [
-   {
-    "at": "div.yrbar > label.yrchip > span.yc-k",
-    "fs": 12,
-    "floor": 14,
-    "poster": false,
-    "t": "Lineup"
-   }
-  ],
-  "tap": [
-   {
-    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i.on",
-    "w": 33,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
-    "w": 33,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
-    "w": 33,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
-    "w": 33,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
-    "w": 33,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
-    "w": 33,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
-    "w": 33,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
-    "w": 33,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
-    "w": 33,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
-    "w": 33,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "div.po-in > div.po-names.then > div.pcloud > span.pn",
-    "w": 308,
-    "h": 41,
-    "poster": true,
-    "t": "BUILT TO SPILL"
-   },
-   {
-    "at": "div.po-in > div.po-names.then > div.pcloud > span.pn",
-    "w": 77,
-    "h": 42,
-    "poster": true,
-    "t": "GZA"
-   },
-   {
-    "at": "div.po-in > div.po-names.then > div.pcloud > span.pn",
-    "w": 186,
-    "h": 42,
-    "poster": true,
-    "t": "GOTH BABE"
-   }
-  ],
-  "contrast": [
-   {
-    "at": "div.po-ctl > span.po-track > i.po-knob > b.po-yr",
-    "cr": 1,
-    "t": "2022",
-    "poster": true
-   }
-  ],
-  "scroll": [],
-  "round": [],
-  "overflow": false
- },
- "y2012@phone": {
-  "text": [
-   {
-    "at": "div.yrbar > label.yrchip > span.yc-k",
-    "fs": 12,
-    "floor": 14,
-    "poster": false,
-    "t": "Lineup"
-   }
-  ],
-  "tap": [
-   {
-    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i.on",
-    "w": 33,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
-    "w": 33,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
-    "w": 33,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
-    "w": 33,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
-    "w": 33,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
-    "w": 33,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
-    "w": 33,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
-    "w": 33,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
-    "w": 33,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
-    "w": 33,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "div.po-in > div.po-names.then > div.pcloud > span.pn",
-    "w": 166,
-    "h": 43,
-    "poster": true,
-    "t": "NEKO CASE"
-   },
-   {
-    "at": "div.po-in > div.po-names.then > div.pcloud > span.pn",
-    "w": 177,
-    "h": 43,
-    "poster": true,
-    "t": "TODD SNIDER"
-   }
-  ],
-  "contrast": [
-   {
-    "at": "div.po-ctl > span.po-track > i.po-knob > b.po-yr",
-    "cr": 1,
-    "t": "2012",
+    "t": "2009",
     "poster": true
    }
   ],
@@ -615,7 +234,7 @@
  "y2024@tablet": {
   "text": [
    {
-    "at": "div.yrbar > label.yrchip > span.yc-k",
+    "at": "div.yrbar > button.yrchip.ywopen > span.yc-k",
     "fs": 12,
     "floor": 15,
     "poster": false,
@@ -762,132 +381,10 @@
   "round": [],
   "overflow": false
  },
- "y2026@tablet": {
-  "text": [
-   {
-    "at": "div.yrbar > label.yrchip > span.yc-k",
-    "fs": 12,
-    "floor": 15,
-    "poster": false,
-    "t": "Lineup"
-   },
-   {
-    "at": "div.grid2 > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 15,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.grid2 > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 15,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.grid2 > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 15,
-    "poster": false,
-    "t": "Their story \u2192"
-   }
-  ],
-  "tap": [
-   {
-    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i.on",
-    "w": 42,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
-    "w": 42,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
-    "w": 42,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
-    "w": 42,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
-    "w": 42,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
-    "w": 42,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
-    "w": 42,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
-    "w": 42,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
-    "w": 42,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
-    "w": 42,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "div.po-in > div.po-names.then > div.pcloud > span.pn",
-    "w": 316,
-    "h": 41,
-    "poster": true,
-    "t": "SHAKEY GRAVES"
-   }
-  ],
-  "contrast": [
-   {
-    "at": "div.po-ctl > span.po-track > i.po-knob > b.po-yr",
-    "cr": 1,
-    "t": "2026",
-    "poster": true
-   }
-  ],
-  "scroll": [],
-  "round": [],
-  "overflow": false
- },
  "y2015@tablet": {
   "text": [
    {
-    "at": "div.yrbar > label.yrchip > span.yc-k",
+    "at": "div.yrbar > button.yrchip.ywopen > span.yc-k",
     "fs": 12,
     "floor": 15,
     "poster": false,
@@ -1062,10 +559,10 @@
   "round": [],
   "overflow": false
  },
- "y2001@tablet": {
+ "y2009@tablet": {
   "text": [
    {
-    "at": "div.yrbar > label.yrchip > span.yc-k",
+    "at": "div.yrbar > button.yrchip.ywopen > span.yc-k",
     "fs": 12,
     "floor": 15,
     "poster": false,
@@ -1075,401 +572,17 @@
   "tap": [
    {
     "at": "div.po-in > div.po-names.then > div.pcloud > span.pn",
-    "w": 317,
+    "w": 445,
     "h": 41,
     "poster": true,
-    "t": "CLUMSY LOVERS"
-   },
-   {
-    "at": "div.po-in > div.po-names.then > div.pcloud > span.pn",
-    "w": 275,
-    "h": 41,
-    "poster": true,
-    "t": "LAURIE LEWIS"
-   },
-   {
-    "at": "div.po-in > div.po-names.then > div.pcloud > span.pn",
-    "w": 235,
-    "h": 41,
-    "poster": true,
-    "t": "TERRY ROBB"
-   },
-   {
-    "at": "div.po-in > div.po-names.then > div.pcloud > span.pn",
-    "w": 446,
-    "h": 41,
-    "poster": true,
-    "t": "CALEB KLAUDER BAND"
-   },
-   {
-    "at": "div.po-in > div.po-names.then > div.pcloud > span.pn",
-    "w": 358,
-    "h": 41,
-    "poster": true,
-    "t": "DICKEL BROTHERS"
-   },
-   {
-    "at": "div.po-in > div.po-names.then > div.pcloud > span.pn",
-    "w": 272,
-    "h": 41,
-    "poster": true,
-    "t": "HAREBRAINED"
-   },
-   {
-    "at": "div.po-in > div.po-names.then > div.pcloud > span.pn",
-    "w": 239,
-    "h": 41,
-    "poster": true,
-    "t": "JACKSTRAW"
-   },
-   {
-    "at": "div.po-in > div.po-names.then > div.pcloud > span.pn",
-    "w": 293,
-    "h": 41,
-    "poster": true,
-    "t": "LYNN CONOVER"
-   },
-   {
-    "at": "div.po-in > div.po-names.then > div.pcloud > span.pn",
-    "w": 172,
-    "h": 41,
-    "poster": true,
-    "t": "PIG IRON"
+    "t": "THE HACKENSAW BOYS"
    }
   ],
   "contrast": [
    {
     "at": "div.po-ctl > span.po-track > i.po-knob > b.po-yr",
     "cr": 1,
-    "t": "2001",
-    "poster": true
-   }
-  ],
-  "scroll": [],
-  "round": [],
-  "overflow": false
- },
- "y2022@tablet": {
-  "text": [
-   {
-    "at": "div.yrbar > label.yrchip > span.yc-k",
-    "fs": 12,
-    "floor": 15,
-    "poster": false,
-    "t": "Lineup"
-   },
-   {
-    "at": "div.grid2 > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 15,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.grid2 > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 15,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.grid2 > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 15,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.grid2 > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 15,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.grid2 > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 15,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.grid2 > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 15,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.grid2 > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 15,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.grid2 > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 15,
-    "poster": false,
-    "t": "Their story \u2192"
-   }
-  ],
-  "tap": [
-   {
-    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i.on",
-    "w": 42,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
-    "w": 42,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
-    "w": 42,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
-    "w": 42,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
-    "w": 42,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
-    "w": 42,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
-    "w": 42,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
-    "w": 42,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
-    "w": 42,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
-    "w": 42,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "div.po-in > div.po-names.then > div.pcloud > span.pn",
-    "w": 308,
-    "h": 41,
-    "poster": true,
-    "t": "BUILT TO SPILL"
-   },
-   {
-    "at": "div.po-in > div.po-names.then > div.pcloud > span.pn",
-    "w": 77,
-    "h": 42,
-    "poster": true,
-    "t": "GZA"
-   },
-   {
-    "at": "div.po-in > div.po-names.then > div.pcloud > span.pn",
-    "w": 186,
-    "h": 42,
-    "poster": true,
-    "t": "GOTH BABE"
-   }
-  ],
-  "contrast": [
-   {
-    "at": "div.po-ctl > span.po-track > i.po-knob > b.po-yr",
-    "cr": 1,
-    "t": "2022",
-    "poster": true
-   }
-  ],
-  "scroll": [],
-  "round": [],
-  "overflow": false
- },
- "y2012@tablet": {
-  "text": [
-   {
-    "at": "div.yrbar > label.yrchip > span.yc-k",
-    "fs": 12,
-    "floor": 15,
-    "poster": false,
-    "t": "Lineup"
-   },
-   {
-    "at": "div.grid2 > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 15,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.grid2 > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 15,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.grid2 > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 15,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.grid2 > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 15,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.grid2 > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 15,
-    "poster": false,
-    "t": "Their story \u2192"
-   }
-  ],
-  "tap": [
-   {
-    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i.on",
-    "w": 42,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
-    "w": 42,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
-    "w": 42,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
-    "w": 42,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
-    "w": 42,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
-    "w": 42,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
-    "w": 42,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
-    "w": 42,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
-    "w": 42,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
-    "w": 42,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "div.po-in > div.po-names.then > div.pcloud > span.pn",
-    "w": 371,
-    "h": 41,
-    "poster": true,
-    "t": "HOT 8 BRASS BAND"
-   },
-   {
-    "at": "div.po-in > div.po-names.then > div.pcloud > span.pn",
-    "w": 367,
-    "h": 42,
-    "poster": true,
-    "t": "KITTY, DAISY, & LEWIS"
-   },
-   {
-    "at": "div.po-in > div.po-names.then > div.pcloud > span.pn",
-    "w": 166,
-    "h": 43,
-    "poster": true,
-    "t": "NEKO CASE"
-   },
-   {
-    "at": "div.po-in > div.po-names.then > div.pcloud > span.pn",
-    "w": 177,
-    "h": 43,
-    "poster": true,
-    "t": "TODD SNIDER"
-   }
-  ],
-  "contrast": [
-   {
-    "at": "div.po-ctl > span.po-track > i.po-knob > b.po-yr",
-    "cr": 1,
-    "t": "2012",
+    "t": "2009",
     "poster": true
    }
   ],
@@ -1480,7 +593,7 @@
  "y2024@desktop": {
   "text": [
    {
-    "at": "div.yrbar > label.yrchip > span.yc-k",
+    "at": "div.yrbar > button.yrchip.ywopen > span.yc-k",
     "fs": 12,
     "floor": 16,
     "poster": false,
@@ -1641,160 +754,10 @@
   "round": [],
   "overflow": false
  },
- "y2026@desktop": {
-  "text": [
-   {
-    "at": "div.yrbar > label.yrchip > span.yc-k",
-    "fs": 12,
-    "floor": 16,
-    "poster": false,
-    "t": "Lineup"
-   },
-   {
-    "at": "div.grid2 > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 16,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.grid2 > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 16,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.grid2 > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 16,
-    "poster": false,
-    "t": "Their story \u2192"
-   }
-  ],
-  "tap": [
-   {
-    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i.on",
-    "w": 31,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
-    "w": 31,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
-    "w": 31,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
-    "w": 31,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
-    "w": 31,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
-    "w": 31,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
-    "w": 31,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
-    "w": 31,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
-    "w": 31,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
-    "w": 31,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "div.po-in > div.po-names.then > div.pcloud > span.pn",
-    "w": 295,
-    "h": 42,
-    "poster": true,
-    "t": "BUILT TO SPILL"
-   },
-   {
-    "at": "div.po-in > div.po-names.then > div.pcloud > span.pn",
-    "w": 224,
-    "h": 42,
-    "poster": true,
-    "t": "STEVE EARLE"
-   },
-   {
-    "at": "div.po-in > div.po-names.then > div.pcloud > span.pn",
-    "w": 256,
-    "h": 42,
-    "poster": true,
-    "t": "THEE SINSEERS"
-   },
-   {
-    "at": "div.po-in > div.po-names.then > div.pcloud > span.pn",
-    "w": 214,
-    "h": 42,
-    "poster": true,
-    "t": "THE ALTONS"
-   },
-   {
-    "at": "div.po-in > div.po-names.then > div.pcloud > span.pn",
-    "w": 406,
-    "h": 43,
-    "poster": true,
-    "t": "THE BROTHERS COMATOSE"
-   }
-  ],
-  "contrast": [
-   {
-    "at": "div.po-ctl > span.po-track > i.po-knob > b.po-yr",
-    "cr": 1,
-    "t": "2026",
-    "poster": true
-   }
-  ],
-  "scroll": [],
-  "round": [],
-  "overflow": false
- },
  "y2015@desktop": {
   "text": [
    {
-    "at": "div.yrbar > label.yrchip > span.yc-k",
+    "at": "div.yrbar > button.yrchip.ywopen > span.yc-k",
     "fs": 12,
     "floor": 16,
     "poster": false,
@@ -1962,364 +925,58 @@
   "round": [],
   "overflow": false
  },
- "y2001@desktop": {
+ "y2009@desktop": {
   "text": [
    {
-    "at": "div.yrbar > label.yrchip > span.yc-k",
+    "at": "div.yrbar > button.yrchip.ywopen > span.yc-k",
     "fs": 12,
     "floor": 16,
     "poster": false,
     "t": "Lineup"
-   }
-  ],
-  "tap": [],
-  "contrast": [
-   {
-    "at": "div.po-ctl > span.po-track > i.po-knob > b.po-yr",
-    "cr": 1,
-    "t": "2001",
-    "poster": true
-   }
-  ],
-  "scroll": [],
-  "round": [],
-  "overflow": false
- },
- "y2022@desktop": {
-  "text": [
-   {
-    "at": "div.yrbar > label.yrchip > span.yc-k",
-    "fs": 12,
-    "floor": 16,
-    "poster": false,
-    "t": "Lineup"
-   },
-   {
-    "at": "div.grid2 > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 16,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.grid2 > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 16,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.grid2 > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 16,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.grid2 > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 16,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.grid2 > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 16,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.grid2 > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 16,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.grid2 > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 16,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.grid2 > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 16,
-    "poster": false,
-    "t": "Their story \u2192"
    }
   ],
   "tap": [
    {
-    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i.on",
-    "w": 31,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
-    "w": 31,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
-    "w": 31,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
-    "w": 31,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
-    "w": 31,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
-    "w": 31,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
-    "w": 31,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
-    "w": 31,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
-    "w": 31,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
-    "w": 31,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
     "at": "div.po-in > div.po-names.then > div.pcloud > span.pn",
-    "w": 257,
-    "h": 42,
-    "poster": true,
-    "t": "VALERIE JUNE"
-   },
-   {
-    "at": "div.po-in > div.po-names.then > div.pcloud > span.pn",
-    "w": 141,
-    "h": 43,
-    "poster": true,
-    "t": "QUANTIC"
-   },
-   {
-    "at": "div.po-in > div.po-names.then > div.pcloud > span.pn",
-    "w": 185,
-    "h": 43,
-    "poster": true,
-    "t": "INNER WAVE"
-   }
-  ],
-  "contrast": [
-   {
-    "at": "div.po-ctl > span.po-track > i.po-knob > b.po-yr",
-    "cr": 1,
-    "t": "2022",
-    "poster": true
-   }
-  ],
-  "scroll": [],
-  "round": [],
-  "overflow": false
- },
- "y2012@desktop": {
-  "text": [
-   {
-    "at": "div.yrbar > label.yrchip > span.yc-k",
-    "fs": 12,
-    "floor": 16,
-    "poster": false,
-    "t": "Lineup"
-   },
-   {
-    "at": "div.grid2 > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 16,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.grid2 > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 16,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.grid2 > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 16,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.grid2 > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 16,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.grid2 > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 16,
-    "poster": false,
-    "t": "Their story \u2192"
-   }
-  ],
-  "tap": [
-   {
-    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i.on",
-    "w": 31,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
-    "w": 31,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
-    "w": 31,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
-    "w": 31,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
-    "w": 31,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
-    "w": 31,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
-    "w": 31,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
-    "w": 31,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
-    "w": 31,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
-    "w": 31,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "div.po-in > div.po-names.then > div.pcloud > span.pn",
-    "w": 240,
-    "h": 42,
-    "poster": true,
-    "t": "NEKO CASE"
-   },
-   {
-    "at": "div.po-in > div.po-names.then > div.pcloud > span.pn",
-    "w": 254,
-    "h": 41,
-    "poster": true,
-    "t": "TODD SNIDER"
-   },
-   {
-    "at": "div.po-in > div.po-names.then > div.pcloud > span.pn",
-    "w": 148,
+    "w": 145,
     "h": 42,
     "poster": true,
     "t": "DR. DOG"
    },
    {
     "at": "div.po-in > div.po-names.then > div.pcloud > span.pn",
-    "w": 119,
+    "w": 286,
     "h": 43,
     "poster": true,
-    "t": "BOMBINO"
+    "t": "BLITZEN TRAPPER"
    },
    {
     "at": "div.po-in > div.po-names.then > div.pcloud > span.pn",
-    "w": 178,
+    "w": 226,
     "h": 43,
     "poster": true,
-    "t": "ALELA DIANE"
+    "t": "DALE WATSON"
    },
    {
     "at": "div.po-in > div.po-names.then > div.pcloud > span.pn",
-    "w": 243,
+    "w": 120,
     "h": 43,
     "poster": true,
-    "t": "MIDTOWN DICKENS"
+    "t": "JOE PUG"
+   },
+   {
+    "at": "div.po-in > div.po-names.then > div.pcloud > span.pn",
+    "w": 316,
+    "h": 43,
+    "poster": true,
+    "t": "FOGHORN STRINGBAND"
    }
   ],
   "contrast": [
    {
     "at": "div.po-ctl > span.po-track > i.po-knob > b.po-yr",
     "cr": 1,
-    "t": "2012",
+    "t": "2009",
     "poster": true
    }
   ],

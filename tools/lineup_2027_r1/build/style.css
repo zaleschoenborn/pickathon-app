@@ -910,3 +910,23 @@ h2{font-family:var(--display);font-weight:400;font-size:27px;line-height:1.14;le
   .yrtop .poster[data-yr="2006"] .po-art{grid-row:1/span 2;width:200px}
   .yrtop .poster[data-yr="2006"] .po-badge{width:auto!important;max-width:200px;max-height:320px!important;margin:0 auto!important}
 }
+
+/* r62 (Zale, Nov 22 20:29): top band back to the plain horizon (it was busy); the poster art lives inside the panel as a faint texture;
+   panels without a readable poster color go dark with light names; year buttons and caption sit lower */
+@media (min-width:1000px){
+  .yrtop.framed>.yrcrown::before{display:none}
+  .yrtop.framed{background:linear-gradient(to bottom,transparent 0 58px,var(--mat) 58px)}
+  .yrtop.framed>.yrcrown{height:74px}
+  .yrtop.framed.dark .poster{--paper:var(--dkp)!important;--ink:var(--dki)!important;--ink2:var(--dki2)!important}
+  .yrtop.framed .poster{position:relative;isolation:isolate}
+  .yrtop.framed .poster::after{content:"";position:absolute;inset:18px;z-index:-1;background:var(--post) center 30%/cover no-repeat;opacity:.09;mix-blend-mode:multiply;pointer-events:none}
+  .yrtop.framed.dark .poster::after{mix-blend-mode:screen;opacity:.12}
+  .yrtop .poster .po-ctl{margin-top:34px}
+  .yrtop .poster .po-cap{margin-top:30px}
+}
+/* r62b: on a dark panel the year logo sits on a small paper plate, so dark lettering in the logo still reads */
+@media (min-width:1000px){
+  .yrtop.framed{--pp:var(--paper)}
+  .yrtop.framed.dark .po-art .po-badge{background:var(--pp);padding:12px;border-radius:3px;box-shadow:0 0 0 3px var(--dki2);box-sizing:border-box}
+  .yrtop.framed.dark .poster[data-yr="2006"] .po-badge{background:none;padding:0;box-shadow:none}
+}

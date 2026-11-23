@@ -905,13 +905,20 @@ def year_page(y):
     if _bold:
         import colorsys as _cs
         _pnl = max(_bold, key=lambda c: _cs.rgb_to_hls(*[int(c[i:i+2], 16) / 255 for i in (1, 3, 5)])[2])
+    # r62 (Zale, Nov 22 20:29: "less white, more frequently"): no readable poster color for the panel -> a dark panel in the year's band color with light names
+    _dark = None
+    if not _bold and _cr(P['paper'], P['band']) >= 4.5:
+        _lt = [c for c in [P.get('light'), P.get('warm')] + list(P.get('stripe', [])) if c and len(c) == 7 and _cr(c, P['band']) >= 4.5 and _dist(c, P['paper']) > 40]
+        _dark = (P['band'], P['paper'], _lt[0] if _lt else P['paper'])
+        _pnl = P['band']
+    elif _bold: pass
     elif _lum(P['paper']) > .82:  # r57: pale paper takes a wash of the year color, eased back until every text color keeps 4.5:1
         for _t in (.14, .10, .07, .04):
             _c = _mix(P['paper'], _tint, _t)
             if all(_cr(x, _c) >= 4.5 for x in _txt): _pnl = _c; break
     _cand = [c for c in list(P.get('stripe', [])) + [P.get('light'), P.get('warm'), P['ink']] if c and len(c) == 7 and _dist(c, P['paper']) > 60]
     _band = max(_cand, key=lambda c: _dist(c, _tint)) if _cand else P['ink']  # r57: border band contrasts with the frame color
-    h = h[:_top] + '<div class="yrtop framed%s" style="--paper:%s;--ink:%s;--mat:%s;--s1:%s;--s2:%s;--s3:%s;--tint:%s;--pnl:%s;--post:url(%s)">%s' % (' pale' if _pale else '', P['paper'], P['ink'], _mat(P), _band, _st[1], _st[2], _tint, _pnl, _postimg(y), _crown) + h[_top:] + '</div>'
+    h = h[:_top] + '<div class="yrtop framed%s" style="--paper:%s;--ink:%s;--mat:%s;--s1:%s;--s2:%s;--s3:%s;--tint:%s;--pnl:%s;--post:url(%s)%s">%s' % ((' pale' if _pale else '') + (' dark' if _dark else ''), P['paper'], P['ink'], _mat(P), _band, _st[1], _st[2], _tint, _pnl, _postimg(y), (';--dkp:%s;--dki:%s;--dki2:%s' % _dark) if _dark else '', _crown) + h[_top:] + '</div>'
     if st.get('headline'):
         h += ('<section class="story short"><p class="kick">The %s story</p><p class="lead">%s.</p>%s</section>') % (y, E(st['headline'].rstrip('.')), ('<p class="body" hidden>%s</p><button class="chip stog" aria-expanded="false" data-open="Read the %s story" data-shut="Show less"><span>Read the %s story</span> %s</button>' % (E(st['story']), y, y, ICON['caret'])) if st.get('story') else '')
     lp = ''  # Nov 21 r27 (Zale): the lineup picker is off until the other lineups (Family, DJs, Comedy...) are drawn; it listed them with nothing behind them
