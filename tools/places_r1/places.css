@@ -990,6 +990,5 @@ html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-tv .pkpl-gk h2.pkpl-hook1{font-siz
 html body.pkpl-v2 #root #pkpl .pkpl-gk p.pkpl-ask{margin-top:14px}
 html body.pkpl-v2 #root #pkpl .pkpl-gk p.pkpl-ask{font-size:12px!important;letter-spacing:.16em!important;margin:12px 0 0!important}html body.pkpl-v2 #root #pkpl .pkpl-gk h2.pkpl-hook1{font-size:21px!important}html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-tv .pkpl-gk h2.pkpl-hook1{font-size:18px!important}
 /* Zale, Nov 23: merch gets a plain merch plate over the 2026 frog badge baked into the art */
-#pkpl .pkpl-patch{fill:#2B2628;stroke:rgba(242,237,227,.35);stroke-width:1.5}
 /* amenity name on hover (desktop) */
 #pkpl .pkpl-amhov{position:absolute;left:0;top:0;z-index:30;pointer-events:none;padding:7px 11px;border-radius:8px;background:#12160F;border:1px solid #3A4331;color:#F2EDE3;font:700 14px/1 'Bricolage Grotesque',system-ui,sans-serif;white-space:nowrap;box-shadow:0 4px 14px rgba(0,0,0,.4)}
