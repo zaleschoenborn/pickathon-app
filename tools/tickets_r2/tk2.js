@@ -563,7 +563,7 @@
     if (t === 'Music') { L = xBands(); cards = L.map(function (a, i) { return card('x-play', i, a.img, '', 'Seen here first', gN(a.g), a.y, a.n, a.line, true, 'Watch ' + a.n + ', Pickathon ' + a.y); }).join(''); }
     else { L = xPlaces(t); cards = L.map(function (p, i) { return card('x-tour', i, p.img, p.pos, t, '', '', p.n, p.line, false, 'Photo tour of ' + p.n); }).join(''); }
     var tk = xTicket(t), line = t === 'Music' ? '' : (XD[t] || '');
-    return '<p class="tk-g-k tk-x-k">What do you want to experience?</p>' +
+    return '<h2 class="tk-d tk-x-h">Wander a city in the forest that only exists for one weekend.</h2><p class="tk-g-k tk-x-k">What do you want to experience?</p>' +
       '<div class="tk-x-ch" role="group" aria-label="Experiences">' + list.map(function (x) { return '<button type="button" class="tk-x-chip" data-act="x-pick" data-v="' + x + '" aria-pressed="' + (x === t ? 'true' : 'false') + '">' + xIc(x) + '<span>' + x + '</span></button>'; }).join('') + '</div>' +
       (t === 'Music' ? '<p class="tk-x-set">Most festivals book the names you already know. We book the ones you’re about to.</p>' : '') +
       '<ul class="tk-x-row" aria-label="' + (t === 'Music' ? 'Bands that played Pickathon before they were big' : esc(t) + ' at Pickathon, by place') + '">' + cards + '</ul>' +
