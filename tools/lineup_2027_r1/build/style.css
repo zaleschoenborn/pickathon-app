@@ -842,3 +842,36 @@ h2{font-family:var(--display);font-weight:400;font-size:27px;line-height:1.14;le
   .yrtop.framed>.hero{align-self:start;position:sticky;top:12px;height:660px;min-height:0}
 }
 .hero .krow .k{white-space:nowrap}
+
+/* r59: the wall of year logos */
+.ywopen{background:none;font:inherit;color:inherit}
+.ywall[hidden]{display:none!important}
+.ywall{position:fixed;inset:0;z-index:900;background:rgba(24,20,21,.97);display:flex;flex-direction:column;padding:16px 16px 24px;overflow:auto;scrollbar-width:none}
+.ywall::-webkit-scrollbar{display:none}
+.yw-h{display:flex;align-items:center;justify-content:space-between;max-width:1100px;width:100%;margin:0 auto 12px}
+.yw-h p{font-family:var(--display);font-size:26px;letter-spacing:.04em;color:var(--cream);margin:0}
+.yw-x{width:48px;height:48px;border:2px solid var(--line2);border-radius:6px;background:none;color:var(--cream);font-size:28px;line-height:1;cursor:pointer}
+.yw-g{display:grid;grid-template-columns:repeat(auto-fill,minmax(98px,1fr));gap:12px;max-width:1100px;width:100%;margin:0 auto}
+.yw-i{display:flex;flex-direction:column;align-items:center;gap:6px;padding:10px 6px 8px;border:2px solid transparent;border-radius:6px;background:rgba(255,255,255,.04);color:var(--cream);cursor:pointer;font:inherit}
+.yw-i:hover,.yw-i:focus-visible{border-color:var(--gold,#D6B54A)}
+.yw-i[aria-current]{border-color:var(--gold,#D6B54A);background:rgba(214,181,74,.12)}
+.yw-l{display:flex;align-items:center;justify-content:center;width:100%;height:76px}
+.yw-l img{max-width:100%;max-height:76px;object-fit:contain}
+.yw-l i{font-style:normal;font-family:var(--display);font-size:22px;color:var(--dim)}
+.yw-i b{font-family:var(--display);font-size:18px;letter-spacing:.04em}
+.yw-off{cursor:default;opacity:.55}
+.yw-off .yw-l i{font-family:var(--text);font-size:14px}
+@media (min-width:1000px){.ywall{padding:32px}.yw-g{grid-template-columns:repeat(auto-fill,minmax(132px,1fr));gap:16px}.yw-l{height:104px}.yw-l img{max-height:104px}}
+/* r59b (Zale, Nov 22 20:13): the logos shrink so every year fits on one screen, no scrolling */
+.ywall{padding:12px 12px 16px;justify-content:center}
+.yw-h{margin-bottom:8px}
+.yw-h p{font-size:22px}
+.yw-g{grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}
+.yw-i{gap:3px;padding:6px 2px 5px;min-height:44px}
+.yw-l{height:46px}
+.yw-l img{max-height:46px}
+.yw-l i{font-size:16px}
+.yw-i b{font-size:14px}
+.yw-off .yw-l i{font-size:11px}
+@media (min-width:700px){.yw-g{grid-template-columns:repeat(8,minmax(0,1fr));gap:10px}.yw-l{height:64px}.yw-l img{max-height:64px}.yw-i b{font-size:16px}}
+@media (min-width:1000px){.ywall{padding:24px 32px}.yw-g{grid-template-columns:repeat(10,minmax(0,1fr));gap:12px}.yw-l{height:78px}.yw-l img{max-height:78px}}

@@ -362,13 +362,31 @@ ICON = {
 }
 LOGO = img('logo27-gold.png', 300, fmt='PNG')
 
+_YW = None
+def year_wall(cur):
+    """r59: every year's own logo in a grid, newest first; 2020-21 shown as a quiet note (no festival)."""
+    global _YW
+    if _YW is None:
+        tiles = ['<button type="button" class="yw-i" data-go="s1" data-y="2027"><span class="yw-l"><img loading="lazy" src="%s" alt=""></span><b>2027</b></button>' % LOGO]
+        for yy in sorted(d['yearBill'].keys(), reverse=True):
+            if yy == '2019': tiles.append('<span class="yw-i yw-off"><span class="yw-l"><i>No festival</i></span><b>2020–21</b></span>')
+            lg = d['yearLogo'].get(yy)
+            pic = ('<img loading="lazy" src="%s" alt="">' % img(lg, 220, fmt='PNG')) if lg and not lg.startswith('http') and os.path.exists(_src(lg)) else '<i>%s</i>' % yy
+            tiles.append('<button type="button" class="yw-i" data-go="y%s" data-y="%s"><span class="yw-l">%s</span><b>%s</b></button>' % (yy, yy, pic, yy))
+        _YW = ''.join(tiles)
+    w = _YW.replace('data-y="%s"' % cur, 'data-y="%s" aria-current="true"' % cur, 1)
+    return ('<div class="ywall" hidden role="dialog" aria-label="Choose a Pickathon year"><div class="yw-h"><p>Pick a year</p>'
+            '<button type="button" class="yw-x" aria-label="Close">×</button></div><div class="yw-g">%s</div></div>') % w
+
 def header(title, sub, back=True, chip=None):
     t = '<span class="hd-t"><b>%s</b>%s</span>' % (E(title), ('<i>%s</i>' % E(sub)) if sub else '')
     # r52 (Zale, Nov 22 18:35): the live app strips this page's header, so the year switch lives in its own bar under the sale strip
     if chip:
         # r45 (Zale, Nov 22): the year switch must be obvious on every Lineup page, 2027 included: 'Lineup 2027 >' opens every year
-        bar = ('<div class="yrbar"><label class="yrchip"><span class="yc-k">Lineup</span><b class="yc-y">%s</b><span class="yc-a" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M4 1.5l5 4.5-5 4.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>'
-             '<select class="ysel2" aria-label="Change lineup year">%s</select></label>') % (chip, '<option value="s1"%s>2027</option>' % (' selected' if chip == '2027' else '') + ''.join('<option value="y%s"%s>%s</option>' % (yy, ' selected' if yy == chip else '', yy) for yy in sorted(d['yearBill'].keys(), reverse=True))) + '</div>'
+        # r59 (Zale, Nov 22 20:20): the gold button opens a wall of year logos; tap a logo to go to that year (one chooser everywhere)
+        bar = ('<div class="yrbar"><button type="button" class="yrchip ywopen" aria-expanded="false" aria-label="Lineup %s. Choose another year">'
+               '<span class="yc-k">Lineup</span><b class="yc-y">%s</b><span class="yc-a" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M4 1.5l5 4.5-5 4.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>'
+               '%s</div>') % (chip, chip, year_wall(chip))
         t = '<span class="hd-t"><b>Lineup</b><i>%s</i></span>' % chip
     else:
         bar = ''
