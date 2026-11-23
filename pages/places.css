@@ -1,0 +1,991 @@
+/* pk-places (tools/places_r1): the Places map and the neighborhood page as its sheet (phone, portrait tablet) or left panel (sideways tablet, desktop). Design notes Nov 12 2026. */
+#pkpl,#pkpl *{box-sizing:border-box}
+#pkpl *{scrollbar-width:none}#pkpl *::-webkit-scrollbar{display:none}
+#pkpl{--pl-ground:#2B2628;--pl-cream:#F2EDE3;--pl-dim:#CFC9BC;--pl-mute:#A9A294;--pl-gold:#F2B33D;--pl-ink:#12160F;display:block;position:relative;z-index:0}
+.pkpl-map{position:absolute;left:0;top:0;width:100%;height:var(--pkpl-vh,100svh);overflow:hidden;background:#1B2416;touch-action:none;user-select:none;-webkit-user-select:none;-webkit-tap-highlight-color:transparent;outline:none}
+.pkpl-world{position:absolute;left:0;top:0;width:2041px;height:3810px;transform-origin:0 0;will-change:transform}
+.pkpl-base{position:absolute;left:0;top:0;width:2041px!important;max-width:none!important;height:3810px!important;display:block}
+/* Site Build Nov 22 (Zale: blank map on first load): a 4 KB preview of the 2027 map sits under the full picture, so the farm shows at once and sharpens when map4 arrives */
+.pkpl-base[src*="map4"]{background:#27301f url(data:image/webp;base64,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) 0 0/100% 100% no-repeat}
+.pkpl-tiles{position:absolute;inset:0}
+.pkpl-tiles img{position:absolute;display:block;max-width:none!important;opacity:0;transition:opacity .25s}
+.pkpl-tiles img.on{opacity:1}
+.pkpl-map:not(.pkpl-hi) .pkpl-tiles{display:none}
+.pkpl-svg{position:absolute;left:0;top:0;width:2041px;height:3810px;overflow:visible}
+.pkpl-sh{fill:transparent;stroke:none;cursor:default}
+.pkpl-veil{fill:rgba(12,14,10,.34);pointer-events:none}
+/* the picked place: a soft static glow on its own ground, nothing on top (addendum 2). No pulsing. */
+.pkpl-lit{fill:rgba(255,236,170,.08);stroke:#FFE7A3;stroke-width:5;stroke-linejoin:round;filter:url(#pkpl-glow);pointer-events:none;vector-effect:non-scaling-stroke}
+.pkpl-hov{fill:rgba(255,236,170,.14);stroke:rgba(255,231,163,.9);stroke-width:3;stroke-linejoin:round;filter:url(#pkpl-glow);pointer-events:none;vector-effect:non-scaling-stroke}
+.pkpl-pins,.pkpl-am{position:absolute;inset:0;pointer-events:none}
+.pkpl-em{position:absolute;left:0;top:0;width:44px;height:44px;margin:-22px 0 0 -22px;padding:4px;border:0;border-radius:50%;background:transparent;pointer-events:auto;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.pkpl-em img{display:block;width:100%;height:100%;object-fit:contain;pointer-events:none;border-radius:50%;background:rgba(18,22,15,.84);padding:2px;box-shadow:0 2px 6px rgba(0,0,0,.45)}
+.pkpl-em.hov img,.pkpl-em:focus-visible img{box-shadow:0 0 0 2px #FFE7A3,0 0 14px 3px rgba(255,231,163,.8)}
+.pkpl-em:focus-visible{outline:3px solid #FFE7A3;outline-offset:2px}
+.pkpl-em[hidden],.pkpl-nm[hidden]{display:none}
+.pkpl-nm{position:absolute;left:0;top:0;margin-top:25px;white-space:nowrap;translate:-50% 0;padding:2px 7px;border-radius:5px;background:rgba(18,22,15,.78);color:var(--pl-cream);font:800 11px/1.25 'Bricolage Grotesque',system-ui,sans-serif;font-stretch:75%;letter-spacing:.06em;text-transform:uppercase;pointer-events:none}
+.pkpl-amdot{position:absolute;left:0;top:0;width:30px;height:30px;margin:-15px 0 0 -15px;border-radius:50%;background:#FBF4E4;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 2px #FFE7A3,0 0 14px 4px rgba(255,231,163,.75)}
+.pkpl-amdot img{width:20px;height:20px;object-fit:contain}
+/* title screen: entering the map itself (Places tab, Explore all neighborhoods) */
+.pkpl-title{position:absolute;left:0;top:0;right:0;padding:18px 20px 64px;background:linear-gradient(180deg,rgba(18,22,15,.92) 0%,rgba(18,22,15,.78) 55%,rgba(18,22,15,0) 100%);color:var(--pl-cream);pointer-events:none;transition:opacity .3s}
+.pkpl-notitle .pkpl-title{opacity:0;visibility:hidden}
+#root #pkpl .pkpl-k{margin:0 0 6px;font:800 13px/1.2 'Bricolage Grotesque',system-ui,sans-serif;font-stretch:75%;letter-spacing:.14em;text-transform:uppercase;color:#D6B54A;max-width:none}
+#root #pkpl .pkpl-d{margin:0;font-family:'Pickathon 2014',sans-serif!important;font-weight:400!important;font-size:clamp(30px,9vw,46px)!important;line-height:1.02!important;letter-spacing:.02em;text-transform:uppercase;color:var(--pl-cream);max-width:none}
+#root #pkpl .pkpl-l{margin:10px 0 0;font:700 16px/1.3 'Bricolage Grotesque',system-ui,sans-serif;color:var(--pl-gold);max-width:none}
+/* tools: Find and Full map (one quiet style) */
+.pkpl-tools{position:absolute;right:12px;bottom:12px;display:flex;gap:8px;z-index:3}
+#root .pkpl-tb{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-width:50px;padding:0 16px;background:rgba(18,22,15,.86);cursor:pointer;white-space:nowrap}
+.pkpl-tb[hidden]{display:none}
+.pkpl-tb svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.pkpl-amtag{position:absolute;left:12px;top:12px;max-width:calc(100% - 190px);z-index:3;display:flex;align-items:center;gap:4px;min-height:44px;padding:0 4px 0 14px;border-radius:6px;background:#FBF4E4;color:#12160F;font:800 14px/1.2 'Bricolage Grotesque',system-ui,sans-serif;box-shadow:0 2px 10px rgba(0,0,0,.4)}
+.pkpl-amtag[hidden]{display:none}
+.pkpl-amtag button{width:44px;height:44px;border:0;background:transparent;color:#12160F;font-size:24px;line-height:1;cursor:pointer}
+.pkpl-hovtag{position:absolute;left:0;top:0;z-index:4;padding:6px 10px;border-radius:6px;background:rgba(18,22,15,.92);color:var(--pl-cream);pointer-events:none;white-space:nowrap;box-shadow:0 2px 10px rgba(0,0,0,.4)}
+.pkpl-hovtag[hidden]{display:none}
+.pkpl-hovtag b{display:block;font:400 18px/1.05 'Pickathon 2014',sans-serif;text-transform:uppercase;letter-spacing:.02em}
+.pkpl-hovtag small{display:block;margin-top:2px;font:800 10.5px/1.2 'Bricolage Grotesque',system-ui,sans-serif;font-stretch:75%;letter-spacing:.12em;text-transform:uppercase;color:#D6B54A}
+/* Find */
+.pkpl-find{position:absolute;inset:0;z-index:6;display:flex;flex-direction:column;background:rgba(18,22,15,.97);touch-action:pan-y}
+.pkpl-find[hidden]{display:none}
+.pkpl-fbar{display:flex;gap:8px;padding:12px}
+.pkpl-fbar input{flex:1;min-width:0;min-height:48px;padding:0 14px;border-radius:6px;border:1px solid rgba(242,237,227,.5);background:#1A2017;color:var(--pl-cream);font:600 16px/1.2 'Bricolage Grotesque',system-ui,sans-serif;outline:none}
+.pkpl-fbar input:focus{border-color:#F2B33D}
+.pkpl-fbar button{flex:none;width:48px;height:48px;border-radius:6px;border:1px solid rgba(242,237,227,.5);background:transparent;color:var(--pl-cream);font-size:26px;line-height:1;cursor:pointer}
+.pkpl-fres{flex:1;overflow-y:auto;padding:0 12px 20px}
+#root #pkpl .pkpl-fg{margin:14px 4px 6px;font:800 12px/1.2 'Bricolage Grotesque',system-ui,sans-serif;font-stretch:75%;letter-spacing:.14em;text-transform:uppercase;color:#D6B54A;max-width:none}
+.pkpl-fres button{display:flex;align-items:center;gap:12px;width:100%;min-height:52px;padding:6px 6px;border:0;border-bottom:1px solid #2F372A;background:transparent;color:var(--pl-cream);text-align:left;cursor:pointer;font:inherit}
+.pkpl-fres button img{flex:none;width:34px;height:34px;object-fit:contain}
+.pkpl-fres button span{min-width:0}
+.pkpl-fres b{display:block;font:800 16px/1.2 'Bricolage Grotesque',system-ui,sans-serif}
+.pkpl-fres small{display:block;margin-top:1px;font-size:13px;color:var(--pl-mute)}
+#root #pkpl .pkpl-fnone{margin:20px 6px;color:var(--pl-mute);max-width:none}
+
+/* ---------- the sheet top (#pkpl-top) ---------- */
+#pkpl-top,#pkpl-top *{box-sizing:border-box}
+#pkpl-top{display:block;position:relative;z-index:1}
+.pkpl-sheet{position:relative;background:#2B2628;color:#F2EDE3;border-radius:16px 16px 0 0;box-shadow:0 -6px 22px rgba(0,0,0,.45);overflow:hidden}
+.pkpl-grab{position:absolute;left:0;right:0;top:0;height:22px;z-index:4;display:flex;justify-content:center;align-items:center;pointer-events:none}
+.pkpl-grab i{display:block;width:40px;height:5px;border-radius:3px;background:rgba(242,237,227,.85);box-shadow:0 1px 4px rgba(0,0,0,.5)}
+.pkpl-hero{position:relative;height:clamp(250px,40svh,340px);overflow:hidden;background:#1E2A1B;touch-action:pan-y}
+.pkpl-hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;max-width:none;opacity:0;z-index:0;transition:opacity 1.5s cubic-bezier(.4,0,.2,1)}
+.pkpl-hero>img.on{opacity:1}
+.pkpl-hero>img.top{z-index:1}
+.pkpl-hero>img.cut{transition:none}
+.pkpl-shade{position:absolute;left:0;right:0;bottom:0;height:70%;z-index:2;background:linear-gradient(180deg,rgba(18,22,15,0) 0%,rgba(18,22,15,.6) 50%,rgba(18,22,15,.92) 100%);pointer-events:none}
+.pkpl-shade::before{content:"";position:absolute;left:0;right:0;bottom:100%;height:60px;background:linear-gradient(0deg,rgba(18,22,15,0),rgba(18,22,15,.28));transform:translateY(-100%)}
+.pkpl-hi:not(.pkpl-map){position:absolute;left:0;right:0;bottom:0;padding:0 16px 36px;z-index:2;pointer-events:none}
+#root #pkpl-top .pkpl-kind{margin:0 0 6px;font:800 12.5px/1.2 'Bricolage Grotesque',system-ui,sans-serif;font-stretch:75%;letter-spacing:.14em;text-transform:uppercase;color:#9FCB8A;max-width:none}
+.pkpl-nmrow{display:flex;align-items:center;gap:10px;min-width:0}
+.pkpl-nmrow img{flex:none;width:46px;height:46px;object-fit:contain;max-width:none}
+#root #pkpl-top .pkpl-nmrow h1{margin:0;min-width:0;font-family:'Pickathon 2014',sans-serif!important;font-weight:400!important;font-size:clamp(36px,10.5vw,52px)!important;line-height:.95!important;letter-spacing:.02em;text-transform:uppercase;color:#F2EDE3;overflow-wrap:anywhere;max-width:none}
+#root #pkpl-top .pkpl-tt{margin:6px 0 0;font:700 17px/1.25 'Bricolage Grotesque',system-ui,sans-serif;color:#F2CF62;max-width:none}
+.pkpl-arr{position:absolute;top:34%;z-index:3;width:44px;height:44px;margin-top:-22px;border:0;border-radius:50%;background:rgba(18,22,15,.42);color:#F2EDE3;display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0}
+.pkpl-arr svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+.pkpl-arr.l{left:6px}.pkpl-arr.r{right:6px}
+.pkpl-dots{position:absolute;left:0;right:0;bottom:-6px;z-index:3;display:flex;justify-content:center}
+.pkpl-dots button{width:44px;height:44px;padding:0;border:0;background:transparent;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.pkpl-dots i{display:block;width:6px;height:6px;border-radius:50%;background:rgba(242,237,227,.45)}
+.pkpl-dots [aria-current] i{background:#F2EDE3}
+#root #pkpl-top .pkpl-hook{margin:0;padding:14px 16px 4px;font:500 17px/1.45 'Bricolage Grotesque',system-ui,sans-serif;color:#DCD6C9;max-width:none}
+#root #pkpl-top .pkpl-from{margin:0;padding:12px 16px 0;font:700 15px/1.35 'Bricolage Grotesque',system-ui,sans-serif;color:#F2B33D;max-width:none}
+/* schedule posted: the next sets lead, shorter hero, no hook line */
+.pkpl-has .pkpl-hero{height:clamp(190px,24svh,220px)}
+.pkpl-sc{padding:12px 16px 4px}
+.pkpl-days{display:flex;gap:8px;overflow-x:auto;margin:0 -16px;padding:0 16px 2px}
+#root #pkpl-top .pkpl-chip{flex:none;min-height:44px;min-width:64px;padding:0 14px}
+#root #pkpl-top .pkpl-chip[aria-pressed="true"]{background:#F2EDE3;color:#12160F;border-color:#F2EDE3}
+.pkpl-sets{list-style:none;margin:10px 0 0;padding:0}
+.pkpl-sets li{display:flex;align-items:baseline;gap:12px;min-height:48px;padding:8px 0;border-bottom:1px solid #4A4245}
+.pkpl-st{flex:none;width:68px;font:800 15px/1.2 'Bricolage Grotesque',system-ui,sans-serif;color:#9FCB8A;font-variant-numeric:tabular-nums}
+.pkpl-sa{min-width:0}
+.pkpl-sa b{display:block;font:800 17px/1.2 'Bricolage Grotesque',system-ui,sans-serif;color:#F2EDE3}
+.pkpl-sa small{display:block;margin-top:2px;font-size:13px;color:#B9B3A6}
+#root #pkpl-top .pkpl-whole{width:100%;margin-top:12px}
+
+/* ---------- phone and portrait tablet ---------- */
+/* Places tab: the map fills the phone scroller */
+body.pkpl-on:not(.pkpl-hood):not(.pkpl-wide) #pk-scroll-phone{overflow:hidden!important;position:relative}
+body.pkpl-on:not(.pkpl-hood) #pk-scroll-phone>:not(#pkpl):not(style):not([aria-label="Cookie choices"]){display:none!important}
+body.pkpl-on:not(.pkpl-hood) #pk-scroll-phone>#pkpl{position:absolute;inset:0}
+body.pkpl-on:not(.pkpl-hood) #pkpl .pkpl-map{height:100%}
+/* a neighborhood: the map stays put behind; the page scrolls over it as a sheet */
+body.pkpl-hood:not(.pkpl-wide) #pk-scroll-phone{scroll-behavior:auto}
+body.pkpl-hood:not(.pkpl-wide) #pkpl{position:sticky;top:0;height:0;overflow:visible}
+body.pkpl-hood:not(.pkpl-wide) #pkpl-sp{display:block;height:calc(var(--pkpl-vh,600px) - 118px);pointer-events:none}
+body.pkpl-hood:not(.pkpl-wide) #pk-scroll-phone>:not(#pkpl):not(#pkpl-sp):not(#pkpl-top):not(style){position:relative;z-index:1;background:#2B2628}
+body.pkpl-hood .pk-hd-hero{display:none!important}
+body.pkpl-hood .pk-hd-w{display:flex;flex-direction:column;padding-top:4px}
+body.pkpl-hood #root .pk-hd-w>.pk-hd-cols{order:0}
+body.pkpl-hood #root .pk-hd-w>.pk-hd-desc0{order:1;margin-top:22px}   /* the hook is the short description; the long one follows the video */
+body.pkpl-hood .pk-hd-links>li:first-child{display:none}   /* no map link at the bottom (rulebook) */
+body.pkpl-hood .pk-hd-vid{margin-top:16px}
+/* Listen stays in the header on the map and neighborhood pages (Zale, Nov 22 06:33: rulebook, icon only on phone) */
+#pkpl-sp{display:none}
+@media (min-width:700px) and (max-width:1199px){
+  .pkpl-hero{height:clamp(300px,34svh,380px)}
+  .pkpl-hi:not(.pkpl-map){padding:0 24px 32px}
+  .pkpl-em{width:48px;height:48px;margin:-24px 0 0 -24px}
+}
+
+/* ---------- sideways tablet and desktop: panel on the left, map on the right ---------- */
+body.pkpl-wide.pkpl-on:not(.pkpl-hood) #pk-scroll-desk>:not(#pkpl):not(style):not([aria-label="Cookie choices"]){display:none!important}
+body.pkpl-wide.pkpl-on:not(.pkpl-hood) #pk-scroll-desk>#pkpl{height:var(--pkpl-vh)}
+body.pkpl-wide.pkpl-on:not(.pkpl-hood) #pk-scroll-desk,body.pkpl-wide.pkpl-on:not(.pkpl-hood)~footer{min-height:0}
+body.pkpl-wide.pkpl-hood #pkpl{position:sticky;top:var(--pkpl-hd,0px);height:0;overflow:visible;z-index:2}
+body.pkpl-wide.pkpl-hood #pkpl .pkpl-map{left:auto;right:0;width:calc(100% - var(--pkpl-lw))}
+body.pkpl-wide.pkpl-hood #pk-scroll-desk>:not(#pkpl):not(style),body.pkpl-wide.pkpl-hood #pk-scroll-phone>:not(#pkpl):not(style){width:var(--pkpl-lw);max-width:var(--pkpl-lw);margin-left:0!important;margin-right:0!important}
+body.pkpl-wide.pkpl-hood #pk-scroll-phone>:not(#pkpl):not(style){position:relative;z-index:1}
+body.pkpl-wide .pkpl-sheet{border-radius:0;box-shadow:none}
+body.pkpl-wide .pkpl-grab{display:none}
+body.pkpl-wide .pkpl-hero{height:clamp(300px,42vh,420px)}
+body.pkpl-wide .pkpl-hi:not(.pkpl-map){padding:0 32px 36px}
+body.pkpl-wide.pkpl-hood .pk-hd-w{padding-left:32px;padding-right:32px}
+body.pkpl-wide.pkpl-hood .pk-hd-cols{display:block}
+body.pkpl-wide.pkpl-hood .pk-hd-who{display:block!important}
+body.pkpl-wide.pkpl-hood .pk-hd-yc{flex:0 0 78%!important}
+body.pkpl-wide #root #pkpl-top .pkpl-hook,body.pkpl-wide #root #pkpl-top .pkpl-from{padding-left:32px;padding-right:32px}
+body.pkpl-wide .pkpl-sc{padding-left:32px;padding-right:32px}
+body.pkpl-wide .pkpl-days{margin:0 -32px;padding:0 32px 2px}
+body.pkpl-wide .pkpl-em{width:48px;height:48px;margin:-24px 0 0 -24px}
+body.pkpl-wide .pkpl-title{right:auto;bottom:0;width:var(--pkpl-lw);padding:48px 32px;isolation:isolate;background:linear-gradient(90deg,rgba(18,22,15,.92) 0%,rgba(18,22,15,.8) 70%,rgba(18,22,15,0) 100%);display:flex;flex-direction:column;justify-content:center}
+body.pkpl-wide #root #pkpl .pkpl-d{font-size:clamp(44px,4.6vw,72px)!important}
+body.pkpl-wide #root #pkpl .pkpl-l{font-size:19px}
+body.pkpl-wide .pkpl-find{left:auto;width:420px;border-left:1px solid #2F372A}
+@media (hover:hover){.pkpl-arr:hover{background:rgba(18,22,15,.7)}}
+@media (prefers-reduced-motion:reduce){.pkpl-hero>img,.pkpl-title,.pkpl-tiles img{transition:none}}
+body.pkpl-hood .pkpl-tools{top:12px;bottom:auto}   /* on a neighborhood the sheet or the dev bar can cover the bottom */
+@media (max-width:699px){#root .pkpl-tbf{padding:0;width:50px}.pkpl-tbf span{display:none}}
+.pkpl-amtag span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+body.pkpl-on:not(.pkpl-hood) .pkpl-amtag{top:auto;bottom:66px;max-width:calc(100% - 24px)}
+.pkpl-has .pkpl-arr{top:26px;margin-top:0}
+body.pkpl-hood .pk-g1-pill{display:none!important}   /* rulebook: no gold Watch pills; the white play ring stays on the video */
+#root #pkpl-top .pkpl-chip,#root #pkpl-top .pkpl-whole{border-radius:6px!important}
+.pkpl-has .pkpl-arr{top:10px}
+@media (max-width:399px) and (max-height:780px){.pkpl-hero{height:228px}.pkpl-has .pkpl-hero{height:176px}#root #pkpl-top .pkpl-nmrow h1{font-size:34px!important}}   /* 360x740 is tight (addendum 3) */
+body.pkpl-wide.pkpl-hood #root .pk-hd-colL,body.pkpl-wide.pkpl-hood #root .pk-hd-colR{display:block!important;width:auto!important;grid-template-columns:none!important}
+body.pkpl-wide.pkpl-hood #root .pk-hd-colL>*{width:auto!important;max-width:none!important}
+body.pkpl-hood #root .pk-hd-desc0.pkpl-dup{display:none!important}   /* the long description says the same as the hook */
+.pkpl-hi.pkpl-tok .pkpl-base{visibility:hidden}
+#root#root#root#root#root#root#root#root .pkpl-tb{min-height:50px!important;height:50px}
+@media (min-width:1200px){#root#root#root#root#root#root#root#root .pkpl-tb{min-height:56px!important;height:56px}}
+#root#root#root#root#root#root#root#root .pkpl-tb{background:rgba(18,22,15,.9)!important;border:1px solid rgba(242,237,227,.6)!important;color:#F2EDE3!important}
+
+/* Nov 18 fluid map (Design: Neighborhoods + Maps): while the map moves, no live glow, no tile fades; pins ride with the map or hide during a pinch.
+   The white emblem badges and name pills are off (Zale, Nov 18): the map's own art names the places; taps go to the shapes. */
+.pkpl-moving .pkpl-lit,.pkpl-moving .pkpl-hov{filter:none}
+.pkpl-moving .pkpl-tiles img{transition:none}
+.pkpl-pins{will-change:transform}
+.pkpl-pinch .pkpl-pins{visibility:hidden}
+.pkpl-em,.pkpl-nm{display:none!important}
+
+/* ---------- experiences (Nov 19): the bottom bar, names on lit places, dimmed places, the "Also at" tiles ---------- */
+.pkpl-xb{position:absolute;left:0;right:0;bottom:0;z-index:4;display:flex;gap:6px;overflow-x:auto;padding:10px 12px calc(10px + env(safe-area-inset-bottom,0px));background:linear-gradient(0deg,rgba(18,22,15,.92) 0%,rgba(18,22,15,.78) 70%,rgba(18,22,15,0) 100%);scrollbar-width:none;-webkit-overflow-scrolling:touch;touch-action:pan-x}
+.pkpl-xb::-webkit-scrollbar{display:none}
+.pkpl-xe{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;gap:4px;min-width:62px;min-height:54px;padding:6px 8px;border:1px solid rgba(242,237,227,.28);border-radius:8px;background:rgba(18,22,15,.55);color:#F2EDE3;font:700 11px/1.1 'Bricolage Grotesque',system-ui,sans-serif;letter-spacing:.02em;cursor:pointer}
+.pkpl-xe svg{width:22px;height:22px}
+.pkpl-xe[aria-pressed="true"]{background:rgba(214,181,74,.2);border-color:#D6B54A;color:#FFE7A3}
+.pkpl-xe.quiet{opacity:.5}
+.pkpl-xls{position:absolute;inset:0;pointer-events:none;z-index:2;overflow:hidden}
+.pkpl-xl{position:absolute;left:0;top:0;white-space:nowrap;font:800 13px/1 'Bricolage Grotesque',system-ui,sans-serif;letter-spacing:.04em;color:#fff;text-shadow:0 0 3px rgba(0,0,0,.85),0 0 9px rgba(0,0,0,.7),0 1px 2px rgba(0,0,0,.9)}
+.pkpl-xpon .pkpl-veil{fill:rgba(12,14,10,.55)}
+.pkpl-tools{bottom:92px}
+body.pkpl-wide .pkpl-xb{justify-content:center}
+body.pkpl-wide .pkpl-xe{min-width:74px}
+body.pkpl-hood:not(.pkpl-wide) #pkpl .pkpl-xb{display:flex}   /* Nov 20 (Zale): the experience row stays pinned above the tab bar on a phone neighborhood page; the sheet rises above it */
+#root #pkpl-top .pkpl-also{padding:20px 16px 10px}
+#root #pkpl-top .pkpl-also h2{margin:0 0 12px;font-size:20px!important;line-height:1.1!important;font:800 13px/1.2 'Bricolage Grotesque',system-ui,sans-serif;font-stretch:75%;letter-spacing:.14em;text-transform:uppercase;color:#D6B54A}
+#root #pkpl-top .pkpl-at{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+#root #pkpl-top .pkpl-ax{position:relative;aspect-ratio:4/3;border:0;border-radius:10px;overflow:hidden;padding:0;background:#1E2A1B;cursor:pointer;color:#F2EDE3}
+#root #pkpl-top .pkpl-ax img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+#root #pkpl-top .pkpl-axs{position:absolute;inset:0;background:linear-gradient(0deg,rgba(18,22,15,.85) 0%,rgba(18,22,15,0) 65%)}
+#root #pkpl-top .pkpl-axn{position:absolute;left:10px;bottom:9px;display:flex;align-items:center;gap:7px}
+#root #pkpl-top .pkpl-axn svg{width:20px;height:20px}
+#root #pkpl-top .pkpl-axn b{font:800 14px/1 'Bricolage Grotesque',system-ui,sans-serif}
+@media (min-width:700px){#root #pkpl-top .pkpl-at{grid-template-columns:repeat(3,1fr)}}
+
+/* ---------- amenity icons (Nov 19): one-color plates drawn by the map itself, replacing the painted multicolor ones ---------- */
+.pkpl-ip{fill:#2B2628}
+.pkpl-ig{fill:none;stroke:#F2EDE3;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.pkpl-ics,.pkpl-icon{pointer-events:none}
+.pkpl-icon use{filter:drop-shadow(0 0 5px rgba(255,231,163,.95))}
+.pkpl-amon .pkpl-veil{fill:rgba(12,14,10,.55)}
+#root .pkpl-fres .pkpl-fi{flex:none;width:34px;height:34px;border-radius:8px;background:#2B2628;color:#F2EDE3;display:flex;align-items:center;justify-content:center;font-style:normal}
+#root .pkpl-fres .pkpl-fi svg{width:22px;height:22px}
+/* Find on a phone: neighborhoods and amenities in two columns (Zale, Nov 19) */
+#root .pkpl-f2{display:grid;grid-template-columns:1fr 1fr;column-gap:10px}
+#root .pkpl-f2 button{min-height:48px;gap:9px;padding:6px 2px}
+#root .pkpl-f2 b{font-size:15px}
+#root .pkpl-f2 small{font-size:12px}
+#root .pkpl-f2 img,#root .pkpl-f2 .pkpl-fi{width:30px!important;height:30px!important}
+#root .pkpl-f2 .pkpl-fi svg{width:20px;height:20px}
+body.pkpl-wide #root .pkpl-f2,body.pkpl-wide .pkpl-f2{grid-template-columns:1fr 1fr 1fr}
+#root .pkpl-ftabs{display:flex;gap:8px;padding:0 12px 6px}
+#root .pkpl-ftabs button{flex:1;min-height:44px;border-radius:6px;border:1px solid rgba(242,237,227,.35);background:transparent;color:var(--pl-cream);font:800 13px/1 'Bricolage Grotesque',system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;cursor:pointer}
+#root .pkpl-ftabs button[aria-selected="true"]{background:rgba(214,181,74,.18);border-color:#D6B54A;color:#FFE7A3}
+/* Nov 19: where you came from, and the desktop experience menu */
+.pkpl-was{fill:none;stroke:#F2EDE3;stroke-opacity:.6;stroke-width:2.5;stroke-linejoin:round;pointer-events:none;vector-effect:non-scaling-stroke}
+body.pkpl-wide .pkpl-notitle .pkpl-title{opacity:1;visibility:visible}
+body.pkpl-wide #root #pkpl .pkpl-d{font-size:clamp(36px,3.4vw,54px)!important}
+
+body.pkpl-hood.pkpl-wide .pkpl-title{display:none}
+
+/* desktop (Nov 19, drill-in): experiences across the top of the map, the places on the left, the card replaces the list */
+body.pkpl-wide .pkpl-xb{top:0;bottom:auto;justify-content:center;gap:6px;padding:12px 16px 26px;background:linear-gradient(180deg,rgba(18,22,15,.9) 0%,rgba(18,22,15,.7) 65%,rgba(18,22,15,0) 100%)}
+body.pkpl-wide .pkpl-xe{min-width:68px;min-height:52px;padding:6px 8px;font-size:12px}
+body.pkpl-wide .pkpl-tools{bottom:16px}
+body.pkpl-wide .pkpl-title{justify-content:flex-start;padding-top:110px;overflow-y:auto;scrollbar-width:none}
+body.pkpl-wide .pkpl-title::-webkit-scrollbar{display:none}
+.pkpl-pl{display:flex;flex-direction:column;gap:2px;margin-top:22px;pointer-events:auto}
+.pkpl-pl:empty{display:none}
+#root #pkpl .pkpl-pr{display:flex;align-items:center;gap:14px;width:100%;min-height:60px;padding:8px 6px;border:0;border-bottom:1px solid rgba(242,237,227,.14);background:transparent;color:#F2EDE3;text-align:left;cursor:pointer;font:inherit}
+#root #pkpl .pkpl-pr:hover{background:rgba(242,237,227,.06)}
+#root #pkpl .pkpl-pr img{flex:none;width:40px;height:40px}
+#root #pkpl .pkpl-pr b{display:block;font:800 17px/1.2 'Bricolage Grotesque',system-ui,sans-serif}
+#root #pkpl .pkpl-pr small{display:block;margin-top:2px;font:500 14px/1.35 'Bricolage Grotesque',system-ui,sans-serif;color:#C9C2B4}
+body:not(.pkpl-wide) .pkpl-pl{display:none}
+#root #pkpl-top .pkpl-up{display:flex;align-items:center;gap:8px;min-height:48px;margin:0 0 8px;padding:0 14px 0 6px;border:0;background:transparent;color:#FFE7A3;font:800 14px/1 'Bricolage Grotesque',system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;cursor:pointer}
+#root #pkpl-top .pkpl-up svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+
+body.pkpl-hood.pkpl-wide .pkpl-tools{top:auto;bottom:16px}
+body.pkpl-wide .pkpl-xb{justify-content:safe center}
+body.pkpl-xpup div:has(> .pk-backb){display:none}
+
+/* desktop: a phone-width left column; the map is the hero and slides over when you pick (Nov 19) */
+:root{--pkpl-lw:clamp(400px,32vw,480px)}
+body.pkpl-wide .pkpl-title::before{content:'';position:absolute;inset:0;z-index:-1;background:#141A11;opacity:0;transition:opacity .45s ease}
+body.pkpl-wide .pkpl-xpon .pkpl-title::before,body.pkpl-wide .pkpl-amon .pkpl-title::before{opacity:.97}
+body.pkpl-wide .pkpl-xb{left:var(--pkpl-lw)}
+body.pkpl-wide.pkpl-hood .pkpl-xb{left:0}
+body.pkpl-wide.pkpl-hood #root .pk-hd-creds{grid-template-columns:1fr 1fr!important}
+
+body.pkpl-wide .pkpl-pg{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+body.pkpl-wide .pkpl-pg .pkpl-xe{flex-direction:row;justify-content:flex-start;gap:10px;min-height:48px;padding:8px 12px;font-size:14px}
+body.pkpl-wide .pkpl-pg .pkpl-xe svg{width:20px;height:20px;flex:none}
+body.pkpl-wide .pkpl-pg .pkpl-xe:hover{border-color:#D6B54A;color:#FFE7A3}
+
+/* Nov 19 polish: cream for the picked experience, the year logo on the title, calmer spacing, column centered */
+#root#root#root#root #pkpl .pkpl-xe[aria-pressed="true"]{background:#F2EDE3!important;border-color:#F2EDE3!important;color:#1A2017!important}
+#root #pkpl .pkpl-k .pkpl-logo{display:none}
+body.pkpl-wide .pkpl-title{justify-content:safe center;padding:100px 36px 32px}
+body.pkpl-wide #root #pkpl .pkpl-d{line-height:1.08!important;letter-spacing:.03em;margin-bottom:14px}
+body.pkpl-wide #root #pkpl .pkpl-l{font-size:18px;line-height:1.5;margin:0 0 6px}
+body.pkpl-wide .pkpl-pl{margin-top:26px}
+#root #pkpl .pkpl-pr{gap:16px;min-height:72px;padding:12px 6px}
+#root #pkpl .pkpl-pr small{line-height:1.45;margin-top:4px}
+body.pkpl-wide .pkpl-pg{gap:10px}
+body.pkpl-wide .pkpl-pg .pkpl-xe{min-height:50px;padding:10px 14px}
+
+body.pkpl-wide #root #pkpl .pkpl-d{font-size:clamp(34px,2.9vw,44px)!important}
+body.pkpl-wide .pkpl-title{padding-top:96px}
+body.pkpl-wide #root #pkpl .pkpl-l{font-size:17px}
+body.pkpl-wide .pkpl-pg{margin-top:4px}
+body.pkpl-wide .pkpl-pg .pkpl-xe{min-height:46px;padding:8px 14px}
+
+/* experience title: icon plate + "<Experience> at Pickathon" (Nov 19). Desktop: icon above. Phone: icon to the right */
+.pkpl-tx .pkpl-k{display:none}
+#root #pkpl .pkpl-tx .pkpl-d{display:flex;align-items:center;justify-content:space-between;gap:14px}
+#root #pkpl .pkpl-xi{order:2;flex:none;display:flex;align-items:center;justify-content:center;width:64px;height:64px;border-radius:12px;background:#F2EDE3;color:#1A2017}
+#root #pkpl .pkpl-xi svg{width:38px;height:38px;stroke-width:1.6}
+#root #pkpl .pkpl-xt{order:1;min-width:0}
+body.pkpl-wide #root #pkpl .pkpl-tx .pkpl-d{flex-direction:column;align-items:flex-start;justify-content:flex-start;gap:20px}
+body.pkpl-wide #root #pkpl .pkpl-xi{order:0;width:84px;height:84px;border-radius:16px}
+body.pkpl-wide #root #pkpl .pkpl-xi svg{width:50px;height:50px}
+/* phone: the title sits above the place names, and they keep clear of it */
+body:not(.pkpl-wide) .pkpl-title{z-index:3;background:linear-gradient(180deg,rgba(18,22,15,.96) 0%,rgba(18,22,15,.9) 70%,rgba(18,22,15,0) 100%)}
+
+/* neighborhood page refinements (Zale, Nov 19) */
+#root #pkpl-top .pkpl-soon{margin:18px 16px 4px;padding:18px 18px 16px;border-radius:12px;background:#1A2017;border:1px solid #3A4331;border-left:4px solid #D6B54A}
+#root #pkpl-top .pkpl-soon .pkpl-sk{margin:0 0 4px;font:800 12px/1.2 'Bricolage Grotesque',system-ui,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#D6B54A}
+#root #pkpl-top .pkpl-soon h2{margin:0 0 8px;font-size:22px!important;line-height:1.1!important}
+#root #pkpl-top .pkpl-soon p{margin:0;font:500 16px/1.5 'Bricolage Grotesque',system-ui,sans-serif;color:#DCD6C9;max-width:none}
+#root #pkpl-top .pkpl-sam{display:flex;flex-wrap:wrap;gap:8px 16px;margin-top:14px}
+#root #pkpl-top .pkpl-sam span{display:flex;align-items:center;gap:8px;font:600 14px/1.2 'Bricolage Grotesque',system-ui,sans-serif;color:#F2EDE3}
+#root #pkpl-top .pkpl-sam .pkpl-fi{width:28px;height:28px;border-radius:7px;background:#2B2628;color:#F2EDE3;display:flex;align-items:center;justify-content:center}
+#root #pkpl-top .pkpl-sam .pkpl-fi svg{width:18px;height:18px}
+html body.pkpl-hood #root#root#root#root#root#root#root#root#root#root#root#root :is(.pk-hd-nov,section.pk-nh,section.pk-hm,.pk-way-hd,.pk-hd-yw .pk-hd-arr){display:none!important}
+html body.pkpl-hood #root#root#root#root#root#root#root#root#root#root#root#root .pk-hd-row{overflow-x:auto!important;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;overscroll-behavior-x:contain;touch-action:pan-x pan-y}
+body.pkpl-hood #root .pk-hd-row::-webkit-scrollbar{display:none}
+body.pkpl-hood #root .pk-hd-row>.pk-hd-yc{scroll-snap-align:start}
+/* map backdrop = the art's own outside color, so zooming never shows a seam (Nov 19) */
+.pkpl-map{background:#0F1712!important}
+/* phone: a compact experience title so every lit place fits under it (Architecture lights 15) */
+body:not(.pkpl-wide) .pkpl-tx{padding:14px 18px 40px}
+body:not(.pkpl-wide) #root#root#root #pkpl .pkpl-tx .pkpl-d{font-size:26px!important;line-height:1.05!important}
+body:not(.pkpl-wide) #root#root#root #pkpl .pkpl-tx .pkpl-xi{width:48px;height:48px;border-radius:10px}
+body:not(.pkpl-wide) #root#root#root #pkpl .pkpl-tx .pkpl-xi svg{width:28px;height:28px}
+body:not(.pkpl-wide) #root#root#root #pkpl .pkpl-tx .pkpl-l{margin-top:6px;font-size:15px!important;line-height:1.4!important;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+
+#pkpl-back{max-width:1248px;margin:8px auto 28px;padding:0 16px;box-sizing:border-box}
+body.pkpl-wide.pkpl-hood #pkpl-back{margin-left:0}
+#pkpl-back button{position:relative;display:block;width:100%;aspect-ratio:16/9;max-height:320px;padding:0;border:1px solid #3A4331;border-radius:14px;overflow:hidden;background:#0F1712;cursor:pointer}
+#pkpl-back button>svg{position:absolute;inset:0;width:100%;height:100%}
+#pkpl-back .pkpl-bk{position:absolute;left:12px;bottom:12px;display:flex;align-items:center;gap:8px;min-height:44px;padding:0 16px 0 10px;border-radius:6px;background:rgba(18,22,15,.88);color:#FFE7A3;font:800 14px/1 'Bricolage Grotesque',system-ui,sans-serif;letter-spacing:.06em;text-transform:uppercase}
+#pkpl-back .pkpl-bk svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+
+/* lit place names sit on the neighborhood's own painted name: a small cream tag, dark type (Zale, Nov 19) */
+.pkpl-xl{padding:1px 4px 0;border-radius:3px;background:#F2EDE3;color:#1A2017;text-shadow:none;font-weight:800;letter-spacing:.06em;text-transform:uppercase;line-height:1.15;box-shadow:0 1px 2px rgba(0,0,0,.4);font-weight:700}
+
+/* performances under the hero: square cards, swipe with a thumb, a play ring on each */
+#root #pkpl-top .pkpl-vids{padding:16px 0 4px}
+#root #pkpl-top .pkpl-vr{display:flex;gap:10px;overflow-x:auto;padding:0 16px;scroll-snap-type:x mandatory;scroll-padding:0 16px;scrollbar-width:none;-webkit-overflow-scrolling:touch;touch-action:pan-x pan-y;overscroll-behavior-x:contain}
+#root #pkpl-top .pkpl-vr::-webkit-scrollbar{display:none}
+#root #pkpl-top .pkpl-vt{position:relative;flex:0 0 min(62vw,240px);aspect-ratio:1/1;padding:0;border:0;border-radius:12px;overflow:hidden;background:#1E2A1B;cursor:pointer;scroll-snap-align:start;color:#F2EDE3}
+body.pkpl-wide #root #pkpl-top .pkpl-vt{flex-basis:200px}
+#root #pkpl-top .pkpl-vt img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+#root #pkpl-top .pkpl-vt::after{content:'';position:absolute;inset:0;background:linear-gradient(0deg,rgba(18,22,15,.85) 0%,rgba(18,22,15,0) 55%)}
+#root #pkpl-top .pkpl-pr0{position:absolute;left:50%;top:44%;z-index:1;width:56px;height:56px;margin:-28px 0 0 -28px;border-radius:50%;border:2px solid #fff;background:rgba(18,22,15,.55);display:flex;align-items:center;justify-content:center}
+#root #pkpl-top .pkpl-pr0 i{display:block;width:0;height:0;margin-left:4px;border-style:solid;border-width:10px 0 10px 16px;border-color:transparent transparent transparent #fff}
+#root #pkpl-top .pkpl-vc{position:absolute;left:12px;right:12px;bottom:10px;z-index:1;text-align:left}
+#root #pkpl-top .pkpl-vc b{display:block;font:800 15px/1.2 'Bricolage Grotesque',system-ui,sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#root #pkpl-top .pkpl-vc small{display:block;margin-top:2px;font:600 12px/1.2 'Bricolage Grotesque',system-ui,sans-serif;color:#D6B54A}
+
+/* lit names: the map's own lettering, redrawn crisp with a dark edge; no tags (Nov 19) */
+.pkpl-xls{display:none!important}
+.pkpl-nms path{display:none;fill:#FFFFFF;stroke:#12160F;stroke-width:3px;stroke-linejoin:round;paint-order:stroke;vector-effect:non-scaling-stroke;pointer-events:none}
+.pkpl-nms path.on{display:inline}
+
+/* desktop place list: compact grid when there are many (Nov 19) */
+body.pkpl-wide .pkpl-pl.pkpl-many{display:grid;grid-template-columns:1fr 1fr;gap:6px 10px;margin-top:18px}
+#root #pkpl .pkpl-pl.pkpl-many .pkpl-pr{min-height:46px;padding:6px 8px;gap:10px;border:1px solid rgba(242,237,227,.16);border-radius:8px}
+#root #pkpl .pkpl-pl.pkpl-many .pkpl-pr img{width:30px;height:30px}
+#root #pkpl .pkpl-pl.pkpl-many .pkpl-pr b{font-size:15px}
+#root #pkpl .pkpl-pl.pkpl-many .pkpl-pr small{display:none}
+body.pkpl-wide .pkpl-tx .pkpl-l{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+@media (max-height:860px){body.pkpl-wide #root #pkpl .pkpl-xi{width:60px;height:60px;border-radius:12px}body.pkpl-wide #root #pkpl .pkpl-xi svg{width:36px;height:36px}body.pkpl-wide #root #pkpl .pkpl-tx .pkpl-d{gap:12px}body.pkpl-wide .pkpl-title{padding-top:90px}}
+
+body.pkpl-wide .pkpl-tight{padding-top:88px!important}
+body.pkpl-wide .pkpl-tight .pkpl-l{-webkit-line-clamp:2!important;font-size:16px!important}
+body.pkpl-wide #root #pkpl .pkpl-tight .pkpl-xi{width:48px;height:48px;border-radius:10px}
+body.pkpl-wide #root #pkpl .pkpl-tight .pkpl-xi svg{width:28px;height:28px}
+body.pkpl-wide #root #pkpl .pkpl-tight .pkpl-d{font-size:32px!important;gap:10px!important;margin-bottom:8px}
+body.pkpl-wide .pkpl-tight2 .pkpl-l{display:none!important}
+body.pkpl-wide .pkpl-tight2 .pkpl-pl{margin-top:10px}
+/* the left column no longer sits under the experience row: start it near the top; the row shares the map's width evenly */
+body.pkpl-wide .pkpl-title,body.pkpl-wide .pkpl-tight{padding-top:36px!important}
+body.pkpl-wide .pkpl-tight{padding-top:24px!important}
+body.pkpl-wide .pkpl-xb{right:0;gap:6px;justify-content:stretch;overflow:hidden}
+body.pkpl-wide .pkpl-xb .pkpl-xe{flex:1 1 0;min-width:0;max-width:96px;padding:6px 4px;font-size:clamp(10.5px,.85vw,12.5px)}
+body.pkpl-wide .pkpl-xb .pkpl-xe span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+body.pkpl-wide .pkpl-xb{justify-content:center}
+body.pkpl-wide .pkpl-title>*{flex-shrink:0}
+body.pkpl-wide .pkpl-xb .pkpl-xe{flex:1 1 auto;max-width:none;padding:6px 5px}
+body.pkpl-wide .pkpl-xb .pkpl-xe span{overflow:visible;text-overflow:clip}
+
+/* Architecture intro + Build with Pickathon */
+.pkpl-ab:empty{display:none}
+.pkpl-ab{pointer-events:auto;margin-top:14px}
+#root #pkpl .pkpl-ab p{margin:0 0 14px;font:500 16px/1.5 'Bricolage Grotesque',system-ui,sans-serif;color:#E8E2D4;max-width:none}
+#root #pkpl .pkpl-abb{min-height:46px!important;padding:0 18px!important;font-size:14px!important}
+body:not(.pkpl-wide) .pkpl-ab{display:none}
+body.pkpl-wide .pkpl-tight3 .pkpl-ab p{font-size:14.5px;line-height:1.42;margin-bottom:10px}
+body.pkpl-wide .pkpl-tight3 .pkpl-pl.pkpl-many{grid-template-columns:1fr 1fr 1fr;gap:5px 6px}
+#root #pkpl .pkpl-tight3 .pkpl-pl.pkpl-many .pkpl-pr{min-height:38px;padding:4px 6px;gap:6px}
+#root #pkpl .pkpl-tight3 .pkpl-pl.pkpl-many .pkpl-pr img{width:22px;height:22px}
+#root #pkpl .pkpl-tight3 .pkpl-pl.pkpl-many .pkpl-pr b{font-size:12.5px}
+body.pkpl-wide #root #pkpl .pkpl-tight4 .pkpl-xi{display:none}
+body.pkpl-wide #root #pkpl .pkpl-tight4 .pkpl-d{font-size:28px!important}
+body.pkpl-wide .pkpl-tight4{padding-top:18px!important;padding-bottom:16px!important}
+body.pkpl-wide .pkpl-tight4 .pkpl-ab{margin-top:8px}
+body.pkpl-wide #root #pkpl .pkpl-tight4 .pkpl-abb{min-height:40px!important}
+body.pkpl-wide .pkpl-tight4 .pkpl-pl{margin-top:12px!important}
+body.pkpl-wide .pkpl-tight4{padding-top:12px!important;padding-bottom:6px!important}body.pkpl-wide #root #pkpl .pkpl-tight4 .pkpl-ab p{margin-bottom:8px}
+/* desktop: the experience icon sits to the right of the title, like the phone, so the column has more height (Zale, Nov 19) */
+body.pkpl-wide #root #pkpl .pkpl-tx .pkpl-d{flex-direction:row!important;align-items:center!important;justify-content:space-between!important;gap:16px!important}
+body.pkpl-wide #root #pkpl .pkpl-xi{order:2!important;width:68px;height:68px;border-radius:14px}
+body.pkpl-wide #root #pkpl .pkpl-xi svg{width:40px;height:40px}
+body.pkpl-wide #root #pkpl .pkpl-tight4 .pkpl-xi{display:flex!important;width:52px;height:52px}
+body.pkpl-wide #root #pkpl .pkpl-tight4 .pkpl-xi svg{width:30px;height:30px}
+/* desktop neighborhood page: the page column scrolls, the map to its right takes the mouse and trackpad (drag, wheel, pinch) (Zale, Nov 19) */
+body.pkpl-wide.pkpl-hood #pk-scroll-desk{pointer-events:none}
+body.pkpl-wide.pkpl-hood #pk-scroll-desk>*{pointer-events:auto}
+body.pkpl-wide.pkpl-hood #pk-scroll-desk>#pkpl{pointer-events:none}
+body.pkpl-wide.pkpl-hood #pkpl .pkpl-map{pointer-events:auto}
+
+/* desktop experience column: icon on the left of the title; the experience's photo behind, darkened so the words and buttons read (Nov 19) */
+body.pkpl-wide #root #pkpl .pkpl-xi{order:0!important}
+body.pkpl-wide #root #pkpl .pkpl-tx .pkpl-d{justify-content:flex-start!important;gap:18px!important}
+.pkpl-tbg{display:none}
+body.pkpl-wide .pkpl-hasbg .pkpl-tbg{display:block;position:absolute;inset:0;z-index:-1;background-size:cover;background-repeat:no-repeat}
+body.pkpl-wide .pkpl-hasbg .pkpl-tbg::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,22,15,.62) 0%,rgba(18,22,15,.78) 45%,rgba(18,22,15,.9) 100%)}
+body.pkpl-wide .pkpl-hasbg::before{opacity:0!important}
+
+/* card title on the photo: smaller so the photo shows (Zale, Nov 19) */
+#root #pkpl-top .pkpl-nmrow h1{font-size:clamp(28px,7.6vw,38px)!important;line-height:1!important}
+#root #pkpl-top .pkpl-nmrow img{width:44px!important;height:44px!important}
+#root #pkpl-top .pkpl-tt{font-size:15px;line-height:1.3;margin-top:4px}
+#root #pkpl-top .pkpl-hi:not(.pkpl-map){padding-bottom:28px}
+
+/* neighborhood page, one clean order (Zale, Nov 19) */
+body.pkpl-wide .pkpl-hero,body.pkpl-wide .pkpl-has .pkpl-hero{height:clamp(240px,38vh,380px)!important}   /* round 3: name, line and prev/next fit above the fold at 1280x720 */
+html body.pkpl-hood #root#root#root#root#root#root#root#root#root#root#root#root :is(.pk-hd-desc,.pk-hd-vid,.pk-hd-sum,.pk-hd-who,section.pk-hd-w>.pk-hd-links,section.pk-hd-w>.pk-hd-cols){display:none!important}
+#root #pkpl-top .pkpl-what{padding:16px 16px 0}
+#root #pkpl-top .pkpl-what .pkpl-hook{margin:0 0 10px;padding:0}
+#root #pkpl-top .pkpl-more p{margin:0;font:500 16px/1.55 'Bricolage Grotesque',system-ui,sans-serif;color:#C9C2B4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;max-width:none}
+#root #pkpl-top .pkpl-more.open p{display:block}
+#root #pkpl-top .pkpl-rm{margin:6px 0 0;padding:6px 0;min-height:36px;border:0;background:none;color:#FFE7A3;font:800 13px/1 'Bricolage Grotesque',system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;cursor:pointer}
+#root .pkpl-credit{margin-top:20px;padding-top:16px;border-top:1px solid #3A4331}
+#root .pkpl-credit .pkpl-sk{margin:0 0 8px;font:800 12px/1.2 'Bricolage Grotesque',system-ui,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#D6B54A}
+#root .pkpl-credit .pkpl-bw{margin-top:12px;min-height:44px!important;font-size:13px!important}
+#pkpl-back .pkpl-walk{list-style:none;margin:10px 0 0;padding:0;display:flex;flex-direction:column;gap:4px}
+#root#root#root #pkpl-top .pkpl-soon p{font-size:16px!important;line-height:1.5!important}#root#root#root #pkpl-top .pkpl-soon h2{font-size:22px!important}
+#root #pkpl-top .pkpl-hook{padding:16px 16px 0!important;margin:0!important}
+#root #pkpl-top .pkpl-what{padding:10px 16px 0}
+
+/* this year's story leads, the place follows (Nov 19) */
+#root #pkpl-top .pkpl-yr{padding:22px 16px 4px}
+#root #pkpl-top .pkpl-yr .pkpl-sk,#root #pkpl-top .pkpl-what .pkpl-sk{margin:0 0 6px;font:800 12px/1.2 'Bricolage Grotesque',system-ui,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#D6B54A}
+#root#root #pkpl-top .pkpl-yr h2{margin:0 0 10px;font-family:'Pickathon 2014',sans-serif!important;font-weight:400!important;font-size:clamp(28px,7vw,34px)!important;line-height:1.02!important;letter-spacing:.02em;color:#F2EDE3}
+#root #pkpl-top .pkpl-yr .pkpl-more p{-webkit-line-clamp:3;color:#E8E2D4}
+#root #pkpl-top .pkpl-what{padding:18px 16px 0}
+#root #pkpl-top .pkpl-ab1{margin:0 0 6px;font:600 17px/1.45 'Bricolage Grotesque',system-ui,sans-serif;color:#F2EDE3;max-width:none}
+html body.pkpl-hood #root#root#root#root#root#root#root#root#root#root#root#root .pk-hd-story{display:none!important}
+
+#root #pkpl-top .pkpl-yr .pkpl-more p{-webkit-line-clamp:4;margin:0 0 10px}
+#root #pkpl-top .pkpl-yr .pkpl-more:not(.open) p+p{display:none}
+#root #pkpl-top .pkpl-yr .pkpl-ab1{margin:0 0 10px;font-size:18px;color:#F2EDE3}   /* review Nov 22 #9: gold for short lines only */
+#root #pkpl-top .pkpl-cred:not(:empty){margin-top:16px;padding-top:14px;border-top:1px solid #3A4331}
+#root #pkpl-top .pkpl-cred .pkpl-sk{margin:0 0 8px}
+#root #pkpl-top .pkpl-cred .pkpl-bw{margin-top:12px;min-height:44px!important;font-size:13px!important}
+#root#root #pkpl-top .pkpl-vh{margin:0 16px 12px;font:800 13px/1.2 'Bricolage Grotesque',system-ui,sans-serif!important;letter-spacing:.14em;text-transform:uppercase;color:#D6B54A}
+#root #pkpl-top .pkpl-vids{padding-top:22px}
+
+#root #pkpl-top .pkpl-vall{display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-end;gap:6px;padding:16px;background:#1A2017;border:1px solid #3A4331;text-align:left}
+#root #pkpl-top .pkpl-vall::after{display:none}
+#root #pkpl-top .pkpl-vall b{display:block;font:800 18px/1.15 'Bricolage Grotesque',system-ui,sans-serif;color:#F2EDE3}
+#root #pkpl-top .pkpl-vall small{display:block;margin-top:3px;font:600 13px/1.2 'Bricolage Grotesque',system-ui,sans-serif;color:#D6B54A}
+#root #pkpl-top .pkpl-vall svg{position:absolute;top:14px;right:14px;width:22px;height:22px;fill:none;stroke:#FFE7A3;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+#root#root#root #pkpl-top .pkpl-vh{text-transform:uppercase!important;letter-spacing:.14em!important;font-size:13px!important}
+
+/* Nov 20: back to all experiences, above the experience title */
+#root#root#root #pkpl .pkpl-bk0{position:relative;z-index:2;display:inline-flex;align-items:center;gap:4px;margin:0 0 8px;padding:6px 10px 6px 4px;min-height:44px;width:auto;align-self:flex-start;pointer-events:auto;background:none;border:0;color:#F2EDE3;font:800 12px/1 inherit;letter-spacing:.08em;text-transform:uppercase;cursor:pointer}
+#root#root#root #pkpl .pkpl-bk0[hidden]{display:none}
+#root#root#root #pkpl .pkpl-bk0 svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+
+/* Nov 20 (Zale): clipped text fades into a half-cut line; a gold "Keep reading" with a chevron sits below the fade; "Show less" when open */
+#root#root #pkpl-top .pkpl-more:not(.open) p{-webkit-mask-image:linear-gradient(180deg,#000 0,#000 55%,rgba(0,0,0,.08) 100%);mask-image:linear-gradient(180deg,#000 0,#000 55%,rgba(0,0,0,.08) 100%)}
+#root#root #pkpl-top .pkpl-rm{display:inline-flex;align-items:center;gap:6px;margin:4px 0 0;padding:8px 0;min-height:44px;color:#F2CF62;font-size:14px;letter-spacing:.06em}
+#root#root #pkpl-top .pkpl-rm::after{content:"";width:8px;height:8px;margin-top:-4px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:rotate(45deg);transition:transform .25s}
+#root#root #pkpl-top .pkpl-rm[aria-expanded="true"]::after{margin-top:4px;transform:rotate(225deg)}
+
+/* Nov 20: short screens: the Architecture intro and the place buttons shrink in steps so nothing runs off the bottom or sits over the text */
+body.pkpl-wide .pkpl-tight5 .pkpl-ab p{font-size:14.5px!important;line-height:1.38!important;margin-bottom:8px!important}
+body.pkpl-wide .pkpl-tight5 .pkpl-abb{min-height:40px!important;font-size:12px!important;padding:0 14px!important}
+body.pkpl-wide .pkpl-tight6 .pkpl-pr{min-height:34px!important;padding:3px 8px!important}
+body.pkpl-wide .pkpl-tight6 .pkpl-pr img{width:20px!important;height:20px!important}
+body.pkpl-wide .pkpl-tight6 .pkpl-ab p{font-size:13.5px!important;line-height:1.32!important}
+
+#root#root#root#root body.pkpl-wide #pkpl .pkpl-tight3 .pkpl-ab p,html body.pkpl-wide #root#root#root#root #pkpl .pkpl-title.pkpl-tight3 .pkpl-ab p{font-size:15px!important;line-height:1.4!important;margin-bottom:10px!important}
+html body.pkpl-wide #root#root#root#root #pkpl .pkpl-title.pkpl-tight5 .pkpl-ab p{font-size:14px!important;line-height:1.36!important;margin-bottom:8px!important}
+html body.pkpl-wide #root#root#root#root #pkpl .pkpl-title.pkpl-tight6 .pkpl-ab p{font-size:13px!important;line-height:1.3!important}
+html body.pkpl-wide #root#root#root#root #pkpl .pkpl-title.pkpl-tight5 .pkpl-abb{min-height:38px!important;font-size:12px!important;padding:0 14px!important}
+
+/* Nov 20: on a desktop neighborhood page the map box can run below the window; the map's own buttons stay on screen */
+html body.pkpl-wide.pkpl-hood #root #pkpl .pkpl-tools{position:fixed;right:16px;bottom:16px;top:auto;z-index:20}
+
+/* ---------- phone neighborhood card (Zale, Nov 20): a bottom card that rises, scrolls inside, and folds to a bar ---------- */
+.pkpl-bar{display:none}
+body.pkpl-hood:not(.pkpl-wide) #pkpl-sp{display:none}
+body.pkpl-hood:not(.pkpl-wide) #pkpl-top{position:absolute;left:0;right:0;bottom:0;height:calc(var(--pkpl-open,60vh) + max(0px, -1 * var(--pkpl-y,0px)));z-index:6;display:flex;flex-direction:column;overflow:hidden;background:#2B2628;border-radius:16px 16px 0 0;box-shadow:0 -6px 22px rgba(0,0,0,.45);transform:translateY(max(0px, var(--pkpl-y,0px)));padding-bottom:env(safe-area-inset-bottom,0px)}   /* pulled above open: the sheet grows upward from its bottom edge (no empty band); below open it slides down (Nov 21) */
+body.pkpl-hood:not(.pkpl-wide) #pkpl-top.pkpl-anim{transition:transform .32s cubic-bezier(.2,.8,.2,1),height .32s cubic-bezier(.2,.8,.2,1)}
+body.pkpl-hood:not(.pkpl-wide) #pkpl-top .pkpl-bar{display:flex;flex:none;position:relative;align-items:center;gap:10px;height:22px;padding:0;background:#2B2628;cursor:pointer;touch-action:none;user-select:none;-webkit-user-select:none}
+body.pkpl-hood:not(.pkpl-wide) #pkpl-top .pkpl-bar i{position:absolute;left:50%;top:6px;width:32px;height:4px;margin-left:-16px;border-radius:3px;background:rgba(242,237,227,.85)}
+body.pkpl-hood:not(.pkpl-wide) #pkpl-top .pkpl-bn{flex:1;min-width:0;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;font-family:'Pickathon 2014',sans-serif;font-size:22px;line-height:1;text-transform:uppercase;letter-spacing:.02em;color:#F2EDE3}
+body.pkpl-hood:not(.pkpl-wide) #pkpl-top .pkpl-bar svg{flex:none;width:22px;height:22px;fill:none;stroke:#FFE7A3;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;transition:transform .32s ease}
+body.pkpl-hood:not(.pkpl-wide) #pkpl-top.pkpl-folded .pkpl-bar svg{transform:rotate(180deg)}
+body.pkpl-hood:not(.pkpl-wide) #pkpl-top .pkpl-sheet{flex:1 1 auto;min-height:0;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;border-radius:0;box-shadow:none}
+body.pkpl-hood:not(.pkpl-wide) #pkpl-top .pkpl-grab{display:none}
+/* phone: the map and the card are the whole screen; the page sections below the card are hidden here (they covered the map) */
+body.pkpl-hood:not(.pkpl-wide) #pk-scroll-phone>*:not(#pkpl):not(#pkpl-top):not(#pkpl-sp):not(#pk-farmmap):not(style):not([aria-label="Listen"]):not([aria-label="Cookie choices"]){display:none!important}
+
+/* phone experience strip (Zale, Nov 20): one compact row of chips on a solid dark bar, right above the tab bar; Find and Full map sit just above it */
+html body:not(.pkpl-wide) #root .pkpl-xb{padding:8px 10px;gap:6px;align-items:center;background:#12160F;border-top:1px solid #3A4331}   /* no safe-area padding here: the tab bar below already carries it, so this padding made a gap (Zale, Nov 20) */
+html body:not(.pkpl-wide) #root .pkpl-xb .pkpl-xe{flex-direction:row;gap:6px;min-width:0;min-height:40px;padding:0 12px;border-radius:6px;font-size:13px;line-height:1;white-space:nowrap}
+html body:not(.pkpl-wide) #root .pkpl-xb .pkpl-xe svg{width:18px;height:18px;flex:none}
+html body:not(.pkpl-wide) #root#root .pkpl-tools{bottom:66px;gap:8px}
+html body:not(.pkpl-wide) #root#root#root .pkpl-tools .pkpl-tb{min-height:44px!important;height:44px!important;padding:0 14px!important;font-size:13px!important;width:auto!important;min-width:0!important}
+/* phone card bar (Zale, Nov 20): open, the bar is only the pull handle; minimized, it is a small card with the logo and the name */
+body.pkpl-hood:not(.pkpl-wide) #pkpl-top .pkpl-bar{justify-content:center;padding:0}
+body.pkpl-hood:not(.pkpl-wide) #pkpl-top .pkpl-bn,body.pkpl-hood:not(.pkpl-wide) #pkpl-top .pkpl-bi{display:none}
+body.pkpl-hood:not(.pkpl-wide) #pkpl-top.pkpl-folded .pkpl-bar{height:56px;justify-content:flex-start;padding:12px 16px 0;gap:10px;border-bottom:1px solid #3A4331}
+body.pkpl-hood:not(.pkpl-wide) #pkpl-top.pkpl-folded .pkpl-bi{display:block;width:36px;height:36px;flex:none;border-radius:50%;background:#12160F;padding:2px;object-fit:contain}
+body.pkpl-hood:not(.pkpl-wide) #pkpl-top.pkpl-folded .pkpl-bn{display:block;font-size:19px;line-height:1}
+/* desktop scroll cue (Zale, Nov 20): the bottom of the panel fades into the page while more is below; no icon, no pulse */
+#pkpl-more{display:none;position:fixed;left:0;bottom:0;z-index:5;width:var(--pkpl-lw,40%);height:140px;pointer-events:none;background:linear-gradient(180deg,rgba(43,38,40,0) 0%,rgba(43,38,40,.92) 85%,#2B2628 100%)}
+body.pkpl-wide.pkpl-hood #pkpl-more.pkpl-more-on{display:block}
+
+/* Nov 20 (Zale): phone neighborhood page: the experience row stays pinned; the sheet rises above it and stops short of the top, leaving a map margin */
+html body.pkpl-hood:not(.pkpl-wide) #pkpl-top{bottom:61px}
+/* Nov 20 (Zale): Find and full map are icons only on phone */
+#root#root#root#root#root#root#root#root .pkpl-tools .pkpl-tb span{display:none}
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .pkpl-tools .pkpl-tb{width:44px!important;min-width:44px!important;box-sizing:border-box!important;padding:0!important;justify-content:center!important}
+/* Nov 20 (Zale): no Find or full-map on a phone neighborhood page; the back arrow returns to the map */
+html body.pkpl-hood:not(.pkpl-wide) #root#root#root#root#root#root#root#root .pkpl-tools{display:none}
+
+/* Nov 20 (Zale): phone neighborhood sheet: a soft fade at the bottom while more text is below */
+body.pkpl-hood:not(.pkpl-wide) #pkpl-top::after{content:'';position:absolute;left:0;right:0;bottom:0;height:56px;pointer-events:none;z-index:3;background:linear-gradient(180deg,rgba(43,38,40,0) 0%,rgba(43,38,40,.9) 80%,#2B2628 100%);opacity:0;transition:opacity .25s}
+body.pkpl-hood:not(.pkpl-wide) #pkpl-top.pkpl-more::after{opacity:1}
+
+/* MOCK Nov 21 (Zale): desktop left column. Experiences pinned at the top of the column, the words and the places under them; the map runs under the column and fades in, no hard edge; the lower part rises once on a pick, then scrolls */
+body.pkpl-v2:not(.pkpl-hood) #pkpl .pkpl-xb{display:none}
+html body.pkpl-v2 #root #pkpl .pkpl-title{padding:28px 32px 0!important;justify-content:flex-start;overflow:visible;background:none}
+html body.pkpl-v2 #root #pkpl .pkpl-title::before{display:none}
+html body.pkpl-v2 #root #pkpl .pkpl-tbg{display:none!important}
+html body.pkpl-v2 #root #pkpl .pkpl-title::after{content:'';position:absolute;top:0;bottom:0;left:0;width:calc(100% + 64px);z-index:-1;pointer-events:none;background:linear-gradient(90deg,rgba(18,22,15,.93) 0%,rgba(18,22,15,.9) 80%,rgba(18,22,15,0) 100%)}
+html body.pkpl-v2.pkpl-v2g #root #pkpl .pkpl-title::after{width:calc(100% + 64px);background:linear-gradient(90deg,rgba(18,22,15,.98) 0%,rgba(18,22,15,.96) 72%,rgba(18,22,15,.6) 90%,rgba(18,22,15,0) 100%)}
+html body.pkpl-v2 #root #pkpl .pkpl-g2{flex:none;display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding-bottom:22px;border-bottom:1px solid rgba(242,237,227,.16)}
+html body.pkpl-v2 #root #pkpl .pkpl-g2 .pkpl-xe{min-width:0;min-height:60px;padding:8px 4px;font-size:12.5px;background:rgba(18,22,15,.6)}
+html body.pkpl-v2 #root #pkpl .pkpl-g2 .pkpl-xe:hover{border-color:#D6B54A;color:#FFE7A3}
+html body.pkpl-v2 #root #pkpl .pkpl-g2 .pkpl-xe[aria-pressed="true"]{background:#F2EDE3;border-color:#F2EDE3;color:#12160F}
+html body.pkpl-v2 #root #pkpl .pkpl-body{flex:1 1 auto;min-height:0;overflow-y:auto;scrollbar-width:none;padding:26px 0 40px;display:flex;flex-direction:column}
+html body.pkpl-v2 #root #pkpl .pkpl-body::-webkit-scrollbar{display:none}
+html body.pkpl-v2 #root #pkpl .pkpl-body>*{flex-shrink:0}
+html body.pkpl-v2 #root #pkpl .pkpl-body.pkpl-more{-webkit-mask-image:linear-gradient(180deg,#000 0,#000 calc(100% - 84px),transparent 100%);mask-image:linear-gradient(180deg,#000 0,#000 calc(100% - 84px),transparent 100%)}
+html body.pkpl-v2 #root #pkpl .pkpl-title:not(.pkpl-tx) .pkpl-body{justify-content:flex-start;padding-top:40px}
+html body.pkpl-v2 #root #pkpl .pkpl-tx .pkpl-d{font-size:30px!important;gap:14px!important;margin-bottom:10px}
+html body.pkpl-v2 #root #pkpl .pkpl-tx .pkpl-xi{width:52px;height:52px;border-radius:10px}
+html body.pkpl-v2 #root #pkpl .pkpl-tx .pkpl-xi svg{width:30px;height:30px}
+html body.pkpl-v2 #root #pkpl .pkpl-tx .pkpl-l{display:block;-webkit-line-clamp:unset;overflow:visible;font-size:17px}
+html body.pkpl-v2 #root #pkpl .pkpl-pl{margin-top:14px}
+@keyframes pkpl-rise{from{transform:translateY(46vh);opacity:0}60%{opacity:1}to{transform:none;opacity:1}}
+html body.pkpl-v2 #root #pkpl .pkpl-body.pkpl-rise{animation:pkpl-rise .62s cubic-bezier(.2,.8,.2,1) both}
+html body.pkpl-v2 #root #pkpl .pkpl-g2,html body.pkpl-v2 #root #pkpl .pkpl-body{pointer-events:auto;position:relative;z-index:2}
+
+/* MOCK Nov 21 (Zale) phone: the map on top, the swipe row of experiences, the words and the experience's places under it */
+/* phone and upright tablet (Nov 22, Zale 'all form factors'): the same words and places as the desktop column, in a sheet under the experience row */
+html body.pkpl-v2p:not(.pkpl-hood) #root #pkpl .pkpl-title{display:none!important}
+html body.pkpl-v2p:not(.pkpl-hood) #root #pkpl .pkpl-ps{position:absolute;left:0;right:0;bottom:0;z-index:4;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:none;touch-action:pan-y;padding:10px 16px 24px;background:#12160F;color:#F2EDE3;transition:height .28s cubic-bezier(.2,.7,.2,1)}
+html body.pkpl-v2p #root #pkpl .pkpl-ps::-webkit-scrollbar{display:none}
+html body.pkpl-v2p #root #pkpl .pkpl-ps.pkpl-ps0{padding-top:0;padding-bottom:0;visibility:hidden}
+html body.pkpl-v2p.pkpl-hood #root #pkpl .pkpl-ps,html body.pkpl-v2p.pkpl-hood #root #pkpl .pkpl-psg,html body:not(.pkpl-v2p) #root #pkpl .pkpl-psg{display:none}
+html body.pkpl-v2p:not(.pkpl-hood) #root .pkpl-xb{z-index:5;border-top:0;border-bottom:0;background:#12160F;padding-top:4px;padding-bottom:10px}
+html body.pkpl-v2p:not(.pkpl-hood) #root#root#root .pkpl-tools{bottom:var(--pkpl-psb,200px);transition:bottom .28s cubic-bezier(.2,.7,.2,1)}
+html body.pkpl-v2p:not(.pkpl-hood) #root #pkpl .pkpl-psh2{position:absolute;left:0;right:0;z-index:5;padding:0 16px 10px;background:#12160F;border-radius:16px 16px 0 0;cursor:pointer;transition:bottom .28s cubic-bezier(.2,.7,.2,1)}
+html body:not(.pkpl-v2p) #root #pkpl .pkpl-psh2,html body.pkpl-hood #root #pkpl .pkpl-psh2{display:none}
+html body.pkpl-v2p #root #pkpl .pkpl-psg{display:grid;place-items:center;width:72px;height:20px;margin:0 auto 4px;padding:0;border:0;background:none;cursor:pointer}
+html body.pkpl-v2p #root #pkpl .pkpl-psg i{display:block;width:36px;height:4px;border-radius:2px;background:rgba(242,237,227,.45)}
+html body.pkpl-v2p #root #pkpl .pkpl-psht{min-height:34px}
+html body.pkpl-v2p:not(.pkpl-hood) #root #pkpl .pkpl-psq{position:absolute;left:0;right:0;z-index:5;padding:12px 16px 4px;background:#12160F;border-top:1px solid #2F372A;box-shadow:0 -14px 14px -6px #12160F;font:800 clamp(10px,2.8vw,12px)/1 'Bricolage Grotesque',system-ui,sans-serif;letter-spacing:.09em;white-space:nowrap;text-transform:uppercase;color:#E9B93C;transition:bottom .28s cubic-bezier(.2,.7,.2,1)}
+html body:not(.pkpl-v2p) #root #pkpl .pkpl-psq,html body.pkpl-hood #root #pkpl .pkpl-psq{display:none}
+html body.pkpl-v2p #root #pkpl .pkpl-psk{margin:0 0 7px;font:800 clamp(9.5px,2.65vw,12px)/1 'Bricolage Grotesque',system-ui,sans-serif;letter-spacing:.09em;white-space:nowrap;text-transform:uppercase;color:#E9B93C}
+html body.pkpl-v2p #root #pkpl .pkpl-psht h2{margin:0;font-family:'Pickathon 2014',sans-serif;font-size:clamp(21px,6vw,30px);font-weight:400;line-height:1.05;letter-spacing:.02em;text-transform:uppercase;color:#F2EDE3}
+html body.pkpl-v2p #root #pkpl .pkpl-psht .pkpl-pc{display:flex;align-items:center;gap:10px;margin:0;font:400 15px/1 'Bricolage Grotesque',system-ui,sans-serif;color:rgba(242,237,227,.7)}
+html body.pkpl-v2p #root #pkpl .pkpl-psht .pkpl-pci{display:inline-grid;place-items:center;flex:none;width:30px;height:30px;border-radius:7px;background:#F2EDE3;color:#12160F}
+html body.pkpl-v2p #root #pkpl .pkpl-psht .pkpl-pci svg{width:18px;height:18px}
+html body.pkpl-v2p #root #pkpl .pkpl-psht .pkpl-pc .pkpl-pcb{margin:0;line-height:1;font-family:'Pickathon 2014',sans-serif;font-size:22px;font-weight:400;letter-spacing:.03em;text-transform:uppercase;color:#F2EDE3;white-space:nowrap}
+html body.pkpl-v2p #root #pkpl .pkpl-psht .pkpl-pcn{margin-left:auto;flex:none;font-weight:700;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#E9B93C;white-space:nowrap}
+html body.pkpl-v2p #root #pkpl .pkpl-psl{margin:0 0 10px;font:600 15px/1.4 'Bricolage Grotesque',system-ui,sans-serif;color:#E9B93C}
+html body.pkpl-v2p #root #pkpl .pkpl-ps .pkpl-gh{margin:14px 0 4px;font:800 11.5px/1 'Bricolage Grotesque',system-ui,sans-serif;letter-spacing:.2em;text-transform:uppercase;color:rgba(242,237,227,.5)}
+html body.pkpl-v2p #root #pkpl .pkpl-psls{display:grid;grid-template-columns:1fr;column-gap:18px}
+html body.pkpl-v2p #root #pkpl .pkpl-psls.pkpl-pst{grid-template-columns:1fr 1fr}
+html body.pkpl-v2p #root #pkpl .pkpl-ps .pkpl-pr{display:flex;align-items:center;width:100%;min-height:56px;padding:8px 2px;gap:12px;border:0;border-bottom:1px solid #262D22;background:none;color:#F2EDE3;text-align:left;font:inherit;cursor:pointer}
+html body.pkpl-v2p #root #pkpl .pkpl-ps .pkpl-pr img{flex:none;width:40px;height:40px;object-fit:contain}
+html body.pkpl-v2p #root #pkpl .pkpl-ps .pkpl-pr span{display:flex;flex-direction:column;gap:3px;min-width:0}
+html body.pkpl-v2p #root #pkpl .pkpl-ps .pkpl-pr b{font:700 16px/1.2 'Bricolage Grotesque',system-ui,sans-serif}
+html body.pkpl-v2p #root #pkpl .pkpl-ps .pkpl-pr small{font:400 14px/1.35 'Bricolage Grotesque',system-ui,sans-serif;color:rgba(242,237,227,.72)}
+html body.pkpl-v2p #root #pkpl .pkpl-pst .pkpl-pr{min-height:48px}
+html body.pkpl-v2p #root #pkpl .pkpl-pst .pkpl-pr img{width:32px;height:32px}
+html body.pkpl-v2p #root #pkpl .pkpl-pst .pkpl-pr b{font-size:15px}
+html body.pkpl-v2p #root #pkpl .pkpl-psab{margin:0 0 6px}
+html body.pkpl-v2p #root #pkpl .pkpl-ps.pkpl-xf{animation:pkpl-xf .32s ease}
+@media (min-width:600px){
+html body.pkpl-v2p:not(.pkpl-hood) #root #pkpl .pkpl-psq{padding-left:28px;padding-right:28px}
+html body.pkpl-v2p #root #pkpl .pkpl-ps{padding:12px 28px 28px}
+html body.pkpl-v2p:not(.pkpl-hood) #root #pkpl .pkpl-psh2{padding:0 28px 10px}
+html body.pkpl-v2p #root #pkpl .pkpl-psls.pkpl-psl2{grid-template-columns:1fr 1fr}
+html body.pkpl-v2p #root #pkpl .pkpl-psls.pkpl-pst{grid-template-columns:1fr 1fr 1fr}
+}
+@media (prefers-reduced-motion:reduce){html body.pkpl-v2p #root #pkpl .pkpl-ps,html body.pkpl-v2p #root .pkpl-xb,html body.pkpl-v2p #root .pkpl-tools,html body.pkpl-v2p #root #pkpl .pkpl-psg{transition:none}}
+
+/* MOCK: long lists (more than six places) use compact rows: smaller emblem, the line held to one row */
+html body.pkpl-v2 #root #pkpl .pkpl-pl.pkpl-cmp .pkpl-pr{min-height:54px;padding:7px 4px;gap:12px}
+html body.pkpl-v2 #root #pkpl .pkpl-pl.pkpl-cmp .pkpl-pr img{width:32px;height:32px}
+html body.pkpl-v2 #root #pkpl .pkpl-pl.pkpl-cmp .pkpl-pr span{min-width:0}
+html body.pkpl-v2 #root #pkpl .pkpl-pl.pkpl-cmp .pkpl-pr b{font-size:16px}
+html body.pkpl-v2 #root #pkpl .pkpl-pl.pkpl-cmp .pkpl-pr small{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:1px;font-size:13.5px}
+html body.pkpl-v2 #root #pkpl .pkpl-body{padding-top:20px}
+
+/* MOCK round 3: summary held to two lines; the place the pointer is on gets its line in one fixed slot; long lists (ten or more) show every place at once as tiles or two columns */
+html body.pkpl-v2 #root #pkpl .pkpl-tx .pkpl-l{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden}
+html body.pkpl-v2 #root #pkpl .pkpl-pd{display:none;margin:12px 0 0;min-height:42px;font:500 14px/1.45 'Bricolage Grotesque',system-ui,sans-serif;color:rgba(242,237,227,.62)}
+html body.pkpl-v2 #root #pkpl .pkpl-pd.on{color:#F2EDE3}
+html body.pkpl-v2 #root #pkpl .pkpl-pd b{color:#E9B93C;font-weight:800;margin-right:4px}
+html body.pkpl-v2 #root #pkpl .pkpl-long .pkpl-pd{display:block}
+html body.pkpl-v2 #root #pkpl .pkpl-long .pkpl-pl{margin-top:6px}
+html body.pkpl-v2 #root #pkpl .pkpl-pl.pkpl-tiles{display:grid!important;grid-template-columns:repeat(3,1fr);gap:6px}
+html body.pkpl-v2 #root #pkpl .pkpl-pl.pkpl-tiles .pkpl-pr{flex-direction:column;align-items:center;justify-content:center;gap:5px;min-height:70px;padding:8px 4px;border:1px solid rgba(242,237,227,.16);border-radius:8px;background:rgba(18,22,15,.55);text-align:center}
+html body.pkpl-v2 #root #pkpl .pkpl-pl.pkpl-tiles .pkpl-pr img{width:32px;height:32px}
+html body.pkpl-v2 #root #pkpl .pkpl-pl.pkpl-tiles .pkpl-pr b{font-size:13.5px;line-height:1.15}
+html body.pkpl-v2 #root #pkpl .pkpl-pl.pkpl-tiles .pkpl-pr small,html body.pkpl-v2 #root #pkpl .pkpl-pl.pkpl-cols .pkpl-pr small{display:none}
+html body.pkpl-v2 #root #pkpl .pkpl-pl.pkpl-tiles .pkpl-pr:hover,html body.pkpl-v2 #root #pkpl .pkpl-pl.pkpl-cols .pkpl-pr:hover{border-color:#D6B54A;background:rgba(214,181,74,.12)}
+html body.pkpl-v2 #root #pkpl .pkpl-pl.pkpl-cols{display:grid!important;grid-template-columns:1fr 1fr;column-gap:14px;row-gap:0}
+html body.pkpl-v2 #root #pkpl .pkpl-pl.pkpl-cols .pkpl-pr{min-height:46px;padding:6px 4px;gap:10px;border-bottom:1px solid rgba(242,237,227,.12)}
+html body.pkpl-v2 #root #pkpl .pkpl-pl.pkpl-cols .pkpl-pr img{width:28px;height:28px}
+html body.pkpl-v2 #root #pkpl .pkpl-pl.pkpl-cols .pkpl-pr b{font-size:15px}
+html body.pkpl-v2 #root #pkpl .pkpl-ab{margin-top:26px}
+
+/* MOCK: Architecture stays short: no long paragraph, Build with Pickathon is one quiet button under the places */
+html body.pkpl-v2 #root #pkpl .pkpl-ab p{display:none}
+html body.pkpl-v2 #root #pkpl .pkpl-ab{margin-top:18px}
+
+html body.pkpl-v2 #root #pkpl .pkpl-pl.pkpl-cols .pkpl-pr{min-height:39px;padding:4px}
+html body.pkpl-v2 #root #pkpl .pkpl-long .pkpl-pd{min-height:22px;margin-top:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+html body.pkpl-v2 #root #pkpl .pkpl-pl.pkpl-cols.pkpl-c3{grid-template-columns:repeat(3,1fr);column-gap:8px}
+html body.pkpl-v2 #root #pkpl .pkpl-pl.pkpl-cols.pkpl-c3 .pkpl-pr{min-height:46px;gap:8px}
+html body.pkpl-v2 #root #pkpl .pkpl-pl.pkpl-cols.pkpl-c3 .pkpl-pr img{width:26px;height:26px}
+html body.pkpl-v2 #root #pkpl .pkpl-pl.pkpl-cols.pkpl-c3 .pkpl-pr b{font-size:13.5px}
+
+/* MOCK round 4 (Zale, Nov 21 20:28): a narrative at all times: Choose your adventure, the buttons, the experience with its icon, how many neighborhoods, the pointer line, the places. Resting rows are quiet, the pointed one is solid */
+html body.pkpl-v2 #root #pkpl .pkpl-gk{flex:none;margin:0 0 12px;font:800 13px/1 'Bricolage Grotesque',system-ui,sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#E9B93C;position:relative;z-index:2}
+html body.pkpl-v2 #root #pkpl .pkpl-title{padding-top:22px!important}
+html body.pkpl-v2 #root #pkpl .pkpl-g2{padding-bottom:18px}
+html body.pkpl-v2 #root #pkpl .pkpl-body .pkpl-k{display:none}
+html body.pkpl-v2 #root #pkpl .pkpl-title:not(.pkpl-tx) .pkpl-body{padding-top:28px}
+html body.pkpl-v2 #root #pkpl .pkpl-pc{margin:16px 0 0;font:800 12.5px/1 'Bricolage Grotesque',system-ui,sans-serif;letter-spacing:.18em;text-transform:uppercase;color:rgba(242,237,227,.72)}
+html body.pkpl-v2 #root #pkpl .pkpl-long .pkpl-pd{margin-top:8px;min-height:22px}
+html body.pkpl-v2 #root #pkpl .pkpl-pl.pkpl-cols .pkpl-pr{min-height:44px;padding:5px 8px;border-radius:6px;border-bottom-color:transparent;transition:background .15s,color .15s}
+html body.pkpl-v2 #root #pkpl .pkpl-pl.pkpl-cols .pkpl-pr img{opacity:.6}
+html body.pkpl-v2 #root #pkpl .pkpl-pl.pkpl-cols .pkpl-pr b{color:rgba(242,237,227,.78);font-weight:600}
+html body.pkpl-v2 #root #pkpl .pkpl-pl.pkpl-cols .pkpl-pr.pkpl-hot{background:#F2EDE3;border-color:#F2EDE3}
+html body.pkpl-v2 #root #pkpl .pkpl-pl.pkpl-cols .pkpl-pr.pkpl-hot img{opacity:1;filter:invert(1)}
+html body.pkpl-v2 #root #pkpl .pkpl-pl.pkpl-cols .pkpl-pr.pkpl-hot b{color:#12160F;font-weight:800}
+html body.pkpl-v2 #root #pkpl .pkpl-pl.pkpl-cols.pkpl-c1{grid-template-columns:1fr}
+html body.pkpl-v2 #root #pkpl .pkpl-pl.pkpl-cols.pkpl-c3 .pkpl-pr{padding:5px 6px}
+
+html body.pkpl-v2 #root #pkpl .pkpl-long .pkpl-pd{white-space:normal;min-height:42px;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;font-size:14.5px}
+html body.pkpl-v2 #root #pkpl .pkpl-pl.pkpl-cols .pkpl-pr.pkpl-hot{background:#F6F1E6}
+
+/* MOCK round 5 (Zale, Nov 21 20:39): a headline that asks; the experience as one compact line; one line slot for the summary or the pointed place; all 20 neighborhoods before a pick */
+html body.pkpl-v2 #root #pkpl .pkpl-gk{margin:0 0 16px;letter-spacing:0;text-transform:none}
+html body.pkpl-v2 #root #pkpl .pkpl-gk p{margin:0 0 8px;font:800 12px/1 'Bricolage Grotesque',system-ui,sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#E9B93C}
+html body.pkpl-v2 #root #pkpl .pkpl-gk h2{margin:0;font-family:'Pickathon 2014',sans-serif;font-size:34px;line-height:1.05;letter-spacing:.02em;text-transform:uppercase;color:#F2EDE3}
+html body.pkpl-v2 #root #pkpl .pkpl-body .pkpl-d,html body.pkpl-v2 #root #pkpl .pkpl-body .pkpl-l{display:none!important}
+html body.pkpl-v2 #root #pkpl .pkpl-title .pkpl-body{padding-top:18px!important;justify-content:flex-start!important}
+html body.pkpl-v2 #root #pkpl .pkpl-pc{display:flex;align-items:center;gap:10px;margin:0;font:400 15px/1 'Bricolage Grotesque',system-ui,sans-serif;letter-spacing:0;text-transform:none;color:rgba(242,237,227,.7)}
+html body.pkpl-v2 #root #pkpl .pkpl-pc[hidden]{display:none}
+html body.pkpl-v2 #root #pkpl .pkpl-pci{display:inline-grid;place-items:center;width:34px;height:34px;border-radius:8px;background:#F2EDE3;color:#12160F}
+html body.pkpl-v2 #root #pkpl .pkpl-pci svg{width:20px;height:20px}
+html body.pkpl-v2 #root #pkpl .pkpl-pc b{font-family:'Pickathon 2014',sans-serif;font-size:24px;font-weight:400;letter-spacing:.03em;text-transform:uppercase;color:#F2EDE3}
+html body.pkpl-v2 #root #pkpl .pkpl-pcn{margin-left:auto;font-weight:700;font-size:12.5px;letter-spacing:.16em;text-transform:uppercase;color:#E9B93C}
+html body.pkpl-v2 #root #pkpl .pkpl-long .pkpl-pd,html body.pkpl-v2 #root #pkpl .pkpl-pd{display:-webkit-box!important;margin:10px 0 8px;min-height:44px;color:#F2EDE3;font-weight:500;font-size:15px;-webkit-line-clamp:2!important;-webkit-box-orient:vertical;overflow:hidden;white-space:normal!important}
+html body.pkpl-v2 #root #pkpl .pkpl-pd.on{color:#F2EDE3;font-weight:500}
+html body.pkpl-v2 #root #pkpl .pkpl-pl .pkpl-gh{grid-column:1/-1;margin:10px 0 2px;font:800 11.5px/1 'Bricolage Grotesque',system-ui,sans-serif;letter-spacing:.2em;text-transform:uppercase;color:rgba(242,237,227,.5)}
+html body.pkpl-v2 #root #pkpl .pkpl-pl .pkpl-gh:first-child{margin-top:0}
+html body.pkpl-v2 #root #pkpl .pkpl-pl.pkpl-cols.pkpl-c3 .pkpl-pr{min-height:38px}
+
+html body.pkpl-v2 #root #pkpl .pkpl-gk{margin-bottom:14px}
+html body.pkpl-v2 #root #pkpl .pkpl-gk h2{font-size:31px}
+html body.pkpl-v2 #root #pkpl .pkpl-title:not(.pkpl-tx) .pkpl-pd{min-height:0;margin:2px 0 4px;font-size:14px}
+html body.pkpl-v2 #root #pkpl .pkpl-title:not(.pkpl-tx) .pkpl-body{padding-top:14px!important;padding-bottom:12px}
+html body.pkpl-v2 #root #pkpl .pkpl-pl .pkpl-gh{margin:8px 0 0}
+html body.pkpl-v2 #root #pkpl .pkpl-title:not(.pkpl-tx) .pkpl-pl.pkpl-cols.pkpl-c3 .pkpl-pr{min-height:34px;padding-top:3px;padding-bottom:3px}
+html body.pkpl-v2 #root #pkpl .pkpl-gk p{font-size:11.5px;letter-spacing:.14em;white-space:nowrap}
+html body.pkpl-v2 #root #pkpl .pkpl-g2 .pkpl-xe{min-height:50px;padding:5px 4px;gap:3px}
+html body.pkpl-v2 #root #pkpl .pkpl-g2{gap:7px;padding-bottom:16px}
+html body.pkpl-v2 #root #pkpl .pkpl-pl.pkpl-cols.pkpl-c3 .pkpl-pr b{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+html body.pkpl-v2 #root #pkpl .pkpl-pl.pkpl-cols.pkpl-c3 .pkpl-pr span{min-width:0;overflow:hidden}
+html body.pkpl-v2 #root #pkpl .pkpl-pcn{white-space:nowrap}
+
+/* MOCK round 6: a quiet fade when the list changes; Build with Pickathon sits right under Architecture's line */
+@keyframes pkpl-xf{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+html body.pkpl-v2 #root #pkpl .pkpl-body.pkpl-xf{animation:pkpl-xf .32s ease-out both}
+html body.pkpl-v2 #root #pkpl .pkpl-ab{margin:0 0 14px!important}
+html body.pkpl-v2 #root #pkpl .pkpl-ab button{min-height:44px;padding:0 16px;font-size:13px;letter-spacing:.12em}
+
+/* MOCK: 2027 palette test: the fill takes the hue, the painted art keeps its light and texture */
+#pkpl .pkpl-p27 path{mix-blend-mode:multiply;opacity:.9;pointer-events:none}   /* the new tiles leave each neighborhood a pale ground, so the fill multiplies under the trees, trails and icons */
+/* Nov 21: desktop neighborhood page in the new layout: no experience bar across the map; the column's back link returns to the experience and its buttons */
+html body.pkpl-v2.pkpl-hood #root #pkpl .pkpl-xb{display:none!important}
+@media (max-width:380px){html body.pkpl-v2p #root #pkpl .pkpl-psk{letter-spacing:.04em}}
+
+@media (max-width:380px){html body.pkpl-v2p #root #pkpl .pkpl-psq{letter-spacing:.04em}}
+
+/* Nov 22 06:19: arrival title; the small question line hides until something is picked */
+html body.pkpl-v2p #root #pkpl .pkpl-psht .pkpl-psbig{margin:0;font-family:'Pickathon 2014',sans-serif;font-size:clamp(22px,6.4vw,32px);font-weight:400;line-height:1.05;letter-spacing:.02em;text-transform:uppercase;color:#F2EDE3}
+html body.pkpl-v2p #root #pkpl .pkpl-psq.pkpl-psq0{padding-top:6px;padding-bottom:0;font-size:0;line-height:0;border-top-color:transparent}
+
+/* Nov 22 06:46 trims: small experience line that opens the list; smaller summary */
+html body.pkpl-v2p #root #pkpl .pkpl-psht{min-height:0}
+html body.pkpl-v2p #root #pkpl .pkpl-psln{display:flex;align-items:center;gap:10px;min-height:32px}
+html body.pkpl-v2p #root #pkpl .pkpl-psln .pkpl-pci{display:inline-grid;place-items:center;flex:none;width:28px;height:28px;border-radius:7px;background:#F2EDE3;color:#12160F}
+html body.pkpl-v2p #root #pkpl .pkpl-psln .pkpl-pci svg{width:17px;height:17px}
+html body.pkpl-v2p #root #pkpl .pkpl-psn{flex:1;min-width:0;font:800 12px/1.2 'Bricolage Grotesque',system-ui,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#E9B93C;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+html body.pkpl-v2p #root #pkpl .pkpl-psmore{flex:none;display:inline-flex;align-items:center;gap:6px;min-height:32px;padding:0 12px;border:1px solid rgba(242,237,227,.5);border-radius:6px;font:700 13px/1 'Bricolage Grotesque',system-ui,sans-serif;color:#F2EDE3}
+html body.pkpl-v2p #root #pkpl .pkpl-ps .pkpl-psl{font-size:15px;line-height:1.4;font-weight:500;color:rgba(242,237,227,.86);margin-bottom:8px}
+
+/* review Nov 22 (#2, #3): on a neighborhood page the phone shows one title and one way back; the experience row and the old title block step aside */
+html body.pkpl-v2p.pkpl-hood #root #pkpl .pkpl-title{display:none!important}   /* the experience row stays (Zale's Nov 20 ruling); reviewers' 'hide it' is his call */
+
+/* review Nov 22 (#6, #7, #10, #15) and Zale's soft fade */
+html body.pkpl-v2p:not(.pkpl-hood) #root #pkpl .pkpl-psh2{border-radius:0}
+html body.pkpl-v2p:not(.pkpl-hood) #root #pkpl .pkpl-psh2::before{content:'';position:absolute;left:0;right:0;top:-40px;height:40px;background:linear-gradient(to bottom,rgba(18,22,15,0),rgba(18,22,15,.72) 60%,#12160F);pointer-events:none}
+html body.pkpl-v2p #root #pkpl .pkpl-psg{height:44px;margin:-8px auto -8px}   /* 44 px to grab; the bar itself stays small (round 2 #8) */
+html body.pkpl-v2p #root #pkpl .pkpl-psln{min-height:44px}
+html body.pkpl-v2p #root #pkpl .pkpl-psmore{min-height:44px;padding:0 16px}
+html body.pkpl-v2p #root .pkpl-xb.pkpl-xbmore::after{content:'';position:sticky;right:0;flex:none;width:44px;margin-left:-44px;align-self:stretch;pointer-events:none;background:linear-gradient(to right,rgba(18,22,15,0),#12160F 85%)}   /* the fade covers the buttons, never the map behind the row (round 2 #9) */
+html body.pkpl-v2p #root #pkpl .pkpl-psall{display:inline;min-height:44px;padding:10px 0;margin:-10px 0;border:0;background:none;font:inherit;color:#F2EDE3;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+@media (min-width:600px) and (min-height:600px){html body.pkpl-v2p:not(.pkpl-hood) #root .pkpl-xb{flex-wrap:wrap;overflow-x:visible;row-gap:8px}html body.pkpl-v2p #root .pkpl-xb.pkpl-xbmore::after{display:none}}
+
+/* edge tags for lit places outside the view (Zale, Nov 22: chosen after the independent review) */
+#root #pkpl .pkpl-edge{position:absolute;inset:0;pointer-events:none;z-index:3}
+#root #pkpl .pkpl-edgetag{position:absolute;pointer-events:auto;min-height:44px;padding:0 14px;border:1px solid rgba(242,237,227,.55);border-radius:22px;background:rgba(18,22,15,.86);color:#F2EDE3;font:700 14px/1 'Bricolage Grotesque',system-ui,sans-serif;letter-spacing:.02em;white-space:nowrap;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.35)}
+#root #pkpl .pkpl-et-up,#root #pkpl .pkpl-et-down{transform:translateX(-50%)}
+#root #pkpl .pkpl-et-right{transform:translate(-100%,-50%)}
+#root #pkpl .pkpl-et-left{transform:translateY(-50%)}
+.pkpl-pinch .pkpl-edge,.pkpl-moving .pkpl-edge{opacity:0}
+
+/* Nov 22 (Zale): one navigation model on neighborhood pages */
+#root #pkpl-top .pkpl-kind.pkpl-kx{display:inline-flex;align-items:center;gap:8px;color:#F2CF62;text-shadow:0 1px 6px rgba(0,0,0,.65)}
+#root #pkpl-top .pkpl-kci{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:6px;background:#F2EDE3;color:#12160F;text-shadow:none}
+#root #pkpl-top .pkpl-kci svg{width:15px;height:15px}
+#root #pkpl-top .pkpl-hero .pkpl-arr{display:none}
+#root #pkpl-top .pkpl-stepl{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:10px 12px 2px}
+#root #pkpl-top .pkpl-stepl button{min-height:44px;padding:0 12px;border:1px solid rgba(242,237,227,.4);border-radius:22px;background:none;color:#F2EDE3;font:700 14px/1 'Bricolage Grotesque',system-ui,sans-serif;white-space:nowrap;cursor:pointer}
+#root #pkpl-top .pkpl-stepl span{font:600 12px/1.2 'Bricolage Grotesque',system-ui,sans-serif;color:rgba(242,237,227,.6);text-align:center}
+#root #pkpl-top .pkpl-also .pkpl-at{display:flex!important;flex-wrap:wrap;gap:8px;grid-template-columns:none!important}
+#root #pkpl-top .pkpl-also .pkpl-axc{display:inline-flex;align-items:center;gap:8px;width:auto!important;height:44px!important;min-height:44px;aspect-ratio:auto!important;padding:0 14px;border:1px solid rgba(242,237,227,.5);border-radius:6px;background:none;color:#F2EDE3;font:700 15px/1 'Bricolage Grotesque',system-ui,sans-serif;cursor:pointer}
+#root #pkpl-top .pkpl-also .pkpl-axc svg{width:18px;height:18px}
+#root #pkpl-top .pkpl-also .pkpl-axc b{font-weight:700;color:#F2EDE3}
+#root #pkpl-top .pkpl-bn small{font-weight:600;color:#E9B93C}
+html body #root .pkpl-xb .pkpl-xe.quiet{opacity:1!important}
+html body.pkpl-hood:not(.pkpl-wide) #root #pkpl .pkpl-xb{z-index:7;background:#12160F}   /* Nov 22: the row stays on top, right above the nav; the folded bar shows above it */
+html body.pkpl-v2p.pkpl-hood #pkpl-top.pkpl-folded{clip-path:inset(0 0 var(--pkpl-y,0px) 0)}   /* the folded sheet stops at the row instead of sliding under it */
+
+/* Nov 22: on a neighborhood page the neighbors step back a little more, so the place you're on reads first */
+.pkpl-picked .pkpl-veil{fill:rgba(12,14,10,.48)}
+/* 3. text slides under the sheet's top edge instead of being cut mid-letter */
+html body.pkpl-hood:not(.pkpl-wide) #root #pkpl-top .pkpl-sheet{-webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 16px);mask-image:linear-gradient(to bottom,transparent 0,#000 16px)}
+
+/* round 2 review (Nov 22) */
+html body.pkpl-v2p #root .pkpl-xb.pkpl-xbleft::before{content:'';position:sticky;left:0;flex:none;width:36px;margin-right:-36px;align-self:stretch;pointer-events:none;z-index:1;background:linear-gradient(to left,rgba(18,22,15,0),#12160F 85%)}
+@media (min-width:600px) and (min-height:600px){html body.pkpl-v2p #root .pkpl-xb.pkpl-xbleft::before{display:none}}
+#root #pkpl-top .pkpl-stepl button{min-width:118px;border-radius:6px;text-transform:none;letter-spacing:0;font-size:14px}
+#root #pkpl-top .pkpl-stepl button:last-child{text-align:right}
+#root #pkpl-top .pkpl-stepl span{color:rgba(242,237,227,.78);white-space:nowrap}
+#root #pkpl .pkpl-edgetag{background:#12160F;box-shadow:none}
+#root #pkpl-top .pkpl-tt{color:#F2EDE3}
+#root #pkpl-top .pkpl-bn{font-family:'Pickathon 2014',sans-serif!important;font-weight:400!important;letter-spacing:.03em}
+#root #pkpl-top .pkpl-bn small{font-family:'Bricolage Grotesque',system-ui,sans-serif;font-weight:700;letter-spacing:.06em}
+
+/* Nov 22, Zale's picks after round 2 */
+#root #pkpl-top .pkpl-hi .pkpl-kci{display:none}   /* 1: one mark on the photo: the gold experience name over the emblem */
+#root #pkpl-top .pkpl-kind.pkpl-kx{gap:0}
+html body.pkpl-v2p #root .pkpl-xb{background:#1C2118!important;border-top:1px solid rgba(233,185,60,.32)!important}   /* 2: the row reads as experiences, not a second nav */
+html body.pkpl-v2p #root .pkpl-xb.pkpl-xbmore::after{background:linear-gradient(to right,rgba(28,33,24,0),#1C2118 85%)}
+html body.pkpl-v2p #root .pkpl-xb.pkpl-xbleft::before{background:linear-gradient(to left,rgba(28,33,24,0),#1C2118 85%)}
+#root #pkpl-top .pkpl-hxr{display:flex;flex-wrap:nowrap;gap:6px;overflow-x:auto;scrollbar-width:none;padding:10px 16px;background:#1C2118;border-bottom:1px solid rgba(233,185,60,.32)}   /* 5 */
+#root #pkpl-top .pkpl-hxr::-webkit-scrollbar{display:none}
+#root #pkpl-top .pkpl-hxr button{flex:none;display:inline-flex;align-items:center;gap:6px;height:36px;padding:0 10px;border:1px solid rgba(242,237,227,.45);border-radius:6px;background:none;color:#F2EDE3;font:700 13px/1 'Bricolage Grotesque',system-ui,sans-serif;cursor:pointer}
+#root #pkpl-top .pkpl-hxr button svg{width:15px;height:15px}
+#root #pkpl-top .pkpl-hxr button[aria-pressed="true"]{background:#F2EDE3;color:#12160F;border-color:#F2EDE3}
+#root #pkpl-top .pkpl-hxr button:hover{border-color:#F2EDE3}
+
+/* Zale, Nov 22 11:15: on desktop the row is a compact 4x3 grid (a mouse can't swipe); same component as the map page's grid */
+#root #pkpl-top .pkpl-hxr{display:grid!important;grid-template-columns:repeat(4,1fr);gap:6px;overflow:visible;padding:10px 16px 12px}
+#root #pkpl-top .pkpl-hxr button{height:auto;min-height:44px;flex-direction:column;justify-content:center;gap:3px;padding:5px 4px;font-size:12px;text-align:center}
+#root #pkpl-top .pkpl-hxr button svg{width:16px;height:16px}
+#root#root#root#root #pkpl-top .pkpl-hxr button[aria-pressed="true"]{background:#F2EDE3!important;color:#12160F!important;border-color:#F2EDE3!important}   /* pressed = cream, same as the map grid */
+
+/* round 3 review (Nov 22) */
+html body.pkpl-v2 #root #pkpl .pkpl-long .pkpl-pd{white-space:normal!important;text-overflow:clip!important}
+#root #pkpl-top .pkpl-credw{padding:0 16px}
+body.pkpl-wide #root #pkpl-top .pkpl-credw{padding:0 32px}
+body.pkpl-wide #root #pkpl-top .pkpl-shade{height:78%;background:linear-gradient(180deg,rgba(18,22,15,0) 0%,rgba(18,22,15,.7) 45%,rgba(18,22,15,.95) 100%)}
+body.pkpl-wide #root #pkpl-top .pkpl-dots i{width:8px;height:8px;background:rgba(242,237,227,.6)}
+body.pkpl-wide #root #pkpl-top .pkpl-hi .pkpl-tt{color:#F2EDE3}
+#root #pkpl .pkpl-edgetag.pkpl-etall{border-style:dashed}
+@media (max-width:1100px){
+  html body.pkpl-v2 #root #pkpl .pkpl-pl.pkpl-cols.pkpl-c3{grid-template-columns:1fr 1fr}
+  html body.pkpl-wide #root #pkpl .pkpl-tools,html body.pkpl-wide.pkpl-hood #root #pkpl .pkpl-tools{bottom:84px}
+  html body.pkpl-v2 #root #pkpl .pkpl-g2 .pkpl-xe{font-size:11.5px;letter-spacing:-.01em}
+  #root #pkpl-top .pkpl-hxr button{font-size:11px;letter-spacing:-.01em}
+}
+/* desktop rails get arrows (a mouse can't swipe) */
+.pkpl-rail{position:relative}
+.pkpl-rarr{position:absolute;top:50%;z-index:4;width:40px;height:40px;margin-top:-20px;border:1px solid rgba(242,237,227,.5);border-radius:50%;background:rgba(18,22,15,.88);color:#F2EDE3;display:grid;place-items:center;cursor:pointer}
+.pkpl-rarr svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.pkpl-rarr.l{left:6px}.pkpl-rarr.r{right:6px}
+.pkpl-rarr[hidden]{display:none}
+
+/* round 4: the place you came back from stays marked for a moment (no motion) */
+html body.pkpl-v2 #root #pkpl .pkpl-pr.pkpl-was{border-color:#F2EDE3!important;background:rgba(242,237,227,.08)!important}
+#root #pkpl-top .pkpl-kind.pkpl-kx{color:#E9B93C}
+
+/* Zale, Nov 22 (round 4): lit names at most 1.6x; names of the other places stay readable above the veil, softer */
+.pkpl-nms path.dim{display:inline;fill:#E8E1D2;fill-opacity:.6;stroke:#12160F;stroke-opacity:.5;stroke-width:2px}
+
+/* Zale, Nov 22 (round 4): the desktop panel is solid behind every word, in every state, with a short soft edge where it meets the map */
+html body.pkpl-v2 #root #pkpl .pkpl-title::after,html body.pkpl-v2.pkpl-v2g #root #pkpl .pkpl-title::after{width:calc(100% + 28px);background:linear-gradient(90deg,#12160F 0,#12160F calc(100% - 28px),rgba(18,22,15,0) 100%)}
+
+/* Zale, Nov 22: tablet uses its space; on neighborhood pages the experience buttons wrap to full rows like on the map */
+@media (min-width:600px) and (min-height:600px){html body.pkpl-hood:not(.pkpl-wide) #root #pkpl .pkpl-xb{flex-wrap:wrap;overflow-x:visible;row-gap:8px}html body.pkpl-hood:not(.pkpl-wide) #root #pkpl .pkpl-xb::after,html body.pkpl-hood:not(.pkpl-wide) #root #pkpl .pkpl-xb::before{display:none}}
+@media (min-width:600px) and (min-height:600px){html body.pkpl-hood:not(.pkpl-wide) #root #pkpl-top{bottom:var(--pkpl-xbh,61px)}}
+
+/* mission review (Nov 22): the bands under the video row link to their pages; the Creative Neighborhoods line under Who built it */
+#root #pkpl-top .pkpl-vx{margin:10px 16px 0;font:500 15px/1.6 'Bricolage Grotesque',system-ui,sans-serif;color:rgba(242,237,227,.72)}
+body.pkpl-wide #root #pkpl-top .pkpl-vx{margin:10px 32px 0}
+#root #pkpl-top .pkpl-vxa{display:inline-block;min-height:44px;padding:10px 0;line-height:24px;border:0;background:none;color:#F2EDE3;font:inherit;font-weight:700;text-decoration:underline;text-decoration-color:rgba(242,237,227,.35);text-underline-offset:3px;cursor:pointer}
+#root #pkpl-top .pkpl-vxa:hover{text-decoration-color:#E9B93C}
+#root #pkpl-top .pkpl-cnl{margin:12px 0 4px;font:500 16px/1.5 'Bricolage Grotesque',system-ui,sans-serif;color:#F2EDE3;max-width:52ch}
+#root #pkpl-top .pkpl-what .pkpl-wt{margin:0;font:500 17px/1.55 'Bricolage Grotesque',system-ui,sans-serif;color:#E8E2D4;max-width:60ch}
+
+/* Zale, Nov 22: video cards bigger and simple: the picture plays, the name under it opens the artist page */
+#root #pkpl-top .pkpl-vw{flex:0 0 min(74vw,300px);display:flex;flex-direction:column;scroll-snap-align:start}
+body.pkpl-wide #root #pkpl-top .pkpl-vw{flex-basis:280px}
+#root #pkpl-top .pkpl-vw .pkpl-vt{flex:none;width:100%;aspect-ratio:4/3}
+#root #pkpl-top .pkpl-vw .pkpl-vt::after{display:none}
+#root #pkpl-top .pkpl-vn{display:block;min-height:44px;padding:8px 2px 0;border:0;background:none;text-align:left;cursor:pointer;color:#F2EDE3}
+#root #pkpl-top .pkpl-vn b{display:block;font:800 16px/1.25 'Bricolage Grotesque',system-ui,sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#root #pkpl-top .pkpl-vn small{display:block;margin-top:3px;font:600 14px/1.2 'Bricolage Grotesque',system-ui,sans-serif;color:rgba(242,237,227,.62)}
+#root #pkpl-top .pkpl-vn:hover b{text-decoration:underline;text-underline-offset:3px}
+#root #pkpl-top .pkpl-vr > .pkpl-vt.pkpl-vall{flex-basis:160px;aspect-ratio:auto}
+
+/* Zale, Nov 22: desktop neighborhood card rises over the experience grid, like the phone sheet. '‹ Map' stays on top, the grid stays put, the card scrolls up over it; the handle covers or shows the grid */
+body.pkpl-wide.pkpl-hood #root #pkpl-top .pkpl-up{position:sticky;top:var(--pkpl-hh,89px);z-index:3;background:#12160F}
+body.pkpl-wide.pkpl-hood #root #pkpl-top .pkpl-hxr{position:sticky;top:calc(var(--pkpl-hh,89px) + 48px);z-index:1}
+body.pkpl-wide.pkpl-hood #root #pkpl-top .pkpl-sheet{position:relative;z-index:2;border-radius:16px 16px 0 0;box-shadow:0 -12px 28px rgba(0,0,0,.45);margin-top:4px}
+body.pkpl-wide #root #pkpl-top .pkpl-dgrab{display:flex;position:absolute;left:0;right:0;top:0;height:28px;padding:0;border:0;background:transparent;cursor:pointer;pointer-events:auto;z-index:5}
+body.pkpl-wide #root #pkpl-top .pkpl-dgrab i{width:44px}
+body.pkpl-wide.pkpl-hood #root #pkpl-top .pkpl-up{display:flex;width:100%;box-sizing:border-box}
+body.pkpl-wide #root #pkpl-top .pkpl-dgrab{z-index:9}
+body.pkpl-wide #root #pkpl-top .pkpl-dgrab i{display:block}
+body.pkpl-wide.pkpl-hood #root #pkpl-top .pkpl-sheet{padding-top:22px;background:#2B2628}
+body.pkpl-wide #root #pkpl-top .pkpl-dgrab{height:22px}
+body.pkpl-wide #root #pkpl-top .pkpl-dgrab i{width:48px;height:5px;background:rgba(242,237,227,.7);box-shadow:none}
+body.pkpl-wide #root #pkpl-top .pkpl-dgrab:hover i{background:#F2EDE3}
+
+/* Zale, Nov 22: desktop list rows size to the room (--pkpl-rh from fitList): emblem about 70% of the row, name scales with it */
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-pl.pkpl-cols .pkpl-pr{min-height:var(--pkpl-rh,44px);gap:calc(var(--pkpl-rh,44px) * .22)}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-pl.pkpl-cols .pkpl-pr img{width:calc(var(--pkpl-rh,44px) * .68);height:calc(var(--pkpl-rh,44px) * .68);opacity:.85}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-pl.pkpl-cols .pkpl-pr b{font-size:clamp(15px,calc(var(--pkpl-rh,44px) * .3),19px)}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-pl + .pkpl-ab{margin-top:18px}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-pl.pkpl-cols.pkpl-c3{column-gap:6px}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-pl.pkpl-cols.pkpl-c3 .pkpl-pr{gap:7px;padding:4px 4px}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-pl.pkpl-cols.pkpl-c3 .pkpl-pr img{width:28px;height:28px}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-pl.pkpl-cols.pkpl-c3 .pkpl-pr b{font-size:15px;white-space:nowrap;overflow:visible}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-pl.pkpl-cols.pkpl-c3 .pkpl-pr b{font-size:14px;white-space:normal;line-height:1.15;overflow-wrap:normal}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-pl.pkpl-cols.pkpl-c3 .pkpl-pr span{min-width:0}
+
+/* Zale, Nov 22: short screens: a smaller headline, icon-beside-label tiles, so long lists fit without scrolling */
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-title.pkpl-tv{padding-top:18px!important}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-tv .pkpl-gk{margin-bottom:10px}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-tv .pkpl-gk p{margin-bottom:6px}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-tv .pkpl-gk h2{font-size:24px!important;line-height:1.05!important}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-tv .pkpl-g2{gap:6px;padding-bottom:12px}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-tv .pkpl-g2 .pkpl-xe{min-height:44px!important;height:44px;flex-direction:row;justify-content:center;gap:6px;padding:4px}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-tv .pkpl-g2 .pkpl-xe svg{width:16px;height:16px;flex:none}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-tv .pkpl-pd{margin:6px 0 6px;min-height:0}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-tv2 .pkpl-pd{-webkit-line-clamp:1!important;min-height:0!important}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-tv .pkpl-pl + .pkpl-ab{margin-top:8px!important;padding-top:0!important;padding-bottom:0!important}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-tv .pkpl-pl.pkpl-cols.pkpl-c3 .pkpl-pr{padding:2px 2px;gap:6px}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-tv .pkpl-pl.pkpl-cols.pkpl-c3 .pkpl-pr img{width:24px;height:24px}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-tv .pkpl-pl.pkpl-cols.pkpl-c3 .pkpl-pr b{white-space:nowrap;font-size:14px}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-tv .pkpl-g2 .pkpl-xe{gap:4px;padding:2px;letter-spacing:-.01em}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-tv .pkpl-g2 .pkpl-xe svg{width:14px;height:14px}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-tv .pkpl-g2 .pkpl-xe{font-size:12px}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-tv .pkpl-g2 .pkpl-xe span{overflow:visible;text-overflow:clip}
+
+/* Zale, Nov 22 (phone): the sheet follows the finger (no transition while dragging); prev/next never under a fade; the place you're on gets the stronger outline among its lit experience */
+html body.pkpl-v2p #root .pkpl-psdrag .pkpl-ps,html body.pkpl-v2p #root .pkpl-psdrag .pkpl-psh2,html body.pkpl-v2p #root #pkpl.pkpl-psdrag .pkpl-ps,html body.pkpl-v2p #root #pkpl.pkpl-psdrag .pkpl-psh2{transition:none!important}
+html body.pkpl-hood:not(.pkpl-wide) #root #pkpl-top::after{display:none!important}
+.pkpl-was.pkpl-wcur{stroke:#FFF6DA;stroke-opacity:1;stroke-width:5}
+
+/* Zale, Nov 22: phone neighborhood bar carries the name and prev/next in every state; the row under the photo goes away; the experience line bigger */
+body.pkpl-hood:not(.pkpl-wide) #root #pkpl-top .pkpl-bar,body.pkpl-hood:not(.pkpl-wide) #root #pkpl-top.pkpl-folded .pkpl-bar{height:58px;padding:12px 4px 0;justify-content:space-between;gap:4px;border-bottom:1px solid #3A4331}
+body.pkpl-hood:not(.pkpl-wide) #root #pkpl-top .pkpl-bar .pkpl-bmid{flex:1;min-width:0;display:flex;align-items:center;justify-content:center;gap:8px}
+body.pkpl-hood:not(.pkpl-wide) #root #pkpl-top .pkpl-bar .pkpl-bi{display:block;width:30px;height:30px;flex:none}
+body.pkpl-hood:not(.pkpl-wide) #root #pkpl-top .pkpl-bar .pkpl-bn{display:block;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+body.pkpl-hood:not(.pkpl-wide) #root #pkpl-top .pkpl-bar .pkpl-bn em{display:block;font:600 12px/1.2 'Bricolage Grotesque',system-ui,sans-serif;font-style:normal;letter-spacing:0;text-transform:none;color:rgba(242,237,227,.6);margin-top:2px}
+body.pkpl-hood:not(.pkpl-wide) #root #pkpl-top .pkpl-bst{flex:none;width:44px;height:44px;margin-top:-6px;display:grid;place-items:center;border:0;border-radius:50%;background:transparent;color:#F2EDE3;cursor:pointer}
+body.pkpl-hood:not(.pkpl-wide) #root #pkpl-top .pkpl-bst svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;transform:none!important}
+body.pkpl-hood:not(.pkpl-wide) #root #pkpl-top .pkpl-bst:active{background:rgba(242,237,227,.12)}
+body.pkpl-hood:not(.pkpl-wide) #root #pkpl-top .pkpl-stepl{display:none!important}
+.pkpl-was.pkpl-wcur{stroke:#FFE7A3;stroke-opacity:.55;stroke-width:2;fill:rgba(12,14,10,.22)}
+html body.pkpl-v2p #root #pkpl .pkpl-psl{font:600 19px/1.35 'Bricolage Grotesque',system-ui,sans-serif;color:#F2EDE3}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-pd{font-size:17px!important;font-weight:600!important;line-height:1.4!important}
+body.pkpl-hood:not(.pkpl-wide) #root #pkpl-top .pkpl-bar .pkpl-bn em{color:#E9B93C;font-weight:700;letter-spacing:.04em}
+html body.pkpl-v2p #root #pkpl .pkpl-ps .pkpl-psl{font-size:19px!important;line-height:1.35!important;font-weight:600!important;color:#F2EDE3}
+
+/* Zale, Nov 22 evening: the experience panel is a menu first. Each place gets its photo (thumbs from tools/places_r1/thumbs.py) with its map emblem on the corner; bigger names; the long description lives on the place pages */
+html body #root #pkpl .pkpl-pr .pkpl-tw{position:relative;flex:none;display:block;border-radius:8px;overflow:visible}
+html body #root #pkpl .pkpl-pr .pkpl-tw .pkpl-tp{display:block;width:100%;height:100%;object-fit:cover;border-radius:8px;opacity:1}
+html body #root #pkpl .pkpl-pr .pkpl-tw .pkpl-te{position:absolute;left:-6px;bottom:-6px;width:42%;height:42%;padding:2px;border-radius:50%;background:#12160F;object-fit:contain;opacity:1}
+/* phone: one column, 72px photos, 18px names */
+html body.pkpl-v2p #root #pkpl .pkpl-ps .pkpl-psls:has(.pkpl-prp){grid-template-columns:1fr}
+html body.pkpl-v2p #root #pkpl .pkpl-ps .pkpl-pr.pkpl-prp{min-height:88px;gap:16px;padding:8px 2px 8px 6px}
+html body.pkpl-v2p #root #pkpl .pkpl-ps .pkpl-pr.pkpl-prp .pkpl-tw{width:72px;height:72px}
+html body.pkpl-v2p #root #pkpl .pkpl-ps .pkpl-pr.pkpl-prp .pkpl-tw img{width:auto;height:auto}
+html body.pkpl-v2p #root #pkpl .pkpl-ps .pkpl-pr.pkpl-prp .pkpl-tw .pkpl-tp{width:72px;height:72px}
+html body.pkpl-v2p #root #pkpl .pkpl-ps .pkpl-pr.pkpl-prp .pkpl-tw .pkpl-te{width:30px;height:30px}
+html body.pkpl-v2p #root #pkpl .pkpl-ps .pkpl-pr.pkpl-prp b{font-size:18px}
+html body.pkpl-v2p #root #pkpl .pkpl-ps .pkpl-pr.pkpl-prp small{font-size:15px}
+@media (min-width:600px) and (min-height:600px){html body.pkpl-v2p #root #pkpl .pkpl-ps .pkpl-psls:has(.pkpl-prp){grid-template-columns:1fr 1fr}}
+/* desktop: after a pick the pressed button answers the question, so the headline steps aside and the places get its room */
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-title.pkpl-tx .pkpl-gk{display:none}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-pl.pkpl-cols .pkpl-pr.pkpl-prp .pkpl-tw{width:calc(var(--pkpl-rh,44px) * .86);height:calc(var(--pkpl-rh,44px) * .86)}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-pl.pkpl-cols .pkpl-pr.pkpl-prp .pkpl-tw .pkpl-tp{width:100%;height:100%;opacity:1}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-pl.pkpl-cols .pkpl-pr.pkpl-prp .pkpl-tw .pkpl-te{width:44%;height:44%;opacity:1}
+/* phone neighborhood sheet: it stops on purpose, the whole photo plus the top of the next line (Zale, Nov 22 evening) */
+@media (max-width:599px){html body #root #pkpl-top .pkpl-hero{height:max(170px,min(clamp(250px,40svh,340px),calc(var(--pkpl-open,444px) - 102px)))!important}
+  html body #root #pkpl-top.pkpl-has .pkpl-hero,html body #root #pkpl-top .pkpl-has .pkpl-hero{height:max(150px,min(clamp(190px,24svh,220px),calc(var(--pkpl-open,444px) - 102px)))!important}}
+/* phone: the bar above the photo already names the place and the experience, so the photo keeps just its one line (no third repeat) */
+@media (max-width:599px){html body.pkpl-v2p #root #pkpl-top .pkpl-hi .pkpl-kind,html body.pkpl-v2p #root #pkpl-top .pkpl-hi .pkpl-nmrow{display:none!important}}
+/* desktop: the photo fills the row; the map lights the place on hover, so no emblem badge at this size */
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-pl.pkpl-cols .pkpl-pr.pkpl-prp{min-height:var(--pkpl-rh,44px);padding-top:2px;padding-bottom:2px}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-pl.pkpl-cols .pkpl-pr.pkpl-prp .pkpl-tw{width:calc(var(--pkpl-rh,44px) - 7px);height:calc(var(--pkpl-rh,44px) - 7px)}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-pl.pkpl-cols .pkpl-pr.pkpl-prp .pkpl-tw .pkpl-te{display:none}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-pl.pkpl-cols .pkpl-pr.pkpl-prp .pkpl-tw .pkpl-tp{border-radius:6px}
+/* short laptops (3 columns): names may take two lines rather than cut off; tighter photo gap; the experience buttons and the count fit their boxes */
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-pl.pkpl-cols.pkpl-c3 .pkpl-pr.pkpl-prp{gap:8px}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-pl.pkpl-cols.pkpl-c3 .pkpl-pr.pkpl-prp b{font-size:15px;line-height:1.1;white-space:normal;overflow:visible;text-overflow:clip}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-pl.pkpl-cols.pkpl-c3 .pkpl-pr.pkpl-prp span{min-width:0;overflow:visible}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-tv .pkpl-g2 .pkpl-xe{gap:5px;padding-left:4px;padding-right:4px}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-tv .pkpl-g2 .pkpl-xe span{font-size:13.5px}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-pc{flex-wrap:nowrap}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-tv .pkpl-pc .pkpl-pcn{letter-spacing:.1em;white-space:nowrap}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-pl.pkpl-cols.pkpl-c3{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-pl.pkpl-cols.pkpl-c3 .pkpl-pr.pkpl-prp b{font-size:14px}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-tv .pkpl-g2 .pkpl-xe span{font-size:12.5px;letter-spacing:-.01em}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-tv .pkpl-g2 .pkpl-xe svg{flex:none;width:13px;height:13px}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-tv .pkpl-pc .pkpl-pcn{font-size:10.5px}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-tv .pkpl-g2 .pkpl-xe{flex-direction:column;gap:3px;padding:3px 2px}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-tv .pkpl-pc b{font-size:21px}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-tv .pkpl-pc .pkpl-pcn{letter-spacing:.08em}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-pc{flex-wrap:wrap;row-gap:6px}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-pl.pkpl-cols.pkpl-c3 .pkpl-pr.pkpl-prp b{font-size:13.5px}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-pl.pkpl-cols.pkpl-c3 .pkpl-pr.pkpl-prp{gap:6px}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-pl.pkpl-cols.pkpl-c3 .pkpl-pr.pkpl-prp .pkpl-tw{width:calc(var(--pkpl-rh,44px) - 10px);height:calc(var(--pkpl-rh,44px) - 10px)}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-pl.pkpl-cols.pkpl-c3 .pkpl-pr.pkpl-prp{padding-left:0;padding-right:0;gap:5px}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-title:not(.pkpl-tv) .pkpl-pc{flex-wrap:nowrap}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-pc .pkpl-pcn{letter-spacing:.1em;white-space:nowrap}
+@media (max-width:1400px){html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-pc .pkpl-pcn{font-size:11px;letter-spacing:.08em}html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-pc{gap:8px}}
+/* Zale, Nov 22 17:50: phone neighborhood photo fades into the page at the bottom so the half-open sheet reads as "there's more" */
+@media (max-width:599px){html body.pkpl-v2p #root #pkpl-top .pkpl-hero::after{content:"";position:absolute;left:0;right:0;bottom:0;height:26px;background:linear-gradient(180deg,rgba(43,38,40,0) 0,rgba(43,38,40,.8) 60%,#2B2628 100%);pointer-events:none;z-index:2}
+}
+/* desktop is back to the map icons (Zale 17:50), a touch bigger now that the headline steps aside */
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-pl.pkpl-cols .pkpl-pr img{width:calc(var(--pkpl-rh,44px) * .76);height:calc(var(--pkpl-rh,44px) * .76);opacity:.9}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-pl.pkpl-cols.pkpl-c3{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-pl.pkpl-cols.pkpl-c3 .pkpl-pr{gap:6px;padding-left:0;padding-right:0}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-pl.pkpl-cols.pkpl-c3 .pkpl-pr b{font-size:14.5px;line-height:1.1;white-space:normal}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-pl.pkpl-cols.pkpl-c3 .pkpl-pr b{overflow:visible;text-overflow:clip;font-size:14px}html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-pl.pkpl-cols.pkpl-c3 .pkpl-pr span{min-width:0;overflow:visible}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-pl.pkpl-cols.pkpl-c3 .pkpl-pr b{white-space:normal!important;font-size:14px!important;line-height:1.1!important}html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-pl.pkpl-cols.pkpl-c3 .pkpl-pr{padding-left:0!important;padding-right:0!important}
+/* Zale, Nov 22 17:55: half open, the photo runs right to the sheet's visible edge and a little past it, softly faded at the bottom; nothing below it shows until you pull up */
+@media (max-width:599px){
+  html body.pkpl-v2p #root #pkpl-top .pkpl-hero,html body.pkpl-v2p #root #pkpl-top.pkpl-has .pkpl-hero,html body.pkpl-v2p #root #pkpl-top .pkpl-has .pkpl-hero{height:max(220px,calc(var(--pkpl-open,444px) - 58px + 40px))!important}
+  html body.pkpl-v2p #root #pkpl-top .pkpl-hero::after{height:92px!important;background:linear-gradient(180deg,rgba(43,38,40,0) 0,rgba(43,38,40,.5) 58%,#2B2628 100%)!important}
+  html body.pkpl-v2p #root #pkpl-top .pkpl-hi:not(.pkpl-map){padding-bottom:76px}
+  html body.pkpl-v2p #root #pkpl-top .pkpl-dots{bottom:34px}}
+/* Zale, Nov 22 18:40: arrival leads with the hook; the question is a small label right on the experience buttons */
+html body.pkpl-v2p #root #pkpl .pkpl-psbig.pkpl-hook1{font-size:clamp(24px,6.6vw,30px);line-height:1.08}
+html body.pkpl-v2p #root #pkpl .pkpl-psl.pkpl-psl0{font-size:16px;margin-top:2px;color:rgba(242,237,227,.8)}
+html body.pkpl-v2p:not(.pkpl-hood) #root #pkpl .pkpl-psq:not(.pkpl-psq0){color:#E9B93C;font-size:12px;letter-spacing:.14em}
+/* desktop arrival (Zale, Nov 22 19:25): the hook in big type, then a small gold question sitting on the buttons */
+html body.pkpl-v2 #root #pkpl .pkpl-gk h2.pkpl-hook1{font-size:25px!important;line-height:1.12!important}
+html body.pkpl-v2 #root #pkpl .pkpl-gk p.pkpl-ask{margin:18px 0 0;font:800 12px/1 'Bricolage Grotesque',system-ui,sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#E9B93C;white-space:normal}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-tv .pkpl-gk h2.pkpl-hook1{font-size:24px!important}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-title:not(.pkpl-tx) .pkpl-pd:empty{display:none}
+/* Zale, Nov 22 19:31: desktop title stays put after a pick (no jump), and is small enough to sit above the fold */
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-title.pkpl-tx .pkpl-gk{display:block!important}
+html body.pkpl-v2 #root #pkpl .pkpl-gk h2.pkpl-hook1{font-size:19px!important;line-height:1.18!important;letter-spacing:.03em}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-tv .pkpl-gk h2.pkpl-hook1{font-size:17px!important}
+html body.pkpl-v2 #root #pkpl .pkpl-gk p.pkpl-ask{margin-top:14px}
+html body.pkpl-v2 #root #pkpl .pkpl-gk p.pkpl-ask{font-size:12px!important;letter-spacing:.16em!important;margin:12px 0 0!important}html body.pkpl-v2 #root #pkpl .pkpl-gk h2.pkpl-hook1{font-size:21px!important}html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-tv .pkpl-gk h2.pkpl-hook1{font-size:18px!important}
