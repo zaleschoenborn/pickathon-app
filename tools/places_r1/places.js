@@ -19,6 +19,7 @@
     if (XWdone || !XH) return; var d = data(); if (!d || !d.hoods) return; XWdone = true;
     var W = d.xpWords || XW; if (!W) return; M0W = W.map || {};
     Object.keys(W.XPD || {}).forEach(function (e) { XH.XPD[e] = W.XPD[e]; });
+    if (XW && XW !== W) { Object.keys(XW.XPD || {}).forEach(function (e) { XH.XPD[e] = XW.XPD[e]; }); M0W = Object.assign({}, M0W, XW.map || {}); }   /* Nov 22 19:40: Copy's newest lines (bundled from copy-review-nov22b) win until Site Build merges Copy's data.json; re-pull the bundle when Copy changes them */
     Object.keys(W.XPB || {}).forEach(function (e) { XH.XPB[e] = XH.XPB[e] || {}; Object.keys(W.XPB[e]).forEach(function (k) { XH.XPB[e][k] = W.XPB[e][k]; }); });
     HKW = W.hook || {}; DSW = W.desc || {}; WCN = W.cn || {};   /* read through hookOf/ddOf, so the shared data (and Home) are never changed */
   }
@@ -101,9 +102,12 @@
     if (out.length < 3 && e !== 'Architecture') (((XM.arch || {})[k]) || []).slice(0, 3 - out.length).forEach(function (z) { add({ i: z.f, p: z.p }); });
     return out.slice(0, e === 'Architecture' ? 8 : 5);
   }
+  function thumbOf(e, k) { var z = e && xpPhotos(e, k)[0]; return z ? 'i/th/' + z.i.split('?')[0].split('/').pop().replace(/\.\w+$/, '') + '.webp' : ''; }   /* Zale, Nov 22: menu first; small square photos made by tools/places_r1/thumbs.py */
+  function pic(e, k) { var t = thumbOf(e, k); return t ? '<span class="pkpl-tw"><img class="pkpl-tp" src="' + esc(t) + '" alt="" loading="lazy" decoding="async"><img class="pkpl-te" src="' + esc(emb(k)) + '" alt=""></span>' : '<img src="' + esc(emb(k)) + '" alt="">'; }
   function xpLine(e, k) { var b = ((XH.XPB || {})[e] || {})[k]; return b || (e === 'Architecture' ? (hookOf(data().hoods[k]) || (data().hoods[k] || {}).t || '') : XH.XPD[e] || ''); }
   function xpIcon(e) { return '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">' + (XH.XPI[e] || '') + '</svg>'; }
   function litSet() { return M && M.xp ? xpPlaces(M.xp) : []; }
+  function curGroup() { if (!M || !M.cur || !M.xp) return null; var g = litSet(); return g.length > 1 && g.indexOf(M.cur) >= 0 ? g : null; }
 
   /* ---------- the map ---------- */
   var M = null;   /* one map for the whole visit */
@@ -111,7 +115,7 @@
     var el = document.createElement('div'); el.className = 'pkpl-map'; el.setAttribute('role', 'region'); el.setAttribute('aria-label', 'Farm map');
     var shapes = ids().map(function (k) { return '<path class="pkpl-sh" data-h="' + k + '" d="' + HH.shapes[k] + '"/>'; }).join('');
     el.innerHTML =
-      '<div class="pkpl-world"><img class="pkpl-base" src="farmmap/' + (PAL27 ? 'map4' : 'map2') + '.webp?v=3" alt="" draggable="false" decoding="async"><div class="pkpl-tiles"></div>' +
+      '<div class="pkpl-world"><img class="pkpl-base" src="farmmap/' + (PAL27 ? 'map4' : 'map2') + '.webp?v=3" alt="" draggable="false" decoding="async" fetchpriority="high"><div class="pkpl-tiles"></div>' +
       '<svg class="pkpl-svg" viewBox="0 0 ' + W + ' ' + H + '" preserveAspectRatio="none" aria-hidden="true">' +
       '<defs><filter id="pkpl-glow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="9" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>' + Object.keys(AMI || {}).map(function (k) { return '<symbol id="pkpl-i-' + k + '" viewBox="0 0 24 24"><rect class="pkpl-ip" x=".75" y=".75" width="22.5" height="22.5" rx="5"/><g class="pkpl-ig" transform="translate(2.4 2.4) scale(.8)">' + AMI[k] + '</g></symbol>'; }).join('') + '</defs>' +
       '<g class="pkpl-ics">' + (MI || []).map(amUse).join('') + '</g>' +
@@ -131,20 +135,20 @@
     return M;
   }
   function minS() { if (V2 && wide()) { var cy = farmY(); return M.vh / (cy[1] - cy[0]) / 0.9; }   /* the callers allow 0.9 of this, so the farm's own height (not the art's empty bottom) fits the screen exactly */ if (v2p()) return M.vw / 1700 / 0.9;   /* phone: the whole farm fits the strip above the sheet */ return Math.min(M.vw / W, M.vh / H); }   /* MOCK: desktop zooms out no further than the farm's height */
-  function maxS() { return 2.6 * TF / (window.devicePixelRatio || 1); }
+  function maxS() { return 1.5 * TF / (window.devicePixelRatio || 1); }   /* Site Build Nov 22 (Zale: zoomed trail names not sharp): was 2.6x past the sharpest tiles; 1.5x keeps lettering crisp */
   function farmY() { return [0, union(ids())[3] + 40]; }   /* MOCK: the farm from the forest's top edge to just below the camps */
   function clampView(s, tx, ty) {   /* keep some map on screen */
     s = Math.max(minS() * 0.9, Math.min(maxS(), s));
-    if (V2 && (wide() || v2p())) {   /* MOCK (Zale, Nov 21): top and bottom lock to the screen; zoomed in, a little margin; zoomed all the way out, none */
+    if (V2 && (wide() || v2p() || top().r === 'hood')) {   /* MOCK (Zale, Nov 21): top and bottom lock to the screen; zoomed in, a little margin; zoomed all the way out, none */
       var cy = farmY(), t0 = cy[0] * s, b0 = cy[1] * s, m = Math.min(28, Math.max(0, (s / (minS() * 0.9) - 1) * 120));
-      var vb = v2p() ? clear() : { y: 0, h: M.vh };   /* phone: the farm may slide until its bottom reaches the top of the sheet */
+      var vb = v2p() ? clear() : (!wide() && top().r === 'hood') ? region() : { y: 0, h: M.vh };   /* phone: the farm may slide until its bottom reaches the top of the sheet */
       ty = b0 - t0 >= vb.h ? Math.min(m - t0, Math.max(vb.y + vb.h - b0 - m, ty)) : vb.y + (vb.h - t0 - b0) / 2;
       var l0 = 280 * s, r0 = 1980 * s, lc = !wide() ? 0 : top().r !== 'hood' ? lw() : 0;   /* left and right lock too: the farm (map units 280-1980) reaches under the column and to the right edge, no dark gap either side (Zale, Nov 21) */
       if (r0 - l0 >= M.vw) tx = Math.min(-l0, Math.max(M.vw - r0, tx));
       else if (r0 - l0 >= M.vw - lc) tx = Math.min(lc - l0, Math.max(M.vw - r0, tx));   /* Nov 21: narrower than the screen but wider than the space beside the column: it may slide anywhere from the column's edge to the right edge, so a place at the side (the Refuge) stays in view */
       else tx = lc + (M.vw - lc - (r0 - l0)) / 2 - l0;
     }
-    if (M.free) return [s, tx, ty];   /* a place was framed: its centre may sit past the map's edge (Zale, Nov 20) */
+    if (M.free || (V2 && (v2p() || (!wide() && top().r === 'hood')))) return [s, tx, ty];   /* Zale, Nov 22: on phone the farm lock above is the only limit, so places behind the sheet can be dragged up into view */   /* a place was framed: its centre may sit past the map's edge (Zale, Nov 20) */
     var mw = W * s, mh = H * s, pad = 60, lx, hx, ly, hy;
     if (mw <= M.vw) { lx = -mw * 0.25; hx = M.vw - mw * 0.75; } else { lx = M.vw - mw - pad; hx = pad; }
     if (mh <= M.vh) { ly = -mh * 0.25; hy = M.vh - mh * 0.75; } else { ly = M.vh - mh - pad; hy = pad; }
@@ -179,8 +183,8 @@
       if (!d || !D4[k]) return; var ar = { up: '\u2191', down: '\u2193', left: '\u2190', right: '\u2192' }[d];
       var px = d === 'left' ? cr.x + 8 : d === 'right' ? cr.x + cr.w - 8 : Math.max(cr.x + 70, Math.min(cr.x + cr.w - (d === 'down' ? 170 : 70), x)), py = d === 'up' ? cr.y + 8 : d === 'down' ? cr.y + cr.h - 52 : Math.max(cr.y + 30, Math.min(cr.y + cr.h - 60, y));
       out.push('<button type="button" class="pkpl-edgetag pkpl-et-' + d + '" data-et="' + k + '" data-mx="' + mx + '" data-my="' + my + '" style="left:' + Math.round(px) + 'px;top:' + Math.round(py) + 'px">' + ar + ' ' + esc(D4[k].n) + '</button>'); });
-    var byEdge = {}; out = out.filter(function (h) { var d = /pkpl-et-(\w+)/.exec(h)[1]; byEdge[d] = (byEdge[d] || 0) + 1; return byEdge[d] <= (wide() ? 5 : 3); });
-    var extra = Object.keys(byEdge).reduce(function (a, d) { return a + Math.max(0, byEdge[d] - (wide() ? 5 : 3)); }, 0);
+    var byEdge = {}; out = out.filter(function (h) { var d = /pkpl-et-(\w+)/.exec(h)[1]; byEdge[d] = (byEdge[d] || 0) + 1; return byEdge[d] <= (wide() ? 5 : 2); });
+    var extra = Object.keys(byEdge).reduce(function (a, d) { return a + Math.max(0, byEdge[d] - (wide() ? 5 : 2)); }, 0);
     if (extra) out.push('<button type="button" class="pkpl-edgetag pkpl-et-down pkpl-etall" style="left:' + Math.round(cr.x + 60) + 'px;top:' + Math.round(cr.y + cr.h - 52) + 'px">' + esc((M0W.moreTag || '\u2193 {n} more').replace('{n}', extra)) + '</button>');
     host.innerHTML = out.join('');   /* round 3: never a wall of tags */
     ['up', 'down'].forEach(function (d) { var T = $$('.pkpl-et-' + d, host).sort(function (a, b) { return a.offsetLeft - b.offsetLeft; }), edge = -1e9;   /* tags on one edge never overlap (round 2) */
@@ -263,7 +267,7 @@
   /* the visible part of the map (phone: above the sheet) */
   function lw() { return Math.round(Math.max(400, Math.min(480, window.innerWidth * 0.32))); }   /* desktop left column: phone-card width, the map is the hero (Zale, Nov 19) */
   function sheetOpen() { var sc = scroller(); return openH(sc ? sc.clientHeight : 600); }   /* the card opens to the phone's scroll area less a map margin at the top (Nov 20, Zale) */
-  function openH(vh) { return Math.round(vh * 0.6) + (V2 && !wide() ? 50 : 0); }   /* Zale, Nov 22: about 50px taller on phone and tablet so prev/next shows above the experience row */   /* open: the sheet covers 60%, the map shows above it (the yesterday default, Zale, Nov 20) */
+  function openH(vh) { var h = Math.round(vh * 0.6) + (V2 && !wide() && vh > 500 ? 50 : 0); return V2 && !wide() && window.innerWidth < 600 ? Math.max(h, Math.min(272, Math.round(vh * 0.66))) : h; }   /* Zale, Nov 22 evening: short phones still open far enough for the whole photo plus a peek (the hero shrinks to fit, places.css) */   /* Zale, Nov 22: about 50px taller on phone and tablet so prev/next shows above the experience row */   /* open: the sheet covers 60%, the map shows above it (the yesterday default, Zale, Nov 20) */
   function v2Fit(v, L, one) {   /* MOCK round 4: no empty margin on the right; the framed places sit against the right side and the map runs under the left column */
     var b = union(L), s1 = v[0], tx = v[1], east = b[2] * s1 + tx, lim = M.vw - (one ? 190 : 84);
     if (east < lim) tx += lim - east;
@@ -272,6 +276,18 @@
   function v2p() { return V2 && !wide() && top().r !== 'hood'; }
   function xbH() { var x = M && $('.pkpl-xb', M.el); return x ? x.offsetHeight : 56; }
   function hdH() { var x = M && $('.pkpl-psh2', M.el), q = M && $('.pkpl-psq', M.el); return x && v2p() ? x.offsetHeight + (q ? q.offsetHeight : 0) : 0; }   /* the cap (handle, title) plus the question line */
+  function fitList(pl, t, n) {   /* Zale, Nov 22: the list grows to fill the room in the panel: bigger emblems and names, two columns, three only when two won't fit */
+    if (!wide() || !n) return; pl.style.removeProperty('--pkpl-rh'); pl.classList.remove('pkpl-c3'); t.classList.remove('pkpl-tv');
+    var need = function () { var ab0 = pl.nextElementSibling && pl.nextElementSibling.classList.contains('pkpl-ab') ? pl.nextElementSibling.offsetHeight + 18 : 0; return t.getBoundingClientRect().bottom - pl.getBoundingClientRect().top - 28 - ab0; };
+    if (need() < Math.ceil(n / (n > 9 ? 3 : 2)) * (n > 9 ? 36 : 50)) t.classList.add('pkpl-tv');   /* Zale, Nov 22: short laptops (1280x720) tighten the headline and grid so every place fits above the bottom edge */
+    var ab = pl.nextElementSibling && pl.nextElementSibling.classList.contains('pkpl-ab') ? pl.nextElementSibling : null;
+    var room = t.getBoundingClientRect().bottom - pl.getBoundingClientRect().top - 38 - (ab ? ab.offsetHeight + 18 : 0);
+    var rows = Math.ceil(n / 2), rh = Math.floor(room / rows);
+    if (rh < 34 && n > 9) { pl.classList.add('pkpl-c3'); rows = Math.ceil(n / 3); rh = Math.floor(room / rows); }
+    rh = Math.max(pl.classList.contains('pkpl-c3') && !t.classList.contains('pkpl-tv') ? 40 : 34, Math.min(76, rh)); pl.style.setProperty('--pkpl-rh', rh + 'px');
+    var bdf = pl.closest('.pkpl-body'), ovf = bdf ? bdf.scrollHeight - bdf.clientHeight : 0; if (ovf > 0 && ovf < 60) { rh = Math.max(30, rh - Math.ceil(ovf / rows)); pl.style.setProperty('--pkpl-rh', rh + 'px'); }   /* a last few pixels over (a wrapped count line): trim the rows, never scroll */
+    t.classList.remove('pkpl-tv2'); if (t.classList.contains('pkpl-tv') && (ab || pl).getBoundingClientRect().bottom > t.getBoundingClientRect().bottom - 6) t.classList.add('pkpl-tv2');   /* still over: the summary goes to one line */
+  }
   function psH() { if (!M || !v2p()) return 0; var st = M.ps == null ? 1 : M.ps, top2 = xbH() + hdH(); if (st === 0) return 0; if (st === 2) { var full = Math.max(0, M.vh - top2), ps2 = $('.pkpl-ps', M.el), inner = ps2 && ps2.firstElementChild; if (window.innerWidth >= 600 && ps2) { var need = 0; Array.prototype.forEach.call(ps2.children, function (c) { need = Math.max(need, c.offsetTop + c.offsetHeight); }); if (need > 0) return Math.min(full, need + 24); } return full; }   /* Zale, Nov 22: on tablet a short list stops where it ends, the map shows above */
     var ps = $('.pkpl-ps', M.el), l1 = ps && $('.pkpl-psl', ps); return l1 ? l1.offsetTop + l1.offsetHeight + 14 : 96; }   /* Zale, Nov 22 06:19: half-open shows the title and summary only; pull up for the neighborhoods */
   function psPlace() {   /* size the sheet and slide the experience row and the handle on top of it */
@@ -287,11 +303,19 @@
   function psTouch() {   /* swipe up on the words, the row or the handle: full; swipe down at the top: half, then folded (same feel as the neighborhood sheet) */
     var t0 = null, inP = function (el) { return el && el.closest && el.closest('.pkpl-ps,.pkpl-psh2,.pkpl-psq,.pkpl-xb'); };
     M.el.addEventListener('touchstart', function (e) { if (!v2p() || e.touches.length !== 1 || !inP(e.target)) { t0 = null; return; } var p = e.touches[0]; t0 = { x: p.clientX, y: p.clientY, el: e.target, done: 0, sc: $('.pkpl-ps', M.el).scrollTop }; }, { passive: true });
+    var hAt = function (st) { var o = M.ps; M.ps = st; var h = psH(); M.ps = o; return h; };   /* Zale, Nov 22: the sheet follows the finger and settles at the nearest stop */
+    var place = function (h) { var ps = $('.pkpl-ps', M.el), hd = $('.pkpl-psh2', M.el), qq = $('.pkpl-psq', M.el), qh = qq ? qq.offsetHeight : 0, xh = xbH(); if (ps) { ps.style.height = h + 'px'; ps.classList.toggle('pkpl-ps0', h < 2); } if (hd) hd.style.bottom = (h + xh + qh) + 'px'; };
     M.el.addEventListener('touchmove', function (e) { if (!t0 || t0.done) return; var p = e.touches[0], dx = p.clientX - t0.x, dy = p.clientY - t0.y, ps = $('.pkpl-ps', M.el), onRow = t0.el.closest('.pkpl-xb,.pkpl-psh2,.pkpl-psq');
-      if (Math.abs(dy) < 10 || Math.abs(dy) < Math.abs(dx) * 1.2) return;
-      if (dy < 0 && M.ps < 2) { t0.done = 1; if (e.cancelable) e.preventDefault(); psSet(M.ps + 1); return; }
-      if (dy > 0 && (onRow || ps.scrollTop <= 0) && M.ps > 0) { t0.done = 1; if (e.cancelable) e.preventDefault(); psSet(M.ps - 1); } }, { passive: false });
-    M.el.addEventListener('touchend', function () { t0 = null; }, { passive: true });
+      if (!t0.drag) {
+        if (Math.abs(dy) < 8 || Math.abs(dy) < Math.abs(dx) * 1.2) return;
+        var up = dy < 0; if ((up && M.ps < 2) || (!up && (onRow || ps.scrollTop <= 0) && M.ps > 0)) { t0.drag = 1; t0.h0 = hAt(M.ps); t0.max = hAt(2); t0.y = p.clientY; dy = 0; M.el.classList.add('pkpl-psdrag'); } else { t0.done = 1; return; }
+      }
+      if (e.cancelable) e.preventDefault(); t0.h = Math.max(0, Math.min(t0.max, t0.h0 - dy)); t0.v = dy - (t0.ly || 0); t0.ly = dy; place(t0.h); }, { passive: false });
+    M.el.addEventListener('touchend', function () { if (t0 && t0.drag) { M.el.classList.remove('pkpl-psdrag'); var h = t0.h == null ? t0.h0 : t0.h, hs = [hAt(0), hAt(1), hAt(2)], best = 0;
+        hs.forEach(function (x, k) { if (Math.abs(x - h) < Math.abs(hs[best] - h)) best = k; });
+        if (Math.abs(t0.v || 0) > 6) { var cur = M.ps; best = t0.v < 0 ? Math.max(best, Math.min(2, cur + (h > hs[cur] ? 1 : 0))) : Math.min(best, Math.max(0, cur - (h < hs[cur] ? 1 : 0))); }   /* a quick flick goes one stop that way */
+        if (best === M.ps) psPlace(); else psSet(best); }
+      t0 = null; }, { passive: true });
     M.el.addEventListener('click', function (e) { if (e.target.closest('.pkpl-psall')) { psSet(2); return; } if (e.target.closest('.pkpl-psh2')) psSet(M.ps === 2 ? 1 : M.ps + 1); });
   }
   function clear() { var r = region(), t = wide() && top().r !== 'hood' ? lw() : 0, ti = $('.pkpl-title', M.el), up = wide() ? 78 : (M.title && ti ? Math.max(0, ti.offsetHeight - 14) : 0), dn = wide() ? 8 : (top().r === 'hood' ? sheetOpen() : 150); if (v2p()) { up = 8; dn = psH() + xbH() + hdH() + 8; } if (V2 && wide()) up = 16; return { x: r.x + t, y: r.y + up, w: r.w - t, h: Math.max(160, r.h - up - dn) }; }   /* the lit places fill what is left */   /* above the experience bar and the amenity tag */
@@ -303,7 +327,9 @@
     return { x: 0, y: 0, w: M.vw, h: Math.max(160, Math.min(M.vh, Math.round(h))) };
   }
   function recenter() {   /* the sheet moved: keep the zoom, slide the selected place back to the middle of the map that shows (Zale, Nov 21) */
-    if (!M || !M.cur || !M.s) return; M.free = true; animTo(fitBox(box(M.cur), region(), 0, M.s), 480);
+    if (!M || !M.cur || !M.s) return; M.free = true; var g = curGroup(), ce = cardEl();
+    if (g && ce && ce.classList.contains('pkpl-folded')) { var b9 = box(M.cur), w9 = b9[2] - b9[0], h9 = b9[3] - b9[1], m9 = Math.max(w9, h9) * 0.6; animTo(fitBox([b9[0] - m9, b9[1] - m9, b9[2] + m9, b9[3] + m9], region(), 8), 520); return; }   /* Zale, Nov 22: folded, zoomed on your place with its neighbors around it */   /* Zale, Nov 22: folded, the map shows the whole experience, not a tight zoom on one place */
+    animTo(fitBox(box(M.cur), region(), 0, M.s), 480);
   }
   function frame(k, now) {   /* first pick zooms in; another pick while zoomed keeps the zoom and centres */
     var zoomed = M.s > minS() * 1.9 && M.cur && M.cur !== k;
@@ -315,10 +341,11 @@
   }
   function lit() {
     var k = M.cur, L = (!k && M.amen) ? Object.keys(amenHoods()) : (!k && M.xp) ? litSet() : [], d = k ? HH.shapes[k] : L.map(function (h) { return HH.shapes[h]; }).join(' ');
+    var grp = curGroup(), dLit = null; if (grp) { d = grp.map(function (h) { return HH.shapes[h]; }).join(' '); dLit = HH.shapes[k]; }   /* Zale, Nov 22: on a neighborhood page the whole experience stays lit; the place you're on gets the stronger outline */
     if (!k && V2 && M.hot && HH.shapes[M.hot]) d = HH.shapes[M.hot];   /* MOCK: the place the pointer is on is lit, everything else dims */
     $('.pkpl-veil', M.svg).setAttribute('d', d ? 'M-4000,-4000H' + (W + 4000) + 'V' + (H + 4000) + 'H-4000Z ' + d : '');
-    $('.pkpl-lit', M.svg).setAttribute('d', d);
-    $('.pkpl-was', M.svg).setAttribute('d', (!k && M.was && (M.xp || M.amen || (V2 && wide())) && HH.shapes[M.was]) || '');
+    $('.pkpl-lit', M.svg).setAttribute('d', dLit || d);   /* Zale, Nov 22: the place you're on gets the glow; the rest of its experience stays lit but softer */
+    var wp = $('.pkpl-was', M.svg); wp.setAttribute('d', grp ? grp.filter(function (h) { return h !== k; }).map(function (h) { return HH.shapes[h]; }).join(' ') : ((!k && M.was && (M.xp || M.amen || (V2 && wide())) && HH.shapes[M.was]) || '')); wp.classList.toggle('pkpl-wcur', !!grp);
     $$('.pkpl-sh', M.svg).forEach(function (p) { p.classList.toggle('on', p.getAttribute('data-h') === k); });
     M.el.classList.toggle('pkpl-picked', !!k); M.el.classList.toggle('pkpl-xpon', !k && (!!M.xp || !!M.amen));
     var full = $('[data-pl="full"]', M.el); if (full) full.hidden = !k && !M.amen && !M.xp && !(M.s > startView()[0] * 1.15);
@@ -357,10 +384,10 @@
       if (M.xp === 'Architecture') { var l2 = $('.pkpl-l', t); if (l2) l2.textContent = (XH.XPD.Architecture || '').split('. ')[0].replace(/\.?$/, '.'); }   /* MOCK: Architecture kept short (Zale, Nov 21); final words are Copy's */
       if (bd._xp !== M.xp) { bd._hk = null; pd.classList.remove('on'); pd.textContent = ''; if (!M.xp) M.s0 = null; }
       var pc = $('.pkpl-pc', bd); if (!pc) { pc = document.createElement('p'); pc.className = 'pkpl-pc'; bd.insertBefore(pc, pd); } var nL = M.xp ? litSet().length : 0; pc.textContent = M.xp ? 'In ' + nL + (nL === 1 ? ' neighborhood' : ' neighborhoods') : ''; pc.hidden = !M.xp;
-      if (!$('.pkpl-gk', t)) { var gk = document.createElement('div'); gk.className = 'pkpl-gk'; gk.innerHTML = '<p>' + ids().length + ' neighborhoods \u00b7 ' + XO.length + ' experiences</p><h2>' + esc(M0W.headline || 'What do you want to experience?') + '</h2>';   /* Zale, Nov 21: the headline is about the experience; Copy polishes */ t.insertBefore(gk, g2); }
+      if (!$('.pkpl-gk', t)) { var gk = document.createElement('div'); gk.className = 'pkpl-gk'; gk.innerHTML = '<h2 class="pkpl-hook1">' + esc(M0W.arrival || 'Each year, Pickathon builds a city of neighborhoods. Then it\u2019s gone.') + '</h2><p class="pkpl-ask">' + esc(M0W.ask || 'What do you want to do?') + '</p>';   /* Zale, Nov 22 18:40 and 19:25: the hook leads on every size; the question is a small label right on the buttons; no counts */   /* Zale, Nov 21: the headline is about the experience; Copy polishes */ t.insertBefore(gk, g2); }
       pc.innerHTML = M.xp ? '<span class="pkpl-pci">' + xpIcon(M.xp) + '</span><b>' + esc(M.xp) + '</b><span class="pkpl-pcn">' + nL + (nL === 1 ? ' neighborhood' : ' neighborhoods') + '</span>' : ''; pc.hidden = !M.xp;
-      bd._sum = M.xp ? (XH.XPD[M.xp] || '').split(/(?<=[.!?])\s/)[0] : (M0W.first || 'Point at a neighborhood to find it on the map, or pick an experience above.');
-      if (!bd._hk) pd.textContent = bd._sum; var abm = $('.pkpl-ab', bd), plm = $('.pkpl-pl', bd); if (abm && plm && abm.nextSibling !== plm) bd.insertBefore(abm, plm);
+      bd._sum = M.xp ? (XH.XPD[M.xp] || '').split(/(?<=[.!?])\s/)[0] : '';   /* arrival: the hook above says it; pointing at a place still shows its line here */
+      if (!bd._hk) pd.textContent = bd._sum; var abm = $('.pkpl-ab', bd), plm = $('.pkpl-pl', bd); if (abm && plm && plm.nextSibling !== abm) plm.after(abm);   /* Zale, Nov 22: Build with Pickathon closes the Architecture panel, after the places */
       if (!bd._lv) { bd._lv = 1; bd.addEventListener('mouseleave', function () { bd._hk = null; $$('.pkpl-pr', bd).forEach(function (x) { x.classList.remove('pkpl-hot'); }); pd.classList.remove('on'); pd.textContent = bd._sum; M.hot = null; lit(); }); }
       $$('.pkpl-xe', g2).forEach(function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-xp') === M.xp ? 'true' : 'false'); });
       bk.hidden = true;
@@ -371,17 +398,17 @@
     var v2p = V2 && !wide(); document.body.classList.toggle('pkpl-v2p', v2p);
     if (v2p) {   /* phone and upright tablet (Zale, Nov 22 'work on all form factors'): map on top, the swipe row of experiences, then the same words and places as the desktop column, in a sheet that pulls up to full and folds to the row */
       var ps = $('.pkpl-ps', M.el); if (!ps) { ps = document.createElement('div'); ps.className = 'pkpl-ps'; M.el.appendChild(ps); var hd = document.createElement('div'); hd.className = 'pkpl-psh2'; hd.innerHTML = '<button type="button" class="pkpl-psg" aria-label="Show more"><i></i></button><div class="pkpl-psht"></div>'; M.el.appendChild(hd); var qq = document.createElement('div'); qq.className = 'pkpl-psq'; qq.textContent = 'What do you want to experience?'; M.el.appendChild(qq); psTouch(); }
-      var Lp = M.xp ? litSet() : [], D3 = data().hoods, tile = function (k, line) { return '<button type="button" class="pkpl-pr" data-hp="' + k + '"><img src="' + esc(emb(k)) + '" alt=""><span><b>' + esc(D3[k].n) + '</b>' + (line ? '<small>' + esc(line) + '</small>' : '') + '</span></button>'; };
+      var Lp = M.xp ? litSet() : [], D3 = data().hoods, tile = function (k, line) { return '<button type="button" class="pkpl-pr' + (line ? ' pkpl-prp' : '') + '" data-hp="' + k + '">' + (line ? pic(M.xp, k) : '<img src="' + esc(emb(k)) + '" alt="">') + '<span><b>' + esc(D3[k].n) + '</b>' + (line ? '<small>' + esc(line) + '</small>' : '') + '</span></button>'; };
       var sum = M.xp === 'Architecture' ? (XH.XPD.Architecture || '').split('. ')[0].replace(/\.?$/, '.') : M.xp ? (XH.XPD[M.xp] || '').split(/(?<=[.!?])\s/)[0] : '';
       $('.pkpl-psht', M.el).innerHTML = M.xp ? '<div class="pkpl-psln"><span class="pkpl-pci">' + xpIcon(M.xp) + '</span><span class="pkpl-psn">' + Lp.length + (Lp.length === 1 ? ' neighborhood' : ' neighborhoods') + '</span><span class="pkpl-psmore">' + (M.ps === 2 ? 'Map' : 'See ' + (Lp.length === 1 ? 'it' : 'them')) + '</span></div>'   /* Zale, Nov 22 06:46 trims: the pressed button already names the experience, so a small line that opens the list */
-        : '<h2 class="pkpl-psbig">What do you want to experience?</h2>';   /* Zale, Nov 22 06:19: arrival asks, nothing picked */
+        : '<h2 class="pkpl-psbig pkpl-hook1">' + esc(M0W.arrival || 'Each year, Pickathon builds a city of neighborhoods. Then it\u2019s gone.') + '</h2>';   /* Zale, Nov 22 18:40: the hook leads (his Summer camp line, copy_review-48); the question moves down onto the buttons */   /* Zale, Nov 22 06:19: arrival asks, nothing picked */
       if (M.xp) ps.innerHTML = '<p class="pkpl-psl">' + esc(sum) + '</p>'
-        + (M.xp === 'Architecture' ? '<div class="pkpl-psab"><button type="button" class="pk-cta sec pkpl-abb" data-go="build">Build with Pickathon</button></div>' : '')
-        + '<div class="pkpl-psls' + (Lp.length > 4 ? ' pkpl-psl2' : '') + '">' + Lp.map(function (k) { return tile(k, xpLine(M.xp, k)); }).join('') + '</div>';
-      else ps.innerHTML = '<p class="pkpl-psl">' + phoneFirst() + '</p>'
+        + '<div class="pkpl-psls' + (Lp.length > 4 ? ' pkpl-psl2' : '') + '">' + Lp.map(function (k) { return tile(k, xpLine(M.xp, k)); }).join('') + '</div>'
+        + (M.xp === 'Architecture' ? '<div class="pkpl-psab"><button type="button" class="pk-cta sec pkpl-abb" data-go="build">Build with Pickathon</button></div>' : '');   /* Zale, Nov 22: Build with Pickathon closes the list on every size */
+      else ps.innerHTML = '<p class="pkpl-psl pkpl-psl0"><button type="button" class="pkpl-psall">' + esc(M0W.seeAll || 'See every neighborhood') + '</button></p>'
         + [['stage', 'Stages'], ['around', 'Hangouts'], ['camp', 'Camping']].map(function (g) { var ks = ids().filter(function (k) { return (D3[k].k || 'around') === g[0]; }); return ks.length ? '<p class="pkpl-gh">' + g[1] + '</p><div class="pkpl-psls pkpl-pst">' + ks.map(function (k) { return tile(k); }).join('') + '</div>' : ''; }).join('');
-      if (ps._xp !== M.xp) { var px2 = ps._xp; ps._xp = M.xp; ps.scrollTop = 0; if (M.ps === 0 || M.ps == null) M.ps = 1; ps.classList.remove('pkpl-xf'); void ps.offsetWidth; if (px2 !== undefined && !calm()) ps.classList.add('pkpl-xf'); var xr = $('.pkpl-xb', M.el), xs = M.xp && xr && $('.pkpl-xe[data-xp="' + M.xp + '"]', xr); if (xs) { var cx = xs.offsetLeft + xs.offsetWidth / 2 - xr.clientWidth / 2; if (xs.offsetLeft < xr.scrollLeft + 8 || xs.offsetLeft + xs.offsetWidth > xr.scrollLeft + xr.clientWidth - 8) xr.scrollTo({ left: Math.max(0, cx), behavior: calm() ? 'auto' : 'smooth' }); } }   /* the picked button is never half off the edge (Site Build, Nov 22) */
-      var qq2 = $('.pkpl-psq', M.el); if (qq2) qq2.classList.add('pkpl-psq0');   /* the question line is dropped: arrival's title asks it, and after a pick the pressed button answers it */
+      if (ps._xp !== M.xp) { var px2 = ps._xp; ps._xp = M.xp; ps.scrollTop = 0; M.ps = 1;   /* Zale, Nov 22: a new experience always opens half, so the map shows it lit */ ps.classList.remove('pkpl-xf'); void ps.offsetWidth; if (px2 !== undefined && !calm()) ps.classList.add('pkpl-xf'); var xr = $('.pkpl-xb', M.el), xs = M.xp && xr && $('.pkpl-xe[data-xp="' + M.xp + '"]', xr); if (xs) { var cx = xs.offsetLeft + xs.offsetWidth / 2 - xr.clientWidth / 2; if (xs.offsetLeft < xr.scrollLeft + 8 || xs.offsetLeft + xs.offsetWidth > xr.scrollLeft + xr.clientWidth - 8) xr.scrollTo({ left: Math.max(0, cx), behavior: calm() ? 'auto' : 'smooth' }); } }   /* the picked button is never half off the edge (Site Build, Nov 22) */
+      var qq2 = $('.pkpl-psq', M.el); if (qq2) { qq2.classList.toggle('pkpl-psq0', !!M.xp); qq2.textContent = M.xp ? '' : (M0W.ask || 'What do you want to do?'); }   /* the question line is dropped: arrival's title asks it, and after a pick the pressed button answers it */
       psPlace(); var xr3 = $('.pkpl-xb', M.el); if (xr3 && !xr3._end) { xr3._end = 1; xr3.addEventListener('scroll', xbEnd, { passive: true }); } setTimeout(xbEnd, 400);
     } else { var ps0 = $('.pkpl-ps', M.el); if (ps0) ps0.style.height = ''; var xb0 = $('.pkpl-xb', M.el); if (xb0) xb0.style.bottom = ''; }
     var ab = $('.pkpl-ab', t);   /* Architecture: what it is and how to build with us (Zale, Nov 19: it's how sponsors find us) */
@@ -395,7 +422,7 @@
     }
     if (pl && !M.xp && !M.amen) { pl.innerHTML = '<div class="pkpl-pg">' + XO.map(function (e) { return '<button type="button" class="pkpl-xe" data-xp="' + e + '">' + xpIcon(e) + '<span>' + e + '</span></button>'; }).join('') + '</div>'; return; }   /* arrival: choose your adventure right under the title */
     if (pl) pl.innerHTML = L.length ? L.map(function (k) { var h = data().hoods[k]; return '<button type="button" class="pkpl-pr" data-hp="' + k + '"><img src="' + esc(emb(k)) + '" alt=""><span><b>' + esc(h.n) + '</b><small>' + esc(xpLine(M.xp, k)) + '</small></span></button>'; }).join('') : '';
-    if (v2 && pl) { pl.classList.remove('pkpl-cmp'); pl.classList.add('pkpl-cols'); pl.classList.toggle('pkpl-c3', L.length > 9); pl.classList.toggle('pkpl-c1', L.length <= 4); t.classList.add('pkpl-long'); }
+    if (v2 && pl) { pl.classList.remove('pkpl-cmp'); pl.classList.add('pkpl-cols'); pl.classList.remove('pkpl-c1'); pl.classList.toggle('pkpl-c3', false); t.classList.add('pkpl-long'); fitList(pl, t, L.length); }
     if (v2) { if (pl) pl.classList.remove('pkpl-many'); t.classList.remove('pkpl-tight', 'pkpl-tight2', 'pkpl-tight3', 'pkpl-tight4', 'pkpl-tight5', 'pkpl-tight6'); return; }
     if (pl && wide()) { pl.classList.remove('pkpl-many'); t.classList.remove('pkpl-tight', 'pkpl-tight2', 'pkpl-tight3', 'pkpl-tight4', 'pkpl-tight5', 'pkpl-tight6'); var over = function () { return t.scrollHeight > t.clientHeight + 2; };   /* fit without scrolling: full rows, then a compact grid, then a tighter title (Zale, Nov 19) */
       if (over()) t.classList.add('pkpl-tight'); if (L.length && over()) pl.classList.add('pkpl-many'); if (over()) t.classList.add('pkpl-tight2'); if (over()) t.classList.add('pkpl-tight3'); if (over()) t.classList.add('pkpl-tight4'); if (over()) t.classList.add('pkpl-tight5'); if (over()) t.classList.add('pkpl-tight6'); }
@@ -405,7 +432,7 @@
     box.innerHTML = L.map(function (k) { return '<span class="pkpl-xl" data-h="' + k + '">' + esc(data().hoods[k].n) + (C && C[k] ? ' · ' + C[k] : '') + '</span>'; }).join(''); xlPlace();
   }
   function nmDraw() {   /* the map's own lettering, crisp, for the lit places (Zale, Nov 19: no added tags) */
-    var C = (!M.cur && M.amen) ? amenHoods() : null, L = M.cur ? [M.cur] : C ? Object.keys(C) : M.xp ? litSet() : [];   /* Nov 22: the place you're on gets the same crisp lettering as lit places */
+    var C = (!M.cur && M.amen) ? amenHoods() : null, L = curGroup() || (M.cur ? [M.cur] : C ? Object.keys(C) : M.xp ? litSet() : []);   /* Nov 22: the place you're on gets the same crisp lettering as lit places */
     $$('.pkpl-nms path', M.svg).forEach(function (p) { var k = p.getAttribute('data-h'), on = L.indexOf(k) >= 0, nb = (NB || {})[k]; p.classList.toggle('on', on); p.classList.toggle('dim', !on && L.length > 0); if (!on) p.removeAttribute('transform');   /* Zale, Nov 22: the other places' names stay readable over the veil */
       if (on && nb) { var cx = (nb[0] + nb[2]) / 2, cy = (nb[1] + nb[3]) / 2, f = Math.max(1, Math.min(1.6, 12 / ((nb[3] - nb[1]) * M.s))); p.setAttribute('transform', 'translate(' + cx + ' ' + cy + ') scale(' + f.toFixed(2) + ') translate(' + (-cx) + ' ' + (-cy) + ')'); } });
   }
@@ -416,6 +443,7 @@
   }
   function fitLit() {
     var L = M.amen ? Object.keys(amenHoods()) : litSet(); if (!L.length) { home(); return; }
+    if (L.length > 1 && L.indexOf('curation') >= 0) L = L.filter(function (k) { return k !== 'curation'; });   /* Zale, Nov 22: Curation sits off the farm in its own box; framing on it zooms the farm out to nothing. Its box and edge tag show it */
     if (V2 && wide() && L.length <= 3) { var rgS = clear(), fS = fitBox(union(L), rgS, 36); var vS = v2Fit(fitBox(union(L), rgS, 36, Math.min(fS[0], startView()[0] * 2)), L); M.s0 = vS[0]; M.free = true; animTo(vS, 560); return; }   /* Nov 21: one to three places never zoom closer than twice the overview (Family) */
     if (V2 && wide() && L.length > 3 && !/[?&]z=0/.test(location.search)) {   /* MOCK: fill the screen: frame the heart of this experience, the far places sit off the edge and a drag or a row brings them in */
       var reg = clear(), s0 = fitBox(union(L), reg, 18)[0], K = L.slice(), up = L.filter(function (k) { return (box(k)[1] + box(k)[3]) / 2 < 2900; }), min = Math.ceil(L.length * 0.6);
@@ -634,14 +662,14 @@
     var days = Object.keys(S).sort(), has = days.length > 0;
     if (TOP.k !== k) { TOP.k = k; TOP.all = false; TOP.i = 0; TOP.day = days[0] || ''; if (FROM && FROM.h !== k) FROM = null; }
     if (days.indexOf(TOP.day) < 0) TOP.day = days[0] || '';
-    var ph = XE ? xpPhotos(XE, k) : photos(k); if (!ph.length) ph = photos(k); var L = (XE && xpPlaces(XE).length > 1 && xpPlaces(XE).indexOf(k) >= 0) ? xpPlaces(XE) : ids(), j = L.indexOf(k), prev = L[(j - 1 + L.length) % L.length], next = L[(j + 1) % L.length];
+    var ph = XE ? xpPhotos(XE, k) : photos(k); if (!ph.length) ph = photos(k); var L = (XE && xpPlaces(XE).length > 1 && xpPlaces(XE).indexOf(k) >= 0) ? xpPlaces(XE) : ids(), j = L.indexOf(k), prev = L[(j - 1 + L.length) % L.length], next = L[(j + 1) % L.length], stepOK = !!(XE && L.length > 1 && L.length < ids().length && j >= 0);
     var key = k + '|' + XE + '|' + (M && M.xp) + '|' + has + '|' + TOP.day + '|' + TOP.all + '|' + (FROM ? FROM.n : '') + '|' + wide();
     if (el._key === key) return; el._key = key;
     var dayN = {}; (D.days || []).forEach(function (d) { dayN[d.id] = d.n; });
     var rows = has ? S[TOP.day] : [], showN = TOP.all ? rows.length : 3;
     var html = (XH && M && wide() ? '<button type="button" class="pkpl-up" data-pk="up"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5 8 12l7 7"/></svg>Map' + (M.xp ? ' \u00b7 ' + esc(M.xp) : '') + '</button>' : '') +
-      (XH && wide() ? '<div class="pkpl-hxr" role="toolbar" aria-label="Experiences">' + XO.map(function (e) { return '<button type="button" data-pk="xprow" data-e="' + esc(e) + '" aria-pressed="' + (e === XE) + '">' + xpIcon(e) + '<span>' + esc(e) + '</span></button>'; }).join('') + '</div>' : '')   /* Zale, Nov 22: the experience row is the main navigation on every size, desktop neighborhood pages too */ + '<div class="pkpl-bar" role="button" tabindex="0" aria-expanded="true" aria-label="Show or hide ' + esc(h.n) + '"><i aria-hidden="true"></i><img class="pkpl-bi" src="' + esc(emb(k)) + '" alt=""><span class="pkpl-bn">' + esc(h.n) + (XE ? '<small> \u00b7 ' + esc(XE) + '</small>' : '') + '</span></div>' + '<div class="pkpl-sheet' + (has ? ' pkpl-has' : '') + '">' +
-      '<div class="pkpl-grab" aria-hidden="true"><i></i></div>' +
+      (XH && wide() ? '<div class="pkpl-hxr" role="toolbar" aria-label="Experiences">' + XO.map(function (e) { return '<button type="button" data-pk="xprow" data-e="' + esc(e) + '" aria-pressed="' + (e === XE) + '">' + xpIcon(e) + '<span>' + esc(e) + '</span></button>'; }).join('') + '</div>' : '')   /* Zale, Nov 22: the experience row is the main navigation on every size, desktop neighborhood pages too */ + '<div class="pkpl-bar" role="button" tabindex="0" aria-expanded="true" aria-label="Show or hide ' + esc(h.n) + '"><i aria-hidden="true"></i>' + (stepOK ? '<button type="button" class="pkpl-bst l" data-pk="step" data-to="' + prev + '" aria-label="Previous: ' + esc(D.hoods[prev].n) + '"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5 8 12l7 7"/></svg></button>' : '') + '<span class="pkpl-bmid"><img class="pkpl-bi" src="' + esc(emb(k)) + '" alt=""><span class="pkpl-bn">' + esc(h.n) + (XE || stepOK ? '<em>' + esc([XE, stepOK ? (j + 1) + ' of ' + L.length : ''].filter(Boolean).join(' \u00b7 ')) + '</em>' : '') + '</span></span>' + (stepOK ? '<button type="button" class="pkpl-bst r" data-pk="step" data-to="' + next + '" aria-label="Next: ' + esc(D.hoods[next].n) + '"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>' : '') + '</div>' + '<div class="pkpl-sheet' + (has ? ' pkpl-has' : '') + '">' +
+      (wide() ? '<button type="button" class="pkpl-grab pkpl-dgrab" data-pk="dgrab" aria-label="Show or hide the experiences"><i></i></button>' : '<div class="pkpl-grab" aria-hidden="true"><i></i></div>') +
       '<div class="pkpl-hero" aria-roledescription="carousel" aria-label="' + esc(h.n) + ' photos">' +
       ph.map(function (p, i) { return '<img src="' + esc(p.i) + '" alt="" style="object-position:' + esc(p.p) + '"' + (i === 0 ? '' : ' loading="lazy"') + ' draggable="false">'; }).join('') +
       '<div class="pkpl-shade" aria-hidden="true"></div>' +
@@ -761,10 +789,11 @@
   }
   var lastHood = '';
   function xbVar() { if (!M || wide()) return; var x = $('.pkpl-xb', M.el); if (x && x.offsetHeight) document.documentElement.style.setProperty('--pkpl-xbh', (x.offsetHeight + 5) + 'px'); }   /* tablet: the row can be two lines on a neighborhood page */
-  function settleSheet() { xbVar(); setTimeout(xbVar, 300);   /* a new place opens with the sheet at about 60% (55% on portrait tablet) */
+  function hhVar() { var hd = document.querySelector('#root header'); if (hd && wide()) document.documentElement.style.setProperty('--pkpl-hh', hd.offsetHeight + 'px'); }
+  function settleSheet() { xbVar(); setTimeout(xbVar, 300); hhVar();   /* a new place opens with the sheet at about 60% (55% on portrait tablet) */
     var t = top(); if (t.r !== 'hood' || wide()) { lastHood = t.r === 'hood' ? t.h : ''; return; }
     if (lastHood === t.h) return; lastHood = t.h;
-    var sc0 = scroller(); if (sc0) sc0.scrollTop = 0; setFold(false); return;   /* the card is pinned on phone; the page never scrolls to place it */
+    var sc0 = scroller(); if (sc0) sc0.scrollTop = 0; var kf = KEEPFOLD; KEEPFOLD = false; setFold(kf); return;   /* Zale, Nov 22: stepping from the folded bar stays folded */   /* the card is pinned on phone; the page never scrolls to place it */
     var sc = scroller(), sp = document.getElementById('pkpl-sp'); if (!sc || !sp) return;
     var set = function () { if (!sp.isConnected) return; var vh = sc.clientHeight, f = window.innerWidth >= 700 ? 0.55 : 0.6; sc.scrollTop = Math.max(0, sp.offsetTop + sp.offsetHeight - Math.round(vh * (1 - f))); };
     var touched = false, mv = function () { touched = true; };
@@ -857,7 +886,7 @@
   function onClick(e) {
     var b = e.target.closest ? e.target.closest('[data-pk]') : null; if (!b || !b.closest('#pkpl-top')) return;
     var a = b.getAttribute('data-pk');
-    if (a === 'step') { FROM = null; if (TOP.xp && TOP.xp !== 'Architecture' && M) M.xp = TOP.xp; go('hood', { h: b.getAttribute('data-to') }); return; }   /* the arrows keep the experience: next Wellness place, and so on */
+    if (a === 'step') { var ce0 = cardEl(); KEEPFOLD = !wide() && !!(ce0 && ce0.classList.contains('pkpl-folded')); FROM = null; if (TOP.xp && TOP.xp !== 'Architecture' && M) M.xp = TOP.xp; go('hood', { h: b.getAttribute('data-to') }); return; }   /* the arrows keep the experience: next Wellness place, and so on */
     if (a === 'dot') { var hero = b.closest('.pkpl-hero'); clearTimeout(TOP.timer); heroShow(hero, +b.getAttribute('data-i')); return; }
     if (a === 'day') { TOP.day = b.getAttribute('data-d'); TOP.all = false; drawTop(); return; }
     if (a === 'whole') { TOP.all = !TOP.all; drawTop(); return; }
@@ -866,6 +895,10 @@
     if (a === 'vid') { var L = VPK[b.getAttribute('data-vk')] || [], i0 = +b.getAttribute('data-i') || 0, Q = L.slice(i0).concat(L.slice(0, i0)).map(function (v) { return { u: vidU(v), c: v.a + ' · Pickathon ' + v.y }; });
       if (Q.length > 1 && window.__pkRadio) window.__pkRadio(Q, ''); else if (Q[0] && window.__pkPlayVid) window.__pkPlayVid(Q[0].u, Q[0].c); return; }   /* tap one: the five play in a row */
     if (a === 'vall') { go('watch', { hood: b.getAttribute('data-h') }); return; }
+    if (a === 'dgrab') {   /* Zale, Nov 22: on desktop the neighborhood card rises over the experiences; the handle covers or shows them */
+      var sh = $('#pkpl-top .pkpl-sheet'), gx = $('#pkpl-top .pkpl-hxr'); if (!sh || !gx) return;
+      var gb = gx.getBoundingClientRect(), st = sh.getBoundingClientRect(), covered = st.top < gb.bottom - 8;
+      window.scrollBy({ top: covered ? -(gb.bottom - st.top) : (st.top - gb.top), behavior: calm() ? 'auto' : 'smooth' }); return; }
     if (a === 'act') { go('act', { n: b.getAttribute('data-n'), y: b.getAttribute('data-y') || '' }); return; }   /* the video row's names lead to the artist page */
     if (a === 'xprow') { xpPick(b.getAttribute('data-e')); return; }   /* same rule as the phone row: to the map with that experience lit */
     if (a === 'xp') { TOP.xp = b.getAttribute('data-e'); TOP.all = false; if (M) { M.xp = TOP.xp; lit(); } var sc = scroller(); drawTop(); xbDraw(); var sh = $('#pkpl-top .pkpl-sheet'); if (sh) sh.scrollTop = 0; if (wide()) { var msc = moreScroller(); if (msc) msc.scrollTop = 0; } shape(); return; }   /* round 3: the switch is seen (back to the photo), credits stay */   /* Zale, Nov 22: switching here also switches the row and the map */
@@ -880,6 +913,7 @@
   /* the phone card: the bar is the handle; drag it down to fold, up to open, or tap it to flip */
   function cardEl() { return document.getElementById('pkpl-top'); }
   function foldY() { var c = cardEl(), b = c ? parseFloat(getComputedStyle(c).bottom) || 0 : 0; return sheetOpen() - 56 + (V2 && !wide() ? 0 : b); }   /* Nov 22: on phone the folded bar sits right above the experience row, which stays above the nav */   /* folded: only the bar with the logo and name shows above the tab bar (Zale, Nov 21) */
+  var KEEPFOLD = false;
   function setFold(f) { var el = cardEl(); if (!el) return; el.classList.add('pkpl-anim'); el.classList.toggle('pkpl-folded', !!f); el.style.setProperty('--pkpl-y', (f ? foldY() : 0) + 'px'); document.documentElement.style.setProperty('--pkpl-y', (f ? foldY() : 0) + 'px');   /* the chip row above the sheet follows it */ if (M.cur && !wide()) setTimeout(function () { if (M.cur) recenter(); }, 420); setTimeout(chipsAboveFold, 360);   /* after the sheet has finished sliding, so the strip above it is measured at rest */   /* the map re-centers on the selected place in the strip that shows */ var b = el.querySelector('.pkpl-bar'); if (b) b.setAttribute('aria-expanded', String(!f)); }
   (function sheetDrag() {
     /* Nov 20 (Zale): the bar is a handle. Three rests: full frame (pulled up past open), open (the default: a little map above), and folded (a thin bar). A pull down of about 30% of the travel folds it; a pull up past half the map strip takes the whole frame. */
@@ -888,9 +922,12 @@
     var gapOf = function () { var sc = scroller(), c = cardEl(); if (!sc || !c) return 0; return Math.max(0, Math.round(c.getBoundingClientRect().top - sc.getBoundingClientRect().top)); };
     var yNow = function (el) { return parseFloat(el.style.getPropertyValue('--pkpl-y')) || 0; };
     var setY = function (el, y) { el.style.setProperty('--pkpl-y', y + 'px'); document.documentElement.style.setProperty('--pkpl-y', y + 'px'); };
-    document.addEventListener('pointerdown', function (e) { if (wide() || !onBar(e.target)) return; var el = cardEl(); if (!el) return; st = { y: e.clientY, base: yNow(el), gap: gapOf(), moved: false }; el.classList.remove('pkpl-anim'); try { e.target.closest('.pkpl-bar').setPointerCapture(e.pointerId); } catch (x) {} }, true);
-    document.addEventListener('pointermove', function (e) { if (!st) return; var dy = e.clientY - st.y; if (Math.abs(dy) > 6) st.moved = true; if (!st.moved) return; var lo = -st.gap, hi = foldY(); setY(cardEl(), Math.min(hi, Math.max(lo, st.base + dy))); }, true);
-    var end = function (e) { if (!st) return; var s = st; st = null; var el = cardEl(); if (!el) return; if (!s.moved) { setFold(!el.classList.contains('pkpl-folded')); return; } var y = yNow(el), f = foldY(), dir = y - s.base, t, folded = false; if (dir < -20) { t = y < -s.gap / 2 ? -s.gap : 0; } else if (dir > 20) { if (y > f * 0.3) { t = f; folded = true; } else { t = Math.max(0, s.base); } } else { t = s.base; folded = s.base >= f - 1; } el.classList.add('pkpl-anim'); el.classList.toggle('pkpl-folded', folded); var b = el.querySelector('.pkpl-bar'); if (b) b.setAttribute('aria-expanded', String(!folded)); setY(el, t); if (M.cur && !wide()) setTimeout(function () { if (M.cur) recenter(); }, 420); setTimeout(chipsAboveFold, 360);   /* after the sheet has finished sliding, so the strip above it is measured at rest */ };
+    document.addEventListener('pointerdown', function (e) { if (wide() || !onBar(e.target) || e.target.closest('.pkpl-bst')) return; var el = cardEl(); if (!el) return; st = { x: e.clientX, y: e.clientY, base: yNow(el), gap: gapOf(), moved: false }; el.classList.remove('pkpl-anim'); try { e.target.closest('.pkpl-bar').setPointerCapture(e.pointerId); } catch (x) {} }, true);
+    document.addEventListener('pointermove', function (e) { if (!st) return; var dy = e.clientY - st.y; if (Math.abs(e.clientX - st.x) > Math.abs(dy) * 1.5 && Math.abs(e.clientX - st.x) > 10) return; if (Math.abs(dy) > 6) st.moved = true; if (!st.moved) return; var lo = -st.gap, hi = foldY(); setY(cardEl(), Math.min(hi, Math.max(lo, st.base + dy))); }, true);
+    var end = function (e) { if (!st) return; var s = st; st = null; var el = cardEl(); if (!el) return;
+      var dx9 = e && e.clientX != null ? e.clientX - s.x : 0, dy9 = e && e.clientY != null ? e.clientY - s.y : 0;
+      if (Math.abs(dx9) > 44 && Math.abs(dx9) > Math.abs(dy9) * 1.5) { var bs = el.querySelector('.pkpl-bst.' + (dx9 < 0 ? 'r' : 'l')); setY(el, s.base); el.classList.add('pkpl-anim'); if (bs) bs.click(); return; }   /* Zale, Nov 22: swipe the bar sideways for the next or previous place */
+      if (!s.moved) { setFold(!el.classList.contains('pkpl-folded')); return; } var y = yNow(el), f = foldY(), dir = y - s.base, t, folded = false; if (dir < -20) { t = y < -s.gap / 2 ? -s.gap : 0; } else if (dir > 20) { if (y > f * 0.3) { t = f; folded = true; } else { t = Math.max(0, s.base); } } else { t = s.base; folded = s.base >= f - 1; } el.classList.add('pkpl-anim'); el.classList.toggle('pkpl-folded', folded); var b = el.querySelector('.pkpl-bar'); if (b) b.setAttribute('aria-expanded', String(!folded)); setY(el, t); if (M.cur && !wide()) setTimeout(function () { if (M.cur) recenter(); }, 420); setTimeout(chipsAboveFold, 360);   /* after the sheet has finished sliding, so the strip above it is measured at rest */ };
     document.addEventListener('pointerup', end, true); document.addEventListener('pointercancel', end, true);
     /* Nov 21 (Zale): the sheet follows a swipe on its content, not only the bar. Swipe up: it grows to the full frame first, then the story scrolls. At the top of the story, swipe down: it slides back to open, and on down to the folded bar. */
     var tc = null;

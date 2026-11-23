@@ -48,6 +48,7 @@ for i, (st, sid) in enumerate(heads):
     seg = seg.replace(' hidden', '', 0)
     seg = re.sub(r'src="img/', 'src="' + IMG, seg)
     seg = re.sub(r'url\(img/', 'url(' + IMG, seg)
+    seg = re.sub(r'(&quot;i&quot;: &quot;)img/', lambda m: m.group(1) + IMG, seg)   # the year reel's data-slides JSON (frames after the first 404ed without this)
     seg = re.sub(r'<div class="sale">.*?</div>(?=<)', '', seg, count=1, flags=re.S)   # the live shell has the sale strip
     raw = seg
     seg = re.sub(r'<header class="hd">.*?</header>', '', seg, count=1, flags=re.S)       # the live shell has the header (and the year picker)
@@ -80,7 +81,8 @@ b = app.index("(function () {\n    var bar = document.querySelector('.bkw')")
 widgets = app[a:b].replace('document.querySelectorAll', 'root.querySelectorAll').replace('document.querySelector', 'root.querySelector')
 widgets = widgets.replace('document.createElement', 'document.createElement')
 widgets = widgets.replace('document.addEventListener(', 'docOn(')
-widgets = widgets.replace('timer = setInterval(', 'timer = ivOn(')   # reel timers stop on the next redraw
+widgets = widgets.replace('timer = setInterval(', 'timer = ivOn(')
+widgets = widgets.replace('e.target.closest(', 'lxT(e).closest(')   # r51: page-level taps see the shadow host; use the real tapped element   # reel timers stop on the next redraw
 widgets = widgets.replace("root.querySelector('.pkvid')", "(document.querySelector('.pkvid') || document.querySelector('.pk-vo'))")   # the video player lives in the page, not the shadow root   # page-level listeners are dropped on the next redraw
 rt = open(os.path.join(ROOT, 'tools/lineup_2027_r1/build/lx_runtime.js'), encoding='utf-8').read()
 open(OUT + '/lx.js', 'w', encoding='utf-8').write(rt.replace('/*WIDGETS*/', widgets))

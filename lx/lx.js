@@ -7,15 +7,19 @@
   function pageSlug(n) { var s = slug(n); if (IDX.names[s]) return s; var f = fold(n); if (IDX.fold[f]) return IDX.fold[f]; f = f.replace(/^the/, ''); if (IDX.names[f]) return f; return IDX.fold[f] || ''; }
   function fetchText(u) { return fetch(u).then(function (r) { if (!r.ok) throw new Error(u + ' ' + r.status); return r.text(); }); }
   function rerender() { try { if (window.__pkSet) window.__pkSet({}); } catch (e) {} }
-  fetch(BASE + 'index.json').then(function (r) { return r.json(); }).then(function (j) { IDX = j; rerender(); }).catch(function () {});
+  var YRS = /^(199\d|20(0\d|1\d|2[2-6]))$/, IDXDEAD = 0;   /* the years that have a page (2020-21 had no festival); checked against the index once it arrives */
+  fetch(BASE + 'index.json').then(function (r) { return r.json(); }).then(function (j) { IDX = j; rerender(); }).catch(function () { IDXDEAD = 1; rerender(); });
   fetchText(BASE + 'lx.css').then(function (c) { CSS = c; }).catch(function () {});
+  if (/^#\/(lineup|\d{4})\/?$/.test(location.hash)) fetchText(BASE + (/^#\/lineup/.test(location.hash) ? 's1' : 'y' + location.hash.slice(2, 6)) + '.html').then(function (h) { var k = /^#\/lineup/.test(location.hash) ? 's1' : 'y' + location.hash.slice(2, 6); FR[k] = FR[k] || h; }).catch(function () {});   // arriving on a Lineup page: start its fragment with the index, not after it
 
   /* which screen the current route shows, or '' to leave the route to the older page */
   window.__lxKey = function (R, cur, st) {
-    if (!IDX || /[?&]old=lineup/.test(location.search)) return '';
-    if (R === 'lineup') return (!cur.keepArch && !st.luArch && (st.lineup || 'music') === 'music' && (st.season || 'off') === 'off') ? 's1' : '';
-    if (R === 'past') return IDX.years.indexOf(String(cur.y)) >= 0 ? 'y' + cur.y : '';
-    if (R === 'act') { var s = pageSlug(cur.n); return s ? 'a/' + s : ''; }
+    /* Site Build Nov 22 (Zale: the old Lineup page flashed for ~0.8 s before the new one): the 2027 page and year pages are claimed at once
+       (they don't need the index); an artist page holds an empty frame ('wait') until the index arrives, instead of drawing the old page */
+    /* cut 2 (Zale Nov 22, old Lineup removed): every Lineup route lands on the 2027 page, which holds the Archive; the old Archive view, non-music tabs and season variants are gone */
+    if (R === 'lineup') return 's1';
+    if (R === 'past') return (IDX ? IDX.years.indexOf(String(cur.y)) >= 0 : YRS.test(String(cur.y))) ? 'y' + cur.y : '';
+    if (R === 'act') { if (!IDX) return IDXDEAD ? '' : 'wait'; var s = pageSlug(cur.n); return s ? 'a/' + s : ''; }
     return '';
   };
 
@@ -54,20 +58,23 @@
   var DOCL = [];
   function docOn(type, fn, opt) { document.addEventListener(type, fn, opt); DOCL.push([type, fn, opt]); }
   var IVL = [];
+  function lxT(e) { var p = e.composedPath ? e.composedPath() : [], x = p[0] || e.target; return x && x.closest ? x : (x && x.parentElement) || document.body; }
   function ivOn(fn, ms) { var id = setInterval(fn, ms); IVL.push(id); return id; }
   function docOff() { DOCL.forEach(function (x) { document.removeEventListener(x[0], x[1], x[2]); }); DOCL = []; IVL.forEach(clearInterval); IVL = []; }
   function widgets(root) {
     docOff();
   // r45 (Zale, Nov 22): the year reel plays on its own, 4 s a frame, hard cut; a segment jumps; the photo plays that band's song
-  root.querySelectorAll('.hero.reel').forEach(function (hero) {
+  root.querySelectorAll('.hero.reel, .hero.areel').forEach(function (hero) {
     var S; try { S = JSON.parse(hero.dataset.slides); } catch (e) { return; }
     if (!S || S.length < 2) return;
-    S.forEach(function (f) { var im = new Image(); im.src = f.i; });
     var i = 0, T = 4000, timer = 0, ph = hero.querySelector(':scope > img'), segs = hero.querySelectorAll('.segs [data-slide]');
+    // r58: the app serves these pages from another folder; take the folder from the first photo so every frame finds its picture
+    var base = (ph.getAttribute('src') || '').replace(/img\/[^\/]*$/, '');
+    S.forEach(function (f) { if (/^img\//.test(f.i)) f.i = base + f.i; var im = new Image(); im.src = f.i; });
     var KC = { Discovery: 'disc', Legend: 'leg', 'Deep cut': 'deep' };
     function go(n) {
       i = (n + S.length) % S.length; var f = S[i];
-      ph.src = f.i; ph.setAttribute('data-clip', f.clip || ''); if (!f.clip) ph.removeAttribute('data-clip');
+      ph.src = f.i; if (f.pos) ph.style.objectPosition = f.pos; ph.setAttribute('data-clip', f.clip || ''); if (!f.clip) ph.removeAttribute('data-clip');
       var k = hero.querySelector('.krow .k'), g = hero.querySelector('.krow .g'), h1 = hero.querySelector('h1'), sub = hero.querySelector('.hero-sub'), ring = hero.querySelector('.ring');
       if (k) { k.textContent = f.k; k.className = 'k k-' + (KC[f.k] || 'none'); } if (g) g.textContent = f.g;
       if (h1) { h1.textContent = f.n; h1.classList.toggle('sm', f.n.length > 12); }
@@ -76,11 +83,37 @@
       segs.forEach(function (s, x) { s.classList.remove('on'); s.classList.toggle('done', x < i); });
       void hero.offsetWidth; segs[i].classList.add('on');
     }
-    function live() { return hero.offsetParent !== null && !document.hidden && !(document.querySelector('.pkvid') || document.querySelector('.pk-vo')); }
+    function live() { return !!hero.getClientRects().length && !document.hidden && !(document.querySelector('.pkvid') || document.querySelector('.pk-vo')); }  // r53: offsetParent is null inside the app's fixed shell
     function restart() { clearInterval(timer); timer = ivOn(function () { if (live()) go(i + 1); }, T); }
-    hero.querySelector('.segs').addEventListener('click', function (e) { var s = e.target.closest('[data-slide]'); if (!s) return; e.stopPropagation(); go(+s.dataset.slide); restart(); });
+    hero.querySelector('.segs').addEventListener('click', function (e) { var s = lxT(e).closest('[data-slide]'); if (!s) return; e.stopPropagation(); go(+s.dataset.slide); restart(); });
     restart();
   });
+
+  // r51 (Zale, Nov 22): the sitewide player takes a list. Year reel: the year's ten songs in reel order, from the frame you tapped.
+  // Archive card: that act's songs across the years (data-q). Artist page video cards: the page's videos in order from the one tapped.
+  // Only inside the live app (window.__pkVideo); the standalone mockup plays the single clip.
+  docOn('click', function (e) {
+    if (!window.__pkVideo) return;
+    var c = lxT(e).closest('[data-clip]'); if (!c) return;
+    var L = [], hero = c.closest('.hero.reel'), S, i0 = 0, k;
+    if (hero) {
+      try { S = JSON.parse(hero.dataset.slides); } catch (x) { S = null; }
+      if (S) { var u0 = c.getAttribute('data-clip'); S.forEach(function (f, x) { if (f.clip === u0) i0 = x; });
+        for (k = 0; k < S.length; k++) { var f = S[(i0 + k) % S.length]; if (f.clip) L.push({ u: f.clip, c: f.n + ' · Pickathon ' + (hero.querySelector('.hyr-y') || {}).textContent }); } }
+    } else if (c.dataset.q) {
+      c.dataset.q.split(';;').forEach(function (p) { var a = p.split('|'); L.push({ u: a[0], c: a.slice(1).join('|') }); });
+    } else if (/^a-/.test((c.closest('main') || {}).id || '')) {
+      // artist page: every song on the page, in page order, starting from the one tapped (one entry per clip)
+      var mn = c.closest('main'), nm0 = (mn.querySelector('.hero-tx h1, .hd-t b') || {}).textContent || '', seen = {};
+      var all = Array.prototype.slice.call(mn.querySelectorAll('[data-clip]')).filter(function (x) { var u = x.getAttribute('data-clip'); if (!u || seen[u]) return false; seen[u] = 1; return true; });
+      var at = Math.max(0, all.findIndex(function (x) { return x.getAttribute('data-clip') === c.getAttribute('data-clip'); }));
+      for (k = 0; k < all.length; k++) { var v = all[(at + k) % all.length], b = v.querySelector('b'), s2 = v.querySelector('span:not(.vth):not(.ring)'), cy = (v.closest('[data-yr]') || {}).dataset;
+        var yr0 = ((v.closest('.card') || v).querySelector('.cyr') || {}).textContent || ''; L.push({ u: v.getAttribute('data-clip'), c: b ? b.textContent + (s2 ? ' · ' + s2.textContent : '') : nm0 + (yr0 ? ' · Pickathon ' + yr0 : '') }); }
+    }
+    if (L.length < 2) return;
+    e.preventDefault(); e.stopPropagation(); e.stopImmediatePropagation();
+    window.__pkVideo(L, '');
+  }, true);
   root.querySelectorAll('.poster').forEach(function (p) {
     var track = p.querySelector('.po-track'), knob = p.querySelector('.po-knob'), cap = p.querySelector('.po-cap'); if (!track || !knob || !cap) return;
     var thenEl = p.querySelector('.po-names.then'), nowEl = p.querySelector('.po-names.now');
@@ -117,15 +150,15 @@
       cap.textContent = now ? cap.dataset.now : cap.dataset.then; knob.setAttribute('aria-valuenow', now ? 1 : 0);
     }
     function begin() { measure(); busy = true; thenEl.hidden = true; nowEl.hidden = true; morph.hidden = false; }
-    function go(now) {
+    function go(now, slow) {
       if (p.classList.contains('all')) { settle(now); return; }
       cancelAnimationFrame(raf); if (!busy) begin(); flags(now);
-      var from = t, to = now ? 1 : 0, t0 = performance.now(), dur = 150 + 650 * Math.abs(to - from);
+      var from = t, to = now ? 1 : 0, t0 = performance.now(), dur = slow || (150 + 650 * Math.abs(to - from));
       (function step(n) { var k = Math.min(1, (n - t0) / dur); k = k < .5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2; t = from + (to - from) * k; render(); if (n - t0 < dur) raf = requestAnimationFrame(step); else settle(now); })(t0);
     }
     p.addEventListener('click', function (e) {
-      var b = e.target.closest('.po-b'); if (b) { go(b.dataset.m === 'now'); return; }
-      var a = e.target.closest('.po-all'); if (a) {
+      var b = lxT(e).closest('.po-b'); if (b) { go(b.dataset.m === 'now'); return; }
+      var a = lxT(e).closest('.po-all'); if (a) {
         var open = !p.classList.contains('all'); p.classList.toggle('all', open);
         p.querySelectorAll('.po-rest').forEach(function (r) { r.hidden = !open; });
         a.textContent = open ? a.dataset.open : a.dataset.shut;
@@ -138,6 +171,21 @@
     function up(e) { if (!track.classList.contains('drag')) return; track.classList.remove('drag'); var now = frac(e) > 0.5; knob.style.left = ''; if (p.classList.contains('all')) settle(now); else go(now); }
     track.addEventListener('pointerup', up); track.addEventListener('pointercancel', up);
     knob.addEventListener('keydown', function (e) { if (e.key === 'ArrowRight') go(true); if (e.key === 'ArrowLeft') go(false); });
+    // r50 (Zale, Nov 22): the first time the poster is nearly in full view it plays once on its own: the booking lineup holds long
+    // enough to read (3 s), then slides slowly to today (2.4 s, the year counting over the knob) and stays there. Any tap first cancels it.
+    // r53: only a real choice cancels it (a lineup button, the track or the knob), never a finger scrolling across the poster
+    var touched = false; p.querySelectorAll('.po-b, .po-track, .po-all').forEach(function (x) { x.addEventListener('pointerdown', function () { touched = true; }); }); knob.addEventListener('keydown', function () { touched = true; });
+    function shown(el) { return !!(el && el.getClientRects().length); }
+    if (window.IntersectionObserver && !(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)) {
+      var io = new IntersectionObserver(function (es) {
+        es.forEach(function (en) {
+          if (!en.isIntersecting || en.intersectionRatio < 0.6 || touched) return;
+          io.disconnect();
+          setTimeout(function () { if (!touched && t === 0 && !p.classList.contains('all') && shown(p)) go(true, 2400); }, 3000);
+        });
+      }, { threshold: [0.6, 0.8] });
+      io.observe(p.querySelector('.po-names.then') || p);
+    }
   });
   root.querySelectorAll('.gp').forEach(function (gp) {
     // r29 (Zale, Nov 21): pick as many kinds of music as you like. "Everything" clears; the gold button closes the list.
@@ -163,8 +211,8 @@
     }
     btn.addEventListener('click', function () { list.hidden = !list.hidden; btn.setAttribute('aria-expanded', String(!list.hidden)); if (!list.hidden) apply(); });
     list.addEventListener('click', function (e) {
-      if (e.target.closest('.gp-done')) { shut(); return; }
-      var o = e.target.closest('.gp-o'); if (!o) return; var g = o.dataset.g, k = picks.indexOf(g);
+      if (lxT(e).closest('.gp-done')) { shut(); return; }
+      var o = lxT(e).closest('.gp-o'); if (!o) return; var g = o.dataset.g, k = picks.indexOf(g);
       if (g === all) picks = []; else if (k > -1) picks.splice(k, 1); else picks.push(g);
       apply();
     });
@@ -173,7 +221,7 @@
   });
   root.querySelectorAll('.bk').forEach(function (bk) {
     bk.addEventListener('click', function (e) {
-      var b = e.target.closest('.bkb'); if (!b) return;
+      var b = lxT(e).closest('.bkb'); if (!b) return;
       bk.querySelectorAll('.bkb').forEach(function (x) { x.classList.toggle('on', x === b); });
       bk.closest('.arch').querySelectorAll('.bl').forEach(function (g) { g.hidden = g.dataset.b !== b.dataset.b; });
     });
@@ -197,10 +245,10 @@
   });
   // r30: "See everyone" opens the rest of the year's acts; picking a kind of music shows every match
   root.querySelectorAll('section.rest').forEach(function (rest) {
-    var minis = rest.querySelector('.minis'), evy = rest.querySelector('.evy'), gp = rest.querySelector('.gp'); if (!minis) return;
+    var main_ = rest.closest('main') || document, minis = rest.querySelector('.minis'), evy = rest.querySelector('.evy'), gp = main_.querySelector('.ypick .gp') || rest.querySelector('.gp'); if (!minis) return;
     function sync() { var f = !!(gp && gp.classList.contains('set')); minis.classList.toggle('filt', f); if (evy) evy.hidden = f || minis.classList.contains('open'); }
     if (evy) evy.addEventListener('click', function () { minis.classList.add('open'); sync(); });
-    rest.addEventListener('lxfilter', sync);
+    main_.addEventListener('lxfilter', sync);
   });
   // r31: inside the live app the ring must win over the card's own link (the app plays it with its own player)
   root.querySelectorAll('a [data-clip]').forEach(function (r) {
@@ -224,6 +272,7 @@
     if (LASTK !== key) { LASTK = key; toTop(); }
   }
   function mount(host, key) {
+    if (key === 'wait') { var rt = host.shadowRoot || host.attachShadow({ mode: 'open' }); if (host._k !== 'wait') { rt.innerHTML = ''; host._k = 'wait'; } return; }   // index still on its way: hold an empty frame
     if (!FONTS) { FONTS = 1; var l = document.createElement('link'); l.rel = 'stylesheet'; l.href = BASE + 'fonts.css'; document.head.appendChild(l); }
     if (FR[key] && CSS) { paint(host, key, FR[key], CSS); return; }   // cached: draw in the same frame, no flash
     var need = FR[key] ? Promise.resolve(FR[key]) : fetchText(BASE + key + '.html').then(function (h) { FR[key] = h; return h; });

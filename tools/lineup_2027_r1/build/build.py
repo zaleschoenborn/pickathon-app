@@ -291,6 +291,21 @@ for _o in _LC:
         _ks = ''.join(ch for ch in _ud.normalize('NFD', _nm.lower()) if ch.isalnum())
         _LY.setdefault((_ks, str(_o['y'])), _u); _LA.setdefault(_ks, _u)
 CLIPY = {**CLIPY, **_LY}; CLIPA = {**CLIPA, **_LA}
+# r73 (Zale, Nov 22 21:53): an artist page's big play button plays every song that act has from that year, as one playlist
+CLIPYL = {}
+for _o in _LC:
+    _u = _o['url'].split('&')[0]; _sg = (_o.get('tail') or '').split(' | ')[-1].strip() if _o.get('tail') else ''
+    for _nm in {_o['act'], _o['artist'], _o['act_id'].replace('-', ' ')}:
+        _ks = ''.join(ch for ch in _ud.normalize('NFD', _nm.lower()) if ch.isalnum())
+        _l = CLIPYL.setdefault((_ks, str(_o['y'])), [])
+        if _u not in [x[0] for x in _l]: _l.append((_u, _sg if len(_sg) < 60 else ''))
+# r57 (Zale, Nov 22 19:57): a year reel plays only that year's recordings; an act not recorded that year gets no reel frame
+YURLS = {}
+for _v in d['videos']:
+    if _v.get('y'):
+        _u = _vurl(_v)
+        if _u: YURLS.setdefault(str(_v['y']), set()).add(_u.split('&')[0])
+for _o in _LC: YURLS.setdefault(str(_o['y']), set()).add(_o['url'].split('&')[0])
 _CLIPALIAS = {'Kurt Vile & The Violators': 'Kurt Vile', 'Destroyer (solo)': 'Destroyer', 'Corrinne West & Kelly Joe Phelps': 'Corinne West & Kelly Joe Phelps',
               'Caleb Klauder Band': 'Caleb Klauder'}  # r36: the card's printed name vs the ledger's name for the same act
 def clip_for(n, y=None):
@@ -310,11 +325,26 @@ def archive_clip(n, y):
         if u: return u
     return ''
 
-def photo_play(url, n):
+def year_clip(n, y):
+    """r57: that year's song for the act, or nothing (never another year's recording)."""
+    n2 = _CLIPALIAS.get(n, n); k = ''.join(ch for ch in _ud.normalize('NFD', n2.lower()) if ch.isalnum())
+    return CLIPY.get((k, str(y)), '')
+
+def act_queue(n, y):
+    """r51 (Zale, Nov 22): the sitewide player takes a list. An Archive card queues the act's own songs across the years:
+    its own year first, then later years, then earlier ones. Format: url|caption;;url|caption"""
+    n2 = _CLIPALIAS.get(n, n); k = ''.join(ch for ch in _ud.normalize('NFD', n2.lower()) if ch.isalnum())
+    yrs = sorted(int(yy) for (kk, yy) in CLIPY if kk == k); y = int(y)
+    seen, out = set(), []
+    for yy in [y] + [a for a in yrs if a > y] + [a for a in reversed(yrs) if a < y]:
+        u = CLIPY.get((k, str(yy)))
+        if u and u not in seen: seen.add(u); out.append('%s|%s · Pickathon %s' % (u, n, yy))
+    return ';;'.join(out)
+def photo_play(url, n, q=''):
     """r36 (Zale, Nov 22): on a card with a song, the whole photo plays it; the ring is centered and only marks it.
     The name and 'Their story' open the artist page."""
-    return ('<span class="pz" data-clip="%s" role="button" tabindex="0" aria-label="Play a song by %s">'
-            '<span class="ring sm"><svg viewBox="0 0 24 24"><path d="M9 6.5v11l9-5.5z" fill="#fff"/></svg></span></span>') % (_h.escape(url, quote=True), E(n))
+    return ('<span class="pz" data-clip="%s"%s role="button" tabindex="0" aria-label="Play a song by %s">'
+            '<span class="ring sm"><svg viewBox="0 0 24 24"><path d="M9 6.5v11l9-5.5z" fill="#fff"/></svg></span></span>') % (_h.escape(url, quote=True), (' data-q="%s"' % _h.escape(q, quote=True)) if q else '', E(n))
 def card(n, yr, k, g, src, pos='50% 40%', vid=True, cls=''):
     if vid is True: vid = (clip_for(n, yr) if yr else '') or clip_for(n)  # r31: no ring without a song to play
     g_all, g = gall_n(n, g), gp_n(n, g)  # r42: filter on every tag, print the primary
@@ -340,15 +370,41 @@ ICON = {
 }
 LOGO = img('logo27-gold.png', 300, fmt='PNG')
 
+_YW = None
+def year_wall(cur):
+    """r59: every year's own logo in a grid, newest first; 2020-21 shown as a quiet note (no festival)."""
+    global _YW
+    if _YW is None:
+        tiles = ['<button type="button" class="yw-i" data-go="s1" data-y="2027"><span class="yw-l"><img loading="lazy" src="%s" alt=""></span><b>2027</b></button>' % LOGO]
+        for yy in sorted(d['yearBill'].keys(), reverse=True):
+            if yy == '2019': tiles.append('<span class="yw-i yw-off"><span class="yw-l"><i>No festival</i></span><b>2020–21</b></span>')
+            lg = d['yearLogo'].get(yy)
+            pic = ('<img loading="lazy" src="%s" alt="">' % img(lg, 220, fmt='PNG')) if lg and not lg.startswith('http') and os.path.exists(_src(lg)) else '<i>%s</i>' % yy
+            tiles.append('<button type="button" class="yw-i" data-go="y%s" data-y="%s"><span class="yw-l">%s</span><b>%s</b></button>' % (yy, yy, pic, yy))
+        _YW = ''.join(tiles)
+    w = _YW.replace('data-y="%s"' % cur, 'data-y="%s" aria-current="true"' % cur, 1)
+    return ('<div class="ywall" hidden role="dialog" aria-label="Choose a Pickathon year"><div class="yw-h"><p>Pick a year</p>'
+            '<button type="button" class="yw-x" aria-label="Close">×</button></div><div class="yw-g">%s</div></div>') % w
+
 def header(title, sub, back=True, chip=None):
     t = '<span class="hd-t"><b>%s</b>%s</span>' % (E(title), ('<i>%s</i>' % E(sub)) if sub else '')
+    # r52 (Zale, Nov 22 18:35): the live app strips this page's header, so the year switch lives in its own bar under the sale strip
     if chip:
         # r45 (Zale, Nov 22): the year switch must be obvious on every Lineup page, 2027 included: 'Lineup 2027 >' opens every year
-        t = ('<label class="yrchip"><span class="yc-k">Lineup</span><b class="yc-y">%s</b><span class="yc-a" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M4 1.5l5 4.5-5 4.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>'
-             '<select class="ysel2" aria-label="Change lineup year">%s</select></label>') % (chip, '<option value="s1"%s>2027</option>' % (' selected' if chip == '2027' else '') + ''.join('<option value="y%s"%s>%s</option>' % (yy, ' selected' if yy == chip else '', yy) for yy in sorted(d['yearBill'].keys(), reverse=True)))
+        # r59 (Zale, Nov 22 20:20): the gold button opens a wall of year logos; tap a logo to go to that year (one chooser everywhere)
+        bar = ('<div class="yrbar"><button type="button" class="yrchip ywopen" aria-expanded="false" aria-label="Lineup %s. Choose another year">'
+               '<span class="yc-k">Lineup</span><b class="yc-y">%s</b><span class="yc-a" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M4 1.5l5 4.5-5 4.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>'
+               '</div>%s') % (chip, chip, year_wall(chip))
+        # r68 (Zale, Nov 22 21:22): the header title IS the year chooser; tap "Lineup 2013" to open the wall of year logos
+        # r69 (Zale, Nov 22 21:26): the year's own logo leads the chooser in the header (it replaces the 2027 wordmark on year pages)
+        # r70 (Zale, Nov 22 21:40): the 2027 logo and back stay on the left as home; the chooser is a centered, words-only button (no small year logo: it blurs at header size)
+        t = ('<span class="hd-sp hd-sp1"></span><button type="button" class="hd-t hd-yr ywopen" aria-expanded="false" aria-label="Lineup %s. Choose another year"><b>Lineup</b><i>%s</i>'
+             '<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 4.5l3.5 3.5 3.5-3.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>') % (chip, chip)
+    else:
+        bar = ''
     return ('<header class="hd">%s<img class="hd-logo" src="%s" alt="Pickathon 2027"><span class="hd-rule"></span>%s'
             '<span class="hd-sp"></span><button class="hd-listen" aria-label="Listen">%s</button><button class="hd-ic" aria-label="Search">%s</button></header>'
-            '<div class="sale"><span><b>Holiday Sale</b> · from $483</span><a href="#" class="sale-b">Get tickets <svg viewBox="0 0 12 12" width="11" height="11"><path d="M4 1.5l5 4.5-5 4.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></a></div>'
+            '<div class="sale"><span><b>Holiday Sale</b> · from $483</span><a href="#" class="sale-b">Get tickets <svg viewBox="0 0 12 12" width="11" height="11"><path d="M4 1.5l5 4.5-5 4.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></a></div>' + bar
             ) % (('<button class="hd-ic" aria-label="Back">%s</button>' % ICON['back']) if back else '', LOGO, t, ICON['note'], ICON['search'])
 
 TABBAR = ('<nav class="tabs">' + ''.join('<a href="#">%s<span>%s</span></a>' % (ICON[i], l) for i, l in
@@ -464,6 +520,18 @@ def seam(yr, P):
     elif yr == '2023':
         f = img('ext/seam/y23-fir.png', 420, fmt='PNG'); fo = img('ext/seam/y23-fir-orange.png', 420, fmt='PNG')
         art = row(f, 0, 26, 46, 104, alt=fo, every=5)
+    elif yr == '2003':  # r56: a line of Artwork's redrawn horseshoes (artwork-45), like 2023's firs
+        f = img('ext/art/y03-horseshoe-redraw.png', 160, fmt='PNG')
+        art = row(f, 0, 9, 36, 44)
+    elif yr == '2004':  # r56: a line of tonic bottles (artwork-45)
+        f = img('ext/art/y04-tonic-redraw-bottle.png', 200, fmt='PNG')
+        art = row(f, 0, 9, 54, 72)
+    elif yr in ('2001', '2002'):  # r56: the year's redrawn wordmark standing on the ground, over the kit's hills
+        wm = img('ext/art/y01-wordmark-redraw-cutout.png' if yr == '2001' else 'ext/art/y02-tiles-wordmark-redraw-cutout.png', 700, fmt='PNG')
+        c1 = P['light'] if P['light'].upper() != paper.upper() else P['warm']
+        art = (('<svg class="sm-hill" viewBox="0 0 390 70" preserveAspectRatio="none" aria-hidden="true">'
+                '<path fill="%s" d="M0 40c40-12 90-16 140-8 40 7 70 9 110 0 50-11 96-10 140 4V70H0z"/></svg>') % c1 +
+               '<img class="sm-wm sm-wm%s" src="%s" alt="">' % (yr[2:], wm))
     elif yr == '2025':
         STAR = '<svg viewBox="-10 -10 20 20"><path fill="%s" d="M0-10Q1.8-1.8 10 0Q1.8 1.8 0 10Q-1.8 1.8-10 0Q-1.8-1.8 0-10z"/></svg>'
         # confetti spilling off the stripe, graded big to small (the 2025 sheet's sparkles around the trout)
@@ -548,7 +616,10 @@ _ALINES = json.load(open(ROOT + 'arch_lines.json'))  # r44: Copy Review's one li
 def vcard(n, y, k, g, p, pos):
     h = _vcard(n, y, k, g, p, pos)
     ln = _ALINES.get('%s|%s|%s' % (k, ''.join(c for c in _ud.normalize('NFD', n.lower()) if c.isalnum() and ord(c) < 128), y), '')
-    return h.replace('</span><span class="cstory">', '</span><span class="cline">%s</span><span class="cstory">' % E(ln), 1) if ln and '<span class="cstory">' in h else h
+    # r55 (Zale, Nov 22 19:32): desktop shows 3 bigger cards across WITH the three-line blurb; phone (two-up) hides it in CSS
+    h = h.replace('</span><span class="cstory">', '</span><span class="cline">%s</span><span class="cstory">' % E(ln), 1) if ln and '<span class="cstory">' in h else h
+    q = act_queue(n, y)  # r51: the player queues this act's songs across the years, starting with this card's
+    return h.replace('<span class="pz" data-clip=', '<span class="pz" data-q="%s" data-clip=' % _h.escape(q, quote=True), 1) if q.count(';;') else h
 def _vcard(n, y, k, g, p, pos):
     if not p:  # no photo for that year: a plain site-color card, same anatomy; r36: it still plays the act's best song when the ledger has one
         _cv = archive_clip(n, y)
@@ -624,9 +695,28 @@ with open(ROOT + 'home_top_discoveries.csv', 'w', newline='', encoding='utf-8') 
     _w = csv.writer(_f); _w.writerow(['rank', 'act', 'first_year', 'magnitude_dec', 'clip_url', 'tags'])
     for _i, r in enumerate(_rows, 1): _w.writerow([_i, r[1], r[2], r[0], r[3], r[4]])
 
+# r47 (Zale, Nov 22: "one mixed feed"): the Archive opens on All, every class mixed, biggest today first (class table magnitude_dec);
+# an act held in two classes shows once under All (its bigger card); Discoveries / Legends / Deep cuts stay as filters, each by magnitude too
+_magall = {}
+for _r in csv.DictReader(open(ROOT + 'class_table_v163.csv', encoding='utf-8')):
+    if _r.get('site_row') != 'yes': continue
+    try: _mv = float(_r.get('magnitude_dec') or 0)
+    except ValueError: continue
+    for _nm in {_r.get('lineup_act') or '', _r['act']}:
+        if _nm: _magall[(_canon(_nm), _r['year'])] = max(_mv, _magall.get((_canon(_nm), _r['year']), 0))
+def _mg(x): return _magall.get((_canon(x[0]), str(x[1])), 0)
+for _lst in (disc, leg, deep): _lst.sort(key=lambda x: (-_mg(x), x[0]))
+ARCH_ALL, _seen = [], set()
+for k, x in sorted([('disc', x) for x in disc] + [('leg', x) for x in leg] + [('deep', x) for x in deep], key=lambda t: (-_mg(t[1]), {'disc': 0, 'leg': 1, 'deep': 2}[t[0]], t[1][0])):
+    if _canon(x[0]) in _seen: continue
+    _seen.add(_canon(x[0])); ARCH_ALL.append((k,) + tuple(x))
+print('archive All: %d cards (%d acts in two classes shown once)' % (len(ARCH_ALL), len(disc) + len(leg) + len(deep) - len(ARCH_ALL)))
 bars = [(1, [58, 34]), (1, [70]), (2, [40, 44]), (2, [30, 26, 30]), (3, [22, 28, 20, 18]), (3, [18, 24, 16, 26]), (4, [14, 18, 12, 16, 14]), (4, [12, 16, 18, 12, 10])]
 barh = ''.join('<div class="br b%d">%s</div>' % (lv, ''.join('<i style="width:%d%%"></i>' % w for w in ws)) for lv, ws in bars)
 s1 = header('Lineup', 'Aug 5–8, 2027', back=False, chip='2027')
+# r60 (Zale, Nov 22 20:18): 2027 gets the same paper frame on desktop, with no logo yet: plum frame, the year's horizon on top, a gold printed border on the poster card
+P27 = {'paper': '#F2EDE3', 'ink': '#3B2935', 'light': '#E3B5CF', 'warm': '#F2CF62', 'stripe': ['#F2CF62', '#86526B', '#E3B5CF'], 'band': '#86526B'}
+s1 += '<div class="yrtop framed f27" style="--paper:#F2EDE3;--ink:#3B2935;--mat:#86526B;--s1:#F2CF62;--pnl:#3B2935"><div class="yrcrown" aria-hidden="true">%s</div>' % generic_seam('2027', P27)
 s1 += ('<section class="hero h27"><img src="%s" alt="" style="object-position:74%% 50%%"><div class="hero-sc"></div>'
        '<div class="hero-tx"><p class="kick">The 2027 lineup · not out yet</p><h1>The names<br>come later.</h1>'
        '<p class="hero-sub">60+ acts on hand-built stages, most playing twice. Be first to hear who.</p>'
@@ -637,14 +727,14 @@ s1 += ('<section class="p27"><div class="stripe"><i style="background:#F2CF62"><
        '<p class="p27-d">August 5–8 · Pendarvis Farm</p><div class="p27-bill" role="img" aria-label="The 2027 poster, names not yet announced">%s</div>'
        '<p class="p27-c">The 2027 poster · names go here</p></div>'
        '<div class="stripe"><i style="background:#F2CF62"></i><i style="background:#86526B"></i><i style="background:#E3B5CF"></i><i style="background:#F2EDE3"></i></div></section>') % barh
+s1 += '</div>'
 s1 += ('<section class="arch"><p class="kick">While you wait</p><h2>Wait, they played here?</h2><p class="sub">They played the farm in small rooms. Look how big they got.</p>'
-       '<div class="bkw"><div class="bk"><button class="bkb on" data-b="disc"><span>Discoveries</span><b>@ND</b></button><button class="bkb" data-b="leg"><span>Legends</span><b>@NL</b></button><button class="bkb" data-b="deep"><span>Deep cuts</span><b>@NP</b></button></div>%s</div>'
-       '<div class="grid2 bl" data-b="disc">%s</div><div class="grid2 bl" data-b="leg" hidden>%s</div><div class="grid2 bl" data-b="deep" hidden>%s</div>'
+       # r48 (Zale, Nov 22: one question only): no class tabs; the class word stays on each card; one mixed feed, biggest today first
+       '<div class="bkw one"><div class="bk" hidden><button class="bkb on" data-b="all"></button></div>%s<span class="bkc" aria-live="off"><b>0</b> of <i>@NA</i></span></div>'
+       '<div class="grid2 bl" data-b="all">%s</div>'
        '<button class="btn line wide more">Keep going</button></section>') % (gpick('.arch .card', 'What kind of music do you love?', GLIST).replace('class="gp"', 'class="gp gpc"'),
-       ''.join(vcard(n, y, 'disc', g, p, pos) for n, y, g, p, pos in disc),
-       ''.join(vcard(n, y, 'leg', g, p, pos) for n, y, g, p, pos in leg),
-       ''.join(vcard(n, y, 'deep', g, p, pos) for n, y, g, p, pos in deep))
-s1 = s1.replace('@ND', str(len(disc))).replace('@NL', str(len(leg))).replace('@NP', str(len(deep)))
+       ''.join(vcard(n, y, k, g, p, pos) for k, n, y, g, p, pos in ARCH_ALL))
+s1 = s1.replace('@NA', str(len(ARCH_ALL))).replace('@ND', str(len(disc))).replace('@NL', str(len(leg))).replace('@NP', str(len(deep)))
 
 P24 = d['yearBrand']['2024']
 # ---------- SCREEN 3: Geese ----------
@@ -722,6 +812,46 @@ def tile(a, y, P, photo):
             '<span class="yt-n" style="font-size:max(var(--lab),%.1fpx)">%s</span>%s</a>') % (_aslug(n), E(n), P['paper'], P['ink'], P['ink2'], P['band'], KLAB[k], fs, '<br>'.join(E(x) for x in lines), foot)
 
 YREEL = {}
+_RF = json.load(open(ROOT + 'reel_focus.json'))
+# r66 (Copy Review copy_review-50, Nov 22): a three-line then -> now line for every Music act-year (473 that had none), from branch copy-review-nov22b data.json actYearLines
+_AYL = {}
+for _o in json.load(open(ROOT + 'act_year_lines.json', encoding='utf-8')):
+    _AYL[(''.join(c for c in _ud.normalize('NFD', _o['n'].lower()) if c.isalnum() and ord(c) < 128), str(_o['y']))] = _o['l']
+def _rline(n, y, k):  # r50: the reel frame carries Copy Review's three-line card line (then -> now) when one exists
+    sl_ = ''.join(c for c in _ud.normalize('NFD', n.lower()) if c.isalnum() and ord(c) < 128)
+    for kk in (k, 'disc', 'leg', 'deep'):
+        v = _ALINES.get('%s|%s|%s' % (kk, sl_, y))
+        if v: return v
+    return _AYL.get((sl_, str(y)), '')
+def _postimg(y):
+    """r61 (Zale, Nov 22 20:23): the frame shows a close-up of that year's own poster art, washed in the frame color."""
+    for p_ in ('i/y%s-poster.webp' % y[2:], 'i/y%s-centre.webp' % y[2:]):
+        if os.path.exists(_src(p_)): return img(p_, 1400, 70)
+    return 'data:,'
+def _lum(c):
+    r, g, b = (int(c[i:i+2], 16) / 255 for i in (1, 3, 5)); return .2126 * r + .7152 * g + .0722 * b
+def _grl(c):
+    v = [int(c[i:i+2], 16) / 255 for i in (1, 3, 5)]; v = [x / 12.92 if x <= .03928 else ((x + .055) / 1.055) ** 2.4 for x in v]
+    return .2126 * v[0] + .7152 * v[1] + .0722 * v[2]
+def _gcr(a, b): la, lb = sorted([_grl(a), _grl(b)]); return (lb + .05) / (la + .05)
+def _acc(P, bg='#2A2527'):
+    """r71 (Zale, Nov 22 21:45, picked Light): the artist page's labels take the year's own boldest color that still reads 4.5:1 on the dark page."""
+    import colorsys
+    cs = [c for c in [P.get('warm'), P.get('light'), P.get('band'), P.get('ink2'), P['paper']] + list(P.get('stripe', [])) if c and len(c) == 7 and _gcr(c, bg) >= 4.5]
+    def sc(c):
+        r, g, b = (int(c[i:i+2], 16) / 255 for i in (1, 3, 5)); return max(r, g, b) - min(r, g, b)  # chroma: near-whites don't count as a color
+    best = max(cs, key=sc) if cs else None
+    return best if best and sc(best) >= .28 else '#D6B54A'  # no real color that reads: keep the site gold
+def _mat(P):
+    """r56c (Zale, Nov 22): the frame takes the year's boldest color; the poster and photo stay on paper below it."""
+    import colorsys
+    pa = P['paper'].upper()
+    cs = [c for c in [P.get('band'), P.get('warm'), P.get('light')] + list(P.get('stripe', [])) if c and c.upper() != pa and len(c) == 7]
+    def sc(c):
+        r, g, b = (int(c[i:i+2], 16) / 255 for i in (1, 3, 5)); h_, l_, s_ = colorsys.rgb_to_hls(r, g, b)
+        return s_ * (1 - abs(l_ - .45) * 1.4)
+    return max(cs, key=sc) if cs else P['band']
+EARLY_ART = {y_: 'ext/art/y%s-art-centre.png' % y_[2:] for y_ in ['2000','2001','2002','2003','2004','2005','2006'] if os.path.exists(ROOT + 'ext/art/y%s-art-centre.png' % y_[2:])}
 def year_page(y):
     P = d['yearBrand'][y]; st = d['yearStory'].get(y, {}); yp = d['yearPhotos'].get(y, {})
     allb = d['yearBill'][y]
@@ -738,7 +868,8 @@ def year_page(y):
     hero = None
     if r0 and loc(r0.get('i')) and 'poster' not in r0['i']:
         kk = (r0.get('k') or '').split(' · ')
-        hero = (r0['i'], r0['n'], kk[0] if kk else '', kk[1] if len(kk) > 1 else '', r0.get('l', ''), bool(r0.get('v')), r0.get('v', ''))
+        _hv = r0.get('v', '') if (r0.get('v') or '').split('&')[0] in YURLS.get(y, ()) else ''  # r57: same-year song or none
+        hero = (r0['i'], r0['n'], kk[0] if kk else '', kk[1] if len(kk) > 1 else '', r0.get('l', ''), bool(_hv), _hv)
     elif ten and ph(ten[0]):
         a0 = ten[0]; hero = (ph(a0), a0['n'], KLAB[a0['k']], gp_a(a0), '', False, '')
     # r45 (Zale, Nov 22): every year opens on a ten-band reel built from TODAY's magnitude (class table magnitude_dec), top act first.
@@ -751,13 +882,15 @@ def year_page(y):
         o = _ov.get(a['n']) or _ovc.get(_canon(a['n'])) or {}
         rp = o.get('i') if (o.get('i') and loc(o['i']) and 'poster' not in o['i']) else ''
         p = ph(a) or rp or ARCHF.get((_canon(a['n']), y), '')
-        clip = o.get('v') or archive_clip(a['n'], y)
-        if not p or 'poster' in p or not clip: continue  # every frame plays a song (Zale: 'we go to different videos if we can't find them')
-        sl.append({'i': img(p, 1100, 80), 'raw': p, 'n': a['n'], 'k': KLAB[a['k']], 'g': gp_a(a), 'l': o.get('l', ''), 'clip': clip, 'sg': ''})
+        clip = year_clip(a['n'], y) or (o.get('v') if (o.get('v') or '').split('&')[0] in YURLS.get(y, ()) else '')
+        if not p or 'poster' in p or not clip or p in _RF['drop']: continue  # every frame plays a song (Zale: 'we go to different videos if we can't find them')
+        _fx = _RF['focus'].get(p)
+        sl.append({'i': img(p, 1100, 80), 'raw': p, 'pos': ('%s%% %s%%' % tuple(_fx)) if _fx else fpos(p, FOC), 'n': a['n'], 'k': KLAB[a['k']], 'g': gp_a(a), 'l': _rline(a['n'], y, a['k']) or o.get('l', ''), 'clip': clip, 'sg': ''})
         if len(sl) == 10: break
     if not sl and hero:
         sl = [{'i': img(hero[0], 1100, 80), 'raw': hero[0], 'n': hero[1], 'k': hero[2], 'g': hero[3], 'l': hero[4], 'clip': hero[6], 'sg': ''}]
     YREEL[y] = sl
+    _top = len(h)  # r49: hero + poster share one band (side by side on desktop)
     if sl: hero = hero or (sl[0]['raw'],)
     if hero:
         if sl:
@@ -766,7 +899,7 @@ def year_page(y):
             sattr = ' data-slides="%s"' % html.escape(json.dumps(sl), quote=True)
             h += ('<section class="hero hyr reel"%s><img src="%s" alt="" style="object-position:%s" data-clip="%s"><div class="hero-sc"></div><div class="segs">%s</div><span class="hyr-y">%s</span>%s'
                   '<div class="hero-tx"><p class="krow"><span class="k k-%s">%s</span><span class="g">%s</span></p><h1 class="act%s">%s</h1>%s</div></section>') % (
-                  sattr, sl[0]['i'], fpos(sl[0]['raw'], FOCH), E(sl[0]['clip']), segs, y, clip_ring(sl[0]['clip'], 'lg'),
+                  sattr, sl[0]['i'], sl[0].get('pos') or fpos(sl[0]['raw'], FOC), E(sl[0]['clip']), segs, y, clip_ring(sl[0]['clip'], 'lg'),
                   kc, E(sl[0]['k']), E(sl[0]['g']), ' sm' if len(sl[0]['n']) > 12 else '', E(sl[0]['n']), ('<p class="hero-sub">%s</p>' % E(sl[0]['l'])) if sl[0]['l'] else '')
         else:
             h += ('<section class="hero hyr"><img src="%s" alt="" style="object-position:%s"><div class="hero-sc"></div><div class="segs">%s</div><span class="hyr-y">%s</span>%s'
@@ -775,14 +908,59 @@ def year_page(y):
                   kc, E(hero[2]), E(hero[3]), ' sm' if len(hero[1]) > 12 else '', E(hero[1]), ('<p class="hero-sub">%s</p>' % E(hero[4])) if hero[4] else '')
     if y == '2024':
         badge = img('i/y24-badge-keyline.png', 460, fmt='PNG')
+    elif y in EARLY_ART:
+        badge = img(EARLY_ART[y], 460, fmt='PNG')  # r56: Artwork's approved 2000-2006 piece (artwork-46)
     else:
         badge = img(d['yearLogo'][y], 460, fmt='PNG')
     # r45 (Zale, Nov 22): the booking view is ordered and sized by AT-FESTIVAL magnitude (class table at_festival_magnitude_dec) from 2009 on; earlier years keep the printed poster order
     then_list = sorted(music, key=lambda x: -(x.get('mb') if x.get('mb') is not None else -1)) if (ranked and int(y) >= 2009) else music
     h += poster_block(P, badge, y, then_list, today_all, len(music), joined=bool(hero), ranked=ranked)
+    # r56 (Zale, Nov 22): paper frame. The year's own art runs along the top (desktop), and the poster paper wraps photo and poster like a printed poster with a photo window
+    _crown = '<div class="yrcrown" aria-hidden="true">%s</div>' % seam(y, P)
+    _st = (list(P.get('stripe', [])) + [P['ink']] * 3)[:3]
+    _pale = _lum(P['paper']) > .82
+    _tint = _mat(P)
+    def _mix(a, b, t): return '#%02X%02X%02X' % tuple(round(int(a[i:i+2], 16) * (1 - t) + int(b[i:i+2], 16) * t) for i in (1, 3, 5))
+    def _rl(c):
+        v = [int(c[i:i+2], 16) / 255 for i in (1, 3, 5)]; v = [x / 12.92 if x <= .03928 else ((x + .055) / 1.055) ** 2.4 for x in v]
+        return .2126 * v[0] + .7152 * v[1] + .0722 * v[2]
+    def _dist(a, b): return sum((int(a[i:i+2], 16) - int(b[i:i+2], 16)) ** 2 for i in (1, 3, 5)) ** .5
+    def _cr(a, b): la, lb = sorted([_rl(a), _rl(b)]); return (lb + .05) / (la + .05)
+    _txt = [c for c in (P['ink'], P.get('ink2'), P.get('band')) if c and len(c) == 7 and _cr(c, P['paper']) >= 4.5]
+    _pnl = P['paper']
+    # r61 (Zale, Nov 22 20:23: "too much white still"): the panel takes one of the poster's own colors when every text color still reads 4.5:1 on it
+    _bold = [c for c in [P.get('light'), P.get('warm')] + list(P.get('stripe', [])) if c and len(c) == 7 and _lum(c) < .9 and _dist(c, P['paper']) > 40 and all(_cr(x, c) >= 4.5 for x in _txt)]
+    if _bold:
+        import colorsys as _cs
+        _pnl = max(_bold, key=lambda c: _cs.rgb_to_hls(*[int(c[i:i+2], 16) / 255 for i in (1, 3, 5)])[2])
+    # r62 (Zale, Nov 22 20:29: "less white, more frequently"): no readable poster color for the panel -> a dark panel in the year's band color with light names
+    _dark = None
+    if not _bold and _cr(P['paper'], P['band']) >= 4.5:
+        _lt = [c for c in [P.get('light'), P.get('warm')] + list(P.get('stripe', [])) if c and len(c) == 7 and _cr(c, P['band']) >= 4.5 and _dist(c, P['paper']) > 40]
+        _dark = (P['band'], P['paper'], _lt[0] if _lt else P['paper'])
+        _pnl = P['band']
+    # r64 (Zale, Nov 22 20:54): two years set by eye: 2013 deep poster brown (the grey was weak), 2022 poster yellow (the badger lost its fill on maroon)
+    _OVR = {'2013': ('#3E2A12', '#97D6C9', '#EC8015', 'dark'), '2022': ('#E2BD23', '#6B3030', '#3E1C1C', 'lit')}
+    if y in _OVR:
+        _o = _OVR[y]; _dark = _o[:3]; _pnl = _o[0]; _litp = _o[3] == 'lit'
+    else:
+        _litp = False
+    if _dark: pass
+    elif _bold: pass
+    elif _lum(P['paper']) > .82:  # r57: pale paper takes a wash of the year color, eased back until every text color keeps 4.5:1
+        for _t in (.14, .10, .07, .04):
+            _c = _mix(P['paper'], _tint, _t)
+            if all(_cr(x, _c) >= 4.5 for x in _txt): _pnl = _c; break
+    _cand = [c for c in list(P.get('stripe', [])) + [P.get('light'), P.get('warm'), P['ink']] if c and len(c) == 7 and _dist(c, P['paper']) > 60]
+    _band = max(_cand, key=lambda c: _dist(c, _tint)) if _cand else P['ink']  # r57: border band contrasts with the frame color
+    h = h[:_top] + '<div class="yrtop framed%s" style="--paper:%s;--ink:%s;--mat:%s;--s1:%s;--s2:%s;--s3:%s;--tint:%s;--pnl:%s;--post:url(%s)%s">%s' % ((' pale' if _pale else '') + (' dark' if _dark else '') + (' litp' if _litp else ''), P['paper'], P['ink'], _mat(P), _band, _st[1], _st[2], _tint, _pnl, _postimg(y), (';--dkp:%s;--dki:%s;--dki2:%s' % _dark) if _dark else '', _crown) + h[_top:] + '</div>'
     if st.get('headline'):
         h += ('<section class="story short"><p class="kick">The %s story</p><p class="lead">%s.</p>%s</section>') % (y, E(st['headline'].rstrip('.')), ('<p class="body" hidden>%s</p><button class="chip stog" aria-expanded="false" data-open="Read the %s story" data-shut="Show less"><span>Read the %s story</span> %s</button>' % (E(st['story']), y, y, ICON['caret'])) if st.get('story') else '')
     lp = ''  # Nov 21 r27 (Zale): the lineup picker is off until the other lineups (Family, DJs, Comedy...) are drawn; it listed them with nothing behind them
+    # r49 (Zale, Nov 22): the music question comes first, before "Begin here", and filters both Begin here and everyone below
+    _gall = gopts([x for x in music if x.get('g')])
+    if len(_gall) >= 3:
+        h += '<section class="ypick">%s</section>' % gpick('#y%s .topten .card, %s' % (y, '#y%s .mini' % y if True else ''), opts=['Everything'] + _gall).replace(", #y%s .mini" % y, ", #y%s .mini, #y%s .rest .row" % (y, y))
     if ten:
         h += ('<section class="topten">%s<h2 class="h-big">Begin here</h2><p class="sub k2">%s ways into Pickathon %s.</p><div class="grid2%s">%s</div></section>') % (
               lp, NUM.get(len(ten), str(len(ten))), y, '' if any(ph(a) for a in ten) else ' flat', ''.join(tile(a, y, P, ph(a)) for a in ten))
@@ -805,7 +983,7 @@ def year_page(y):
         gs = gopts([x for x in others if x.get('g')])
         body = '<div class="rows">%s</div>' % ''.join('<a class="row" data-g="%s" data-art="%s" data-an="%s" href="#"><b>%s</b><span>%s</span></a>' % (E(gall_a(x)), _aslug(x['n']), E(x['n']), E(x['n']), E(' · '.join(t for t in (KLAB.get(x.get('k'), ''), gp_a(x)) if t))) for x in others)
     if others:
-        h += '<section class="rest"><h2 class="h-big">Keep wandering</h2>%s%s</section>' % (gpick(sel, opts=['Everything'] + gs) if len(gs) >= 3 else '', body)
+        h += '<section class="rest"><h2 class="h-big">Keep wandering</h2>%s</section>' % body
     h += ('<section class="years"><p class="kick">See other years</p><div class="swipe yrs"><a class="yr" data-go="s1" href="#">2027</a>%s</div></section>') % ''.join(
          ('<span class="yr off">2020–21 · no festival</span>' if x == '2019' else '') + '<a class="yr%s" data-go="y%s" href="#">%s</a>' % (' on' if x == y else '', x, x) for x in YEARS)
     return h
@@ -868,6 +1046,11 @@ def _cls(name, yr):
     for y, x in _KIN.get(name, []):
         if str(y) == str(yr): return x
     return None
+_STORIES = {}
+import glob as _gl
+for _f in sorted(_gl.glob(ROOT + 'stories/stories_*.csv')):
+    for _r in csv.DictReader(open(_f, encoding='utf-8')):
+        if _r.get('story'): _STORIES[(_slug(_r['act']), str(_r['year']))] = _r
 def art_page(slug, ap):
     name = _NAMES[slug]; yr = str(ap.get('yr') or max([y for y, _ in _KIN.get(name, [])] or [2024]))
     if not str(ap.get('hero','')).startswith(('i/', 'ext/')) or not os.path.exists(_src(ap['hero'])):
@@ -877,10 +1060,58 @@ def art_page(slug, ap):
     k = x.get('k', 'none'); g = x.get('g', '')
     P = d['yearBrand'].get(yr, P24)
     h = header(name, 'Pickathon ' + yr)
-    h += ('<section class="hero hact"><img src="%s" alt="" style="object-position:%s"><div class="hero-sc"></div>'
-          '<div class="hero-tx"><p class="krow"><span class="k k-%s">%s</span>%s</p><h1>%s</h1><p class="ah-meta">Pickathon %s</p></div></section>') % (
-          img(ap['hero'], 780), ap.get('hpos', '50% 40%'), k, KLAB.get(k, ''), ('<span class="g">%s</span>' % E(gp_n(name, GSHORT.get(g, g)))) if (gp_n(name) or g) else '', E(name), yr)
-    story = [s for s in (ap.get('story') or []) if s.get('t')]
+    # r71 (Zale, Nov 22 21:45, picked Light): the year's thin border strip sits above the hero, the same strip as the top of the year page
+    _P2 = P if yr in d['yearBrand'] else P27
+    h += '<div class="acrown" aria-hidden="true">%s</div>' % (seam(yr, _P2) if yr != '2027' else generic_seam('2027', P27))
+    # r73 (Zale, Nov 22 21:53, picked "card line"): the hero is a reel of that year's photos (3-5, best first, different stages), 4 s a photo, hard cut;
+    # the name, class and the act-year card line stay put; one big play button plays every song from that year as a playlist
+    _fr, _seen, _sts = [], set(), set()
+    _cand = [(ap['hero'], ap.get('hpos', '50% 40%'), ap.get('heroSt', ''))] + [(g_['i'], g_.get('pos', '50% 50%'), g_.get('st', '')) for g_ in (ap.get('gal') or [])]
+    _cand = [c_ for c_ in _cand if ('/y%s' % yr[2:]) in c_[0] or c_[0] == ap['hero']]
+    for _pass in (0, 1):  # first one photo per stage, then fill
+        for c_ in _cand:
+            if c_[0] in _seen or len(_fr) >= 5: continue
+            if _pass == 0 and c_[2] and c_[2] in _sts and len(_fr) > 0: continue
+            _seen.add(c_[0]); _sts.add(c_[2]); _fr.append(c_)
+    _ksy = ''.join(ch for ch in _ud.normalize('NFD', _CLIPALIAS.get(name, name).lower()) if ch.isalnum())
+    _ysongs = list(CLIPYL.get((_ksy, yr), []))
+    _c1 = CLIPY.get((_ksy, yr))
+    if _c1 and _c1.split('&')[0] not in [u_ for u_, _ in _ysongs]: _ysongs.append((_c1, ''))
+    _q = ';;'.join('%s|%s%s · Pickathon %s' % (u_, name, (' · ' + sg_) if sg_ else '', yr) for u_, sg_ in _ysongs)
+    _ring = ''
+    if _ysongs:
+        _ring = clip_ring(_ysongs[0][0], 'lg')
+        if len(_ysongs) > 1: _ring = _ring.replace('<span class="ring lg" data-clip=', '<span class="ring lg" data-q="%s" data-clip=' % _h.escape(_q, quote=True), 1)
+    _line = _rline(name, yr, k) or ''
+    _gt = gp_n(name, GSHORT.get(g, g)) if (gp_n(name) or g) else ''
+    _sl = [{'i': img(f_[0], 780), 'pos': f_[1], 'n': name, 'k': KLAB.get(k, ''), 'g': _gt, 'l': _line, 'clip': _ysongs[0][0] if _ysongs else ''} for f_ in _fr]
+    _segs = ''.join('<i data-slide="%d"%s><b></b></i>' % (n_, ' class="on"' if n_ == 0 else '') for n_ in range(len(_sl))) if len(_sl) > 1 else ''
+    h += ('<section class="hero hact%s"%s><img src="%s" alt="" style="object-position:%s"><div class="hero-sc"></div>%s%s'
+          '<div class="hero-tx"><p class="krow"><span class="k k-%s">%s</span>%s</p><h1>%s</h1><p class="ah-meta">Pickathon %s</p>%s</div></section>') % (
+          ' areel' if _segs else '', (' data-slides="%s"' % html.escape(json.dumps(_sl), quote=True)) if _segs else '',
+          img(_fr[0][0], 780) if _fr else img(ap['hero'], 780), _fr[0][1] if _fr else ap.get('hpos', '50% 40%'),
+          ('<div class="segs">%s</div>' % _segs) if _segs else '', _ring,
+          k, KLAB.get(k, ''), ('<span class="g">%s</span>' % E(gp_n(name, GSHORT.get(g, g)))) if (gp_n(name) or g) else '', E(name), yr,
+          ('<p class="hero-sub">%s</p>' % E(_line)) if _line else '')
+    # r73 (Zale, Nov 22 21:56): the same year strip turned upside down closes the bottom of the photo
+    h += '<div class="acrown afoot" aria-hidden="true">%s</div>' % (seam(yr, _P2) if yr != '2027' else generic_seam('2027', P27))
+    # r74 (Zale, Nov 22 22:03; picked "go to that year's page"): a small year block under the reel ties the act to its Pickathon:
+    # the year logo, "Pickathon 2013" and the stage, then every year the act played; each year opens that year's lineup page
+    _lgy = d['yearLogo'].get(yr)
+    _lgi = ('<img src="%s" alt="">' % img(_lgy, 220, fmt='PNG')) if (_lgy and not _lgy.startswith('http') and os.path.exists(_src(_lgy))) else ('<img src="%s" alt="">' % LOGO)
+    _stg = (_fr[0][2] if _fr else '') or ap.get('heroSt', '')
+    _yrs = sorted({str(y_) for y_, _ in _KIN.get(name, [])} | {yr})
+    h += ('<section class="ayb" style="--yp:%s;--yi:%s"><span class="ayb-l">%s</span><div class="ayb-t"><b>Pickathon %s</b>%s</div>'
+          '<div class="ayb-y"><p>Their Pickathons</p><div>%s</div></div></section>') % (
+          _P2['paper'], _P2['ink'], _lgi, yr, ('<span>%s</span>' % E(_stg)) if _stg else '',
+          ''.join('<button type="button" data-go="y%s"%s aria-label="Pickathon %s lineup">%s</button>' % (y_, ' aria-current="true"' if y_ == yr else '', y_, y_) for y_ in _yrs))
+    # r66 (Zale picked one continuous story, copy_review-54): intro, one story in a few paragraphs, then a small sets block; read from Copy Review's stories_<year> CSVs
+    _st = _STORIES.get((_slug(name), yr))
+    story = [] if _st else [s for s in (ap.get('story') or []) if s.get('t')]
+    if _st:
+        h += '<section class="liner one"><p class="kick">Liner notes</p><p class="lead">%s</p>%s%s</section>' % (
+            E(_st['intro']), ''.join('<p class="body">%s</p>' % E(pp.strip()) for pp in _st['story'].split('\n\n') if pp.strip()),
+            ('<div class="sets"><p class="kick">At Pickathon %s</p><p>%s</p></div>' % (yr, E(_st['sets']))) if _st.get('sets') else '')
     if story:
         h += '<section class="liner"><p class="kick">Liner notes</p><p class="lead">%s</p>' % E(story[0]['t'])
         for s in story[1:]:
@@ -894,37 +1125,43 @@ def art_page(slug, ap):
             h += '<figure class="ph"><img src="%s" alt="" style="object-position:%s"><figcaption>%s%s</figcaption></figure>' % (
                 img(p['i'], 600), p.get('pos', '50% 50%'), E(p.get('st', '')), '')
         h += '</div></section>'
-    clips = [r for r in d['yearReel'].get('2026', []) if norm(r['n']) == norm(name) and r.get('v') and r.get('i') and loc(r['i']) and 'poster' not in r['i']]
-    if clips:
-        h += '<section class="shelf vids"><div class="sh-h"><div><p class="kick">Filmed on the farm</p><h2>Videos · Pickathon 2026</h2></div></div><div class="swipe">'
-        for r in clips:
-            h += ('<div class="vid" role="button" tabindex="0" data-clip="%s"><span class="vth"><img src="%s" alt="" style="object-position:50%% 40%%">%s</span>'
-                  '<b>%s</b><span>%s · Pickathon 2026</span></div>') % (_h.escape(r['v'], quote=True), img(r['i'], 600), play('sm'), E(name), E(r.get('sg', '')))
+    # r58 (Zale, Nov 22 20:06): an artist page carries every song the act has from every Pickathon year (newest first), then its full sets
+    _ks = ''.join(ch for ch in _ud.normalize('NFD', _CLIPALIAS.get(name, name).lower()) if ch.isalnum())
+    _yp = lambda yy: (d['yearPhotos'].get(str(yy), {}).get(name, {}) or {}).get('i')
+    def _thumb(u, yy):
+        p_ = _yp(yy)
+        if p_ and loc(p_): return img(p_, 520)
+        m_ = _re.search(r'v=([A-Za-z0-9_-]{11})', u)
+        return ('https://i.ytimg.com/vi/%s/hqdefault.jpg' % m_.group(1)) if m_ else img(ap['hero'], 520)
+    songs, seen_u = [], set()
+    for (kk, yy), u in sorted(CLIPY.items(), key=lambda t: -int(t[0][1])):
+        if kk == _ks and u.split('&')[0] not in seen_u: seen_u.add(u.split('&')[0]); songs.append((u, yy, ''))
+    for v in (ap.get('vids') or []):
+        if v.get('u') and v['u'].split('&')[0] not in seen_u: seen_u.add(v['u'].split('&')[0]); songs.append((v['u'], ap.get('yr') or yr, v.get('sg', '')))
+    if songs:
+        h += '<section class="shelf vids"><div class="sh-h"><div><p class="kick">Filmed on the farm</p><h2>Songs at Pickathon</h2></div></div><div class="swipe">'
+        for u, yy, sg in songs[:12]:
+            h += ('<div class="vid" role="button" tabindex="0" data-clip="%s"><span class="vth"><img loading="lazy" src="%s" alt="" style="object-position:50%% 40%%">%s</span>'
+                  '<b>%s</b><span>%sPickathon %s</span></div>') % (_h.escape(u, quote=True), _thumb(u, yy), play('sm'), E(name), (E(sg) + ' · ') if sg else '', yy)
         h += '</div></section>'
-    vids2 = ap.get('vids') or []
-    if vids2:
-        h += '<section class="shelf vids"><div class="sh-h"><div><p class="kick">Videos</p><h2>Pickathon</h2></div></div><div class="swipe">'
-        for v in vids2:
-            h += ('<div class="vid" role="button" tabindex="0" data-clip="%s"><span class="vth"><img src="%s" alt="" style="object-position:50%% 40%%">%s</span>'
-                  '<b>%s</b><span>%s</span></div>') % (_h.escape(v['u'], quote=True), img(v['i'], 600), play('sm'), E(name), E(v['sg']))
+    fulls = [v for v in d['videos'] if _slug(v.get('a') or '') in (_slug(name), _ks) and (v.get('f') or v.get('cad') or 'full set' in str(v.get('s', '')).lower()) and _vurl(v)]
+    if fulls:
+        h += '<section class="shelf vids"><div class="sh-h"><div><p class="kick">The whole show</p><h2>Full sets</h2></div></div><div class="swipe">'
+        for v in sorted(fulls, key=lambda v: -int(v.get('y') or 0))[:6]:
+            u = _vurl(v)
+            h += ('<div class="vid" role="button" tabindex="0" data-clip="%s"><span class="vth"><img loading="lazy" src="%s" alt="" style="object-position:50%% 40%%">%s</span>'
+                  '<b>%s, full set</b><span>Pickathon %s</span></div>') % (_h.escape(u, quote=True), _thumb(u, v.get('y')), play('sm'), E(name), v.get('y'))
         h += '</div></section>'
-    years = sorted({y for y, _ in _KIN.get(name, [])})
-    if years:
-        h += '<section class="theirs"><p class="kick">Their Pickathons</p><div class="filt">%s</div></section>' % ''.join(
-            '<a class="chip%s" href="#">Pickathon %s</a>' % (' on' if str(y) == yr else '', y) for y in years)
-    # Nov 21: class from the live table at the act's first year (never hard-coded); matched on genre, then nearest in size (Zale, Nov 19)
-    _me = x.get('m') or 0
-    same = []
-    for p in d['past']['deep']:
-        if p['n'] == name or not p.get('g') or p.get('g') != g or not str(p.get('pi','')).startswith('i/') or not os.path.exists(APP + p['pi']): continue
-        c = _cls(p['n'], p.get('pyr')) or {}
-        if c.get('k') not in ('disc', 'leg', 'deep'): continue
-        same.append((abs((c.get('m') or 0) - _me), p, c['k']))
-    same = [(p, kk) for _, p, kk in sorted(same, key=lambda t: t[0])[:5]]
+    # r74: Their Pickathons moved up into the year block under the reel
+    # r58 (Zale, Nov 22 20:06): "If you like" draws from the Archive's cards that share any of the act's music tags, nearest in size today
+    _mt = set(tags_of(name)) or ({gp_n(name, GSHORT.get(g, g))} - {''})
+    _me = max([v for (cn, _y), v in _magall.items() if cn == _canon(name)] or [x.get('m') or 0])
+    same = sorted([c for c in ARCH_ALL if _canon(c[1]) != _canon(name) and c[4] and (set(tags_of(c[1])) or {c[3]}) & _mt],
+                  key=lambda c: abs(_mg((c[1], c[2])) - _me))[:6]
     if same:
-        h += shelf('Same sound, other summers', 'IF YOU LIKE %s' % name.upper(), 'Acts who stand about where %s stands.' % name, '',
-                   [card(p['n'], p['pyr'], kk, GSHORT.get(p.get('g',''), p.get('g','')), img(p['pi'], 520)) for p, kk in same])
-    return ('<main id="a-%s" class="screen" hidden style="--paper:%s;--ink:%s;--ink2:%s">%s</main>') % (slug, P['paper'], P['ink'], P['ink2'], h)
+        h += shelf('Same sound, other summers', 'IF YOU LIKE %s' % name.upper(), 'Acts who stand about where %s stands today.' % name, '',
+                   [vcard(n_, y_, k_, g_, p_, pos_) for k_, n_, y_, g_, p_, pos_ in same])
+    return ('<main id="a-%s" class="screen" hidden style="--paper:%s;--ink:%s;--ink2:%s;--acc:%s;--mat:%s">%s</main>') % (slug, P['paper'], P['ink'], P['ink2'], _acc(P), _mat(P), h)
 ARTISTS = {}
 for _s, _ap in d['actPages'].items():
     if _s in _NAMES:

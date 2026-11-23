@@ -1,5 +1,5 @@
-// Pickathon service worker. Build 20261119-5350
-const V='pk-20261122-5385',M='pkmedia-3',KEEP=["ssindex-b6158b1d.json"],SHELL=['./','index.html','data.json','focus.json','focus-tall.json','focus-hero.json','focus.js?v=5360','manifest.json','icon-192.png','apple-touch-icon.png','fonts/pickathon-2014.ttf','lx/lx.js?v=5385','lx/lx.css','lx/fonts.css','lx/index.json','fonts/bricolage-grotesque-latin-wght-normal.woff2','farmmap/index.html?embed=1','farmmap/lab-phone.html?embed=1'];
+// Pickathon service worker. Build 20261122-5392
+const V='pk-20261122-5392',M='pkmedia-3',KEEP=["ssindex-b6158b1d.json"],SHELL=['./','index.html','data.json','focus.json','focus-tall.json','focus-hero.json','focus.js?v=5392','manifest.json','icon-192.png','apple-touch-icon.png','fonts/pickathon-2014.ttf','lx/lx.js?v=5388','lx/lx.css','lx/fonts.css','lx/index.json','fonts/bricolage-grotesque-latin-wght-normal.woff2','farmmap/index.html?embed=1','farmmap/lab-phone.html?embed=1'];
 const MP='pkmap-1';
 const fl=new Map();/* one network request per URL at a time (icons are asked for twice by the page) */
 const once=(k,f)=>{let p=fl.get(k);if(!p){p=f().finally(()=>fl.delete(k));fl.set(k,p)}return p.then(x=>x.clone())};
@@ -11,7 +11,7 @@ const idleExtra=()=>new Promise(r=>setTimeout(r,25000)).then(()=>self.clients.ma
 self.addEventListener('message',e=>{if(e.data==='skip')self.skipWaiting();if(e.data==='ver'&&e.ports&&e.ports[0])e.ports[0].postMessage(V);if(e.data==='pack'&&!xtra)idleExtra().catch(()=>{})});
 self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(k=>Promise.all(k.filter(x=>(x.startsWith('pk-')&&x!==V)||(x.startsWith('pkmedia')&&x!==M)).map(x=>caches.delete(x)))).then(()=>caches.open(M)).then(h=>h.keys().then(ks=>Promise.all(ks.filter(q=>{const p=new URL(q.url).pathname.split('/').pop();return /pack|ssindex/.test(p)&&KEEP.indexOf(p)<0}).map(q=>h.delete(q))))).then(()=>self.clients.claim()).then(()=>{mapPack('core')}))});
 self.addEventListener('fetch',e=>{const r=e.request;if(r.method!=='GET')return;const u=new URL(r.url);if(/fonts\.(googleapis|gstatic)\.com$/.test(u.hostname)){e.respondWith(caches.open(M).then(h=>h.match(r).then(m=>m||fetch(r).then(x=>{h.put(r,x.clone());return x}))));return}if(u.origin!==location.origin)return;if(/\/(sw|version)\.(js|json)$/.test(u.pathname))return;
- if(/\/farmmap\/(t|l|h|ic)\/|\/farmmap\/map(_calm)?\.webp$/.test(u.pathname)){const hero=/\/farmmap\/h\//.test(u.pathname);const ver=/[?&]v=/.test(u.search);e.respondWith(caches.open(MP).then(c=>c.match(r).then(m=>{
+ if(/\/farmmap\/(t\d?|l|h|ic)\/|\/farmmap\/map(_calm|\d)?\.webp$/.test(u.pathname)){const hero=/\/farmmap\/h\//.test(u.pathname);const ver=/[?&]v=/.test(u.search);e.respondWith(caches.open(MP).then(c=>c.match(r).then(m=>{
   /* versioned (?v=) files never change under the same URL: a cache hit is final, no network */
   if(m&&(ver||!hero))return m;
   const net=once(r.url,()=>fetch(r).then(x=>{if(x.ok)c.put(r,x.clone());return x}));
@@ -20,7 +20,9 @@ self.addEventListener('fetch',e=>{const r=e.request;if(r.method!=='GET')return;c
  /* Rule: anything that changes (pages, data, the map page) always comes from the network when online; the saved copy is only for offline. Big files that never change (map tiles, photos, fonts) come from the cache. */
  const fresh=r.mode==='navigate'||/(\.html|data\.json|manifest\.json)$/.test(u.pathname)||u.pathname.endsWith('/');
  /* Nov 13 (Zale): show the saved copy at once and check for a newer one in the background; the next visit gets the new version. First load after the install is the saved copy. Offline still falls back to the saved copy. */
- if(fresh){const net=fetch(r,{cache:'reload'}).then(x=>{if(x.ok&&x.status===200){const c=x.clone();return caches.open(V).then(h=>h.put(r,c)).catch(()=>{}).then(()=>x)}return x});e.waitUntil(net.catch(()=>{}));e.respondWith(caches.match(r).then(m=>m||net.catch(()=>caches.match('index.html'))));return}
+ /* Site Build Nov 22 (Zale: slow first paint): a copy saved by THIS build's install is already the current file (every deploy bumps V and the page's
+    version check reloads onto a newer build), so serve it with no background download; only a copy from elsewhere is refreshed in the background. */
+ if(fresh){const own=caches.open(V).then(h=>h.match(r));e.respondWith(own.then(m=>{if(m)return m;const net=fetch(r,{cache:'reload'}).then(x=>{if(x.ok&&x.status===200){const c=x.clone();return caches.open(V).then(h=>h.put(r,c)).catch(()=>{}).then(()=>x)}return x});e.waitUntil(net.catch(()=>{}));return caches.match(r).then(o=>o||net.catch(()=>caches.match('index.html')))}));return}
  const media=/pack[\w-]*\.json$|ssindex|\/tools\/lineup_2027_r1\/img\/|\/i\/|\/m\/|\/m\/|\/ss\/|\/fonts\//.test(u.pathname);
  /* QA M16 (Nov 11): emblems, photos and scripts were cache-first forever, so a phone kept a stale copy after the file was fixed.
     Each saved copy now carries the build it was saved under (x-pk-v). A copy from an older build is served at once (offline still works)
