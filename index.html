@@ -14909,6 +14909,12 @@ html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-pl.pkpl-cols.pkpl-c3 .pkpl-pr{gap:
 html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-pl.pkpl-cols.pkpl-c3 .pkpl-pr b{font-size:14.5px;line-height:1.1;white-space:normal}
 html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-pl.pkpl-cols.pkpl-c3 .pkpl-pr b{overflow:visible;text-overflow:clip;font-size:14px}html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-pl.pkpl-cols.pkpl-c3 .pkpl-pr span{min-width:0;overflow:visible}
 html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-pl.pkpl-cols.pkpl-c3 .pkpl-pr b{white-space:normal!important;font-size:14px!important;line-height:1.1!important}html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-pl.pkpl-cols.pkpl-c3 .pkpl-pr{padding-left:0!important;padding-right:0!important}
+/* Zale, Nov 22 17:55: half open, the photo runs right to the sheet's visible edge and a little past it, softly faded at the bottom; nothing below it shows until you pull up */
+@media (max-width:599px){
+  html body.pkpl-v2p #root #pkpl-top .pkpl-hero,html body.pkpl-v2p #root #pkpl-top.pkpl-has .pkpl-hero,html body.pkpl-v2p #root #pkpl-top .pkpl-has .pkpl-hero{height:max(220px,calc(var(--pkpl-open,444px) - 58px + 40px))!important}
+  html body.pkpl-v2p #root #pkpl-top .pkpl-hero::after{height:92px!important;background:linear-gradient(180deg,rgba(43,38,40,0) 0,rgba(43,38,40,.5) 58%,#2B2628 100%)!important}
+  html body.pkpl-v2p #root #pkpl-top .pkpl-hi:not(.pkpl-map){padding-bottom:76px}
+  html body.pkpl-v2p #root #pkpl-top .pkpl-dots{bottom:34px}}
 </style>
 <script id="pk-places">
 /* pk-places: Places map and neighborhood pages, round 1 (Nov 13 2026). Source: tools/places_r1/places.js, spliced into index.html by tools/places_r1/build.py.
