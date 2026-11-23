@@ -850,3 +850,15 @@ body.pkpl-wide.pkpl-hood #root #pkpl-top .pkpl-sheet{padding-top:22px;background
 body.pkpl-wide #root #pkpl-top .pkpl-dgrab{height:22px}
 body.pkpl-wide #root #pkpl-top .pkpl-dgrab i{width:48px;height:5px;background:rgba(242,237,227,.7);box-shadow:none}
 body.pkpl-wide #root #pkpl-top .pkpl-dgrab:hover i{background:#F2EDE3}
+
+/* Zale, Nov 22: desktop list rows size to the room (--pkpl-rh from fitList): emblem about 70% of the row, name scales with it */
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-pl.pkpl-cols .pkpl-pr{min-height:var(--pkpl-rh,44px);gap:calc(var(--pkpl-rh,44px) * .22)}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-pl.pkpl-cols .pkpl-pr img{width:calc(var(--pkpl-rh,44px) * .68);height:calc(var(--pkpl-rh,44px) * .68);opacity:.85}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-pl.pkpl-cols .pkpl-pr b{font-size:clamp(15px,calc(var(--pkpl-rh,44px) * .3),19px)}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-pl + .pkpl-ab{margin-top:18px}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-pl.pkpl-cols.pkpl-c3{column-gap:6px}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-pl.pkpl-cols.pkpl-c3 .pkpl-pr{gap:7px;padding:4px 4px}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-pl.pkpl-cols.pkpl-c3 .pkpl-pr img{width:28px;height:28px}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-pl.pkpl-cols.pkpl-c3 .pkpl-pr b{font-size:15px;white-space:nowrap;overflow:visible}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-pl.pkpl-cols.pkpl-c3 .pkpl-pr b{font-size:14px;white-space:normal;line-height:1.15;overflow-wrap:normal}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-pl.pkpl-cols.pkpl-c3 .pkpl-pr span{min-width:0}
