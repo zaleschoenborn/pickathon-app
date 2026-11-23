@@ -34,7 +34,7 @@
   var ORDER = ['woods', 'paddock', 'cherryhill', 'grove', 'windmill', 'galaxy', 'lucky', 'farmhouse', 'curation', 'refuge', 'coyote', 'courtyard', 'market', 'orchard', 'welcomelot', 'lushcamp', 'quailtrail', 'southcamp', 'wildcamp', 'willowcamp'];
   var CORE = ['woods', 'refuge', 'coyote', 'cherryhill', 'market', 'grove', 'windmill', 'paddock', 'galaxy', 'courtyard'];   /* desktop start: Woods down to the Courtyard (addendum 3) */
   var AMN = { stage: 'Stages', restroom: 'Restrooms', water: 'Water', food: 'Food', bar: 'Bars', coffee: 'Coffee', craft: 'Craft and makers', atm: 'ATMs', dishes: 'Dish return', dishwash: 'Dish wash', wash: 'Hand wash', medical: 'Medical', shower: 'Showers', charge: 'Charging', info: 'Info', ice: 'Ice', dj: 'DJ booths', smoke: 'Smoking', shuttle: 'Shuttle', bike: 'Bike parking', moto: 'Motorcycle parking', parking: 'Parking', rv: 'RV camping', carcamp: 'Car camping', access: 'Accessible camping', gear: 'Gear drops', tent: 'Camp sites' };
-  var ISZ = { gear: 40 }, IS0 = 30;   /* plate size in map pixels (the art's plates were about 41) */
+  var ISZ = { gear: 40, merch: 40 }, IS0 = 30;   /* plate size in map pixels (the art's plates were about 41) */
   function amGlyph(k) { return '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">' + ((AMI || {})[k] || '') + '</svg>'; }
   function amOf(k) { return (MI || []).filter(function (z) { return z[0] === k; }); }
   function amUse(z) { var w = ISZ[z[0]] || IS0; return '<use href="#pkpl-i-' + z[0] + '" x="' + (z[1] - w / 2) + '" y="' + (z[2] - w / 2) + '" width="' + w + '" height="' + w + '"/>'; }
@@ -117,7 +117,7 @@
       '<div class="pkpl-world"><img class="pkpl-base" src="farmmap/' + (PAL27 ? 'map4' : 'map2') + '.webp?v=3" alt="" draggable="false" decoding="async" fetchpriority="high"><div class="pkpl-tiles"></div>' +
       '<svg class="pkpl-svg" viewBox="0 0 ' + W + ' ' + H + '" preserveAspectRatio="none" aria-hidden="true">' +
       '<defs><filter id="pkpl-glow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="9" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>' + Object.keys(AMI || {}).map(function (k) { return '<symbol id="pkpl-i-' + k + '" viewBox="0 0 24 24"><rect class="pkpl-ip" x=".75" y=".75" width="22.5" height="22.5" rx="5"/><g class="pkpl-ig" transform="translate(2.4 2.4) scale(.8)">' + AMI[k] + '</g></symbol>'; }).join('') + '</defs>' +
-      '<g class="pkpl-ics">' + (MI || []).map(amUse).join('') + '</g>' +
+      '<circle class="pkpl-patch" cx="1544.5" cy="2647.5" r="30.5"/>' + '<g class="pkpl-ics">' + (MI || []).map(amUse).join('') + '</g>' +
       '<path class="pkpl-veil" fill-rule="evenodd" d=""/><g class="pkpl-icon"></g><g class="pkpl-shs">' + shapes + '</g><path class="pkpl-lit" d=""/><path class="pkpl-was" d=""/><g class="pkpl-nms">' + Object.keys(NP || {}).map(function (k) { return '<path data-h="' + k + '" d="' + NP[k] + '"/>'; }).join('') + '</g><path class="pkpl-hov" d=""/></svg></div>' +
       '<div class="pkpl-pins"></div><div class="pkpl-am"></div>' +
       '<div class="pkpl-title" aria-hidden="false"><p class="pkpl-k"><img class="pkpl-logo" src="logo27-gold.png" alt="Pickathon 2027"><span>Pickathon</span></p><h1 class="pkpl-d">Summer camp for your soul</h1><p class="pkpl-l">Pick an experience below, then tap a place that lights up</p><div class="pkpl-ab"></div><div class="pkpl-pl"></div></div>' +
@@ -221,7 +221,7 @@
       if (u < 1) M.anim = requestAnimationFrame(f); else { M.anim = 0; moving(false); } })(performance.now());
   }
   function tiles() {
-    var dpr = window.devicePixelRatio || 1, on = M.s * dpr > 1.0;
+    var dpr = window.devicePixelRatio || 1, was = M.el.classList.contains('pkpl-hi'), on = M.s * dpr > (was ? 0.8 : 1.0);   /* Nov 23 (Zale: Wild Camp flashes while zooming out): a gap between switching on and off, so the detail layer doesn't blink at the edge */
     M.el.classList.toggle('pkpl-hi', on); if (!on) return;
     var x0 = -M.tx / M.s, y0 = -M.ty / M.s, x1 = x0 + M.vw / M.s, y1 = y0 + M.vh / M.s, need = [];
     for (var c = Math.max(0, Math.floor(x0 / TS)); c <= Math.min(4, Math.floor(x1 / TS)); c++) for (var r = Math.max(0, Math.floor(y0 / TS)); r <= Math.min(8, Math.floor(y1 / TS)); r++) {
@@ -496,7 +496,7 @@
       el.classList.add('pkpl-drag');
     });
     el.addEventListener('pointermove', function (e) {
-      if (!P[e.pointerId]) { if (e.pointerType === 'mouse' && !touch()) { var hp = e.target.closest && e.target.closest('[data-h]'); var r = rel(e); hover(hp ? hp.getAttribute('data-h') : '', r[0], r[1]); } return; }
+      if (!P[e.pointerId]) { if (e.pointerType === 'mouse' && !touch()) { var r = rel(e), ik = iconHit(r); if (ik) { hover('', r[0], r[1]); amHover(ik, r[0], r[1]); el.style.cursor = 'pointer'; return; } amHover(''); el.style.cursor = ''; var hp = e.target.closest && e.target.closest('[data-h]'); hover(hp ? hp.getAttribute('data-h') : '', r[0], r[1]); } return; }
       P[e.pointerId] = rel(e); var q = pts(); if (!start) return;
       if (q.length === 1 && start.p.length === 1) {
         var dx = q[0][0] - start.p[0][0], dy = q[0][1] - start.p[0][1];
@@ -543,7 +543,7 @@
       var hp = e.target.closest('[data-hp]'); if (hp) { if (M.title) { M.title = false; } open(hp.getAttribute('data-hp')); return; }
       var b = e.target.closest('[data-pl]'); if (b) { tool(b.getAttribute('data-pl'), b); return; }
       var a = e.target.closest('.pkpl-amdot'); if (a) return;
-      if (M.cur && !M.amen && (!e.target.closest('[data-h]') || e.target.closest('[data-h]').getAttribute('data-h') === M.cur)) { var gk = iconAt(rel(e)); if (gk) { glow(gk === M.glow ? '' : gk); e.stopPropagation(); return; } }   /* a tap on ANOTHER neighborhood's shape always opens that neighborhood (Zale, Nov 20: it got stuck behind an icon glow) */   /* Nov 20 (Zale): inside a place, tap one of its icons and every icon of that kind glows on the real map; the view stays put */
+      if (!M.amen) { var gk = iconHit(rel(e)); if (gk) { amHover(''); if (gk === M.glow) { glow(''); } else { var fk = fitKind(gk); glow.s = fk ? fk[0] : 0; glow(gk); } e.stopPropagation(); return; } }   /* Zale, Nov 23: an amenity is on top everywhere: click it and every one of that kind lights up across the farm, the map zooms out to show them all; the tag at the top clears it */   /* a tap on ANOTHER neighborhood's shape always opens that neighborhood (Zale, Nov 20: it got stuck behind an icon glow) */   /* Nov 20 (Zale): inside a place, tap one of its icons and every icon of that kind glows on the real map; the view stays put */
       var h = e.target.closest('[data-h]');
       if (!h && !wide() && e.clientX != null) { for (var ri = 0; ri < 16 && !h; ri++) { var ang = ri * Math.PI / 4, rr = ri < 8 ? 12 : 22, q = document.elementFromPoint(e.clientX + rr * Math.cos(ang), e.clientY + rr * Math.sin(ang)); h = q && q.closest && q.closest('#pkpl [data-h]'); } }   /* Nov 21: a finger that just misses a thin place (Quail Trail) still opens it */
       if (M.title) { M.title = false; M.el.classList.add('pkpl-notitle'); if (!h) return; }   /* the title screen holds until a click on the map or an icon */
@@ -564,8 +564,11 @@
     (MI || []).forEach(function (z) { var d = Math.hypot(z[1] - mx, z[2] - my); if (d < r && d < bd) { bd = d; best = z[0]; } });
     return best;
   }
+  function iconHit(p) { var k = iconAt(p); return k && (ISZ[k] || IS0) * M.s >= 13 ? k : null; }   /* only icons big enough to see on screen take a click */
+  function amHover(k, x, y) { var t = $('.pkpl-amhov', M.el); if (!t) { t = document.createElement('div'); t.className = 'pkpl-amhov'; t.hidden = true; M.el.appendChild(t); } if (!k) { t.hidden = true; return; } t.textContent = (AMN[k] || k) + (k === M.glow ? '' : ' \u00b7 show all'); t.hidden = false; t.style.transform = 'translate(' + Math.round(Math.min(x + 14, M.vw - t.offsetWidth - 8)) + 'px,' + Math.round(Math.max(8, y - 40)) + 'px)'; }
+  function fitKind(k) { var P = amOf(k); if (!P.length) return; var b = [1e9, 1e9, -1e9, -1e9]; P.forEach(function (z) { b[0] = Math.min(b[0], z[1]); b[1] = Math.min(b[1], z[2]); b[2] = Math.max(b[2], z[1]); b[3] = Math.max(b[3], z[2]); }); var pd = 60, v = fitBox([b[0] - pd, b[1] - pd, b[2] + pd, b[3] + pd], clear(), 24); M.free = true; animTo(v, 520); return v; }
   function glow(kind) {   /* the kind's icons glow wherever they sit on the map; the camera does not move */
-    M.glow = kind || ''; $('.pkpl-icon', M.svg).innerHTML = kind ? amOf(kind).map(amUse).join('') : '';
+    M.glow = kind || ''; var gs = glow.s || M.s; $('.pkpl-icon', M.svg).innerHTML = kind ? amOf(kind).map(function (z) { var w = Math.max(ISZ[z[0]] || IS0, 26 / gs); return '<use href="#pkpl-i-' + z[0] + '" x="' + (z[1] - w / 2) + '" y="' + (z[2] - w / 2) + '" width="' + w + '" height="' + w + '"/>'; }).join('') : ''; glow.s = 0;   /* glowing icons never drop below about 26 px on screen, so a farm-wide view still shows them */
     M.el.classList.toggle('pkpl-glowon', !!kind);
     var tag = $('.pkpl-amtag', M.el); if (!M.amen) { tag.hidden = !kind; if (kind) $('span', tag).textContent = (AMN[kind] || kind) + ' · ' + amOf(kind).length + ' on the farm'; }
   }
