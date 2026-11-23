@@ -902,3 +902,57 @@ html body.pkpl-v2p #root #pkpl .pkpl-psl{font:600 19px/1.35 'Bricolage Grotesque
 html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-pd{font-size:17px!important;font-weight:600!important;line-height:1.4!important}
 body.pkpl-hood:not(.pkpl-wide) #root #pkpl-top .pkpl-bar .pkpl-bn em{color:#E9B93C;font-weight:700;letter-spacing:.04em}
 html body.pkpl-v2p #root #pkpl .pkpl-ps .pkpl-psl{font-size:19px!important;line-height:1.35!important;font-weight:600!important;color:#F2EDE3}
+
+/* Zale, Nov 22 evening: the experience panel is a menu first. Each place gets its photo (thumbs from tools/places_r1/thumbs.py) with its map emblem on the corner; bigger names; the long description lives on the place pages */
+html body #root #pkpl .pkpl-pr .pkpl-tw{position:relative;flex:none;display:block;border-radius:8px;overflow:visible}
+html body #root #pkpl .pkpl-pr .pkpl-tw .pkpl-tp{display:block;width:100%;height:100%;object-fit:cover;border-radius:8px;opacity:1}
+html body #root #pkpl .pkpl-pr .pkpl-tw .pkpl-te{position:absolute;left:-6px;bottom:-6px;width:42%;height:42%;padding:2px;border-radius:50%;background:#12160F;object-fit:contain;opacity:1}
+/* phone: one column, 72px photos, 18px names */
+html body.pkpl-v2p #root #pkpl .pkpl-ps .pkpl-psls:has(.pkpl-prp){grid-template-columns:1fr}
+html body.pkpl-v2p #root #pkpl .pkpl-ps .pkpl-pr.pkpl-prp{min-height:88px;gap:16px;padding:8px 2px 8px 6px}
+html body.pkpl-v2p #root #pkpl .pkpl-ps .pkpl-pr.pkpl-prp .pkpl-tw{width:72px;height:72px}
+html body.pkpl-v2p #root #pkpl .pkpl-ps .pkpl-pr.pkpl-prp .pkpl-tw img{width:auto;height:auto}
+html body.pkpl-v2p #root #pkpl .pkpl-ps .pkpl-pr.pkpl-prp .pkpl-tw .pkpl-tp{width:72px;height:72px}
+html body.pkpl-v2p #root #pkpl .pkpl-ps .pkpl-pr.pkpl-prp .pkpl-tw .pkpl-te{width:30px;height:30px}
+html body.pkpl-v2p #root #pkpl .pkpl-ps .pkpl-pr.pkpl-prp b{font-size:18px}
+html body.pkpl-v2p #root #pkpl .pkpl-ps .pkpl-pr.pkpl-prp small{font-size:15px}
+@media (min-width:600px) and (min-height:600px){html body.pkpl-v2p #root #pkpl .pkpl-ps .pkpl-psls:has(.pkpl-prp){grid-template-columns:1fr 1fr}}
+/* desktop: after a pick the pressed button answers the question, so the headline steps aside and the places get its room */
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-title.pkpl-tx .pkpl-gk{display:none}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-pl.pkpl-cols .pkpl-pr.pkpl-prp .pkpl-tw{width:calc(var(--pkpl-rh,44px) * .86);height:calc(var(--pkpl-rh,44px) * .86)}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-pl.pkpl-cols .pkpl-pr.pkpl-prp .pkpl-tw .pkpl-tp{width:100%;height:100%;opacity:1}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-pl.pkpl-cols .pkpl-pr.pkpl-prp .pkpl-tw .pkpl-te{width:44%;height:44%;opacity:1}
+/* phone neighborhood sheet: it stops on purpose, the whole photo plus the top of the next line (Zale, Nov 22 evening) */
+@media (max-width:599px){html body #root #pkpl-top .pkpl-hero{height:max(170px,min(clamp(250px,40svh,340px),calc(var(--pkpl-open,444px) - 102px)))!important}
+  html body #root #pkpl-top.pkpl-has .pkpl-hero,html body #root #pkpl-top .pkpl-has .pkpl-hero{height:max(150px,min(clamp(190px,24svh,220px),calc(var(--pkpl-open,444px) - 102px)))!important}}
+/* phone: the bar above the photo already names the place and the experience, so the photo keeps just its one line (no third repeat) */
+@media (max-width:599px){html body.pkpl-v2p #root #pkpl-top .pkpl-hi .pkpl-kind,html body.pkpl-v2p #root #pkpl-top .pkpl-hi .pkpl-nmrow{display:none!important}}
+/* desktop: the photo fills the row; the map lights the place on hover, so no emblem badge at this size */
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-pl.pkpl-cols .pkpl-pr.pkpl-prp{min-height:var(--pkpl-rh,44px);padding-top:2px;padding-bottom:2px}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-pl.pkpl-cols .pkpl-pr.pkpl-prp .pkpl-tw{width:calc(var(--pkpl-rh,44px) - 7px);height:calc(var(--pkpl-rh,44px) - 7px)}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-pl.pkpl-cols .pkpl-pr.pkpl-prp .pkpl-tw .pkpl-te{display:none}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-pl.pkpl-cols .pkpl-pr.pkpl-prp .pkpl-tw .pkpl-tp{border-radius:6px}
+/* short laptops (3 columns): names may take two lines rather than cut off; tighter photo gap; the experience buttons and the count fit their boxes */
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-pl.pkpl-cols.pkpl-c3 .pkpl-pr.pkpl-prp{gap:8px}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-pl.pkpl-cols.pkpl-c3 .pkpl-pr.pkpl-prp b{font-size:15px;line-height:1.1;white-space:normal;overflow:visible;text-overflow:clip}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-pl.pkpl-cols.pkpl-c3 .pkpl-pr.pkpl-prp span{min-width:0;overflow:visible}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-tv .pkpl-g2 .pkpl-xe{gap:5px;padding-left:4px;padding-right:4px}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-tv .pkpl-g2 .pkpl-xe span{font-size:13.5px}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-pc{flex-wrap:nowrap}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-tv .pkpl-pc .pkpl-pcn{letter-spacing:.1em;white-space:nowrap}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-pl.pkpl-cols.pkpl-c3{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-pl.pkpl-cols.pkpl-c3 .pkpl-pr.pkpl-prp b{font-size:14px}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-tv .pkpl-g2 .pkpl-xe span{font-size:12.5px;letter-spacing:-.01em}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-tv .pkpl-g2 .pkpl-xe svg{flex:none;width:13px;height:13px}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-tv .pkpl-pc .pkpl-pcn{font-size:10.5px}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-tv .pkpl-g2 .pkpl-xe{flex-direction:column;gap:3px;padding:3px 2px}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-tv .pkpl-pc b{font-size:21px}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-tv .pkpl-pc .pkpl-pcn{letter-spacing:.08em}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-pc{flex-wrap:wrap;row-gap:6px}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-pl.pkpl-cols.pkpl-c3 .pkpl-pr.pkpl-prp b{font-size:13.5px}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-pl.pkpl-cols.pkpl-c3 .pkpl-pr.pkpl-prp{gap:6px}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-pl.pkpl-cols.pkpl-c3 .pkpl-pr.pkpl-prp .pkpl-tw{width:calc(var(--pkpl-rh,44px) - 10px);height:calc(var(--pkpl-rh,44px) - 10px)}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-pl.pkpl-cols.pkpl-c3 .pkpl-pr.pkpl-prp{padding-left:0;padding-right:0;gap:5px}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-title:not(.pkpl-tv) .pkpl-pc{flex-wrap:nowrap}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-pc .pkpl-pcn{letter-spacing:.1em;white-space:nowrap}
+@media (max-width:1400px){html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-pc .pkpl-pcn{font-size:11px;letter-spacing:.08em}html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-pc{gap:8px}}
