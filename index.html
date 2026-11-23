@@ -12196,7 +12196,7 @@ window.pkClimbRank = function (C, dd) {
       var v = vidOf(a.vu), r = vidRec(v), full = !!(r && r.f), watch = !!a.vu && !full && /^(Watch|Listen)/.test(a.vt || '');
       var up = UPT[a.n]; return { n: a.n, cl: a.ctl || '', kind: a.kind || 'Discovery', y: String(a.yr || ''), line: shortLine(a.line), img: up ? 'i/' + up + '.jpg' : img, ss: up ? 'i/' + up + '-s.jpg 720w, i/' + up + '.jpg 1080w' : '', vu: watch ? a.vu : '', vt: watch ? a.vt : '', m: a.m, k: 'disc', c: a.cf };
     }).filter(function (a) { return a.img; });
-    BL.sort(window.pkRankCmp || function () { return 0; }); BLd = D; return BL;
+    BL.sort(window.pkRankCmp || function () { return 0; }); BL = BL.slice(0, 15); BLd = D; return BL;   /* Zale Nov 23 14:37: 15 cards is plenty to scroll, then they go on to the 2027 lineup or the Archive; the rest are kept for the Music neighborhood cards (Home never repeats them there) */
   }
   /* Who's up next, Nov 13: tall card photos re-exported from the Dropbox originals (2:3, subject-cropped, 1080 and 720 wide; source list in
      Dropbox _claude_work/upnext_nov13/map.json). Acts not listed keep their old photo until a better frame is picked. */
@@ -12447,9 +12447,9 @@ window.pkClimbRank = function (C, dd) {
   /* open on the real first card (rank 1), centered */
   /* Zale, Nov 13: each visit opens on a random one of the top 10 Discoveries (by rank), so Home stays fresh. Nov 15: random among the best-known names first. */
   function loopHome(r, keep) { var go = function () { if (!r.clientWidth) return; var k = r._K || 0;
-      if (r._start == null) { var L = ($('.h2-s5', root) || {})._L || [], top = L.slice().sort(window.pkRankCmp || function () { return 0; }).slice(0, 10), FAM = { 'Tyler Childers': 1, 'Khruangbin': 1, 'Sturgill Simpson': 1 }, fam = L.filter(function (x) { return FAM[x.n]; });
+      if (r._start == null) { var L = ($('.h2-s5', root) || {})._L || [], top = L.slice().sort(window.pkRankCmp || function () { return 0; }).slice(0, 7), FAM = { 'Tyler Childers': 1, 'Khruangbin': 1, 'Sturgill Simpson': 1 }, fam = L.filter(function (x) { return FAM[x.n]; });
         /* Zale, Nov 15: open on one of the names a stranger already knows (random among them, so Home stays fresh); falls back to the top 10 */
-        if (fam.length) top = fam; var pick = top[Math.floor(Math.random() * top.length)];
+        fam = fam.filter(function (x) { return top.indexOf(x) > -1; }); if (fam.length) top = fam;   /* Zale Nov 23: open on one of the top seven */ var pick = top[Math.floor(Math.random() * top.length)];
         r._start = Math.max(0, L.indexOf(pick)); }
       k += r._start; if (keep) { var m = ccMid(r); k = m.i; } jumpTo(r, k); };
     if (window.requestAnimationFrame) requestAnimationFrame(function () { requestAnimationFrame(go); }); else setTimeout(go, 30); }
