@@ -886,3 +886,19 @@ html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-tv .pkpl-g2 .pkpl-xe span{overflow
 html body.pkpl-v2p #root .pkpl-psdrag .pkpl-ps,html body.pkpl-v2p #root .pkpl-psdrag .pkpl-psh2,html body.pkpl-v2p #root #pkpl.pkpl-psdrag .pkpl-ps,html body.pkpl-v2p #root #pkpl.pkpl-psdrag .pkpl-psh2{transition:none!important}
 html body.pkpl-hood:not(.pkpl-wide) #root #pkpl-top::after{display:none!important}
 .pkpl-was.pkpl-wcur{stroke:#FFF6DA;stroke-opacity:1;stroke-width:5}
+
+/* Zale, Nov 22: phone neighborhood bar carries the name and prev/next in every state; the row under the photo goes away; the experience line bigger */
+body.pkpl-hood:not(.pkpl-wide) #root #pkpl-top .pkpl-bar,body.pkpl-hood:not(.pkpl-wide) #root #pkpl-top.pkpl-folded .pkpl-bar{height:58px;padding:12px 4px 0;justify-content:space-between;gap:4px;border-bottom:1px solid #3A4331}
+body.pkpl-hood:not(.pkpl-wide) #root #pkpl-top .pkpl-bar .pkpl-bmid{flex:1;min-width:0;display:flex;align-items:center;justify-content:center;gap:8px}
+body.pkpl-hood:not(.pkpl-wide) #root #pkpl-top .pkpl-bar .pkpl-bi{display:block;width:30px;height:30px;flex:none}
+body.pkpl-hood:not(.pkpl-wide) #root #pkpl-top .pkpl-bar .pkpl-bn{display:block;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+body.pkpl-hood:not(.pkpl-wide) #root #pkpl-top .pkpl-bar .pkpl-bn em{display:block;font:600 12px/1.2 'Bricolage Grotesque',system-ui,sans-serif;font-style:normal;letter-spacing:0;text-transform:none;color:rgba(242,237,227,.6);margin-top:2px}
+body.pkpl-hood:not(.pkpl-wide) #root #pkpl-top .pkpl-bst{flex:none;width:44px;height:44px;margin-top:-6px;display:grid;place-items:center;border:0;border-radius:50%;background:transparent;color:#F2EDE3;cursor:pointer}
+body.pkpl-hood:not(.pkpl-wide) #root #pkpl-top .pkpl-bst svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;transform:none!important}
+body.pkpl-hood:not(.pkpl-wide) #root #pkpl-top .pkpl-bst:active{background:rgba(242,237,227,.12)}
+body.pkpl-hood:not(.pkpl-wide) #root #pkpl-top .pkpl-stepl{display:none!important}
+.pkpl-was.pkpl-wcur{stroke:#FFE7A3;stroke-opacity:.55;stroke-width:2;fill:rgba(12,14,10,.22)}
+html body.pkpl-v2p #root #pkpl .pkpl-psl{font:600 19px/1.35 'Bricolage Grotesque',system-ui,sans-serif;color:#F2EDE3}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-pd{font-size:17px!important;font-weight:600!important;line-height:1.4!important}
+body.pkpl-hood:not(.pkpl-wide) #root #pkpl-top .pkpl-bar .pkpl-bn em{color:#E9B93C;font-weight:700;letter-spacing:.04em}
+html body.pkpl-v2p #root #pkpl .pkpl-ps .pkpl-psl{font-size:19px!important;line-height:1.35!important;font-weight:600!important;color:#F2EDE3}
