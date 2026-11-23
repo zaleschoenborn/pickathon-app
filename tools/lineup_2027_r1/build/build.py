@@ -386,7 +386,7 @@ def year_wall(cur):
     return ('<div class="ywall" hidden role="dialog" aria-label="Choose a Pickathon year"><div class="yw-h"><p>Pick a year</p>'
             '<button type="button" class="yw-x" aria-label="Close">×</button></div><div class="yw-g">%s</div></div>') % w
 
-def header(title, sub, back=True, chip=None):
+def header(title, sub, back=True, chip=None, wall=True):
     t = '<span class="hd-t"><b>%s</b>%s</span>' % (E(title), ('<i>%s</i>' % E(sub)) if sub else '')
     # r52 (Zale, Nov 22 18:35): the live app strips this page's header, so the year switch lives in its own bar under the sale strip
     if chip:
@@ -395,11 +395,12 @@ def header(title, sub, back=True, chip=None):
         bar = ('<div class="yrbar"><button type="button" class="yrchip ywopen" aria-expanded="false" aria-label="Lineup %s. Choose another year">'
                '<span class="yc-k">Lineup</span><b class="yc-y">%s</b><span class="yc-a" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M4 1.5l5 4.5-5 4.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>'
                '</div>%s') % (chip, chip, year_wall(chip))
+        if not wall: bar = ''  # r75: artist pages share one wall for the whole site (.ywall-g)
         # r68 (Zale, Nov 22 21:22): the header title IS the year chooser; tap "Lineup 2013" to open the wall of year logos
         # r69 (Zale, Nov 22 21:26): the year's own logo leads the chooser in the header (it replaces the 2027 wordmark on year pages)
         # r70 (Zale, Nov 22 21:40): the 2027 logo and back stay on the left as home; the chooser is a centered, words-only button (no small year logo: it blurs at header size)
-        t = ('<span class="hd-sp hd-sp1"></span><button type="button" class="hd-t hd-yr ywopen" aria-expanded="false" aria-label="Lineup %s. Choose another year"><b>Lineup</b><i>%s</i>'
-             '<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 4.5l3.5 3.5 3.5-3.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>') % (chip, chip)
+        t = ('<span class="hd-sp hd-sp1"></span><button type="button" class="hd-t hd-yr ywopen" data-y="%s" aria-expanded="false" aria-label="Lineup %s. Choose another year"><b>Lineup</b><i>%s</i>'
+             '<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 4.5l3.5 3.5 3.5-3.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>') % (chip, chip, chip)
     else:
         bar = ''
     return ('<header class="hd">%s<img class="hd-logo" src="%s" alt="Pickathon 2027"><span class="hd-rule"></span>%s'
@@ -1059,7 +1060,7 @@ def art_page(slug, ap):
     x = _cls(name, yr) or {}
     k = x.get('k', 'none'); g = x.get('g', '')
     P = d['yearBrand'].get(yr, P24)
-    h = header(name, 'Pickathon ' + yr)
+    h = header(name, 'Pickathon ' + yr, chip=yr, wall=False)  # r75 (Zale, Nov 22 22:41): the year chooser sits in the artist header too
     # r71 (Zale, Nov 22 21:45, picked Light): the year's thin border strip sits above the hero, the same strip as the top of the year page
     _P2 = P if yr in d['yearBrand'] else P27
     h += '<div class="acrown" aria-hidden="true">%s</div>' % (seam(yr, _P2) if yr != '2027' else generic_seam('2027', P27))
@@ -1212,7 +1213,7 @@ _ASCRIPT = ('<script>document.getElementById("asel").addEventListener("change",f
             'document.querySelectorAll(".screen").forEach(function(m){m.hidden=true;});var m=document.getElementById("a-"+v);'
             'if(m){m.hidden=false;window.scrollTo(0,0);}});</script>')
 
-page = page.replace('<button data-s="s3">', _ASEL + '<button data-s="s3">', 1).replace('<nav class="tabs">', ''.join(ARTISTS.values()) + '<nav class="tabs">', 1).replace('</body>', _ASCRIPT + _PLAYER + '</body>')
+page = page.replace('<button data-s="s3">', _ASEL + '<button data-s="s3">', 1).replace('<nav class="tabs">', ''.join(ARTISTS.values()) + year_wall('').replace('class="ywall"', 'class="ywall ywall-g"', 1) + '<nav class="tabs">', 1).replace('</body>', _ASCRIPT + _PLAYER + '</body>')
 # name variants and collab billings that point at a page we have (Zale, Nov 20: "those names obviously map to an artist")
 _PIDS0 = set(_re.findall(r'id="a-([a-z0-9]+)"', page))
 page = _re.sub(r' data-art="([a-z0-9]*)"', lambda m: (' data-art="%s"' % _ALIAS[m.group(1)]) if (m.group(1) in _ALIAS and _ALIAS[m.group(1)] in _PIDS0) else m.group(0), page)

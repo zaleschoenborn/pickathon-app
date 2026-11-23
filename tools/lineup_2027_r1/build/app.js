@@ -29,9 +29,9 @@
   document.addEventListener('click', function (e) {
     var path = e.composedPath ? e.composedPath() : [e.target], t = path[0] && path[0].closest ? path[0] : e.target;
     var op = t.closest && t.closest('.ywopen'), wall;
-    if (op) { var sc = op.closest('main, .screen') || document; wall = sc.querySelector('.ywall'); if (wall) { wall.hidden = !wall.hidden; op.setAttribute('aria-expanded', String(!wall.hidden)); } return; }
+    if (op) { var sc = op.closest('main, .screen') || document; wall = sc.querySelector('.ywall') || document.querySelector('.ywall-g'); if (wall && wall.classList.contains('ywall-g')) { wall.querySelectorAll('[data-y]').forEach(function (b) { if (b.dataset.y === op.dataset.y) b.setAttribute('aria-current', 'true'); else b.removeAttribute('aria-current'); }); } if (wall) { wall.hidden = !wall.hidden; op.setAttribute('aria-expanded', String(!wall.hidden)); } return; }
     wall = t.closest && t.closest('.ywall');
-    if (wall && (t.closest('.yw-x') || t === wall || t.closest('[data-go]'))) { wall.hidden = true; (wall.parentNode.querySelectorAll('.ywopen') || []).forEach(function (o) { o.setAttribute('aria-expanded', 'false'); }); }
+    if (wall && (t.closest('.yw-x') || t === wall || t.closest('[data-go]'))) { wall.hidden = true; document.querySelectorAll('.ywopen').forEach(function (o) { o.setAttribute('aria-expanded', 'false'); }); }
   }, true);
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') document.querySelectorAll('.ywall').forEach(function (w) { w.hidden = true; }); });
   // r45 (Zale, Nov 22): the year reel plays on its own, 4 s a frame, hard cut; a segment jumps; the photo plays that band's song
