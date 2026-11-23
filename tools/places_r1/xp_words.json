@@ -1,0 +1,159 @@
+{
+ "map": {
+  "small": "20 neighborhoods · 12 experiences",
+  "headline": "What do you want to experience?",
+  "first": "Most of it built by hand, for one summer only.",
+  "groups": {
+   "Stages": "Stages",
+   "Hangouts": "Hangouts",
+   "Camping": "Camping"
+  },
+  "architecture": "Built by hand each summer, then given away.",
+  "buildKicker": "The {year} build",
+  "moreTag": "↓ {n} more",
+  "phoneFirst": "Pick one below to light up the map, or see all 20 neighborhoods.",
+  "aboutKicker": "About {place}",
+  "soonLine": "{What} at {place}, Thursday to Sunday, August 5 to 8. The full schedule comes with the 2027 lineup.",
+  "vidHead": "Then and now",
+  "vidMore": "Their stories:",
+  "cnLine": "Most of each neighborhood is built new each summer by architects, builders and students, and much of it moves on to community projects after the festival."
+ },
+ "XPD": {
+  "Architecture": "Built by hand each summer, then given away to schools, farms and woodworkers.",
+  "Music": "Hear bands in an old barn, a forest bowl and a meadow at sunset.",
+  "DJs": "Dance under the trees until the stars come out, and long after.",
+  "Family": "Kids 12 and under get in free, and get a camp of their own in the woods.",
+  "Comedy": "Touring comics on a barn stage, with a crowd close enough to heckle.",
+  "Literary": "Slow down for stories and poems, read aloud beneath the trees.",
+  "Wellness": "Morning yoga, sound baths, forest hikes and a sober-friendly place to rest.",
+  "Food": "Sit down at a long table by the creek, or eat your way through local kitchens.",
+  "Craft": "Meet the makers and take home something made by hand.",
+  "Drinks": "Local beer, wine, cocktails and coffee, never far from a stage.",
+  "Art": "Installations that come alive after dark, and murals painted while you watch.",
+  "Camping": "Sleep under giant firs and ferns, or in your own rig, and walk in to the music."
+ },
+ "XPB": {
+  "Music": {
+   "woods": "Under a living roof of big-leaf maples",
+   "paddock": "The biggest sets of the weekend, after sundown",
+   "cherryhill": "Wild late sets on student-built stages",
+   "grove": "Daytime sets in dappled fir shade",
+   "windmill": "From morning coffee sets to punk rock",
+   "galaxy": "Psych, punk and soul you feel in your chest",
+   "lucky": "Seated sessions for songs that need quiet",
+   "farmhouse": "Buskers greet you at the gate",
+   "curation": "A band plays while the courses arrive"
+  },
+  "DJs": {
+   "market": "A pop-up dance floor among the food stalls",
+   "windmill": "Afternoon records on the hillside",
+   "woods": "The forest floor turns into a dance floor",
+   "courtyard": "Dancing by the fire pit under open sky",
+   "curation": "Records spun over dinner and brunch"
+  },
+  "Family": {
+   "coyote": "Puppet parades, kid bands and a talent show"
+  },
+  "Comedy": {
+   "lucky": "Touring stand-up in a seated barn"
+  },
+  "Literary": {
+   "woods": "Sunday stories told on the big forest stage",
+   "windmill": "Poets and authors on the slope, coffee in hand"
+  },
+  "Wellness": {
+   "lucky": "Vinyasa and qigong before the first band",
+   "courtyard": "Rise-and-shine yoga in the open air",
+   "refuge": "Sound baths, tarot and a sober-friendly rest",
+   "coyote": "Family yoga and square dancing for all ages",
+   "trails": "Forest hikes up toward Scouters Mountain",
+   "windmill": "The morning fun run starts on this slope"
+  },
+  "Food": {
+   "curation": "A chef's meal at a hidden table by the creek",
+   "market": "Over twenty Oregon kitchens in one square",
+   "windmill": "A bite under the firs between sets",
+   "lucky": "A quick plate on the main path"
+  },
+  "Craft": {
+   "market": "A dozen makers' stalls on Craft Row",
+   "paddock": "Secondhand finds at the Merry Pop In Shop"
+  },
+  "Drinks": {
+   "woods": "A bar that glows among the maples",
+   "windmill": "A hillside beer, zero-proof too",
+   "curation": "Wine and cocktails poured with each course",
+   "grove": "A cold one in deep shade",
+   "courtyard": "The Galaxy Bar, a few steps from the barn",
+   "market": "The bar at the center of town"
+  },
+  "Art": {
+   "windmill": "Murals painted live, then a brush for you",
+   "quailtrail": "The Grotto Gallery, tucked along the path"
+  },
+  "Camping": {
+   "wildcamp": "Off-grid camping at the top of the farm",
+   "lushcamp": "Fern-shaded, with a quiet zone for families",
+   "willowcamp": "Car and van camping beneath a giant willow",
+   "southcamp": "Rigs parked right beside the gate"
+  }
+ },
+ "hook": {
+  "woods": "A steep trail down into a bowl of giant maples",
+  "paddock": "The one meadow that holds everyone at sunset",
+  "cherryhill": "Sleeps all day, glows on the ridge all night",
+  "grove": "Deep shade, and strange objects in the trees",
+  "windmill": "A hillside lounge above the meadow",
+  "galaxy": "A century-old barn, sweaty and loud",
+  "lucky": "A barn with seats, built for listening",
+  "farmhouse": "The front door, where wristbands go on",
+  "curation": "Just off the farm: one chef, one band",
+  "refuge": "A quiet pocket of forest to reset",
+  "coyote": "A whole camp in the woods built for kids",
+  "courtyard": "Fire pit, bar and open sky outside the barn",
+  "market": "Where every path crosses, food in hand",
+  "orchard": "Old apple trees that hush the outside world",
+  "welcomelot": "Porches with no house behind them",
+  "quailtrail": "An art-lined shortcut through the woods",
+  "lushcamp": "Ferns, shade and a quiet camp",
+  "wildcamp": "The biggest trees, the farthest tents",
+  "willowcamp": "Field camping under one giant willow",
+  "southcamp": "Park by the entrance and sleep in your rig"
+ },
+ "desc": {
+  "woods": "A steep trail drops into a natural bowl ringed by Douglas firs, under a roof of big-leaf maples. Shaded all day, it runs from morning until late at night, and its stage is rebuilt each year from the forest around it.",
+  "paddock": "The only place on the farm big enough to hold everyone at once. It opens after the sun drops behind the tree line, and its edge is redrawn every year.",
+  "cherryhill": "The dark sister of the Woods, asleep by day and glowing on the ridge at night. Portland State architecture students build it from borrowed materials, then send them back to work.",
+  "grove": "A dense stand of Douglas firs that stays cool all day, where the stage weaves through the trunks and art hides in the shade.",
+  "windmill": "A hillside lounge on the forest edge above the meadow, under tall firs and the farm's old windmill. Readings and coffee in the morning, punk and records by afternoon.",
+  "galaxy": "A century-old barn where the line between band and crowd disappears. Psych, punk and soul you feel in your chest.",
+  "lucky": "A barn with seats for sets that need a quieter room, with shade and a hundred seats outside for the wait.",
+  "farmhouse": "The front door to the farm: rideshare, shuttle and bikes arrive here, wristbands go on, and the first music of the day greets you.",
+  "curation": "A room just off the farm, beside the creek, where one chef and one band share a table with a hundred people, from Friday dinner to Sunday brunch.",
+  "refuge": "A protected pocket of the farm for rest: yoga, sound baths, plant meditation, tarot, and a sober-friendly place to land. Cedar showers are tucked in the trees.",
+  "coyote": "A camp of their own for kids, with kid bands, puppet parades, crafts and drop-off care. Kids 12 and under get in free.",
+  "courtyard": "The open-air plaza outside the Galaxy Barn, with a fire pit, a bar and a screen showing the stage inside. Its lumber goes on to Oregon woodworkers.",
+  "market": "The town square, where every path crosses: Oregon kitchens, a dozen makers, a bar, a seating shed and a pop-up dance floor, with art that wakes up at night.",
+  "orchard": "A hallway of old apple trees from the front door down to the barns, where the outside world starts to fade.",
+  "welcomelot": "The first stop for drivers: wristbands through the car window, gear drop-off, then a mile's walk through the woods or a shuttle to the gate.",
+  "quailtrail": "A wooded path of art between the Woods and the heart of the farm.",
+  "lushcamp": "The big central campground, shaded and full of ferns, close to the stages, with a quiet camp for families.",
+  "wildcamp": "Rugged camping in the upper reaches of the property, among the biggest trees on the farm.",
+  "willowcamp": "Field camping for cars, vans and RVs under a huge willow, a short shuttle or half-mile walk from the gates.",
+  "southcamp": "Vehicle camping right beside the main entrance, for anyone who wants their rig close."
+ },
+ "cn": {
+  "paddock": "Scott Edwards Architecture built the 2026 stage from modular parts made for Portland’s Q-Side Skatepark.",
+  "windmill": "Built in 2026 by architects, students and Sabin CDC as a kit of parts made to move on to Sabin’s work across Portland.",
+  "farmhouse": "Bora Architecture & Interiors and Dream Big City built the 2026 pieces for Dream Plaza 2.0, a skate and arts space in Portland.",
+  "orchard": "The 2026 story poles and archways, by Bora Architecture & Interiors and Dream Big City, were made for Dream Plaza 2.0.",
+  "courtyard": "Designed by Matt Thomas and Chris Cardoza, built by Blackbird Public Arts, with the Guild of Oregon Woodworkers as downstream partner.",
+  "cherryhill": "After the 2026 festival, the stage’s fishing nets were set to go, through Net Your Problem, to protect villages in Ukraine.",
+  "refuge": "Built by Peter Mangano and Duke Stebbins; the 2026 wood was set to go to Alliance Charter Academy in Oregon City."
+ },
+ "home": {
+  "family": "Kids get their own festival in the woods, all weekend.",
+  "camping": "Camping comes with 3-day and 4-day weekend tickets.",
+  "lineupSoon": "Announced in January."
+ }
+}

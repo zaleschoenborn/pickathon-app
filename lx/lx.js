@@ -53,10 +53,35 @@
 
   var DOCL = [];
   function docOn(type, fn, opt) { document.addEventListener(type, fn, opt); DOCL.push([type, fn, opt]); }
-  function docOff() { DOCL.forEach(function (x) { document.removeEventListener(x[0], x[1], x[2]); }); DOCL = []; }
+  var IVL = [];
+  function ivOn(fn, ms) { var id = setInterval(fn, ms); IVL.push(id); return id; }
+  function docOff() { DOCL.forEach(function (x) { document.removeEventListener(x[0], x[1], x[2]); }); DOCL = []; IVL.forEach(clearInterval); IVL = []; }
   function widgets(root) {
     docOff();
-root.querySelectorAll('.poster').forEach(function (p) {
+  // r45 (Zale, Nov 22): the year reel plays on its own, 4 s a frame, hard cut; a segment jumps; the photo plays that band's song
+  root.querySelectorAll('.hero.reel').forEach(function (hero) {
+    var S; try { S = JSON.parse(hero.dataset.slides); } catch (e) { return; }
+    if (!S || S.length < 2) return;
+    S.forEach(function (f) { var im = new Image(); im.src = f.i; });
+    var i = 0, T = 4000, timer = 0, ph = hero.querySelector(':scope > img'), segs = hero.querySelectorAll('.segs [data-slide]');
+    var KC = { Discovery: 'disc', Legend: 'leg', 'Deep cut': 'deep' };
+    function go(n) {
+      i = (n + S.length) % S.length; var f = S[i];
+      ph.src = f.i; ph.setAttribute('data-clip', f.clip || ''); if (!f.clip) ph.removeAttribute('data-clip');
+      var k = hero.querySelector('.krow .k'), g = hero.querySelector('.krow .g'), h1 = hero.querySelector('h1'), sub = hero.querySelector('.hero-sub'), ring = hero.querySelector('.ring');
+      if (k) { k.textContent = f.k; k.className = 'k k-' + (KC[f.k] || 'none'); } if (g) g.textContent = f.g;
+      if (h1) { h1.textContent = f.n; h1.classList.toggle('sm', f.n.length > 12); }
+      if (sub) { sub.textContent = f.l; sub.hidden = !f.l; }
+      if (ring) { if (f.clip) { ring.dataset.clip = f.clip; ring.hidden = false; } else ring.hidden = true; }
+      segs.forEach(function (s, x) { s.classList.remove('on'); s.classList.toggle('done', x < i); });
+      void hero.offsetWidth; segs[i].classList.add('on');
+    }
+    function live() { return hero.offsetParent !== null && !document.hidden && !(document.querySelector('.pkvid') || document.querySelector('.pk-vo')); }
+    function restart() { clearInterval(timer); timer = ivOn(function () { if (live()) go(i + 1); }, T); }
+    hero.querySelector('.segs').addEventListener('click', function (e) { var s = e.target.closest('[data-slide]'); if (!s) return; e.stopPropagation(); go(+s.dataset.slide); restart(); });
+    restart();
+  });
+  root.querySelectorAll('.poster').forEach(function (p) {
     var track = p.querySelector('.po-track'), knob = p.querySelector('.po-knob'), cap = p.querySelector('.po-cap'); if (!track || !knob || !cap) return;
     var thenEl = p.querySelector('.po-names.then'), nowEl = p.querySelector('.po-names.now');
     var morph = document.createElement('div'); morph.className = 'po-names morph'; morph.hidden = true; nowEl.parentNode.insertBefore(morph, nowEl.nextSibling);
@@ -65,28 +90,30 @@ root.querySelectorAll('.poster').forEach(function (p) {
     function measure() {
       var th = thenEl.hidden, nh = nowEl.hidden; thenEl.hidden = false; nowEl.hidden = false;
       var A = {}, B = {};
-      thenEl.querySelectorAll(':scope > .pl span:not(.dot)').forEach(function (s) { A[s.textContent] = rel(s, thenEl); });
+      thenEl.querySelectorAll(':scope > .pcloud > .pn').forEach(function (s) { A[s.textContent] = rel(s, thenEl); });
       nowEl.querySelectorAll(':scope > .pcloud > .pn').forEach(function (s) { B[s.textContent] = rel(s, nowEl); });
-      var hh0 = 0, hh1 = 0; thenEl.querySelectorAll(':scope > .pl').forEach(function (l) { hh0 = Math.max(hh0, l.getBoundingClientRect().bottom - thenEl.getBoundingClientRect().top); });
+      var hh0 = 0, hh1 = 0; hh0 = thenEl.querySelector(':scope > .pcloud').getBoundingClientRect().height;
       hh1 = nowEl.querySelector(':scope > .pcloud').getBoundingClientRect().height;
       thenEl.hidden = th; nowEl.hidden = nh; h0 = hh0; h1 = hh1;
       morph.textContent = ''; items = [];
       var keys = Object.keys(A).concat(Object.keys(B).filter(function (k) { return !(k in A); }));
       keys.forEach(function (k) { var s = document.createElement('span'); s.className = 'pm'; s.textContent = k; morph.appendChild(s); items.push({ el: s, a: A[k], b: B[k] }); });
     }
+    var yrEl = knob.querySelector('.po-yr'), Y0 = parseInt(p.dataset.yr, 10) || 0, Y1 = 2026;
     function mix(u, v, k) { return u + (v - u) * k; }
+    function yearLabel(k) { if (!yrEl) return; yrEl.textContent = k >= 0.995 ? 'Today' : String(Math.round(Y0 + (Y1 - Y0) * k)); }
     function render() {
       items.forEach(function (it) {
         var a = it.a || it.b, b = it.b || it.a, s = it.el.style;
         s.left = mix(a.x, b.x, t) + 'px'; s.top = mix(a.y, b.y, t) + 'px'; s.fontSize = mix(a.fs, b.fs, t) + 'px';
         s.color = t < 0.5 ? a.c : b.c; s.opacity = it.a && it.b ? 1 : (it.a ? 1 - t : t);
       });
-      morph.style.height = mix(h0, h1, t) + 'px';
+      morph.style.height = mix(h0, h1, t) + 'px'; yearLabel(t);
       cap.textContent = t > 0.5 ? cap.dataset.now : cap.dataset.then; knob.setAttribute('aria-valuenow', t > 0.5 ? 1 : 0);
     }
     function flags(now) { p.classList.toggle('is-now', now); p.querySelectorAll('.po-b').forEach(function (x) { x.classList.toggle('on', (x.dataset.m === 'now') === now); }); }
     function settle(now) {
-      t = now ? 1 : 0; busy = false; morph.hidden = true; thenEl.hidden = now; nowEl.hidden = !now; flags(now);
+      t = now ? 1 : 0; yearLabel(t); busy = false; morph.hidden = true; thenEl.hidden = now; nowEl.hidden = !now; flags(now);
       cap.textContent = now ? cap.dataset.now : cap.dataset.then; knob.setAttribute('aria-valuenow', now ? 1 : 0);
     }
     function begin() { measure(); busy = true; thenEl.hidden = true; nowEl.hidden = true; morph.hidden = false; }
@@ -105,7 +132,7 @@ root.querySelectorAll('.poster').forEach(function (p) {
       }
     });
     function frac(e) { var r = track.getBoundingClientRect(); return Math.max(0, Math.min(1, (e.clientX - r.left) / r.width)); }
-    function drag(e) { var f = frac(e); knob.style.left = 'calc(' + (f * 100) + '% - 11px)'; if (p.classList.contains('all')) { flags(f > 0.5); thenEl.hidden = f > 0.5; nowEl.hidden = f <= 0.5; return; } cancelAnimationFrame(raf); if (!busy) begin(); t = f; render(); }
+    function drag(e) { var f = frac(e); yearLabel(f); knob.style.left = 'calc(' + (f * 100) + '% - 11px)'; if (p.classList.contains('all')) { flags(f > 0.5); thenEl.hidden = f > 0.5; nowEl.hidden = f <= 0.5; return; } cancelAnimationFrame(raf); if (!busy) begin(); t = f; render(); }
     track.addEventListener('pointerdown', function (e) { track.setPointerCapture(e.pointerId); track.classList.add('drag'); drag(e); });
     track.addEventListener('pointermove', function (e) { if (track.classList.contains('drag')) drag(e); });
     function up(e) { if (!track.classList.contains('drag')) return; track.classList.remove('drag'); var now = frac(e) > 0.5; knob.style.left = ''; if (p.classList.contains('all')) settle(now); else go(now); }
@@ -125,7 +152,7 @@ root.querySelectorAll('.poster').forEach(function (p) {
       });
       root.querySelectorAll(gp.dataset.target).forEach(function (c) {
         var cg = c.dataset.g || '';
-        var hit = !picks.length || picks.some(function (g) { return cg.indexOf(g) === 0 || (g === 'Indie rock' && cg === 'Indie'); });
+        var ct = cg.split('|'); var hit = !picks.length || picks.some(function (g) { return ct.indexOf(g) > -1; });
         c.classList.toggle('gone', !hit); if (hit && !c.closest('[hidden]')) shown++;
       });
       word.textContent = !picks.length ? all : picks.length < 3 ? picks.join(' + ') : picks[0] + ' + ' + (picks.length - 1) + ' more';
@@ -176,7 +203,7 @@ root.querySelectorAll('.poster').forEach(function (p) {
     rest.addEventListener('lxfilter', sync);
   });
   // r31: inside the live app the ring must win over the card's own link (the app plays it with its own player)
-  root.querySelectorAll('a .ring[data-clip]').forEach(function (r) {
+  root.querySelectorAll('a [data-clip]').forEach(function (r) {
     r.addEventListener('click', function (e) { if (!window.__pkPlayVid) return; e.preventDefault(); e.stopPropagation(); window.__pkPlayVid(r.getAttribute('data-clip'), ''); });
   });
   // r30: the year story opens in place

@@ -41,8 +41,10 @@ async def main():
                 name = await pg.evaluate("()=>document.querySelector('#y2026 .hero h1').textContent")
                 await pg.evaluate("()=>document.querySelector('#y2026 .hero .ring').click()")
                 src = await pg.evaluate("()=>document.querySelector('.pkvid iframe')&&document.querySelector('.pkvid iframe').src")
-                vid, hh = re.search(r'vimeo\.com/(?:video/)?(\d+)/?([0-9a-f]*)', f['clip']).groups()
-                ok(name == f['n'] and src and ('/video/' + vid) in src and ('h=' + hh) in src, '%dpx frame %d %s plays %s/%s' % (w, k + 1, f['n'], vid, hh))
+                mv = re.search(r'vimeo\.com/(?:video/)?(\d+)/?([0-9a-f]*)', f['clip']); my = re.search(r'(?:v=|youtu\.be/)([\w-]{11})', f['clip'])
+                if mv: vid, hh = mv.groups(); good = src and ('/video/' + vid) in src and ('h=' + hh) in src
+                else: vid, hh = (my.group(1) if my else '?'), ''; good = bool(src and my and ('/embed/' + vid) in src)
+                ok(name == f['n'] and good, '%dpx frame %d %s plays %s/%s' % (w, k + 1, f['n'], vid, hh))
                 await pg.evaluate("()=>{const o=document.querySelector('.pkvid');o&&o.remove()}")
             # artist pages that carry 2026 clips
             ar = await pg.evaluate("()=>[...document.querySelectorAll('main.screen')].filter(m=>m.querySelector('.vid[data-clip]')).map(m=>m.id)")
