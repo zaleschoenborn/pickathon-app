@@ -310,11 +310,21 @@ def archive_clip(n, y):
         if u: return u
     return ''
 
-def photo_play(url, n):
+def act_queue(n, y):
+    """r51 (Zale, Nov 22): the sitewide player takes a list. An Archive card queues the act's own songs across the years:
+    its own year first, then later years, then earlier ones. Format: url|caption;;url|caption"""
+    n2 = _CLIPALIAS.get(n, n); k = ''.join(ch for ch in _ud.normalize('NFD', n2.lower()) if ch.isalnum())
+    yrs = sorted(int(yy) for (kk, yy) in CLIPY if kk == k); y = int(y)
+    seen, out = set(), []
+    for yy in [y] + [a for a in yrs if a > y] + [a for a in reversed(yrs) if a < y]:
+        u = CLIPY.get((k, str(yy)))
+        if u and u not in seen: seen.add(u); out.append('%s|%s · Pickathon %s' % (u, n, yy))
+    return ';;'.join(out)
+def photo_play(url, n, q=''):
     """r36 (Zale, Nov 22): on a card with a song, the whole photo plays it; the ring is centered and only marks it.
     The name and 'Their story' open the artist page."""
-    return ('<span class="pz" data-clip="%s" role="button" tabindex="0" aria-label="Play a song by %s">'
-            '<span class="ring sm"><svg viewBox="0 0 24 24"><path d="M9 6.5v11l9-5.5z" fill="#fff"/></svg></span></span>') % (_h.escape(url, quote=True), E(n))
+    return ('<span class="pz" data-clip="%s"%s role="button" tabindex="0" aria-label="Play a song by %s">'
+            '<span class="ring sm"><svg viewBox="0 0 24 24"><path d="M9 6.5v11l9-5.5z" fill="#fff"/></svg></span></span>') % (_h.escape(url, quote=True), (' data-q="%s"' % _h.escape(q, quote=True)) if q else '', E(n))
 def card(n, yr, k, g, src, pos='50% 40%', vid=True, cls=''):
     if vid is True: vid = (clip_for(n, yr) if yr else '') or clip_for(n)  # r31: no ring without a song to play
     g_all, g = gall_n(n, g), gp_n(n, g)  # r42: filter on every tag, print the primary
@@ -548,7 +558,9 @@ _ALINES = json.load(open(ROOT + 'arch_lines.json'))  # r44: Copy Review's one li
 def vcard(n, y, k, g, p, pos):
     h = _vcard(n, y, k, g, p, pos)
     ln = _ALINES.get('%s|%s|%s' % (k, ''.join(c for c in _ud.normalize('NFD', n.lower()) if c.isalnum() and ord(c) < 128), y), '')
-    return h.replace('</span><span class="cstory">', '</span><span class="cline">%s</span><span class="cstory">' % E(ln), 1) if ln and '<span class="cstory">' in h else h
+    h = h.replace('</span><span class="cstory">', '</span><span class="cline">%s</span><span class="cstory">' % E(ln), 1) if ln and '<span class="cstory">' in h else h
+    q = act_queue(n, y)  # r51: the player queues this act's songs across the years, starting with this card's
+    return h.replace('<span class="pz" data-clip=', '<span class="pz" data-q="%s" data-clip=' % _h.escape(q, quote=True), 1) if q.count(';;') else h
 def _vcard(n, y, k, g, p, pos):
     if not p:  # no photo for that year: a plain site-color card, same anatomy; r36: it still plays the act's best song when the ledger has one
         _cv = archive_clip(n, y)
