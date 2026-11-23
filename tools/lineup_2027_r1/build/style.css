@@ -875,3 +875,11 @@ h2{font-family:var(--display);font-weight:400;font-size:27px;line-height:1.14;le
 .yw-off .yw-l i{font-size:11px}
 @media (min-width:700px){.yw-g{grid-template-columns:repeat(8,minmax(0,1fr));gap:10px}.yw-l{height:64px}.yw-l img{max-height:64px}.yw-i b{font-size:16px}}
 @media (min-width:1000px){.ywall{padding:24px 32px}.yw-g{grid-template-columns:repeat(10,minmax(0,1fr));gap:12px}.yw-l{height:78px}.yw-l img{max-height:78px}}
+
+/* r60: 2027 in the same frame (no logo yet) */
+@media (min-width:1000px){
+  .yrtop.framed.f27 .p27{border-radius:2px;box-shadow:inset 0 0 0 10px var(--s1),inset 0 0 0 14px var(--pnl),inset 0 0 0 16px var(--paper);display:flex;flex-direction:column;justify-content:center}
+  .yrtop.framed.f27 .p27>.stripe{display:none}
+  .yrtop.framed.f27 .p27-in{padding:48px 56px}
+  .yrtop.framed.f27>.hero{box-shadow:0 0 0 3px var(--paper),0 0 0 5px var(--ink)}
+}

@@ -702,7 +702,9 @@ print('archive All: %d cards (%d acts in two classes shown once)' % (len(ARCH_AL
 bars = [(1, [58, 34]), (1, [70]), (2, [40, 44]), (2, [30, 26, 30]), (3, [22, 28, 20, 18]), (3, [18, 24, 16, 26]), (4, [14, 18, 12, 16, 14]), (4, [12, 16, 18, 12, 10])]
 barh = ''.join('<div class="br b%d">%s</div>' % (lv, ''.join('<i style="width:%d%%"></i>' % w for w in ws)) for lv, ws in bars)
 s1 = header('Lineup', 'Aug 5–8, 2027', back=False, chip='2027')
-s1 += '<div class="yrtop">'
+# r60 (Zale, Nov 22 20:18): 2027 gets the same paper frame on desktop, with no logo yet: plum frame, the year's horizon on top, a gold printed border on the poster card
+P27 = {'paper': '#F2EDE3', 'ink': '#3B2935', 'light': '#E3B5CF', 'warm': '#F2CF62', 'stripe': ['#F2CF62', '#86526B', '#E3B5CF'], 'band': '#86526B'}
+s1 += '<div class="yrtop framed f27" style="--paper:#F2EDE3;--ink:#3B2935;--mat:#86526B;--s1:#F2CF62;--pnl:#3B2935"><div class="yrcrown" aria-hidden="true">%s</div>' % generic_seam('2027', P27)
 s1 += ('<section class="hero h27"><img src="%s" alt="" style="object-position:74%% 50%%"><div class="hero-sc"></div>'
        '<div class="hero-tx"><p class="kick">The 2027 lineup · not out yet</p><h1>The names<br>come later.</h1>'
        '<p class="hero-sub">60+ acts on hand-built stages, most playing twice. Be first to hear who.</p>'
