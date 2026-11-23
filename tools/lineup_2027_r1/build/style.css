@@ -1037,3 +1037,20 @@ main[id^="a-"] .sale{display:none}
 .hact .ring.lg{position:absolute;left:50%;top:44%;transform:translate(-50%,-50%);z-index:3;pointer-events:auto;cursor:pointer}
 .hact .hero-sub{margin:10px 0 0;max-width:34em;font-size:16px;line-height:1.4;color:#F2EDE3;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
 .hact .ah-meta{margin-top:6px}
+/* r74 (Zale, Nov 22 22:03): the year block under the artist reel: year logo, year and stage, then the years they played (each opens that year's lineup) */
+.ayb{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;align-items:center;margin:14px 18px 0;padding:12px 14px;background:var(--yp);color:var(--yi);border-radius:4px;box-shadow:inset 0 0 0 4px var(--mat),inset 0 0 0 6px var(--yp),inset 0 0 0 7.5px var(--yi)}
+.ayb-l{display:grid;place-items:center;width:64px;height:64px}
+.ayb-l img{max-width:64px;max-height:64px;object-fit:contain}
+.ayb-t b{display:block;font-family:var(--display);font-size:22px;letter-spacing:.03em;line-height:1.1}
+.ayb-t span{display:block;font-size:14px;font-weight:600;margin-top:2px}
+.ayb-y{grid-column:1/-1;padding-top:6px}
+.ayb-y p{margin:0 0 6px;font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase}
+.ayb-y div{display:flex;flex-wrap:wrap;gap:8px}
+.ayb-y button{min-width:64px;height:44px;padding:0 12px;border-radius:4px;border:1.5px solid var(--yi);background:transparent;color:var(--yi);font-family:var(--display);font-size:18px;letter-spacing:.04em;cursor:pointer}
+.ayb-y button[aria-current]{background:var(--yi);color:var(--yp)}
+@media (min-width:1000px){
+  .ayb{grid-template-columns:auto 1fr auto;margin:18px auto 0;max-width:1152px;width:calc(100% - 128px);padding:14px 20px}
+  .ayb-l{width:76px;height:76px}.ayb-l img{max-width:76px;max-height:76px}
+  .ayb-y{grid-column:auto;padding-top:0;text-align:right}.ayb-y div{justify-content:flex-end}
+}
+.acrown .sm-disc,.acrown .sm-badge{display:none}

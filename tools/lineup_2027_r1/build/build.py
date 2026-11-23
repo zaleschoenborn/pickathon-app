@@ -1095,6 +1095,16 @@ def art_page(slug, ap):
           ('<p class="hero-sub">%s</p>' % E(_line)) if _line else '')
     # r73 (Zale, Nov 22 21:56): the same year strip turned upside down closes the bottom of the photo
     h += '<div class="acrown afoot" aria-hidden="true">%s</div>' % (seam(yr, _P2) if yr != '2027' else generic_seam('2027', P27))
+    # r74 (Zale, Nov 22 22:03; picked "go to that year's page"): a small year block under the reel ties the act to its Pickathon:
+    # the year logo, "Pickathon 2013" and the stage, then every year the act played; each year opens that year's lineup page
+    _lgy = d['yearLogo'].get(yr)
+    _lgi = ('<img src="%s" alt="">' % img(_lgy, 220, fmt='PNG')) if (_lgy and not _lgy.startswith('http') and os.path.exists(_src(_lgy))) else ('<img src="%s" alt="">' % LOGO)
+    _stg = (_fr[0][2] if _fr else '') or ap.get('heroSt', '')
+    _yrs = sorted({str(y_) for y_, _ in _KIN.get(name, [])} | {yr})
+    h += ('<section class="ayb" style="--yp:%s;--yi:%s"><span class="ayb-l">%s</span><div class="ayb-t"><b>Pickathon %s</b>%s</div>'
+          '<div class="ayb-y"><p>Their Pickathons</p><div>%s</div></div></section>') % (
+          _P2['paper'], _P2['ink'], _lgi, yr, ('<span>%s</span>' % E(_stg)) if _stg else '',
+          ''.join('<button type="button" data-go="y%s"%s aria-label="Pickathon %s lineup">%s</button>' % (y_, ' aria-current="true"' if y_ == yr else '', y_, y_) for y_ in _yrs))
     # r66 (Zale picked one continuous story, copy_review-54): intro, one story in a few paragraphs, then a small sets block; read from Copy Review's stories_<year> CSVs
     _st = _STORIES.get((_slug(name), yr))
     story = [] if _st else [s for s in (ap.get('story') or []) if s.get('t')]
@@ -1142,15 +1152,7 @@ def art_page(slug, ap):
             h += ('<div class="vid" role="button" tabindex="0" data-clip="%s"><span class="vth"><img loading="lazy" src="%s" alt="" style="object-position:50%% 40%%">%s</span>'
                   '<b>%s, full set</b><span>Pickathon %s</span></div>') % (_h.escape(u, quote=True), _thumb(u, v.get('y')), play('sm'), E(name), v.get('y'))
         h += '</div></section>'
-    years = sorted({y for y, _ in _KIN.get(name, [])})
-    if years:
-        # r71: Their Pickathons are small tiles in each year's colors with that year's logo (the logo wall's tiles); a tile goes to that year's page
-        def _yt(y):
-            y = str(y); Py = d['yearBrand'].get(y, P24); lg = d['yearLogo'].get(y)
-            pic = ('<img loading="lazy" src="%s" alt="">' % img(lg, 220, fmt='PNG')) if lg and not lg.startswith('http') and os.path.exists(_src(lg)) else '<i>%s</i>' % y
-            return ('<button type="button" class="yw-i at-i" data-go="y%s" style="--yb:%s"%s aria-label="Pickathon %s lineup"><span class="yw-l">%s</span><b>%s</b></button>') % (
-                y, _mat(Py), ' aria-current="true"' if y == yr else '', y, pic, y)
-        h += '<section class="theirs"><p class="kick">Their Pickathons</p><div class="at-g">%s</div></section>' % ''.join(_yt(y) for y in years)
+    # r74: Their Pickathons moved up into the year block under the reel
     # r58 (Zale, Nov 22 20:06): "If you like" draws from the Archive's cards that share any of the act's music tags, nearest in size today
     _mt = set(tags_of(name)) or ({gp_n(name, GSHORT.get(g, g))} - {''})
     _me = max([v for (cn, _y), v in _magall.items() if cn == _canon(name)] or [x.get('m') or 0])
