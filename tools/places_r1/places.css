@@ -165,7 +165,7 @@ body.pkpl-hood .pk-g1-pill{display:none!important}   /* rulebook: no gold Watch 
 body.pkpl-wide.pkpl-hood #root .pk-hd-colL,body.pkpl-wide.pkpl-hood #root .pk-hd-colR{display:block!important;width:auto!important;grid-template-columns:none!important}
 body.pkpl-wide.pkpl-hood #root .pk-hd-colL>*{width:auto!important;max-width:none!important}
 body.pkpl-hood #root .pk-hd-desc0.pkpl-dup{display:none!important}   /* the long description says the same as the hook */
-.pkpl-hi.pkpl-tok .pkpl-base{visibility:hidden}
+/* Nov 23: the coarse base stays painted under the detail tiles, so nothing goes blank while tiles swap */
 #root#root#root#root#root#root#root#root .pkpl-tb{min-height:50px!important;height:50px}
 @media (min-width:1200px){#root#root#root#root#root#root#root#root .pkpl-tb{min-height:56px!important;height:56px}}
 #root#root#root#root#root#root#root#root .pkpl-tb{background:rgba(18,22,15,.9)!important;border:1px solid rgba(242,237,227,.6)!important;color:#F2EDE3!important}
@@ -989,3 +989,7 @@ html body.pkpl-v2 #root #pkpl .pkpl-gk h2.pkpl-hook1{font-size:19px!important;li
 html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-tv .pkpl-gk h2.pkpl-hook1{font-size:17px!important}
 html body.pkpl-v2 #root #pkpl .pkpl-gk p.pkpl-ask{margin-top:14px}
 html body.pkpl-v2 #root #pkpl .pkpl-gk p.pkpl-ask{font-size:12px!important;letter-spacing:.16em!important;margin:12px 0 0!important}html body.pkpl-v2 #root #pkpl .pkpl-gk h2.pkpl-hook1{font-size:21px!important}html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-tv .pkpl-gk h2.pkpl-hook1{font-size:18px!important}
+/* Zale, Nov 23: merch gets a plain merch plate over the 2026 frog badge baked into the art */
+#pkpl .pkpl-patch{fill:#2B2628;stroke:rgba(242,237,227,.35);stroke-width:1.5}
+/* amenity name on hover (desktop) */
+#pkpl .pkpl-amhov{position:absolute;left:0;top:0;z-index:30;pointer-events:none;padding:7px 11px;border-radius:8px;background:#12160F;border:1px solid #3A4331;color:#F2EDE3;font:700 14px/1 'Bricolage Grotesque',system-ui,sans-serif;white-space:nowrap;box-shadow:0 4px 14px rgba(0,0,0,.4)}
