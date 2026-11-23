@@ -746,6 +746,14 @@
   function whatIs(h, has) { var t = ddOf(h) || (Array.isArray(h.d) ? h.d.join(' ') : (h.d || '')), hk = has ? '' : (hookOf(h) || ''); if (!t && !hk) return '';
     var body = !t ? '' : t.length < 260 ? '<p class="pkpl-wt">' + esc(t) + '</p>' : '<div class="pkpl-more"><p>' + esc(t) + '</p><button type="button" class="pkpl-rm" data-pk="rm" aria-expanded="false">Keep reading</button></div>';   /* a short description shows whole */
     return '<div class="pkpl-what"><p class="pkpl-sk">' + esc((M0W.aboutKicker || 'About {place}').replace('{place}', h.n)) + '</p>' + (hk ? '<p class="pkpl-ab1">' + esc(hk) + '</p>' : '') + body + '</div>'; }
+  function amOf(k) { return (MI || []).filter(function (z) { return z[3] === k; }).map(function (z) { return z[0]; }).filter(function (x, i, a) { return a.indexOf(x) === i && x !== 'tent' && x !== 'gear'; }); }
+  function quick(k, h, hasVid, hasYr) {   /* Zale, Nov 23: a few quick links on the photo, so the practical things and the story are one tap away without pulling the page up first */
+    var am = amOf(k).slice(0, 3), Q = [];
+    Q.push('<button type="button" class="pkpl-q" data-pk="q" data-to="soon">' + (am.length ? '<span class="pkpl-qi">' + am.map(function (x) { return '<i class="pkpl-fi">' + amGlyph(x) + '</i>'; }).join('') + '</span>' : '') + '<span>What\u2019s here</span></button>');
+    if (hasVid) Q.push('<button type="button" class="pkpl-q" data-pk="q" data-to="vids"><span class="pkpl-qp" aria-hidden="true"></span><span>' + esc(M0W.vidHead || 'Then and now') + '</span></button>');
+    if (hasYr) Q.push('<button type="button" class="pkpl-q" data-pk="q" data-to="yr"><span>The story</span></button>');
+    return '<div class="pkpl-qr" role="group" aria-label="Jump to">' + Q.join('') + '</div>';
+  }
   function soon(k, XE, h, has) {
     if (has) return '';   /* the real schedule is showing: it is the 2027 card */   /* the 2027 schedule, summarized until it posts (Zale, Nov 19: more useful than every past year) */
     var HP = (data().hoodProg || {})[k], kinds = HP ? (HP.kinds || []).map(function (g) { return g[0]; }).filter(function (n) { return !/^(more|showcases)/i.test(n); }) : [];
@@ -755,7 +763,7 @@
     else if (XE && XE !== 'Architecture' && (musicy || !kinds.length)) what = ({ DJs: 'DJ sets', Comedy: 'comedy', Literary: 'readings and storytelling', Food: 'food and drink', Drinks: 'drinks' })[XE] || lc(XE);
     else if (musicy) what = 'music from legends, discoveries and deep cuts';
     else what = kinds.slice(0, 4).map(lc).join(', ').replace(/, ([^,]*)$/, ' and $1') || (XE ? lc(XE) : 'programming');
-    var am = (MI || []).filter(function (z) { return z[3] === k; }).map(function (z) { return z[0]; }).filter(function (x, i, a) { return a.indexOf(x) === i && x !== 'tent' && x !== 'gear'; });
+    var am = amOf(k);
     return '<section class="pkpl-soon" aria-label="2027 at ' + esc(h.n) + '"><p class="pkpl-sk">Schedule</p><h2>2027 at ' + esc(h.n) + '</h2><p>' + esc(M0W.soonLine ? M0W.soonLine.replace('{What}', what.charAt(0).toUpperCase() + what.slice(1)).replace('{place}', h.n) : 'Four days of ' + what + ' at ' + h.n + ', Thursday to Sunday, August 5 to 8. The full schedule posts with the 2027 lineup.') + '</p>' +
       (am.length ? '<div class="pkpl-sam">' + am.map(function (x) { return '<span><i class="pkpl-fi">' + amGlyph(x) + '</i>' + esc(AMN[x] || x) + '</span>'; }).join('') + '</div>' : '') + '</section>';
   }
