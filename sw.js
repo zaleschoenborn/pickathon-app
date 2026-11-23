@@ -1,5 +1,5 @@
-// Pickathon service worker. Build 20261122-5393
-const V='pk-20261122-5393',M='pkmedia-3',KEEP=["ssindex-b6158b1d.json"],SHELL=['./','index.html','data.json','focus.json','focus-tall.json','focus-hero.json','focus.js?v=5393','manifest.json','icon-192.png','apple-touch-icon.png','fonts/pickathon-2014.ttf','lx/lx.js?v=5388','lx/lx.css','lx/fonts.css','lx/index.json','fonts/bricolage-grotesque-latin-wght-normal.woff2','farmmap/index.html?embed=1','farmmap/lab-phone.html?embed=1'];
+// Pickathon service worker. Build 20261123-5394
+const V='pk-20261123-5394',M='pkmedia-3',KEEP=["ssindex-b6158b1d.json"],SHELL=['./','index.html','data.rt.json','focus.json','focus-tall.json','focus-hero.json','focus.js?v=5394','manifest.json','icon-192.png','apple-touch-icon.png','fonts/pickathon-2014.ttf','lx/lx.js?v=5388','lx/lx.css','lx/fonts.css','lx/index.json','fonts/bricolage-grotesque-latin-wght-normal.woff2','farmmap/index.html?embed=1','farmmap/lab-phone.html?embed=1'];
 const MP='pkmap-1';
 const fl=new Map();/* one network request per URL at a time (icons are asked for twice by the page) */
 const once=(k,f)=>{let p=fl.get(k);if(!p){p=f().finally(()=>fl.delete(k));fl.set(k,p)}return p.then(x=>x.clone())};
@@ -18,7 +18,7 @@ self.addEventListener('fetch',e=>{const r=e.request;if(r.method!=='GET')return;c
   if(m){e.waitUntil(net.catch(()=>{}));return m}
   return net.catch(()=>new Response('',{status:504}))})));return}
  /* Rule: anything that changes (pages, data, the map page) always comes from the network when online; the saved copy is only for offline. Big files that never change (map tiles, photos, fonts) come from the cache. */
- const fresh=r.mode==='navigate'||/(\.html|data\.json|manifest\.json)$/.test(u.pathname)||u.pathname.endsWith('/');
+ const fresh=r.mode==='navigate'||/(\.html|data\.json|data\.rt\.json|manifest\.json)$/.test(u.pathname)||u.pathname.endsWith('/');
  /* Nov 13 (Zale): show the saved copy at once and check for a newer one in the background; the next visit gets the new version. First load after the install is the saved copy. Offline still falls back to the saved copy. */
  /* Site Build Nov 22 (Zale: slow first paint): a copy saved by THIS build's install is already the current file (every deploy bumps V and the page's
     version check reloads onto a newer build), so serve it with no background download; only a copy from elsewhere is refreshed in the background. */
