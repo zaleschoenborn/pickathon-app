@@ -936,3 +936,5 @@ h2{font-family:var(--display);font-weight:400;font-size:27px;line-height:1.14;le
     filter:drop-shadow(3px 0 0 var(--dki2)) drop-shadow(-3px 0 0 var(--dki2)) drop-shadow(0 3px 0 var(--dki2)) drop-shadow(0 -3px 0 var(--dki2))}
   .yrtop.framed.dark .poster[data-yr="2006"] .po-badge{filter:none}
 }
+
+@media (min-width:1000px){.yrtop.framed.litp .po-art .po-badge{filter:none}.yrtop.framed.litp .poster::after{mix-blend-mode:multiply;opacity:.1}}

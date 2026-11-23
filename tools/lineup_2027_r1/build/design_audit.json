@@ -1,5 +1,5 @@
 {
- "y2024@phone": {
+ "y2013@phone": {
   "text": [
    {
     "at": "div.yrbar > button.yrchip.ywopen > span.yc-k",
@@ -82,17 +82,24 @@
    },
    {
     "at": "div.po-in > div.po-names.then > div.pcloud > span.pn",
-    "w": 264,
+    "w": 108,
+    "h": 41,
+    "poster": true,
+    "t": "FEIST"
+   },
+   {
+    "at": "div.po-in > div.po-names.then > div.pcloud > span.pn",
+    "w": 192,
     "h": 43,
     "poster": true,
-    "t": "ELEPHANT REVIVAL"
+    "t": "ANDREW BIRD"
    }
   ],
   "contrast": [
    {
     "at": "div.po-ctl > span.po-track > i.po-knob > b.po-yr",
     "cr": 1,
-    "t": "2024",
+    "t": "2013",
     "poster": true
    }
   ],
@@ -100,138 +107,7 @@
   "round": [],
   "overflow": false
  },
- "y2015@phone": {
-  "text": [
-   {
-    "at": "div.yrbar > button.yrchip.ywopen > span.yc-k",
-    "fs": 12,
-    "floor": 14,
-    "poster": false,
-    "t": "Lineup"
-   }
-  ],
-  "tap": [
-   {
-    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i.on",
-    "w": 33,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
-    "w": 33,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
-    "w": 33,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
-    "w": 33,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
-    "w": 33,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
-    "w": 33,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
-    "w": 33,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
-    "w": 33,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
-    "w": 33,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
-    "w": 33,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "div.po-in > div.po-names.then > div.pcloud > span.pn",
-    "w": 258,
-    "h": 41,
-    "poster": true,
-    "t": "TUNE-YARDS"
-   },
-   {
-    "at": "div.po-in > div.po-names.then > div.pcloud > span.pn",
-    "w": 183,
-    "h": 42,
-    "poster": true,
-    "t": "TINARIWEN"
-   }
-  ],
-  "contrast": [
-   {
-    "at": "div.po-ctl > span.po-track > i.po-knob > b.po-yr",
-    "cr": 1,
-    "t": "2015",
-    "poster": true
-   }
-  ],
-  "scroll": [],
-  "round": [],
-  "overflow": false
- },
- "y2009@phone": {
-  "text": [
-   {
-    "at": "div.yrbar > button.yrchip.ywopen > span.yc-k",
-    "fs": 12,
-    "floor": 14,
-    "poster": false,
-    "t": "Lineup"
-   }
-  ],
-  "tap": [],
-  "contrast": [
-   {
-    "at": "div.po-ctl > span.po-track > i.po-knob > b.po-yr",
-    "cr": 1,
-    "t": "2009",
-    "poster": true
-   }
-  ],
-  "scroll": [],
-  "round": [],
-  "overflow": false
- },
- "y2024@tablet": {
+ "y2013@tablet": {
   "text": [
    {
     "at": "div.yrbar > button.yrchip.ywopen > span.yc-k",
@@ -239,6 +115,20 @@
     "floor": 15,
     "poster": false,
     "t": "Lineup"
+   },
+   {
+    "at": "div.grid2 > a.card.tt > span.cbody > span.cstory",
+    "fs": 14,
+    "floor": 15,
+    "poster": false,
+    "t": "Their story \u2192"
+   },
+   {
+    "at": "div.grid2 > a.card.tt > span.cbody > span.cstory",
+    "fs": 14,
+    "floor": 15,
+    "poster": false,
+    "t": "Their story \u2192"
    },
    {
     "at": "div.grid2 > a.card.tt > span.cbody > span.cstory",
@@ -356,24 +246,24 @@
    },
    {
     "at": "div.po-in > div.po-names.then > div.pcloud > span.pn",
-    "w": 395,
+    "w": 108,
     "h": 41,
     "poster": true,
-    "t": "COURTNEY BARNETT"
+    "t": "FEIST"
    },
    {
     "at": "div.po-in > div.po-names.then > div.pcloud > span.pn",
-    "w": 264,
+    "w": 192,
     "h": 43,
     "poster": true,
-    "t": "ELEPHANT REVIVAL"
+    "t": "ANDREW BIRD"
    }
   ],
   "contrast": [
    {
     "at": "div.po-ctl > span.po-track > i.po-knob > b.po-yr",
     "cr": 1,
-    "t": "2024",
+    "t": "2013",
     "poster": true
    }
   ],
@@ -381,216 +271,7 @@
   "round": [],
   "overflow": false
  },
- "y2015@tablet": {
-  "text": [
-   {
-    "at": "div.yrbar > button.yrchip.ywopen > span.yc-k",
-    "fs": 12,
-    "floor": 15,
-    "poster": false,
-    "t": "Lineup"
-   },
-   {
-    "at": "div.grid2 > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 15,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.grid2 > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 15,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.grid2 > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 15,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.grid2 > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 15,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.grid2 > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 15,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.grid2 > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 15,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.grid2 > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 15,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.grid2 > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 15,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.grid2 > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 15,
-    "poster": false,
-    "t": "Their story \u2192"
-   }
-  ],
-  "tap": [
-   {
-    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i.on",
-    "w": 42,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
-    "w": 42,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
-    "w": 42,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
-    "w": 42,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
-    "w": 42,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
-    "w": 42,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
-    "w": 42,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
-    "w": 42,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
-    "w": 42,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
-    "w": 42,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "div.po-in > div.po-names.then > div.pcloud > span.pn",
-    "w": 258,
-    "h": 41,
-    "poster": true,
-    "t": "TUNE-YARDS"
-   },
-   {
-    "at": "div.po-in > div.po-names.then > div.pcloud > span.pn",
-    "w": 183,
-    "h": 42,
-    "poster": true,
-    "t": "TINARIWEN"
-   },
-   {
-    "at": "div.po-in > div.po-names.then > div.pcloud > span.pn",
-    "w": 429,
-    "h": 42,
-    "poster": true,
-    "t": "TURNPIKE TROUBADOURS"
-   }
-  ],
-  "contrast": [
-   {
-    "at": "div.po-ctl > span.po-track > i.po-knob > b.po-yr",
-    "cr": 1,
-    "t": "2015",
-    "poster": true
-   }
-  ],
-  "scroll": [],
-  "round": [],
-  "overflow": false
- },
- "y2009@tablet": {
-  "text": [
-   {
-    "at": "div.yrbar > button.yrchip.ywopen > span.yc-k",
-    "fs": 12,
-    "floor": 15,
-    "poster": false,
-    "t": "Lineup"
-   }
-  ],
-  "tap": [
-   {
-    "at": "div.po-in > div.po-names.then > div.pcloud > span.pn",
-    "w": 445,
-    "h": 41,
-    "poster": true,
-    "t": "THE HACKENSAW BOYS"
-   }
-  ],
-  "contrast": [
-   {
-    "at": "div.po-ctl > span.po-track > i.po-knob > b.po-yr",
-    "cr": 1,
-    "t": "2009",
-    "poster": true
-   }
-  ],
-  "scroll": [],
-  "round": [],
-  "overflow": false
- },
- "y2024@desktop": {
+ "y2013@desktop": {
   "text": [
    {
     "at": "div.yrbar > button.yrchip.ywopen > span.yc-k",
@@ -598,6 +279,20 @@
     "floor": 16,
     "poster": false,
     "t": "Lineup"
+   },
+   {
+    "at": "div.grid2 > a.card.tt > span.cbody > span.cstory",
+    "fs": 14,
+    "floor": 16,
+    "poster": false,
+    "t": "Their story \u2192"
+   },
+   {
+    "at": "div.grid2 > a.card.tt > span.cbody > span.cstory",
+    "fs": 14,
+    "floor": 16,
+    "poster": false,
+    "t": "Their story \u2192"
    },
    {
     "at": "div.grid2 > a.card.tt > span.cbody > span.cstory",
@@ -712,271 +407,34 @@
     "h": 45,
     "poster": false,
     "t": ""
-   },
-   {
-    "at": "div.po-in > div.po-names.then > div.pcloud > span.pn",
-    "w": 378,
-    "h": 41,
-    "poster": true,
-    "t": "ELEPHANT REVIVAL"
    },
    {
     "at": "div.po-in > div.po-names.then > div.pcloud > span.pn",
     "w": 276,
-    "h": 42,
+    "h": 41,
     "poster": true,
-    "t": "DURAND JONES"
+    "t": "ANDREW BIRD"
    },
    {
     "at": "div.po-in > div.po-names.then > div.pcloud > span.pn",
-    "w": 101,
-    "h": 42,
+    "w": 336,
+    "h": 43,
     "poster": true,
-    "t": "ROG\u00ca"
+    "t": "THE DEVIL MAKES THREE"
    },
    {
     "at": "div.po-in > div.po-names.then > div.pcloud > span.pn",
-    "w": 209,
-    "h": 42,
+    "w": 307,
+    "h": 43,
     "poster": true,
-    "t": "JAKE KOHN"
+    "t": "THE FELICE BROTHERS"
    }
   ],
   "contrast": [
    {
     "at": "div.po-ctl > span.po-track > i.po-knob > b.po-yr",
     "cr": 1,
-    "t": "2024",
-    "poster": true
-   }
-  ],
-  "scroll": [],
-  "round": [],
-  "overflow": false
- },
- "y2015@desktop": {
-  "text": [
-   {
-    "at": "div.yrbar > button.yrchip.ywopen > span.yc-k",
-    "fs": 12,
-    "floor": 16,
-    "poster": false,
-    "t": "Lineup"
-   },
-   {
-    "at": "div.grid2 > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 16,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.grid2 > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 16,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.grid2 > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 16,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.grid2 > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 16,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.grid2 > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 16,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.grid2 > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 16,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.grid2 > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 16,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.grid2 > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 16,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.grid2 > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 16,
-    "poster": false,
-    "t": "Their story \u2192"
-   }
-  ],
-  "tap": [
-   {
-    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i.on",
-    "w": 31,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
-    "w": 31,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
-    "w": 31,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
-    "w": 31,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
-    "w": 31,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
-    "w": 31,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
-    "w": 31,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
-    "w": 31,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
-    "w": 31,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
-    "w": 31,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "div.po-in > div.po-names.then > div.pcloud > span.pn",
-    "w": 363,
-    "h": 42,
-    "poster": true,
-    "t": "SHABAZZ PALACES"
-   },
-   {
-    "at": "div.po-in > div.po-names.then > div.pcloud > span.pn",
-    "w": 156,
-    "h": 43,
-    "poster": true,
-    "t": "TY SEGALL"
-   }
-  ],
-  "contrast": [
-   {
-    "at": "div.po-ctl > span.po-track > i.po-knob > b.po-yr",
-    "cr": 1,
-    "t": "2015",
-    "poster": true
-   }
-  ],
-  "scroll": [],
-  "round": [],
-  "overflow": false
- },
- "y2009@desktop": {
-  "text": [
-   {
-    "at": "div.yrbar > button.yrchip.ywopen > span.yc-k",
-    "fs": 12,
-    "floor": 16,
-    "poster": false,
-    "t": "Lineup"
-   }
-  ],
-  "tap": [
-   {
-    "at": "div.po-in > div.po-names.then > div.pcloud > span.pn",
-    "w": 145,
-    "h": 42,
-    "poster": true,
-    "t": "DR. DOG"
-   },
-   {
-    "at": "div.po-in > div.po-names.then > div.pcloud > span.pn",
-    "w": 286,
-    "h": 43,
-    "poster": true,
-    "t": "BLITZEN TRAPPER"
-   },
-   {
-    "at": "div.po-in > div.po-names.then > div.pcloud > span.pn",
-    "w": 226,
-    "h": 43,
-    "poster": true,
-    "t": "DALE WATSON"
-   },
-   {
-    "at": "div.po-in > div.po-names.then > div.pcloud > span.pn",
-    "w": 120,
-    "h": 43,
-    "poster": true,
-    "t": "JOE PUG"
-   },
-   {
-    "at": "div.po-in > div.po-names.then > div.pcloud > span.pn",
-    "w": 316,
-    "h": 43,
-    "poster": true,
-    "t": "FOGHORN STRINGBAND"
-   }
-  ],
-  "contrast": [
-   {
-    "at": "div.po-ctl > span.po-track > i.po-knob > b.po-yr",
-    "cr": 1,
-    "t": "2009",
+    "t": "2013",
     "poster": true
    }
   ],
