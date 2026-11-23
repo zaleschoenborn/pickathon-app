@@ -1088,11 +1088,11 @@ def art_page(slug, ap):
     _sl = [{'i': img(f_[0], 780), 'pos': f_[1], 'n': name, 'k': KLAB.get(k, ''), 'g': _gt, 'l': _line, 'clip': _ysongs[0][0] if _ysongs else ''} for f_ in _fr]
     _segs = ''.join('<i data-slide="%d"%s><b></b></i>' % (n_, ' class="on"' if n_ == 0 else '') for n_ in range(len(_sl))) if len(_sl) > 1 else ''
     h += ('<section class="hero hact%s"%s><img src="%s" alt="" style="object-position:%s"><div class="hero-sc"></div>%s%s'
-          '<div class="hero-tx"><p class="krow"><span class="k k-%s">%s</span>%s</p><h1>%s</h1><p class="ah-meta">Pickathon %s</p>%s</div></section>') % (
+          '<span class="hyr-y">%s</span><div class="hero-tx"><p class="krow"><span class="k k-%s">%s</span>%s</p><h1>%s</h1>%s</div></section>') % (
           ' areel' if _segs else '', (' data-slides="%s"' % html.escape(json.dumps(_sl), quote=True)) if _segs else '',
           img(_fr[0][0], 780) if _fr else img(ap['hero'], 780), _fr[0][1] if _fr else ap.get('hpos', '50% 40%'),
-          ('<div class="segs">%s</div>' % _segs) if _segs else '', _ring,
-          k, KLAB.get(k, ''), ('<span class="g">%s</span>' % E(gp_n(name, GSHORT.get(g, g)))) if (gp_n(name) or g) else '', E(name), yr,
+          ('<div class="segs">%s</div>' % _segs) if _segs else '', _ring, yr,
+          k, KLAB.get(k, ''), ('<span class="g">%s</span>' % E(gp_n(name, GSHORT.get(g, g)))) if (gp_n(name) or g) else '', E(name),
           ('<p class="hero-sub">%s</p>' % E(_line)) if _line else '')
     # r73 (Zale, Nov 22 21:56): the same year strip turned upside down closes the bottom of the photo
     h += '<div class="acrown afoot" aria-hidden="true">%s</div>' % (seam(yr, _P2) if yr != '2027' else generic_seam('2027', P27))
@@ -1102,8 +1102,9 @@ def art_page(slug, ap):
     _lgi = ('<img src="%s" alt="">' % img(_lgy, 220, fmt='PNG')) if (_lgy and not _lgy.startswith('http') and os.path.exists(_src(_lgy))) else ('<img src="%s" alt="">' % LOGO)
     _stg = (_fr[0][2] if _fr else '') or ap.get('heroSt', '')
     # r76 (Zale, Nov 22 22:45, picked A): the year seal sits across the join of photo and page, like a stamp; year and stage under it
-    h += ('<div class="aseal" style="--yp:%s;--yi:%s"><span class="as-l">%s</span><p>Pickathon %s%s</p></div>') % (
-          _P2['paper'], _P2['ink'], _lgi, yr, (' · %s' % E(_stg)) if _stg else '')
+    # r77 (Zale, Nov 22 22:52): the year shows once, in the photo's top-right corner like the year pages; the seal names only the stage
+    h += ('<div class="aseal" style="--yp:%s;--yi:%s"><span class="as-l">%s</span>%s</div>') % (
+          _P2['paper'], _P2['ink'], _lgi, '')  # r77b (Zale 22:52): no caption under the seal; it looked thin. The year is in the photo's corner
     # r66 (Zale picked one continuous story, copy_review-54): intro, one story in a few paragraphs, then a small sets block; read from Copy Review's stories_<year> CSVs
     _st = _STORIES.get((_slug(name), yr))
     story = [] if _st else [s for s in (ap.get('story') or []) if s.get('t')]

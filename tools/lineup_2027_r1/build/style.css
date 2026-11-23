@@ -1062,3 +1062,4 @@ main[id^="a-"] .sale{display:none}
 @media (min-width:1000px){.aseal{margin-top:-70px}.as-l{width:96px;height:96px}.as-l img{max-width:72px;max-height:72px}.aseal p{font-size:13px}}
 @media (max-width:999px){main[id^="a-"] .hact .hero-tx{padding-bottom:62px}}
 @media (max-width:999px){.hact .ring.lg{top:34%}}
+.aseal{margin-bottom:-14px}
