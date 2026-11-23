@@ -930,3 +930,9 @@ h2{font-family:var(--display);font-weight:400;font-size:27px;line-height:1.14;le
   .yrtop.framed.dark .po-art .po-badge{background:var(--pp);padding:12px;border-radius:3px;box-shadow:0 0 0 3px var(--dki2);box-sizing:border-box}
   .yrtop.framed.dark .poster[data-yr="2006"] .po-badge{background:none;padding:0;box-shadow:none}
 }
+/* r63 (Zale, Nov 22 20:41: "the white square does not work"): no plate; the logo gets a die-cut sticker edge in the year's light color that follows its own shape */
+@media (min-width:1000px){
+  .yrtop.framed.dark .po-art .po-badge{background:none!important;padding:0!important;box-shadow:none!important;
+    filter:drop-shadow(3px 0 0 var(--dki2)) drop-shadow(-3px 0 0 var(--dki2)) drop-shadow(0 3px 0 var(--dki2)) drop-shadow(0 -3px 0 var(--dki2))}
+  .yrtop.framed.dark .poster[data-yr="2006"] .po-badge{filter:none}
+}
