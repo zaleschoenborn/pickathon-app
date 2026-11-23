@@ -14432,6 +14432,7 @@ html body.pkpl-v2 #root #pkpl .pkpl-gk p.pkpl-ask{font-size:12px!important;lette
     if (XWdone || !XH) return; var d = data(); if (!d || !d.hoods) return; XWdone = true;
     var W = d.xpWords || XW; if (!W) return; M0W = W.map || {};
     Object.keys(W.XPD || {}).forEach(function (e) { XH.XPD[e] = W.XPD[e]; });
+    if (XW && XW !== W) { Object.keys(XW.XPD || {}).forEach(function (e) { XH.XPD[e] = XW.XPD[e]; }); M0W = Object.assign({}, M0W, XW.map || {}); }   /* Nov 22 19:40: Copy's newest lines (bundled from copy-review-nov22b) win until Site Build merges Copy's data.json; re-pull the bundle when Copy changes them */
     Object.keys(W.XPB || {}).forEach(function (e) { XH.XPB[e] = XH.XPB[e] || {}; Object.keys(W.XPB[e]).forEach(function (k) { XH.XPB[e][k] = W.XPB[e][k]; }); });
     HKW = W.hook || {}; DSW = W.desc || {}; WCN = W.cn || {};   /* read through hookOf/ddOf, so the shared data (and Home) are never changed */
   }
