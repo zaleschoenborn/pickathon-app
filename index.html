@@ -14934,6 +14934,10 @@ html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-pl.pkpl-cols.pkpl-c3 .pkpl-pr b{wh
   html body.pkpl-v2p #root #pkpl-top .pkpl-hero::after{height:92px!important;background:linear-gradient(180deg,rgba(43,38,40,0) 0,rgba(43,38,40,.5) 58%,#2B2628 100%)!important}
   html body.pkpl-v2p #root #pkpl-top .pkpl-hi:not(.pkpl-map){padding-bottom:76px}
   html body.pkpl-v2p #root #pkpl-top .pkpl-dots{bottom:34px}}
+/* Zale, Nov 22 18:40: arrival leads with the hook; the question is a small label right on the experience buttons */
+html body.pkpl-v2p #root #pkpl .pkpl-psbig.pkpl-hook1{font-size:clamp(24px,6.6vw,30px);line-height:1.08}
+html body.pkpl-v2p #root #pkpl .pkpl-psl.pkpl-psl0{font-size:16px;margin-top:2px;color:rgba(242,237,227,.8)}
+html body.pkpl-v2p:not(.pkpl-hood) #root #pkpl .pkpl-psq:not(.pkpl-psq0){color:#E9B93C;font-size:12px;letter-spacing:.14em}
 </style>
 <script id="pk-places">
 /* pk-places: Places map and neighborhood pages, round 1 (Nov 13 2026). Source: tools/places_r1/places.js, spliced into index.html by tools/places_r1/build.py.
@@ -15338,14 +15342,14 @@ html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-pl.pkpl-cols.pkpl-c3 .pkpl-pr b{wh
       var Lp = M.xp ? litSet() : [], D3 = data().hoods, tile = function (k, line) { return '<button type="button" class="pkpl-pr' + (line ? ' pkpl-prp' : '') + '" data-hp="' + k + '">' + (line ? pic(M.xp, k) : '<img src="' + esc(emb(k)) + '" alt="">') + '<span><b>' + esc(D3[k].n) + '</b>' + (line ? '<small>' + esc(line) + '</small>' : '') + '</span></button>'; };
       var sum = M.xp === 'Architecture' ? (XH.XPD.Architecture || '').split('. ')[0].replace(/\.?$/, '.') : M.xp ? (XH.XPD[M.xp] || '').split(/(?<=[.!?])\s/)[0] : '';
       $('.pkpl-psht', M.el).innerHTML = M.xp ? '<div class="pkpl-psln"><span class="pkpl-pci">' + xpIcon(M.xp) + '</span><span class="pkpl-psn">' + Lp.length + (Lp.length === 1 ? ' neighborhood' : ' neighborhoods') + '</span><span class="pkpl-psmore">' + (M.ps === 2 ? 'Map' : 'See ' + (Lp.length === 1 ? 'it' : 'them')) + '</span></div>'   /* Zale, Nov 22 06:46 trims: the pressed button already names the experience, so a small line that opens the list */
-        : '<h2 class="pkpl-psbig">What do you want to experience?</h2>';   /* Zale, Nov 22 06:19: arrival asks, nothing picked */
+        : '<h2 class="pkpl-psbig pkpl-hook1">' + esc(M0W.arrival || 'Each year, Pickathon builds a city of neighborhoods. Then it\u2019s gone.') + '</h2>';   /* Zale, Nov 22 18:40: the hook leads (his Summer camp line, copy_review-48); the question moves down onto the buttons */   /* Zale, Nov 22 06:19: arrival asks, nothing picked */
       if (M.xp) ps.innerHTML = '<p class="pkpl-psl">' + esc(sum) + '</p>'
         + '<div class="pkpl-psls' + (Lp.length > 4 ? ' pkpl-psl2' : '') + '">' + Lp.map(function (k) { return tile(k, xpLine(M.xp, k)); }).join('') + '</div>'
         + (M.xp === 'Architecture' ? '<div class="pkpl-psab"><button type="button" class="pk-cta sec pkpl-abb" data-go="build">Build with Pickathon</button></div>' : '');   /* Zale, Nov 22: Build with Pickathon closes the list on every size */
-      else ps.innerHTML = '<p class="pkpl-psl">' + phoneFirst() + '</p>'
+      else ps.innerHTML = '<p class="pkpl-psl pkpl-psl0"><button type="button" class="pkpl-psall">' + esc(M0W.seeAll || 'See every neighborhood') + '</button></p>'
         + [['stage', 'Stages'], ['around', 'Hangouts'], ['camp', 'Camping']].map(function (g) { var ks = ids().filter(function (k) { return (D3[k].k || 'around') === g[0]; }); return ks.length ? '<p class="pkpl-gh">' + g[1] + '</p><div class="pkpl-psls pkpl-pst">' + ks.map(function (k) { return tile(k); }).join('') + '</div>' : ''; }).join('');
       if (ps._xp !== M.xp) { var px2 = ps._xp; ps._xp = M.xp; ps.scrollTop = 0; M.ps = 1;   /* Zale, Nov 22: a new experience always opens half, so the map shows it lit */ ps.classList.remove('pkpl-xf'); void ps.offsetWidth; if (px2 !== undefined && !calm()) ps.classList.add('pkpl-xf'); var xr = $('.pkpl-xb', M.el), xs = M.xp && xr && $('.pkpl-xe[data-xp="' + M.xp + '"]', xr); if (xs) { var cx = xs.offsetLeft + xs.offsetWidth / 2 - xr.clientWidth / 2; if (xs.offsetLeft < xr.scrollLeft + 8 || xs.offsetLeft + xs.offsetWidth > xr.scrollLeft + xr.clientWidth - 8) xr.scrollTo({ left: Math.max(0, cx), behavior: calm() ? 'auto' : 'smooth' }); } }   /* the picked button is never half off the edge (Site Build, Nov 22) */
-      var qq2 = $('.pkpl-psq', M.el); if (qq2) qq2.classList.add('pkpl-psq0');   /* the question line is dropped: arrival's title asks it, and after a pick the pressed button answers it */
+      var qq2 = $('.pkpl-psq', M.el); if (qq2) { qq2.classList.toggle('pkpl-psq0', !!M.xp); qq2.textContent = M.xp ? '' : (M0W.ask || 'What do you want to do?'); }   /* the question line is dropped: arrival's title asks it, and after a pick the pressed button answers it */
       psPlace(); var xr3 = $('.pkpl-xb', M.el); if (xr3 && !xr3._end) { xr3._end = 1; xr3.addEventListener('scroll', xbEnd, { passive: true }); } setTimeout(xbEnd, 400);
     } else { var ps0 = $('.pkpl-ps', M.el); if (ps0) ps0.style.height = ''; var xb0 = $('.pkpl-xb', M.el); if (xb0) xb0.style.bottom = ''; }
     var ab = $('.pkpl-ab', t);   /* Architecture: what it is and how to build with us (Zale, Nov 19: it's how sponsors find us) */
