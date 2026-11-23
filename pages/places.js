@@ -692,9 +692,9 @@
       (has ? '<section class="pkpl-sc" aria-label="Schedule at ' + esc(h.n) + '"><div class="pkpl-days" role="group" aria-label="Day">' + days.map(function (d) { return '<button type="button" class="pk-cta sec pkpl-chip" data-pk="day" data-d="' + d + '"' + (d === TOP.day ? ' aria-pressed="true"' : ' aria-pressed="false"') + '>' + esc(dayN[d] || d.slice(5)) + '</button>'; }).join('') + '</div>' +
         '<ol class="pkpl-sets">' + rows.slice(0, showN).map(function (s) { var A = (D.artists || {})[s.a] || {}; return '<li><span class="pkpl-st">' + tm(s.s) + '</span><span class="pkpl-sa"><b>' + esc(A.n || s.a) + '</b><small>' + esc(LBL[s.l] || '') + '</small></span></li>'; }).join('') + '</ol>' +
         (rows.length > 3 ? '<button type="button" class="pk-cta sec pkpl-whole" data-pk="whole" aria-expanded="' + TOP.all + '">' + (TOP.all ? 'Show less' : 'Whole day at ' + esc(h.n)) + '</button>' : '') + '</section>' : '') +
-      whatIs(h, has) +   /* Zale, Nov 22 (mission review): lead with what the place is now */
+      '<h2 class="pkpl-grp">' + esc(M0W.grpVisit || 'Your visit') + '</h2>' + whatIs(h, has) +   /* Zale, Nov 22 (mission review): lead with what the place is now */
       soon(k, XE, h, has) + vids(k, XE) +
-      alsoAt(k, XE, h) + yearIs(h) + '<div class="pkpl-credw"><div class="pkpl-cred"></div></div>' +   /* the last build is history, next to who built it */
+      alsoAt(k, XE, h) + '<h2 class="pkpl-grp">' + esc(M0W.grpStory || 'The story') + '</h2>' + yearIs(h) + '<div class="pkpl-credw"><div class="pkpl-cred"></div></div>' +   /* the last build is history, next to who built it */
       '</div>';
     setTimeout(railArrows, 400);
     el.innerHTML = html; (function () { var tt = $('.pkpl-hi .pkpl-tt', el), a1 = $('.pkpl-what .pkpl-ab1', el) || $('.pkpl-yr .pkpl-ab1', el); if (tt && a1 && tt.textContent.trim() === a1.textContent.trim()) a1.remove(); })();   /* never the same line twice (Architecture shows the hook on the photo) */ var cr9 = $('.pkpl-cred', el), cw9 = $('.pkpl-credw', el); if (cr9 && cw9) cw9.appendChild(cr9);   /* Nov 22 review: who built it comes after what's here */
@@ -746,7 +746,7 @@
   function whatIs(h, has) { var t = ddOf(h) || (Array.isArray(h.d) ? h.d.join(' ') : (h.d || '')), hk = has ? '' : (hookOf(h) || ''); if (!t && !hk) return '';
     var body = !t ? '' : t.length < 260 ? '<p class="pkpl-wt">' + esc(t) + '</p>' : '<div class="pkpl-more"><p>' + esc(t) + '</p><button type="button" class="pkpl-rm" data-pk="rm" aria-expanded="false">Keep reading</button></div>';   /* a short description shows whole */
     return '<div class="pkpl-what"><p class="pkpl-sk">' + esc((M0W.aboutKicker || 'About {place}').replace('{place}', h.n)) + '</p>' + (hk ? '<p class="pkpl-ab1">' + esc(hk) + '</p>' : '') + body + '</div>'; }
-  function amOf(k) { return (MI || []).filter(function (z) { return z[3] === k; }).map(function (z) { return z[0]; }).filter(function (x, i, a) { return a.indexOf(x) === i && x !== 'tent' && x !== 'gear'; }); }
+  function amAt(k) { return (MI || []).filter(function (z) { return z[3] === k; }).map(function (z) { return z[0]; }).filter(function (x, i, a) { return a.indexOf(x) === i && x !== 'tent' && x !== 'gear'; }); }
   function quick(k, h, hasVid, hasYr) {   /* Zale, Nov 23: quick links on the photo, most useful first: Schedule (Now playing at the festival, later), Watch, Who built it */
     var Q = ['<button type="button" class="pkpl-q" data-pk="q" data-to="soon"><span>Schedule</span></button>'];
     if (hasVid) Q.push('<button type="button" class="pkpl-q" data-pk="q" data-to="vids"><span class="pkpl-qp" aria-hidden="true"></span><span>Watch</span></button>');
@@ -763,7 +763,7 @@
     else if (XE && XE !== 'Architecture' && (musicy || !kinds.length)) what = ({ DJs: 'DJ sets', Comedy: 'comedy', Literary: 'readings and storytelling', Food: 'food and drink', Drinks: 'drinks' })[XE] || lc(XE);
     else if (musicy) what = 'music from legends, discoveries and deep cuts';
     else what = kinds.slice(0, 4).map(lc).join(', ').replace(/, ([^,]*)$/, ' and $1') || (XE ? lc(XE) : 'programming');
-    var am = amOf(k);
+    var am = amAt(k);
     return '<section class="pkpl-soon" aria-label="2027 at ' + esc(h.n) + '"><p class="pkpl-sk">Schedule</p><h2>2027 at ' + esc(h.n) + '</h2><p>' + esc(M0W.soonLine ? M0W.soonLine.replace('{What}', what.charAt(0).toUpperCase() + what.slice(1)).replace('{place}', h.n) : 'Four days of ' + what + ' at ' + h.n + ', Thursday to Sunday, August 5 to 8. The full schedule posts with the 2027 lineup.') + '</p>' +
       (am.length ? '<div class="pkpl-sam">' + am.map(function (x) { return '<span><i class="pkpl-fi">' + amGlyph(x) + '</i>' + esc(AMN[x] || x) + '</span>'; }).join('') + '</div>' : '') + '</section>';
   }
