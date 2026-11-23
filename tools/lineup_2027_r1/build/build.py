@@ -624,6 +624,22 @@ with open(ROOT + 'home_top_discoveries.csv', 'w', newline='', encoding='utf-8') 
     _w = csv.writer(_f); _w.writerow(['rank', 'act', 'first_year', 'magnitude_dec', 'clip_url', 'tags'])
     for _i, r in enumerate(_rows, 1): _w.writerow([_i, r[1], r[2], r[0], r[3], r[4]])
 
+# r47 (Zale, Nov 22: "one mixed feed"): the Archive opens on All, every class mixed, biggest today first (class table magnitude_dec);
+# an act held in two classes shows once under All (its bigger card); Discoveries / Legends / Deep cuts stay as filters, each by magnitude too
+_magall = {}
+for _r in csv.DictReader(open(ROOT + 'class_table_v163.csv', encoding='utf-8')):
+    if _r.get('site_row') != 'yes': continue
+    try: _mv = float(_r.get('magnitude_dec') or 0)
+    except ValueError: continue
+    for _nm in {_r.get('lineup_act') or '', _r['act']}:
+        if _nm: _magall[(_canon(_nm), _r['year'])] = max(_mv, _magall.get((_canon(_nm), _r['year']), 0))
+def _mg(x): return _magall.get((_canon(x[0]), str(x[1])), 0)
+for _lst in (disc, leg, deep): _lst.sort(key=lambda x: (-_mg(x), x[0]))
+ARCH_ALL, _seen = [], set()
+for k, x in sorted([('disc', x) for x in disc] + [('leg', x) for x in leg] + [('deep', x) for x in deep], key=lambda t: (-_mg(t[1]), {'disc': 0, 'leg': 1, 'deep': 2}[t[0]], t[1][0])):
+    if _canon(x[0]) in _seen: continue
+    _seen.add(_canon(x[0])); ARCH_ALL.append((k,) + tuple(x))
+print('archive All: %d cards (%d acts in two classes shown once)' % (len(ARCH_ALL), len(disc) + len(leg) + len(deep) - len(ARCH_ALL)))
 bars = [(1, [58, 34]), (1, [70]), (2, [40, 44]), (2, [30, 26, 30]), (3, [22, 28, 20, 18]), (3, [18, 24, 16, 26]), (4, [14, 18, 12, 16, 14]), (4, [12, 16, 18, 12, 10])]
 barh = ''.join('<div class="br b%d">%s</div>' % (lv, ''.join('<i style="width:%d%%"></i>' % w for w in ws)) for lv, ws in bars)
 s1 = header('Lineup', 'Aug 5–8, 2027', back=False, chip='2027')
@@ -638,13 +654,14 @@ s1 += ('<section class="p27"><div class="stripe"><i style="background:#F2CF62"><
        '<p class="p27-c">The 2027 poster · names go here</p></div>'
        '<div class="stripe"><i style="background:#F2CF62"></i><i style="background:#86526B"></i><i style="background:#E3B5CF"></i><i style="background:#F2EDE3"></i></div></section>') % barh
 s1 += ('<section class="arch"><p class="kick">While you wait</p><h2>Wait, they played here?</h2><p class="sub">They played the farm in small rooms. Look how big they got.</p>'
-       '<div class="bkw"><div class="bk"><button class="bkb on" data-b="disc"><span>Discoveries</span><b>@ND</b></button><button class="bkb" data-b="leg"><span>Legends</span><b>@NL</b></button><button class="bkb" data-b="deep"><span>Deep cuts</span><b>@NP</b></button></div>%s</div>'
-       '<div class="grid2 bl" data-b="disc">%s</div><div class="grid2 bl" data-b="leg" hidden>%s</div><div class="grid2 bl" data-b="deep" hidden>%s</div>'
+       '<div class="bkw"><div class="bk"><button class="bkb on" data-b="all"><span>All</span><b>@NA</b></button><button class="bkb" data-b="disc"><span>Discoveries</span><b>@ND</b></button><button class="bkb" data-b="leg"><span>Legends</span><b>@NL</b></button><button class="bkb" data-b="deep"><span>Deep cuts</span><b>@NP</b></button></div>%s</div>'
+       '<div class="grid2 bl" data-b="all">%s</div><div class="grid2 bl" data-b="disc" hidden>%s</div><div class="grid2 bl" data-b="leg" hidden>%s</div><div class="grid2 bl" data-b="deep" hidden>%s</div>'
        '<button class="btn line wide more">Keep going</button></section>') % (gpick('.arch .card', 'What kind of music do you love?', GLIST).replace('class="gp"', 'class="gp gpc"'),
+       ''.join(vcard(n, y, k, g, p, pos) for k, n, y, g, p, pos in ARCH_ALL),
        ''.join(vcard(n, y, 'disc', g, p, pos) for n, y, g, p, pos in disc),
        ''.join(vcard(n, y, 'leg', g, p, pos) for n, y, g, p, pos in leg),
        ''.join(vcard(n, y, 'deep', g, p, pos) for n, y, g, p, pos in deep))
-s1 = s1.replace('@ND', str(len(disc))).replace('@NL', str(len(leg))).replace('@NP', str(len(deep)))
+s1 = s1.replace('@NA', str(len(ARCH_ALL))).replace('@ND', str(len(disc))).replace('@NL', str(len(leg))).replace('@NP', str(len(deep)))
 
 P24 = d['yearBrand']['2024']
 # ---------- SCREEN 3: Geese ----------
