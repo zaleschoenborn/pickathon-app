@@ -643,6 +643,7 @@ print('archive All: %d cards (%d acts in two classes shown once)' % (len(ARCH_AL
 bars = [(1, [58, 34]), (1, [70]), (2, [40, 44]), (2, [30, 26, 30]), (3, [22, 28, 20, 18]), (3, [18, 24, 16, 26]), (4, [14, 18, 12, 16, 14]), (4, [12, 16, 18, 12, 10])]
 barh = ''.join('<div class="br b%d">%s</div>' % (lv, ''.join('<i style="width:%d%%"></i>' % w for w in ws)) for lv, ws in bars)
 s1 = header('Lineup', 'Aug 5–8, 2027', back=False, chip='2027')
+s1 += '<div class="yrtop">'
 s1 += ('<section class="hero h27"><img src="%s" alt="" style="object-position:74%% 50%%"><div class="hero-sc"></div>'
        '<div class="hero-tx"><p class="kick">The 2027 lineup · not out yet</p><h1>The names<br>come later.</h1>'
        '<p class="hero-sub">60+ acts on hand-built stages, most playing twice. Be first to hear who.</p>'
@@ -653,6 +654,7 @@ s1 += ('<section class="p27"><div class="stripe"><i style="background:#F2CF62"><
        '<p class="p27-d">August 5–8 · Pendarvis Farm</p><div class="p27-bill" role="img" aria-label="The 2027 poster, names not yet announced">%s</div>'
        '<p class="p27-c">The 2027 poster · names go here</p></div>'
        '<div class="stripe"><i style="background:#F2CF62"></i><i style="background:#86526B"></i><i style="background:#E3B5CF"></i><i style="background:#F2EDE3"></i></div></section>') % barh
+s1 += '</div>'
 s1 += ('<section class="arch"><p class="kick">While you wait</p><h2>Wait, they played here?</h2><p class="sub">They played the farm in small rooms. Look how big they got.</p>'
        # r48 (Zale, Nov 22: one question only): no class tabs; the class word stays on each card; one mixed feed, biggest today first
        '<div class="bkw one"><div class="bk" hidden><button class="bkb on" data-b="all"></button></div>%s</div>'
@@ -768,11 +770,12 @@ def year_page(y):
         p = ph(a) or rp or ARCHF.get((_canon(a['n']), y), '')
         clip = o.get('v') or archive_clip(a['n'], y)
         if not p or 'poster' in p or not clip: continue  # every frame plays a song (Zale: 'we go to different videos if we can't find them')
-        sl.append({'i': img(p, 1100, 80), 'raw': p, 'n': a['n'], 'k': KLAB[a['k']], 'g': gp_a(a), 'l': o.get('l', ''), 'clip': clip, 'sg': ''})
+        sl.append({'i': img(p, 1100, 80), 'raw': p, 'pos': fpos(p, FOC), 'n': a['n'], 'k': KLAB[a['k']], 'g': gp_a(a), 'l': o.get('l', ''), 'clip': clip, 'sg': ''})
         if len(sl) == 10: break
     if not sl and hero:
         sl = [{'i': img(hero[0], 1100, 80), 'raw': hero[0], 'n': hero[1], 'k': hero[2], 'g': hero[3], 'l': hero[4], 'clip': hero[6], 'sg': ''}]
     YREEL[y] = sl
+    _top = len(h)  # r49: hero + poster share one band (side by side on desktop)
     if sl: hero = hero or (sl[0]['raw'],)
     if hero:
         if sl:
@@ -781,7 +784,7 @@ def year_page(y):
             sattr = ' data-slides="%s"' % html.escape(json.dumps(sl), quote=True)
             h += ('<section class="hero hyr reel"%s><img src="%s" alt="" style="object-position:%s" data-clip="%s"><div class="hero-sc"></div><div class="segs">%s</div><span class="hyr-y">%s</span>%s'
                   '<div class="hero-tx"><p class="krow"><span class="k k-%s">%s</span><span class="g">%s</span></p><h1 class="act%s">%s</h1>%s</div></section>') % (
-                  sattr, sl[0]['i'], fpos(sl[0]['raw'], FOCH), E(sl[0]['clip']), segs, y, clip_ring(sl[0]['clip'], 'lg'),
+                  sattr, sl[0]['i'], sl[0].get('pos') or fpos(sl[0]['raw'], FOC), E(sl[0]['clip']), segs, y, clip_ring(sl[0]['clip'], 'lg'),
                   kc, E(sl[0]['k']), E(sl[0]['g']), ' sm' if len(sl[0]['n']) > 12 else '', E(sl[0]['n']), ('<p class="hero-sub">%s</p>' % E(sl[0]['l'])) if sl[0]['l'] else '')
         else:
             h += ('<section class="hero hyr"><img src="%s" alt="" style="object-position:%s"><div class="hero-sc"></div><div class="segs">%s</div><span class="hyr-y">%s</span>%s'
@@ -795,9 +798,14 @@ def year_page(y):
     # r45 (Zale, Nov 22): the booking view is ordered and sized by AT-FESTIVAL magnitude (class table at_festival_magnitude_dec) from 2009 on; earlier years keep the printed poster order
     then_list = sorted(music, key=lambda x: -(x.get('mb') if x.get('mb') is not None else -1)) if (ranked and int(y) >= 2009) else music
     h += poster_block(P, badge, y, then_list, today_all, len(music), joined=bool(hero), ranked=ranked)
+    h = h[:_top] + '<div class="yrtop">' + h[_top:] + '</div>'
     if st.get('headline'):
         h += ('<section class="story short"><p class="kick">The %s story</p><p class="lead">%s.</p>%s</section>') % (y, E(st['headline'].rstrip('.')), ('<p class="body" hidden>%s</p><button class="chip stog" aria-expanded="false" data-open="Read the %s story" data-shut="Show less"><span>Read the %s story</span> %s</button>' % (E(st['story']), y, y, ICON['caret'])) if st.get('story') else '')
     lp = ''  # Nov 21 r27 (Zale): the lineup picker is off until the other lineups (Family, DJs, Comedy...) are drawn; it listed them with nothing behind them
+    # r49 (Zale, Nov 22): the music question comes first, before "Begin here", and filters both Begin here and everyone below
+    _gall = gopts([x for x in music if x.get('g')])
+    if len(_gall) >= 3:
+        h += '<section class="ypick">%s</section>' % gpick('#y%s .topten .card, %s' % (y, '#y%s .mini' % y if True else ''), opts=['Everything'] + _gall).replace(", #y%s .mini" % y, ", #y%s .mini, #y%s .rest .row" % (y, y))
     if ten:
         h += ('<section class="topten">%s<h2 class="h-big">Begin here</h2><p class="sub k2">%s ways into Pickathon %s.</p><div class="grid2%s">%s</div></section>') % (
               lp, NUM.get(len(ten), str(len(ten))), y, '' if any(ph(a) for a in ten) else ' flat', ''.join(tile(a, y, P, ph(a)) for a in ten))
@@ -820,7 +828,7 @@ def year_page(y):
         gs = gopts([x for x in others if x.get('g')])
         body = '<div class="rows">%s</div>' % ''.join('<a class="row" data-g="%s" data-art="%s" data-an="%s" href="#"><b>%s</b><span>%s</span></a>' % (E(gall_a(x)), _aslug(x['n']), E(x['n']), E(x['n']), E(' · '.join(t for t in (KLAB.get(x.get('k'), ''), gp_a(x)) if t))) for x in others)
     if others:
-        h += '<section class="rest"><h2 class="h-big">Keep wandering</h2>%s%s</section>' % (gpick(sel, opts=['Everything'] + gs) if len(gs) >= 3 else '', body)
+        h += '<section class="rest"><h2 class="h-big">Keep wandering</h2>%s</section>' % body
     h += ('<section class="years"><p class="kick">See other years</p><div class="swipe yrs"><a class="yr" data-go="s1" href="#">2027</a>%s</div></section>') % ''.join(
          ('<span class="yr off">2020–21 · no festival</span>' if x == '2019' else '') + '<a class="yr%s" data-go="y%s" href="#">%s</a>' % (' on' if x == y else '', x, x) for x in YEARS)
     return h

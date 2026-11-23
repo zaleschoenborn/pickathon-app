@@ -33,7 +33,7 @@
     var KC = { Discovery: 'disc', Legend: 'leg', 'Deep cut': 'deep' };
     function go(n) {
       i = (n + S.length) % S.length; var f = S[i];
-      ph.src = f.i; ph.setAttribute('data-clip', f.clip || ''); if (!f.clip) ph.removeAttribute('data-clip');
+      ph.src = f.i; if (f.pos) ph.style.objectPosition = f.pos; ph.setAttribute('data-clip', f.clip || ''); if (!f.clip) ph.removeAttribute('data-clip');
       var k = hero.querySelector('.krow .k'), g = hero.querySelector('.krow .g'), h1 = hero.querySelector('h1'), sub = hero.querySelector('.hero-sub'), ring = hero.querySelector('.ring');
       if (k) { k.textContent = f.k; k.className = 'k k-' + (KC[f.k] || 'none'); } if (g) g.textContent = f.g;
       if (h1) { h1.textContent = f.n; h1.classList.toggle('sm', f.n.length > 12); }
@@ -163,10 +163,10 @@
   });
   // r30: "See everyone" opens the rest of the year's acts; picking a kind of music shows every match
   document.querySelectorAll('section.rest').forEach(function (rest) {
-    var minis = rest.querySelector('.minis'), evy = rest.querySelector('.evy'), gp = rest.querySelector('.gp'); if (!minis) return;
+    var main_ = rest.closest('main') || document, minis = rest.querySelector('.minis'), evy = rest.querySelector('.evy'), gp = main_.querySelector('.ypick .gp') || rest.querySelector('.gp'); if (!minis) return;
     function sync() { var f = !!(gp && gp.classList.contains('set')); minis.classList.toggle('filt', f); if (evy) evy.hidden = f || minis.classList.contains('open'); }
     if (evy) evy.addEventListener('click', function () { minis.classList.add('open'); sync(); });
-    rest.addEventListener('lxfilter', sync);
+    main_.addEventListener('lxfilter', sync);
   });
   // r31: inside the live app the ring must win over the card's own link (the app plays it with its own player)
   document.querySelectorAll('a [data-clip]').forEach(function (r) {
