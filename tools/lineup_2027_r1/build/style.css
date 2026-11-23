@@ -980,3 +980,12 @@ h2{font-family:var(--display);font-weight:400;font-size:27px;line-height:1.14;le
   .yrtop.framed>.poster>.stripe{display:none}
   .yrtop.framed .poster.joined .po-badge{margin-top:0}
 }
+
+/* r68: the year chooser lives in the header title; the separate band shows only where the header is not drawn (inside the live app until Site Build folds it in) */
+main.screen:has(.hd .hd-yr) .yrbar{display:none}
+.hd-yr{display:flex;flex-direction:column;align-items:flex-start;background:none;border:0;padding:4px 10px 4px 0;margin:0;color:inherit;font:inherit;cursor:pointer;min-height:44px;justify-content:center;text-align:left}
+.hd-yr i{display:inline-flex;align-items:center;gap:5px;font-style:normal;color:var(--gold,#D6B54A);font-family:var(--display);font-size:20px;letter-spacing:.04em;line-height:1}
+.hd-yr i svg{width:13px;height:13px}
+.hd-yr b{font-size:11px;letter-spacing:.14em;text-transform:uppercase;line-height:1.2}
+.hd-yr:focus-visible{outline:2px solid var(--gold,#D6B54A);outline-offset:2px}
+@media (max-width:999px){main.screen:has(.hd .hd-yr) .hd{position:sticky;top:0;z-index:60}}

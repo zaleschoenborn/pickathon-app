@@ -386,8 +386,10 @@ def header(title, sub, back=True, chip=None):
         # r59 (Zale, Nov 22 20:20): the gold button opens a wall of year logos; tap a logo to go to that year (one chooser everywhere)
         bar = ('<div class="yrbar"><button type="button" class="yrchip ywopen" aria-expanded="false" aria-label="Lineup %s. Choose another year">'
                '<span class="yc-k">Lineup</span><b class="yc-y">%s</b><span class="yc-a" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M4 1.5l5 4.5-5 4.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>'
-               '%s</div>') % (chip, chip, year_wall(chip))
-        t = '<span class="hd-t"><b>Lineup</b><i>%s</i></span>' % chip
+               '</div>%s') % (chip, chip, year_wall(chip))
+        # r68 (Zale, Nov 22 21:22): the header title IS the year chooser; tap "Lineup 2013" to open the wall of year logos
+        t = ('<button type="button" class="hd-t hd-yr ywopen" aria-expanded="false" aria-label="Lineup %s. Choose another year"><b>Lineup</b><i>%s'
+             '<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 4.5l3.5 3.5 3.5-3.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></i></button>') % (chip, chip)
     else:
         bar = ''
     return ('<header class="hd">%s<img class="hd-logo" src="%s" alt="Pickathon 2027"><span class="hd-rule"></span>%s'
