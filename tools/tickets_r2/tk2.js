@@ -598,7 +598,7 @@
   function entryHTML() {
     var cold = isCold(), H = (site().data || {}).hoods || {}, camp = H.lushcamp && (H.lushcamp.hi || H.lushcamp.i) || 'i/r3-hood-lushcamp.jpg';
     return '<section class="tk-e tk-e3' + (cold ? ' tk-e3-cold' : '') + '" id="tk-entry" aria-label="Pickathon ' + YEAR + ' tickets"><div class="tk-e3-in">' +
-      '<div class="tk-e3-hook">' + (cold ? '<div class="tk-x" id="tk-x" hidden></div>' : '<div class="tk-e3-ph"><img src="' + esc(camp) + '" alt="Friends with guitars at their camp under the firs" fetchpriority="high"></div>') + '</div>' +
+      '<div class="tk-e3-hook">' + (cold ? '<div class="tk-x" id="tk-x" hidden></div>' : '<div class="tk-e3-ph"><img src="' + esc(camp) + '" alt="Friends with guitars at their camp under the firs" fetchpriority="high"></div>' + '<p class="tk-e3-wl"><button type="button" class="tk-tlink" data-act="x-open">What’s it like? →</button></p>') + '</div>' +
       '<div class="tk-e3-buy">' +
         '<p class="tk-e3-sale">' + headline() + '</p>' +
         '<div class="tk-e-vet" id="tk-e-vet"></div>' +
@@ -680,6 +680,7 @@
     if (act === 'x-pick') { xpPick(b.getAttribute('data-v')); xDraw(); return true; }
     if (act === 'x-play') { var xa = xBands()[+b.getAttribute('data-i')]; if (xa && xa.vu && window.__pkPlayVid) { try { window.__pkPlayVid(xa.vu, xa.n + ' · Pickathon ' + xa.y); } catch (x) {} } return true; }
     if (act === 'x-tour') { var xp = xPlaces(XCUR)[+b.getAttribute('data-i')], AT = app(); if (xp && AT && AT.ssOpen) { try { AT.ssOpen(xp.k); } catch (x) {} } return true; }
+    if (act === 'x-open') { var hk = $('.tk-e3-hook', root); if (hk) { hk.innerHTML = '<div class="tk-x" id="tk-x" hidden></div>'; xDraw(); var xb = $('#tk-x', root); if (xb) { try { xb.scrollIntoView({ block: 'start', behavior: 'smooth' }); } catch (x) {} } } return true; }
     if (act === 'x-lineup') { var AL = app(); if (AL) AL.go('lineup'); return true; }
     if (act === 'e-why') { var AW = app(); if (AW) AW.go('home'); return true; }
     if (act === 'e-tile') { eTile(b.getAttribute('data-t')); return true; }

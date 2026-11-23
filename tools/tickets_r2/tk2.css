@@ -864,3 +864,8 @@ body:has(#tk2 #tk-bar:not([hidden])) #pk-toast,body:has(#pk-co) #pk-toast{displa
 .tk2 .tk-x-row>li:only-child{width:100%;max-width:560px}
 
 #tk2 .tk-x-tag{font-family:inherit;font-size:13px;letter-spacing:.06em;font-weight:700;color:var(--cream-dim);text-transform:lowercase}
+
+/* warm visitors: a small way into the experience picker (Zale, Nov 23) */
+.tk2 .tk-e3-wl{padding:0 var(--gutter);margin:6px 0 0}
+#tk2 .tk-e3-wl .tk-tlink{min-height:44px;color:var(--gold,#F2CF62);font-weight:800}
+@media (min-width:1025px){.tk2 .tk-e3-wl{padding:0}}
