@@ -938,3 +938,12 @@ h2{font-family:var(--display);font-weight:400;font-size:27px;line-height:1.14;le
 }
 
 @media (min-width:1000px){.yrtop.framed.litp .po-art .po-badge{filter:none}.yrtop.framed.litp .poster::after{mix-blend-mode:multiply;opacity:.1}}
+/* r65 (Zale, Nov 22 20:58, picked A): on phone the year's horizon sits as a cap above the reel (video keeps full width and height);
+   the horizon between the reel and the poster goes, so the art lives only at the top, like desktop */
+@media (max-width:999px){
+  .yrtop.framed>.yrcrown{display:block;position:relative;height:52px;margin:0}
+  .yrtop.framed>.yrcrown>.seam,.yrtop.framed>.yrcrown>svg.cloud{position:absolute;left:0;right:0;bottom:0;height:52px;width:100%;--sc:.62}
+  .yrtop.framed>.yrcrown .sm-g path,.yrtop.framed>.yrcrown svg.cloud path:last-child{fill:var(--mat)}
+  .yrtop.framed>.hero{border-top:6px solid var(--mat)}
+  .yrtop.framed .poster.joined>.seam,.yrtop.framed .poster.joined>svg.cloud{display:none}
+}
