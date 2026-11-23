@@ -763,6 +763,7 @@ def _rline(n, y, k):  # r50: the reel frame carries Copy Review's three-line car
         v = _ALINES.get('%s|%s|%s' % (kk, sl_, y))
         if v: return v
     return ''
+EARLY_ART = {y_: 'ext/art/y%s-art-centre.png' % y_[2:] for y_ in ['2004'] if os.path.exists(ROOT + 'ext/art/y%s-art-centre.png' % y_[2:])}
 def year_page(y):
     P = d['yearBrand'][y]; st = d['yearStory'].get(y, {}); yp = d['yearPhotos'].get(y, {})
     allb = d['yearBill'][y]
@@ -818,12 +819,16 @@ def year_page(y):
                   kc, E(hero[2]), E(hero[3]), ' sm' if len(hero[1]) > 12 else '', E(hero[1]), ('<p class="hero-sub">%s</p>' % E(hero[4])) if hero[4] else '')
     if y == '2024':
         badge = img('i/y24-badge-keyline.png', 460, fmt='PNG')
+    elif y in EARLY_ART:
+        badge = img(EARLY_ART[y], 460, fmt='PNG')  # r56: Artwork's approved 2000-2006 piece (artwork-46)
     else:
         badge = img(d['yearLogo'][y], 460, fmt='PNG')
     # r45 (Zale, Nov 22): the booking view is ordered and sized by AT-FESTIVAL magnitude (class table at_festival_magnitude_dec) from 2009 on; earlier years keep the printed poster order
     then_list = sorted(music, key=lambda x: -(x.get('mb') if x.get('mb') is not None else -1)) if (ranked and int(y) >= 2009) else music
     h += poster_block(P, badge, y, then_list, today_all, len(music), joined=bool(hero), ranked=ranked)
-    h = h[:_top] + '<div class="yrtop">' + h[_top:] + '</div>'
+    # r56 (Zale, Nov 22): paper frame. The year's own art runs along the top (desktop), and the poster paper wraps photo and poster like a printed poster with a photo window
+    _crown = ('<div class="yrcrown" aria-hidden="true">%s</div>' % seam(y, P)) if hero else ''
+    h = h[:_top] + '<div class="yrtop framed" style="--paper:%s;--ink:%s">%s' % (P['paper'], P['ink'], _crown) + h[_top:] + '</div>'
     if st.get('headline'):
         h += ('<section class="story short"><p class="kick">The %s story</p><p class="lead">%s.</p>%s</section>') % (y, E(st['headline'].rstrip('.')), ('<p class="body" hidden>%s</p><button class="chip stog" aria-expanded="false" data-open="Read the %s story" data-shut="Show less"><span>Read the %s story</span> %s</button>' % (E(st['story']), y, y, ICON['caret'])) if st.get('story') else '')
     lp = ''  # Nov 21 r27 (Zale): the lineup picker is off until the other lineups (Family, DJs, Comedy...) are drawn; it listed them with nothing behind them

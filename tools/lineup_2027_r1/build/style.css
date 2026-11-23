@@ -769,3 +769,21 @@ h2{font-family:var(--display);font-weight:400;font-size:27px;line-height:1.14;le
   .arch .card .cline{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;font-size:17px;line-height:1.35;letter-spacing:0;text-transform:none;font-family:var(--text);font-weight:500;color:var(--cream);margin-top:8px;max-width:34ch}
   .arch .card .cname{font-size:28px}
 }
+
+/* r56 (Zale, Nov 22): paper frame on desktop. The year's art crowns the top; the poster paper mats the photo like a window in a printed poster */
+.yrcrown{display:none}
+@media (min-width:1000px){
+  .yrtop.framed{position:relative;padding:0 28px 28px;background:linear-gradient(to bottom,transparent 0 76px,var(--paper) 76px);grid-template-rows:auto 1fr}
+  .yrtop.framed>.yrcrown{display:block;grid-column:1/-1;height:96px;margin:0 -28px;position:relative}
+  .yrtop.framed>.yrcrown>.seam,.yrtop.framed>.yrcrown>svg.cloud{position:absolute;left:0;right:0;bottom:0;height:96px;width:100%;--sc:.95}
+  .yrtop.framed>.yrcrown svg.cloud{display:block}
+  .yrtop.framed>.hero{min-height:620px;border:3px solid var(--ink);border-radius:4px;overflow:hidden}
+  .yrtop.framed .poster{background:transparent}
+  .yrtop.framed .poster .po-in{padding-top:8px}
+}
+@media (min-width:1000px){
+  .yrtop.framed{background:linear-gradient(to bottom,transparent 0 58px,var(--paper) 58px)}
+  .yrtop.framed>.yrcrown{height:74px}
+  .yrtop.framed>.yrcrown>.seam,.yrtop.framed>.yrcrown>svg.cloud{height:74px}
+  .yrtop.framed .poster>svg.cloud{display:none}
+}
