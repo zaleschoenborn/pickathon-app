@@ -1029,3 +1029,5 @@ main[id^="a-"] .liner .sets{border-left-color:var(--acc)}
 .at-i .yw-l img{max-height:64px}
 .at-i b{font-size:17px}
 @media (min-width:1000px){.at-g{grid-template-columns:repeat(auto-fill,minmax(120px,1fr))}.at-i .yw-l{height:84px}.at-i .yw-l img{max-height:84px}}
+/* r72 (Zale, Nov 22 21:53): the artist hero fades only enough to read the name, like Home and the year reels; no full fade to the page */
+main[id^="a-"] .hact .hero-sc{background:linear-gradient(180deg,rgba(20,16,17,.22) 0,rgba(20,16,17,0) 20%,rgba(20,16,17,0) 50%,rgba(20,16,17,.55) 76%,rgba(20,16,17,.74) 100%)}
