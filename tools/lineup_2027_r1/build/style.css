@@ -952,3 +952,31 @@ h2{font-family:var(--display);font-weight:400;font-size:27px;line-height:1.14;le
 .liner.one .body{margin-top:14px}
 .liner.one .sets{margin-top:22px;padding-top:14px;border-top:1px solid var(--line2)}
 .liner.one .sets p:last-child{margin-top:6px;font-size:16px;line-height:1.5;color:var(--cream)}
+/* r67 (Zale, Nov 22 21:12), phone: the year chooser rides up top in a thin bar that stays on screen; no holiday strip on Lineup pages;
+   one thin line of the year's border above a tall reel; no dates box; the lineup panel matches desktop (frame color, poster-color panel,
+   sticker-edge logo, printed border) in one column */
+@media (max-width:999px){
+  main.screen:has(.yrbar) .sale{display:none}
+  .yrbar{position:sticky;top:0;z-index:60;padding:6px 12px;border-bottom:0}
+  .yrbar .yrchip{height:38px;padding:0 6px 0 10px}
+  .yrbar .yrchip .yc-y{font-size:21px}
+  .yrbar .yrchip .yc-k{font-size:10px}
+  .yrtop.framed>.yrcrown{height:20px;overflow:hidden}
+  .yrtop.framed>.yrcrown>.seam,.yrtop.framed>.yrcrown>svg.cloud{height:20px;--sc:.28}
+  .yrtop.framed>.yrcrown .sm-sun{display:none}
+  .yrtop.framed>.hero{border-top:0}
+  .yrtop>.hero.hyr{height:min(640px,calc(100svh - 150px))}
+  .yrtop .po-art .po-dates{display:none!important}
+  /* the panel */
+  .yrtop.framed>.poster{background:var(--mat)!important;padding:10px;margin:0!important}
+  .yrtop.framed>.poster .po-in{position:relative;isolation:isolate;background:var(--pnl);border-radius:2px;padding:30px 20px 28px;
+    box-shadow:inset 0 0 0 8px var(--s1),inset 0 0 0 11px var(--pnl),inset 0 0 0 13px var(--ink)}
+  .yrtop.framed>.poster .po-in::after{content:"";position:absolute;inset:14px;z-index:-1;background:var(--post) center 30%/cover no-repeat;opacity:.09;mix-blend-mode:multiply;pointer-events:none}
+  .yrtop.framed.dark>.poster{--paper:var(--dkp)!important;--ink:var(--dki)!important;--ink2:var(--dki2)!important}
+  .yrtop.framed.dark>.poster .po-in{box-shadow:inset 0 0 0 8px var(--s1),inset 0 0 0 11px var(--pnl),inset 0 0 0 13px var(--dki)}
+  .yrtop.framed.dark>.poster .po-in::after{mix-blend-mode:screen;opacity:.12}
+  .yrtop.framed.dark .po-art .po-badge{filter:drop-shadow(2px 0 0 var(--dki2)) drop-shadow(-2px 0 0 var(--dki2)) drop-shadow(0 2px 0 var(--dki2)) drop-shadow(0 -2px 0 var(--dki2))}
+  .yrtop.framed.litp .po-art .po-badge,.yrtop.framed .poster[data-yr="2006"] .po-badge{filter:none}
+  .yrtop.framed>.poster>.stripe{display:none}
+  .yrtop.framed .poster.joined .po-badge{margin-top:0}
+}
