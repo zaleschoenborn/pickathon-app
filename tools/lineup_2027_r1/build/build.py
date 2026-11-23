@@ -807,6 +807,11 @@ def _rline(n, y, k):  # r50: the reel frame carries Copy Review's three-line car
         v = _ALINES.get('%s|%s|%s' % (kk, sl_, y))
         if v: return v
     return ''
+def _postimg(y):
+    """r61 (Zale, Nov 22 20:23): the frame shows a close-up of that year's own poster art, washed in the frame color."""
+    for p_ in ('i/y%s-poster.webp' % y[2:], 'i/y%s-centre.webp' % y[2:]):
+        if os.path.exists(_src(p_)): return img(p_, 1400, 70)
+    return 'data:,'
 def _lum(c):
     r, g, b = (int(c[i:i+2], 16) / 255 for i in (1, 3, 5)); return .2126 * r + .7152 * g + .0722 * b
 def _mat(P):
@@ -891,17 +896,22 @@ def year_page(y):
     def _rl(c):
         v = [int(c[i:i+2], 16) / 255 for i in (1, 3, 5)]; v = [x / 12.92 if x <= .03928 else ((x + .055) / 1.055) ** 2.4 for x in v]
         return .2126 * v[0] + .7152 * v[1] + .0722 * v[2]
+    def _dist(a, b): return sum((int(a[i:i+2], 16) - int(b[i:i+2], 16)) ** 2 for i in (1, 3, 5)) ** .5
     def _cr(a, b): la, lb = sorted([_rl(a), _rl(b)]); return (lb + .05) / (la + .05)
     _txt = [c for c in (P['ink'], P.get('ink2'), P.get('band')) if c and len(c) == 7 and _cr(c, P['paper']) >= 4.5]
     _pnl = P['paper']
-    if _lum(P['paper']) > .82:  # r57: pale paper takes a wash of the year color, eased back until every text color keeps 4.5:1
+    # r61 (Zale, Nov 22 20:23: "too much white still"): the panel takes one of the poster's own colors when every text color still reads 4.5:1 on it
+    _bold = [c for c in [P.get('light'), P.get('warm')] + list(P.get('stripe', [])) if c and len(c) == 7 and _lum(c) < .9 and _dist(c, P['paper']) > 40 and all(_cr(x, c) >= 4.5 for x in _txt)]
+    if _bold:
+        import colorsys as _cs
+        _pnl = max(_bold, key=lambda c: _cs.rgb_to_hls(*[int(c[i:i+2], 16) / 255 for i in (1, 3, 5)])[2])
+    elif _lum(P['paper']) > .82:  # r57: pale paper takes a wash of the year color, eased back until every text color keeps 4.5:1
         for _t in (.14, .10, .07, .04):
             _c = _mix(P['paper'], _tint, _t)
             if all(_cr(x, _c) >= 4.5 for x in _txt): _pnl = _c; break
-    def _dist(a, b): return sum((int(a[i:i+2], 16) - int(b[i:i+2], 16)) ** 2 for i in (1, 3, 5)) ** .5
     _cand = [c for c in list(P.get('stripe', [])) + [P.get('light'), P.get('warm'), P['ink']] if c and len(c) == 7 and _dist(c, P['paper']) > 60]
     _band = max(_cand, key=lambda c: _dist(c, _tint)) if _cand else P['ink']  # r57: border band contrasts with the frame color
-    h = h[:_top] + '<div class="yrtop framed%s" style="--paper:%s;--ink:%s;--mat:%s;--s1:%s;--s2:%s;--s3:%s;--tint:%s;--pnl:%s">%s' % (' pale' if _pale else '', P['paper'], P['ink'], _mat(P), _band, _st[1], _st[2], _tint, _pnl, _crown) + h[_top:] + '</div>'
+    h = h[:_top] + '<div class="yrtop framed%s" style="--paper:%s;--ink:%s;--mat:%s;--s1:%s;--s2:%s;--s3:%s;--tint:%s;--pnl:%s;--post:url(%s)">%s' % (' pale' if _pale else '', P['paper'], P['ink'], _mat(P), _band, _st[1], _st[2], _tint, _pnl, _postimg(y), _crown) + h[_top:] + '</div>'
     if st.get('headline'):
         h += ('<section class="story short"><p class="kick">The %s story</p><p class="lead">%s.</p>%s</section>') % (y, E(st['headline'].rstrip('.')), ('<p class="body" hidden>%s</p><button class="chip stog" aria-expanded="false" data-open="Read the %s story" data-shut="Show less"><span>Read the %s story</span> %s</button>' % (E(st['story']), y, y, ICON['caret'])) if st.get('story') else '')
     lp = ''  # Nov 21 r27 (Zale): the lineup picker is off until the other lineups (Family, DJs, Comedy...) are drawn; it listed them with nothing behind them

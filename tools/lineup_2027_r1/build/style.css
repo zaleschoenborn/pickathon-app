@@ -883,3 +883,30 @@ h2{font-family:var(--display);font-weight:400;font-size:27px;line-height:1.14;le
   .yrtop.framed.f27 .p27-in{padding:48px 56px}
   .yrtop.framed.f27>.hero{box-shadow:0 0 0 3px var(--paper),0 0 0 5px var(--ink)}
 }
+
+/* r61 (Zale, Nov 22 20:23) */
+@media (min-width:1000px){
+  /* the frame carries the year's poster art, washed in the frame color */
+  .yrtop.framed{isolation:isolate}
+  .yrtop.framed::before{content:"";position:absolute;left:0;right:0;top:58px;bottom:0;z-index:-1;background:var(--post) center 30%/cover no-repeat;opacity:.38;mix-blend-mode:luminosity;pointer-events:none}
+  .yrtop.framed{background:linear-gradient(to bottom,transparent 0 58px,var(--mat) 58px)}
+  /* "This is the lineup in" sits under the year buttons, right above the names, and is bigger */
+  .yrtop .poster .po-ctl{grid-column:2;grid-row:1;margin-top:4px}
+  .yrtop .poster .po-cap{grid-column:2;grid-row:2;margin-top:22px;font-size:44px;line-height:1.02}
+  .yrtop .po-names{margin-top:22px}
+  /* 2006: the tall rider stands as a card beside the buttons, not squeezed into the logo box */
+  .yrtop .poster[data-yr="2006"] .po-art{grid-row:1/span 3;width:200px}
+  .yrtop .poster[data-yr="2006"] .po-badge{max-height:none!important;width:200px!important;height:auto}
+}
+.poster[data-yr="2006"] .po-badge{max-height:260px}
+/* r61b: the poster art shows in the band above the frame (more room, more color), fading up into the dark; the 2006 rider stays beside the buttons */
+@media (min-width:1000px){
+  .yrtop.framed::before{display:none}
+  .yrtop.framed{background:linear-gradient(to bottom,transparent 0 104px,var(--mat) 104px)}
+  .yrtop.framed>.yrcrown{height:120px}
+  .yrtop.framed>.yrcrown>.seam,.yrtop.framed>.yrcrown>svg.cloud{height:74px;top:auto}
+  .yrtop.framed>.yrcrown::before{content:"";position:absolute;inset:0 0 10px 0;background:var(--post) center 35%/cover no-repeat;opacity:.5;
+    -webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 70%);mask-image:linear-gradient(to bottom,transparent 0,#000 70%)}
+  .yrtop .poster[data-yr="2006"] .po-art{grid-row:1/span 2;width:200px}
+  .yrtop .poster[data-yr="2006"] .po-badge{width:auto!important;max-width:200px;max-height:320px!important;margin:0 auto!important}
+}
