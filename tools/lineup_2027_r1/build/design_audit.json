@@ -1,226 +1,8 @@
 {
- "s1@phone": {
-  "text": [
-   {
-    "at": "header.hd > label.yrchip > span.yc-k",
-    "fs": 12,
-    "floor": 14,
-    "poster": false,
-    "t": "Lineup"
-   }
-  ],
-  "tap": [],
-  "contrast": [],
-  "scroll": [],
-  "round": [],
-  "overflow": false
- },
- "y2026@phone": {
-  "text": [
-   {
-    "at": "header.hd > label.yrchip > span.yc-k",
-    "fs": 12,
-    "floor": 14,
-    "poster": false,
-    "t": "Lineup"
-   }
-  ],
-  "tap": [
-   {
-    "at": "section.hero.hyr > div.segs > i.on",
-    "w": 33,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "section.hero.hyr > div.segs > i",
-    "w": 33,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "section.hero.hyr > div.segs > i",
-    "w": 33,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "section.hero.hyr > div.segs > i",
-    "w": 33,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "section.hero.hyr > div.segs > i",
-    "w": 33,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "section.hero.hyr > div.segs > i",
-    "w": 33,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "section.hero.hyr > div.segs > i",
-    "w": 33,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "section.hero.hyr > div.segs > i",
-    "w": 33,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "section.hero.hyr > div.segs > i",
-    "w": 33,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "section.hero.hyr > div.segs > i",
-    "w": 33,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "div.po-in > div.po-names.then > div.pcloud > span.pn",
-    "w": 316,
-    "h": 41,
-    "poster": true,
-    "t": "SHAKEY GRAVES"
-   }
-  ],
-  "contrast": [
-   {
-    "at": "div.po-ctl > span.po-track > i.po-knob > b.po-yr",
-    "cr": 1,
-    "t": "2026",
-    "poster": true
-   }
-  ],
-  "scroll": [],
-  "round": [],
-  "overflow": false
- },
- "y2024@phone": {
-  "text": [
-   {
-    "at": "header.hd > label.yrchip > span.yc-k",
-    "fs": 12,
-    "floor": 14,
-    "poster": false,
-    "t": "Lineup"
-   }
-  ],
-  "tap": [
-   {
-    "at": "section.hero.hyr > div.segs > i.on",
-    "w": 33,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "section.hero.hyr > div.segs > i",
-    "w": 33,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "section.hero.hyr > div.segs > i",
-    "w": 33,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "section.hero.hyr > div.segs > i",
-    "w": 33,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "section.hero.hyr > div.segs > i",
-    "w": 33,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "section.hero.hyr > div.segs > i",
-    "w": 33,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "section.hero.hyr > div.segs > i",
-    "w": 33,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "section.hero.hyr > div.segs > i",
-    "w": 33,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "section.hero.hyr > div.segs > i",
-    "w": 33,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "section.hero.hyr > div.segs > i",
-    "w": 33,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "div.po-in > div.po-names.then > div.pcloud > span.pn",
-    "w": 264,
-    "h": 43,
-    "poster": true,
-    "t": "ELEPHANT REVIVAL"
-   }
-  ],
-  "contrast": [
-   {
-    "at": "div.po-ctl > span.po-track > i.po-knob > b.po-yr",
-    "cr": 1,
-    "t": "2024",
-    "poster": true
-   }
-  ],
-  "scroll": [],
-  "round": [],
-  "overflow": false
- },
  "y2013@phone": {
   "text": [
    {
-    "at": "header.hd > label.yrchip > span.yc-k",
+    "at": "div.yrbar > button.yrchip.ywopen > span.yc-k",
     "fs": 12,
     "floor": 14,
     "poster": false,
@@ -229,70 +11,70 @@
   ],
   "tap": [
    {
-    "at": "section.hero.hyr > div.segs > i.on",
+    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i.on",
     "w": 33,
     "h": 45,
     "poster": false,
     "t": ""
    },
    {
-    "at": "section.hero.hyr > div.segs > i",
+    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
     "w": 33,
     "h": 45,
     "poster": false,
     "t": ""
    },
    {
-    "at": "section.hero.hyr > div.segs > i",
+    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
     "w": 33,
     "h": 45,
     "poster": false,
     "t": ""
    },
    {
-    "at": "section.hero.hyr > div.segs > i",
+    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
     "w": 33,
     "h": 45,
     "poster": false,
     "t": ""
    },
    {
-    "at": "section.hero.hyr > div.segs > i",
+    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
     "w": 33,
     "h": 45,
     "poster": false,
     "t": ""
    },
    {
-    "at": "section.hero.hyr > div.segs > i",
+    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
     "w": 33,
     "h": 45,
     "poster": false,
     "t": ""
    },
    {
-    "at": "section.hero.hyr > div.segs > i",
+    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
     "w": 33,
     "h": 45,
     "poster": false,
     "t": ""
    },
    {
-    "at": "section.hero.hyr > div.segs > i",
+    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
     "w": 33,
     "h": 45,
     "poster": false,
     "t": ""
    },
    {
-    "at": "section.hero.hyr > div.segs > i",
+    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
     "w": 33,
     "h": 45,
     "poster": false,
     "t": ""
    },
    {
-    "at": "section.hero.hyr > div.segs > i",
+    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
     "w": 33,
     "h": 45,
     "poster": false,
@@ -318,769 +100,6 @@
     "at": "div.po-ctl > span.po-track > i.po-knob > b.po-yr",
     "cr": 1,
     "t": "2013",
-    "poster": true
-   }
-  ],
-  "scroll": [],
-  "round": [],
-  "overflow": false
- },
- "y2003@phone": {
-  "text": [
-   {
-    "at": "header.hd > label.yrchip > span.yc-k",
-    "fs": 12,
-    "floor": 14,
-    "poster": false,
-    "t": "Lineup"
-   }
-  ],
-  "tap": [
-   {
-    "at": "div.po-in > div.po-names.then > div.pcloud > span.pn",
-    "w": 256,
-    "h": 41,
-    "poster": true,
-    "t": "OTIS TAYLOR"
-   },
-   {
-    "at": "div.po-in > div.po-names.then > div.pcloud > span.pn",
-    "w": 300,
-    "h": 41,
-    "poster": true,
-    "t": "TRASHCAN JOE"
-   },
-   {
-    "at": "div.po-in > div.po-names.then > div.pcloud > span.pn",
-    "w": 239,
-    "h": 41,
-    "poster": true,
-    "t": "JACKSTRAW"
-   }
-  ],
-  "contrast": [
-   {
-    "at": "div.po-ctl > span.po-track > i.po-knob > b.po-yr",
-    "cr": 1,
-    "t": "2003",
-    "poster": true
-   }
-  ],
-  "scroll": [],
-  "round": [],
-  "overflow": false
- },
- "a-shakeygraves@phone": {
-  "text": [],
-  "tap": [],
-  "contrast": [],
-  "scroll": [],
-  "round": [],
-  "overflow": false
- },
- "a-altngn@phone": {
-  "text": [],
-  "tap": [],
-  "contrast": [],
-  "scroll": [],
-  "round": [],
-  "overflow": false
- },
- "a-elucid@phone": {
-  "text": [],
-  "tap": [],
-  "contrast": [],
-  "scroll": [],
-  "round": [],
-  "overflow": false
- },
- "s1@tablet": {
-  "text": [
-   {
-    "at": "header.hd > label.yrchip > span.yc-k",
-    "fs": 12,
-    "floor": 15,
-    "poster": false,
-    "t": "Lineup"
-   },
-   {
-    "at": "div.grid2.bl > a.card.tt > span.cbody > span.cline",
-    "fs": 14,
-    "floor": 15,
-    "poster": false,
-    "t": "Small rooms in Austin and Nashville in 2"
-   },
-   {
-    "at": "div.grid2.bl > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 15,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.grid2.bl > a.card.tt > span.cbody > span.cline",
-    "fs": 14,
-    "floor": 15,
-    "poster": false,
-    "t": "Kentucky theaters in 2019. Now a Grammy "
-   },
-   {
-    "at": "div.grid2.bl > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 15,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.grid2.bl > a.card.tt > span.cbody > span.cline",
-    "fs": 14,
-    "floor": 15,
-    "poster": false,
-    "t": "Philadelphia bars in 2012. Then a Grammy"
-   },
-   {
-    "at": "div.grid2.bl > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 15,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.grid2.bl > a.card.tt > span.cbody > span.cline",
-    "fs": 14,
-    "floor": 15,
-    "poster": false,
-    "t": "A young flatpicker nobody had reviewed i"
-   },
-   {
-    "at": "div.grid2.bl > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 15,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.grid2.bl > a.card.tt > span.cbody > span.cline",
-    "fs": 14,
-    "floor": 15,
-    "poster": false,
-    "t": "An Ohio trio in rock clubs in 2019. Now "
-   },
-   {
-    "at": "div.grid2.bl > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 15,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.grid2.bl > a.card.tt > span.cbody > span.cline",
-    "fs": 14,
-    "floor": 15,
-    "poster": false,
-    "t": "A debut just out and small theaters in 2"
-   },
-   {
-    "at": "div.grid2.bl > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 15,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.grid2.bl > a.card.tt > span.cbody > span.cline",
-    "fs": 14,
-    "floor": 15,
-    "poster": false,
-    "t": "Los Angeles jazz clubs in 2015. Within t"
-   },
-   {
-    "at": "div.grid2.bl > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 15,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.grid2.bl > a.card.tt > span.cbody > span.cline",
-    "fs": 14,
-    "floor": 15,
-    "poster": false,
-    "t": "A Colorado farmer playing small clubs in"
-   },
-   {
-    "at": "div.grid2.bl > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 15,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.grid2.bl > a.card.tt > span.cbody > span.cline",
-    "fs": 14,
-    "floor": 15,
-    "poster": false,
-    "t": "Small clubs, weeks before their first al"
-   },
-   {
-    "at": "div.grid2.bl > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 15,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.grid2.bl > a.card.tt > span.cbody > span.cline",
-    "fs": 14,
-    "floor": 15,
-    "poster": false,
-    "t": "Club stages in Paris and Amsterdam in 20"
-   },
-   {
-    "at": "div.grid2.bl > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 15,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.grid2.bl > a.card.tt > span.cbody > span.cline",
-    "fs": 14,
-    "floor": 15,
-    "poster": false,
-    "t": "San Francisco clubs in 2019. Now Red Roc"
-   },
-   {
-    "at": "div.grid2.bl > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 15,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.grid2.bl > a.card.tt > span.cbody > span.cline",
-    "fs": 14,
-    "floor": 15,
-    "poster": false,
-    "t": "A Duluth bar band in 2007. Then Red Rock"
-   },
-   {
-    "at": "div.grid2.bl > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 15,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.grid2.bl > a.card.tt > span.cbody > span.cline",
-    "fs": 14,
-    "floor": 15,
-    "poster": false,
-    "t": "Small clubs in 2012. Then Madison Square"
-   },
-   {
-    "at": "div.grid2.bl > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 15,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.grid2.bl > a.card.tt > span.cbody > span.cline",
-    "fs": 14,
-    "floor": 15,
-    "poster": false,
-    "t": "Clubs in 2017. Then three Grammy nominat"
-   },
-   {
-    "at": "div.grid2.bl > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 15,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.grid2.bl > a.card.tt > span.cbody > span.cline",
-    "fs": 14,
-    "floor": 15,
-    "poster": false,
-    "t": "Small European clubs in 2015. Then two G"
-   },
-   {
-    "at": "div.grid2.bl > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 15,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.grid2.bl > a.card.tt > span.cbody > span.cline",
-    "fs": 14,
-    "floor": 15,
-    "poster": false,
-    "t": "Austin bars in 2018, before their first "
-   },
-   {
-    "at": "div.grid2.bl > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 15,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.grid2.bl > a.card.tt > span.cbody > span.cline",
-    "fs": 14,
-    "floor": 15,
-    "poster": false,
-    "t": "A Saskatchewan baritone in clubs in 2018"
-   },
-   {
-    "at": "div.grid2.bl > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 15,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.grid2.bl > a.card.tt > span.cbody > span.cline",
-    "fs": 14,
-    "floor": 15,
-    "poster": false,
-    "t": "Small European rooms in 2014. Then the P"
-   },
-   {
-    "at": "div.grid2.bl > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 15,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.grid2.bl > a.card.tt > span.cbody > span.cline",
-    "fs": 14,
-    "floor": 15,
-    "poster": false,
-    "t": "A former street busker in Texas clubs in"
-   },
-   {
-    "at": "div.grid2.bl > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 15,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.grid2.bl > a.card.tt > span.cbody > span.cline",
-    "fs": 14,
-    "floor": 15,
-    "poster": false,
-    "t": "Toronto clubs with one album in 2016. Th"
-   },
-   {
-    "at": "div.grid2.bl > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 15,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.grid2.bl > a.card.tt > span.cbody > span.cline",
-    "fs": 14,
-    "floor": 15,
-    "poster": false,
-    "t": "Atlanta theaters in 2022. Then the Greek"
-   },
-   {
-    "at": "div.grid2.bl > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 15,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.grid2.bl > a.card.tt > span.cbody > span.cline",
-    "fs": 14,
-    "floor": 15,
-    "poster": false,
-    "t": "A songwriter living on a sailboat, playi"
-   },
-   {
-    "at": "div.grid2.bl > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 15,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.grid2.bl > a.card.tt > span.cbody > span.cline",
-    "fs": 14,
-    "floor": 15,
-    "poster": false,
-    "t": "Brooklyn clubs in 2024. Then a Brit Awar"
-   },
-   {
-    "at": "div.grid2.bl > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 15,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.grid2.bl > a.card.tt > span.cbody > span.cline",
-    "fs": 14,
-    "floor": 15,
-    "poster": false,
-    "t": "Southern clubs in 2017. Then boygenius, "
-   },
-   {
-    "at": "div.grid2.bl > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 15,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.grid2.bl > a.card.tt > span.cbody > span.cline",
-    "fs": 14,
-    "floor": 15,
-    "poster": false,
-    "t": "London bar stages, years before his firs"
-   },
-   {
-    "at": "div.grid2.bl > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 15,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.grid2.bl > a.card.tt > span.cbody > span.cline",
-    "fs": 14,
-    "floor": 15,
-    "poster": false,
-    "t": "Small clubs in 2019. Now arenas in Stock"
-   },
-   {
-    "at": "div.grid2.bl > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 15,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.grid2.bl > a.card.tt > span.cbody > span.cline",
-    "fs": 14,
-    "floor": 15,
-    "poster": false,
-    "t": "Baltimore clubs in 2011. Now main stages"
-   },
-   {
-    "at": "div.grid2.bl > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 15,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.grid2.bl > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 15,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.grid2.bl > a.card.tt > span.cbody > span.cline",
-    "fs": 14,
-    "floor": 15,
-    "poster": false,
-    "t": "Small rooms in 2010. Then a Grammy for B"
-   },
-   {
-    "at": "div.grid2.bl > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 15,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.grid2.bl > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 15,
-    "poster": false,
-    "t": "Their story \u2192"
-   }
-  ],
-  "tap": [],
-  "contrast": [],
-  "scroll": [],
-  "round": [],
-  "overflow": false
- },
- "y2026@tablet": {
-  "text": [
-   {
-    "at": "header.hd > label.yrchip > span.yc-k",
-    "fs": 12,
-    "floor": 15,
-    "poster": false,
-    "t": "Lineup"
-   },
-   {
-    "at": "div.grid2 > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 15,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.grid2 > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 15,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.grid2 > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 15,
-    "poster": false,
-    "t": "Their story \u2192"
-   }
-  ],
-  "tap": [
-   {
-    "at": "section.hero.hyr > div.segs > i.on",
-    "w": 42,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "section.hero.hyr > div.segs > i",
-    "w": 42,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "section.hero.hyr > div.segs > i",
-    "w": 42,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "section.hero.hyr > div.segs > i",
-    "w": 42,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "section.hero.hyr > div.segs > i",
-    "w": 42,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "section.hero.hyr > div.segs > i",
-    "w": 42,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "section.hero.hyr > div.segs > i",
-    "w": 42,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "section.hero.hyr > div.segs > i",
-    "w": 42,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "section.hero.hyr > div.segs > i",
-    "w": 42,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "section.hero.hyr > div.segs > i",
-    "w": 42,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "div.po-in > div.po-names.then > div.pcloud > span.pn",
-    "w": 316,
-    "h": 41,
-    "poster": true,
-    "t": "SHAKEY GRAVES"
-   }
-  ],
-  "contrast": [
-   {
-    "at": "div.po-ctl > span.po-track > i.po-knob > b.po-yr",
-    "cr": 1,
-    "t": "2026",
-    "poster": true
-   }
-  ],
-  "scroll": [],
-  "round": [],
-  "overflow": false
- },
- "y2024@tablet": {
-  "text": [
-   {
-    "at": "header.hd > label.yrchip > span.yc-k",
-    "fs": 12,
-    "floor": 15,
-    "poster": false,
-    "t": "Lineup"
-   },
-   {
-    "at": "div.grid2 > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 15,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.grid2 > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 15,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.grid2 > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 15,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.grid2 > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 15,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.grid2 > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 15,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.grid2 > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 15,
-    "poster": false,
-    "t": "Their story \u2192"
-   }
-  ],
-  "tap": [
-   {
-    "at": "section.hero.hyr > div.segs > i.on",
-    "w": 42,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "section.hero.hyr > div.segs > i",
-    "w": 42,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "section.hero.hyr > div.segs > i",
-    "w": 42,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "section.hero.hyr > div.segs > i",
-    "w": 42,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "section.hero.hyr > div.segs > i",
-    "w": 42,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "section.hero.hyr > div.segs > i",
-    "w": 42,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "section.hero.hyr > div.segs > i",
-    "w": 42,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "section.hero.hyr > div.segs > i",
-    "w": 42,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "section.hero.hyr > div.segs > i",
-    "w": 42,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "section.hero.hyr > div.segs > i",
-    "w": 42,
-    "h": 45,
-    "poster": false,
-    "t": ""
-   },
-   {
-    "at": "div.po-in > div.po-names.then > div.pcloud > span.pn",
-    "w": 395,
-    "h": 41,
-    "poster": true,
-    "t": "COURTNEY BARNETT"
-   },
-   {
-    "at": "div.po-in > div.po-names.then > div.pcloud > span.pn",
-    "w": 264,
-    "h": 43,
-    "poster": true,
-    "t": "ELEPHANT REVIVAL"
-   }
-  ],
-  "contrast": [
-   {
-    "at": "div.po-ctl > span.po-track > i.po-knob > b.po-yr",
-    "cr": 1,
-    "t": "2024",
     "poster": true
    }
   ],
@@ -1091,7 +110,7 @@
  "y2013@tablet": {
   "text": [
    {
-    "at": "header.hd > label.yrchip > span.yc-k",
+    "at": "div.yrbar > button.yrchip.ywopen > span.yc-k",
     "fs": 12,
     "floor": 15,
     "poster": false,
@@ -1156,70 +175,70 @@
   ],
   "tap": [
    {
-    "at": "section.hero.hyr > div.segs > i.on",
+    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i.on",
     "w": 42,
     "h": 45,
     "poster": false,
     "t": ""
    },
    {
-    "at": "section.hero.hyr > div.segs > i",
+    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
     "w": 42,
     "h": 45,
     "poster": false,
     "t": ""
    },
    {
-    "at": "section.hero.hyr > div.segs > i",
+    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
     "w": 42,
     "h": 45,
     "poster": false,
     "t": ""
    },
    {
-    "at": "section.hero.hyr > div.segs > i",
+    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
     "w": 42,
     "h": 45,
     "poster": false,
     "t": ""
    },
    {
-    "at": "section.hero.hyr > div.segs > i",
+    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
     "w": 42,
     "h": 45,
     "poster": false,
     "t": ""
    },
    {
-    "at": "section.hero.hyr > div.segs > i",
+    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
     "w": 42,
     "h": 45,
     "poster": false,
     "t": ""
    },
    {
-    "at": "section.hero.hyr > div.segs > i",
+    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
     "w": 42,
     "h": 45,
     "poster": false,
     "t": ""
    },
    {
-    "at": "section.hero.hyr > div.segs > i",
+    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
     "w": 42,
     "h": 45,
     "poster": false,
     "t": ""
    },
    {
-    "at": "section.hero.hyr > div.segs > i",
+    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
     "w": 42,
     "h": 45,
     "poster": false,
     "t": ""
    },
    {
-    "at": "section.hero.hyr > div.segs > i",
+    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
     "w": 42,
     "h": 45,
     "poster": false,
@@ -1252,768 +271,10 @@
   "round": [],
   "overflow": false
  },
- "y2003@tablet": {
-  "text": [
-   {
-    "at": "header.hd > label.yrchip > span.yc-k",
-    "fs": 12,
-    "floor": 15,
-    "poster": false,
-    "t": "Lineup"
-   }
-  ],
-  "tap": [
-   {
-    "at": "div.po-in > div.po-names.then > div.pcloud > span.pn",
-    "w": 256,
-    "h": 41,
-    "poster": true,
-    "t": "OTIS TAYLOR"
-   },
-   {
-    "at": "div.po-in > div.po-names.then > div.pcloud > span.pn",
-    "w": 446,
-    "h": 41,
-    "poster": true,
-    "t": "FOGHORN STRINGBAND"
-   },
-   {
-    "at": "div.po-in > div.po-names.then > div.pcloud > span.pn",
-    "w": 413,
-    "h": 41,
-    "poster": true,
-    "t": "THE CROOKED JADES"
-   },
-   {
-    "at": "div.po-in > div.po-names.then > div.pcloud > span.pn",
-    "w": 300,
-    "h": 41,
-    "poster": true,
-    "t": "TRASHCAN JOE"
-   },
-   {
-    "at": "div.po-in > div.po-names.then > div.pcloud > span.pn",
-    "w": 445,
-    "h": 41,
-    "poster": true,
-    "t": "DYLAN THOMAS VANCE"
-   },
-   {
-    "at": "div.po-in > div.po-names.then > div.pcloud > span.pn",
-    "w": 398,
-    "h": 41,
-    "poster": true,
-    "t": "EL SON DEL PUEBLO"
-   },
-   {
-    "at": "div.po-in > div.po-names.then > div.pcloud > span.pn",
-    "w": 239,
-    "h": 41,
-    "poster": true,
-    "t": "JACKSTRAW"
-   }
-  ],
-  "contrast": [
-   {
-    "at": "div.po-ctl > span.po-track > i.po-knob > b.po-yr",
-    "cr": 1,
-    "t": "2003",
-    "poster": true
-   }
-  ],
-  "scroll": [],
-  "round": [],
-  "overflow": false
- },
- "a-shakeygraves@tablet": {
-  "text": [
-   {
-    "at": "div.swipe > a.card.pc > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 15,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.swipe > a.card.pc > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 15,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.swipe > a.card.pc > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 15,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.swipe > a.card.pc > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 15,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.swipe > a.card.pc > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 15,
-    "poster": false,
-    "t": "Their story \u2192"
-   }
-  ],
-  "tap": [],
-  "contrast": [],
-  "scroll": [],
-  "round": [],
-  "overflow": false
- },
- "a-altngn@tablet": {
-  "text": [
-   {
-    "at": "div.swipe > a.card.pc > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 15,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.swipe > a.card.pc > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 15,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.swipe > a.card.pc > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 15,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.swipe > a.card.pc > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 15,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.swipe > a.card.pc > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 15,
-    "poster": false,
-    "t": "Their story \u2192"
-   }
-  ],
-  "tap": [],
-  "contrast": [],
-  "scroll": [],
-  "round": [],
-  "overflow": false
- },
- "a-elucid@tablet": {
-  "text": [],
-  "tap": [],
-  "contrast": [],
-  "scroll": [],
-  "round": [],
-  "overflow": false
- },
- "s1@desktop": {
-  "text": [
-   {
-    "at": "header.hd > label.yrchip > span.yc-k",
-    "fs": 12,
-    "floor": 16,
-    "poster": false,
-    "t": "Lineup"
-   },
-   {
-    "at": "div.grid2.bl > a.card.tt > span.cbody > span.cline",
-    "fs": 14,
-    "floor": 16,
-    "poster": false,
-    "t": "Small rooms in Austin and Nashville in 2"
-   },
-   {
-    "at": "div.grid2.bl > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 16,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.grid2.bl > a.card.tt > span.cbody > span.cline",
-    "fs": 14,
-    "floor": 16,
-    "poster": false,
-    "t": "Kentucky theaters in 2019. Now a Grammy "
-   },
-   {
-    "at": "div.grid2.bl > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 16,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.grid2.bl > a.card.tt > span.cbody > span.cline",
-    "fs": 14,
-    "floor": 16,
-    "poster": false,
-    "t": "Philadelphia bars in 2012. Then a Grammy"
-   },
-   {
-    "at": "div.grid2.bl > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 16,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.grid2.bl > a.card.tt > span.cbody > span.cline",
-    "fs": 14,
-    "floor": 16,
-    "poster": false,
-    "t": "A young flatpicker nobody had reviewed i"
-   },
-   {
-    "at": "div.grid2.bl > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 16,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.grid2.bl > a.card.tt > span.cbody > span.cline",
-    "fs": 14,
-    "floor": 16,
-    "poster": false,
-    "t": "An Ohio trio in rock clubs in 2019. Now "
-   },
-   {
-    "at": "div.grid2.bl > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 16,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.grid2.bl > a.card.tt > span.cbody > span.cline",
-    "fs": 14,
-    "floor": 16,
-    "poster": false,
-    "t": "A debut just out and small theaters in 2"
-   },
-   {
-    "at": "div.grid2.bl > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 16,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.grid2.bl > a.card.tt > span.cbody > span.cline",
-    "fs": 14,
-    "floor": 16,
-    "poster": false,
-    "t": "Los Angeles jazz clubs in 2015. Within t"
-   },
-   {
-    "at": "div.grid2.bl > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 16,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.grid2.bl > a.card.tt > span.cbody > span.cline",
-    "fs": 14,
-    "floor": 16,
-    "poster": false,
-    "t": "A Colorado farmer playing small clubs in"
-   },
-   {
-    "at": "div.grid2.bl > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 16,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.grid2.bl > a.card.tt > span.cbody > span.cline",
-    "fs": 14,
-    "floor": 16,
-    "poster": false,
-    "t": "Small clubs, weeks before their first al"
-   },
-   {
-    "at": "div.grid2.bl > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 16,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.grid2.bl > a.card.tt > span.cbody > span.cline",
-    "fs": 14,
-    "floor": 16,
-    "poster": false,
-    "t": "Club stages in Paris and Amsterdam in 20"
-   },
-   {
-    "at": "div.grid2.bl > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 16,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.grid2.bl > a.card.tt > span.cbody > span.cline",
-    "fs": 14,
-    "floor": 16,
-    "poster": false,
-    "t": "San Francisco clubs in 2019. Now Red Roc"
-   },
-   {
-    "at": "div.grid2.bl > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 16,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.grid2.bl > a.card.tt > span.cbody > span.cline",
-    "fs": 14,
-    "floor": 16,
-    "poster": false,
-    "t": "A Duluth bar band in 2007. Then Red Rock"
-   },
-   {
-    "at": "div.grid2.bl > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 16,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.grid2.bl > a.card.tt > span.cbody > span.cline",
-    "fs": 14,
-    "floor": 16,
-    "poster": false,
-    "t": "Small clubs in 2012. Then Madison Square"
-   },
-   {
-    "at": "div.grid2.bl > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 16,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.grid2.bl > a.card.tt > span.cbody > span.cline",
-    "fs": 14,
-    "floor": 16,
-    "poster": false,
-    "t": "Clubs in 2017. Then three Grammy nominat"
-   },
-   {
-    "at": "div.grid2.bl > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 16,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.grid2.bl > a.card.tt > span.cbody > span.cline",
-    "fs": 14,
-    "floor": 16,
-    "poster": false,
-    "t": "Small European clubs in 2015. Then two G"
-   },
-   {
-    "at": "div.grid2.bl > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 16,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.grid2.bl > a.card.tt > span.cbody > span.cline",
-    "fs": 14,
-    "floor": 16,
-    "poster": false,
-    "t": "Austin bars in 2018, before their first "
-   },
-   {
-    "at": "div.grid2.bl > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 16,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.grid2.bl > a.card.tt > span.cbody > span.cline",
-    "fs": 14,
-    "floor": 16,
-    "poster": false,
-    "t": "A Saskatchewan baritone in clubs in 2018"
-   },
-   {
-    "at": "div.grid2.bl > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 16,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.grid2.bl > a.card.tt > span.cbody > span.cline",
-    "fs": 14,
-    "floor": 16,
-    "poster": false,
-    "t": "Small European rooms in 2014. Then the P"
-   },
-   {
-    "at": "div.grid2.bl > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 16,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.grid2.bl > a.card.tt > span.cbody > span.cline",
-    "fs": 14,
-    "floor": 16,
-    "poster": false,
-    "t": "A former street busker in Texas clubs in"
-   },
-   {
-    "at": "div.grid2.bl > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 16,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.grid2.bl > a.card.tt > span.cbody > span.cline",
-    "fs": 14,
-    "floor": 16,
-    "poster": false,
-    "t": "Toronto clubs with one album in 2016. Th"
-   },
-   {
-    "at": "div.grid2.bl > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 16,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.grid2.bl > a.card.tt > span.cbody > span.cline",
-    "fs": 14,
-    "floor": 16,
-    "poster": false,
-    "t": "Atlanta theaters in 2022. Then the Greek"
-   },
-   {
-    "at": "div.grid2.bl > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 16,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.grid2.bl > a.card.tt > span.cbody > span.cline",
-    "fs": 14,
-    "floor": 16,
-    "poster": false,
-    "t": "A songwriter living on a sailboat, playi"
-   },
-   {
-    "at": "div.grid2.bl > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 16,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.grid2.bl > a.card.tt > span.cbody > span.cline",
-    "fs": 14,
-    "floor": 16,
-    "poster": false,
-    "t": "Brooklyn clubs in 2024. Then a Brit Awar"
-   },
-   {
-    "at": "div.grid2.bl > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 16,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.grid2.bl > a.card.tt > span.cbody > span.cline",
-    "fs": 14,
-    "floor": 16,
-    "poster": false,
-    "t": "Southern clubs in 2017. Then boygenius, "
-   },
-   {
-    "at": "div.grid2.bl > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 16,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.grid2.bl > a.card.tt > span.cbody > span.cline",
-    "fs": 14,
-    "floor": 16,
-    "poster": false,
-    "t": "London bar stages, years before his firs"
-   },
-   {
-    "at": "div.grid2.bl > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 16,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.grid2.bl > a.card.tt > span.cbody > span.cline",
-    "fs": 14,
-    "floor": 16,
-    "poster": false,
-    "t": "Small clubs in 2019. Now arenas in Stock"
-   },
-   {
-    "at": "div.grid2.bl > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 16,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.grid2.bl > a.card.tt > span.cbody > span.cline",
-    "fs": 14,
-    "floor": 16,
-    "poster": false,
-    "t": "Baltimore clubs in 2011. Now main stages"
-   },
-   {
-    "at": "div.grid2.bl > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 16,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.grid2.bl > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 16,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.grid2.bl > a.card.tt > span.cbody > span.cline",
-    "fs": 14,
-    "floor": 16,
-    "poster": false,
-    "t": "Small rooms in 2010. Then a Grammy for B"
-   },
-   {
-    "at": "div.grid2.bl > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 16,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.grid2.bl > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 16,
-    "poster": false,
-    "t": "Their story \u2192"
-   }
-  ],
-  "tap": [],
-  "contrast": [],
-  "scroll": [],
-  "round": [],
-  "overflow": false
- },
- "y2026@desktop": {
-  "text": [
-   {
-    "at": "header.hd > label.yrchip > span.yc-k",
-    "fs": 12,
-    "floor": 16,
-    "poster": false,
-    "t": "Lineup"
-   },
-   {
-    "at": "div.grid2 > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 16,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.grid2 > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 16,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.grid2 > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 16,
-    "poster": false,
-    "t": "Their story \u2192"
-   }
-  ],
-  "tap": [
-   {
-    "at": "div.po-in > div.po-names.then > div.pcloud > span.pn",
-    "w": 273,
-    "h": 42,
-    "poster": true,
-    "t": "STEVE EARLE"
-   },
-   {
-    "at": "div.po-in > div.po-names.then > div.pcloud > span.pn",
-    "w": 312,
-    "h": 42,
-    "poster": true,
-    "t": "THEE SINSEERS"
-   },
-   {
-    "at": "div.po-in > div.po-names.then > div.pcloud > span.pn",
-    "w": 260,
-    "h": 42,
-    "poster": true,
-    "t": "THE ALTONS"
-   },
-   {
-    "at": "div.po-in > div.po-names.then > div.pcloud > span.pn",
-    "w": 486,
-    "h": 42,
-    "poster": true,
-    "t": "THE BROTHERS COMATOSE"
-   },
-   {
-    "at": "div.po-in > div.po-names.then > div.pcloud > span.pn",
-    "w": 207,
-    "h": 43,
-    "poster": true,
-    "t": "MARCOS VALLE"
-   },
-   {
-    "at": "div.po-in > div.po-names.then > div.pcloud > span.pn",
-    "w": 351,
-    "h": 43,
-    "poster": true,
-    "t": "THE TRAVELIN' MCCOURYS"
-   }
-  ],
-  "contrast": [
-   {
-    "at": "div.po-ctl > span.po-track > i.po-knob > b.po-yr",
-    "cr": 1,
-    "t": "2026",
-    "poster": true
-   }
-  ],
-  "scroll": [],
-  "round": [],
-  "overflow": false
- },
- "y2024@desktop": {
-  "text": [
-   {
-    "at": "header.hd > label.yrchip > span.yc-k",
-    "fs": 12,
-    "floor": 16,
-    "poster": false,
-    "t": "Lineup"
-   },
-   {
-    "at": "div.grid2 > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 16,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.grid2 > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 16,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.grid2 > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 16,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.grid2 > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 16,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.grid2 > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 16,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.grid2 > a.card.tt > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 16,
-    "poster": false,
-    "t": "Their story \u2192"
-   }
-  ],
-  "tap": [
-   {
-    "at": "div.po-in > div.po-names.then > div.pcloud > span.pn",
-    "w": 115,
-    "h": 43,
-    "poster": true,
-    "t": "LA LOM"
-   },
-   {
-    "at": "div.po-in > div.po-names.then > div.pcloud > span.pn",
-    "w": 225,
-    "h": 43,
-    "poster": true,
-    "t": "BILLIE MARTEN"
-   }
-  ],
-  "contrast": [
-   {
-    "at": "div.po-ctl > span.po-track > i.po-knob > b.po-yr",
-    "cr": 1,
-    "t": "2024",
-    "poster": true
-   }
-  ],
-  "scroll": [],
-  "round": [],
-  "overflow": false
- },
  "y2013@desktop": {
   "text": [
    {
-    "at": "header.hd > label.yrchip > span.yc-k",
+    "at": "div.yrbar > button.yrchip.ywopen > span.yc-k",
     "fs": 12,
     "floor": 16,
     "poster": false,
@@ -2078,46 +339,95 @@
   ],
   "tap": [
    {
+    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i.on",
+    "w": 31,
+    "h": 45,
+    "poster": false,
+    "t": ""
+   },
+   {
+    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
+    "w": 31,
+    "h": 45,
+    "poster": false,
+    "t": ""
+   },
+   {
+    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
+    "w": 31,
+    "h": 45,
+    "poster": false,
+    "t": ""
+   },
+   {
+    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
+    "w": 31,
+    "h": 45,
+    "poster": false,
+    "t": ""
+   },
+   {
+    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
+    "w": 31,
+    "h": 45,
+    "poster": false,
+    "t": ""
+   },
+   {
+    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
+    "w": 31,
+    "h": 45,
+    "poster": false,
+    "t": ""
+   },
+   {
+    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
+    "w": 31,
+    "h": 45,
+    "poster": false,
+    "t": ""
+   },
+   {
+    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
+    "w": 31,
+    "h": 45,
+    "poster": false,
+    "t": ""
+   },
+   {
+    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
+    "w": 31,
+    "h": 45,
+    "poster": false,
+    "t": ""
+   },
+   {
+    "at": "div.yrtop.framed > section.hero.hyr > div.segs > i",
+    "w": 31,
+    "h": 45,
+    "poster": false,
+    "t": ""
+   },
+   {
     "at": "div.po-in > div.po-names.then > div.pcloud > span.pn",
-    "w": 394,
-    "h": 42,
+    "w": 276,
+    "h": 41,
+    "poster": true,
+    "t": "ANDREW BIRD"
+   },
+   {
+    "at": "div.po-in > div.po-names.then > div.pcloud > span.pn",
+    "w": 336,
+    "h": 43,
     "poster": true,
     "t": "THE DEVIL MAKES THREE"
    },
    {
     "at": "div.po-in > div.po-names.then > div.pcloud > span.pn",
-    "w": 360,
-    "h": 42,
+    "w": 307,
+    "h": 43,
     "poster": true,
     "t": "THE FELICE BROTHERS"
-   },
-   {
-    "at": "div.po-in > div.po-names.then > div.pcloud > span.pn",
-    "w": 162,
-    "h": 43,
-    "poster": true,
-    "t": "HOWE GELB"
-   },
-   {
-    "at": "div.po-in > div.po-names.then > div.pcloud > span.pn",
-    "w": 274,
-    "h": 43,
-    "poster": true,
-    "t": "SHABAZZ PALACES"
-   },
-   {
-    "at": "div.po-in > div.po-names.then > div.pcloud > span.pn",
-    "w": 275,
-    "h": 43,
-    "poster": true,
-    "t": "SHARON VAN ETTEN"
-   },
-   {
-    "at": "div.po-in > div.po-names.then > div.pcloud > span.pn",
-    "w": 158,
-    "h": 43,
-    "poster": true,
-    "t": "DIVINE FITS"
    }
   ],
   "contrast": [
@@ -2128,125 +438,6 @@
     "poster": true
    }
   ],
-  "scroll": [],
-  "round": [],
-  "overflow": false
- },
- "y2003@desktop": {
-  "text": [
-   {
-    "at": "header.hd > label.yrchip > span.yc-k",
-    "fs": 12,
-    "floor": 16,
-    "poster": false,
-    "t": "Lineup"
-   }
-  ],
-  "tap": [],
-  "contrast": [
-   {
-    "at": "div.po-ctl > span.po-track > i.po-knob > b.po-yr",
-    "cr": 1,
-    "t": "2003",
-    "poster": true
-   }
-  ],
-  "scroll": [],
-  "round": [],
-  "overflow": false
- },
- "a-shakeygraves@desktop": {
-  "text": [
-   {
-    "at": "div.swipe > a.card.pc > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 16,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.swipe > a.card.pc > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 16,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.swipe > a.card.pc > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 16,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.swipe > a.card.pc > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 16,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.swipe > a.card.pc > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 16,
-    "poster": false,
-    "t": "Their story \u2192"
-   }
-  ],
-  "tap": [],
-  "contrast": [],
-  "scroll": [],
-  "round": [],
-  "overflow": false
- },
- "a-altngn@desktop": {
-  "text": [
-   {
-    "at": "div.swipe > a.card.pc > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 16,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.swipe > a.card.pc > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 16,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.swipe > a.card.pc > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 16,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.swipe > a.card.pc > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 16,
-    "poster": false,
-    "t": "Their story \u2192"
-   },
-   {
-    "at": "div.swipe > a.card.pc > span.cbody > span.cstory",
-    "fs": 14,
-    "floor": 16,
-    "poster": false,
-    "t": "Their story \u2192"
-   }
-  ],
-  "tap": [],
-  "contrast": [],
-  "scroll": [],
-  "round": [],
-  "overflow": false
- },
- "a-elucid@desktop": {
-  "text": [],
-  "tap": [],
-  "contrast": [],
   "scroll": [],
   "round": [],
   "overflow": false

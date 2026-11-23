@@ -24,12 +24,24 @@
   document.addEventListener('click', function (e) { var a = e.target.closest('[data-go]'); if (a) { e.preventDefault(); show(a.dataset.go); } });
   var m = (location.hash || '').match(/^#(s[136]|y\d{4})$/); if (m && document.getElementById(m[1])) show(m[1]);
 
+
+  // r59 (Zale, Nov 22 20:20): the gold year button opens the wall of year logos; a logo goes to that year (data-go), the X, Escape or a tap outside closes
+  document.addEventListener('click', function (e) {
+    var path = e.composedPath ? e.composedPath() : [e.target], t = path[0] && path[0].closest ? path[0] : e.target;
+    var op = t.closest && t.closest('.ywopen'), wall;
+    if (op) { var sc = op.closest('main, .screen') || document; wall = sc.querySelector('.ywall'); if (wall) { wall.hidden = !wall.hidden; op.setAttribute('aria-expanded', String(!wall.hidden)); } return; }
+    wall = t.closest && t.closest('.ywall');
+    if (wall && (t.closest('.yw-x') || t === wall || t.closest('[data-go]'))) { wall.hidden = true; (wall.parentNode.querySelectorAll('.ywopen') || []).forEach(function (o) { o.setAttribute('aria-expanded', 'false'); }); }
+  }, true);
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') document.querySelectorAll('.ywall').forEach(function (w) { w.hidden = true; }); });
   // r45 (Zale, Nov 22): the year reel plays on its own, 4 s a frame, hard cut; a segment jumps; the photo plays that band's song
   document.querySelectorAll('.hero.reel').forEach(function (hero) {
     var S; try { S = JSON.parse(hero.dataset.slides); } catch (e) { return; }
     if (!S || S.length < 2) return;
-    S.forEach(function (f) { var im = new Image(); im.src = f.i; });
     var i = 0, T = 4000, timer = 0, ph = hero.querySelector(':scope > img'), segs = hero.querySelectorAll('.segs [data-slide]');
+    // r58: the app serves these pages from another folder; take the folder from the first photo so every frame finds its picture
+    var base = (ph.getAttribute('src') || '').replace(/img\/[^\/]*$/, '');
+    S.forEach(function (f) { if (/^img\//.test(f.i)) f.i = base + f.i; var im = new Image(); im.src = f.i; });
     var KC = { Discovery: 'disc', Legend: 'leg', 'Deep cut': 'deep' };
     function go(n) {
       i = (n + S.length) % S.length; var f = S[i];

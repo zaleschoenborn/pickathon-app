@@ -769,3 +769,233 @@ h2{font-family:var(--display);font-weight:400;font-size:27px;line-height:1.14;le
   .arch .card .cline{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;font-size:17px;line-height:1.35;letter-spacing:0;text-transform:none;font-family:var(--text);font-weight:500;color:var(--cream);margin-top:8px;max-width:34ch}
   .arch .card .cname{font-size:28px}
 }
+
+/* r56 (Zale, Nov 22): paper frame on desktop. The year's art crowns the top; the poster paper mats the photo like a window in a printed poster */
+.yrcrown{display:none}
+@media (min-width:1000px){
+  .yrtop.framed{position:relative;padding:0 28px 28px;background:linear-gradient(to bottom,transparent 0 76px,var(--paper) 76px);grid-template-rows:auto 1fr}
+  .yrtop.framed>.yrcrown{display:block;grid-column:1/-1;height:96px;margin:0 -28px;position:relative}
+  .yrtop.framed>.yrcrown>.seam,.yrtop.framed>.yrcrown>svg.cloud{position:absolute;left:0;right:0;bottom:0;height:96px;width:100%;--sc:.95}
+  .yrtop.framed>.yrcrown svg.cloud{display:block}
+  .yrtop.framed>.hero{min-height:620px;border:3px solid var(--ink);border-radius:4px;overflow:hidden}
+  .yrtop.framed .poster{background:transparent}
+  .yrtop.framed .poster .po-in{padding-top:8px}
+}
+@media (min-width:1000px){
+  .yrtop.framed{background:linear-gradient(to bottom,transparent 0 58px,var(--paper) 58px)}
+  .yrtop.framed>.yrcrown{height:74px}
+  .yrtop.framed>.yrcrown>.seam,.yrtop.framed>.yrcrown>svg.cloud{height:74px}
+  .yrtop.framed .poster>svg.cloud{display:none}
+}
+
+/* r56: 2000-2006 art (artwork-45/46) */
+.seam .sm-wm{position:absolute;left:50%;transform:translateX(-50%);bottom:16px;height:calc(64px*var(--sc));display:block;z-index:250}
+.seam .sm-wm.sm-wm02{height:calc(34px*var(--sc));bottom:22px}
+.poster[data-yr="2006"] .po-badge{width:auto!important;max-height:300px;margin:0 auto!important}
+@media (min-width:1000px){.yrtop .poster[data-yr="2006"] .po-badge{max-height:360px}}
+
+@media (min-width:1000px){
+  .yrtop.framed:not(:has(>.hero)){display:block}
+  .yrtop.framed:not(:has(>.hero))>.yrcrown{margin:0 -28px}
+  .yrtop.framed:not(:has(>.hero)) .poster>.stripe:first-child{display:none}
+  .seam .sm-wm.sm-wm02{height:calc(50px*var(--sc));bottom:20px}
+  .seam .sm-wm{height:calc(70px*var(--sc))}
+}
+
+/* r56c (Zale, Nov 22): no dates tag under the logo; bigger logo; the frame is the year's boldest color, the poster panel stays paper */
+.yrtop .po-art .po-dates{display:none!important}
+@media (min-width:1000px){
+  .yrtop.framed{background:linear-gradient(to bottom,transparent 0 58px,var(--mat) 58px);padding:0 28px 28px;column-gap:20px}
+  .yrtop.framed>.yrcrown .sm-g path,.yrtop.framed>.yrcrown svg.cloud path:last-child{fill:var(--mat)}
+  .yrtop.framed>.hero{border:3px solid var(--paper)}
+  .yrtop.framed .poster{background:var(--paper)!important;border-radius:4px}
+  .yrtop.framed .poster .po-in{padding-top:36px}
+  .yrtop .poster.joined .po-in,.yrtop .poster.solo .po-in{grid-template-columns:240px minmax(0,1fr)}
+  .yrtop .po-art,.yrtop .poster .po-badge,.yrtop .poster.joined .po-badge,.yrtop .poster.solo .po-badge{width:240px}
+}
+
+/* r57 (Zale, Nov 22 19:57: "too many white ones", go deeper into customization): a pale paper takes a wash of the year's color,
+   and the poster panel gets a printed border in the year's stripe colors (outer band, paper gap, ink rule), like a screen-printed poster */
+@media (min-width:1000px){
+  .yrtop.framed .poster{background:var(--pnl)!important;border-radius:2px;
+    box-shadow:inset 0 0 0 10px var(--s1),inset 0 0 0 14px var(--pnl),inset 0 0 0 16px var(--ink)}
+  .yrtop.framed .poster .po-in{padding:44px 52px 48px}
+  .yrtop.framed>.hero{border:none;border-radius:2px;box-shadow:0 0 0 3px var(--pnl),0 0 0 5px var(--ink)}
+  .yrtop.framed{column-gap:26px;padding:0 32px 32px}
+  .yrtop.framed .poster .stripe{display:none}
+}
+
+@media (min-width:1000px){
+  .yrtop.framed .poster.joined,.yrtop.framed .poster.solo{background:var(--pnl)!important}
+  .yrtop.framed .poster .po-in{background:transparent!important}
+}
+/* r58 (Zale, Nov 22 20:06) */
+/* the year list opened black on Windows: an invisible select hides its own option list there; keep the select see-through, not invisible */
+.yrbar .yrchip select{opacity:1;color:transparent;background:transparent}
+.yrbar .yrchip select option{color:#1c1718;background:#fff}
+/* the reel blurb gets three lines, and the photo no longer fades to a solid band at the bottom */
+.hero.reel .hero-sc{background:linear-gradient(180deg,rgba(20,16,17,.25) 0,rgba(20,16,17,0) 22%,rgba(20,16,17,0) 44%,rgba(20,16,17,.62) 78%,rgba(20,16,17,.78) 100%)}
+.hero.reel .hero-sub{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+@media (min-width:1000px){
+  .yrtop>.hero.reel .hero-sub{max-width:26ch;font-size:18px}
+  /* opening the whole bill no longer stretches the photo: it holds its size and stays in view */
+  .yrtop.framed>.hero{align-self:start;position:sticky;top:12px;height:660px;min-height:0}
+}
+.hero .krow .k{white-space:nowrap}
+
+/* r59: the wall of year logos */
+.ywopen{background:none;font:inherit;color:inherit}
+.ywall[hidden]{display:none!important}
+.ywall{position:fixed;inset:0;z-index:900;background:rgba(24,20,21,.97);display:flex;flex-direction:column;padding:16px 16px 24px;overflow:auto;scrollbar-width:none}
+.ywall::-webkit-scrollbar{display:none}
+.yw-h{display:flex;align-items:center;justify-content:space-between;max-width:1100px;width:100%;margin:0 auto 12px}
+.yw-h p{font-family:var(--display);font-size:26px;letter-spacing:.04em;color:var(--cream);margin:0}
+.yw-x{width:48px;height:48px;border:2px solid var(--line2);border-radius:6px;background:none;color:var(--cream);font-size:28px;line-height:1;cursor:pointer}
+.yw-g{display:grid;grid-template-columns:repeat(auto-fill,minmax(98px,1fr));gap:12px;max-width:1100px;width:100%;margin:0 auto}
+.yw-i{display:flex;flex-direction:column;align-items:center;gap:6px;padding:10px 6px 8px;border:2px solid transparent;border-radius:6px;background:rgba(255,255,255,.04);color:var(--cream);cursor:pointer;font:inherit}
+.yw-i:hover,.yw-i:focus-visible{border-color:var(--gold,#D6B54A)}
+.yw-i[aria-current]{border-color:var(--gold,#D6B54A);background:rgba(214,181,74,.12)}
+.yw-l{display:flex;align-items:center;justify-content:center;width:100%;height:76px}
+.yw-l img{max-width:100%;max-height:76px;object-fit:contain}
+.yw-l i{font-style:normal;font-family:var(--display);font-size:22px;color:var(--dim)}
+.yw-i b{font-family:var(--display);font-size:18px;letter-spacing:.04em}
+.yw-off{cursor:default;opacity:.55}
+.yw-off .yw-l i{font-family:var(--text);font-size:14px}
+@media (min-width:1000px){.ywall{padding:32px}.yw-g{grid-template-columns:repeat(auto-fill,minmax(132px,1fr));gap:16px}.yw-l{height:104px}.yw-l img{max-height:104px}}
+/* r59b (Zale, Nov 22 20:13): the logos shrink so every year fits on one screen, no scrolling */
+.ywall{padding:12px 12px 16px;justify-content:center}
+.yw-h{margin-bottom:8px}
+.yw-h p{font-size:22px}
+.yw-g{grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}
+.yw-i{gap:3px;padding:6px 2px 5px;min-height:44px}
+.yw-l{height:46px}
+.yw-l img{max-height:46px}
+.yw-l i{font-size:16px}
+.yw-i b{font-size:14px}
+.yw-off .yw-l i{font-size:11px}
+@media (min-width:700px){.yw-g{grid-template-columns:repeat(8,minmax(0,1fr));gap:10px}.yw-l{height:64px}.yw-l img{max-height:64px}.yw-i b{font-size:16px}}
+@media (min-width:1000px){.ywall{padding:24px 32px}.yw-g{grid-template-columns:repeat(10,minmax(0,1fr));gap:12px}.yw-l{height:78px}.yw-l img{max-height:78px}}
+
+/* r60: 2027 in the same frame (no logo yet) */
+@media (min-width:1000px){
+  .yrtop.framed.f27 .p27{border-radius:2px;box-shadow:inset 0 0 0 10px var(--s1),inset 0 0 0 14px var(--pnl),inset 0 0 0 16px var(--paper);display:flex;flex-direction:column;justify-content:center}
+  .yrtop.framed.f27 .p27>.stripe{display:none}
+  .yrtop.framed.f27 .p27-in{padding:48px 56px}
+  .yrtop.framed.f27>.hero{box-shadow:0 0 0 3px var(--paper),0 0 0 5px var(--ink)}
+}
+
+/* r61 (Zale, Nov 22 20:23) */
+@media (min-width:1000px){
+  /* the frame carries the year's poster art, washed in the frame color */
+  .yrtop.framed{isolation:isolate}
+  .yrtop.framed::before{content:"";position:absolute;left:0;right:0;top:58px;bottom:0;z-index:-1;background:var(--post) center 30%/cover no-repeat;opacity:.38;mix-blend-mode:luminosity;pointer-events:none}
+  .yrtop.framed{background:linear-gradient(to bottom,transparent 0 58px,var(--mat) 58px)}
+  /* "This is the lineup in" sits under the year buttons, right above the names, and is bigger */
+  .yrtop .poster .po-ctl{grid-column:2;grid-row:1;margin-top:4px}
+  .yrtop .poster .po-cap{grid-column:2;grid-row:2;margin-top:22px;font-size:44px;line-height:1.02}
+  .yrtop .po-names{margin-top:22px}
+  /* 2006: the tall rider stands as a card beside the buttons, not squeezed into the logo box */
+  .yrtop .poster[data-yr="2006"] .po-art{grid-row:1/span 3;width:200px}
+  .yrtop .poster[data-yr="2006"] .po-badge{max-height:none!important;width:200px!important;height:auto}
+}
+.poster[data-yr="2006"] .po-badge{max-height:260px}
+/* r61b: the poster art shows in the band above the frame (more room, more color), fading up into the dark; the 2006 rider stays beside the buttons */
+@media (min-width:1000px){
+  .yrtop.framed::before{display:none}
+  .yrtop.framed{background:linear-gradient(to bottom,transparent 0 104px,var(--mat) 104px)}
+  .yrtop.framed>.yrcrown{height:120px}
+  .yrtop.framed>.yrcrown>.seam,.yrtop.framed>.yrcrown>svg.cloud{height:74px;top:auto}
+  .yrtop.framed>.yrcrown::before{content:"";position:absolute;inset:0 0 10px 0;background:var(--post) center 35%/cover no-repeat;opacity:.5;
+    -webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 70%);mask-image:linear-gradient(to bottom,transparent 0,#000 70%)}
+  .yrtop .poster[data-yr="2006"] .po-art{grid-row:1/span 2;width:200px}
+  .yrtop .poster[data-yr="2006"] .po-badge{width:auto!important;max-width:200px;max-height:320px!important;margin:0 auto!important}
+}
+
+/* r62 (Zale, Nov 22 20:29): top band back to the plain horizon (it was busy); the poster art lives inside the panel as a faint texture;
+   panels without a readable poster color go dark with light names; year buttons and caption sit lower */
+@media (min-width:1000px){
+  .yrtop.framed>.yrcrown::before{display:none}
+  .yrtop.framed{background:linear-gradient(to bottom,transparent 0 58px,var(--mat) 58px)}
+  .yrtop.framed>.yrcrown{height:74px}
+  .yrtop.framed.dark .poster{--paper:var(--dkp)!important;--ink:var(--dki)!important;--ink2:var(--dki2)!important}
+  .yrtop.framed .poster{position:relative;isolation:isolate}
+  .yrtop.framed .poster::after{content:"";position:absolute;inset:18px;z-index:-1;background:var(--post) center 30%/cover no-repeat;opacity:.09;mix-blend-mode:multiply;pointer-events:none}
+  .yrtop.framed.dark .poster::after{mix-blend-mode:screen;opacity:.12}
+  .yrtop .poster .po-ctl{margin-top:34px}
+  .yrtop .poster .po-cap{margin-top:30px}
+}
+/* r62b: on a dark panel the year logo sits on a small paper plate, so dark lettering in the logo still reads */
+@media (min-width:1000px){
+  .yrtop.framed{--pp:var(--paper)}
+  .yrtop.framed.dark .po-art .po-badge{background:var(--pp);padding:12px;border-radius:3px;box-shadow:0 0 0 3px var(--dki2);box-sizing:border-box}
+  .yrtop.framed.dark .poster[data-yr="2006"] .po-badge{background:none;padding:0;box-shadow:none}
+}
+/* r63 (Zale, Nov 22 20:41: "the white square does not work"): no plate; the logo gets a die-cut sticker edge in the year's light color that follows its own shape */
+@media (min-width:1000px){
+  .yrtop.framed.dark .po-art .po-badge{background:none!important;padding:0!important;box-shadow:none!important;
+    filter:drop-shadow(3px 0 0 var(--dki2)) drop-shadow(-3px 0 0 var(--dki2)) drop-shadow(0 3px 0 var(--dki2)) drop-shadow(0 -3px 0 var(--dki2))}
+  .yrtop.framed.dark .poster[data-yr="2006"] .po-badge{filter:none}
+}
+
+@media (min-width:1000px){.yrtop.framed.litp .po-art .po-badge{filter:none}.yrtop.framed.litp .poster::after{mix-blend-mode:multiply;opacity:.1}}
+/* r65 (Zale, Nov 22 20:58, picked A): on phone the year's horizon sits as a cap above the reel (video keeps full width and height);
+   the horizon between the reel and the poster goes, so the art lives only at the top, like desktop */
+@media (max-width:999px){
+  .yrtop.framed>.yrcrown{display:block;position:relative;height:52px;margin:0}
+  .yrtop.framed>.yrcrown>.seam,.yrtop.framed>.yrcrown>svg.cloud{position:absolute;left:0;right:0;bottom:0;height:52px;width:100%;--sc:.62}
+  .yrtop.framed>.yrcrown .sm-g path,.yrtop.framed>.yrcrown svg.cloud path:last-child{fill:var(--mat)}
+  .yrtop.framed>.hero{border-top:6px solid var(--mat)}
+  .yrtop.framed .poster.joined>.seam,.yrtop.framed .poster.joined>svg.cloud{display:none}
+}
+
+/* r66: one continuous artist story */
+.liner.one .body{margin-top:14px}
+.liner.one .sets{margin-top:22px;padding-top:14px;border-top:1px solid var(--line2)}
+.liner.one .sets p:last-child{margin-top:6px;font-size:16px;line-height:1.5;color:var(--cream)}
+/* r67 (Zale, Nov 22 21:12), phone: the year chooser rides up top in a thin bar that stays on screen; no holiday strip on Lineup pages;
+   one thin line of the year's border above a tall reel; no dates box; the lineup panel matches desktop (frame color, poster-color panel,
+   sticker-edge logo, printed border) in one column */
+@media (max-width:999px){
+  main.screen:has(.yrbar) .sale{display:none}
+  .yrbar{position:sticky;top:0;z-index:60;padding:6px 12px;border-bottom:0}
+  .yrbar .yrchip{height:38px;padding:0 6px 0 10px}
+  .yrbar .yrchip .yc-y{font-size:21px}
+  .yrbar .yrchip .yc-k{font-size:10px}
+  .yrtop.framed>.yrcrown{height:20px;overflow:hidden}
+  .yrtop.framed>.yrcrown>.seam,.yrtop.framed>.yrcrown>svg.cloud{height:20px;--sc:.28}
+  .yrtop.framed>.yrcrown .sm-sun{display:none}
+  .yrtop.framed>.hero{border-top:0}
+  .yrtop>.hero.hyr{height:min(640px,calc(100svh - 150px))}
+  .yrtop .po-art .po-dates{display:none!important}
+  /* the panel */
+  .yrtop.framed>.poster{background:var(--mat)!important;padding:10px;margin:0!important}
+  .yrtop.framed>.poster .po-in{position:relative;isolation:isolate;background:var(--pnl);border-radius:2px;padding:30px 20px 28px;
+    box-shadow:inset 0 0 0 8px var(--s1),inset 0 0 0 11px var(--pnl),inset 0 0 0 13px var(--ink)}
+  .yrtop.framed>.poster .po-in::after{content:"";position:absolute;inset:14px;z-index:-1;background:var(--post) center 30%/cover no-repeat;opacity:.09;mix-blend-mode:multiply;pointer-events:none}
+  .yrtop.framed.dark>.poster{--paper:var(--dkp)!important;--ink:var(--dki)!important;--ink2:var(--dki2)!important}
+  .yrtop.framed.dark>.poster .po-in{box-shadow:inset 0 0 0 8px var(--s1),inset 0 0 0 11px var(--pnl),inset 0 0 0 13px var(--dki)}
+  .yrtop.framed.dark>.poster .po-in::after{mix-blend-mode:screen;opacity:.12}
+  .yrtop.framed.dark .po-art .po-badge{filter:drop-shadow(2px 0 0 var(--dki2)) drop-shadow(-2px 0 0 var(--dki2)) drop-shadow(0 2px 0 var(--dki2)) drop-shadow(0 -2px 0 var(--dki2))}
+  .yrtop.framed.litp .po-art .po-badge,.yrtop.framed .poster[data-yr="2006"] .po-badge{filter:none}
+  .yrtop.framed>.poster>.stripe{display:none}
+  .yrtop.framed .poster.joined .po-badge{margin-top:0}
+}
+
+/* r68: the year chooser lives in the header title; the separate band shows only where the header is not drawn (inside the live app until Site Build folds it in) */
+main.screen:has(.hd .hd-yr) .yrbar{display:none}
+.hd-yr{display:flex;flex-direction:column;align-items:flex-start;background:none;border:0;padding:4px 10px 4px 0;margin:0;color:inherit;font:inherit;cursor:pointer;min-height:44px;justify-content:center;text-align:left}
+.hd-yr i{display:inline-flex;align-items:center;gap:5px;font-style:normal;color:var(--gold,#D6B54A);font-family:var(--display);font-size:20px;letter-spacing:.04em;line-height:1}
+.hd-yr i svg{width:13px;height:13px}
+.hd-yr b{font-size:11px;letter-spacing:.14em;text-transform:uppercase;line-height:1.2}
+.hd-yr:focus-visible{outline:2px solid var(--gold,#D6B54A);outline-offset:2px}
+@media (max-width:999px){main.screen:has(.hd .hd-yr) .hd{position:sticky;top:0;z-index:60}}
+
+/* r69: the year logo sits in the chooser; the 2027 wordmark and its rule step aside on Lineup pages */
+.hd:has(.hd-yr) .hd-logo,.hd:has(.hd-yr) .hd-rule{display:none}
+.hd-yr{flex-direction:row;align-items:center;gap:10px}
+.hd-yr>span{display:flex;flex-direction:column;align-items:flex-start}
+.hd-yl{height:40px;width:auto;max-width:96px;object-fit:contain;display:block}
+@media (min-width:1000px){.hd-yl{height:48px;max-width:120px}}
+/* r69b: a logo with dark lettering gets a thin light edge in the header so it reads on the dark bar */
+.hd-yl{filter:drop-shadow(1.5px 0 0 rgba(242,237,227,.85)) drop-shadow(-1.5px 0 0 rgba(242,237,227,.85)) drop-shadow(0 1.5px 0 rgba(242,237,227,.85)) drop-shadow(0 -1.5px 0 rgba(242,237,227,.85))}
+main#s1 .hd-yl{filter:none}

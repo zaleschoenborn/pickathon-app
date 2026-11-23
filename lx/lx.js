@@ -67,8 +67,10 @@
   root.querySelectorAll('.hero.reel').forEach(function (hero) {
     var S; try { S = JSON.parse(hero.dataset.slides); } catch (e) { return; }
     if (!S || S.length < 2) return;
-    S.forEach(function (f) { var im = new Image(); im.src = f.i; });
     var i = 0, T = 4000, timer = 0, ph = hero.querySelector(':scope > img'), segs = hero.querySelectorAll('.segs [data-slide]');
+    // r58: the app serves these pages from another folder; take the folder from the first photo so every frame finds its picture
+    var base = (ph.getAttribute('src') || '').replace(/img\/[^\/]*$/, '');
+    S.forEach(function (f) { if (/^img\//.test(f.i)) f.i = base + f.i; var im = new Image(); im.src = f.i; });
     var KC = { Discovery: 'disc', Legend: 'leg', 'Deep cut': 'deep' };
     function go(n) {
       i = (n + S.length) % S.length; var f = S[i];
