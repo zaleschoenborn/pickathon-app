@@ -822,6 +822,18 @@ def _postimg(y):
     return 'data:,'
 def _lum(c):
     r, g, b = (int(c[i:i+2], 16) / 255 for i in (1, 3, 5)); return .2126 * r + .7152 * g + .0722 * b
+def _grl(c):
+    v = [int(c[i:i+2], 16) / 255 for i in (1, 3, 5)]; v = [x / 12.92 if x <= .03928 else ((x + .055) / 1.055) ** 2.4 for x in v]
+    return .2126 * v[0] + .7152 * v[1] + .0722 * v[2]
+def _gcr(a, b): la, lb = sorted([_grl(a), _grl(b)]); return (lb + .05) / (la + .05)
+def _acc(P, bg='#2A2527'):
+    """r71 (Zale, Nov 22 21:45, picked Light): the artist page's labels take the year's own boldest color that still reads 4.5:1 on the dark page."""
+    import colorsys
+    cs = [c for c in [P.get('warm'), P.get('light'), P.get('band'), P.get('ink2'), P['paper']] + list(P.get('stripe', [])) if c and len(c) == 7 and _gcr(c, bg) >= 4.5]
+    def sc(c):
+        r, g, b = (int(c[i:i+2], 16) / 255 for i in (1, 3, 5)); return max(r, g, b) - min(r, g, b)  # chroma: near-whites don't count as a color
+    best = max(cs, key=sc) if cs else None
+    return best if best and sc(best) >= .28 else '#D6B54A'  # no real color that reads: keep the site gold
 def _mat(P):
     """r56c (Zale, Nov 22): the frame takes the year's boldest color; the poster and photo stay on paper below it."""
     import colorsys
@@ -1040,6 +1052,9 @@ def art_page(slug, ap):
     k = x.get('k', 'none'); g = x.get('g', '')
     P = d['yearBrand'].get(yr, P24)
     h = header(name, 'Pickathon ' + yr)
+    # r71 (Zale, Nov 22 21:45, picked Light): the year's thin border strip sits above the hero, the same strip as the top of the year page
+    _P2 = P if yr in d['yearBrand'] else P27
+    h += '<div class="acrown" aria-hidden="true">%s</div>' % (seam(yr, _P2) if yr != '2027' else generic_seam('2027', P27))
     h += ('<section class="hero hact"><img src="%s" alt="" style="object-position:%s"><div class="hero-sc"></div>'
           '<div class="hero-tx"><p class="krow"><span class="k k-%s">%s</span>%s</p><h1>%s</h1><p class="ah-meta">Pickathon %s</p></div></section>') % (
           img(ap['hero'], 780), ap.get('hpos', '50% 40%'), k, KLAB.get(k, ''), ('<span class="g">%s</span>' % E(gp_n(name, GSHORT.get(g, g)))) if (gp_n(name) or g) else '', E(name), yr)
@@ -1092,8 +1107,13 @@ def art_page(slug, ap):
         h += '</div></section>'
     years = sorted({y for y, _ in _KIN.get(name, [])})
     if years:
-        h += '<section class="theirs"><p class="kick">Their Pickathons</p><div class="filt">%s</div></section>' % ''.join(
-            '<a class="chip%s" href="#">Pickathon %s</a>' % (' on' if str(y) == yr else '', y) for y in years)
+        # r71: Their Pickathons are small tiles in each year's colors with that year's logo (the logo wall's tiles); a tile goes to that year's page
+        def _yt(y):
+            y = str(y); Py = d['yearBrand'].get(y, P24); lg = d['yearLogo'].get(y)
+            pic = ('<img loading="lazy" src="%s" alt="">' % img(lg, 220, fmt='PNG')) if lg and not lg.startswith('http') and os.path.exists(_src(lg)) else '<i>%s</i>' % y
+            return ('<button type="button" class="yw-i at-i" data-go="y%s" style="--yb:%s"%s aria-label="Pickathon %s lineup"><span class="yw-l">%s</span><b>%s</b></button>') % (
+                y, _mat(Py), ' aria-current="true"' if y == yr else '', y, pic, y)
+        h += '<section class="theirs"><p class="kick">Their Pickathons</p><div class="at-g">%s</div></section>' % ''.join(_yt(y) for y in years)
     # r58 (Zale, Nov 22 20:06): "If you like" draws from the Archive's cards that share any of the act's music tags, nearest in size today
     _mt = set(tags_of(name)) or ({gp_n(name, GSHORT.get(g, g))} - {''})
     _me = max([v for (cn, _y), v in _magall.items() if cn == _canon(name)] or [x.get('m') or 0])
@@ -1102,7 +1122,7 @@ def art_page(slug, ap):
     if same:
         h += shelf('Same sound, other summers', 'IF YOU LIKE %s' % name.upper(), 'Acts who stand about where %s stands today.' % name, '',
                    [vcard(n_, y_, k_, g_, p_, pos_) for k_, n_, y_, g_, p_, pos_ in same])
-    return ('<main id="a-%s" class="screen" hidden style="--paper:%s;--ink:%s;--ink2:%s">%s</main>') % (slug, P['paper'], P['ink'], P['ink2'], h)
+    return ('<main id="a-%s" class="screen" hidden style="--paper:%s;--ink:%s;--ink2:%s;--acc:%s;--mat:%s">%s</main>') % (slug, P['paper'], P['ink'], P['ink2'], _acc(P), _mat(P), h)
 ARTISTS = {}
 for _s, _ap in d['actPages'].items():
     if _s in _NAMES:
