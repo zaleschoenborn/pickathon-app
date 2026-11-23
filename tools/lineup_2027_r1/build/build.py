@@ -801,12 +801,16 @@ def tile(a, y, P, photo):
 
 YREEL = {}
 _RF = json.load(open(ROOT + 'reel_focus.json'))
+# r66 (Copy Review copy_review-50, Nov 22): a three-line then -> now line for every Music act-year (473 that had none), from branch copy-review-nov22b data.json actYearLines
+_AYL = {}
+for _o in json.load(open(ROOT + 'act_year_lines.json', encoding='utf-8')):
+    _AYL[(''.join(c for c in _ud.normalize('NFD', _o['n'].lower()) if c.isalnum() and ord(c) < 128), str(_o['y']))] = _o['l']
 def _rline(n, y, k):  # r50: the reel frame carries Copy Review's three-line card line (then -> now) when one exists
     sl_ = ''.join(c for c in _ud.normalize('NFD', n.lower()) if c.isalnum() and ord(c) < 128)
     for kk in (k, 'disc', 'leg', 'deep'):
         v = _ALINES.get('%s|%s|%s' % (kk, sl_, y))
         if v: return v
-    return ''
+    return _AYL.get((sl_, str(y)), '')
 def _postimg(y):
     """r61 (Zale, Nov 22 20:23): the frame shows a close-up of that year's own poster art, washed in the frame color."""
     for p_ in ('i/y%s-poster.webp' % y[2:], 'i/y%s-centre.webp' % y[2:]):
@@ -1018,6 +1022,11 @@ def _cls(name, yr):
     for y, x in _KIN.get(name, []):
         if str(y) == str(yr): return x
     return None
+_STORIES = {}
+import glob as _gl
+for _f in sorted(_gl.glob(ROOT + 'stories/stories_*.csv')):
+    for _r in csv.DictReader(open(_f, encoding='utf-8')):
+        if _r.get('story'): _STORIES[(_slug(_r['act']), str(_r['year']))] = _r
 def art_page(slug, ap):
     name = _NAMES[slug]; yr = str(ap.get('yr') or max([y for y, _ in _KIN.get(name, [])] or [2024]))
     if not str(ap.get('hero','')).startswith(('i/', 'ext/')) or not os.path.exists(_src(ap['hero'])):
@@ -1030,7 +1039,13 @@ def art_page(slug, ap):
     h += ('<section class="hero hact"><img src="%s" alt="" style="object-position:%s"><div class="hero-sc"></div>'
           '<div class="hero-tx"><p class="krow"><span class="k k-%s">%s</span>%s</p><h1>%s</h1><p class="ah-meta">Pickathon %s</p></div></section>') % (
           img(ap['hero'], 780), ap.get('hpos', '50% 40%'), k, KLAB.get(k, ''), ('<span class="g">%s</span>' % E(gp_n(name, GSHORT.get(g, g)))) if (gp_n(name) or g) else '', E(name), yr)
-    story = [s for s in (ap.get('story') or []) if s.get('t')]
+    # r66 (Zale picked one continuous story, copy_review-54): intro, one story in a few paragraphs, then a small sets block; read from Copy Review's stories_<year> CSVs
+    _st = _STORIES.get((_slug(name), yr))
+    story = [] if _st else [s for s in (ap.get('story') or []) if s.get('t')]
+    if _st:
+        h += '<section class="liner one"><p class="kick">Liner notes</p><p class="lead">%s</p>%s%s</section>' % (
+            E(_st['intro']), ''.join('<p class="body">%s</p>' % E(pp.strip()) for pp in _st['story'].split('\n\n') if pp.strip()),
+            ('<div class="sets"><p class="kick">At Pickathon %s</p><p>%s</p></div>' % (yr, E(_st['sets']))) if _st.get('sets') else '')
     if story:
         h += '<section class="liner"><p class="kick">Liner notes</p><p class="lead">%s</p>' % E(story[0]['t'])
         for s in story[1:]:

@@ -947,3 +947,8 @@ h2{font-family:var(--display);font-weight:400;font-size:27px;line-height:1.14;le
   .yrtop.framed>.hero{border-top:6px solid var(--mat)}
   .yrtop.framed .poster.joined>.seam,.yrtop.framed .poster.joined>svg.cloud{display:none}
 }
+
+/* r66: one continuous artist story */
+.liner.one .body{margin-top:14px}
+.liner.one .sets{margin-top:22px;padding-top:14px;border-top:1px solid var(--line2)}
+.liner.one .sets p:last-child{margin-top:6px;font-size:16px;line-height:1.5;color:var(--cream)}
