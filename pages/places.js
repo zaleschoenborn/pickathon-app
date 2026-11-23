@@ -747,13 +747,13 @@
     var body = !t ? '' : t.length < 260 ? '<p class="pkpl-wt">' + esc(t) + '</p>' : '<div class="pkpl-more"><p>' + esc(t) + '</p><button type="button" class="pkpl-rm" data-pk="rm" aria-expanded="false">Keep reading</button></div>';   /* a short description shows whole */
     return '<div class="pkpl-what"><p class="pkpl-sk">' + esc((M0W.aboutKicker || 'About {place}').replace('{place}', h.n)) + '</p>' + (hk ? '<p class="pkpl-ab1">' + esc(hk) + '</p>' : '') + body + '</div>'; }
   function amOf(k) { return (MI || []).filter(function (z) { return z[3] === k; }).map(function (z) { return z[0]; }).filter(function (x, i, a) { return a.indexOf(x) === i && x !== 'tent' && x !== 'gear'; }); }
-  function quick(k, h, hasVid, hasYr) {   /* Zale, Nov 23: a few quick links on the photo, so the practical things and the story are one tap away without pulling the page up first */
-    var am = amOf(k).slice(0, 3), Q = [];
-    Q.push('<button type="button" class="pkpl-q" data-pk="q" data-to="soon">' + (am.length ? '<span class="pkpl-qi">' + am.map(function (x) { return '<i class="pkpl-fi">' + amGlyph(x) + '</i>'; }).join('') + '</span>' : '') + '<span>What\u2019s here</span></button>');
-    if (hasVid) Q.push('<button type="button" class="pkpl-q" data-pk="q" data-to="vids"><span class="pkpl-qp" aria-hidden="true"></span><span>' + esc(M0W.vidHead || 'Then and now') + '</span></button>');
-    if (hasYr) Q.push('<button type="button" class="pkpl-q" data-pk="q" data-to="yr"><span>The story</span></button>');
+  function quick(k, h, hasVid, hasYr) {   /* Zale, Nov 23: quick links on the photo, most useful first: Schedule (Now playing at the festival, later), Watch, Who built it */
+    var Q = ['<button type="button" class="pkpl-q" data-pk="q" data-to="soon"><span>Schedule</span></button>'];
+    if (hasVid) Q.push('<button type="button" class="pkpl-q" data-pk="q" data-to="vids"><span class="pkpl-qp" aria-hidden="true"></span><span>Watch</span></button>');
+    if (hasYr) Q.push('<button type="button" class="pkpl-q" data-pk="q" data-to="yr"><span>Who built it</span></button>');
     return '<div class="pkpl-qr" role="group" aria-label="Jump to">' + Q.join('') + '</div>';
   }
+
   function soon(k, XE, h, has) {
     if (has) return '';   /* the real schedule is showing: it is the 2027 card */   /* the 2027 schedule, summarized until it posts (Zale, Nov 19: more useful than every past year) */
     var HP = (data().hoodProg || {})[k], kinds = HP ? (HP.kinds || []).map(function (g) { return g[0]; }).filter(function (n) { return !/^(more|showcases)/i.test(n); }) : [];
@@ -904,7 +904,7 @@
     var b = e.target.closest ? e.target.closest('[data-pk]') : null; if (!b || !b.closest('#pkpl-top')) return;
     var a = b.getAttribute('data-pk');
     if (a === 'step') { var ce0 = cardEl(); KEEPFOLD = !wide() && !!(ce0 && ce0.classList.contains('pkpl-folded')); FROM = null; if (TOP.xp && TOP.xp !== 'Architecture' && M) M.xp = TOP.xp; go('hood', { h: b.getAttribute('data-to') }); return; }   /* the arrows keep the experience: next Wellness place, and so on */
-    if (a === 'q') { var cq = cardEl(), sel = { soon: ['.pkpl-sc', '.pkpl-soon', '.pkpl-what'], vids: ['.pkpl-vids'], yr: ['.pkpl-yr'] }[b.getAttribute('data-to')] || [], tq = null; sel.some(function (q) { tq = cq && $(q, cq); return tq; });
+    if (a === 'q') { var cq = cardEl(), sel = { soon: ['.pkpl-sc', '.pkpl-soon', '.pkpl-what'], vids: ['.pkpl-vids'], yr: ['.pkpl-yr', '.pkpl-credw'] }[b.getAttribute('data-to')] || [], tq = null; sel.some(function (q) { tq = cq && $(q, cq); return tq; });
       if (tq) { if (cq.classList.contains('pkpl-folded')) setFold(false); setTimeout(function () { tq.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 60); } return; }   /* quick link: open the page right at that part */
     if (a === 'dot') { var hero = b.closest('.pkpl-hero'); clearTimeout(TOP.timer); heroShow(hero, +b.getAttribute('data-i')); return; }
     if (a === 'day') { TOP.day = b.getAttribute('data-d'); TOP.all = false; drawTop(); return; }
