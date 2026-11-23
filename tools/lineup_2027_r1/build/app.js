@@ -8,17 +8,21 @@
   }
   bar.addEventListener('click', function (e) { var b = e.target.closest('button'); if (b) show(b.dataset.s); });
   document.addEventListener('change', function (e) { var t = e.target; if ((t.id === 'ysel' || t.classList.contains('ysel2')) && t.value) { show(t.value); if (t.classList.contains('ysel2')) { var o = t.querySelector('option[selected]'); if (o) t.value = o.value; } } });
-  function openArt(slug, an) {  // every name, tile and card opens its artist page (Nov 20: Zale said yes)
-    var el = document.getElementById('a-' + slug) || document.getElementById('a-' + slug.replace(/^the/, ''));
+  function openArt(slug, an, yr) {  // every name, tile and card opens its artist page (Nov 20: Zale said yes)
+    // r79 (Zale, Nov 22 23:08): one artist page per year played; the year comes from the card, else the page it sits on
+    var el = (yr && (document.getElementById('a-' + slug + '-y' + yr) || document.getElementById('a-' + slug.replace(/^the/, '') + '-y' + yr))) || document.getElementById('a-' + slug) || document.getElementById('a-' + slug.replace(/^the/, ''));
     if (!el) return false;
     var cur = document.querySelector('.screen:not([hidden])'); if (cur && cur !== el) hist.push(cur.id);
     document.querySelectorAll('.screen').forEach(function (m) { m.hidden = m !== el; });
-    if (an) el.querySelectorAll('.hd-t b, .hero-tx h1').forEach(function (x) { x.textContent = an; });  // the page carries the name the poster printed
+    if (an) el.querySelectorAll('.hd-t:not(.hd-yr) b, .hero-tx h1').forEach(function (x) { x.textContent = an; });  // the page carries the name the poster printed
     window.scrollTo(0, 0); return true;
   }
   document.addEventListener('click', function (e) {
     if (e.target.closest('[data-clip]')) return;  // r36: on a card with a song the photo plays it; the name and 'Their story' open the artist page
-    var a = e.target.closest('[data-art]'); if (a && openArt(a.dataset.art, a.dataset.an)) { e.preventDefault(); return; }
+    var a = e.target.closest('[data-art]');
+    if (a) { var yr = a.dataset.ay || ''; if (!yr) { var mm = (a.closest('main') || {}).id || ''; var r = /^y(\d{4})$/.exec(mm); if (r) yr = r[1]; }
+      if (!yr) { var cy = (a.closest('.card, .vcard, [data-y]') || a).querySelector('.cyr, .yt-y'); if (cy) { var r2 = /(\d{4})/.exec(cy.textContent); if (r2) yr = r2[1]; } }
+      if (openArt(a.dataset.art, a.dataset.an, yr)) { e.preventDefault(); return; } }
     var b = e.target.closest('.hd button[aria-label="Back"]'); if (b && hist.length) { var id = hist.pop(); show(id); e.preventDefault(); }
   });
   document.addEventListener('click', function (e) { var a = e.target.closest('[data-go]'); if (a) { e.preventDefault(); show(a.dataset.go); } });

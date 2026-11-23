@@ -1059,7 +1059,7 @@ import glob as _gl
 for _f in sorted(_gl.glob(ROOT + 'stories/stories_*.csv')):
     for _r in csv.DictReader(open(_f, encoding='utf-8')):
         if _r.get('story'): _STORIES[(_slug(_r['act']), str(_r['year']))] = _r
-def art_page(slug, ap):
+def art_page(slug, ap, pid=None):
     name = _NAMES[slug]; yr = str(ap.get('yr') or max([y for y, _ in _KIN.get(name, [])] or [2024]))
     if not str(ap.get('hero','')).startswith(('i/', 'ext/')) or not os.path.exists(_src(ap['hero'])):
         ap = dict(ap, hero=d['yearLogo'][yr] if yr in d['yearLogo'] else 'logo27-gold.png')
@@ -1168,7 +1168,8 @@ def art_page(slug, ap):
     if same:
         h += shelf('Same sound, other summers', 'IF YOU LIKE %s' % name.upper(), 'Acts who stand about where %s stands today.' % name, '',
                    [vcard(n_, y_, k_, g_, p_, pos_) for k_, n_, y_, g_, p_, pos_ in same])
-    return ('<main id="a-%s" class="screen" hidden style="--paper:%s;--ink:%s;--ink2:%s;--acc:%s;--mat:%s">%s</main>') % (slug, P['paper'], P['ink'], P['ink2'], _acc(P), _mat(P), h)
+    if pid: slug = pid
+    return ('<main id="a-%s" class="screen" hidden style=""--paper:%s;--ink:%s;--ink2:%s;--acc:%s;--mat:%s">%s</main>') % (slug, P['paper'], P['ink'], P['ink2'], _acc(P), _mat(P), h)
 ARTISTS = {}
 for _s, _ap in d['actPages'].items():
     if _s in _NAMES:
@@ -1212,16 +1213,34 @@ for _o in _OWN:
         _apo = {'yr': str(min(int(y) for y, _ in _KIN[_NAMES[_o]])), 'gal': [p for p in _ph if p is not _hp][:8], 'vids': _vi}
         if _hp: _apo.update(hero=_hp['i'], hpos=_hp['pos'])
         ARTISTS[_o] = art_page(_o, _apo)
-print(len(ARTISTS), 'artist pages generated')
+# r79 (Zale, Nov 22 23:08): "there's always a separate artist page for every year they play Pickathon". The page each act already had
+# keeps its id (a-<slug>, its own year); every other year gets a-<slug>-y<year> with that year's photo, songs, line and story
+_NEXTRA = 0
+for _s in list(ARTISTS):
+    _nm = _NAMES.get(_s)
+    _ap0 = d['actPages'].get(_s)
+    _m0 = _re.search(r'class="hyr-y">(\d{4})<', ARTISTS[_s]); _y0 = _m0.group(1) if _m0 else ''
+    for _y in sorted({str(y_) for y_, _ in _KIN.get(_nm, [])}):
+        if _y == _y0: continue
+        _yp = (d['yearPhotos'].get(_y, {}).get(_nm) or {})
+        _api = {'yr': _y, 'gal': [], 'vids': [], 'story': []}
+        if _yp.get('i') and os.path.exists(_src(_yp['i'])):
+            _api.update(hero=_yp['i'], hpos=fpos(_yp['i']), heroSt=_yp.get('s', ''))
+        if _ap0 and str(_ap0.get('yr')) == _y: _api = _ap0
+        try:
+            ARTISTS[_s + 'y' + _y] = art_page(_s, _api, pid='%s-y%s' % (_s, _y)); _NEXTRA += 1
+        except Exception as _e:
+            print('skip year page', _s, _y, _e)
+print(len(ARTISTS), 'artist pages generated (%d extra act-year pages)' % _NEXTRA)
 _ASEL = '<label class="mb-sel">Artist <select id="asel"><option value="">Pick an artist</option>%s</select></label>' % ''.join(
-    '<option value="%s">%s</option>' % (s, E(_NAMES[s])) for s in sorted(ARTISTS, key=lambda s: _NAMES[s].lower()))
+    '<option value="%s">%s</option>' % (s, E(_NAMES[s])) for s in sorted([k_ for k_ in ARTISTS if k_ in _NAMES], key=lambda s: _NAMES[s].lower()))
 _ASCRIPT = ('<script>document.getElementById("asel").addEventListener("change",function(e){var v=e.target.value;if(!v)return;'
             'document.querySelectorAll(".screen").forEach(function(m){m.hidden=true;});var m=document.getElementById("a-"+v);'
             'if(m){m.hidden=false;window.scrollTo(0,0);}});</script>')
 
 page = page.replace('<button data-s="s3">', _ASEL + '<button data-s="s3">', 1).replace('<nav class="tabs">', ''.join(ARTISTS.values()) + year_wall('').replace('class="ywall"', 'class="ywall ywall-g"', 1) + '<nav class="tabs">', 1).replace('</body>', _ASCRIPT + _PLAYER + '</body>')
 # name variants and collab billings that point at a page we have (Zale, Nov 20: "those names obviously map to an artist")
-_PIDS0 = set(_re.findall(r'id="a-([a-z0-9]+)"', page))
+_PIDS0 = set(_re.findall(r'id="a-([a-z0-9]+)"', page))  # base ids; act-year pages are a-<slug>-y<year>
 page = _re.sub(r' data-art="([a-z0-9]*)"', lambda m: (' data-art="%s"' % _ALIAS[m.group(1)]) if (m.group(1) in _ALIAS and _ALIAS[m.group(1)] in _PIDS0) else m.group(0), page)
 # names with no artist page keep no link (a tap must never go nowhere); the gaps are listed in the build log
 _PIDS = set(_re.findall(r'id="a-([a-z0-9]+)"', page))
