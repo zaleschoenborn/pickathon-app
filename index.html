@@ -13572,7 +13572,7 @@ window.pkClimbRank = function (C, dd) {
     requestAnimationFrame(f); if (document.fonts && document.fonts.ready) document.fonts.ready.then(f);
     if (!window.__pkXPR) { window.__pkXPR = 1; addEventListener('resize', function () { var e = root && $('[data-h2="xpan"]', root); if (e) xpFitMap(e); }); } }
   /* copy_review-43 (Nov 22 14:05): xpWords.home = family, camping, lineupSoon; the fallbacks are the same words so the page reads right before the data ships */
-  function homeW(k) { var F = { family: 'Kids get their own festival in the woods, all weekend.', camping: 'Camping is included with 3- and 4-day tickets.', lineupSoon: 'Announced in January.', campIntro: 'Each year, Pickathon builds a city of neighborhoods. Then it\'s gone.' }; var W = null; try { W = D && D.xpWords && D.xpWords.home; } catch (e) {} return (W && W[k]) || F[k]; }
+  function homeW(k) { var F = { family: 'Kids get their own festival in the woods, all weekend.', camping: 'Camping is included with 3- and 4-day tickets.', lineupSoon: 'Announced in January.', campIntro: 'Each year, Pickathon builds a city of imagination. Then it\'s gone.' }; var W = null; try { W = D && D.xpWords && D.xpWords.home; } catch (e) {} return (W && W[k]) || F[k]; }
   function xpWordsIn() { if (xpWordsIn.ok || !D || !D.xpWords) return; var W = D.xpWords; xpWordsIn.ok = 1;   /* copy_review-35: one shared set of experience and place words (Home and the Places map) */
     if (W.XPD) Object.keys(W.XPD).forEach(function (k) { if (W.XPD[k]) XPD[k] = W.XPD[k]; });
     if (W.XPB) Object.keys(W.XPB).forEach(function (x) { XPB[x] = XPB[x] || {}; Object.keys(W.XPB[x] || {}).forEach(function (h) { if (W.XPB[x][h]) XPB[x][h] = W.XPB[x][h]; }); });
