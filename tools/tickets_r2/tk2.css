@@ -846,3 +846,12 @@ body:has(#tk2 #tk-bar:not([hidden])) #pk-toast,body:has(#pk-co) #pk-toast{displa
 /* a cold visitor's experience pick lights its row in the steps (Family: kids) */
 #tk2 .tk-g-hl,.tk2 .tk-g-hl,.tk-gscrim .tk-g-hl{outline:2px solid #F2CF62;outline-offset:2px;border-radius:8px;background:rgba(242,207,98,.07)}
 .tk-g-yp{font-style:normal;color:#F2CF62;font-weight:700}
+
+/* Music setup and the bet (Zale, Nov 23): one line above the bands, one line and the lineup link below */
+.tk2 .tk-x-set{padding:0 var(--gutter);margin:4px 0 0;font-size:17px;line-height:1.35;font-weight:700;color:var(--cream);max-width:560px}
+.tk2 .tk-x-next{padding:0 var(--gutter);margin:12px 0 0;font-size:15px;line-height:1.4;color:var(--cream-dim)}
+.tk2 .tk-x-next span{margin-right:6px}.tk2 .tk-x-next .tk-tlink{color:var(--gold,#F2CF62);font-weight:800}
+@media (min-width:1025px){.tk2 .tk-x-set,.tk2 .tk-x-next{padding-left:0;padding-right:0}}
+.tk2 .tk-x-set{margin-top:14px}
+.tk2 .tk-x-next span{display:block;margin:0 0 2px}
+#tk2 .tk-x-next .tk-tlink{min-height:44px;padding:0;display:inline-flex;align-items:center}

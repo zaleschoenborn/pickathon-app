@@ -560,12 +560,14 @@
         (yr ? '<span class="tk-x-yr tk-d">' + esc(yr) + '</span>' : '') + (play ? RING : '') +
         '<span class="tk-x-low"><span class="tk-x-kk"><b>' + esc(kL) + '</b>' + (kR ? '<span>' + esc(kR) + '</span>' : '') + '</span><span class="tk-x-n tk-d">' + esc(name) + '</span>' + (line ? '<span class="tk-x-l">' + esc(line) + '</span>' : '') + '</span></button></li>';
     };
-    if (t === 'Music') { L = xBands(); cards = L.map(function (a, i) { return card('x-play', i, a.img, '', 'Discovery', gN(a.g), a.y, a.n, a.line, true, 'Watch ' + a.n + ', Pickathon ' + a.y); }).join(''); }
+    if (t === 'Music') { L = xBands(); cards = L.map(function (a, i) { return card('x-play', i, a.img, '', 'Seen here first', gN(a.g), a.y, a.n, a.line, true, 'Watch ' + a.n + ', Pickathon ' + a.y); }).join(''); }
     else { L = xPlaces(t); cards = L.map(function (p, i) { return card('x-tour', i, p.img, p.pos, t, '', '', p.n, p.line, false, 'Photo tour of ' + p.n); }).join(''); }
     var tk = xTicket(t), line = t === 'Music' ? '' : (XD[t] || '');
     return '<p class="tk-g-k tk-x-k">What do you want to experience?</p>' +
       '<div class="tk-x-ch" role="group" aria-label="Experiences">' + list.map(function (x) { return '<button type="button" class="tk-x-chip" data-act="x-pick" data-v="' + x + '" aria-pressed="' + (x === t ? 'true' : 'false') + '">' + xIc(x) + '<span>' + x + '</span></button>'; }).join('') + '</div>' +
+      (t === 'Music' ? '<p class="tk-x-set">Most festivals book the names you already know. We book the ones you’re about to.</p>' : '') +
       '<ul class="tk-x-row" aria-label="' + (t === 'Music' ? 'Bands that played Pickathon before they were big' : esc(t) + ' at Pickathon, by place') + '">' + cards + '</ul>' +
+      (t === 'Music' ? '<p class="tk-x-next"><span>Someone on the 2027 lineup is next.</span><button type="button" class="tk-tlink" data-act="x-lineup">' + ((site().season || 'off') === 'off' ? 'Be there first →' : 'See the 2027 lineup →') + '</button></p>' : '') +
       (line || tk ? '<p class="tk-x-line">' + esc(line) + (tk ? '<b>' + esc(tk) + '</b>' : '') + '</p>' : '');
   }
   function xDraw(tries) {
@@ -659,6 +661,7 @@
     if (act === 'x-pick') { xpPick(b.getAttribute('data-v')); xDraw(); return true; }
     if (act === 'x-play') { var xa = xBands()[+b.getAttribute('data-i')]; if (xa && xa.vu && window.__pkPlayVid) { try { window.__pkPlayVid(xa.vu, xa.n + ' · Pickathon ' + xa.y); } catch (x) {} } return true; }
     if (act === 'x-tour') { var xp = xPlaces(XCUR)[+b.getAttribute('data-i')], AT = app(); if (xp && AT && AT.ssOpen) { try { AT.ssOpen(xp.k); } catch (x) {} } return true; }
+    if (act === 'x-lineup') { var AL = app(); if (AL) AL.go('lineup'); return true; }
     if (act === 'e-why') { var AW = app(); if (AW) AW.go('home'); return true; }
     if (act === 'e-tile') { eTile(b.getAttribute('data-t')); return true; }
     if (g && gDayTap(EN, g, b.getAttribute('data-d'))) { entryDraw(); return true; }

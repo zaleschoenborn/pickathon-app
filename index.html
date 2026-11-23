@@ -8605,6 +8605,15 @@ body:has(#tk2 #tk-bar:not([hidden])) #pk-toast,body:has(#pk-co) #pk-toast{displa
 /* a cold visitor's experience pick lights its row in the steps (Family: kids) */
 #tk2 .tk-g-hl,.tk2 .tk-g-hl,.tk-gscrim .tk-g-hl{outline:2px solid #F2CF62;outline-offset:2px;border-radius:8px;background:rgba(242,207,98,.07)}
 .tk-g-yp{font-style:normal;color:#F2CF62;font-weight:700}
+
+/* Music setup and the bet (Zale, Nov 23): one line above the bands, one line and the lineup link below */
+.tk2 .tk-x-set{padding:0 var(--gutter);margin:4px 0 0;font-size:17px;line-height:1.35;font-weight:700;color:var(--cream);max-width:560px}
+.tk2 .tk-x-next{padding:0 var(--gutter);margin:12px 0 0;font-size:15px;line-height:1.4;color:var(--cream-dim)}
+.tk2 .tk-x-next span{margin-right:6px}.tk2 .tk-x-next .tk-tlink{color:var(--gold,#F2CF62);font-weight:800}
+@media (min-width:1025px){.tk2 .tk-x-set,.tk2 .tk-x-next{padding-left:0;padding-right:0}}
+.tk2 .tk-x-set{margin-top:14px}
+.tk2 .tk-x-next span{display:block;margin:0 0 2px}
+#tk2 .tk-x-next .tk-tlink{min-height:44px;padding:0;display:inline-flex;align-items:center}
 </style>
 <script id="pk-tk2">
 /* pk-tk2: Tickets, round 2 design (Nov 11 2026). Source: tools/tickets_r2/tk2.js, spliced into index.html by tools/tickets_r2/build.py.
@@ -9169,12 +9178,14 @@ body:has(#tk2 #tk-bar:not([hidden])) #pk-toast,body:has(#pk-co) #pk-toast{displa
         (yr ? '<span class="tk-x-yr tk-d">' + esc(yr) + '</span>' : '') + (play ? RING : '') +
         '<span class="tk-x-low"><span class="tk-x-kk"><b>' + esc(kL) + '</b>' + (kR ? '<span>' + esc(kR) + '</span>' : '') + '</span><span class="tk-x-n tk-d">' + esc(name) + '</span>' + (line ? '<span class="tk-x-l">' + esc(line) + '</span>' : '') + '</span></button></li>';
     };
-    if (t === 'Music') { L = xBands(); cards = L.map(function (a, i) { return card('x-play', i, a.img, '', 'Discovery', gN(a.g), a.y, a.n, a.line, true, 'Watch ' + a.n + ', Pickathon ' + a.y); }).join(''); }
+    if (t === 'Music') { L = xBands(); cards = L.map(function (a, i) { return card('x-play', i, a.img, '', 'Seen here first', gN(a.g), a.y, a.n, a.line, true, 'Watch ' + a.n + ', Pickathon ' + a.y); }).join(''); }
     else { L = xPlaces(t); cards = L.map(function (p, i) { return card('x-tour', i, p.img, p.pos, t, '', '', p.n, p.line, false, 'Photo tour of ' + p.n); }).join(''); }
     var tk = xTicket(t), line = t === 'Music' ? '' : (XD[t] || '');
     return '<p class="tk-g-k tk-x-k">What do you want to experience?</p>' +
       '<div class="tk-x-ch" role="group" aria-label="Experiences">' + list.map(function (x) { return '<button type="button" class="tk-x-chip" data-act="x-pick" data-v="' + x + '" aria-pressed="' + (x === t ? 'true' : 'false') + '">' + xIc(x) + '<span>' + x + '</span></button>'; }).join('') + '</div>' +
+      (t === 'Music' ? '<p class="tk-x-set">Most festivals book the names you already know. We book the ones you’re about to.</p>' : '') +
       '<ul class="tk-x-row" aria-label="' + (t === 'Music' ? 'Bands that played Pickathon before they were big' : esc(t) + ' at Pickathon, by place') + '">' + cards + '</ul>' +
+      (t === 'Music' ? '<p class="tk-x-next"><span>Someone on the 2027 lineup is next.</span><button type="button" class="tk-tlink" data-act="x-lineup">' + ((site().season || 'off') === 'off' ? 'Be there first →' : 'See the 2027 lineup →') + '</button></p>' : '') +
       (line || tk ? '<p class="tk-x-line">' + esc(line) + (tk ? '<b>' + esc(tk) + '</b>' : '') + '</p>' : '');
   }
   function xDraw(tries) {
@@ -9268,6 +9279,7 @@ body:has(#tk2 #tk-bar:not([hidden])) #pk-toast,body:has(#pk-co) #pk-toast{displa
     if (act === 'x-pick') { xpPick(b.getAttribute('data-v')); xDraw(); return true; }
     if (act === 'x-play') { var xa = xBands()[+b.getAttribute('data-i')]; if (xa && xa.vu && window.__pkPlayVid) { try { window.__pkPlayVid(xa.vu, xa.n + ' · Pickathon ' + xa.y); } catch (x) {} } return true; }
     if (act === 'x-tour') { var xp = xPlaces(XCUR)[+b.getAttribute('data-i')], AT = app(); if (xp && AT && AT.ssOpen) { try { AT.ssOpen(xp.k); } catch (x) {} } return true; }
+    if (act === 'x-lineup') { var AL = app(); if (AL) AL.go('lineup'); return true; }
     if (act === 'e-why') { var AW = app(); if (AW) AW.go('home'); return true; }
     if (act === 'e-tile') { eTile(b.getAttribute('data-t')); return true; }
     if (g && gDayTap(EN, g, b.getAttribute('data-d'))) { entryDraw(); return true; }
