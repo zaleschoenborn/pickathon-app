@@ -963,7 +963,7 @@ def year_page(y):
     then_list = sorted(music, key=lambda x: -(x.get('mb') if x.get('mb') is not None else -1)) if (ranked and int(y) >= 2009) else music
     h += poster_block(P, badge, y, then_list, today_all, len(music), joined=bool(hero), ranked=ranked)
     # r56 (Zale, Nov 22): paper frame. The year's own art runs along the top (desktop), and the poster paper wraps photo and poster like a printed poster with a photo window
-    _crown = '<div class="yrcrown" aria-hidden="true">%s</div>' % seam(y, P)
+    _crown = '' if os.path.exists(ROOT + 'ext/horizons/y%s-horizon.png' % y[2:]) else '<div class="yrcrown" aria-hidden="true">%s</div>' % seam(y, P)  # r93b (Zale, Nov 24): one band, not two
     _st = (list(P.get('stripe', [])) + [P['ink']] * 3)[:3]
     _pale = _lum(P['paper']) > .82
     _tint = _mat(P)
@@ -1001,6 +1001,10 @@ def year_page(y):
     _cand = [c for c in list(P.get('stripe', [])) + [P.get('light'), P.get('warm'), P['ink']] if c and len(c) == 7 and _dist(c, P['paper']) > 60]
     _band = max(_cand, key=lambda c: _dist(c, _tint)) if _cand else P['ink']  # r57: border band contrasts with the frame color
     h = h[:_top] + '<div class="yrtop framed%s" style="--paper:%s;--ink:%s;--mat:%s;--s1:%s;--s2:%s;--s3:%s;--tint:%s;--pnl:%s;--post:url(%s)%s">%s' % ((' pale' if _pale else '') + (' dark' if _dark else '') + (' litp' if _litp else ''), P['paper'], P['ink'], _mat(P), _band, _st[1], _st[2], _tint, _pnl, _postimg(y), (';--dkp:%s;--dki:%s;--dki2:%s' % _dark) if _dark else '', _crown) + h[_top:] + '</div>'
+    # r93c (Zale, Nov 24 10:22, picked same join): the year's world ends on a thin accent line with the year icon on it, like the artist page
+    _yic = 'ext/icons/y%s-icon.png' % y[2:]
+    if os.path.exists(ROOT + _yic):
+        h += '<div class="yjoin" aria-hidden="true"><img src="%s" alt=""></div>' % img(_yic, 240, fmt='PNG')
     if st.get('headline'):
         h += ('<section class="story short"><p class="kick">The %s story</p><p class="lead">%s.</p>%s</section>') % (y, E(st['headline'].rstrip('.')), ('<p class="body" hidden>%s</p><button class="chip stog" aria-expanded="false" data-open="Read the %s story" data-shut="Show less"><span>Read the %s story</span> %s</button>' % (E(st['story']), y, y, ICON['caret'])) if st.get('story') else '')
     lp = ''  # Nov 21 r27 (Zale): the lineup picker is off until the other lineups (Family, DJs, Comedy...) are drawn; it listed them with nothing behind them
@@ -1286,7 +1290,7 @@ def art_page(slug, ap, pid=None):
           k, KLAB.get(k, ''), ('<span class="g">%s</span>' % E(gp_n(name, GSHORT.get(g, g)))) if (gp_n(name) or g) else '', E(name),
           ('<p class="hero-sub">%s</p>' % E(_line)) if _line else '')
     # r73 (Zale, Nov 22 21:56): the same year strip turned upside down closes the bottom of the photo
-    h += '<div class="acrown afoot" aria-hidden="true">%s</div>' % (seam(yr, _P2) if yr != '2027' else generic_seam('2027', P27))
+    h += '<div class="hzn-foot" aria-hidden="true"></div>' if _hz else '<div class="acrown afoot" aria-hidden="true">%s</div>' % (seam(yr, _P2) if yr != '2027' else generic_seam('2027', P27))
     # r74 (Zale, Nov 22 22:03; picked "go to that year's page"): a small year block under the reel ties the act to its Pickathon:
     # the year logo, "Pickathon 2013" and the stage, then every year the act played; each year opens that year's lineup page
     _lgy = d['yearLogo'].get(yr)

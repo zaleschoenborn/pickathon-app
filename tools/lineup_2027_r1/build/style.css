@@ -1179,3 +1179,8 @@ a.hd-yr{text-decoration:none}
 @media (min-width:700px){.hzn img{height:96px}}
 @media (min-width:1000px){.hzn img{height:120px}}
 .hzn-art img{height:56px}@media (min-width:1000px){.hzn-art img{height:96px}}
+.hzn-foot{height:3px;background:var(--acc,#D6B54A)}
+/* r93c year-page join: accent line + year icon, the same join as the artist page */
+.yjoin{position:relative;height:3px;background:var(--acc,#D6B54A);margin:0 0 56px}
+.yjoin img{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:84px;height:84px;object-fit:contain;filter:drop-shadow(0 2px 6px rgba(0,0,0,.45))}
+@media (min-width:1000px){.yjoin{margin-bottom:68px}.yjoin img{width:108px;height:108px}}
