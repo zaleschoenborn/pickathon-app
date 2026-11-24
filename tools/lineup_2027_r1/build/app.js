@@ -280,3 +280,24 @@ window.addEventListener('load',fitK);window.addEventListener('resize',fitK);docu
     document.querySelectorAll('.po-names').forEach(function (n) { pkRO.observe(n); }); }
   document.querySelectorAll('.po-names').forEach(pkFitPoster);
 })();
+
+/* r101 (Zale, Nov 24 12:53): Vimeo session cards load their own still from Vimeo's oEmbed when they scroll into view (cached per browser) */
+(function () {
+  var cache = {}; try { cache = JSON.parse(localStorage.getItem('pkvt') || '{}'); } catch (e) {}
+  function save() { try { localStorage.setItem('pkvt', JSON.stringify(cache)); } catch (e) {} }
+  function put(card, src) { var v = card.querySelector('.vth'); if (!v || v.querySelector('img:not(.wk-ic)')) return; var i = document.createElement('img'); i.alt = ''; i.src = src; i.onload = function () { var n = v.querySelector('.wk-n'); if (n) n.remove(); v.insertBefore(i, v.firstChild); }; }
+  function load(card) {
+    var u = card.getAttribute('data-clip') || ''; if (u.indexOf('vimeo.com') < 0 || card.__vt) return; card.__vt = 1;
+    if (cache[u]) { put(card, cache[u]); return; }
+    fetch('https://vimeo.com/api/oembed.json?width=640&url=' + encodeURIComponent(u)).then(function (r) { return r.ok ? r.json() : null; }).then(function (j) {
+      if (j && j.thumbnail_url) { cache[u] = j.thumbnail_url; save(); put(card, j.thumbnail_url); }
+    }).catch(function () {});
+  }
+  function init() {
+    var cards = document.querySelectorAll('.wk.vid[data-clip*="vimeo.com"]'); if (!cards.length) return;
+    if (!('IntersectionObserver' in window)) { cards.forEach(load); return; }
+    var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { io.unobserve(e.target); load(e.target); } }); }, { rootMargin: '300px' });
+    cards.forEach(function (c) { if (!c.querySelector('.vth img:not(.wk-ic)')) io.observe(c); });
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
+})();
