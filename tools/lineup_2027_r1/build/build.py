@@ -1176,13 +1176,36 @@ def art_page(slug, ap, pid=None):
                   '<b>%s, full set</b><span>Pickathon %s</span></div>') % (_h.escape(u, quote=True), _thumb(u, v.get('y')), play('sm'), E(name), v.get('y'))
         h += '</div></section>'
     # r74: Their Pickathons moved up into the year block under the reel
-    # r58 (Zale, Nov 22 20:06): "If you like" draws from the Archive's cards that share any of the act's music tags, nearest in size today
-    _mt = set(tags_of(name)) or ({gp_n(name, GSHORT.get(g, g))} - {''})
-    _me = max([v for (cn, _y), v in _magall.items() if cn == _canon(name)] or [x.get('m') or 0])
-    same = sorted([c for c in ARCH_ALL if _canon(c[1]) != _canon(name) and c[4] and (set(tags_of(c[1])) or {c[3]}) & _mt],
-                  key=lambda c: abs(_mg((c[1], c[2])) - _me))[:6]
+    # r85 (Zale, Nov 23 23:55): "If you like" is a fan's recommendation, not a size match. Same sound first (shared music tags,
+    # primary tag weighted), other summers only, one or two names a fan likely knows, the rest Deep cuts and Discoveries they may not;
+    # no two picks from the same year; a fixed per-act shuffle so neighboring pages differ.
+    _mt = list(tags_of(name)) or [t for t in [gp_n(name, GSHORT.get(g, g))] if t]
+    _mts = set(_mt)
+    def _fit(c):
+        ct = list(tags_of(c[1])) or [c[3]]
+        sh = _mts & set(ct)
+        if not sh: return 0
+        return len(sh) / len(_mts | set(ct)) + (0.5 if ct and _mt and ct[0] == _mt[0] else 0)
+    import random as _rnd
+    _rng = _rnd.Random(_slug(name))
+    _cand = [(c, _fit(c), _rng.random()) for c in ARCH_ALL if _canon(c[1]) != _canon(name) and c[4] and str(c[2]) != str(yr)]
+    _cand = [t for t in _cand if t[1] > 0]
+    _cand.sort(key=lambda t: (-round(t[1], 1), t[2]))
+    _big = [t for t in _cand if _mg((t[0][1], t[0][2])) >= 5]
+    _less = [t for t in _cand if _mg((t[0][1], t[0][2])) < 5 and t[0][0] in ('deep', 'disc')]
+    same, _yrs = [], set()
+    def _take(pool, n):
+        got = 0
+        for t in pool:
+            if got >= n: break
+            c = t[0]
+            if c in same or str(c[2]) in _yrs: continue
+            same.append(c); _yrs.add(str(c[2])); got += 1
+    _take(_big, 2); _take(_less, 6 - len(same))
+    if len(same) < 6: _take(_cand, 6)
+    same = same[:6]
     if same:
-        h += shelf('Same sound, other summers', 'IF YOU LIKE %s' % name.upper(), 'Acts who stand about where %s stands today.' % name, '',
+        h += shelf('Same sound, other summers', 'IF YOU LIKE %s' % name.upper(), 'A few you may know, more you may not.', '',
                    [vcard(n_, y_, k_, g_, p_, pos_) for k_, n_, y_, g_, p_, pos_ in same])
     if pid: slug = pid
     return ('<main id="a-%s" class="screen" hidden style=""--paper:%s;--ink:%s;--ink2:%s;--acc:%s;--mat:%s">%s</main>') % (slug, P['paper'], P['ink'], P['ink2'], _acc(P), _mat(P), h)
