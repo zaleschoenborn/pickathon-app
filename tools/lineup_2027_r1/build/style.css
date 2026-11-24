@@ -1198,3 +1198,18 @@ a.hd-yr{text-decoration:none}
   .yrtop.framed+.yjoin,.yjoin{margin-top:0}
 }
 @media (min-width:1000px){.yrtop .poster .po-in .po-listen{grid-column:1/-1;justify-self:center}.yrtop.framed .poster .po-in{padding-bottom:64px!important}}
+/* r95 (Zale, Nov 24 10:43): poster lines centered on desktop, each line kept to one line: a long headliner steps down in size to fit */
+@media (min-width:1000px){
+  .yrtop .po-names,.yrtop .po-names .po-ln,.yrtop .po-names div{text-align:center}
+  .yrtop .pl{justify-content:center!important}
+  .yrtop .po-names.then .pl span{white-space:nowrap!important}
+  .yrtop .po-names.then .pl.l1{font-size:min(64px,calc(640px / (0.74 * var(--n,10))))}
+  .yrtop .po-names.then .pl.l2{font-size:min(48px,calc(640px / (0.74 * var(--n,10))))}
+  .yrtop .po-names.then .pl.l3{font-size:min(31px,calc(640px / (0.74 * var(--n,10))))}
+  .yrtop .po-names.then .pl.l4{font-size:min(20px,calc(640px / (0.74 * var(--n,10))))}
+}
+/* r95b: the poster's name cloud: centered, every name on one line; a long name steps down to fit the column */
+@media (min-width:1000px){
+  .yrtop .po-names .pcloud{justify-content:center!important;max-width:none!important}
+  .yrtop .po-names .pcloud .pn{white-space:nowrap!important;overflow-wrap:normal!important;font-size:min(calc((var(--lo) + var(--s)*(var(--hi) - var(--lo))) * 1px),calc(620px / (0.74 * var(--n,10))))}
+}

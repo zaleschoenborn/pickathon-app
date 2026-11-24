@@ -238,7 +238,7 @@ def poster_html(lines, tags=None):
     tags = tags or {}
     h = ''
     for cls, row in lines:
-        h += '<div class="pl %s">%s</div>' % (cls, '<span class="dot">•</span>'.join('<span data-c="%s" data-art="%s" data-an="%s">%s</span>' % (tags.get(n, ''), _aslug(n), E(_ORIG.get(n, n)), E(n)) for n in row))
+        h += '<div class="pl %s" style="--n:%d">%s</div>' % (cls, sum(len(n) for n in row) + 3 * (len(row) - 1), '<span class="dot">•</span>'.join('<span data-c="%s" data-art="%s" data-an="%s">%s</span>' % (tags.get(n, ''), _aslug(n), E(_ORIG.get(n, n)), E(n)) for n in row))
     return h
 
 
@@ -470,7 +470,7 @@ def now_html(acts, rest=False, then=False):
     ms = [mk(a) for a in acts] or [1]; mx, mn = max(ms), min(ms); out = ''
     for a in acts:
         v = (mk(a) - mn) / (mx - mn) if mx > mn else 1.0
-        out += '<span class="pn" style="--s:%.3f" data-c="%s" data-art="%s" data-an="%s">%s</span>' % (v, ctag(a.get('kb', 'none') if then else a['k']), _aslug(nm(a)), E(a['n']), E(nm(a)))
+        out += '<span class="pn" style="--s:%.3f;--n:%d" data-c="%s" data-art="%s" data-an="%s">%s</span>' % (v, len(nm(a)), ctag(a.get('kb', 'none') if then else a['k']), _aslug(nm(a)), E(a['n']), E(nm(a)))
     return '<div class="pcloud%s">%s</div>' % (' rest' if rest else '', out)
 
 def poster_block(P, badge, yr, then, now, total, joined=True, ranked=True):
