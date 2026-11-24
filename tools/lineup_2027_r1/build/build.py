@@ -35,7 +35,7 @@ def _n(x):
     x = x.lower().replace('&', 'and').strip()
     if x.startswith('the '): x = x[4:]
     return _re.sub(r'[^a-z0-9]', '', x)
-_CT = os.environ.get('PK_CLASS_TABLE', ROOT + 'class_table_v163.csv')  # copy of live v163 (Dropbox server_modified 2026-11-21 19:15Z); pointer CLASS_TABLE_CURRENT.txt names v159
+_CT = os.environ.get('PK_CLASS_TABLE', ROOT + 'class_table_nov24_v188.csv')  # r96: copy of the live table named by _catalogs/master/CLASS_TABLE_CURRENT.txt (v188, Dropbox server_modified 2026-11-24 04:30Z); refresh from the pointer every build
 _IDX = {(_n(r['act']), r['year']): r for r in csv.DictReader(open(_CT, encoding='utf-8-sig'))}
 _M = {'Discovery': 'disc', 'Legend': 'leg', 'Deep cut': 'deep'}
 _ALIAS = {'2mangentlemanband': 'twomangentlemenband', '79ersgang': '79rsgang', 'billystringsdonjulin': 'billystrings',
@@ -174,7 +174,7 @@ KLAB = {'disc': 'Discovery', 'leg': 'Legend', 'deep': 'Deep cut', 'none': ''}
 TAGS15 = ['Folk & songwriters', 'Country & Americana', 'Indie rock', 'Indie pop', 'Bluegrass & string band', 'Soul, funk & R&B', 'Psychedelic & jams',
           'Electronic & experimental', 'Punk & heavy', 'Blues', 'Jazz', 'Hip-hop', 'African & global', 'Latin', 'Cajun, zydeco & brass']
 _TG = {}
-for _r in csv.DictReader(open(ROOT + 'class_table_v163.csv', encoding='utf-8')):
+for _r in csv.DictReader(open(_CT, encoding='utf-8-sig')):
     _t = [t for t in (_r.get('genre_tags') or '').split('|') if t in TAGS15]
     if not _t: continue
     for _nm in (_r.get('act'), _r.get('lineup_act')):
@@ -697,7 +697,7 @@ for _lst in (disc, leg, deep):
     _lst[:] = _keep
 # r42 (Zale, Nov 22): top-ranked Discoveries in one batch for Home (design_home-40): same cards, same clips, same tags as the Archive
 _mag = {}
-for _r in csv.DictReader(open(ROOT + 'class_table_v163.csv', encoding='utf-8')):
+for _r in csv.DictReader(open(_CT, encoding='utf-8-sig')):
     if _r.get('site_row') == 'yes' and _r.get('class') == 'Discovery':
         try: _mag[(_aslug(_r.get('lineup_act') or _r['act']), _r['year'])] = float(_r.get('magnitude_dec') or 0)
         except ValueError: pass
@@ -712,7 +712,7 @@ with open(ROOT + 'home_top_discoveries.csv', 'w', newline='', encoding='utf-8') 
 # r47 (Zale, Nov 22: "one mixed feed"): the Archive opens on All, every class mixed, biggest today first (class table magnitude_dec);
 # an act held in two classes shows once under All (its bigger card); Discoveries / Legends / Deep cuts stay as filters, each by magnitude too
 _magall = {}
-for _r in csv.DictReader(open(ROOT + 'class_table_v163.csv', encoding='utf-8')):
+for _r in csv.DictReader(open(_CT, encoding='utf-8-sig')):
     if _r.get('site_row') != 'yes': continue
     try: _mv = float(_r.get('magnitude_dec') or 0)
     except ValueError: continue
@@ -960,7 +960,11 @@ def year_page(y):
     else:
         badge = img(d['yearLogo'][y], 460, fmt='PNG')
     # r45 (Zale, Nov 22): the booking view is ordered and sized by AT-FESTIVAL magnitude (class table at_festival_magnitude_dec) from 2009 on; earlier years keep the printed poster order
-    then_list = sorted(music, key=lambda x: -(x.get('mb') if x.get('mb') is not None else -1)) if (ranked and int(y) >= 2009) else music
+    # r96 (Zale, Nov 24 10:55, the booking-number rule): rank by at_festival_magnitude_dec, high to low; Discovery ahead of Legend only on an
+    # exact tie; blanks ("not measured") below the ranked acts in printed order; before 2009 the printed order stands
+    _ko = {'disc': 0, 'leg': 1}
+    then_list = ([x for x in sorted([x for x in music if x.get('mb') is not None], key=lambda x: (-x['mb'], _ko.get(x.get('kb', ''), 2)))] +
+                 [x for x in music if x.get('mb') is None]) if (ranked and int(y) >= 2009) else music
     h += poster_block(P, badge, y, then_list, today_all, len(music), joined=bool(hero), ranked=ranked)
     # r56 (Zale, Nov 22): paper frame. The year's own art runs along the top (desktop), and the poster paper wraps photo and poster like a printed poster with a photo window
     _crown = '' if os.path.exists(ROOT + 'ext/horizons/y%s-horizon.png' % y[2:]) else '<div class="yrcrown" aria-hidden="true">%s</div>' % seam(y, P)  # r93b (Zale, Nov 24): one band, not two
