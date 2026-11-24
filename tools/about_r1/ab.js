@@ -19,14 +19,18 @@
       : '<div class="' + cls + '">' + inner + '</div>';
   }
   function html(S) {
-    var o = '', H = S.hero || {}, W = S.worlds || {}, E = S.eras || {}, P = S.press || {}, M = S.more || {}, J = S.join || {};
+    var o = '', H = S.hero || {}, W = S.worlds || {}, Z = S.zero || {}, E = S.eras || {}, P = S.press || {}, M = S.more || {}, J = S.join || {};
     o += '<section class="ab-hero"><img src="' + esc(H.im) + '" alt="' + esc(H.alt) + '" style="object-position:' + focusOf(H.im) + '" fetchpriority="high" decoding="async">' +
       '<div class="ab-hx"><h1 class="ab-d ab-h1">' + esc(H.t) + '</h1><p class="ab-lede">' + esc(H.x) + '</p></div></section>';
     o += '<div class="ab-in">';
+    var XS = window.pkXset || {};
     o += '<section class="ab-sec"><h2 class="ab-d ab-h2">' + esc(W.h) + '</h2><ul class="ab-worlds">' + (W.r || []).map(function (w, i) {
-      return '<li>' + tag(w.go, 'ab-wc', '<img src="' + esc(w.im) + '" alt="' + esc(w.alt) + '" style="object-position:' + (w.pos || focusOf(w.im)) + '"' + (i > 1 ? ' loading="lazy"' : '') + ' decoding="async">' +
-        '<span class="ab-wx"><span class="ab-wk">' + esc(w.k) + '</span><span class="ab-wt">' + esc(w.t) + '</span><span class="ab-wl">' + esc(w.x) + '</span></span>', w.k + ': ' + w.t) + '</li>';
-    }).join('') + '</ul></section>';
+      var line = XS[w.k === 'Wonders' ? 'Architecture' : w.k] || w.x;
+      return '<li>' + tag(w.go, 'ab-wc', '<img src="' + esc(w.im) + '" alt="' + esc(w.alt) + '" style="object-position:' + (w.pos || focusOf(w.im)) + '"' + (i > 3 ? ' loading="lazy"' : '') + ' decoding="async">' +
+        '<span class="ab-wx"><span class="ab-wt">' + esc(w.k) + '</span><span class="ab-wl">' + esc(line) + '</span></span>', w.k) + '</li>';
+    }).join('') + '</ul>';
+    if (Z.k) o += tag(Z.go, 'ab-zero', '<img src="' + esc(Z.im) + '" alt="" style="object-position:' + esc(Z.pos || '50% 50%') + '" loading="lazy" decoding="async"><span class="ab-zx"><span class="ab-wk">' + esc(Z.k) + '</span><span class="ab-wt">' + esc(Z.t) + '</span><span class="ab-wl">' + esc(Z.x) + '</span></span>', Z.k);
+    o += '</section>';
     o += '<section class="ab-sec" id="ab-story"><h2 class="ab-d ab-h2">' + esc(E.h) + '</h2><p class="ab-sub">' + esc(E.x) + '</p><ul class="ab-eras">' + (E.r || []).map(function (e) {
       return '<li>' + tag(E.go, 'ab-era', '<span class="ab-pf"><img src="' + esc(e.im) + '" alt="Pickathon ' + esc(e.py) + ' poster" loading="lazy" decoding="async"></span>' +
         '<span class="ab-ey">' + esc(e.y) + '</span><span class="ab-en">' + esc(e.n) + '</span><span class="ab-ex">' + esc(e.x) + '</span>') + '</li>';

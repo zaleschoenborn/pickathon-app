@@ -8,62 +8,111 @@
   },
   "worlds": {
     "h": "The Pickathon universe",
-    "_src": "Six worlds approved by Zale Nov 24 (info_area_card_draft4.md section 5). Titles and lines are drafts for Copy Review. Facts: Avett 2006 is Zale's own statement (Lineup to confirm); dishes 2011 per Festival History; Treeline 2017 to the veterans village per Festival History; 'more than once' per Festival History.",
+    "_src": "The twelve experiences and their lines are a COPY of Tickets XSET (tools/tickets_r2/tk2.js; Zale wrote/approved Nov 23, Copy Review owns them, design_my_pickathon-10). One list: when XSET is exposed (window.pkXset), ab.js reads it first. Wonders is the visitor name for Architecture (Zale, Nov 23). Photos: catalog picks Nov 24 (see _photos) and Home's activity photos i/xc.",
+    "_photos": "Picked Nov 24 from catalog_Photos_MASTER_2006-2026.csv by tag search (pickathon-photo-slot-picks): camp 2022_Rob_Kerr-camping.4.jpg; wonder 2025_andy_meeks-galaxycourtyard-17.jpg; food 2025_Risa_Scott-Saturday_Brunch-Curation-220.jpg; zero 0248-2017_amanda_cowan_dishwashstation.jpg. Discovery and Artists first keep site files y24t-geese.jpg and y24-roge.jpg. Sheets: Dropbox _catalogs/work/design_trip_info/sheets/. Nov 24 later: drinks 2025_Erin_Riddle-Food and Food Market-55.jpg; art 2019_Erin_Riddle-385_Art-Electric Boogaloo.jpg; craft 2024_Erin_Riddle_Mercantile-Shops 24.jpg; literary 2024_brooke_hoyer-spoken_word-woods-05201.jpg.",
     "r": [
       {
-        "k": "Discovery",
-        "t": "Hear them before everyone else does",
-        "x": "The Avett Brothers played our first year on the farm, in 2006. So many more since.",
+        "k": "Music",
+        "x": "Most festivals book the names you already know. We book the ones you’re about to.",
         "im": "i/y24t-geese.jpg",
         "alt": "Geese on a small stage in 2024, the crowd close",
-        "go": "route:lineup:keepArch=1"
-      },
-      {
-        "k": "Summer camp",
-        "t": "Four days in the woods",
-        "x": "Camp under the trees. Kids 12 and under come free.",
-        "im": "i/about/world-camp.jpg",
-        "alt": "Campers in the shade between tents and tall firs, 2022",
-        "go": "route:hoods",
-        "pos": "48% 60%"
+        "go": "route:lineup"
       },
       {
         "k": "Wonders",
-        "t": "A city built for one weekend",
-        "x": "Students and makers build every neighborhood. The 2017 Treeline stage now shelters veterans.",
+        "x": "Step into an architectural wonderland, built by hand into the forest. When it’s over, it all finds a new home.",
         "im": "i/about/world-wonder.jpg",
-        "alt": "The Galaxy courtyard lit at night, full of people, 2025",
+        "alt": "The Galaxy courtyard lit at night, full of people",
         "go": "route:build",
         "pos": "45% 50%"
       },
       {
-        "k": "Artists first",
-        "t": "Time to play, time to listen",
-        "x": "Most artists play more than once, so nobody rushes, on stage or off.",
-        "im": "i/y24-roge.jpg",
-        "alt": "Rogê playing in the middle of the Woods crowd",
-        "go": "route:lineup"
+        "k": "Family",
+        "x": "This isn’t a festival your kids put up with. They get a camp of their own in the woods.",
+        "im": "i/xc/sing.webp",
+        "alt": "Families singing together at the Coyote stage",
+        "go": "route:hoods"
+      },
+      {
+        "k": "Wellness",
+        "x": "Four days of music, and you’ll go home rested. Morning yoga under the firs, trails and quiet corners.",
+        "im": "i/xc/riseshine.webp",
+        "alt": "Morning yoga outside at the Courtyard",
+        "go": "route:hoods",
+        "pos": "40% 60%"
       },
       {
         "k": "Food",
-        "t": "Long tables in the forest",
-        "x": "Local kitchens all weekend, and Curation dinners that pair a chef with an artist.",
+        "x": "Skip the food-truck line. Sit down at a long table with a chef and a band.",
         "im": "i/about/world-food.jpg",
-        "alt": "Glasses raised at a long Curation brunch table, 2025",
+        "alt": "Glasses raised at a long Curation brunch table",
         "go": "plan:farm:food",
         "pos": "45% 40%"
       },
       {
-        "k": "Zero waste",
-        "t": "Real plates, no trash",
-        "x": "Reusable dishes and steel cups. Single-use dishes have been gone since 2011.",
-        "im": "i/about/world-zero.jpg",
-        "alt": "Hands washing a reusable plate beside a steel cup, 2017",
-        "go": "page:commitment-to-sustainability",
-        "pos": "38% 30%"
+        "k": "Drinks",
+        "x": "Local beer, a cocktail, a good coffee, and you never have to leave the music to get one.",
+        "im": "i/about/world-drinks.jpg",
+        "alt": "The Pickathon Bar, busy in the afternoon",
+        "go": "route:hoods",
+        "pos": "40% 50%"
+      },
+      {
+        "k": "Camping",
+        "x": "No parking-lot campground. Your tent goes under giant firs, a short walk from the music.",
+        "im": "i/about/world-camp.jpg",
+        "alt": "Campers in the shade between tents and tall firs",
+        "go": "plan:sleep",
+        "pos": "48% 60%"
+      },
+      {
+        "k": "DJs",
+        "x": "The headliner ends. The woods don’t. Dance under the trees long after.",
+        "im": "i/xc/dj.webp",
+        "alt": "Records spinning on the hillside",
+        "go": "route:hoods"
+      },
+      {
+        "k": "Art",
+        "x": "After dark, the forest lights up with art you stumble onto around every bend.",
+        "im": "i/about/world-art.jpg",
+        "alt": "Glowing light pillars in the trees at night",
+        "go": "route:hoods",
+        "pos": "40% 50%"
+      },
+      {
+        "k": "Comedy",
+        "x": "Touring comics in a barn small enough to heckle back.",
+        "im": "i/xc/comics.webp",
+        "alt": "A comic on stage in the Lucky Barn",
+        "go": "route:hoods"
+      },
+      {
+        "k": "Literary",
+        "x": "Stories and poems read aloud under the trees. Bring nothing but time.",
+        "im": "i/about/world-lit.jpg",
+        "alt": "Spoken word on the Woods stage",
+        "go": "route:hoods",
+        "pos": "45% 40%"
+      },
+      {
+        "k": "Craft",
+        "x": "Take home something made by hand, by the person who made it.",
+        "im": "i/about/world-craft.jpg",
+        "alt": "The Mercantile lit at dusk, people walking through",
+        "go": "route:hoods",
+        "pos": "50% 50%"
       }
-    ],
-    "_photos": "Picked Nov 24 from catalog_Photos_MASTER_2006-2026.csv by tag search (pickathon-photo-slot-picks): camp 2022_Rob_Kerr-camping.4.jpg; wonder 2025_andy_meeks-galaxycourtyard-17.jpg; food 2025_Risa_Scott-Saturday_Brunch-Curation-220.jpg; zero 0248-2017_amanda_cowan_dishwashstation.jpg. Discovery and Artists first keep site files y24t-geese.jpg and y24-roge.jpg. Sheets: Dropbox _catalogs/work/design_trip_info/sheets/."
+    ]
+  },
+  "zero": {
+    "k": "Zero waste",
+    "t": "Real plates, no trash.",
+    "x": "Reusable dishes and steel cups all weekend. Single-use dishes have been gone since 2011.",
+    "im": "i/about/world-zero.jpg",
+    "pos": "38% 30%",
+    "go": "page:commitment-to-sustainability",
+    "b": "How we do it"
   },
   "eras": {
     "h": "Our story, in posters",
