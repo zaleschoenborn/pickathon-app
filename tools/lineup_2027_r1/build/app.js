@@ -255,3 +255,6 @@
   })();
   document.addEventListener('click', function (e) { var a = e.target.closest('a[href="#"]'); if (a) e.preventDefault(); });
 })();
+/* r83: shrink the reel's class-and-genre line one step if it would overflow */
+(function(){function fitK(){document.querySelectorAll('.hero .krow,.ahero .krow').forEach(function(k){k.classList.remove('tight');if(k.scrollWidth>k.clientWidth+1)k.classList.add('tight')})}
+window.addEventListener('load',fitK);window.addEventListener('resize',fitK);document.addEventListener('click',function(){setTimeout(fitK,60)});setInterval(fitK,1500)})();

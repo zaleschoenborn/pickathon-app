@@ -1063,3 +1063,8 @@ main[id^="a-"] .sale{display:none}
 @media (max-width:999px){main[id^="a-"] .hact .hero-tx{padding-bottom:62px}}
 @media (max-width:999px){.hact .ring.lg{top:34%}}
 .aseal{margin-bottom:-14px}
+/* r83 (Zale, Nov 23 23:26): on the year reel and artist hero the class word sits left and the genre right, one line, never wrapping (like the 2027 square cards) */
+.hero .krow,.ahero .krow{justify-content:space-between;white-space:nowrap;letter-spacing:.08em;min-width:0}
+.hero .krow .g::before,.ahero .krow .g::before{display:none}
+.hero .krow .g,.ahero .krow .g{text-align:right}
+.hero .krow.tight,.ahero .krow.tight{font-size:13px;letter-spacing:.05em}
