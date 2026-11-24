@@ -755,7 +755,7 @@
     if (XE === 'Music') what = 'music from legends, discoveries and deep cuts';
     else if (XE && XE !== 'Architecture' && (musicy || !kinds.length)) what = ({ DJs: 'DJ sets', Comedy: 'comedy', Literary: 'readings and storytelling', Food: 'food and drink', Drinks: 'drinks' })[XE] || lc(XE);
     else if (musicy) what = 'music from legends, discoveries and deep cuts';
-    else what = kinds.slice(0, 4).map(lc).join(', ').replace(/, ([^,]*)$/, ' and $1') || (XE ? lc(XE) : 'programming');
+    else what = kinds.slice(0, 4).map(lc).join(', ').replace(/, ([^,]*)$/, ' and $1') || (XE && XE !== 'Architecture' ? lc(XE) : 'programming');   /* Nov 24 panel test: never print the data key 'Architecture' to visitors */
     var am = (MI || []).filter(function (z) { return z[3] === k; }).map(function (z) { return z[0]; }).filter(function (x, i, a) { return a.indexOf(x) === i && x !== 'tent' && x !== 'gear'; });
     return '<section class="pkpl-soon" aria-label="2027 at ' + esc(h.n) + '"><p class="pkpl-sk">Schedule</p><h2>2027 at ' + esc(h.n) + '</h2><p>' + esc(M0W.soonLine ? M0W.soonLine.replace('{What}', what.charAt(0).toUpperCase() + what.slice(1)).replace('{place}', h.n) : 'Four days of ' + what + ' at ' + h.n + ', Thursday to Sunday, August 5 to 8. The full schedule posts with the 2027 lineup.') + '</p>' +
       (am.length ? '<div class="pkpl-sam">' + am.map(function (x) { return '<span><i class="pkpl-fi">' + amGlyph(x) + '</i>' + esc(AMN[x] || x) + '</span>'; }).join('') + '</div>' : '') + '</section>';
@@ -799,7 +799,7 @@
   }
   var lastHood = '';
   function xbVar() { if (!M || wide()) return; var x = $('.pkpl-xb', M.el); if (x && x.offsetHeight) document.documentElement.style.setProperty('--pkpl-xbh', (x.offsetHeight + 5) + 'px'); }   /* tablet: the row can be two lines on a neighborhood page */
-  function hhVar() { var hd = document.querySelector('#root header'); if (hd && wide()) document.documentElement.style.setProperty('--pkpl-hh', hd.offsetHeight + 'px'); }
+  function hhVar() { var hd = document.querySelector('#root header'); if (!hd || !wide()) return; var t = document.getElementById('pkpl-top'), sc = t && t.parentElement, inner = sc && sc !== document.body && /(auto|scroll)/.test(getComputedStyle(sc).overflowY); document.documentElement.style.setProperty('--pkpl-hh', (inner ? 0 : hd.offsetHeight) + 'px'); }   /* Nov 24 panel test: in the app shell (1024 and tablets) the page scrolls inside a box that already starts under the header, so the sticky back link sits at its top, not a header height lower */
   function settleSheet() { xbVar(); setTimeout(xbVar, 300); hhVar();   /* a new place opens with the sheet at about 60% (55% on portrait tablet) */
     var t = top(); if (t.r !== 'hood' || wide()) { lastHood = t.r === 'hood' ? t.h : ''; return; }
     if (lastHood === t.h) return; lastHood = t.h;
