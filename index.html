@@ -8772,6 +8772,33 @@ body:has(#tk2 #tk-bar:not([hidden])) #pk-toast,body:has(#pk-co) #pk-toast{displa
  .tk2.tk-gscrim .tk-g-pad,.tk2.tk-gscrim .tk-g-bar2,.tk2.tk-gscrim .tk-g-stepn{max-width:640px;margin-left:auto;margin-right:auto;width:100%;box-sizing:border-box}
  .tk2.tk-gscrim .tk-g-foot{padding-left:max(16px,calc(50vw - 320px));padding-right:max(16px,calc(50vw - 320px))}
 }
+
+/* Nov 24: step names read heavier */
+.tk2.tk-gscrim .tk-g-bar2 li{font-size:13px;font-weight:900;color:rgba(245,239,226,.75)}
+.tk2.tk-gscrim .tk-g-bar2 li.on{color:var(--gold,#F2CF62)}
+@media (min-width:1025px){.tk2.tk-gscrim .tk-g-bar2 li{font-size:15px}}
+
+/* Nov 24: "Pick what you want" is its own screen */
+.tk2 .tk-t-hd{display:none}
+.tk2 .tk-know #tk-e-days,.tk2 .tk-know .tk-e-vet,.tk2 .tk-know .tk-e3-know>summary{display:none}
+.tk2 .tk-know .tk-t-hd{display:block;margin:0 0 12px}
+.tk2 .tk-know .tk-t-hd .tk-tlink{min-height:44px;display:inline-flex;align-items:center;padding:0}
+.tk2 .tk-know .tk-t-hd h2{margin:4px 0 0}
+
+.tk2 .tk-g-fold{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:8px 0 12px;padding:12px 14px;border:1px solid rgba(245,239,226,.18);border-radius:12px;font-weight:700}
+.tk2 .tk-g-fold .tk-tlink{min-height:44px;display:inline-flex;align-items:center}
+
+/* Nov 24 panel fixes: bigger small print and targets, no page bar behind the steps, headings clear the menu, add-ons one per row beside the order */
+.tk2 .tk-g-ftot span{font-size:14px}
+.tk2 .tk-g-ftot i{font-size:14px}
+.tk2 .tk-g-edits .tk-tlink{min-height:44px;display:inline-flex;align-items:center;font-size:14px}
+.tk2 .tk-t-stp button{width:44px;height:44px}
+.tk2 .tk-g-sub,.tk2 .tk-g-r p span,.tk2 .tk-g-stepn{color:rgba(245,239,226,.82)}
+.tk2 .tk-g-r p span{font-size:15px}
+body:has(.tk-gscrim) #tk-bar{visibility:hidden}
+.tk2 #tk-e3-know,.tk2 #tk-e-days{scroll-margin-top:84px}
+.tk2 .tk-g-pat .tk-num small{font-size:.6em;font-weight:700;opacity:.8}
+@media (min-width:1025px){.tk2.tk-gscrim .tk-g-pad4 .tk-g-adds{grid-template-columns:1fr;display:grid;gap:10px}}
 </style>
 <script id="pk-tk2">
 /* pk-tk2: Tickets, round 2 design (Nov 11 2026). Source: tools/tickets_r2/tk2.js, spliced into index.html by tools/tickets_r2/build.py.
@@ -9404,7 +9431,7 @@ body:has(#tk2 #tk-bar:not([hidden])) #pk-toast,body:has(#pk-co) #pk-toast{displa
         '<p class="tk-e3-sale">' + headline() + '</p>' +
         '<div class="tk-e-vet" id="tk-e-vet"></div>' +
         '<div class="tk-e-days" id="tk-e-days"><h1 class="tk-d" tabindex="-1">When are you coming?</h1><p class="tk-g-sub">Tap your days. We’ll find the ticket.</p><div id="tk-e-pick"></div><button type="button" class="tk-g-btn tk-e-next" data-act="e-next" id="tk-e-next">Next: who’s coming</button></div>' +
-        '<details class="tk-e3-know" id="tk-e3-know"><summary><b>I know what I want</b>' + ic('chev', 'tk-e-chev') + '</summary><div class="tk-e-grid" id="tk-e-grid"></div></details>' +
+        '<details class="tk-e3-know" id="tk-e3-know"><summary><b>I know what I want</b>' + ic('chev', 'tk-e-chev') + '</summary><div class="tk-t-hd"><button type="button" class="tk-tlink" data-act="t-back">← Help me choose instead</button><h2 class="tk-d" tabindex="-1">Pick what you want</h2></div><div class="tk-e-grid" id="tk-e-grid"></div></details>' +
       '</div></div>' +
       '<div class="tk-e3-more"><div class="tk-e-plan" id="tk-e-plan"></div>' + (cold ? '' : '<p class="tk-e3-why"><button type="button" class="tk-tlink" data-act="e-why">New here? Why Pickathon →</button></p>') + '</div></section>';
   }
@@ -9419,10 +9446,10 @@ body:has(#tk2 #tk-bar:not([hidden])) #pk-toast,body:has(#pk-co) #pk-toast{displa
     var meals = MEALS.filter(function (id) { return !off(id); }).map(function (id) { return li(esc(XN[id].replace('Curation · ', '')), money(PS(id)) + ' a seat'); });
     var kids = [li('Kids 12 and under', 'Free')]; if (!sold('teen')) kids.push(li('Teens 13–17, weekend passes', money(PS('teen')))); kids.push(li('Day tickets, ages 13 and up', 'One price'));
     return '<p class="tk-g-k">Plan your trip</p><p class="tk-g-sub">Look around first. Everything here is added in the steps.</p>' +
-      row('camp', hi('lushcamp', 'i/r3-hood-lushcamp.jpg'), 'Camping', 'A tent spot comes with weekend passes', camp, 'sleep', 'Choose camping') +
+      row('camp', hi('lushcamp', 'i/r3-hood-lushcamp.jpg'), 'Camping', 'Tent camping comes with 3- and 4-Day passes', camp, 'sleep', 'Choose camping') +
       row('go', hi('orchard', 'i/r3-hood-woods.jpg'), 'Getting there', 'Park, shuttle, bike or drop-off', go, 'sleep', 'Choose how you’ll get there') +
       (meals.length ? row('meals', hi('curation', 'i/r35-grove-1.jpg'), 'Curation meals', 'A chef and a band at one long table', meals, 'order', 'Add a meal') : '') +
-      row('kids', hi('coyote', 'i/r35-grove-1.jpg'), 'Kids and teens', 'Kids are free. Teens are half price.', kids, 'who', 'Add kids or teens');
+      row('kids', hi('coyote', 'i/r35-grove-1.jpg'), 'Kids and teens', 'Kids are free. Teens 13–17 are ' + money(PS('teen')) + ' on a weekend pass.', kids, 'who', 'Add kids or teens');
   }
   function vetHTML() {
     var t = totals(S);
@@ -9517,6 +9544,7 @@ body:has(#tk2 #tk-bar:not([hidden])) #pk-toast,body:has(#pk-co) #pk-toast{displa
       entrySide(); var kb = $('[data-act="t-step"][data-k="' + k + '"][data-d="' + dd + '"]', root); if (kb && !kb.disabled) { try { kb.focus({ preventScroll: true }); } catch (x) {} } return true; }
     if (act === 't-sleep') { if (groups(S).length) guide('sleep'); else { TNOTE = 'Add a pass first.'; entrySide(); } return true; }
     if (act === 't-go') { proceed(); return true; }
+    if (act === 't-back') { var kd = $('#tk-e3-know', root); if (kd) kd.open = false; return true; }
     if (act === 'e-tile') { eTile(b.getAttribute('data-t')); return true; }
     if (g && gDayTap(EN, g, b.getAttribute('data-d'))) { entryDraw(); return true; }
     if (act === 'e-days') { var hd = $('#tk-e-help', root); if (hd) hd.open = true; to = $('#tk-e-days', root); if (to) { try { to.scrollIntoView({ block: 'start', behavior: 'smooth' }); } catch (x) { to.scrollIntoView(); } var hh = $('h2', to); if (hh) { try { hh.focus({ preventScroll: true }); } catch (x) {} } } return true; }
@@ -9556,10 +9584,10 @@ body:has(#tk2 #tk-bar:not([hidden])) #pk-toast,body:has(#pk-co) #pk-toast{displa
         '</ul><p class="tk-e-press">Featured in The New York Times’ festivals to see in 2026. Named best independent music festival by Paste. Two AIA architecture awards.</p></div></details>' +
       '<details class="tk-e-pr" data-plan="types"><summary><img src="' + esc(hi('lushcamp', 'i/r3-hood-lushcamp.jpg')) + '" alt="" loading="lazy"><span class="tk-e-pr-t"><b>What goes on sale</b><span>Weekend passes, day tickets, Patron and add-ons</span></span>' + ic('chev', 'tk-e-chev') + '</summary><div class="tk-e-pr-in tk-s-pr"><ul class="tk-s-pl">' +
         row('4 days · Thu–Sun', 'Camping in the forest included. Add a Wednesday early arrival.') + row('3 days · Fri–Sun', 'Camping in the forest included.') + row('Day tickets', 'Saturday + Sunday, or any one day. Ages 13 and up, no camping.') + row('Patron Pass · Wed–Sun', 'Backstage hospitality, concierge and early entry. Any age, one each.') + row('Add-ons', 'Car camping, camper van and RV sites, parking, the MAX shuttle and Curation meals.') +
-        '</ul><p class="tk-s-pn">Kids 12 and under are free. Teens 13 to 17 are half price on weekend passes. Prices come out when tickets do.</p></div></details>' +
+        '</ul><p class="tk-s-pn">Kids 12 and under are free. Teens 13 to 17 pay the teen price, half the 4-Day, on any weekend pass. Prices come out when tickets do.</p></div></details>' +
       '<details class="tk-e-pr" data-plan="faq"><summary><img src="' + esc(hi('grove', 'i/r35-grove-1.jpg')) + '" alt="" loading="lazy"><span class="tk-e-pr-t"><b>Good to know</b><span>Kids, day tickets, RVs and getting there</span></span>' + ic('chev', 'tk-e-chev') + '</summary><div class="tk-e-pr-in tk-s-qs">' +
       q('When do tickets go on sale?', pre ? 'Soon. Sign up and we send one email the moment they do.' : 'Sign up and we send one email when the next sale opens.') +
-      q('Can I bring my kids?', 'Yes. Kids 12 and under are free with a weekend pass or a day ticket. Teens 13 to 17 are half price on weekend passes.') +
+      q('Can I bring my kids?', 'Yes. Kids 12 and under are free with a weekend pass or a day ticket. Teens 13 to 17 pay the teen price, half the 4-Day, on any weekend pass.') +
       q('Can I come for just one day?', 'Yes. Day tickets are one price for ages 13 and up. They don’t include camping.') +
       q('Can I car camp or bring an RV?', 'Yes. Car camping, camper van and RV sites at Willow Camp and South Camp are added to your order. South Camp sells out first.') +
       q('How do I get there?', 'Drive and park, take the MAX to Lents Town Center and ride the shuttle, bike in, or get dropped off.') +
@@ -9585,7 +9613,7 @@ body:has(#tk2 #tk-bar:not([hidden])) #pk-toast,body:has(#pk-co) #pk-toast{displa
     h += '<div id="tk-top"></div>';
     h += '<div class="tk-cols"><div class="tk-build">';
     h += '<fieldset><div class="tk-leg"><legend class="tk-d tk-d-label">Pick a ticket</legend><button type="button" class="tk-pill tk-pill-sm" data-act="help" aria-haspopup="dialog">Pick by days</button></div><p class="tk-feenote">Prices include the ' + (FEE * 100) + '% fee.</p><div class="tk-grps" id="tk-grps" hidden></div><div class="tk-passes" id="tk-passes">' +
-      group('wk', 'Weekend passes', 'Camping included · teens 13–17 half price') +
+      group('wk', 'Weekend passes', 'Camping with 3- and 4-Day · teens 13–17 ' + money(PS('teen'))) +
       passCard('p4', '4 days', span('dthu', 'dsun'), [0, 1, 1, 1, 1], pprice('p4')) +
       '<label class="tk-wed" id="tk-wed" hidden><input type="checkbox" id="tk-wedc"><span><b>Arrive ' + DAY.w[3] + ', ' + DAY.w[4] + '</b>, from 5 pm. Adults and teens.</span><em class="tk-num">+' + money(PS('early')) + ' each</em></label>' +
       passCard('p3', '3 days', span('dfri', 'dsun'), [0, 0, 1, 1, 1], pprice('p3')) +
@@ -9626,7 +9654,7 @@ body:has(#tk2 #tk-bar:not([hidden])) #pk-toast,body:has(#pk-co) #pk-toast{displa
       MEALS.map(function (id) { return xrow(id, XN[id].replace('Curation · ', '').replace(/^./, function (c) { return c.toUpperCase(); }), ''); }).join('') + '</details>' +
       '<details id="tk-x-dish"><summary><span>Cup, plate and coozie</span><span class="tk-num tk-dim" id="tk-xs-dish"></span></summary><p>Reusable, for the zero waste festival. Waiting for you at the farm.</p>' +
       DISH.map(function (id) { return xrow(id, XN[id], ''); }).join('') + '</details>' +
-      '<details id="tk-x-give"><summary><span>Give back</span><span class="tk-num tk-dim" id="tk-xs-give"></span></summary><p>For the Creative Neighborhoods student build program.</p>' +
+      '<details id="tk-x-give"><summary><span>Build the Wonders</span><span class="tk-num tk-dim" id="tk-xs-give"></span></summary><p>Students build the neighborhoods with Creative Neighborhoods, a nonprofit. Then every build finds a new home.</p>' +
       GIVE.map(function (id) { return xrow(id, XN[id], id === 'tools' ? 'Stage and build equipment' : 'A pre-apprenticeship student, through the program'); }).join('') + '</details>' +
       '<div class="tk-hand"><button type="button" class="tk-pill" data-go="info">How the weekend works</button><button type="button" class="tk-tlink" data-go="list">Every pass and price</button></div>' +
       '<p class="tk-fine">' + fineLine() + '</p></section>';
@@ -10034,7 +10062,7 @@ body:has(#tk2 #tk-bar:not([hidden])) #pk-toast,body:has(#pk-co) #pk-toast{displa
   var GBAN = { 1: ['', GHERO, '62% 22%'], 2: ['coyote', 'i/r35-grove-1.jpg', '50% 62%'], 3: ['wildcamp', 'i/r3-hood-lushcamp.jpg', '50% 70%'], 4: ['galaxy', 'i/r3-hood-woods.jpg', '50% 30%'] };
   /* Nov 22 drafts: a plain page header ("Tickets · Aug 5–8, 2027"), the four steps by name, "Step n of 4"; no photo banner */
   function gTop(n) {
-    var names = ['Days', 'Who', 'Getting there', 'Order'], keys = ['days', 'who', 'sleep', 'order'];
+    var names = ['Days', 'Who', 'Travel', 'Order'], keys = ['days', 'who', 'sleep', 'order'];
     return '<div class="tk-g-top tk-g-hd2"><button type="button" class="tk-g-hdb" data-g="fast" aria-label="Back to Tickets">‹</button>' + logo() + '<p class="tk-g-hdt"><b>Tickets</b><span>' + DAY.dthu[4] + '–' + DAY.dsun[4].split(' ')[1] + ', ' + YEAR + '</span></p></div>' +
       (n ? '<ol class="tk-g-bar2" aria-label="Step ' + n + ' of 4">' + names.map(function (nm, i) { var k = i + 1; return '<li class="' + (k < n ? 'done' : k === n ? 'on' : '') + '"' + (k === n ? ' aria-current="step"' : '') + '>' + (k < n && !(gNone() && k < 3) ? '<button type="button" data-g="go" data-to="' + keys[i] + '">' + nm + '</button>' : nm) + '</li>'; }).join('') + '</ol><p class="tk-g-stepn">Step ' + n + ' of 4</p>' : '');
   }
@@ -10046,7 +10074,7 @@ body:has(#tk2 #tk-bar:not([hidden])) #pk-toast,body:has(#pk-co) #pk-toast{displa
     else if (!p.k) h += '<p class="tk-g-hint">Those days are sold out. Try other days.</p>';
     else {
       h += '<div class="tk-g-that" aria-live="polite"><p class="tk-g-thatk">That’s the</p><p class="tk-d tk-g-thatn">' + esc(p.name) + '</p><p class="tk-g-thatm">' + esc(p.meta) + '</p><p class="tk-g-thatp"><b class="tk-num">' + money(p.each) + '</b><span>' + (p.k === 'pat' ? 'per person' : p.k === 'days' || p.k === 'd2' ? 'ages 13 and up' : 'per adult') + '</span></p></div>';
-      if (p.k === 'p4' && !sold('patron')) h += '<div class="tk-g-pat"><p class="tk-g-path"><b class="tk-d">Or go Patron</b><b class="tk-num">' + money(PS('patron')) + '</b></p><ul><li>Backstage at every stage</li><li>Meals in the artist village</li><li>Wednesday early entry</li></ul><button type="button" class="tk-g-patb" data-g="pat">Make it Patron</button></div>';   /* Nov 22 draft: at four days, Patron replaces the Wednesday nudge */
+      if (p.k === 'p4' && !sold('patron')) h += '<div class="tk-g-pat"><p class="tk-g-path"><b class="tk-d">Or go Patron</b><b class="tk-num">' + money(PS('patron')) + ' <small>each</small></b></p><ul><li>Backstage at every stage</li><li>Meals in the artist village</li><li>Wednesday early entry</li></ul><button type="button" class="tk-g-patb" data-g="pat">Make it Patron</button></div>';   /* Nov 22 draft: at four days, Patron replaces the Wednesday nudge */
       if (p.k === 'p3' && !sold('p4')) h += '<button type="button" class="tk-g-nudge" data-g="add" data-d="dthu"><span>Add Thursday</span><b>+ ' + money(PS('p4') - PS('p3')) + ' · 4-Day Pass</b></button>';
       else if (p.k === 'd2' && !sold('p3')) h += '<button type="button" class="tk-g-nudge" data-g="add" data-d="dfri"><span>Add Friday and camping</span><b>+ ' + money(PS('p3') - PS('d2')) + ' · 3-Day Pass</b></button>';
       else if (p.k === 'p4' && !q.on.w && !off('early') && sold('patron')) h += '<button type="button" class="tk-g-nudge" data-g="add" data-d="w"><span>Arrive Wednesday</span><b>+ ' + money(PS('early')) + ' each</b></button>';
@@ -10070,11 +10098,11 @@ body:has(#tk2 #tk-bar:not([hidden])) #pk-toast,body:has(#pk-co) #pk-toast{displa
     t = totals(S);
     if (st === 'who') {
       var kd = kind(S.pass);
-      h += gTop(2) + '<div class="tk-g-pad"><h2 class="tk-d" tabindex="-1">Who’s coming?</h2><p class="tk-g-sub">' + (kd === 'pat' ? 'A Patron Pass is for any age, one per person.' : kd === 'wk' ? 'Kids are free. Teens are half price on weekend passes.' : 'Day tickets are one price for ages 13 and up. Kids are free.') + '</p><div class="tk-g-who">' +
+      h += gTop(2) + '<div class="tk-g-pad"><h2 class="tk-d" tabindex="-1">Who’s coming?</h2><p class="tk-g-sub">' + (kd === 'pat' ? 'A Patron Pass is for any age, one per person.' : kd === 'wk' ? 'Kids are free. Teens 13–17 are ' + money(PS('teen')) + ', half the 4-Day.' : 'Day tickets are one price for ages 13 and up. Kids are free.') + '</p>' + (GS.same === false && !GS.cnt && kd !== 'pat' ? '<p class="tk-g-fold"><span>' + [[GS.adult, 'adult'], [GS.teen, 'teen'], [GS.kid, 'kid']].filter(function (x) { return x[0]; }).map(function (x) { return x[0] + ' ' + x[1] + (x[0] > 1 ? 's' : ''); }).join(' · ') + '</span><button type="button" class="tk-tlink" data-g="cnt">Change</button></p><div class="tk-g-who" hidden>' : '<div class="tk-g-who">') +
         gStepper('adult', kd === 'pat' ? 'People' : kd === 'wk' ? 'Adults' : 'Ages 13 and up', kd === 'pat' ? 'Any age · ' + money(PS('patron')) : kd === 'wk' ? '18 and up · ' + money(PS(S.pass)) : 'One price for everyone', GS.adult, 1) +
         (kd === 'wk' && !sold('teen') ? gStepper('teen', 'Teens', '13–17 · ' + money(PS('teen')) + ', half the 4-Day', GS.teen, 0) : '') +
         (kd !== 'pat' ? (xpPick() === 'Family' ? gStepper('kid', 'Kids', '12 and under · free · <em class="tk-g-yp">You picked Family</em>', GS.kid, 0).replace('class="tk-g-r"', 'class="tk-g-r tk-g-hl"') : gStepper('kid', 'Kids', '12 and under · free', GS.kid, 0)) : '') + '</div>' + (kd !== 'pat' && GS.adult + GS.teen > 1 ? '<button type="button" class="tk-g-same" data-g="same" role="switch" aria-checked="' + (GS.same !== false ? 'true' : 'false') + '"><span class="tk-g-sw"></span>Everyone on the same days</button>' + (GS.same === false ? gWhoSplitHTML() : '') : '') + '</div>';
-      return h + gFoot('Getting there →', 'sleep', 'days', GS.same === false && !gSplit()) + gRev(t);
+      return h + gFoot('Travel →', 'sleep', 'days', GS.same === false && !gSplit()) + gRev(t);
     }
     if (st === 'sleep') {   /* Nov 22 drafts: two plain questions, getting there first; car, van or RV opens the camps */
       var camp = gCamps() || gNone(), none = gNone(), veh = VEH.test(S.sleep), TG = 'https://pickathon.com/info/traveling-to-pickathon/';
@@ -10114,10 +10142,10 @@ body:has(#tk2 #tk-bar:not([hidden])) #pk-toast,body:has(#pk-co) #pk-toast{displa
     h += gTop(4) + '<div class="tk-g-pad tk-g-pad4"><div class="tk-g-o1"><h2 class="tk-d" tabindex="-1">Your order</h2><ul class="tk-g-olist">' + olines(t) + '</ul><p class="tk-g-ototal"><span><b>Total</b><small>fee included</small></span><b class="tk-num">' + money(t.total) + '</b></p>' +
       '<p class="tk-g-edits">' + (S.pass !== 'none' ? '<button type="button" class="tk-tlink" data-g="go" data-to="days">Edit days</button><button type="button" class="tk-tlink" data-g="go" data-to="who">Edit who</button>' : '') + '<button type="button" class="tk-tlink" data-g="go" data-to="sleep">Edit travel</button></p></div><div class="tk-g-o2">';
     if (meals.length || dish.length || give.length) {
-      h += '<p class="tk-g-k tk-g-k2">Add to your weekend</p><div class="tk-g-adds">' + card('meal', 'Curation meal', 'Chef + artist', meals) + card('dish', 'Dishware', 'Cup, plate', dish) + card('give', 'Fund the Tools', 'Students build', give) + '</div>';
+      h += '<p class="tk-g-k tk-g-k2">Add to your weekend</p><div class="tk-g-adds">' + card('meal', 'Curation meal', meals.length + (meals.length === 1 ? ' seating' : ' seatings') + ' on your days', meals) + card('dish', 'Dishware', 'Cup, plate', dish) + card('give', 'Build the Wonders', 'Give to Creative Neighborhoods', give) + '</div>';
       if (GS.add === 'meal') h += '<p class="tk-g-addk">On your days, pick a seating</p><div class="tk-g-who tk-g-x">' + meals.map(xr).join('') + '</div>';
       if (GS.add === 'dish') h += '<div class="tk-g-who tk-g-x">' + dish.map(xr).join('') + '</div>';
-      if (GS.add === 'give') h += '<div class="tk-g-who tk-g-x">' + give.map(xr).join('') + '</div>';
+      if (GS.add === 'give') h += '<p class="tk-g-addk">Students build the neighborhoods with Creative Neighborhoods, a nonprofit. Then every build finds a new home.</p><div class="tk-g-who tk-g-x">' + give.map(xr).join('') + '</div>';
     }
     h += (w === 'pre' ? '<p class="tk-g-note">Checkout opens ' + esc(T.show.isToday ? 'today' : T.show.dayS) + '. Save your order now and pay in one tap then.</p>' : '') +
       (window.pkGift && w === 'sale' && (giftable(S).length || (S.gifts || []).length) ? '<div class="tk-g-gift">' + giftsOk(S).map(function (g, i) { return '<p><span>' + giftLabel(g) + '</span><button type="button" class="tk-tlink" data-g="gift" data-i="' + i + '">Edit</button></p>'; }).join('') + (giftable(S).length ? '<button type="button" class="tk-pill tk-pill-sm" data-g="gift" data-i="-1">' + ((S.gifts || []).length ? 'Give another as a gift' : 'Give any of it as a gift') + '</button>' : '') + '</div>' : '') +
@@ -10149,7 +10177,8 @@ body:has(#tk2 #tk-bar:not([hidden])) #pk-toast,body:has(#pk-co) #pk-toast{displa
       if (a === 'review') { GS.rev = !GS.rev; gDraw(); return; }
       if (a === 'veh') { GS.veh = true; gDraw(); return; }
       if (a === 'big') { S.big = !S.big; S = clean(S); save(); update(); gDraw(); return; }
-      if (a === 'addp') { GS.add = GS.add === v ? '' : v; if (v === 'give' && GS.add === 'give') { GIVE.forEach(function (id) { if (!off(id) && !(S.x || {})[id]) { if (!S.x) S.x = {}; S.x[id] = 1; } }); S = clean(S); save(); update(); } gDraw(); return; }
+      if (a === 'addp') { GS.add = GS.add === v ? '' : v; gDraw(); return; }
+      if (a === 'cnt') { GS.cnt = true; gDraw(); return; }   /* Nov 24: with different days on, the counters fold to one line until you tap Change */
       if (a === 'pday') { S.pday = v; S = clean(S); save(); update(); gDraw(); return; }
       if (a === 'go') { GS.rev = false; GS.step = b.getAttribute('data-to'); gDraw(true); return; }
       if (a === 'gift') { giftForm(+b.getAttribute('data-i'), function () { gDraw(); }); return; }
@@ -10180,6 +10209,8 @@ body:has(#tk2 #tk-bar:not([hidden])) #pk-toast,body:has(#pk-co) #pk-toast{displa
   };
   document.addEventListener('change', function (e) { if (root && root.contains(e.target)) onChange(e); });
   document.addEventListener('click', function (e) { if (root && root.contains(e.target)) onClick(e); });
+  /* Nov 24: "I know what I want" opens as its own screen: the day picker steps aside until you go back */
+  document.addEventListener('toggle', function (e) { var d = e.target; if (!root || !d || d.id !== 'tk-e3-know') return; var sec = $('#tk-entry', root); if (sec) sec.classList.toggle('tk-know', d.open); if (d.open) { var hh = $('.tk-t-hd h2', d); try { d.scrollIntoView({ block: 'start' }); if (hh) hh.focus({ preventScroll: true }); } catch (x) {} } else { var dy = $('#tk-e-days', root); try { if (dy) dy.scrollIntoView({ block: 'start' }); } catch (x) {} } }, true);
 
   /* A reload or a tab the phone put to sleep comes back to where the buyer was: Tickets, or Checkout. A link ending #tickets opens Tickets too. */
   var back = ''; try { back = window.sessionStorage.getItem(SSW) || ''; } catch (e) {}

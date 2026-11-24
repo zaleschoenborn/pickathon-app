@@ -1013,3 +1013,30 @@ body:has(#tk2 #tk-bar:not([hidden])) #pk-toast,body:has(#pk-co) #pk-toast{displa
  .tk2.tk-gscrim .tk-g-pad,.tk2.tk-gscrim .tk-g-bar2,.tk2.tk-gscrim .tk-g-stepn{max-width:640px;margin-left:auto;margin-right:auto;width:100%;box-sizing:border-box}
  .tk2.tk-gscrim .tk-g-foot{padding-left:max(16px,calc(50vw - 320px));padding-right:max(16px,calc(50vw - 320px))}
 }
+
+/* Nov 24: step names read heavier */
+.tk2.tk-gscrim .tk-g-bar2 li{font-size:13px;font-weight:900;color:rgba(245,239,226,.75)}
+.tk2.tk-gscrim .tk-g-bar2 li.on{color:var(--gold,#F2CF62)}
+@media (min-width:1025px){.tk2.tk-gscrim .tk-g-bar2 li{font-size:15px}}
+
+/* Nov 24: "Pick what you want" is its own screen */
+.tk2 .tk-t-hd{display:none}
+.tk2 .tk-know #tk-e-days,.tk2 .tk-know .tk-e-vet,.tk2 .tk-know .tk-e3-know>summary{display:none}
+.tk2 .tk-know .tk-t-hd{display:block;margin:0 0 12px}
+.tk2 .tk-know .tk-t-hd .tk-tlink{min-height:44px;display:inline-flex;align-items:center;padding:0}
+.tk2 .tk-know .tk-t-hd h2{margin:4px 0 0}
+
+.tk2 .tk-g-fold{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:8px 0 12px;padding:12px 14px;border:1px solid rgba(245,239,226,.18);border-radius:12px;font-weight:700}
+.tk2 .tk-g-fold .tk-tlink{min-height:44px;display:inline-flex;align-items:center}
+
+/* Nov 24 panel fixes: bigger small print and targets, no page bar behind the steps, headings clear the menu, add-ons one per row beside the order */
+.tk2 .tk-g-ftot span{font-size:14px}
+.tk2 .tk-g-ftot i{font-size:14px}
+.tk2 .tk-g-edits .tk-tlink{min-height:44px;display:inline-flex;align-items:center;font-size:14px}
+.tk2 .tk-t-stp button{width:44px;height:44px}
+.tk2 .tk-g-sub,.tk2 .tk-g-r p span,.tk2 .tk-g-stepn{color:rgba(245,239,226,.82)}
+.tk2 .tk-g-r p span{font-size:15px}
+body:has(.tk-gscrim) #tk-bar{visibility:hidden}
+.tk2 #tk-e3-know,.tk2 #tk-e-days{scroll-margin-top:84px}
+.tk2 .tk-g-pat .tk-num small{font-size:.6em;font-weight:700;opacity:.8}
+@media (min-width:1025px){.tk2.tk-gscrim .tk-g-pad4 .tk-g-adds{grid-template-columns:1fr;display:grid;gap:10px}}
