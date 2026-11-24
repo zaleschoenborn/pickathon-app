@@ -874,7 +874,7 @@ html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-tv .pkpl-g2{gap:6px;padding-bottom
 html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-tv .pkpl-g2 .pkpl-xe{min-height:44px!important;height:44px;flex-direction:row;justify-content:center;gap:6px;padding:4px}
 html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-tv .pkpl-g2 .pkpl-xe svg{width:16px;height:16px;flex:none}
 html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-tv .pkpl-pd{margin:6px 0 6px;min-height:0}
-html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-tv2 .pkpl-pd{-webkit-line-clamp:1!important;min-height:0!important}
+html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-tv2 .pkpl-pd{-webkit-line-clamp:3!important;min-height:0!important}
 html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-tv .pkpl-pl + .pkpl-ab{margin-top:8px!important;padding-top:0!important;padding-bottom:0!important}
 html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-tv .pkpl-pl.pkpl-cols.pkpl-c3 .pkpl-pr{padding:2px 2px;gap:6px}
 html body.pkpl-v2.pkpl-wide #root #pkpl .pkpl-tv .pkpl-pl.pkpl-cols.pkpl-c3 .pkpl-pr img{width:24px;height:24px}
@@ -992,3 +992,6 @@ html body.pkpl-v2 #root #pkpl .pkpl-gk p.pkpl-ask{font-size:12px!important;lette
 /* Zale, Nov 23: merch gets a plain merch plate over the 2026 frog badge baked into the art */
 /* amenity name on hover (desktop) */
 #pkpl .pkpl-amhov{position:absolute;left:0;top:0;z-index:30;pointer-events:none;padding:7px 11px;border-radius:8px;background:#12160F;border:1px solid #3A4331;color:#F2EDE3;font:700 14px/1 'Bricolage Grotesque',system-ui,sans-serif;white-space:nowrap;box-shadow:0 4px 14px rgba(0,0,0,.4)}
+
+/* Panel test Nov 24: touch screens get 44px rows in the place list (wide tablets use the 3-column list) */
+@media (pointer:coarse){html body.pkpl-v2 #root #pkpl .pkpl-pl.pkpl-cols .pkpl-pr,html body.pkpl-v2 #root #pkpl .pkpl-title:not(.pkpl-tx) .pkpl-pl.pkpl-cols.pkpl-c3 .pkpl-pr,body.pkpl-wide .pkpl-tight6 .pkpl-pr{min-height:44px!important}}
