@@ -261,4 +261,22 @@
 })();
 /* r83: shrink the reel's class-and-genre line one step if it would overflow */
 (function(){function fitK(){document.querySelectorAll('.hero .krow,.ahero .krow').forEach(function(k){k.classList.remove('tight');if(k.scrollWidth>k.clientWidth+1)k.classList.add('tight')})}
-window.addEventListener('load',fitK);window.addEventListener('resize',fitK);document.addEventListener('click',function(){setTimeout(fitK,60)});setInterval(fitK,1500)})();
+window.addEventListener('load',fitK);window.addEventListener('resize',fitK);document.addEventListener('click',function(){setTimeout(fitK,60)});setInterval(fitK,1500)
+  // r98 (Zale, Nov 24 11:17): poster type follows rank. Each name starts at its magnitude size; going down the ranked list a name is never
+  // bigger than the one above it, and a name too long for the column steps down (and so does everyone below it). No name wraps.
+  function pkFitPoster(pn) {
+    var W = pn.clientWidth; if (!W) return;
+    pn.querySelectorAll('.pcloud:not(.rest)').forEach(function (pc) {
+      var prev = 1e9;
+      pc.querySelectorAll('.pn').forEach(function (e) {
+        e.style.fontSize = '';
+        var base = parseFloat(getComputedStyle(e).fontSize), w = e.scrollWidth;
+        var s = Math.min(base, w > W ? base * W / w * 0.97 : base, prev);
+        e.style.setProperty('font-size', s.toFixed(1) + 'px', 'important'); prev = s;
+      });
+    });
+  }
+  if (window.ResizeObserver) { var pkRO = new ResizeObserver(function (es) { es.forEach(function (x) { pkFitPoster(x.target); }); });
+    document.querySelectorAll('.po-names').forEach(function (n) { pkRO.observe(n); }); }
+  document.querySelectorAll('.po-names').forEach(pkFitPoster);
+})();

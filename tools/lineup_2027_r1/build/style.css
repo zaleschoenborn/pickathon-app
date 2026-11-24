@@ -1219,3 +1219,18 @@ a.hd-yr{text-decoration:none}
 /* r97: fit each poster name to the names column itself (container width), every size */
 .po-names{container-type:inline-size}
 .po-names .pcloud .pn{white-space:nowrap!important;overflow-wrap:normal!important;font-size:min(calc((var(--lo) + var(--s)*(var(--hi) - var(--lo))) * 1px),calc(96cqw / (0.74 * var(--n,10))))!important}
+/* r98 (Zale, Nov 24 11:17): type size follows rank: names start at their magnitude size; app.js fits them so no lower-ranked name is ever
+   bigger than one above it, and no name wraps. Desktop: smaller logo and caption, the caption first, then the slider with room between */
+.po-names .pcloud:not(.rest) .pn{font-size:calc((var(--lo) + var(--s)*(var(--hi) - var(--lo))) * 1px)!important;white-space:nowrap!important}
+@media (min-width:1000px){
+  .yrtop .po-art,.yrtop .poster .po-badge,.yrtop .poster.joined .po-badge,.yrtop .poster.solo .po-badge{width:176px!important}
+  .yrtop .poster .po-cap{grid-column:2!important;grid-row:1!important;margin-top:18px!important;font-size:32px!important;line-height:1.08!important;text-align:left}
+  .yrtop .poster .po-ctl{grid-column:2!important;grid-row:2!important;margin-top:26px!important;max-width:none!important;width:100%;gap:22px!important}
+  .yrtop .poster .po-ctl .po-track{min-width:120px}
+  .yrtop .poster .po-in{column-gap:40px!important}
+}
+@media (min-width:1000px){
+  .yrtop .poster .po-ctl .po-b{flex:none!important;white-space:nowrap;font-size:14px!important;padding:0 16px!important;height:46px!important}
+  .yrtop .poster .po-ctl .po-track{flex:1 1 auto!important;min-width:64px!important}
+  .yrtop .poster .po-ctl{gap:18px!important}
+}
