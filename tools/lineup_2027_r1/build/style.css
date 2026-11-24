@@ -1234,3 +1234,26 @@ a.hd-yr{text-decoration:none}
   .yrtop .poster .po-ctl .po-track{flex:1 1 auto!important;min-width:64px!important}
   .yrtop .poster .po-ctl{gap:18px!important}
 }
+/* r99 (Zale, Nov 24 11:26): the slider sits centered in its column with room at both edges; the year riding the knob is bigger and readable */
+.po-ctl{width:calc(100% - 48px)!important;max-width:340px!important;margin-left:auto!important;margin-right:auto!important;gap:12px!important}
+.po-ctl .po-b{padding:0 12px!important}
+.po-yr{font-size:15px!important;letter-spacing:.06em!important;top:-26px!important}
+@media (min-width:1000px){
+  .yrtop .poster .po-ctl{width:auto!important;max-width:440px!important;justify-self:center!important;margin-left:auto!important;margin-right:auto!important;gap:22px!important;margin-top:40px!important}
+  .yrtop .poster .po-cap{text-align:center!important;justify-self:center!important}
+  .po-yr{font-size:19px!important;top:-32px!important}
+}
+/* r99b: slider gets real room: phone = nearly the panel width, smaller button type; desktop = its own centered row across the poster */
+.po-ctl{width:calc(100% - 20px)!important;max-width:360px!important;gap:10px!important}
+.po-ctl .po-b{padding:0 10px!important;font-size:12px!important;letter-spacing:.05em!important}
+.po-ctl .po-track{flex:1 1 auto!important;min-width:70px!important}
+.po-yr{top:auto!important;bottom:32px!important;font-size:16px!important}
+@media (min-width:1000px){
+  .yrtop .po-art{grid-row:1!important}
+  .yrtop .poster .po-cap{grid-column:2!important;grid-row:1!important;align-self:center!important;margin-top:0!important;font-size:34px!important}
+  .yrtop .poster .po-ctl{grid-column:1/-1!important;grid-row:2!important;justify-self:center!important;width:100%!important;max-width:520px!important;margin:38px auto 0!important;gap:22px!important}
+  .yrtop .poster .po-ctl .po-b{font-size:14px!important;padding:0 18px!important;letter-spacing:.08em!important}
+  .po-yr{font-size:20px!important;bottom:34px!important}
+}
+@media (max-width:379px){.po-ctl{gap:8px!important;width:calc(100% - 12px)!important}.po-ctl .po-b{font-size:11px!important;padding:0 8px!important;letter-spacing:.03em!important}.po-ctl .po-track{min-width:48px!important}}
+@media (max-width:999px){.poster .po-cap{font-size:22px!important;line-height:1.15!important}.po-yr{font-size:19px!important;bottom:34px!important}.po-ctl{margin-top:40px!important}}
