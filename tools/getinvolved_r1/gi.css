@@ -1,0 +1,39 @@
+/* pk-gi1-css: the Get involved door, build 1 (Nov 24 2026). Scoped under #gi1. Sitewide tokens: ground #2B2628, card #1C191A, deep #15110F, gold #D6B54A, cream #F2EDE3. Brand font Bricolage Grotesque. */
+#gi1{font-family:'Bricolage Grotesque',sans-serif;color:#F2EDE3;padding-bottom:40px}
+#gi1 button{font-family:inherit}
+#root #gi1 .gi-go{all:unset;box-sizing:border-box;cursor:pointer;-webkit-tap-highlight-color:transparent}
+#root #gi1 .gi-go:focus-visible{outline:2px solid #D6B54A;outline-offset:3px}
+#root #gi1 .gi-crumb{display:flex;align-items:center;min-height:44px;padding:0 20px;font-size:15px;font-weight:700;color:#D6B54A}
+#gi1 .gi-hero{position:relative;height:300px;overflow:hidden;background:#15110F}
+#gi1 .gi-hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+#gi1 .gi-hero::after{content:"";position:absolute;inset:0;background:linear-gradient(rgba(21,17,15,0),rgba(21,17,15,.92) 45%)}
+#gi1 .gi-hx{position:absolute;z-index:1;left:0;right:0;bottom:0;padding:48px 20px 20px}
+#root #gi1 .gi-h1{margin:0;font-weight:800;font-size:38px;line-height:1.02;color:#F2EDE3}
+#root #gi1 .gi-line{margin:8px 0 0;font-weight:400;font-size:20px;line-height:1.3;color:#F2EDE3}
+#gi1 .gi-cards{list-style:none;margin:0;padding:20px;display:grid;grid-template-columns:minmax(0,1fr);gap:20px}
+#gi1 .gi-card{position:relative;height:440px;border-radius:6px;overflow:hidden;background:#1C191A}
+#gi1 .gi-card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+#gi1 .gi-tx{position:absolute;left:0;right:0;bottom:0;display:flex;flex-direction:column;gap:8px;padding:56px 20px 20px;background:linear-gradient(rgba(21,17,15,0),rgba(21,17,15,.92) 38%)}
+#root #gi1 .gi-lab{font-size:19px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#F2EDE3}
+#root #gi1 .gi-t{margin:0;font-size:36px;font-weight:800;line-height:1.05;color:#F2EDE3}
+#root #gi1 .gi-t.gi-tl{font-size:32px}
+#root #gi1 .gi-l{margin:0 0 6px;font-size:27px;font-weight:400;line-height:1.25;color:#F2EDE3}
+#root#root#root#root#root#root#root#root#root#root#root#root #gi1 .pk-cta.gi-btn{display:flex!important;align-items:center;justify-content:center;width:100%!important;min-height:50px!important;height:50px;margin:0!important;padding:0 16px!important;border-radius:6px!important;font-family:'Bricolage Grotesque',sans-serif!important;font-weight:800!important;font-size:14px!important;letter-spacing:1px!important;text-transform:uppercase;box-shadow:none!important}
+#root#root#root#root#root#root#root#root#root#root#root#root #gi1 .pk-cta.gi-btn.pri{background:rgba(214,181,74,.18)!important;color:#F2CF62!important;border:2px solid #D6B54A!important}
+#root#root#root#root#root#root#root#root#root#root#root#root #gi1 .pk-cta.gi-btn.sec{background:rgba(21,17,15,.26)!important;color:#F2EDE3!important;border:2px solid rgba(242,237,227,.88)!important}
+#gi1 .gi-links{display:flex;flex-direction:column;padding:0 20px}
+#root #gi1 .gi-lk{display:flex;align-items:center;min-height:44px;font-size:16px;font-weight:700;color:#D6B54A}
+@media (min-width:600px){#gi1 .gi-hero{height:360px}#gi1 .gi-cards{padding:32px}#root #gi1 .gi-crumb{padding:0 32px}#gi1 .gi-hx{padding:48px 32px 32px}#gi1 .gi-links{padding:0 32px}}
+@media (min-width:1200px){
+  #root #gi1 .gi-crumb{padding:0 56px;font-size:16px}
+  #gi1 .gi-hero{height:420px}
+  #gi1 .gi-hx{padding:48px 56px 56px}
+  #root #gi1 .gi-h1{font-size:64px}
+  #root #gi1 .gi-line{font-size:24px}
+  #gi1 .gi-cards{grid-template-columns:repeat(2,minmax(0,1fr));padding:40px 56px}
+  #gi1 .gi-card{height:480px}
+  #root #gi1 .gi-t{font-size:40px}
+  #root #gi1 .gi-t.gi-tl{font-size:36px}
+  #root#root#root#root#root#root#root#root#root#root#root#root #gi1 .pk-cta.gi-btn{min-height:56px!important;height:56px;font-size:16px!important}
+  #gi1 .gi-links{padding:0 56px;flex-direction:row;gap:32px}
+}
