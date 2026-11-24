@@ -717,25 +717,26 @@ barh = ''.join('<div class="br b%d">%s</div>' % (lv, ''.join('<i style="width:%d
 s1 = header('Lineup', 'Aug 5–8, 2027', back=False, chip='2027')
 # r60 (Zale, Nov 22 20:18): 2027 gets the same paper frame on desktop, with no logo yet: plum frame, the year's horizon on top, a gold printed border on the poster card
 P27 = {'paper': '#F2EDE3', 'ink': '#3B2935', 'light': '#E3B5CF', 'warm': '#F2CF62', 'stripe': ['#F2CF62', '#86526B', '#E3B5CF'], 'band': '#86526B'}
-s1 += '<div class="yrtop framed f27" style="--paper:#F2EDE3;--ink:#3B2935;--mat:#86526B;--s1:#F2CF62;--pnl:#3B2935"><div class="yrcrown" aria-hidden="true">%s</div>' % generic_seam('2027', P27)
-s1 += ('<section class="hero h27"><img src="%s" alt="" style="object-position:74%% 50%%"><div class="hero-sc"></div>'
-       '<div class="hero-tx"><p class="kick">The 2027 lineup · not out yet</p><h1>The names<br>come later.</h1>'
-       '<p class="hero-sub">60+ acts on hand-built stages, most playing twice. Be first to hear who.</p>'
-       '<a class="btn gold" href="#">Send me the 2027 lineup</a></div></section>') % img('i/pk-yr2024-1.jpg', 1100, 80)
-# Nov 21 r27 (Zale, 09:10): the placeholder 2027 poster card is back under the hero, so 2027 has its year block like every other year (r25 had removed it)
-s1 += ('<section class="p27"><div class="stripe"><i style="background:#F2CF62"></i><i style="background:#86526B"></i><i style="background:#E3B5CF"></i><i style="background:#F2EDE3"></i></div>'
-       '<div class="p27-in"><div class="p27-top"><div><p class="p27-k">Pickathon</p><p class="p27-y">2027</p></div><span class="p27-q" aria-hidden="true">?</span></div>'
-       '<p class="p27-d">August 5–8 · Pendarvis Farm</p><div class="p27-bill" role="img" aria-label="The 2027 poster, names not yet announced">%s</div>'
-       '<p class="p27-c">The 2027 poster · names go here</p></div>'
-       '<div class="stripe"><i style="background:#F2CF62"></i><i style="background:#86526B"></i><i style="background:#E3B5CF"></i><i style="background:#F2EDE3"></i></div></section>') % barh
-s1 += '</div>'
-s1 += ('<section class="arch"><p class="kick">While you wait</p><h2>Wait, they played here?</h2><p class="sub">They played the farm in small rooms. Look how big they got.</p>'
-       # r48 (Zale, Nov 22: one question only): no class tabs; the class word stays on each card; one mixed feed, biggest today first
-       '<div class="bkw one"><div class="bk" hidden><button class="bkb on" data-b="all"></button></div>%s<span class="bkc" aria-live="off"><b>0</b> of <i>@NA</i></span></div>'
-       '<div class="grid2 bl" data-b="all">%s</div>'
-       '<button class="btn line wide more">Keep going</button></section>') % (gpick('.arch .card', 'What kind of music do you love?', GLIST).replace('class="gp"', 'class="gp gpc"'),
-       ''.join(vcard(n, y, k, g, p, pos) for k, n, y, g, p, pos in ARCH_ALL))
-s1 = s1.replace('@NA', str(len(ARCH_ALL))).replace('@ND', str(len(disc))).replace('@NL', str(len(leg))).replace('@NP', str(len(deep)))
+# r80 (Zale, Nov 23 18:24, LOCKED): the 2027 preview page, until the lineup is out. Poster first (no photo hero): text left, the "?" seal
+# lockup and five rows of hidden names right; then "Wait, they played here?": Music Highlights as square cards, endless scroll,
+# magnitude order feathered and reshuffled each visit, a sticky bar (kind of music, Full archive, N of M bands) and one ticket card
+# after the first 24. Once the 2027 lineup is out, 2027 uses the same year template as 1999-2026 and this page retires.
+# Parts: s1_2027.html / .css / .js (cut from the locked mock m16). Card data comes live from ARCH_ALL below.
+_P27A = []
+for _r, (k, n, y, g, p, pos) in enumerate(ARCH_ALL):
+    _ga = [t for t in (gall_n(n, g) or '').split('|') if t]
+    _gp = gp_n(n, g)
+    if _gp in _ga: _ga.remove(_gp); _ga.insert(0, _gp)
+    _cv = archive_clip(n, y); _q = act_queue(n, y)
+    _P27A.append({'r': _r, 'g': _ga or [''], 'img': img(p, 520) if p else '', 'pos': pos or '50% 40%', 'kc': 'k-' + k, 'k': KLAB[k], 'y': str(y), 'n': n,
+                  'a': _aslug(n), 'c': _cv or '', 'q': _q if _q.count(';;') else '',
+                  'l': _ALINES.get('%s|%s|%s' % (k, ''.join(c for c in _ud.normalize('NFD', n.lower()) if c.isalnum() and ord(c) < 128), y), '')})
+_SHEET = ('<div class="sheet" id="p27-sheet" hidden><div class="sheet-in"><p>What kind of music do you love?</p><button class="on" data-g="">Every kind</button>%s</div></div>'
+          % ''.join('<button data-g="%s">%s</button>' % (E(t), E(t)) for t in TAGS15))
+s1 += (open(ROOT + 's1_2027.html').read().replace('@SEAL', img('ext/y27-seal.png', 950, fmt='PNG')).replace('<i id="p27-tot">459</i>', '<i id="p27-tot">%d</i>' % len(_P27A))
+       + _SHEET + '<style>%s</style>' % open(ROOT + 's1_2027.css').read().replace('url(y27/rays2400.png)', 'url(%s)' % img('ext/y27-rays2400.png', 2400, fmt='PNG')).replace('url(y27/rays.png)', 'url(%s)' % img('ext/y27-rays2400.png', 2400, fmt='PNG'))
+       + '<script>%s</script>' % open(ROOT + 's1_2027.js').read().replace('__ALL__', json.dumps(_P27A, ensure_ascii=False).replace('</', '<\\/')))
+print('2027 preview wall: %d cards, %d with a song, %d with a blurb' % (len(_P27A), sum(1 for x in _P27A if x['c']), sum(1 for x in _P27A if x['l'])))
 
 P24 = d['yearBrand']['2024']
 # ---------- SCREEN 3: Geese ----------
