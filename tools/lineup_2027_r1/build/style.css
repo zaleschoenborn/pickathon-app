@@ -1093,3 +1093,63 @@ main[id^="a-"] .sale{display:none}
 }
 /* r87: the year-reel line (~120 characters) never cuts off: four lines allowed on the narrower desktop reel */
 .hero.reel .hero-sub{-webkit-line-clamp:4;line-clamp:4}
+
+/* r88 (Zale, Nov 24 07:46): artist page polish. Hero line = who they were that year */
+main[id^="a-"] .hact .hero-sub{font-size:18px;line-height:1.35;max-width:30em;-webkit-line-clamp:3}
+@media(min-width:1000px){main[id^="a-"] .hact .hero-sub{font-size:24px;line-height:1.3;max-width:26em}}
+/* liner notes as a timeline: a thin rail, the Pickathon marker holds the sets as one-line chips */
+.liner.tl .tl-rail{position:relative;padding-left:22px;border-left:2px solid var(--line2);margin-left:4px}
+.liner.tl .tl-rail .body{margin:0 0 14px}
+.liner.tl .tl-pk{position:relative;margin:4px 0 18px;padding:12px 14px;border-radius:6px;background:rgba(214,181,74,.08);border:1px solid rgba(214,181,74,.35)}
+.liner.tl .tl-dot{position:absolute;left:-31px;top:16px;width:14px;height:14px;border-radius:50%;background:var(--acc,#D6B54A);box-shadow:0 0 0 4px var(--bg,#2a2526)}
+.liner.tl .tl-y{margin:0 0 6px;font-size:13px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--acc,#D6B54A)}
+.liner.tl .tl-c{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:6px 18px}
+.liner.tl .tl-c li{font-size:15px;line-height:1.4;color:var(--cream)}
+.liner.tl .tl-c b{font-weight:800;margin-right:6px;color:var(--cream)}
+.liner.tl .setg{display:none}
+/* follow and listen */
+.fol{margin:22px 0 0;padding:16px 16px 14px;border:1px solid var(--line2);border-radius:6px}
+.fol .fol-l{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 4px}
+.fol .fol-l a{display:inline-flex;align-items:center;min-height:44px;padding:0 14px;border:1.5px solid var(--line2);border-radius:4px;font-size:15px;font-weight:700;color:var(--cream);text-decoration:none}
+.fol .fol-l a:hover{border-color:var(--acc,#D6B54A)}
+.fol .fol-f{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;margin:12px 0 0;font-size:15px}
+.fol .fol-f dt{font-weight:800;letter-spacing:.1em;text-transform:uppercase;font-size:12px;opacity:.75;padding-top:2px}
+.fol .fol-f dd{margin:0;color:var(--cream)}
+@media(min-width:1000px){
+ .liner.one.tl{display:grid;grid-template-columns:minmax(0,1fr) 300px;column-gap:56px;align-items:start}
+ .liner.one.tl>.tl-main{grid-column:1}.liner.one.tl>.fol{grid-column:2;margin:34px 0 0;position:sticky;top:96px}
+}
+/* every pickathon: one small card per visit */
+.shelf.every .swipe{gap:12px}
+.shelf.every .ev{flex:none;width:220px;display:flex;flex-direction:column;border-radius:6px;overflow:hidden;border:1px solid var(--line2);background:rgba(255,255,255,.03);text-decoration:none;color:var(--cream)}
+.shelf.every .ev.on{border-color:var(--acc,#D6B54A);box-shadow:inset 0 0 0 1px var(--acc,#D6B54A)}
+.shelf.every .ev-p{display:block;width:100%;height:130px;object-fit:cover}
+.shelf.every .ev-n{background:#3a3334}
+.shelf.every .ev-b{position:relative;display:flex;flex-direction:column;gap:4px;padding:30px 12px 14px}
+.shelf.every .ev-i{position:absolute;top:-26px;left:10px;width:50px;height:50px;object-fit:contain}
+.shelf.every .ev-y{font-size:13px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--acc,#D6B54A)}
+.shelf.every .ev-l{font-size:15px;line-height:1.35}
+/* if you like: smaller cards, no blurb */
+.shelf.yl .swipe>.card.tt{width:170px;height:212px}
+.shelf.yl .card .cline,.shelf.yl .card .cstory,.shelf.yl .card .krow .g{display:none}
+.shelf.yl .card .cname{font-size:15px}
+.shelf.yl .card.seeall{display:none}
+.shelf.every .ev-n{display:flex;align-items:center;justify-content:center}.shelf.every .ev-n img{width:84px;height:84px;object-fit:contain}
+/* r89 artist page: That weekend, All <act>, panel placeholders and years */
+.liner.tl .tl-pk{padding:8px 14px}.liner.tl .tl-pk .tl-y{margin:0}
+.shelf.weekend .wk{flex:none;width:210px}.shelf.weekend .vth{display:block;position:relative;height:118px;border-radius:10px;overflow:hidden;background:#2b2627}
+.shelf.weekend .vth img{width:100%;height:100%;object-fit:cover}
+.shelf.weekend .wk-n{display:flex;height:100%;align-items:center;justify-content:center;background:#332d2e}.shelf.weekend .wk-ic{width:64px;height:64px;object-fit:contain;opacity:.9}
+.shelf.weekend .wk>b{display:block;margin-top:10px;font-size:17px;font-weight:700;color:#f3ead8}.shelf.weekend .wk>b i{font-style:normal;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#d9b24a;margin-left:6px}
+.shelf.weekend .wk>span:last-child{display:block;margin-top:2px;font-size:14px;color:#b9ad9c}
+.shelf.allact .vid{width:200px}.shelf.allact .ay-y{position:absolute;top:8px;right:10px;font-family:var(--disp,inherit);font-size:20px;color:#fff;text-shadow:0 1px 6px rgba(0,0,0,.6);z-index:2}
+.fol .fol-l .ph{display:inline-flex;align-items:center;min-height:44px;padding:0 14px;border:1px dashed rgba(243,234,216,.28);border-radius:6px;color:rgba(243,234,216,.4);font-size:14px}
+.fol .fol-yk{margin:14px 0 6px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#b9ad9c}
+.fol .fol-y{display:flex;flex-wrap:wrap;gap:8px}.fol .fol-y a,.fol .fol-y span{display:inline-flex;align-items:center;min-height:44px;padding:0 14px;border:1px solid rgba(243,234,216,.25);border-radius:6px;color:#f3ead8;font-size:15px;text-decoration:none}
+.fol .fol-y span.on{border-color:#d9b24a;color:#d9b24a;background:rgba(217,178,74,.1)}
+.liner.tl .tl-wk .shelf.weekend.in{margin:10px 0 0;padding:0}.liner.tl .tl-wk .shelf.weekend.in .wk{width:170px}.liner.tl .tl-wk .shelf.weekend.in .vth{height:96px}
+.liner.tl .tl-pk:has(.tl-wk){background:none;border:0;padding:6px 0 4px}
+.shelf.weekend .wk{scroll-snap-align:start}
+.liner.tl .tl-pk .tl-s{margin:4px 0 0;font-size:14px;line-height:1.45;color:#d8ccb6}
+.shelf.weekend .wk-ic{width:34px;height:34px;opacity:.55}.shelf.weekend .wk-n{background:#2f2a2b;border:1px solid rgba(243,234,216,.1);border-radius:10px}
+.shelf.weekend .vth img.wk-ic{width:34px;height:34px;object-fit:contain;opacity:.55}
