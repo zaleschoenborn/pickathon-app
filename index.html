@@ -11515,7 +11515,10 @@ html:root:root #root#root#root#root#root#root#root#root#root#root#root#root#root
   #pkh2#pkh2 .h2-xrg{position:absolute;left:50%;top:44%;width:62px;height:62px;margin:-31px 0 0 -31px;border-radius:50%;border:2px solid #fff;background:rgba(0,0,0,.45)}
   #pkh2#pkh2 .h2-xrg:after{content:'';position:absolute;left:25px;top:19px;border-left:19px solid #fff;border-top:11px solid transparent;border-bottom:11px solid transparent}
   #pkh2#pkh2 .h2-xlo{position:absolute;left:18px;right:18px;bottom:26px;display:block}
+  #pkh2#pkh2 .h2-xt.h2-xtl{font-size:clamp(18px,1.55vw,25px);line-height:1.08}
+  #pkh2#pkh2 .h2-xt>span:first-child{min-width:0}
   #pkh2#pkh2 .h2-xy{flex:none;color:#D6B54A;font:inherit;font-weight:inherit}
+  @media (max-width:999px){#pkh2#pkh2 .h2-xy{font-size:20px}#pkh2#pkh2#pkh2 .h2-xt,#pkh2#pkh2#pkh2 .h2-xt.h2-xtl{font-size:20px;line-height:1.06;height:3.18em}}
   #pkh2#pkh2 .h2-xt{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;font-size:clamp(22px,1.9vw,30px);line-height:1.04;height:2.08em;overflow:hidden;margin:0 0 10px;text-wrap:balance;color:#F2EDE3}
   #pkh2#pkh2 .h2-xb2{display:block;font:500 clamp(15px,1.15vw,17px)/1.35 'Bricolage Grotesque',system-ui,sans-serif;color:#F2EDE3;text-wrap:pretty;height:5.4em;overflow:hidden;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical}
   #pkh2#pkh2 .h2-xca2{display:flex!important;position:absolute;top:50%;margin-top:-22px}
@@ -12602,7 +12605,7 @@ window.pkClimbRank = function (C, dd) {
       return '<article class="h2-xcc" role="listitem"><button type="button" class="h2-xcb2" data-h2="xcard" data-i="' + i + '" data-h="' + c.k + '" aria-label="' + esc((c.vu ? 'Watch ' + c.t + ' at ' + (H.n || '') + ', Pickathon ' + c.y : (c.t ? c.t + ', ' : '') + (H.n || '') + '. Open its page')) + '">' +
         '<img class="h2-xci2" src="' + esc(c.img) + '" alt="" loading="' + (i < 3 ? 'eager' : 'lazy') + '" decoding="async" style="object-position:' + esc(c.pos) + '"><span class="h2-xsh"></span>' +
         '<span class="h2-xwh"><img src="' + esc(ic) + '" alt="" width="26" height="26">' + esc(H.n || '') + '' + '</span>' + (c.vu ? '<span class="h2-xrg" aria-hidden="true"></span>' : '') +
-        '<span class="h2-xlo">' + (c.t ? '<span class="h2-d h2-xt"><span>' + esc(c.t) + '</span>' + (c.y ? '<b class="h2-xy">' + esc(c.y) + '</b>' : '') + '</span>' : '') + (c.b ? '<span class="h2-xb2">' + esc(c.b) + '</span>' : '') + '</span></button></article>'; }).join('');
+        '<span class="h2-xlo">' + (c.t ? '<span class="h2-d h2-xt' + (c.t.length > 21 ? ' h2-xtl' : '') + '"><span>' + esc(c.t) + '</span>' + (c.y ? '<b class="h2-xy">' + esc(c.y) + '</b>' : '') + '</span>' : '') + (c.b ? '<span class="h2-xb2">' + esc(c.b) + '</span>' : '') + '</span></button></article>'; }).join('');
     box._L = L; box.scrollLeft = 0; var dt = $('[data-h2="xcdots"]', root); if (dt) dt.innerHTML = L.map(function (c, i) { return '<i' + (i ? '' : ' class="on"') + '></i>'; }).join('');
     xcInit(box); }
   function xcStep(box, d) { var C = box.children, i = 0, j; if (!C.length) return; for (j = 0; j < C.length; j++) if (C[j].offsetLeft - box.offsetLeft <= box.scrollLeft + 8) i = j; i += d; var end = box.scrollLeft + box.clientWidth >= box.scrollWidth - 4; if (i >= C.length || (d > 0 && end)) i = 0; if (i < 0) i = C.length - 1; try { box.scrollTo({ left: C[i].offsetLeft - box.offsetLeft, behavior: reduced() ? 'auto' : 'smooth' }); } catch (e) { box.scrollLeft = C[i].offsetLeft - box.offsetLeft; } }
