@@ -14,6 +14,9 @@ for r in C('summer_camp_cards_nov24_draft2.csv'): words[(r['experience'], r['pla
 REN = {'Brunch at Curation': 'Sunday Brunch at Curation', "Kids' Talent Show": 'Ukulele and Talent Show', 'Music Classes': 'Family Jam'}
 for r in C('summer_camp_cards_changes_nov24_draft1.csv'):
     old = REN.get(r['title'], r['title']); words[(r['experience'], r['place_key'], old)] = (r['title'], r['blurb'])
+for r in C('summer_camp_cards_changes2_nov24_draft1.csv'):
+    for key in [kk for kk in words if kk[0] == r['experience'] and kk[1] == r['place_key'] and words[kk][0] == r['title']] or [(r['experience'], r['place_key'], r['title'])]:
+        words[key] = (r['title'], r['blurb'])
 music = {(r['act'], r['year']): r['line'] for r in C('music_row_lines_nov24_draft1.csv')}
 won = {}
 for f in ('wonders_cards_nov24_draft1.csv', 'wonders_cards_2025_2026_nov24_draft1.csv', 'wonders_cards_2025_rest_nov24_draft1.csv', 'wonders_cards_2026_rest_nov24_draft1.csv'):
