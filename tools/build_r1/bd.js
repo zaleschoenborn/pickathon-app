@@ -155,10 +155,11 @@
   /* ---------- Start a project: one question per screen ---------- */
   var S = { step: 0, a: {}, sent: false, err: '', last: null };
   function sheetEl() { var s = document.getElementById('bd1-sheet'); if (!s) { s = document.createElement('div'); s.id = 'bd1-sheet'; s.className = 'bd1s'; s.hidden = true; document.body.appendChild(s); } return s; }
-  function open(kind) {
+  function open(kind, builds) {
     var d = data(); if (!d) return; S.last = document.activeElement; S.err = '';
     if (S.sent) { S.sent = false; S.step = 0; S.a = {}; }
     if (kind) { S.a.kind = kind; if (!S.step) S.step = 1; }
+    if (builds) S.a.builds = builds;
     var s = sheetEl(); s.hidden = false; document.documentElement.classList.add('bd1-lock'); draw(true);
   }
   window.pkBuildStart = open;

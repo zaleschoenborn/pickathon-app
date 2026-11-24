@@ -227,7 +227,7 @@ window.pkTix = function (testDay, season) {
 .pkbs-hero{position:relative;min-height:min(58vh,560px);display:flex;align-items:flex-end;background-color:#221E20;background-size:cover;background-position:center}
 .pkbs-hero:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,14,16,.25) 0%,rgba(18,14,16,.35) 40%,#2B2628 100%)}
 .pkbs-hin{position:relative;z-index:1;width:100%;max-width:1100px;margin:0 auto;padding:80px 16px 24px}
-.pkbs-back{position:absolute;top:18px;left:16px;display:inline-flex;align-items:center;min-height:44px;padding:0 14px;border:1.5px solid #F2EDE3;border-radius:6px;background:rgba(18,14,16,.4);color:#F2EDE3;font:inherit;font-weight:800;font-size:14px;letter-spacing:.04em;cursor:pointer}
+.pkbs-hin:has(>.pkbs-crumb){position:static}.pkbs-crumb{position:absolute;z-index:2;top:12px;left:16px;right:16px;display:flex;align-items:center;justify-content:flex-start;min-height:44px;padding:0;border:0;background:none;color:#F2CF62;font:inherit;font-weight:700;font-size:14px;letter-spacing:.02em;text-align:left;text-shadow:0 1px 8px rgba(0,0,0,.85),0 0 2px rgba(0,0,0,.6);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer}.pkbs-crumb:focus-visible{outline:3px solid #F2CF62;outline-offset:2px}@media(min-width:600px){.pkbs-crumb{font-size:15px}}@media(min-width:800px){.pkbs-crumb{left:max(32px,calc((100% - 1100px)/2 + 32px));right:32px;font-size:16px}}.pkbs-back{position:absolute;top:18px;left:16px;display:inline-flex;align-items:center;min-height:44px;padding:0 14px;border:1.5px solid #F2EDE3;border-radius:6px;background:rgba(18,14,16,.4);color:#F2EDE3;font:inherit;font-weight:800;font-size:14px;letter-spacing:.04em;cursor:pointer}
 .pkbs-kick{margin:0 0 10px;font:700 13px/1.3 "Courier Prime","Courier New",monospace;letter-spacing:.14em;text-transform:uppercase;color:#D6B54A}
 .pkbs-h1{margin:0;font:400 clamp(40px,8vw,84px)/.9 "Pickathon 2014","Work Sans",sans-serif;text-wrap:balance;max-width:900px}
 .pkbs-small{min-height:260px}.pkst-read{margin:10px 0 0;font-size:14px;color:#CFC9BC}.pkst-body{max-width:680px;padding-top:30px}.pkst-h{margin:34px 0 8px;font:700 13px/1.3 "Courier Prime","Courier New",monospace;letter-spacing:.14em;text-transform:uppercase;color:#D6B54A}.pkst .pkst-body p{font-size:18px}.pkbs-main{max-width:1100px;margin:0 auto;padding:0 16px 56px}
@@ -4433,8 +4433,8 @@ div[aria-label="Preview controls"] { display: none !important }
 
 <sc-if value="{{r.buildstory}}" hint-placeholder-val="{{false}}">
 <div class="pkbs">
-<sc-if value="{{bs.isList}}" hint-placeholder-val="{{false}}"><header class="pkbs-hero pkbs-small"><div class="pkbs-hin"><button type="button" class="pkbs-back" onClick="{{bs.back}}">← Build with Pickathon</button><p class="pkbs-kick">Pickathon builds</p><h1 class="pkbs-h1">Built to be given away</h1></div></header><main class="pkbs-main"><h3 class="pkbs-rowh">2026</h3><div class="pkbs-grid"><sc-for list="{{bs.list26}}" as="m" hint-placeholder-count="4"><button type="button" class="pkbs-card" onClick="{{m.open}}"><img loading="lazy" src="{{m.img}}" alt=""><span><em>{{m.kick}}</em><strong>{{m.name}}</strong><sc-if value="{{m.hasNext}}" hint-placeholder-val="{{true}}"><small>{{m.next}}</small></sc-if></span></button></sc-for></div><h3 class="pkbs-rowh">2025</h3><div class="pkbs-grid"><sc-for list="{{bs.list25}}" as="m" hint-placeholder-count="4"><button type="button" class="pkbs-card" onClick="{{m.open}}"><img loading="lazy" src="{{m.img}}" alt=""><span><em>{{m.kick}}</em><strong>{{m.name}}</strong><sc-if value="{{m.hasNext}}" hint-placeholder-val="{{true}}"><small>{{m.next}}</small></sc-if></span></button></sc-for></div></main></sc-if>
-<sc-if value="{{bs.isOne}}" hint-placeholder-val="{{true}}"><header class="pkbs-hero" style="{{bs.heroStyle}}"><div class="pkbs-hin"><button type="button" class="pkbs-back" onClick="{{bs.back}}">← All builds</button><p class="pkbs-kick">{{bs.kick}}</p><h1 class="pkbs-h1">{{bs.t}}</h1></div></header>
+<sc-if value="{{bs.isList}}" hint-placeholder-val="{{false}}"><header class="pkbs-hero pkbs-small"><div class="pkbs-hin"><button type="button" class="pkbs-crumb" onClick="{{bs.back}}">‹ Build with Pickathon · All builds</button><p class="pkbs-kick">Pickathon builds</p><h1 class="pkbs-h1">Built to be given away</h1></div></header><main class="pkbs-main"><h3 class="pkbs-rowh">2026</h3><div class="pkbs-grid"><sc-for list="{{bs.list26}}" as="m" hint-placeholder-count="4"><button type="button" class="pkbs-card" onClick="{{m.open}}"><img loading="lazy" src="{{m.img}}" alt=""><span><em>{{m.kick}}</em><strong>{{m.name}}</strong><sc-if value="{{m.hasNext}}" hint-placeholder-val="{{true}}"><small>{{m.next}}</small></sc-if></span></button></sc-for></div><h3 class="pkbs-rowh">2025</h3><div class="pkbs-grid"><sc-for list="{{bs.list25}}" as="m" hint-placeholder-count="4"><button type="button" class="pkbs-card" onClick="{{m.open}}"><img loading="lazy" src="{{m.img}}" alt=""><span><em>{{m.kick}}</em><strong>{{m.name}}</strong><sc-if value="{{m.hasNext}}" hint-placeholder-val="{{true}}"><small>{{m.next}}</small></sc-if></span></button></sc-for></div></main></sc-if>
+<sc-if value="{{bs.isOne}}" hint-placeholder-val="{{true}}"><header class="pkbs-hero" style="{{bs.heroStyle}}"><div class="pkbs-hin"><button type="button" class="pkbs-crumb" onClick="{{bs.back}}">{{bs.crumb}}</button><p class="pkbs-kick">{{bs.kick}}</p><h1 class="pkbs-h1">{{bs.t}}</h1></div></header>
 <main class="pkbs-main">
 <sc-if value="{{bs.hasCreds}}" hint-placeholder-val="{{true}}"><div class="pkbs-creds"><sc-for list="{{bs.creds}}" as="c" hint-placeholder-count="3"><div class="pkbs-cred"><b>{{c.l}}</b><span>{{c.v}}</span></div></sc-for></div></sc-if>
 <sc-for list="{{bs.parts}}" as="p" hint-placeholder-count="1"><section class="pkbs-part"><h2>{{p.h}}</h2><p>{{p.p}}</p></section></sc-for>
@@ -6742,7 +6742,6 @@ window.__pkMapH = mapH; window.__pkGoFarm = goFarm;   // pk-home2: the Home neig
       var BS = window.pkBuildStories ? window.pkBuildStories(d) : [];
       var openBS = function (id) { return function () { self.go('buildstory', { b: id }); }; };
       var bsCard = function (b) { return { id: b.id, img: b.img, kick: b.y + ' · ' + b.hood, name: b.name, hasNext: !!b.next, next: 'Next: ' + b.next, open: openBS(b.id) }; };
-      if (R === 'build') { out.bstories = { items: BS.filter(function (b) { return b.y === '2026'; }).concat(BS.filter(function (b) { return b.y === '2025'; })).map(bsCard), has: BS.length > 0 }; }
       if (R === 'buildstory') {
         var B0 = BS.filter(function (b) { return b.id === cur.b; })[0] || (cur.b ? BS[0] : null) || BS[0] || { id: '', y: '', hood: '', name: '', img: '', parts: null, d: '' };
         var KINDS = { stage: 'Stage', gathering: 'Gathering', camping: 'Camping' };
@@ -6752,7 +6751,7 @@ window.__pkMapH = mapH; window.__pkGoFarm = goFarm;   // pk-home2: the Home neig
           hasCreds: crd.length > 0, creds: crd, parts: prts.map(function (x) { return { h: x[0], p: x[1] }; }), hasParts: prts.length > 0,
           note: B0.parts ? 'A photo of it in its new home and a line from the people who use it, once it has moved.' : 'The story of this build is still being written: what it looked like, who built it, and where it went next.',
           moreH: 'More ' + B0.y + ' builds', more: BS.filter(function (x) { return x.id !== B0.id && x.y === B0.y; }).slice(0, 8).map(bsCard),
-          back: function () { if (cur.b) self.go('buildstory', { b: '' }); else self.go('build'); }, cta: function () { self.go('build'); setTimeout(function () { try { var el = document.getElementById('pk-build-form'); if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch (e) {} }, 350); } };
+          back: function () { if (cur.b) self.go('buildstory', { b: '' }); else self.go('build'); }, cta: function () { if (window.pkBuildStart) window.pkBuildStart('', { stage: 'stage', gathering: 'gather' }[B0.kind] || ''); else self.go('build'); }, crumb: '\u2039 All builds \u00b7 ' + (B0.name || B0.title || '') };
       }
     }
     if (R === 'story') {
@@ -15531,7 +15530,7 @@ html.bd1-lock,html.bd1-lock body{overflow:hidden}
   .bd1s .bds-btn{min-height:56px}
 }
 /* QA 2026-11-13: timeline dots get a 44px touch area without changing their look */#root .pk-tn button.pk-tn-dot::after{content:"";position:absolute;left:50%;top:50%;width:44px;height:44px;transform:translate(-50%,-50%);background:transparent;box-shadow:none;border:0;padding:0;min-height:0}
-/*pk-ah-art*/html body .pk-ah.pk-ah-art .pk-ah-i{filter:brightness(.6) saturate(.9)!important}html body .pk-ah.pk-ah-none .pk-ah-i{visibility:hidden!important}html body .pk-as-sets .pk-as-sp0:not(:empty)::before{content:" · "}}</style>
+</style>
 <script id="pk-build1">
 /* pk-build1: Build with Pickathon, round 1 (Nov 13 2026). Route 'build'. Spec: photo-catalog/design_specs/build_page.md (Zale, Nov 8).
    Source: tools/build_r1/bd.js, spliced into index.html by tools/build_r1/build.py (<script id="pk-build1">, <style id="pk-build1-css">).
@@ -15690,10 +15689,11 @@ html.bd1-lock,html.bd1-lock body{overflow:hidden}
   /* ---------- Start a project: one question per screen ---------- */
   var S = { step: 0, a: {}, sent: false, err: '', last: null };
   function sheetEl() { var s = document.getElementById('bd1-sheet'); if (!s) { s = document.createElement('div'); s.id = 'bd1-sheet'; s.className = 'bd1s'; s.hidden = true; document.body.appendChild(s); } return s; }
-  function open(kind) {
+  function open(kind, builds) {
     var d = data(); if (!d) return; S.last = document.activeElement; S.err = '';
     if (S.sent) { S.sent = false; S.step = 0; S.a = {}; }
     if (kind) { S.a.kind = kind; if (!S.step) S.step = 1; }
+    if (builds) S.a.builds = builds;
     var s = sheetEl(); s.hidden = false; document.documentElement.classList.add('bd1-lock'); draw(true);
   }
   window.pkBuildStart = open;
