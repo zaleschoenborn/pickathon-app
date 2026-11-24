@@ -404,6 +404,7 @@ def header(title, sub, back=True, chip=None, wall=True):
                '<span class="yc-k">Lineup</span><b class="yc-y">%s</b><span class="yc-a" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M4 1.5l5 4.5-5 4.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>'
                '</div>%s') % (chip, chip, year_wall(chip))
         if not wall: bar = ''  # r75: artist pages share one wall for the whole site (.ywall-g)
+        if chip != '2027': bar = ''  # r106 (Zale, Nov 24 15:32): inside a past year the live shell's year strip/header is the one picker; the gold button stays on the 2027 page only, where the shell has none
         # r68 (Zale, Nov 22 21:22): the header title IS the year chooser; tap "Lineup 2013" to open the wall of year logos
         # r69 (Zale, Nov 22 21:26): the year's own logo leads the chooser in the header (it replaces the 2027 wordmark on year pages)
         # r70 (Zale, Nov 22 21:40): the 2027 logo and back stay on the left as home; the chooser is a centered, words-only button (no small year logo: it blurs at header size)
