@@ -11516,6 +11516,9 @@ html:root:root #root#root#root#root#root#root#root#root#root#root#root#root#root
   #pkh2#pkh2 .h2-xrg:after{content:'';position:absolute;left:25px;top:19px;border-left:19px solid #fff;border-top:11px solid transparent;border-bottom:11px solid transparent}
   #pkh2#pkh2 .h2-xlo{position:absolute;left:18px;right:18px;bottom:26px;display:block}
 html body:not(#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1) #pkh2 .h2-xt,html body:not(#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1) #pkh2 .h2-xt *{font-family:'Pickathon 2014','Bricolage Grotesque',Impact,sans-serif!important;font-weight:400!important;letter-spacing:.02em!important}
+  #pkh2#pkh2 .h2-pastw{margin:10px 0 0;display:flex}
+  html body:not(#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1) #pkh2 .h2-pastl{background:none!important;border:0!important;padding:0!important;min-height:44px;display:inline-flex;align-items:center;color:#D6B54A!important;font:700 16px/1.2 'Bricolage Grotesque',system-ui,sans-serif!important;letter-spacing:0!important;text-transform:none!important;cursor:pointer;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:5px}
+  @media (min-width:1200px){html body:not(#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1) #pkh2 .h2-pastl{font-size:18px!important}}
   #pkh2#pkh2 .h2-xt.h2-xtl{font-size:clamp(18px,1.55vw,25px);line-height:1.08}
   #pkh2#pkh2 .h2-xt>span:first-child{min-width:0}
   #pkh2#pkh2 .h2-xy{flex:none;color:#D6B54A;font:inherit;font-weight:inherit}
@@ -12151,7 +12154,8 @@ window.pkClimbRank = function (C, dd) {
       '<div class="h2-cc-nav"><button type="button" class="h2-pill h2-s5top h2-anb" data-h2="alldisc">The 2027 lineup</button><button type="button" class="h2-ib" data-h2="cprev" aria-label="Previous discoveries">' + CHEV + '</button><button type="button" class="h2-ib" data-h2="cnext" aria-label="More discoveries">' + CHEV + '</button></div></div>' +
       '<div class="h2-ccw"><div class="h2-cc-r" data-h2="cards" role="list" aria-label="Discoveries, ranked by how big they are today"></div>' +
       '<button type="button" class="h2-arw h2-arl" data-h2="cprev" aria-label="Previous discovery">' + CHEV + '</button><button type="button" class="h2-arw h2-arr" data-h2="cnext" aria-label="Next discovery">' + CHEV + '</button></div>' +
-      '<div class="pk-cl-btns h2-two"><button type="button" class="pk-bkb pri pk-cl-ex" data-h2="alldisc">The 2027 lineup</button></div></section>';
+      '<div class="pk-cl-btns h2-two"><button type="button" class="pk-bkb pri pk-cl-ex" data-h2="alldisc">The 2027 lineup</button></div>' +
+      '<p class="h2-pastw"><button type="button" class="h2-pastl" data-h2="pastlu">Every past lineup, then and now \u2192</button></p></section>';   /* Zale, Nov 24 15:15: one link for fans who came before (user_testing-5); opens the Lineup page with its year picker */
     return hP + hBand + hPoster + hPlace + hPress + h;   /* Zale, Nov 12 night: the poster is the proof and follows the stories; neighborhoods lead into the ticket line. Current architecture, not a hard rule (see home_poster_frame_nov12.md) */
   }
   /* the hero's sale line and its one button (5174 wording). Before the round: "Holiday Sale opens Nov 19, 10 am PT" + Alert me when it opens (the
@@ -12870,6 +12874,7 @@ window.pkClimbRank = function (C, dd) {
     if (a === 'plan') { go('info'); return; }
     if (a === 'lu27') { go('lineup'); return; }
     if (a === 'xpgo') { xpEnter(b.getAttribute('data-xp')); return; }
+    if (a === 'pastlu') { go('lineup'); setTimeout(function () { try { if (window.pkYearWall && !window.pkYearWall.isOpen()) window.pkYearWall.open(b); } catch (x) {} }, 500); return; }
     if (a === 'xcprev' || a === 'xcnext') { var xb = root && $('[data-h2="xcards"]', root); if (xb) xcStep(xb, a === 'xcnext' ? 1 : -1); return; }
     if (a === 'xcard') { var xl = (root && $('[data-h2="xcards"]', root) || {})._L || [], xc = xl[+b.getAttribute('data-i')]; if (!xc) return; if (xc.vu && window.__pkPlayVid) { try { window.__pkPlayVid(xc.vu, xc.t + ' \u00b7 Pickathon ' + xc.y); } catch (x) {} return; } if (xc.k === '__build') { go('build'); return; } homeOpenHood(xc.k); return; }
     if (a === 'xpsel') { xpPick(b.getAttribute('data-xp')); return; }
