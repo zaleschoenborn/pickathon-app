@@ -409,8 +409,10 @@ def header(title, sub, back=True, chip=None, wall=True):
                  '<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M4 2.5l3.5 3.5-3.5 3.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>') % (chip, chip, chip)
     else:
         bar = ''
+    _plh = d.get('playlistMain', {}).get(str(chip)) if chip else None  # r91: the note follows the page's year
+    _la = (' data-sp="https://open.spotify.com/playlist/%s" aria-label="Listen to the Pickathon %s lineup"' % (_plh, chip)) if _plh else ' aria-label="Listen"'
     return ('<header class="hd">%s<img class="hd-logo" src="%s" alt="Pickathon 2027"><span class="hd-rule"></span>%s'
-            '<span class="hd-sp"></span><button class="hd-listen" aria-label="Listen">%s</button><button class="hd-ic" aria-label="Search">%s</button></header>'
+            '<span class="hd-sp"></span><button class="hd-listen"' + _la + '>%s</button><button class="hd-ic" aria-label="Search">%s</button></header>'
             '<div class="sale"><span><b>Holiday Sale</b> · from $483</span><a href="#" class="sale-b">Get tickets <svg viewBox="0 0 12 12" width="11" height="11"><path d="M4 1.5l5 4.5-5 4.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></a></div>' + bar
             ) % (('<button class="hd-ic" aria-label="Back">%s</button>' % ICON['back']) if back else '', LOGO, t, ICON['note'], ICON['search'])
 
@@ -492,6 +494,11 @@ def poster_block(P, badge, yr, then, now, total, joined=True, ranked=True):
     if not ranked:
         a = html_.index('<div class="po-ctl">'); b = html_.index('<div class="po-names then">')
         html_ = html_[:a] + html_[b:]
+    # r91 (Zale, Nov 24 09:55, picked note + one quiet line): the year's lineup playlist, opened in the visitor's service (Spotify for now)
+    _pl = d.get('playlistMain', {}).get(str(yr))
+    if _pl:
+        _u = 'https://open.spotify.com/playlist/' + _pl
+        html_ = html_.replace('<p class="po-tap">Tap any name</p>', '<p class="po-tap">Tap any name</p><a class="po-listen" href="%s" data-sp="%s">Hear the %s lineup <span aria-hidden="true">&rarr;</span></a>' % (_u, _u, yr), 1)
     if total <= 10:
         a = html_.index('<button class="po-all"'); b = html_.index('<p class="po-tap">')
         html_ = html_[:a] + html_[b:]

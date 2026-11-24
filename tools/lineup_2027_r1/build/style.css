@@ -1168,3 +1168,6 @@ a.hd-yr{text-decoration:none}
 .shelf.weekend .cd-sp{position:absolute;right:10px;bottom:10px}
 .shelf.weekend .wk.cd{cursor:pointer}
 .shelf.weekend .cd-sp{position:absolute;right:10px;bottom:10px;width:40px;height:40px}.shelf.weekend .cd-sp>*{position:static!important;transform:none!important;margin:0!important}
+/* r91 year lineup playlist line under the poster */
+.po-listen{display:inline-flex;align-items:center;gap:6px;min-height:44px;margin:4px 0 0;font-size:15px;font-weight:700;color:var(--ink,#2b2627);text-decoration:none;border-bottom:1.5px solid currentColor;line-height:1.2;padding-top:10px}
+.po-listen{display:flex;width:max-content;margin:2px auto 0;align-self:center;justify-self:center}
