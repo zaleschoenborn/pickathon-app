@@ -84,7 +84,7 @@ alpha[~allowed]=0
 # 2026 ticket -> plain ticket, no year (Zale: timeless)
 tb=np.zeros_like(alpha,bool); tb[7870:8025,2738:2890]=True
 tk=tb&(idm==23); tkf=ndimage.binary_fill_holes(ndimage.binary_closing(tk,iterations=6))
-col[tkf]=(68,60,62); alpha[tkf]=np.maximum(alpha[tkf],(a[tkf]>0.02)*1.0)
+alpha[ndimage.binary_dilation(tkf,iterations=2)]=0   # site draws the ticket as a standard amenity icon
 alpha[tb&~tkf&(idm==10)]=0
 out=L2*(1-alpha[...,None])+col*alpha[...,None]
 np.save('L3.npy',out.astype(np.uint8))
