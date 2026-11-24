@@ -994,3 +994,22 @@ body:has(#tk2 #tk-bar:not([hidden])) #pk-toast,body:has(#pk-co) #pk-toast{displa
 
 /* Nov 24 (Zale): the corner is the neighborhood alone; the year sits to the right of the title, in the title font, gold, only on place-and-year cards */
 .tk2 .tk-x-n .tk-x-y2{display:inline;white-space:nowrap;margin-left:.3em;color:var(--gold,#F2CF62);font:inherit;font-size:.85em}
+
+/* Nov 24 (Zale OK'd mockup draft 1): tablet and desktop steps */
+.tk2 .tk-g-side{display:none}
+@media (min-width:1025px){
+ .tk2.tk-gscrim .tk-sheet{width:min(1120px,92vw);max-width:none;display:grid;grid-template-columns:minmax(0,1fr) 380px;column-gap:40px;align-content:start}
+ .tk2.tk-gscrim .tk-sheet>.tk-g-top,.tk2.tk-gscrim .tk-sheet>.tk-g-bar2,.tk2.tk-gscrim .tk-sheet>.tk-g-stepn{grid-column:1/-1}
+ .tk2.tk-gscrim .tk-sheet>.tk-g-pad{grid-column:1;grid-row:4}
+ .tk2.tk-gscrim .tk-sheet>.tk-g-foot{grid-column:1;grid-row:5}
+ .tk2.tk-gscrim .tk-sheet>.tk-g-side{display:block;grid-column:2;grid-row:4/span 2;align-self:start;margin:24px 24px 24px 0;padding:16px 18px;border-radius:14px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12)}
+ .tk2.tk-gscrim .tk-sheet>.tk-g-rev,.tk2.tk-gscrim .tk-g-ftot{display:none}
+ .tk2.tk-gscrim .tk-sheet[data-step="order"]{grid-template-columns:minmax(0,1fr)}
+ .tk2.tk-gscrim .tk-g-pad4{display:grid;grid-template-columns:minmax(0,1fr) 380px;column-gap:40px;align-items:start}
+ .tk2.tk-gscrim .tk-g-pad4 .tk-g-o2 .tk-g-k2{margin-top:0}
+}
+@media (min-width:700px) and (max-width:1024px){
+ .tk2.tk-gscrim .tk-sheet{width:100vw;max-width:none;border-radius:0}
+ .tk2.tk-gscrim .tk-g-pad,.tk2.tk-gscrim .tk-g-bar2,.tk2.tk-gscrim .tk-g-stepn{max-width:640px;margin-left:auto;margin-right:auto;width:100%;box-sizing:border-box}
+ .tk2.tk-gscrim .tk-g-foot{padding-left:max(16px,calc(50vw - 320px));padding-right:max(16px,calc(50vw - 320px))}
+}
