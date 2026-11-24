@@ -918,8 +918,9 @@
     var s = null;
     document.addEventListener('pointerdown', function (e) { var t = e.target.closest && e.target.closest('#pkpl-top .pkpl-hero'); s = t ? { x: e.clientX, y: e.clientY, t: Date.now() } : null; }, true);
     document.addEventListener('pointerup', function (e) { if (!s) return; var dx = e.clientX - s.x, dy = e.clientY - s.y, dt = Date.now() - s.t; s = null;
-      if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy) * 1.6 && dt < 700) { var k = top().h, L = ids(), j = L.indexOf(k); if (j < 0) return; FROM = null; go('hood', { h: L[(j + (dx < 0 ? 1 : -1) + L.length) % L.length] }); } }, true);
+      if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy) * 1.6 && dt < 700) { var hero = $('#pkpl-top .pkpl-hero'); if (!hero) return; var n = $$('img', hero).filter(function (x) { return x.parentNode === hero; }).length; if (n < 2) return; clearTimeout(TOP.timer); heroShow(hero, ((TOP.i || 0) + (dx < 0 ? 1 : -1) + n) % n); } }, true);   /* Zale, Nov 24 panel test: a sideways swipe on the photo shows the next photo, as the dots promise; the next place is the name bar swipe and the arrows */
   })();
+  document.addEventListener('touchend', function (e) { if (e.target && e.target.closest && e.target.closest('#pkpl-top .pkpl-hero')) e.stopPropagation(); }, true);   /* Nov 24: the site's older hood-page swipe (index.html) would step to the next place; on the photo the swipe belongs to the photos */
   /* the phone card: the bar is the handle; drag it down to fold, up to open, or tap it to flip */
   function cardEl() { return document.getElementById('pkpl-top'); }
   function foldY() { var c = cardEl(), b = c ? parseFloat(getComputedStyle(c).bottom) || 0 : 0; return sheetOpen() - 56 + (V2 && !wide() ? 0 : b); }   /* Nov 22: on phone the folded bar sits right above the experience row, which stays above the nav */   /* folded: only the bar with the logo and name shows above the tab bar (Zale, Nov 21) */
