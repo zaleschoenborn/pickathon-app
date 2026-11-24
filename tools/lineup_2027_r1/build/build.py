@@ -829,7 +829,7 @@ for _o in json.load(open(ROOT + 'act_year_lines.json', encoding='utf-8')):
 import glob as _gl0
 _SLN = {}
 for _f in sorted(_gl0.glob(ROOT + 'stories/stories_*.csv')):
-    for _r in csv.DictReader(open(_f, encoding='utf-8')):
+    for _r in csv.DictReader(open(_f, encoding='utf-8-sig')):
         if _r.get('line'): _SLN[(''.join(c for c in _ud.normalize('NFD', _r['act'].lower()) if c.isalnum() and ord(c) < 128), str(_r['year']))] = _r['line']
 def _rline(n, y, k):  # r50: the reel frame carries Copy Review's three-line card line (then -> now) when one exists
     sl_ = ''.join(c for c in _ud.normalize('NFD', n.lower()) if c.isalnum() and ord(c) < 128)
@@ -1064,8 +1064,14 @@ def _cls(name, yr):
 _STORIES = {}
 import glob as _gl
 for _f in sorted(_gl.glob(ROOT + 'stories/stories_*.csv')):
-    for _r in csv.DictReader(open(_f, encoding='utf-8')):
+    for _r in csv.DictReader(open(_f, encoding='utf-8-sig')):
         if _r.get('story'): _STORIES[(_slug(_r['act']), str(_r['year']))] = _r
+def _salt(s):  # r84: loose key so 'The Black Lillies' / 'Black Lillies', '&' / 'and', 'ft.' billings meet
+    s = s[3:] if s.startswith('the') else s
+    return s.replace('and', '').replace('the', '')
+_STORIES_ALT = {}
+for (_k, _y), _r in _STORIES.items(): _STORIES_ALT.setdefault((_salt(_k), _y), (_k, _r))
+_STORY_USED = set()
 def art_page(slug, ap, pid=None):
     name = _NAMES[slug]; yr = str(ap.get('yr') or max([y for y, _ in _KIN.get(name, [])] or [2024]))
     if not str(ap.get('hero','')).startswith(('i/', 'ext/')) or not os.path.exists(_src(ap['hero'])):
@@ -1121,6 +1127,9 @@ def art_page(slug, ap, pid=None):
           _P2['paper'], _P2['ink'], _lgi, '')  # r77b (Zale 22:52): no caption under the seal; it looked thin. The year is in the photo's corner
     # r66 (Zale picked one continuous story, copy_review-54): intro, one story in a few paragraphs, then a small sets block; read from Copy Review's stories_<year> CSVs
     _st = _STORIES.get((_slug(name), yr))
+    if _st: _STORY_USED.add((_slug(name), yr))
+    elif (_salt(_slug(name)), yr) in _STORIES_ALT:
+        _kk, _st = _STORIES_ALT[(_salt(_slug(name)), yr)]; _STORY_USED.add((_kk, yr))
     story = [] if _st else [s for s in (ap.get('story') or []) if s.get('t')]
     if _st:
         h += '<section class="liner one"><p class="kick">Liner notes</p><p class="lead">%s</p>%s%s</section>' % (
@@ -1256,3 +1265,6 @@ page = _re.sub(r' data-art="([a-z0-9]*)"', lambda m: m.group(0) if (m.group(1) i
 print('names without an artist page (no link):', len(_DROP), _DROP)
 open(OUT + 'index.html', 'w').write(page)
 print(len(page) // 1024, 'KB html', len(os.listdir(OUT + 'img')), 'images', sum(os.path.getsize(OUT + 'img/' + f) for f in os.listdir(OUT + 'img')) // 1024, 'KB')
+_miss = sorted(set(_STORIES) - _STORY_USED)
+print('stories: %d in Copy Review files, %d on artist pages, %d not placed' % (len(_STORIES), len(_STORY_USED), len(_miss)))
+json.dump([list(m) for m in _miss], open(ROOT + 'stories_not_placed.json', 'w'), indent=0)

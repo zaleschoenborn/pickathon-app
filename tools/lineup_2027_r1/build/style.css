@@ -1068,3 +1068,5 @@ main[id^="a-"] .sale{display:none}
 .hero .krow .g::before,.ahero .krow .g::before{display:none}
 .hero .krow .g,.ahero .krow .g{text-align:right}
 .hero .krow.tight,.ahero .krow.tight{font-size:13px;letter-spacing:.05em}
+/* r84: "If you like" shelf cards on artist pages had zero width (width:auto + aspect-ratio inside a flex row); give them the shelf's height-based width */
+.swipe>.card.tt{flex:none;width:245px;height:306px}
