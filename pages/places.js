@@ -103,6 +103,7 @@
   }
   function thumbOf(e, k) { var z = e && xpPhotos(e, k)[0]; return z ? 'i/th/' + z.i.split('?')[0].split('/').pop().replace(/\.\w+$/, '') + '.webp' : ''; }   /* Zale, Nov 22: menu first; small square photos made by tools/places_r1/thumbs.py */
   function pic(e, k) { var t = thumbOf(e, k); return t ? '<span class="pkpl-tw"><img class="pkpl-tp" src="' + esc(t) + '" alt="" loading="lazy" decoding="async"><img class="pkpl-te" src="' + esc(emb(k)) + '" alt=""></span>' : '<img src="' + esc(emb(k)) + '" alt="">'; }
+  function XN(e) { return e === 'Architecture' ? 'Wonders' : esc(e); }   /* Zale, Nov 23 16:03: the experience reads "Wonders" (design_home-52); label only, the data key stays Architecture until Copy decides the rest */
   function xpLine(e, k) { var b = ((XH.XPB || {})[e] || {})[k]; return b || (e === 'Architecture' ? (hookOf(data().hoods[k]) || (data().hoods[k] || {}).t || '') : XH.XPD[e] || ''); }
   function xpIcon(e) { return '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">' + (XH.XPI[e] || '') + '</svg>'; }
   function litSet() { return M && M.xp ? xpPlaces(M.xp) : []; }
@@ -122,7 +123,7 @@
       '<div class="pkpl-pins"></div><div class="pkpl-am"></div>' +
       '<div class="pkpl-title" aria-hidden="false"><p class="pkpl-k"><img class="pkpl-logo" src="logo27-gold.png" alt="Pickathon 2027"><span>Pickathon</span></p><h1 class="pkpl-d">Summer camp for your soul</h1><p class="pkpl-l">Pick an experience below, then tap a place that lights up</p><div class="pkpl-ab"></div><div class="pkpl-pl"></div></div>' +
       '<div class="pkpl-xls"></div>' +
-      '<div class="pkpl-xb" role="toolbar" aria-label="Experiences">' + XO.map(function (e) { return '<button type="button" class="pkpl-xe" data-xp="' + e + '" aria-pressed="false">' + xpIcon(e) + '<span>' + e + '</span></button>'; }).join('') + '</div>' +
+      '<div class="pkpl-xb" role="toolbar" aria-label="Experiences">' + XO.map(function (e) { return '<button type="button" class="pkpl-xe" data-xp="' + e + '" aria-pressed="false">' + xpIcon(e) + '<span>' + XN(e) + '</span></button>'; }).join('') + '</div>' +
       '<div class="pkpl-tools"><button type="button" class="pk-cta sec pkpl-tb" data-pl="find" aria-label="Find a place, an act or water, food and more"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5 21 21"/></svg><span>Find</span></button>' +
       '<button type="button" class="pk-cta sec pkpl-tb pkpl-tbf" data-pl="full" aria-label="Full map" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg><span aria-hidden="true">Full map</span></button></div>' +
       '<div class="pkpl-amtag" hidden><span></span><button type="button" data-pl="amclear" aria-label="Clear">×</button></div>' +
@@ -371,7 +372,7 @@
     var bk = $('.pkpl-bk0', t); if (!bk) { bk = document.createElement('button'); bk.type = 'button'; bk.className = 'pkpl-bk0'; bk.setAttribute('data-pl', 'allxp'); bk.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5 8 12l7 7"/></svg><span>All experiences</span>'; t.insertBefore(bk, t.firstChild); }   /* Nov 20 (Zale): a way back above the experience's title, to the first screen with every experience */
     bk.hidden = !M.xp;
     var d = $('.pkpl-d', t);   /* desktop: the experience big, then "at" and the year's logo as the word Pickathon (Zale, Nov 19) */
-    if (M.xp) d.innerHTML = '<span class="pkpl-xi">' + xpIcon(M.xp) + '</span><span class="pkpl-xt">' + esc(M.xp) + ' at Pickathon</span>';   /* the experience's icon as a graphic, same plate as the picked button (Zale, Nov 19) */
+    if (M.xp) d.innerHTML = '<span class="pkpl-xi">' + xpIcon(M.xp) + '</span><span class="pkpl-xt">' + XN(M.xp) + ' at Pickathon</span>';   /* the experience's icon as a graphic, same plate as the picked button (Zale, Nov 19) */
     else d.textContent = 'Summer camp for your soul';
     t.classList.toggle('pkpl-tx', !!M.xp);
     var bg = $('.pkpl-tbg', t); if (!bg) { bg = document.createElement('div'); bg.className = 'pkpl-tbg'; bg.setAttribute('aria-hidden', 'true'); t.insertBefore(bg, t.firstChild); }   /* desktop: the experience's hero photo behind the column, under a dark wash (Zale, Nov 19) */
@@ -381,7 +382,7 @@
     var v2 = V2 && wide(); document.body.classList.toggle('pkpl-v2', v2); document.body.classList.toggle('pkpl-v2g', v2 && V2G === 'strong');
     if (v2) {   /* MOCK: experiences live in the left column, pinned; the words and places scroll under them */
       var g2 = $('.pkpl-g2', t), bd = $('.pkpl-body', t);
-      if (!g2) { g2 = document.createElement('div'); g2.className = 'pkpl-g2'; g2.setAttribute('role', 'toolbar'); g2.setAttribute('aria-label', 'Experiences'); g2.innerHTML = XO.map(function (e) { return '<button type="button" class="pkpl-xe" data-xp="' + e + '" aria-pressed="false">' + xpIcon(e) + '<span>' + e + '</span></button>'; }).join('');
+      if (!g2) { g2 = document.createElement('div'); g2.className = 'pkpl-g2'; g2.setAttribute('role', 'toolbar'); g2.setAttribute('aria-label', 'Experiences'); g2.innerHTML = XO.map(function (e) { return '<button type="button" class="pkpl-xe" data-xp="' + e + '" aria-pressed="false">' + xpIcon(e) + '<span>' + XN(e) + '</span></button>'; }).join('');
         bd = document.createElement('div'); bd.className = 'pkpl-body'; ['.pkpl-k', '.pkpl-d', '.pkpl-l', '.pkpl-ab', '.pkpl-pl'].forEach(function (q) { var n = $(q, t); if (n) bd.appendChild(n); }); t.appendChild(g2); t.appendChild(bd); }
       var plx = $('.pkpl-pl', bd), abx = $('.pkpl-ab', bd), pd = $('.pkpl-pd', bd);
       if (!pd) { pd = document.createElement('p'); pd.className = 'pkpl-pd'; bd.insertBefore(pd, plx); if (abx) bd.appendChild(abx);
@@ -391,7 +392,7 @@
       if (bd._xp !== M.xp) { bd._hk = null; pd.classList.remove('on'); pd.textContent = ''; if (!M.xp) M.s0 = null; }
       var pc = $('.pkpl-pc', bd); if (!pc) { pc = document.createElement('p'); pc.className = 'pkpl-pc'; bd.insertBefore(pc, pd); } var nL = M.xp ? litSet().length : 0; pc.textContent = M.xp ? 'In ' + nL + (nL === 1 ? ' neighborhood' : ' neighborhoods') : ''; pc.hidden = !M.xp;
       if (!$('.pkpl-gk', t)) { var gk = document.createElement('div'); gk.className = 'pkpl-gk'; gk.innerHTML = '<h2 class="pkpl-hook1">' + esc(M0W.arrival || 'Wander a city of neighborhoods in the forest, here for one weekend.') + '</h2><p class="pkpl-ask">' + esc(M0W.ask || 'What do you want to do?') + '</p>';   /* Zale, Nov 22 18:40 and 19:25: the hook leads on every size; the question is a small label right on the buttons; no counts */   /* Zale, Nov 21: the headline is about the experience; Copy polishes */ t.insertBefore(gk, g2); }
-      pc.innerHTML = M.xp ? '<span class="pkpl-pci">' + xpIcon(M.xp) + '</span><b>' + esc(M.xp) + '</b><span class="pkpl-pcn">' + nL + (nL === 1 ? ' neighborhood' : ' neighborhoods') + '</span>' : ''; pc.hidden = !M.xp;
+      pc.innerHTML = M.xp ? '<span class="pkpl-pci">' + xpIcon(M.xp) + '</span><b>' + XN(M.xp) + '</b><span class="pkpl-pcn">' + nL + (nL === 1 ? ' neighborhood' : ' neighborhoods') + '</span>' : ''; pc.hidden = !M.xp;
       bd._sum = M.xp ? (XH.XPD[M.xp] || '').split(/(?<=[.!?])\s/)[0] : '';   /* arrival: the hook above says it; pointing at a place still shows its line here */
       if (!bd._hk) pd.textContent = bd._sum; var abm = $('.pkpl-ab', bd), plm = $('.pkpl-pl', bd); if (abm && plm && plm.nextSibling !== abm) plm.after(abm);   /* Zale, Nov 22: Build with Pickathon closes the Architecture panel, after the places */
       if (!bd._lv) { bd._lv = 1; bd.addEventListener('mouseleave', function () { bd._hk = null; $$('.pkpl-pr', bd).forEach(function (x) { x.classList.remove('pkpl-hot'); }); pd.classList.remove('on'); pd.textContent = bd._sum; M.hot = null; lit(); }); }
@@ -426,7 +427,7 @@
       pl.innerHTML = G.map(function (g) { var ks = ids().filter(function (k) { return (D2[k].k || 'around') === g[0]; }); return ks.length ? '<p class="pkpl-gh">' + g[1] + '</p>' + ks.map(function (k) { return '<button type="button" class="pkpl-pr" data-hp="' + k + '"><img src="' + esc(emb(k)) + '" alt=""><span><b>' + esc(D2[k].n) + '</b></span></button>'; }).join('') : ''; }).join('');
       return;
     }
-    if (pl && !M.xp && !M.amen) { pl.innerHTML = '<div class="pkpl-pg">' + XO.map(function (e) { return '<button type="button" class="pkpl-xe" data-xp="' + e + '">' + xpIcon(e) + '<span>' + e + '</span></button>'; }).join('') + '</div>'; return; }   /* arrival: choose your adventure right under the title */
+    if (pl && !M.xp && !M.amen) { pl.innerHTML = '<div class="pkpl-pg">' + XO.map(function (e) { return '<button type="button" class="pkpl-xe" data-xp="' + e + '">' + xpIcon(e) + '<span>' + XN(e) + '</span></button>'; }).join('') + '</div>'; return; }   /* arrival: choose your adventure right under the title */
     if (pl) pl.innerHTML = L.length ? L.map(function (k) { var h = data().hoods[k]; return '<button type="button" class="pkpl-pr" data-hp="' + k + '"><img src="' + esc(emb(k)) + '" alt=""><span><b>' + esc(h.n) + '</b><small>' + esc(xpLine(M.xp, k)) + '</small></span></button>'; }).join('') : '';
     if (v2 && pl) { pl.classList.remove('pkpl-cmp'); pl.classList.add('pkpl-cols'); pl.classList.remove('pkpl-c1'); pl.classList.toggle('pkpl-c3', false); t.classList.add('pkpl-long'); fitList(pl, t, L.length); }
     if (v2) { if (pl) pl.classList.remove('pkpl-many'); t.classList.remove('pkpl-tight', 'pkpl-tight2', 'pkpl-tight3', 'pkpl-tight4', 'pkpl-tight5', 'pkpl-tight6'); return; }
@@ -676,8 +677,8 @@
     if (el._key === key) return; el._key = key;
     var dayN = {}; (D.days || []).forEach(function (d) { dayN[d.id] = d.n; });
     var rows = has ? S[TOP.day] : [], showN = TOP.all ? rows.length : 3;
-    var html = (XH && M && wide() ? '<button type="button" class="pkpl-up" data-pk="up"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5 8 12l7 7"/></svg>Map' + (M.xp ? ' \u00b7 ' + esc(M.xp) : '') + '</button>' : '') +
-      (XH && wide() ? '<div class="pkpl-hxr" role="toolbar" aria-label="Experiences">' + XO.map(function (e) { return '<button type="button" data-pk="xprow" data-e="' + esc(e) + '" aria-pressed="' + (e === XE) + '">' + xpIcon(e) + '<span>' + esc(e) + '</span></button>'; }).join('') + '</div>' : '')   /* Zale, Nov 22: the experience row is the main navigation on every size, desktop neighborhood pages too */ + '<div class="pkpl-bar" role="button" tabindex="0" aria-expanded="true" aria-label="Show or hide ' + esc(h.n) + '"><i aria-hidden="true"></i>' + (stepOK ? '<button type="button" class="pkpl-bst l" data-pk="step" data-to="' + prev + '" aria-label="Previous: ' + esc(D.hoods[prev].n) + '"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5 8 12l7 7"/></svg></button>' : '') + '<span class="pkpl-bmid"><img class="pkpl-bi" src="' + esc(emb(k)) + '" alt=""><span class="pkpl-bn">' + esc(h.n) + (XE || stepOK ? '<em>' + esc([XE, stepOK ? (j + 1) + ' of ' + L.length : ''].filter(Boolean).join(' \u00b7 ')) + '</em>' : '') + '</span></span>' + (stepOK ? '<button type="button" class="pkpl-bst r" data-pk="step" data-to="' + next + '" aria-label="Next: ' + esc(D.hoods[next].n) + '"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>' : '') + '</div>' + '<div class="pkpl-sheet' + (has ? ' pkpl-has' : '') + '">' +
+    var html = (XH && M && wide() ? '<button type="button" class="pkpl-up" data-pk="up"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5 8 12l7 7"/></svg>Map' + (M.xp ? ' \u00b7 ' + XN(M.xp) : '') + '</button>' : '') +
+      (XH && wide() ? '<div class="pkpl-hxr" role="toolbar" aria-label="Experiences">' + XO.map(function (e) { return '<button type="button" data-pk="xprow" data-e="' + esc(e) + '" aria-pressed="' + (e === XE) + '">' + xpIcon(e) + '<span>' + XN(e) + '</span></button>'; }).join('') + '</div>' : '')   /* Zale, Nov 22: the experience row is the main navigation on every size, desktop neighborhood pages too */ + '<div class="pkpl-bar" role="button" tabindex="0" aria-expanded="true" aria-label="Show or hide ' + esc(h.n) + '"><i aria-hidden="true"></i>' + (stepOK ? '<button type="button" class="pkpl-bst l" data-pk="step" data-to="' + prev + '" aria-label="Previous: ' + esc(D.hoods[prev].n) + '"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5 8 12l7 7"/></svg></button>' : '') + '<span class="pkpl-bmid"><img class="pkpl-bi" src="' + esc(emb(k)) + '" alt=""><span class="pkpl-bn">' + esc(h.n) + (XE || stepOK ? '<em>' + esc([XE, stepOK ? (j + 1) + ' of ' + L.length : ''].filter(Boolean).join(' \u00b7 ')) + '</em>' : '') + '</span></span>' + (stepOK ? '<button type="button" class="pkpl-bst r" data-pk="step" data-to="' + next + '" aria-label="Next: ' + esc(D.hoods[next].n) + '"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>' : '') + '</div>' + '<div class="pkpl-sheet' + (has ? ' pkpl-has' : '') + '">' +
       (wide() ? '<button type="button" class="pkpl-grab pkpl-dgrab" data-pk="dgrab" aria-label="Show or hide the experiences"><i></i></button>' : '<div class="pkpl-grab" aria-hidden="true"><i></i></div>') +
       '<div class="pkpl-hero" aria-roledescription="carousel" aria-label="' + esc(h.n) + ' photos">' +
       ph.map(function (p, i) { return '<img src="' + esc(p.i) + '" alt="" style="object-position:' + esc(p.p) + '"' + (i === 0 ? '' : ' loading="lazy"') + ' draggable="false">'; }).join('') +
@@ -762,7 +763,7 @@
   function alsoAt(k, XE, h) {   /* one tile per other experience at this place */
     if (!XE) return ''; var O = xpAt(k).filter(function (e) { return e !== XE; }); if (!O.length) return '';
     return '<section class="pkpl-also" aria-label="Also at ' + esc(h.n) + '"><h2>Also at ' + esc(h.n) + '</h2><div class="pkpl-at">' + O.map(function (e) {
-      return '<button type="button" class="pkpl-ax pkpl-axc" data-pk="xp" data-e="' + esc(e) + '">' + xpIcon(e) + '<b>' + esc(e) + '</b></button>'; }).join('') + '</div></section>';   /* Nov 22: a side note in small chips, same look as the row */
+      return '<button type="button" class="pkpl-ax pkpl-axc" data-pk="xp" data-e="' + esc(e) + '">' + xpIcon(e) + '<b>' + XN(e) + '</b></button>'; }).join('') + '</div></section>';   /* Nov 22: a side note in small chips, same look as the row */
   }
   function heroArm(el) {
     clearTimeout(TOP.timer); var hero = $('.pkpl-hero', el); if (!hero) return;
