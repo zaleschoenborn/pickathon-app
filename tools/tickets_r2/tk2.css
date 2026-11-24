@@ -869,3 +869,16 @@ body:has(#tk2 #tk-bar:not([hidden])) #pk-toast,body:has(#pk-co) #pk-toast{displa
 .tk2 .tk-e3-wl{padding:0 var(--gutter);margin:6px 0 0}
 #tk2 .tk-e3-wl .tk-tlink{min-height:44px;color:var(--gold,#F2CF62);font-weight:800}
 @media (min-width:1025px){.tk2 .tk-e3-wl{padding:0}}
+
+/* Round 2: named step bar inside the guided sheet (Nov 23) */
+.tk2 .tk-g-bar,.tk-gscrim .tk-g-bar{position:relative;z-index:1;list-style:none;display:flex;gap:4px;margin:14px 0 0;padding:0;flex-wrap:nowrap}
+.tk-gscrim .tk-g-bar li{flex:1 1 0;min-width:0;border-top:3px solid rgba(245,239,226,.35);padding-top:6px;font:800 12px/1.15 'Bricolage Grotesque',system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:rgba(245,239,226,.7)}
+.tk-gscrim .tk-g-bar li.done{border-color:var(--gold,#F2CF62)}
+.tk-gscrim .tk-g-bar li.on{border-color:var(--gold,#F2CF62);color:var(--gold,#F2CF62)}
+.tk-gscrim .tk-g-bar button{all:unset;cursor:pointer;display:block;min-height:32px;color:#F5EFE2;text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1px}
+.tk-gscrim .tk-g-bar button:focus-visible{outline:2px solid var(--gold,#F2CF62);outline-offset:2px}
+.tk-gscrim .tk-g-cur.tk-g-hl{outline:2px solid #F2CF62;outline-offset:2px}
+.tk-e-tile:disabled{opacity:.45}
+.tk-gscrim .tk-g-ban{flex-wrap:wrap}
+.tk-gscrim .tk-g-ban>.tk-g-bar{flex:0 0 100%;order:9;margin:12px 0 2px;gap:8px}
+.tk-gscrim .tk-g-bar li{font-size:12.5px}
