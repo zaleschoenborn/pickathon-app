@@ -8,19 +8,27 @@
   }
   bar.addEventListener('click', function (e) { var b = e.target.closest('button'); if (b) show(b.dataset.s); });
   document.addEventListener('change', function (e) { var t = e.target; if ((t.id === 'ysel' || t.classList.contains('ysel2')) && t.value) { show(t.value); if (t.classList.contains('ysel2')) { var o = t.querySelector('option[selected]'); if (o) t.value = o.value; } } });
-  function openArt(slug, an) {  // every name, tile and card opens its artist page (Nov 20: Zale said yes)
-    var el = document.getElementById('a-' + slug) || document.getElementById('a-' + slug.replace(/^the/, ''));
+  function openArt(slug, an, yr) {  // every name, tile and card opens its artist page (Nov 20: Zale said yes)
+    // r79 (Zale, Nov 22 23:08): one artist page per year played; the year comes from the card, else the page it sits on
+    var el = (yr && (document.getElementById('a-' + slug + '-y' + yr) || document.getElementById('a-' + slug.replace(/^the/, '') + '-y' + yr))) || document.getElementById('a-' + slug) || document.getElementById('a-' + slug.replace(/^the/, ''));
     if (!el) return false;
-    var cur = document.querySelector('.screen:not([hidden])'); if (cur && cur !== el) hist.push(cur.id);
+    // r89c (Zale, Nov 24 09:10): another year of the same act swaps in place, so Back always returns to where you came from
+    var cur = document.querySelector('.screen:not([hidden])'), base = function (id) { return (id || '').replace(/-y\d{4}$/, ''); };
+    if (cur && cur !== el && !(/^a-/.test(cur.id) && base(cur.id) === base(el.id))) hist.push(cur.id);
     document.querySelectorAll('.screen').forEach(function (m) { m.hidden = m !== el; });
-    if (an) el.querySelectorAll('.hd-t b, .hero-tx h1').forEach(function (x) { x.textContent = an; });  // the page carries the name the poster printed
+    if (an) el.querySelectorAll('.hd-t:not(.hd-yr) b, .hero-tx h1').forEach(function (x) { x.textContent = an; });  // the page carries the name the poster printed
     window.scrollTo(0, 0); return true;
   }
   document.addEventListener('click', function (e) {
     if (e.target.closest('[data-clip]')) return;  // r36: on a card with a song the photo plays it; the name and 'Their story' open the artist page
-    var a = e.target.closest('[data-art]'); if (a && openArt(a.dataset.art, a.dataset.an)) { e.preventDefault(); return; }
+    var a = e.target.closest('[data-art]');
+    if (a) { var yr = a.dataset.ay || ''; if (!yr) { var mm = (a.closest('main') || {}).id || ''; var r = /^y(\d{4})$/.exec(mm); if (r) yr = r[1]; }
+      if (!yr) { var cy = (a.closest('.card, .vcard, [data-y]') || a).querySelector('.cyr, .yt-y'); if (cy) { var r2 = /(\d{4})/.exec(cy.textContent); if (r2) yr = r2[1]; } }
+      if (openArt(a.dataset.art, a.dataset.an, yr)) { e.preventDefault(); return; } }
     var b = e.target.closest('.hd button[aria-label="Back"]'); if (b && hist.length) { var id = hist.pop(); show(id); e.preventDefault(); }
   });
+  // r90c: a CD track opens in the visitor's chosen music service; the mock opens Spotify (Site Build routes it through the Listen setting)
+  document.addEventListener('click', function (e) { var c = e.target.closest('[data-sp]'); if (c) { e.preventDefault(); e.stopPropagation(); if (window.__pkListen) window.__pkListen(c.dataset.sp); else window.open(c.dataset.sp, '_blank', 'noopener'); } }, true);
   document.addEventListener('click', function (e) { var a = e.target.closest('[data-go]'); if (a) { e.preventDefault(); show(a.dataset.go); } });
   var m = (location.hash || '').match(/^#(s[136]|y\d{4})$/); if (m && document.getElementById(m[1])) show(m[1]);
 
@@ -29,9 +37,9 @@
   document.addEventListener('click', function (e) {
     var path = e.composedPath ? e.composedPath() : [e.target], t = path[0] && path[0].closest ? path[0] : e.target;
     var op = t.closest && t.closest('.ywopen'), wall;
-    if (op) { var sc = op.closest('main, .screen') || document; wall = sc.querySelector('.ywall'); if (wall) { wall.hidden = !wall.hidden; op.setAttribute('aria-expanded', String(!wall.hidden)); } return; }
+    if (op) { var sc = op.closest('main, .screen') || document; wall = sc.querySelector('.ywall') || document.querySelector('.ywall-g'); if (wall && wall.classList.contains('ywall-g')) { wall.querySelectorAll('[data-y]').forEach(function (b) { if (b.dataset.y === op.dataset.y) b.setAttribute('aria-current', 'true'); else b.removeAttribute('aria-current'); }); } if (wall) { wall.hidden = !wall.hidden; op.setAttribute('aria-expanded', String(!wall.hidden)); } return; }
     wall = t.closest && t.closest('.ywall');
-    if (wall && (t.closest('.yw-x') || t === wall || t.closest('[data-go]'))) { wall.hidden = true; (wall.parentNode.querySelectorAll('.ywopen') || []).forEach(function (o) { o.setAttribute('aria-expanded', 'false'); }); }
+    if (wall && (t.closest('.yw-x') || t === wall || t.closest('[data-go]'))) { wall.hidden = true; document.querySelectorAll('.ywopen').forEach(function (o) { o.setAttribute('aria-expanded', 'false'); }); }
   }, true);
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') document.querySelectorAll('.ywall').forEach(function (w) { w.hidden = true; }); });
   // r45 (Zale, Nov 22): the year reel plays on its own, 4 s a frame, hard cut; a segment jumps; the photo plays that band's song
@@ -113,12 +121,12 @@
         s.color = t < 0.5 ? a.c : b.c; s.opacity = it.a && it.b ? 1 : (it.a ? 1 - t : t);
       });
       morph.style.height = mix(h0, h1, t) + 'px'; yearLabel(t);
-      cap.textContent = t > 0.5 ? cap.dataset.now : cap.dataset.then; knob.setAttribute('aria-valuenow', t > 0.5 ? 1 : 0);
+      cap.textContent = t > 0.5 ? cap.dataset.now : cap.dataset.then; cap.style.opacity = Math.min(1, Math.abs(t - 0.5) * 2.4); knob.setAttribute('aria-valuenow', t > 0.5 ? 1 : 0);
     }
     function flags(now) { p.classList.toggle('is-now', now); p.querySelectorAll('.po-b').forEach(function (x) { x.classList.toggle('on', (x.dataset.m === 'now') === now); }); }
     function settle(now) {
       t = now ? 1 : 0; yearLabel(t); busy = false; morph.hidden = true; thenEl.hidden = now; nowEl.hidden = !now; flags(now);
-      cap.textContent = now ? cap.dataset.now : cap.dataset.then; knob.setAttribute('aria-valuenow', now ? 1 : 0);
+      cap.textContent = now ? cap.dataset.now : cap.dataset.then; cap.style.opacity = 1; knob.setAttribute('aria-valuenow', now ? 1 : 0);
     }
     function begin() { measure(); busy = true; thenEl.hidden = true; nowEl.hidden = true; morph.hidden = false; }
     function go(now, slow) {
@@ -250,4 +258,46 @@
     var mo = bar.parentNode.querySelector('.more'); if (mo) mo.addEventListener('click', function () { setTimeout(tick, 30); }); tick();
   })();
   document.addEventListener('click', function (e) { var a = e.target.closest('a[href="#"]'); if (a) e.preventDefault(); });
+})();
+/* r83: shrink the reel's class-and-genre line one step if it would overflow */
+(function(){function fitK(){document.querySelectorAll('.hero .krow,.ahero .krow').forEach(function(k){k.classList.remove('tight');if(k.scrollWidth>k.clientWidth+1)k.classList.add('tight')})}
+window.addEventListener('load',fitK);window.addEventListener('resize',fitK);document.addEventListener('click',function(){setTimeout(fitK,60)});setInterval(fitK,1500)
+  // r98 (Zale, Nov 24 11:17): poster type follows rank. Each name starts at its magnitude size; going down the ranked list a name is never
+  // bigger than the one above it, and a name too long for the column steps down (and so does everyone below it). No name wraps.
+  function pkFitPoster(pn) {
+    var W = pn.clientWidth; if (!W) return;
+    pn.querySelectorAll('.pcloud:not(.rest)').forEach(function (pc) {
+      var prev = 1e9;
+      pc.querySelectorAll('.pn').forEach(function (e) {
+        e.style.fontSize = '';
+        var base = parseFloat(getComputedStyle(e).fontSize), w = e.scrollWidth;
+        var s = Math.min(base, w > W ? base * W / w * 0.97 : base, prev);
+        e.style.setProperty('font-size', s.toFixed(1) + 'px', 'important'); prev = s;
+      });
+    });
+  }
+  if (window.ResizeObserver) { var pkRO = new ResizeObserver(function (es) { es.forEach(function (x) { pkFitPoster(x.target); }); });
+    document.querySelectorAll('.po-names').forEach(function (n) { pkRO.observe(n); }); }
+  document.querySelectorAll('.po-names').forEach(pkFitPoster);
+})();
+
+/* r101 (Zale, Nov 24 12:53): Vimeo session cards load their own still from Vimeo's oEmbed when they scroll into view (cached per browser) */
+(function () {
+  var cache = {}; try { cache = JSON.parse(localStorage.getItem('pkvt') || '{}'); } catch (e) {}
+  function save() { try { localStorage.setItem('pkvt', JSON.stringify(cache)); } catch (e) {} }
+  function put(card, src) { var v = card.querySelector('.vth'); if (!v || v.querySelector('img:not(.wk-ic)')) return; var i = document.createElement('img'); i.alt = ''; i.src = src; i.onload = function () { var n = v.querySelector('.wk-n'); if (n) n.remove(); v.insertBefore(i, v.firstChild); }; }
+  function load(card) {
+    var u = card.getAttribute('data-clip') || ''; if (u.indexOf('vimeo.com') < 0 || card.__vt) return; card.__vt = 1;
+    if (cache[u]) { put(card, cache[u]); return; }
+    fetch('https://vimeo.com/api/oembed.json?width=640&url=' + encodeURIComponent(u)).then(function (r) { return r.ok ? r.json() : null; }).then(function (j) {
+      if (j && j.thumbnail_url) { cache[u] = j.thumbnail_url; save(); put(card, j.thumbnail_url); }
+    }).catch(function () {});
+  }
+  function init() {
+    var cards = document.querySelectorAll('.wk.vid[data-clip*="vimeo.com"]'); if (!cards.length) return;
+    if (!('IntersectionObserver' in window)) { cards.forEach(load); return; }
+    var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { io.unobserve(e.target); load(e.target); } }); }, { rootMargin: '300px' });
+    cards.forEach(function (c) { if (!c.querySelector('.vth img:not(.wk-ic)')) io.observe(c); });
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
 })();
