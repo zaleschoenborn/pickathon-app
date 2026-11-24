@@ -379,7 +379,10 @@ def year_wall(cur):
         for yy in sorted(d['yearBill'].keys(), reverse=True):
             if yy == '2019': tiles.append('<span class="yw-i yw-off"><span class="yw-l"><i>No festival</i></span><b>2020–21</b></span>')
             lg = d['yearLogo'].get(yy)
-            pic = ('<img loading="lazy" src="%s" alt="">' % img(lg, 220, fmt='PNG')) if lg and not lg.startswith('http') and os.path.exists(_src(lg)) else '<i>%s</i>' % yy
+            # r82 (Artwork artwork-51, Zale approved Nov 23 21:06-23:05): small year marks use the hand-cut year icons (two-ring edge, same square every year)
+            _ic = 'ext/icons/y%s-icon.png' % yy[2:]
+            if os.path.exists(ROOT + _ic): lg = _ic
+            pic = ('<img loading="lazy" src="%s" alt="">' % img(lg, 160 if 'icons/' in lg else 220, fmt='PNG')) if lg and not lg.startswith('http') and os.path.exists(_src(lg)) else '<i>%s</i>' % yy
             tiles.append('<button type="button" class="yw-i" data-go="y%s" data-y="%s"><span class="yw-l">%s</span><b>%s</b></button>' % (yy, yy, pic, yy))
         _YW = ''.join(tiles)
     w = _YW.replace('data-y="%s"' % cur, 'data-y="%s" aria-current="true"' % cur, 1)

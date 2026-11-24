@@ -846,7 +846,7 @@ h2{font-family:var(--display);font-weight:400;font-size:27px;line-height:1.14;le
 /* r59: the wall of year logos */
 .ywopen{background:none;font:inherit;color:inherit}
 .ywall[hidden]{display:none!important}
-.ywall{position:fixed;inset:0;z-index:900;background:rgba(24,20,21,.97);display:flex;flex-direction:column;padding:16px 16px 24px;overflow:auto;scrollbar-width:none}
+.ywall{position:fixed;inset:0;z-index:900;background:#181415;display:flex;flex-direction:column;padding:16px 16px 24px;overflow:auto;scrollbar-width:none}
 .ywall::-webkit-scrollbar{display:none}
 .yw-h{display:flex;align-items:center;justify-content:space-between;max-width:1100px;width:100%;margin:0 auto 12px}
 .yw-h p{font-family:var(--display);font-size:26px;letter-spacing:.04em;color:var(--cream);margin:0}
