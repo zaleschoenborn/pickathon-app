@@ -630,22 +630,43 @@
     return t.ready ? '<div class="tk-e-vet-b"><button type="button" class="tk-pill tk-pill-gold" data-act="sheet" aria-haspopup="dialog">Finish my order · ' + money(t.total) + '</button></div>' : '';
   }
   /* Nov 15 late, Zale: experts see every option at once. A tap on a pass tile goes to "who's coming" with that pass chosen; a tap on an add-on goes to its step. */
+  /* Nov 22 draft "Pick what you want": the expert route is one plain list, every item a row with − n +. Counts are read from the order
+     and written back into the same order record, so the guided steps and checkout see one order. */
+  function tCounts() {
+    var c = { p4: 0, p3: 0, d2: 0, pat: 0, teen: 0, kid: 0 }; OK.day.forEach(function (d) { c[d] = 0; });
+    groups(S).forEach(function (g) { if (g.pass === 'd1') c[g.day] += g.adult; else if (g.pass === 'pat') c.pat += g.adult; else if (c[g.pass] !== undefined) c[g.pass] += g.adult; c.teen += g.teen || 0; c.kid += g.kid || 0; });
+    return c;
+  }
+  function tApply(c) {
+    var G = [];
+    ['p4', 'p3', 'd2'].forEach(function (k) { if (c[k]) G.push({ pass: k, adult: c[k], teen: 0, kid: 0 }); });
+    OK.day.forEach(function (d) { if (c[d]) G.push({ pass: 'd1', day: d, adult: c[d], teen: 0, kid: 0 }); });
+    if (c.pat) G.push({ pass: 'pat', adult: c.pat, teen: 0, kid: 0 });
+    var wk = G.filter(function (g) { return kind(g.pass) === 'wk'; })[0];
+    if (c.teen) { if (wk) wk.teen = c.teen; else return 'Teen passes go with an adult 3-Day or 4-Day Pass.'; }
+    if (c.kid) { var gk = G.filter(function (g) { return g.pass !== 'pat'; })[0]; if (gk) gk.kid = c.kid; else return 'Kids come free with an adult pass.'; }
+    if (G.length > 6) return 'That’s more pass types than one order holds. Split it into two orders.';
+    var keep = { sleep: S.sleep, go: S.go, x: S.x, car: S.car, sites: S.sites, pwr: S.pwr, big: S.big, dp: S.dp, gifts: S.gifts };
+    if (!G.length) { S.pass = null; S.more = []; S.day = null; S.adult = 1; S.teen = 0; S.kid = 0; }
+    else { var f = G[0]; S.more = G.slice(1).map(cleanG); S.pass = f.pass; S.day = f.day || null; S.adult = f.adult; S.teen = f.teen; S.kid = f.kid; S.wed = false; }
+    Object.keys(keep).forEach(function (k) { if (keep[k] !== undefined) S[k] = keep[k]; });
+    if (!gCamps() && VEH.test(S.sleep)) S.sleep = 'tent';
+    S = clean(S); save(); update(); return '';
+  }
+  var TNOTE = '';
   function gridHTML() {
-    var tile = function (id, a, name, sub, price, cls) { var o = off(id); return '<button type="button" class="tk-e-tile' + (cls || '') + '" data-act="e-tile" data-t="' + a + '"' + (o ? ' disabled' : '') + '><b>' + name + '</b><span>' + sub + '</span><i class="tk-num">' + (o ? 'Sold out' : price) + '</i></button>'; };
-    var from = function (ids) { ids = ids.filter(function (id) { return !off(id); }); return ids.length ? (ids.length > 1 ? 'from ' : '') + money(Math.min.apply(null, ids.map(PS))) : ''; };
-    var h = '<p class="tk-g-k">Choose your pass</p><div class="tk-e-tiles">' +
-      tile('p4', 'p4', '4-Day Pass', 'Thu–Sun, camping included', money(PS('p4'))) +
-      tile('p3', 'p3', '3-Day Pass', 'Fri–Sun, camping included', money(PS('p3'))) +
-      tile('d2', 'd2', 'Sat + Sun', 'Two days, no camping', money(PS('d2'))) +
-      tile('patron', 'pat', 'Patron Pass', 'Backstage, any age', money(PS('patron')), ' tk-e-tile-pat') + '</div>' +
-      '<div class="tk-e-days1" role="group" aria-label="One-day tickets"><span>One day</span>' + OK.day.map(function (d) { return '<button type="button" class="tk-e-d1" data-act="e-tile" data-t="' + d + '"' + (off(d) ? ' disabled' : '') + '><b>' + DAY[d][2] + '</b><i class="tk-num">' + (off(d) ? 'Sold out' : money(PS(d))) + '</i></button>'; }).join('') + '</div>' +
-      '<p class="tk-e-line">Kids 12 and under are free. Teens 13–17 are half price on weekend passes.</p>' +
-      '<p class="tk-g-k tk-g-k2">Add to your trip</p><div class="tk-e-tiles tk-e-tiles3">' +
-      tile('wcar', 'car', 'Car camping', 'Next to your car', from(['wcar', 'scar'])) +
-      tile('wvan', 'van', 'Camper van', 'Power at South Camp', from(['wvan', 'svan'])) +
-      tile('wrv', 'rv', 'RV', 'Power at South Camp', from(['wrv', 'srv'])) + '</div><div class="tk-e-tiles">' +
-      '<button type="button" class="tk-e-tile" data-act="e-tile" data-t="park"><b>Parking and shuttle</b><span>Weekend or one day</span><i class="tk-num">' + from(['wpark', 'pthu', 'pfri', 'psat', 'psun', 'shuttle']) + '</i></button>' +
-      '<button type="button" class="tk-e-tile" data-act="e-tile" data-t="meals"><b>Curation meals</b><span>A chef and a band</span><i class="tk-num">' + from(MEALS) + '</i></button></div>';
+    var c = tCounts(), X = S.x || {};
+    var row = function (k, name, sub, price, n, xid) { var o = xid ? off(xid) : k === 'kid' ? false : off(k === 'pat' ? 'patron' : k);
+      return '<div class="tk-t-r' + (n ? ' on' : '') + (o ? ' off' : '') + '"><p><b>' + name + '</b>' + (sub ? '<span>' + sub + '</span>' : '') + '</p><em class="tk-num">' + (o ? 'Sold out' : price) + '</em><span class="tk-t-stp"><button type="button" data-act="t-step" data-k="' + (xid ? 'x-' + xid : k) + '" data-d="-1" aria-label="One fewer, ' + esc(name) + '"' + (n ? '' : ' disabled') + '>−</button><i>' + n + '</i><button type="button" data-act="t-step" data-k="' + (xid ? 'x-' + xid : k) + '" data-d="1" aria-label="One more, ' + esc(name) + '"' + (o ? ' disabled' : '') + '>+</button></span></div>'; };
+    var sect = function (title, rows) { var open = rows.filter(function (r) { return r.indexOf(' off"') < 0; }), so = rows.filter(function (r) { return r.indexOf(' off"') >= 0; }); return '<p class="tk-g-k tk-t-k">' + title + '</p><div class="tk-t-list">' + open.concat(so).join('') + '</div>'; };
+    var meals = MEALS.filter(function (id) { return xok(id, S); }), t = totals(S);
+    var h = sect('Weekend passes', [row('p4', '4-Day Pass', 'Thu–Sun · camping', money(PS('p4')), c.p4), row('p3', '3-Day Pass', 'Fri–Sun · camping', money(PS('p3')), c.p3), row('d2', '2-Day Ticket', 'Sat + Sun', money(PS('d2')), c.d2), row('teen', 'Teen Pass', '13–17 · with an adult weekend pass', money(PS('teen')), c.teen), row('kid', 'Kids 12 and under', 'With an adult', 'Free', c.kid), row('pat', 'Patron Pass', 'Backstage · Wed–Sun · any age', money(PS('patron')), c.pat)]) +
+      sect('One day', OK.day.map(function (d) { return row(d, DAY[d][3] || N[d], '', money(PS(d)), c[d]); })) +
+      sect('Curation meals · chef + artist', meals.length ? meals.map(function (id) { return row('', XN[id].replace('Curation · ', ''), '', money(PS(id)), X[id] || 0, id); }) : []) + (meals.length ? '' : '<p class="tk-t-note">Add a pass and the Curation seatings on your days show here.</p>') +
+      sect('Extras', DISH.concat(GIVE).map(function (id) { return row('', XN[id], '', money(PS(id)), X[id] || 0, id); })) +
+      (TNOTE ? '<p class="tk-t-note tk-t-warn" role="status">' + esc(TNOTE) + '</p>' : '') +
+      '<p class="tk-t-more">Camping, parking or the shuttle? <button type="button" class="tk-tlink" data-act="t-sleep">Pick them next →</button></p>' +
+      '';
     return h;
   }
   function eTile(t) {
@@ -685,6 +706,12 @@
     if (act === 'x-open') { var hk = $('.tk-e3-hook', root); if (hk) { hk.innerHTML = '<div class="tk-x" id="tk-x" hidden></div>'; xDraw(); var xb = $('#tk-x', root); if (xb) { try { xb.scrollIntoView({ block: 'start', behavior: 'smooth' }); } catch (x) {} } } return true; }
     if (act === 'x-lineup') { var AL = app(); if (AL) AL.go('lineup'); return true; }
     if (act === 'e-why') { var AW = app(); if (AW) AW.go('home'); return true; }
+    if (act === 't-step') { var k = b.getAttribute('data-k'), dd = +b.getAttribute('data-d');
+      if (k.indexOf('x-') === 0) { var id = k.slice(2); if (!S.x) S.x = {}; S.x[id] = Math.max(0, Math.min(12, (S.x[id] || 0) + dd)); S = clean(S); save(); update(); TNOTE = ''; }
+      else { var c = tCounts(); c[k] = Math.max(0, Math.min(12, (c[k] || 0) + dd)); TNOTE = tApply(c); }
+      entrySide(); var kb = $('[data-act="t-step"][data-k="' + k + '"][data-d="' + dd + '"]', root); if (kb && !kb.disabled) { try { kb.focus({ preventScroll: true }); } catch (x) {} } return true; }
+    if (act === 't-sleep') { if (groups(S).length) guide('sleep'); else { TNOTE = 'Add a pass first.'; entrySide(); } return true; }
+    if (act === 't-go') { proceed(); return true; }
     if (act === 'e-tile') { eTile(b.getAttribute('data-t')); return true; }
     if (g && gDayTap(EN, g, b.getAttribute('data-d'))) { entryDraw(); return true; }
     if (act === 'e-days') { var hd = $('#tk-e-help', root); if (hd) hd.open = true; to = $('#tk-e-days', root); if (to) { try { to.scrollIntoView({ block: 'start', behavior: 'smooth' }); } catch (x) { to.scrollIntoView(); } var hh = $('h2', to); if (hh) { try { hh.focus({ preventScroll: true }); } catch (x) {} } } return true; }

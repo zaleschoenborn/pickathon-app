@@ -955,3 +955,22 @@ body:has(#tk2 #tk-bar:not([hidden])) #pk-toast,body:has(#pk-co) #pk-toast{displa
 .tk-gscrim .tk-g-addk{margin:8px 0 0;font-size:14px;color:rgba(245,239,226,.75)}
 .tk-gscrim .tk-g-rev{position:sticky;bottom:76px;margin:0 -16px;padding:10px 16px 14px;background:#3A3436;border-top:1px solid rgba(245,239,226,.2);border-radius:14px 14px 0 0;box-shadow:0 -10px 30px rgba(0,0,0,.45)}
 .tk-gscrim .tk-g-revg{display:block;width:44px;height:4px;border-radius:2px;background:rgba(245,239,226,.4);margin:0 auto 10px}
+
+/* Nov 22 draft: "I know what I want" as one plain list */
+.tk2 .tk-t-k{margin:18px 0 6px!important}
+.tk2 .tk-t-list{border-top:1px solid var(--line)}
+.tk2 .tk-t-r{display:grid;grid-template-columns:1fr auto auto;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)}
+.tk2 .tk-t-r p{margin:0;display:flex;flex-direction:column;gap:2px}.tk2 .tk-t-r b{font-size:16px;color:var(--cream)}.tk2 .tk-t-r p span{font-size:13px;color:var(--cream-dim)}
+.tk2 .tk-t-r em{font-style:normal;font-weight:800;font-size:15px;color:var(--cream)}
+.tk2 .tk-t-r.off{opacity:.45}
+.tk2 .tk-t-stp{display:flex;align-items:center;border:2px solid var(--line);border-radius:8px}
+.tk2 .tk-t-r.on .tk-t-stp{border-color:var(--gold,#F2CF62)}
+.tk2 .tk-t-stp button{width:40px;height:40px;border:0;background:transparent;color:var(--cream);font-size:20px;cursor:pointer}
+.tk2 .tk-t-stp button:disabled{opacity:.35}
+.tk2 .tk-t-stp i{font-style:normal;min-width:22px;text-align:center;font-weight:800;color:var(--cream)}
+.tk2 .tk-t-r.on .tk-t-stp i{color:var(--gold,#F2CF62)}
+.tk2 .tk-t-note{font-size:14px;color:var(--cream-dim);margin:8px 0}.tk2 .tk-t-warn{color:#F0A487}
+.tk2 .tk-t-more{font-size:15px;color:var(--cream-dim);margin:16px 0 0}.tk2 .tk-t-more .tk-tlink{color:var(--gold,#F2CF62);font-weight:800}
+.tk2 .tk-t-bar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:16px 0 8px;padding:12px 14px;border:2px solid var(--line);border-radius:10px}
+.tk2 .tk-t-bar p{margin:0;display:flex;flex-direction:column}.tk2 .tk-t-bar b{font-size:20px;color:var(--cream)}.tk2 .tk-t-bar span{font-size:13px;color:var(--cream-dim)}
+.tk2 .tk-t-sum{display:block;font-size:13px;font-weight:600;color:var(--cream-dim);margin-left:8px}

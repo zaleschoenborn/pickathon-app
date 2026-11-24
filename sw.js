@@ -1,5 +1,5 @@
 // Pickathon service worker. Build 20261123-5395
-const V='pk-20261123-5402',M='pkmedia-3',KEEP=["ssindex-b6158b1d.json"],SHELL=['./','index.html','data.rt.json','focus.json','focus-tall.json','focus-hero.json','focus.js?v=5395','manifest.json','icon-192.png','apple-touch-icon.png','fonts/pickathon-2014.ttf','lx/lx.js?v=5388','lx/lx.css','lx/fonts.css','lx/index.json','fonts/bricolage-grotesque-latin-wght-normal.woff2','farmmap/index.html?embed=1','farmmap/lab-phone.html?embed=1'];
+const V='pk-20261123-5404',M='pkmedia-3',KEEP=["ssindex-b6158b1d.json"],SHELL=['./','index.html','data.rt.json','focus.json','focus-tall.json','focus-hero.json','focus.js?v=5395','manifest.json','icon-192.png','apple-touch-icon.png','fonts/pickathon-2014.ttf','lx/lx.js?v=5388','lx/lx.css','lx/fonts.css','lx/index.json','fonts/bricolage-grotesque-latin-wght-normal.woff2','farmmap/index.html?embed=1','farmmap/lab-phone.html?embed=1'];
 const MP='pkmap-1';
 const fl=new Map();/* one network request per URL at a time (icons are asked for twice by the page) */
 const once=(k,f)=>{let p=fl.get(k);if(!p){p=f().finally(()=>fl.delete(k));fl.set(k,p)}return p.then(x=>x.clone())};
