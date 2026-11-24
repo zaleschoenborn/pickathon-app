@@ -84,26 +84,24 @@
   .ab1 .ab-hp{height:440px}
   .ab1 .ab-hx2{left:32px;bottom:28px;max-width:640px}
   #root .ab1 .ab-hl{font-size:19px}
-  .ab1 .ab-pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:40px}
+  .ab1 .ab-more{max-width:640px}
   .ab1 .ab-join{margin-top:56px;padding:32px;display:grid;grid-template-columns:1fr auto;column-gap:32px;align-items:center}
   #root .ab1 .ab-jx{margin-bottom:0}
   #root#root#root#root#root#root#root#root#root#root#root#root#root#root .ab1 .pk-cta.ab-btn{min-height:56px!important;height:56px!important}
   #root#root#root#root#root#root#root#root#root#root#root#root#root#root .ab1 .ab-join .pk-cta.ab-btn{grid-row:1/3;grid-column:2;width:auto!important;padding:0 40px!important}
 }
 
-/* the Pickathon universe: the twelve experiences (same list and lines as Home and Tickets), words on the photo (Nov 24) */
-.ab1 .ab-worlds{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
-.ab1 .ab-worlds li{display:flex}
-.ab1 .ab-wc{position:relative;flex:1;min-height:280px;border-radius:8px;overflow:hidden;background:var(--deep);color:var(--cream)}
-.ab1 .ab-wc img,.ab1 .ab-zero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-.ab1 .ab-wc::after,.ab1 .ab-zero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(var(--ab-fade),0) 30%,rgba(var(--ab-fade),.93) 74%)}
-.ab1 .ab-wx,.ab1 .ab-zx{position:absolute;z-index:1;left:12px;right:12px;bottom:12px;display:block}
+/* What Pickathon stands for: three commitments, photo above words (Nov 24 15:30) */
+.ab1 .ab-stands{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:1fr;gap:14px}
+.ab1 .ab-stands li{display:flex}
+.ab1 .ab-st{flex:1;display:flex;flex-direction:column;justify-content:flex-start;border-radius:8px;overflow:hidden;background:var(--ab-card);color:var(--cream)}
+.ab1 .ab-sp2{display:block;height:220px;background:var(--deep)}
+.ab1 .ab-sp2 img{width:100%;height:100%;object-fit:cover;display:block}
+.ab1 .ab-sx{display:block;padding:16px 16px 18px}
 #root .ab1 .ab-wk{display:block;font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--gold)}
-#root .ab1 .ab-wt{display:block;font-family:"Pickathon 2014","Bricolage Grotesque",Impact,sans-serif!important;font-size:22px;line-height:1.05;letter-spacing:.04em;text-transform:uppercase;color:var(--gold)}
-#root .ab1 .ab-wl{display:block;margin-top:6px;font-size:14px;line-height:1.35;color:var(--cream)}
-.ab1 .ab-zero{position:relative;margin-top:10px;min-height:220px;border-radius:8px;overflow:hidden;background:var(--deep);color:var(--cream)}
-#root .ab1 .ab-zero .ab-wt{margin-top:4px;color:var(--cream)}
-@media (hover:hover){.ab1 .ab-wc:hover img,.ab1 .ab-zero:hover img{filter:brightness(1.08)}}
-@media (max-width:374px){#root .ab1 .ab-wt{font-size:20px}.ab1 .ab-wc{min-height:300px}}
-@media (min-width:600px){.ab1 .ab-worlds{grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.ab1 .ab-wc{min-height:300px}}
-@media (min-width:1024px){.ab1 .ab-worlds{grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}.ab1 .ab-wc{min-height:330px}.ab1 .ab-wx,.ab1 .ab-zx{left:18px;right:18px;bottom:18px}#root .ab1 .ab-wt{font-size:26px}#root .ab1 .ab-wl{font-size:15px}.ab1 .ab-zero{margin-top:16px;min-height:260px}.ab1 .ab-zx{max-width:560px}}
+#root .ab1 .ab-wt{display:block;margin-top:4px;font-family:"Pickathon 2014","Bricolage Grotesque",Impact,sans-serif!important;font-size:24px;line-height:1.05;letter-spacing:.04em;text-transform:uppercase;color:var(--cream)}
+#root .ab1 .ab-wl{display:block;margin-top:8px;font-size:16px;line-height:1.45;color:var(--cream-dim)}
+#root .ab1 .ab-sb{display:inline-flex;align-items:center;gap:6px;min-height:44px;margin-top:6px;font-size:16px;font-weight:700;color:var(--gold)}
+@media (hover:hover){.ab1 .ab-st:hover{background:#433C3E}}
+@media (min-width:700px){.ab1 .ab-stands{grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}.ab1 .ab-sx{padding:18px 20px 20px}}
+@media (min-width:1024px){.ab1 .ab-sp2{height:260px}#root .ab1 .ab-wt{font-size:28px}}
