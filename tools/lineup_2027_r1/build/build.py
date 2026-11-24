@@ -1236,7 +1236,8 @@ for _s in list(ARTISTS):
     _nm = _NAMES.get(_s)
     _ap0 = d['actPages'].get(_s)
     _m0 = _re.search(r'class="hyr-y">(\d{4})<', ARTISTS[_s]); _y0 = _m0.group(1) if _m0 else ''
-    for _y in sorted({str(y_) for y_, _ in _KIN.get(_nm, [])}):
+    # r84b: a year Copy Review wrote a story for gets its own page even when the class table spells the act differently that year
+    for _y in sorted({str(y_) for y_, _ in _KIN.get(_nm, [])} | {y_ for (k_, y_) in _STORIES if _salt(k_) == _salt(_s)}):
         if _y == _y0: continue
         _yp = (d['yearPhotos'].get(_y, {}).get(_nm) or {})
         _api = {'yr': _y, 'gal': [], 'vids': [], 'story': []}

@@ -1070,3 +1070,6 @@ main[id^="a-"] .sale{display:none}
 .hero .krow.tight,.ahero .krow.tight{font-size:13px;letter-spacing:.05em}
 /* r84: "If you like" shelf cards on artist pages had zero width (width:auto + aspect-ratio inside a flex row); give them the shelf's height-based width */
 .swipe>.card.tt{flex:none;width:245px;height:306px}
+
+/* r84 (Zale, Nov 23 23:48): card lines read in sentence case; the class word and name stay in caps */
+.card .cline{text-transform:none;letter-spacing:0;font-weight:500}
