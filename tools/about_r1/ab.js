@@ -1,7 +1,7 @@
-/* pk-about1: the About hub, draft 3 (Nov 15 2026). Route 'aboutus', address #/about-us.
+/* pk-about1: the About story page, draft 4 (Nov 24 2026; shape approved by Zale Nov 24). Route 'aboutus', address #/about-us.
    Source: tools/about_r1/ab.js, spliced into index.html by tools/about_r1/build.py (<script id="pk-about1">, <style id="pk-about1-css">).
-   Draws into <div id="ab1" class="pl2 ab1" data-pk-own> (the app's renderer leaves it alone). Every word and photo comes from
-   data.json aboutHub; nothing is typed here. It borrows Plan's .pl2 tokens and the shared pk-cta button, and never changes Plan's files. */
+   Draws into <div id="ab1" class="pl2 ab1" data-pk-own>. Words and photos come from data.json aboutStory; until Site Build moves it
+   there, build.py embeds tools/about_r1/about_story.json as window.__pkAboutStory. Posters show whole, never cropped. */
 (function () {
   'use strict';
   function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
@@ -12,48 +12,59 @@
     if (!FOC) { FOC = {}; try { var x = new XMLHttpRequest(); x.open('GET', 'focus.json', false); x.send(); if (x.status === 200) FOC = JSON.parse(x.responseText) || {}; } catch (e) {} }
     var f = FOC[src]; return f ? f[0] + '% ' + f[1] + '%' : '50% 50%';
   }
-  /* The four eras of Our story, read from data.json about.chapters ("Name, years"). A swipe row on phone and tablet; not buttons. */
-  function eras() {
-    var ch = ((site().data || {}).about || {}).chapters || []; if (!ch.length) return '';
-    return '<ul class="ab-eras" aria-label="The four eras">' + ch.map(function (c) {
-      var h = String(c.h || ''), i = h.lastIndexOf(',');
-      return '<li><span class="ab-ey">' + esc(i > 0 ? h.slice(i + 1).trim() : '') + '</span><span class="ab-en">' + esc(i > 0 ? h.slice(0, i) : h) + '</span></li>';
+  function poster(y) { return 'i/y' + String(y).slice(-2) + '-poster.webp'; }
+  function chev() { return '<svg class="ab-rc" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>'; }
+  function tag(go, cls, inner, label) {
+    return go ? '<button type="button" class="' + cls + ' ab-go" data-ab-go="' + esc(go) + '"' + (label ? ' aria-label="' + esc(label) + '"' : '') + '>' + inner + '</button>'
+      : '<div class="' + cls + '">' + inner + '</div>';
+  }
+  function html(S) {
+    var o = '', H = S.hero || {}, W = S.worlds || {}, E = S.eras || {}, P = S.press || {}, M = S.more || {}, J = S.join || {};
+    o += '<section class="ab-hero"><img src="' + esc(H.im) + '" alt="' + esc(H.alt) + '" style="object-position:' + focusOf(H.im) + '" fetchpriority="high" decoding="async">' +
+      '<div class="ab-hx"><h1 class="ab-d ab-h1">' + esc(H.t) + '</h1><p class="ab-lede">' + esc(H.x) + '</p></div></section>';
+    o += '<div class="ab-in">';
+    o += '<section class="ab-sec"><h2 class="ab-d ab-h2">' + esc(W.h) + '</h2><ul class="ab-worlds">' + (W.r || []).map(function (w, i) {
+      return '<li>' + tag(w.go, 'ab-wc', '<img src="' + esc(w.im) + '" alt="' + esc(w.alt) + '" style="object-position:' + (w.pos || focusOf(w.im)) + '"' + (i > 1 ? ' loading="lazy"' : '') + ' decoding="async">' +
+        '<span class="ab-wx"><span class="ab-wk">' + esc(w.k) + '</span><span class="ab-wt">' + esc(w.t) + '</span><span class="ab-wl">' + esc(w.x) + '</span></span>', w.k + ': ' + w.t) + '</li>';
+    }).join('') + '</ul></section>';
+    o += '<section class="ab-sec" id="ab-story"><h2 class="ab-d ab-h2">' + esc(E.h) + '</h2><p class="ab-sub">' + esc(E.x) + '</p><ul class="ab-eras">' + (E.r || []).map(function (e) {
+      return '<li>' + tag(E.go, 'ab-era', '<span class="ab-pf"><img src="' + esc(e.im) + '" alt="Pickathon ' + esc(e.py) + ' poster" loading="lazy" decoding="async"></span>' +
+        '<span class="ab-ey">' + esc(e.y) + '</span><span class="ab-en">' + esc(e.n) + '</span><span class="ab-ex">' + esc(e.x) + '</span>') + '</li>';
     }).join('') + '</ul>';
-  }
-  function html(H) {
-    return '<div class="ab-in"><h1 class="pl-d ab-h1">' + esc(H.t) + '</h1><p class="ab-lede">' + esc(H.x) + '</p>' +
-      '<ul class="ab-list">' + (H.s || []).map(function (c, i) {
-        return '<li class="ab-c" id="ab-' + esc(c.id) + '"><div class="ab-im"><img src="' + esc(c.im) + '" alt="" style="object-position:' + focusOf(c.im) + '"' + (i > 1 ? ' loading="lazy"' : '') + ' decoding="async"></div>' +
-          '<div class="ab-tx"><p class="ab-k">' + esc(c.k) + '</p><h2 class="pl-d ab-t">' + esc(c.t) + '</h2><p class="ab-x">' + esc(c.x) + '</p>' + (c.eras ? eras() : '') +
-          '<button type="button" class="pk-cta sec pl-btn ab-btn" data-ab-go="' + esc(c.b[1]) + '">' + esc(c.b[0]) + '</button></div></li>';
-      }).join('') + '</ul>' + find(H.find) + '</div>';
-  }
-  /* The compact list under the photo cards: one tappable row per page, in small groups. No photos, so the whole list fits one phone screen. */
-  function find(F) {
-    if (!F || !(F.g || []).length) return '';
-    return '<section class="ab-find" aria-labelledby="ab-find-h"><h2 class="pl-d ab-fh" id="ab-find-h">' + esc(F.h) + '</h2><div class="ab-fg">' + F.g.map(function (g) {
-      return '<div class="ab-g"><p class="ab-k">' + esc(g.k) + '</p><ul class="ab-rows">' + (g.r || []).map(function (r) {
-        return '<li><button type="button" class="ab-row" data-ab-go="' + esc(r[2]) + '"><span class="ab-rt">' + esc(r[0]) + '</span><span class="ab-rx">' + esc(r[1]) + '</span>' +
-          '<svg class="ab-rc" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button></li>';
-      }).join('') + '</ul></div>';
-    }).join('') + '</div></section>';
+    if ((E.strip || []).length) o += '<ul class="ab-strip" aria-label="More posters">' + E.strip.map(function (y) {
+      return '<li>' + tag('route:past:y=' + y, 'ab-sp', '<img src="i/about/y' + String(y).slice(-2) + '-icon.webp" alt="" loading="lazy" decoding="async"><span>' + esc(y) + '</span>', 'Pickathon ' + y) + '</li>';
+    }).join('') + '</ul>';
+    if (E.all) o += '<button type="button" class="ab-link ab-go" data-ab-go="' + esc(E.all[1]) + '">' + esc(E.all[0]) + ' <span aria-hidden="true">→</span></button>';
+    o += '</section>';
+    o += '<div class="ab-pair"><section class="ab-sec ab-press"><h2 class="ab-d ab-h2">' + esc(P.h) + '</h2><ul class="ab-q">' + (P.r || []).map(function (q) {
+      return q.q ? '<li class="ab-qq"><span class="ab-qt">“' + esc(q.q) + '”</span><span class="ab-qb">' + esc(q.by) + (q.y ? ', ' + esc(q.y) : '') + '</span></li>' : '<li><b>' + esc(q.src) + '</b> ' + esc(q.x) + '</li>';
+    }).join('') + '</ul>' + (P.all ? '<button type="button" class="ab-link ab-go" data-ab-go="' + esc(P.all[1]) + '">' + esc(P.all[0]) + ' <span aria-hidden="true">→</span></button>' : '') + '</section>';
+    if ((M.r || []).length) o += '<section class="ab-sec ab-more"><h2 class="ab-d ab-h2">' + esc(M.h) + '</h2><ul class="ab-rows">' + M.r.map(function (r) {
+      return '<li><button type="button" class="ab-row ab-go" data-ab-go="' + esc(r[2]) + '"><span class="ab-rt">' + esc(r[0]) + '</span><span class="ab-rx">' + esc(r[1]) + '</span>' + chev() + '</button></li>';
+    }).join('') + '</ul></section>';
+    o += '</div>';
+    o += '<section class="ab-join"><h2 class="ab-d ab-h2">' + esc(J.h) + '</h2><p class="ab-jx">' + esc(J.x) + '</p>' +
+      (J.b ? '<button type="button" class="pk-cta pri pl-btn ab-btn ab-go" data-ab-go="' + esc(J.b[1]) + '">' + esc(J.b[0]) + '</button>' : '') + '</section>';
+    return o + '</div>';
   }
   function go(to) {
     var a = app(); if (!a) return; var c = to.indexOf(':'), k = to.slice(0, c), v = to.slice(c + 1);
-    if (k === 'route') { a.go(v); return; }
+    if (k === 'scroll') { var t = document.getElementById(v); if (t) t.scrollIntoView({ behavior: 'smooth', block: 'start' }); return; }
+    if (k === 'route') { var p = v.split(':'); if (p[1]) { var kv = p[1].split('='), q = {}; q[kv[0]] = kv[1] === '1' ? true : kv[1]; a.go(p[0], q); } else a.go(v); return; }
     if (k === 'page') { a.go('page', { p: v }); return; }
     if (k === 'url') { window.open(v, '_blank', 'noopener'); return; }
-    if (k === 'plan') { var p = v.split(':'); a.go('info', p[1] ? { step: p[0], c: p[1] } : { step: p[0] }); return; }
+    if (k === 'plan') { var s = v.split(':'); a.go('info', s[1] ? { step: s[0], c: s[1] } : { step: s[0] }); return; }
   }
+  function story() { return (site().data || {}).aboutStory || window.__pkAboutStory || null; }
   var root = null, lastKey = '';
   function sync() {
     var el = document.getElementById('ab1'); if (!el) { root = null; return; }
-    var H = (site().data || {}).aboutHub; if (!H) return;
-    var k = (H.s || []).map(function (c) { return c.id; }).join(',') + '|' + H.t + '|' + JSON.stringify(H.find || 0).length + '|' + (((site().data || {}).about || {}).chapters || []).length;
+    var S = story(); if (!S) return;
+    var k = JSON.stringify(S).length + '|' + ((S.hero || {}).t || '');
     if (el !== root || !el.firstChild || k !== lastKey) {
-      root = el; lastKey = k; el.innerHTML = html(H);
+      root = el; lastKey = k; el.innerHTML = html(S);
       [].forEach.call(el.querySelectorAll('p,li'), function (e) { e.classList.add('pk-krtk'); });
-      [].forEach.call(el.querySelectorAll('.pl-d'), function (e) { e.classList.add('pkp-head'); });
+      [].forEach.call(el.querySelectorAll('.ab-d'), function (e) { e.classList.add('pkp-head'); });
     }
   }
   document.addEventListener('click', function (e) {
