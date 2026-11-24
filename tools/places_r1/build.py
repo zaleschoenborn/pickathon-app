@@ -20,7 +20,7 @@ def put(s, tag, id_, body, after):
     return s[:m.end()] + '\n' + new + s[m.end():]
 HH = json.dumps(json.load(open(os.path.join(ROOT, 'tools/home_r2/hoods_home.json'), encoding='utf-8')), ensure_ascii=False, separators=(',', ':'))
 J = lambda f: json.dumps(json.load(open(os.path.join(D, f), encoding='utf-8')), ensure_ascii=False, separators=(',', ':'))
-js = rd('places.js').replace('/*@HOODS_HOME*/null', HH).replace('/*@XP_HOME*/null', J('xp_home.json')).replace('/*@XP_MINE*/null', J('xp_manifest.json')).replace('/*@XP_WORDS*/null', J('xp_words.json')).replace('/*@BY_WORDS*/null', J('by_words.json')).replace('/*@MAP_ICONS*/null', J('map_icons.json')).replace('/*@NAME_BOXES*/null', J('name_boxes.json')).replace('/*@NAME_PATHS*/null', J('name_paths.json')).replace('/*@AMEN_ICONS*/null', J('amen_icons.json'))
+js = rd('places.js').replace('/*@HOODS_HOME*/null', HH).replace('/*@XP_HOME*/null', J('xp_home.json')).replace('/*@XP_MINE*/null', J('xp_manifest.json')).replace('/*@XP_WORDS*/null', J('xp_words.json')).replace('/*@BY_WORDS*/null', J('by_words.json')).replace('/*@MAP_ICONS*/null', J('map_icons.json')).replace('/*@NAME_BOXES*/null', J('name_boxes.json')).replace('/*@NAME_PATHS*/null', J('name_paths.json')).replace('/*@AMEN_ICONS*/null', J('amen_icons.json')).replace('/*@CARDS*/null', J('cards.json'))
 os.makedirs(os.path.join(ROOT, 'pages'), exist_ok=True)
 open(os.path.join(ROOT, 'pages', 'places.js'), 'w', encoding='utf-8').write(js)
 open(os.path.join(ROOT, 'pages', 'places.css'), 'w', encoding='utf-8').write(rd('places.css'))
