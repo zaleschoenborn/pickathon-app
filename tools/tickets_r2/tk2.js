@@ -1206,7 +1206,7 @@
     return '<div class="tk-g-top tk-g-hd2"><button type="button" class="tk-g-hdb" data-g="fast" aria-label="Back to Tickets">‹</button>' + logo() + '<p class="tk-g-hdt"><b>Tickets</b><span>' + DAY.dthu[4] + '–' + DAY.dsun[4].split(' ')[1] + ', ' + YEAR + '</span></p></div>' +
       (n ? '<ol class="tk-g-bar2" aria-label="Step ' + n + ' of 4">' + names.map(function (nm, i) { var k = i + 1; return '<li class="' + (k < n ? 'done' : k === n ? 'on' : '') + '"' + (k === n ? ' aria-current="step"' : '') + '>' + (k < n && !(gNone() && k < 3) ? '<button type="button" data-g="go" data-to="' + keys[i] + '">' + nm + '</button>' : nm) + '</li>'; }).join('') + '</ol><p class="tk-g-stepn">Step ' + n + ' of 4</p>' : '');
   }
-  function gFoot(label, act, back, off) { var tt = GS && GS.step !== 'days' ? totals(S) : null, np = tt ? groups(S).reduce(function (a, g) { return a + g.adult + g.teen + g.kid; }, 0) : 0; return '<div class="tk-g-foot">' + (tt ? '<p class="tk-g-tot"><b class="tk-num">' + money(tt.total) + '</b><span>' + (np > 1 ? np + ' people · ' : '') + 'fee in</span></p>' : (back ? '<button type="button" class="tk-g-back" data-g="go" data-to="' + back + '" aria-label="Back">←</button>' : '')) + '<button type="button" class="tk-g-btn" data-g="next" data-to="' + act + '"' + (off ? ' disabled' : '') + '>' + label + '</button></div>'; }
+  function gFoot(label, act, back, off) { var tt = GS && GS.step !== 'days' ? totals(S) : null, np = tt ? groups(S).reduce(function (a, g) { return a + g.adult + g.teen + g.kid; }, 0) : 0; return '<div class="tk-g-foot">' + (tt ? '<button type="button" class="tk-g-ftot" data-g="review" aria-label="Review order"><b class="tk-num">' + money(tt.total) + '</b><span>' + (np > 1 ? np + ' people · ' : '') + 'fee in</span>' + (GS.step !== 'order' ? '<i>Review order ' + (GS.rev ? '▾' : '▴') + '</i>' : '') + '</button>' : (back ? '<button type="button" class="tk-g-back" data-g="go" data-to="' + back + '" aria-label="Back">←</button>' : '')) + '<button type="button" class="tk-g-btn" data-g="next" data-to="' + act + '"' + (off ? ' disabled' : '') + '>' + label + '</button></div>'; }
   function gDaysHTML(q, bare) {
     var p = gPlan(q), h = '<div class="tk-g-days" role="group" aria-label="Festival days">' +
       GD.map(function (d) { var so = d === 'w' ? off('early') || sold('p4') : sold(d) && sold('p4'); return '<button type="button" class="tk-g-day" data-g="day" data-d="' + d + '" aria-pressed="' + (!q.pat && q.on[d] ? 'true' : 'false') + '"' + (so ? ' disabled' : '') + '><b class="tk-d">' + DAY[d][2] + '</b><span>' + DAY[d][4] + '</span>' + (d === 'w' ? '<em>Early arrival</em>' : '') + '</button>'; }).join('') + '</div>';
@@ -1242,46 +1242,58 @@
         gStepper('adult', kd === 'pat' ? 'People' : kd === 'wk' ? 'Adults' : 'Ages 13 and up', kd === 'pat' ? 'Any age · ' + money(PS('patron')) : kd === 'wk' ? '18 and up · ' + money(PS(S.pass)) : 'One price for everyone', GS.adult, 1) +
         (kd === 'wk' && !sold('teen') ? gStepper('teen', 'Teens', '13–17 · ' + money(PS('teen')) + ', half the 4-Day', GS.teen, 0) : '') +
         (kd !== 'pat' ? (xpPick() === 'Family' ? gStepper('kid', 'Kids', '12 and under · free · <em class="tk-g-yp">You picked Family</em>', GS.kid, 0).replace('class="tk-g-r"', 'class="tk-g-r tk-g-hl"') : gStepper('kid', 'Kids', '12 and under · free', GS.kid, 0)) : '') + '</div>' + (kd !== 'pat' && GS.adult + GS.teen > 1 ? '<button type="button" class="tk-g-same" data-g="same" role="switch" aria-checked="' + (GS.same !== false ? 'true' : 'false') + '"><span class="tk-g-sw"></span>Everyone on the same days</button>' + (GS.same === false ? gWhoSplitHTML() : '') : '') + '</div>';
-      return h + gFoot('Getting there →', 'sleep', 'days', GS.same === false && !gSplit());
+      return h + gFoot('Getting there →', 'sleep', 'days', GS.same === false && !gSplit()) + gRev(t);
     }
-    if (st === 'sleep') {
-      var H = (site().data && site().data.hoods) || {}, im = function (id) { var o = H[id]; return o ? (o.hi || o.i) : ''; }, camp = gCamps() || gNone(), none = gNone(), veh = VEH.test(S.sleep);
-      h += gTop(3) + '<div class="tk-g-pad"><h2 class="tk-d" tabindex="-1">' + (camp ? 'Where you’ll sleep' : 'Getting there') + '</h2>';
-      if (camp) {
-        h += '<p class="tk-g-sub">' + (none ? 'Add a camping spot to the pass you already have.' : 'Your pass comes with a tent spot in the woods.') + '</p>';
-        var types = [['tent', 'Tent in the woods', 'Walk in and pick your spot', ['tent'], 'lushcamp'], ['car', 'Car camping', 'Sleep next to your car', ['wcar', 'scar'], 'willowcamp'], ['van', 'Camper van', 'A site for your van', ['wvan', 'svan'], 'southcamp'], ['rv', 'RV', 'A site for your RV', ['wrv', 'srv'], 'southcamp']];
-        types.forEach(function (ty) {
-          var ids = ty[3].filter(function (id) { return id === 'tent' ? !none : !off(id); }); if (!ids.length) return;
-          var on = ids.indexOf(S.sleep) >= 0, pr = ty[0] === 'tent' ? '' : (ids.length > 1 ? 'from ' : '') + money(Math.min.apply(null, ids.map(PS)));
-          h += '<div class="tk-g-card' + (on ? ' on' : '') + '">' + (im(ty[4]) ? '<img src="' + esc(im(ty[4])) + '" alt="" loading="lazy">' : '') + '<span class="tk-g-sh"></span>' + (ty[0] === 'tent' ? '<span class="tk-g-tag">Included</span>' : '') +
-            '<button type="button" class="tk-g-pick" data-g="sleep" data-v="' + ids[0] + '" aria-pressed="' + (on ? 'true' : 'false') + '"><span><b>' + ty[1] + '</b><span>' + ty[2] + '</span></span>' + (pr ? '<em class="tk-num">' + pr + '</em>' : '') + '</button></div>';
-          if (on && ty[0] !== 'tent') {
-            if (ids.length > 1) h += '<div class="tk-g-chips" role="group" aria-label="Which camp">' + ids.map(function (id) { return '<button type="button" class="tk-g-chip" data-g="sleep" data-v="' + id + '" aria-pressed="' + (S.sleep === id ? 'true' : 'false') + '">' + (id.charAt(0) === 'w' ? 'Willow Camp' : 'South Camp') + ' · ' + money(PS(id)) + '</button>'; }).join('') + '</div>';
-            if (PWR[S.sleep] && !off(PWR[S.sleep])) h += '<div class="tk-g-chips"><button type="button" class="tk-g-chip" data-g="pwr" aria-pressed="' + (S.pwr ? 'true' : 'false') + '">Add power · ' + money(PS(PWR[S.sleep])) + '</button></div>';
-            else if (/^s(van|rv)$/.test(S.sleep)) h += '<p class="tk-g-note">South Camp sites include power.</p>';
-          }
-        });
-      }
+    if (st === 'sleep') {   /* Nov 22 drafts: two plain questions, getting there first; car, van or RV opens the camps */
+      var camp = gCamps() || gNone(), none = gNone(), veh = VEH.test(S.sleep), TG = 'https://pickathon.com/info/traveling-to-pickathon/';
+      var radio = function (g, v, on, title, sub, price, link, dis) { return '<div class="tk-g-rad' + (on ? ' on' : '') + (dis ? ' off' : '') + '"><button type="button" data-g="' + g + '" data-v="' + v + '" aria-pressed="' + (on ? 'true' : 'false') + '"' + (dis ? ' disabled' : '') + '><i></i><span><b>' + title + '</b>' + (sub ? '<small>' + sub + '</small>' : '') + '</span><em class="tk-num">' + price + '</em></button>' + (link ? '<a href="' + TG + '" target="_blank" rel="noopener">' + link + ' →</a>' : '') + '</div>'; };
+      h += gTop(3) + '<div class="tk-g-pad">';
       if (!veh) {
-        h += '<p class="tk-g-k tk-g-k2">' + (camp ? 'And getting there' : 'How will you get there?') + '</p><div class="tk-g-chips tk-g-go" role="group" aria-label="Getting there">';
-        var pks = parkIds(Object.assign({}, S, { go: 'drive' })).filter(Boolean), pk = pks.length && pks.every(function (x) { return !off(x); }), gos = [['drive', 'Drive and park', pk ? money(Math.round(pks.reduce(function (t0, x) { return t0 + PS(x); }, 0) * 100) / 100) + ' a car' + (pks.length > 1 ? ', ' + pks.length + ' days' : '') : ''], ['shuttle', 'Shuttle', !off('shuttle') ? money(PS('shuttle')) + ' each' : ''], ['bike', 'Bike', 'Free'], ['drop', 'Drop-off', 'Free'], ['later', 'Decide later', '']];
-        gos.forEach(function (g) { if ((g[0] === 'drive' && !g[2]) || (g[0] === 'shuttle' && !g[2])) return; h += '<button type="button" class="tk-g-chip" data-g="goway" data-v="' + g[0] + '" aria-pressed="' + (S.go === g[0] ? 'true' : 'false') + '">' + g[1] + (g[2] ? ' · ' + g[2] : '') + '</button>'; });
-        h += '</div>';
+        var pks = parkIds(Object.assign({}, S, { go: 'drive' })).filter(Boolean), pk = pks.length && pks.every(function (x) { return !off(x); });
+        h += '<h2 class="tk-d" tabindex="-1">How are you getting there?</h2><div class="tk-g-rads">' +
+          (pk ? radio('goway', 'drive', S.go === 'drive', 'Drive and park', 'Welcome Lot, half a mile. Free shuttle to the gate', money(Math.round(pks.reduce(function (t0, x) { return t0 + PS(x); }, 0) * 100) / 100), 'Where to park') : '') +
+          (!off('shuttle') ? radio('goway', 'shuttle', S.go === 'shuttle', 'Shuttle from the MAX', 'Lents Town Center stop. Rides all weekend. Ages 13 and up need a pass', money(PS('shuttle')) + ' ea', 'Where it picks up') : '') +
+          radio('goway', 'bike', S.go === 'bike' || S.go === 'drop', 'Bike, walk or drop-off', 'Staffed bike parking', 'Free', 'Drop-off spots') + '</div>' +
+          (S.go === 'drive' ? '<button type="button" class="tk-g-big" data-g="big" aria-pressed="' + (S.big ? 'true' : 'false') + '">Truck or van over 16 ft? <u>Oversized parking</u></button>' : '');
         if (none && S.go === 'drive') h += '<p class="tk-g-k tk-g-k2">Which day are you driving?</p><div class="tk-g-chips" role="group" aria-label="Parking day"><button type="button" class="tk-g-chip" data-g="pday" data-v="" aria-pressed="' + (!S.pday ? 'true' : 'false') + '">All weekend</button>' + OK.day.map(function (d) { return '<button type="button" class="tk-g-chip" data-g="pday" data-v="' + d + '" aria-pressed="' + (S.pday === d ? 'true' : 'false') + '">' + DAY[d][2] + '</button>'; }).join('') + '</div>';
-      } else h += '<p class="tk-g-note">Your site is where you park. No parking pass needed.</p>';
-      return h + '</div>' + gFoot('Next: your order', 'order', none ? 'days' : 'who');
+      }
+      if (camp) {
+        var vIds = ['wcar', 'wvan', 'wrv', 'scar', 'svan', 'srv'], vOpen = veh || GS.veh, vMin = vIds.filter(function (id) { return !off(id); });
+        h += (veh ? '<h2 class="tk-d" tabindex="-1">Where will you sleep?</h2>' : '<p class="tk-g-k tk-g-k2 tk-g-q">Where will you sleep?</p>') + '<div class="tk-g-rads">' +
+          (!none ? radio('sleep', 'tent', S.sleep === 'tent' && !vOpen, 'Tent in the woods', 'Included with weekend passes', 'Included') : '') +
+          (vMin.length ? (vOpen ? '' : radio('veh', '1', false, 'Car, van or RV', '', 'from ' + money(Math.min.apply(null, vMin.map(PS))))) : '') + '</div>';
+        if (vOpen && vMin.length) {
+          var row = function (id, title, sub) { return radio('sleep', id, S.sleep === id, title, sub, off(id) ? 'Sold out' : money(PS(id)), '', off(id)); };
+          var camp1 = function (label, rows) { var open = rows.filter(function (r) { return !off(r[0]); }), so = rows.filter(function (r) { return off(r[0]); }); return '<p class="tk-g-k tk-g-k2">' + label + '</p><div class="tk-g-rads">' + open.concat(so).map(function (r) { return row(r[0], r[1], r[2]); }).join('') + '</div>'; };
+          h += camp1('Willow Camp · Meadow and shade', [['wcar', 'Car', 'Covers your car. It stays parked all weekend, no coming and going'], ['wvan', 'Camper van', PWR.wvan && !off(PWR.wvan) ? '16–26 ft · power ' + money(PS(PWR.wvan)) : '16–26 ft'], ['wrv', 'RV', PWR.wrv && !off(PWR.wrv) ? '26–35 ft · power ' + money(PS(PWR.wrv)) : '26–35 ft']]) +
+            camp1('South Camp · Across from the gate', [['scar', 'Car', 'Power included'], ['svan', 'Camper van', 'Power included'], ['srv', 'RV', 'Power included']]);
+          if (PWR[S.sleep] && !off(PWR[S.sleep])) h += '<div class="tk-g-chips"><button type="button" class="tk-g-chip" data-g="pwr" aria-pressed="' + (S.pwr ? 'true' : 'false') + '">Add power · ' + money(PS(PWR[S.sleep])) + '</button></div>';
+          h += '<p class="tk-g-links"><button type="button" class="tk-tlink" data-g="sleep" data-v="tent">' + (none ? 'Never mind' : 'Back to a tent in the woods') + '</button></p>';
+        }
+      }
+      h += '</div>';
+      return h + gFoot('Your order →', 'order', none ? 'days' : 'who') + gRev(t);
     }
-    /* order */
-    var meals = MEALS.filter(function (id) { return xok(id, S); }), more = DISH.concat(GIVE).filter(function (id) { return !off(id); }), X = S.x || {}, go = goLabel(t), cim = ((site().data && site().data.hoods) || {}).curation;
+    /* order (Nov 22 draft): one plain list, the total, edit links, three add-ons one tap away */
+    var meals = MEALS.filter(function (id) { return xok(id, S); }), dish = DISH.filter(function (id) { return !off(id); }), give = GIVE.filter(function (id) { return !off(id); }), X = S.x || {}, go = goLabel(t);
     var xr = function (id) { return gStepper('x-' + id, esc(XN[id].replace('Curation · ', '')), money(PS(id)) + (MEAL[id] !== undefined ? ' a seat' : ''), X[id] || 0, 0); };
-    h += gTop(4) + '<div class="tk-g-pad"><h2 class="tk-d" tabindex="-1">Your order</h2>' + gStub(t, 'Total, fee included') + (meals.length || more.length ? '<p class="tk-g-k tk-g-k2">Add to your weekend</p>' : '');
-    if (meals.length) h += '<div class="tk-g-card tk-g-cur">' + (cim ? '<img src="' + esc(cim.hi || cim.i) + '" alt="" loading="lazy">' : '') + '<span class="tk-g-sh"></span><div class="tk-g-pick"><span><b>Curation</b><span>A chef and a band at one long table</span></span></div></div><div class="tk-g-who tk-g-x">' + meals.map(xr).join('') + '</div>';
-    if (more.length) h += '<details class="tk-g-more"><summary>Souvenir dishware and giving back</summary><div class="tk-g-who tk-g-x">' + more.map(xr).join('') + '</div></details>';
+    var cnt = function (ids) { return ids.reduce(function (a, id) { return a + (X[id] || 0); }, 0); };
+    var card = function (k, title, sub, ids) { if (!ids.length) return ''; var n = cnt(ids), op = GS.add === k; return '<button type="button" class="tk-g-addc' + (op || n ? ' on' : '') + (k === 'meal' && xpPick() === 'Food' ? ' tk-g-hl' : '') + '" data-g="addp" data-v="' + k + '" aria-expanded="' + (op ? 'true' : 'false') + '"><b>' + title + '</b><span>' + sub + '</span><em class="tk-num">' + money(Math.min.apply(null, ids.map(PS))) + (ids.length > 1 && k !== 'meal' ? '+' : '') + '</em><i>' + (n ? n : '+') + '</i></button>'; };
+    h += gTop(4) + '<div class="tk-g-pad"><h2 class="tk-d" tabindex="-1">Your order</h2><ul class="tk-g-olist">' + olines(t) + '</ul><p class="tk-g-ototal"><span><b>Total</b><small>fee included</small></span><b class="tk-num">' + money(t.total) + '</b></p>' +
+      '<p class="tk-g-edits">' + (S.pass !== 'none' ? '<button type="button" class="tk-tlink" data-g="go" data-to="days">Edit days</button><button type="button" class="tk-tlink" data-g="go" data-to="who">Edit who</button>' : '') + '<button type="button" class="tk-tlink" data-g="go" data-to="sleep">Edit travel</button></p>';
+    if (meals.length || dish.length || give.length) {
+      h += '<p class="tk-g-k tk-g-k2">Add to your weekend</p><div class="tk-g-adds">' + card('meal', 'Curation meal', 'Chef + artist', meals) + card('dish', 'Dishware', 'Cup, plate', dish) + card('give', 'Fund the Tools', 'Students build', give) + '</div>';
+      if (GS.add === 'meal') h += '<p class="tk-g-addk">On your days, pick a seating</p><div class="tk-g-who tk-g-x">' + meals.map(xr).join('') + '</div>';
+      if (GS.add === 'dish') h += '<div class="tk-g-who tk-g-x">' + dish.map(xr).join('') + '</div>';
+      if (GS.add === 'give') h += '<div class="tk-g-who tk-g-x">' + give.map(xr).join('') + '</div>';
+    }
     h += (w === 'pre' ? '<p class="tk-g-note">Checkout opens ' + esc(T.show.isToday ? 'today' : T.show.dayS) + '. Save your order now and pay in one tap then.</p>' : '') +
       (window.pkGift && w === 'sale' && (giftable(S).length || (S.gifts || []).length) ? '<div class="tk-g-gift">' + giftsOk(S).map(function (g, i) { return '<p><span>' + giftLabel(g) + '</span><button type="button" class="tk-tlink" data-g="gift" data-i="' + i + '">Edit</button></p>'; }).join('') + (giftable(S).length ? '<button type="button" class="tk-pill tk-pill-sm" data-g="gift" data-i="-1">' + ((S.gifts || []).length ? 'Give another as a gift' : 'Give any of it as a gift') + '</button>' : '') + '</div>' : '') +
       '<p class="tk-g-links"><span></span>' + (S.pass !== 'none' ? '<button type="button" class="tk-tlink" data-g="another">Add a different pass →</button>' : '<button type="button" class="tk-tlink" data-g="go" data-to="days">I need a pass too →</button>') + '</p></div>';
-    return h + gFoot(esc(go.t), 'pay', 'sleep', !!go.off || !t.ready);
+    return h + gFoot(esc(go.t).replace(/^Checkout · .*/, 'Checkout →'), 'pay', 'sleep', !!go.off || !t.ready);
   }
+  /* Nov 22 draft: from step 2 on, the total in the bar opens "So far" */
+  function gRev(t) { if (!GS || !GS.rev) return ''; return '<div class="tk-g-rev" role="dialog" aria-label="So far"><span class="tk-g-revg"></span><p class="tk-g-k">So far</p><ul class="tk-g-olist">' + olines(t) + '</ul><p class="tk-g-ototal"><span><b>' + money(t.total) + '</b><small>5% fee included</small></span><button type="button" class="tk-tlink" data-g="review">Close ▾</button></p></div>'; }
   function gDraw(focus) {
     if (!scrim || !GS) return; var box = $('.tk-sheet', scrim); if (!box) return;
     var sc = box.scrollTop; box.innerHTML = gHTML(); guard(scrim); box.setAttribute('data-step', GS.step);
@@ -1301,15 +1313,19 @@
       if (a === 'another') { var cur = cleanG(S), ks = (S.more || []).slice(); if (gok(cur)) ks.push(cur); GS.keep = ks.slice(0, 5); GS.on = {}; GS.pat = false; GS.adult = 1; GS.teen = 0; GS.kid = 0; GS.step = 'days'; gDraw(true); return; }
       if (a === 'same') { if (GS.same === false) { GS.same = true; gApply(); } else { GS.same = false; gPeople(); gApplySplit(); } gDraw(); return; }
       if (a === 'pd') { var pp = gPeople()[+b.getAttribute('data-i')]; if (pp) { pp.on[d] = !pp.on[d]; gApplySplit(); } gDraw(); return; }
+      if (a === 'review') { GS.rev = !GS.rev; gDraw(); return; }
+      if (a === 'veh') { GS.veh = true; gDraw(); return; }
+      if (a === 'big') { S.big = !S.big; S = clean(S); save(); update(); gDraw(); return; }
+      if (a === 'addp') { GS.add = GS.add === v ? '' : v; if (v === 'give' && GS.add === 'give') { GIVE.forEach(function (id) { if (!off(id) && !(S.x || {})[id]) { if (!S.x) S.x = {}; S.x[id] = 1; } }); S = clean(S); save(); update(); } gDraw(); return; }
       if (a === 'pday') { S.pday = v; S = clean(S); save(); update(); gDraw(); return; }
-      if (a === 'go') { GS.step = b.getAttribute('data-to'); gDraw(true); return; }
+      if (a === 'go') { GS.rev = false; GS.step = b.getAttribute('data-to'); gDraw(true); return; }
       if (a === 'gift') { giftForm(+b.getAttribute('data-i'), function () { gDraw(); }); return; }
       if (gDayTap(GS, a, d)) { gDraw(); return; }
       if (a === 'next') {
         var to = b.getAttribute('data-to');
         if (to === 'pay') { var wn = when(); GS = null; closeSheet(true); lastKey = ''; sync(); proceed(); if (wn === 'pre') live('Order saved. Checkout opens ' + (T.show.isToday ? 'today' : T.show.dayS) + '.'); return; }
         if (to === 'who' && !gApply()) return;
-        GS.step = to; gDraw(true); return;
+        GS.rev = false; GS.step = to; gDraw(true); return;
       }
       if (a === 'step') {
         var n = +d;
@@ -1317,7 +1333,7 @@
         else { GS[k] = Math.max(k === 'adult' ? 1 : 0, Math.min(k === 'adult' ? 20 : 10, GS[k] + n)); if (GS.same === false) { gPeople(); gApplySplit(); } else gApply(); }
         gDraw(); return;
       }
-      if (a === 'sleep') { if (!v) return; S.sleep = v; if (!PWR[v]) S.pwr = false; S = clean(S); save(); update(); gDraw(); return; }
+      if (a === 'sleep') { if (!v) return; if (v === 'tent') GS.veh = false; S.sleep = v; if (!PWR[v]) S.pwr = false; S = clean(S); save(); update(); gDraw(); return; }
       if (a === 'pwr') { S.pwr = !S.pwr; S = clean(S); save(); update(); gDraw(); return; }
       if (a === 'goway') { S.go = v; S = clean(S); save(); update(); gDraw(); return; }
     });

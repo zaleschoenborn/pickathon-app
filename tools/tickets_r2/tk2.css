@@ -920,3 +920,38 @@ body:has(#tk2 #tk-bar:not([hidden])) #pk-toast,body:has(#pk-co) #pk-toast{displa
 .tk-gscrim .tk-g-pd{min-height:44px;border:2px solid rgba(245,239,226,.3);border-radius:6px;background:transparent;color:#F5EFE2;font:800 14px/1 inherit;cursor:pointer}
 .tk-gscrim .tk-g-pd[aria-pressed="true"]{background:var(--gold,#F2CF62);border-color:var(--gold,#F2CF62);color:#12160F}
 .tk-gscrim .tk-g-pd:disabled{opacity:.35}
+
+/* Nov 22 drafts, steps 3-4 and the So far panel */
+.tk-gscrim .tk-g-ftot{all:unset;cursor:pointer;display:flex;flex-direction:column;line-height:1.15;margin-right:auto;min-height:44px;justify-content:center}
+.tk-gscrim .tk-g-ftot b{font-size:20px;color:#F5EFE2}.tk-gscrim .tk-g-ftot span{font-size:13px;color:rgba(245,239,226,.7)}.tk-gscrim .tk-g-ftot i{font-style:normal;font-size:12.5px;font-weight:800;color:var(--gold,#F2CF62)}
+.tk-gscrim .tk-g-rads{display:flex;flex-direction:column;gap:10px;margin:12px 0}
+.tk-gscrim .tk-g-rad{border:2px solid rgba(245,239,226,.25);border-radius:10px;padding:12px 14px}
+.tk-gscrim .tk-g-rad.on{border-color:var(--gold,#F2CF62)}
+.tk-gscrim .tk-g-rad.off{opacity:.45}
+.tk-gscrim .tk-g-rad>button{all:unset;cursor:pointer;display:flex;align-items:flex-start;gap:12px;width:100%;min-height:36px}
+.tk-gscrim .tk-g-rad i{flex:none;width:20px;height:20px;border-radius:50%;border:2px solid rgba(245,239,226,.6);margin-top:2px;box-sizing:border-box}
+.tk-gscrim .tk-g-rad.on i{border:6px solid var(--gold,#F2CF62)}
+.tk-gscrim .tk-g-rad span{flex:1;display:flex;flex-direction:column;gap:3px}
+.tk-gscrim .tk-g-rad b{font-size:16px;color:#F5EFE2}.tk-gscrim .tk-g-rad small{font-size:13.5px;line-height:1.35;color:rgba(245,239,226,.75)}
+.tk-gscrim .tk-g-rad em{font-style:normal;font-weight:800;color:var(--gold,#F2CF62);font-size:15px;white-space:nowrap}
+.tk-gscrim .tk-g-rad a{display:inline-block;margin:6px 0 0 32px;color:var(--gold,#F2CF62);font-weight:800;font-size:13.5px;text-decoration:none}
+.tk-gscrim .tk-g-big{all:unset;cursor:pointer;display:block;font-size:14px;color:rgba(245,239,226,.75);margin:2px 0 8px;min-height:32px}
+.tk-gscrim .tk-g-big u{color:var(--gold,#F2CF62);font-weight:800;text-decoration:none}
+.tk-gscrim .tk-g-q{margin-top:22px!important;font-size:18px!important;letter-spacing:.04em!important}
+.tk-gscrim .tk-g-olist{list-style:none;margin:12px 0 0;padding:0;border:2px solid rgba(245,239,226,.2);border-radius:10px 10px 0 0;overflow:hidden}
+.tk-gscrim .tk-g-olist li{display:flex;justify-content:space-between;gap:10px;padding:10px 14px;border-bottom:1px solid rgba(245,239,226,.12);font-size:15px;color:#F5EFE2}
+.tk-gscrim .tk-g-ototal{display:flex;justify-content:space-between;align-items:center;margin:0 0 6px;padding:12px 14px;background:rgba(242,207,98,.14);border:2px solid rgba(245,239,226,.2);border-top:0;border-radius:0 0 10px 10px}
+.tk-gscrim .tk-g-ototal span{display:flex;flex-direction:column}.tk-gscrim .tk-g-ototal small{font-size:13px;color:rgba(245,239,226,.7)}
+.tk-gscrim .tk-g-ototal b{font-size:18px;color:#F5EFE2}.tk-gscrim .tk-g-ototal>b{font-size:22px;color:var(--gold,#F2CF62)}
+.tk-gscrim .tk-g-edits{display:flex;gap:18px;justify-content:flex-end;margin:6px 0 0}
+.tk-gscrim .tk-g-edits .tk-tlink{color:var(--gold,#F2CF62);font-weight:800;font-size:13px;letter-spacing:.08em;text-transform:uppercase}
+.tk-gscrim .tk-g-adds{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:10px 0}
+.tk-gscrim .tk-g-addc{position:relative;display:flex;flex-direction:column;gap:2px;text-align:left;padding:10px 10px 12px;min-height:118px;border:2px solid rgba(245,239,226,.25);border-radius:10px;background:transparent;color:#F5EFE2;cursor:pointer;font:inherit}
+.tk-gscrim .tk-g-addc.on{border-color:var(--gold,#F2CF62)}
+.tk-gscrim .tk-g-addc b{font-size:15px;line-height:1.15}.tk-gscrim .tk-g-addc span{font-size:12.5px;color:rgba(245,239,226,.7)}
+.tk-gscrim .tk-g-addc em{font-style:normal;font-weight:800;color:var(--gold,#F2CF62);font-size:14px;margin-top:auto}
+.tk-gscrim .tk-g-addc i{position:absolute;right:8px;bottom:8px;width:28px;height:28px;border:2px solid #F5EFE2;border-radius:6px;display:flex;align-items:center;justify-content:center;font-style:normal;font-weight:800}
+.tk-gscrim .tk-g-addc.on i{background:var(--gold,#F2CF62);border-color:var(--gold,#F2CF62);color:#12160F}
+.tk-gscrim .tk-g-addk{margin:8px 0 0;font-size:14px;color:rgba(245,239,226,.75)}
+.tk-gscrim .tk-g-rev{position:sticky;bottom:76px;margin:0 -16px;padding:10px 16px 14px;background:#3A3436;border-top:1px solid rgba(245,239,226,.2);border-radius:14px 14px 0 0;box-shadow:0 -10px 30px rgba(0,0,0,.45)}
+.tk-gscrim .tk-g-revg{display:block;width:44px;height:4px;border-radius:2px;background:rgba(245,239,226,.4);margin:0 auto 10px}
