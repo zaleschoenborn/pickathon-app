@@ -35,6 +35,7 @@ def _n(x):
     x = x.lower().replace('&', 'and').strip()
     if x.startswith('the '): x = x[4:]
     return _re.sub(r'[^a-z0-9]', '', x)
+_CAP = json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'cap_colors.json')))  # caption color per year, sampled for 4.5:1 on that year's panel
 _CT = os.environ.get('PK_CLASS_TABLE', ROOT + 'class_table_nov24_v188.csv')  # r96: copy of the live table named by _catalogs/master/CLASS_TABLE_CURRENT.txt (v188, Dropbox server_modified 2026-11-24 04:30Z); refresh from the pointer every build
 _IDX = {(_n(r['act']), r['year']): r for r in csv.DictReader(open(_CT, encoding='utf-8-sig'))}
 _M = {'Discovery': 'disc', 'Legend': 'leg', 'Deep cut': 'deep'}
@@ -481,14 +482,14 @@ def poster_block(P, badge, yr, then, now, total, joined=True, ranked=True):
     cc = P['light'] if P['light'].upper() != P['paper'].upper() else P['warm']
     cloud = seam(yr, P) if joined else stripe
     dates = ('<p class="po-dates" style="color:%s">%s</p>' % (P.get('bandText', P['paper']), E(P['dates'].upper()))) if P.get('dates') else ''
-    html_ = ('<section class="poster JOIN" style="--paper:%s;--ink:%s;--ink2:%s;--band:%s" data-yr="%s">%s<div class="po-in">'
+    html_ = ('<section class="poster JOIN" style="--paper:%s;--ink:%s;--ink2:%s;--band:%s;--cap:%s" data-yr="%s">%s<div class="po-in">'
             '<div class="po-art"><img class="po-badge" src="%s" alt="Pickathon %s poster art">%s</div>'
             '<h2 class="po-cap" data-then="The %s lineup, as we booked it." data-now="The %s lineup, if we booked it today.">The %s lineup, as we booked it.</h2>'
             '<div class="po-ctl"><button class="po-b on" data-m="then">Lineup %s</button><span class="po-track"><i class="po-knob" role="slider" tabindex="0" aria-label="Slide from %s to today" aria-valuemin="0" aria-valuemax="1" aria-valuenow="0"><b class="po-yr" data-y0="%s">%s</b></i></span><button class="po-b" data-m="now">Lineup today</button></div>'
             '<div class="po-names then">%s<div class="po-rest" hidden>%s</div></div><div class="po-names now" hidden>%s<div class="po-rest" hidden>%s</div></div>'
             '<button class="po-all" data-open="Show the top ten" data-shut="See the whole bill · %d bands">See the whole bill · %d bands</button>'
             '<p class="po-tap">Tap any name</p></div>%s</section>') % (
-            P['paper'], P['ink'], P['ink2'], P['band'], yr, cloud, badge, yr, dates, yr, yr, yr, yr, yr, yr, yr,
+            P['paper'], P['ink'], P['ink2'], P['band'], _CAP.get(str(yr), '#F2CF62'), yr, cloud, badge, yr, dates, yr, yr, yr, yr, yr, yr, yr,
             now_html(then[:10], then=True), now_html(then[10:], True, then=True), now_html(now[:10]), now_html(now[10:], True), total, total, stripe)
     html_ = html_.replace('poster JOIN', 'poster joined' if joined else 'poster solo')
     if not ranked:

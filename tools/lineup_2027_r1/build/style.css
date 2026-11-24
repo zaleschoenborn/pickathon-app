@@ -1257,3 +1257,14 @@ a.hd-yr{text-decoration:none}
 }
 @media (max-width:379px){.po-ctl{gap:8px!important;width:calc(100% - 12px)!important}.po-ctl .po-b{font-size:11px!important;padding:0 8px!important;letter-spacing:.03em!important}.po-ctl .po-track{min-width:48px!important}}
 @media (max-width:999px){.poster .po-cap{font-size:22px!important;line-height:1.15!important}.po-yr{font-size:19px!important;bottom:34px!important}.po-ctl{margin-top:40px!important}}
+/* r100 (Zale, Nov 24 11:36): desktop: the slider goes back under the caption in the right column; the caption is the point: bigger, and it
+   crossfades between "as we booked it" and "if we booked it today" as the names move */
+.poster .po-cap{transition:none}
+@media (min-width:1000px){
+  .yrtop .po-art{grid-row:1/span 2!important;align-self:center!important}
+  .yrtop .poster .po-cap{grid-column:2!important;grid-row:1!important;align-self:end!important;margin-top:8px!important;font-size:42px!important;line-height:1.04!important;text-align:left!important;justify-self:start!important;color:var(--cap,#F2CF62)!important}
+  .yrtop .poster .po-ctl{grid-column:2!important;grid-row:2!important;justify-self:stretch!important;width:auto!important;max-width:none!important;margin:44px 8px 0 0!important;gap:14px!important}
+  .yrtop .poster .po-ctl .po-b{font-size:13px!important;padding:0 14px!important;letter-spacing:.06em!important}
+  .yrtop .poster .po-ctl .po-track{min-width:56px!important}
+}
+@media (max-width:999px){.poster .po-cap{font-size:26px!important;line-height:1.1!important;color:var(--cap,#F2CF62)!important}}

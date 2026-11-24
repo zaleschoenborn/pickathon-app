@@ -121,12 +121,12 @@
         s.color = t < 0.5 ? a.c : b.c; s.opacity = it.a && it.b ? 1 : (it.a ? 1 - t : t);
       });
       morph.style.height = mix(h0, h1, t) + 'px'; yearLabel(t);
-      cap.textContent = t > 0.5 ? cap.dataset.now : cap.dataset.then; knob.setAttribute('aria-valuenow', t > 0.5 ? 1 : 0);
+      cap.textContent = t > 0.5 ? cap.dataset.now : cap.dataset.then; cap.style.opacity = Math.min(1, Math.abs(t - 0.5) * 2.4); knob.setAttribute('aria-valuenow', t > 0.5 ? 1 : 0);
     }
     function flags(now) { p.classList.toggle('is-now', now); p.querySelectorAll('.po-b').forEach(function (x) { x.classList.toggle('on', (x.dataset.m === 'now') === now); }); }
     function settle(now) {
       t = now ? 1 : 0; yearLabel(t); busy = false; morph.hidden = true; thenEl.hidden = now; nowEl.hidden = !now; flags(now);
-      cap.textContent = now ? cap.dataset.now : cap.dataset.then; knob.setAttribute('aria-valuenow', now ? 1 : 0);
+      cap.textContent = now ? cap.dataset.now : cap.dataset.then; cap.style.opacity = 1; knob.setAttribute('aria-valuenow', now ? 1 : 0);
     }
     function begin() { measure(); busy = true; thenEl.hidden = true; nowEl.hidden = true; morph.hidden = false; }
     function go(now, slow) {
