@@ -1063,9 +1063,24 @@ def _cls(name, yr):
     return None
 _STORIES = {}
 import glob as _gl
-for _f in sorted(_gl.glob(ROOT + 'stories/stories_*.csv')):
+for _f in sorted(_gl.glob(ROOT + 'stories/stories_[0-9]*_draft*.csv')):
     for _r in csv.DictReader(open(_f, encoding='utf-8-sig')):
         if _r.get('story'): _STORIES[(_slug(_r['act']), str(_r['year']))] = _r
+# r86 (copy_review-97, Nov 24): Copy Review's changed rows from Artist Classification's returns overlay the year files, oldest batch
+# first (returns, then b16_21, b22_25, b26_30); they carry intro and story only, so sets and line stay from the year file.
+def _rorder(f):
+    for i, t in enumerate(('_b16_21', '_b22_25', '_b26_30')):
+        if t in f: return (i + 1, f)
+    return (0, f)
+_NCHG = 0
+for _f in sorted(_gl.glob(ROOT + 'stories/stories_changes_returns_*.csv'), key=_rorder):
+    for _r in csv.DictReader(open(_f, encoding='utf-8-sig')):
+        if not _r.get('story'): continue
+        _k = (_slug(_r['act']), str(_r['year']))
+        _base = dict(_STORIES.get(_k) or {'year': _r['year'], 'act': _r['act'], 'sets': '', 'line': ''})
+        _base.update(intro=_r.get('intro') or _base.get('intro', ''), story=_r['story']); _STORIES[_k] = _base; _NCHG += 1
+# stories_changes_v3_* is Copy Review's change log for 2023-2026; those edits are already in the year files (checked Nov 24), so it is not read.
+print('story changes applied:', _NCHG)
 def _salt(s):  # r84: loose key so 'The Black Lillies' / 'Black Lillies', '&' / 'and', 'ft.' billings meet
     s = s[3:] if s.startswith('the') else s
     return s.replace('and', '').replace('the', '')
