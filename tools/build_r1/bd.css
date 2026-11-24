@@ -138,3 +138,5 @@ html.bd1-lock,html.bd1-lock body{overflow:hidden}
   .bd1s .bds-btn{min-height:56px}
 }
 /* QA 2026-11-13: timeline dots get a 44px touch area without changing their look */#root .pk-tn button.pk-tn-dot::after{content:"";position:absolute;left:50%;top:50%;width:44px;height:44px;transform:translate(-50%,-50%);background:transparent;box-shadow:none;border:0;padding:0;min-height:0}
+
+.bd1s .bds-more{margin-top:4px}.bd1s .bds-more>summary{display:flex;align-items:center;min-height:44px;color:#F2CF62;font-weight:700;font-size:.9375rem;cursor:pointer;list-style:none}.bd1s .bds-more>summary::-webkit-details-marker{display:none}.bd1s .bds-more>summary::before{content:'+';display:inline-block;width:20px;font-weight:800}.bd1s .bds-more[open]>summary::before{content:'\2212'}.bd1s .bds-more>summary:focus-visible{outline:3px solid #F2CF62;outline-offset:2px}.bd1s .bds-more .bds-fs{margin-top:8px}

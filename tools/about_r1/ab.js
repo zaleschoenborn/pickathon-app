@@ -19,13 +19,13 @@
       : '<div class="' + cls + '">' + inner + '</div>';
   }
   function html(S) {
-    var o = '', H = S.hero || {}, W = S.worlds || {}, E = S.eras || {}, P = S.press || {}, M = S.more || {}, J = S.join || {};
+    var o = '', H = S.hero || {}, W = S.stands || {}, E = S.eras || {}, M = S.more || {}, J = S.join || {};
     o += '<section class="ab-hero"><img src="' + esc(H.im) + '" alt="' + esc(H.alt) + '" style="object-position:' + focusOf(H.im) + '" fetchpriority="high" decoding="async">' +
       '<div class="ab-hx"><h1 class="ab-d ab-h1">' + esc(H.t) + '</h1><p class="ab-lede">' + esc(H.x) + '</p></div></section>';
     o += '<div class="ab-in">';
-    o += '<section class="ab-sec"><h2 class="ab-d ab-h2">' + esc(W.h) + '</h2><ul class="ab-worlds">' + (W.r || []).map(function (w, i) {
-      return '<li>' + tag(w.go, 'ab-wc', '<img src="' + esc(w.im) + '" alt="' + esc(w.alt) + '" style="object-position:' + (w.pos || focusOf(w.im)) + '"' + (i > 1 ? ' loading="lazy"' : '') + ' decoding="async">' +
-        '<span class="ab-wx"><span class="ab-wk">' + esc(w.k) + '</span><span class="ab-wt">' + esc(w.t) + '</span><span class="ab-wl">' + esc(w.x) + '</span></span>', w.k + ': ' + w.t) + '</li>';
+    o += '<section class="ab-sec"><h2 class="ab-d ab-h2">' + esc(W.h) + '</h2><ul class="ab-stands">' + (W.r || []).map(function (w, i) {
+      return '<li>' + tag(w.go, 'ab-st', '<span class="ab-sp2"><img src="' + esc(w.im) + '" alt="' + esc(w.alt) + '" style="object-position:' + (w.pos || focusOf(w.im)) + '"' + (i ? ' loading="lazy"' : '') + ' decoding="async"></span>' +
+        '<span class="ab-sx"><span class="ab-wk">' + esc(w.k) + '</span><span class="ab-wt">' + esc(w.t) + '</span><span class="ab-wl">' + esc(w.x) + '</span>' + (w.b ? '<span class="ab-sb">' + esc(w.b) + ' <span aria-hidden="true">→</span></span>' : '') + '</span>', w.k + ': ' + w.t) + '</li>';
     }).join('') + '</ul></section>';
     o += '<section class="ab-sec" id="ab-story"><h2 class="ab-d ab-h2">' + esc(E.h) + '</h2><p class="ab-sub">' + esc(E.x) + '</p><ul class="ab-eras">' + (E.r || []).map(function (e) {
       return '<li>' + tag(E.go, 'ab-era', '<span class="ab-pf"><img src="' + esc(e.im) + '" alt="Pickathon ' + esc(e.py) + ' poster" loading="lazy" decoding="async"></span>' +
@@ -36,13 +36,9 @@
     }).join('') + '</ul>';
     if (E.all) o += '<button type="button" class="ab-link ab-go" data-ab-go="' + esc(E.all[1]) + '">' + esc(E.all[0]) + ' <span aria-hidden="true">→</span></button>';
     o += '</section>';
-    o += '<div class="ab-pair"><section class="ab-sec ab-press"><h2 class="ab-d ab-h2">' + esc(P.h) + '</h2><ul class="ab-q">' + (P.r || []).map(function (q) {
-      return q.q ? '<li class="ab-qq"><span class="ab-qt">“' + esc(q.q) + '”</span><span class="ab-qb">' + esc(q.by) + (q.y ? ', ' + esc(q.y) : '') + '</span></li>' : '<li><b>' + esc(q.src) + '</b> ' + esc(q.x) + '</li>';
-    }).join('') + '</ul>' + (P.all ? '<button type="button" class="ab-link ab-go" data-ab-go="' + esc(P.all[1]) + '">' + esc(P.all[0]) + ' <span aria-hidden="true">→</span></button>' : '') + '</section>';
     if ((M.r || []).length) o += '<section class="ab-sec ab-more"><h2 class="ab-d ab-h2">' + esc(M.h) + '</h2><ul class="ab-rows">' + M.r.map(function (r) {
       return '<li><button type="button" class="ab-row ab-go" data-ab-go="' + esc(r[2]) + '"><span class="ab-rt">' + esc(r[0]) + '</span><span class="ab-rx">' + esc(r[1]) + '</span>' + chev() + '</button></li>';
     }).join('') + '</ul></section>';
-    o += '</div>';
     o += '<section class="ab-join"><h2 class="ab-d ab-h2">' + esc(J.h) + '</h2><p class="ab-jx">' + esc(J.x) + '</p>' +
       (J.b ? '<button type="button" class="pk-cta pri pl-btn ab-btn ab-go" data-ab-go="' + esc(J.b[1]) + '">' + esc(J.b[0]) + '</button>' : '') + '</section>';
     return o + '</div>';
