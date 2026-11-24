@@ -831,6 +831,21 @@ _SLN = {}
 for _f in sorted(_gl0.glob(ROOT + 'stories/stories_*.csv')):
     for _r in csv.DictReader(open(_f, encoding='utf-8-sig')):
         if _r.get('line'): _SLN[(''.join(c for c in _ud.normalize('NFD', _r['act'].lower()) if c.isalnum() and ord(c) < 128), str(_r['year']))] = _r['line']
+# r87 (Zale, Nov 24 07:22, copy_review-59): three reels, three lines. The year reel uses Copy Review's year-reel line (what that summer
+# meant, ~120 characters), the artist page photo uses the artist-reel line (what came after that visit); the card line stays the fallback.
+_YRL, _ARL = {}, {}
+def _k0(n): return ''.join(c for c in _ud.normalize('NFD', n.lower()) if c.isalnum() and ord(c) < 128)
+for _f in sorted(_gl0.glob(ROOT + 'reels/reel_archive_set_*.csv')):
+    for _r in csv.DictReader(open(_f, encoding='utf-8-sig')):
+        if (_r.get('year_reel_new') or '').strip(): _YRL[(_k0(_r['act']), str(_r['year']))] = _r['year_reel_new'].strip()
+        if (_r.get('artist_reel') or '').strip(): _ARL.setdefault((_k0(_r['act']), str(_r['year'])), _r['artist_reel'].strip())
+for _f in sorted(_gl0.glob(ROOT + 'reels/artist_reel_*.csv')):
+    for _r in csv.DictReader(open(_f, encoding='utf-8-sig')):
+        if (_r.get('artist_reel_line') or '').strip(): _ARL[(_k0(_r['act']), str(_r['year']))] = _r['artist_reel_line'].strip()
+for _f in sorted(_gl0.glob(ROOT + 'stories/stories_changes_returns_*.csv')):
+    for _r in csv.DictReader(open(_f, encoding='utf-8-sig')):
+        if (_r.get('artist_reel_line') or '').strip(): _ARL[(_k0(_r['act']), str(_r['year']))] = _r['artist_reel_line'].strip()
+print('reel lines: %d year-reel, %d artist-reel' % (len(_YRL), len(_ARL)))
 def _rline(n, y, k):  # r50: the reel frame carries Copy Review's three-line card line (then -> now) when one exists
     sl_ = ''.join(c for c in _ud.normalize('NFD', n.lower()) if c.isalnum() and ord(c) < 128)
     if (sl_, str(y)) in _SLN: return _SLN[(sl_, str(y))]
@@ -900,7 +915,7 @@ def year_page(y):
         clip = year_clip(a['n'], y) or (o.get('v') if (o.get('v') or '').split('&')[0] in YURLS.get(y, ()) else '')
         if not p or 'poster' in p or not clip or p in _RF['drop']: continue  # every frame plays a song (Zale: 'we go to different videos if we can't find them')
         _fx = _RF['focus'].get(p)
-        sl.append({'i': img(p, 1100, 80), 'raw': p, 'pos': ('%s%% %s%%' % tuple(_fx)) if _fx else fpos(p, FOC), 'n': a['n'], 'k': KLAB[a['k']], 'g': gp_a(a), 'l': _rline(a['n'], y, a['k']) or o.get('l', ''), 'clip': clip, 'sg': ''})
+        sl.append({'i': img(p, 1100, 80), 'raw': p, 'pos': ('%s%% %s%%' % tuple(_fx)) if _fx else fpos(p, FOC), 'n': a['n'], 'k': KLAB[a['k']], 'g': gp_a(a), 'l': _YRL.get((_k0(a['n']), str(y))) or _rline(a['n'], y, a['k']) or o.get('l', ''), 'clip': clip, 'sg': ''})
         if len(sl) == 10: break
     if not sl and hero:
         sl = [{'i': img(hero[0], 1100, 80), 'raw': hero[0], 'n': hero[1], 'k': hero[2], 'g': hero[3], 'l': hero[4], 'clip': hero[6], 'sg': ''}]
@@ -1087,6 +1102,24 @@ def _salt(s):  # r84: loose key so 'The Black Lillies' / 'Black Lillies', '&' / 
 _STORIES_ALT = {}
 for (_k, _y), _r in _STORIES.items(): _STORIES_ALT.setdefault((_salt(_k), _y), (_k, _r))
 _STORY_USED = set()
+_DAYN = {'Thu': 'Thursday', 'Fri': 'Friday', 'Sat': 'Saturday', 'Sun': 'Sunday', 'Wed': 'Wednesday'}
+def _setgfx(yr, sets):
+    """r87 (Zale, Nov 24 07:22, copy_review-60): sets as a small where-and-when graphic, one stub per set: day, date, time large, place."""
+    out = []
+    for s in [x.strip() for x in sets.split('·') if x.strip()]:
+        m = _re.match(r'^(\w{3})\w*\s+(\w{3}\s+\d+),\s*(.+?),\s*(.+)$', s)
+        if not m:
+            out.append('<li class="st"><span class="st-p">%s</span></li>' % E(s)); continue
+        d, dt, tm, pl = m.groups()
+        late = ''
+        lm = _re.match(r'late night \((.+)\)', tm)
+        if lm: tm, late = lm.group(1), 'Late night'
+        tm = tm.replace(' am', '<small>am</small>').replace(' pm', '<small>pm</small>')
+        pl = _re.sub(r'\s+Stage$', '', pl.strip())
+        out.append('<li class="st"><span class="st-d">%s<i>%s</i></span><span class="st-t">%s</span>%s<span class="st-p">%s</span></li>' % (
+            E(d), E(dt), tm, ('<span class="st-l">%s</span>' % late) if late else '', E(pl)))
+    if not out: return ''
+    return '<aside class="setg"><p class="kick">At Pickathon %s</p><ul>%s</ul></aside>' % (yr, ''.join(out))
 def art_page(slug, ap, pid=None):
     name = _NAMES[slug]; yr = str(ap.get('yr') or max([y for y, _ in _KIN.get(name, [])] or [2024]))
     if not str(ap.get('hero','')).startswith(('i/', 'ext/')) or not os.path.exists(_src(ap['hero'])):
@@ -1118,7 +1151,7 @@ def art_page(slug, ap, pid=None):
     if _ysongs:
         _ring = clip_ring(_ysongs[0][0], 'lg')
         if len(_ysongs) > 1: _ring = _ring.replace('<span class="ring lg" data-clip=', '<span class="ring lg" data-q="%s" data-clip=' % _h.escape(_q, quote=True), 1)
-    _line = _rline(name, yr, k) or ''
+    _line = _ARL.get((_k0(name), str(yr))) or _rline(name, yr, k) or ''
     _gt = gp_n(name, GSHORT.get(g, g)) if (gp_n(name) or g) else ''
     _sl = [{'i': img(f_[0], 780), 'pos': f_[1], 'n': name, 'k': KLAB.get(k, ''), 'g': _gt, 'l': _line, 'clip': _ysongs[0][0] if _ysongs else ''} for f_ in _fr]
     _segs = ''.join('<i data-slide="%d"%s><b></b></i>' % (n_, ' class="on"' if n_ == 0 else '') for n_ in range(len(_sl))) if len(_sl) > 1 else ''
@@ -1149,7 +1182,7 @@ def art_page(slug, ap, pid=None):
     if _st:
         h += '<section class="liner one"><p class="kick">Liner notes</p><p class="lead">%s</p>%s%s</section>' % (
             E(_st['intro']), ''.join('<p class="body">%s</p>' % E(pp.strip()) for pp in _st['story'].split('\n\n') if pp.strip()),
-            ('<div class="sets"><p class="kick">At Pickathon %s</p><p>%s</p></div>' % (yr, E(_st['sets']))) if _st.get('sets') else '')
+            _setgfx(yr, _st.get('sets') or ''))
     if story:
         h += '<section class="liner"><p class="kick">Liner notes</p><p class="lead">%s</p>' % E(story[0]['t'])
         for s in story[1:]:

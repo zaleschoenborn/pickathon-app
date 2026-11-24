@@ -1073,3 +1073,23 @@ main[id^="a-"] .sale{display:none}
 
 /* r84 (Zale, Nov 23 23:48): card lines read in sentence case; the class word and name stay in caps */
 .card .cline{text-transform:none;letter-spacing:0;font-weight:500}
+
+/* r87 (Zale, Nov 24 07:22, copy_review-60): sets as a where-and-when graphic, one stub per set, in the year accent */
+.setg{margin:26px 0 6px}
+.setg ul{list-style:none;margin:10px 0 0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(148px,1fr));gap:10px}
+.setg .st{position:relative;display:flex;flex-direction:column;gap:2px;padding:12px 14px 13px 16px;border:1px solid var(--line2);border-radius:6px;background:rgba(255,255,255,.03)}
+.setg .st::before{content:"";position:absolute;left:0;top:10px;bottom:10px;width:3px;border-radius:0 2px 2px 0;background:var(--acc,#D6B54A)}
+.setg .st-d{font-size:13px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--acc,#D6B54A)}
+.setg .st-d i{font-style:normal;font-weight:600;letter-spacing:.06em;color:var(--cream);opacity:.8;margin-left:8px}
+.setg .st-t{font-family:var(--display);font-size:30px;line-height:1.05;color:var(--cream);margin-top:4px}
+.setg .st-t small{font-size:.5em;margin-left:3px;letter-spacing:.04em}
+.setg .st-l{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;opacity:.75}
+.setg .st-p{font-size:16px;font-weight:600;line-height:1.3;color:var(--cream);margin-top:6px}
+@media(min-width:1000px){
+ .liner.one{display:grid;grid-template-columns:minmax(0,1fr) 260px;column-gap:48px;align-items:start}
+ .liner.one>*{grid-column:1}
+ .liner.one>.setg{grid-column:2;grid-row:1 / span 20;margin:0;position:sticky;top:96px}
+ .liner.one>.setg ul{grid-template-columns:1fr}
+}
+/* r87: the year-reel line (~120 characters) never cuts off: four lines allowed on the narrower desktop reel */
+.hero.reel .hero-sub{-webkit-line-clamp:4;line-clamp:4}
