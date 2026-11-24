@@ -547,7 +547,25 @@
       .map(function (k) { var h = H[k], ph = PH[k], z = Array.isArray(ph) ? ph[0] : ph, img = z ? (typeof z === 'string' ? z : z.i) : (h.hi || h.i), pos = z && z.p ? z.p : (h.p ? h.p[0] + '% ' + h.p[1] + '%' : '50% 40%');
         return { k: k, n: h.n || k, img: img, pos: pos, line: B[k] }; });
   }
-  function xBands() { return discoveries().filter(function (a) { return a.vu; }).slice(0, 8); }
+  var XVEN = { 'Woods': 'woods', 'Woods Stage': 'woods', 'Galaxy Barn': 'galaxy', 'Lucky Barn': 'lucky', 'Paddock': 'paddock', 'Paddock Stage': 'paddock', 'Grove': 'grove', 'Cherry Hill': 'cherryhill', 'Windmill': 'windmill' }, XB = null;
+  function xBands() {   /* ranked Discoveries that have a video from a neighborhood stage that same year */
+    if (XB && XB.length) return XB;
+    var D = site().data || {}, V = D.videos || [], H = D.hoods || {}, out = [];
+    discoveries().forEach(function (a) {
+      if (out.length >= 8) return;
+      var nm = String(a.n).toLowerCase(), v = V.filter(function (x) { return String(x.y) === String(a.y) && XVEN[x.vn] && String(x.a || '').toLowerCase().indexOf(nm) === 0; })[0];
+      if (!v) return; var hk = XVEN[v.vn], id = String(v.id);
+      out.push({ n: a.n, y: String(a.y), line: a.line, img: a.img, hk: hk, place: (H[hk] && H[hk].n) || v.vn, vu: /^vm\d+$/.test(id) ? 'https://vimeo.com/' + id.slice(2) : 'https://www.youtube.com/watch?v=' + id });
+    });
+    XB = out; return out;
+  }
+  function xWonder(k) {   /* that neighborhood's latest build: title, year, the story in a line or two */
+    var h = ((site().data || {}).hoods || {})[k] || {}, pb = (h.pb || []).slice().sort(function (a, b) { return +b.y - +a.y; })[0], by = h.by || {}, yk = Object.keys(by).sort().pop();
+    var cut = function (x) { x = String(x || '').replace(/\s+/g, ' ').trim(); if (x.length <= 150) return x; var m = x.slice(0, 150).match(/^(.*[.!?])\s/); return m ? m[1] : x.slice(0, 147).replace(/\s\S*$/, '') + '…'; };
+    if (yk && (!pb || +yk >= +pb.y) && by[yk].t) return { t: by[yk].t, y: yk, d: cut((by[yk].d || [])[0]) };
+    if (pb && pb.b) return { t: pb.b, y: String(pb.y), d: cut(pb.d) };
+    return null;
+  }
   function xTicket(t) {
     if (t === 'Family') return 'Kids 12 and under get in free.';
     if (t === 'Camping' && (!off('p4') || !off('p3'))) return 'Tent camping comes with 3- and 4-Day passes.';
@@ -576,13 +594,15 @@
     if (!list.length) return '';
     if (list.indexOf(t) < 0) t = list[0]; XCUR = t;
     var gN = function (g) { return String(g || '').replace(/\b\w/g, function (c) { return c.toUpperCase(); }); };
-    var card = function (act, i, img, pos, kL, kR, yr, name, line, play, label, tag) {   /* the same card anatomy as Home's band cards: kicker and year on the photo, name and blurb low */
+    /* Zale, Nov 23 23:45 ("the home run"): every card says where and when (neighborhood icon, name, year) upper left, what's in the photo
+       as the title, and why it matters below. Photo, place and year must match: Music uses only acts with a video from that venue that year. */
+    var card = function (act, i, img, pos, hk, place, yr, title, blurb, play, label) {
       return '<li class="tk-x-c"><button type="button" class="tk-x-ph" data-act="' + act + '" data-i="' + i + '" aria-label="' + esc(label) + '"><img src="' + esc(img) + '" alt="" loading="lazy" decoding="async"' + (pos ? ' style="object-position:' + esc(pos) + '"' : '') + '><span class="tk-x-sh"></span>' +
-        (yr ? '<span class="tk-x-yr tk-d">' + esc(yr) + '</span>' : '') + (play ? RING : '') +
-        '<span class="tk-x-low"><span class="tk-x-kk"><b>' + esc(kL) + '</b>' + (kR ? '<span>' + esc(kR) + '</span>' : '') + '</span><span class="tk-x-n tk-d">' + esc(name) + (tag ? ' <small class="tk-x-tag">' + tag + '</small>' : '') + '</span>' + (line ? '<span class="tk-x-l">' + esc(line) + '</span>' : '') + '</span></button></li>';
+        '<span class="tk-x-where">' + (hk ? '<img src="ic2/' + esc(hk) + '.png" alt="">' : '') + esc(place) + (yr ? ' · <b>' + esc(yr) + '</b>' : '') + '</span>' + (play ? RING : '') +
+        '<span class="tk-x-low">' + (title ? '<span class="tk-x-n tk-d">' + esc(title) + '</span>' : '') + (blurb ? '<span class="tk-x-l">' + esc(blurb) + '</span>' : '') + '</span></button></li>';
     };
-    if (t === 'Music') { L = xBands(); cards = L.map(function (a, i) { return card('x-play', i, a.img, '', 'Seen here first', gN(a.g), a.y, a.n, a.line, true, 'Watch ' + a.n + ', Pickathon ' + a.y); }).join(''); }
-    else { L = xPlaces(t); cards = L.map(function (p, i) { return card('x-tour', i, p.img, p.pos, xL(t), '', '', p.n, p.line, false, 'Photo tour of ' + p.n, XPATH[p.k] ? '' : 'neighborhood'); }).join(''); }
+    if (t === 'Music') { L = xBands(); cards = L.map(function (a, i) { return card('x-play', i, a.img, '', a.hk, a.place, a.y, a.n, a.line, true, 'Watch ' + a.n + ' at ' + a.place + ', Pickathon ' + a.y); }).join(''); }
+    else { L = xPlaces(t); cards = L.map(function (p, i) { var w = t === 'Architecture' ? xWonder(p.k) : null; return card('x-tour', i, p.img, p.pos, p.k, p.n, w ? w.y : '', w ? w.t : '', w ? ((XPBH.Architecture || {})[p.k] || w.d) : p.line, false, 'Photo tour of ' + p.n); }).join(''); }
     var tk = xTicket(t), line = XSET[t] ? '' : (XD[t] || '');
     return '<h2 class="tk-d tk-x-h">Wander a city of neighborhoods in the forest that only exists for one weekend.</h2><p class="tk-g-k tk-x-k">What do you want to experience?</p>' +
       '<div class="tk-x-ch" role="group" aria-label="Experiences">' + list.map(function (x) { return '<button type="button" class="tk-x-chip" data-act="x-pick" data-v="' + x + '" aria-pressed="' + (x === t ? 'true' : 'false') + '">' + xIc(x) + '<span>' + xL(x) + '</span></button>'; }).join('') + '</div>' +

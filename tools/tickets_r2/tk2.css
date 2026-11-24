@@ -974,3 +974,20 @@ body:has(#tk2 #tk-bar:not([hidden])) #pk-toast,body:has(#pk-co) #pk-toast{displa
 .tk2 .tk-t-bar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:16px 0 8px;padding:12px 14px;border:2px solid var(--line);border-radius:10px}
 .tk2 .tk-t-bar p{margin:0;display:flex;flex-direction:column}.tk2 .tk-t-bar b{font-size:20px;color:var(--cream)}.tk2 .tk-t-bar span{font-size:13px;color:var(--cream-dim)}
 .tk2 .tk-t-sum{display:block;font-size:13px;font-weight:600;color:var(--cream-dim);margin-left:8px}
+
+/* card pattern (Nov 23): where and when upper left, title, blurb */
+.tk2 .tk-x-where{position:absolute;left:14px;top:13px;right:14px;z-index:2;display:flex;align-items:center;gap:8px;font:800 12px/1.2 'Bricolage Grotesque',system-ui,sans-serif;letter-spacing:.13em;text-transform:uppercase;color:#F5EFE2}
+.tk2 .tk-x-where img{position:static!important;width:22px;height:22px;object-fit:contain;flex:none}
+.tk2 .tk-x-where b{color:var(--gold,#F2CF62)}
+.tk2 .tk-x-n{font-size:24px!important;margin:0 0 6px!important}
+
+/* desktop, cold visitors: the experience row runs full width across the top, the days below (Zale, Nov 23) */
+@media (min-width:1025px){
+ .tk2 .tk-e3-cold .tk-e3-in{display:block}
+ .tk2 .tk-e3-cold .tk-x-row{overflow-x:auto}
+ .tk2 .tk-e3-cold .tk-x-c{width:360px}
+ .tk2 .tk-e3-cold .tk-x-ph{height:470px}
+ .tk2 .tk-e3-cold .tk-x-n{font-size:30px!important}
+ .tk2 .tk-e3-cold .tk-x-l{font-size:17px}
+ .tk2 .tk-e3-cold .tk-e3-buy{max-width:720px;margin-top:34px;padding-top:24px;border-top:1px solid var(--line)}
+}
