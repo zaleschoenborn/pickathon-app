@@ -1184,3 +1184,17 @@ a.hd-yr{text-decoration:none}
 .yjoin{position:relative;height:3px;background:var(--acc,#D6B54A);margin:0 0 56px}
 .yjoin img{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:84px;height:84px;object-fit:contain;filter:drop-shadow(0 2px 6px rgba(0,0,0,.45))}
 @media (min-width:1000px){.yjoin{margin-bottom:68px}.yjoin img{width:108px;height:108px}}
+/* r94 (Zale, Nov 24 10:39): desktop year top: photo and poster joined side by side at the same height, no red frame around or between them,
+   a bigger photo with bigger words; the join line and year icon close the bottom */
+@media (min-width:1000px){
+  .yrtop.framed{background:none!important;padding:0!important;column-gap:0!important;grid-template-columns:minmax(0,5fr) minmax(0,7fr)!important;align-items:stretch!important;max-width:1280px}
+  .yrtop.framed::before{display:none!important}
+  .yrtop.framed>.hero{position:relative!important;top:auto!important;height:auto!important;min-height:0!important;align-self:stretch!important;border:0!important;border-radius:0!important;box-shadow:none!important;margin:0!important}
+  .yrtop.framed>.hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  .yrtop.framed>.hero h1{font-size:clamp(48px,4.4vw,64px);line-height:1}
+  .yrtop.framed>.hero .hero-sub{font-size:20px;line-height:1.45;max-width:30ch}
+  .yrtop.framed>.hero .krow{font-size:14px}
+  .yrtop.framed .poster{border-radius:0!important;margin:0!important}
+  .yrtop.framed+.yjoin,.yjoin{margin-top:0}
+}
+@media (min-width:1000px){.yrtop .poster .po-in .po-listen{grid-column:1/-1;justify-self:center}.yrtop.framed .poster .po-in{padding-bottom:64px!important}}
