@@ -1161,25 +1161,63 @@
   function gStepper(k, label, sub, n, min) {
     return '<div class="tk-g-r"><p><b>' + label + '</b><span>' + sub + '</span></p><div class="tk-g-stp"><button type="button" data-g="step" data-k="' + k + '" data-d="-1" aria-label="One fewer, ' + esc(label) + '"' + (n <= min ? ' disabled' : '') + '>−</button><b aria-live="polite">' + n + '</b><button type="button" data-g="step" data-k="' + k + '" data-d="1" aria-label="One more, ' + esc(label) + '">+</button></div></div>';
   }
+  /* Round 3 (Zale, Nov 23 22:14: match the Nov 22 drafts): "Everyone on the same days", on by default. Off: one row per person 13 and up,
+     each with its own day strip; people on the same days share one pass. Kids 12 and under come free with the first pass. */
+  function gPeople() {
+    var L = GS.ppl || [], want = GS.adult + (kind(S.pass) === 'wk' || GS.teenSplit ? GS.teen : 0), i;
+    for (i = 0; i < GS.adult + GS.teen; i++) { var t = i < GS.adult ? 'a' : 't'; if (!L[i]) L[i] = { t: t, on: Object.assign({}, GS.on) }; L[i].t = t; }
+    L.length = GS.adult + GS.teen; GS.ppl = L; return L;
+  }
+  function gSplit() {   /* the people's day sets, grouped; null when a teen has no adult on the same days */
+    var sets = {}, order = [];
+    gPeople().forEach(function (p) { var k = OK.day.filter(function (d) { return p.on[d]; }).join(','); if (!k) return; if (!sets[k]) { sets[k] = { on: {}, a: 0, t: 0 }; OK.day.forEach(function (d) { if (p.on[d]) sets[k].on[d] = 1; }); order.push(k); } sets[k][p.t]++; });
+    var out = [], bad = false;
+    order.forEach(function (k) { var x = sets[k], p = gPlan({ on: x.on, pat: false }); if (!p || !p.k) { bad = true; return; }
+      if (p.k === 'days') p.days.forEach(function (d) { out.push({ pass: 'd1', day: d, adult: x.a + x.t, teen: 0, kid: 0 }); });
+      else { if (!x.a && x.t) bad = true; out.push({ pass: p.k, day: null, adult: x.a, teen: kind(p.k) === 'wk' ? x.t : 0, kid: 0 }); if (kind(p.k) !== 'wk' && x.t) out[out.length - 1].adult += x.t; } });
+    if (bad || !out.length || out.length > 6) return null;
+    out[0].kid = GS.kid; return out;
+  }
+  function gApplySplit() {
+    var G = gSplit(); if (!G) return false;
+    var keep = { sleep: S.sleep, go: S.go, x: S.x, car: S.car, sites: S.sites, pwr: S.pwr, big: S.big, dp: S.dp }, f = G[0];
+    S.more = G.slice(1).map(cleanG); S.pass = f.pass; S.day = f.day; S.adult = f.adult; S.teen = f.teen; S.kid = f.kid; S.wed = false;
+    Object.keys(keep).forEach(function (k) { S[k] = keep[k]; }); if (!gCamps() && VEH.test(S.sleep)) S.sleep = 'tent';
+    S = clean(S); save(); update(); return true;
+  }
+  function gPassOf(on) { var p = gPlan({ on: on, pat: false }); return p && p.k ? p : null; }
+  function gWhoSplitHTML() {
+    var L = gPeople(), nA = 0, nT = 0;
+    var h = '<div class="tk-g-ppl">' + L.map(function (p, i) { var lab = p.t === 'a' ? (i === 0 ? 'You' : 'Adult ' + (nA + 1)) : 'Teen ' + (++nT); if (p.t === 'a') nA++;
+      var pp = gPassOf(p.on), pn = pp ? (pp.k === 'days' ? (pp.days.length === 1 ? 'Day' : pp.days.length + ' days') : pp.k === 'p4' ? '4-Day' : pp.k === 'p3' ? '3-Day' : '2-Day') : '', pm = pp ? pp.meta.split(' · ')[0] : '';
+      return '<div class="tk-g-pr"><p class="tk-g-prh"><b>' + lab + '</b>' + (pp ? '<span><em>' + pn + ' · ' + money(p.t === 't' && kind(pp.k) === 'wk' ? PS('teen') : pp.each) + '</em><small>' + esc(pm) + '</small></span>' : '<span><small>Pick a day</small></span>') + '</p><span class="tk-g-pdays" role="group" aria-label="' + lab + ' days">' + GD.map(function (d) { var w = d === 'w'; return '<button type="button" class="tk-g-pd" data-g="pd" data-i="' + i + '" data-d="' + d + '" aria-pressed="' + (!w && p.on[d] ? 'true' : 'false') + '"' + (w || (sold(d) && sold('p4')) ? ' disabled' : '') + '>' + DAY[d][2] + '</button>'; }).join('') + '</span></div>'; }).join('') +
+      (GS.kid ? '<div class="tk-g-pr tk-g-prk"><p class="tk-g-prh"><b>' + (GS.kid > 1 ? GS.kid + ' kids' : 'Kid') + '</b><span><em>Free</em><small>with an adult</small></span></p></div>' : '') + '</div>';
+    if (!gSplit()) h += '<p class="tk-g-note">Give everyone at least one day. Teens need an adult on the same days.</p>';
+    return h;
+  }
   function gStub(t, totalLabel) {
     return '<div class="tk-g-stub"><p class="tk-g-stubh"><b class="tk-d">Pickathon ' + YEAR + '</b><span>' + DAY.dthu[4] + '–' + DAY.dsun[4].split(' ')[1] + ' · Pendarvis Farm</span></p><span class="tk-g-strip" aria-hidden="true">' + DAYS.map(function (d, i) { return '<i class="' + (cover(S)[i] ? 'on' : '') + '">' + d[1] + '</i>'; }).join('') + '</span><ul class="tk-olines">' + olines(t) + '</ul><div class="tk-g-cut"></div><p class="tk-g-tot"><span>' + totalLabel + '</span><b class="tk-num">' + money(t.total) + '</b></p><p class="tk-g-stubf">Every act plays two sets on two stages</p></div>';
   }
   /* Nov 15 night: the steps carry Pickathon: a photo banner per step, the step count in words, and the order as a real ticket stub */
   var GBAN = { 1: ['', GHERO, '62% 22%'], 2: ['coyote', 'i/r35-grove-1.jpg', '50% 62%'], 3: ['wildcamp', 'i/r3-hood-lushcamp.jpg', '50% 70%'], 4: ['galaxy', 'i/r3-hood-woods.jpg', '50% 30%'] };
+  /* Nov 22 drafts: a plain page header ("Tickets · Aug 5–8, 2027"), the four steps by name, "Step n of 4"; no photo banner */
   function gTop(n) {
-    var H = (site().data || {}).hoods || {}, b = GBAN[n] || GBAN[1], o = b[0] && H[b[0]], img = (o && (o.hi || o.i)) || b[1];
-    return '<div class="tk-g-top tk-g-ban"><img class="tk-g-banimg" src="' + esc(img) + '" alt="" style="object-position:' + b[2] + '"><span class="tk-g-bansh"></span>' + logo() + (n ? '<span class="tk-g-steps" aria-label="Step ' + n + ' of 4">' + [1, 2, 3, 4].map(function (i) { return '<i' + (i <= n ? ' class="on"' : '') + '></i>'; }).join('') + '</span>' : '') + '<button type="button" class="tk-sheet-x" data-g="fast" aria-label="Close">' + ic('x') + '</button>' + (n ? '<p class="tk-g-stepk">Step ' + n + ' of 4</p>' : '') + '</div>'; }
-  function gFoot(label, act, back, off) { return '<div class="tk-g-foot">' + (back ? '<button type="button" class="tk-g-back" data-g="go" data-to="' + back + '" aria-label="Back">←</button>' : '') + '<button type="button" class="tk-g-btn" data-g="next" data-to="' + act + '"' + (off ? ' disabled' : '') + '>' + label + '</button></div>'; }
+    var names = ['Days', 'Who', 'Getting there', 'Order'], keys = ['days', 'who', 'sleep', 'order'];
+    return '<div class="tk-g-top tk-g-hd2"><button type="button" class="tk-g-hdb" data-g="fast" aria-label="Back to Tickets">‹</button>' + logo() + '<p class="tk-g-hdt"><b>Tickets</b><span>' + DAY.dthu[4] + '–' + DAY.dsun[4].split(' ')[1] + ', ' + YEAR + '</span></p></div>' +
+      (n ? '<ol class="tk-g-bar2" aria-label="Step ' + n + ' of 4">' + names.map(function (nm, i) { var k = i + 1; return '<li class="' + (k < n ? 'done' : k === n ? 'on' : '') + '"' + (k === n ? ' aria-current="step"' : '') + '>' + (k < n && !(gNone() && k < 3) ? '<button type="button" data-g="go" data-to="' + keys[i] + '">' + nm + '</button>' : nm) + '</li>'; }).join('') + '</ol><p class="tk-g-stepn">Step ' + n + ' of 4</p>' : '');
+  }
+  function gFoot(label, act, back, off) { var tt = GS && GS.step !== 'days' ? totals(S) : null, np = tt ? groups(S).reduce(function (a, g) { return a + g.adult + g.teen + g.kid; }, 0) : 0; return '<div class="tk-g-foot">' + (tt ? '<p class="tk-g-tot"><b class="tk-num">' + money(tt.total) + '</b><span>' + (np > 1 ? np + ' people · ' : '') + 'fee in</span></p>' : (back ? '<button type="button" class="tk-g-back" data-g="go" data-to="' + back + '" aria-label="Back">←</button>' : '')) + '<button type="button" class="tk-g-btn" data-g="next" data-to="' + act + '"' + (off ? ' disabled' : '') + '>' + label + '</button></div>'; }
   function gDaysHTML(q, bare) {
     var p = gPlan(q), h = '<div class="tk-g-days" role="group" aria-label="Festival days">' +
       GD.map(function (d) { var so = d === 'w' ? off('early') || sold('p4') : sold(d) && sold('p4'); return '<button type="button" class="tk-g-day" data-g="day" data-d="' + d + '" aria-pressed="' + (!q.pat && q.on[d] ? 'true' : 'false') + '"' + (so ? ' disabled' : '') + '><b class="tk-d">' + DAY[d][2] + '</b><span>' + DAY[d][4] + '</span>' + (d === 'w' ? '<em>Early arrival</em>' : '') + '</button>'; }).join('') + '</div>';
     if (!p) h += '<p class="tk-g-hint">Not sure? Most people come Friday to Sunday.</p>';
     else if (!p.k) h += '<p class="tk-g-hint">Those days are sold out. Try other days.</p>';
     else {
-      h += '<p class="tk-g-k">Your ticket</p><div class="tk-g-stub tk-g-one" aria-live="polite"><div><p class="tk-d tk-g-name">' + esc(p.name) + '</p><p class="tk-g-meta">' + esc(p.meta) + '<br>' + esc(p.why) + '</p></div><p class="tk-g-price tk-num">' + money(p.each) + '<small>' + (p.k === 'pat' ? 'per person' : p.k === 'days' || p.k === 'd2' ? 'ages 13 and up' : 'per adult') + ', fee included</small></p></div>';
+      h += '<div class="tk-g-that" aria-live="polite"><p class="tk-g-thatk">That’s the</p><p class="tk-d tk-g-thatn">' + esc(p.name) + '</p><p class="tk-g-thatm">' + esc(p.meta) + '</p><p class="tk-g-thatp"><b class="tk-num">' + money(p.each) + '</b><span>' + (p.k === 'pat' ? 'per person' : p.k === 'days' || p.k === 'd2' ? 'ages 13 and up' : 'per adult') + '</span></p></div>';
+      if (p.k === 'p4' && !sold('patron')) h += '<div class="tk-g-pat"><p class="tk-g-path"><b class="tk-d">Or go Patron</b><b class="tk-num">' + money(PS('patron')) + '</b></p><ul><li>Backstage at every stage</li><li>Meals in the artist village</li><li>Wednesday early entry</li></ul><button type="button" class="tk-g-patb" data-g="pat">Make it Patron</button></div>';   /* Nov 22 draft: at four days, Patron replaces the Wednesday nudge */
       if (p.k === 'p3' && !sold('p4')) h += '<button type="button" class="tk-g-nudge" data-g="add" data-d="dthu"><span>Add Thursday</span><b>+ ' + money(PS('p4') - PS('p3')) + ' · 4-Day Pass</b></button>';
       else if (p.k === 'd2' && !sold('p3')) h += '<button type="button" class="tk-g-nudge" data-g="add" data-d="dfri"><span>Add Friday and camping</span><b>+ ' + money(PS('p3') - PS('d2')) + ' · 3-Day Pass</b></button>';
-      else if (p.k === 'p4' && !q.on.w && !off('early')) h += '<button type="button" class="tk-g-nudge" data-g="add" data-d="w"><span>Arrive Wednesday</span><b>+ ' + money(PS('early')) + ' each</b></button>';
+      else if (p.k === 'p4' && !q.on.w && !off('early') && sold('patron')) h += '<button type="button" class="tk-g-nudge" data-g="add" data-d="w"><span>Arrive Wednesday</span><b>+ ' + money(PS('early')) + ' each</b></button>';
     }
     if (bare) return h;
     return h + '<p class="tk-g-k tk-g-k2">Been before?</p><div class="tk-g-vet"><button type="button" class="tk-pill" data-g="addons">Add-ons for a pass I have</button>' + (sold('patron') ? '' : '<button type="button" class="tk-pill" data-g="pat" aria-pressed="' + (q.pat ? 'true' : 'false') + '">' + (q.pat ? 'Not Patron: pick days' : 'Patron Pass · backstage') + '</button>') + '</div>';
@@ -1203,8 +1241,8 @@
       h += gTop(2) + '<div class="tk-g-pad"><h2 class="tk-d" tabindex="-1">Who’s coming?</h2><p class="tk-g-sub">' + (kd === 'pat' ? 'A Patron Pass is for any age, one per person.' : kd === 'wk' ? 'Kids are free. Teens are half price on weekend passes.' : 'Day tickets are one price for ages 13 and up. Kids are free.') + '</p><div class="tk-g-who">' +
         gStepper('adult', kd === 'pat' ? 'People' : kd === 'wk' ? 'Adults' : 'Ages 13 and up', kd === 'pat' ? 'Any age · ' + money(PS('patron')) : kd === 'wk' ? '18 and up · ' + money(PS(S.pass)) : 'One price for everyone', GS.adult, 1) +
         (kd === 'wk' && !sold('teen') ? gStepper('teen', 'Teens', '13–17 · ' + money(PS('teen')) + ', half the 4-Day', GS.teen, 0) : '') +
-        (kd !== 'pat' ? (xpPick() === 'Family' ? gStepper('kid', 'Kids', '12 and under · free · <em class="tk-g-yp">You picked Family</em>', GS.kid, 0).replace('class="tk-g-r"', 'class="tk-g-r tk-g-hl"') : gStepper('kid', 'Kids', '12 and under · free', GS.kid, 0)) : '') + '</div>' + gStub(t, 'So far') + '</div>';
-      return h + gFoot(gCamps() ? 'Next: where you’ll sleep' : 'Next: getting there', 'sleep', 'days');
+        (kd !== 'pat' ? (xpPick() === 'Family' ? gStepper('kid', 'Kids', '12 and under · free · <em class="tk-g-yp">You picked Family</em>', GS.kid, 0).replace('class="tk-g-r"', 'class="tk-g-r tk-g-hl"') : gStepper('kid', 'Kids', '12 and under · free', GS.kid, 0)) : '') + '</div>' + (kd !== 'pat' && GS.adult + GS.teen > 1 ? '<button type="button" class="tk-g-same" data-g="same" role="switch" aria-checked="' + (GS.same !== false ? 'true' : 'false') + '"><span class="tk-g-sw"></span>Everyone on the same days</button>' + (GS.same === false ? gWhoSplitHTML() : '') : '') + '</div>';
+      return h + gFoot('Getting there →', 'sleep', 'days', GS.same === false && !gSplit());
     }
     if (st === 'sleep') {
       var H = (site().data && site().data.hoods) || {}, im = function (id) { var o = H[id]; return o ? (o.hi || o.i) : ''; }, camp = gCamps() || gNone(), none = gNone(), veh = VEH.test(S.sleep);
@@ -1261,6 +1299,8 @@
       if (a === 'fast') { GS = null; closeSheet(true); lastKey = ''; sync(); return; }
       if (a === 'addons') { addonsOnly(); return; }
       if (a === 'another') { var cur = cleanG(S), ks = (S.more || []).slice(); if (gok(cur)) ks.push(cur); GS.keep = ks.slice(0, 5); GS.on = {}; GS.pat = false; GS.adult = 1; GS.teen = 0; GS.kid = 0; GS.step = 'days'; gDraw(true); return; }
+      if (a === 'same') { if (GS.same === false) { GS.same = true; gApply(); } else { GS.same = false; gPeople(); gApplySplit(); } gDraw(); return; }
+      if (a === 'pd') { var pp = gPeople()[+b.getAttribute('data-i')]; if (pp) { pp.on[d] = !pp.on[d]; gApplySplit(); } gDraw(); return; }
       if (a === 'pday') { S.pday = v; S = clean(S); save(); update(); gDraw(); return; }
       if (a === 'go') { GS.step = b.getAttribute('data-to'); gDraw(true); return; }
       if (a === 'gift') { giftForm(+b.getAttribute('data-i'), function () { gDraw(); }); return; }
@@ -1274,7 +1314,7 @@
       if (a === 'step') {
         var n = +d;
         if (k.indexOf('x-') === 0) { if (!S.x) S.x = {}; sv(k, Math.max(0, Math.min(12, gv(k) + n))); S = clean(S); save(); update(); }
-        else { GS[k] = Math.max(k === 'adult' ? 1 : 0, Math.min(k === 'adult' ? 20 : 10, GS[k] + n)); gApply(); }
+        else { GS[k] = Math.max(k === 'adult' ? 1 : 0, Math.min(k === 'adult' ? 20 : 10, GS[k] + n)); if (GS.same === false) { gPeople(); gApplySplit(); } else gApply(); }
         gDraw(); return;
       }
       if (a === 'sleep') { if (!v) return; S.sleep = v; if (!PWR[v]) S.pwr = false; S = clean(S); save(); update(); gDraw(); return; }

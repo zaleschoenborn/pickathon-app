@@ -869,3 +869,54 @@ body:has(#tk2 #tk-bar:not([hidden])) #pk-toast,body:has(#pk-co) #pk-toast{displa
 .tk2 .tk-e3-wl{padding:0 var(--gutter);margin:6px 0 0}
 #tk2 .tk-e3-wl .tk-tlink{min-height:44px;color:var(--gold,#F2CF62);font-weight:800}
 @media (min-width:1025px){.tk2 .tk-e3-wl{padding:0}}
+
+/* Nov 22 draft, step 1: the ticket under the days (dark, gold rule) and the Patron card at four days */
+.tk-g-that{border:2px solid var(--gold,#F2CF62);border-radius:10px;padding:14px 16px 14px;margin:14px 0 10px;background:transparent;color:#F5EFE2}
+.tk-g-thatk{margin:0;font:800 12.5px/1 'Bricolage Grotesque',system-ui,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--gold,#F2CF62)}
+.tk-g-thatn{margin:6px 0 2px!important;font-size:26px!important;line-height:1.05;color:#F5EFE2}
+.tk-g-thatm{margin:0;font-size:15px;color:rgba(245,239,226,.8)}
+.tk-g-thatp{display:flex;justify-content:space-between;align-items:baseline;margin:12px 0 0}
+.tk-g-thatp b{font-size:28px;font-weight:800;color:var(--gold,#F2CF62)}
+.tk-g-thatp span{font-size:15px;color:rgba(245,239,226,.8)}
+.tk-g-pat{border:2px solid rgba(245,239,226,.3);border-radius:10px;padding:14px 16px;margin:0 0 10px;color:#F5EFE2}
+.tk-g-path{display:flex;justify-content:space-between;align-items:baseline;margin:0}
+.tk-g-path .tk-d{font-size:19px!important;color:#F5EFE2}
+.tk-g-path .tk-num{color:var(--gold,#F2CF62);font-size:16px}
+.tk-g-pat ul{list-style:none;margin:10px 0 12px;padding:0;font-size:15px;line-height:1.6;color:rgba(245,239,226,.85)}
+.tk-g-pat li:before{content:'✦';color:var(--gold,#F2CF62);margin-right:8px}
+.tk-g-patb{min-height:44px;padding:0 16px;border:2px solid #F5EFE2;border-radius:6px;background:transparent;color:#F5EFE2;font:800 13px 'Bricolage Grotesque',system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;cursor:pointer}
+.tk-g-patb{font-family:inherit!important;font-weight:800}
+
+/* Nov 22 drafts, steps 2-4: plain header, named steps, bottom total (Nov 23 build) */
+.tk-gscrim .tk-g-hd2{display:flex;align-items:center;gap:12px;padding:12px 16px;background:#3A3436;border-bottom:1px solid rgba(245,239,226,.12)}
+.tk-gscrim .tk-g-hd2 svg,.tk-gscrim .tk-g-hd2 img{height:30px;width:auto}
+.tk-gscrim .tk-g-hdb{all:unset;cursor:pointer;min-width:32px;min-height:44px;display:flex;align-items:center;justify-content:center;font-size:30px;color:#F5EFE2}
+.tk-gscrim .tk-g-hdt{margin:0;padding-left:12px;border-left:1px solid rgba(245,239,226,.3);display:flex;flex-direction:column;line-height:1.15}
+.tk-gscrim .tk-g-hdt b{font-size:17px;color:#F5EFE2}.tk-gscrim .tk-g-hdt span{font-size:14px;color:rgba(245,239,226,.75)}
+.tk-gscrim .tk-g-bar2{list-style:none;display:flex;gap:6px;margin:12px 16px 0;padding:0}
+.tk-gscrim .tk-g-bar2 li{flex:1 1 auto;border-top:4px solid rgba(245,239,226,.25);padding-top:6px;font:800 11.5px/1.1 inherit;letter-spacing:.1em;text-transform:uppercase;color:rgba(245,239,226,.6);border-radius:2px}
+.tk-gscrim .tk-g-bar2 li.done{border-color:var(--gold,#F2CF62)}
+.tk-gscrim .tk-g-bar2 li.on{border-color:var(--gold,#F2CF62);color:var(--gold,#F2CF62)}
+.tk-gscrim .tk-g-bar2 button{all:unset;cursor:pointer;color:rgba(245,239,226,.85)}
+.tk-gscrim .tk-g-stepn{margin:6px 16px 0;font-size:13px;color:rgba(245,239,226,.6)}
+.tk-gscrim .tk-g-tot{margin:0;display:flex;flex-direction:column;line-height:1.1;margin-right:auto}
+.tk-gscrim .tk-g-tot b{font-size:20px;color:#F5EFE2}.tk-gscrim .tk-g-tot span{font-size:13px;color:rgba(245,239,226,.7)}
+.tk-gscrim .tk-g-foot{align-items:center}
+/* who: everyone on the same days */
+.tk-gscrim .tk-g-same{all:unset;box-sizing:border-box;display:flex;align-items:center;gap:12px;min-height:48px;margin:14px 0 6px;font-weight:700;font-size:16px;color:#F5EFE2;cursor:pointer}
+.tk-gscrim .tk-g-sw{flex:none;width:46px;height:28px;border-radius:14px;background:rgba(245,239,226,.25);position:relative}
+.tk-gscrim .tk-g-sw:after{content:'';position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:#F5EFE2;transition:left .15s}
+.tk-gscrim .tk-g-same[aria-checked="true"] .tk-g-sw{background:var(--gold,#F2CF62)}
+.tk-gscrim .tk-g-same[aria-checked="true"] .tk-g-sw:after{left:21px;background:#12160F}
+.tk-gscrim .tk-g-ppl{border:2px solid rgba(245,239,226,.2);border-radius:10px;padding:4px 14px;margin:6px 0 10px}
+.tk-gscrim .tk-g-pr{padding:12px 0;border-bottom:1px solid rgba(245,239,226,.12)}
+.tk-gscrim .tk-g-pr:last-child{border-bottom:0}
+.tk-gscrim .tk-g-prh{display:flex;justify-content:space-between;align-items:flex-start;margin:0 0 8px;font-size:16px;color:#F5EFE2}
+.tk-gscrim .tk-g-prh span{display:flex;flex-direction:column;align-items:flex-end;line-height:1.2}
+.tk-gscrim .tk-g-prh em{font-style:normal;font-weight:800;color:var(--gold,#F2CF62);font-size:14.5px}
+.tk-gscrim .tk-g-prh small{font-size:12.5px;color:rgba(245,239,226,.65)}
+.tk-gscrim .tk-g-prk .tk-g-prh{margin:0}
+.tk-gscrim .tk-g-pdays{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.tk-gscrim .tk-g-pd{min-height:44px;border:2px solid rgba(245,239,226,.3);border-radius:6px;background:transparent;color:#F5EFE2;font:800 14px/1 inherit;cursor:pointer}
+.tk-gscrim .tk-g-pd[aria-pressed="true"]{background:var(--gold,#F2CF62);border-color:var(--gold,#F2CF62);color:#12160F}
+.tk-gscrim .tk-g-pd:disabled{opacity:.35}
