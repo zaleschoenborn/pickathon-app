@@ -81,6 +81,11 @@ soft=(a<0.72)&(a>0.02); soft=ndimage.binary_opening(soft,iterations=3); soft=ndi
 alpha[soft]=0; print('soft halo px',int(soft.sum()))
 vis=np.load('t2vis.npy'); allowed=LBL|(diskmask([(float(b['center_x'])*2.4,float(b['center_y'])*2.4+60,200) for b in B])&(idf==7))|ndimage.binary_dilation(lab_>0,iterations=8)|ndimage.binary_dilation(vis&(lab_==0),iterations=3)
 alpha[~allowed]=0
+# 2026 ticket -> plain ticket, no year (Zale: timeless)
+tb=np.zeros_like(alpha,bool); tb[7870:8025,2738:2890]=True
+tk=tb&(idm==23); tkf=ndimage.binary_fill_holes(ndimage.binary_closing(tk,iterations=6))
+col[tkf]=(68,60,62); alpha[tkf]=np.maximum(alpha[tkf],(a[tkf]>0.02)*1.0)
+alpha[tb&~tkf&(idm==10)]=0
 out=L2*(1-alpha[...,None])+col*alpha[...,None]
 np.save('L3.npy',out.astype(np.uint8))
 O=out.astype(np.uint8)
