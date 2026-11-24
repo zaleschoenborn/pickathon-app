@@ -759,11 +759,13 @@
     if (has) return '';   /* the real schedule is showing: it is the 2027 card */   /* the 2027 schedule, summarized until it posts (Zale, Nov 19: more useful than every past year) */
     var HP = (data().hoodProg || {})[k], kinds = HP ? (HP.kinds || []).map(function (g) { return g[0]; }).filter(function (n) { return !/^(more|showcases)/i.test(n); }) : [];
     var lc = function (x) { return x.charAt(0).toLowerCase() + x.slice(1); }, what;
+    var XW = { Music: 'music', DJs: 'DJ sets', Comedy: 'comedy', Literary: 'readings', Food: 'food', Drinks: 'drinks', Family: 'family fun', Wellness: 'wellness', Craft: 'craft', Art: 'art', Camping: 'camping' };
+    if (!kinds.length) kinds = xpAt(k).filter(function (e) { return XW[e]; }).map(function (e) { return XW[e]; });   /* hoodProg dropped from the data (row -45): name what this place has from the same lists the experience panels use */
     var musicy = /legends|discoveries/i.test(kinds.join(' '));
     if (XE === 'Music') what = 'music from legends, discoveries and deep cuts';
     else if (XE && XE !== 'Architecture' && (musicy || !kinds.length)) what = ({ DJs: 'DJ sets', Comedy: 'comedy', Literary: 'readings and storytelling', Food: 'food and drink', Drinks: 'drinks' })[XE] || lc(XE);
     else if (musicy) what = 'music from legends, discoveries and deep cuts';
-    else what = kinds.slice(0, 4).map(lc).join(', ').replace(/, ([^,]*)$/, ' and $1') || (XE && XE !== 'Architecture' ? lc(XE) : 'programming');   /* Nov 24 panel test: never print the data key 'Architecture' to visitors */
+    else what = kinds.slice(0, 4).map(function (x) { return /^[A-Z]{2}/.test(x) ? x : lc(x); }).join(', ').replace(/, ([^,]*)$/, ' and $1') || (XE && XE !== 'Architecture' ? lc(XE) : 'programming');   /* Nov 24 panel test: never print the data key 'Architecture' to visitors */
     var am = (MI || []).filter(function (z) { return z[3] === k; }).map(function (z) { return z[0]; }).filter(function (x, i, a) { return a.indexOf(x) === i && x !== 'tent' && x !== 'gear'; });
     return '<section class="pkpl-soon" aria-label="2027 at ' + esc(h.n) + '"><p class="pkpl-sk">Schedule</p><h2>2027 at ' + esc(h.n) + '</h2><p>' + esc(M0W.soonLine ? M0W.soonLine.replace('{What}', what.charAt(0).toUpperCase() + what.slice(1)).replace('{place}', h.n) : 'Four days of ' + what + ' at ' + h.n + ', Thursday to Sunday, August 5 to 8. The full schedule posts with the 2027 lineup.') + '</p>' +
       (am.length ? '<div class="pkpl-sam">' + am.map(function (x) { return '<span><i class="pkpl-fi">' + amGlyph(x) + '</i>' + esc(AMN[x] || x) + '</span>'; }).join('') + '</div>' : '') + '</section>';
