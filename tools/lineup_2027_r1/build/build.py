@@ -892,6 +892,12 @@ def _mat(P):
         return s_ * (1 - abs(l_ - .45) * 1.4)
     return max(cs, key=sc) if cs else P['band']
 EARLY_ART = {y_: 'ext/art/y%s-art-centre.png' % y_[2:] for y_ in ['2000','2001','2002','2003','2004','2005','2006'] if os.path.exists(ROOT + 'ext/art/y%s-art-centre.png' % y_[2:])}
+def _hzn(y, where):
+    """r93 MOCK (Zale, Nov 24 10:09; artwork-52 PREVIEW, not final): Artwork's top-edge horizon, art only, on the dark bar, its flat bottom on
+    the line where the bar meets the page; the same strip on the year page and that year's artist pages. Decision due before the push."""
+    f = 'ext/horizons/y%s-horizon.png' % str(y)[2:]
+    if not os.path.exists(ROOT + f): return ''
+    return '<div class="hzn hzn-%s" aria-hidden="true"><img src="%s" alt=""></div>' % (where, img(f, 2400, fmt='PNG'))
 def year_page(y):
     P = d['yearBrand'][y]; st = d['yearStory'].get(y, {}); yp = d['yearPhotos'].get(y, {})
     allb = d['yearBill'][y]
@@ -904,6 +910,7 @@ def year_page(y):
     ten = today[:10]; others = [x for x in today_all if x not in ten]
     ph = lambda a: (yp.get(a['n'], {}).get('i') if loc(yp.get(a['n'], {}).get('i')) else None)
     h = header('', '', chip=y)
+    h += _hzn(y, 'yr')
     reel = d['yearReel'].get(y, []); r0 = reel[0] if reel else None
     hero = None
     if r0 and loc(r0.get('i')) and 'poster' not in r0['i']:
@@ -1241,7 +1248,8 @@ def art_page(slug, ap, pid=None):
     h = header(name, 'Pickathon ' + yr, chip=yr, wall=False)  # r75 (Zale, Nov 22 22:41): the year chooser sits in the artist header too
     # r71 (Zale, Nov 22 21:45, picked Light): the year's thin border strip sits above the hero, the same strip as the top of the year page
     _P2 = P if yr in d['yearBrand'] else P27
-    h += '<div class="acrown" aria-hidden="true">%s</div>' % (seam(yr, _P2) if yr != '2027' else generic_seam('2027', P27))
+    _hz = _hzn(yr, 'art')
+    h += _hz or '<div class="acrown" aria-hidden="true">%s</div>' % (seam(yr, _P2) if yr != '2027' else generic_seam('2027', P27))
     # r73 (Zale, Nov 22 21:53, picked "card line"): the hero is a reel of that year's photos (3-5, best first, different stages), 4 s a photo, hard cut;
     # the name, class and the act-year card line stay put; one big play button plays every song from that year as a playlist
     _fr, _seen, _sts = [], set(), set()
@@ -1361,10 +1369,16 @@ def art_page(slug, ap, pid=None):
         _cards.append(_card(th, u_, E(_songt(sg_) or 'Session'), st_ or 'Pickathon %s' % yr))
     _cdk = _CDT.get(_slug(name)) or _CDT.get(_ks) or []
     def _cdcard(o):
+        # r92 (Zale, Nov 24 10:09): Video Catalog's draft 20 gives each CD song its own link per player and the CD cover;
+        # the card opens the song in the visitor's player (data-svc), Spotify, then Bandcamp, when that player has none
         _ic2 = 'ext/icons/y%s-icon.png' % str(o['y'])[2:]
         ich = ('<img class="cd-ic" src="%s" alt="">' % img(_ic2, 200, fmt='PNG')) if os.path.exists(ROOT + _ic2) else ''
-        return ('<div class="wk cd" role="button" tabindex="0" data-sp="%s" aria-label="Play %s on the Live at Pickathon %s CD"><span class="vth cd-c">%s<span class="cd-l">Live at Pickathon<br>%s</span><span class="cd-sp" aria-hidden="true">%s</span></span><b>%s</b><span>Live at Pickathon CD</span></div>') % (
-            _h.escape(o['u'], quote=True), E(o['song']), o['y'], ich, o['y'], play('sm'), E(o['song']))
+        svc = {k_: o.get(k_) for k_ in ('sp', 'am', 'yt', 'az', 'td', 'bc') if o.get(k_)}
+        u0 = o.get('sp') or o.get('bc') or o.get('album') or ''
+        cov = ('<img class="cd-cov" loading="lazy" src="%s" alt="" onerror="this.remove()">' % _h.escape(o['cover'], quote=True)) if o.get('cover') else ''
+        return ('<div class="wk cd" role="button" tabindex="0" data-sp="%s" data-svc="%s" aria-label="Play %s from the Live at Pickathon %s CD">'
+                '<span class="vth cd-c">%s%s<span class="cd-l">Live at Pickathon<br>%s</span>%s</span><b>%s</b><span>Live at Pickathon %s CD</span></div>') % (
+            _h.escape(u0, quote=True), _h.escape(json.dumps(svc), quote=True), E(o['song']), o['y'], ich, cov, o['y'], play('sm'), E(o['song']), o['y'])
     for o in [o for o in _cdk if str(o['y']) == str(yr)]:
         _cards.append(_cdcard(o))
     for v in [v for v in fulls_all if str(v.get('y')) == str(yr)][:2]:
