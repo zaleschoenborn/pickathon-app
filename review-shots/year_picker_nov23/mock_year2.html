@@ -1,0 +1,101 @@
+<!doctype html><html><head><meta charset="utf-8">
+<style>
+@font-face{font-family:Brico;src:url(fonts/bricolage-grotesque-latin-wght-normal.woff2) format('woff2');font-weight:200 800}
+@font-face{font-family:Alfa;src:url(fonts/alfa-slab-one-latin-400.woff2) format('woff2')}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#1f1b1d;font-family:Brico,system-ui,sans-serif;color:#f3ead7;padding:8px}
+:root{--hd:#433d3f;--gold:#f2cf62;--line:rgba(243,234,215,.14);--nv:#454661;--kh:#d4c08a;--gr:#a8c25e;--cr:#f1ead6}
+svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.hd{height:76px;background:var(--hd);display:flex;align-items:center;padding:0 32px;gap:20px;border-bottom:1px solid var(--line);position:relative;z-index:3}
+.brand{display:flex;align-items:center;gap:14px}.brand img{height:50px}
+.dates{border-left:1px solid var(--line);padding-left:14px;font-size:13px;font-weight:600;line-height:1.35}.dates span{display:block;font-weight:500;opacity:.8}
+nav{display:flex;gap:22px;margin:0 auto;font-size:14px;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+nav a{height:76px;display:flex;align-items:center;gap:9px;border-bottom:3px solid transparent;border-top:3px solid transparent}
+nav a.on{border-bottom-color:var(--gold)}
+.yc{display:inline-flex;align-items:center;gap:3px;font-family:Alfa;font-size:17px;letter-spacing:.02em;color:var(--kh)}
+.yc svg{width:14px;height:14px;stroke-width:2.2}
+.tools{display:flex;align-items:center;gap:4px}
+.ic{width:44px;height:44px;display:grid;place-items:center;border-radius:22px}
+.listen{height:44px;border:1px solid rgba(243,234,215,.35);border-radius:22px;display:flex;align-items:center;gap:8px;padding:0 16px 0 13px;font-weight:700;font-size:13px;letter-spacing:.08em}
+.listen svg{color:var(--gold);width:20px}
+.tix{height:44px;background:var(--gold);color:#241f21;border-radius:22px;padding:0 22px;display:flex;align-items:center;font-weight:800;font-size:15px;margin-left:8px}
+/* 2019 hero */
+.hero{background:var(--nv);position:relative;overflow:hidden;display:flex;align-items:center;gap:34px;padding:30px 56px 34px}
+.hero:before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgba(255,255,255,.025) 0 2px,transparent 2px 9px)}
+.hero img{height:190px;position:relative}
+.hero .tx{position:relative}
+.kick{font-size:13px;font-weight:700;letter-spacing:.18em;color:var(--gr)}
+.yrrow{display:flex;align-items:center;gap:18px;margin:6px 0 2px}
+.big{font-family:Alfa;font-size:84px;line-height:1;color:var(--cr);letter-spacing:.01em}
+.big b{color:var(--kh);font-weight:400}
+.arr{display:flex;gap:2px}
+.arr span{width:44px;height:44px;display:grid;place-items:center;color:var(--kh)}
+.arr svg{width:26px;height:26px;stroke-width:2.2}
+.meta{font-size:15px;font-weight:700;letter-spacing:.14em;color:var(--cr);opacity:.85}
+.all{margin-left:6px;font-size:14px;font-weight:700;color:var(--kh);display:inline-flex;align-items:center;gap:4px;border-bottom:1.5px solid rgba(212,192,138,.5);padding-bottom:2px}
+.all svg{width:14px;height:14px}
+.acts{background:#2f2a3a;padding:22px 56px;display:grid;grid-template-columns:repeat(5,1fr);gap:16px}
+.card{height:150px;border-radius:10px;background:linear-gradient(160deg,#505170,#2c2b3c)}
+.cap{font-size:14px;color:#b7ad97;margin:6px 2px 18px}
+/* phone */
+.m{width:390px;border-radius:22px;overflow:hidden;border:1px solid #555;background:#2f2a3a;position:relative}
+.mh{height:76px;background:var(--hd);display:flex;align-items:center;padding:0 8px 0 4px;gap:6px;border-bottom:1px solid var(--line)}
+.mh img{height:34px}
+.mt{border-left:1px solid var(--line);padding-left:10px;line-height:1.15;flex:1;min-height:52px;display:flex;flex-direction:column;justify-content:center}
+.mt b{font-size:19px}
+.mt .yc{font-size:18px;margin-top:2px}
+.lis{width:44px;height:44px;border-radius:22px;border:1px solid rgba(243,234,215,.35);display:grid;place-items:center;color:var(--gold)}
+.m .hero{flex-direction:column;align-items:flex-start;gap:12px;padding:20px 20px 22px}
+.m .hero img{height:150px;align-self:center}
+.m .big{font-size:44px}
+.m .meta{font-size:12px}
+.m .acts{grid-template-columns:1fr 1fr;padding:14px 16px;gap:10px}.m .card{height:118px}
+.bot{height:72px;background:#3a3436;border-top:1px solid var(--line);display:flex;justify-content:space-around;align-items:center;font-size:12px;font-weight:600;position:absolute;left:0;right:0;bottom:0}
+.bot div{opacity:.75}
+.sheet{position:absolute;left:0;right:0;bottom:72px;background:#3a3436;border-radius:18px 18px 0 0;padding:10px 16px 18px;border-top:1px solid var(--line);box-shadow:0 -14px 30px rgba(0,0,0,.4)}
+.hdl{width:44px;height:5px;border-radius:3px;background:#777;margin:2px auto 12px}
+.sheet .tp{display:flex;justify-content:space-between;align-items:center;margin:0 2px 10px}
+.sheet h4{font-size:12px;letter-spacing:.14em;text-transform:uppercase;opacity:.7}
+.sheet .tp a{font-size:13px;color:var(--gold);font-weight:600}
+.grid{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.grid b{height:46px;display:grid;place-items:center;border-radius:8px;font-family:Alfa;font-weight:400;font-size:16px;background:rgba(243,234,215,.06)}
+.grid b.on{background:var(--kh);color:#26253a}
+.grid b.x{opacity:.28}
+.dim{position:absolute;left:0;right:0;top:76px;bottom:72px;background:rgba(0,0,0,.45)}
+.row{display:flex;gap:28px}
+</style></head><body>
+<div id="dtop" style="width:1440px">
+ <div class="hd"><div class="brand"><img src="logo27-gold.png"><div class="dates">Aug 5–8, 2027<span>Happy Valley, Oregon</span></div></div>
+  <nav><a>Neighborhoods</a><a class="on">Lineup</a><a>Plan your trip</a><a>Stories</a><a>My Pickathon</a><a>More ▾</a></nav>
+  <div class="tools"><div class="listen"><svg viewBox="0 0 24 24"><path d="M9 18V5l11-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="17" cy="16" r="3"/></svg>LISTEN</div><div class="ic"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg></div><div class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4.5-6 8-6s7 2 8 6"/></svg></div><div class="tix">Get tickets</div></div></div>
+ <div class="hero"><img src="i/y19-logo.webp"><div class="tx"><div class="kick">THE LINEUP</div>
+  <div class="yrrow"><div class="big">PICKATHON <b>2019</b></div><div class="arr"><span><svg viewBox="0 0 24 24"><path d="M15 5 8 12l7 7"/></svg></span><span><svg viewBox="0 0 24 24"><path d="m9 5 7 7-7 7"/></svg></span></div></div>
+  <div class="meta">AUGUST 2–4 · PENDARVIS FARM <span class="all">All years<svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></span></div></div></div>
+ <div class="acts"><div class="card"></div><div class="card"></div><div class="card"></div><div class="card"></div><div class="card"></div></div>
+</div>
+<p class="cap">Desktop, top of Lineup: the year is the page's headline, in that year's poster colors. Light arrows step a year; "All years" opens the grid.</p>
+<div id="dscr" style="width:1440px">
+ <div class="hd"><div class="brand"><img src="logo27-gold.png"><div class="dates">Aug 5–8, 2027<span>Happy Valley, Oregon</span></div></div>
+  <nav><a>Neighborhoods</a><a class="on">Lineup <span class="yc">2019<svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></span></a><a>Plan your trip</a><a>Stories</a><a>My Pickathon</a><a>More ▾</a></nav>
+  <div class="tools"><div class="listen"><svg viewBox="0 0 24 24"><path d="M9 18V5l11-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="17" cy="16" r="3"/></svg>LISTEN</div><div class="ic"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg></div><div class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4.5-6 8-6s7 2 8 6"/></svg></div><div class="tix">Get tickets</div></div></div>
+ <div class="acts"><div class="card"></div><div class="card"></div><div class="card"></div><div class="card"></div><div class="card"></div><div class="card"></div><div class="card"></div><div class="card"></div><div class="card"></div><div class="card"></div></div>
+</div>
+<p class="cap">Desktop, scrolled: the big year folds into the header beside LINEUP. No extra bar.</p>
+<div id="ph" class="row">
+ <div><div class="m" style="height:844px">
+  <div class="mh"><div class="ic"><svg viewBox="0 0 24 24"><path d="M15 5 8 12l7 7"/></svg></div><img src="logo27-gold.png"><div class="mt"><b>Lineup</b><span class="yc">2019<svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></span></div><div class="lis"><svg viewBox="0 0 24 24"><path d="M9 18V5l11-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="17" cy="16" r="3"/></svg></div><div class="ic"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg></div></div>
+  <div class="hero"><img src="i/y19-logo.webp"><div class="tx"><div class="kick">THE LINEUP</div><div class="big">PICKATHON <b>2019</b></div><div class="meta">AUGUST 2–4 · PENDARVIS FARM</div></div></div>
+  <div class="acts"><div class="card"></div><div class="card"></div></div>
+  <div class="bot"><div>Home</div><div>Places</div><div>Tickets</div><div>My Trip</div><div>More</div></div></div>
+  <p class="cap">Phone: the year lives under "Lineup" in the header. Nothing extra pins.</p></div>
+ <div><div class="m" style="height:844px">
+  <div class="mh"><div class="ic"><svg viewBox="0 0 24 24"><path d="M15 5 8 12l7 7"/></svg></div><img src="logo27-gold.png"><div class="mt"><b>Lineup</b><span class="yc">2019<svg viewBox="0 0 24 24"><path d="m18 15-6-6-6 6"/></svg></span></div><div class="lis"><svg viewBox="0 0 24 24"><path d="M9 18V5l11-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="17" cy="16" r="3"/></svg></div><div class="ic"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg></div></div>
+  <div class="hero"><img src="i/y19-logo.webp"><div class="tx"><div class="kick">THE LINEUP</div><div class="big">PICKATHON <b>2019</b></div></div></div>
+  <div class="dim"></div>
+  <div class="sheet"><div class="hdl"></div><div class="tp"><h4>Pick a year</h4><a>Back to 2027 ›</a></div><div class="grid">
+   <b>1999</b><b>2000</b><b>2001</b><b>2002</b><b>2003</b><b>2004</b><b>2005</b><b>2006</b><b>2007</b><b>2008</b><b>2009</b><b>2010</b><b>2011</b><b>2012</b><b>2013</b><b>2014</b><b>2015</b><b>2016</b><b>2017</b><b>2018</b><b class="on">2019</b><b class="x">2020</b><b class="x">2021</b><b>2022</b><b>2023</b><b>2024</b><b>2025</b><b>2026</b><b>2027</b>
+  </div></div>
+  <div class="bot"><div>Home</div><div>Places</div><div>Tickets</div><div>My Trip</div><div>More</div></div></div>
+  <p class="cap">Phone: tap the year, a sheet of years slides up</p></div>
+</div>
+</body></html>
