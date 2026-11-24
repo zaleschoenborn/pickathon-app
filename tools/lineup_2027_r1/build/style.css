@@ -1213,3 +1213,9 @@ a.hd-yr{text-decoration:none}
   .yrtop .po-names .pcloud{justify-content:center!important;max-width:none!important}
   .yrtop .po-names .pcloud .pn{white-space:nowrap!important;overflow-wrap:normal!important;font-size:min(calc((var(--lo) + var(--s)*(var(--hi) - var(--lo))) * 1px),calc(620px / (0.74 * var(--n,10))))}
 }
+@media (max-width:999px){
+  .po-names .pcloud .pn{white-space:nowrap!important;overflow-wrap:normal!important;font-size:min(calc((var(--lo) + var(--s)*(var(--hi) - var(--lo))) * 1px),calc((100vw - 64px) / (0.74 * var(--n,10))))}
+}
+/* r97: fit each poster name to the names column itself (container width), every size */
+.po-names{container-type:inline-size}
+.po-names .pcloud .pn{white-space:nowrap!important;overflow-wrap:normal!important;font-size:min(calc((var(--lo) + var(--s)*(var(--hi) - var(--lo))) * 1px),calc(96cqw / (0.74 * var(--n,10))))!important}
