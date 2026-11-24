@@ -20,6 +20,7 @@
     var W = d.xpWords || XW; if (!W) return; M0W = W.map || {};
     Object.keys(W.XPD || {}).forEach(function (e) { XH.XPD[e] = W.XPD[e]; });
     Object.keys(W.XPB || {}).forEach(function (e) { XH.XPB[e] = XH.XPB[e] || {}; Object.keys(W.XPB[e]).forEach(function (k) { XH.XPB[e][k] = W.XPB[e][k]; }); });
+    if (CARDS && CARDS._w && CARDS._w.xp_line) XH.XPD.Architecture = CARDS._w.xp_line;   /* Copy Review's Wonders line for the Farm (farm_words_nov24, row design_neighborhoods-46) */
     HKW = W.hook || {}; DSW = W.desc || {}; WCN = W.cn || {};   /* read through hookOf/ddOf, so the shared data (and Home) are never changed */
   }
   var M0W = {}, HKW = {}, DSW = {}, WCN = {}, HKEY = null;
@@ -106,7 +107,7 @@
   function XN(e) { return e === 'Architecture' ? 'Wonders' : esc(e); }
   function cardsOf(e, k) { return ((CARDS || {})[e] || {})[k] || []; }
   function cardSet(k, first) { var o = [], seen = {}; [first].concat(XO).forEach(function (e) { if (!e || seen[e]) return; seen[e] = 1; cardsOf(e, k).forEach(function (c) { o.push({ e: e, c: c }); }); }); return o; }   /* a place's cards, the experience you came from first, then the experience order */
-  function rowLine(e, k) { var r = (((XH || {}).ROW || {})[e] || {})[k]; if (r) return r; var L = cardsOf(e, k); if (e === 'Music' || e === 'Architecture' || !L.length) return ''; return L.length === 1 ? L[0].t : ''; }   /* Copy Review's row line when it lands (xpWords.ROW, row design_neighborhoods-46); else the card's title */
+  function rowLine(e, k) { var r = (((CARDS || {})._row || {})[e] || {})[k]; if (r) return r; var L = cardsOf(e, k); if (e === 'Music' || e === 'Architecture' || !L.length) return ''; return L.length === 1 ? L[0].t : ''; }   /* Copy Review's row line when it lands (xpWords.ROW, row design_neighborhoods-46); else the card's title */
   function rowNames(e, k) { var L = cardsOf(e, k); return e !== 'Music' && e !== 'Architecture' && L.length > 1 ? L.map(function (c, i) { return '<span class="pkpl-cn" data-ci="' + i + '">' + esc(c.s || c.t) + '</span>'; }).join('<i aria-hidden="true"> \u00b7 </i>') : ''; }   /* Zale, Nov 23 16:03: the experience reads "Wonders" (design_home-52); label only, the data key stays Architecture until Copy decides the rest */
   function xpLine(e, k) { var rl = CARDS && rowLine(e, k); if (rl) return rl; if (CARDS && e !== 'Music' && e !== 'Architecture' && cardsOf(e, k).length > 1) return cardsOf(e, k).map(function (c) { return c.s || c.t; }).join(' \u00b7 '); var b = ((XH.XPB || {})[e] || {})[k]; return b || (e === 'Architecture' ? (hookOf(data().hoods[k]) || (data().hoods[k] || {}).t || '') : XH.XPD[e] || ''); }
   function xpIcon(e) { return '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">' + (XH.XPI[e] || '') + '</svg>'; }

@@ -49,7 +49,18 @@ for k, ys in hw.items():
         if (k, y) in won and y in ys: pick = {'t': won[(k, y)][0], 'y': y, 'b': won[(k, y)][1], 'i': ys[y]['img'], 'p': ys[y]['pos'] or '50% 50%'}; break
         if y == '2026' and '2026' in ys: pick = {'t': ys['2026']['t'], 'y': '2026', 'b': '', 'i': ys['2026']['img'], 'p': ys['2026']['pos'] or '50% 50%'}; break
     if pick: out.setdefault('Architecture', {})[k] = [pick]
+fw = C('farm_words_nov24_draft1.csv')   # Copy Review's Farm words (row design_neighborhoods-46)
+SN = {(r['experience'], r['card_title']): r['text'] for r in fw if r['kind'] == 'short_name'}
+SN.update({(e, n): v for (e, t), v in list(SN.items()) for n in [{'Ukulele and Talent Show': "Kids' Talent Show", 'Sunday Brunch at Curation': 'Brunch at Curation'}.get(t)] if n})
+for xp, pl in out.items():
+    for k, L in pl.items():
+        for c in L:
+            if (xp, c['t']) in SN: c['s'] = SN[(xp, c['t'])]
+out['_row'] = {}
+for r in fw:
+    if r['kind'] == 'row_line': out['_row'].setdefault('Architecture' if r['experience'] == 'Wonders' else r['experience'], {})[r['place_key']] = r['text']
+out['_w'] = {r['kind']: r['text'] for r in fw if r['experience'] == 'Wonders'}
 json.dump(out, open(os.path.join(R, 'cards.json'), 'w', encoding='utf-8'), ensure_ascii=False, separators=(',', ':'))
-print({x: sum(len(v) for v in p.values()) for x, p in out.items()}, 'missing words:', miss)
+print({x: sum(len(v) for v in p.values()) for x, p in out.items() if not x.startswith('_')}, 'missing words:', miss)
 print('no clip:', [(k, c['t']) for k, L in out.get('Music', {}).items() for c in L if not c['v']])
 print('wonders no blurb:', [k for k, L in out['Architecture'].items() if not L[0]['b']])
