@@ -633,13 +633,17 @@
   function gridHTML() {
     var tile = function (id, a, name, sub, price, cls) { var o = off(id); return '<button type="button" class="tk-e-tile' + (cls || '') + '" data-act="e-tile" data-t="' + a + '"' + (o ? ' disabled' : '') + '><b>' + name + '</b><span>' + sub + '</span><i class="tk-num">' + (o ? 'Sold out' : price) + '</i></button>'; };
     var from = function (ids) { ids = ids.filter(function (id) { return !off(id); }); return ids.length ? (ids.length > 1 ? 'from ' : '') + money(Math.min.apply(null, ids.map(PS))) : ''; };
-    var last = function (list) { return list.filter(function (r) { return !off(r[0]); }).concat(list.filter(function (r) { return off(r[0]); })).map(function (r) { return tile.apply(null, r); }).join(''); };   /* Zale's sold-out rule: open first, sold out grayed below */
     var h = '<p class="tk-g-k">Choose your pass</p><div class="tk-e-tiles">' +
-      last([['p4', 'p4', '4-Day Pass', 'Thu–Sun, camping included', money(PS('p4'))], ['p3', 'p3', '3-Day Pass', 'Fri–Sun, camping included', money(PS('p3'))], ['d2', 'd2', 'Sat + Sun', 'Two days, no camping', money(PS('d2'))], ['patron', 'pat', 'Patron Pass', 'Backstage, any age', money(PS('patron')), ' tk-e-tile-pat']]) + '</div>' +
+      tile('p4', 'p4', '4-Day Pass', 'Thu–Sun, camping included', money(PS('p4'))) +
+      tile('p3', 'p3', '3-Day Pass', 'Fri–Sun, camping included', money(PS('p3'))) +
+      tile('d2', 'd2', 'Sat + Sun', 'Two days, no camping', money(PS('d2'))) +
+      tile('patron', 'pat', 'Patron Pass', 'Backstage, any age', money(PS('patron')), ' tk-e-tile-pat') + '</div>' +
       '<div class="tk-e-days1" role="group" aria-label="One-day tickets"><span>One day</span>' + OK.day.map(function (d) { return '<button type="button" class="tk-e-d1" data-act="e-tile" data-t="' + d + '"' + (off(d) ? ' disabled' : '') + '><b>' + DAY[d][2] + '</b><i class="tk-num">' + (off(d) ? 'Sold out' : money(PS(d))) + '</i></button>'; }).join('') + '</div>' +
       '<p class="tk-e-line">Kids 12 and under are free. Teens 13–17 are half price on weekend passes.</p>' +
       '<p class="tk-g-k tk-g-k2">Add to your trip</p><div class="tk-e-tiles tk-e-tiles3">' +
-      last([['wcar', 'car', 'Car camping', 'Next to your car', from(['wcar', 'scar'])], ['wvan', 'van', 'Camper van', 'Power at South Camp', from(['wvan', 'svan'])], ['wrv', 'rv', 'RV', 'Power at South Camp', from(['wrv', 'srv'])]]) + '</div><div class="tk-e-tiles">' +
+      tile('wcar', 'car', 'Car camping', 'Next to your car', from(['wcar', 'scar'])) +
+      tile('wvan', 'van', 'Camper van', 'Power at South Camp', from(['wvan', 'svan'])) +
+      tile('wrv', 'rv', 'RV', 'Power at South Camp', from(['wrv', 'srv'])) + '</div><div class="tk-e-tiles">' +
       '<button type="button" class="tk-e-tile" data-act="e-tile" data-t="park"><b>Parking and shuttle</b><span>Weekend or one day</span><i class="tk-num">' + from(['wpark', 'pthu', 'pfri', 'psat', 'psun', 'shuttle']) + '</i></button>' +
       '<button type="button" class="tk-e-tile" data-act="e-tile" data-t="meals"><b>Curation meals</b><span>A chef and a band</span><i class="tk-num">' + from(MEALS) + '</i></button></div>';
     return h;
@@ -780,7 +784,7 @@
       '<div class="tk-opts" role="radiogroup" aria-labelledby="tk-h-go">' +
       opt('tk-go', 'drive', emblem('welcomelot'), 'Drive and park', '', '') +
       '<div class="tk-park" id="tk-park" hidden><div class="tk-chips" id="tk-pday" role="radiogroup" aria-label="Which parking?">' + chip('tk-pday', '', 'Weekend') + OK.day.map(function (d) { return chip('tk-pday', d, DAY[d][2] + ' only'); }).join('') + '</div><div class="tk-chips" id="tk-d2p" role="radiogroup" aria-label="Parking for Sat + Sun">' + chip('tk-dp', '0', 'Weekend parking<b class="tk-num" id="tk-dpw"></b>') + chip('tk-dp', '1', 'Sat + Sun day passes<b class="tk-num" id="tk-dpd"></b>') + '</div><p class="tk-pnote" id="tk-dpnote"></p><div class="tk-chips" id="tk-size" role="radiogroup" aria-label="Vehicle size">' + chip('tk-big', '0', 'Car or motorcycle, up to 16′<b class="tk-num" data-c="wpark"></b>') + chip('tk-big', '1', 'Oversized, 16′ to 24′<b class="tk-num" data-c="opark"></b>') + '</div>' + stepper('car', 'Cars', null, 'car') + '</div>' +
-      opt('tk-go', 'shuttle', '<span class="tk-opt-e"></span>', 'MAX + shuttle', 'From Lents Town Center MAX, about hourly, all weekend. One pass per rider, ages 13 and up.', per('shuttle', 'a rider')) +
+      opt('tk-go', 'shuttle', '<span class="tk-opt-e"></span>', 'MAX + shuttle', 'From Lents Town Center MAX, about hourly, all weekend. One pass per rider over 12.', per('shuttle', 'a rider')) +
       opt('tk-go', 'bike', '<span class="tk-opt-e"></span>', 'Bike', 'Staffed bike parking at the farm.', 'Free') +
       opt('tk-go', 'drop', emblem('southcamp'), 'Dropped off', 'Rideshare or a friend, at the South Lot.', 'Free') +
       opt('tk-go', 'later', '<span class="tk-opt-e"></span>', 'Decide later', 'Parking and shuttle passes can be added any time.', money(0)) +
@@ -1162,17 +1166,9 @@
   }
   /* Nov 15 night: the steps carry Pickathon: a photo banner per step, the step count in words, and the order as a real ticket stub */
   var GBAN = { 1: ['', GHERO, '62% 22%'], 2: ['coyote', 'i/r35-grove-1.jpg', '50% 62%'], 3: ['wildcamp', 'i/r3-hood-lushcamp.jpg', '50% 70%'], 4: ['galaxy', 'i/r3-hood-woods.jpg', '50% 30%'] };
-  /* Round 2 (Zale, Nov 22-23): the steps by name. Done steps are buttons back to that step; the current one is gold. */
-  function gBar(n) {
-    var keys = ['days', 'who', 'sleep', 'order'], names = ['Days', 'Who', gCamps() || gNone() ? 'Sleep' : 'Getting there', 'Order'];
-    return '<ol class="tk-g-bar" aria-label="Step ' + n + ' of 4">' + names.map(function (nm, i) {
-      var k = i + 1, cur = k === n;
-      return '<li' + (cur ? ' class="on" aria-current="step"' : k < n ? ' class="done"' : '') + '>' + (k < n && !(gNone() && k < 3) ? '<button type="button" data-g="go" data-to="' + keys[i] + '">' + nm + '</button>' : '<span>' + nm + '</span>') + '</li>';
-    }).join('') + '</ol>';
-  }
   function gTop(n) {
     var H = (site().data || {}).hoods || {}, b = GBAN[n] || GBAN[1], o = b[0] && H[b[0]], img = (o && (o.hi || o.i)) || b[1];
-    return '<div class="tk-g-top tk-g-ban"><img class="tk-g-banimg" src="' + esc(img) + '" alt="" style="object-position:' + b[2] + '"><span class="tk-g-bansh"></span>' + logo() + '' + '<button type="button" class="tk-sheet-x" data-g="fast" aria-label="Close">' + ic('x') + '</button>' + (n ? gBar(n) : '') + '</div>'; }
+    return '<div class="tk-g-top tk-g-ban"><img class="tk-g-banimg" src="' + esc(img) + '" alt="" style="object-position:' + b[2] + '"><span class="tk-g-bansh"></span>' + logo() + (n ? '<span class="tk-g-steps" aria-label="Step ' + n + ' of 4">' + [1, 2, 3, 4].map(function (i) { return '<i' + (i <= n ? ' class="on"' : '') + '></i>'; }).join('') + '</span>' : '') + '<button type="button" class="tk-sheet-x" data-g="fast" aria-label="Close">' + ic('x') + '</button>' + (n ? '<p class="tk-g-stepk">Step ' + n + ' of 4</p>' : '') + '</div>'; }
   function gFoot(label, act, back, off) { return '<div class="tk-g-foot">' + (back ? '<button type="button" class="tk-g-back" data-g="go" data-to="' + back + '" aria-label="Back">←</button>' : '') + '<button type="button" class="tk-g-btn" data-g="next" data-to="' + act + '"' + (off ? ' disabled' : '') + '>' + label + '</button></div>'; }
   function gDaysHTML(q, bare) {
     var p = gPlan(q), h = '<div class="tk-g-days" role="group" aria-label="Festival days">' +
@@ -1241,7 +1237,7 @@
     var meals = MEALS.filter(function (id) { return xok(id, S); }), more = DISH.concat(GIVE).filter(function (id) { return !off(id); }), X = S.x || {}, go = goLabel(t), cim = ((site().data && site().data.hoods) || {}).curation;
     var xr = function (id) { return gStepper('x-' + id, esc(XN[id].replace('Curation · ', '')), money(PS(id)) + (MEAL[id] !== undefined ? ' a seat' : ''), X[id] || 0, 0); };
     h += gTop(4) + '<div class="tk-g-pad"><h2 class="tk-d" tabindex="-1">Your order</h2>' + gStub(t, 'Total, fee included') + (meals.length || more.length ? '<p class="tk-g-k tk-g-k2">Add to your weekend</p>' : '');
-    if (meals.length) h += '<div class="tk-g-card tk-g-cur' + (xpPick() === 'Food' ? ' tk-g-hl' : '') + '">' + (cim ? '<img src="' + esc(cim.hi || cim.i) + '" alt="" loading="lazy">' : '') + '<span class="tk-g-sh"></span><div class="tk-g-pick"><span><b>Curation</b><span>A chef and a band at one long table</span></span></div></div><div class="tk-g-who tk-g-x">' + meals.map(xr).join('') + '</div>';
+    if (meals.length) h += '<div class="tk-g-card tk-g-cur">' + (cim ? '<img src="' + esc(cim.hi || cim.i) + '" alt="" loading="lazy">' : '') + '<span class="tk-g-sh"></span><div class="tk-g-pick"><span><b>Curation</b><span>A chef and a band at one long table</span></span></div></div><div class="tk-g-who tk-g-x">' + meals.map(xr).join('') + '</div>';
     if (more.length) h += '<details class="tk-g-more"><summary>Souvenir dishware and giving back</summary><div class="tk-g-who tk-g-x">' + more.map(xr).join('') + '</div></details>';
     h += (w === 'pre' ? '<p class="tk-g-note">Checkout opens ' + esc(T.show.isToday ? 'today' : T.show.dayS) + '. Save your order now and pay in one tap then.</p>' : '') +
       (window.pkGift && w === 'sale' && (giftable(S).length || (S.gifts || []).length) ? '<div class="tk-g-gift">' + giftsOk(S).map(function (g, i) { return '<p><span>' + giftLabel(g) + '</span><button type="button" class="tk-tlink" data-g="gift" data-i="' + i + '">Edit</button></p>'; }).join('') + (giftable(S).length ? '<button type="button" class="tk-pill tk-pill-sm" data-g="gift" data-i="-1">' + ((S.gifts || []).length ? 'Give another as a gift' : 'Give any of it as a gift') + '</button>' : '') + '</div>' : '') +
