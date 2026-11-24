@@ -1217,6 +1217,12 @@ def _setgfx(yr, sets):
             E(d), E(dt), tm, ('<span class="st-l">%s</span>' % late) if late else '', E(pl)))
     if not out: return ''
     return '<aside class="setg"><p class="kick">At Pickathon %s</p><ul>%s</ul></aside>' % (yr, ''.join(out))
+# r90c (Zale, Nov 24 09:28): the Live at Pickathon CDs (2000-2008) from the content workbook (Pickathon Content by Year by Artist.xlsx,
+# audio track rows; Spotify album links, track ids not in the workbook yet); played in the visitor's chosen service, Spotify by default
+_CDT = {}
+for _o in json.load(open(ROOT + 'cd_tracks.json', encoding='utf-8')) if os.path.exists(ROOT + 'cd_tracks.json') else []:
+    for _kk in {_slug(_o['a']), _slug(_o['id'].replace('-', ' '))}:
+        _CDT.setdefault(_kk, []).append(_o)
 def art_page(slug, ap, pid=None):
     name = _NAMES[slug]; yr = str(ap.get('yr') or max([y for y, _ in _KIN.get(name, [])] or [2024]))
     if not str(ap.get('hero','')).startswith(('i/', 'ext/')) or not os.path.exists(_src(ap['hero'])):
@@ -1273,7 +1279,9 @@ def art_page(slug, ap, pid=None):
     _stg = (_fr[0][2] if _fr else '') or ap.get('heroSt', '')
     # r76 (Zale, Nov 22 22:45, picked A): the year seal sits across the join of photo and page, like a stamp; year and stage under it
     # r77 (Zale, Nov 22 22:52): the year shows once, in the photo's top-right corner like the year pages; the seal names only the stage
-    h += ('<div class="aseal" style="--yp:%s;--yi:%s"><span class="as-l">%s</span>%s</div>') % (
+    _yic = 'ext/icons/y%s-icon.png' % yr[2:]  # r90 (Zale, Nov 24 09:26): the seal is Artwork's year icon, not a poster scrap
+    if os.path.exists(ROOT + _yic): _lgi = '<img class="as-ic" src="%s" alt="Pickathon %s">' % (img(_yic, 240, fmt='PNG'), yr)
+    h += ('<div class="aseal%s" style="--yp:%s;--yi:%s"><span class="as-l">%s</span>%s</div>') % (' ic' if os.path.exists(ROOT + _yic) else '',
           _P2['paper'], _P2['ink'], _lgi, '')  # r77b (Zale 22:52): no caption under the seal; it looked thin. The year is in the photo's corner
     # r66 (Zale picked one continuous story, copy_review-54): intro, one story in a few paragraphs, then a small sets block; read from Copy Review's stories_<year> CSVs
     story = [] if _st else [s for s in (ap.get('story') or []) if s.get('t')]
@@ -1324,9 +1332,9 @@ def art_page(slug, ap, pid=None):
                 cls, _h.escape(clip, quote=True), thh, play('sm'), top, E(sub)))
         return '<div class="wk%s"><span class="vth">%s</span><b>%s</b><span>%s</span></div>' % (cls, thh, top, E(sub))
     for s in [x.strip() for x in ((_st or {}).get('sets') or '').split('\u00b7') if x.strip()]:
-        m = _re.match(r'^(\w{3})\w*\s+\w{3}\s+\d+,\s*(.+?),\s*(.+)$', s)
+        m = _re.match(r'^(\w{3})\w*\s+\w{3}\s+\d+,\s*([^,]+?)(?:,\s*(.+))?$', s)
         if not m: continue
-        dd, tm, pl = m.groups()
+        dd, tm, pl = m.groups(); pl = pl or ''
         late = bool(_re.match(r'late night', tm)); tm = _re.sub(r'late night \((.+)\)', r'\1', tm)
         pl = _re.sub(r'\s+Stage$', '', pl.strip())
         vv = next((x for x in _vy if x[2] and _stw(x[2]) & _stw(pl)), None)
@@ -1334,19 +1342,28 @@ def art_page(slug, ap, pid=None):
         if vv: _vy.remove(vv); th = _yt(vv[0])
         if not th:
             ph = next((c_[0] for c_ in _cand if c_[2] and (_stw(c_[2]) & _stw(pl)) and c_[0] not in _used_ph), None)
+            # r90b: else another photo of theirs from that year (not the hero's first frame), so a set card is never blank when we have pictures
+            if not ph: ph = next((f_[0] for f_ in _fr[1:] if f_[0] not in _used_ph), None)
             if ph: _used_ph.add(ph); th = img(ph, 520)
-        _cards.append(_card(th, vv[0] if vv else '', '%s %s%s' % (E(dd), E(tm), ' <i>late</i>' if late else ''), pl + ((' · ' + _songt(vv[1])) if vv and _songt(vv[1]) else '')))
+        _cards.append(_card(th, vv[0] if vv else '', '%s %s%s' % (E(dd), E(tm), ' <i>late</i>' if late else ''), (pl or 'Pickathon %s' % yr) + ((' · ' + _songt(vv[1])) if vv and _songt(vv[1]) else '')))
     for u_, sg_, st_ in _vy:
         th = _yt(u_)
         if not th:
             ph = next((c_[0] for c_ in _cand if c_[0] not in _used_ph), None)
             if ph: _used_ph.add(ph); th = img(ph, 520)
         _cards.append(_card(th, u_, E(_songt(sg_) or 'Session'), st_ or 'Pickathon %s' % yr))
+    _cdk = _CDT.get(_slug(name)) or _CDT.get(_ks) or []
+    def _cdcard(o):
+        _ic2 = 'ext/icons/y%s-icon.png' % str(o['y'])[2:]
+        ich = ('<img class="cd-ic" src="%s" alt="">' % img(_ic2, 200, fmt='PNG')) if os.path.exists(ROOT + _ic2) else ''
+        return ('<div class="wk cd" role="button" tabindex="0" data-sp="%s" aria-label="Play %s on the Live at Pickathon %s CD"><span class="vth cd-c">%s<span class="cd-l">Live at Pickathon<br>%s</span><span class="cd-sp" aria-hidden="true">%s</span></span><b>%s</b><span>Live at Pickathon CD</span></div>') % (
+            _h.escape(o['u'], quote=True), E(o['song']), o['y'], ich, o['y'], play('sm'), E(o['song']))
+    for o in [o for o in _cdk if str(o['y']) == str(yr)]:
+        _cards.append(_cdcard(o))
     for v in [v for v in fulls_all if str(v.get('y')) == str(yr)][:2]:
         u = _vurl(v)
         _cards.append(_card(_yt(u) or (img(_fr[0][0], 520) if _fr else ''), u, 'Full set', 'Pickathon %s' % yr))
-    if _cards:
-        h += '<section class="shelf vids weekend"><div class="sh-h"><div><p class="kick">That weekend</p><h2>Pickathon %s</h2></div></div><div class="swipe">%s</div></section>' % (yr, ''.join(_cards))
+    # r90 (Zale, Nov 24 09:35, picked one shelf): this visit first under a gold label, then each other year newest first, then records
     # r89 (Zale, Nov 24 08:40): ALL <ACT>: everything we have from their other Pickathons, newest year first, full sets allowed
     _ac = []
     for y_ in sorted({str(y2) for y2, _ in _KIN.get(name, [])} - {str(yr)}, reverse=True):
@@ -1356,13 +1373,21 @@ def art_page(slug, ap, pid=None):
             _sy.add(u_); _ac.append((u_, y_, _songt(sg_) or name, _songs2(sg_)))
         for v in [v for v in fulls_all if str(v.get('y')) == y_][:1]:
             _ac.append((_vurl(v), y_, 'Full set', ''))
-    if _ac:
-        _ah = ''
-        for u_, y_, t_, s2_ in _ac[:16]:
-            th = _yt(u_) or (img(_yp(y_), 520) if _yp(y_) and loc(_yp(y_)) else '')
-            _ah += ('<div class="vid ay" role="button" tabindex="0" data-clip="%s"><span class="vth">%s<span class="ay-y">%s</span>%s</span><b>%s</b><span>%s</span></div>') % (
-                _h.escape(u_, quote=True), ('<img loading="lazy" src="%s" alt="">' % th) if th else '', y_, play('sm'), E(t_), E(s2_ or 'Pickathon ' + y_))
-        h += '<section class="shelf vids allact"><div class="sh-h"><div><p class="kick">Their other Pickathons</p><h2>All %s</h2></div></div><div class="swipe">%s</div></section>' % (E(name), _ah)
+        for o in [o for o in _cdk if str(o['y']) == y_]:
+            _ac.append(('CD', y_, o, ''))
+    _gl = lambda t, on=False: '<p class="gl%s">%s</p>' % (' on' if on else '', t)
+    _all = [c_.replace('<span class="vth', _gl('%s · this visit' % yr, True) + '<span class="vth', 1) if i_ == 0 else c_.replace('<span class="vth', _gl('') + '<span class="vth', 1) for i_, c_ in enumerate(_cards)]
+    _prev = None
+    for u_, y_, t_, s2_ in _ac[:16]:
+        if u_ == 'CD':
+            _all.append(_cdcard(t_).replace('<span class="vth', _gl(y_ if y_ != _prev else '') + '<span class="vth', 1)); _prev = y_; continue
+        th = _yt(u_) or (img(_yp(y_), 520) if _yp(y_) and loc(_yp(y_)) else '')
+        _all.append(('<div class="wk vid" role="button" tabindex="0" data-clip="%s">%s<span class="vth">%s%s</span><b>%s</b><span>%s</span></div>') % (
+            _h.escape(u_, quote=True), _gl(y_ if y_ != _prev else ''), ('<img loading="lazy" src="%s" alt="">' % th) if th else '', play('sm'), E(t_), E(s2_ or 'Pickathon ' + y_)))
+        _prev = y_
+    # Records (Spotify tracks with album covers) join here once Artist Classification sends them (design_lineup_artist-61)
+    if _all:
+        h += '<section class="shelf vids weekend onesh"><div class="sh-h"><div><p class="kick">Filmed on the farm</p><h2>%s at Pickathon</h2></div></div><div class="swipe">%s</div></section>' % (E(name), ''.join(_all))
     # r85 (Zale, Nov 23 23:55): "If you like" is a fan's recommendation, not a size match. Same sound first (shared music tags,
     # primary tag weighted), other summers only, one or two names a fan likely knows, the rest Deep cuts and Discoveries they may not;
     # no two picks from the same year; a fixed per-act shuffle so neighboring pages differ.

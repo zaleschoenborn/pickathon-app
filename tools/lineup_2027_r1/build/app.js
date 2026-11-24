@@ -27,6 +27,8 @@
       if (openArt(a.dataset.art, a.dataset.an, yr)) { e.preventDefault(); return; } }
     var b = e.target.closest('.hd button[aria-label="Back"]'); if (b && hist.length) { var id = hist.pop(); show(id); e.preventDefault(); }
   });
+  // r90c: a CD track opens in the visitor's chosen music service; the mock opens Spotify (Site Build routes it through the Listen setting)
+  document.addEventListener('click', function (e) { var c = e.target.closest('[data-sp]'); if (c) { e.preventDefault(); e.stopPropagation(); if (window.__pkListen) window.__pkListen(c.dataset.sp); else window.open(c.dataset.sp, '_blank', 'noopener'); } }, true);
   document.addEventListener('click', function (e) { var a = e.target.closest('[data-go]'); if (a) { e.preventDefault(); show(a.dataset.go); } });
   var m = (location.hash || '').match(/^#(s[136]|y\d{4})$/); if (m && document.getElementById(m[1])) show(m[1]);
 
