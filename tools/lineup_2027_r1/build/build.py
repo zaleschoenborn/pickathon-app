@@ -489,7 +489,7 @@ def poster_block(P, badge, yr, then, now, total, joined=True, ranked=True):
             '<div class="po-names then">%s<div class="po-rest" hidden>%s</div></div><div class="po-names now" hidden>%s<div class="po-rest" hidden>%s</div></div>'
             '<button class="po-all" data-open="Show the top ten" data-shut="See the whole bill · %d bands">See the whole bill · %d bands</button>'
             '<p class="po-tap">Tap any name</p></div>%s</section>') % (
-            P['paper'], P['ink'], P['ink2'], P['band'], _CAP.get(str(yr), '#F2CF62'), yr, cloud, badge, yr, dates, yr, yr, yr, yr, yr, yr, yr,
+            P['paper'], P['ink'], P['ink2'], P['band'], (_CAP.get(str(yr), '#F2CF62') if _CAP.get(str(yr), '#F2CF62') == '#F2CF62' else '#F2CF62;--capbg:#221E20;--cappad:.14em .5em .1em'), yr, cloud, badge, yr, dates, yr, yr, yr, yr, yr, yr, yr,
             now_html(then[:10], then=True), now_html(then[10:], True, then=True), now_html(now[:10]), now_html(now[10:], True), total, total, stripe)
     html_ = html_.replace('poster JOIN', 'poster joined' if joined else 'poster solo')
     if not ranked:

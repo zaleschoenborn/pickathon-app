@@ -1268,3 +1268,5 @@ a.hd-yr{text-decoration:none}
   .yrtop .poster .po-ctl .po-track{min-width:56px!important}
 }
 @media (max-width:999px){.poster .po-cap{font-size:26px!important;line-height:1.1!important;color:var(--cap,#F2CF62)!important}}
+/* r100c: years where gold can't read on the panel get a dark chip behind a gold caption */
+.poster .po-cap{background:var(--capbg,transparent)!important;padding:var(--cappad,0)!important;border-radius:3px;box-decoration-break:clone;-webkit-box-decoration-break:clone}
