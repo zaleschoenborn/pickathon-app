@@ -15559,7 +15559,7 @@ html.bd1-lock,html.bd1-lock body{overflow:hidden}
       var h = d.hoods[k]; if (!h || h.k === 'camp') return;
       var nx = String(h.nx || '').trim();
       if (!skip.test(nx)) {
-        var im = (h.g && h.g[0] && h.g[0].i) || h.i; /* the curated gallery's first shot: the structure, not the crowd */
+        var im = (P.cards && P.cards[k]) || (h.g && h.g[0] && h.g[0].i) || h.i; /* the curated gallery's first shot: the structure, not the crowd */
         if (im) out.push({ kind: 'hood', y: '2026', h: k, nm: h.n, now: nx, im: im });
       }
       (h.pb || []).forEach(function (b) {

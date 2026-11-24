@@ -10,6 +10,7 @@ d = json.loads(open(P, encoding='utf-8').read())
 d['buildPage'] = {
   "_edit": "Build with Pickathon page (route build). Every word on the page is here; the deadline lines come from buildCopy, the builds from hoods (nx, by, pb, hr) and privateBuilds. {firms} is filled from the 2026 architecture credits; {year} from buildCopy.year.",
   "hero": {"t": "What do you want Pickathon to build for you?", "x": "Leading architects design it. Thousands see it at Pickathon. Then it goes to work at your place, for years.", "im": "i/bhero-paddock-2025.jpg", "tour": "Tour the builds", "cta": "Start a project"},
+  "cards": {"paddock": "i/bcard-paddock.jpg", "windmill": "i/bcard-windmill.jpg", "market": "i/bcard-market.jpg", "cherryhill": "i/bcard-cherryhill.jpg"},
   "went": {"k": "Where the builds went", "t": "Built for one weekend, then sent to work", "chips": [["hood", "Neighborhoods"], ["priv", "Private builds"]], "now": "Now", "more": "Read the build stories", "skip": "stays on the farm|no downstream|no physical build|^$"},
   "get": {"k": "What you get", "t": "Commission a build, get three things", "items": [
     ["Designed by leading architects", "Firms like {firms} design it for your site."],
