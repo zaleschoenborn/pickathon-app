@@ -1021,3 +1021,20 @@ html body #root #pkpl .pkpl-pr small.pkpl-cns .pkpl-cn:hover{text-decoration:und
 html body.pkpl-wide #root #pkpl-top .pkpl-hero .pkpl-cplay{top:30%;width:52px;height:52px;margin:-26px 0 0 -26px}
 html body.pkpl-wide #root #pkpl-top .pkpl-hero .pkpl-cplay:after{margin-left:4px;border-left-width:16px;border-top-width:10px;border-bottom-width:10px}
 html body #root #pkpl .pkpl-pl.pkpl-cols .pkpl-pr:has(small.pkpl-cns){grid-column:1/-1}
+/* Nov 24 (Zale picked): quick links under the card's words, Schedule and More about <place>; 44px pills */
+html body #root #pkpl-top .pkpl-hero .pkpl-chi .pkpl-qr{display:flex!important;gap:8px;margin-top:12px;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;pointer-events:auto}
+html body #root #pkpl-top .pkpl-hero .pkpl-chi .pkpl-qr::-webkit-scrollbar{display:none}
+html body #root #pkpl-top .pkpl-hero .pkpl-chi .pkpl-q{flex:none;display:inline-flex!important;align-items:center;gap:7px;width:auto!important;height:auto!important;min-height:44px;padding:0 14px!important;border-radius:22px!important;border:1px solid rgba(242,237,227,.42)!important;background:rgba(18,22,15,.6)!important;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);color:#F2EDE3!important;font:700 14px/1 'Bricolage Grotesque',system-ui,sans-serif!important;white-space:nowrap;cursor:pointer}
+html body #root #pkpl-top .pkpl-hero .pkpl-chi .pkpl-q:hover{border-color:#E9B93C!important}
+html body #root #pkpl-top .pkpl-hero .pkpl-chi .pkpl-q svg{width:16px;height:16px;flex:none;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+@media (max-width:999px){html body #root #pkpl-top .pkpl-hero .pkpl-chi .pkpl-ct{font-size:clamp(24px,7vw,32px)!important}html body #root #pkpl-top .pkpl-hero .pkpl-chi .pkpl-cy{font-size:17px}html body #root #pkpl-top .pkpl-hero .pkpl-chi .pkpl-cb{font-size:15px;margin-top:6px}}
+@media (max-width:999px){html body #root #pkpl-top .pkpl-hero .pkpl-cplay{top:27%}}
+/* the place rides in the card's kicker on desktop and sideways tablet (the phone bar already names it); the play ring moves to the corner there so it never sits on the words */
+html body #root #pkpl-top .pkpl-hero .pkpl-chi .pkpl-ck .pkpl-cpl,html body #root #pkpl-top .pkpl-hero .pkpl-chi .pkpl-ck .pkpl-cdot{display:none}
+html body #root #pkpl-top .pkpl-hero .pkpl-chi .pkpl-ck .pkpl-cxp{display:inline-flex;align-items:center;gap:7px}
+html body.pkpl-wide #root #pkpl-top .pkpl-hero .pkpl-chi .pkpl-ck .pkpl-cpl{display:inline-flex;align-items:center;gap:7px;color:#F2EDE3}
+html body.pkpl-wide #root #pkpl-top .pkpl-hero .pkpl-chi .pkpl-ck .pkpl-cpl img{width:22px;height:22px}
+html body.pkpl-wide #root #pkpl-top .pkpl-hero .pkpl-chi .pkpl-ck .pkpl-cdot{display:inline;color:#8E8778}
+html body.pkpl-wide #root #pkpl-top .pkpl-hero .pkpl-cplay{top:16px;left:auto;right:16px;margin:0}
+/* short landscape phones: the card keeps its title, year and links; the blurb and kicker step aside */
+@media (orientation:landscape) and (max-height:500px){html body #root #pkpl-top .pkpl-hero .pkpl-chi .pkpl-cb,html body #root #pkpl-top .pkpl-hero .pkpl-chi .pkpl-ck{display:none}html body #root #pkpl-top .pkpl-hero .pkpl-chi .pkpl-ct{font-size:22px!important}html body #root #pkpl-top .pkpl-hero .pkpl-chi .pkpl-cy{display:inline;margin-left:10px;font-size:16px}html body #root #pkpl-top .pkpl-hero .pkpl-cplay{top:14px;left:auto;right:14px;margin:0;width:48px;height:48px}html body #root #pkpl-top .pkpl-hero .pkpl-chi .pkpl-qr{margin-top:8px}}
