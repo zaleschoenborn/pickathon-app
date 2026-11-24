@@ -1043,3 +1043,5 @@ html body #root #pkpl-top .pkpl-hero .pkpl-chi .pkpl-ct .pkpl-cy{display:inline!
 html body #root #pkpl-top .pkpl-w27{margin:12px 0 0;font:700 15px/1.35 'Bricolage Grotesque',system-ui,sans-serif;color:#F2CF62}
 html body #root #pkpl-top .pkpl-xa{margin:22px 16px 0}
 html body.pkpl-wide #root #pkpl-top .pkpl-xa{margin:22px 16px 0}
+/* phone held sideways (Nov 24 rotation check): only ~120px of the photo shows between the name bar and the experience row, so the photo fits that space, the card's title and quick links sit inside it, and the dots step aside (swipe still moves between cards) */
+@media (orientation:landscape) and (max-height:500px){html body:not(.pkpl-wide) #root #pkpl-top .pkpl-hero{height:max(118px,calc(100svh - 272px))!important}html body:not(.pkpl-wide) #root #pkpl-top .pkpl-dots{display:none}html body:not(.pkpl-wide) #root #pkpl-top .pkpl-hero .pkpl-chi{bottom:10px!important}html body:not(.pkpl-wide) #root #pkpl-top .pkpl-hero .pkpl-chi .pkpl-qr{margin-top:6px}}

@@ -9,7 +9,7 @@
 import json, os, sys
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DROP = ['actPages', 'yearRatings', 'climbSrc', 'billTN', 'lnt', 'yln', 'storyFacts', 'actYearLines', 'archLx', 'playlistStart', 'arcSpine',
-        'pastSched', 'yearBill', 'yearStory', 'deepcuts', 'arc', 'actSets', 'yearPhotos', 'press', 'climb', 'hoodProg', 'yearReel']
+        'pastSched', 'yearBill', 'yearStory', 'deepcuts', 'arc', 'actSets', 'yearPhotos', 'press', 'climb', 'yearReel']   # hoodProg kept: Places Find and the Info 'now at' card read it (design_neighborhoods-45)
 def main():
     d = json.load(open(os.path.join(ROOT, 'data.json'), encoding='utf-8'))
     gone = [k for k in DROP if k in d]
