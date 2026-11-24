@@ -882,3 +882,18 @@ body:has(#tk2 #tk-bar:not([hidden])) #pk-toast,body:has(#pk-co) #pk-toast{displa
 .tk-gscrim .tk-g-ban{flex-wrap:wrap}
 .tk-gscrim .tk-g-ban>.tk-g-bar{flex:0 0 100%;order:9;margin:12px 0 2px;gap:8px}
 .tk-gscrim .tk-g-bar li{font-size:12.5px}
+
+/* Round 3: Everyone on the same days (Nov 23) */
+.tk-gscrim .tk-g-same{all:unset;box-sizing:border-box;display:flex;align-items:center;gap:12px;min-height:48px;margin:14px 0 4px;font-weight:800;font-size:16px;color:#F5EFE2;cursor:pointer}
+.tk-gscrim .tk-g-sw{flex:none;width:46px;height:28px;border-radius:14px;background:rgba(245,239,226,.25);position:relative;transition:background .15s}
+.tk-gscrim .tk-g-sw:after{content:'';position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:#F5EFE2;transition:left .15s}
+.tk-gscrim .tk-g-same[aria-checked="true"] .tk-g-sw{background:var(--gold,#F2CF62)}
+.tk-gscrim .tk-g-same[aria-checked="true"] .tk-g-sw:after{left:21px;background:#12160F}
+.tk-gscrim .tk-g-same:focus-visible{outline:2px solid var(--gold,#F2CF62);outline-offset:3px}
+.tk-gscrim .tk-g-ppl{margin:4px 0 10px}
+.tk-gscrim .tk-g-pr{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 0;border-bottom:1px solid rgba(245,239,226,.15)}
+.tk-gscrim .tk-g-pr p{margin:0;font-size:15px}
+.tk-gscrim .tk-g-pdays{display:flex;gap:5px}
+.tk-gscrim .tk-g-pd{min-width:44px;min-height:44px;border:2px solid rgba(245,239,226,.35);border-radius:6px;background:transparent;color:#F5EFE2;font:800 13px/1 inherit;cursor:pointer;padding:0 4px}
+.tk-gscrim .tk-g-pd[aria-pressed="true"]{background:var(--gold,#F2CF62);border-color:var(--gold,#F2CF62);color:#12160F}
+.tk-gscrim .tk-g-pd:disabled{opacity:.35}
