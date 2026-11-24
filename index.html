@@ -15201,59 +15201,102 @@ html body:not(#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1) a
 })();
 </script>
 <style id="pk-about1-css">
-/* pk-about1-css: the About hub, draft 3 (Nov 15 2026). Scoped under .ab1; uses Plan's .pl2 tokens and the shared pk-cta button. */
-.ab1 .ab-in{max-width:1160px;margin:0 auto;padding:14px var(--gutter) 8px}
-#root .ab1 .ab-h1{font-size:var(--d-sec)!important}
-#root .ab1 .ab-lede{margin-top:6px;color:var(--cream-dim);font-size:1rem;line-height:1.4}
-.ab1 .ab-list{display:grid;grid-template-columns:1fr;gap:16px;margin-top:18px}
-.ab1 .ab-c{display:flex;flex-direction:column;background:#1A2017;border:1px solid #3A4331;border-left:4px solid var(--gold);border-radius:16px;overflow:hidden}
-.ab1 .ab-im{height:172px;flex:none;background:var(--deep)}
-.ab1 .ab-im img{width:100%;height:100%;object-fit:cover}
-.ab1 .ab-tx{display:flex;flex-direction:column;flex:1;padding:14px 16px 16px}
-#root .ab1 .ab-k{font-size:.8125rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);line-height:1.2}
-#root .ab1 .ab-t{font-size:var(--d-card)!important;margin-top:6px!important}
-#root .ab1 .ab-x{margin-top:6px;font-size:.9375rem;line-height:1.4;color:var(--cream-dim);flex:1}
-#root#root#root#root#root#root#root#root#root#root#root#root#root#root .ab1 .pk-cta.ab-btn{margin-top:14px!important;width:100%!important}
-.ab1 .ab-eras{display:flex;gap:10px;margin:12px -16px 0;padding:0 16px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;list-style:none}
-.ab1 .ab-eras::-webkit-scrollbar{display:none}
-.ab1 .ab-eras li{flex:0 0 46%;scroll-snap-align:start;display:flex;flex-direction:column;gap:4px;padding:10px 12px;border:1px solid #3A4331;border-radius:10px;background:#141A12}
-#root .ab1 .ab-ey{font-size:.8125rem;font-weight:800;letter-spacing:.06em;color:var(--gold);line-height:1.2}
-#root .ab1 .ab-en{font-size:.9375rem;font-weight:700;line-height:1.25;color:var(--cream)}
-@media (min-width:600px){.ab1 .ab-eras{overflow:visible;margin:12px 0 0;padding:0}.ab1 .ab-eras li{flex:1 1 0}}
-@media (min-width:600px) and (max-width:1199px){.ab1 .ab-in{max-width:768px}.ab1 .ab-im{height:240px}}
-@media (min-width:1200px){
-  .ab1 .ab-list{grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
-  .ab1 .ab-c:first-child{grid-column:1/-1;flex-direction:row;min-height:340px}
-  .ab1 .ab-c:first-child .ab-im{height:auto;width:58%}
-  .ab1 .ab-c:first-child .ab-tx{justify-content:center;padding:28px 32px}
-  #root .ab1 .ab-c:first-child .ab-t{font-size:var(--d-sec)!important}
-  .ab1 .ab-c:first-child .ab-x{flex:0}
-  .ab1 .ab-c:first-child .ab-eras{margin-top:18px;display:grid;grid-template-columns:1fr 1fr;gap:10px}
-  #root#root#root#root#root#root#root#root#root#root#root#root#root#root .ab1 .ab-c:first-child .pk-cta.ab-btn{width:auto!important;align-self:flex-start;padding:0 32px!important}
-  .ab1 .ab-im{height:260px}
-  .ab1 .ab-fg{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:28px}
-  .ab1 .ab-g{margin-top:0}
-  #root#root#root#root#root#root#root#root#root#root#root#root#root#root .ab1 .pk-cta.ab-btn{min-height:56px!important;height:56px!important}
-}
-
-.ab1 .ab-find{margin-top:28px}
-#root .ab1 .ab-fh{font-size:var(--d-card)!important}
-.ab1 .ab-fg{margin-top:4px}
-.ab1 .ab-g{margin-top:16px}
-.ab1 .ab-rows{list-style:none;margin:6px 0 0;padding:0;background:#1A2017;border:1px solid #3A4331;border-radius:16px;overflow:hidden}
+/* pk-about1-css: the About story page, draft 4 (Nov 24 2026). Scoped under .ab1; site tokens and the shared pk-cta button.
+   Words sit on photos over a short warm-black fade (#15110F, design_studio-101). Posters always show whole (object-fit:contain). */
+.ab1{--ab-fade:21,17,15;--ab-card:#383234;--ab-line:rgba(242,237,227,.18)}
+#root .ab1 .ab-d{font-family:"Pickathon 2014","Bricolage Grotesque",Impact,sans-serif!important;font-weight:400!important;text-transform:uppercase;letter-spacing:.04em;line-height:1.04;color:var(--cream);margin:0}
+.ab1 .ab-go{all:unset;box-sizing:border-box;display:block;width:100%;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.ab1 .ab-go.ab-link{width:auto}
+.ab1 .ab-go:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+/* hero: one photo, headline and line low on it */
+.ab1 .ab-hero{position:relative;height:min(78vh,560px);min-height:420px;overflow:hidden;background:var(--deep)}
+.ab1 .ab-hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.ab1 .ab-hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(var(--ab-fade),0) 32%,rgba(var(--ab-fade),.9) 82%,var(--bg) 100%)}
+.ab1 .ab-hx{position:absolute;z-index:1;left:var(--gutter,20px);right:var(--gutter,20px);bottom:26px;max-width:760px}
+#root .ab1 .ab-h1{font-size:40px!important}
+#root .ab1 .ab-lede{margin:12px 0 0;font-size:18px;line-height:1.45;color:var(--cream);max-width:34em}
+.ab1 .ab-in{max-width:1160px;margin:0 auto;padding:0 var(--gutter,20px) 40px}
+.ab1 .ab-sec{margin-top:36px}
+#root .ab1 .ab-h2{font-size:26px!important;margin-bottom:14px}
+#root .ab1 .ab-sub{margin:-8px 0 16px;font-size:17px;color:var(--cream-dim)}
+/* four big-word tiles */
+.ab1 .ab-tiles,.ab1 .ab-eras,.ab1 .ab-strip,.ab1 .ab-q,.ab1 .ab-rows{list-style:none;margin:0;padding:0}
+.ab1 .ab-tiles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.ab1 .ab-tiles li{display:flex}
+.ab1 .ab-tile{flex:1;min-height:150px;padding:16px 14px;border-radius:6px;background:var(--ab-card);color:var(--cream)}
+#root .ab1 .ab-w{display:flex;align-items:flex-end;height:42px;font-size:40px!important;line-height:1;color:var(--gold)}
+#root .ab1 .ab-tx{display:block;margin-top:10px;font-size:17px;font-weight:700;line-height:1.3}
+/* eras: the posters whole, as printed */
+.ab1 .ab-eras{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 10px}
+.ab1 .ab-era{color:var(--cream)}
+.ab1 .ab-pf{display:block;aspect-ratio:1/1;background:var(--ab-card);border-radius:4px;padding:8px}
+.ab1 .ab-pf img{width:100%;height:100%;object-fit:contain;display:block}
+#root .ab1 .ab-ey{display:block;margin-top:8px;font-size:14px;font-weight:800;letter-spacing:.04em;color:var(--gold)}
+#root .ab1 .ab-en{display:block;font-size:17px;font-weight:700;line-height:1.25}
+#root .ab1 .ab-ex{display:block;margin-top:4px;font-size:15px;line-height:1.35;color:var(--cream-dim)}
+.ab1 .ab-strip{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:6px;margin-top:22px}
+.ab1 .ab-sp{text-align:center;color:var(--cream-dim)}
+.ab1 .ab-sp img{display:block;width:100%;aspect-ratio:1/1;object-fit:contain;background:var(--ab-card);border-radius:3px;padding:3px;box-sizing:border-box}
+#root .ab1 .ab-sp span{display:block;margin-top:4px;font-size:13px;font-weight:700}
+#root .ab1 .ab-link{display:inline-flex;align-items:center;gap:6px;min-height:44px;margin-top:6px;font-size:16px;font-weight:700;color:var(--gold)}
+/* the neighborhoods: words on the photo */
+.ab1 .ab-hood{margin-left:calc(-1 * var(--gutter,20px));margin-right:calc(-1 * var(--gutter,20px))}
+.ab1 .ab-hp{position:relative;height:300px;overflow:hidden;background:var(--deep)}
+.ab1 .ab-hp img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.ab1 .ab-hp::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(var(--ab-fade),0) 35%,rgba(var(--ab-fade),.92) 100%)}
+.ab1 .ab-hx2{position:absolute;z-index:1;left:var(--gutter,20px);right:var(--gutter,20px);bottom:16px}
+#root .ab1 .ab-hx2 .ab-h2{display:block;margin:0}
+#root .ab1 .ab-hl{display:block;margin-top:6px;font-size:17px;line-height:1.4;color:var(--cream)}
+#root#root#root#root#root#root#root#root#root#root#root#root#root#root .ab1 .ab-hood .pk-cta.ab-btn{margin:14px var(--gutter,20px) 0!important;width:calc(100% - 2 * var(--gutter,20px))!important;display:flex!important}
+/* press and more */
+.ab1 .ab-q li{padding:12px 0;border-top:1px solid var(--ab-line);font-size:17px;line-height:1.4;color:var(--cream)}
+.ab1 .ab-q li:last-child{border-bottom:1px solid var(--ab-line)}
+.ab1 .ab-rows{background:#1A2017;border:1px solid #3A4331;border-radius:16px;overflow:hidden}
 .ab1 .ab-rows li+li{border-top:1px solid #3A4331}
-#root .ab1 .ab-row{display:grid;grid-template-columns:1fr 20px;grid-template-areas:"t c" "x c";align-items:center;column-gap:12px;row-gap:2px;width:100%;min-height:64px;padding:10px 14px 10px 16px;background:none;border:0;text-align:left;color:var(--cream);font:inherit;cursor:pointer}
-#root .ab1 .ab-rt{grid-area:t;font-size:1rem;font-weight:800;line-height:1.25;color:var(--cream)}
-#root .ab1 .ab-rx{grid-area:x;font-size:.875rem;line-height:1.3;color:var(--cream-dim)}
-.ab1 .ab-rc{grid-area:c;color:var(--gold)}
-#root .ab1 .ab-row:focus-visible{outline:2px solid var(--gold);outline-offset:-2px}
-@media (hover:hover){#root .ab1 .ab-row:hover{background:#222A1D}}
+.ab1 .ab-row{display:grid;grid-template-columns:1fr auto;grid-template-rows:auto auto;column-gap:12px;align-items:center;width:100%;min-height:64px;padding:12px 16px;color:var(--cream)}
+#root .ab1 .ab-rt{font-size:17px;font-weight:700}
+#root .ab1 .ab-rx{grid-row:2;font-size:15px;color:var(--cream-dim)}
+.ab1 .ab-rc{grid-row:1/3;grid-column:2;color:var(--gold)}
+/* be part of it */
+.ab1 .ab-join{margin-top:36px;padding:22px 18px;background:var(--ab-card);border-radius:6px}
+#root .ab1 .ab-join .ab-h2{margin-bottom:0}
+#root .ab1 .ab-jx{margin:8px 0 16px;font-size:17px;line-height:1.45;color:var(--cream)}
+#root#root#root#root#root#root#root#root#root#root#root#root#root#root .ab1 .pk-cta.ab-btn{width:100%!important}
+@media (hover:hover){.ab1 .ab-tile[data-ab-go]:hover,.ab1 .ab-row:hover{background:#433C3E}.ab1 .ab-era:hover .ab-en,.ab1 .ab-link:hover{color:var(--gold)}}
+@media (max-width:374px){#root .ab1 .ab-h1{font-size:34px!important}#root .ab1 .ab-w{font-size:34px!important}#root .ab1 .ab-tx{font-size:16px}}
+@media (min-width:600px){
+  .ab1 .ab-tiles{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .ab1 .ab-eras{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .ab1 .ab-hood{margin-left:0;margin-right:0}
+  .ab1 .ab-hp{border-radius:8px;height:360px}
+  #root#root#root#root#root#root#root#root#root#root#root#root#root#root .ab1 .ab-hood .pk-cta.ab-btn{margin:14px 0 0!important;width:auto!important;padding:0 32px!important;display:inline-flex!important}
+}
+@media (min-width:1024px){
+  .ab1 .ab-hero{height:min(72vh,620px)}
+  .ab1 .ab-hx{left:max(var(--gutter,20px),calc((100% - 1160px) / 2 + var(--gutter,20px)));bottom:44px}
+  #root .ab1 .ab-h1{font-size:64px!important}
+  #root .ab1 .ab-lede{font-size:20px}
+  .ab1 .ab-sec{margin-top:56px}
+  #root .ab1 .ab-h2{font-size:32px!important;margin-bottom:18px}
+  .ab1 .ab-tile{min-height:170px;padding:20px 18px}
+  #root .ab1 .ab-w{font-size:48px!important;height:50px}
+  .ab1 .ab-strip{max-width:640px}
+  .ab1 .ab-eras{gap:24px 20px}
+  .ab1 .ab-hp{height:440px}
+  .ab1 .ab-hx2{left:32px;bottom:28px;max-width:640px}
+  #root .ab1 .ab-hl{font-size:19px}
+  .ab1 .ab-pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:40px}
+  .ab1 .ab-join{margin-top:56px;padding:32px;display:grid;grid-template-columns:1fr auto;column-gap:32px;align-items:center}
+  #root .ab1 .ab-jx{margin-bottom:0}
+  #root#root#root#root#root#root#root#root#root#root#root#root#root#root .ab1 .pk-cta.ab-btn{min-height:56px!important;height:56px!important}
+  #root#root#root#root#root#root#root#root#root#root#root#root#root#root .ab1 .ab-join .pk-cta.ab-btn{grid-row:1/3;grid-column:2;width:auto!important;padding:0 40px!important}
+}
 </style>
 <script id="pk-about1">
-/* pk-about1: the About hub, draft 3 (Nov 15 2026). Route 'aboutus', address #/about-us.
+/* pk-about1: the About story page, draft 4 (Nov 24 2026; shape approved by Zale Nov 24). Route 'aboutus', address #/about-us.
    Source: tools/about_r1/ab.js, spliced into index.html by tools/about_r1/build.py (<script id="pk-about1">, <style id="pk-about1-css">).
-   Draws into <div id="ab1" class="pl2 ab1" data-pk-own> (the app's renderer leaves it alone). Every word and photo comes from
-   data.json aboutHub; nothing is typed here. It borrows Plan's .pl2 tokens and the shared pk-cta button, and never changes Plan's files. */
+   Draws into <div id="ab1" class="pl2 ab1" data-pk-own>. Words and photos come from data.json aboutStory; until Site Build moves it
+   there, build.py embeds tools/about_r1/about_story.json as window.__pkAboutStory. Posters show whole, never cropped. */
 (function () {
   'use strict';
   function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
@@ -15264,48 +15307,61 @@ html body:not(#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1#y1) a
     if (!FOC) { FOC = {}; try { var x = new XMLHttpRequest(); x.open('GET', 'focus.json', false); x.send(); if (x.status === 200) FOC = JSON.parse(x.responseText) || {}; } catch (e) {} }
     var f = FOC[src]; return f ? f[0] + '% ' + f[1] + '%' : '50% 50%';
   }
-  /* The four eras of Our story, read from data.json about.chapters ("Name, years"). A swipe row on phone and tablet; not buttons. */
-  function eras() {
-    var ch = ((site().data || {}).about || {}).chapters || []; if (!ch.length) return '';
-    return '<ul class="ab-eras" aria-label="The four eras">' + ch.map(function (c) {
-      var h = String(c.h || ''), i = h.lastIndexOf(',');
-      return '<li><span class="ab-ey">' + esc(i > 0 ? h.slice(i + 1).trim() : '') + '</span><span class="ab-en">' + esc(i > 0 ? h.slice(0, i) : h) + '</span></li>';
+  function poster(y) { return 'i/y' + String(y).slice(-2) + '-poster.webp'; }
+  function chev() { return '<svg class="ab-rc" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>'; }
+  function tag(go, cls, inner, label) {
+    return go ? '<button type="button" class="' + cls + ' ab-go" data-ab-go="' + esc(go) + '"' + (label ? ' aria-label="' + esc(label) + '"' : '') + '>' + inner + '</button>'
+      : '<div class="' + cls + '">' + inner + '</div>';
+  }
+  function html(S) {
+    var o = '', H = S.hero || {}, T = S.tiles || {}, E = S.eras || {}, N = S.hoods || {}, P = S.press || {}, M = S.more || {}, J = S.join || {};
+    o += '<section class="ab-hero"><img src="' + esc(H.im) + '" alt="' + esc(H.alt) + '" style="object-position:' + focusOf(H.im) + '" fetchpriority="high" decoding="async">' +
+      '<div class="ab-hx"><h1 class="ab-d ab-h1">' + esc(H.t) + '</h1><p class="ab-lede">' + esc(H.x) + '</p></div></section>';
+    o += '<div class="ab-in">';
+    o += '<section class="ab-sec"><h2 class="ab-d ab-h2">' + esc(T.h) + '</h2><ul class="ab-tiles">' + (T.r || []).map(function (t) {
+      return '<li>' + tag(t.go, 'ab-tile', '<span class="ab-d ab-w">' + esc(t.w) + '</span><span class="ab-tx">' + esc(t.x) + '</span>') + '</li>';
+    }).join('') + '</ul></section>';
+    o += '<section class="ab-sec" id="ab-story"><h2 class="ab-d ab-h2">' + esc(E.h) + '</h2><p class="ab-sub">' + esc(E.x) + '</p><ul class="ab-eras">' + (E.r || []).map(function (e) {
+      return '<li>' + tag(E.go, 'ab-era', '<span class="ab-pf"><img src="' + esc(e.im) + '" alt="Pickathon ' + esc(e.py) + ' poster" loading="lazy" decoding="async"></span>' +
+        '<span class="ab-ey">' + esc(e.y) + '</span><span class="ab-en">' + esc(e.n) + '</span><span class="ab-ex">' + esc(e.x) + '</span>') + '</li>';
     }).join('') + '</ul>';
-  }
-  function html(H) {
-    return '<div class="ab-in"><h1 class="pl-d ab-h1">' + esc(H.t) + '</h1><p class="ab-lede">' + esc(H.x) + '</p>' +
-      '<ul class="ab-list">' + (H.s || []).map(function (c, i) {
-        return '<li class="ab-c" id="ab-' + esc(c.id) + '"><div class="ab-im"><img src="' + esc(c.im) + '" alt="" style="object-position:' + focusOf(c.im) + '"' + (i > 1 ? ' loading="lazy"' : '') + ' decoding="async"></div>' +
-          '<div class="ab-tx"><p class="ab-k">' + esc(c.k) + '</p><h2 class="pl-d ab-t">' + esc(c.t) + '</h2><p class="ab-x">' + esc(c.x) + '</p>' + (c.eras ? eras() : '') +
-          '<button type="button" class="pk-cta sec pl-btn ab-btn" data-ab-go="' + esc(c.b[1]) + '">' + esc(c.b[0]) + '</button></div></li>';
-      }).join('') + '</ul>' + find(H.find) + '</div>';
-  }
-  /* The compact list under the photo cards: one tappable row per page, in small groups. No photos, so the whole list fits one phone screen. */
-  function find(F) {
-    if (!F || !(F.g || []).length) return '';
-    return '<section class="ab-find" aria-labelledby="ab-find-h"><h2 class="pl-d ab-fh" id="ab-find-h">' + esc(F.h) + '</h2><div class="ab-fg">' + F.g.map(function (g) {
-      return '<div class="ab-g"><p class="ab-k">' + esc(g.k) + '</p><ul class="ab-rows">' + (g.r || []).map(function (r) {
-        return '<li><button type="button" class="ab-row" data-ab-go="' + esc(r[2]) + '"><span class="ab-rt">' + esc(r[0]) + '</span><span class="ab-rx">' + esc(r[1]) + '</span>' +
-          '<svg class="ab-rc" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button></li>';
-      }).join('') + '</ul></div>';
-    }).join('') + '</div></section>';
+    if ((E.strip || []).length) o += '<ul class="ab-strip" aria-label="More posters">' + E.strip.map(function (y) {
+      return '<li>' + tag('route:past:y=' + y, 'ab-sp', '<img src="' + poster(y).replace('.webp', '-s.webp') + '" alt="" loading="lazy" decoding="async"><span>' + esc(y) + '</span>', 'Pickathon ' + y) + '</li>';
+    }).join('') + '</ul>';
+    if (E.all) o += '<button type="button" class="ab-link ab-go" data-ab-go="' + esc(E.all[1]) + '">' + esc(E.all[0]) + ' <span aria-hidden="true">→</span></button>';
+    o += '</section>';
+    o += '<section class="ab-sec ab-hood">' + tag(N.go, 'ab-hp', '<img src="' + esc(N.im) + '" alt="' + esc(N.alt) + '" style="object-position:' + focusOf(N.im) + '" loading="lazy" decoding="async">' +
+      '<span class="ab-hx2"><span class="ab-d ab-h2">' + esc(N.t) + '</span><span class="ab-hl">' + esc(N.x) + '</span></span>', N.t) +
+      (N.b ? '<button type="button" class="pk-cta sec pl-btn ab-btn ab-go" data-ab-go="' + esc(N.b[1]) + '">' + esc(N.b[0]) + '</button>' : '') + '</section>';
+    o += '<div class="ab-pair"><section class="ab-sec ab-press"><h2 class="ab-d ab-h2">' + esc(P.h) + '</h2><ul class="ab-q">' + (P.r || []).map(function (q) {
+      return '<li><b>' + esc(q.src) + '</b> ' + esc(q.x) + '</li>';
+    }).join('') + '</ul>' + (P.all ? '<button type="button" class="ab-link ab-go" data-ab-go="' + esc(P.all[1]) + '">' + esc(P.all[0]) + ' <span aria-hidden="true">→</span></button>' : '') + '</section>';
+    if ((M.r || []).length) o += '<section class="ab-sec ab-more"><h2 class="ab-d ab-h2">' + esc(M.h) + '</h2><ul class="ab-rows">' + M.r.map(function (r) {
+      return '<li><button type="button" class="ab-row ab-go" data-ab-go="' + esc(r[2]) + '"><span class="ab-rt">' + esc(r[0]) + '</span><span class="ab-rx">' + esc(r[1]) + '</span>' + chev() + '</button></li>';
+    }).join('') + '</ul></section>';
+    o += '</div>';
+    o += '<section class="ab-join"><h2 class="ab-d ab-h2">' + esc(J.h) + '</h2><p class="ab-jx">' + esc(J.x) + '</p>' +
+      (J.b ? '<button type="button" class="pk-cta pri pl-btn ab-btn ab-go" data-ab-go="' + esc(J.b[1]) + '">' + esc(J.b[0]) + '</button>' : '') + '</section>';
+    return o + '</div>';
   }
   function go(to) {
     var a = app(); if (!a) return; var c = to.indexOf(':'), k = to.slice(0, c), v = to.slice(c + 1);
-    if (k === 'route') { a.go(v); return; }
+    if (k === 'scroll') { var t = document.getElementById(v); if (t) t.scrollIntoView({ behavior: 'smooth', block: 'start' }); return; }
+    if (k === 'route') { var p = v.split(':'); if (p[1]) { var kv = p[1].split('='), q = {}; q[kv[0]] = kv[1]; a.go(p[0], q); } else a.go(v); return; }
     if (k === 'page') { a.go('page', { p: v }); return; }
     if (k === 'url') { window.open(v, '_blank', 'noopener'); return; }
-    if (k === 'plan') { var p = v.split(':'); a.go('info', p[1] ? { step: p[0], c: p[1] } : { step: p[0] }); return; }
+    if (k === 'plan') { var s = v.split(':'); a.go('info', s[1] ? { step: s[0], c: s[1] } : { step: s[0] }); return; }
   }
+  function story() { return (site().data || {}).aboutStory || window.__pkAboutStory || null; }
   var root = null, lastKey = '';
   function sync() {
     var el = document.getElementById('ab1'); if (!el) { root = null; return; }
-    var H = (site().data || {}).aboutHub; if (!H) return;
-    var k = (H.s || []).map(function (c) { return c.id; }).join(',') + '|' + H.t + '|' + JSON.stringify(H.find || 0).length + '|' + (((site().data || {}).about || {}).chapters || []).length;
+    var S = story(); if (!S) return;
+    var k = JSON.stringify(S).length + '|' + ((S.hero || {}).t || '');
     if (el !== root || !el.firstChild || k !== lastKey) {
-      root = el; lastKey = k; el.innerHTML = html(H);
+      root = el; lastKey = k; el.innerHTML = html(S);
       [].forEach.call(el.querySelectorAll('p,li'), function (e) { e.classList.add('pk-krtk'); });
-      [].forEach.call(el.querySelectorAll('.pl-d'), function (e) { e.classList.add('pkp-head'); });
+      [].forEach.call(el.querySelectorAll('.ab-d'), function (e) { e.classList.add('pkp-head'); });
     }
   }
   document.addEventListener('click', function (e) {
@@ -15778,3 +15834,6 @@ function tick(){var now=Date.now();sets().forEach(function(p){try{step(p,now)}ca
 @media (min-width:1000px) and (hover:hover){html body:not(#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1) #pkh2 .h2-s3c .h2-ccw .h2-arl svg{transform:scaleX(-1)!important}html body:not(#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1) #pkh2 .h2-s3c .h2-ccw .h2-arr svg{transform:none!important}}
 </style>
 <script>(function(){function chk(){var t=document.getElementById('pk-scroll-phone'),d=document.getElementById('pk-scroll-desk');var y=Math.max(window.scrollY||0,t?t.scrollTop:0,d?d.scrollTop:0);document.body.classList.toggle('pk-pv-scrolled',y>4);}document.addEventListener('scroll',chk,true);window.addEventListener('resize',chk);})();</script>
+<script id="pk-about1-data">
+window.__pkAboutStory = {"_edit":"About story page (route aboutus, #/about-us), draft 4 (Nov 24 2026; shape approved by Zale Nov 24). Words: Copy Review info_about_words_nov24_draft1.csv; facts: Festival History Nov 24 (ZERO 2011, TWICE 'more than once', BUILT 2017 Treeline to the Clackamas County Veterans Village). go: route:x, route:x:key=value, page:x, plan:step:case, scroll:id. Site Build: move this object into data.json as aboutStory; ab.js reads data.json first and this copy only as a fallback.","hero":{"im":"i/pk-woods-12.jpg","alt":"A crowd in the Woods lifting a guitar overhead","t":"A festival built by its community.","x":"It started in 1999 as a benefit for KBOO community radio, run by volunteers. People still build it."},"tiles":{"h":"What makes it different","r":[{"w":"1999","x":"Born as a benefit for KBOO community radio, run by volunteers.","go":"scroll:ab-story"},{"w":"BUILT","x":"Built by students and makers. The 2017 Treeline stage became sleeping pods for veterans.","go":"route:build"},{"w":"TWICE","x":"Most artists play more than once, so there is time to wander."},{"w":"ZERO","x":"Single-use dishes have been gone since 2011.","go":"plan:farm:food"}]},"eras":{"h":"Our story, in posters","x":"Four eras. Every year has its own poster.","go":"route:about","r":[{"y":"1999–2005","n":"Before the farm","x":"A one-day benefit for KBOO, run by volunteers.","im":"i/y99-poster.webp","py":"1999"},{"y":"2006–2019","n":"Finding our home","x":"Pendarvis Farm becomes home, and students start building the stages.","im":"i/y06-poster.webp","py":"2006"},{"y":"2020–2023","n":"Starting over as neighborhoods","x":"No festival in 2020 or 2021, then back in 2022 as neighborhoods.","im":"i/y22-poster.webp","py":"2022"},{"y":"2024–now","n":"Building to last","x":"A 10-year permit, and Creative Neighborhoods starts building to last.","im":"i/y24-poster.webp","py":"2024"}],"strip":["2003","2009","2013","2016","2019","2026"],"all":["See every poster, 1999 to now","route:past"]},"hoods":{"im":"i/p596.jpg","alt":"Lantern towers lit at night in a neighborhood","t":"The neighborhoods","x":"Every neighborhood is designed and built by its own team. Meet the people who built them.","go":"route:hoods","b":["Who built them","route:build"]},"press":{"h":"What others say","r":[{"src":"The New York Times","x":"picked Pickathon for its 2026 list of festivals to see."}],"all":["All press","route:press"]},"more":{"h":"On the farm","r":[["Neighbors","Festival dates, traffic and how to reach us","page:neighbors"],["The podcast","The story, the artists and the farm","page:pickathon-podcast-guide"]]},"join":{"h":"Be part of it","x":"Work a shift, build a neighborhood, or bring your business.","b":["Get involved","page:community"]}};
+</script>
