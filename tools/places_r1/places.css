@@ -1040,3 +1040,6 @@ html body.pkpl-wide #root #pkpl-top .pkpl-hero .pkpl-cplay{top:16px;left:auto;ri
 @media (orientation:landscape) and (max-height:500px){html body #root #pkpl-top .pkpl-hero .pkpl-chi .pkpl-cb,html body #root #pkpl-top .pkpl-hero .pkpl-chi .pkpl-ck{display:none}html body #root #pkpl-top .pkpl-hero .pkpl-chi .pkpl-ct{font-size:22px!important}html body #root #pkpl-top .pkpl-hero .pkpl-chi .pkpl-cy{display:inline;margin-left:10px;font-size:16px}html body #root #pkpl-top .pkpl-hero .pkpl-cplay{top:14px;left:auto;right:14px;margin:0;width:48px;height:48px}html body #root #pkpl-top .pkpl-hero .pkpl-chi .pkpl-qr{margin-top:8px}}
 /* Zale, Nov 24 10:24: the year sits right after the title, as on Home and Tickets, not on its own line */
 html body #root #pkpl-top .pkpl-hero .pkpl-chi .pkpl-ct .pkpl-cy{display:inline!important;margin:0 0 0 .4em!important;font-family:'Pickathon 2014',sans-serif!important;font-size:1em!important;letter-spacing:.02em;color:#F2CF62;white-space:nowrap}
+html body #root #pkpl-top .pkpl-w27{margin:12px 0 0;font:700 15px/1.35 'Bricolage Grotesque',system-ui,sans-serif;color:#F2CF62}
+html body #root #pkpl-top .pkpl-xa{margin:22px 16px 0}
+html body.pkpl-wide #root #pkpl-top .pkpl-xa{margin:22px 16px 0}

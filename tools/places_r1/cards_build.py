@@ -60,6 +60,10 @@ out['_row'] = {}
 for r in fw:
     if r['kind'] == 'row_line': out['_row'].setdefault('Architecture' if r['experience'] == 'Wonders' else r['experience'], {})[r['place_key']] = r['text']
 out['_w'] = {r['kind']: r['text'] for r in fw if r['experience'] == 'Wonders'}
+ab = os.path.join(R, 'copy_in', 'farm_about.csv')   # Copy Review's "<experience> at <place>" blocks from Pickathon's own stories (row design_neighborhoods-48), when they land
+if os.path.exists(ab):
+    out['_about'] = {}
+    for r in csv.DictReader(open(ab, encoding='utf-8')): out['_about'].setdefault('Architecture' if r['experience'] == 'Wonders' else r['experience'], {})[r['place_key']] = r['text']
 json.dump(out, open(os.path.join(R, 'cards.json'), 'w', encoding='utf-8'), ensure_ascii=False, separators=(',', ':'))
 print({x: sum(len(v) for v in p.values()) for x, p in out.items() if not x.startswith('_')}, 'missing words:', miss)
 print('no clip:', [(k, c['t']) for k, L in out.get('Music', {}).items() for c in L if not c['v']])
