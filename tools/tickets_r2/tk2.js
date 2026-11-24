@@ -600,8 +600,8 @@
        as the title, and why it matters below. Photo, place and year must match: Music uses only acts with a video from that venue that year. */
     var card = function (act, i, img, pos, hk, place, yr, title, blurb, play, label) {
       return '<li class="tk-x-c"><button type="button" class="tk-x-ph" data-act="' + act + '" data-i="' + i + '" aria-label="' + esc(label) + '"><img src="' + esc(img) + '" alt="" loading="lazy" decoding="async"' + (pos ? ' style="object-position:' + esc(pos) + '"' : '') + '><span class="tk-x-sh"></span>' +
-        '<span class="tk-x-where">' + (hk ? '<img src="ic2/' + esc(hk) + '.png" alt="">' : '') + esc(place) + (yr ? ' · <b>' + esc(yr) + '</b>' : '') + '</span>' + (play ? RING : '') +
-        '<span class="tk-x-low">' + (title ? '<span class="tk-x-n tk-d">' + esc(title) + '</span>' : '') + (blurb ? '<span class="tk-x-l">' + esc(blurb) + '</span>' : '') + '</span></button></li>';
+        '<span class="tk-x-where">' + (hk ? '<img src="ic2/' + esc(hk) + '.png" alt="">' : '') + esc(place) + '</span>' + (play ? RING : '') +
+        '<span class="tk-x-low">' + (title ? '<span class="tk-x-n tk-d">' + esc(title) + '</span>' : '') + (yr ? '<span class="tk-x-y2">' + esc(yr) + '</span>' : '') + (blurb ? '<span class="tk-x-l">' + esc(blurb) + '</span>' : '') + '</span></button></li>';
     };
     if (t === 'Music') { L = xBands(); cards = L.map(function (a, i) { return card('x-play', i, a.img, '', a.hk, a.place, a.y, a.n, a.line, true, 'Watch ' + a.n + ' at ' + a.place + ', Pickathon ' + a.y); }).join(''); }
     else { L = xPlaces(t); cards = L.map(function (p, i) { var w = t === 'Architecture' ? xWonder(p.k) : null; var tt = !w && XTT[t] && XTT[t][p.k]; return card('x-tour', i, p.img, p.pos, p.k, p.n, w ? w.y : '', w ? w.t : (tt ? tt[0] : ''), w ? ((XPBH.Architecture || {})[p.k] || w.d) : (tt ? tt[1] : p.line), false, 'Photo tour of ' + p.n); }).join(''); }
