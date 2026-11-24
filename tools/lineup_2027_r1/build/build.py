@@ -404,6 +404,9 @@ def header(title, sub, back=True, chip=None, wall=True):
         # r70 (Zale, Nov 22 21:40): the 2027 logo and back stay on the left as home; the chooser is a centered, words-only button (no small year logo: it blurs at header size)
         t = ('<span class="hd-sp hd-sp1"></span><button type="button" class="hd-t hd-yr ywopen" data-y="%s" aria-expanded="false" aria-label="Lineup %s. Choose another year"><b>Lineup</b><i>%s</i>'
              '<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 4.5l3.5 3.5 3.5-3.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>') % (chip, chip, chip)
+        if not wall:  # r89c (Zale, Nov 24 09:10): on an artist page the button follows that page's year and goes to the top of that year's lineup
+            t = ('<span class="hd-sp hd-sp1"></span><a href="#" class="hd-t hd-yr" data-go="y%s" aria-label="Go to the Pickathon %s lineup"><b>Lineup</b><i>%s</i>'
+                 '<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M4 2.5l3.5 3.5-3.5 3.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>') % (chip, chip, chip)
     else:
         bar = ''
     return ('<header class="hd">%s<img class="hd-logo" src="%s" alt="Pickathon 2027"><span class="hd-rule"></span>%s'

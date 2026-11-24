@@ -12,7 +12,9 @@
     // r79 (Zale, Nov 22 23:08): one artist page per year played; the year comes from the card, else the page it sits on
     var el = (yr && (document.getElementById('a-' + slug + '-y' + yr) || document.getElementById('a-' + slug.replace(/^the/, '') + '-y' + yr))) || document.getElementById('a-' + slug) || document.getElementById('a-' + slug.replace(/^the/, ''));
     if (!el) return false;
-    var cur = document.querySelector('.screen:not([hidden])'); if (cur && cur !== el) hist.push(cur.id);
+    // r89c (Zale, Nov 24 09:10): another year of the same act swaps in place, so Back always returns to where you came from
+    var cur = document.querySelector('.screen:not([hidden])'), base = function (id) { return (id || '').replace(/-y\d{4}$/, ''); };
+    if (cur && cur !== el && !(/^a-/.test(cur.id) && base(cur.id) === base(el.id))) hist.push(cur.id);
     document.querySelectorAll('.screen').forEach(function (m) { m.hidden = m !== el; });
     if (an) el.querySelectorAll('.hd-t:not(.hd-yr) b, .hero-tx h1').forEach(function (x) { x.textContent = an; });  // the page carries the name the poster printed
     window.scrollTo(0, 0); return true;
