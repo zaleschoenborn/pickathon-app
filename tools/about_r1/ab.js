@@ -19,27 +19,25 @@
       : '<div class="' + cls + '">' + inner + '</div>';
   }
   function html(S) {
-    var o = '', H = S.hero || {}, T = S.tiles || {}, E = S.eras || {}, N = S.hoods || {}, P = S.press || {}, M = S.more || {}, J = S.join || {};
+    var o = '', H = S.hero || {}, W = S.worlds || {}, E = S.eras || {}, P = S.press || {}, M = S.more || {}, J = S.join || {};
     o += '<section class="ab-hero"><img src="' + esc(H.im) + '" alt="' + esc(H.alt) + '" style="object-position:' + focusOf(H.im) + '" fetchpriority="high" decoding="async">' +
       '<div class="ab-hx"><h1 class="ab-d ab-h1">' + esc(H.t) + '</h1><p class="ab-lede">' + esc(H.x) + '</p></div></section>';
     o += '<div class="ab-in">';
-    o += '<section class="ab-sec"><h2 class="ab-d ab-h2">' + esc(T.h) + '</h2><ul class="ab-tiles">' + (T.r || []).map(function (t) {
-      return '<li>' + tag(t.go, 'ab-tile', '<span class="ab-d ab-w">' + esc(t.w) + '</span><span class="ab-tx">' + esc(t.x) + '</span>') + '</li>';
+    o += '<section class="ab-sec"><h2 class="ab-d ab-h2">' + esc(W.h) + '</h2><ul class="ab-worlds">' + (W.r || []).map(function (w, i) {
+      return '<li>' + tag(w.go, 'ab-wc', '<img src="' + esc(w.im) + '" alt="' + esc(w.alt) + '" style="object-position:' + focusOf(w.im) + '"' + (i > 1 ? ' loading="lazy"' : '') + ' decoding="async">' +
+        '<span class="ab-wx"><span class="ab-wk">' + esc(w.k) + '</span><span class="ab-wt">' + esc(w.t) + '</span><span class="ab-wl">' + esc(w.x) + '</span></span>', w.k + ': ' + w.t) + '</li>';
     }).join('') + '</ul></section>';
     o += '<section class="ab-sec" id="ab-story"><h2 class="ab-d ab-h2">' + esc(E.h) + '</h2><p class="ab-sub">' + esc(E.x) + '</p><ul class="ab-eras">' + (E.r || []).map(function (e) {
       return '<li>' + tag(E.go, 'ab-era', '<span class="ab-pf"><img src="' + esc(e.im) + '" alt="Pickathon ' + esc(e.py) + ' poster" loading="lazy" decoding="async"></span>' +
         '<span class="ab-ey">' + esc(e.y) + '</span><span class="ab-en">' + esc(e.n) + '</span><span class="ab-ex">' + esc(e.x) + '</span>') + '</li>';
     }).join('') + '</ul>';
     if ((E.strip || []).length) o += '<ul class="ab-strip" aria-label="More posters">' + E.strip.map(function (y) {
-      return '<li>' + tag('route:past:y=' + y, 'ab-sp', '<img src="' + poster(y).replace('.webp', '-s.webp') + '" alt="" loading="lazy" decoding="async"><span>' + esc(y) + '</span>', 'Pickathon ' + y) + '</li>';
+      return '<li>' + tag('route:past:y=' + y, 'ab-sp', '<img src="i/about/y' + String(y).slice(-2) + '-icon.webp" alt="" loading="lazy" decoding="async"><span>' + esc(y) + '</span>', 'Pickathon ' + y) + '</li>';
     }).join('') + '</ul>';
     if (E.all) o += '<button type="button" class="ab-link ab-go" data-ab-go="' + esc(E.all[1]) + '">' + esc(E.all[0]) + ' <span aria-hidden="true">→</span></button>';
     o += '</section>';
-    o += '<section class="ab-sec ab-hood">' + tag(N.go, 'ab-hp', '<img src="' + esc(N.im) + '" alt="' + esc(N.alt) + '" style="object-position:' + focusOf(N.im) + '" loading="lazy" decoding="async">' +
-      '<span class="ab-hx2"><span class="ab-d ab-h2">' + esc(N.t) + '</span><span class="ab-hl">' + esc(N.x) + '</span></span>', N.t) +
-      (N.b ? '<button type="button" class="pk-cta sec pl-btn ab-btn ab-go" data-ab-go="' + esc(N.b[1]) + '">' + esc(N.b[0]) + '</button>' : '') + '</section>';
     o += '<div class="ab-pair"><section class="ab-sec ab-press"><h2 class="ab-d ab-h2">' + esc(P.h) + '</h2><ul class="ab-q">' + (P.r || []).map(function (q) {
-      return '<li><b>' + esc(q.src) + '</b> ' + esc(q.x) + '</li>';
+      return q.q ? '<li class="ab-qq"><span class="ab-qt">“' + esc(q.q) + '”</span><span class="ab-qb">' + esc(q.by) + (q.y ? ', ' + esc(q.y) : '') + '</span></li>' : '<li><b>' + esc(q.src) + '</b> ' + esc(q.x) + '</li>';
     }).join('') + '</ul>' + (P.all ? '<button type="button" class="ab-link ab-go" data-ab-go="' + esc(P.all[1]) + '">' + esc(P.all[0]) + ' <span aria-hidden="true">→</span></button>' : '') + '</section>';
     if ((M.r || []).length) o += '<section class="ab-sec ab-more"><h2 class="ab-d ab-h2">' + esc(M.h) + '</h2><ul class="ab-rows">' + M.r.map(function (r) {
       return '<li><button type="button" class="ab-row ab-go" data-ab-go="' + esc(r[2]) + '"><span class="ab-rt">' + esc(r[0]) + '</span><span class="ab-rx">' + esc(r[1]) + '</span>' + chev() + '</button></li>';
@@ -52,7 +50,7 @@
   function go(to) {
     var a = app(); if (!a) return; var c = to.indexOf(':'), k = to.slice(0, c), v = to.slice(c + 1);
     if (k === 'scroll') { var t = document.getElementById(v); if (t) t.scrollIntoView({ behavior: 'smooth', block: 'start' }); return; }
-    if (k === 'route') { var p = v.split(':'); if (p[1]) { var kv = p[1].split('='), q = {}; q[kv[0]] = kv[1]; a.go(p[0], q); } else a.go(v); return; }
+    if (k === 'route') { var p = v.split(':'); if (p[1]) { var kv = p[1].split('='), q = {}; q[kv[0]] = kv[1] === '1' ? true : kv[1]; a.go(p[0], q); } else a.go(v); return; }
     if (k === 'page') { a.go('page', { p: v }); return; }
     if (k === 'url') { window.open(v, '_blank', 'noopener'); return; }
     if (k === 'plan') { var s = v.split(':'); a.go('info', s[1] ? { step: s[0], c: s[1] } : { step: s[0] }); return; }
