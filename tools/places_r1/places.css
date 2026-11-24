@@ -433,7 +433,7 @@ html body.pkpl-hood #root#root#root#root#root#root#root#root#root#root#root#root
 
 /* this year's story leads, the place follows (Nov 19) */
 #root #pkpl-top .pkpl-yr{padding:22px 16px 4px}
-#root #pkpl-top .pkpl-yr .pkpl-sk,#root #pkpl-top .pkpl-what .pkpl-sk{margin:0 0 6px;font:800 12px/1.2 'Bricolage Grotesque',system-ui,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#D6B54A}
+#root #pkpl-top .pkpl-yr .pkpl-sk,#root #pkpl-top .pkpl-what .pkpl-sk,#root #pkpl-top .pkpl-xa .pkpl-sk{margin:0 0 6px;font:800 12px/1.2 'Bricolage Grotesque',system-ui,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#D6B54A}
 #root#root #pkpl-top .pkpl-yr h2{margin:0 0 10px;font-family:'Pickathon 2014',sans-serif!important;font-weight:400!important;font-size:clamp(28px,7vw,34px)!important;line-height:1.02!important;letter-spacing:.02em;color:#F2EDE3}
 #root #pkpl-top .pkpl-yr .pkpl-more p{-webkit-line-clamp:3;color:#E8E2D4}
 #root #pkpl-top .pkpl-what{padding:18px 16px 0}
@@ -826,7 +826,7 @@ body.pkpl-wide #root #pkpl-top .pkpl-vx{margin:10px 32px 0}
 #root #pkpl-top .pkpl-vxa{display:inline-block;min-height:44px;padding:10px 0;line-height:24px;border:0;background:none;color:#F2EDE3;font:inherit;font-weight:700;text-decoration:underline;text-decoration-color:rgba(242,237,227,.35);text-underline-offset:3px;cursor:pointer}
 #root #pkpl-top .pkpl-vxa:hover{text-decoration-color:#E9B93C}
 #root #pkpl-top .pkpl-cnl{margin:12px 0 4px;font:500 16px/1.5 'Bricolage Grotesque',system-ui,sans-serif;color:#F2EDE3;max-width:52ch}
-#root #pkpl-top .pkpl-what .pkpl-wt{margin:0;font:500 17px/1.55 'Bricolage Grotesque',system-ui,sans-serif;color:#E8E2D4;max-width:60ch}
+#root #pkpl-top .pkpl-what .pkpl-wt,#root #pkpl-top .pkpl-xa .pkpl-wt{margin:0;font:500 17px/1.55 'Bricolage Grotesque',system-ui,sans-serif;color:#E8E2D4;max-width:60ch}
 
 /* Zale, Nov 22: video cards bigger and simple: the picture plays, the name under it opens the artist page */
 #root #pkpl-top .pkpl-vw{flex:0 0 min(74vw,300px);display:flex;flex-direction:column;scroll-snap-align:start}
