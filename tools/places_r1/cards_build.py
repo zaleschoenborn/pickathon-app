@@ -16,7 +16,7 @@ for r in C('summer_camp_cards_changes_nov24_draft1.csv'):
     old = REN.get(r['title'], r['title']); words[(r['experience'], r['place_key'], old)] = (r['title'], r['blurb'])
 music = {(r['act'], r['year']): r['line'] for r in C('music_row_lines_nov24_draft1.csv')}
 won = {}
-for f in ('wonders_cards_nov24_draft1.csv', 'wonders_cards_2025_2026_nov24_draft1.csv'):
+for f in ('wonders_cards_nov24_draft1.csv', 'wonders_cards_2025_2026_nov24_draft1.csv', 'wonders_cards_2025_rest_nov24_draft1.csv', 'wonders_cards_2026_rest_nov24_draft1.csv'):
     for r in C(f): won[(r['place_key'], r['year'])] = (r['title'], r['blurb'])
 def vid(act, y, k):
     best = None
