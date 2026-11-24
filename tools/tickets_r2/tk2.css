@@ -992,6 +992,5 @@ body:has(#tk2 #tk-bar:not([hidden])) #pk-toast,body:has(#pk-co) #pk-toast{displa
  .tk2 .tk-e3-cold .tk-e3-buy{max-width:720px;margin-top:34px;padding-top:24px;border-top:1px solid var(--line)}
 }
 
-/* Nov 24 (Zale): the year sits under the title, gold, only when there is one; the corner is the neighborhood alone */
-.tk2 .tk-x-yr{display:block;color:#f2c14e;font-weight:700;font-size:15px;line-height:1.1;margin:2px 0 4px}
-@media (min-width:1025px){.tk2 .tk-x-yr{font-size:20px}}
+/* Nov 24 (Zale): the corner is the neighborhood alone; the year sits to the right of the title, in the title font, gold, only on place-and-year cards */
+.tk2 .tk-x-n .tk-x-y2{display:inline;white-space:nowrap;margin-left:.3em;color:var(--gold,#F2CF62);font:inherit;font-size:.85em}

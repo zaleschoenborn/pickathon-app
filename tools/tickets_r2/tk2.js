@@ -554,12 +554,13 @@
     if (XB && XB.length) return XB;
     var D = site().data || {}, V = D.videos || [], H = D.hoods || {}, out = [];
     discoveries().forEach(function (a) {
-      if (out.length >= 8) return;
-      var nm = String(a.n).toLowerCase(), v = V.filter(function (x) { return String(x.y) === String(a.y) && XVEN[x.vn] && String(x.a || '').toLowerCase().indexOf(nm) === 0; })[0];
-      if (!v) return; var hk = XVEN[v.vn], id = String(v.id);
-      out.push({ n: a.n, y: String(a.y), line: a.line, img: a.img, hk: hk, place: (H[hk] && H[hk].n) || v.vn, vu: /^vm\d+$/.test(id) ? 'https://vimeo.com/' + id.slice(2) : 'https://www.youtube.com/watch?v=' + id });
+      if (out.length >= 12) return;
+      var nm = String(a.n).toLowerCase(), v = V.filter(function (x) { return String(x.y) === String(a.y) && XVEN[x.vn] && !x.f && !/full set/i.test(x.s || '') && String(x.a || '').toLowerCase().indexOf(nm) === 0; })[0];   /* single songs only, never a full set (rulebook) */
+      if (!v) return; var hk = XVEN[v.vn], id = String(v.id); if (out.filter(function (o) { return o.hk === hk; }).length >= 3) return;
+      out.push({ n: a.n, y: String(a.y), line: a.line, img: a.img, hk: hk, place: (H[hk] && H[hk].n) || v.vn, vu: /^vm\d+$/.test(id) ? 'https://vimeo.com/' + id.slice(2) + (v.vh ? '/' + v.vh : '') : 'https://www.youtube.com/watch?v=' + id });
     });
-    XB = out; return out;
+    var ord = [], rest = out.slice(); while (rest.length) { var last = ord.length ? ord[ord.length - 1].hk : '', k = 0; for (var j = 0; j < rest.length; j++) { if (rest[j].hk !== last) { k = j; break; } } ord.push(rest.splice(k, 1)[0]); }
+    XB = ord; return ord;   /* rank order, max 3 per neighborhood, never the same neighborhood twice in a row (Zale, Nov 24) */
   }
   function xWonder(k) {   /* that neighborhood's latest build: title, year, the story in a line or two */
     var h = ((site().data || {}).hoods || {})[k] || {}, pb = (h.pb || []).slice().sort(function (a, b) { return +b.y - +a.y; })[0], by = h.by || {}, yk = Object.keys(by).sort().pop();
@@ -601,7 +602,7 @@
     var card = function (act, i, img, pos, hk, place, yr, title, blurb, play, label) {
       return '<li class="tk-x-c"><button type="button" class="tk-x-ph" data-act="' + act + '" data-i="' + i + '" aria-label="' + esc(label) + '"><img src="' + esc(img) + '" alt="" loading="lazy" decoding="async"' + (pos ? ' style="object-position:' + esc(pos) + '"' : '') + '><span class="tk-x-sh"></span>' +
         '<span class="tk-x-where">' + (hk ? '<img src="ic2/' + esc(hk) + '.png" alt="">' : '') + esc(place) + '</span>' + (play ? RING : '') +
-        '<span class="tk-x-low">' + (title ? '<span class="tk-x-n tk-d">' + esc(title) + '</span>' : '') + (yr ? '<span class="tk-x-y2">' + esc(yr) + '</span>' : '') + (blurb ? '<span class="tk-x-l">' + esc(blurb) + '</span>' : '') + '</span></button></li>';
+        '<span class="tk-x-low">' + (title ? '<span class="tk-x-n tk-d">' + esc(title) + (yr ? '<span class="tk-x-y2">' + esc(yr) + '</span>' : '') + '</span>' : '') + (blurb ? '<span class="tk-x-l">' + esc(blurb) + '</span>' : '') + '</span></button></li>';
     };
     if (t === 'Music') { L = xBands(); cards = L.map(function (a, i) { return card('x-play', i, a.img, '', a.hk, a.place, a.y, a.n, a.line, true, 'Watch ' + a.n + ' at ' + a.place + ', Pickathon ' + a.y); }).join(''); }
     else { L = xPlaces(t); cards = L.map(function (p, i) { var w = t === 'Architecture' ? xWonder(p.k) : null; var tt = !w && XTT[t] && XTT[t][p.k]; return card('x-tour', i, p.img, p.pos, p.k, p.n, w ? w.y : '', w ? w.t : (tt ? tt[0] : ''), w ? ((XPBH.Architecture || {})[p.k] || w.d) : (tt ? tt[1] : p.line), false, 'Photo tour of ' + p.n); }).join(''); }
@@ -723,7 +724,13 @@
     if (g === 'addons') { addonsOnly(); return true; }
     if (act === 'e-fast') { guide('days'); return true; }
     if (act === 'x-pick') { xpPick(b.getAttribute('data-v')); xDraw(); return true; }
-    if (act === 'x-play') { var xa = xBands()[+b.getAttribute('data-i')]; if (xa && xa.vu && window.__pkPlayVid) { try { window.__pkPlayVid(xa.vu, xa.n + ' · Pickathon ' + xa.y); } catch (x) {} } return true; }
+    if (act === 'x-play') {   /* Zale, Nov 24: tap a band, then the whole Music row plays on: start on that song, then sudoku order so no neighborhood plays twice in a row */
+      var XL = xBands(), st = +b.getAttribute('data-i'), xa = XL[st]; if (!xa || !xa.vu) return true;
+      var rest = XL.filter(function (a, j) { return j !== st && a.vu; }), q = [xa];
+      while (rest.length) { var last = q[q.length - 1].hk, k = 0; for (var j = 0; j < rest.length; j++) { if (rest[j].hk !== last) { k = j; break; } } q.push(rest.splice(k, 1)[0]); }
+      var cap = function (a) { return a.n + ' · ' + a.place + ', Pickathon ' + a.y; };
+      try { if (window.__pkRadio) window.__pkRadio(q.map(function (a) { return { u: a.vu, c: cap(a) }; }), 'Seen here first'); else if (window.__pkPlayVid) window.__pkPlayVid(xa.vu, cap(xa)); } catch (x) {}
+      return true; }
     if (act === 'x-tour') { var xp = xPlaces(XCUR)[+b.getAttribute('data-i')], AT = app(); if (xp && AT && AT.ssOpen) { try { AT.ssOpen(xp.k); } catch (x) {} } return true; }
     if (act === 'x-open') { var hk = $('.tk-e3-hook', root); if (hk) { hk.innerHTML = '<div class="tk-x" id="tk-x" hidden></div>'; xDraw(); var xb = $('#tk-x', root); if (xb) { try { xb.scrollIntoView({ block: 'start', behavior: 'smooth' }); } catch (x) {} } } return true; }
     if (act === 'x-lineup') { var AL = app(); if (AL) AL.go('lineup'); return true; }
