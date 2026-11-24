@@ -181,7 +181,7 @@
       h = '<h2 class="bds-q" tabindex="-1">' + esc(st.q) + '</h2><p class="bds-sum">' + esc(sum) + '</p>' +
         '<div class="bds-fs">' + fld('name', 'text', 'name', 1) + fld('org', 'text', 'organization', 1) + fld('email', 'email', 'email', 1) +
         '<label class="bds-l bds-wide">' + esc(L.what) + '<span class="bds-lh">' + esc(L.whatH) + '</span><textarea rows="4" data-bds-f="what" required>' + esc(S.a.what || '') + '</textarea></label>' +
-        fld('phone', 'tel', 'tel', 0) + '<label class="bds-l">' + esc(L.heard) + '<select data-bds-f="heard"><option value=""></option>' + F.heard.map(function (o) { return '<option value="' + o[0] + '"' + (S.a.heard === o[0] ? ' selected' : '') + '>' + esc(o[1]) + '</option>'; }).join('') + '</select></label></div>' +
+        '<details class="bds-more bds-wide"' + ((S.a.cost || S.a.fund || S.a.phone || S.a.heard) ? ' open' : '') + '><summary>' + esc(L.more) + '</summary><div class="bds-fs">' + (F.opt || []).map(function (q) { return '<label class="bds-l">' + esc(q.l) + '<select data-bds-f="' + q.id + '"><option value=""></option>' + q.o.map(function (o) { return '<option value="' + o[0] + '"' + (S.a[q.id] === o[0] ? ' selected' : '') + '>' + esc(o[1]) + '</option>'; }).join('') + '</select></label>'; }).join('') + fld('phone', 'tel', 'tel', 0) + '<label class="bds-l">' + esc(L.heard) + '<select data-bds-f="heard"><option value=""></option>' + F.heard.map(function (o) { return '<option value="' + o[0] + '"' + (S.a.heard === o[0] ? ' selected' : '') + '>' + esc(o[1]) + '</option>'; }).join('') + '</select></label></div></details></div>' +
         (S.err ? '<p class="bds-err" role="alert">' + esc(S.err) + '</p>' : '') + '<button type="button" class="bds-btn pri" data-bds="send">' + esc(F.send) + '</button>' +
         (((d.buildForm || {}).live) ? '' : '<p class="bds-test">' + esc(F.test) + '</p>');
     }
@@ -193,7 +193,7 @@
     ['name', 'org', 'email', 'what'].forEach(function (k) { if (!String(b[k] || '').trim()) miss.push(F.f[k].toLowerCase()); });
     if (miss.length) { S.err = F.need + miss.join(', ') + '.'; draw(); return; }
     b.email = String(b.email).trim(); if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(b.email)) { S.err = F.badEmail; draw(); return; }
-    var lab = function (id) { var q = F.steps.filter(function (x) { return x.id === id; })[0], o = q && q.o.filter(function (x) { return fill(x[0], d) === b[id]; })[0]; return o ? fill(o[1], d) : 'not answered'; };
+    var lab = function (id) { var q = F.steps.concat(F.opt || []).filter(function (x) { return x.id === id; })[0], o = q && q.o.filter(function (x) { return fill(x[0], d) === b[id]; })[0]; return o ? fill(o[1], d) : 'not answered'; };
     var heard = (F.heard.filter(function (o) { return o[0] === b.heard; })[0] || [0, 'not answered'])[1];
     var extra = ['Door: Wants something built', 'Who: ' + lab('kind'), 'Wants built: ' + lab('builds'), 'When: ' + lab('when'), 'Budget: ' + lab('cost'), 'Who pays: ' + lab('fund'), 'Heard via: ' + heard, 'Source: pickathon.com Build page'].join('\n');
     var E = G.entries || {}, fd = new URLSearchParams();
