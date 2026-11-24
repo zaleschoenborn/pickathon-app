@@ -3797,6 +3797,8 @@ document.addEventListener('keydown',function(e){if(e.key==='Escape'){var x=docum
 <sc-if value="{{clash.has}}" hint-placeholder-val="{{false}}"><sc-if value="{{bmw.show}}" hint-placeholder-val="{{false}}"><div style="margin: 0 0 14px; padding: 12px 14px; border-radius: 14px; border: 1px solid #6B5A2A; background: #2A2418; max-width: 760px"><button type="button" onClick="{{bmw.go}}" style="min-height: 44px; padding: 0 18px; border-radius: 999px; border: 0; background: #F2B33D; color: #12160F; font: inherit; font-weight: 800; cursor: pointer">{{bmw.label}}</button><p style="margin: 8px 0 0; font-size: 14px; color: #E6E0D3">{{bmw.sub}}</p><sc-if value="{{bmw.hasMsg}}" hint-placeholder-val="{{false}}"><p role="status" style="margin: 8px 0 0; font-weight: 800; color: #F2B33D">{{bmw.msg}}</p></sc-if></div></sc-if></sc-if>
 <sc-if value="{{clash.has}}" hint-placeholder-val="{{false}}"><section aria-label="Overlaps in your plan" class="pk-sch-clash"><p class="pkp-mono pk-sch-k">Your plan</p><sc-for list="{{clash.list}}" as="cl" hint-placeholder-count="1"><div class="pk-sch-cl"><p class="pk-sch-clt">{{cl.text}}</p><div class="pk-sch-clf"><sc-for list="{{cl.fixes}}" as="fx" hint-placeholder-count="1"><button type="button" class="pk-sch-fix pk-sqb" onClick="{{fx.go}}">{{fx.label}}</button></sc-for><sc-if value="{{cl.noFix}}" hint-placeholder-val="{{false}}"><span class="pk-sch-nofix">Neither has another set that fits. Keep both, or unstar one.</span></sc-if></div></div></sc-for><sc-if value="{{clash.more}}" hint-placeholder-val="{{false}}"><p class="pk-sch-nofix">{{clash.more}}</p></sc-if></section></sc-if>
 
+<div role="group" aria-label="View" class="pk-sch-mode pk-sg-mode"><sc-for list="{{sched.modeBtns}}" as="m" hint-placeholder-count="2"><button class="pk-sqb" type="button" onClick="{{m.pick}}" aria-pressed="{{m.on}}" style="{{m.style}}">{{m.label}}</button></sc-for></div>
+<sc-if value="{{sched.sgOn}}" hint-placeholder-val="{{true}}"><div id="pk-sg" data-pk-own="1"></div></sc-if>
 <sc-if value="{{sched.grid}}" hint-placeholder-val="{{false}}">
 <sc-if value="{{sched.empty}}" hint-placeholder-val="{{false}}"><p style="margin: 0 0 56px; padding: 20px; border: 1px solid rgba(242,237,227,.14); border-radius: 14px; color: #B9B3A6">Nothing matches this filter on this day.</p></sc-if>
 <sc-for list="{{sched.blocks}}" as="bk" hint-placeholder-count="1">
@@ -3828,7 +3830,6 @@ document.addEventListener('keydown',function(e){if(e.key==='Escape'){var x=docum
 </sc-for>
 </sc-if>
 <sc-if value="{{sched.list}}" hint-placeholder-val="{{true}}">
-<div role="group" aria-label="View" class="pk-sch-mode"><sc-for list="{{sched.modeBtns}}" as="m" hint-placeholder-count="2"><button class="pk-sqb" type="button" onClick="{{m.pick}}" aria-pressed="{{m.on}}" style="{{m.style}}">{{m.label}}</button></sc-for></div>
 <sc-if value="{{sched.byStage}}" hint-placeholder-val="{{true}}">
 <sc-if value="{{sched.noneHere}}" hint-placeholder-val="{{false}}"><p style="margin: 16px 0; padding: 16px; border-radius: 14px; background: rgba(242,237,227,.04); border: 1px solid rgba(242,237,227,.14); color: #DCD6C9">{{sched.noneText}}</p></sc-if><sc-if value="{{sched.hasStages}}" hint-placeholder-val="{{true}}"><p style="margin: 0 0 8px; font-size: 13px; color: #B9B3A6">Swipe for the next stage →</p></sc-if>
 <div style="display: flex; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; margin: 0 -12px 32px; padding: 0 12px 4px">
@@ -5882,36 +5883,18 @@ window.__pkMapH = mapH; window.__pkGoFarm = goFarm;   // pk-home2: the Home neig
         };
       })();
       var daySets = d.sets.filter(pass);
-      if (!phone) {
-        var pref = ['woods', 'paddock', 'galaxy-barn', 'cherry-hill', 'windmill', 'grove', 'lucky-barn', 'farmhouse', 'refuge', 'curation', 'coyote-stage', 'coyote-crafts', 'coyote-workshop', 'cedarwood', 'trackers', 'feeding-nest'];
-        var used = {}; daySets.forEach(function (s) { used[s.st] = true; });
-        var cols = pref.filter(function (c) { return used[c]; }).concat(Object.keys(used).filter(function (c) { return pref.indexOf(c) < 0; }));
-        out.sched.gridCols = 'display: grid; grid-template-columns: 72px repeat(' + Math.max(1, cols.length) + ', minmax(110px, 1fr))';
-        out.sched.minW = 'min-width: ' + Math.max(600, 72 + cols.length * 118) + 'px';
-        out.sched.empty = cols.length === 0;
-        var nbLg = function (h) { return h ? 'ic2/' + h + '.png' : ''; }; out.sched.cols = cols.map(function (c) { var h = stage[c] ? stage[c].h : 'coyote'; var sn = stage[c] ? stage[c].n : c, hn = d.hoods[h].n; return { lg: nbLg(h), n: sn, h: sameNm(sn, hn) ? '' : hn, hasH: !sameNm(sn, hn), aria: sn + (sameNm(sn, hn) ? '' : ', ' + hn) + ': open the neighborhood', go: openH(h) }; });
-        var hours = {}; daySets.forEach(function (s) { if (cols.indexOf(s.st) >= 0) hours[s.s.slice(0, 13)] = true; });
-        var mkRows = function (cols) { var hours = {}; daySets.forEach(function (s) { if (cols.indexOf(s.st) >= 0) hours[s.s.slice(0, 13)] = true; }); return Object.keys(hours).sort().map(function (hk) {
-          return { label: t12(hk + ':00'), cells: cols.map(function (c) { return { items: daySets.filter(function (s) { return s.st === c && s.s.slice(0, 13) === hk; }).map(function (s) { var sb = schRow(s), on = sb.st === 'mine'; var base = s.l === 'music' ? '#D7C57D' : s.l === 'djs' ? '#B3BAD2' : s.l === 'family' ? '#BDC0A8' : '#9EC2E2'; return Object.assign(sb, { name: d.artists[s.a].n, time: (t12(s.s) + '–\u200b' + t12(s.e)).replace(/ /g, '\u00a0'), open: openA(s.a), box: 'border-left-color: ' + base }); }) }; }) };
-        }); };
-        var vw = st.vw || (typeof window !== 'undefined' ? window.innerWidth : 1280), maxC = Math.max(3, Math.floor((Math.min(vw, 1280) - 112) / 140)); var per = cols.length > maxC ? Math.ceil(cols.length / Math.ceil(cols.length / maxC)) : Math.max(1, cols.length), blocks = [];
-        for (var bi = 0; bi < cols.length; bi += per) { var ch = cols.slice(bi, bi + per); blocks.push({ gridCols: 'display: grid; grid-template-columns: 64px repeat(' + ch.length + ', minmax(0, 1fr))', cols: out.sched.cols.slice(bi, bi + per), rows: mkRows(ch) }); }
-        out.sched.blocks = blocks;
-      } else {
-        var rows = [], last = '';
-        var earlyN = 0, dsT = daySets; if (SEA === 'fest' && !st.schedEarly) { dsT = daySets.filter(function (s) { return ms(s.e) > nowMs; }); earlyN = daySets.length - dsT.length; }
+      /* Schedule r2 (Zale, Nov 24 "Build as drawn"): Grid = a column per place on desktop, places down the side with the day sliding sideways on phone, emblems on both; List = by time. The grid is drawn by the pk-sg module from window.__pkSG. */
+      var byT = st.schedBy === 'time';
+      out.sched.grid = false; out.sched.list = byT; out.sched.byTime = byT; out.sched.byStage = false; out.sched.sgOn = !byT;
+      out.sched.modeBtns = [['grid', 'Grid'], ['time', 'List']].map(function (m) { var on = (m[0] === 'time') === byT; return { label: m[1], on: on ? 'true' : 'false', pick: function () { self.setState({ schedBy: m[0] }); }, style: '' }; });
+      (function () { var rows = [], last = '', earlyN = 0, dsT = daySets; if (SEA === 'fest' && !st.schedEarly) { dsT = daySets.filter(function (s) { return ms(s.e) > nowMs; }); earlyN = daySets.length - dsT.length; }
         out.sched.hasEarly = earlyN > 0; out.sched.earlyLabel = 'Show ' + earlyN + ' earlier sets today ↑'; out.sched.showEarly = function () { self.setState({ schedEarly: true }); };
-        dsT.forEach(function (s) { var hr = t12(s.s.slice(0, 13) + ':00'); if (hr !== last) { rows.push({ isHour: true, isSet: false, hour: hr }); last = hr; } var h = d.hoods[hoodIdOf(s)]; rows.push(Object.assign(schRow(s), { isHour: false, isSet: true, name: d.artists[s.a].n, where: stage[s.st].n + (sameNm(stage[s.st].n, h.n) ? '' : ' · ' + h.n), time: t12(s.s) + '–' + t12(s.e), open: openA(s.a) })); });
-        out.sched.items = rows;
-        var byT = st.schedBy ? st.schedBy === 'time' : SEA === 'fest';
-        var stOrder = []; daySets.forEach(function (s) { if (stOrder.indexOf(s.st) < 0) stOrder.push(s.st); });
-        var prefP = ['woods', 'paddock', 'galaxy-barn', 'cherry-hill', 'windmill', 'grove', 'lucky-barn', 'farmhouse', 'refuge', 'curation'];
-        stOrder.sort(function (a, b) { var ia = prefP.indexOf(a), ib = prefP.indexOf(b); return (ia < 0 ? 99 : ia) - (ib < 0 ? 99 : ib); });
-        out.sched.byTime = byT; out.sched.byStage = !byT;
-        out.sched.modeBtns = [['stage', 'By stage'], ['time', 'By time']].map(function (m) { var on = (m[0] === 'time') === byT; return { label: m[1], on: on ? 'true' : 'false', pick: function () { self.setState({ schedBy: m[0] }); }, style: '' }; });
-        out.sched.stages = stOrder.map(function (c, i) { var hk = stage[c] ? stage[c].h : null; return { lg: hk ? 'ic2/' + hk + '.png' : '', hasLg: !!hk, hn: hk && d.hoods[hk] && d.hoods[hk].n !== (stage[c] || {}).n ? d.hoods[hk].n : '', n: stage[c] ? stage[c].n : c, pos: (i + 1) + ' of ' + stOrder.length, go: hk ? openH(hk) : function () {}, sets: daySets.filter(function (s) { return s.st === c; }).map(function (s) { return Object.assign(schRow(s), { name: d.artists[s.a].n, time: t12(s.s) + '–' + t12(s.e), open: openA(s.a) }); }) }; });
-        out.sched.hasStages = stOrder.length > 0;
-      }
+        dsT.slice().sort(function (p, q) { return p.s < q.s ? -1 : p.s > q.s ? 1 : 0; }).forEach(function (s) { var hr = t12(s.s.slice(0, 13) + ':00'); if (hr !== last) { rows.push({ isHour: true, isSet: false, hour: hr }); last = hr; } var h = d.hoods[hoodIdOf(s)] || { n: '' }; var sn = (stage[s.st] || {}).n || ''; rows.push(Object.assign(schRow(s), { isHour: false, isSet: true, name: (d.artists[s.a] || {}).n || s.a, where: sn + (sameNm(sn, h.n) ? '' : ' · ' + h.n), time: t12(s.s) + '–' + t12(s.e), open: openA(s.a) })); });
+        out.sched.items = rows; })();
+      window.__pkSG = { v: (window.__pkSG ? window.__pkSG.v : 0) + 1, phone: !!phone, day: st.day, fest: SEA === 'fest', nowMs: nowMs, empty: !daySets.length,
+        sets: daySets.map(function (s) { var r0 = schRow(s), hk = hoodIdOf(s); return { id: s.id, n: (d.artists[s.a] || {}).n || s.a, s: s.s, e: s.e, l: s.l, hk: hk, w: r0.st, label: r0.label, tog: r0.toggle, open: openA(s.a) }; }),
+        hoods: (function () { var o = {}; Object.keys(d.hoods).forEach(function (k) { o[k] = d.hoods[k].n; }); return o; })(), openH: function (k) { openH(k)(); } };
+      setTimeout(function () { if (window.__pkSGlater) window.__pkSGlater(); }, 0);
     }
     if (R === 'hoods') {
       out.secret = (function () {
@@ -7487,6 +7470,93 @@ html:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root:
 @media (min-width:601px) and (max-width:1199px) and (max-height:900px){html:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root body .pk-yreel:not(.pk-yrp) .pk-rs img:not(.pk-tl):not(.pk-rhi){height:50%!important}}
 /*pk-bk4*/@media (max-width:1199px){html:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:root body .pk-bk.pk-one .pk-one-t .pk-bkbs.pk-nbbs{justify-content:center !important;gap:10px !important}html:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:root body .pk-bk.pk-one .pk-one-t .pk-bkbs.pk-nbbs .pk-bkb{flex:1 1 0 !important;width:auto !important;min-width:0 !important;max-width:none !important}}@media (max-width:1199px){html:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:root body .pk-bcc .pk-bcbr{left:auto !important;right:16px !important;bottom:16px !important;width:auto !important;display:flex !important}html:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:root body .pk-bcc .pk-bcbr .pk-bcsee{flex:none !important;width:auto !important;min-height:44px !important;padding:0 18px !important;border:2px solid rgba(242,237,227,.8) !important;background:rgba(18,22,15,.34) !important;color:#F2EDE3 !important;backdrop-filter:blur(5px);border-radius:999px !important;white-space:nowrap !important;text-transform:uppercase !important;font-size:12px !important;letter-spacing:.06em !important}html:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:roothtml:root body .pk-bcc .pk-bct{right:150px !important;bottom:16px !important}}
 </style>
+<script>/*pk-sg: Schedule grid r2 (Design My Pickathon, Nov 24; Zale "Build as drawn"). Desktop: a column per place, time runs down. Phone: places down the side, the day slides sideways. Gold = in your plan, or matches a thing to do you starred on Tickets (window.__pkXS). Data: window.__pkSG, set by the app each render.*/
+(function () {
+  var ORD = ['woods', 'paddock', 'galaxy', 'cherryhill', 'windmill', 'grove', 'lucky', 'farmhouse', 'coyote', 'refuge', 'curation'];
+  var CAT = { wellness: 'wellness', family: 'family', comedy: 'comedy', literary: 'literary', djs: 'djs', music: 'music', food: 'curation', drinks: 'curation', curation: 'curation' };
+  var STOP = { before: 1, music: 1, school: 1, under: 1, night: 1, after: 1, morning: 1, classes: 1, curation: 1 };
+  var SV = function (on) { return '<svg viewBox="0 0 24 24" width="17" height="17" aria-hidden="true"><path d="M12 2.6l2.9 6.2 6.8.7-5.1 4.6 1.5 6.7L12 17.4l-6.1 3.4 1.5-6.7-5.1-4.6 6.8-.7z" fill="' + (on ? '#F2CF62' : 'none') + '" stroke="' + (on ? '#F2CF62' : 'rgba(245,239,226,.6)') + '" stroke-width="1.8"/></svg>'; };
+  var esc = function (t) { return String(t == null ? '' : t).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
+  var css = '#pk-sg{position:relative;margin:0 0 36px}#pk-sg .sg-sc{overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}#pk-sg .sg-sc::-webkit-scrollbar{display:none}' +
+    '#pk-sg .sg-in{position:relative}#pk-sg .sg-b{position:absolute;border-radius:6px;background:#3d3638;border-left:3px solid rgba(245,239,226,.28);overflow:hidden}' +
+    '#pk-sg .sg-b.wellness,#pk-sg .sg-b.family{background:#343a39}#pk-sg .sg-b.djs{background:#3a3440}#pk-sg .sg-b.curation{background:#3f3a31}#pk-sg .sg-b.comedy,#pk-sg .sg-b.literary{background:#3a3634}' +
+    '#pk-sg .sg-b.on{border-left-color:#F2CF62;background:#4a3f2c}#pk-sg .sg-b.auto{border-left-color:#F2CF62;border-left-style:dashed}' +
+    '#pk-sg .sg-o{position:absolute;inset:0;width:100%;height:100%;padding:5px 30px 4px 8px;border:0;background:transparent;color:#F5EFE2;font:inherit;text-align:left;cursor:pointer;line-height:1.15;display:block}' +
+    '#pk-sg .sg-o b{display:block;font-size:13.5px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}#pk-sg .sg-o i{display:block;font-style:normal;color:#B9B3A6;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}#pk-sg .sg-o i.tg{color:#F2CF62;font-weight:800}' +
+    '#pk-sg .sg-s{position:absolute;right:0;top:0;width:34px;height:40px;padding:6px 0 0;border:0;background:transparent;cursor:pointer;display:flex;justify-content:center;align-items:flex-start}' +
+    '#pk-sg .sg-hr{position:absolute;border-color:rgba(245,239,226,.09);border-style:solid;border-width:0}#pk-sg .sg-hr span{position:absolute;font-size:12px;font-weight:800;color:#F2CF62;white-space:nowrap}' +
+    '#pk-sg .sg-now{position:absolute;z-index:2;background:#F2CF62;pointer-events:none}#pk-sg .sg-now span{position:absolute;background:#F2CF62;color:#2B2628;font-size:10px;font-weight:900;padding:2px 5px;border-radius:3px}' +
+    '#pk-sg .sg-hd{border:0;background:transparent;color:#F5EFE2;font:inherit;font-size:13px;font-weight:800;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px;padding:0 2px;min-height:44px;line-height:1.1;text-align:center}#pk-sg .sg-hd img{width:42px;height:42px}' +
+    '#pk-sg .sg-heads{display:flex;position:sticky;top:0;z-index:4;background:#2B2628;padding:8px 0;border-bottom:1px solid rgba(245,239,226,.12)}' +
+    '#pk-sg .sg-ad{display:flex;gap:10px;align-items:flex-start;margin:10px 0 12px;padding:0 0 10px;border-bottom:1px solid rgba(245,239,226,.12)}#pk-sg .sg-adk{flex:none;width:40px;margin:8px 0 0;font-size:12px;font-weight:800;color:#F2CF62;line-height:1.1}#pk-sg .sg-ad>div{display:flex;flex-wrap:wrap;gap:6px}#pk-sg .sg-ad button{display:flex;align-items:center;gap:8px;max-width:340px;min-height:44px;padding:4px 10px 4px 6px;border:0;border-left:3px solid rgba(245,239,226,.28);border-radius:5px;background:#343a39;color:#B9B3A6;font:inherit;font-size:12px;line-height:1.2;text-align:left;cursor:pointer}#pk-sg .sg-ad button img{width:26px;height:26px;flex:none}#pk-sg .sg-ad button.on{border-left-color:#F2CF62;background:#4a3f2c}#pk-sg .sg-ad b{display:block;color:#F5EFE2;font-weight:800;font-size:13px}' +
+    '#pk-sg .sg-lc{position:sticky;left:0;z-index:3;width:76px;background:#2B2628;box-shadow:6px 0 10px rgba(0,0,0,.4)}#pk-sg .sg-rl{position:absolute;left:0;width:76px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border:0;background:transparent;color:#F5EFE2;font:inherit;font-size:11px;font-weight:800;text-align:center;line-height:1.05;padding:0 4px;cursor:pointer}#pk-sg .sg-rl img{width:30px;height:30px}' +
+    '#pk-sg .sg-rr{position:absolute;left:0;right:0;border-top:1px solid rgba(245,239,226,.08)}#pk-sg .sg-ft{margin:8px 0 0;color:#B9B3A6;font-size:13px}#pk-sg .sg-em{padding:20px;border:1px solid rgba(242,237,227,.14);border-radius:14px;color:#B9B3A6}' +
+    '.pk-sg-mode{max-width:300px}#pk-sg.dk .sg-o{padding:5px 6px 4px 7px}#pk-sg.dk .sg-o b{white-space:normal;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;font-size:13px;line-height:1.12;margin-bottom:2px}#pk-sg.dk .sg-s{top:auto;bottom:0;width:34px;height:34px;padding:0;align-items:center}#pk-sg.dk .sg-o i{padding-right:24px}#pk-sg.dk .sg-o i.tg{display:none}';
+  var mem = {}, RAF = 0, ACT = {};
+  function mins(iso, day) { return Math.round((Date.parse(iso.replace(' ', 'T') + ':00Z') - Date.parse(day + 'T00:00:00Z')) / 6e4); }
+  function t12(m) { var H = Math.floor(m / 60) % 24, M = m % 60; return ((H + 11) % 12 + 1) + (M ? ':' + (M < 10 ? '0' : '') + M : '') + (H < 12 ? 'a' : 'p'); }
+  function flags(sets) { var F = {}, X = []; try { X = (window.__pkXS && window.__pkXS.all && window.__pkXS.all()) || []; } catch (e) {} if (!X.length) return F;
+    X.forEach(function (r) { var c = CAT[r.e] || r.e, pool = sets.filter(function (s) { return s.hk === r.hk && s.l === c; }); if (!pool.length) return;
+      var kw = String(r.t || '').toLowerCase().split(/[^a-z]+/).filter(function (w) { return w.length >= 5 && !STOP[w]; });
+      var hit = pool.filter(function (s) { var n = s.n.toLowerCase(); return kw.some(function (w) { return n.indexOf(w.slice(0, 5)) >= 0; }); });
+      (hit.length ? hit : pool).forEach(function (s) { if (!F[s.id]) F[s.id] = r.t; }); }); return F; }
+  function lanes(list) { var L = []; list.sort(function (a, b) { return a.a - b.a; }).forEach(function (x) { var i = 0; while (i < L.length && L[i] > x.a) i++; L[i] = x.b; x.ln = i; }); return Math.max(1, L.length); }
+  function blk(x, F, style, meta) { var s = x.s0, fl = F[s.id], on = s.w === 'mine' || !!fl; ACT[s.id] = s;
+    return '<div class="sg-b ' + esc(s.l) + (on ? ' on' : s.w === 'auto' ? ' auto' : '') + '" style="' + style + '"><button type="button" class="sg-o" data-sg="o" data-i="' + esc(s.id) + '"' + (fl ? ' title="You starred ' + esc(fl) + ' on Tickets"' : '') + '><b>' + esc(s.n) + '</b><i>' + meta + '</i>' + (fl ? '<i class="tg">★ You starred ' + esc(fl) + '</i>' : '') + '</button><button type="button" class="sg-s" data-sg="s" data-i="' + esc(s.id) + '" aria-pressed="' + (s.w === 'mine' ? 'true' : s.w === 'auto' ? 'mixed' : 'false') + '" aria-label="' + esc(s.label) + '">' + SV(s.w !== 'off' || !!fl) + '</button></div>'; }
+  function paint() {
+    var host = document.getElementById('pk-sg'), G = window.__pkSG; if (!host || !G) return;
+    var sig = G.v + '|' + (function () { try { return JSON.stringify((window.__pkXS && window.__pkXS.all()) || []).length; } catch (e) { return 0; } })();
+    if (host.getAttribute('data-v') === sig && host.firstChild) return;
+    var old = host.querySelector('.sg-sc'); if (old && host.getAttribute('data-day')) mem[host.getAttribute('data-day') + (G.phone ? 'p' : 'd')] = old.scrollLeft;
+    host.setAttribute('data-v', sig); host.setAttribute('data-day', G.day); host.className = G.phone ? 'ph' : 'dk'; ACT = {};
+    if (!document.getElementById('pk-sg-css')) { var st = document.createElement('style'); st.id = 'pk-sg-css'; st.textContent = css; document.head.appendChild(st); }
+    if (G.empty) { host.innerHTML = '<p class="sg-em">Nothing matches this filter on this day.</p>'; return; }
+    var F = flags(G.sets), X = G.sets.map(function (s) { return { s0: s, a: mins(s.s, G.day), b: mins(s.e, G.day) }; }).filter(function (x) { return x.b > x.a; });
+    var T0 = Math.floor(Math.min.apply(null, X.map(function (x) { return x.a; })) / 60) * 60, T1 = Math.ceil(Math.max.apply(null, X.map(function (x) { return x.b; })) / 60) * 60;
+    var by = {}; X.forEach(function (x) { (by[x.s0.hk] = by[x.s0.hk] || []).push(x); });
+    var cols = ORD.filter(function (k) { return by[k]; }).concat(Object.keys(by).filter(function (k) { return ORD.indexOf(k) < 0; }));
+    var nowM = G.fest && G.nowMs ? Math.round((G.nowMs - Date.parse(G.day + 'T00:00:00Z')) / 6e4) : -1, h = '', hr, k;
+    var lab = function (k) { return esc(G.hoods[k] || k); };
+    if (G.phone) {
+      var PX = 2.6, LW = 76, top = 30, rows = '', lc = '', blocks = '', y = top;
+      cols.forEach(function (k) { var n = lanes(by[k]), lh = 52, ht = n * lh + 8;
+        lc += '<button type="button" class="sg-rl" data-sg="h" data-k="' + k + '" style="top:' + y + 'px;height:' + ht + 'px"><img src="ic2/' + k + '.png" alt="">' + lab(k) + '</button>';
+        rows += '<div class="sg-rr" style="top:' + y + 'px;height:' + ht + 'px"></div>';
+        by[k].forEach(function (x) { blocks += blk(x, F, 'left:' + (LW + (x.a - T0) * PX + 2) + 'px;top:' + (y + 4 + x.ln * lh) + 'px;width:' + Math.max((x.b - x.a) * PX - 4, 64) + 'px;height:' + (lh - 6) + 'px', t12(x.a) + '–' + t12(x.b)); });
+        y += ht; });
+      var W = LW + (T1 - T0) * PX; hr = '';
+      for (k = T0; k < T1; k += 60) hr += '<div class="sg-hr" style="left:' + (LW + (k - T0) * PX) + 'px;top:0;bottom:0;border-left-width:1px"><span style="top:6px;left:5px">' + t12(k) + '</span></div>';
+      if (nowM >= T0 && nowM < T1) hr += '<div class="sg-now" style="left:' + (LW + (nowM - T0) * PX) + 'px;top:0;bottom:0;width:2px"><span style="top:4px;left:-16px">NOW</span></div>';
+      h = '<div class="sg-sc"><div class="sg-in" style="width:' + W + 'px;height:' + (y + 6) + 'px"><div class="sg-lc" style="height:' + (y + 6) + 'px">' + lc + '</div>' + hr + rows + blocks + '</div></div><p class="sg-ft">Place names stay put; slide the day sideways. Tap a set to open it, ☆ to add it to your plan.</p>';
+      host.innerHTML = h;
+      var sc = host.querySelector('.sg-sc'), key = G.day + 'p';
+      if (mem[key] != null) sc.scrollLeft = mem[key]; else { var first = nowM >= T0 ? nowM - 30 : (function () { var m = X.filter(function (x) { return x.s0.l === 'music'; }).map(function (x) { return x.a; }); return m.length ? Math.min.apply(null, m) - 15 : T0; })(); sc.scrollLeft = Math.max(0, (first - T0) * PX); }
+    } else {
+      host.style.marginLeft = host.style.marginRight = ''; host.style.width = ''; var pw = host.clientWidth || 1100, want = Math.min(window.innerWidth - 48, 1560); if (want > pw + 40) { var ml = Math.round((pw - want) / 2); host.style.width = want + 'px'; host.style.marginLeft = ml + 'px'; }
+      var DP = 1.3, TW = 48, hostW = host.clientWidth || 1200, LN = {}, units = 0; cols.forEach(function (k) { LN[k] = lanes(by[k].filter(function (x) { return x.b - x.a < 180; }).map(function (x) { return x; })); units += LN[k] > 1 ? 1.7 : 1; });
+      var unit = Math.max(88, Math.floor((hostW - TW) / units)), CW = {}, CX = {}, cx = TW; cols.forEach(function (k) { CW[k] = Math.floor(unit * (LN[k] > 1 ? 1.7 : 1)); CX[k] = cx; cx += CW[k]; }); var cw = unit, H = (T1 - T0) * DP, heads = '', g = '', ad = '', over = cx > hostW + 2;
+      cols.forEach(function (k, ci) { var all = by[k], longs = all.filter(function (x) { return x.b - x.a >= 180; }), rest = all.filter(function (x) { return x.b - x.a < 180; }), n = lanes(rest), w = (CW[k] - 6) / n;
+        heads += '<div style="width:' + CW[k] + 'px;flex:none"><button type="button" class="sg-hd" data-sg="h" data-k="' + k + '" style="width:100%"><img src="ic2/' + k + '.png" alt="">' + lab(k) + '</button>' + '</div>'; longs.forEach(function (x) { var s = x.s0, fl = F[s.id]; ACT[s.id] = s; ad += '<button type="button" data-sg="o" data-i="' + esc(s.id) + '" class="' + (s.w === 'mine' || fl ? 'on' : '') + '"><img src="ic2/' + k + '.png" alt=""><span><b>' + esc(s.n) + '</b>' + lab(k) + ' · ' + t12(x.a) + '–' + t12(x.b) + (fl ? ' · ★ You starred ' + esc(fl) : '') + '</span></button>'; });
+        rest.forEach(function (x) { var tall = (x.b - x.a) * DP; g += blk(x, F, 'left:' + (CX[k] + 3 + x.ln * w) + 'px;top:' + ((x.a - T0) * DP + 2) + 'px;width:' + (w - 4) + 'px;height:' + Math.max(tall - 4, 26) + 'px', n === 1 ? t12(x.a) + '–' + t12(x.b) : t12(x.a)); }); });
+      hr = '';
+      for (k = T0; k < T1; k += 60) hr += '<div class="sg-hr" style="left:0;right:0;top:' + ((k - T0) * DP) + 'px;border-top-width:1px"><span style="left:4px;top:4px">' + t12(k) + '</span></div>';
+      if (nowM >= T0 && nowM < T1) hr += '<div class="sg-now" style="left:' + TW + 'px;right:0;top:' + ((nowM - T0) * DP) + 'px;height:2px"><span style="left:-' + (TW - 6) + 'px;top:-8px">NOW</span></div>';
+      var inner = '<div class="sg-heads" style="padding-left:' + TW + 'px;width:' + cx + 'px;box-sizing:border-box">' + heads + '</div>' + (ad ? '<div class="sg-ad"><span class="sg-adk">All day</span><div>' + ad + '</div></div>' : '') + '<div class="sg-in" style="height:' + H + 'px;width:' + cx + 'px">' + hr + g + '</div>';
+      host.innerHTML = over ? '<div class="sg-sc">' + inner + '</div>' : inner;
+      try { var sb = document.querySelector('.pk-schbar'), hd = host.querySelector('.sg-heads'); if (sb && hd && !over && getComputedStyle(sb).position === 'sticky') hd.style.top = ((parseFloat(getComputedStyle(sb).top) || 0) + sb.offsetHeight) + 'px'; } catch (e) {}
+      var sc2 = host.querySelector('.sg-sc'); if (sc2 && mem[G.day + 'd'] != null) sc2.scrollLeft = mem[G.day + 'd'];
+    }
+  }
+  function later() { if (RAF) return; RAF = requestAnimationFrame(function () { RAF = 0; paint(); }); }
+  document.addEventListener('click', function (e) { var b = e.target.closest && e.target.closest('#pk-sg [data-sg]'); if (!b) return; var G = window.__pkSG || {}, t = b.getAttribute('data-sg');
+    if (t === 'h') { if (G.openH) G.openH(b.getAttribute('data-k')); return; }
+    var s = ACT[b.getAttribute('data-i')]; if (!s) return; if (t === 's') { var sc = document.querySelector('#pk-sg .sg-sc'); if (sc) mem[G.day + (G.phone ? 'p' : 'd')] = sc.scrollLeft; s.tog(); } else s.open(); });
+  window.addEventListener('pkxs', later); window.addEventListener('resize', function () { var h = document.getElementById('pk-sg'); if (h) { h.removeAttribute('data-v'); later(); } });
+  new MutationObserver(function () { if (document.getElementById('pk-sg')) later(); }).observe(document.body, { childList: true, subtree: true });
+  window.__pkSGlater = later;
+  window.__pkSGpaint = function () { var h = document.getElementById('pk-sg'); if (h) h.removeAttribute('data-v'); paint(); };
+})();
+</script>
 <script>/*pk-acct: My Pickathon account (sample data only until the FMS account service is live) and Past Pickathons (stars and years saved in this browser). Hooks: __pkAcct.sample('ready'|'pending'|'late'|'paid'|'none'|'out'), __pkAcct.signIn(), __pkAcct.signOut()*/
 (function () {
   var ME = null, sheet = null, S = { step: 'email', email: '', err: '', cool: 0, ban: '', y: '', sel: [] }, T = null, QI = 0, prevF = null, RAF = 0, OPEN = false;
