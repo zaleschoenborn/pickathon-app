@@ -1014,7 +1014,7 @@ def year_page(y):
     _yic = 'ext/icons/y%s-icon.png' % y[2:]
     if os.path.exists(ROOT + _yic):
         h += '<div class="yjoin" aria-hidden="true"><img src="%s" alt=""></div>' % img(_yic, 240, fmt='PNG')
-    if st.get('headline'):
+    if False and st.get('headline'):  # r103: year stories hidden for now (Zale Nov 24 13:31, copy_review-112); the words stay in Copy Review's file
         h += ('<section class="story short"><p class="kick">The %s story</p><p class="lead">%s.</p>%s</section>') % (y, E(st['headline'].rstrip('.')), ('<p class="body" hidden>%s</p><button class="chip stog" aria-expanded="false" data-open="Read the %s story" data-shut="Show less"><span>Read the %s story</span> %s</button>' % (E(st['story']), y, y, ICON['caret'])) if st.get('story') else '')
     lp = ''  # Nov 21 r27 (Zale): the lineup picker is off until the other lineups (Family, DJs, Comedy...) are drawn; it listed them with nothing behind them
     # r49 (Zale, Nov 22): the music question comes first, before "Begin here", and filters both Begin here and everyone below
@@ -1113,12 +1113,13 @@ for _f in sorted(_gl.glob(ROOT + 'stories/stories_[0-9]*_draft*.csv')):
         if _r.get('story'): _STORIES[(_slug(_r['act']), str(_r['year']))] = _r
 # r86 (copy_review-97, Nov 24): Copy Review's changed rows from Artist Classification's returns overlay the year files, oldest batch
 # first (returns, then b16_21, b22_25, b26_30); they carry intro and story only, so sets and line stay from the year file.
-def _rorder(f):
-    for i, t in enumerate(('_b16_21', '_b22_25', '_b26_30')):
-        if t in f: return (i + 1, f)
-    return (0, f)
+def _rorder(f):  # r103: oldest batch first so a newer file always wins; single-act and voice-pass files come last
+    b = os.path.basename(f)
+    for i, t in enumerate(('_gapfile', '_b16_21', '_b22_25', '_b26_30', '_b31_35_', '_b31_35a', 'late_gapfiles', 'otis_taylor', 'shakey_graves', 'heft_returns', 'voice_pass')):
+        if t in b: return (i + 1, b)
+    return (0, b)
 _NCHG = 0
-for _f in sorted(_gl.glob(ROOT + 'stories/stories_changes_returns_*.csv'), key=_rorder):
+for _f in sorted([x for x in _gl.glob(ROOT + 'stories/stories_changes_*.csv') if '_v3_' not in x], key=_rorder):
     for _r in csv.DictReader(open(_f, encoding='utf-8-sig')):
         if not _r.get('story'): continue
         _k = (_slug(_r['act']), str(_r['year']))
