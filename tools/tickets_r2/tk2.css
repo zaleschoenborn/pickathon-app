@@ -782,3 +782,261 @@ body:has(#tk2 #tk-bar:not([hidden])) #pk-toast,body:has(#pk-co) #pk-toast{displa
 #tk2 .tk-s-stack .tk-s-end{padding:22px 0 4px;margin:6px 0 0;background:none;border-top:1px solid var(--line)}
 #tk2 .tk-s-stack .tk-s-pl li{border-top:1px dotted var(--line)}
 #tk2 .tk-e-why .tk-e-reel{margin-left:0;margin-right:0;padding-left:12px;padding-right:12px;scroll-padding-left:12px}
+/* ---------- Intro, days first (Nov 23): .tk-e3. Phone and tablet: one column (hook, then the days). Desktop 1025+: hook left, days right. ---------- */
+.tk2 .tk-e3-in{display:block}
+.tk2 .tk-e3-ph{position:relative;height:200px;overflow:hidden}
+.tk2 .tk-e3-ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 40%}
+.tk2 .tk-e3-ph:after{content:'';position:absolute;inset:auto 0 0 0;height:64px;background:linear-gradient(transparent,var(--ground))}
+.tk2 .tk-e3-buy{padding:4px var(--gutter) 0}
+.tk2 .tk-e3-sale{margin:6px 0 4px;font-weight:700;font-size:var(--t-sm);color:var(--cream-dim)}
+.tk2 .tk-e3-sale .tk-runout{color:var(--gold,#F2CF62);margin-left:.35em}
+.tk2 .tk-e3-sale .tk-runout:before{content:'· ';color:var(--cream-dim)}
+.tk2 .tk-e3 .tk-e-days h1{margin:6px 0 4px;font-size:clamp(26px,7.4vw,34px)!important;line-height:1.05;color:var(--cream)}
+.tk2 .tk-e3 .tk-e-next{margin-top:14px}
+.tk2 .tk-e3-know{margin-top:18px;border-top:1px solid var(--line);padding-top:4px}
+.tk2 .tk-e3-know>summary{list-style:none;display:flex;align-items:center;gap:8px;min-height:48px;cursor:pointer;color:var(--gold,#F2CF62);font-weight:800}
+.tk2 .tk-e3-know>summary::-webkit-details-marker{display:none}
+.tk2 .tk-e3-know[open]>summary .tk-e-chev{transform:rotate(180deg)}
+.tk2 .tk-e3-more{padding:8px var(--gutter) 0}
+.tk2 .tk-e3-why{margin:14px 0 0}
+/* the experience picker (cold visitors only) */
+.tk2 .tk-x{padding:14px 0 6px}
+.tk2 .tk-x-k{padding:0 var(--gutter);margin:0 0 10px}
+.tk2 .tk-x-ch{display:flex;gap:8px;overflow-x:auto;padding:0 var(--gutter) 2px;scrollbar-width:none;scroll-padding:0 var(--gutter)}
+.tk2 .tk-x-ch::-webkit-scrollbar{display:none}
+.tk2 .tk-x-chip{flex:none;display:inline-flex;align-items:center;gap:7px;min-height:44px;padding:0 14px;border:2px solid var(--line);border-radius:6px;background:transparent;color:var(--cream);font:inherit;font-size:15px;font-weight:800;cursor:pointer}
+.tk2 .tk-x-chip[aria-pressed="true"]{background:var(--cream);color:#12160F;border-color:var(--cream)}
+.tk2 .tk-x-ic{width:18px;height:18px;flex:none}
+.tk2 .tk-x-row{list-style:none;margin:12px 0 0;padding:0 var(--gutter);display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding:0 var(--gutter);scrollbar-width:none}
+.tk2 .tk-x-row::-webkit-scrollbar{display:none}
+.tk2 .tk-x-c{flex:none;width:min(78vw,300px);scroll-snap-align:start}
+.tk2 .tk-x-ph{position:relative;display:block;width:100%;height:min(80vw,320px);padding:0;border:0;border-radius:10px;overflow:hidden;background:var(--deep);cursor:pointer;text-align:left;color:var(--cream)}
+.tk2 .tk-x-ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.tk2 .tk-x-sh{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.38) 0,rgba(0,0,0,0) 22%,rgba(0,0,0,0) 45%,rgba(18,16,17,.92) 100%)}
+.tk2 .tk-x-yr{position:absolute;top:12px;right:14px;font-size:26px!important;line-height:1;color:var(--cream)}
+.tk2 .tk-x-ph .tk-ring{top:42%}
+.tk2 .tk-x-low{position:absolute;left:14px;right:14px;bottom:14px;display:block}
+.tk2 .tk-x-kk{display:flex;justify-content:space-between;gap:8px;font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase}
+.tk2 .tk-x-kk b{color:var(--gold,#F2CF62)}
+.tk2 .tk-x-n{display:block;margin:4px 0 4px;font-size:22px!important;line-height:1.05;color:var(--cream)}
+.tk2 .tk-x-l{display:block;font-size:15px;line-height:1.35;color:var(--cream)}
+.tk2 .tk-x-line{padding:0 var(--gutter);margin:12px 0 0;font-size:15px;line-height:1.4;color:var(--cream-dim)}
+.tk2 .tk-x-line b{display:block;margin-top:4px;color:var(--gold,#F2CF62)}
+.tk2 .tk-e3-cold .tk-e3-buy{margin-top:10px;border-top:1px solid var(--line);margin-left:var(--gutter);margin-right:var(--gutter);padding-left:0;padding-right:0;padding-top:10px}
+@media (min-width:600px) and (max-width:1024px){
+ .tk2 .tk-e3{max-width:660px;margin:0 auto}
+ .tk2 .tk-e3-ph{height:260px;border-radius:0 0 12px 12px}
+ .tk2 .tk-x-c{width:300px}
+ .tk2 .tk-x-ph{height:360px}
+}
+@media (min-width:1025px){
+ .tk2 .tk-e3-in{display:grid;grid-template-columns:minmax(0,1fr) 440px;gap:56px;max-width:1200px;margin:0 auto;padding:36px var(--gutter) 0;align-items:start}
+ .tk2 .tk-e3-cold .tk-e3-buy,.tk2 .tk-e3-buy{margin:0;border:0;padding:0}
+ .tk2 .tk-e3-ph{height:460px;border-radius:12px}
+ .tk2 .tk-e3-ph:after{display:none}
+ .tk2 .tk-x{padding:0}
+ .tk2 .tk-x-k,.tk2 .tk-x-ch,.tk2 .tk-x-row,.tk2 .tk-x-line{padding-left:0;padding-right:0}
+ .tk2 .tk-x-c{width:300px}
+ .tk2 .tk-x-ph{height:400px}
+ .tk2 .tk-e3-more{max-width:1200px;margin:24px auto 0}
+}
+#tk2 .tk-e3 .tk-e-days{padding:4px 0 0;margin:0;max-width:none}
+#tk2 .tk-e3 .tk-e-days h1{margin:4px 0 4px!important;padding:0!important}
+
+/* a cold visitor's experience pick lights its row in the steps (Family: kids) */
+#tk2 .tk-g-hl,.tk2 .tk-g-hl,.tk-gscrim .tk-g-hl{outline:2px solid #F2CF62;outline-offset:2px;border-radius:8px;background:rgba(242,207,98,.07)}
+.tk-g-yp{font-style:normal;color:#F2CF62;font-weight:700}
+
+/* Music setup and the bet (Zale, Nov 23): one line above the bands, one line and the lineup link below */
+.tk2 .tk-x-set{padding:0 var(--gutter);margin:4px 0 0;font-size:17px;line-height:1.35;font-weight:700;color:var(--cream);max-width:560px}
+.tk2 .tk-x-next{padding:0 var(--gutter);margin:12px 0 0;font-size:15px;line-height:1.4;color:var(--cream-dim)}
+.tk2 .tk-x-next span{margin-right:6px}.tk2 .tk-x-next .tk-tlink{color:var(--gold,#F2CF62);font-weight:800}
+@media (min-width:1025px){.tk2 .tk-x-set,.tk2 .tk-x-next{padding-left:0;padding-right:0}}
+.tk2 .tk-x-set{margin-top:14px}
+.tk2 .tk-x-next span{display:block;margin:0 0 2px}
+#tk2 .tk-x-next .tk-tlink{min-height:44px;padding:0;display:inline-flex;align-items:center}
+
+/* cold-visitor headline above the experience question (Zale, Nov 23) */
+#tk2 .tk-x-h{padding:0 var(--gutter);margin:6px 0 14px;font-size:clamp(24px,6.6vw,32px)!important;line-height:1.08;color:var(--cream);max-width:620px}
+@media (min-width:1025px){#tk2 .tk-x-h{padding:0;font-size:36px!important}}
+#tk2 #tk-x .tk-x-k{font-size:12.5px!important;letter-spacing:.14em!important;line-height:1.3!important;margin:0 0 10px!important}
+/* an experience found in one place shows one wide card instead of a lonely swipe */
+.tk2 .tk-x-row>li:only-child{width:100%;max-width:560px}
+
+#tk2 .tk-x-tag{font-family:inherit;font-size:13px;letter-spacing:.06em;font-weight:700;color:var(--cream-dim);text-transform:lowercase}
+
+/* warm visitors: a small way into the experience picker (Zale, Nov 23) */
+.tk2 .tk-e3-wl{padding:0 var(--gutter);margin:6px 0 0}
+#tk2 .tk-e3-wl .tk-tlink{min-height:44px;color:var(--gold,#F2CF62);font-weight:800}
+@media (min-width:1025px){.tk2 .tk-e3-wl{padding:0}}
+
+/* Nov 22 draft, step 1: the ticket under the days (dark, gold rule) and the Patron card at four days */
+.tk-g-that{border:2px solid var(--gold,#F2CF62);border-radius:10px;padding:14px 16px 14px;margin:14px 0 10px;background:transparent;color:#F5EFE2}
+.tk-g-thatk{margin:0;font:800 12.5px/1 'Bricolage Grotesque',system-ui,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--gold,#F2CF62)}
+.tk-g-thatn{margin:6px 0 2px!important;font-size:26px!important;line-height:1.05;color:#F5EFE2}
+.tk-g-thatm{margin:0;font-size:15px;color:rgba(245,239,226,.8)}
+.tk-g-thatp{display:flex;justify-content:space-between;align-items:baseline;margin:12px 0 0}
+.tk-g-thatp b{font-size:28px;font-weight:800;color:var(--gold,#F2CF62)}
+.tk-g-thatp span{font-size:15px;color:rgba(245,239,226,.8)}
+.tk-g-pat{border:2px solid rgba(245,239,226,.3);border-radius:10px;padding:14px 16px;margin:0 0 10px;color:#F5EFE2}
+.tk-g-path{display:flex;justify-content:space-between;align-items:baseline;margin:0}
+.tk-g-path .tk-d{font-size:19px!important;color:#F5EFE2}
+.tk-g-path .tk-num{color:var(--gold,#F2CF62);font-size:16px}
+.tk-g-pat ul{list-style:none;margin:10px 0 12px;padding:0;font-size:15px;line-height:1.6;color:rgba(245,239,226,.85)}
+.tk-g-pat li:before{content:'✦';color:var(--gold,#F2CF62);margin-right:8px}
+.tk-g-patb{min-height:44px;padding:0 16px;border:2px solid #F5EFE2;border-radius:6px;background:transparent;color:#F5EFE2;font:800 13px 'Bricolage Grotesque',system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;cursor:pointer}
+.tk-g-patb{font-family:inherit!important;font-weight:800}
+
+/* Nov 22 drafts, steps 2-4: plain header, named steps, bottom total (Nov 23 build) */
+.tk-gscrim .tk-g-hd2{display:flex;align-items:center;gap:12px;padding:12px 16px;background:#3A3436;border-bottom:1px solid rgba(245,239,226,.12)}
+.tk-gscrim .tk-g-hd2 svg,.tk-gscrim .tk-g-hd2 img{height:30px;width:auto}
+.tk-gscrim .tk-g-hdb{all:unset;cursor:pointer;min-width:32px;min-height:44px;display:flex;align-items:center;justify-content:center;font-size:30px;color:#F5EFE2}
+.tk-gscrim .tk-g-hdt{margin:0;padding-left:12px;border-left:1px solid rgba(245,239,226,.3);display:flex;flex-direction:column;line-height:1.15}
+.tk-gscrim .tk-g-hdt b{font-size:17px;color:#F5EFE2}.tk-gscrim .tk-g-hdt span{font-size:14px;color:rgba(245,239,226,.75)}
+.tk-gscrim .tk-g-bar2{list-style:none;display:flex;gap:6px;margin:12px 16px 0;padding:0}
+.tk-gscrim .tk-g-bar2 li{flex:1 1 auto;border-top:4px solid rgba(245,239,226,.25);padding-top:6px;font:800 11.5px/1.1 inherit;letter-spacing:.1em;text-transform:uppercase;color:rgba(245,239,226,.6);border-radius:2px}
+.tk-gscrim .tk-g-bar2 li.done{border-color:var(--gold,#F2CF62)}
+.tk-gscrim .tk-g-bar2 li.on{border-color:var(--gold,#F2CF62);color:var(--gold,#F2CF62)}
+.tk-gscrim .tk-g-bar2 button{all:unset;cursor:pointer;color:rgba(245,239,226,.85)}
+.tk-gscrim .tk-g-stepn{margin:6px 16px 0;font-size:13px;color:rgba(245,239,226,.6)}
+.tk-gscrim .tk-g-tot{margin:0;display:flex;flex-direction:column;line-height:1.1;margin-right:auto}
+.tk-gscrim .tk-g-tot b{font-size:20px;color:#F5EFE2}.tk-gscrim .tk-g-tot span{font-size:13px;color:rgba(245,239,226,.7)}
+.tk-gscrim .tk-g-foot{align-items:center}
+/* who: everyone on the same days */
+.tk-gscrim .tk-g-same{all:unset;box-sizing:border-box;display:flex;align-items:center;gap:12px;min-height:48px;margin:14px 0 6px;font-weight:700;font-size:16px;color:#F5EFE2;cursor:pointer}
+.tk-gscrim .tk-g-sw{flex:none;width:46px;height:28px;border-radius:14px;background:rgba(245,239,226,.25);position:relative}
+.tk-gscrim .tk-g-sw:after{content:'';position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:#F5EFE2;transition:left .15s}
+.tk-gscrim .tk-g-same[aria-checked="true"] .tk-g-sw{background:var(--gold,#F2CF62)}
+.tk-gscrim .tk-g-same[aria-checked="true"] .tk-g-sw:after{left:21px;background:#12160F}
+.tk-gscrim .tk-g-ppl{border:2px solid rgba(245,239,226,.2);border-radius:10px;padding:4px 14px;margin:6px 0 10px}
+.tk-gscrim .tk-g-pr{padding:12px 0;border-bottom:1px solid rgba(245,239,226,.12)}
+.tk-gscrim .tk-g-pr:last-child{border-bottom:0}
+.tk-gscrim .tk-g-prh{display:flex;justify-content:space-between;align-items:flex-start;margin:0 0 8px;font-size:16px;color:#F5EFE2}
+.tk-gscrim .tk-g-prh span{display:flex;flex-direction:column;align-items:flex-end;line-height:1.2}
+.tk-gscrim .tk-g-prh em{font-style:normal;font-weight:800;color:var(--gold,#F2CF62);font-size:14.5px}
+.tk-gscrim .tk-g-prh small{font-size:12.5px;color:rgba(245,239,226,.65)}
+.tk-gscrim .tk-g-prk .tk-g-prh{margin:0}
+.tk-gscrim .tk-g-pdays{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.tk-gscrim .tk-g-pd{min-height:44px;border:2px solid rgba(245,239,226,.3);border-radius:6px;background:transparent;color:#F5EFE2;font:800 14px/1 inherit;cursor:pointer}
+.tk-gscrim .tk-g-pd[aria-pressed="true"]{background:var(--gold,#F2CF62);border-color:var(--gold,#F2CF62);color:#12160F}
+.tk-gscrim .tk-g-pd:disabled{opacity:.35}
+
+/* Nov 22 drafts, steps 3-4 and the So far panel */
+.tk-gscrim .tk-g-ftot{all:unset;cursor:pointer;display:flex;flex-direction:column;line-height:1.15;margin-right:auto;min-height:44px;justify-content:center}
+.tk-gscrim .tk-g-ftot b{font-size:20px;color:#F5EFE2}.tk-gscrim .tk-g-ftot span{font-size:13px;color:rgba(245,239,226,.7)}.tk-gscrim .tk-g-ftot i{font-style:normal;font-size:12.5px;font-weight:800;color:var(--gold,#F2CF62)}
+.tk-gscrim .tk-g-rads{display:flex;flex-direction:column;gap:10px;margin:12px 0}
+.tk-gscrim .tk-g-rad{border:2px solid rgba(245,239,226,.25);border-radius:10px;padding:12px 14px}
+.tk-gscrim .tk-g-rad.on{border-color:var(--gold,#F2CF62)}
+.tk-gscrim .tk-g-rad.off{opacity:.45}
+.tk-gscrim .tk-g-rad>button{all:unset;cursor:pointer;display:flex;align-items:flex-start;gap:12px;width:100%;min-height:36px}
+.tk-gscrim .tk-g-rad i{flex:none;width:20px;height:20px;border-radius:50%;border:2px solid rgba(245,239,226,.6);margin-top:2px;box-sizing:border-box}
+.tk-gscrim .tk-g-rad.on i{border:6px solid var(--gold,#F2CF62)}
+.tk-gscrim .tk-g-rad span{flex:1;display:flex;flex-direction:column;gap:3px}
+.tk-gscrim .tk-g-rad b{font-size:16px;color:#F5EFE2}.tk-gscrim .tk-g-rad small{font-size:13.5px;line-height:1.35;color:rgba(245,239,226,.75)}
+.tk-gscrim .tk-g-rad em{font-style:normal;font-weight:800;color:var(--gold,#F2CF62);font-size:15px;white-space:nowrap}
+.tk-gscrim .tk-g-rad a{display:inline-block;margin:6px 0 0 32px;color:var(--gold,#F2CF62);font-weight:800;font-size:13.5px;text-decoration:none}
+.tk-gscrim .tk-g-big{all:unset;cursor:pointer;display:block;font-size:14px;color:rgba(245,239,226,.75);margin:2px 0 8px;min-height:32px}
+.tk-gscrim .tk-g-big u{color:var(--gold,#F2CF62);font-weight:800;text-decoration:none}
+.tk-gscrim .tk-g-q{margin-top:22px!important;font-size:18px!important;letter-spacing:.04em!important}
+.tk-gscrim .tk-g-olist{list-style:none;margin:12px 0 0;padding:0;border:2px solid rgba(245,239,226,.2);border-radius:10px 10px 0 0;overflow:hidden}
+.tk-gscrim .tk-g-olist li{display:flex;justify-content:space-between;gap:10px;padding:10px 14px;border-bottom:1px solid rgba(245,239,226,.12);font-size:15px;color:#F5EFE2}
+.tk-gscrim .tk-g-ototal{display:flex;justify-content:space-between;align-items:center;margin:0 0 6px;padding:12px 14px;background:rgba(242,207,98,.14);border:2px solid rgba(245,239,226,.2);border-top:0;border-radius:0 0 10px 10px}
+.tk-gscrim .tk-g-ototal span{display:flex;flex-direction:column}.tk-gscrim .tk-g-ototal small{font-size:13px;color:rgba(245,239,226,.7)}
+.tk-gscrim .tk-g-ototal b{font-size:18px;color:#F5EFE2}.tk-gscrim .tk-g-ototal>b{font-size:22px;color:var(--gold,#F2CF62)}
+.tk-gscrim .tk-g-edits{display:flex;gap:18px;justify-content:flex-end;margin:6px 0 0}
+.tk-gscrim .tk-g-edits .tk-tlink{color:var(--gold,#F2CF62);font-weight:800;font-size:13px;letter-spacing:.08em;text-transform:uppercase}
+.tk-gscrim .tk-g-adds{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:10px 0}
+.tk-gscrim .tk-g-addc{position:relative;display:flex;flex-direction:column;gap:2px;text-align:left;padding:10px 10px 12px;min-height:118px;border:2px solid rgba(245,239,226,.25);border-radius:10px;background:transparent;color:#F5EFE2;cursor:pointer;font:inherit}
+.tk-gscrim .tk-g-addc.on{border-color:var(--gold,#F2CF62)}
+.tk-gscrim .tk-g-addc b{font-size:15px;line-height:1.15}.tk-gscrim .tk-g-addc span{font-size:12.5px;color:rgba(245,239,226,.7)}
+.tk-gscrim .tk-g-addc em{font-style:normal;font-weight:800;color:var(--gold,#F2CF62);font-size:14px;margin-top:auto}
+.tk-gscrim .tk-g-addc i{position:absolute;right:8px;bottom:8px;width:28px;height:28px;border:2px solid #F5EFE2;border-radius:6px;display:flex;align-items:center;justify-content:center;font-style:normal;font-weight:800}
+.tk-gscrim .tk-g-addc.on i{background:var(--gold,#F2CF62);border-color:var(--gold,#F2CF62);color:#12160F}
+.tk-gscrim .tk-g-addk{margin:8px 0 0;font-size:14px;color:rgba(245,239,226,.75)}
+.tk-gscrim .tk-g-rev{position:sticky;bottom:76px;margin:0 -16px;padding:10px 16px 14px;background:#3A3436;border-top:1px solid rgba(245,239,226,.2);border-radius:14px 14px 0 0;box-shadow:0 -10px 30px rgba(0,0,0,.45)}
+.tk-gscrim .tk-g-revg{display:block;width:44px;height:4px;border-radius:2px;background:rgba(245,239,226,.4);margin:0 auto 10px}
+
+/* Nov 22 draft: "I know what I want" as one plain list */
+.tk2 .tk-t-k{margin:18px 0 6px!important}
+.tk2 .tk-t-list{border-top:1px solid var(--line)}
+.tk2 .tk-t-r{display:grid;grid-template-columns:1fr auto auto;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)}
+.tk2 .tk-t-r p{margin:0;display:flex;flex-direction:column;gap:2px}.tk2 .tk-t-r b{font-size:16px;color:var(--cream)}.tk2 .tk-t-r p span{font-size:13px;color:var(--cream-dim)}
+.tk2 .tk-t-r em{font-style:normal;font-weight:800;font-size:15px;color:var(--cream)}
+.tk2 .tk-t-r.off{opacity:.45}
+.tk2 .tk-t-stp{display:flex;align-items:center;border:2px solid var(--line);border-radius:8px}
+.tk2 .tk-t-r.on .tk-t-stp{border-color:var(--gold,#F2CF62)}
+.tk2 .tk-t-stp button{width:40px;height:40px;border:0;background:transparent;color:var(--cream);font-size:20px;cursor:pointer}
+.tk2 .tk-t-stp button:disabled{opacity:.35}
+.tk2 .tk-t-stp i{font-style:normal;min-width:22px;text-align:center;font-weight:800;color:var(--cream)}
+.tk2 .tk-t-r.on .tk-t-stp i{color:var(--gold,#F2CF62)}
+.tk2 .tk-t-note{font-size:14px;color:var(--cream-dim);margin:8px 0}.tk2 .tk-t-warn{color:#F0A487}
+.tk2 .tk-t-more{font-size:15px;color:var(--cream-dim);margin:16px 0 0}.tk2 .tk-t-more .tk-tlink{color:var(--gold,#F2CF62);font-weight:800}
+.tk2 .tk-t-bar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:16px 0 8px;padding:12px 14px;border:2px solid var(--line);border-radius:10px}
+.tk2 .tk-t-bar p{margin:0;display:flex;flex-direction:column}.tk2 .tk-t-bar b{font-size:20px;color:var(--cream)}.tk2 .tk-t-bar span{font-size:13px;color:var(--cream-dim)}
+.tk2 .tk-t-sum{display:block;font-size:13px;font-weight:600;color:var(--cream-dim);margin-left:8px}
+
+/* card pattern (Nov 23): where and when upper left, title, blurb */
+.tk2 .tk-x-where{position:absolute;left:14px;top:13px;right:14px;z-index:2;display:flex;align-items:center;gap:8px;font:800 12px/1.2 'Bricolage Grotesque',system-ui,sans-serif;letter-spacing:.13em;text-transform:uppercase;color:#F5EFE2}
+.tk2 .tk-x-where img{position:static!important;width:22px;height:22px;object-fit:contain;flex:none}
+.tk2 .tk-x-where b{color:var(--gold,#F2CF62)}
+.tk2 .tk-x-n{font-size:24px!important;margin:0 0 6px!important}
+
+/* desktop, cold visitors: the experience row runs full width across the top, the days below (Zale, Nov 23) */
+@media (min-width:1025px){
+ .tk2 .tk-e3-cold .tk-e3-in{display:block}
+ .tk2 .tk-e3-cold .tk-x-row{overflow-x:auto}
+ .tk2 .tk-e3-cold .tk-x-c{width:360px}
+ .tk2 .tk-e3-cold .tk-x-ph{height:470px}
+ .tk2 .tk-e3-cold .tk-x-n{font-size:30px!important}
+ .tk2 .tk-e3-cold .tk-x-l{font-size:17px}
+ .tk2 .tk-e3-cold .tk-e3-buy{max-width:720px;margin-top:34px;padding-top:24px;border-top:1px solid var(--line)}
+}
+
+/* Nov 24 (Zale): the corner is the neighborhood alone; the year sits to the right of the title, in the title font, gold, only on place-and-year cards */
+.tk2 .tk-x-n .tk-x-y2{display:inline;white-space:nowrap;margin-left:.3em;color:var(--gold,#F2CF62);font:inherit;font-size:.85em}
+
+/* Nov 24 (Zale OK'd mockup draft 1): tablet and desktop steps */
+.tk2 .tk-g-side{display:none}
+@media (min-width:1025px){
+ .tk2.tk-gscrim .tk-sheet{width:min(1120px,92vw);max-width:none;display:grid;grid-template-columns:minmax(0,1fr) 380px;column-gap:40px;align-content:start}
+ .tk2.tk-gscrim .tk-sheet>.tk-g-top,.tk2.tk-gscrim .tk-sheet>.tk-g-bar2,.tk2.tk-gscrim .tk-sheet>.tk-g-stepn{grid-column:1/-1}
+ .tk2.tk-gscrim .tk-sheet>.tk-g-pad{grid-column:1;grid-row:4}
+ .tk2.tk-gscrim .tk-sheet>.tk-g-foot{grid-column:1;grid-row:5}
+ .tk2.tk-gscrim .tk-sheet>.tk-g-side{display:block;grid-column:2;grid-row:4/span 2;align-self:start;margin:24px 24px 24px 0;padding:16px 18px;border-radius:14px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12)}
+ .tk2.tk-gscrim .tk-sheet>.tk-g-rev,.tk2.tk-gscrim .tk-g-ftot{display:none}
+ .tk2.tk-gscrim .tk-sheet[data-step="order"]{grid-template-columns:minmax(0,1fr)}
+ .tk2.tk-gscrim .tk-g-pad4{display:grid;grid-template-columns:minmax(0,1fr) 380px;column-gap:40px;align-items:start}
+ .tk2.tk-gscrim .tk-g-pad4 .tk-g-o2 .tk-g-k2{margin-top:0}
+}
+@media (min-width:700px) and (max-width:1024px){
+ .tk2.tk-gscrim .tk-sheet{width:100vw;max-width:none;border-radius:0}
+ .tk2.tk-gscrim .tk-g-pad,.tk2.tk-gscrim .tk-g-bar2,.tk2.tk-gscrim .tk-g-stepn{max-width:640px;margin-left:auto;margin-right:auto;width:100%;box-sizing:border-box}
+ .tk2.tk-gscrim .tk-g-foot{padding-left:max(16px,calc(50vw - 320px));padding-right:max(16px,calc(50vw - 320px))}
+}
+
+/* Nov 24: step names read heavier */
+.tk2.tk-gscrim .tk-g-bar2 li{font-size:13px;font-weight:900;color:rgba(245,239,226,.75)}
+.tk2.tk-gscrim .tk-g-bar2 li.on{color:var(--gold,#F2CF62)}
+@media (min-width:1025px){.tk2.tk-gscrim .tk-g-bar2 li{font-size:15px}}
+
+/* Nov 24: "Pick what you want" is its own screen */
+.tk2 .tk-t-hd{display:none}
+.tk2 .tk-know #tk-e-days,.tk2 .tk-know .tk-e-vet,.tk2 .tk-know .tk-e3-know>summary{display:none}
+.tk2 .tk-know .tk-t-hd{display:block;margin:0 0 12px}
+.tk2 .tk-know .tk-t-hd .tk-tlink{min-height:44px;display:inline-flex;align-items:center;padding:0}
+.tk2 .tk-know .tk-t-hd h2{margin:4px 0 0}
+
+.tk2 .tk-g-fold{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:8px 0 12px;padding:12px 14px;border:1px solid rgba(245,239,226,.18);border-radius:12px;font-weight:700}
+.tk2 .tk-g-fold .tk-tlink{min-height:44px;display:inline-flex;align-items:center}
+
+/* Nov 24 panel fixes: bigger small print and targets, no page bar behind the steps, headings clear the menu, add-ons one per row beside the order */
+.tk2 .tk-g-ftot span{font-size:14px}
+.tk2 .tk-g-ftot i{font-size:14px}
+.tk2 .tk-g-edits .tk-tlink{min-height:44px;display:inline-flex;align-items:center;font-size:14px}
+.tk2 .tk-t-stp button{width:44px;height:44px}
+.tk2 .tk-g-sub,.tk2 .tk-g-r p span,.tk2 .tk-g-stepn{color:rgba(245,239,226,.82)}
+.tk2 .tk-g-r p span{font-size:15px}
+body:has(.tk-gscrim) #tk-bar{visibility:hidden}
+.tk2 #tk-e3-know,.tk2 #tk-e-days{scroll-margin-top:84px}
+.tk2 .tk-g-pat .tk-num small{font-size:.6em;font-weight:700;opacity:.8}
+@media (min-width:1025px){.tk2.tk-gscrim .tk-g-pad4 .tk-g-adds{grid-template-columns:1fr;display:grid;gap:10px}}

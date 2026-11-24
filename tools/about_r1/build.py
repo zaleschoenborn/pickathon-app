@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""Splice the About hub (draft 1, Nov 13 2026) into index.html.
+"""Splice the About page (draft 4, Nov 24 2026; draft 1 Nov 13) into index.html.
+   about_story.json -> <script id="pk-about1-data"> (fallback until data.json has aboutStory)
    ab.css -> <style id="pk-about1-css">   ab.js -> <script id="pk-about1">
    Shared edits, each found by an exact anchor and made once:
      1. route 'aboutus' at #/about-us (NAMED / NAMED2)
@@ -35,6 +36,9 @@ s = hook(s, "aboutus: 'About Pickathon'",
 # draft 2: the hub no longer pitches Build itself, so the sitewide closing card shows again
 s = s.replace('press: 1, about: 1, aboutus: 1 }', 'press: 1, about: 1 }')
 s = put(s, 'style', 'pk-about1-css', rd('ab.css'))
+import json
+story = json.loads(rd('about_story.json'))
+s = put(s, 'script', 'pk-about1-data', 'window.__pkAboutStory = ' + json.dumps(story, ensure_ascii=False, separators=(',', ':')).replace('</', '<\\/') + ';')
 s = put(s, 'script', 'pk-about1', rd('ab.js'))
 open(IDX, 'w', encoding='utf-8').write(s)
 print('index.html', len(s))

@@ -39,5 +39,6 @@ s = sub1(s, r"const V='[^']*'", "const V='%s'" % V, "const V in sw.js")
 s = sub1(s, r"'focus\.js(\?v=[^']*)?'", "'focus.js?v=%d'" % n, 'focus.js in the sw.js SHELL list')
 open(p, 'w', encoding='utf-8').write(s)
 
+import subprocess; subprocess.check_call([sys.executable, os.path.join(root, 'tools', 'data_runtime.py')])   # data.rt.json: the copy of data.json the page downloads (speed step 3)
 open(os.path.join(root, 'version.json'), 'w', encoding='utf-8').write(json.dumps({'build': n, 'stamp': stamp, 'v': V}, separators=(',', ':')) + '\n')
 print('stamped', stamp, 'in', root)

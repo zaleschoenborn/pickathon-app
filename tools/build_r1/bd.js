@@ -23,7 +23,7 @@
       var h = d.hoods[k]; if (!h || h.k === 'camp') return;
       var nx = String(h.nx || '').trim();
       if (!skip.test(nx)) {
-        var im = (h.g && h.g[0] && h.g[0].i) || h.i; /* the curated gallery's first shot: the structure, not the crowd */
+        var im = (P.cards && P.cards[k]) || (h.g && h.g[0] && h.g[0].i) || h.i; /* the curated gallery's first shot: the structure, not the crowd */
         if (im) out.push({ kind: 'hood', y: '2026', h: k, nm: h.n, now: nx, im: im });
       }
       (h.pb || []).forEach(function (b) {
@@ -155,10 +155,11 @@
   /* ---------- Start a project: one question per screen ---------- */
   var S = { step: 0, a: {}, sent: false, err: '', last: null };
   function sheetEl() { var s = document.getElementById('bd1-sheet'); if (!s) { s = document.createElement('div'); s.id = 'bd1-sheet'; s.className = 'bd1s'; s.hidden = true; document.body.appendChild(s); } return s; }
-  function open(kind) {
+  function open(kind, builds) {
     var d = data(); if (!d) return; S.last = document.activeElement; S.err = '';
     if (S.sent) { S.sent = false; S.step = 0; S.a = {}; }
     if (kind) { S.a.kind = kind; if (!S.step) S.step = 1; }
+    if (builds) S.a.builds = builds;
     var s = sheetEl(); s.hidden = false; document.documentElement.classList.add('bd1-lock'); draw(true);
   }
   window.pkBuildStart = open;
@@ -180,7 +181,7 @@
       h = '<h2 class="bds-q" tabindex="-1">' + esc(st.q) + '</h2><p class="bds-sum">' + esc(sum) + '</p>' +
         '<div class="bds-fs">' + fld('name', 'text', 'name', 1) + fld('org', 'text', 'organization', 1) + fld('email', 'email', 'email', 1) +
         '<label class="bds-l bds-wide">' + esc(L.what) + '<span class="bds-lh">' + esc(L.whatH) + '</span><textarea rows="4" data-bds-f="what" required>' + esc(S.a.what || '') + '</textarea></label>' +
-        fld('phone', 'tel', 'tel', 0) + '<label class="bds-l">' + esc(L.heard) + '<select data-bds-f="heard"><option value=""></option>' + F.heard.map(function (o) { return '<option value="' + o[0] + '"' + (S.a.heard === o[0] ? ' selected' : '') + '>' + esc(o[1]) + '</option>'; }).join('') + '</select></label></div>' +
+        '<details class="bds-more bds-wide"' + ((S.a.cost || S.a.fund || S.a.phone || S.a.heard) ? ' open' : '') + '><summary>' + esc(L.more) + '</summary><div class="bds-fs">' + (F.opt || []).map(function (q) { return '<label class="bds-l">' + esc(q.l) + '<select data-bds-f="' + q.id + '"><option value=""></option>' + q.o.map(function (o) { return '<option value="' + o[0] + '"' + (S.a[q.id] === o[0] ? ' selected' : '') + '>' + esc(o[1]) + '</option>'; }).join('') + '</select></label>'; }).join('') + fld('phone', 'tel', 'tel', 0) + '<label class="bds-l">' + esc(L.heard) + '<select data-bds-f="heard"><option value=""></option>' + F.heard.map(function (o) { return '<option value="' + o[0] + '"' + (S.a.heard === o[0] ? ' selected' : '') + '>' + esc(o[1]) + '</option>'; }).join('') + '</select></label></div></details></div>' +
         (S.err ? '<p class="bds-err" role="alert">' + esc(S.err) + '</p>' : '') + '<button type="button" class="bds-btn pri" data-bds="send">' + esc(F.send) + '</button>' +
         (((d.buildForm || {}).live) ? '' : '<p class="bds-test">' + esc(F.test) + '</p>');
     }
@@ -192,7 +193,7 @@
     ['name', 'org', 'email', 'what'].forEach(function (k) { if (!String(b[k] || '').trim()) miss.push(F.f[k].toLowerCase()); });
     if (miss.length) { S.err = F.need + miss.join(', ') + '.'; draw(); return; }
     b.email = String(b.email).trim(); if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(b.email)) { S.err = F.badEmail; draw(); return; }
-    var lab = function (id) { var q = F.steps.filter(function (x) { return x.id === id; })[0], o = q && q.o.filter(function (x) { return fill(x[0], d) === b[id]; })[0]; return o ? fill(o[1], d) : 'not answered'; };
+    var lab = function (id) { var q = F.steps.concat(F.opt || []).filter(function (x) { return x.id === id; })[0], o = q && q.o.filter(function (x) { return fill(x[0], d) === b[id]; })[0]; return o ? fill(o[1], d) : 'not answered'; };
     var heard = (F.heard.filter(function (o) { return o[0] === b.heard; })[0] || [0, 'not answered'])[1];
     var extra = ['Door: Wants something built', 'Who: ' + lab('kind'), 'Wants built: ' + lab('builds'), 'When: ' + lab('when'), 'Budget: ' + lab('cost'), 'Who pays: ' + lab('fund'), 'Heard via: ' + heard, 'Source: pickathon.com Build page'].join('\n');
     var E = G.entries || {}, fd = new URLSearchParams();
