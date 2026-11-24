@@ -24,7 +24,7 @@
       '<div class="ab-hx"><h1 class="ab-d ab-h1">' + esc(H.t) + '</h1><p class="ab-lede">' + esc(H.x) + '</p></div></section>';
     o += '<div class="ab-in">';
     o += '<section class="ab-sec"><h2 class="ab-d ab-h2">' + esc(W.h) + '</h2><ul class="ab-worlds">' + (W.r || []).map(function (w, i) {
-      return '<li>' + tag(w.go, 'ab-wc', '<img src="' + esc(w.im) + '" alt="' + esc(w.alt) + '" style="object-position:' + focusOf(w.im) + '"' + (i > 1 ? ' loading="lazy"' : '') + ' decoding="async">' +
+      return '<li>' + tag(w.go, 'ab-wc', '<img src="' + esc(w.im) + '" alt="' + esc(w.alt) + '" style="object-position:' + (w.pos || focusOf(w.im)) + '"' + (i > 1 ? ' loading="lazy"' : '') + ' decoding="async">' +
         '<span class="ab-wx"><span class="ab-wk">' + esc(w.k) + '</span><span class="ab-wt">' + esc(w.t) + '</span><span class="ab-wl">' + esc(w.x) + '</span></span>', w.k + ': ' + w.t) + '</li>';
     }).join('') + '</ul></section>';
     o += '<section class="ab-sec" id="ab-story"><h2 class="ab-d ab-h2">' + esc(E.h) + '</h2><p class="ab-sub">' + esc(E.x) + '</p><ul class="ab-eras">' + (E.r || []).map(function (e) {

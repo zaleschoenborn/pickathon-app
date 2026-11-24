@@ -22,17 +22,19 @@
         "k": "Summer camp",
         "t": "Four days in the woods",
         "x": "Camp under the trees. Kids 12 and under come free.",
-        "im": "i/pk-lushcamp-05.jpg",
-        "alt": "Tents among tall trees and ferns",
-        "go": "route:hoods"
+        "im": "i/about/world-camp.jpg",
+        "alt": "Campers in the shade between tents and tall firs, 2022",
+        "go": "route:hoods",
+        "pos": "48% 60%"
       },
       {
         "k": "Wonders",
         "t": "A city built for one weekend",
         "x": "Students and makers build every neighborhood. The 2017 Treeline stage now shelters veterans.",
-        "im": "i/p596.jpg",
-        "alt": "Lantern towers lit at night",
-        "go": "route:build"
+        "im": "i/about/world-wonder.jpg",
+        "alt": "The Galaxy courtyard lit at night, full of people, 2025",
+        "go": "route:build",
+        "pos": "45% 50%"
       },
       {
         "k": "Artists first",
@@ -46,19 +48,22 @@
         "k": "Food",
         "t": "Long tables in the forest",
         "x": "Local kitchens all weekend, and Curation dinners that pair a chef with an artist.",
-        "im": "i/pk-pb-curation-2024-2.jpg",
-        "alt": "People sharing a long table in the woods",
-        "go": "plan:farm:food"
+        "im": "i/about/world-food.jpg",
+        "alt": "Glasses raised at a long Curation brunch table, 2025",
+        "go": "plan:farm:food",
+        "pos": "45% 40%"
       },
       {
         "k": "Zero waste",
         "t": "Real plates, no trash",
         "x": "Reusable dishes and steel cups. Single-use dishes have been gone since 2011.",
-        "im": "i/hb-curation-3.jpg",
-        "alt": "Reusable green bowls of food",
-        "go": "page:commitment-to-sustainability"
+        "im": "i/about/world-zero.jpg",
+        "alt": "Hands washing a reusable plate beside a steel cup, 2017",
+        "go": "page:commitment-to-sustainability",
+        "pos": "38% 30%"
       }
-    ]
+    ],
+    "_photos": "Picked Nov 24 from catalog_Photos_MASTER_2006-2026.csv by tag search (pickathon-photo-slot-picks): camp 2022_Rob_Kerr-camping.4.jpg; wonder 2025_andy_meeks-galaxycourtyard-17.jpg; food 2025_Risa_Scott-Saturday_Brunch-Curation-220.jpg; zero 0248-2017_amanda_cowan_dishwashstation.jpg. Discovery and Artists first keep site files y24t-geese.jpg and y24-roge.jpg. Sheets: Dropbox _catalogs/work/design_trip_info/sheets/."
   },
   "eras": {
     "h": "Our story, in posters",
