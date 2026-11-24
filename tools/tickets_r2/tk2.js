@@ -550,6 +550,7 @@
       .map(function (k) { var h = H[k], ph = PH[k], z = Array.isArray(ph) ? ph[0] : ph, img = z ? (typeof z === 'string' ? z : z.i) : (h.hi || h.i), pos = z && z.p ? z.p : (h.p ? h.p[0] + '% ' + h.p[1] + '%' : '50% 40%');
         return { k: k, n: h.n || k, img: img, pos: pos, line: B[k] }; });
   }
+  function xKey(t, c) { return t + '|' + c.k + '|' + c.title; }   /* one star per activity at one neighborhood (design_studio-105) */
   function xCards(t) {   /* one card per thing you can do (Home's XCT), in Tickets' place order; the activity photo when Home has one, else the place's photo */
     var D = site().data || {}, H = D.hoods || {}, T = XCT[t] || {}, P = xPlaces(t), seen = {}, out = [], phone = window.matchMedia && window.matchMedia('(max-width: 700px)').matches;
     var keys = P.map(function (p) { return p.k; }).concat(Object.keys(T)).filter(function (k) { if (seen[k] || !T[k]) return false; seen[k] = 1; return true; });
@@ -609,13 +610,14 @@
     var gN = function (g) { return String(g || '').replace(/\b\w/g, function (c) { return c.toUpperCase(); }); };
     /* Zale, Nov 23 23:45 ("the home run"): every card says where and when (neighborhood icon, name, year) upper left, what's in the photo
        as the title, and why it matters below. Photo, place and year must match: Music uses only acts with a video from that venue that year. */
-    var card = function (act, i, img, pos, hk, place, yr, title, blurb, play, label) {
+    var XSTAR = '<svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path d="M12 2.6l2.9 6.2 6.8.7-5.1 4.6 1.5 6.7L12 17.4l-6.1 3.4 1.5-6.7-5.1-4.6 6.8-.7z"/></svg>';
+      var card = function (act, i, img, pos, hk, place, yr, title, blurb, play, label, sk) {
       return '<li class="tk-x-c"><button type="button" class="tk-x-ph" data-act="' + act + '" data-i="' + i + '" aria-label="' + esc(label) + '"><img src="' + esc(img) + '" alt="" loading="lazy" decoding="async"' + (pos ? ' style="object-position:' + esc(pos) + '"' : '') + '><span class="tk-x-sh"></span>' +
         '<span class="tk-x-where">' + (hk ? '<img src="ic2/' + esc(hk) + '.png" alt="">' : '') + esc(place) + '</span>' + (play ? RING : '') +
-        '<span class="tk-x-low">' + (title ? '<span class="tk-x-n tk-d">' + esc(title) + (yr ? '<span class="tk-x-y2">' + esc(yr) + '</span>' : '') + '</span>' : '') + (blurb ? '<span class="tk-x-l">' + esc(blurb) + '</span>' : '') + '</span></button></li>';
+        '<span class="tk-x-low">' + (title ? '<span class="tk-x-n tk-d">' + esc(title) + (yr ? '<span class="tk-x-y2">' + esc(yr) + '</span>' : '') + '</span>' : '') + (blurb ? '<span class="tk-x-l">' + esc(blurb) + '</span>' : '') + '</span></button>' + (sk ? '<button type="button" class="tk-x-star" data-act="x-star" data-i="' + i + '" aria-pressed="' + !!(window.__pkXS && window.__pkXS.has(sk)) + '" aria-label="Star ' + esc(title) + ' at ' + esc(place) + '">' + XSTAR + '</button>' : '') + '</li>';
     };
     if (t === 'Music') { L = xBands(); cards = L.map(function (a, i) { return card('x-play', i, a.img, '', a.hk, a.place, a.y, a.n, a.line, true, 'Watch ' + a.n + ' at ' + a.place + ', Pickathon ' + a.y); }).join(''); }
-    else if (XCT[t]) { L = xCards(t); cards = L.map(function (c, i) { return card('x-tour', i, c.img, c.pos, c.k, c.n, '', c.title, c.blurb, false, c.title + ' at ' + c.n); }).join(''); }
+    else if (XCT[t]) { L = xCards(t); cards = L.map(function (c, i) { return card('x-tour', i, c.img, c.pos, c.k, c.n, '', c.title, c.blurb, false, c.title + ' at ' + c.n, xKey(XCUR, c)); }).join(''); }
       else { L = xPlaces(t); cards = L.map(function (p, i) { var cw = t === 'Architecture' && XWD[p.k], w = cw ? { t: cw[0], y: '', d: cw[1] } : (t === 'Architecture' ? xWonder(p.k) : null); if (w && !cw) w = { t: w.t, y: '', d: w.d }; var tt = null; return card('x-tour', i, p.img, p.pos, p.k, p.n, w ? w.y : '', w ? w.t : (tt ? tt[0] : ''), w ? (cw ? w.d : ((XPBH.Architecture || {})[p.k] || w.d)) : (tt ? tt[1] : p.line), false, 'Photo tour of ' + p.n); }).join(''); }
     var tk = xTicket(t), line = XSET[t] ? '' : (XD[t] || '');
     return '<h2 class="tk-d tk-x-h">Wander a city of neighborhoods in the forest that only exists for one weekend.</h2><p class="tk-g-k tk-x-k">What do you want to experience?</p>' +
@@ -742,6 +744,7 @@
       var cap = function (a) { return a.n + ' · ' + a.place + ', Pickathon ' + a.y; };
       try { if (window.__pkRadio) window.__pkRadio(q.map(function (a) { return { u: a.vu, c: cap(a) }; }), 'Seen here first'); else if (window.__pkPlayVid) window.__pkPlayVid(xa.vu, cap(xa)); } catch (x) {}
       return true; }
+    if (act === 'x-star') { var xc = xCards(XCUR)[+b.getAttribute('data-i')]; if (xc && window.__pkXS) { var on = window.__pkXS.toggle({ k: xKey(XCUR, xc), e: XCUR, hk: xc.k, p: xc.n, t: xc.title, img: xc.img }); b.setAttribute('aria-pressed', on); } return true; }
     if (act === 'x-tour') { var xp = (XCT[XCUR] ? xCards(XCUR) : xPlaces(XCUR))[+b.getAttribute('data-i')], AT = app(); if (xp && AT && AT.ssOpen) { try { AT.ssOpen(xp.k); } catch (x) {} } return true; }
     if (act === 'x-open') { var hk = $('.tk-e3-hook', root); if (hk) { hk.innerHTML = '<div class="tk-x" id="tk-x" hidden></div>'; xDraw(); var xb = $('#tk-x', root); if (xb) { try { xb.scrollIntoView({ block: 'start', behavior: 'smooth' }); } catch (x) {} } } return true; }
     if (act === 'x-lineup') { var AL = app(); if (AL) AL.go('lineup'); return true; }
