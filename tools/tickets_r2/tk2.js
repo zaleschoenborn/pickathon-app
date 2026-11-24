@@ -568,6 +568,8 @@
     Literary: 'Stories and poems read aloud under the trees. Bring nothing but time.',
     Craft: 'Take home something made by hand, by the person who made it.'
   };
+  var XLAB = { Architecture: 'Wonders' };   /* chip and card label only; data keys stay Architecture (Zale, Nov 23, design_home-52) */
+  function xL(t) { return XLAB[t] || t; }
   function xHTML() {
     var D = site().data || {}, XD = ((D.xpWords || {}).XPD) || {}, t = xpPick() || 'Music', L, cards = '';
     var list = XPO.filter(function (x) { return x === 'Music' ? xBands().length : xPlaces(x).length; });
@@ -580,10 +582,10 @@
         '<span class="tk-x-low"><span class="tk-x-kk"><b>' + esc(kL) + '</b>' + (kR ? '<span>' + esc(kR) + '</span>' : '') + '</span><span class="tk-x-n tk-d">' + esc(name) + (tag ? ' <small class="tk-x-tag">' + tag + '</small>' : '') + '</span>' + (line ? '<span class="tk-x-l">' + esc(line) + '</span>' : '') + '</span></button></li>';
     };
     if (t === 'Music') { L = xBands(); cards = L.map(function (a, i) { return card('x-play', i, a.img, '', 'Seen here first', gN(a.g), a.y, a.n, a.line, true, 'Watch ' + a.n + ', Pickathon ' + a.y); }).join(''); }
-    else { L = xPlaces(t); cards = L.map(function (p, i) { return card('x-tour', i, p.img, p.pos, t, '', '', p.n, p.line, false, 'Photo tour of ' + p.n, XPATH[p.k] ? '' : 'neighborhood'); }).join(''); }
+    else { L = xPlaces(t); cards = L.map(function (p, i) { return card('x-tour', i, p.img, p.pos, xL(t), '', '', p.n, p.line, false, 'Photo tour of ' + p.n, XPATH[p.k] ? '' : 'neighborhood'); }).join(''); }
     var tk = xTicket(t), line = XSET[t] ? '' : (XD[t] || '');
     return '<h2 class="tk-d tk-x-h">Wander a city of neighborhoods in the forest that only exists for one weekend.</h2><p class="tk-g-k tk-x-k">What do you want to experience?</p>' +
-      '<div class="tk-x-ch" role="group" aria-label="Experiences">' + list.map(function (x) { return '<button type="button" class="tk-x-chip" data-act="x-pick" data-v="' + x + '" aria-pressed="' + (x === t ? 'true' : 'false') + '">' + xIc(x) + '<span>' + x + '</span></button>'; }).join('') + '</div>' +
+      '<div class="tk-x-ch" role="group" aria-label="Experiences">' + list.map(function (x) { return '<button type="button" class="tk-x-chip" data-act="x-pick" data-v="' + x + '" aria-pressed="' + (x === t ? 'true' : 'false') + '">' + xIc(x) + '<span>' + xL(x) + '</span></button>'; }).join('') + '</div>' +
       (XSET[t] ? '<p class="tk-x-set">' + esc(XSET[t]) + '</p>' : '') +
       '<ul class="tk-x-row" aria-label="' + (t === 'Music' ? 'Bands that played Pickathon before they were big' : esc(t) + ' at Pickathon, by place') + '">' + cards + '</ul>' +
       (t === 'Music' ? '<p class="tk-x-next"><span>Someone on the 2027 lineup is next.</span><button type="button" class="tk-tlink" data-act="x-lineup">' + ((site().season || 'off') === 'off' ? 'Be there first →' : 'See the 2027 lineup →') + '</button></p>' : '') +
