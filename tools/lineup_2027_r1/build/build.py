@@ -854,10 +854,11 @@ for _f in sorted(_gl0.glob(ROOT + 'reels/reel_archive_set_*.csv')):
     for _r in csv.DictReader(open(_f, encoding='utf-8-sig')):
         if (_r.get('year_reel_new') or '').strip(): _YRL[(_k0(_r['act']), str(_r['year']))] = _r['year_reel_new'].strip()
         if (_r.get('artist_reel') or '').strip(): _ARL.setdefault((_k0(_r['act']), str(_r['year'])), _r['artist_reel'].strip())
-for _f in sorted(_gl0.glob(ROOT + 'reels/artist_reel_*.csv')):
+for _f in sorted(_gl0.glob(ROOT + 'stories/stories_changes_returns_*.csv')):
     for _r in csv.DictReader(open(_f, encoding='utf-8-sig')):
         if (_r.get('artist_reel_line') or '').strip(): _ARL[(_k0(_r['act']), str(_r['year']))] = _r['artist_reel_line'].strip()
-for _f in sorted(_gl0.glob(ROOT + 'stories/stories_changes_returns_*.csv')):
+# r105: Copy Review's then-and-now artist reel lines for all 26 years (copy_review-114/-115) load last, so they beat the older returns lines
+for _f in sorted(_gl0.glob(ROOT + 'reels/artist_reel_*.csv')):
     for _r in csv.DictReader(open(_f, encoding='utf-8-sig')):
         if (_r.get('artist_reel_line') or '').strip(): _ARL[(_k0(_r['act']), str(_r['year']))] = _r['artist_reel_line'].strip()
 print('reel lines: %d year-reel, %d artist-reel' % (len(_YRL), len(_ARL)))
