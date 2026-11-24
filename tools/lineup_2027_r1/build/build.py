@@ -731,11 +731,14 @@ for _r, (k, n, y, g, p, pos) in enumerate(ARCH_ALL):
     _P27A.append({'r': _r, 'g': _ga or [''], 'img': img(p, 520) if p else '', 'pos': pos or '50% 40%', 'kc': 'k-' + k, 'k': KLAB[k], 'y': str(y), 'n': n,
                   'a': _aslug(n), 'c': _cv or '', 'q': _q if _q.count(';;') else '',
                   'l': _ALINES.get('%s|%s|%s' % (k, ''.join(c for c in _ud.normalize('NFD', n.lower()) if c.isalnum() and ord(c) < 128), y), '')})
+year_wall('')  # fills _YW
+# r81 (Zale, Nov 23 18:55): one 'Every lineup has its own page' card in the wall after 48 bands; the year on each card opens that year
+_YRS27 = _YW.split('</button>', 1)[1]  # every year but 2027
 _SHEET = ('<div class="sheet" id="p27-sheet" hidden><div class="sheet-in"><p>What kind of music do you love?</p><button class="on" data-g="">Every kind</button>%s</div></div>'
           % ''.join('<button data-g="%s">%s</button>' % (E(t), E(t)) for t in TAGS15))
 s1 += (open(ROOT + 's1_2027.html').read().replace('@SEAL', img('ext/y27-seal.png', 950, fmt='PNG')).replace('<i id="p27-tot">459</i>', '<i id="p27-tot">%d</i>' % len(_P27A))
        + _SHEET + '<style>%s</style>' % open(ROOT + 's1_2027.css').read().replace('url(y27/rays2400.png)', 'url(%s)' % img('ext/y27-rays2400.png', 2400, fmt='PNG')).replace('url(y27/rays.png)', 'url(%s)' % img('ext/y27-rays2400.png', 2400, fmt='PNG'))
-       + '<script>%s</script>' % open(ROOT + 's1_2027.js').read().replace('__ALL__', json.dumps(_P27A, ensure_ascii=False).replace('</', '<\\/')))
+       + '<script>%s</script>' % open(ROOT + 's1_2027.js').read().replace('__YRS__', _YRS27.replace('`', '')).replace('__ALL__', json.dumps(_P27A, ensure_ascii=False).replace('</', '<\\/')))
 print('2027 preview wall: %d cards, %d with a song, %d with a blurb' % (len(_P27A), sum(1 for x in _P27A if x['c']), sum(1 for x in _P27A if x['l'])))
 
 P24 = d['yearBrand']['2024']
