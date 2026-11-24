@@ -267,6 +267,10 @@ def play(sz=''):
     return '<span class="ring %s" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 6.5v11l9-5.5z" fill="#fff"/></svg></span>' % sz
 
 # r31 (Nov 21): a play ring on a card plays a song. Best single song per act (never a full set or A Concert A Day), by views.
+def _vstart(v):  # r102: a full set opens at its start time, as the site's own player expects (YouTube &t=Ns, Vimeo #t=Ns)
+    u = _vurl(v)
+    if not u or not v.get('t'): return u
+    return u + ('#t=%ds' % v['t'] if 'vimeo' in u else '&t=%ds' % v['t'])
 def _vurl(v):
     if v.get('vm'): return 'https://vimeo.com/%s%s' % (v['vm'], ('/' + v['vh']) if v.get('vh') else '')
     return 'https://www.youtube.com/watch?v=%s' % v['id'] if _re.match(r'^[A-Za-z0-9_-]{11}$', str(v.get('id', ''))) else ''
@@ -1366,7 +1370,8 @@ def art_page(slug, ap, pid=None):
         _rpx = _rawparts(sg_); _kd = (_kd[0], _kd[1] + ('-'.join(_rpx[3:]) if _rpx and not _kd[0] else ''))
         if (_kd[0] or _kd[1]) and _kd in _seenv: continue  # r101: the same song and place posted twice (YouTube and Vimeo, or a RAW copy) shows once
         _seenv.add(_kd); _seenv.add(u_.split('&')[0]); _vy.append((u_, sg_, _songs2(sg_)))
-    fulls_all = [v for v in d['videos'] if _slug(v.get('a') or '') in (_slug(name), _ks) and (v.get('f') or v.get('cad') or 'full set' in str(v.get('s', '')).lower()) and _vurl(v)]
+    # r102 (Zale, Nov 24 13:23): a full set shows when it is approved (A Concert A Day, or a band-approved mix) or has a start time
+    fulls_all = [v for v in d['videos'] if _slug(v.get('a') or '') in (_slug(name), _ks) and (v.get('f') or v.get('cad') or 'full set' in str(v.get('s', '')).lower()) and _vurl(v) and (v.get('cad') or v.get('t') or 'approved' in str(v.get('sp', '')).lower())]
     _used_ph, _cards = set(), []
     def _card(th, clip, top, sub, cls=''):
         thh = ('<img loading="lazy" src="%s" alt="">' % th) if th else '<span class="wk-n">%s</span>' % _icn
@@ -1381,11 +1386,12 @@ def art_page(slug, ap, pid=None):
         late = bool(_re.match(r'late night', tm)); tm = _re.sub(r'late night \((.+)\)', r'\1', tm)
         pl = _re.sub(r'\s+Stage$', '', pl.strip())
         vv = next((x for x in _vy if x[2] and _stw(x[2]) & _stw(pl)), None)
-        th = ''
-        if vv: _vy.remove(vv); th = _yt(vv[0])
-        # r101 (Zale, Nov 24 12:53): a set with no clip takes its own catalog frame (build/set_photos.json, key slug|year|stage), checked by eye
+        # r102 (Zale, Nov 24 13:23): the shelf shows only what the Video Ledger backs, so a scheduled set with no recording gets no card (the set still reads in the story)
+        if not vv: continue
+        _vy.remove(vv)
+        # photo first (catalog frame, build/set_photos.json, key slug|year|stage), else a frame of its own video
         _sp = _SETPH.get('%s|%s|%s' % (_slug(name), yr, pl.lower()))
-        if not th and _sp and os.path.exists(ROOT + _sp): th = img(_sp, 520)
+        th = img(_sp, 520) if _sp and os.path.exists(ROOT + _sp) else _yt(vv[0])
         if not th:
             ph = next((c_[0] for c_ in _cand if c_[2] and (_stw(c_[2]) & _stw(pl)) and c_[0] not in _used_ph), None)
             # r90b: else another photo of theirs from that year (not the hero's first frame), so a set card is never blank when we have pictures
@@ -1414,8 +1420,8 @@ def art_page(slug, ap, pid=None):
     for o in [o for o in _cdk if str(o['y']) == str(yr)]:
         _cards.append(_cdcard(o))
     for v in [v for v in fulls_all if str(v.get('y')) == str(yr)][:4]:  # r101: every public full set of the year, not two
-        u = _vurl(v)
-        _cards.append(_card(_yt(u) or (img(_fr[0][0], 520) if _fr else ''), u, 'Full set', 'Pickathon %s' % yr))
+        u = _vstart(v)
+        _cards.append(_card(_yt(_vurl(v)) or (img(_fr[0][0], 520) if _fr else ''), u, 'Full set', 'Pickathon %s' % yr))
     # r90 (Zale, Nov 24 09:35, picked one shelf): this visit first under a gold label, then each other year newest first, then records
     # r89 (Zale, Nov 24 08:40): ALL <ACT>: everything we have from their other Pickathons, newest year first, full sets allowed
     _ac = []
@@ -1429,7 +1435,7 @@ def art_page(slug, ap, pid=None):
             if _tt and _kd2 in _sy: continue  # same song and place posted twice shows once
             _sy.add(u_); _sy.add(_kd2); _ac.append((u_, y_, _tt or _pv or name, _pv if _tt else ''))
         for v in [v for v in fulls_all if str(v.get('y')) == y_][:1]:
-            _ac.append((_vurl(v), y_, 'Full set', ''))
+            _ac.append((_vstart(v), y_, 'Full set', ''))
         for o in [o for o in _cdk if str(o['y']) == y_]:
             _ac.append(('CD', y_, o, ''))
     _gl = lambda t, on=False: '<p class="gl%s">%s</p>' % (' on' if on else '', t)
