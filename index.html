@@ -10077,6 +10077,10 @@ body:has(.tk-gscrim) #tk-bar{visibility:hidden}
       if (p.k === 'p4' && !sold('patron')) h += '<div class="tk-g-pat"><p class="tk-g-path"><b class="tk-d">Or go Patron</b><b class="tk-num">' + money(PS('patron')) + ' <small>each</small></b></p><ul><li>Backstage at every stage</li><li>Meals in the artist village</li><li>Wednesday early entry</li></ul><button type="button" class="tk-g-patb" data-g="pat">Make it Patron</button></div>';   /* Nov 22 draft: at four days, Patron replaces the Wednesday nudge */
       if (p.k === 'p3' && !sold('p4')) h += '<button type="button" class="tk-g-nudge" data-g="add" data-d="dthu"><span>Add Thursday</span><b>+ ' + money(PS('p4') - PS('p3')) + ' · 4-Day Pass</b></button>';
       else if (p.k === 'd2' && !sold('p3')) h += '<button type="button" class="tk-g-nudge" data-g="add" data-d="dfri"><span>Add Friday and camping</span><b>+ ' + money(PS('p3') - PS('d2')) + ' · 3-Day Pass</b></button>';
+      else if (p.k === 'days' && p.days.length >= 2) {   /* Nov 24 (panel): day tickets that cost close to a pass get a nudge up to the pass, with camping */
+        var up = p.days.every(function (d) { return gCover('p3').indexOf(d) >= 0; }) && !sold('p3') ? 'p3' : !sold('p4') ? 'p4' : '', dif = up ? Math.round((PS(up) - p.each) * 100) / 100 : 99;
+        if (up && dif <= 75) h += '<button type="button" class="tk-g-nudge" data-g="up" data-d="' + up + '"><span>' + (dif <= 0 ? 'Same price or less: make it the ' : 'Make it the ') + N[up] + ', camping included</span><b>' + (dif <= 0 ? money(PS(up)) : '+ ' + money(dif)) + '</b></button>';
+      }
       else if (p.k === 'p4' && !q.on.w && !off('early') && sold('patron')) h += '<button type="button" class="tk-g-nudge" data-g="add" data-d="w"><span>Arrive Wednesday</span><b>+ ' + money(PS('early')) + ' each</b></button>';
     }
     if (bare) return h;
@@ -10084,6 +10088,7 @@ body:has(.tk-gscrim) #tk-bar{visibility:hidden}
   }
   function gDayTap(q, a, d) {   /* the same day rules on the page and in the sheet */
     if (a === 'day') { q.pat = false; q.on[d] = !q.on[d]; if (d === 'w' && q.on.w) OK.day.forEach(function (x) { q.on[x] = true; }); if (d !== 'w' && !q.on[d]) q.on.w = false; return true; }
+    if (a === 'up') { gCover(d).forEach(function (x) { q.on[x] = true; }); return true; }
     if (a === 'add') { q.on[d] = true; if (d === 'w') OK.day.forEach(function (x) { q.on[x] = true; }); return true; }
     if (a === 'pat') { q.pat = !q.pat; return true; }
     return false;
