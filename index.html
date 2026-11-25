@@ -1782,14 +1782,54 @@ html body:not(#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1
 #root#root#root#root#root#root#root#root .pk-yrs-b.pk-yrs-b{height:50px!important;min-height:50px!important;padding:0 18px}
 #root#root .pk-yrs-b[aria-current="true"]{opacity:.55}
 </style>
+<style id="pk-lnb-css">
+html body header nav button.pk-lnb{display:inline-flex!important;align-items:center;gap:8px;border:0!important;border-bottom:2px solid #D6B54A!important;border-radius:4px 4px 0 0!important;background:transparent!important;padding:0 10px 0 12px!important;margin:0 4px;opacity:1!important}
+html body header nav button.pk-lnb:hover,html body header button.pk-lnh-b:hover{background:rgba(242,237,227,.10)!important}
+html body header nav button.pk-lnb .pk-lnb-k{font:inherit;font-size:13px;font-weight:800;letter-spacing:.06em;text-transform:uppercase}
+html body header nav button.pk-lnb .pk-lnb-y{font:400 26px/1 "Pickathon 2014",'Bricolage Grotesque',sans-serif!important;letter-spacing:.04em!important;padding-top:4px;color:inherit}
+html.pk-lnh body .pk-tm{display:none!important}
+html.pk-lnh.pk-tmbar body #root#root#root#root#root .pkp>header>div:first-child>button[aria-label="Pickathon home"],
+html.pk-lnh.pk-tmbar body #root#root#root#root#root .pkp>header>div:first-child>span{visibility:visible!important}
+html.pk-lnh body #root#root#root#root#root .pkp>header>div:first-child{flex-wrap:nowrap}
+html body header button.pk-lnh-b{flex:none;display:inline-flex;align-items:center;gap:6px;min-height:44px;margin-left:8px;padding:0 8px 0 10px;border:0!important;border-bottom:2px solid #D6B54A!important;border-radius:4px 4px 0 0!important;background:transparent!important;color:#F2EDE3!important;cursor:pointer}
+html body header button.pk-lnh-b .pk-lnb-k{font:800 11px/1 'Bricolage Grotesque',sans-serif;letter-spacing:.1em;text-transform:uppercase}
+html body header button.pk-lnh-b .pk-lnb-y{font:400 22px/1 "Pickathon 2014",'Bricolage Grotesque',sans-serif!important;letter-spacing:.04em!important;padding-top:3px}
+html.pk-lnh .pk-hdw{display:none}
+html.pk-lnh body #root#root#root#root#root .pkp>header>div:first-child>span{display:none!important}
+</style>
 <script id="pk-tm-js">
 (function () {
   var el = null, key = '';
   function back() { var A = window.__pkApp, T = window.__pkTM || {}; if (!A) return; A.state.tmY = '';
     if (T.r === 'act' && (T.ex || {}).n) A.go('act', { n: T.ex.n, y: '' }, true); else if (T.r === 'act') A.go('lineup'); else if (T.r === 'hood') A.go('hood', { h: (T.ex || {}).h, tm0: 1 }, true); else if (T.r === 'mine') A.go('mine', {}, true); else A.go('lineup'); }
+  /* Nov 24 (Zale, Lineup chat): on desktop the nav's own LINEUP item becomes the year picker on every Lineup page: "LINEUP 2018 v", always in the sticky top nav, opens the year wall. No bar under the nav. */
+  function syncHdr(on, yr) {
+    var H = document.querySelector('#root .pkp > header'), d = H && H.querySelector(':scope > div:first-child'), b = d && d.querySelector('button.pk-lnh-b');
+    document.documentElement.classList.toggle('pk-lnh', !!(on && d));
+    if (!on || !d) { if (b) b.remove(); return; }
+    if (!b) { b = document.createElement('button'); b.type = 'button'; b.className = 'pk-lnh-b'; b.setAttribute('aria-haspopup', 'dialog');
+      b.addEventListener('click', function (e) { e.stopPropagation(); if (window.pkYearWall) window.pkYearWall.open(b); }); d.appendChild(b); }
+    if (b.getAttribute('data-y') !== yr) { b.setAttribute('data-y', yr); b.setAttribute('aria-label', 'Lineup ' + yr + '. Choose another year');
+      b.innerHTML = '<span class="pk-lnb-k">Lineup</span><b class="pk-lnb-y pkp-head">' + yr + '</b><svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/></svg>'; }
+  }
+  function syncNav(on, yr) {
+    var nb = document.querySelectorAll('header nav[aria-label="Main"] button[data-nav]'), i, b;
+    for (i = 0; i < nb.length; i++) { b = nb[i];
+      if (!b.hasAttribute('data-pk-lny') && (b.textContent || '').trim().toLowerCase() !== 'lineup') continue;
+      if (on) {
+        if (b.getAttribute('data-pk-lny') !== yr) { if (!b.hasAttribute('data-pk-lny')) b.setAttribute('data-pk-lno', b.innerHTML);
+          b.setAttribute('data-pk-lny', yr); b.classList.add('pk-lnb');
+          b.innerHTML = '<span class="pk-lnb-k">Lineup</span><b class="pk-lnb-y pkp-head">' + yr + '</b><svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+          b.setAttribute('aria-haspopup', 'dialog'); b.setAttribute('aria-label', 'Lineup ' + yr + '. Choose another year'); }
+        if (!b.__pkLn) { b.__pkLn = 1; b.addEventListener('click', function (e) { if (!this.hasAttribute('data-pk-lny') || !window.pkYearWall) return; e.stopImmediatePropagation(); e.preventDefault(); window.pkYearWall.open(this); }, true); }
+      } else if (b.hasAttribute('data-pk-lny')) { b.innerHTML = b.getAttribute('data-pk-lno') || 'Lineup'; b.removeAttribute('data-pk-lny'); b.removeAttribute('data-pk-lno'); b.removeAttribute('aria-haspopup'); b.removeAttribute('aria-label'); b.classList.remove('pk-lnb'); }
+    }
+  }
   setInterval(function () {
-    var T = window.__pkTM || {}, y = T.y, AP = window.__pkApp, cs = AP && AP.state && AP.state.stack && AP.state.stack[AP.state.stack.length - 1], show = !!y && ['past', 'act', 'hood', 'mine'].indexOf(T.r) >= 0 && (!cs || cs.r === T.r), root = document.getElementById('root');
+    var T = window.__pkTM || {}, y = T.y || (T.r === 'lineup' ? '2027' : ''), AP = window.__pkApp, cs = AP && AP.state && AP.state.stack && AP.state.stack[AP.state.stack.length - 1], show = !!y && ['past', 'act', 'hood', 'mine', 'lineup'].indexOf(T.r) >= 0 && (!cs || cs.r === T.r) && !(window.innerWidth >= 1200 && ['past', 'act', 'lineup'].indexOf(T.r) >= 0), root = document.getElementById('root');
     if (!root) return;
+    try { syncHdr(window.innerWidth < 1200 && ['past', 'act', 'lineup'].indexOf(T.r) >= 0 && (!cs || cs.r === T.r), y); } catch (e) {}
+    try { syncNav(window.innerWidth >= 1200 && ['past', 'act', 'lineup'].indexOf(T.r) >= 0 && (!cs || cs.r === T.r), y); } catch (e) {}
     if (!show) { if (el) { el.remove(); el = null; key = ''; } document.documentElement.classList.remove('pk-tmon'); return; }
     var B = (window.__pkYB || {})[y] || {}, k = y + '|' + T.r;
     if (!el || !document.body.contains(el)) { el = document.createElement('div'); el.className = 'pk-tm'; el.setAttribute('role', 'status'); document.body.appendChild(el); key = ''; }
@@ -1808,6 +1848,8 @@ html body:not(#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1#g1
       document.documentElement.style.setProperty('--tms', (window.pkStripeGrad && window.pkStripeGrad(B)) || 'none');
       el.style.setProperty('--tmb', B.band || '#2B2628'); var LG = (window.__pkYL || {})[y] || '', here = T.r === 'past';
       var seal = '<i class="pk-tm-seal" aria-hidden="true">' + (LG ? '<img src="' + LG + '" alt="">' : '') + '</i>';
+      /* Nov 24 (Zale, Lineup chat): on every Lineup page (2027, past years, artists) the header picker reads "Lineup 2018 ˅", words only, no seal; hood and mine pages keep the seal */
+      if (T.r === 'past' || T.r === 'act' || T.r === 'lineup') seal = '<span class="pk-tm-sub">Lineup</span>';
       /* Round 3.5 opener spec: one opener on every page inside a past year: seal + "2019 ▾" (no "LINEUP"), arrow cursor, 44 px target */
       el.innerHTML = '<button type="button" class="pk-tm-yr pk-tm-pick" aria-haspopup="dialog" aria-expanded="false" aria-label="Pickathon ' + y + '. ' + (here ? 'Jump to another year' : 'Another year') + '">' + seal + '<b class="pk-tm-y pkp-head">' + y + '</b><svg class="pk-tm-dn" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>';
       var yb = el.querySelector('.pk-tm-yr');

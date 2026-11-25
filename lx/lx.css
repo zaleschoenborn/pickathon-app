@@ -840,7 +840,7 @@ h2{font-family:var(--display);font-weight:400;font-size:27px;line-height:1.14;le
 /* r59: the wall of year logos */
 .ywopen{background:none;font:inherit;color:inherit}
 .ywall[hidden]{display:none!important}
-.ywall{position:fixed;inset:0;z-index:900;background:rgba(24,20,21,.97);display:flex;flex-direction:column;padding:16px 16px 24px;overflow:auto;scrollbar-width:none}
+.ywall{position:fixed;inset:0;z-index:900;background:#181415;display:flex;flex-direction:column;padding:16px 16px 24px;overflow:auto;scrollbar-width:none}
 .ywall::-webkit-scrollbar{display:none}
 .yw-h{display:flex;align-items:center;justify-content:space-between;max-width:1100px;width:100%;margin:0 auto 12px}
 .yw-h p{font-family:var(--display);font-size:26px;letter-spacing:.04em;color:var(--cream);margin:0}
@@ -1048,3 +1048,293 @@ main[id^="a-"] .sale{display:none}
   .ayb-y{grid-column:auto;padding-top:0;text-align:right}.ayb-y div{justify-content:flex-end}
 }
 .acrown .sm-disc,.acrown .sm-badge{display:none}
+/* r76 (Zale, Nov 22 22:45, picked A): the year seal across the join of the photo and the page; replaces r74's card */
+.aseal{position:relative;z-index:4;display:flex;flex-direction:column;align-items:center;margin:-52px auto 0;text-align:center;pointer-events:none}
+.as-l{display:grid;place-items:center;width:84px;height:84px;border-radius:50%;background:var(--yp);box-shadow:0 0 0 3px var(--mat),0 0 0 5px var(--yp),0 0 0 6.5px var(--yi),0 6px 14px rgba(0,0,0,.35)}
+.as-l img{max-width:62px;max-height:62px;object-fit:contain}
+.aseal p{margin:12px 0 0;font-size:12px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--acc)}
+@media (min-width:1000px){.aseal{margin-top:-70px}.as-l{width:96px;height:96px}.as-l img{max-width:72px;max-height:72px}.aseal p{font-size:13px}}
+@media (max-width:999px){main[id^="a-"] .hact .hero-tx{padding-bottom:62px}}
+@media (max-width:999px){.hact .ring.lg{top:34%}}
+.aseal{margin-bottom:-14px}
+/* r83 (Zale, Nov 23 23:26): on the year reel and artist hero the class word sits left and the genre right, one line, never wrapping (like the 2027 square cards) */
+.hero .krow,.ahero .krow{justify-content:space-between;white-space:nowrap;letter-spacing:.08em;min-width:0}
+.hero .krow .g::before,.ahero .krow .g::before{display:none}
+.hero .krow .g,.ahero .krow .g{text-align:right}
+.hero .krow.tight,.ahero .krow.tight{font-size:13px;letter-spacing:.05em}
+/* r84: "If you like" shelf cards on artist pages had zero width (width:auto + aspect-ratio inside a flex row); give them the shelf's height-based width */
+.swipe>.card.tt{flex:none;width:245px;height:306px}
+
+/* r84 (Zale, Nov 23 23:48): card lines read in sentence case; the class word and name stay in caps */
+.card .cline{text-transform:none;letter-spacing:0;font-weight:500}
+
+/* r87 (Zale, Nov 24 07:22, copy_review-60): sets as a where-and-when graphic, one stub per set, in the year accent */
+.setg{margin:26px 0 6px}
+.setg ul{list-style:none;margin:10px 0 0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(148px,1fr));gap:10px}
+.setg .st{position:relative;display:flex;flex-direction:column;gap:2px;padding:12px 14px 13px 16px;border:1px solid var(--line2);border-radius:6px;background:rgba(255,255,255,.03)}
+.setg .st::before{content:"";position:absolute;left:0;top:10px;bottom:10px;width:3px;border-radius:0 2px 2px 0;background:var(--acc,#D6B54A)}
+.setg .st-d{font-size:13px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--acc,#D6B54A)}
+.setg .st-d i{font-style:normal;font-weight:600;letter-spacing:.06em;color:var(--cream);opacity:.8;margin-left:8px}
+.setg .st-t{font-family:var(--display);font-size:30px;line-height:1.05;color:var(--cream);margin-top:4px}
+.setg .st-t small{font-size:.5em;margin-left:3px;letter-spacing:.04em}
+.setg .st-l{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;opacity:.75}
+.setg .st-p{font-size:16px;font-weight:600;line-height:1.3;color:var(--cream);margin-top:6px}
+@media(min-width:1000px){
+ .liner.one{display:grid;grid-template-columns:minmax(0,1fr) 260px;column-gap:48px;align-items:start}
+ .liner.one>*{grid-column:1}
+ .liner.one>.setg{grid-column:2;grid-row:1 / span 20;margin:0;position:sticky;top:96px}
+ .liner.one>.setg ul{grid-template-columns:1fr}
+}
+/* r87: the year-reel line (~120 characters) never cuts off: four lines allowed on the narrower desktop reel */
+.hero.reel .hero-sub{-webkit-line-clamp:4;line-clamp:4}
+
+/* r88 (Zale, Nov 24 07:46): artist page polish. Hero line = who they were that year */
+main[id^="a-"] .hact .hero-sub{font-size:18px;line-height:1.35;max-width:30em;-webkit-line-clamp:3}
+@media(min-width:1000px){main[id^="a-"] .hact .hero-sub{font-size:24px;line-height:1.3;max-width:26em}}
+/* liner notes as a timeline: a thin rail, the Pickathon marker holds the sets as one-line chips */
+.liner.tl .tl-rail{position:relative;padding-left:22px;border-left:2px solid var(--line2);margin-left:4px}
+.liner.tl .tl-rail .body{margin:0 0 14px}
+.liner.tl .tl-pk{position:relative;margin:4px 0 18px;padding:12px 14px;border-radius:6px;background:rgba(214,181,74,.08);border:1px solid rgba(214,181,74,.35)}
+.liner.tl .tl-dot{position:absolute;left:-31px;top:16px;width:14px;height:14px;border-radius:50%;background:var(--acc,#D6B54A);box-shadow:0 0 0 4px var(--bg,#2a2526)}
+.liner.tl .tl-y{margin:0 0 6px;font-size:13px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--acc,#D6B54A)}
+.liner.tl .tl-c{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:6px 18px}
+.liner.tl .tl-c li{font-size:15px;line-height:1.4;color:var(--cream)}
+.liner.tl .tl-c b{font-weight:800;margin-right:6px;color:var(--cream)}
+.liner.tl .setg{display:none}
+/* follow and listen */
+.fol{margin:22px 0 0;padding:16px 16px 14px;border:1px solid var(--line2);border-radius:6px}
+.fol .fol-l{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 4px}
+.fol .fol-l a{display:inline-flex;align-items:center;min-height:44px;padding:0 14px;border:1.5px solid var(--line2);border-radius:4px;font-size:15px;font-weight:700;color:var(--cream);text-decoration:none}
+.fol .fol-l a:hover{border-color:var(--acc,#D6B54A)}
+.fol .fol-f{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;margin:12px 0 0;font-size:15px}
+.fol .fol-f dt{font-weight:800;letter-spacing:.1em;text-transform:uppercase;font-size:12px;opacity:.75;padding-top:2px}
+.fol .fol-f dd{margin:0;color:var(--cream)}
+@media(min-width:1000px){
+ .liner.one.tl{display:grid;grid-template-columns:minmax(0,1fr) 300px;column-gap:56px;align-items:start}
+ .liner.one.tl>.tl-main{grid-column:1}.liner.one.tl>.fol{grid-column:2;margin:34px 0 0;position:sticky;top:96px}
+}
+/* every pickathon: one small card per visit */
+.shelf.every .swipe{gap:12px}
+.shelf.every .ev{flex:none;width:220px;display:flex;flex-direction:column;border-radius:6px;overflow:hidden;border:1px solid var(--line2);background:rgba(255,255,255,.03);text-decoration:none;color:var(--cream)}
+.shelf.every .ev.on{border-color:var(--acc,#D6B54A);box-shadow:inset 0 0 0 1px var(--acc,#D6B54A)}
+.shelf.every .ev-p{display:block;width:100%;height:130px;object-fit:cover}
+.shelf.every .ev-n{background:#3a3334}
+.shelf.every .ev-b{position:relative;display:flex;flex-direction:column;gap:4px;padding:30px 12px 14px}
+.shelf.every .ev-i{position:absolute;top:-26px;left:10px;width:50px;height:50px;object-fit:contain}
+.shelf.every .ev-y{font-size:13px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--acc,#D6B54A)}
+.shelf.every .ev-l{font-size:15px;line-height:1.35}
+/* if you like: smaller cards, no blurb */
+.shelf.yl .swipe>.card.tt{width:170px;height:212px}
+.shelf.yl .card .cline,.shelf.yl .card .cstory,.shelf.yl .card .krow .g{display:none}
+.shelf.yl .card .cname{font-size:15px}
+.shelf.yl .card.seeall{display:none}
+.shelf.every .ev-n{display:flex;align-items:center;justify-content:center}.shelf.every .ev-n img{width:84px;height:84px;object-fit:contain}
+/* r89 artist page: That weekend, All <act>, panel placeholders and years */
+.liner.tl .tl-pk{padding:8px 14px}.liner.tl .tl-pk .tl-y{margin:0}
+.shelf.weekend .wk{flex:none;width:210px}.shelf.weekend .vth{display:block;position:relative;height:118px;border-radius:10px;overflow:hidden;background:#2b2627}
+.shelf.weekend .vth img{width:100%;height:100%;object-fit:cover}
+.shelf.weekend .wk-n{display:flex;height:100%;align-items:center;justify-content:center;background:#332d2e}.shelf.weekend .wk-ic{width:64px;height:64px;object-fit:contain;opacity:.9}
+.shelf.weekend .wk>b{display:block;margin-top:10px;font-size:17px;font-weight:700;color:#f3ead8}.shelf.weekend .wk>b i{font-style:normal;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#d9b24a;margin-left:6px}
+.shelf.weekend .wk>span:last-child{display:block;margin-top:2px;font-size:14px;color:#b9ad9c}
+.shelf.allact .vid{width:200px}.shelf.allact .ay-y{position:absolute;top:8px;right:10px;font-family:var(--disp,inherit);font-size:20px;color:#fff;text-shadow:0 1px 6px rgba(0,0,0,.6);z-index:2}
+.fol .fol-l .ph{display:inline-flex;align-items:center;min-height:44px;padding:0 14px;border:1px dashed rgba(243,234,216,.28);border-radius:6px;color:rgba(243,234,216,.4);font-size:14px}
+.fol .fol-yk{margin:14px 0 6px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#b9ad9c}
+.fol .fol-y{display:flex;flex-wrap:wrap;gap:8px}.fol .fol-y a,.fol .fol-y span{display:inline-flex;align-items:center;min-height:44px;padding:0 14px;border:1px solid rgba(243,234,216,.25);border-radius:6px;color:#f3ead8;font-size:15px;text-decoration:none}
+.fol .fol-y span.on{border-color:#d9b24a;color:#d9b24a;background:rgba(217,178,74,.1)}
+.liner.tl .tl-wk .shelf.weekend.in{margin:10px 0 0;padding:0}.liner.tl .tl-wk .shelf.weekend.in .wk{width:170px}.liner.tl .tl-wk .shelf.weekend.in .vth{height:96px}
+.liner.tl .tl-pk:has(.tl-wk){background:none;border:0;padding:6px 0 4px}
+.shelf.weekend .wk{scroll-snap-align:start}
+.liner.tl .tl-pk .tl-s{margin:4px 0 0;font-size:14px;line-height:1.45;color:#d8ccb6}
+.shelf.weekend .wk-ic{width:34px;height:34px;opacity:.55}.shelf.weekend .wk-n{background:#2f2a2b;border:1px solid rgba(243,234,216,.1);border-radius:10px}
+.shelf.weekend .vth img.wk-ic{width:34px;height:34px;object-fit:contain;opacity:.55}
+a.hd-yr{text-decoration:none}
+/* r90: one shelf with year labels; year icon seal */
+.shelf.onesh .gl{margin:0 0 8px;height:16px;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:#b9ad9c;font-weight:700;white-space:nowrap}
+.shelf.onesh .gl.on{color:#d9b24a}
+.shelf.onesh .wk{width:200px}.shelf.onesh .vid>b,.shelf.onesh .wk>b{font-size:16px}
+.aseal.ic .as-l{background:none;border:0;box-shadow:none}.aseal.ic .as-l img.as-ic{width:100%;height:100%;object-fit:contain}
+.aseal.ic .as-l{width:92px;height:92px}.aseal.ic .as-l img.as-ic{max-width:92px;max-height:92px;filter:drop-shadow(0 2px 6px rgba(0,0,0,.45))}
+@media (min-width:1000px){.aseal.ic .as-l{width:116px;height:116px}.aseal.ic .as-l img.as-ic{max-width:116px;max-height:116px}}
+/* r90c Live at Pickathon CD track card */
+.shelf.weekend .cd-c{display:flex;align-items:center;gap:12px;padding:0 14px;background:linear-gradient(135deg,#3b3335,#2a2526);border:1px solid rgba(243,234,216,.12)}
+.shelf.weekend .vth img.cd-ic{width:66px;height:66px;object-fit:contain;flex:none}
+.shelf.weekend .cd-l{font-size:11px;letter-spacing:.12em;text-transform:uppercase;line-height:1.5;color:#d9b24a;font-weight:700}
+.shelf.weekend .cd-sp{position:absolute;right:10px;bottom:10px}
+.shelf.weekend .wk.cd{cursor:pointer}
+.shelf.weekend .cd-sp{position:absolute;right:10px;bottom:10px;width:40px;height:40px}.shelf.weekend .cd-sp>*{position:static!important;transform:none!important;margin:0!important}
+/* r91 year lineup playlist line under the poster */
+.po-listen{display:inline-flex;align-items:center;gap:6px;min-height:44px;margin:4px 0 0;font-size:15px;font-weight:700;color:var(--ink,#2b2627);text-decoration:none;border-bottom:1.5px solid currentColor;line-height:1.2;padding-top:10px}
+.po-listen{display:flex;width:max-content;margin:2px auto 0;align-self:center;justify-self:center}
+.shelf.weekend .cd-c{position:relative}.shelf.weekend .vth img.cd-cov{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1}
+.shelf.weekend .cd-c .ring{z-index:2}
+/* r93 MOCK: Artwork's top-edge horizons (artwork-52 preview) */
+.hzn{background:#2B2628;overflow:hidden;line-height:0;border-bottom:3px solid var(--acc,#D6B54A)}
+.hzn img{display:block;height:72px;width:auto;max-width:none;margin:0 auto;position:relative;left:50%;transform:translateX(-50%)}
+@media (min-width:700px){.hzn img{height:96px}}
+@media (min-width:1000px){.hzn img{height:120px}}
+.hzn-art img{height:56px}@media (min-width:1000px){.hzn-art img{height:96px}}
+.hzn-foot{height:3px;background:var(--acc,#D6B54A)}
+/* r93c year-page join: accent line + year icon, the same join as the artist page */
+.yjoin{position:relative;height:3px;background:var(--acc,#D6B54A);margin:0 0 56px}
+.yjoin img{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:84px;height:84px;object-fit:contain;filter:drop-shadow(0 2px 6px rgba(0,0,0,.45))}
+@media (min-width:1000px){.yjoin{margin-bottom:68px}.yjoin img{width:108px;height:108px}}
+/* r94 (Zale, Nov 24 10:39): desktop year top: photo and poster joined side by side at the same height, no red frame around or between them,
+   a bigger photo with bigger words; the join line and year icon close the bottom */
+@media (min-width:1000px){
+  .yrtop.framed{background:none!important;padding:0!important;column-gap:0!important;grid-template-columns:minmax(0,5fr) minmax(0,7fr)!important;align-items:stretch!important;max-width:1280px}
+  .yrtop.framed::before{display:none!important}
+  .yrtop.framed>.hero{position:relative!important;top:auto!important;height:auto!important;min-height:0!important;align-self:stretch!important;border:0!important;border-radius:0!important;box-shadow:none!important;margin:0!important}
+  .yrtop.framed>.hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  .yrtop.framed>.hero h1{font-size:clamp(48px,4.4vw,64px);line-height:1}
+  .yrtop.framed>.hero .hero-sub{font-size:20px;line-height:1.45;max-width:30ch}
+  .yrtop.framed>.hero .krow{font-size:14px}
+  .yrtop.framed .poster{border-radius:0!important;margin:0!important}
+  .yrtop.framed+.yjoin,.yjoin{margin-top:0}
+}
+@media (min-width:1000px){.yrtop .poster .po-in .po-listen{grid-column:1/-1;justify-self:center}.yrtop.framed .poster .po-in{padding-bottom:64px!important}}
+/* r95 (Zale, Nov 24 10:43): poster lines centered on desktop, each line kept to one line: a long headliner steps down in size to fit */
+@media (min-width:1000px){
+  .yrtop .po-names,.yrtop .po-names .po-ln,.yrtop .po-names div{text-align:center}
+  .yrtop .pl{justify-content:center!important}
+  .yrtop .po-names.then .pl span{white-space:nowrap!important}
+  .yrtop .po-names.then .pl.l1{font-size:min(64px,calc(640px / (0.74 * var(--n,10))))}
+  .yrtop .po-names.then .pl.l2{font-size:min(48px,calc(640px / (0.74 * var(--n,10))))}
+  .yrtop .po-names.then .pl.l3{font-size:min(31px,calc(640px / (0.74 * var(--n,10))))}
+  .yrtop .po-names.then .pl.l4{font-size:min(20px,calc(640px / (0.74 * var(--n,10))))}
+}
+/* r95b: the poster's name cloud: centered, every name on one line; a long name steps down to fit the column */
+@media (min-width:1000px){
+  .yrtop .po-names .pcloud{justify-content:center!important;max-width:none!important}
+  .yrtop .po-names .pcloud .pn{white-space:nowrap!important;overflow-wrap:normal!important;font-size:min(calc((var(--lo) + var(--s)*(var(--hi) - var(--lo))) * 1px),calc(620px / (0.74 * var(--n,10))))}
+}
+@media (max-width:999px){
+  .po-names .pcloud .pn{white-space:nowrap!important;overflow-wrap:normal!important;font-size:min(calc((var(--lo) + var(--s)*(var(--hi) - var(--lo))) * 1px),calc((100vw - 64px) / (0.74 * var(--n,10))))}
+}
+/* r97: fit each poster name to the names column itself (container width), every size */
+.po-names{container-type:inline-size}
+.po-names .pcloud .pn{white-space:nowrap!important;overflow-wrap:normal!important;font-size:min(calc((var(--lo) + var(--s)*(var(--hi) - var(--lo))) * 1px),calc(96cqw / (0.74 * var(--n,10))))!important}
+/* r98 (Zale, Nov 24 11:17): type size follows rank: names start at their magnitude size; app.js fits them so no lower-ranked name is ever
+   bigger than one above it, and no name wraps. Desktop: smaller logo and caption, the caption first, then the slider with room between */
+.po-names .pcloud:not(.rest) .pn{font-size:calc((var(--lo) + var(--s)*(var(--hi) - var(--lo))) * 1px)!important;white-space:nowrap!important}
+@media (min-width:1000px){
+  .yrtop .po-art,.yrtop .poster .po-badge,.yrtop .poster.joined .po-badge,.yrtop .poster.solo .po-badge{width:176px!important}
+  .yrtop .poster .po-cap{grid-column:2!important;grid-row:1!important;margin-top:18px!important;font-size:32px!important;line-height:1.08!important;text-align:left}
+  .yrtop .poster .po-ctl{grid-column:2!important;grid-row:2!important;margin-top:26px!important;max-width:none!important;width:100%;gap:22px!important}
+  .yrtop .poster .po-ctl .po-track{min-width:120px}
+  .yrtop .poster .po-in{column-gap:40px!important}
+}
+@media (min-width:1000px){
+  .yrtop .poster .po-ctl .po-b{flex:none!important;white-space:nowrap;font-size:14px!important;padding:0 16px!important;height:46px!important}
+  .yrtop .poster .po-ctl .po-track{flex:1 1 auto!important;min-width:64px!important}
+  .yrtop .poster .po-ctl{gap:18px!important}
+}
+/* r99 (Zale, Nov 24 11:26): the slider sits centered in its column with room at both edges; the year riding the knob is bigger and readable */
+.po-ctl{width:calc(100% - 48px)!important;max-width:340px!important;margin-left:auto!important;margin-right:auto!important;gap:12px!important}
+.po-ctl .po-b{padding:0 12px!important}
+.po-yr{font-size:15px!important;letter-spacing:.06em!important;top:-26px!important}
+@media (min-width:1000px){
+  .yrtop .poster .po-ctl{width:auto!important;max-width:440px!important;justify-self:center!important;margin-left:auto!important;margin-right:auto!important;gap:22px!important;margin-top:40px!important}
+  .yrtop .poster .po-cap{text-align:center!important;justify-self:center!important}
+  .po-yr{font-size:19px!important;top:-32px!important}
+}
+/* r99b: slider gets real room: phone = nearly the panel width, smaller button type; desktop = its own centered row across the poster */
+.po-ctl{width:calc(100% - 20px)!important;max-width:360px!important;gap:10px!important}
+.po-ctl .po-b{padding:0 10px!important;font-size:12px!important;letter-spacing:.05em!important}
+.po-ctl .po-track{flex:1 1 auto!important;min-width:70px!important}
+.po-yr{top:auto!important;bottom:32px!important;font-size:16px!important}
+@media (min-width:1000px){
+  .yrtop .po-art{grid-row:1!important}
+  .yrtop .poster .po-cap{grid-column:2!important;grid-row:1!important;align-self:center!important;margin-top:0!important;font-size:34px!important}
+  .yrtop .poster .po-ctl{grid-column:1/-1!important;grid-row:2!important;justify-self:center!important;width:100%!important;max-width:520px!important;margin:38px auto 0!important;gap:22px!important}
+  .yrtop .poster .po-ctl .po-b{font-size:14px!important;padding:0 18px!important;letter-spacing:.08em!important}
+  .po-yr{font-size:20px!important;bottom:34px!important}
+}
+@media (max-width:379px){.po-ctl{gap:8px!important;width:calc(100% - 12px)!important}.po-ctl .po-b{font-size:11px!important;padding:0 8px!important;letter-spacing:.03em!important}.po-ctl .po-track{min-width:48px!important}}
+@media (max-width:999px){.poster .po-cap{font-size:22px!important;line-height:1.15!important}.po-yr{font-size:19px!important;bottom:34px!important}.po-ctl{margin-top:40px!important}}
+/* r100 (Zale, Nov 24 11:36): desktop: the slider goes back under the caption in the right column; the caption is the point: bigger, and it
+   crossfades between "as we booked it" and "if we booked it today" as the names move */
+.poster .po-cap{transition:none}
+@media (min-width:1000px){
+  .yrtop .po-art{grid-row:1/span 2!important;align-self:center!important}
+  .yrtop .poster .po-cap{grid-column:2!important;grid-row:1!important;align-self:end!important;margin-top:8px!important;font-size:42px!important;line-height:1.04!important;text-align:left!important;justify-self:start!important;color:var(--cap,#F2CF62)!important}
+  .yrtop .poster .po-ctl{grid-column:2!important;grid-row:2!important;justify-self:stretch!important;width:auto!important;max-width:none!important;margin:44px 8px 0 0!important;gap:14px!important}
+  .yrtop .poster .po-ctl .po-b{font-size:13px!important;padding:0 14px!important;letter-spacing:.06em!important}
+  .yrtop .poster .po-ctl .po-track{min-width:56px!important}
+}
+@media (max-width:999px){.poster .po-cap{font-size:26px!important;line-height:1.1!important;color:var(--cap,#F2CF62)!important}}
+/* r101: set lines in the story tick, one per line with a bold day and time */
+.tl-pk ul.tl-s{list-style:none;margin:6px 0 0;padding:0;display:grid;gap:5px}
+.tl-pk ul.tl-s li{font-size:15px;line-height:1.35;color:var(--dim)}
+.tl-pk ul.tl-s li b{color:var(--cream);font-weight:800;margin-right:8px;letter-spacing:.01em}
+/* r101: year markers inside the artist shelf */
+.shelf.onesh .ym{flex:none;width:78px;align-self:stretch;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;border-left:2px solid #5a5254;padding:0 6px 0 10px;text-align:center;scroll-snap-align:start}
+.shelf.onesh .ym img{width:46px;height:46px;object-fit:contain}
+.shelf.onesh .ym b{font-size:19px;font-weight:800;letter-spacing:.02em;color:#f3ead8}
+.shelf.onesh .ym span{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#d9b24a;font-weight:700}
+.shelf.onesh .ym.on{border-left-color:#d9b24a}.shelf.onesh .ym.on b{color:#d9b24a}
+
+/* r108 stars (header spec Nov 24): star upper right on every card and artist photo; the year label moves upper left */
+.pk-star1{width:44px;height:44px;display:inline-flex;align-items:center;justify-content:center;padding:0;border:0;border-radius:4px;background:rgba(43,38,40,.55);cursor:pointer}
+.pk-star1 path{fill:none;stroke:#F5EFE2}.pk-star1[aria-pressed=true] path{fill:#F2CF62;stroke:#F2CF62}
+.card{position:relative}
+.cstar{position:absolute;top:2px;right:2px;z-index:4}
+.cyr{left:12px;right:auto}
+.hact .hyr-y{left:16px;right:auto}
+.hact>.cstar{top:18px;right:8px;z-index:5}
+@media (min-width:1000px){.hact .hyr-y{left:max(64px,calc((100% - 1152px)/2));right:auto}.hact>.cstar{right:max(56px,calc((100% - 1152px)/2 - 8px))}}
+/* r106 (tablet 1000-1199): the poster sits in a ~580px panel beside the hero photo, so it stacks in one column like the phone; nothing may pass the panel edge */
+@media (min-width:1000px) and (max-width:1199px){
+  .poster.joined .po-in,.poster.solo .po-in{display:block;padding:0 24px 40px;text-align:center}
+  .poster .po-cap{width:auto;max-width:100%;font-size:28px;margin:20px 0 0}
+  .po-ctl{width:100%;max-width:340px;margin:18px auto 0;gap:8px}
+  .po-b{min-width:0;font-size:12px;letter-spacing:.05em;padding:0 10px;height:44px}
+  .po-names{width:100%;margin:22px 0 0;text-align:center}
+  .po-names .po-ln,.po-names div{text-align:center}
+  .po-names.then .pl.l1{font-size:38px}.po-names.then .pl.l2{font-size:30px}.po-names.then .pl.l3{font-size:22px}.po-names.then .pl.l4{font-size:16px}
+  .pl{justify-content:center}
+  .pcloud{justify-content:center;gap:4px 16px;max-width:100%}
+  .po-art{margin:0 auto}
+}
+/* r106: a long headliner name wraps inside the poster panel instead of running past its frame (tablet and small desktop) */
+@media (min-width:1000px) and (max-width:1439px){
+  .po-names .pcloud .pn,.pcloud .pn{white-space:normal;overflow-wrap:break-word;text-wrap:balance;max-width:100%;line-height:1}
+  .po-names .pcloud .pn{--hi:52}
+}
+@media (min-width:1200px) and (max-width:1439px){
+  .po-ctl{width:100%;max-width:100%;gap:8px}
+  .po-b{padding:0 10px;font-size:12px;letter-spacing:.05em}
+}
+@media (min-width:1200px) and (max-width:1439px){
+  /* r106: the controls column is ~285px here; the two buttons share a row and the slider drops under them */
+  .po-ctl{flex-wrap:wrap;justify-content:space-between;row-gap:46px;overflow:visible}
+  .po-b{padding:0 8px;font-size:12px;letter-spacing:.03em;white-space:nowrap;flex:0 0 auto}
+  .po-ctl>.po-track{order:3;flex:1 0 100%;width:100%;min-width:0;margin-top:26px}
+}
+/* r106 (Zale, Nov 24 22:31): the year logo on the poster is a bit big at tablet and small desktop */
+@media (min-width:1000px) and (max-width:1199px){
+  .yrtop .po-art,.yrtop .poster .po-badge,.yrtop .poster.joined .po-badge,.yrtop .poster.solo .po-badge{width:128px!important}
+}
+@media (min-width:1200px) and (max-width:1439px){
+  .yrtop .po-art,.yrtop .poster .po-badge,.yrtop .poster.joined .po-badge,.yrtop .poster.solo .po-badge{width:136px!important}
+}
+@media (min-width:1440px){
+  .yrtop .po-art,.yrtop .poster .po-badge,.yrtop .poster.joined .po-badge,.yrtop .poster.solo .po-badge{width:150px!important}
+}
+/* r107 (Zale Nov 24 22:35): the poster logo and caption are sized from the headliner's fitted name size (--pH, set by fitPoster), so the bill leads at every width and every year:
+   logo height = 3.2 x headliner size (110 to 200px), caption = 0.62 x headliner size (18 to 40px). Tall stickers and round seals get the same height. */
+.poster .po-art,.poster .po-badge,.yrtop .po-art,.yrtop .poster .po-badge,.yrtop .poster.joined .po-badge,.yrtop .poster.solo .po-badge{width:auto!important;max-width:none!important;height:clamp(110px,calc(var(--pH,40px)*3.2),200px)!important}
+.poster .po-art{display:flex;align-items:center;justify-content:center}
+.poster .po-badge{width:auto!important}
+.poster .po-cap,.yrtop .poster .po-cap{font-size:clamp(18px,calc(var(--pH,40px)*.62),40px)!important;line-height:1.1}
+/* r108 (Zale Nov 24 22:41): at 1000-1199 the top of the poster stays two columns: logo left, caption and controls right; the bill runs full width below */
+@media (min-width:1000px) and (max-width:1199px){
+  .yrtop .poster.joined .po-in,.yrtop .poster.solo .po-in,.poster.joined .po-in,.poster.solo .po-in{display:grid;grid-template-columns:auto minmax(0,1fr);column-gap:24px;row-gap:0;align-items:center;text-align:left;padding:0 24px 40px}
+  .yrtop .po-art,.poster .po-art{grid-column:1;grid-row:1/span 2;margin:0;align-self:center}
+  .yrtop .poster .po-cap,.poster .po-cap{grid-column:2;grid-row:1;margin:0;text-align:left;align-self:end}
+  .yrtop .po-ctl,.po-ctl{grid-column:2;grid-row:2;margin:14px 0 0;max-width:340px;align-self:start}
+  .yrtop .poster .po-names,.po-names{grid-column:1/-1;grid-row:3;margin-top:26px}
+  .yrtop .poster .po-all{grid-column:1/-1;grid-row:4}.yrtop .poster .po-tap{grid-column:1/-1;grid-row:5}
+}
+@media (min-width:1000px) and (max-width:1199px){
+  .yrtop .poster.joined .po-in,.yrtop .poster.solo .po-in,.poster.joined .po-in,.poster.solo .po-in{padding:34px 36px 40px;column-gap:28px}
+}

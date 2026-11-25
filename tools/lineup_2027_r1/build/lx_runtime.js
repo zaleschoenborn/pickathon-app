@@ -66,11 +66,40 @@
 /*WIDGETS*/
   }
 
+  /* r108 stars: the pages draw inside a shadow root, so the shared hook (window.__pkStar) cannot see these buttons; this bridge calls it and repaints. */
+  function starPaint(root) { var S = window.__pkStar; if (!S) return; [].forEach.call(root.querySelectorAll('[data-pkstar]'), function (b) { var x = null; try { x = JSON.parse(b.getAttribute('data-x') || 'null'); } catch (e) {} var on = S.has(b.getAttribute('data-pkstar'), b.getAttribute('data-id'), x); b.setAttribute('aria-pressed', on ? 'true' : 'false'); var l = b.getAttribute('aria-label') || ''; b.setAttribute('aria-label', on ? l.replace(/^Star /, 'Unstar ') : l.replace(/^Unstar /, 'Star ')); }); }
+  function starBridge(root) {
+    if (!root._starOn) { root._starOn = 1;
+      root.addEventListener('click', function (e) { var p = e.composedPath ? e.composedPath() : [], b = null; for (var i = 0; i < p.length; i++) if (p[i].getAttribute && p[i].getAttribute('data-pkstar')) { b = p[i]; break; } if (!b) return; e.preventDefault(); e.stopPropagation(); var S = window.__pkStar; if (!S) return; var x = null; try { x = JSON.parse(b.getAttribute('data-x') || 'null'); } catch (er) {} S.toggle(b.getAttribute('data-pkstar'), b.getAttribute('data-id'), x); starPaint(root); }, true);
+      window.addEventListener('pkstar', function () { starPaint(root); }); window.addEventListener('storage', function () { starPaint(root); }); }
+    starPaint(root); }
   var LASTK = '';
+  // r106: poster names fit their column (the page-level fit in app.js cannot see inside the shadow root): never wider than the column, never bigger than the name above
+  function fitPoster(root) {
+    root.querySelectorAll('.po-names').forEach(function (pn) {
+      var W = pn.clientWidth; if (!W) return;
+      pn.querySelectorAll('.pcloud:not(.rest)').forEach(function (pc) {
+        var prev = 1e9; pc._h0 = 0;
+        pc.querySelectorAll('.pn').forEach(function (e) {
+          e.style.removeProperty('font-size');
+          var base = parseFloat(getComputedStyle(e).fontSize), w = e.scrollWidth;
+          var s = Math.min(base, w > W ? base * W / w * 0.97 : base, prev);
+          e.style.setProperty('font-size', s.toFixed(1) + 'px', 'important'); prev = s;
+          if (!pc._h0) pc._h0 = s;
+        });
+      });
+      var po = pn.closest('.poster'), H = pn.querySelector('.pcloud:not(.rest)'); if (po && H && H._h0) po.style.setProperty('--pH', H._h0.toFixed(1) + 'px');
+    });
+  }
+  function fitWatch(root) {
+    fitPoster(root);
+    if (window.ResizeObserver && !root._fro) { root._fro = new ResizeObserver(function () { fitPoster(root); }); root.querySelectorAll('.po-names').forEach(function (n) { root._fro.observe(n); }); }
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { fitPoster(root); });
+  }
   function paint(host, key, html, css) {
     var root = host.shadowRoot || host.attachShadow({ mode: 'open' });
     root.innerHTML = '<style>' + css + '\n.phone{max-width:none;margin:0;padding-bottom:32px;min-height:0;background:transparent}.screen{display:block}</style><div class="phone">' + html + '</div>';
-    host._k = key; wire(root); try { widgets(root); } catch (e) { if (window.console) console.error('lx widgets', e); }
+    host._k = key; wire(root); starBridge(root); try { fitWatch(root); } catch (e) {} try { widgets(root); } catch (e) { if (window.console) console.error('lx widgets', e); }
     if (LASTK !== key) { LASTK = key; toTop(); }
   }
   function mount(host, key) {
