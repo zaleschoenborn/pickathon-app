@@ -830,7 +830,7 @@ def name_lines(n):
 def tile(a, y, P, photo):
     n = a['n']; k = a['k']; cd = CD.get((norm(n), y)); vid = (norm(n), y) in VID
     if photo:
-        h = card(n, '', k, '', img(photo, 560), fpos(photo), clip_for(n, y) or bool(cd), 'tt')
+        h = card(n, '', k, '', img(photo, 560), fpos(photo), False, 'tt')   # Nov 25 (Zale): Begin here cards are plain cards to the artist page, no play button
         if cd:
             h = h.replace('</span></span></a>', '</span><span class="ctrk">%s · CD</span></span></a>' % E(cd))
         return h
