@@ -1320,3 +1320,9 @@ a.hd-yr{text-decoration:none}
 @media (min-width:1440px){
   .yrtop .po-art,.yrtop .poster .po-badge,.yrtop .poster.joined .po-badge,.yrtop .poster.solo .po-badge{width:150px!important}
 }
+/* r107 (Zale Nov 24 22:35): the poster logo and caption are sized from the headliner's fitted name size (--pH, set by fitPoster), so the bill leads at every width and every year:
+   logo height = 3.2 x headliner size (110 to 200px), caption = 0.62 x headliner size (18 to 40px). Tall stickers and round seals get the same height. */
+.poster .po-art,.poster .po-badge,.yrtop .po-art,.yrtop .poster .po-badge,.yrtop .poster.joined .po-badge,.yrtop .poster.solo .po-badge{width:auto!important;max-width:none!important;height:clamp(110px,calc(var(--pH,40px)*3.2),200px)!important}
+.poster .po-art{display:flex;align-items:center;justify-content:center}
+.poster .po-badge{width:auto!important}
+.poster .po-cap,.yrtop .poster .po-cap{font-size:clamp(18px,calc(var(--pH,40px)*.62),40px)!important;line-height:1.1}

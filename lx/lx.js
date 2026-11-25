@@ -277,14 +277,16 @@
     root.querySelectorAll('.po-names').forEach(function (pn) {
       var W = pn.clientWidth; if (!W) return;
       pn.querySelectorAll('.pcloud:not(.rest)').forEach(function (pc) {
-        var prev = 1e9;
+        var prev = 1e9; pc._h0 = 0;
         pc.querySelectorAll('.pn').forEach(function (e) {
           e.style.removeProperty('font-size');
           var base = parseFloat(getComputedStyle(e).fontSize), w = e.scrollWidth;
           var s = Math.min(base, w > W ? base * W / w * 0.97 : base, prev);
           e.style.setProperty('font-size', s.toFixed(1) + 'px', 'important'); prev = s;
+          if (!pc._h0) pc._h0 = s;
         });
       });
+      var po = pn.closest('.poster'), H = pn.querySelector('.pcloud:not(.rest)'); if (po && H && H._h0) po.style.setProperty('--pH', H._h0.toFixed(1) + 'px');
     });
   }
   function fitWatch(root) {
