@@ -7493,7 +7493,7 @@ html:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root:
 <script>/*pk-star: ONE star hook for every page (Design My Pickathon, Nov 24; spec design_specs/stars_basics_nov24_draft1.md). Pages never write star storage themselves.
   __pkStar.has(kind, id) / __pkStar.toggle(kind, id, extra) / __pkStar.count(kind, year) / __pkStar.button(kind, id, label, extra) -> HTML
   kinds: 'act'  = a 2027 act (id = artist key; feeds the Schedule plan; pk-site-mine-2027 'a:<key>')
-         'past' = a past act-year for that year's top five (id = act name, extra.y = year; at 5 the app offers the top-five card; pk-pstars-2027)
+         'past' = a past act-year (id = act name, extra.y = year; no cap; the fifth star on a year shows the share offer once for that year; pk-pstars-2027)
          'todo' = a thing to do at a place (extra = {e, hk, p, t, img}; id = e|hk|t; window.__pkXS)
   Every change fires window event 'pkstar' {kind, id, on}. Clicks on [data-pkstar] buttons are handled here.*/
 (function () {
@@ -7511,6 +7511,7 @@ html:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root:
     if (kind === 'act') { var s = J(MK, {}); if (s['a:' + id]) { delete s['a:' + id]; } else s['a:' + id] = true; try { localStorage.setItem(MK, JSON.stringify(s)); } catch (e) {} var a = A(); if (a && a.setState && (window.__pkSY || '2026') === '2027') a.setState({ stars: s }); }
     else if (kind === 'past') { var a2 = A(), y = (x && x.y) || ''; if (a2 && a2.pStar) a2.pStar(id, y); else { var L = J('pk-pstars-2027', []), i = -1; L.forEach(function (z, j) { if (z.n === id && String(z.y) === String(y)) i = j; }); if (i >= 0) L.splice(i, 1); else L.push({ n: id, y: y }); try { localStorage.setItem('pk-pstars-2027', JSON.stringify(L)); } catch (e) {} } }
     else if (kind === 'todo' && window.__pkXS) window.__pkXS.toggle(Object.assign({ k: id }, x || {}));
+    try { var ap = A(); if (ap && ap.setState) ap.setState({ starTick: (ap.state.starTick || 0) + 1 }); } catch (e) {}   /* re-render so the header star's total follows every star (Design Studio -110) */
     var on = has(kind, id, x); try { window.dispatchEvent(new CustomEvent('pkstar', { detail: { kind: kind, id: id, on: on, n: kind === 'past' ? count('past', (x || {}).y) : count(kind) } })); } catch (e) {}
     paintAll(); return on; }
   function button(kind, id, label, x) { var on = has(kind, id, x); return '<button type="button" class="pk-star1" data-pkstar="' + kind + '" data-id="' + String(id).replace(/"/g, '&quot;') + '"' + (x ? ' data-x="' + JSON.stringify(x).replace(/"/g, '&quot;') + '"' : '') + ' aria-pressed="' + on + '" aria-label="' + (on ? 'Unstar ' : 'Star ') + String(label || id).replace(/"/g, '&quot;') + '">' + SV + '</button>'; }
