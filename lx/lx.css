@@ -1326,3 +1326,15 @@ a.hd-yr{text-decoration:none}
 .poster .po-art{display:flex;align-items:center;justify-content:center}
 .poster .po-badge{width:auto!important}
 .poster .po-cap,.yrtop .poster .po-cap{font-size:clamp(18px,calc(var(--pH,40px)*.62),40px)!important;line-height:1.1}
+/* r108 (Zale Nov 24 22:41): at 1000-1199 the top of the poster stays two columns: logo left, caption and controls right; the bill runs full width below */
+@media (min-width:1000px) and (max-width:1199px){
+  .yrtop .poster.joined .po-in,.yrtop .poster.solo .po-in,.poster.joined .po-in,.poster.solo .po-in{display:grid;grid-template-columns:auto minmax(0,1fr);column-gap:24px;row-gap:0;align-items:center;text-align:left;padding:0 24px 40px}
+  .yrtop .po-art,.poster .po-art{grid-column:1;grid-row:1/span 2;margin:0;align-self:center}
+  .yrtop .poster .po-cap,.poster .po-cap{grid-column:2;grid-row:1;margin:0;text-align:left;align-self:end}
+  .yrtop .po-ctl,.po-ctl{grid-column:2;grid-row:2;margin:14px 0 0;max-width:340px;align-self:start}
+  .yrtop .poster .po-names,.po-names{grid-column:1/-1;grid-row:3;margin-top:26px}
+  .yrtop .poster .po-all{grid-column:1/-1;grid-row:4}.yrtop .poster .po-tap{grid-column:1/-1;grid-row:5}
+}
+@media (min-width:1000px) and (max-width:1199px){
+  .yrtop .poster.joined .po-in,.yrtop .poster.solo .po-in,.poster.joined .po-in,.poster.solo .po-in{padding:34px 36px 40px;column-gap:28px}
+}
