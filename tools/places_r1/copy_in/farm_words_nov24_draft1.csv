@@ -1,0 +1,31 @@
+experience,place_key,kind,text,card_title
+Music,woods,row_line,Settle into the shade of big-leaf maples and let the music come to you.,
+Music,paddock,row_line,"Evening sets on the open field, from sunset to past midnight.",
+Music,cherryhill,row_line,Stay late: sets run into the small hours on the ridge-top stage.,
+Music,grove,row_line,"Easygoing sets in the shade of the firs, a cold drink close by.",
+Music,windmill,row_line,"Sunny hillside sets, with coffee in the morning and a bar by evening.",
+Music,galaxy,row_line,"Psych, punk and soul inside the old barn, up close and loud.",
+Music,lucky,row_line,"Seats and quiet in a barn, for the sets you want to really hear.",
+Music,farmhouse,row_line,"A stage by the old farmhouse, close to where the weekend begins.",
+Music,curation,row_line,"A chef and an artist share one dinner table, with music between courses.",
+Wellness,lucky,short_name,Vinyasa,Vinyasa Before the Music
+Wellness,windmill,short_name,Scouters Hike,Hike Scouters Mountain
+Wellness,refuge,short_name,Massage,Massage in the Woods
+Wellness,refuge,short_name,Typewriter Poetry,Poetry on a Typewriter
+Family,coyote,short_name,Kids Camp,Summer Camp for Your Kids
+Family,coyote,short_name,Archery,Archery and Adventure Games
+Family,coyote,short_name,Survival School,Wilderness Survival School
+Family,coyote,short_name,Make Things,Make Something by Hand
+Family,coyote,short_name,Talent Show,Ukulele and Talent Show
+Family,coyote,short_name,Baby Nest,A Quiet Nest for Babies
+Drinks,windmill,short_name,Morning Coffee,Morning Coffee on the Hill
+Drinks,windmill,short_name,Evening Bar,Evenings at the Windmill Bar
+Comedy,lucky,short_name,Quiet Sets,Quiet Sets in the Barn
+Food,curation,short_name,Hidden Dinner,Dinner at a Hidden Table
+Food,curation,short_name,Brunch,Sunday Brunch at Curation
+DJs,market,short_name,Records,Records at the Crossroads
+DJs,woods,short_name,Forest Floor,Forest Floor Dance Party
+Literary,woods,short_name,Sunday Stories,Sunday Stories in the Woods
+Drinks,grove,short_name,Cold One,A Cold One in the Shade
+Wonders,all,xp_line,Architecture premieres built for these woods. Step inside a place that exists nowhere else.,
+Wonders,all,wonders_2027,The 2027 wonders are still to come. We reveal them slowly.,

@@ -15,6 +15,11 @@ for e, places in hx.items():
     for k, v in places.items():
         v = v if isinstance(v, list) else [v]
         if v: z = v[0]; srcs.add((z, '50% 50%') if isinstance(z, str) else (z['i'], z.get('p', '50% 50%')))
+cj = os.path.join(R, 'cards.json')   # Nov 24: the Farm's rows show the first card's photo (Home's photos)
+if os.path.exists(cj):
+    for e, places in [(a, b) for a, b in json.load(open(cj)).items() if not a.startswith('_')]:
+        for k, v in places.items():
+            if v: srcs.add((v[0]['i'], v[0].get('p', '50% 50%')))
 os.makedirs(os.path.join(ROOT, 'i', 'th'), exist_ok=True)
 S = 192; n = 0
 for f, p in sorted(srcs):
