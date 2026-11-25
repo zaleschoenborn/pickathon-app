@@ -1053,3 +1053,9 @@ html body.pkpl-hood:not(.pkpl-wide) #root#root#root#root #pkpl .pkpl-xb .pkpl-xe
 html body.pkpl-hood:not(.pkpl-wide) #root#root#root#root #pkpl .pkpl-xb .pkpl-xe[aria-pressed="true"] svg{color:#D6B54A!important}
 /* rotation check Nov 24: after an upright tablet turns sideways, the phone-only 'See every neighborhood' link stayed in the page behind the panel */
 html body.pkpl-wide #root #pkpl .pkpl-psall{display:none!important}
+
+/* Nov 25 (Zale via Site Build): the photo is big and graphic. Phone: about 60px of map stays above the name bar (Zale picked the thin strip); the photo runs down under the experience row. Desktop: the photo runs from under the experience grid to near the bottom of the window. */
+.pkpl-hero>.pkpl-cx{position:absolute;inset:0;z-index:1;pointer-events:none}
+.pkpl-cx>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;max-width:none;opacity:0;transition:opacity 1.5s cubic-bezier(.4,0,.2,1)}
+.pkpl-cx>img.on{opacity:1}
+html body.pkpl-wide #root #pkpl-top .pkpl-hero,html body.pkpl-wide #root #pkpl-top .pkpl-has .pkpl-hero{height:clamp(300px,calc(100vh - 360px),760px)!important}

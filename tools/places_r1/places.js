@@ -279,7 +279,8 @@
   /* the visible part of the map (phone: above the sheet) */
   function lw() { return Math.round(Math.max(400, Math.min(480, window.innerWidth * 0.32))); }   /* desktop left column: phone-card width, the map is the hero (Zale, Nov 19) */
   function sheetOpen() { var sc = scroller(); return openH(sc ? sc.clientHeight : 600); }   /* the card opens to the phone's scroll area less a map margin at the top (Nov 20, Zale) */
-  function openH(vh) { var h = Math.round(vh * 0.6) + (V2 && !wide() && vh > 500 ? 50 : 0); return V2 && !wide() && window.innerWidth < 600 ? Math.max(h, Math.min(272, Math.round(vh * 0.66))) : h; }   /* Zale, Nov 22 evening: short phones still open far enough for the whole photo plus a peek (the hero shrinks to fit, places.css) */   /* Zale, Nov 22: about 50px taller on phone and tablet so prev/next shows above the experience row */   /* open: the sheet covers 60%, the map shows above it (the yesterday default, Zale, Nov 20) */
+  function openH(vh) { if (V2 && !wide() && window.innerWidth < 600 && vh > 420) return vh - 60 - ((typeof xbH === "function" && xbH()) || 62);   /* Zale, Nov 25: on a phone a neighborhood opens with a thin map strip (about 60px) above the name bar, so the photo is big; pulling down still shows the map */
+    var h = Math.round(vh * 0.6) + (V2 && !wide() && vh > 500 ? 50 : 0); return V2 && !wide() && window.innerWidth < 600 ? Math.max(h, Math.min(272, Math.round(vh * 0.66))) : h; }   /* Zale, Nov 22 evening: short phones still open far enough for the whole photo plus a peek (the hero shrinks to fit, places.css) */   /* Zale, Nov 22: about 50px taller on phone and tablet so prev/next shows above the experience row */   /* open: the sheet covers 60%, the map shows above it (the yesterday default, Zale, Nov 20) */
   function v2Fit(v, L, one) {   /* MOCK round 4: no empty margin on the right; the framed places sit against the right side and the map runs under the left column */
     var b = union(L), s1 = v[0], tx = v[1], east = b[2] * s1 + tx, lim = M.vw - (one ? 190 : 84);
     if (east < lim) tx += lim - east;
@@ -778,11 +779,24 @@
   function ringPlace(hero) { var pb = hero && $('.pkpl-cplay', hero), w = hero && $('.pkpl-chw', hero); if (!pb || !w || wide() || matchMedia('(orientation:landscape) and (max-height:500px)').matches) { if (pb) pb.style.top = ''; return; } var sp = w.getBoundingClientRect().top - hero.getBoundingClientRect().top; pb.style.marginTop = '0'; pb.style.top = Math.max(10, Math.round(sp / 2 - pb.offsetHeight / 2)) + 'px'; }   /* the play ring sits in the middle of the photo above the words, never on them */
   function cardHi(z) { var c = z.c, k = top().h, H = (data().hoods || {})[k]; return '<p class="pkpl-ck">' + (H ? '<span class="pkpl-cpl"><img src="' + esc(emb(k)) + '" alt="">' + esc(H.n) + '</span><span class="pkpl-cdot" aria-hidden="true">\u00b7</span>' : '') + '<span class="pkpl-cxp">' + xpIcon(z.e) + XN(z.e) + '</span></p><h2 class="pkpl-ct">' + esc(c.t) + (c.y ? '<span class="pkpl-cy">' + esc(c.y) + '</span>' : '') + '</h2>' + (c.b ? '<p class="pkpl-cb">' + esc(c.b) + '</p>' : ''); }
   function heroArm(el) {
-    clearTimeout(TOP.timer); var hero = $('.pkpl-hero', el); if (!hero) return; hero._cs = el._cs || null; if (hero._cs) { TOP.i = el._c0 || 0; ringPlace(hero); setTimeout(function () { ringPlace(hero); }, 300); var f0 = $$('img', hero).filter(function (x) { return x.parentNode === hero; })[TOP.i]; if (f0) heroReady(f0).then(function (ok) { if (ok && f0.isConnected) { f0.classList.add('top'); requestAnimationFrame(function () { f0.classList.add('on'); }); } }); return; }   /* cards never turn by themselves (Zale, Nov 24: like Home's picker); swipe, dots or arrows */
+    clearTimeout(TOP.timer); var hero = $('.pkpl-hero', el); if (!hero) return; hero._cs = el._cs || null; if (hero._cs) { TOP.i = el._c0 || 0; ringPlace(hero); setTimeout(function () { ringPlace(hero); }, 300); var f0 = $$('img', hero).filter(function (x) { return x.parentNode === hero; })[TOP.i]; if (f0) heroReady(f0).then(function (ok) { if (ok && f0.isConnected) { f0.classList.add('top'); requestAnimationFrame(function () { f0.classList.add('on'); }); } }); cxRun(hero); return; }   /* cards never turn by themselves (Zale, Nov 24: like Home's picker); swipe, dots or arrows */
     var imgs = $$('img:not(.pkpl-nmrow img)', hero).filter(function (x) { return x.parentNode === hero; }); if (imgs.length > 1) heroReady(imgs[1]);
     if (imgs[0]) heroReady(imgs[0]).then(function (ok) { var f = imgs[0]; if (!ok || !f.isConnected || f.classList.contains('on') || TOP.i !== 0) return; requestAnimationFrame(function () { f.classList.add('top'); requestAnimationFrame(function () { f.classList.add('on'); }); }); });   /* the first photo fades in once it has decoded, never pops in over the dark frame (Zale, Nov 20) */
     if (imgs.length < 2 || calm()) return;
     (function step() { TOP.timer = setTimeout(function () { if (!hero.isConnected) return; if (document.hidden) { step(); return; } heroShow(hero, (TOP.i + 1) % imgs.length); step(); }, HERO_MS); })();   /* the photo rotation itself, not layout */
+  }
+  function cxStop(hero) { clearTimeout(hero._cxt); hero._cxk = 0; var w = $('.pkpl-cx', hero); if (w) w.innerHTML = ''; }
+  function cxRun(hero) {   /* Zale, Nov 25 ("photos now, Copy's cards later"): while a card is on screen, a few more photos of the same experience at the same place fade in under its words. The words stay; swiping still moves to the next card. Never with reduced motion, never under a clip */
+    cxStop(hero); var z = hero._cs && hero._cs[TOP.i]; if (!z || z.c.v || !z.c.x || !z.c.x.length || calm()) return;
+    var L = [[z.c.i, z.c.p]].concat(z.c.x), i0 = TOP.i, tk = hero._tok;
+    (function step() { hero._cxt = setTimeout(function () {
+      if (!hero.isConnected || TOP.i !== i0 || hero._tok !== tk) return; if (document.hidden) { step(); return; }
+      hero._cxk = (hero._cxk + 1) % L.length; var w = $('.pkpl-cx', hero);
+      if (!w) { w = document.createElement('div'); w.className = 'pkpl-cx'; w.setAttribute('aria-hidden', 'true'); hero.insertBefore(w, $('.pkpl-shade', hero)); }
+      if (hero._cxk === 0) { $$('img', w).forEach(function (x) { x.classList.remove('on'); }); setTimeout(function () { if (hero._cxk === 0) w.innerHTML = ''; }, HERO_FADE + 60); step(); return; }
+      var im = document.createElement('img'); im.alt = ''; im.draggable = false; im.src = L[hero._cxk][0]; im.style.objectPosition = L[hero._cxk][1]; w.appendChild(im);
+      heroReady(im).then(function (ok) { if (!im.isConnected) return; if (!ok) { im.remove(); step(); return; } requestAnimationFrame(function () { im.classList.add('on'); setTimeout(function () { $$('img', w).forEach(function (x) { if (x !== im) x.remove(); }); }, HERO_FADE + 60); step(); }); });
+    }, HERO_MS); })();
   }
   function heroReady(im) {   /* the next photo is loaded and decoded before it fades in, so a fade never shows a blank */
     try { im.loading = 'eager'; } catch (x) {}
@@ -791,7 +805,7 @@
   }
   function heroShow(hero, i) {   /* Zale, Nov 19: a true crossfade. The new photo fades in on top; the one under it stays fully visible until the fade ends, then drops out unseen. No dark dip between photos */
     var imgs = $$('img', hero).filter(function (x) { return x.parentNode === hero; }); var nx = imgs[i]; if (!nx) return;
-    var tok = (hero._tok = (hero._tok || 0) + 1); TOP.i = i;
+    var tok = (hero._tok = (hero._tok || 0) + 1); TOP.i = i; cxStop(hero);
     if (hero._cs && hero._cs[i]) { var hi = $('.pkpl-chw', hero), pb = $('.pkpl-cplay', hero); if (hi) hi.innerHTML = cardHi(hero._cs[i]); if (pb) pb.hidden = !hero._cs[i].c.v; ringPlace(hero); }   /* the card's words travel with its photo */
     $$('.pkpl-dots button', hero).forEach(function (b, j) { if (j === i) b.setAttribute('aria-current', 'true'); else b.removeAttribute('aria-current'); });
     heroReady(nx).then(function (ok) {
@@ -799,7 +813,7 @@
       if (!ok) return;
       imgs.forEach(function (x) { x.classList.remove('top'); });
       nx.classList.add('top'); requestAnimationFrame(function () { nx.classList.add('on'); });
-      clearTimeout(hero._xt); hero._xt = setTimeout(function () { if (tok !== hero._tok) return; imgs.forEach(function (x) { if (x !== nx && x.classList.contains('on')) { x.classList.add('cut'); x.classList.remove('on'); void x.offsetWidth; x.classList.remove('cut'); } }); var nn = imgs[(i + 1) % imgs.length]; if (nn) heroReady(nn); }, HERO_FADE + 60);
+      clearTimeout(hero._xt); hero._xt = setTimeout(function () { if (tok !== hero._tok) return; cxRun(hero); imgs.forEach(function (x) { if (x !== nx && x.classList.contains('on')) { x.classList.add('cut'); x.classList.remove('on'); void x.offsetWidth; x.classList.remove('cut'); } }); var nn = imgs[(i + 1) % imgs.length]; if (nn) heroReady(nn); }, HERO_FADE + 60);
     });
   }
   /* phone and portrait tablet: the sheet. Its scroll is the phone scroller: the space above it is see-through, so dragging the sheet down shows the map and dragging it up opens the page */

@@ -59,6 +59,29 @@ for k, ys in hw.items():
         if y == '2026' and '2026' in ys: pick = {'t': ys['2026']['t'], 'y': '2026', 'b': '', 'i': ys['2026']['img'], 'p': ys['2026']['pos'] or '50% 50%'}; break
     if pick and (k, pick['y']) in XWP: pick['i'], pick['p'] = XWP[(k, pick['y'])]   # Home's build photos for Wonders (design_home-64, Nov 24): same photos as Home
     if pick: out.setdefault('Architecture', {})[k] = [pick]
+# Deeper rotation (Zale, Nov 25, picked "photos now, Copy's cards later"): each card carries a few more photos of the same
+# experience at the same place ('x'), shown under the card's words. Sources: xp_manifest.json (photos already picked and
+# cropped for the Farm). Wonders cards name a 2026 build, so only 2026 frames of that place go under them, except the places
+# whose card is about the place itself (Galaxy, Orchard, Curation). Music keeps its clip. Cards that already have their own
+# photo each (several cards, one pool) get none, so no photo shows a different moment than the words. At most 4 extra per card.
+import re as _re2
+MAN = json.load(open(os.path.join(R, 'xp_manifest.json'), encoding='utf-8'))
+TIMELESS = {'galaxy', 'orchard', 'curation'}
+def _yr(s): m = _re2.search(r'/(20\d\d)', s or ''); return m.group(1) if m else ''
+for xp, pl in out.items():
+    if xp == 'Music': continue
+    for k, L in pl.items():
+        pool = MAN['arch'].get(k, []) if xp == 'Architecture' else (MAN['xp'].get(xp, {}) or {}).get(k, [])
+        if xp == 'Architecture' and k not in TIMELESS: pool = [p for p in pool if L and _yr(p.get('src')) == (L[0].get('y') or '2026')]
+        if (xp, k) in {('Craft', 'paddock')}: continue   # the card is one named shop (Merry Pop); the pool shows other makers' booths
+        if len(L) != 1: continue   # several specific cards (Refuge, Coyote, Curation meals): a shared pool could put the wrong moment under the words
+        used = {c['i'] for c in L}
+        pool = [p for p in pool if p['f'] not in used and os.path.exists(os.path.join(R, '..', '..', p['f']))]
+        for j, p in enumerate(pool):
+            c = L[j % len(L)]
+            if len(c.setdefault('x', [])) < 4: c['x'].append([p['f'], p.get('p', '50% 50%')])
+        for c in L:
+            if c.get('x') == []: del c['x']
 fw = C('farm_words_nov24_draft1.csv')   # Copy Review's Farm words (row design_neighborhoods-46)
 SN = {(r['experience'], r['card_title']): r['text'] for r in fw if r['kind'] == 'short_name'}
 SN.update({(e, n): v for (e, t), v in list(SN.items()) for n in [{'Ukulele and Talent Show': "Kids' Talent Show", 'Sunday Brunch at Curation': 'Brunch at Curation'}.get(t)] if n})
