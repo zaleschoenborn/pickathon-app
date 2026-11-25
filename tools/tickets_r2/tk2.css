@@ -1040,3 +1040,9 @@ body:has(.tk-gscrim) #tk-bar{visibility:hidden}
 .tk2 #tk-e3-know,.tk2 #tk-e-days{scroll-margin-top:84px}
 .tk2 .tk-g-pat .tk-num small{font-size:.6em;font-weight:700;opacity:.8}
 @media (min-width:1025px){.tk2.tk-gscrim .tk-g-pad4 .tk-g-adds{grid-template-columns:1fr;display:grid;gap:10px}}
+
+/* Nov 24 (Zale OK'd My Pickathon draft 2): a star on every thing-to-do card, upper right (the neighborhood mark keeps the upper left) */
+.tk2 .tk-x-c{position:relative}
+.tk2 .tk-x-star{position:absolute;right:4px;top:4px;z-index:4;width:44px;height:44px;display:grid;place-items:center;border:0;border-radius:50%;background:transparent;cursor:pointer}
+.tk2 .tk-x-star path{fill:rgba(0,0,0,.25);stroke:#F5EFE2;stroke-width:1.6}
+.tk2 .tk-x-star[aria-pressed="true"] path{fill:#F2CF62;stroke:#F2CF62}

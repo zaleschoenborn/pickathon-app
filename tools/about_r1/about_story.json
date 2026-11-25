@@ -1,0 +1,119 @@
+{
+  "_edit": "About story page (route aboutus, #/about-us), draft 4 (Nov 24 2026; shape approved by Zale Nov 24). Words: Copy Review info_about_words_nov24_draft1.csv; facts: Festival History Nov 24 (ZERO 2011, TWICE 'more than once', BUILT 2017 Treeline to the Clackamas County Veterans Village). go: route:x, route:x:key=value, page:x, plan:step:case, scroll:id. Site Build: move this object into data.json as aboutStory; ab.js reads data.json first and this copy only as a fallback.",
+  "hero": {
+    "im": "i/pk-woods-12.jpg",
+    "alt": "A crowd in the Woods lifting a guitar overhead",
+    "t": "A festival built by its community.",
+    "x": "It started in 1999 as a benefit for KBOO community radio, run by volunteers. People still build it."
+  },
+  "stands": {
+    "h": "What Pickathon stands for",
+    "_src": "Zale, Nov 24 15:30: About holds only what no other page covers. Experiences live on Home and The Farm, discovery on Home and the Lineup, press quotes on Home. The three commitments are Zale's Nov 23 direction (a community festival; sustainable for everyone; good for artists, mutual benefit). Facts: KBOO 1999 (Festival History 9), dishes 2011 and Treeline 2017 to the veterans village (Festival History 8), more than once (Festival History), Will Oldham quote (Press source of truth, SPIN 2025). Words are drafts for Copy Review.",
+    "r": [
+      {
+        "k": "Community",
+        "t": "Built by the people who show up",
+        "x": "It began as a benefit for KBOO community radio. Volunteers still run much of it, and students and makers build the neighborhoods.",
+        "im": "i/hb-cherryhill-1.jpg",
+        "alt": "The Cherry Hill neighborhood, built by students",
+        "go": "page:community",
+        "b": "Get involved"
+      },
+      {
+        "k": "Sustainable",
+        "t": "Leave the farm better",
+        "x": "Real plates and steel cups since 2011. Every structure is built for a second life: the 2017 Treeline stage now shelters veterans.",
+        "im": "i/about/world-zero.jpg",
+        "pos": "38% 30%",
+        "alt": "Hands washing a reusable plate beside a steel cup",
+        "go": "page:commitment-to-sustainability",
+        "b": "How we do it"
+      },
+      {
+        "k": "Artists",
+        "t": "Good for the people on stage",
+        "x": "Most artists play more than once, so nobody rushes. “A respect for humanity that is absent in the makeup of most festivals.” Will Oldham, in SPIN",
+        "im": "i/y24-roge.jpg",
+        "alt": "Rogê playing in the middle of the Woods crowd",
+        "go": "route:lineup",
+        "b": "The 2027 lineup"
+      }
+    ]
+  },
+  "eras": {
+    "h": "Our story, in posters",
+    "x": "Four eras. Every year has its own poster.",
+    "go": "route:about",
+    "r": [
+      {
+        "y": "1999–2005",
+        "n": "Before the farm",
+        "x": "A one-day benefit for KBOO, run by volunteers.",
+        "im": "i/y99-poster.webp",
+        "py": "1999"
+      },
+      {
+        "y": "2006–2019",
+        "n": "Finding our home",
+        "x": "Pendarvis Farm becomes home, and students start building the stages.",
+        "im": "i/y06-poster.webp",
+        "py": "2006"
+      },
+      {
+        "y": "2020–2023",
+        "n": "Starting over as neighborhoods",
+        "x": "No festival in 2020 or 2021, then back in 2022 as neighborhoods.",
+        "im": "i/y22-poster.webp",
+        "py": "2022"
+      },
+      {
+        "y": "2024–now",
+        "n": "Building to last",
+        "x": "A 10-year permit, and Creative Neighborhoods starts building to last.",
+        "im": "i/about/y24-medallion.webp",
+        "py": "2024"
+      }
+    ],
+    "strip": [
+      "2003",
+      "2009",
+      "2013",
+      "2016",
+      "2019",
+      "2026"
+    ],
+    "all": [
+      "See every poster, 1999 to now",
+      "route:past"
+    ],
+    "strip_note": "Strip shows Artwork's year icons (Dropbox _catalogs/artwork/<year>/yNN-icon-1024.png, Nov 24), saved as i/about/yNN-icon.webp"
+  },
+  "more": {
+    "h": "More about Pickathon",
+    "r": [
+      [
+        "Press",
+        "What others have written, year by year",
+        "route:press"
+      ],
+      [
+        "Neighbors",
+        "Festival dates, traffic and how to reach us",
+        "page:neighbors"
+      ],
+      [
+        "The podcast",
+        "The story, the artists and the farm",
+        "page:pickathon-podcast-guide"
+      ]
+    ]
+  },
+  "join": {
+    "h": "Be part of it",
+    "x": "Work a shift, build a neighborhood, or bring your business.",
+    "b": [
+      "Get involved",
+      "page:community"
+    ]
+  }
+}
