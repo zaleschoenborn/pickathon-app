@@ -1138,11 +1138,12 @@ for _f in sorted([x for x in _gl.glob(ROOT + 'stories/stories_changes_*.csv') if
 # r104 (Zale Nov 24 13:47, copy_review-106): the artist photo carries Copy Review's longer hero line (115 to 140 characters); files hero_line_<year>_*.csv
 # (year, act, hero_line), newest draft of a year wins; a year with no file, or a blank row, falls back to the intro / card line below
 _HERO = {}
+_HERO_YEARS = set()
 for _f in sorted(_gl.glob(ROOT + 'stories/hero_line_[0-9]*.csv')):
     for _r in csv.DictReader(open(_f, encoding='utf-8-sig')):
-        if (_r.get('hero_line') or '').strip(): _HERO[(_slug(_r['act']), str(_r['year']))] = _r['hero_line'].strip()
+        if (_r.get('hero_line') or '').strip(): _HERO[(_slug(_r['act']), str(_r['year']))] = _r['hero_line'].strip(); _HERO_YEARS.add(str(_r['year']))
 for _k, _r in _STORIES.items():
-    if (_r.get('hero_line') or '').strip() and _k not in _HERO: _HERO[_k] = _r['hero_line'].strip()
+    if (_r.get('hero_line') or '').strip() and _k not in _HERO: _HERO[_k] = _r['hero_line'].strip(); _HERO_YEARS.add(str(_k[1]))
 # stories_changes_v3_* is Copy Review's change log for 2023-2026; those edits are already in the year files (checked Nov 24), so it is not read.
 print('story changes applied:', _NCHG)
 # MOCK ONLY (r89, Zale Nov 24): Copy Review's Nov 23 draft (one arc told from each visit) is not merged into the year files yet;
@@ -1322,7 +1323,13 @@ def art_page(slug, ap, pid=None):
     elif (_salt(_slug(name)), yr) in _STORIES_ALT:
         _kk, _st = _STORIES_ALT[(_salt(_slug(name)), yr)]; _STORY_USED.add((_kk, yr))
     # r88 (Zale, Nov 24 07:46): the photo carries who they were THAT year: the story's opening line, else the card line
-    _line = _HERO.get((_slug(name), yr)) or _HERO.get((_salt(_slug(name)), yr)) or ((_st or {}).get('intro') or '').strip() or _rline(name, yr, k) or ''
+    # r109 (Zale Nov 24 22:44): years with no hero-line file use Copy Review's own story opening (first sentence, 60-150 characters), else the intro / card line; nothing written by Design
+    _s1 = ''
+    if _st and yr not in _HERO_YEARS:
+        import re as _re2
+        _m1 = _re2.match(r'(.+?[.!?])(\s|$)', (_st.get('story') or '').strip())
+        if _m1 and 60 <= len(_m1.group(1)) <= 150: _s1 = _m1.group(1)
+    _line = _HERO.get((_slug(name), yr)) or _HERO.get((_salt(_slug(name)), yr)) or _s1 or ((_st or {}).get('intro') or '').strip() or _rline(name, yr, k) or ''
     _gt = gp_n(name, GSHORT.get(g, g)) if (gp_n(name) or g) else ''
     _sl = [{'i': img(f_[0], 780), 'pos': f_[1], 'n': name, 'k': KLAB.get(k, ''), 'g': _gt, 'l': _line, 'clip': _ysongs[0][0] if _ysongs else ''} for f_ in _fr]
     _segs = ''.join('<i data-slide="%d"%s><b></b></i>' % (n_, ' class="on"' if n_ == 0 else '') for n_ in range(len(_sl))) if len(_sl) > 1 else ''
