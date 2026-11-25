@@ -161,11 +161,11 @@
      Copy is moved from data.json pages (traveling-to-pickathon, bike-to-pickathon, camping, lodging, ada-info, easy-day,
      what-to-bring-to-pickathon, commitment-to-sustainability); hours are 2026's and say so. Prices live on Tickets only.
      ====================================================================================== */
-  var STEPS = ['arrive', 'sleep', 'farm'], LSV = 'pk27planv';
+  var STEPS = ['arrive', 'sleep', 'farm', 'home'], LSV = 'pk27planv';
   window.pkTripRedirect = {
     'traveling-to-pickathon': 'arrive', 'bike-to-pickathon': 'arrive:bike', 'camping': 'sleep', 'lodging': 'sleep:hotel',
     'what-to-bring-to-pickathon': 'pack', 'ada-info': 'farm:access', 'getting-around-pickathon-neighborhood-map': 'farm',
-    'commitment-to-sustainability': 'farm:food', 'easy-day': '', 'pickathon-2026-tickets-passes': 'tickets'
+    'commitment-to-sustainability': 'farm:food', 'easy-day': 'sleep:hotel', 'pickathon-2026-tickets-passes': 'tickets'
   };
   /* photos: picked from the neighborhood galleries in data.json (Photo Catalog photos); crops from focus.json.
      Photo Catalog's "trip moment" tag (design_studio-65) will replace these lists when it lands. */
@@ -174,7 +174,7 @@
     sleep: ['i/pk-lushcamp-05.jpg', 'i/r3-home-lushcamp.jpg', 'i/pk-wildcamp-10.jpg', 'i/pk-wildcamp-09.jpg', 'i/68.jpg', 'i/p502.jpg', 'i/pk-lushcamp-01.jpg'],
     farm: ['i/pk-coyote-01.jpg', 'i/pk-paddock-c11.jpg', 'i/455.jpg', 'i/pk-coyote-21.jpg', 'i/pk-paddock-01.jpg', 'i/pk-paddock-c12.jpg', 'i/pk-coyote-09.jpg']
   };
-  var CARD_IM = { buy: 'i/pk-welcomelot-13.jpg', arrive: 'i/pk-farmhouse-01.jpg', sleep: 'i/pk-lushcamp-05.jpg', farm: 'i/pk-paddock-c11.jpg', pack: 'i/pk-wildcamp-09.jpg' };
+  var CARD_IM = { home: 'i/pk-welcomelot-01.jpg', buy: 'i/pk-welcomelot-13.jpg', arrive: 'i/pk-farmhouse-01.jpg', sleep: 'i/pk-lushcamp-05.jpg', farm: 'i/pk-paddock-c11.jpg', pack: 'i/pk-wildcamp-09.jpg' };
   /* subject-crop points from focus.json for these photos (rebuild if a crop changes) */
   var FOC = {"i/455.jpg":[54,45],"i/68.jpg":[54,32],"i/p502.jpg":[48,36],"i/p531.jpg":[41,55],"i/pk-coyote-01.jpg":[52,51],"i/pk-coyote-09.jpg":[52,48],"i/pk-coyote-21.jpg":[62,26],"i/pk-farmhouse-01.jpg":[51,50],"i/pk-farmhouse-24.jpg":[40,60],"i/pk-lushcamp-01.jpg":[60,37],"i/pk-lushcamp-05.jpg":[43,41],"i/pk-paddock-01.jpg":[61,47],"i/pk-paddock-c11.jpg":[66,82],"i/pk-paddock-c12.jpg":[13,54],"i/pk-welcomelot-01.jpg":[46,46],"i/pk-welcomelot-10.jpg":[59,52],"i/pk-welcomelot-13.jpg":[24,33],"i/pk-wildcamp-09.jpg":[46,40],"i/pk-wildcamp-10.jpg":[55,44],"i/r3-home-lushcamp.jpg":[25,50]};
   function focusOf(src) { var f = FOC[src]; return f ? f[0] + '% ' + f[1] + '%' : '50% 50%'; }
@@ -195,14 +195,35 @@
       pack: ['Get ready', 'What do I pack?', !asked ? 'A short list. Food and drink are on the farm.' : (e.camp ? 'A short list, set for how you are sleeping.' : 'A short list for a day on the farm.'), btn('Packing list', 'step:pack', 'sec')],
       arrive: ['Arrive', 'How do I get there and in?', asked ? 'You picked: ' + GO_T[e.go].toLowerCase() + '.' : 'Drive, ride the shuttle, bike or get dropped off.', btn('Arrive', 'step:arrive', 'sec')],
       sleep: ['Sleep', 'Where do I sleep?', asked ? sl : 'A tent in the woods, your car, an RV, or off site.', btn('Sleep', 'step:sleep', 'sec')],
-      farm: ['At the farm', 'What is it like inside?', 'Twenty neighborhoods, food, water, kids and access.', btn('At the farm', 'step:farm', 'sec')]
+      farm: ['At the farm', 'What is it like inside?', 'Neighborhoods, food, water, kids and access.', btn('At the farm', 'step:farm', 'sec')],
+      home: ['Going home', 'How do I leave?', 'Gear trucks out Sunday and Monday. Off the farm by noon Monday.', btn('Going home', 'step:home', 'sec')]
     };
-    var ids = pf ? (tail ? [] : ['buy', 'pack', 'arrive', 'sleep', 'farm']) : (tail ? ['pack'] : ['sleep', 'arrive', 'farm', 'buy']);
+    var ids = pf ? (tail ? [] : ['buy', 'pack', 'arrive', 'sleep', 'farm', 'home']) : (tail ? ['pack', 'home'] : ['sleep', 'arrive', 'farm', 'buy']);
     return ids.map(function (id, n) {
       var c = K[id];
-      return '<li class="pl-sc"><div class="pl-sc-im">' + img(CARD_IM[id], 'pl-sc-img') + (pf ? '<span class="pl-sc-n pl-d">' + (n + 1) + '</span>' : '') + '</div>' +
-        '<div class="pl-sc-tx"><p class="pl-sc-k">' + c[0] + '</p><h2 class="pl-d pl-d-card pl-sc-q">' + c[1] + '</h2><p class="pl-sc-x">' + esc(c[2]) + '</p>' + c[3] + '</div></li>';
+      var to = (/data-go="([^"]+)"/.exec(c[3]) || [])[1] || '';
+      return '<li class="pl-sc pl-row"><button type="button" class="pl-row-b" data-go="' + to + '"><span class="pl-sc-im">' + img(CARD_IM[id], 'pl-sc-img') + (pf ? '<span class="pl-sc-n pl-d">' + (n + 1) + '</span>' : '') + '</span>' +
+        '<span class="pl-sc-tx"><span class="pl-sc-k">' + c[0] + '</span><span class="pl-sc-q">' + c[1] + '</span><span class="pl-sc-x">' + esc(c[2]) + '</span></span>' +
+        '<svg class="pl-qa-c" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button></li>';
     }).join('');
+  }
+
+  /* the questions people ask most, answered on the page in one line each; a tap opens the step with the detail (Zale, Nov 24 15:47: core info first, simple). Facts only from the site's own pages. */
+  var QA = [
+    ['Where do I park?', 'At the Welcome Lot, 19208 SE Foster Rd (don’t type “Pickathon” into your GPS). A free shuttle runs to the gate until 2 AM.', 'step:arrive:drive'],
+    ['Is there a shuttle from Portland?', 'Yes. The Pickathon Shuttle runs round trip from the Lents Town Center MAX stop, with a Shuttle Pass.', 'step:arrive:shuttle'],
+    ['Can I camp?', 'Tent camping in the woods comes with any 3- or 4-Day Pass. Car, van and RV spots need a Vehicle Camping Pass.', 'step:sleep:woods'],
+    ['Are kids free?', 'Kids 12 and under get in free with a ticketed adult, and Coyote is a neighborhood built for them.', 'step:farm:kids'],
+    ['Can I leave and come back?', 'Yes, as often as you like. Show your parking pass when you return.', 'step:arrive:drive'],
+    ['What should I bring?', 'Skip the cooler: food and drink are on the farm. Bring a refillable bottle (water is free) and a battery pack.', 'step:pack'],
+    ['What stays home?', 'Pets (service animals are welcome), outside alcohol and campfires.', 'step:pack'],
+    ['Is it accessible?', 'ADA parking and campsites and accessible restrooms. Email info@pickathon.com two weeks ahead to arrange more.', 'step:farm:access']
+  ];
+  function qaHTML() {
+    return '<section class="pl-qa" id="pl-qa" aria-labelledby="pl-qa-h"><h2 class="pl-d pl-qa-h" id="pl-qa-h">Quick answers</h2><ul class="pl-qa-l">' + QA.map(function (q) {
+      return '<li><button type="button" class="pl-qa-r" data-go="' + q[2] + '"><span class="pl-qa-q">' + esc(q[0]) + '</span><span class="pl-qa-a">' + esc(q[1]) + '</span>' +
+        '<svg class="pl-qa-c" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button></li>';
+    }).join('') + '</ul></section>';
   }
 
   function hubHTML() {
@@ -220,6 +241,8 @@
         '<div class="pl-plan-next"><p class="pl-next-k" id="pl-nk">Next</p><p class="pl-next-t pl-d" id="pl-nt"></p><p class="pl-next-p" id="pl-nn"></p><div class="pl-plan-b"><span id="pl-nb"></span>' +
         '<button type="button" class="pk-cta sec pl-btn" id="pl-share">Send this plan to your group</button></div><p class="pl-next-p" id="pl-cd"></p><p class="pl-next-p" id="pl-shared" role="status" hidden></p></div></section>' +
       '<ul class="pl-basics"><li><b>Aug 5–8, 2027</b><span>Gates open Wed, Aug 4</span></li><li><b>Happy Valley, OR</b><span>12 miles from Portland</span></li><li><b>Camping included</b><span>Tents in the woods, with any 3- or 4-Day Pass</span></li></ul>' +
+      qaHTML() +
+      '<h2 class="pl-d pl-qa-h pl-st-h" id="pl-st-h">Your trip, step by step</h2>' +
       '<ol class="pl-steps" id="pl-steps"></ol><ol class="pl-steps" id="pl-steps2" hidden></ol>' +
       '</div>';
   }
@@ -287,7 +310,7 @@
     },
     farm: {
       n: 5, t: 'At the farm', line: 'What it’s like once you’re through the gate.',
-      fact: { k: 'Find your way', t: 'Twenty neighborhoods, one map', s: 'Stages, food, water, restrooms and camps', x: 'Tap any neighborhood for what’s there this year.', b: btn('Open the map', 'route:hoods', 'sec') },
+      fact: { k: 'Find your way', t: 'Every neighborhood, one map', s: 'Stages, food, water, restrooms and camps', x: 'Tap any neighborhood for what’s there this year.', b: btn('Open the map', 'route:hoods', 'sec') },
       q: 'What do you want to know?',
       cases: [['kids', 'Kids'], ['food', 'Food and water'], ['access', 'Access']],
       steps: function (c) {
@@ -306,7 +329,27 @@
       buy: {},
       shared: ['How the days run', 'The 2027 set times post closer to the festival.', [
         ['Day', 'Shows start in the shaded woods while the sun is hot.'], ['Night', 'The crowds move to the open meadows under the stars.'],
-        ['Twice', 'Most bands play twice, on two different stages, so one day still gets you a big slice of the lineup.']]],
+        ['Twice', 'Most bands play twice, on two different stages, so one day still gets you a big slice of the lineup.'],
+        ['On the map', 'First aid, info booths, restrooms, showers and water stations are all marked. Trails are lit at night.']]],
+      next: 'home'
+    },
+    home: {
+      n: 6, t: 'Going home', line: 'Breaking camp and getting your gear out.',
+      fact: { k: 'Monday', t: 'Off the farm by noon', s: 'Last year’s time. 2027 hours post in early summer.', x: 'Drop your gear on Sunday or early Monday so it rides out ahead of you.', b: '' },
+      q: 'How are you leaving?',
+      cases: [['camp', 'Tent camping'], ['vehicle', 'Vehicle camping'], ['day', 'Day trip or shuttle']],
+      steps: function (c) {
+        if (c === 'camp') return [S('Break camp', 'Carry your gear to the Gear Drop on the logging road and put it in the pile marked TO WELCOME LOT. Bikes and ADA guests use their own pile.'),
+          S('Drop it in time', 'Gear trucks run Sunday 8 am to 7 pm and Monday 8 am to noon. Drop your gear at least 30 minutes before the end, or it may not get picked up.'),
+          S('Meet it at the Welcome Lot', 'Walk the trail out or ride the parking shuttle, collect your gear and drive home. Bikes and ADA gear come out at the South Lot.')];
+        if (c === 'vehicle') return [S('Pack up at your spot', 'Vehicles stay parked until Monday. No driving in and out.'),
+          S('Leave by noon Monday', 'Everyone is off the farm by noon. Your pass sends you out the gate you came in.')];
+        return [S('Catch the shuttle back', 'The Pickathon Shuttle to the Lents Town Center MAX runs Thursday to Sunday 8 am to 2 am, and Monday 8 am to 1 pm.'),
+          S('Driving?', 'The free parking shuttle runs to the Welcome Lot until 2 am, so you can stay for the late sets.')];
+      },
+      buy: {},
+      shared: ['Going-home hours', 'Last year’s hours. 2027 hours post in early summer.', [
+        ['Gear trucks', 'Sun 8 am to 7 pm, Mon 8 am to noon'], ['Shuttle to MAX', 'Mon 8 am to 1 pm'], ['Off the farm', 'Everyone by noon Monday']]],
       next: ''
     }
   };
@@ -315,6 +358,7 @@
     if (stepCase && ok(stepCase)) return stepCase;
     if (step === 'arrive') return ok(v) && v === 'fly' ? 'fly' : e.go;
     if (step === 'sleep') { if (!e.camp) return 'hotel'; if (e.veh) return 'vehicle'; return ok(v) && v !== 'vehicle' && v !== 'hotel' ? v : 'woods'; }
+    if (step === 'home') { if (ok(v)) return v; return !e.camp ? 'day' : (e.veh ? 'vehicle' : 'camp'); }
     return ok(v) ? v : 'kids';
   }
   function stripHTML(step) { var L = STRIP[step] || []; if (!L.length) return ''; return '<div class="pl-strip" aria-label="Photos"><ul>' + L.map(function (s) { return '<li>' + img(s, 'pl-strip-img') + '</li>'; }).join('') + '</ul></div>'; }
@@ -325,7 +369,7 @@
     var steps = P.steps(c, e.camp), buy = P.buy[c];
     var pf = planFirst(), nxId = pf ? P.next : ({ sleep: 'arrive', arrive: 'farm' }[step] || ''), nx = nxId ? PAGES[nxId] : null;
     return '<div class="pl-in pl-page">' + backChip() +
-      '<p class="pl-mark">' + (pf ? P.n + ' of 5 · ' : '') + P.t + '</p>' +
+      '<p class="pl-mark">' + (pf ? P.n + ' of 6 · ' : '') + P.t + '</p>' +
       '<h1 class="pl-d pl-h1">' + P.t + '</h1><p class="pl-lede">' + esc(P.line) + '</p>' +
       '<section class="pl-fact" aria-label="' + esc(F.k) + '"><p class="pl-fact-k">' + esc(F.k) + '</p><p class="pl-d pl-fact-t">' + esc(F.t) + '</p><p class="pl-fact-s">' + esc(F.s) + '</p><p class="pl-fact-x">' + esc(F.x) + '</p>' + (F.b ? '<div class="pl-fact-b">' + F.b + '</div>' : '') + '</section>' +
       '<div class="pl-cols2"><div>' +
@@ -342,10 +386,10 @@
   /* packing: its own page (Zale, Nov 13) */
   function packHTML() {
     var e = effective();
-    var every = ['Walking shoes: the farm is dusty and hilly', 'Layers for hot days and cool nights', 'Sunscreen, a hat and sunglasses', 'A water bottle to refill free', 'A steel cup (sold on site, or bring yours)', 'ID and a card or cash', 'A battery pack: service is fine, but there are no public phones', 'A low chair or a blanket'];
+    var every = ['Walking shoes: the farm is dusty and hilly', 'Layers for hot days and cool nights', 'Sunscreen, a hat and sunglasses', 'A water bottle to refill free', 'A steel cup (sold on site, or bring yours)', 'ID (to pick up tickets and to buy a drink) and a card or cash', 'A battery pack: service is fine, but there are no public phones', 'A low chair or a blanket'];
     var camp = ['Pack light: most of what you need is on site', 'Pack in containers you can carry from the Gear Drop to your site, anywhere from 10 yards to a third of a mile', 'A camp stove only with extreme care', 'A yoga mat for the morning classes'];
     return '<div class="pl-in pl-page">' + backChip() +
-      '<p class="pl-mark">' + (planFirst() ? '2 of 5 · ' : '') + 'Get ready</p><h1 class="pl-d pl-h1">What to pack</h1><p class="pl-lede">Everything else is on the farm. Skip the cooler: food and drink are on site all weekend.</p>' +
+      '<p class="pl-mark">' + (planFirst() ? '2 of 6 · ' : '') + 'Get ready</p><h1 class="pl-d pl-h1">What to pack</h1><p class="pl-lede">Everything else is on the farm. Skip the cooler: food and drink are on site all weekend.</p>' +
       '<div class="pl-cols2"><div><h2 class="pl-kick">Everyone</h2><ul class="pl-list">' + every.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul>' +
       (e.camp ? '<h2 class="pl-kick">Tent campers</h2><ul class="pl-list">' + camp.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul>' : '') + '</div>' +
       '<section class="pl-paper pl-card" aria-labelledby="pl-h-rules"><h2 class="pl-d pl-d-card" id="pl-h-rules">The rules</h2><hr class="pl-rule2">' +
@@ -357,7 +401,7 @@
   }
 
   var LSQ = 'pk27planq', LSS = 'pk27planseen', sharedIn = false, sharedVisit = false;
-  var STEP_T = { pack: ['Get ready', 'What to bring, set for how you are sleeping.'], arrive: ['Arrive', 'How you get to the farm and through the gate.'], sleep: ['Sleep', 'Where you sleep, and what is there when you wake up.'], farm: ['At the farm', 'Water, shade, food, kids and access.'] };
+  var STEP_T = { pack: ['Get ready', 'What to bring, set for how you are sleeping.'], arrive: ['Arrive', 'How you get to the farm and through the gate.'], sleep: ['Sleep', 'Where you sleep, and what is there when you wake up.'], farm: ['At the farm', 'Water, shade, food, kids and access.'], home: ['Going home', 'Breaking camp and getting your gear out.'] };
   function seenSet() { var a = lsGet(LSS); return a && a.push ? a : []; }
   function markSeen(st) { var a = seenSet(); if (a.indexOf(st) < 0) { a.push(st); lsSet(LSS, a); } }
   function nextStep(real, w) {   // the one thing to do now: a pass first, then each step you have not opened, then packing
@@ -408,7 +452,7 @@
     var inn = $('.pl-in', root), pf = planFirst(), ld = pf ? 'plan' : 'look';
     if (inn && inn.getAttribute('data-lead') !== ld) {   // move the real nodes, so reading and tab order match what is on screen
       inn.setAttribute('data-lead', ld);
-      (pf ? ['#pl-ask', '#pl-plan', '.pl-basics', '#pl-steps', '#pl-steps2'] : ['.pl-basics', '#pl-steps', '#pl-ask', '#pl-plan', '#pl-steps2']).forEach(function (q) { var n = $(q, root); if (n) inn.appendChild(n); });
+      (pf ? ['#pl-ask', '#pl-plan', '.pl-basics', '#pl-qa', '#pl-st-h', '#pl-steps', '#pl-steps2'] : ['.pl-basics', '#pl-qa', '#pl-st-h', '#pl-steps', '#pl-steps2', '#pl-ask', '#pl-plan']).forEach(function (q) { var n = $(q, root); if (n) inn.appendChild(n); });
     }
     $('#pl-ask-k', root).textContent = pf ? 'Start here' : 'Ready to plan?';
     var asked = !!lsGet(LSQ) || orderNow().real; $('#pl-ask', root).hidden = asked; $('#pl-plan', root).hidden = !asked;
