@@ -1272,3 +1272,13 @@ a.hd-yr{text-decoration:none}
 .shelf.onesh .ym b{font-size:19px;font-weight:800;letter-spacing:.02em;color:#f3ead8}
 .shelf.onesh .ym span{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#d9b24a;font-weight:700}
 .shelf.onesh .ym.on{border-left-color:#d9b24a}.shelf.onesh .ym.on b{color:#d9b24a}
+
+/* r108 stars (header spec Nov 24): star upper right on every card and artist photo; the year label moves upper left */
+.pk-star1{width:44px;height:44px;display:inline-flex;align-items:center;justify-content:center;padding:0;border:0;border-radius:4px;background:rgba(43,38,40,.55);cursor:pointer}
+.pk-star1 path{fill:none;stroke:#F5EFE2}.pk-star1[aria-pressed=true] path{fill:#F2CF62;stroke:#F2CF62}
+.card{position:relative}
+.cstar{position:absolute;top:2px;right:2px;z-index:4}
+.cyr{left:12px;right:auto}
+.hact .hyr-y{left:16px;right:auto}
+.hact>.cstar{top:18px;right:8px;z-index:5}
+@media (min-width:1000px){.hact .hyr-y{left:max(64px,calc((100% - 1152px)/2));right:auto}.hact>.cstar{right:max(56px,calc((100% - 1152px)/2 - 8px))}}

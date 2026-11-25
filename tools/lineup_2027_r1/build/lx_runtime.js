@@ -66,11 +66,18 @@
 /*WIDGETS*/
   }
 
+  /* r108 stars: the pages draw inside a shadow root, so the shared hook (window.__pkStar) cannot see these buttons; this bridge calls it and repaints. */
+  function starPaint(root) { var S = window.__pkStar; if (!S) return; [].forEach.call(root.querySelectorAll('[data-pkstar]'), function (b) { var x = null; try { x = JSON.parse(b.getAttribute('data-x') || 'null'); } catch (e) {} var on = S.has(b.getAttribute('data-pkstar'), b.getAttribute('data-id'), x); b.setAttribute('aria-pressed', on ? 'true' : 'false'); var l = b.getAttribute('aria-label') || ''; b.setAttribute('aria-label', on ? l.replace(/^Star /, 'Unstar ') : l.replace(/^Unstar /, 'Star ')); }); }
+  function starBridge(root) {
+    if (!root._starOn) { root._starOn = 1;
+      root.addEventListener('click', function (e) { var p = e.composedPath ? e.composedPath() : [], b = null; for (var i = 0; i < p.length; i++) if (p[i].getAttribute && p[i].getAttribute('data-pkstar')) { b = p[i]; break; } if (!b) return; e.preventDefault(); e.stopPropagation(); var S = window.__pkStar; if (!S) return; var x = null; try { x = JSON.parse(b.getAttribute('data-x') || 'null'); } catch (er) {} S.toggle(b.getAttribute('data-pkstar'), b.getAttribute('data-id'), x); starPaint(root); }, true);
+      window.addEventListener('pkstar', function () { starPaint(root); }); window.addEventListener('storage', function () { starPaint(root); }); }
+    starPaint(root); }
   var LASTK = '';
   function paint(host, key, html, css) {
     var root = host.shadowRoot || host.attachShadow({ mode: 'open' });
     root.innerHTML = '<style>' + css + '\n.phone{max-width:none;margin:0;padding-bottom:32px;min-height:0;background:transparent}.screen{display:block}</style><div class="phone">' + html + '</div>';
-    host._k = key; wire(root); try { widgets(root); } catch (e) { if (window.console) console.error('lx widgets', e); }
+    host._k = key; wire(root); starBridge(root); try { widgets(root); } catch (e) { if (window.console) console.error('lx widgets', e); }
     if (LASTK !== key) { LASTK = key; toTop(); }
   }
   function mount(host, key) {

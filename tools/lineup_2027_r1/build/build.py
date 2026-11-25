@@ -350,12 +350,19 @@ def photo_play(url, n, q=''):
     The name and 'Their story' open the artist page."""
     return ('<span class="pz" data-clip="%s"%s role="button" tabindex="0" aria-label="Play a song by %s">'
             '<span class="ring sm"><svg viewBox="0 0 24 24"><path d="M9 6.5v11l9-5.5z" fill="#fff"/></svg></span></span>') % (_h.escape(url, quote=True), (' data-q="%s"' % _h.escape(q, quote=True)) if q else '', E(n))
+
+_STAR_SV = '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M12 2.6l2.9 6.2 6.8.7-5.1 4.6 1.5 6.7L12 17.4l-6.1 3.4 1.5-6.7-5.1-4.6 6.8-.7z" stroke-width="1.8"/></svg>'
+def star(n, yr):
+    """r108 (header spec, Zale Nov 24): the one star hook (window.__pkStar, kind 'past', id = act name, x.y = year); upper right of the photo; the runtime paints and handles it."""
+    yr = yr or '@Y@'   # year-page cards carry no year label; the page's own year is filled in where the page is assembled
+    return ('<button type="button" class="pk-star1 cstar" data-pkstar="past" data-id="%s" data-x="%s" aria-pressed="false" aria-label="Star %s, Pickathon %s">%s</button>'
+            % (_h.escape(n, quote=True), _h.escape('{"y":"%s"}' % yr, quote=True), _h.escape(n, quote=True), yr, _STAR_SV))
 def card(n, yr, k, g, src, pos='50% 40%', vid=True, cls=''):
     if vid is True: vid = (clip_for(n, yr) if yr else '') or clip_for(n)  # r31: no ring without a song to play
     g_all, g = gall_n(n, g), gp_n(n, g)  # r42: filter on every tag, print the primary
-    return ('<a class="card %s" data-g="%s" data-art="%s" data-an="%s" href="#"><img src="%s" alt="" style="object-position:%s">%s<span class="cyr">%s</span>'
+    return ('<a class="card %s" data-g="%s" data-art="%s" data-an="%s" href="#"><img src="%s" alt="" style="object-position:%s">%s<span class="cyr">%s</span>%s'
             '<span class="cbody"><span class="krow"><span class="k k-%s">%s</span><span class="g">%s</span></span>'
-            '<span class="cname">%s</span>%s</span></a>') % (cls + (' pc' if isinstance(vid, str) and vid else ''), E(g_all), _aslug(n), E(n), src, pos, (photo_play(vid, n) if isinstance(vid, str) else play('sm')) if vid else '', yr, k, KLAB[k], E(g), E(n),
+            '<span class="cname">%s</span>%s</span></a>') % (cls + (' pc' if isinstance(vid, str) and vid else ''), E(g_all), _aslug(n), E(n), src, pos, (photo_play(vid, n) if isinstance(vid, str) else play('sm')) if vid else '', yr, star(n, yr), k, KLAB[k], E(g), E(n),
             '<span class="cstory">Their story \u2192</span>' if isinstance(vid, str) and vid else '')
 
 # ---------- shared chrome ----------
@@ -645,9 +652,9 @@ def _vcard(n, y, k, g, p, pos):
     if not p:  # no photo for that year: a plain site-color card, same anatomy; r36: it still plays the act's best song when the ledger has one
         _cv = archive_clip(n, y)
         g_all, g = gall_n(n, g), gp_n(n, g)
-        return ('<a class="card tt arch nop%s" data-g="%s" data-art="%s" data-an="%s" href="#"><span class="cyr">%s</span>%s'
+        return ('<a class="card tt arch nop%s" data-g="%s" data-art="%s" data-an="%s" href="#"><span class="cyr">%s</span>%s%s'
                 '<span class="cbody"><span class="krow"><span class="k k-%s">%s</span></span><span class="cname">%s</span>%s</span></a>') % (
-                ' pc' if _cv else '', E(g_all), _aslug(n), E(n), y, photo_play(_cv, n) if _cv else '', k, KLAB[k], E(n), '<span class="cstory">Their story \u2192</span>' if _cv else '')
+                ' pc' if _cv else '', E(g_all), _aslug(n), E(n), y, star(n, y), photo_play(_cv, n) if _cv else '', k, KLAB[k], E(n), '<span class="cstory">Their story \u2192</span>' if _cv else '')
     return card(n, y, k, g, img(p, 520), pos, archive_clip(n, y), 'tt arch').replace('<img src=', '<img loading="lazy" src=', 1)
 leg.append(("I’m With Her", 2018, 'Bluegrass', 'i/p9615.jpg', '22% 50%'))
 deep.append(('Black Mountain', 2011, 'Psych', 'i/p9704.jpg', '100% 50%'))
@@ -1091,7 +1098,7 @@ page = ('<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="
         '<button data-s="s3">Artist: Geese</button><button data-s="s6">Artist: Greg Brown</button></div>'
         '<div class="phone"><main id="s1" class="screen">%s</main>%s<main id="s3" class="screen" hidden>%s</main><main id="s6" class="screen" hidden>%s</main>%s</div>'
         '<script>%s</script></body></html>') % (FONTS, CSS, ''.join('<option value="y%s">%s</option>' % (y, y) for y in YEARS), s1,
-        ''.join('<main id="y%s" class="screen" hidden>%s</main>' % (y, YP[y]) for y in YEARS), s3, s6, TABBAR, JS)
+        ''.join('<main id="y%s" class="screen" hidden>%s</main>' % (y, YP[y].replace('@Y@', y)) for y in YEARS), s3, s6, TABBAR, JS)
 
 # ---------- every artist page, one template (Nov 20 2026) ----------
 import re as _re
@@ -1320,10 +1327,10 @@ def art_page(slug, ap, pid=None):
     _sl = [{'i': img(f_[0], 780), 'pos': f_[1], 'n': name, 'k': KLAB.get(k, ''), 'g': _gt, 'l': _line, 'clip': _ysongs[0][0] if _ysongs else ''} for f_ in _fr]
     _segs = ''.join('<i data-slide="%d"%s><b></b></i>' % (n_, ' class="on"' if n_ == 0 else '') for n_ in range(len(_sl))) if len(_sl) > 1 else ''
     h += ('<section class="hero hact%s"%s><img src="%s" alt="" style="object-position:%s"><div class="hero-sc"></div>%s%s'
-          '<span class="hyr-y">%s</span><div class="hero-tx"><p class="krow"><span class="k k-%s">%s</span>%s</p><h1>%s</h1>%s</div></section>') % (
+          '<span class="hyr-y">%s</span>%s<div class="hero-tx"><p class="krow"><span class="k k-%s">%s</span>%s</p><h1>%s</h1>%s</div></section>') % (
           ' areel' if _segs else '', (' data-slides="%s"' % html.escape(json.dumps(_sl), quote=True)) if _segs else '',
           img(_fr[0][0], 780) if _fr else img(ap['hero'], 780), _fr[0][1] if _fr else ap.get('hpos', '50% 40%'),
-          ('<div class="segs">%s</div>' % _segs) if _segs else '', _ring, yr,
+          ('<div class="segs">%s</div>' % _segs) if _segs else '', _ring, yr, star(name, yr),
           k, KLAB.get(k, ''), ('<span class="g">%s</span>' % E(gp_n(name, GSHORT.get(g, g)))) if (gp_n(name) or g) else '', E(name),
           ('<p class="hero-sub">%s</p>' % E(_line)) if _line else '')
     # r73 (Zale, Nov 22 21:56): the same year strip turned upside down closes the bottom of the photo
