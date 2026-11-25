@@ -6,64 +6,39 @@
     "t": "A festival built by its community.",
     "x": "It started in 1999 as a benefit for KBOO community radio, run by volunteers. People still build it."
   },
-  "worlds": {
-    "h": "The Pickathon universe",
-    "_src": "Six worlds approved by Zale Nov 24 (info_area_card_draft4.md section 5). Titles and lines are drafts for Copy Review. Facts: Avett 2006 is Zale's own statement (Lineup to confirm); dishes 2011 per Festival History; Treeline 2017 to the veterans village per Festival History; 'more than once' per Festival History.",
+  "stands": {
+    "h": "What Pickathon stands for",
+    "_src": "Zale, Nov 24 15:30: About holds only what no other page covers. Experiences live on Home and The Farm, discovery on Home and the Lineup, press quotes on Home. The three commitments are Zale's Nov 23 direction (a community festival; sustainable for everyone; good for artists, mutual benefit). Facts: KBOO 1999 (Festival History 9), dishes 2011 and Treeline 2017 to the veterans village (Festival History 8), more than once (Festival History), Will Oldham quote (Press source of truth, SPIN 2025). Words are drafts for Copy Review.",
     "r": [
       {
-        "k": "Discovery",
-        "t": "Hear them before everyone else does",
-        "x": "The Avett Brothers played our first year on the farm, in 2006. So many more since.",
-        "im": "i/y24t-geese.jpg",
-        "alt": "Geese on a small stage in 2024, the crowd close",
-        "go": "route:lineup:keepArch=1"
+        "k": "Community",
+        "t": "Built by the people who show up",
+        "x": "It began as a benefit for KBOO community radio. Volunteers still run much of it, and students and makers build the neighborhoods.",
+        "im": "i/hb-cherryhill-1.jpg",
+        "alt": "The Cherry Hill neighborhood, built by students",
+        "go": "page:community",
+        "b": "Get involved"
       },
       {
-        "k": "Summer camp",
-        "t": "Four days in the woods",
-        "x": "Camp under the trees. Kids 12 and under come free.",
-        "im": "i/about/world-camp.jpg",
-        "alt": "Campers in the shade between tents and tall firs, 2022",
-        "go": "route:hoods",
-        "pos": "48% 60%"
+        "k": "Sustainable",
+        "t": "Leave the farm better",
+        "x": "Real plates and steel cups since 2011. Every structure is built for a second life: the 2017 Treeline stage now shelters veterans.",
+        "im": "i/about/world-zero.jpg",
+        "pos": "38% 30%",
+        "alt": "Hands washing a reusable plate beside a steel cup",
+        "go": "page:commitment-to-sustainability",
+        "b": "How we do it"
       },
       {
-        "k": "Wonders",
-        "t": "A city built for one weekend",
-        "x": "Students and makers build every neighborhood. The 2017 Treeline stage now shelters veterans.",
-        "im": "i/about/world-wonder.jpg",
-        "alt": "The Galaxy courtyard lit at night, full of people, 2025",
-        "go": "route:build",
-        "pos": "45% 50%"
-      },
-      {
-        "k": "Artists first",
-        "t": "Time to play, time to listen",
-        "x": "Most artists play more than once, so nobody rushes, on stage or off.",
+        "k": "Artists",
+        "t": "Good for the people on stage",
+        "x": "Most artists play more than once, so nobody rushes. “A respect for humanity that is absent in the makeup of most festivals.” Will Oldham, in SPIN",
         "im": "i/y24-roge.jpg",
         "alt": "Rogê playing in the middle of the Woods crowd",
-        "go": "route:lineup"
-      },
-      {
-        "k": "Food",
-        "t": "Long tables in the forest",
-        "x": "Local kitchens all weekend, and Curation dinners that pair a chef with an artist.",
-        "im": "i/about/world-food.jpg",
-        "alt": "Glasses raised at a long Curation brunch table, 2025",
-        "go": "plan:farm:food",
-        "pos": "45% 40%"
-      },
-      {
-        "k": "Zero waste",
-        "t": "Real plates, no trash",
-        "x": "Reusable dishes and steel cups. Single-use dishes have been gone since 2011.",
-        "im": "i/about/world-zero.jpg",
-        "alt": "Hands washing a reusable plate beside a steel cup, 2017",
-        "go": "page:commitment-to-sustainability",
-        "pos": "38% 30%"
+        "go": "route:lineup",
+        "b": "The 2027 lineup"
       }
-    ],
-    "_photos": "Picked Nov 24 from catalog_Photos_MASTER_2006-2026.csv by tag search (pickathon-photo-slot-picks): camp 2022_Rob_Kerr-camping.4.jpg; wonder 2025_andy_meeks-galaxycourtyard-17.jpg; food 2025_Risa_Scott-Saturday_Brunch-Curation-220.jpg; zero 0248-2017_amanda_cowan_dishwashstation.jpg. Discovery and Artists first keep site files y24t-geese.jpg and y24-roge.jpg. Sheets: Dropbox _catalogs/work/design_trip_info/sheets/."
+    ]
   },
   "eras": {
     "h": "Our story, in posters",
@@ -113,38 +88,14 @@
     ],
     "strip_note": "Strip shows Artwork's year icons (Dropbox _catalogs/artwork/<year>/yNN-icon-1024.png, Nov 24), saved as i/about/yNN-icon.webp"
   },
-  "press": {
-    "h": "What others say",
-    "_src": "Quotes verbatim from Press's source of truth, Dropbox _catalogs/archive/festival_history/press_quotes_all_years.csv (each opened in its saved article). One quote per source; under 15 words. NYT worded as Copy Review's recognition line (no count).",
-    "r": [
-      {
-        "src": "The New York Times",
-        "x": "picked Pickathon for its 2026 list of festivals to see."
-      },
-      {
-        "q": "nothing short of a model for the concept of sustainable communities",
-        "by": "Paste",
-        "y": "2023"
-      },
-      {
-        "q": "has seriously challenged all notions of what a festival can and should be",
-        "by": "Vice (Noisey)",
-        "y": "2013"
-      },
-      {
-        "q": "a respect for humanity that is absent in the makeup of most festivals",
-        "by": "Will Oldham (Bonnie “Prince” Billy), in SPIN",
-        "y": "2025"
-      }
-    ],
-    "all": [
-      "All press",
-      "route:press"
-    ]
-  },
   "more": {
-    "h": "On the farm",
+    "h": "More about Pickathon",
     "r": [
+      [
+        "Press",
+        "What others have written, year by year",
+        "route:press"
+      ],
       [
         "Neighbors",
         "Festival dates, traffic and how to reach us",
