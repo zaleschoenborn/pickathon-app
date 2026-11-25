@@ -12380,9 +12380,9 @@ window.pkClimbRank = function (C, dd) {
     var home = !!document.getElementById('pkh2'), off = !t || tixHidden(), offL = !t || tixHidden(true) || !home;   /* Zale Nov 12 07:39: no sticky ticket line on Home (5174 had none), before the sale or on it */
     /* Announcement banner (spec 14, Zale Nov 24 15:55): Home only, the first block of Home's own page at the top of the hero.
        It scrolls away with the hero and never follows the visitor; it is not part of the header or the app frame. Every size. */
-    var tl = home ? document.querySelector('#pkh2 [data-h2="ann"]') : null;
+    var onHome = home && /^#?\/?(home)?$/.test(location.hash || ''), tl = document.querySelector('#pkh2 [data-h2="ann"]');  /* route name matched here, in one place: never any other route */
     if (tl) {
-      var hl = offL ? '' : '<button type="button" class="pk-tl2' + (t.w === 'sale' ? ' is-sale' : '') + '" data-h2tix="1"><span class="pk-tl2-t">' + t.line + '</span><span class="pk-tl2-go">' + esc(t.verb) + CHEV + '</span></button>';
+      var hl = (offL || !onHome) ? '' : '<button type="button" class="pk-tl2' + (t.w === 'sale' ? ' is-sale' : '') + '" data-h2tix="1"><span class="pk-tl2-t">' + t.line + '</span><span class="pk-tl2-go">' + esc(t.verb) + CHEV + '</span></button>';
       if (tl._h !== hl) { tl.innerHTML = hl; tl._h = hl; } tl.hidden = !hl;
     }
     var tb = document.getElementById('pk-tb2');
