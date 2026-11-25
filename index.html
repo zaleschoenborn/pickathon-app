@@ -7511,7 +7511,8 @@ html:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root:
     if (kind === 'act') { var s = J(MK, {}); if (s['a:' + id]) { delete s['a:' + id]; } else s['a:' + id] = true; try { localStorage.setItem(MK, JSON.stringify(s)); } catch (e) {} var a = A(); if (a && a.setState && (window.__pkSY || '2026') === '2027') a.setState({ stars: s }); }
     else if (kind === 'past') { var a2 = A(), y = (x && x.y) || ''; if (a2 && a2.pStar) a2.pStar(id, y); else { var L = J('pk-pstars-2027', []), i = -1; L.forEach(function (z, j) { if (z.n === id && String(z.y) === String(y)) i = j; }); if (i >= 0) L.splice(i, 1); else L.push({ n: id, y: y }); try { localStorage.setItem('pk-pstars-2027', JSON.stringify(L)); } catch (e) {} } }
     else if (kind === 'todo' && window.__pkXS) window.__pkXS.toggle(Object.assign({ k: id }, x || {}));
-    try { var ap = A(); if (ap && ap.setState) ap.setState({ starTick: (ap.state.starTick || 0) + 1 }); } catch (e) {}   /* re-render so the header star's total follows every star (Design Studio -110) */
+    try { var ap = A(); if (ap && ap.setState) ap.setState({ starTick: (ap.state.starTick || 0) + 1, starAsk: null }); } catch (e) {}
+    if (kind === 'past' && has(kind, id, x) && count('past', (x || {}).y) === 5 && window.__pkFive) window.__pkFive.offer((x || {}).y);   /* header spec 5: one offer per year, at the fifth star */   /* re-render so the header star's total follows every star (Design Studio -110) */
     var on = has(kind, id, x); try { window.dispatchEvent(new CustomEvent('pkstar', { detail: { kind: kind, id: id, on: on, n: kind === 'past' ? count('past', (x || {}).y) : count(kind) } })); } catch (e) {}
     paintAll(); return on; }
   function button(kind, id, label, x) { var on = has(kind, id, x); return '<button type="button" class="pk-star1" data-pkstar="' + kind + '" data-id="' + String(id).replace(/"/g, '&quot;') + '"' + (x ? ' data-x="' + JSON.stringify(x).replace(/"/g, '&quot;') + '"' : '') + ' aria-pressed="' + on + '" aria-label="' + (on ? 'Unstar ' : 'Star ') + String(label || id).replace(/"/g, '&quot;') + '">' + SV + '</button>'; }
@@ -7520,6 +7521,91 @@ html:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root:
   window.addEventListener('pkxs', paintAll); window.addEventListener('storage', paintAll);
   var st = document.createElement('style'); st.textContent = '.pk-star1{width:44px;height:44px;display:inline-flex;align-items:center;justify-content:center;padding:0;border:0;border-radius:4px;background:rgba(43,38,40,.55);cursor:pointer}.pk-star1 path{fill:none;stroke:#F5EFE2}.pk-star1[aria-pressed=true] path{fill:#F2CF62;stroke:#F2CF62}'; document.head.appendChild(st);
   window.__pkStar = { has: has, toggle: toggle, count: count, button: button, refresh: paintAll };
+})();
+</script>
+<script>/*pk-five: the share offer at the fifth star on a past year, and the year share card (Design My Pickathon, Nov 24; spec header_bottom_bar_stars_nov24_draft1.md sections 5 and 5b; Zale "Build as drawn" 20:30).
+  __pkFive.offer(y)  shows the offer once per year (pk-share-offered-2027); the first ever carries the teaching line.
+  __pkFive.share(y, names)  draws the 1080x1920 card from the year's kit (data.json yearBrand) with the contrast rule, then opens it to share or save.*/
+(function () {
+  var OFF = 'pk-share-offered-2027';
+  var CAP = { '2026': '#F2CF62', '2025': '#221E20', '2024': '#F2EDE3', '2022': '#221E20', '2019': '#F2EDE3', '2018': '#FFFFFF', '2017': '#FFFFFF', '2005': '#F2EDE3' };   /* kit cap, from Lineup's build/cap_colors.json; every other year #F2CF62 */
+  var HZ = { '1999': 1, '2001': 1, '2007': 1, '2008': 1, '2009': 1, '2010': 1, '2011': 1, '2012': 1, '2013': 1, '2014': 1, '2015': 1, '2016': 1, '2017': 1, '2018': 1, '2019': 1, '2020': 1, '2022': 1, '2023': 1, '2024': 1, '2025': 1, '2026': 1 };   /* Artwork's header strips (preview, Nov 24) in i/hz/; 2000 and 2002-2006 have none yet */
+  var A = function () { return window.__pkApp || null; };
+  var esc = function (t) { return String(t == null ? '' : t).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
+  function J(k, d) { try { return JSON.parse(localStorage.getItem(k) || 'null') || d; } catch (e) { return d; } }
+  function rgb(h) { h = String(h || '#000').replace('#', ''); if (h.length === 3) h = h.split('').map(function (c) { return c + c; }).join(''); return [0, 2, 4].map(function (i) { return parseInt(h.substr(i, 2), 16); }); }
+  function hx(c) { return '#' + c.map(function (v) { return ('0' + Math.round(Math.max(0, Math.min(255, v))).toString(16)).slice(-2); }).join(''); }
+  function lum(h) { var f = function (v) { v /= 255; return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); }, c = rgb(h); return 0.2126 * f(c[0]) + 0.7152 * f(c[1]) + 0.0722 * f(c[2]); }
+  function cr(a, b) { var x = lum(a), y = lum(b); return (Math.max(x, y) + 0.05) / (Math.min(x, y) + 0.05); }
+  function mix(a, b, t) { var p = rgb(a), q = rgb(b); return hx(p.map(function (v, i) { return v + (q[i] - v) * t; })); }
+  function lift(c, bg, tg) { for (var i = 0; i <= 100; i++) { var x = mix(c, '#ffffff', i / 100); if (cr(x, bg) >= tg) return x; } return '#ffffff'; }
+  function sat(h) { var c = rgb(h).map(function (v) { return v / 255; }); return Math.max.apply(0, c) - Math.min.apply(0, c); }
+  /* The contrast rule (spec 5b, revised Nov 24 20:15): main text 6.0:1, kicker = cap if 4.5:1, second ink = most colorful accent lifted to 4.5:1 and 1.3:1 from main, faint seal checked, band darkened in 4% steps only if needed. */
+  function colors(y, K) { var B, main, best, s, cap = CAP[y] || '#F2CF62';
+    for (s = 0; s < 30; s++) { B = mix(K.band, '#15110F', s * 0.04); main = lift(K.paper, B, 6); best = null;
+      [K.warm, K.light, K.ink2].concat(K.stripe || []).filter(Boolean).forEach(function (c) { var x = lift(c, B, 4.5); if (cr(x, B) >= 4.5 && cr(x, main) >= 1.3 && (!best || sat(x) > sat(best))) best = x; });
+      if (cr(main, B) >= 6 && best) break; }
+    var seal = 0.08; while (cr(main, mix(B, '#ffffff', seal)) < 4.5 && seal > 0.02) seal -= 0.01;
+    var o = { B: B, main: main, ink: best || main, kick: cr(cap, B) >= 4.5 ? cap : main, seal: seal, dark: s };
+    try { console.log('[pk-five] ' + y + ' contrast', JSON.stringify({ band: B, main: [main, cr(main, B).toFixed(2)], second: [o.ink, cr(o.ink, B).toFixed(2)], kicker: [o.kick, cr(o.kick, B).toFixed(2)], seal: seal.toFixed(2), darkened: (s * 4) + '%' })); } catch (e) {}
+    return o; }
+  function img(src) { return new Promise(function (ok) { if (!src) return ok(null); var i = new Image(); i.onload = function () { ok(i); }; i.onerror = function () { ok(null); }; i.src = src; }); }
+  function slug(n) { return String(n).toLowerCase().replace(/&/g, '').replace(/[^a-z0-9]/g, ''); }
+  function actImg(y, n) { var yy = String(y).slice(2), s = slug(n); return img('i/y' + yy + 'b-' + s + '.jpg').then(function (i) { return i || img('i/y' + yy + 'n-' + s + '.jpg'); }).then(function (i) { return i || img('i/y' + yy + '-' + s + '.jpg'); }); }
+  function cover(g, im, x, y, w, h, fy) { var r = Math.max(w / im.width, h / im.height), sw = w / r, sh = h / r; g.drawImage(im, (im.width - sw) / 2, Math.max(0, (im.height - sh) * (fy == null ? 0.3 : fy)), sw, sh, x, y, w, h); }
+  function lines(g, t, w, px, min, font) { var words = String(t).split(' '); for (; px >= min; px -= 2) { g.font = font(px); var L = [], cur = ''; words.forEach(function (wd) { var tr = cur ? cur + ' ' + wd : wd; if (g.measureText(tr).width > w && cur) { L.push(cur); cur = wd; } else cur = tr; }); L.push(cur); if (L.length <= 2 && L.every(function (l) { return g.measureText(l).width <= w; })) return { px: px, L: L }; } g.font = font(min); return { px: min, L: [t] }; }
+  function draw(y, names) {
+    var d = (A() && A().state && A().state.data) || {}, K = (d.yearBrand || {})[y]; if (!K) return Promise.reject('no kit');
+    var C = colors(y, K), W = 1080, H = 1920, yy = String(y).slice(2), c = document.createElement('canvas'); c.width = W; c.height = H; var g = c.getContext('2d');
+    var P14 = function (px) { return px + 'px "Pickathon 2014"'; }, BR = function (w) { return function (px) { return w + ' ' + px + 'px "Bricolage Grotesque", sans-serif'; }; };
+    var fonts = (document.fonts && document.fonts.load) ? Promise.all([document.fonts.load(P14(190)), document.fonts.load(BR(800)(58)), document.fonts.load(BR(600)(30))]).catch(function () {}) : Promise.resolve();
+    return fonts.then(function () { return Promise.all([img(HZ[y] ? 'i/hz/y' + yy + '.webp' : ''), img('i/yb/y' + yy + '.webp')].concat(names.slice(0, 5).map(function (n) { return actImg(y, n); }))); }).then(function (I) {
+      var hz = I[0], seal = I[1], ph = I.slice(2);
+      g.fillStyle = C.B; g.fillRect(0, 0, W, H);
+      g.fillStyle = '#15110F'; g.fillRect(0, 0, W, 132); if (hz) { var hw = hz.width * 132 / hz.height; for (var hx0 = (W - hw) / 2; hx0 > -hw; hx0 -= hw); for (; hx0 < W; hx0 += hw) g.drawImage(hz, hx0, 0, hw, 132); }
+      g.fillStyle = (K.stripe && K.stripe[0]) || K.ink2 || '#F2CF62'; g.fillRect(0, 132, W, 4);
+      var TB = 136, TH = 330;   /* top block */
+      if (seal) { g.save(); g.beginPath(); g.rect(0, TB, W, TH); g.clip(); g.globalAlpha = C.seal; g.drawImage(seal, W - 440, TB - 70, 560, 560); g.restore(); g.drawImage(seal, 84, TB + 62, 190, 190); }
+      var tx = seal ? 314 : 84; g.textBaseline = 'alphabetic';
+      g.fillStyle = C.kick; g.font = BR(800)(30); if ('letterSpacing' in g) g.letterSpacing = '6px'; g.fillText('MY TOP FIVE', tx, TB + 92); if ('letterSpacing' in g) g.letterSpacing = '4px';
+      g.fillStyle = C.main; g.font = P14(190); g.fillText(String(y), tx, TB + 252); if ('letterSpacing' in g) g.letterSpacing = '0px';
+      g.font = BR(600)(30); g.fillText(K.dates || '', tx, TB + 300);
+      var RY = TB + TH + 10, RH = 222;
+      names.slice(0, 5).forEach(function (n, i) { var y0 = RY + i * RH, ink = i % 2 ? C.ink : C.main;
+        g.fillStyle = K.paper || '#F5EFE2'; g.fillRect(84, y0, 242, 206);
+        if (ph[i]) cover(g, ph[i], 90, y0 + 6, 230, 194); else { g.fillStyle = C.B; g.fillRect(90, y0 + 6, 230, 194); if (seal) g.drawImage(seal, 135, y0 + 33, 140, 140); }
+        var fit = lines(g, n, 520, 58, 40, BR(800)); g.fillStyle = ink; g.font = BR(800)(fit.px);
+        var lh = fit.px * 1.04, ty = y0 + 103 - (fit.L.length - 1) * lh / 2 + fit.px * 0.35; fit.L.forEach(function (l, j) { g.fillText(l, 366, ty + j * lh); });
+        g.fillStyle = C.ink; g.font = P14(96); g.textAlign = 'right'; g.fillText(String(i + 1), W - 84, y0 + 138); g.textAlign = 'left'; });
+      var AY = 1600, st = (K.stripe && K.stripe.length) ? K.stripe : [C.ink], n18 = 18, aw = W / n18;
+      for (var k = 0; k < n18; k++) { g.fillStyle = st[k % st.length]; g.beginPath(); g.moveTo(k * aw, AY + 70); g.lineTo(k * aw, AY + 35); g.arc(k * aw + aw / 2, AY + 35, aw / 2, Math.PI, 0); g.lineTo((k + 1) * aw, AY + 70); g.closePath(); g.fill(); }
+      g.fillStyle = '#15110F'; g.fillRect(0, 1670, W, 250); g.textAlign = 'center';
+      g.fillStyle = cr(C.ink, '#15110F') >= 4.5 ? C.ink : '#F2CF62'; g.font = P14(64); if ('letterSpacing' in g) g.letterSpacing = '2px'; g.fillText('WERE YOU THERE?', W / 2, 1770); if ('letterSpacing' in g) g.letterSpacing = '0px';
+      g.fillStyle = '#F5EFE2'; g.font = BR(600)(30); g.fillText('Make yours at pickathon.com/my', W / 2, 1822); g.globalAlpha = 0.85; g.fillText('Aug 5 to 8, 2027 · Pendarvis Farm, Oregon', W / 2, 1866); g.globalAlpha = 1; g.textAlign = 'left';
+      g.strokeStyle = C.main; g.globalAlpha = 0.35; g.lineWidth = 2; g.strokeRect(24, 24, W - 48, H - 48); g.globalAlpha = 1;
+      return c; }); }
+  var css = '.pk5-o{position:fixed;left:10px;right:10px;bottom:calc(74px + env(safe-area-inset-bottom,0px));z-index:9000;max-width:440px;margin:0 auto;background:#15110F;color:#F5EFE2;border:1px solid rgba(242,207,98,.5);border-radius:14px;padding:16px;box-shadow:0 10px 30px rgba(0,0,0,.6);font-family:"Bricolage Grotesque",sans-serif}' +
+    '@media (min-width:1025px){.pk5-o{bottom:24px}}.pk5-o .tp{display:flex;gap:12px;align-items:center}.pk5-o img{width:52px;height:52px;flex:none}.pk5-o p{margin:0;font-size:16px;line-height:1.35}' +
+    '.pk5-o .bb{display:flex;gap:10px;margin-top:14px}.pk5-b{flex:1;min-height:48px;border-radius:6px;font:800 15px "Bricolage Grotesque",sans-serif;cursor:pointer;padding:0 14px}.pk5-b.y{background:#F2CF62;color:#2B2628;border:0}.pk5-b.n{background:transparent;color:#F5EFE2;border:2px solid #5a5254}' +
+    '.pk5-t{position:fixed;left:10px;right:10px;bottom:calc(84px + env(safe-area-inset-bottom,0px));z-index:9000;max-width:440px;margin:0 auto;background:#15110F;color:#F5EFE2;border-radius:10px;padding:12px 14px;font:600 15px "Bricolage Grotesque",sans-serif;box-shadow:0 8px 24px rgba(0,0,0,.5)}@media (min-width:1025px){.pk5-t{bottom:24px}}' +
+    '.pk5-v{position:fixed;inset:0;z-index:9500;background:rgba(10,8,8,.92);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:16px}.pk5-v img{max-height:calc(100vh - 120px);max-width:100%;border-radius:10px;box-shadow:0 10px 40px rgba(0,0,0,.6)}.pk5-v .bb{display:flex;gap:10px;width:100%;max-width:420px}';
+  function css1() { if (document.getElementById('pk5-css')) return; var s = document.createElement('style'); s.id = 'pk5-css'; s.textContent = css; document.head.appendChild(s); }
+  function close(sel) { var x = document.querySelector(sel); if (x) x.remove(); }
+  function toast(t) { css1(); close('.pk5-t'); var d = document.createElement('div'); d.className = 'pk5-t'; d.setAttribute('role', 'status'); d.textContent = t; document.body.appendChild(d); setTimeout(function () { d.remove(); }, 4200); }
+  function offer(y) { y = String(y); var L = J(OFF, []); if (L.indexOf(y) >= 0) return; var first = !L.length; L.push(y); try { localStorage.setItem(OFF, JSON.stringify(L)); } catch (e) {}
+    css1(); close('.pk5-o'); var d = document.createElement('div'); d.className = 'pk5-o'; d.setAttribute('role', 'dialog'); d.setAttribute('aria-label', 'Share your ' + y + ' five');
+    d.innerHTML = '<div class="tp"><img src="i/yb/y' + y.slice(2) + '.webp" alt=""><p>' + (first ? '<b>That’s your ' + y + ' five.</b> Share it with friends. You can also find it any time in My Pickathon.' : '<b>That’s your ' + y + ' five.</b> Share it?') + '</p></div><div class="bb"><button type="button" class="pk5-b y" data-p5="go">Share my five</button><button type="button" class="pk5-b n" data-p5="no">Not now</button></div>';
+    d.addEventListener('click', function (e) { var b = e.target.closest('[data-p5]'); if (!b) return; d.remove(); if (b.dataset.p5 === 'go') { var a = A(); share(y, a && a.pPicks ? a.pPicks(y) : []); } else toast('You can always share your picks with friends from My Pickathon, behind this star.'); });
+    document.body.appendChild(d); try { d.querySelector('.pk5-b.y').focus({ preventScroll: true }); } catch (e) {} }
+  function share(y, names) { y = String(y); if (!names || !names.length) { var a = A(); names = a && a.pPicks ? a.pPicks(y) : []; } css1();
+    return draw(y, names).then(function (c) { c.toBlob(function (bl) { var u = URL.createObjectURL(bl), f = null; try { f = new File([bl], 'my-pickathon-' + y + '-five.png', { type: 'image/png' }); } catch (e) {}
+      close('.pk5-v'); var v = document.createElement('div'); v.className = 'pk5-v'; v.setAttribute('role', 'dialog'); v.setAttribute('aria-label', 'Your ' + y + ' five');
+      var canShare = !!(f && navigator.canShare && navigator.canShare({ files: [f] }));
+      v.innerHTML = '<img src="' + u + '" alt="My top five, Pickathon ' + y + ': ' + esc(names.slice(0, 5).join(', ')) + '"><div class="bb">' + (canShare ? '<button type="button" class="pk5-b y" data-p5="sh">Share</button>' : '') + '<a class="pk5-b ' + (canShare ? 'n' : 'y') + '" style="display:grid;place-items:center;text-decoration:none" href="' + u + '" download="my-pickathon-' + y + '-five.png">Save image</a><button type="button" class="pk5-b n" data-p5="x">Close</button></div>';
+      v.addEventListener('click', function (e) { var b = e.target.closest('[data-p5]'); if (b && b.dataset.p5 === 'x' || e.target === v) { v.remove(); return; } if (b && b.dataset.p5 === 'sh') navigator.share({ files: [f], title: 'My Pickathon ' + y + ' five', text: 'My top five from Pickathon ' + y + '. Were you there?' }).catch(function () {}); });
+      document.addEventListener('keydown', function k(e) { if (e.key === 'Escape') { v.remove(); document.removeEventListener('keydown', k); } });
+      document.body.appendChild(v); }, 'image/png'); }); }
+  window.__pkFive = { offer: offer, share: share, draw: draw, colors: function (y) { var d = (A() && A().state && A().state.data) || {}; return colors(String(y), (d.yearBrand || {})[y]); } };
 })();
 </script>
 <script>/*pk-sg: Schedule grid r2 (Design My Pickathon, Nov 24; Zale "Build as drawn"). Desktop: a column per place, time runs down. Phone: places down the side, the day slides sideways. Gold = in your plan, or matches a thing to do you starred on Tickets (window.__pkXS). Data: window.__pkSG, set by the app each render.*/
@@ -7698,13 +7784,14 @@ html:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root:
     var a = A(); if (!a) return '';
     var se = SEASON(), xs = xsAll(), bands = (function () { var o = [], st = {}, AR = ((ST().data || {}).artists) || {}; try { st = JSON.parse(localStorage.getItem('pk-site-mine-2027') || 'null') || {}; } catch (e) {} Object.keys(st).forEach(function (k) { if (st[k] && k.indexOf('a:') === 0 && AR[k.slice(2)]) o.push({ n: AR[k.slice(2)].n, k: k.slice(2) }); }); (ST().pstars || []).forEach(function (z) { if (String(z.y) === '2027' && !o.some(function (q) { return q.n === z.n; })) o.push({ n: z.n }); }); return o; })();   /* 2027 band stars: artist stars (pk-site-mine-2027, a:<key>) that the weekend plan reads, plus any 2027 top-five picks */
     var h = '<section class="ms" aria-label="Your stars"><div class="ms-h"><h2 class="pw-t">Your stars</h2>' + (xs.length || bands.length ? '<button type="button" class="ac-link" data-ms="share">Share ↗</button>' : '') + '</div>';
+    if (!ME) h += '<div class="ms-in"><span>Saved on this phone. Sign in to keep your stars on every device.</span><button type="button" class="ms-inb" data-ac="in">Sign in</button></div>';   /* header spec 4: Sign in is a button at the top of My Pickathon */
     if (se === 'pre') h += '<p class="ms-x">The 2027 lineup is out <b>Jan 13</b>. Star the bands you want and your weekend builds itself.</p>';
     else h += '<p class="ms-x"><b>' + bands.length + (bands.length === 1 ? ' band' : ' bands') + ', ' + xs.length + (xs.length === 1 ? ' thing' : ' things') + ' to do.</b> Your weekend fills in when the schedule is out.</p>';
     if (se !== 'pre') h += '<p class="ms-g">Bands</p>' + (bands.length ? '<div class="ms-r">' + bands.map(function (z) { return '<button type="button" class="ms-c" data-ms="act" data-n="' + esc(z.n) + '"><span class="ms-t">' + esc(z.n) + '</span></button>'; }).join('') + '</div>' : '<p class="ms-x"><button type="button" class="ac-link" data-ms="lineup">Star bands on the 2027 lineup →</button></p>');
     h += '<p class="ms-g">Things to do</p>';
     if (xs.length) h += '<div class="ms-r">' + xs.map(function (r) { return '<div class="ms-c"><img src="' + esc(r.img || '') + '" alt="" loading="lazy" decoding="async"><span class="ms-w">' + (r.hk ? '<img src="ic2/' + esc(r.hk) + '.png" alt="">' : '') + esc(r.p || '') + '</span><button type="button" class="ms-s" data-ms="unstar" data-k="' + esc(r.k) + '" aria-pressed="true" aria-label="Unstar ' + esc(r.t) + '">' + STAR + '</button><span class="ms-t">' + esc(r.t) + '</span></div>'; }).join('') + '</div>' + (xs.some(function (r) { return r.e === 'Food' && /Curation/i.test((r.p || '') + r.t); }) ? '<p class="ms-n">Curation seats sell separately · <button type="button" class="ac-link" data-ac="buy">Get a seat →</button></p>' : '');
     else h += '<p class="ms-x"><button type="button" class="ac-link" data-ms="todo">Star the things you want to do →</button></p>';
-    h += '<p class="ms-n">' + (ME ? 'Signed in · your stars follow you to every device.' : 'Saved on this phone. <button type="button" class="ac-link" data-ac="in">Sign in</button> to keep it on every device.') + '</p>';
+    if (ME) h += '<p class="ms-n">Signed in · your stars follow you to every device.</p>';
     return h + '</section>';
   }
   function andList(l) { return l.length < 2 ? l.join('') : l.slice(0, -1).join(', ') + ' and ' + l[l.length - 1]; }
@@ -7822,8 +7909,8 @@ html:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root:
       h += '<div class="yh">' + (src ? '<img src="' + src + '" alt="">' : '') + '<div><p class="yk">I was there</p><h2>Pickathon ' + esc(S.y) + '</h2>' + (B.dates ? '<p class="yd">' + esc(B.dates) + '</p>' : '') + '</div></div>';
       if (n) {
         h += '<ol aria-label="My top five">' + five.map(function (x, i) { return '<li><b>' + (i + 1) + '</b>' + esc(x) + '</li>'; }).join('') + '</ol>';
-        if (n < 5 && pk) h += '<p style="margin:-6px 0 14px;font-size:14px">' + n + ' of 5 so far. Star more on the ' + esc(S.y) + ' page.</p>';
-        h += '<div class="two">' + (n > 5 ? '<button class="pri sec" type="button" data-sh="ypick">Change picks</button>' : pk ? '<button class="pri sec" type="button" data-sh="ygo">Star more</button>' : '') + '<button class="pri" type="button" data-sh="yshare">Share this year</button></div>';
+        if (n < 5 && pk) h += '<p style="margin:-6px 0 14px;font-size:14px">Star more on the ' + esc(S.y) + ' page to fill your five.</p>';
+        h += '<div class="two">' + (n > 5 ? '<button class="pri sec" type="button" data-sh="ypick">Change picks</button>' : pk ? '<button class="pri sec" type="button" data-sh="ygo">Star more</button>' : '') + '<button class="pri" type="button" data-sh="yshare">Share my five</button></div>';
       } else {
         h += '<p style="margin:16px 0">Star your favorites on the ' + esc(S.y) + ' page and your top five shows up here.</p>' + (pk ? '<button class="pri" type="button" data-sh="ygo">Open the ' + esc(S.y) + ' page</button>' : '');
       }
@@ -7867,7 +7954,7 @@ html:root:root:root:root:root:root:root:root:root:root:root:root:root:root:root:
     if (k === 'ynot') { setYears(myYears().filter(function (q) { return q !== S.y; })); closeSheet(); later(); }
     if (k === 'ygo' && a) { var pk2 = pastKey(S.y); closeSheet(); if (pk2) a.go('past', { y: pk2 }); }
     if (k === 'ypick' && a) { S.sel = a.pPicks(S.y).slice(); S.step = 'pick'; drawSheet(true); }
-    if (k === 'yshare' && a) { var sy = S.y; closeSheet(); a.pTop(sy, false); }
+    if (k === 'yshare' && a) { var sy = S.y; closeSheet(); if (window.__pkFive) window.__pkFive.share(sy, a.pPicks(sy)); else a.pTop(sy, false); }
     if (k === 'mk' && a) { var w = b.dataset.k; closeSheet(); if (w === 'years') yearsCard(); else if (w === 'all') a.pTop(null, true); else a.pTop(w, false); }
   }
   function shSub(e) {
@@ -8978,7 +9065,7 @@ body:has(.tk-gscrim) #tk-bar{visibility:hidden}
 .tk2 .tk-x-star{position:absolute;right:4px;top:4px;z-index:4;width:44px;height:44px;display:grid;place-items:center;border:0;border-radius:50%;background:transparent;cursor:pointer}
 .tk2 .tk-x-star path{fill:rgba(0,0,0,.25);stroke:#F5EFE2;stroke-width:1.6}
 .tk2 .tk-x-star[aria-pressed="true"] path{fill:#F2CF62;stroke:#F2CF62}
-</style>
+.ms-in{display:flex;align-items:center;gap:12px;margin:4px 0 14px;padding:10px 12px;border:1px solid rgba(242,237,227,.18);border-radius:10px;font-size:15px;color:#CFC9BC}.ms-in .ms-inb{margin-left:auto;flex:none;min-height:44px;padding:0 16px;border:2px solid #F5EFE2;border-radius:6px;background:transparent;color:#F5EFE2;font:inherit;font-weight:800;cursor:pointer}</style>
 <script id="pk-tk2">
 /* pk-tk2: Tickets, round 2 design (Nov 11 2026). Source: tools/tickets_r2/tk2.js, spliced into index.html by tools/tickets_r2/build.py.
    The page is drawn into <div id="tk2" data-pk-own> (the app's renderer leaves the inside of a data-pk-own element alone).
