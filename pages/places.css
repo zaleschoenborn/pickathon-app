@@ -1063,3 +1063,10 @@ html body.pkpl-wide #root #pkpl-top .pkpl-hero,html body.pkpl-wide #root #pkpl-t
 html body .pkpl-amtag{left:auto!important;right:12px!important;top:auto!important;bottom:72px!important;max-width:min(320px,calc(100% - 24px))}
 html body.pkpl-wide .pkpl-amtag{right:16px!important;bottom:76px!important}
 html body:not(.pkpl-hood):not(.pkpl-wide) #root#root#root .pkpl-amtag{bottom:calc(var(--pkpl-psb,200px) + 52px)!important;transition:bottom .28s cubic-bezier(.2,.7,.2,1)}
+/* Nov 25 01:35 (Zale, "yes, all of it"): phone neighborhood page: no map strip on arrival (pull the name bar down for the map), the name and its line left-aligned, one calendar icon for Schedule (the "More about" button is gone; scrolling does it), smaller quieter dots */
+html body:not(.pkpl-wide) #root #pkpl-top .pkpl-bar .pkpl-bmid{justify-content:flex-start}
+html body:not(.pkpl-wide) #root #pkpl-top .pkpl-bar .pkpl-bmid>span:last-child,html body:not(.pkpl-wide) #root #pkpl-top .pkpl-bar .pkpl-bmid .pkpl-bt{text-align:left}
+html body:not(.pkpl-wide) #root #pkpl-top .pkpl-hero .pkpl-chi .pkpl-q[data-to="more"]{display:none!important}
+html body:not(.pkpl-wide) #root #pkpl-top .pkpl-hero .pkpl-chi .pkpl-q[data-to="soon"]{width:44px!important;padding:0!important;justify-content:center;gap:0}
+html body:not(.pkpl-wide) #root #pkpl-top .pkpl-hero .pkpl-chi .pkpl-q[data-to="soon"] span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+html body:not(.pkpl-wide) #root #pkpl-top .pkpl-dots button i{transform:scale(.7);opacity:.75}
