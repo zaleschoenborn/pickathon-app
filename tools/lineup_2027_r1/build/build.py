@@ -357,12 +357,12 @@ def star(n, yr):
     yr = yr or '@Y@'   # year-page cards carry no year label; the page's own year is filled in where the page is assembled
     return ('<button type="button" class="pk-star1 cstar" data-pkstar="past" data-id="%s" data-x="%s" aria-pressed="false" aria-label="Star %s, Pickathon %s">%s</button>'
             % (_h.escape(n, quote=True), _h.escape('{"y":"%s"}' % yr, quote=True), _h.escape(n, quote=True), yr, _STAR_SV))
-def card(n, yr, k, g, src, pos='50% 40%', vid=True, cls=''):
+def card(n, yr, k, g, src, pos='50% 40%', vid=True, cls='', noplay=False):
     if vid is True: vid = (clip_for(n, yr) if yr else '') or clip_for(n)  # r31: no ring without a song to play
     g_all, g = gall_n(n, g), gp_n(n, g)  # r42: filter on every tag, print the primary
     return ('<a class="card %s" data-g="%s" data-art="%s" data-an="%s" href="#"><img src="%s" alt="" style="object-position:%s">%s<span class="cyr">%s</span>%s'
             '<span class="cbody"><span class="krow"><span class="k k-%s">%s</span><span class="g">%s</span></span>'
-            '<span class="cname">%s</span>%s</span></a>') % (cls + (' pc' if isinstance(vid, str) and vid else ''), E(g_all), _aslug(n), E(n), src, pos, (photo_play(vid, n) if isinstance(vid, str) else play('sm')) if vid else '', yr, star(n, yr), k, KLAB[k], E(g), E(n),
+            '<span class="cname">%s</span>%s</span></a>') % (cls + (' pc' if isinstance(vid, str) and vid and not noplay else ''), E(g_all), _aslug(n), E(n), src, pos, ('' if noplay else ((photo_play(vid, n) if isinstance(vid, str) else play('sm')) if vid else '')), yr, star(n, yr), k, KLAB[k], E(g), E(n),
             '<span class="cstory">Their story \u2192</span>' if isinstance(vid, str) and vid else '')
 
 # ---------- shared chrome ----------
@@ -830,7 +830,7 @@ def name_lines(n):
 def tile(a, y, P, photo):
     n = a['n']; k = a['k']; cd = CD.get((norm(n), y)); vid = (norm(n), y) in VID
     if photo:
-        h = card(n, '', k, '', img(photo, 560), fpos(photo), False, 'tt')   # Nov 25 (Zale): Begin here cards are plain cards to the artist page, no play button
+        h = card(n, '', k, '', img(photo, 560), fpos(photo), clip_for(n, y) or bool(cd), 'tt', noplay=True)   # Nov 25 (Zale): Begin here cards keep their text and link to the artist page; no play button, no play-on-tap
         if cd:
             h = h.replace('</span></span></a>', '</span><span class="ctrk">%s · CD</span></span></a>' % E(cd))
         return h
