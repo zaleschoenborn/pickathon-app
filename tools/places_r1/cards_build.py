@@ -44,6 +44,12 @@ for xp, cards in H.items():
             if not w: miss.append((xp, k, c['t'])); continue
             o = {'t': w[0], 'y': '', 'b': w[1], 'i': c['img'], 'p': c['pos'] or '50% 50%'}
         out.setdefault(xp, {}).setdefault(k, []).append(o)
+XWP = {}   # copied from Home's index.html XWP (branch design/home-carousel); files i/xw, m/xw
+try:
+    import re as _re
+    _m = _re.search(r'XWP *= *(\{[^;]*\})', open(os.path.join(R, 'home_xwp.txt'), encoding='utf-8').read())
+    XWP = {tuple(k.split('|')): tuple(v) for k, v in json.loads(_m.group(1)).items()} if _m else {}
+except FileNotFoundError: pass
 hw = {}
 for c in H.get('Wonders', []): hw.setdefault(c['h'], {})[c['y'] or '?'] = c
 for k, ys in hw.items():
@@ -51,6 +57,7 @@ for k, ys in hw.items():
     for y in ('2026', '2025', '2024', '2023', '2022', '2019'):
         if (k, y) in won and y in ys: pick = {'t': won[(k, y)][0], 'y': y, 'b': won[(k, y)][1], 'i': ys[y]['img'], 'p': ys[y]['pos'] or '50% 50%'}; break
         if y == '2026' and '2026' in ys: pick = {'t': ys['2026']['t'], 'y': '2026', 'b': '', 'i': ys['2026']['img'], 'p': ys['2026']['pos'] or '50% 50%'}; break
+    if pick and (k, pick['y']) in XWP: pick['i'], pick['p'] = XWP[(k, pick['y'])]   # Home's build photos for Wonders (design_home-64, Nov 24): same photos as Home
     if pick: out.setdefault('Architecture', {})[k] = [pick]
 fw = C('farm_words_nov24_draft1.csv')   # Copy Review's Farm words (row design_neighborhoods-46)
 SN = {(r['experience'], r['card_title']): r['text'] for r in fw if r['kind'] == 'short_name'}
