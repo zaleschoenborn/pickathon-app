@@ -362,8 +362,8 @@ def card(n, yr, k, g, src, pos='50% 40%', vid=True, cls=''):
     g_all, g = gall_n(n, g), gp_n(n, g)  # r42: filter on every tag, print the primary
     return ('<a class="card %s" data-g="%s" data-art="%s" data-an="%s" href="#"><img src="%s" alt="" style="object-position:%s">%s<span class="cyr">%s</span>%s'
             '<span class="cbody"><span class="krow"><span class="k k-%s">%s</span><span class="g">%s</span></span>'
-            '<span class="cname">%s</span>%s</span></a>') % (cls + (' pc' if isinstance(vid, str) and vid else ''), E(g_all), _aslug(n), E(n), src, pos, (photo_play(vid, n) if isinstance(vid, str) else play('sm')) if vid else '', yr, star(n, yr), k, KLAB[k], E(g), E(n),
-            '<span class="cstory">Their story \u2192</span>' if isinstance(vid, str) and vid else '')
+            '<span class="cname">%s</span>%s</span></a>') % (cls, E(g_all), _aslug(n), E(n), src, pos, '', yr, star(n, yr), k, KLAB[k], E(g), E(n),
+            '<span class="cstory">Their story \u2192</span>')   # r111 (Zale Nov 25): a year-page photo opens the artist page; clips play only in the reel
 
 # ---------- shared chrome ----------
 ICON = {
