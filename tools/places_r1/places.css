@@ -1077,3 +1077,11 @@ html body.pkpl-hood:not(.pkpl-wide) #root#root#root#root#root#root#root#root#roo
 html body.pkpl-hood:not(.pkpl-wide) #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .pkpl-tools{height:44px}
 html body.pkpl-hood:not(.pkpl-wide) #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .pkpl-amtag{top:64px!important}
 html body.pkpl-hood:not(.pkpl-wide) #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .pkpl-tools .pkpl-tb{margin:0!important}
+
+/* Nov 25 02:15 (Zale): tablet and desktop get the same look and feel as the phone: one calendar icon for Schedule, no "More about" button, smaller dots, the photo as tall as the window allows */
+html body.pkpl-wide #root #pkpl-top .pkpl-hero .pkpl-chi .pkpl-q[data-to="more"]{display:none!important}
+html body.pkpl-wide #root #pkpl-top .pkpl-hero .pkpl-chi .pkpl-q[data-to="soon"]{width:44px!important;padding:0!important;justify-content:center;gap:0}
+html body.pkpl-wide #root #pkpl-top .pkpl-hero .pkpl-chi .pkpl-q[data-to="soon"] span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+html body.pkpl-wide #root #pkpl-top .pkpl-dots i{width:6px;height:6px;opacity:.75}
+/* Nov 25 02:25 (Zale): portrait tablet gets the phone's look: the photo runs nearly to the bottom, name bar and experience row around it */
+@media (min-width:600px){html body.pkpl-v2p:not(.pkpl-wide) #root #pkpl-top .pkpl-hero,html body.pkpl-v2p:not(.pkpl-wide) #root #pkpl-top.pkpl-has .pkpl-hero,html body.pkpl-v2p:not(.pkpl-wide) #root #pkpl-top .pkpl-has .pkpl-hero{height:max(220px,calc(var(--pkpl-open,444px) - 58px - 14px))!important}}
