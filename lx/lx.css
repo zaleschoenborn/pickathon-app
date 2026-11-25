@@ -1310,3 +1310,13 @@ a.hd-yr{text-decoration:none}
   .po-b{padding:0 8px;font-size:12px;letter-spacing:.03em;white-space:nowrap;flex:0 0 auto}
   .po-ctl>.po-track{order:3;flex:1 0 100%;width:100%;min-width:0;margin-top:26px}
 }
+/* r106 (Zale, Nov 24 22:31): the year logo on the poster is a bit big at tablet and small desktop */
+@media (min-width:1000px) and (max-width:1199px){
+  .yrtop .po-art,.yrtop .poster .po-badge,.yrtop .poster.joined .po-badge,.yrtop .poster.solo .po-badge{width:128px!important}
+}
+@media (min-width:1200px) and (max-width:1439px){
+  .yrtop .po-art,.yrtop .poster .po-badge,.yrtop .poster.joined .po-badge,.yrtop .poster.solo .po-badge{width:136px!important}
+}
+@media (min-width:1440px){
+  .yrtop .po-art,.yrtop .poster .po-badge,.yrtop .poster.joined .po-badge,.yrtop .poster.solo .po-badge{width:150px!important}
+}
