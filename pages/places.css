@@ -1053,3 +1053,7 @@ html body.pkpl-hood:not(.pkpl-wide) #root#root#root#root #pkpl .pkpl-xb .pkpl-xe
 html body.pkpl-hood:not(.pkpl-wide) #root#root#root#root #pkpl .pkpl-xb .pkpl-xe[aria-pressed="true"] svg{color:#D6B54A!important}
 /* rotation check Nov 24: after an upright tablet turns sideways, the phone-only 'See every neighborhood' link stayed in the page behind the panel */
 html body.pkpl-wide #root #pkpl .pkpl-psall{display:none!important}
+/* Nov 25 (Zale): the lit amenity's tag sits at the right, just above the map's two buttons, not in the top left corner */
+html body .pkpl-amtag{left:auto!important;right:12px!important;top:auto!important;bottom:72px!important;max-width:min(320px,calc(100% - 24px))}
+html body.pkpl-wide .pkpl-amtag{right:16px!important;bottom:76px!important}
+html body:not(.pkpl-hood):not(.pkpl-wide) #root#root#root .pkpl-amtag{bottom:calc(var(--pkpl-psb,200px) + 52px)!important;transition:bottom .28s cubic-bezier(.2,.7,.2,1)}
