@@ -1282,3 +1282,31 @@ a.hd-yr{text-decoration:none}
 .hact .hyr-y{left:16px;right:auto}
 .hact>.cstar{top:18px;right:8px;z-index:5}
 @media (min-width:1000px){.hact .hyr-y{left:max(64px,calc((100% - 1152px)/2));right:auto}.hact>.cstar{right:max(56px,calc((100% - 1152px)/2 - 8px))}}
+/* r106 (tablet 1000-1199): the poster sits in a ~580px panel beside the hero photo, so it stacks in one column like the phone; nothing may pass the panel edge */
+@media (min-width:1000px) and (max-width:1199px){
+  .poster.joined .po-in,.poster.solo .po-in{display:block;padding:0 24px 40px;text-align:center}
+  .poster .po-cap{width:auto;max-width:100%;font-size:28px;margin:20px 0 0}
+  .po-ctl{width:100%;max-width:340px;margin:18px auto 0;gap:8px}
+  .po-b{min-width:0;font-size:12px;letter-spacing:.05em;padding:0 10px;height:44px}
+  .po-names{width:100%;margin:22px 0 0;text-align:center}
+  .po-names .po-ln,.po-names div{text-align:center}
+  .po-names.then .pl.l1{font-size:38px}.po-names.then .pl.l2{font-size:30px}.po-names.then .pl.l3{font-size:22px}.po-names.then .pl.l4{font-size:16px}
+  .pl{justify-content:center}
+  .pcloud{justify-content:center;gap:4px 16px;max-width:100%}
+  .po-art{margin:0 auto}
+}
+/* r106: a long headliner name wraps inside the poster panel instead of running past its frame (tablet and small desktop) */
+@media (min-width:1000px) and (max-width:1439px){
+  .po-names .pcloud .pn,.pcloud .pn{white-space:normal;overflow-wrap:break-word;text-wrap:balance;max-width:100%;line-height:1}
+  .po-names .pcloud .pn{--hi:52}
+}
+@media (min-width:1200px) and (max-width:1439px){
+  .po-ctl{width:100%;max-width:100%;gap:8px}
+  .po-b{padding:0 10px;font-size:12px;letter-spacing:.05em}
+}
+@media (min-width:1200px) and (max-width:1439px){
+  /* r106: the controls column is ~285px here; the two buttons share a row and the slider drops under them */
+  .po-ctl{flex-wrap:wrap;justify-content:space-between;row-gap:46px;overflow:visible}
+  .po-b{padding:0 8px;font-size:12px;letter-spacing:.03em;white-space:nowrap;flex:0 0 auto}
+  .po-ctl>.po-track{order:3;flex:1 0 100%;width:100%;min-width:0;margin-top:26px}
+}

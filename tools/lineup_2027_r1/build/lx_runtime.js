@@ -74,10 +74,30 @@
       window.addEventListener('pkstar', function () { starPaint(root); }); window.addEventListener('storage', function () { starPaint(root); }); }
     starPaint(root); }
   var LASTK = '';
+  // r106: poster names fit their column (the page-level fit in app.js cannot see inside the shadow root): never wider than the column, never bigger than the name above
+  function fitPoster(root) {
+    root.querySelectorAll('.po-names').forEach(function (pn) {
+      var W = pn.clientWidth; if (!W) return;
+      pn.querySelectorAll('.pcloud:not(.rest)').forEach(function (pc) {
+        var prev = 1e9;
+        pc.querySelectorAll('.pn').forEach(function (e) {
+          e.style.removeProperty('font-size');
+          var base = parseFloat(getComputedStyle(e).fontSize), w = e.scrollWidth;
+          var s = Math.min(base, w > W ? base * W / w * 0.97 : base, prev);
+          e.style.setProperty('font-size', s.toFixed(1) + 'px', 'important'); prev = s;
+        });
+      });
+    });
+  }
+  function fitWatch(root) {
+    fitPoster(root);
+    if (window.ResizeObserver && !root._fro) { root._fro = new ResizeObserver(function () { fitPoster(root); }); root.querySelectorAll('.po-names').forEach(function (n) { root._fro.observe(n); }); }
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { fitPoster(root); });
+  }
   function paint(host, key, html, css) {
     var root = host.shadowRoot || host.attachShadow({ mode: 'open' });
     root.innerHTML = '<style>' + css + '\n.phone{max-width:none;margin:0;padding-bottom:32px;min-height:0;background:transparent}.screen{display:block}</style><div class="phone">' + html + '</div>';
-    host._k = key; wire(root); starBridge(root); try { widgets(root); } catch (e) { if (window.console) console.error('lx widgets', e); }
+    host._k = key; wire(root); starBridge(root); try { fitWatch(root); } catch (e) {} try { widgets(root); } catch (e) { if (window.console) console.error('lx widgets', e); }
     if (LASTK !== key) { LASTK = key; toTop(); }
   }
   function mount(host, key) {
