@@ -310,7 +310,7 @@
     if (hd) hd.style.bottom = (h + xh + qh) + 'px'; M.el.style.setProperty('--pkpl-psb', (h + xh + hdH() + 10) + 'px');
   }
   function psSet(st) {   /* change the sheet and frame the map in what still shows */
-    st = Math.max(0, Math.min(2, st)); if (st === M.ps) return; M.ps = st; psPlace(); var mo = $('.pkpl-psmore', M.el); if (mo) { var nL = M.xp ? litSet().length : 0; mo.textContent = st === 2 ? 'Map' : 'See ' + (nL === 1 ? 'it' : 'them'); }
+    st = Math.max(0, Math.min(2, st)); if (st === 1 && M.xp) st = (M.ps === 0) ? 2 : 0; if (M.xp) MINI = (st === 0); if (st === M.ps) return; M.ps = st; psPlace(); var mo = $('.pkpl-psmore', M.el); if (mo) { var nL = M.xp ? litSet().length : 0; mo.textContent = st === 2 ? 'Map' : 'See ' + (nL === 1 ? 'it' : 'them'); }
     if (st < 2) setTimeout(function () { if (!M || top().r === 'hood') return; if (M.xp || M.amen) fitLit(); else home(); }, calm() ? 0 : 60);
   }
   function psTouch() {   /* swipe up on the words, the row or the handle: full; swipe down at the top: half, then folded (same feel as the neighborhood sheet) */
@@ -327,7 +327,7 @@
     M.el.addEventListener('touchend', function () { if (t0 && t0.drag) { M.el.classList.remove('pkpl-psdrag'); var h = t0.h == null ? t0.h0 : t0.h, hs = [hAt(0), hAt(1), hAt(2)], best = 0;
         hs.forEach(function (x, k) { if (Math.abs(x - h) < Math.abs(hs[best] - h)) best = k; });
         if (Math.abs(t0.v || 0) > 6) { var cur = M.ps; best = t0.v < 0 ? Math.max(best, Math.min(2, cur + (h > hs[cur] ? 1 : 0))) : Math.min(best, Math.max(0, cur - (h < hs[cur] ? 1 : 0))); }   /* a quick flick goes one stop that way */
-        if (best === M.ps) psPlace(); else psSet(best); }
+        if (best === 1 && M.xp) best = h > hs[1] ? 2 : 0; if (best === M.ps) psPlace(); else psSet(best); }
       t0 = null; }, { passive: true });
     M.el.addEventListener('click', function (e) { if (e.target.closest('.pkpl-psall')) { psSet(2); return; } if (e.target.closest('.pkpl-psh2')) psSet(M.ps === 2 ? 1 : M.ps + 1); });
   }
@@ -420,7 +420,7 @@
         + (M.xp === 'Architecture' ? '<div class="pkpl-psab"><button type="button" class="pk-cta sec pkpl-abb" data-go="build">Build with Pickathon</button></div>' : '');   /* Zale, Nov 22: Build with Pickathon closes the list on every size */
       else ps.innerHTML = '<p class="pkpl-psl pkpl-psl0"><button type="button" class="pkpl-psall">' + esc(M0W.seeAll || 'See every neighborhood') + '</button></p>'
         + [['stage', 'Stages'], ['around', 'Hangouts'], ['camp', 'Camping']].map(function (g) { var ks = ids().filter(function (k) { return (D3[k].k || 'around') === g[0]; }); return ks.length ? '<p class="pkpl-gh">' + g[1] + '</p><div class="pkpl-psls pkpl-pst">' + ks.map(function (k) { return tile(k); }).join('') + '</div>' : ''; }).join('');
-      if (ps._xp !== M.xp) { var px2 = ps._xp; ps._xp = M.xp; ps.scrollTop = 0; M.ps = 1;   /* Zale, Nov 22: a new experience always opens half, so the map shows it lit */ ps.classList.remove('pkpl-xf'); void ps.offsetWidth; if (px2 !== undefined && !calm()) ps.classList.add('pkpl-xf'); var xr = $('.pkpl-xb', M.el), xs = M.xp && xr && $('.pkpl-xe[data-xp="' + M.xp + '"]', xr); if (xs) { var cx = xs.offsetLeft + xs.offsetWidth / 2 - xr.clientWidth / 2; if (xs.offsetLeft < xr.scrollLeft + 8 || xs.offsetLeft + xs.offsetWidth > xr.scrollLeft + xr.clientWidth - 8) xr.scrollTo({ left: Math.max(0, cx), behavior: calm() ? 'auto' : 'smooth' }); } }   /* the picked button is never half off the edge (Site Build, Nov 22) */
+      if (ps._xp !== M.xp) { var px2 = ps._xp; ps._xp = M.xp; ps.scrollTop = 0; M.ps = M.xp ? (MINI ? 0 : 2) : 1;   /* Zale, Nov 22: a new experience always opens half, so the map shows it lit */ ps.classList.remove('pkpl-xf'); void ps.offsetWidth; if (px2 !== undefined && !calm()) ps.classList.add('pkpl-xf'); var xr = $('.pkpl-xb', M.el), xs = M.xp && xr && $('.pkpl-xe[data-xp="' + M.xp + '"]', xr); if (xs) { var cx = xs.offsetLeft + xs.offsetWidth / 2 - xr.clientWidth / 2; if (xs.offsetLeft < xr.scrollLeft + 8 || xs.offsetLeft + xs.offsetWidth > xr.scrollLeft + xr.clientWidth - 8) xr.scrollTo({ left: Math.max(0, cx), behavior: calm() ? 'auto' : 'smooth' }); } }   /* the picked button is never half off the edge (Site Build, Nov 22) */
       var qq2 = $('.pkpl-psq', M.el); if (qq2) { qq2.classList.toggle('pkpl-psq0', !!M.xp); qq2.textContent = M.xp ? '' : (M0W.ask || 'What do you want to do?'); }   /* the question line is dropped: arrival's title asks it, and after a pick the pressed button answers it */
       psPlace(); var xr3 = $('.pkpl-xb', M.el); if (xr3 && !xr3._end) { xr3._end = 1; xr3.addEventListener('scroll', xbEnd, { passive: true }); } setTimeout(xbEnd, 400);
     } else { var ps0 = $('.pkpl-ps', M.el); if (ps0) ps0.style.height = ''; var xb0 = $('.pkpl-xb', M.el); if (xb0) xb0.style.bottom = ''; }
@@ -547,7 +547,7 @@
       if (e.target.closest('.pkpl-psh2,.pkpl-psq') || (e.target.closest('.pkpl-ps') && !e.target.closest('button'))) return;   /* the phone sheet's handle and its blank space are not the map */
       var xb = e.target.closest('[data-xp]'); if (xb) { xpPick(xb.getAttribute('data-xp')); return; }
       var gb = e.target.closest('[data-go]'); if (gb) { go(gb.getAttribute('data-go')); return; }
-      var hp = e.target.closest('[data-hp]'); if (hp) { if (M.title) { M.title = false; } var cn = e.target.closest('[data-ci]'); CI = cn ? +cn.getAttribute('data-ci') : 0; open(hp.getAttribute('data-hp')); return; }   /* a card name in the row opens the place on that card */
+      var hp = e.target.closest('[data-hp]'); if (hp) { RAISE = true; if (M.title) { M.title = false; } var cn = e.target.closest('[data-ci]'); CI = cn ? +cn.getAttribute('data-ci') : 0; open(hp.getAttribute('data-hp')); return; }   /* a card name in the row opens the place on that card */
       var b = e.target.closest('[data-pl]'); if (b) { tool(b.getAttribute('data-pl'), b); return; }
       var a = e.target.closest('.pkpl-amdot'); if (a) return;
       if (!M.amen) { var gk = iconHit(rel(e)); if (gk) { amHover(''); if (gk === M.glow) { glow(''); } else { var fk = fitKind(gk); glow.s = fk ? fk[0] : 0; glow(gk); } e.stopPropagation(); return; } }   /* Zale, Nov 23: an amenity is on top everywhere: click it and every one of that kind lights up across the farm, the map zooms out to show them all; the tag at the top clears it */   /* a tap on ANOTHER neighborhood's shape always opens that neighborhood (Zale, Nov 20: it got stuck behind an icon glow) */   /* Nov 20 (Zale): inside a place, tap one of its icons and every icon of that kind glows on the real map; the view stays put */
@@ -586,7 +586,7 @@
       var p = pt(k), near = ids().filter(function (j) { if (j === M.cur) return false; var q = pt(j); return Math.hypot((q[0] - p[0]) * M.s, (q[1] - p[1]) * M.s) < 46; });
       if (near.length > 1) { var b = union(near), m = 30 / M.s; animTo(fitBox([b[0] - m, b[1] - m, b[2] + m, b[3] + m], region(), 40), 520); return; }
     }
-    open(k);
+    RAISE = true; open(k);
   }
   function open(k) { if (top().r === 'hood' && top().h === k) { frame(k); return; } go('hood', { h: k }); }
   function tool(a) {
@@ -830,7 +830,7 @@
   function settleSheet() { xbVar(); setTimeout(xbVar, 300); hhVar();   /* a new place opens with the sheet at about 60% (55% on portrait tablet) */
     var t = top(); if (t.r !== 'hood' || wide()) { lastHood = t.r === 'hood' ? t.h : ''; return; }
     if (lastHood === t.h) return; var prevHood = lastHood; lastHood = t.h;
-    var sc0 = scroller(); if (sc0) sc0.scrollTop = 0; var kf = KEEPFOLD; KEEPFOLD = false; var keepFold = prevHood ? SHEETFOLD : kf, keepY = prevHood ? SHEETY : 0; setFold(keepFold); if (prevHood && !keepFold && keepY < 0) { var ce1 = cardEl(); if (ce1) { ce1.classList.add('pkpl-anim'); setY(ce1, keepY); SHEETY = keepY; } } return;   /* Zale, Nov 25: the sheet is the visitor's to control. Picking another neighborhood (a tap on the map, the arrows) keeps it folded or open exactly as they left it; it only opens by itself when you first arrive from the map list */   /* Zale, Nov 22: stepping from the folded bar stays folded */   /* the card is pinned on phone; the page never scrolls to place it */
+    var sc0 = scroller(); if (sc0) sc0.scrollTop = 0; var kf = KEEPFOLD; KEEPFOLD = false; var raised = RAISE; RAISE = false; var keepFold = prevHood ? (raised ? false : SHEETFOLD) : false, keepY = prevHood && !raised ? SHEETY : 0; setFold(keepFold); if (prevHood && !keepFold && keepY < 0) { var ce1 = cardEl(); if (ce1) { ce1.classList.add('pkpl-anim'); setY(ce1, keepY); SHEETY = keepY; } } return;   /* Zale, Nov 25: the sheet is the visitor's to control. Picking another neighborhood (a tap on the map, the arrows) keeps it folded or open exactly as they left it; it only opens by itself when you first arrive from the map list */   /* Zale, Nov 22: stepping from the folded bar stays folded */   /* the card is pinned on phone; the page never scrolls to place it */
     var sc = scroller(), sp = document.getElementById('pkpl-sp'); if (!sc || !sp) return;
     var set = function () { if (!sp.isConnected) return; var vh = sc.clientHeight, f = window.innerWidth >= 700 ? 0.55 : 0.6; sc.scrollTop = Math.max(0, sp.offsetTop + sp.offsetHeight - Math.round(vh * (1 - f))); };
     var touched = false, mv = function () { touched = true; };
@@ -956,8 +956,8 @@
   function cardEl() { return document.getElementById('pkpl-top'); }
   function foldY() { var c = cardEl(), b = c ? parseFloat(getComputedStyle(c).bottom) || 0 : 0; return sheetOpen() - 56 + (V2 && !wide() ? 0 : b); }   /* Nov 22: on phone the folded bar sits right above the experience row, which stays above the nav */   /* folded: only the bar with the logo and name shows above the tab bar (Zale, Nov 21) */
   var KEEPFOLD = false;
-  var SHEETFOLD = false, SHEETY = 0;
-  function setFold(f) { SHEETFOLD = !!f; SHEETY = f ? foldY() : 0; var el = cardEl(); if (!el) return; el.classList.add('pkpl-anim'); el.classList.toggle('pkpl-folded', !!f); el.style.setProperty('--pkpl-y', (f ? foldY() : 0) + 'px'); document.documentElement.style.setProperty('--pkpl-y', (f ? foldY() : 0) + 'px');   /* the chip row above the sheet follows it */ if (M.cur && !wide()) setTimeout(function () { if (M.cur) recenter(); }, 420); setTimeout(chipsAboveFold, 360);   /* after the sheet has finished sliding, so the strip above it is measured at rest */   /* the map re-centers on the selected place in the strip that shows */ var b = el.querySelector('.pkpl-bar'); if (b) b.setAttribute('aria-expanded', String(!f)); }
+  var SHEETFOLD = false, SHEETY = 0, MINI = false, RAISE = false;   /* Zale, Nov 25 02:27: the phone sheet has two states, full or pulled down to a banner; MINI is the visitor's last choice and both sheets (experience list, neighborhood page) follow it */
+  function setFold(f) { SHEETFOLD = !!f; MINI = !!f; SHEETY = f ? foldY() : 0; var el = cardEl(); if (!el) return; el.classList.add('pkpl-anim'); el.classList.toggle('pkpl-folded', !!f); el.style.setProperty('--pkpl-y', (f ? foldY() : 0) + 'px'); document.documentElement.style.setProperty('--pkpl-y', (f ? foldY() : 0) + 'px');   /* the chip row above the sheet follows it */ if (M.cur && !wide()) setTimeout(function () { if (M.cur) recenter(); }, 420); setTimeout(chipsAboveFold, 360);   /* after the sheet has finished sliding, so the strip above it is measured at rest */   /* the map re-centers on the selected place in the strip that shows */ var b = el.querySelector('.pkpl-bar'); if (b) b.setAttribute('aria-expanded', String(!f)); }
   (function sheetDrag() {
     /* Nov 20 (Zale): the bar is a handle. Three rests: full frame (pulled up past open), open (the default: a little map above), and folded (a thin bar). A pull down of about 30% of the travel folds it; a pull up past half the map strip takes the whole frame. */
     var st = null;
@@ -970,7 +970,7 @@
     var end = function (e) { if (!st) return; var s = st; st = null; var el = cardEl(); if (!el) return;
       var dx9 = e && e.clientX != null ? e.clientX - s.x : 0, dy9 = e && e.clientY != null ? e.clientY - s.y : 0;
       if (Math.abs(dx9) > 44 && Math.abs(dx9) > Math.abs(dy9) * 1.5) { var bs = el.querySelector('.pkpl-bst.' + (dx9 < 0 ? 'r' : 'l')); setY(el, s.base); el.classList.add('pkpl-anim'); if (bs) bs.click(); return; }   /* Zale, Nov 22: swipe the bar sideways for the next or previous place */
-      if (!s.moved) { setFold(!el.classList.contains('pkpl-folded')); return; } var y = yNow(el), f = foldY(), dir = y - s.base, t, folded = false; if (dir < -20) { t = y < -s.gap / 2 ? -s.gap : 0; } else if (dir > 20) { if (y > f * 0.3) { t = f; folded = true; } else { t = Math.max(0, s.base); } } else { t = s.base; folded = s.base >= f - 1; } el.classList.add('pkpl-anim'); el.classList.toggle('pkpl-folded', folded); SHEETFOLD = folded; SHEETY = t; var b = el.querySelector('.pkpl-bar'); if (b) b.setAttribute('aria-expanded', String(!folded)); setY(el, t); if (M.cur && !wide()) setTimeout(function () { if (M.cur) recenter(); }, 420); setTimeout(chipsAboveFold, 360);   /* after the sheet has finished sliding, so the strip above it is measured at rest */ };
+      if (!s.moved) { setFold(!el.classList.contains('pkpl-folded')); return; } var y = yNow(el), f = foldY(), dir = y - s.base, t, folded = false; if (dir < -20) { t = y < -s.gap / 2 ? -s.gap : 0; } else if (dir > 20) { if (y > f * 0.3) { t = f; folded = true; } else { t = Math.max(0, s.base); } } else { t = s.base; folded = s.base >= f - 1; } el.classList.add('pkpl-anim'); el.classList.toggle('pkpl-folded', folded); SHEETFOLD = folded; MINI = folded; SHEETY = t; var b = el.querySelector('.pkpl-bar'); if (b) b.setAttribute('aria-expanded', String(!folded)); setY(el, t); if (M.cur && !wide()) setTimeout(function () { if (M.cur) recenter(); }, 420); setTimeout(chipsAboveFold, 360);   /* after the sheet has finished sliding, so the strip above it is measured at rest */ };
     document.addEventListener('pointerup', end, true); document.addEventListener('pointercancel', end, true);
     /* Nov 21 (Zale): the sheet follows a swipe on its content, not only the bar. Swipe up: it grows to the full frame first, then the story scrolls. At the top of the story, swipe down: it slides back to open, and on down to the folded bar. */
     var tc = null;
