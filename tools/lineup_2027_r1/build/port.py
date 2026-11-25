@@ -105,12 +105,17 @@ try:
     _cd = os.environ.get('PK_CASCADES') or cv2.data.haarcascades
     _cas = [cv2.CascadeClassifier(_cd + 'haarcascade_frontalface_default.xml'), cv2.CascadeClassifier(_cd + 'haarcascade_profileface.xml')]
     _n = _f = 0
+    _FT = json.load(open(os.path.join(ROOT, 'focus-tall.json'), encoding='utf-8'))
     for fn in sorted(os.listdir(OUT + '/a')):
         fp = os.path.join(OUT, 'a', fn)
         h = open(fp, encoding='utf-8').read()
         m = re.search(r'(<section class="hero hact"><img src=")([^"]+)(" alt="" style="object-position:)([^"]*)(")', h)
         if not m: continue
         _n += 1
+        slug = fn[:-5]; ft = _FT.get('i/pv-' + slug + '.jpg')
+        if ft:   # the hand-set subject focus (focus-tall.json) wins over the face finder
+            h = h[:m.start(4)] + '%d%% %d%%' % (ft[0], ft[1]) + h[m.end(4):]
+            open(fp, 'w', encoding='utf-8').write(h); _f += 1; continue
         im = cv2.imread(os.path.join(ROOT, m.group(2)))
         if im is None: continue
         H, W = im.shape[:2]
