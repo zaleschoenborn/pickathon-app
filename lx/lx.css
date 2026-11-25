@@ -1338,3 +1338,8 @@ a.hd-yr{text-decoration:none}
 @media (min-width:1000px) and (max-width:1199px){
   .yrtop .poster.joined .po-in,.yrtop .poster.solo .po-in,.poster.joined .po-in,.poster.solo .po-in{padding:34px 36px 40px;column-gap:28px}
 }
+
+main[id^="a-"] .hact{height:clamp(700px,calc(100vh - 100px),820px)}
+main[id^="a-"] .hact .hero-tx{padding-bottom:74px}
+main[id^="a-"] .hact .ring.lg,.hact .ring.lg{left:50%;top:42%;transform:translate(-50%,-50%)}
+@media (min-width:1000px){main[id^="a-"] .hact{height:clamp(660px,calc(100vh - 140px),760px)}main[id^="a-"] .hact .hero-tx{padding-bottom:90px}main[id^="a-"] .hact .ring.lg{top:40%}}

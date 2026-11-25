@@ -29,6 +29,13 @@ css = re.sub(r'(^|\}|\n)body\{[^}]*\}', r'\1:host{display:block;background:var(-
 css = re.sub(r'(^|(?<=[{}]))\s*\.mockbar[^{}]*\{[^}]*\}', '', css, flags=re.M)   # only rules whose selector is the mock bar (keep :not(.mockbar))                  # the mock bar and its select
 css = re.sub(r'\.mb-sel[^{}]*\{[^}]*\}', '', css)
 css = css.replace('.phone{', '.phone{--lxpad:0;', 1)
+# Site Build, Nov 24 (Zale's review): the artist photo was too short and the words sat mid-photo. Taller photo, words in the lower part, play button centered in the photo above the words.
+css += """
+main[id^="a-"] .hact{height:clamp(700px,calc(100vh - 100px),820px)}
+main[id^="a-"] .hact .hero-tx{padding-bottom:74px}
+main[id^="a-"] .hact .ring.lg,.hact .ring.lg{left:50%;top:42%;transform:translate(-50%,-50%)}
+@media (min-width:1000px){main[id^="a-"] .hact{height:clamp(660px,calc(100vh - 140px),760px)}main[id^="a-"] .hact .hero-tx{padding-bottom:90px}main[id^="a-"] .hact .ring.lg{top:40%}}
+"""
 os.makedirs(OUT + '/a', exist_ok=True)
 open(OUT + '/lx.css', 'w', encoding='utf-8').write(css)
 open(OUT + '/fonts.css', 'w', encoding='utf-8').write(
@@ -48,6 +55,7 @@ for i, (st, sid) in enumerate(heads):
     seg = seg.replace(' hidden', '', 0)
     seg = re.sub(r'src="img/', 'src="' + IMG, seg)
     seg = re.sub(r'url\(img/', 'url(' + IMG, seg)
+    seg = re.sub(r'("img": ")img/', lambda m: m.group(1) + IMG, seg)   # the 2027 archive widget's card data (inline script) 
     seg = re.sub(r'(&quot;i&quot;: &quot;)img/', lambda m: m.group(1) + IMG, seg)   # the year reel's data-slides JSON (frames after the first 404ed without this)
     seg = re.sub(r'<div class="sale">.*?</div>(?=<)', '', seg, count=1, flags=re.S)   # the live shell has the sale strip
     raw = seg
@@ -87,3 +95,43 @@ widgets = widgets.replace("root.querySelector('.pkvid')", "(document.querySelect
 rt = open(os.path.join(ROOT, 'tools/lineup_2027_r1/build/lx_runtime.js'), encoding='utf-8').read()
 open(OUT + '/lx.js', 'w', encoding='utf-8').write(rt.replace('/*WIDGETS*/', widgets))
 print('lx.js written')
+
+# ---- artist photo position (Site Build, Nov 24; Zale: edit images to position optimally) --------------
+# The artist photo is now tall on phones and the words sit in its lower part. Find the biggest face (OpenCV Haar, front then profile),
+# put it at the horizontal middle on a phone and in the upper third on a wide screen. One object-position serves both: a landscape photo
+# has horizontal slack in a tall box and vertical slack in a wide box. No face found: the build's own position stays.
+try:
+    import cv2
+    _cd = os.environ.get('PK_CASCADES') or cv2.data.haarcascades
+    _cas = [cv2.CascadeClassifier(_cd + 'haarcascade_frontalface_default.xml'), cv2.CascadeClassifier(_cd + 'haarcascade_profileface.xml')]
+    _n = _f = 0
+    for fn in sorted(os.listdir(OUT + '/a')):
+        fp = os.path.join(OUT, 'a', fn)
+        h = open(fp, encoding='utf-8').read()
+        m = re.search(r'(<section class="hero hact"><img src=")([^"]+)(" alt="" style="object-position:)([^"]*)(")', h)
+        if not m: continue
+        _n += 1
+        im = cv2.imread(os.path.join(ROOT, m.group(2)))
+        if im is None: continue
+        H, W = im.shape[:2]
+        sc = 900.0 / max(W, H); g = cv2.cvtColor(cv2.resize(im, (int(W * sc), int(H * sc))) if sc < 1 else im, cv2.COLOR_BGR2GRAY); g = cv2.equalizeHist(g)
+        gh, gw = g.shape[:2]; best = None
+        for ci, c in enumerate(_cas):
+            for gg, flip in ((g, False), (cv2.flip(g, 1), True)) if ci else ((g, False),):
+                for (x, y, w, hh) in c.detectMultiScale(gg, 1.1, 6, minSize=(int(gw * .035), int(gw * .035))):
+                    cx = (gw - (x + w / 2.0)) if flip else (x + w / 2.0)
+                    if best is None or w > best[2]: best = (cx, y + hh / 2.0, w)
+            if best: break
+        if not best: continue
+        fx, fy = best[0] / gw, best[1] / gh
+        # phone box 390x744 (cover): scaled width = (W/H)*744
+        sw = (W / float(H)) * 744.0; slack = sw - 390.0
+        px = 50.0 if slack <= 0 else max(0.0, min(100.0, (fx * sw - 195.0) / slack * 100.0))
+        # wide box 1200x700: scaled height = (H/W)*1200; face center at 32% of the box
+        shh = (H / float(W)) * 1200.0; vs = shh - 700.0
+        py = 40.0 if vs <= 0 else max(0.0, min(100.0, (fy * shh - 0.32 * 700.0) / vs * 100.0))
+        h = h[:m.start(4)] + '%d%% %d%%' % (round(px), round(py)) + h[m.end(4):]
+        open(fp, 'w', encoding='utf-8').write(h); _f += 1
+    print('artist photo position: faces found on', _f, 'of', _n)
+except ImportError:
+    print('artist photo position: OpenCV missing, kept the build positions')

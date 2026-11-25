@@ -96,10 +96,19 @@
     if (window.ResizeObserver && !root._fro) { root._fro = new ResizeObserver(function () { fitPoster(root); }); root.querySelectorAll('.po-names').forEach(function (n) { root._fro.observe(n); }); }
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { fitPoster(root); });
   }
+  /* r111 (Site Build, Nov 24): the 2027 page's own inline script (Wait, they played here? cards, music filter, year grid, Send/tickets scroll) never ran inside the shadow root, so the archive after the poster was empty. Run it here with the root as its document. */
+  function runInline(root, html) {
+    if (html.indexOf('p27-grid') < 0) return;
+    var m = html.match(/<script>([\s\S]*?)<\/script>/); if (!m) return;
+    var code = m[1].replace(/document\.getElementById\(/g, 'root.getElementById(').replace(/document\.querySelector\(/g, 'root.querySelector(')
+      .replace('function sbt(){', 'function sbt(){if(!HD||!sbx)return;').replace("addEventListener('scroll',", "docOn('scroll',").replace('document.body.appendChild(t)', 'root.appendChild(t)').replace(/\{passive:true\}\)/g, '{passive:true,capture:true})')
+      .replace("document.querySelector('#s1 .p7-dn').addEventListener", "(root.querySelector('#s1 .p7-dn')||document.createElement('i')).addEventListener");
+    try { new Function('root', 'docOn', code)(root, docOn); } catch (e) { if (window.console) console.error('lx s1', e); }
+  }
   function paint(host, key, html, css) {
     var root = host.shadowRoot || host.attachShadow({ mode: 'open' });
     root.innerHTML = '<style>' + css + '\n.phone{max-width:none;margin:0;padding-bottom:32px;min-height:0;background:transparent}.screen{display:block}</style><div class="phone">' + html + '</div>';
-    host._k = key; wire(root); starBridge(root); try { fitWatch(root); } catch (e) {} try { widgets(root); } catch (e) { if (window.console) console.error('lx widgets', e); }
+    host._k = key; wire(root); starBridge(root); try { fitWatch(root); } catch (e) {} try { widgets(root); } catch (e) { if (window.console) console.error('lx widgets', e); } runInline(root, html);
     if (LASTK !== key) { LASTK = key; toTop(); }
   }
   function mount(host, key) {
