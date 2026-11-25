@@ -315,3 +315,28 @@ html.pl2-zoom{-webkit-text-size-adjust:auto!important;text-size-adjust:auto!impo
 #root#root#root .pl2 .pl-row .pl-sc-im img{position:absolute!important;inset:0!important}
 @media (min-width:900px){.pl2 .pl-qa-r{padding:16px 18px!important}.pl2 .pl-qa-l li{border-top:1px solid var(--line)!important}.pl2 .pl-qa-l li:nth-child(-n+2){border-top:0!important}}
 @media (min-width:1200px){#root#root#root .pl2 .pl-steps{grid-template-columns:1fr!important}.pl2 .pl-row-b{grid-template-columns:140px minmax(0,1fr) auto!important;min-height:104px!important}#root#root#root .pl2 .pl-row .pl-sc-im{width:140px!important;min-height:104px!important}}
+
+/* More sheet, draft 3 (Zale approved Nov 24): photo doors with quick links, What's on tiles, two plain rows */
+.pl2 .pl-mchips{margin:10px 0 4px!important}
+.pl2 .pl-doors{display:grid!important;grid-template-columns:1fr!important;gap:12px!important;margin-top:14px!important}
+.pl2 .pl-door{border-radius:12px!important;overflow:hidden!important;background:#2a2527!important;border:1px solid var(--line)!important}
+.pl2 .pl-door-p{all:unset;box-sizing:border-box;position:relative!important;display:block!important;width:100%!important;height:132px!important;cursor:pointer;overflow:hidden!important}
+.pl2 .pl-door-p img,.pl2 .pl-what img{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;object-fit:cover!important}
+.pl2 .pl-door-p::after,.pl2 .pl-what::after{content:""!important;position:absolute!important;inset:0!important;background:linear-gradient(180deg,rgba(21,17,15,0) 25%,rgba(21,17,15,.9) 92%)!important}
+.pl2 .pl-door-x,.pl2 .pl-what-x{position:absolute!important;z-index:1!important;left:14px!important;right:14px!important;bottom:12px!important;display:block!important}
+#root .pl2 .pl-door-t,.pl2 .pl-door-t{display:block!important;font-family:"Pickathon 2014","Bricolage Grotesque",Impact,sans-serif!important;font-size:24px!important;line-height:1.05!important;letter-spacing:.04em!important;text-transform:uppercase!important;color:var(--cream)!important}
+.pl2 .pl-door-l{display:block!important;margin-top:4px!important;font-size:15px!important;line-height:1.35!important;color:var(--cream)!important}
+.pl2 .pl-door-q{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important}
+.pl2 .pl-door-q button{all:unset;box-sizing:border-box;display:flex!important;align-items:center!important;justify-content:center!important;min-height:48px!important;padding:6px 8px!important;text-align:center!important;font-size:15px!important;font-weight:700!important;line-height:1.2!important;color:var(--gold)!important;cursor:pointer;border-top:1px solid var(--line)!important}
+.pl2 .pl-door-q button+button{border-left:1px solid var(--line)!important}
+.pl2 .pl-whats{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:10px!important}
+.pl2 .pl-what{all:unset;box-sizing:border-box;position:relative!important;display:block!important;height:120px!important;border-radius:12px!important;overflow:hidden!important;cursor:pointer}
+.pl2 .pl-what-t{display:block!important;font-size:18px!important;font-weight:800!important;color:var(--cream)!important}
+.pl2 .pl-what-l{display:block!important;margin-top:2px!important;font-size:13px!important;line-height:1.3!important;color:var(--cream)!important}
+.pl2 .pl-mrows{display:block!important;margin-top:14px!important;border-top:1px solid var(--line)!important}
+.pl2 .pl-mrows button{all:unset;box-sizing:border-box;display:flex!important;align-items:baseline!important;justify-content:space-between!important;gap:12px!important;width:100%!important;min-height:52px!important;padding:12px 2px!important;border-bottom:1px solid var(--line)!important;cursor:pointer}
+.pl2 .pl-mr-t{font-size:17px!important;font-weight:800!important;color:var(--cream)!important}
+.pl2 .pl-mr-x{font-size:15px!important;color:var(--cream-dim)!important;text-align:right!important}
+.pl2 .pl-door-p:focus-visible,.pl2 .pl-door-q button:focus-visible,.pl2 .pl-what:focus-visible,.pl2 .pl-mrows button:focus-visible{outline:2px solid var(--gold)!important;outline-offset:-2px!important}
+@media (hover:hover){.pl2 .pl-door-q button:hover{background:rgba(242,237,227,.06)!important}.pl2 .pl-mrows button:hover .pl-mr-t{color:var(--gold)!important}}
+@media (min-width:900px){.pl2 .pl-sheet{max-width:980px!important}.pl2 .pl-doors{grid-template-columns:repeat(3,minmax(0,1fr))!important}.pl2 .pl-door-p{height:150px!important}.pl2 .pl-what{height:130px!important}.pl2 .pl-mrows{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;column-gap:24px!important}}

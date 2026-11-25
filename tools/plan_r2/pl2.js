@@ -503,7 +503,7 @@
   function mapH(id) { try { sessionStorage.setItem('pkmap.focus', id); sessionStorage.setItem('pkmap.force', '1'); } catch (e) {} var a = app(); if (!a) return; a.setState({ mapHood: id, sheet: false, mapHover: null }); a.go('hoods'); }
   function go(to) {
     var a = app(); if (!a) return; var c = to.indexOf(':'), k = c < 0 ? to : to.slice(0, c), v = c < 0 ? '' : to.slice(c + 1);
-    if (k === 'route') { if (['home', 'lineup', 'schedule', 'stories', 'tickets', 'mine', 'info', 'hoods', 'about', 'build', 'partners', 'press', 'presents'].indexOf(v) >= 0) a.reset(v); else a.go(v); return; }
+    if (k === 'route') { if (['home', 'lineup', 'schedule', 'stories', 'tickets', 'mine', 'info', 'hoods', 'about', 'aboutus', 'getinv', 'past', 'build', 'partners', 'press', 'presents'].indexOf(v) >= 0) a.reset(v); else a.go(v); return; }
     if (k === 'page') { a.go('page', { p: v }); return; }
     if (k === 'hood') { a.go('hood', { h: v }); return; }
     if (k === 'map') { mapH(v); return; }
@@ -522,13 +522,30 @@
   var scrim = null, opener = null, inerted = [];
   function social() { var S = (site().data || {}).social || [], o = {}; S.forEach(function (x) { o[String(x[0]).toLowerCase()] = x[1]; }); return [['Instagram', o.instagram], ['YouTube', o.youtube], ['Spotify', o.spotify]].filter(function (x) { return x[1]; }); }
   function follow(cls) { return social().map(function (x) { return '<a class="' + cls + '" href="' + esc(x[1]) + '" target="_blank" rel="noopener">' + x[0] + '<span class="pl-vh"> (opens in a new tab)</span></a>'; }).join(''); }
+  /* the More sheet, draft 3 (Zale approved the look Nov 24; menu named "More", design_studio-108). Order settled Nov 24 (re design_studio #108):
+     search with four one-tap answers; three photo doors with three quick links each; What's on (Shows, Stories); Schedule and My Pickathon; Sign in and social.
+     Lineup is in both bars, so it is not repeated here. Words: Copy Review, info_about_words_nov24_draft1.csv. */
+  var DOORS = [
+    ['Plan your trip', 'Getting here, where to sleep and what to bring.', 'i/pk-welcomelot-13.jpg', 'route:info', [['Where to sleep', 'step:sleep'], ['Getting here', 'step:arrive'], ['What to pack', 'step:pack']]],
+    ['Get involved', 'Work a shift, build something, or partner with us.', 'i/hb-cherryhill-1.jpg', 'route:getinv', [['Work trade', 'route:getinv'], ['Build with us', 'route:build'], ['Partner with us', 'route:partners']]],
+    ['About', 'Where Pickathon came from, and who builds it.', 'i/33.jpg', 'route:aboutus', [['Our story', 'route:about'], ['The posters', 'route:past'], ['Press', 'route:press']]]
+  ];
+  var WHATS = [['Shows', 'Pickathon Presents, all year', 'i/p9507.jpg', 'route:presents'], ['Stories', 'News from the farm', 'i/p596.jpg', 'route:stories']];
   function moreHTML() {
     var u = site().user;
     return '<div class="pl-sheet-top"><h2 class="pl-d pl-d-card" id="pl-more-h">More</h2><button type="button" class="pl-x" data-close aria-label="Close">' + ic('x') + '</button></div>' +
-      '<form class="pl-search" role="search" id="pl-more-f"><label class="pl-search-l">' + ic('search', 'pl-ic-sm') + '<span class="pl-vh">Search Pickathon</span><input type="search" name="q" placeholder="Search: parking, kids, shuttle…" enterkeyhint="search" autocomplete="off"></label></form>' +
-      '<div class="pl-chips">' + [['Parking', 'go'], ['Camping', 'sleep'], ['Shuttle', 'go'], ['Kids', 'kids']].map(function (c) { return '<button type="button" class="pl-pill pl-pill-sm" data-go="plan:' + c[1] + '">' + c[0] + '</button>'; }).join('') + '</div>' +
-      '<nav class="pl-mmain" aria-label="Festival">' + [['Lineup', '2027 and every year', 'lineup'], ['Plan your trip', 'Getting there, rules', 'info'], ['Schedule', '2026 for now', 'schedule'], ['Shows', 'Pickathon Presents, all year', 'presents'], ['Stories', '', 'stories']].map(function (n) { var cur = topR() === n[2]; return '<button type="button" data-go="route:' + n[2] + '"' + (cur ? ' aria-current="page"' : '') + '><span class="pl-d">' + n[0] + '</span>' + (n[1] ? '<small>' + n[1] + '</small>' : '') + '</button>'; }).join('') + '</nav>' +
-      '<p class="pl-mk" id="pl-mk">About</p><nav class="pl-mabout" aria-labelledby="pl-mk">' + [['About', 'route:aboutus'], ['Build with Pickathon', 'route:build']].map(function (n) { return '<button type="button" data-go="' + n[1] + '">' + n[0] + '</button>'; }).join('') + '</nav>' +
+      '<form class="pl-search" role="search" id="pl-more-f"><label class="pl-search-l">' + ic('search', 'pl-ic-sm') + '<span class="pl-vh">Search Pickathon</span><input type="search" name="q" placeholder="What do you need?" enterkeyhint="search" autocomplete="off"></label></form>' +
+      '<div class="pl-chips pl-mchips">' + [['Parking', 'step:arrive:drive'], ['Camping', 'step:sleep'], ['Shuttle', 'step:arrive:shuttle'], ['Kids', 'step:farm:kids']].map(function (c) { return '<button type="button" class="pl-pill pl-pill-sm" data-go="' + c[1] + '">' + c[0] + '</button>'; }).join('') + '</div>' +
+      '<div class="pl-doors" role="navigation" aria-label="Info">' + DOORS.map(function (d) {
+        return '<div class="pl-door"><button type="button" class="pl-door-p" data-go="' + d[3] + '"><img src="' + d[2] + '" alt="" loading="lazy" decoding="async"><span class="pl-door-x"><span class="pl-door-t pk-feat-h">' + d[0] + '</span><span class="pl-door-l">' + esc(d[1]) + '</span></span></button>' +
+          '<div class="pl-door-q">' + d[4].map(function (q) { return '<button type="button" data-go="' + q[1] + '">' + q[0] + '</button>'; }).join('') + '</div></div>';
+      }).join('') + '</div>' +
+      '<p class="pl-mk" id="pl-mk">What’s on</p><div class="pl-whats" role="navigation" aria-labelledby="pl-mk">' + WHATS.map(function (w) {
+        return '<button type="button" class="pl-what" data-go="' + w[3] + '"><img src="' + w[2] + '" alt="" loading="lazy" decoding="async"><span class="pl-what-x"><span class="pl-what-t">' + w[0] + '</span><span class="pl-what-l">' + w[1] + '</span></span></button>';
+      }).join('') + '</div>' +
+      '<div class="pl-mrows" role="navigation" aria-label="More">' + [['Schedule', '2026 for now', 'route:schedule'], ['My Pickathon', 'Your stars, tickets and years', 'route:mine']].map(function (r) {
+        return '<button type="button" data-go="' + r[2] + '"><span class="pl-mr-t">' + r[0] + '</span><span class="pl-mr-x">' + r[1] + '</span></button>';
+      }).join('') + '</div>' +
       '<div class="pl-mfoot"><button type="button" class="pl-pill pl-pill-sm" data-go="' + (u ? 'route:account' : 'signin') + '">' + (u ? 'Your account' : 'Sign in') + '</button><nav aria-label="Follow Pickathon">' + follow('pl-mf') + '</nav></div>';
   }
   function tabBtns() { return $$('#root nav[aria-label="App"] button').filter(function (b) { return /^\s*More\s*$/.test(b.textContent); }); }
