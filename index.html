@@ -13739,7 +13739,7 @@ html.pk-ovl [role=region][aria-label="Listen"],html.pk-ovl #root button.pk-tly{o
 .pl2 .pl-paper{background:var(--paper);color:var(--ink);border-radius:0}
 /* display face: the site sets h1 and h2 with !important, so these do too */
 #root .pl2 .pl-d,.pl2.pl-scrim .pl-d{font-family:var(--display)!important;font-weight:400!important;letter-spacing:.02em!important;line-height:1.08!important;text-transform:uppercase!important;text-wrap:balance;color:inherit;max-width:none!important;min-height:0!important;margin:0!important}
-
+#root .pl2 .pl-d-label,.pl2.pl-scrim .pl-d-label{font-size:var(--d-label)!important}
 #root .pl2 .pl-d-card,.pl2.pl-scrim .pl-d-card{font-size:var(--d-card)!important}
 .pl2 :focus-visible{outline:3px solid var(--gold);outline-offset:3px;border-radius:4px}
 .pl2 .pl-paper :focus-visible{outline-color:var(--plum)}
@@ -13752,8 +13752,8 @@ html.pk-ovl [role=region][aria-label="Listen"],html.pk-ovl #root button.pk-tly{o
 .pl2 .pl-pill{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;min-height:var(--pill);padding:0 1.125rem;border-radius:999px;border:1.5px solid var(--line-strong);background:transparent;color:var(--cream);font-family:var(--text);font-weight:650;font-size:.9375rem;line-height:1;letter-spacing:0;text-transform:none;text-decoration:none;white-space:nowrap;cursor:pointer;transition:background-color .2s linear,color .2s linear,border-color .2s linear}
 .pl2 .pl-pill:hover{border-color:var(--cream)}
 .pl2 .pl-pill:active{background:rgba(242,237,227,.14)}
-
-
+.pl2 .pl-pill-gold{background:var(--gold);border-color:var(--gold);color:var(--ink);font-weight:750}
+.pl2 .pl-pill-gold:hover,.pl2 .pl-pill-gold:active{background:var(--gold-deep);border-color:var(--gold-deep)}
 .pl2 .pl-pill-sm{padding:0 .875rem;font-size:.875rem}
 .pl2 .pl-paper .pl-pill:not(.pl-pill-gold){border-color:var(--ink);color:var(--ink)}
 .pl2 .pl-tlink{display:inline;padding:4px 0;margin:0;border:0;background:none;color:inherit;font:inherit;font-weight:650;text-align:left;text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1.5px;cursor:pointer;min-height:24px;position:relative}
@@ -13776,22 +13776,22 @@ html.pk-ovl [role=region][aria-label="Listen"],html.pk-ovl #root button.pk-tly{o
 .pl2 .pl-src b{color:var(--cream)}
 #root .pl2 .pl-why{margin-top:8px;padding:8px 12px;border-left:3px solid var(--plum-lt);background:rgba(134,82,107,.22);font-size:var(--t-sm);line-height:1.35}
 
-
+.pl2 .pl-trail{margin-top:14px;display:grid}
 .pl2 .pl-stop{display:grid;grid-template-columns:44px minmax(0,1fr);gap:0 12px;position:relative;padding-bottom:16px}
 .pl2 .pl-stop::before{content:"";position:absolute;left:21px;top:44px;bottom:0;border-left:2px solid var(--line-strong)}
 .pl2 .pl-stop:last-child::before{display:none}.pl2 .pl-stop:last-child{padding-bottom:0}
 .pl2 .pl-stop-n{width:44px;height:44px;display:grid;place-items:center;background:var(--cream);color:var(--ink);font-family:var(--display)!important;font-size:1.375rem;line-height:1;clip-path:polygon(29.3% 0,70.7% 0,100% 29.3%,100% 70.7%,70.7% 100%,29.3% 100%,0 70.7%,0 29.3%)}
-
-
-
-
-
+#root .pl2 .pl-stop-k{font-size:var(--t-sm);font-weight:700;color:var(--cream-dim);line-height:1.2}
+#root .pl2 .pl-stop-big{font-size:var(--d-card)!important;line-height:1.1!important;margin-top:2px!important;overflow-wrap:anywhere}
+#root .pl2 .pl-stop-big small{font-family:var(--text)!important;font-size:var(--t-sm);font-weight:650;letter-spacing:0;text-transform:none;color:var(--cream-dim);white-space:nowrap}
+#root .pl2 .pl-stop-d{font-size:.9375rem;line-height:1.4;color:var(--cream-dim);margin-top:4px;max-width:34em}
+.pl2 .pl-stop-d b{color:var(--cream);font-weight:650}
 .pl2 .pl-at{display:inline-flex;align-items:center;gap:8px;margin-top:6px;padding:4px 0;border:0;background:none;color:inherit;font-size:var(--t-sm);font-weight:650;min-height:44px;cursor:pointer;text-align:left}
 .pl2 .pl-at img{width:36px;height:36px;flex:none}
 .pl2 .pl-at span{text-decoration:underline;text-underline-offset:3px}
+#root .pl2 .pl-hours{margin-top:12px;font-size:var(--t-sm);color:var(--mute)}
 
-
-
+.pl2 .pl-vet{display:grid;gap:12px;margin-top:24px}
 .pl2 .pl-card{padding:14px 16px 12px;border:2px solid var(--ink);outline:1px solid var(--paper);outline-offset:-5px;scroll-margin-top:130px}
 .pl2 .pl-newl li{display:grid;grid-template-columns:5.5rem minmax(0,1fr);gap:10px;padding:8px 0;border-bottom:1px solid rgba(43,38,40,.25);font-size:.9375rem!important;line-height:1.35!important}
 .pl2 .pl-newl li:last-child{border:0}
@@ -13811,14 +13811,14 @@ html.pk-ovl [role=region][aria-label="Listen"],html.pk-ovl #root button.pk-tly{o
 .pl2 .pl-more summary{list-style:none;min-height:48px;display:flex;align-items:center;gap:10px;font-weight:650;cursor:pointer}
 .pl2 .pl-more summary::-webkit-details-marker{display:none}
 .pl2 .pl-more summary > .pl-ic:first-child{color:var(--cream-dim)}
-
-
+.pl2 .pl-more summary .pl-chev{margin-left:auto;transform:rotate(90deg);color:var(--cream-dim)}
+.pl2 .pl-more details[open] summary .pl-chev{transform:rotate(-90deg)}
 .pl2 .pl-more ul{padding:0 0 14px 34px;display:grid;gap:6px;max-width:44em}
 #root .pl2 .pl-more li{font-size:.9375rem;line-height:1.4;color:var(--cream-dim)}
 .pl2 .pl-more li b{color:var(--cream);font-weight:650}
 .pl2 .pl-more li a{font-weight:650;text-underline-offset:3px}
 
-
+.pl2 .pl-nextwrap{padding:0 var(--gutter)}
 .pl2 .pl-next{margin:28px auto 0;max-width:calc(1160px - 2 * var(--gutter));display:flex;align-items:center;gap:14px;padding:14px 16px;border:2px solid var(--ink);outline:1px solid var(--paper);outline-offset:-5px}
 #root .pl2 .pl-next-k{font-size:var(--t-sm);font-weight:700;color:var(--plum)}
 #root .pl2 .pl-next-t{font-size:var(--d-card)!important;line-height:1.1!important;margin-top:2px!important}
@@ -13827,18 +13827,18 @@ html.pk-ovl [role=region][aria-label="Listen"],html.pk-ovl #root button.pk-tly{o
 .pl2 .pl-next .pl-pill{margin-left:auto;flex:none;padding:0 1.25rem;font-size:1rem}
 .pl2 #pl-nb{margin-left:auto;flex:none;display:flex}
 @media (max-width:379px){.pl2 .pl-picks{grid-template-columns:1fr}.pl2 .pl-next{flex-direction:column;align-items:stretch}.pl2 #pl-nb{margin:0}.pl2 #pl-nb .pl-pill{flex:1}}
-@media (min-width:600px) and (max-width:1199px){.pl2 .pl-in{max-width:768px;margin:0 auto}}
+@media (min-width:600px) and (max-width:1199px){.pl2 .pl-in,.pl2 .pl-nextwrap{max-width:768px;margin:0 auto}}
 @media (min-width:1200px){
   .pl2 .pl-in{padding-top:32px}
   .pl2 .pl-top{display:grid;grid-template-columns:minmax(0,1fr) 560px;gap:40px;align-items:end}
   #root .pl2 .pl-h1{font-size:2.5rem!important}
   .pl2 .pl-picks{margin:0}
   .pl2 .pl-cols{display:grid;grid-template-columns:minmax(0,1fr) 440px;gap:64px;align-items:start;margin-top:8px}
-  
+  .pl2 .pl-trail{margin-top:20px}
   .pl2 .pl-stop{padding-bottom:22px}
-  
-  
-  
+  #root .pl2 .pl-stop-big{font-size:1.75rem!important}
+  .pl2 .pl-vet{margin-top:20px;position:sticky;top:110px}
+  .pl2 .pl-more-g{display:grid;grid-template-columns:1fr 1fr;gap:0 40px;align-items:start}
   .pl2 .pl-more details:nth-of-type(2){border-top:1px solid var(--line)}
   .pl2 .pl-next{max-width:760px}
 }
@@ -13929,8 +13929,8 @@ html.pl2-zoom{-webkit-text-size-adjust:auto!important;text-size-adjust:auto!impo
 .pl2 .pl-sc .pk-cta{margin-top:auto!important}
 @media (min-width:600px){.pl2 .pl-sc{grid-template-columns:200px minmax(0,1fr)!important;min-height:190px!important}}
 @media (min-width:1200px){.pl2 .pl-steps{grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:16px!important}.pl2 .pl-sc{grid-template-columns:1fr!important;grid-template-rows:180px auto!important}.pl2 .pl-sc-tx{padding:14px 16px 16px!important;flex:1!important}}
-
-
+.pl2 .pl-packln{margin-top:16px!important}
+.pl2 .pl-newc{margin-top:24px!important;max-width:760px!important}
 /* step pages */
 .pl2 .pl-page{padding-top:14px!important;padding-bottom:8px!important}
 .pl2 .pl-back{padding:0 14px 0 8px!important;font-size:.875rem!important}
@@ -13969,14 +13969,14 @@ html.pl2-zoom{-webkit-text-size-adjust:auto!important;text-size-adjust:auto!impo
 .pl2 .pl-list li{padding-left:18px!important;position:relative!important;line-height:1.4!important}
 .pl2 .pl-list li::before{content:""!important;position:absolute!important;left:0!important;top:.55em!important;width:8px!important;height:8px!important;background:var(--gold)!important;clip-path:polygon(29% 0,71% 0,100% 29%,100% 71%,71% 100%,29% 100%,0 71%,0 29%)!important}
 #root .pl2 .pl-rule-x{font-size:var(--t-sm)!important;color:var(--ink-dim)!important;margin-top:10px!important;line-height:1.35!important}
-
-
+.pl2 .pl-packln{margin-top:14px!important}
+.pl2 .pl-packrow{display:flex!important;width:100%;justify-content:space-between;align-items:center;min-height:56px;padding:0 16px;border:1px solid rgba(245,238,224,.45);border-radius:6px;font-weight:800;text-decoration:none!important}
 /* personal plan: one question, then a card with the next step (Zale, Nov 15) */
 .pl2 .pl-ask[hidden],.pl2 .pl-plan[hidden],.pl2 .pl-shared[hidden],.pl2 #pl-shared[hidden]{display:none!important}
 .pl2 .pl-ask,.pl2 .pl-plan{margin:18px auto 0;max-width:calc(1160px - 2 * var(--gutter));padding:18px 16px;border:2px solid var(--ink);outline:1px solid var(--paper);outline-offset:-5px}
 #root .pl2 .pl-ask-x{margin-top:6px;font-size:var(--t-sm);color:var(--ink-dim)}
 .pl2 .pl-ask-b{display:grid;gap:10px;margin-top:14px}
-
+#root .pl2 .pl-plan-sum{font-size:var(--d-card)!important;line-height:1.1!important;margin-top:2px!important}
 .pl2 .pl-plan .pl-picks{margin-top:12px}
 .pl2 .pl-plan .pl-src{margin-top:10px}
 .pl2 .pl-plan-next{margin-top:16px;padding-top:14px;border-top:1px solid rgba(43,38,40,.35)}
@@ -13991,6 +13991,45 @@ html.pl2-zoom{-webkit-text-size-adjust:auto!important;text-size-adjust:auto!impo
 
 #root#root#root#root#root#root#root#root#root#root#root#root#root#root .pl2 .pl-ask-b .pl-btn,#root#root#root#root#root#root#root#root#root#root#root#root#root#root .pl2 .pl-plan-b .pl-btn{width:100%!important;max-width:none!important;min-width:0!important}
 #root#root#root#root#root#root#root#root#root#root#root#root#root#root .pl2 .pl-plan-b #pl-nb{display:block!important;width:100%!important;margin:0!important}
+
+/* Answers first (Zale, Nov 24 15:47): quick answers on the page, then the steps as compact rows. One look with About. */
+.pl2 .pl-qa{margin-top:24px!important}
+#root .pl2 .pl-qa-h{font-size:var(--d-card)!important;margin:0 0 12px!important}
+#root .pl2 .pl-st-h{margin-top:32px!important}
+.pl2 .pl-qa-l{list-style:none!important;margin:0!important;padding:0!important;display:grid!important;grid-template-columns:1fr!important;gap:0!important;background:var(--raise)!important;border:1px solid var(--line)!important;border-radius:12px!important;overflow:hidden!important}
+.pl2 .pl-qa-l li+li{border-top:1px solid var(--line)!important}
+.pl2 .pl-qa-r{all:unset;box-sizing:border-box;display:grid!important;grid-template-columns:minmax(0,1fr) auto!important;column-gap:12px!important;width:100%!important;min-height:64px!important;padding:14px 16px!important;cursor:pointer;color:var(--cream)!important;-webkit-tap-highlight-color:transparent}
+.pl2 .pl-qa-r:focus-visible,.pl2 .pl-row-b:focus-visible{outline:2px solid var(--gold)!important;outline-offset:-2px!important}
+#root .pl2 .pl-qa-q{grid-column:1!important;font-size:17px!important;font-weight:800!important;line-height:1.3!important;color:var(--cream)!important}
+#root .pl2 .pl-qa-a{grid-column:1!important;margin-top:4px!important;font-size:16px!important;line-height:1.45!important;color:var(--cream-dim)!important}
+.pl2 .pl-qa-c{grid-column:2!important;grid-row:1/3!important;align-self:center!important;color:var(--gold)!important;flex:none}
+#root#root#root .pl2 .pl-steps{gap:10px!important;margin-top:0!important}
+#root#root#root .pl2 .pl-sc.pl-row{display:block!important;min-height:0!important;padding:0!important;background:var(--raise)!important;border:1px solid var(--line)!important;border-left:1px solid var(--line)!important;border-radius:12px!important;overflow:hidden!important}
+.pl2 .pl-row-b{all:unset;box-sizing:border-box;display:grid!important;grid-template-columns:88px minmax(0,1fr) auto!important;column-gap:14px!important;align-items:center!important;width:100%!important;min-height:96px!important;padding:0 14px 0 0!important;cursor:pointer;color:var(--cream)!important}
+#root#root#root .pl2 .pl-row .pl-sc-im{position:relative!important;display:block!important;width:88px!important;height:96px!important;align-self:stretch!important}
+#root#root#root .pl2 .pl-row .pl-sc-im img{width:100%!important;height:100%!important;object-fit:cover!important;display:block!important}
+#root#root#root .pl2 .pl-row .pl-sc-tx{display:block!important;padding:12px 0!important}
+#root .pl2 .pl-row .pl-sc-k{display:block!important;font-size:12px!important;font-weight:800!important;letter-spacing:.1em!important;text-transform:uppercase!important;color:var(--gold)!important}
+#root .pl2 .pl-row .pl-sc-q{display:block!important;margin-top:2px!important;font-size:17px!important;font-weight:800!important;line-height:1.25!important;color:var(--cream)!important}
+#root .pl2 .pl-row .pl-sc-x{display:block!important;margin-top:2px!important;font-size:15px!important;line-height:1.4!important;color:var(--cream-dim)!important}
+@media (hover:hover){.pl2 .pl-qa-r:hover,.pl2 .pl-row-b:hover{background:rgba(242,237,227,.05)!important}}
+@media (min-width:900px){
+  .pl2 .pl-qa-l{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  .pl2 .pl-qa-l li+li{border-top:0!important}
+  .pl2 .pl-qa-l li{border-top:1px solid var(--line)!important}
+  .pl2 .pl-qa-l li:nth-child(-n+2){border-top:0!important}
+  .pl2 .pl-qa-l li:nth-child(odd){border-right:1px solid var(--line)!important}
+  #root#root#root .pl2 .pl-steps{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+}
+@media (min-width:1200px){#root#root#root .pl2 .pl-steps{grid-template-columns:repeat(3,minmax(0,1fr))!important}.pl2 .pl-row-b{grid-template-columns:112px minmax(0,1fr) auto!important;min-height:112px!important}#root#root#root .pl2 .pl-row .pl-sc-im{width:112px!important;height:112px!important}}
+#root .pl2 .pl-row-b .pl-qa-c{grid-column:3!important;grid-row:1!important}
+#root .pl2 .pl-row-b .pl-sc-tx{grid-column:2!important}#root .pl2 .pl-row-b .pl-sc-im{grid-column:1!important}
+#root#root#root .pl2 .pl-steps{grid-template-columns:1fr!important;max-width:760px!important}
+#root#root#root .pl2 #pl-steps2{margin-top:10px!important}
+#root#root#root .pl2 .pl-row .pl-sc-im{height:auto!important;min-height:96px!important;align-self:stretch!important;overflow:hidden!important}
+#root#root#root .pl2 .pl-row .pl-sc-im img{position:absolute!important;inset:0!important}
+@media (min-width:900px){.pl2 .pl-qa-r{padding:16px 18px!important}.pl2 .pl-qa-l li{border-top:1px solid var(--line)!important}.pl2 .pl-qa-l li:nth-child(-n+2){border-top:0!important}}
+@media (min-width:1200px){#root#root#root .pl2 .pl-steps{grid-template-columns:1fr!important}.pl2 .pl-row-b{grid-template-columns:140px minmax(0,1fr) auto!important;min-height:104px!important}#root#root#root .pl2 .pl-row .pl-sc-im{width:140px!important;min-height:104px!important}}
 </style>
 <script id="pk-plan2">
 /* pk-plan2: Plan your trip, the More sheet and the short footer, round 2 design (Nov 11 2026).
@@ -14190,14 +14229,34 @@ html.pl2-zoom{-webkit-text-size-adjust:auto!important;text-size-adjust:auto!impo
       pack: ['Get ready', 'What do I pack?', !asked ? 'A short list. Food and drink are on the farm.' : (e.camp ? 'A short list, set for how you are sleeping.' : 'A short list for a day on the farm.'), btn('Packing list', 'step:pack', 'sec')],
       arrive: ['Arrive', 'How do I get there and in?', asked ? 'You picked: ' + GO_T[e.go].toLowerCase() + '.' : 'Drive, ride the shuttle, bike or get dropped off.', btn('Arrive', 'step:arrive', 'sec')],
       sleep: ['Sleep', 'Where do I sleep?', asked ? sl : 'A tent in the woods, your car, an RV, or off site.', btn('Sleep', 'step:sleep', 'sec')],
-      farm: ['At the farm', 'What is it like inside?', 'Twenty neighborhoods, food, water, kids and access.', btn('At the farm', 'step:farm', 'sec')]
+      farm: ['At the farm', 'What is it like inside?', 'Neighborhoods, food, water, kids and access.', btn('At the farm', 'step:farm', 'sec')]
     };
     var ids = pf ? (tail ? [] : ['buy', 'pack', 'arrive', 'sleep', 'farm']) : (tail ? ['pack'] : ['sleep', 'arrive', 'farm', 'buy']);
     return ids.map(function (id, n) {
       var c = K[id];
-      return '<li class="pl-sc"><div class="pl-sc-im">' + img(CARD_IM[id], 'pl-sc-img') + (pf ? '<span class="pl-sc-n pl-d">' + (n + 1) + '</span>' : '') + '</div>' +
-        '<div class="pl-sc-tx"><p class="pl-sc-k">' + c[0] + '</p><h2 class="pl-d pl-d-card pl-sc-q">' + c[1] + '</h2><p class="pl-sc-x">' + esc(c[2]) + '</p>' + c[3] + '</div></li>';
+      var to = (/data-go="([^"]+)"/.exec(c[3]) || [])[1] || '';
+      return '<li class="pl-sc pl-row"><button type="button" class="pl-row-b" data-go="' + to + '"><span class="pl-sc-im">' + img(CARD_IM[id], 'pl-sc-img') + (pf ? '<span class="pl-sc-n pl-d">' + (n + 1) + '</span>' : '') + '</span>' +
+        '<span class="pl-sc-tx"><span class="pl-sc-k">' + c[0] + '</span><span class="pl-sc-q">' + c[1] + '</span><span class="pl-sc-x">' + esc(c[2]) + '</span></span>' +
+        '<svg class="pl-qa-c" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button></li>';
     }).join('');
+  }
+
+  /* the questions people ask most, answered on the page in one line each; a tap opens the step with the detail (Zale, Nov 24 15:47: core info first, simple). Facts only from the site's own pages. */
+  var QA = [
+    ['Where do I park?', 'At the Welcome Lot, 19208 SE Foster Rd (don’t type “Pickathon” into your GPS). A free shuttle runs to the gate until 2 AM.', 'step:arrive:drive'],
+    ['Is there a shuttle from Portland?', 'Yes. The Pickathon Shuttle runs round trip from the Lents Town Center MAX stop, with a Shuttle Pass.', 'step:arrive:shuttle'],
+    ['Can I camp?', 'Tent camping in the woods comes with any 3- or 4-Day Pass. Car, van and RV spots need a Vehicle Camping Pass.', 'step:sleep:woods'],
+    ['Are kids free?', 'Kids 12 and under get in free with a ticketed adult, and Coyote is a neighborhood built for them.', 'step:farm:kids'],
+    ['Can I leave and come back?', 'Yes, as often as you like. Show your parking pass when you return.', 'step:arrive:drive'],
+    ['What should I bring?', 'Skip the cooler: food and drink are on the farm. Bring a refillable bottle (water is free) and a battery pack.', 'step:pack'],
+    ['What stays home?', 'Pets (service animals are welcome), outside alcohol and campfires.', 'step:pack'],
+    ['Is it accessible?', 'ADA parking and campsites and accessible restrooms. Email info@pickathon.com two weeks ahead to arrange more.', 'step:farm:access']
+  ];
+  function qaHTML() {
+    return '<section class="pl-qa" id="pl-qa" aria-labelledby="pl-qa-h"><h2 class="pl-d pl-qa-h" id="pl-qa-h">Quick answers</h2><ul class="pl-qa-l">' + QA.map(function (q) {
+      return '<li><button type="button" class="pl-qa-r" data-go="' + q[2] + '"><span class="pl-qa-q">' + esc(q[0]) + '</span><span class="pl-qa-a">' + esc(q[1]) + '</span>' +
+        '<svg class="pl-qa-c" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button></li>';
+    }).join('') + '</ul></section>';
   }
 
   function hubHTML() {
@@ -14215,6 +14274,8 @@ html.pl2-zoom{-webkit-text-size-adjust:auto!important;text-size-adjust:auto!impo
         '<div class="pl-plan-next"><p class="pl-next-k" id="pl-nk">Next</p><p class="pl-next-t pl-d" id="pl-nt"></p><p class="pl-next-p" id="pl-nn"></p><div class="pl-plan-b"><span id="pl-nb"></span>' +
         '<button type="button" class="pk-cta sec pl-btn" id="pl-share">Send this plan to your group</button></div><p class="pl-next-p" id="pl-cd"></p><p class="pl-next-p" id="pl-shared" role="status" hidden></p></div></section>' +
       '<ul class="pl-basics"><li><b>Aug 5–8, 2027</b><span>Gates open Wed, Aug 4</span></li><li><b>Happy Valley, OR</b><span>12 miles from Portland</span></li><li><b>Camping included</b><span>Tents in the woods, with any 3- or 4-Day Pass</span></li></ul>' +
+      qaHTML() +
+      '<h2 class="pl-d pl-qa-h pl-st-h" id="pl-st-h">Your trip, step by step</h2>' +
       '<ol class="pl-steps" id="pl-steps"></ol><ol class="pl-steps" id="pl-steps2" hidden></ol>' +
       '</div>';
   }
@@ -14282,7 +14343,7 @@ html.pl2-zoom{-webkit-text-size-adjust:auto!important;text-size-adjust:auto!impo
     },
     farm: {
       n: 5, t: 'At the farm', line: 'What it’s like once you’re through the gate.',
-      fact: { k: 'Find your way', t: 'Twenty neighborhoods, one map', s: 'Stages, food, water, restrooms and camps', x: 'Tap any neighborhood for what’s there this year.', b: btn('Open the map', 'route:hoods', 'sec') },
+      fact: { k: 'Find your way', t: 'Every neighborhood, one map', s: 'Stages, food, water, restrooms and camps', x: 'Tap any neighborhood for what’s there this year.', b: btn('Open the map', 'route:hoods', 'sec') },
       q: 'What do you want to know?',
       cases: [['kids', 'Kids'], ['food', 'Food and water'], ['access', 'Access']],
       steps: function (c) {
@@ -14403,7 +14464,7 @@ html.pl2-zoom{-webkit-text-size-adjust:auto!important;text-size-adjust:auto!impo
     var inn = $('.pl-in', root), pf = planFirst(), ld = pf ? 'plan' : 'look';
     if (inn && inn.getAttribute('data-lead') !== ld) {   // move the real nodes, so reading and tab order match what is on screen
       inn.setAttribute('data-lead', ld);
-      (pf ? ['#pl-ask', '#pl-plan', '.pl-basics', '#pl-steps', '#pl-steps2'] : ['.pl-basics', '#pl-steps', '#pl-ask', '#pl-plan', '#pl-steps2']).forEach(function (q) { var n = $(q, root); if (n) inn.appendChild(n); });
+      (pf ? ['#pl-ask', '#pl-plan', '.pl-basics', '#pl-qa', '#pl-st-h', '#pl-steps', '#pl-steps2'] : ['.pl-basics', '#pl-qa', '#pl-st-h', '#pl-steps', '#pl-steps2', '#pl-ask', '#pl-plan']).forEach(function (q) { var n = $(q, root); if (n) inn.appendChild(n); });
     }
     $('#pl-ask-k', root).textContent = pf ? 'Start here' : 'Ready to plan?';
     var asked = !!lsGet(LSQ) || orderNow().real; $('#pl-ask', root).hidden = asked; $('#pl-plan', root).hidden = !asked;

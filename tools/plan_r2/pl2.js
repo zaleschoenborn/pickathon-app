@@ -195,14 +195,34 @@
       pack: ['Get ready', 'What do I pack?', !asked ? 'A short list. Food and drink are on the farm.' : (e.camp ? 'A short list, set for how you are sleeping.' : 'A short list for a day on the farm.'), btn('Packing list', 'step:pack', 'sec')],
       arrive: ['Arrive', 'How do I get there and in?', asked ? 'You picked: ' + GO_T[e.go].toLowerCase() + '.' : 'Drive, ride the shuttle, bike or get dropped off.', btn('Arrive', 'step:arrive', 'sec')],
       sleep: ['Sleep', 'Where do I sleep?', asked ? sl : 'A tent in the woods, your car, an RV, or off site.', btn('Sleep', 'step:sleep', 'sec')],
-      farm: ['At the farm', 'What is it like inside?', 'Twenty neighborhoods, food, water, kids and access.', btn('At the farm', 'step:farm', 'sec')]
+      farm: ['At the farm', 'What is it like inside?', 'Neighborhoods, food, water, kids and access.', btn('At the farm', 'step:farm', 'sec')]
     };
     var ids = pf ? (tail ? [] : ['buy', 'pack', 'arrive', 'sleep', 'farm']) : (tail ? ['pack'] : ['sleep', 'arrive', 'farm', 'buy']);
     return ids.map(function (id, n) {
       var c = K[id];
-      return '<li class="pl-sc"><div class="pl-sc-im">' + img(CARD_IM[id], 'pl-sc-img') + (pf ? '<span class="pl-sc-n pl-d">' + (n + 1) + '</span>' : '') + '</div>' +
-        '<div class="pl-sc-tx"><p class="pl-sc-k">' + c[0] + '</p><h2 class="pl-d pl-d-card pl-sc-q">' + c[1] + '</h2><p class="pl-sc-x">' + esc(c[2]) + '</p>' + c[3] + '</div></li>';
+      var to = (/data-go="([^"]+)"/.exec(c[3]) || [])[1] || '';
+      return '<li class="pl-sc pl-row"><button type="button" class="pl-row-b" data-go="' + to + '"><span class="pl-sc-im">' + img(CARD_IM[id], 'pl-sc-img') + (pf ? '<span class="pl-sc-n pl-d">' + (n + 1) + '</span>' : '') + '</span>' +
+        '<span class="pl-sc-tx"><span class="pl-sc-k">' + c[0] + '</span><span class="pl-sc-q">' + c[1] + '</span><span class="pl-sc-x">' + esc(c[2]) + '</span></span>' +
+        '<svg class="pl-qa-c" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button></li>';
     }).join('');
+  }
+
+  /* the questions people ask most, answered on the page in one line each; a tap opens the step with the detail (Zale, Nov 24 15:47: core info first, simple). Facts only from the site's own pages. */
+  var QA = [
+    ['Where do I park?', 'At the Welcome Lot, 19208 SE Foster Rd (don’t type “Pickathon” into your GPS). A free shuttle runs to the gate until 2 AM.', 'step:arrive:drive'],
+    ['Is there a shuttle from Portland?', 'Yes. The Pickathon Shuttle runs round trip from the Lents Town Center MAX stop, with a Shuttle Pass.', 'step:arrive:shuttle'],
+    ['Can I camp?', 'Tent camping in the woods comes with any 3- or 4-Day Pass. Car, van and RV spots need a Vehicle Camping Pass.', 'step:sleep:woods'],
+    ['Are kids free?', 'Kids 12 and under get in free with a ticketed adult, and Coyote is a neighborhood built for them.', 'step:farm:kids'],
+    ['Can I leave and come back?', 'Yes, as often as you like. Show your parking pass when you return.', 'step:arrive:drive'],
+    ['What should I bring?', 'Skip the cooler: food and drink are on the farm. Bring a refillable bottle (water is free) and a battery pack.', 'step:pack'],
+    ['What stays home?', 'Pets (service animals are welcome), outside alcohol and campfires.', 'step:pack'],
+    ['Is it accessible?', 'ADA parking and campsites and accessible restrooms. Email info@pickathon.com two weeks ahead to arrange more.', 'step:farm:access']
+  ];
+  function qaHTML() {
+    return '<section class="pl-qa" id="pl-qa" aria-labelledby="pl-qa-h"><h2 class="pl-d pl-qa-h" id="pl-qa-h">Quick answers</h2><ul class="pl-qa-l">' + QA.map(function (q) {
+      return '<li><button type="button" class="pl-qa-r" data-go="' + q[2] + '"><span class="pl-qa-q">' + esc(q[0]) + '</span><span class="pl-qa-a">' + esc(q[1]) + '</span>' +
+        '<svg class="pl-qa-c" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button></li>';
+    }).join('') + '</ul></section>';
   }
 
   function hubHTML() {
@@ -220,6 +240,8 @@
         '<div class="pl-plan-next"><p class="pl-next-k" id="pl-nk">Next</p><p class="pl-next-t pl-d" id="pl-nt"></p><p class="pl-next-p" id="pl-nn"></p><div class="pl-plan-b"><span id="pl-nb"></span>' +
         '<button type="button" class="pk-cta sec pl-btn" id="pl-share">Send this plan to your group</button></div><p class="pl-next-p" id="pl-cd"></p><p class="pl-next-p" id="pl-shared" role="status" hidden></p></div></section>' +
       '<ul class="pl-basics"><li><b>Aug 5–8, 2027</b><span>Gates open Wed, Aug 4</span></li><li><b>Happy Valley, OR</b><span>12 miles from Portland</span></li><li><b>Camping included</b><span>Tents in the woods, with any 3- or 4-Day Pass</span></li></ul>' +
+      qaHTML() +
+      '<h2 class="pl-d pl-qa-h pl-st-h" id="pl-st-h">Your trip, step by step</h2>' +
       '<ol class="pl-steps" id="pl-steps"></ol><ol class="pl-steps" id="pl-steps2" hidden></ol>' +
       '</div>';
   }
@@ -287,7 +309,7 @@
     },
     farm: {
       n: 5, t: 'At the farm', line: 'What it’s like once you’re through the gate.',
-      fact: { k: 'Find your way', t: 'Twenty neighborhoods, one map', s: 'Stages, food, water, restrooms and camps', x: 'Tap any neighborhood for what’s there this year.', b: btn('Open the map', 'route:hoods', 'sec') },
+      fact: { k: 'Find your way', t: 'Every neighborhood, one map', s: 'Stages, food, water, restrooms and camps', x: 'Tap any neighborhood for what’s there this year.', b: btn('Open the map', 'route:hoods', 'sec') },
       q: 'What do you want to know?',
       cases: [['kids', 'Kids'], ['food', 'Food and water'], ['access', 'Access']],
       steps: function (c) {
@@ -408,7 +430,7 @@
     var inn = $('.pl-in', root), pf = planFirst(), ld = pf ? 'plan' : 'look';
     if (inn && inn.getAttribute('data-lead') !== ld) {   // move the real nodes, so reading and tab order match what is on screen
       inn.setAttribute('data-lead', ld);
-      (pf ? ['#pl-ask', '#pl-plan', '.pl-basics', '#pl-steps', '#pl-steps2'] : ['.pl-basics', '#pl-steps', '#pl-ask', '#pl-plan', '#pl-steps2']).forEach(function (q) { var n = $(q, root); if (n) inn.appendChild(n); });
+      (pf ? ['#pl-ask', '#pl-plan', '.pl-basics', '#pl-qa', '#pl-st-h', '#pl-steps', '#pl-steps2'] : ['.pl-basics', '#pl-qa', '#pl-st-h', '#pl-steps', '#pl-steps2', '#pl-ask', '#pl-plan']).forEach(function (q) { var n = $(q, root); if (n) inn.appendChild(n); });
     }
     $('#pl-ask-k', root).textContent = pf ? 'Start here' : 'Ready to plan?';
     var asked = !!lsGet(LSQ) || orderNow().real; $('#pl-ask', root).hidden = asked; $('#pl-plan', root).hidden = !asked;
