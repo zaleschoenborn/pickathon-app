@@ -15,8 +15,8 @@ const serve = require(ROOT + '/tests/lib/serve.js'), fonts = require(ROOT + '/te
 const W = +(process.argv[2] || 390), OUT = process.argv[3] || '/tmp/plan_shots';
 fs.mkdirSync(OUT, { recursive: true });
 const ORDER = (pass) => JSON.stringify({ pass, day: null, adult: 2, teen: 0, kid: 0, wed: false, sleep: 'tent', go: 'drive', car: 1, patron: false });
-const LOOK = ['Sleep', 'Arrive', 'At the farm', 'Before you buy', 'Get ready'];
-const PLAN = ['1 Before you buy', '2 Get ready', '3 Arrive', '4 Sleep', '5 At the farm'];
+const LOOK = ['Sleep', 'Arrive', 'At the farm', 'Before you buy', 'Get ready', 'Going home'];
+const PLAN = ['1 Before you buy', '2 Get ready', '3 Arrive', '4 Sleep', '5 At the farm', '6 Going home'];
 let fails = 0; const bad = (m) => { fails++; console.log('  FAIL ' + m); };
 (async () => {
   const [srv, base] = await serve(ROOT); const br = await chromium.launch();
@@ -50,7 +50,7 @@ let fails = 0; const bad = (m) => { fails++; console.log('  FAIL ' + m); };
   await c.close();
   [c, p, r] = await state('answered', { tap: '.pl2 [data-ask="camp"]' }); if (r.lead !== 'look') bad('answered: answers should still lead'); await c.close();
   [c, p, r] = await state('picked', { order: ORDER('p3') }); if (r.lead !== 'look' || r.len !== 'p3') bad('picked: answers first, length from the picks'); await c.close();
-  [c, p, r] = await state('bought', { order: ORDER('p4'), has: true }); if (r.lead !== 'plan' || !eq(r.cards, PLAN)) bad('bought: plan on top, steps 1-5'); await c.close();
+  [c, p, r] = await state('bought', { order: ORDER('p4'), has: true }); if (r.lead !== 'plan' || !eq(r.cards, PLAN)) bad('bought: plan on top, steps 1-6'); await c.close();
   [c, p, r] = await state('shared', { hash: '#/plan?len=p4&sleep=tent&go=shuttle' }); if (r.lead !== 'plan' || r.len !== 'p4') bad('shared: plan on top with the link picks'); await c.close();
   [c, p, r] = await state('addon', { order: ORDER('none') }); if (!r.len) bad('addon: How long is blank'); await c.close();
   await br.close(); srv.close();
