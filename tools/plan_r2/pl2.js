@@ -165,7 +165,7 @@
   window.pkTripRedirect = {
     'traveling-to-pickathon': 'arrive', 'bike-to-pickathon': 'arrive:bike', 'camping': 'sleep', 'lodging': 'sleep:hotel',
     'what-to-bring-to-pickathon': 'pack', 'ada-info': 'farm:access', 'getting-around-pickathon-neighborhood-map': 'farm',
-    'commitment-to-sustainability': 'farm:food', 'easy-day': '', 'pickathon-2026-tickets-passes': 'tickets'
+    'commitment-to-sustainability': 'farm:food', 'easy-day': 'sleep:hotel', 'pickathon-2026-tickets-passes': 'tickets'
   };
   /* photos: picked from the neighborhood galleries in data.json (Photo Catalog photos); crops from focus.json.
      Photo Catalog's "trip moment" tag (design_studio-65) will replace these lists when it lands. */
@@ -328,7 +328,8 @@
       buy: {},
       shared: ['How the days run', 'The 2027 set times post closer to the festival.', [
         ['Day', 'Shows start in the shaded woods while the sun is hot.'], ['Night', 'The crowds move to the open meadows under the stars.'],
-        ['Twice', 'Most bands play twice, on two different stages, so one day still gets you a big slice of the lineup.']]],
+        ['Twice', 'Most bands play twice, on two different stages, so one day still gets you a big slice of the lineup.'],
+        ['On the map', 'First aid, info booths, restrooms, showers and water stations are all marked. Trails are lit at night.']]],
       next: ''
     }
   };
@@ -364,7 +365,7 @@
   /* packing: its own page (Zale, Nov 13) */
   function packHTML() {
     var e = effective();
-    var every = ['Walking shoes: the farm is dusty and hilly', 'Layers for hot days and cool nights', 'Sunscreen, a hat and sunglasses', 'A water bottle to refill free', 'A steel cup (sold on site, or bring yours)', 'ID and a card or cash', 'A battery pack: service is fine, but there are no public phones', 'A low chair or a blanket'];
+    var every = ['Walking shoes: the farm is dusty and hilly', 'Layers for hot days and cool nights', 'Sunscreen, a hat and sunglasses', 'A water bottle to refill free', 'A steel cup (sold on site, or bring yours)', 'ID (to pick up tickets and to buy a drink) and a card or cash', 'A battery pack: service is fine, but there are no public phones', 'A low chair or a blanket'];
     var camp = ['Pack light: most of what you need is on site', 'Pack in containers you can carry from the Gear Drop to your site, anywhere from 10 yards to a third of a mile', 'A camp stove only with extreme care', 'A yoga mat for the morning classes'];
     return '<div class="pl-in pl-page">' + backChip() +
       '<p class="pl-mark">' + (planFirst() ? '2 of 5 · ' : '') + 'Get ready</p><h1 class="pl-d pl-h1">What to pack</h1><p class="pl-lede">Everything else is on the farm. Skip the cooler: food and drink are on site all weekend.</p>' +
